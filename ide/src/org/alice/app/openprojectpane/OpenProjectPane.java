@@ -44,7 +44,8 @@
 package org.alice.app.openprojectpane;
 
 abstract class ComingSoonTabPane extends TabContentPane {
-	public ComingSoonTabPane() {
+	public ComingSoonTabPane( java.util.UUID individualId ) {
+		super( individualId );
 		setEnabled( false );
 		setToolTipText( "coming soon" );
 	}
@@ -55,6 +56,9 @@ abstract class ComingSoonTabPane extends TabContentPane {
 }
 
 class TutorialPane extends ComingSoonTabPane {
+	public TutorialPane() {
+		super( java.util.UUID.fromString( "f4ff59f1-cf15-4301-a17a-2d80a4ea6fa4" ) );
+	}
 	@Override
 	public String getTabTitleText() {
 		return "Tutorial";
@@ -62,6 +66,9 @@ class TutorialPane extends ComingSoonTabPane {
 }
 
 class MyProjectsPane extends DirectoryListPane {
+	public MyProjectsPane() {
+		super( java.util.UUID.fromString( "c7fb9c47-f215-47dc-941e-872842ce397e" ) );
+	}
 	@Override
 	public java.io.File getDirectory() {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MyProjectsPane" );
@@ -78,6 +85,9 @@ class MyProjectsPane extends DirectoryListPane {
 }
 
 abstract class ApplicationRootDirectoryListPane extends DirectoryListPane {
+	public ApplicationRootDirectoryListPane( java.util.UUID individualId ) {
+		super( individualId );
+	}
 	protected abstract String getSubPath();
 	@Override
 	public java.io.File getDirectory() {
@@ -102,6 +112,9 @@ abstract class ApplicationRootDirectoryListPane extends DirectoryListPane {
 //}
 
 class ExamplesPane extends ApplicationRootDirectoryListPane {
+	public ExamplesPane() {
+		super( java.util.UUID.fromString( "a8d38b0a-049e-4818-9b81-7c3b7b65a739" ) );
+	}
 	@Override
 	public String getSubPath() {
 		return "projects/examples";
@@ -113,6 +126,9 @@ class ExamplesPane extends ApplicationRootDirectoryListPane {
 }
 
 class TextbookPane extends ApplicationRootDirectoryListPane {
+	public TextbookPane() {
+		super( java.util.UUID.fromString( "033afcdf-29b9-4fbf-b9f5-fb5c496a7860" ) );
+	}
 	@Override
 	public String getSubPath() {
 		return "projects/textbook";
@@ -126,6 +142,7 @@ class TextbookPane extends ApplicationRootDirectoryListPane {
 class FileSystemPane extends TabContentPane {
 	private javax.swing.JTextField textField = new javax.swing.JTextField();
 	public FileSystemPane() {
+		super( java.util.UUID.fromString( "b1698424-1f0e-4499-852a-da627fa9e789" ) );
 		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
 			private void handleUpdate( javax.swing.event.DocumentEvent e ) {
 				FileSystemPane.this.updateOKButton();
@@ -181,7 +198,8 @@ class FileSystemPane extends TabContentPane {
  * @author Dennis Cosgrove
  */
 public class OpenProjectPane extends org.alice.ide.InputPanel< java.net.URI > {
-	private edu.cmu.cs.dennisc.croquet.TabbedPane tabbedPane = new edu.cmu.cs.dennisc.croquet.TabbedPane();
+	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabSelectionOperation = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "12e1d59b-2893-4144-b995-08090680a318" ));
+	private edu.cmu.cs.dennisc.croquet.TabbedPane tabbedPane;
 	private MyProjectsPane myProjectsPane = new MyProjectsPane();
 	private TabContentPane templatesPane;
 	private FileSystemPane fileSystemPane = new FileSystemPane();
@@ -201,6 +219,9 @@ public class OpenProjectPane extends org.alice.ide.InputPanel< java.net.URI > {
 		for( TabContentPane tabPane : tabPanes ) { 
 			if( tabPane != null ) {
 				tabPane.setInputPanel( this );
+				
+				//todo: add scrollpane
+				
 				edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( tabPane );
 				scrollPane.setOpaque( false );
 				scrollPane.setBackgroundColor( tabPane.getBackgroundColor() );
@@ -209,9 +230,12 @@ public class OpenProjectPane extends org.alice.ide.InputPanel< java.net.URI > {
 				//scrollPane.setVerticalScrollBarPolicy( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED );
 				
 				this.mapTabPaneToScrollPane.put( tabPane, scrollPane );
-				this.tabbedPane.addTab( tabPane.getTabTitleText(), tabPane.getTabTitleIcon(), scrollPane );
+				
+				this.tabSelectionOperation.addTabIsSelectedOperation( tabPane.getTabIsSelectedOperation() );
+				//this.tabbedPane.addTab( tabPane.getTabTitleText(), tabPane.getTabTitleIcon(), scrollPane );
 			}
 		}
+		this.tabbedPane = this.tabSelectionOperation.createTabbedPane();
 //		this.tabbedPane.addVetoableChangeListener( new java.beans.VetoableChangeListener() {
 //			public void vetoableChange( java.beans.PropertyChangeEvent evt ) throws java.beans.PropertyVetoException {
 		this.tabbedPane.addChangeListener( new javax.swing.event.ChangeListener() {

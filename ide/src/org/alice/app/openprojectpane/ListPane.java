@@ -73,7 +73,8 @@ public abstract class ListPane extends TabContentPane {
 		}
 	};
 	
-	public ListPane() {
+	public ListPane( java.util.UUID individualId ) {
+		super( individualId );
 		this.refresh();
 		this.list.setOpaque( false );
 		this.list.setCellRenderer( new ProjectSnapshotListCellRenderer() );
