@@ -85,8 +85,8 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read(edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is);
 		indirectCreatePersonActionOperation.setSmallIcon(new javax.swing.ImageIcon(image));
 		
-		this.addComponent(createPersonButton, java.awt.BorderLayout.WEST);
-		this.addComponent(buttonPane, java.awt.BorderLayout.EAST);
+		this.addComponent(createPersonButton, CardinalDirection.WEST);
+		this.addComponent(buttonPane, CardinalDirection.EAST);
 	}
 
 	@Override

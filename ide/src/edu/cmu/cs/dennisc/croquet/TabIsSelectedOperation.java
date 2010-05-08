@@ -59,7 +59,7 @@ public abstract class TabIsSelectedOperation extends BooleanStateOperation {
 			//pass
 		} else {
 			this.singletonScrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( this.getSingletonView() );
-			//this.singletonScrollPane.setOpaque( false );
+			this.singletonScrollPane.setOpaque( false );
 			this.singletonScrollPane.setBackgroundColor( this.getSingletonView().getBackgroundColor() );
 			this.singletonScrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 			//scrollPane.setHorizontalScrollBarPolicy( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER );

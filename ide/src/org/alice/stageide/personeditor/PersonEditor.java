@@ -45,7 +45,7 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class PersonEditor extends org.alice.ide.Editor< org.alice.apis.stage.Person > {
+public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //public class PersonEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
 	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane splitPane;
 	private PersonViewer personViewer = PersonViewer.getSingleton();
@@ -76,13 +76,8 @@ public class PersonEditor extends org.alice.ide.Editor< org.alice.apis.stage.Per
 //		this.personViewer.initializeValues( this.person );
 		this.splitPane = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane( this.personViewer, this.ingredientsPane );
 		this.splitPane.setDividerLocation( 400 );
-		this.addComponent( this.splitPane );
+		this.addComponent( this.splitPane, CardinalDirection.CENTER );
 	}
-	
-	@Override
-		protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-			return new java.awt.GridLayout( 1, 1 );
-		}
 	public org.alice.apis.stage.Person getPerson() {
 		org.alice.apis.stage.Person rv;
 		

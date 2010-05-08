@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.cs.dennisc.alice.ast.AbstractType> implements edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
+public abstract class AbstractSceneEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implements edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = null;
 	private org.alice.app.ProjectApplication.ProjectObserver projectObserver = new org.alice.app.ProjectApplication.ProjectObserver() { 
 		public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
@@ -67,8 +67,12 @@ public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.c
 	public abstract Object getInstanceInJavaForUndo( FieldDeclaredInAlice field );
 	
 	public abstract void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty );
+	
+	protected org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
+	}
 	protected edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine getVM() {
-		return getIDE().getVirtualMachineForSceneEditor();
+		return this.getIDE().getVirtualMachineForSceneEditor();
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneField() {
 		return this.sceneField;

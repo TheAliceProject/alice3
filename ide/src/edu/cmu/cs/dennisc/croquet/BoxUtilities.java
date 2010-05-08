@@ -99,4 +99,46 @@ public class BoxUtilities {
 	public static Component< javax.swing.Box.Filler > createRigidArea( int width, int height ) {
 		return createRigidArea( new java.awt.Dimension( width, height ) );
 	}
+	
+	//todo: use Short.MAX_VALUE instead of null?
+	private static class ConstrainedComponent extends Component< javax.swing.JComponent > {
+		private Component<?> component;
+		private Integer minimumPreferredWidth;
+		private Integer minimumPreferredHeight;
+		public ConstrainedComponent( Component<?> component, Integer minimumPreferredWidth, Integer minimumPreferredHeight ) {
+			this.component = component;
+			this.minimumPreferredWidth = minimumPreferredWidth;
+			this.minimumPreferredHeight = minimumPreferredHeight;
+		}
+		@Override
+		protected javax.swing.JComponent createJComponent() {
+			javax.swing.JPanel rv = new javax.swing.JPanel() {
+				@Override
+				public java.awt.Dimension getPreferredSize() {
+					java.awt.Dimension rv = super.getPreferredSize();
+					if( ConstrainedComponent.this.minimumPreferredWidth != null ) {
+						rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( rv, ConstrainedComponent.this.minimumPreferredWidth );
+					}
+					if( ConstrainedComponent.this.minimumPreferredHeight != null ) {
+						rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumHeight( rv, ConstrainedComponent.this.minimumPreferredHeight );
+					}
+					return rv;
+				}
+			};
+			rv.setLayout( new java.awt.BorderLayout() );
+			this.component.adding();
+			rv.add( this.component.getJComponent() );
+			this.component.added();
+			return rv;
+		}
+	}
+	public static Component< ? > createConstrainedToMinimumPreferredWidthComponent( Component<?> component, int width ) {
+		return new ConstrainedComponent( component, width, null );
+	}
+	public static Component< ? > createConstrainedToMinimumPreferredHeightComponent( Component<?> component, int height ) {
+		return new ConstrainedComponent( component, null, height );
+	}
+	public static Component< ? > createConstrainedToMinimumPreferredSizeComponent( Component<?> component, int width, int height ) {
+		return new ConstrainedComponent( component, width, height );
+	}
 }

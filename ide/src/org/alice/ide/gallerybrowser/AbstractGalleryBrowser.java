@@ -45,17 +45,16 @@ package org.alice.ide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractGalleryBrowser extends org.alice.ide.Viewer< Void > {
+public abstract class AbstractGalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private static final int GAP = 4;
 	private AssetsPane assetsPane;
+	public AbstractGalleryBrowser() {
+		super( GAP*2, 0 );
+	}
 	protected void initialize( java.io.File rootDirectory ) {
 		this.assetsPane = this.createAssetsPane( rootDirectory );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( GAP, GAP, GAP, GAP ) );
-		this.addComponent( this.assetsPane, java.awt.BorderLayout.CENTER );
-	}
-	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.BorderLayout( GAP*2, 0 );
+		this.addComponent( this.assetsPane, CardinalDirection.CENTER );
 	}
 	protected AssetsPane createAssetsPane( java.io.File rootDirectory ) {
 		java.io.InputStream is = AbstractGalleryBrowser.class.getResourceAsStream( "images/folder.png" );

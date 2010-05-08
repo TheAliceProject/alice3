@@ -126,7 +126,7 @@ abstract class MembersTab extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 	
 	protected void refresh() {
 		this.removeAllComponents();
-		
+		this.setOpaque( false );
 		boolean isNonConsumedTypeDeclaredInJavaAlreadyEncountered = false;
 		
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : this.types ) {
@@ -219,7 +219,7 @@ class FieldsTab extends MembersTab {
 /**
  * @author Dennis Cosgrove
  */
-public class MembersEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
+public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private MembersTab[] membersTabs = { new ProceduresTab(), new FunctionsTab(), new FieldsTab() };
 	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabSelectionOperation = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP,  java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ) );
 	private org.alice.ide.IDE.FieldSelectionObserver fieldSelectionObserver = new org.alice.ide.IDE.FieldSelectionObserver() {
@@ -258,13 +258,13 @@ public class MembersEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alic
 		for( MembersTab membersTab : membersTabs ) {
 			this.tabSelectionOperation.addTabIsSelectedOperation( membersTab.getTabIsSelectedOperation() );
 		}
-		this.addComponent( this.tabSelectionOperation.getSingletonTabbedPane() );
+		this.addComponent( this.tabSelectionOperation.getSingletonTabbedPane(), CardinalDirection.CENTER );
 	}
-	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate ExpandAllToBoundsLayoutManager" );
-		return new edu.cmu.cs.dennisc.java.awt.ExpandAllToBoundsLayoutManager();
-	}
+//	@Override
+//	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate ExpandAllToBoundsLayoutManager" );
+//		return new edu.cmu.cs.dennisc.java.awt.ExpandAllToBoundsLayoutManager();
+//	}
 
 	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
 		this.refresh();
@@ -272,11 +272,14 @@ public class MembersEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alic
 	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
 		this.refresh();
 	}
+	protected org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
+	}
 	@Override
 	protected void adding() {
 		super.adding();
 		this.getIDE().addFieldSelectionObserver( this.fieldSelectionObserver );
-		this.handleFieldSelection( getIDE().getFieldSelection() );
+		this.handleFieldSelection( this.getIDE().getFieldSelection() );
 	}
 	@Override
 	protected void removed() {

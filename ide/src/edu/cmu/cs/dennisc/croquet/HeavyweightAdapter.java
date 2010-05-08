@@ -40,18 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Viewer< E > extends Component {
-	private E model;
-
-	public E getModel() {
-		return this.model;
+public class HeavyweightAdapter extends Component< javax.swing.JComponent > {
+	private java.awt.Component heavyweightComponent;
+	public HeavyweightAdapter( java.awt.Component heavyweightComponent ) {
+		this.heavyweightComponent = heavyweightComponent;
 	}
-	public void setModel( E model ) {
-		this.model = model;
+	@Override
+	protected final javax.swing.JComponent createJComponent() {
+		javax.swing.JPanel rv = new javax.swing.JPanel();
+		rv.setLayout( new java.awt.BorderLayout() );
+		rv.add( this.heavyweightComponent, java.awt.BorderLayout.CENTER );
+		return rv;
 	}
 }

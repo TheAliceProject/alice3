@@ -46,17 +46,17 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class TabSelectionOperation extends Operation {
-	private static edu.cmu.cs.dennisc.map.MapToMap<TabbedPane, TabFactory, Component<?> > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	private static Component<?> lookup( TabbedPane tabbedPane, TabFactory tabFactory ) {
-		Component<?> rv = mapToMap.get( tabbedPane, tabFactory );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = tabFactory.createComponent( tabbedPane );
-			mapToMap.put( tabbedPane, tabFactory, rv );
-		}
-		return rv;
-	}
+//	private static edu.cmu.cs.dennisc.map.MapToMap<TabbedPane, TabFactory, Component<?> > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+//	private static Component<?> lookup( TabbedPane tabbedPane, TabFactory tabFactory ) {
+//		Component<?> rv = mapToMap.get( tabbedPane, tabFactory );
+//		if( rv != null ) {
+//			//pass
+//		} else {
+//			rv = tabFactory.createComponent( tabbedPane );
+//			mapToMap.put( tabbedPane, tabFactory, rv );
+//		}
+//		return rv;
+//	}
 	public interface SelectionObserver {
 		public void selecting( TabIsSelectedOperation prev, TabIsSelectedOperation next );
 		public void selected( TabIsSelectedOperation prev, TabIsSelectedOperation next );
@@ -127,11 +127,12 @@ public class TabSelectionOperation extends Operation {
 		} else {
 			this.singletonTabbedPane = new TabbedPane();
 			for( TabIsSelectedOperation tabIsSelectedOperation : this.tabIsSelectedOperations ) {
+				ScrollPane scrollPane = tabIsSelectedOperation.getSingletonScrollPane();
 				Component<?> mainComponent = tabIsSelectedOperation.getSingletonView();
 				AbstractButton<?> header = tabIsSelectedOperation.createTabTitle();
 				header.scaleFont( this.headerFontScalar );
 				header.setBackgroundColor( mainComponent.getBackgroundColor() );
-				TabbedPane.Key key = this.singletonTabbedPane.createKey(header, mainComponent, tabIsSelectedOperation.getIndividualUUID().toString() );
+				TabbedPane.Key key = this.singletonTabbedPane.createKey(header, scrollPane, tabIsSelectedOperation.getIndividualUUID().toString() );
 				this.singletonTabbedPane.addTab( key );
 				if( tabIsSelectedOperation.getState() ) {
 					this.singletonTabbedPane.selectTab( key );

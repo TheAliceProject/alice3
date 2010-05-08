@@ -108,10 +108,18 @@ public abstract class Widget extends Component< javax.swing.JPanel > {
 		};
 		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
 		rv.setLayout( layoutManager );
+		rv.setOpaque( false );
+		rv.setDoubleBuffered( false );
+		rv.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
+		rv.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 		return rv;
 	}
 
-	
+	@Override
+	protected void adding() {
+		super.adding();
+		this.updateBorderIfNecessary();
+	}
 	private void updateBorderIfNecessary() {
 		if( this.getBorder() == null ) {
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( this.getInsetTop(), this.getInsetLeft(), this.getInsetBottom(), this.getInsetRight() ) );
