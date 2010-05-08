@@ -71,12 +71,7 @@ class MyProjectsPane extends DirectoryListPane {
 	}
 	@Override
 	public java.io.File getDirectory() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MyProjectsPane" );
-		if( org.alice.ide.IDE.getSingleton() != null ) {
-			return org.alice.ide.IDE.getSingleton().getMyProjectsDirectory();
-		} else {
-			return org.alice.app.ProjectApplication.getSingleton().getMyProjectsDirectory();
-		}
+		return org.alice.app.ProjectApplication.getSingleton().getMyProjectsDirectory();
 	}
 }
 

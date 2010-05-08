@@ -89,7 +89,8 @@ public abstract class Component extends edu.cmu.cs.dennisc.croquet.DragControl {
 	}
 	@Deprecated
 	public void setLeftButtonPressOperation( edu.cmu.cs.dennisc.croquet.AbstractActionOperation operation ) {
-		throw new RuntimeException( "todo" );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setLeftButtonPressOperation" );
+		//throw new RuntimeException( "todo" );
 	}
 	@Deprecated
 	public void setDragOperation( edu.cmu.cs.dennisc.croquet.DragOperation operation ) {

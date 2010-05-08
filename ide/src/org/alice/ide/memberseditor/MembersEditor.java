@@ -42,8 +42,6 @@
  */
 package org.alice.ide.memberseditor;
 
-import org.alice.app.openprojectpane.TabContentPane;
-
 /**
  * @author Dennis Cosgrove
  */

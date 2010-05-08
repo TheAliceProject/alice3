@@ -43,7 +43,7 @@
 package org.alice.ide.editorstabbedpane;
 
 public class BackUIResource extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane implements javax.swing.plaf.UIResource {
-	public BackUIResource( EditorsTabbedPane editorsTabbedPane ) {
+	public BackUIResource( EditorsTabSelectionStateOperation editorsTabbedPane ) {
 		this.add( editorsTabbedPane.getEditPreviousCodeOperation().createButton().getJComponent() );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 2, 2, 0 ) );
 	}

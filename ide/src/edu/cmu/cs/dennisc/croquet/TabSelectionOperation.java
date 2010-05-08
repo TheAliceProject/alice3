@@ -63,6 +63,8 @@ public class TabSelectionOperation extends Operation {
 	}
 	private java.util.List< SelectionObserver > selectionObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private java.util.List< TabIsSelectedOperation > tabIsSelectedOperations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private float headerFontScalar = 1.0f;
+	
 
 	private class TabIsSelectedObserver implements BooleanStateOperation.ValueObserver {
 		private TabbedPane tabbedPane;
@@ -90,6 +92,18 @@ public class TabSelectionOperation extends Operation {
 	public void removeTabIsSelectedOperation( TabIsSelectedOperation tabIsSelectedOperation ) {
 		this.tabIsSelectedOperations.remove( tabIsSelectedOperation );
 	}
+	public Iterable< TabIsSelectedOperation > getTabIsSelectedOperations() {
+		return this.tabIsSelectedOperations;
+	}
+	public void removeAllTabIsSelectedOperations() {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: removeAllTabIsSelectedOperations" );
+		this.tabIsSelectedOperations.clear();
+	}
+	
+	
+	protected void setHeaderFontScalar( float headerFontScalar ) {
+		this.headerFontScalar = headerFontScalar;
+	}
 	
 	private TabIsSelectedOperation currentSelection;
 	public TabIsSelectedOperation getCurrentSelection() {
@@ -115,6 +129,7 @@ public class TabSelectionOperation extends Operation {
 			for( TabIsSelectedOperation tabIsSelectedOperation : this.tabIsSelectedOperations ) {
 				Component<?> mainComponent = tabIsSelectedOperation.getSingletonView();
 				AbstractButton<?> header = tabIsSelectedOperation.createTabTitle();
+				header.scaleFont( this.headerFontScalar );
 				header.setBackgroundColor( mainComponent.getBackgroundColor() );
 				TabbedPane.Key key = this.singletonTabbedPane.createKey(header, mainComponent, tabIsSelectedOperation.getIndividualUUID().toString() );
 				this.singletonTabbedPane.addTab( key );

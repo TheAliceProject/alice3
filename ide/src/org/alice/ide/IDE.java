@@ -343,7 +343,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor;
 	private org.alice.ide.gallerybrowser.AbstractGalleryBrowser galleryBrowser;
 	private org.alice.ide.memberseditor.MembersEditor membersEditor;
-	private org.alice.ide.editorstabbedpane.EditorsTabbedPane editorsTabbedPane;
+	private org.alice.ide.editorstabbedpane.EditorsTabSelectionStateOperation editorsTabbedPane;
 	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
 
 	private edu.cmu.cs.dennisc.croquet.VerticalSplitPane left = new edu.cmu.cs.dennisc.croquet.VerticalSplitPane();
@@ -432,28 +432,19 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return crawler.getList();
 	}
 
-	private org.alice.ide.memberseditor.Factory templatesFactory = this.createTemplatesFactory();
+	private org.alice.ide.memberseditor.Factory templatesFactory = new org.alice.ide.memberseditor.Factory();
 	public org.alice.ide.memberseditor.Factory getTemplatesFactory() {
 		return this.templatesFactory;
 	}
-	protected org.alice.ide.memberseditor.Factory createTemplatesFactory() {
-		return new org.alice.ide.memberseditor.Factory();
-	}
 
-	private org.alice.ide.codeeditor.Factory codeFactory = this.createCodeFactory();
+	private org.alice.ide.codeeditor.Factory codeFactory = new org.alice.ide.codeeditor.Factory();
 	public org.alice.ide.codeeditor.Factory getCodeFactory() {
 		return this.codeFactory;
 	}
-	protected org.alice.ide.codeeditor.Factory createCodeFactory() {
-		return new org.alice.ide.codeeditor.Factory();
-	}
 
-	private org.alice.ide.preview.Factory previewFactory = this.createPreviewFactory();
+	private org.alice.ide.preview.Factory previewFactory = new org.alice.ide.preview.Factory();
 	public org.alice.ide.preview.Factory getPreviewFactory() {
 		return this.previewFactory;
-	}
-	protected org.alice.ide.preview.Factory createPreviewFactory() {
-		return new org.alice.ide.preview.Factory();
 	}
 
 	public void refreshUbiquitousPane() {
@@ -547,8 +538,8 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	protected org.alice.ide.memberseditor.MembersEditor createClassMembersEditor() {
 		return new org.alice.ide.memberseditor.MembersEditor();
 	}
-	protected org.alice.ide.editorstabbedpane.EditorsTabbedPane createEditorsTabbedPane() {
-		return new org.alice.ide.editorstabbedpane.EditorsTabbedPane();
+	protected org.alice.ide.editorstabbedpane.EditorsTabSelectionStateOperation createEditorsTabbedPane() {
+		return new org.alice.ide.editorstabbedpane.EditorsTabSelectionStateOperation();
 	}
 	protected org.alice.ide.ubiquitouspane.UbiquitousPane createUbiquitousPane() {
 		return new org.alice.ide.ubiquitouspane.UbiquitousPane();
@@ -560,7 +551,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	protected org.alice.ide.ubiquitouspane.UbiquitousPane getUbiquitousPane() {
 		return this.ubiquitousPane;
 	}
-	protected org.alice.ide.editorstabbedpane.EditorsTabbedPane getEditorsTabbedPane() {
+	protected org.alice.ide.editorstabbedpane.EditorsTabSelectionStateOperation getEditorsTabbedPane() {
 		return this.editorsTabbedPane;
 	}
 	protected org.alice.ide.memberseditor.MembersEditor getMembersEditor() {
@@ -616,7 +607,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		this.ubiquitousPane = this.createUbiquitousPane();
 
 		this.right.addComponent( this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.NORTH );
-		this.right.addComponent( this.editorsTabbedPane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.CENTER );
+		this.right.addComponent( this.editorsTabbedPane.getSingletonTabbedPane(), edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.CENTER );
 		
 		//edu.cmu.cs.dennisc.swing.InputPane.setDefaultOwnerFrame( this );
 		this.vmForRuntimeProgram = createVirtualMachineForRuntimeProgram();
@@ -745,7 +736,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	//	private java.util.List< zoot.DropReceptor > dropReceptors = new java.util.LinkedList< zoot.DropReceptor >();
 
 	protected org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		return (org.alice.ide.codeeditor.CodeEditor)this.editorsTabbedPane.getSelectedComponent();
+		return (org.alice.ide.codeeditor.CodeEditor)this.editorsTabbedPane.getCurrentSelection().getSingletonView();
 	}
 
 	private ComponentStencil stencil;
@@ -1503,7 +1494,6 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		bodyStatementsProperty.add( new edu.cmu.cs.dennisc.alice.ast.Comment( GENERATED_CODE_WARNING ) );
 		this.sceneEditor.generateCodeForSetUp( bodyStatementsProperty );
 	}
-
 
 	@Deprecated
 	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getProgramType() {

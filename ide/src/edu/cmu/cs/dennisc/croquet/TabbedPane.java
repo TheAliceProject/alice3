@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class TabbedPane extends Component< javax.swing.JComponent > {
+public final class TabbedPane extends Component< javax.swing.JComponent > {
 	private BorderPanel panel;
 	private static class HeaderPane extends Component< javax.swing.JPanel > {
 		private static final int NORTH_AREA_PAD = 8;
@@ -219,87 +219,87 @@ public class TabbedPane extends Component< javax.swing.JComponent > {
 		this.main.show( key.mainComponentKey );
 	}
 
-	@Deprecated
-	public void addTab( String title, Component< ? > component ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: addTab" );
-		//this.getJComponent().addTab( title, component.getJComponent() );
-		//throw new RuntimeException( "todo" );
-	}
-	@Deprecated
-	public void addTab( String title, javax.swing.Icon icon, Component< ? > component ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: addTab" );
-		//this.getJComponent().addTab( title, icon, component.getJComponent() );
-		//throw new RuntimeException( "todo" );
-	}
-	@Deprecated
-	public void setTitleAt( int index, String title ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setTitleAt" );
-		//this.getJComponent().setTitleAt( index, title );
-		//throw new RuntimeException( "todo" );
-	}
-	
-	@Deprecated
-	public java.awt.Color getContentAreaColor() {
-		return java.awt.Color.MAGENTA;
-	}
-	
-	@Deprecated
-	public void closeTab( int index, java.awt.event.MouseEvent e ) {
-		throw new RuntimeException( "todo" );
-	}
-	@Deprecated
-	public void remove( int index ) {
-		throw new RuntimeException( "todo" );
-	}
-	@Deprecated
-	public void removeAll() {
-		throw new RuntimeException( "todo" );
-	}
-	@Deprecated
-	public void updateUI() {
-		throw new RuntimeException( "todo" );
-	}
-	@Deprecated
-	protected edu.cmu.cs.dennisc.javax.swing.plaf.TabbedPaneUI createTabbedPaneUI() {
-		throw new RuntimeException( "todo" );
-	}
-	@Deprecated
-	public boolean isCloseButtonDesiredAt( int index ) {
-		throw new RuntimeException( "todo" );
-	}
-	
-
-	@Deprecated
-	public int getSelectedIndex() {
-		//return this.getJComponent().getSelectedIndex();
-		throw new RuntimeException( "todo" );
-	}
-	@Deprecated
-	public Component< ? > getSelectedComponent() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getSelectedComponent" );
-		//return Component.lookup( this.getJComponent().getSelectedComponent() );
-		return null;
-	}
-	@Deprecated
-	public void setSelectedComponent( Component< ? > selectedComponent ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setSelectedComponent" );
-		//this.getJComponent().setSelectedComponent( selectedComponent.getJComponent() );
-		//throw new RuntimeException( "todo" );
-	}
-	@Deprecated
-	public int indexOfComponent( Component< ? > component ) {
-		//return this.getJComponent().indexOfComponent( component.getJComponent() );
-		throw new RuntimeException( "todo" );
-	}
-	
-	@Deprecated
-	public void addChangeListener( javax.swing.event.ChangeListener listener ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: addChangeListener" );
-		//throw new RuntimeException( "todo" );
-	}
-	@Deprecated
-	public void setTabCloseOperation( AbstractActionOperation operation ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setTabCloseOperation" );
-		//throw new RuntimeException( "todo" );
-	}
+//	@Deprecated
+//	public void addTab( String title, Component< ? > component ) {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: addTab" );
+//		//this.getJComponent().addTab( title, component.getJComponent() );
+//		//throw new RuntimeException( "todo" );
+//	}
+//	@Deprecated
+//	public void addTab( String title, javax.swing.Icon icon, Component< ? > component ) {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: addTab" );
+//		//this.getJComponent().addTab( title, icon, component.getJComponent() );
+//		//throw new RuntimeException( "todo" );
+//	}
+//	@Deprecated
+//	public void setTitleAt( int index, String title ) {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setTitleAt" );
+//		//this.getJComponent().setTitleAt( index, title );
+//		//throw new RuntimeException( "todo" );
+//	}
+//	
+//	@Deprecated
+//	public java.awt.Color getContentAreaColor() {
+//		return java.awt.Color.MAGENTA;
+//	}
+//	
+//	@Deprecated
+//	public void closeTab( int index, java.awt.event.MouseEvent e ) {
+//		throw new RuntimeException( "todo" );
+//	}
+//	@Deprecated
+//	public void remove( int index ) {
+//		throw new RuntimeException( "todo" );
+//	}
+//	@Deprecated
+//	public void removeAll() {
+//		throw new RuntimeException( "todo" );
+//	}
+//	@Deprecated
+//	public void updateUI() {
+//		throw new RuntimeException( "todo" );
+//	}
+//	@Deprecated
+//	protected edu.cmu.cs.dennisc.javax.swing.plaf.TabbedPaneUI createTabbedPaneUI() {
+//		throw new RuntimeException( "todo" );
+//	}
+//	@Deprecated
+//	public boolean isCloseButtonDesiredAt( int index ) {
+//		throw new RuntimeException( "todo" );
+//	}
+//	
+//
+//	@Deprecated
+//	public int getSelectedIndex() {
+//		//return this.getJComponent().getSelectedIndex();
+//		throw new RuntimeException( "todo" );
+//	}
+//	@Deprecated
+//	public Component< ? > getSelectedComponent() {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getSelectedComponent" );
+//		//return Component.lookup( this.getJComponent().getSelectedComponent() );
+//		return null;
+//	}
+//	@Deprecated
+//	public void setSelectedComponent( Component< ? > selectedComponent ) {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setSelectedComponent" );
+//		//this.getJComponent().setSelectedComponent( selectedComponent.getJComponent() );
+//		//throw new RuntimeException( "todo" );
+//	}
+//	@Deprecated
+//	public int indexOfComponent( Component< ? > component ) {
+//		//return this.getJComponent().indexOfComponent( component.getJComponent() );
+//		throw new RuntimeException( "todo" );
+//	}
+//	
+//	@Deprecated
+//	public void addChangeListener( javax.swing.event.ChangeListener listener ) {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: addChangeListener" );
+//		//throw new RuntimeException( "todo" );
+//	}
+//	@Deprecated
+//	public void setTabCloseOperation( AbstractActionOperation operation ) {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setTabCloseOperation" );
+//		//throw new RuntimeException( "todo" );
+//	}
 }

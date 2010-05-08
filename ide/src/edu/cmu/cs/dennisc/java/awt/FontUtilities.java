@@ -80,7 +80,9 @@ public class FontUtilities {
 		component.setFont( font.deriveFont( map ) );
 	}
 	public static void setFontToScaledFont( java.awt.Component component, float scaleFactor ) {
-		java.awt.Font font = component.getFont();
-		component.setFont( font.deriveFont( font.getSize2D() * scaleFactor ) );
+		if( scaleFactor != 1.0f ) {
+			java.awt.Font font = component.getFont();
+			component.setFont( font.deriveFont( font.getSize2D() * scaleFactor ) );
+		}
 	}
 }
