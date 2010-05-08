@@ -49,5 +49,5 @@ public interface TabFactory {
 	public Component<?> createComponent( TabbedPane tabbedPane );
 	public String getTitle();
 	public String getTooltipText();
-	public boolean isCloseAffordanceDesired( int index );
+	public boolean isCloseAffordanceDesired();
 }

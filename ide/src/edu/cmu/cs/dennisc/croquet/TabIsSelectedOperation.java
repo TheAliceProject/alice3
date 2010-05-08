@@ -61,8 +61,8 @@ public final class TabIsSelectedOperation extends BooleanStateOperation {
 //	private java.util.List< Tab > tabs = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 //	private TabSelectionOperation owner;
 	private  TabFactory tabFactory;
-	public TabIsSelectedOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, TabFactory tabFactory ) {
-		super( groupUUID, individualUUID, false, tabFactory.getTitle() );
+	public TabIsSelectedOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, boolean initialState, TabFactory tabFactory ) {
+		super( groupUUID, individualUUID, initialState, tabFactory.getTitle() );
 		this.tabFactory = tabFactory;
 //		this.singleSelectionModel.addChangeListener( new javax.swing.event.ChangeListener() {
 //			public void stateChanged(javax.swing.event.ChangeEvent e) {

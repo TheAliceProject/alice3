@@ -297,6 +297,24 @@ public abstract class Component<J extends javax.swing.JComponent> {
 	public void setPreferredSize( java.awt.Dimension preferredSize ) {
 		this.getJComponent().setPreferredSize( preferredSize );
 	}
-	
+
+	protected void internalAddComponent( Component<?> component ) {
+		assert component != null;
+		component.adding();
+		this.getJComponent().add( component.getJComponent() );
+		component.added();
+	}
+	protected void internalAddComponent( Component<?> component, Object constraints ) {
+		assert component != null;
+		component.adding();
+		this.getJComponent().add( component.getJComponent(), constraints );
+		component.added();
+	}
+	protected void internalRemoveComponent( Component<?> component ) {
+		assert component != null;
+		component.removing();
+		this.getJComponent().remove( component.getJComponent() );
+		component.removed();
+	}
 }
 

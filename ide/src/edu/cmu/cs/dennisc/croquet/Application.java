@@ -246,6 +246,22 @@ public abstract class Application {
 	// }
 
 
+	/*package-private*/ TabTitle createTabTitle(final TabIsSelectedOperation tabIsSelectedOperation) {
+		this.register( tabIsSelectedOperation );
+		return new TabTitle( tabIsSelectedOperation.getTabFactory().isCloseAffordanceDesired() ) {
+			@Override
+			protected void adding() {
+				tabIsSelectedOperation.addAbstractButton(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				tabIsSelectedOperation.removeAbstractButton(this);
+			}
+		};
+	}
 	public RadioButton createRadioButton(final BooleanStateOperation booleanStateOperation) {
 		this.register( booleanStateOperation );
 		return new RadioButton() {

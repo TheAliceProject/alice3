@@ -57,7 +57,6 @@ public class TabSelectionOperation extends Operation {
 		}
 		return rv;
 	}
-//	private javax.swing.SingleSelectionModel singleSelectionModel = new javax.swing.DefaultSingleSelectionModel();
 	private java.util.List< TabIsSelectedOperation > tabIsSelectedOperations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private class TabIsSelectedObserver implements BooleanStateOperation.ValueObserver {
 		private TabbedPane tabbedPane;
@@ -77,6 +76,7 @@ public class TabSelectionOperation extends Operation {
 	};
 	public TabSelectionOperation( java.util.UUID groupUUID, java.util.UUID individualUUID ) {
 		super( groupUUID, individualUUID );
+//		private javax.swing.SingleSelectionModel singleSelectionModel = new javax.swing.DefaultSingleSelectionModel();
 //		this.singleSelectionModel.addChangeListener( new javax.swing.event.ChangeListener() {
 //			public void stateChanged(javax.swing.event.ChangeEvent e) {
 //				edu.cmu.cs.dennisc.print.PrintUtilities.println( "TabSelectionOperation", e );
@@ -84,11 +84,9 @@ public class TabSelectionOperation extends Operation {
 //		} );
 	}
 	public void addTabIsSelectedOperation( TabIsSelectedOperation tabIsSelectedOperation ) {
-//		tabIsSelectedOperation.addValueObserver( this.valueObserver );
 		this.tabIsSelectedOperations.add( tabIsSelectedOperation );
 	}
 	public void removeTabIsSelectedOperation( TabIsSelectedOperation tabIsSelectedOperation ) {
-//		tabIsSelectedOperation.removeValueObserver( this.valueObserver );
 		this.tabIsSelectedOperations.remove( tabIsSelectedOperation );
 	}
 	
@@ -96,10 +94,14 @@ public class TabSelectionOperation extends Operation {
 		TabbedPane rv = new TabbedPane();
 		for( TabIsSelectedOperation tabIsSelectedOperation : this.tabIsSelectedOperations ) {
 			TabFactory tabFactory = tabIsSelectedOperation.getTabFactory();
-			AbstractButton<?> header = Application.getSingleton().createRadioButton( tabIsSelectedOperation );
 			Component<?> mainComponent = tabFactory.createComponent( rv );
+			AbstractButton<?> header = Application.getSingleton().createTabTitle( tabIsSelectedOperation );
+			header.setBackgroundColor( mainComponent.getBackgroundColor() );
 			TabbedPane.Key key = rv.createKey(header, mainComponent, tabIsSelectedOperation.getIndividualUUID().toString() );
 			rv.addTab( key );
+			if( tabIsSelectedOperation.getState() ) {
+				rv.selectTab( key );
+			}
 			tabIsSelectedOperation.addValueObserver( new TabIsSelectedObserver(rv, key) );
 		}
 		return rv;

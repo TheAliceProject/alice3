@@ -48,24 +48,168 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public class TabbedPane extends Component< javax.swing.JComponent > {
 	private BorderPanel panel;
-	private LineAxisPanel header = new LineAxisPanel();
+	private static class HeaderPane extends Component< javax.swing.JPanel > {
+		private static final int NORTH_AREA_PAD = 8;
+		private static final int EAST_TAB_PAD = 48;
+		//private static java.awt.Stroke SELECTED_STROKE = new java.awt.BasicStroke( 3.0f );
+		private static java.awt.Stroke NORMAL_STROKE = new java.awt.BasicStroke( 1.0f );
+		private static java.awt.Color SHADOW = edu.cmu.cs.dennisc.java.awt.ColorUtilities.GARISH_COLOR;
+
+		@Override
+		protected javax.swing.JPanel createJComponent() {
+			javax.swing.JPanel rv = new javax.swing.JPanel() {
+				private java.awt.geom.GeneralPath addToPath( java.awt.geom.GeneralPath rv, float x, float y, float width, float height, float a, boolean isContinuation ) {
+					float x0 = x + width - EAST_TAB_PAD / 2;
+					float x1 = x + width + EAST_TAB_PAD;
+					//x0 += EAST_TAB_PAD;
+					float cx0 = x0 + EAST_TAB_PAD * 0.75f;
+					float cx1 = x0;
+
+					float y0 = y + NORTH_AREA_PAD;
+					float y1 = y + height;// + this.contentBorderInsets.top;
+					float cy0 = y0;
+					float cy1 = y1;
+
+					float xA = x + a;
+					float yA = y + a;
+				
+					if( isContinuation ) {
+						rv.lineTo( x1, y1 );
+					} else {
+						rv.moveTo( x1, y1 );
+					}
+					rv.curveTo( cx1, cy1, cx0, cy0, x0, y0 );
+					rv.lineTo( xA, y0 );
+					rv.quadTo( x, y0, x, yA );
+					rv.lineTo( x, y1 );
+
+					return rv;
+				}
+				private void paintTabBorder( java.awt.Graphics g, int tabPlacement, int tabIndex, int x, int y, int width, int height, boolean isSelected ) {
+					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+					java.awt.Color prev = g.getColor();
+					try {
+//						if( isSelected ) {
+//							g.setColor( this.lightHighlight );
+//							g2.setStroke( this.selectedStroke );
+//							g2.setClip( x, y, width + EAST_TAB_PAD, height + this.contentBorderInsets.top );
+//						} else {
+							g.setColor( SHADOW );
+							g2.setStroke( NORMAL_STROKE );
+//						}
+						java.awt.geom.GeneralPath path = this.addToPath( new java.awt.geom.GeneralPath(), x, y, width, height, height*0.4f, false );
+						g2.draw( path );
+					} finally {
+						g.setColor( prev );
+					}
+				}
+				private void paintTabBackground( java.awt.Graphics g, javax.swing.AbstractButton button ) {
+					java.awt.Color prev = g.getColor();
+					try {
+						int x = button.getX();
+						int y = button.getY();
+						int width = button.getWidth();
+						int height = button.getHeight();
+						boolean isSelected = button.isSelected();
+						boolean isRollover = button.getModel().isArmed();
+						java.awt.Color color = button.getBackground();
+						if( isSelected ) {
+							//pass
+						} else {
+							color = color.darker();
+							if( isRollover ) {
+								//pass
+							} else {
+								color = color.darker();
+							}
+						}
+						g.setColor( color );
+						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+						//g2.setClip( x-100, y, width+200, height + this.contentBorderInsets.top );
+						java.awt.geom.GeneralPath path = addToPath( new java.awt.geom.GeneralPath(), x, y, width, height, height * 0.4f, false );
+						//g2.translate( x, y );
+						g2.fill( path );
+						//g2.translate( -x, -y );
+
+						
+						
+//						if( isCloseButtonDesiredAt( tabIndex ) ) {
+//							if( this.getRolloverTab() == tabIndex ) {
+//								this.closeIcon.setFilled( true );
+//							} else {
+//								this.closeIcon.setFilled( false );
+//							}
+//							this.closeIcon.paintIcon( this.tabPane, g2, x + width - EAST_TAB_PAD / 2, y + height / 2 - 4 );
+//						}
+
+					
+					} finally {
+						g.setColor( prev );
+					}
+				}
+//				private void paintTabArea( java.awt.Graphics g, int tabPlacement, int selectedIndex ) {
+//					java.awt.Color prev = g.getColor();
+//					try {
+//						//g.setColor( this.darkShadow );
+////						java.awt.Color color = javax.swing.UIManager.getColor( "TabbedPane.contentAreaColor" );
+////						g.setColor( color );
+//						g.setColor( this.contentAreaColor );
+//						java.awt.Rectangle bounds = g.getClipBounds();
+//						g.fillRect( bounds.x, bounds.y, bounds.width, bounds.height );
+//					} finally {
+//						g.setColor( prev );
+//					}
+//					super.paintTabArea( g, tabPlacement, selectedIndex );
+//				}
+
+				@Override
+				protected void paintChildren(java.awt.Graphics g) {
+					for( java.awt.Component component : this.getComponents() ) {
+						if( component instanceof javax.swing.AbstractButton ) {
+							javax.swing.AbstractButton button = (javax.swing.AbstractButton)component;
+							if( button.isSelected() ) {
+								//pass
+							} else {
+								this.paintTabBackground(g, button);
+							}
+						}
+					}
+					for( java.awt.Component component : this.getComponents() ) {
+						if( component instanceof javax.swing.AbstractButton ) {
+							javax.swing.AbstractButton button = (javax.swing.AbstractButton)component;
+							if( button.isSelected() ) {
+								this.paintTabBackground(g, button);
+							}
+						}
+					}
+					super.paintChildren(g);
+				}
+			};
+			rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.LINE_AXIS ) );
+			rv.setBackground( new java.awt.Color( 63, 63, 81 ) );
+			return rv;
+		}
+		public void addComponent( Component<?> component ) {
+			this.internalAddComponent( component );
+		}
+		public void removeComponent( Component< ? > component ) {
+			this.internalRemoveComponent( component );
+		}
+	}
 	private CardPanel main = new CardPanel();
-	
+	private HeaderPane headerPane = new HeaderPane();
 	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 	@Override
 	protected javax.swing.JComponent createJComponent() {
-		this.panel = new BorderPanel();
-		this.panel.addComponent( this.header, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.NORTH );
-		this.panel.addComponent( this.main, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.CENTER );
+		this.headerPane.setBackgroundColor( new java.awt.Color( 63, 63, 81 ) );
 		
-//		this.panel.setBackgroundColor( java.awt.Color.GREEN );
-//		this.header.setBackgroundColor( java.awt.Color.RED );
-//		this.main.setBackgroundColor( java.awt.Color.BLUE );
-
+		this.panel = new BorderPanel();
+		this.panel.addComponent( this.headerPane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.NORTH );
+		this.panel.addComponent( this.main, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.CENTER );
 		return panel.getJComponent();
 	}
 	
-	public class Key {
+	/*package-private*/ class Key {
 		private AbstractButton<?> headerComponent;
 		private edu.cmu.cs.dennisc.croquet.CardPanel.Key mainComponentKey;
 		private Key( AbstractButton<?> headerComponent, edu.cmu.cs.dennisc.croquet.CardPanel.Key mainKey ) {
@@ -74,13 +218,12 @@ public class TabbedPane extends Component< javax.swing.JComponent > {
 		}
 	}
 	
-	public Key createKey( AbstractButton<?> header, Component<?> mainComponent, String cardLayoutKey ) {
+	/*package-private*/ Key createKey( AbstractButton<?> header, Component<?> mainComponent, String cardLayoutKey ) {
 		return new Key( header, this.main.createKey( mainComponent, cardLayoutKey) );
 	}
 	
 	/*package-private*/ void addTab( Key key ) {
-		//this.buttonGroup.setSelected( key.headerComponent.getJComponent().getModel(), false );
-		this.header.addComponent( key.headerComponent );
+		this.headerPane.addComponent( key.headerComponent );
 		this.buttonGroup.add( key.headerComponent.getJComponent() );
 		this.main.addComponent( key.mainComponentKey );
 		this.revalidateAndRepaint();
@@ -88,17 +231,14 @@ public class TabbedPane extends Component< javax.swing.JComponent > {
 	/*package-private*/ void removeTab( Key key ) {
 		this.main.removeComponent( key.mainComponentKey );
 		this.buttonGroup.remove( key.headerComponent.getJComponent() );
-		this.header.removeComponent( key.headerComponent );
+		this.headerPane.removeComponent( key.headerComponent );
 		this.revalidateAndRepaint();
 	}
 	/*package-private*/ void selectTab( Key key ) {
+		key.headerComponent.getJComponent().getModel().setSelected( true );
 		this.main.show( key.mainComponentKey );
 	}
-	
-//	public void removeTabSelectionOperation( TabSelectionOperation tabSelectionOperation ) {
-//		this.tabSelectionOperations.remove( tabSelectionOperation );
-//	}
-	
+
 	public void addTab( String title, Component< ? > component ) {
 		//this.getJComponent().addTab( title, component.getJComponent() );
 		throw new RuntimeException( "todo" );
