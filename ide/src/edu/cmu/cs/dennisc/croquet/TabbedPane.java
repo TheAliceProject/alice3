@@ -53,7 +53,7 @@ public class TabbedPane extends Component< javax.swing.JComponent > {
 		private static final int EAST_TAB_PAD = 48;
 		//private static java.awt.Stroke SELECTED_STROKE = new java.awt.BasicStroke( 3.0f );
 		private static java.awt.Stroke NORMAL_STROKE = new java.awt.BasicStroke( 1.0f );
-		private static java.awt.Color SHADOW = edu.cmu.cs.dennisc.java.awt.ColorUtilities.GARISH_COLOR;
+		private static java.awt.Color BORDER_COLOR = java.awt.Color.WHITE;
 
 		@Override
 		protected javax.swing.JPanel createJComponent() {
@@ -85,16 +85,20 @@ public class TabbedPane extends Component< javax.swing.JComponent > {
 
 					return rv;
 				}
-				private void paintTabBorder( java.awt.Graphics g, int tabPlacement, int tabIndex, int x, int y, int width, int height, boolean isSelected ) {
+				private void paintTabBorder( java.awt.Graphics g, javax.swing.AbstractButton button ) {
 					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 					java.awt.Color prev = g.getColor();
+					int x = button.getX();
+					int y = button.getY();
+					int width = button.getWidth();
+					int height = button.getHeight();
 					try {
 //						if( isSelected ) {
 //							g.setColor( this.lightHighlight );
 //							g2.setStroke( this.selectedStroke );
 //							g2.setClip( x, y, width + EAST_TAB_PAD, height + this.contentBorderInsets.top );
 //						} else {
-							g.setColor( SHADOW );
+							g.setColor( BORDER_COLOR );
 							g2.setStroke( NORMAL_STROKE );
 //						}
 						java.awt.geom.GeneralPath path = this.addToPath( new java.awt.geom.GeneralPath(), x, y, width, height, height*0.4f, false );
@@ -125,43 +129,12 @@ public class TabbedPane extends Component< javax.swing.JComponent > {
 						}
 						g.setColor( color );
 						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-						//g2.setClip( x-100, y, width+200, height + this.contentBorderInsets.top );
 						java.awt.geom.GeneralPath path = addToPath( new java.awt.geom.GeneralPath(), x, y, width, height, height * 0.4f, false );
-						//g2.translate( x, y );
 						g2.fill( path );
-						//g2.translate( -x, -y );
-
-						
-						
-//						if( isCloseButtonDesiredAt( tabIndex ) ) {
-//							if( this.getRolloverTab() == tabIndex ) {
-//								this.closeIcon.setFilled( true );
-//							} else {
-//								this.closeIcon.setFilled( false );
-//							}
-//							this.closeIcon.paintIcon( this.tabPane, g2, x + width - EAST_TAB_PAD / 2, y + height / 2 - 4 );
-//						}
-
-					
 					} finally {
 						g.setColor( prev );
 					}
 				}
-//				private void paintTabArea( java.awt.Graphics g, int tabPlacement, int selectedIndex ) {
-//					java.awt.Color prev = g.getColor();
-//					try {
-//						//g.setColor( this.darkShadow );
-////						java.awt.Color color = javax.swing.UIManager.getColor( "TabbedPane.contentAreaColor" );
-////						g.setColor( color );
-//						g.setColor( this.contentAreaColor );
-//						java.awt.Rectangle bounds = g.getClipBounds();
-//						g.fillRect( bounds.x, bounds.y, bounds.width, bounds.height );
-//					} finally {
-//						g.setColor( prev );
-//					}
-//					super.paintTabArea( g, tabPlacement, selectedIndex );
-//				}
-
 				@Override
 				protected void paintChildren(java.awt.Graphics g) {
 					for( java.awt.Component component : this.getComponents() ) {
@@ -179,6 +152,13 @@ public class TabbedPane extends Component< javax.swing.JComponent > {
 							javax.swing.AbstractButton button = (javax.swing.AbstractButton)component;
 							if( button.isSelected() ) {
 								this.paintTabBackground(g, button);
+								this.paintTabBorder(g, button);
+								int y = this.getHeight()-1;
+								g.setColor( BORDER_COLOR );
+								g.drawLine( 0, y, button.getX(), y );
+								
+								int pad = EAST_TAB_PAD/2;
+								g.drawLine( button.getX()+button.getWidth()+pad, y, this.getWidth(), y );
 							}
 						}
 					}
