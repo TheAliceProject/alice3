@@ -87,4 +87,21 @@ public final class TabIsSelectedOperation extends BooleanStateOperation {
 //			this.owner = owner;
 //		}
 //	}
+	/*package-private*/ TabTitle createTabTitle() {
+		Application.getSingleton().register( this );
+		return new TabTitle( this.getTabFactory().isCloseAffordanceDesired() ) {
+			@Override
+			protected void adding() {
+				TabIsSelectedOperation.this.addAbstractButton(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				TabIsSelectedOperation.this.removeAbstractButton(this);
+			}
+		};
+	}
+	
 }

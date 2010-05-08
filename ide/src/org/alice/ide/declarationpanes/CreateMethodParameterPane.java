@@ -80,7 +80,7 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 //			} else {
 //				codeText = "constructor";
 //			}
-			this.checkBox = this.getIDE().createCheckBox( new UnderstandingConfirmationOperation( codeText ) );
+			this.checkBox = new UnderstandingConfirmationOperation( codeText ).createCheckBox();
 			this.checkBox.setOpaque( false );
 			
 			StringBuffer sb = new StringBuffer();

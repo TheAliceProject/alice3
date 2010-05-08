@@ -165,7 +165,7 @@ class CreateTextPane extends org.alice.ide.RowsInputPanel< org.alice.apis.movean
 		} );
 		//this.instanceNameVC.getDocument().addDocumentListener( ecc.dennisc.swing.event.FilteredDocumentAdapter( this.handleInstanceNameChange ) );
 
-		this.constrainInstanceNameToTextVC = this.getIDE().createCheckBox( new ConstrainInstanceNameToTextBooleanStateOperation() );
+		this.constrainInstanceNameToTextVC = new ConstrainInstanceNameToTextBooleanStateOperation().createCheckBox();
 		this.constrainInstanceNameToTextVC.getJComponent().setSelected( true );
 		this.constrainInstanceNameToTextVC.setOpaque( false );
 		this.heightTextField = new TextField( "1.0", " enter height in meters here" );

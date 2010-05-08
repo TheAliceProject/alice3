@@ -55,7 +55,7 @@ class TypeProceduresPane extends AbstractTypeMethodsPane {
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Button createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		return this.getIDE().createButton( new org.alice.ide.operations.ast.DeclareProcedureOperation( type ) );
+		return new org.alice.ide.operations.ast.DeclareProcedureOperation( type ).createButton();
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Button createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {

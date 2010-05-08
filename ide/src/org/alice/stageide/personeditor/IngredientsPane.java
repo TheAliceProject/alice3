@@ -162,7 +162,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		this.baseEyeColorList.setCellRenderer( listCellRenderer );
 
 		edu.cmu.cs.dennisc.croquet.BorderPanel northPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		northPane.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createButton( this.randomPersonActionOperation ), CardinalDirection.NORTH );
+		northPane.addComponent(  this.randomPersonActionOperation.createButton(), CardinalDirection.NORTH );
 		
 		edu.cmu.cs.dennisc.croquet.RowsSpringPanel ubiquitousPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 8 ) {
 			@Override

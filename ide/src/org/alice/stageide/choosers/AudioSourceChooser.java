@@ -272,7 +272,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	public java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
 		super.updateRows( rv );
 		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.BoxUtilities.createRigidArea( new java.awt.Dimension( 0, 32 ) ), null ) );
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( this.getIDE().createButton( testOperation ), null ) );
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( testOperation.createButton(), null ) );
 		return rv;
 	}
 		

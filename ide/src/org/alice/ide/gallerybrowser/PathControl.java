@@ -106,9 +106,9 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 
 		public DirectoryControl( java.io.File file ) {
 			this.file = file;
-			this.selectChildButton = edu.cmu.cs.dennisc.croquet.Application.getSingleton().createButton( new SelectChildDirectoryActionOperation() );
+			this.selectChildButton = new SelectChildDirectoryActionOperation().createButton();
 			selectChildButton.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.GRAY ) );
-			this.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createButton( new SelectDirectoryActionOperation() ), CardinalDirection.CENTER );
+			this.addComponent( new SelectDirectoryActionOperation().createButton(), CardinalDirection.CENTER );
 			this.addComponent( selectChildButton, CardinalDirection.EAST );
 		}
 

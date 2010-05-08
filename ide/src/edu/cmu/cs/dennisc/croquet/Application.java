@@ -179,7 +179,7 @@ public abstract class Application {
 	protected abstract void handlePreferences( java.util.EventObject e );
 	protected abstract void handleQuit( java.util.EventObject e );
 
-	private void register( Operation operation ) {
+	/*package-private*/ void register( Operation operation ) {
 		java.util.UUID id = operation.getIndividualUUID();
 		Operation prev = this.mapUUIDToOperation.get( id );
 		if( prev != null ) {
@@ -188,168 +188,21 @@ public abstract class Application {
 			this.mapUUIDToOperation.put( id, operation );
 		}
 	}
-
-	public Button createButton(final AbstractActionOperation actionOperation) {
-		this.register( actionOperation );
-		return new Button() {
-			@Override
-			protected void adding() {
-				actionOperation.addAbstractButton(this);
-				super.adding();
-			}
-
-			@Override
-			protected void removed() {
-				super.removed();
-				actionOperation.removeAbstractButton(this);
-			}
-		};
-	}
-	public Hyperlink createHyperlink(final AbstractActionOperation actionOperation) {
-		this.register( actionOperation );
-		return new Hyperlink() {
-			@Override
-			protected void adding() {
-				actionOperation.addAbstractButton(this);
-				super.adding();
-			}
-
-			@Override
-			protected void removed() {
-				super.removed();
-				actionOperation.removeAbstractButton(this);
-			}
-		};
-	}
-
-	public MenuItem createMenuItem(final AbstractActionOperation actionOperation) {
-		this.register( actionOperation );
-		return new MenuItem() {
-			@Override
-			protected void adding() {
-				actionOperation.addAbstractButton(this);
-				super.adding();
-			}
-
-			@Override
-			protected void removed() {
-				super.removed();
-				actionOperation.removeAbstractButton(this);
-			}
-		};
-	}
 	
-	// public javax.swing.AbstractButton createHyperlink( ActionOperation
-	// actionOperation ) {
-	// assert actionOperation != null;
-	// return new ZHyperlink(actionOperation);
-	// }
-
-
-	/*package-private*/ TabTitle createTabTitle(final TabIsSelectedOperation tabIsSelectedOperation) {
-		this.register( tabIsSelectedOperation );
-		return new TabTitle( tabIsSelectedOperation.getTabFactory().isCloseAffordanceDesired() ) {
-			@Override
-			protected void adding() {
-				tabIsSelectedOperation.addAbstractButton(this);
-				super.adding();
-			}
-
-			@Override
-			protected void removed() {
-				super.removed();
-				tabIsSelectedOperation.removeAbstractButton(this);
-			}
-		};
-	}
-	public RadioButton createRadioButton(final BooleanStateOperation booleanStateOperation) {
-		this.register( booleanStateOperation );
-		return new RadioButton() {
-			@Override
-			protected void adding() {
-				booleanStateOperation.addAbstractButton(this);
-				super.adding();
-			}
-
-			@Override
-			protected void removed() {
-				super.removed();
-				booleanStateOperation.removeAbstractButton(this);
-			}
-		};
-	}
-	public CheckBox createCheckBox(final BooleanStateOperation booleanStateOperation) {
-		this.register( booleanStateOperation );
-		return new CheckBox() {
-			@Override
-			protected void adding() {
-				booleanStateOperation.addAbstractButton(this);
-				super.adding();
-			}
-
-			@Override
-			protected void removed() {
-				super.removed();
-				booleanStateOperation.removeAbstractButton(this);
-			}
-		};
-	}
-	public CheckBoxMenuItem createCheckBoxMenuItem(final BooleanStateOperation booleanStateOperation) {
-		this.register( booleanStateOperation );
-		// todo: return javax.swing.JMenuItem if true and false different
-		return new CheckBoxMenuItem() {
-			@Override
-			protected void adding() {
-				booleanStateOperation.addAbstractButton(this);
-				super.adding();
-			}
-
-			@Override
-			protected void removed() {
-				super.removed();
-				booleanStateOperation.removeAbstractButton(this);
-			}
-		};
-	}
-	
-//	public KDragControl createDragComponent(final DragOperation dragOperation, KDragControl.Paintable paintable ) {
-//		this.register( dragOperation );
-//		// todo: return javax.swing.JMenuItem if true and false different
-//		return new KDragControl( paintable ) {
-//			@Override
-//			protected void adding() {
-//				dragOperation.addDragComponent(this);
-//				super.adding();
-//			}
-//
-//			@Override
-//			protected void removed() {
-//				super.removed();
-//				dragOperation.removeDragComponent(this);
-//			}
-//			@Override
-//			protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-//				return new java.awt.FlowLayout();
-//			}
-//		};
-//	}
-	
-	private AbstractMenu< ? > addMenuElements( AbstractMenu< ? > rv, Operation[] operations ) {
+	/*package-private*/ static AbstractMenu< ? > addMenuElements( AbstractMenu< ? > rv, Operation[] operations ) {
 		for( Operation operation : operations ) {
 			if( operation != null ) {
 				if( operation instanceof MenuOperation ) {
-					rv.addMenu( this.createMenu( (MenuOperation) operation ) );
+					MenuOperation menuOperation = (MenuOperation)operation;
+					rv.addMenu( menuOperation.createMenu() );
 				} else {
 					AbstractMenuItem<?> menuItem = null;
-					if (operation instanceof ActionOperation) {
-						ActionOperation actionOperation = (ActionOperation) operation;
-						menuItem = this.createMenuItem( actionOperation );
-					} else if (operation instanceof CompositeOperation) {
-						CompositeOperation compositeOperation = (CompositeOperation)operation;
-						menuItem = this.createMenuItem( compositeOperation );				
+					if (operation instanceof AbstractActionOperation) {
+						AbstractActionOperation abstractActionOperation = (AbstractActionOperation) operation;
+						menuItem = abstractActionOperation.createMenuItem();
 					} else if (operation instanceof BooleanStateOperation) {
 						BooleanStateOperation booleanStateOperation = (BooleanStateOperation)operation;
-						menuItem = this.createCheckBoxMenuItem( booleanStateOperation );				
+						menuItem = booleanStateOperation.createCheckBoxMenuItem();				
 					} else {
 						throw new RuntimeException();
 					}
@@ -361,82 +214,7 @@ public abstract class Application {
 		}
 		return rv;
 	}
-
-	/*package-private*/ Menu createMenu( final MenuOperation menuOperation ) {
-		this.register( menuOperation );
-		Menu rv = new Menu() {
-			@Override
-			protected void adding() {
-				menuOperation.addMenu(this);
-				super.adding();
-			}
-
-			@Override
-			protected void removed() {
-				super.removed();
-				menuOperation.removeMenu(this);
-			}
-		};
-		this.addMenuElements( rv, menuOperation.getOperations() );
-		return rv;
-	}
-
-	/*package-private*/ PopupMenu createPopupMenu( final AbstractPopupMenuOperation popupMenuOperation ) {
-		PopupMenu rv = new PopupMenu() {
-			@Override
-			protected void adding() {
-				popupMenuOperation.addPopupMenu(this);
-				super.adding();
-			}
-
-			@Override
-			protected void removed() {
-				super.removed();
-				popupMenuOperation.removePopupMenu(this);
-			}
-		};
-		this.addMenuElements( rv, popupMenuOperation.getOperations() );
-		return rv;
-	}
 	
-	public MenuBar createMenuBar(final MenuBarOperation menuBarOperation) {
-		this.register( menuBarOperation );
-		MenuBar rv = new MenuBar() {
-			@Override
-			protected void adding() {
-				menuBarOperation.addMenuBar(this);
-				super.adding();
-			}
-
-			@Override
-			protected void removed() {
-				super.removed();
-				menuBarOperation.removeMenuBar(this);
-			}
-		};
-		for( MenuOperation menuOperation : menuBarOperation.getMenuOperations() ) {
-			rv.addMenu( this.createMenu( menuOperation ) );
-		}
-		return rv;
-	}
-
-	public <E> ComboBox< E > createComboBox(final ItemSelectionOperation< E > itemSelectionOperation) {
-		this.register( itemSelectionOperation );
-		// todo: return javax.swing.JMenuItem if true and false different
-		return new ComboBox< E >() {
-			@Override
-			protected void adding() {
-				itemSelectionOperation.addComboBox(this);
-				super.adding();
-			}
-
-			@Override
-			protected void removed() {
-				super.removed();
-				itemSelectionOperation.removeComboBox(this);
-			}
-		};
-	}
 	
 
 	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {

@@ -106,8 +106,6 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.croquet.Bord
 		assert collectionOfPreferences != null;
 		this.title = title;
 		
-		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
-		
 		//javax.swing.JLabel titleComponent = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabelWithScaledFont( this.title, 2.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		
 		
@@ -117,9 +115,9 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.croquet.Bord
 
 		edu.cmu.cs.dennisc.croquet.LineAxisPanel buttonsPane = new edu.cmu.cs.dennisc.croquet.LineAxisPanel(
 				edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue(),
-				application.createButton( this.restoreDefaultsActionOperation ),
+				this.restoreDefaultsActionOperation.createButton(),
 				edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( 4 ),
-				application.createButton( this.applyActionOperation )
+				this.applyActionOperation.createButton()
 		);
 
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );

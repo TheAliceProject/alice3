@@ -151,9 +151,8 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 	}
 	public ConfigurationPreferencePaneProxy( edu.cmu.cs.dennisc.preference.Preference<org.alice.ide.preferences.programming.Configuration> preference ) {
 		super( preference );
-		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		org.alice.ide.preferences.programming.Configuration[] configurations = org.alice.ide.preferences.ProgrammingPreferences.getSingleton().getBuiltInPreferenceNodes();
-		edu.cmu.cs.dennisc.croquet.ComboBox<org.alice.ide.preferences.programming.Configuration> activeConfigurationComboBox = edu.cmu.cs.dennisc.croquet.Application.getSingleton().createComboBox( new ConfigurationSelectionOperation( configurations ) );
+		edu.cmu.cs.dennisc.croquet.ComboBox<org.alice.ide.preferences.programming.Configuration> activeConfigurationComboBox = new ConfigurationSelectionOperation( configurations ).createComboBox();
 		activeConfigurationComboBox.setSelectedIndex( 0 );
 		EditVariantOperation editVariantOperation = new EditVariantOperation();
 		editVariantOperation.setEnabled( false );
@@ -171,11 +170,11 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 
 		edu.cmu.cs.dennisc.croquet.LineAxisPanel northTopPane = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
 				activeConfigurationComboBox, 
-				application.createButton( editVariantOperation ), 
-				application.createButton( removeVariantOperation ) );
+				editVariantOperation.createButton(), 
+				removeVariantOperation.createButton() );
 		edu.cmu.cs.dennisc.croquet.LineAxisPanel northBottomPane = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
-				application.createButton( newVariantOperation ), 
-				application.createButton( importVariantOperation ), 
+				newVariantOperation.createButton(), 
+				importVariantOperation.createButton(), 
 				edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() );
 
 		this.preview = new ConfigurationPreview();

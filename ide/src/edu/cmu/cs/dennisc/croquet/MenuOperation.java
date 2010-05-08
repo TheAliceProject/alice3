@@ -92,7 +92,7 @@ public class MenuOperation extends Operation {
 	public Operation[] getOperations() {
 		return this.operations;
 	}
-	/*package-private*/ void addMenu( Menu menu ) {
+	private void addMenu( Menu menu ) {
 		menu.setText( this.text );
 		menu.setMnemonic( this.mnemonic );
 		assert mapMenuToListener.containsKey( menu ) == false;
@@ -106,7 +106,7 @@ public class MenuOperation extends Operation {
 		} );
 		this.addComponent( menu );
 	}
-	/*package-private*/ void removeMenu( Menu menu ) {
+	private void removeMenu( Menu menu ) {
 		this.removeComponent( menu );
 		MenuListener menuListener = this.mapMenuToListener.get( menu );
 		assert menuListener != null;
@@ -115,4 +115,24 @@ public class MenuOperation extends Operation {
 		menu.setMnemonic( 0 );
 		menu.setText( null );
 	}
+	
+	public Menu createMenu() {
+		Application.getSingleton().register( this );
+		Menu rv = new Menu() {
+			@Override
+			protected void adding() {
+				MenuOperation.this.addMenu(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				MenuOperation.this.removeMenu(this);
+			}
+		};
+		Application.addMenuElements( rv, this.getOperations() );
+		return rv;
+	}
+	
 }

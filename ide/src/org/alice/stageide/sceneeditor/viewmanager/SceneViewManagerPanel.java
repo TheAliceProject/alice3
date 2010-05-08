@@ -97,7 +97,7 @@ public class SceneViewManagerPanel extends JPanel{
 		JLabel cameraMarkerTitle = new JLabel( "Camera Markers:");
 		cameraMarkerTitle.setFont( cameraMarkerTitle.getFont().deriveFont( Font.BOLD, 18f ) );
 		
-		addCameraMarkerButton = edu.cmu.cs.dennisc.croquet.Application.getSingleton().createButton(createCameraMarkerAction).getJComponent();
+		addCameraMarkerButton = createCameraMarkerAction.createButton().getJComponent();
 		
 		cameraMarkerPanel = new JPanel();
 		cameraMarkerPanel.setLayout( new GridBagLayout()  );
@@ -173,7 +173,7 @@ public class SceneViewManagerPanel extends JPanel{
 	{
 		JPanel componentPanel = new JPanel();
 		componentPanel.add( new JLabel(field.getName()) );
-		JButton deleteViewButton = edu.cmu.cs.dennisc.croquet.Application.getSingleton().createButton( new org.alice.ide.operations.ast.DeleteFieldOperation( (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice) field ) ).getJComponent();
+		JButton deleteViewButton = new org.alice.ide.operations.ast.DeleteFieldOperation( (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice) field ).createButton().getJComponent();
 		componentPanel.add( deleteViewButton );
 		
 		return componentPanel;

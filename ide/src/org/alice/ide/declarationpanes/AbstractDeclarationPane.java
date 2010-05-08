@@ -189,7 +189,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 			this.isReassignableStateOperation.setTrueText( "yes" );
 			this.isReassignableStateOperation.setFalseText( "no" );
 			this.isReassignableStateOperation.setEnabled( this.isIsReassignableComponentEnabled() );
-			rv = this.getIDE().createCheckBox( this.isReassignableStateOperation );
+			rv = this.isReassignableStateOperation.createCheckBox();
 			rv.setOpaque( false );
 		} else {
 			rv = null;

@@ -107,7 +107,7 @@ public class PreferencesInputPane extends org.alice.ide.InputPanel<Void> {
 			@Override
 			protected void updateCenterComponent( edu.cmu.cs.dennisc.croquet.PageAxisPanel centerComponent, edu.cmu.cs.dennisc.preference.CollectionOfPreferences collectionOfPreferences ) {
 				super.updateCenterComponent( centerComponent, collectionOfPreferences );
-				centerComponent.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createButton( new ClearRecentProjectsOperation() ) );
+				centerComponent.addComponent( new ClearRecentProjectsOperation().createButton() );
 			}
 		};
 		CollectionOfPreferencesPane perspectivePreferencesPane = new CollectionOfPreferencesPane("Programming", org.alice.ide.preferences.ProgrammingPreferences.getSingleton()) {

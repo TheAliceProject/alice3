@@ -120,7 +120,7 @@ public abstract class AbstractActionOperation extends Operation {
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 	}
 
-	/*package-private*/ void addAbstractButton( AbstractButton<?> abstractButton ) {
+	private void addAbstractButton( AbstractButton<?> abstractButton ) {
 		abstractButton.setAction( this.action );
 //		abstractButton.setModel( this.buttonModel );
 		assert this.mapButtonToListener.containsKey( abstractButton ) == false;
@@ -129,13 +129,64 @@ public abstract class AbstractActionOperation extends Operation {
 		abstractButton.getJComponent().addActionListener( buttonActionListener );
 		this.addComponent(abstractButton);
 	}
-	/*package-private*/ void removeAbstractButton( AbstractButton<?> abstractButton ) {
+	private void removeAbstractButton( AbstractButton<?> abstractButton ) {
 		this.removeComponent(abstractButton);
 		ButtonActionListener buttonActionListener = this.mapButtonToListener.get( abstractButton );
 		assert buttonActionListener != null;
 		abstractButton.getJComponent().removeActionListener( buttonActionListener );
 		mapButtonToListener.remove( abstractButton );
-		abstractButton.setAction( null );
 //		abstractButton.setModel( null );
+		abstractButton.setAction( null );
 	}
+	
+	public Button createButton() {
+		Application.getSingleton().register( this );
+		return new Button() {
+			@Override
+			protected void adding() {
+				AbstractActionOperation.this.addAbstractButton(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				AbstractActionOperation.this.removeAbstractButton(this);
+			}
+		};
+	}
+	public Hyperlink createHyperlink() {
+		Application.getSingleton().register( this );
+		return new Hyperlink() {
+			@Override
+			protected void adding() {
+				AbstractActionOperation.this.addAbstractButton(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				AbstractActionOperation.this.removeAbstractButton(this);
+			}
+		};
+	}
+
+	public MenuItem createMenuItem() {
+		Application.getSingleton().register( this );
+		return new MenuItem() {
+			@Override
+			protected void adding() {
+				AbstractActionOperation.this.addAbstractButton(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				AbstractActionOperation.this.removeAbstractButton(this);
+			}
+		};
+	}
+	
 }

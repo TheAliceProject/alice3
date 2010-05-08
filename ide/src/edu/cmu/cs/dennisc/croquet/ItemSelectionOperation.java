@@ -160,11 +160,28 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 		}
 	}
 	
-	/*package-private*/ void addComboBox( ComboBox<E> comboBox ) {
+	private void addComboBox( ComboBox<E> comboBox ) {
 		this.addComponent(comboBox);
 	}
-	/*package-private*/ void removeComboBox( ComboBox<E> comboBox ) {
+	private void removeComboBox( ComboBox<E> comboBox ) {
 		this.removeComponent(comboBox);
 	}
+	public ComboBox< E > createComboBox() {
+		Application.getSingleton().register( this );
+		return new ComboBox< E >() {
+			@Override
+			protected void adding() {
+				ItemSelectionOperation.this.addComboBox(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				ItemSelectionOperation.this.removeComboBox(this);
+			}
+		};
+	}
+	
 	
 }

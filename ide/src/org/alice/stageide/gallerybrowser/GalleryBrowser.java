@@ -58,12 +58,12 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		CreateTextbookInstanceActionOperation createTextbookInstanceActionOperation = new CreateTextbookInstanceActionOperation();
 
 		edu.cmu.cs.dennisc.croquet.GridPanel fromFilePane = edu.cmu.cs.dennisc.croquet.GridPanel.createGridPane( 2, 1, 0, 4 );
-		fromFilePane.addComponent( this.getIDE().createButton(createMyInstanceActionOperation));
-		fromFilePane.addComponent(this.getIDE().createButton(createTextbookInstanceActionOperation));
+		fromFilePane.addComponent( createMyInstanceActionOperation.createButton());
+		fromFilePane.addComponent(createTextbookInstanceActionOperation.createButton());
 
 		edu.cmu.cs.dennisc.croquet.GridPanel bonusPane = edu.cmu.cs.dennisc.croquet.GridPanel.createGridPane( 2, 1, 0, 4 );
-		bonusPane.addComponent(this.getIDE().createButton(createBillboardActionOperation));
-		bonusPane.addComponent(this.getIDE().createButton(createTextActionOperation));
+		bonusPane.addComponent(createBillboardActionOperation.createButton());
+		bonusPane.addComponent(createTextActionOperation.createButton());
 
 		edu.cmu.cs.dennisc.croquet.BorderPanel buttonPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		buttonPane.addComponent(fromFilePane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.NORTH);
@@ -76,7 +76,7 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		this.setBackgroundColor(new java.awt.Color(220, 220, 255));
 
 		IndirectCreatePersonActionOperation indirectCreatePersonActionOperation = new IndirectCreatePersonActionOperation();
-		edu.cmu.cs.dennisc.croquet.Button createPersonButton = this.getIDE().createButton(indirectCreatePersonActionOperation);
+		edu.cmu.cs.dennisc.croquet.Button createPersonButton = indirectCreatePersonActionOperation.createButton();
 		createPersonButton.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.CENTER );
 		createPersonButton.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
 

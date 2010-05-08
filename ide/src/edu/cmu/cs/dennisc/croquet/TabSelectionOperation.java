@@ -95,7 +95,7 @@ public class TabSelectionOperation extends Operation {
 		for( TabIsSelectedOperation tabIsSelectedOperation : this.tabIsSelectedOperations ) {
 			TabFactory tabFactory = tabIsSelectedOperation.getTabFactory();
 			Component<?> mainComponent = tabFactory.createComponent( rv );
-			AbstractButton<?> header = Application.getSingleton().createTabTitle( tabIsSelectedOperation );
+			AbstractButton<?> header = tabIsSelectedOperation.createTabTitle();
 			header.setBackgroundColor( mainComponent.getBackgroundColor() );
 			TabbedPane.Key key = rv.createKey(header, mainComponent, tabIsSelectedOperation.getIndividualUUID().toString() );
 			rv.addTab( key );

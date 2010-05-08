@@ -124,13 +124,13 @@ public /*final*/ class BooleanStateOperation extends Operation {
 		this.updateName();
 	}
 
-	/*package-private*/ void addAbstractButton(AbstractButton<?> abstractButton) {
+	protected void addAbstractButton(AbstractButton<?> abstractButton) {
 		abstractButton.setAction(this.action);
 		abstractButton.setModel(this.buttonModel);
 		this.addComponent(abstractButton);
 	}
 
-	/*package-private*/ void removeAbstractButton(AbstractButton<?> abstractButton) {
+	protected void removeAbstractButton(AbstractButton<?> abstractButton) {
 		this.removeComponent(abstractButton);
 		abstractButton.setModel(null);
 		abstractButton.setAction(null);
@@ -162,4 +162,55 @@ public /*final*/ class BooleanStateOperation extends Operation {
 			this.updateName();
 		}
 	}
+	
+	public RadioButton createRadioButton() {
+		Application.getSingleton().register( this );
+		return new RadioButton() {
+			@Override
+			protected void adding() {
+				BooleanStateOperation.this.addAbstractButton(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				BooleanStateOperation.this.removeAbstractButton(this);
+			}
+		};
+	}
+	public CheckBox createCheckBox() {
+		Application.getSingleton().register( this );
+		return new CheckBox() {
+			@Override
+			protected void adding() {
+				BooleanStateOperation.this.addAbstractButton(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				BooleanStateOperation.this.removeAbstractButton(this);
+			}
+		};
+	}
+	public CheckBoxMenuItem createCheckBoxMenuItem() {
+		Application.getSingleton().register( this );
+		// todo: return javax.swing.JMenuItem if true and false different
+		return new CheckBoxMenuItem() {
+			@Override
+			protected void adding() {
+				BooleanStateOperation.this.addAbstractButton(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				BooleanStateOperation.this.removeAbstractButton(this);
+			}
+		};
+	}
+	
 }

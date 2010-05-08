@@ -393,12 +393,12 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		buttonPane.addComponent( this.getIDE().createButton( this.addItemOperation ), gbc );
-		buttonPane.addComponent( this.getIDE().createButton( this.removeItemOperation ), gbc );
+		buttonPane.addComponent( this.addItemOperation.createButton(), gbc );
+		buttonPane.addComponent( this.removeItemOperation.createButton(), gbc );
 		gbc.insets.top = 8;
-		buttonPane.addComponent( this.getIDE().createButton( this.moveItemUpOperation ), gbc );
+		buttonPane.addComponent( this.moveItemUpOperation.createButton(), gbc );
 		gbc.insets.top = 0;
-		buttonPane.addComponent( this.getIDE().createButton( this.moveItemDownOperation ), gbc );
+		buttonPane.addComponent( this.moveItemDownOperation.createButton(), gbc );
 		gbc.weighty = 1.0;
 		buttonPane.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue(), gbc );
 

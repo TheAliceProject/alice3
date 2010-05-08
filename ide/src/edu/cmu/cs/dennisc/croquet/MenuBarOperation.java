@@ -76,18 +76,39 @@ public class MenuBarOperation extends Operation {
 	public java.util.concurrent.CopyOnWriteArrayList< MenuOperation > getMenuOperations() {
 		return this.menuOperations;
 	}
-	/*package-private*/ void addMenuBar( MenuBar menuBar ) {
+	private void addMenuBar( MenuBar menuBar ) {
 //		assert mapMenuBarToListener.containsKey( menuBar ) == false;
 //		MenuBarChangeListener listener = new MenuBarChangeListener( menuBar );
 //		this.mapMenuBarToListener.put( menuBar, listener );
 //		menuBar.getJComponent().getSelectionModel().addChangeListener( listener );
 		this.addComponent( menuBar );
 	}
-	/*package-private*/ void removeMenuBar( MenuBar menuBar ) {
+	private void removeMenuBar( MenuBar menuBar ) {
 		this.removeComponent( menuBar );
 //		MenuBarChangeListener listener = this.mapMenuBarToListener.get( menuBar );
 //		assert listener != null;
 //		menuBar.getJComponent().getSelectionModel().removeChangeListener( listener );
 //		this.mapMenuBarToListener.remove( menuBar );
 	}
+	public MenuBar createMenuBar() {
+		Application.getSingleton().register( this );
+		MenuBar rv = new MenuBar() {
+			@Override
+			protected void adding() {
+				MenuBarOperation.this.addMenuBar(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				MenuBarOperation.this.removeMenuBar(this);
+			}
+		};
+		for( MenuOperation menuOperation : this.getMenuOperations() ) {
+			rv.addMenu( menuOperation.createMenu() );
+		}
+		return rv;
+	}
+	
 }

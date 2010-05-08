@@ -115,7 +115,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 		this.isArrayStateOperation = new IsArrayStateOperation( isArrayProperty );
 		this.isArrayStateOperation.setEnabled( isArrayCheckBoxEnabled );
 		
-		edu.cmu.cs.dennisc.croquet.CheckBox isArrayCheckBox = edu.cmu.cs.dennisc.croquet.Application.getSingleton().createCheckBox( this.isArrayStateOperation );
+		edu.cmu.cs.dennisc.croquet.CheckBox isArrayCheckBox = this.isArrayStateOperation.createCheckBox();
 		isArrayCheckBox.setOpaque( false );
 		
 		this.addComponent( this.typeComboBox );

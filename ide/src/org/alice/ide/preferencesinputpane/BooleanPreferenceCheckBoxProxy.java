@@ -56,7 +56,7 @@ public class BooleanPreferenceCheckBoxProxy extends PreferenceProxy<Boolean> {
 				this.getPreference().getValue(), 
 				this.getPreference().getKey() 
 		);
-		this.checkBox = edu.cmu.cs.dennisc.croquet.Application.getSingleton().createCheckBox( this.operation );
+		this.checkBox = this.operation.createCheckBox();
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Component< ? > getComponent() {

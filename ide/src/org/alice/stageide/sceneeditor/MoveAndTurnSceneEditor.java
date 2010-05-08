@@ -205,7 +205,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			//final org.alice.interact.CameraNavigatorWidget cameraNavigatorWidget = null;
 
 			edu.cmu.cs.dennisc.croquet.BooleanStateOperation isSceneEditorExpandedOperation = this.getIDE().getIsSceneEditorExpandedOperation();
-			final edu.cmu.cs.dennisc.croquet.CheckBox isSceneEditorExpandedCheckBox = this.getIDE().createCheckBox( isSceneEditorExpandedOperation );
+			final edu.cmu.cs.dennisc.croquet.CheckBox isSceneEditorExpandedCheckBox = isSceneEditorExpandedOperation.createCheckBox();
 			isSceneEditorExpandedCheckBox.getJComponent().setUI( new IsExpandedCheckBoxUI() );
 			final int X_PAD = 16;
 			final int Y_PAD = 10;
@@ -228,7 +228,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 			javax.swing.JPanel lgPanel = this.getLGPanel();
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouthEast( lgPanel, isSceneEditorExpandedCheckBox.getJComponent(), INSET );
-			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthEast( lgPanel, this.getIDE().createButton( this.getIDE().getRunOperation() ).getJComponent(), INSET );
+			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthEast( lgPanel, this.getIDE().getRunOperation().createButton().getJComponent(), INSET );
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouth( lgPanel, mainCameraNavigatorWidget, INSET );
 
 			this.globalDragAdapter.setAnimator( animator );
