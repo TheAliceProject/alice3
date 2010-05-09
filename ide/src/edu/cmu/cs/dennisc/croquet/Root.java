@@ -60,6 +60,9 @@ public abstract class Root<W extends java.awt.Window> {
 	private W window;
 	public Root( W window ) {
 		this.window = window;
+		this.contentPanel.adding();
+		this.getRootPane().setContentPane( this.contentPanel.getJComponent() );
+		this.contentPanel.added();
 		Root.map.put( window, this );
 	}
 
@@ -68,11 +71,17 @@ public abstract class Root<W extends java.awt.Window> {
 	}
 	protected abstract javax.swing.JRootPane getRootPane();
 
-	private BorderPanel borderPanel = new BorderPanel(); 
+	private BorderPanel contentPanel = new BorderPanel(); 
 	public BorderPanel getContentPanel() {
-		return this.borderPanel;
+		return this.contentPanel;
 	}
 	
+	public void addWindowListener( java.awt.event.WindowListener listener ) {
+		this.window.addWindowListener( listener );
+	}
+	public void removeWindowListener( java.awt.event.WindowListener listener ) {
+		this.window.removeWindowListener( listener );
+	}
 	public void addWindowStateListener( java.awt.event.WindowStateListener listener ) {
 		this.window.addWindowStateListener( listener );
 	}
@@ -89,5 +98,9 @@ public abstract class Root<W extends java.awt.Window> {
 	
 	public void setDefaultButton( Button button ) {
 		this.getRootPane().setDefaultButton( button.getJComponent() );
+	}
+	
+	public void pack() {
+		this.getAwtWindow().pack();
 	}
 }

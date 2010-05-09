@@ -47,12 +47,46 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public final class Frame extends Root<javax.swing.JFrame> {
+	/**
+	 * @author Dennis Cosgrove
+	 */
+	public enum DefaultCloseOperation {
+		DO_NOTHING( javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE ),
+		HIDE( javax.swing.WindowConstants.HIDE_ON_CLOSE ),
+		DISPOSE( javax.swing.WindowConstants.DISPOSE_ON_CLOSE ),
+		EXIT( javax.swing.WindowConstants.EXIT_ON_CLOSE );
+		private int internal;
+		private DefaultCloseOperation( int internal ) {
+			this.internal = internal;
+		}
+		public static DefaultCloseOperation valueOf( int windowConstant ) {
+			for( DefaultCloseOperation defaultCloseOperation : DefaultCloseOperation.values() ) {
+				if( defaultCloseOperation.internal == windowConstant ) {
+					return defaultCloseOperation;
+				}
+			}
+			return null;
+		}
+	}
+	
 	public Frame() {
 		super( new javax.swing.JFrame() );
 	}
 	@Override
 	protected javax.swing.JRootPane getRootPane() {
 		return this.getAwtWindow().getRootPane();
+	}
+	public DefaultCloseOperation getDefaultCloseOperation() {
+		return DefaultCloseOperation.valueOf( this.getAwtWindow().getDefaultCloseOperation() );
+	}
+	public void setDefaultCloseOperation( DefaultCloseOperation defaultCloseOperation ) {
+		this.getAwtWindow().setDefaultCloseOperation( defaultCloseOperation.internal );
+	}
+	public String getTitle() {
+		return this.getAwtWindow().getTitle();
+	}
+	public void setTitle( String title ) {
+		this.getAwtWindow().setTitle( title );
 	}
 	public void maximize() {
 		this.getAwtWindow().setExtendedState( this.getAwtWindow().getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH );
