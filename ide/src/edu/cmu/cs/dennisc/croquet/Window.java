@@ -46,43 +46,31 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class Window extends Root {
-	private javax.swing.JWindow jWindow;
+public final class Window extends Root<javax.swing.JWindow> {
+
+	private static javax.swing.JWindow createJWindow( Component<?> owner ) {
+		javax.swing.JWindow rv;
+		if( owner != null ) {
+			Root<?> root = owner.getRoot();
+			java.awt.Window ownerWindow = root.getAwtWindow();
+			if( ownerWindow instanceof java.awt.Frame ) {
+				rv = new javax.swing.JWindow( (java.awt.Frame)ownerWindow );
+			} else {
+				rv = new javax.swing.JWindow( ownerWindow );
+			}
+		} else {
+			rv = new javax.swing.JWindow();
+		}
+		return rv;
+	}
 	public Window() {
 		this( null );
 	}
-	public Window( Root owner ) {
-		if( owner != null ) {
-			java.awt.Frame ownerFrame = owner.getAWTFrame();
-			if( ownerFrame != null ) {
-				this.jWindow = new javax.swing.JWindow( ownerFrame );
-			} else {
-				java.awt.Window ownerWindow = owner.getAWTWindow();
-				if( ownerWindow != null ) {
-					this.jWindow = new javax.swing.JWindow( ownerWindow );
-				}
-			}
-		}
-		if( this.jWindow != null ) {
-			//pass
-		} else {
-			this.jWindow = new javax.swing.JWindow();
-		}
+	public Window( Component<?> owner ) {
+		super( Window.createJWindow( owner ) );
 	}
 	@Override
-	protected java.awt.Dialog getAWTDialog() {
-		return null;
-	}
-	@Override
-	protected java.awt.Frame getAWTFrame() {
-		return null;
-	}
-	@Override
-	protected java.awt.Window getAWTWindow() {
-		return this.jWindow;
-	}
-	@Override
-	protected java.awt.Container getContentPane() {
-		return this.jWindow.getContentPane();
+	protected javax.swing.JRootPane getRootPane() {
+		return this.getAwtWindow().getRootPane();
 	}
 }

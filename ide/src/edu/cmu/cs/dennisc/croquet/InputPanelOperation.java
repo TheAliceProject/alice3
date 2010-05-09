@@ -46,21 +46,174 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class InputPanelOperation<T> extends AbstractActionOperation {
-	private String title;
-	public InputPanelOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, String title ) {
-		super( groupUUID, individualUUID );
-		this.title = title;
-	}
-	protected abstract InputPanel< T > createInputPanel();
-	protected abstract Edit createEdit( edu.cmu.cs.dennisc.croquet.Context context, T value );
-	@Override
-	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
-		InputPanel< T > inputPanel = this.createInputPanel();
-		T value = inputPanel.showInJDialog( button, this.title );
-		if( value != null ) {
-			context.commitAndInvokeDo( this.createEdit( context, value ) );
-		} else {
-			context.cancel();
+	private class ButtonOperation extends ActionOperation {
+		private boolean isOK;
+
+		public ButtonOperation(java.util.UUID individualId, String name, boolean isOK) {
+			super( Application.INHERIT_GROUP, individualId );
+			this.setName(name);
+			this.isOK = isOK;
 		}
+
+		@Override
+		protected void perform(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
+			InputPanelOperation.this.setOK( this.isOK );
+			if (this.isOK) {
+				context.cancel();
+			} else {
+				context.finish();
+			}
+		}
+	}
+	private ButtonOperation okOperation = new ButtonOperation(java.util.UUID.fromString("f6019ff0-cf2b-4d6c-8c8d-14cac8154ebc"), "OK", true);
+	private ButtonOperation cancelOperation;
+	
+	public InputPanelOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, String name, boolean isCancelDesired) {
+		super(groupUUID, individualUUID);
+		this.setName( name );
+		if( isCancelDesired ) {
+			this.cancelOperation = new ButtonOperation(java.util.UUID.fromString( "2a7e61c8-119a-45b1-830c-f59edda720a0"), "Cancel", true);
+		} else {
+			this.cancelOperation = null;
+		}
+	}
+	public InputPanelOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, String title) {
+		this(groupUUID, individualUUID, title, true);
+	}
+
+	public static interface Validator {
+		public boolean isInputValid();
+	}
+
+	private java.util.List<Validator> validators = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
+	protected abstract T getValue();
+
+	protected abstract Component<?> createContentPane();
+
+	protected abstract Edit createEdit(edu.cmu.cs.dennisc.croquet.Context context, T value);
+
+	public void addValidator(Validator validator) {
+		this.validators.add(validator);
+	}
+
+	public void removeValidator(Validator validator) {
+		this.validators.remove(validator);
+	}
+
+	private boolean isOK = false;
+	private void setOK(boolean isOK) {
+		this.isOK = isOK;
+//		dialog.setVisible(false);
+	}
+
+	protected boolean isDisposeDesired( java.awt.event.WindowEvent e ) {
+		return true;
+	}
+	protected boolean isCancelDesired() {
+		return true;
+	}
+	
+	@Override
+	protected final void perform(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
+		class BottomPanel extends Panel {
+			private Button okButton = okOperation.createButton();
+			public BottomPanel() {
+				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+					this.internalAddComponent( okButton );
+					if( cancelOperation != null ) {
+						this.internalAddComponent( cancelOperation.createButton() );
+					}
+				} else {
+					if( cancelOperation != null ) {
+						this.internalAddComponent( cancelOperation.createButton() );
+					}
+					this.internalAddComponent( okButton );
+				}
+			}
+			@Override
+			protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
+				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+					return new java.awt.FlowLayout();
+				} else {
+					return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
+				}
+			}
+			public Button getOkButton() {
+				return this.okButton;
+			}
+		};
+		
+		Component<?> contentPane = this.createContentPane();
+
+		BottomPanel bottomPanel = new BottomPanel();
+		bottomPanel.setBackgroundColor( contentPane.getBackgroundColor() );
+
+		final Dialog dialog = new Dialog(button);
+		dialog.setTitle( this.getName() );
+		//dialog.getAWTDialog().setDefaultCloseOperation( javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+
+//		dialog.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+//		dialog.addWindowListener(new java.awt.event.WindowListener() {
+//			public void windowActivated(java.awt.event.WindowEvent e) {
+//			}
+//
+//			public void windowDeactivated(java.awt.event.WindowEvent e) {
+//			}
+//
+//			public void windowIconified(java.awt.event.WindowEvent e) {
+//			}
+//
+//			public void windowDeiconified(java.awt.event.WindowEvent e) {
+//			}
+//
+//			public void windowOpened(java.awt.event.WindowEvent e) {
+//			}
+//
+//			public void windowClosing(java.awt.event.WindowEvent e) {
+//				if (InputPanel.this.isDisposeDesired(e)) {
+//					e.getWindow().dispose();
+//				}
+//			}
+//
+//			public void windowClosed(java.awt.event.WindowEvent e) {
+//			}
+//		});
+
+		dialog.setDefaultButton( bottomPanel.getOkButton() );
+		
+		BorderPanel borderPanel = new BorderPanel();
+		borderPanel.addComponent( contentPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		borderPanel.addComponent( bottomPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.SOUTH );
+		
+		
+//		this.setOKButton(okButton);
+//		this.isOK = false;
+//
+//		this.getJComponent().revalidate();
+//		dialog.pack();
+//
+//		edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin(dialog, root);
+//
+//		assert this.dialog == null;
+//		this.dialog = dialog;
+//		try {
+//			this.dialog.setVisible(true);
+//			T rv = getInputValue();
+//			return rv;
+//		} finally {
+//			this.setOKButton(null);
+//			this.dialog = null;
+//			// todo?
+//			// this.m_isOK = false;
+//		}
+//
+//		InputPanel<T> inputPanel = this.createInputPanel();
+//		T value = inputPanel.showInJDialog(button, this.title);
+//		if (value != null) {
+//			context.commitAndInvokeDo(this.createEdit(context, value));
+//		} else {
+//			context.cancel();
+//		}
 	}
 }

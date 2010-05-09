@@ -47,19 +47,47 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 //todo: better name
-public abstract class Root {
-	protected abstract java.awt.Window getAWTWindow();
-	protected abstract java.awt.Frame getAWTFrame();
-	protected abstract java.awt.Dialog getAWTDialog();
-	protected abstract java.awt.Container getContentPane();
-//	public void addToContentPane( KComponent<?> component, KBorderPanel.CardinalDirection cardinalDirection ) {
-//		this.getContentPane().add( component.getJComponent(), cardinalDirection.getInternal() );
-//	}
+public abstract class Root<W extends java.awt.Window> {
+	private static java.util.Map< java.awt.Component, Root<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
+	/*package-private*/ static Root<?> lookup( java.awt.Component component ) {
+		if( component != null ) {
+			return Root.map.get( component );
+		} else {
+			return null;
+		}
+	}
+
+	private W window;
+	public Root( W window ) {
+		this.window = window;
+		Root.map.put( window, this );
+	}
+
+	protected final W getAwtWindow() {
+		return this.window;
+	}
+	protected abstract javax.swing.JRootPane getRootPane();
+
+	private BorderPanel borderPanel = new BorderPanel(); 
+	public BorderPanel getContentPanel() {
+		return this.borderPanel;
+	}
 	
 	public void addWindowStateListener( java.awt.event.WindowStateListener listener ) {
-		this.getAWTWindow().addWindowStateListener( listener );
+		this.window.addWindowStateListener( listener );
 	}
 	public void removeWindowStateListener( java.awt.event.WindowStateListener listener ) {
-		this.getAWTWindow().removeWindowStateListener( listener );
+		this.window.removeWindowStateListener( listener );
+	}
+
+	public boolean isVisible() {
+		return this.window.isVisible();
+	}
+	public void setVisible( boolean isVisible ) {
+		this.window.setVisible( isVisible );
+	}
+	
+	public void setDefaultButton( Button button ) {
+		this.getRootPane().setDefaultButton( button.getJComponent() );
 	}
 }

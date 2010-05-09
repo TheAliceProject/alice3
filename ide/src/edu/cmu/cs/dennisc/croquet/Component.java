@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public abstract class Component<J extends javax.swing.JComponent> {
 	private static java.util.Map< java.awt.Component, Component< ? > > map = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
-	protected static Component< ? > lookup( java.awt.Component component ) {
+	/*package-private*/ static Component< ? > lookup( java.awt.Component component ) {
 		if( component != null ) {
 			return Component.map.get( component );
 		} else {
@@ -65,6 +65,7 @@ public abstract class Component<J extends javax.swing.JComponent> {
 			//pass
 		} else {
 			this.jComponent = this.createJComponent();
+			Component.map.put( this.jComponent, this );
 		}
 		return this.jComponent;
 	}
@@ -215,6 +216,10 @@ public abstract class Component<J extends javax.swing.JComponent> {
 	@Deprecated
 	public Component< ? > getParent() {
 		return Component.lookup( this.getJComponent().getParent() );
+	}
+	@Deprecated
+	public Root<?> getRoot() {
+		return Root.lookup( javax.swing.SwingUtilities.getRoot( this.getJComponent() ) );
 	}
 	@Deprecated
 	public Component<?> getComponent( int i ) {

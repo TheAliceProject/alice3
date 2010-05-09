@@ -46,25 +46,15 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class Frame extends Root {
-	private javax.swing.JFrame jFrame = new javax.swing.JFrame();
-	@Override
-	protected java.awt.Dialog getAWTDialog() {
-		return null;
+public final class Frame extends Root<javax.swing.JFrame> {
+	public Frame() {
+		super( new javax.swing.JFrame() );
 	}
 	@Override
-	protected java.awt.Frame getAWTFrame() {
-		return this.jFrame;
-	}
-	@Override
-	protected java.awt.Window getAWTWindow() {
-		return this.jFrame;
-	}
-	@Override
-	protected java.awt.Container getContentPane() {
-		return this.jFrame.getContentPane();
+	protected javax.swing.JRootPane getRootPane() {
+		return this.getAwtWindow().getRootPane();
 	}
 	public void maximize() {
-		this.getAWTFrame().setExtendedState( this.getAWTFrame().getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH );
+		this.getAwtWindow().setExtendedState( this.getAwtWindow().getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH );
 	}
 }

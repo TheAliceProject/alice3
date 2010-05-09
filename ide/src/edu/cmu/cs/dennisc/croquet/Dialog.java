@@ -46,43 +46,48 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class Dialog extends Root {
-	private javax.swing.JDialog jDialog;
+public final class Dialog extends Root< javax.swing.JDialog > {
+	private static javax.swing.JDialog createJDialog( Component<?> owner ) {
+		javax.swing.JDialog rv;
+		if( owner != null ) {
+			Root<?> root = owner.getRoot();
+			java.awt.Window ownerWindow = root.getAwtWindow();
+			if( ownerWindow instanceof java.awt.Frame ) {
+				rv = new javax.swing.JDialog( (java.awt.Frame)ownerWindow );
+			} else 	if( ownerWindow instanceof java.awt.Dialog ) {
+				rv = new javax.swing.JDialog( (java.awt.Dialog)ownerWindow );
+			} else {
+				rv = null;
+			}
+		} else {
+			rv = null;
+		}
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new javax.swing.JDialog();
+		}
+		return rv;
+	}
 	public Dialog() {
 		this( null );
 	}
-	public Dialog( Root owner ) {
-		if( owner != null ) {
-			java.awt.Frame ownerFrame = owner.getAWTFrame();
-			if( ownerFrame != null ) {
-				this.jDialog = new javax.swing.JDialog( ownerFrame );
-			} else {
-				java.awt.Dialog ownerDialog = owner.getAWTDialog();
-				if( ownerDialog != null ) {
-					this.jDialog = new javax.swing.JDialog( ownerDialog );
-				}
-			}
-		}
-		if( this.jDialog != null ) {
-			//pass
-		} else {
-			this.jDialog = new javax.swing.JDialog();
-		}
+	public Dialog( Component<?> owner ) {
+		this( owner, true );
+	}
+	public Dialog( Component<?> owner, boolean isModal ) {
+		super( Dialog.createJDialog( owner ) );
+		this.getAwtWindow().setModal( isModal );
 	}
 	@Override
-	protected java.awt.Dialog getAWTDialog() {
-		return this.jDialog;
+	protected javax.swing.JRootPane getRootPane() {
+		return this.getAwtWindow().getRootPane();
 	}
-	@Override
-	protected java.awt.Frame getAWTFrame() {
-		return null;
+	
+	public String getTitle() {
+		return this.getAwtWindow().getTitle();
 	}
-	@Override
-	protected java.awt.Window getAWTWindow() {
-		return this.jDialog;
-	}
-	@Override
-	protected java.awt.Container getContentPane() {
-		return this.jDialog.getContentPane();
+	public void setTitle( String title ) {
+		this.getAwtWindow().setTitle( title );
 	}
 }
