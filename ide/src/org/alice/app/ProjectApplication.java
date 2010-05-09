@@ -95,9 +95,16 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 		return this.redoOperation;
 	}
 
+	protected abstract org.alice.app.openprojectpane.TabContentPanel createTemplatesTabContentPane();
+	private org.alice.app.openprojectpane.OpenProjectPane openProjectPane;
 	public org.alice.app.openprojectpane.OpenProjectPane getOpenProjectPane() {
-		//todo: cache
-		return new org.alice.app.openprojectpane.OpenProjectPane( this.getTemplatesTabContentPane() );
+		if( this.openProjectPane != null ) {
+			//pass
+		} else {
+			this.openProjectPane = new org.alice.app.openprojectpane.OpenProjectPane(); 
+		}
+		this.openProjectPane.refresh();
+		return this.openProjectPane;
 	}
 
 	private java.util.Map< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node > mapUUIDToNode = new java.util.HashMap< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node >();
@@ -106,16 +113,6 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 	protected abstract String getVersionText();
 	protected abstract String getVersionAdornment();
 	
-	private org.alice.app.openprojectpane.TabContentPane templatesPane;
-	protected abstract org.alice.app.openprojectpane.TabContentPane createTemplatesPane();
-	private org.alice.app.openprojectpane.TabContentPane getTemplatesTabContentPane() {
-		if( this.templatesPane != null ) {
-			//pass
-		} else {
-			this.templatesPane = this.createTemplatesPane();
-		}
-		return this.templatesPane;
-	}
 	
 	private void showUnableToOpenProjectMessageDialog( java.io.File file, boolean isValidZip ) {
 		StringBuffer sb = new StringBuffer();

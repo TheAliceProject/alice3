@@ -108,7 +108,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.splitPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		this.splitPane.setResizeWeight( 1.0 );
 		this.splitPane.setDividerProportionalLocation( 1.0 );
-		this.addComponent( this.splitPane, CardinalDirection.CENTER );
+		this.addComponent( this.splitPane, Constraint.CENTER );
 	}
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > fieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {

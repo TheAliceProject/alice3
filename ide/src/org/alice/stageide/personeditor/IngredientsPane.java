@@ -162,7 +162,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		this.baseEyeColorList.setCellRenderer( listCellRenderer );
 
 		edu.cmu.cs.dennisc.croquet.BorderPanel northPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		northPane.addComponent(  this.randomPersonActionOperation.createButton(), CardinalDirection.NORTH );
+		northPane.addComponent(  this.randomPersonActionOperation.createButton(), Constraint.NORTH );
 		
 		edu.cmu.cs.dennisc.croquet.RowsSpringPanel ubiquitousPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 8 ) {
 			@Override
@@ -173,7 +173,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				return rv;
 			}
 		};
-		northPane.addComponent( ubiquitousPane, CardinalDirection.CENTER );
+		northPane.addComponent( ubiquitousPane, Constraint.CENTER );
 		
 //		final swing.BorderPane hairPane = new swing.BorderPane();
 //		hairPane.add( this.hairColorList, java.awt.BorderLayout.NORTH );
@@ -200,8 +200,8 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		scrollPane.getJComponent().getViewport().setOpaque( false );
 
 		edu.cmu.cs.dennisc.croquet.BorderPanel bodyPane = new edu.cmu.cs.dennisc.croquet.BorderPanel( 8, 8 );
-		bodyPane.addComponent( scrollPane, CardinalDirection.CENTER );
-		bodyPane.addComponent( this.fitnessLevelPane, CardinalDirection.SOUTH );
+		bodyPane.addComponent( scrollPane, Constraint.CENTER );
+		bodyPane.addComponent( this.fitnessLevelPane, Constraint.SOUTH );
 		
 		//java.awt.Color color = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
 		java.awt.Color color = BACKGROUND_COLOR;
@@ -218,8 +218,8 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		java.awt.Font font = tabbedPane.getFont();
 		this.tabbedPane.setFont( font.deriveFont( font.getSize2D() * 1.5f ) );
 
-		this.addComponent( northPane, CardinalDirection.NORTH );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( tabbedPane ), CardinalDirection.CENTER );
+		this.addComponent( northPane, Constraint.NORTH );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( tabbedPane ), Constraint.CENTER );
 		
 	}
 	

@@ -606,8 +606,8 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		this.editorsTabbedPane = this.createEditorsTabbedPane();
 		this.ubiquitousPane = this.createUbiquitousPane();
 
-		this.right.addComponent( this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.NORTH );
-		this.right.addComponent( this.editorsTabbedPane.getSingletonTabbedPane(), edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.CENTER );
+		this.right.addComponent( this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
+		this.right.addComponent( this.editorsTabbedPane.getSingletonTabbedPane(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 		
 		//edu.cmu.cs.dennisc.swing.InputPane.setDefaultOwnerFrame( this );
 		this.vmForRuntimeProgram = createVirtualMachineForRuntimeProgram();
@@ -625,8 +625,8 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createContentPane() {
 		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		rv.addMouseWheelListener( new edu.cmu.cs.dennisc.javax.swing.plaf.metal.FontMouseWheelAdapter() );
-		rv.addComponent( this.root, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.CENTER );
-		rv.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.concealedBin ), edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.EAST );
+		rv.addComponent( this.root, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		rv.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.concealedBin ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.EAST );
 		
 		this.setSceneEditorExpanded( false );
 		return rv;
@@ -736,7 +736,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	//	private java.util.List< zoot.DropReceptor > dropReceptors = new java.util.LinkedList< zoot.DropReceptor >();
 
 	protected org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		return (org.alice.ide.codeeditor.CodeEditor)this.editorsTabbedPane.getCurrentSelection().getSingletonView();
+		return (org.alice.ide.codeeditor.CodeEditor)this.editorsTabbedPane.getCurrentSelectedTabOperation().getSingletonView();
 	}
 
 	private ComponentStencil stencil;

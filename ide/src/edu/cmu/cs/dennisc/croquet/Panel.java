@@ -64,7 +64,7 @@ public abstract class Panel extends Component< javax.swing.JPanel > {
 		rv.setLayout( layoutManager );
 		
 		rv.setOpaque( false );
-		rv.setDoubleBuffered( false );
+		//rv.setDoubleBuffered( false );
 		rv.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		rv.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 		

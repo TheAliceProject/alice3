@@ -47,7 +47,7 @@ package org.alice.ide.initializer;
  */
 public class ItemInitializerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	public ItemInitializerPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty initializerProperty ) {
-		this.addComponent( org.alice.ide.IDE.getSingleton().getCodeFactory().createExpressionPropertyPane( initializerProperty, null ), edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.WEST );
+		this.addComponent( org.alice.ide.IDE.getSingleton().getCodeFactory().createExpressionPropertyPane( initializerProperty, null ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.WEST );
 	}
 }
 //public class ItemInitializerPane extends org.alice.ide.codeeditor.ExpressionPropertyDropDownPane {

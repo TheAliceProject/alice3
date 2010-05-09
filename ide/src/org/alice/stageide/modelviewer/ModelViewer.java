@@ -93,7 +93,7 @@ abstract class AbstractViewer extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			this.initialize();
 			this.isInitialized = true;
 		}
-		this.addComponent( this.adapter, CardinalDirection.CENTER );
+		this.addComponent( this.adapter, Constraint.CENTER );
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
 	}

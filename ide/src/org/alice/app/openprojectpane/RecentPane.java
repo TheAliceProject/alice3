@@ -43,10 +43,7 @@
 
 package org.alice.app.openprojectpane;
 
-class RecentPane extends ListPane {
-	public RecentPane() {
-		super( java.util.UUID.fromString( "b490bb6c-f74f-422b-b9a6-5ef643b02b58" ), "Recent" );
-	}
+class RecentPane extends ListContentPanel {
 	@Override
 	protected String getTextForZeroProjects() {
 		return "there are no recent projects";

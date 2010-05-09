@@ -45,8 +45,11 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TabIsSelectedOperation extends BooleanStateOperation {
-	public TabIsSelectedOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, boolean initialState, String title ) {
+public abstract class TabIsSelectedStateOperation extends BooleanStateOperation {
+	public TabIsSelectedStateOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, boolean initialState ) {
+		super( groupUUID, individualUUID, initialState );
+	}
+	public TabIsSelectedStateOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, boolean initialState, String title ) {
 		super( groupUUID, individualUUID, initialState, title );
 	}
 	
@@ -86,14 +89,14 @@ public abstract class TabIsSelectedOperation extends BooleanStateOperation {
 		return new TabTitle( this.isCloseAffordanceDesired() ) {
 			@Override
 			protected void adding() {
-				TabIsSelectedOperation.this.addAbstractButton(this);
+				TabIsSelectedStateOperation.this.addAbstractButton(this);
 				super.adding();
 			}
 
 			@Override
 			protected void removed() {
 				super.removed();
-				TabIsSelectedOperation.this.removeAbstractButton(this);
+				TabIsSelectedStateOperation.this.removeAbstractButton(this);
 			}
 		};
 	}

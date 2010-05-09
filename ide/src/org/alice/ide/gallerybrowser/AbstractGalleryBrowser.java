@@ -54,7 +54,7 @@ public abstract class AbstractGalleryBrowser extends edu.cmu.cs.dennisc.croquet.
 	protected void initialize( java.io.File rootDirectory ) {
 		this.assetsPane = this.createAssetsPane( rootDirectory );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( GAP, GAP, GAP, GAP ) );
-		this.addComponent( this.assetsPane, CardinalDirection.CENTER );
+		this.addComponent( this.assetsPane, Constraint.CENTER );
 	}
 	protected AssetsPane createAssetsPane( java.io.File rootDirectory ) {
 		java.io.InputStream is = AbstractGalleryBrowser.class.getResourceAsStream( "images/folder.png" );

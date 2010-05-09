@@ -135,7 +135,7 @@ public class SplitSceneEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	public SplitSceneEditor() {
 		this.root.setLeftComponent( new edu.cmu.cs.dennisc.croquet.ScrollPane( this.tree ) );
 		this.root.setRightComponent( this.lookingGlass );
-		this.addComponent( this.root, CardinalDirection.CENTER );
+		this.addComponent( this.root, Constraint.CENTER );
 	}
 	@Override
 	protected void adding() {

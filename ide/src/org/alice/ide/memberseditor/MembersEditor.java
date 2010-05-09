@@ -45,55 +45,17 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class MembersTab extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
-	private java.util.UUID individualId;
-	public MembersTab( java.util.UUID individualId ) {
-		this.individualId = individualId;
+abstract class MembersContentPanel extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
+	public MembersContentPanel() {
 		this.setOpaque( true );
 	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
-	}
-	protected abstract String getKey();
 	public final String getTitle() {
 		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "org.alice.ide.memberseditor.TabTitles", javax.swing.JComponent.getDefaultLocale() );
 		return resourceBundle.getString( this.getKey() );
 	}
+	protected abstract String getKey();
 
 	private java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > types = new java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.AbstractType >();
-
-//	private Iterable< edu.cmu.cs.dennisc.alice.ast.AbstractType > getTypes() {
-//		return this.types;
-//	}
-
-	private edu.cmu.cs.dennisc.croquet.TabIsSelectedOperation tabIsSelectedOperation;
-	public edu.cmu.cs.dennisc.croquet.TabIsSelectedOperation getTabIsSelectedOperation() {
-		if( this.tabIsSelectedOperation != null ) {
-			//pass
-		} else {
-			this.tabIsSelectedOperation = new edu.cmu.cs.dennisc.croquet.TabIsSelectedOperation(
-					edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, 
-					this.individualId, 
-					false, 
-					this.getTitle() ) {
-				@Override
-				protected edu.cmu.cs.dennisc.croquet.Component<?> createSingletonView() {
-//					edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( MembersTab.this );
-//					scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-//					scrollPane.setBackgroundColor( MembersTab.this.getBackgroundColor() );
-//					scrollPane.getJComponent().getVerticalScrollBar().setUnitIncrement( 12 );
-//					return scrollPane;
-					return MembersTab.this;
-				}
-				@Override
-				protected boolean isCloseAffordanceDesired() {
-					return false;
-				}
-			};
-		}
-		return this.tabIsSelectedOperation;
-	}
-	
 	public void handleFieldSelection( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		this.types.clear();
 		if( field != null ) {
@@ -126,7 +88,6 @@ abstract class MembersTab extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 	
 	protected void refresh() {
 		this.removeAllComponents();
-		this.setOpaque( false );
 		boolean isNonConsumedTypeDeclaredInJavaAlreadyEncountered = false;
 		
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : this.types ) {
@@ -146,7 +107,7 @@ abstract class MembersTab extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 			if( type.isConsumptionBySubClassDesired() ) {
 				//pass
 			} else {
-				if( this.getIDE().isEmphasizingClasses() || type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice || isFirstNonConsumedTypeEncounteredInJava ) {
+				if( org.alice.ide.IDE.getSingleton().isEmphasizingClasses() || type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice || isFirstNonConsumedTypeEncounteredInJava ) {
 					this.addComponent( MembersEditor.getComponentFor( this.getClass(), type ) );
 				}
 			}
@@ -165,16 +126,12 @@ abstract class MembersTab extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 	}
 }
 
-abstract class MethodsTab extends MembersTab {
-	public MethodsTab( java.util.UUID individualId ) {
-		super( individualId );
-	}
+abstract class MethodsContentPanel extends MembersContentPanel {
 }
 
-class ProceduresTab extends MethodsTab {
-	public ProceduresTab() {
-		super( java.util.UUID.fromString( "2731d704-1f80-444e-a610-e6e5866c0b9a" ) );
-		this.setBackgroundColor( getIDE().getProcedureColor() );
+class ProceduresContentPanel extends MethodsContentPanel {
+	public ProceduresContentPanel() {
+		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getProcedureColor() );
 	}
 	@Override
 	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
@@ -186,10 +143,9 @@ class ProceduresTab extends MethodsTab {
 	}
 }
 
-class FunctionsTab extends MethodsTab {
-	public FunctionsTab() {
-		super( java.util.UUID.fromString( "0f5d1f93-fc67-4109-9aff-0e7b232f201c" ) );
-		this.setBackgroundColor( getIDE().getFunctionColor() );
+class FunctionsContentPanel extends MethodsContentPanel {
+	public FunctionsContentPanel() {
+		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getFunctionColor() );
 	}
 	@Override
 	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
@@ -201,10 +157,9 @@ class FunctionsTab extends MethodsTab {
 	}
 }
 
-class FieldsTab extends MembersTab {
-	public FieldsTab() {
-		super( java.util.UUID.fromString( "6cb9c5a1-dc60-48e7-9a52-534009a093b8" ) );  
-		this.setBackgroundColor( getIDE().getFieldColor() );
+class FieldsContentPanel extends MembersContentPanel {
+	public FieldsContentPanel() {
+		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getFieldColor() );
 	}
 	@Override
 	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
@@ -220,8 +175,37 @@ class FieldsTab extends MembersTab {
  * @author Dennis Cosgrove
  */
 public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	private MembersTab[] membersTabs = { new ProceduresTab(), new FunctionsTab(), new FieldsTab() };
-	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabSelectionOperation = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP,  java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ) );
+	private static abstract class MemberTabIsSelectedStateOperation extends edu.cmu.cs.dennisc.croquet.TabIsSelectedStateOperation {
+		public MemberTabIsSelectedStateOperation( java.util.UUID individualId, boolean initialState ) {
+			super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, individualId, initialState );
+			MembersContentPanel memberTab = (MembersContentPanel)this.getSingletonView();
+			String trueAndFalseText = memberTab.getTitle();
+			this.setTrueText( trueAndFalseText );
+			this.setFalseText( trueAndFalseText );
+		}
+		@Override
+		protected final boolean isCloseAffordanceDesired() {
+			return false;
+		}
+	}
+	private MemberTabIsSelectedStateOperation proceduresTabIsSelectedStateOperation = new MemberTabIsSelectedStateOperation( java.util.UUID.fromString( "2731d704-1f80-444e-a610-e6e5866c0b9a" ), true ) {
+		@Override
+		protected edu.cmu.cs.dennisc.croquet.Component<?> createSingletonView() {
+			return new ProceduresContentPanel();
+		}
+	};
+	private MemberTabIsSelectedStateOperation functionsTabIsSelectedStateOperation = new MemberTabIsSelectedStateOperation( java.util.UUID.fromString( "0f5d1f93-fc67-4109-9aff-0e7b232f201c" ), false ) {
+		@Override
+		protected edu.cmu.cs.dennisc.croquet.Component<?> createSingletonView() {
+			return new FunctionsContentPanel();
+		}
+	};
+	private MemberTabIsSelectedStateOperation fieldsTabIsSelectedStateOperation = new MemberTabIsSelectedStateOperation( java.util.UUID.fromString( "6cb9c5a1-dc60-48e7-9a52-534009a093b8" ), false ) {
+		@Override
+		protected edu.cmu.cs.dennisc.croquet.Component<?> createSingletonView() {
+			return new FieldsContentPanel();
+		}
+	};
 	private org.alice.ide.IDE.FieldSelectionObserver fieldSelectionObserver = new org.alice.ide.IDE.FieldSelectionObserver() {
 		public void fieldSelectionChanging( edu.cmu.cs.dennisc.alice.ast.AbstractField previousField, edu.cmu.cs.dennisc.alice.ast.AbstractField nextField ) {
 		}
@@ -230,13 +214,22 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	};
 
+	private edu.cmu.cs.dennisc.croquet.TabbedPaneSelectionOperation tabSelectionOperation = new edu.cmu.cs.dennisc.croquet.TabbedPaneSelectionOperation( 
+			edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, 
+			java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ),
+			this.proceduresTabIsSelectedStateOperation,
+			this.functionsTabIsSelectedStateOperation,
+			this.fieldsTabIsSelectedStateOperation
+	);
 	private void handleFieldSelection( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		for( MembersTab membersTab : membersTabs ) {
+		for( edu.cmu.cs.dennisc.croquet.TabIsSelectedStateOperation tabIsSelectedStateOperation : this.tabSelectionOperation.getTabIsSelectedStateOperations() ) {
+			MembersContentPanel membersTab = (MembersContentPanel)tabIsSelectedStateOperation.getSingletonView();
 			membersTab.handleFieldSelection( field );
 		}
 	}
 	private void refresh() {
-		for( MembersTab membersTab : membersTabs ) {
+		for( edu.cmu.cs.dennisc.croquet.TabIsSelectedStateOperation tabIsSelectedStateOperation : this.tabSelectionOperation.getTabIsSelectedStateOperations() ) {
+			MembersContentPanel membersTab = (MembersContentPanel)tabIsSelectedStateOperation.getSingletonView();
 			membersTab.refresh();
 		}
 	}
@@ -255,35 +248,23 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	}
 	
 	public MembersEditor() {
-		for( MembersTab membersTab : membersTabs ) {
-			this.tabSelectionOperation.addTabIsSelectedOperation( membersTab.getTabIsSelectedOperation() );
-		}
-		this.addComponent( this.tabSelectionOperation.getSingletonTabbedPane(), CardinalDirection.CENTER );
+		this.addComponent( this.tabSelectionOperation.getSingletonTabbedPane(), Constraint.CENTER );
 	}
-//	@Override
-//	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate ExpandAllToBoundsLayoutManager" );
-//		return new edu.cmu.cs.dennisc.java.awt.ExpandAllToBoundsLayoutManager();
-//	}
-
 	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
 		this.refresh();
 	}
 	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
 		this.refresh();
 	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
-	}
 	@Override
 	protected void adding() {
 		super.adding();
-		this.getIDE().addFieldSelectionObserver( this.fieldSelectionObserver );
-		this.handleFieldSelection( this.getIDE().getFieldSelection() );
+		org.alice.ide.IDE.getSingleton().addFieldSelectionObserver( this.fieldSelectionObserver );
+		this.handleFieldSelection( org.alice.ide.IDE.getSingleton().getFieldSelection() );
 	}
 	@Override
 	protected void removed() {
-		this.getIDE().removeFieldSelectionObserver( this.fieldSelectionObserver );
+		org.alice.ide.IDE.getSingleton().removeFieldSelectionObserver( this.fieldSelectionObserver );
 		super.removed();
 	}
 	

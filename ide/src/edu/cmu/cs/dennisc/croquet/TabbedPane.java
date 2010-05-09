@@ -184,8 +184,8 @@ public final class TabbedPane extends Component< javax.swing.JComponent > {
 		this.headerPane.setBackgroundColor( new java.awt.Color( 63, 63, 81 ) );
 		
 		this.panel = new BorderPanel();
-		this.panel.addComponent( this.headerPane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.NORTH );
-		this.panel.addComponent( this.main, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.CENTER );
+		this.panel.addComponent( this.headerPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
+		this.panel.addComponent( this.main, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 		return panel.getJComponent();
 	}
 	

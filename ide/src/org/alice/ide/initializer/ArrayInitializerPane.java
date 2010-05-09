@@ -402,7 +402,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		gbc.weighty = 1.0;
 		buttonPane.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue(), gbc );
 
-		this.addComponent( buttonPane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.EAST );
+		this.addComponent( buttonPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.EAST );
 
 		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( this.list );
 //		{
@@ -412,7 +412,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 //			}
 //		};
 		scrollPane.setBorder( null );
-		this.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.CENTER );
+		this.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 	}
 
 	private void updateButtons() {

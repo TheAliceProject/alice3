@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class PageAxisPanel extends AxisPanel {
-	public PageAxisPanel( Component... components ) {
+	public PageAxisPanel( Component<?>... components ) {
 		super( javax.swing.BoxLayout.PAGE_AXIS, components );
 	}
 }

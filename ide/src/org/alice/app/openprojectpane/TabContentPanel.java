@@ -46,60 +46,20 @@ package org.alice.app.openprojectpane;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TabContentPane extends edu.cmu.cs.dennisc.croquet.TabIsSelectedOperation {
+public abstract class TabContentPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private edu.cmu.cs.dennisc.croquet.InputPanel< java.net.URI > inputPanel;
-	public TabContentPane( java.util.UUID individualId, String title ) {
-		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, individualId, false, title );
-	}
-	
-	protected abstract edu.cmu.cs.dennisc.croquet.BorderPanel updateSingletonView( edu.cmu.cs.dennisc.croquet.BorderPanel rv );
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> createSingletonView() {
-		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		this.updateSingletonView( rv );
-		rv.setBackgroundColor( new java.awt.Color( 191, 191, 255 ) );
-		rv.setOpaque( true );
+	public TabContentPanel() {
+		this.setBackgroundColor( new java.awt.Color( 191, 191, 255 ) );
+		this.setOpaque( true );
 		final int INSET = 8;
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
-		return rv;
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 	}
-	@Override
-	protected boolean isCloseAffordanceDesired() {
-		return false;
-	}
+	public abstract java.net.URI getSelectedURI();
 	public void setInputPanel( edu.cmu.cs.dennisc.croquet.InputPanel< java.net.URI > inputPanel ) {
 		this.inputPanel = inputPanel;
 	}
-	public abstract java.net.URI getSelectedURI();
-	public javax.swing.Icon getTabTitleIcon() {
-		return null;
-	}
-//	private edu.cmu.cs.dennisc.croquet.TabIsSelectedOperation tabIsSelectedOperation;
-//	public edu.cmu.cs.dennisc.croquet.TabIsSelectedOperation getTabIsSelectedOperation() {
-//		if( this.tabIsSelectedOperation != null ) {
-//			//pass
-//		} else {
-//			this.tabIsSelectedOperation = new edu.cmu.cs.dennisc.croquet.TabIsSelectedOperation(
-//					edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, 
-//					this.individualId, 
-//					false, 
-//					new edu.cmu.cs.dennisc.croquet.TabFactory() {
-//						public edu.cmu.cs.dennisc.croquet.Component<?> createComponent(edu.cmu.cs.dennisc.croquet.TabbedPane tabbedPane) {
-//							return TabContentPane.this;
-//						}
-//						public String getTitle() {
-//							return TabContentPane.this.getTabTitleText();
-//						}
-//						public String getTooltipText() {
-//							return null;
-//						}
-//						public boolean isCloseAffordanceDesired() {
-//							return false;
-//						}
-//					}
-//			);
-//		}
-//		return this.tabIsSelectedOperation;
+//	public javax.swing.Icon getTabTitleIcon() {
+//		return null;
 //	}
 	protected void updateOKButton() {
 		if( this.inputPanel != null ) {

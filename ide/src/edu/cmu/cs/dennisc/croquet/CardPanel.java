@@ -48,14 +48,10 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public class CardPanel extends Panel {
 	private java.awt.CardLayout cardLayout;
-//	private int hgap;
-//	private int vgap;
 	public CardPanel() {
 		this( 0, 0 );
 	}
 	public CardPanel( int hgap, int vgap ) {
-//		this.hgap = hgap;
-//		this.vgap = vgap;
 		this.cardLayout = new java.awt.CardLayout( hgap, vgap );
 	}
 	@Override

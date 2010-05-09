@@ -50,9 +50,9 @@ class MethodPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //		header.setAlignmentX( 0.0f );
 		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		org.alice.ide.codeeditor.ParametersPane parametersPane = new org.alice.ide.codeeditor.ParametersPane( factory, method );
-		this.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( method, parametersPane ), edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.NORTH );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( 12 ), edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.WEST );
-		this.addComponent( new BodyPane( factory.createComponent( method.body.getValue() ) ), edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.CENTER );
+		this.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( method, parametersPane ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( 12 ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.WEST );
+		this.addComponent( new BodyPane( factory.createComponent( method.body.getValue() ) ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 		this.setAlignmentX( 0.0f );
 		this.setOpaque( true );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );

@@ -97,6 +97,9 @@ public /*final*/ class BooleanStateOperation extends Operation {
 	public BooleanStateOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, boolean initialState, String trueAndFalseText) {
 		this(groupUUID, individualUUID, initialState, trueAndFalseText, trueAndFalseText);
 	}
+	public BooleanStateOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, boolean initialState ) {
+		this(groupUUID, individualUUID, initialState, null, null );
+	}
 
 	public Boolean getState() {
 		return this.buttonModel.isSelected();

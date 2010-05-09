@@ -68,9 +68,9 @@ class FitnessLevelActionOperation extends org.alice.ide.operations.Inconsequenti
 class FitnessLevelPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private FitnessLevelSlider slider = new FitnessLevelSlider();
 	public FitnessLevelPane() {
-		this.addComponent( new FitnessLevelActionOperation( this.slider, 0, "SOFT" ).createButton(), CardinalDirection.WEST );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.slider ), CardinalDirection.CENTER );
-		this.addComponent( new FitnessLevelActionOperation( this.slider, 100, "CUT" ).createButton(), CardinalDirection.EAST );
+		this.addComponent( new FitnessLevelActionOperation( this.slider, 0, "SOFT" ).createButton(), Constraint.WEST );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.slider ), Constraint.CENTER );
+		this.addComponent( new FitnessLevelActionOperation( this.slider, 100, "CUT" ).createButton(), Constraint.EAST );
 	}
 
 	public void setFitnessLevel( Double fitnessLevel ) {

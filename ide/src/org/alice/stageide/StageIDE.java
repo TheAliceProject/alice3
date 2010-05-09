@@ -660,9 +660,9 @@ public class StageIDE extends org.alice.ide.IDE {
 		java.awt.image.BufferedImage rv = offscreenLookingGlass.getColorBuffer();
 		return rv;
 	}
-
+	
 	@Override
-	protected org.alice.app.openprojectpane.TabContentPane createTemplatesPane() {
+	protected org.alice.app.openprojectpane.TabContentPanel createTemplatesTabContentPane() {
 		return new org.alice.stageide.openprojectpane.templates.TemplatesTabContentPane();
 	}
 

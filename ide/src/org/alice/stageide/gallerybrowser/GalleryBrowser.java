@@ -66,8 +66,8 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		bonusPane.addComponent(createTextActionOperation.createButton());
 
 		edu.cmu.cs.dennisc.croquet.BorderPanel buttonPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		buttonPane.addComponent(fromFilePane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.NORTH);
-		buttonPane.addComponent(bonusPane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.SOUTH);
+		buttonPane.addComponent(fromFilePane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH);
+		buttonPane.addComponent(bonusPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.SOUTH);
 
 		// this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4,
 		// 4 ) );
@@ -85,8 +85,8 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read(edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is);
 		indirectCreatePersonActionOperation.setSmallIcon(new javax.swing.ImageIcon(image));
 		
-		this.addComponent(createPersonButton, CardinalDirection.WEST);
-		this.addComponent(buttonPane, CardinalDirection.EAST);
+		this.addComponent(createPersonButton, Constraint.WEST);
+		this.addComponent(buttonPane, Constraint.EAST);
 	}
 
 	@Override

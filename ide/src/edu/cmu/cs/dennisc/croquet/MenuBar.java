@@ -47,11 +47,13 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class MenuBar extends Component< javax.swing.JMenuBar > {
+	/*package-private*/ public MenuBar() {
+	}
 	@Override
 	protected javax.swing.JMenuBar createJComponent() {
 		return new javax.swing.JMenuBar();
 	}
-	public void addMenu( Menu menu ) {
+	/*package-private*/ void addMenu( Menu menu ) {
 		menu.adding();
 		this.getJComponent().add( menu.getJComponent() );
 		menu.added();

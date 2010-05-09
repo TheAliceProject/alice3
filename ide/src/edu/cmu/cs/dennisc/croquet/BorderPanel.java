@@ -47,14 +47,23 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class BorderPanel extends Panel {
-	public enum CardinalDirection {
+	public enum Constraint {
 		CENTER( java.awt.BorderLayout.CENTER ),
+		
 		NORTH( java.awt.BorderLayout.NORTH ),
+		PAGE_START( java.awt.BorderLayout.PAGE_START ),
+		
 		SOUTH( java.awt.BorderLayout.SOUTH ),
+		PAGE_END( java.awt.BorderLayout.PAGE_END ),
+		
+		WEST( java.awt.BorderLayout.WEST ),
+		LINE_START( java.awt.BorderLayout.LINE_START ),
+
 		EAST( java.awt.BorderLayout.EAST ),
-		WEST( java.awt.BorderLayout.WEST );
+		LINE_END( java.awt.BorderLayout.LINE_END );
+		
 		private String internal;
-		private CardinalDirection( String internal ) {
+		private Constraint( String internal ) {
 			this.internal = internal;
 		}
 		/*package-private*/ String getInternal() {
@@ -74,7 +83,7 @@ public class BorderPanel extends Panel {
 	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.BorderLayout( this.hgap, this.vgap );
 	}
-	public void addComponent( Component<?> child, CardinalDirection cardinalDirection ) {
+	public void addComponent( Component<?> child, Constraint cardinalDirection ) {
 		this.internalAddComponent( child, cardinalDirection.internal );
 	}
 	public void removeComponent( Component< ? > component ) {

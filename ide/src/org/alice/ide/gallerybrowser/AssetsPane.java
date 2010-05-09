@@ -54,8 +54,8 @@ public abstract class AssetsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		this.thumbnailsPane.setFolderIcon( folderIcon );
 		this.pathControl = this.createPathControl( rootDirectory );
 		this.pathControl.setFolderIconSmall( folderIconSmall );
-		this.addComponent( this.pathControl, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.NORTH );
-		this.addComponent( this.thumbnailsPane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.CENTER );
+		this.addComponent( this.pathControl, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
+		this.addComponent( this.thumbnailsPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 	}
 	protected PathControl createPathControl( java.io.File rootDirectory ) {
 		return new PathControl( rootDirectory ) {

@@ -43,8 +43,6 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
-import org.alice.ide.codeeditor.ExpressionPropertyDropDownPane;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -181,7 +179,8 @@ public abstract class Component<J extends javax.swing.JComponent> {
 	}
 	
 	public <T extends Component<?>> java.util.List< T > findAllMatches( Class<T> cls, edu.cmu.cs.dennisc.pattern.Criterion< T > criterion ) {
-		throw new RuntimeException( "todo" );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: findAllMatches" );
+		return java.util.Collections.emptyList();
 	}
 	public <T extends Component<?>> java.util.List< T > findAllMatches( Class<T> cls ) {
 		return this.findAllMatches( cls, null );

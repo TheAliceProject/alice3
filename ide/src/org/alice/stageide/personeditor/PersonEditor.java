@@ -76,7 +76,7 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //		this.personViewer.initializeValues( this.person );
 		this.splitPane = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane( this.personViewer, this.ingredientsPane );
 		this.splitPane.setDividerLocation( 400 );
-		this.addComponent( this.splitPane, CardinalDirection.CENTER );
+		this.addComponent( this.splitPane, Constraint.CENTER );
 	}
 	public org.alice.apis.stage.Person getPerson() {
 		org.alice.apis.stage.Person rv;

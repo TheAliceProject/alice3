@@ -85,8 +85,13 @@ public class ScrollPane extends Component< javax.swing.JScrollPane > {
 		return Component.lookup( this.getJComponent().getViewport().getView() );
 	}
 	public void setViewportView( Component<?> view ) {
-		assert view != null;
-		this.getJComponent().setViewportView( view.getJComponent() );
+		if( view != null ) {
+			view.adding();
+			this.getJComponent().setViewportView( view.getJComponent() );
+			view.added();
+		} else {
+			this.getJComponent().setViewportView( null );
+		}
 	}
 	public void setVerticalScrollbarPolicy( KVerticalScrollbarPolicy verticalScrollbarPolicy ) {
 		assert verticalScrollbarPolicy != null;

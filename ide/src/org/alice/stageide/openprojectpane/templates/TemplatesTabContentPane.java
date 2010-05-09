@@ -42,7 +42,7 @@
  */
 package org.alice.stageide.openprojectpane.templates;
 
-public class TemplatesTabContentPane extends org.alice.app.openprojectpane.ListPane {
+public class TemplatesTabContentPane extends org.alice.app.openprojectpane.ListContentPanel {
 	private static java.net.URI[] uris;
 	static {
 		java.util.List< java.net.URI > list = new java.util.LinkedList< java.net.URI >();
@@ -80,10 +80,6 @@ public class TemplatesTabContentPane extends org.alice.app.openprojectpane.ListP
 //		} else {
 //			return null;
 //		}
-	}
-
-	public TemplatesTabContentPane() {
-		super( java.util.UUID.fromString( "e658dbd1-c58b-42ec-9338-49f186aecc71" ), "Templates" );
 	}
 	@Override
 	protected String getTextForZeroProjects() {

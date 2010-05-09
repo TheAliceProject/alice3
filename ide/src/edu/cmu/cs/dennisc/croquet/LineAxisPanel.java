@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class LineAxisPanel extends AxisPanel {
-	public LineAxisPanel( Component... components ) {
+	public LineAxisPanel( Component<?>... components ) {
 		super( javax.swing.BoxLayout.LINE_AXIS, components );
 	}
 }

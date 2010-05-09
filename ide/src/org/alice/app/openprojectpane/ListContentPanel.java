@@ -43,12 +43,10 @@
 
 package org.alice.app.openprojectpane;
 
-import edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection;
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListPane extends TabContentPane {
+public abstract class ListContentPanel extends TabContentPanel {
 	private javax.swing.JList list = new javax.swing.JList() {
 		@Override
 		public void paint(java.awt.Graphics g) {
@@ -59,7 +57,7 @@ public abstract class ListPane extends TabContentPane {
 				java.awt.Font font = this.getFont();
 				font = font.deriveFont( java.awt.Font.ITALIC );
 				g.setFont( font );
-				edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g, ListPane.this.getTextForZeroProjects(), this.getSize() );
+				edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g, ListContentPanel.this.getTextForZeroProjects(), this.getSize() );
 			}
 		}
 	};
@@ -68,16 +66,12 @@ public abstract class ListPane extends TabContentPane {
 		@Override
 		protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
 			if( quoteClickCountUnquote == 2 ) {
-				ListPane.this.fireOKButtonIfPossible();
+				ListContentPanel.this.fireOKButtonIfPossible();
 			}
 		}
 	};
 	
-	public ListPane( java.util.UUID individualId, String title ) {
-		super( individualId, title );
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.BorderPanel updateSingletonView(edu.cmu.cs.dennisc.croquet.BorderPanel rv) {
+	public ListContentPanel() {
 		this.refresh();
 		this.list.setOpaque( false );
 		this.list.setCellRenderer( new ProjectSnapshotListCellRenderer() );
@@ -89,7 +83,7 @@ public abstract class ListPane extends TabContentPane {
 		this.list.addKeyListener( new java.awt.event.KeyListener() {
 			public void keyPressed( java.awt.event.KeyEvent e ) {
 				if( e.getKeyCode() == java.awt.event.KeyEvent.VK_F5 ) {
-					ListPane.this.refresh();
+					ListContentPanel.this.refresh();
 				}
 			}
 			public void keyReleased( java.awt.event.KeyEvent e ) {
@@ -102,14 +96,12 @@ public abstract class ListPane extends TabContentPane {
 				if( e.getValueIsAdjusting() ) {
 					//pass
 				} else {
-					ListPane.this.updateOKButton();
+					ListContentPanel.this.updateOKButton();
 				}
 			}
 		} );
-		rv.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.list ), CardinalDirection.CENTER );
-		return rv;
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.list ), Constraint.CENTER );
 	}
-
 	protected abstract String getTextForZeroProjects();
 	
 	protected abstract java.net.URI[] getURIs();

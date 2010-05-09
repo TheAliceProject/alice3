@@ -89,7 +89,7 @@ public class FauxIDE extends IDE {
 		return null;
 	}
 	@Override
-	protected org.alice.app.openprojectpane.TabContentPane createTemplatesPane() {
+	protected org.alice.app.openprojectpane.TabContentPanel createTemplatesTabContentPane() {
 		return null;
 	}
 	public static void main( String[] args ) {

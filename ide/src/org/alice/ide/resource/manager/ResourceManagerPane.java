@@ -563,7 +563,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		scrollPane.setPreferredSize( new java.awt.Dimension( 320, 240 ) );
 		//this.table.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		this.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.CENTER );
+		this.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 
 		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		edu.cmu.cs.dennisc.croquet.Panel pane = edu.cmu.cs.dennisc.croquet.GridPanel.createSingleColumnGridPane(  
@@ -573,7 +573,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 				this.renameResourceOperation.createButton(), 
 				this.replaceResourceOperation.createButton() 
 		);
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.PageAxisPanel( pane, edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() ), edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.EAST );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.PageAxisPanel( pane, edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.EAST );
 		this.handleSelection();
 	}
 
