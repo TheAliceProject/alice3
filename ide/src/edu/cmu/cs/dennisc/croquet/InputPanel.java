@@ -77,14 +77,14 @@ public abstract class InputPanel< T > extends Panel {
 			this.okButton.setEnabled( isOKButtonValid() );
 		}
 	}
-	@Deprecated
-	public void fireOKButtonIfPossible() {
-		if( this.okButton != null ) {
-			if( this.okButton.isEnabled() ) {
-				this.okButton.doClick();
-			}
-		}
-	}
+//	@Deprecated
+//	public void fireOKButtonIfPossible() {
+//		if( this.okButton != null ) {
+//			if( this.okButton.isEnabled() ) {
+//				this.okButton.doClick();
+//			}
+//		}
+//	}
 
 	protected boolean isDisposeDesired( java.awt.event.WindowEvent e ) {
 		return true;
@@ -165,7 +165,7 @@ public abstract class InputPanel< T > extends Panel {
 		javax.swing.JPanel panel = new javax.swing.JPanel();
 		panel.setBackground( this.getJComponent().getBackground() );
 		panel.add( okButton );
-
+		
 		if( this.isCancelDesired() ) {
 			panel.add( cancelButton );
 		} else {

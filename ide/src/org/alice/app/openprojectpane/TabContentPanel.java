@@ -66,9 +66,9 @@ public abstract class TabContentPanel extends edu.cmu.cs.dennisc.croquet.BorderP
 			this.inputPanel.updateOKButton();
 		}
 	}
-	protected void fireOKButtonIfPossible() {
-		if( this.inputPanel != null ) {
-			this.inputPanel.fireOKButtonIfPossible();
-		}
-	}
+//	protected void fireOKButtonIfPossible() {
+//		if( this.inputPanel != null ) {
+//			this.inputPanel.fireOKButtonIfPossible();
+//		}
+//	}
 }

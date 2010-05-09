@@ -66,7 +66,10 @@ public abstract class ListContentPanel extends TabContentPanel {
 		@Override
 		protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
 			if( quoteClickCountUnquote == 2 ) {
-				ListContentPanel.this.fireOKButtonIfPossible();
+				javax.swing.JButton defaultButton = ListContentPanel.this.list.getRootPane().getDefaultButton();
+				if( defaultButton.isEnabled() ) {
+					defaultButton.doClick();
+				}
 			}
 		}
 	};
