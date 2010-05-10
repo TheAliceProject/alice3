@@ -251,7 +251,7 @@ public class SceneEditor extends Program {
 
 	@Override
 	protected void run() {
-		this.viewSelector.setPersespectiveCamera( this.sceneEditor.getSGPerspectiveCamera());
+		this.viewSelector.setPerspectiveCamera( this.sceneEditor.getSGPerspectiveCamera());
 		this.viewSelector.setOrthographicCamera( this.sceneEditor.getSGOrthographicCamera() );
 	}
 

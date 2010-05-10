@@ -56,6 +56,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.alice.apis.moveandturn.PerspectiveCameraMarker;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventManager;
@@ -66,8 +67,10 @@ import org.alice.interact.handle.HandleManager;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle;
 import org.alice.interact.manipulator.AbstractManipulator;
+import org.alice.interact.manipulator.Camera2DDragManipulator;
 import org.alice.interact.manipulator.CameraInformedManipulator;
 import org.alice.interact.manipulator.OnScreenLookingGlassInformedManipulator;
+import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 
 import edu.cmu.cs.dennisc.animation.Animator;
@@ -122,6 +125,9 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			return this.perspectiveCamera == camera || this.orthographicCamera == camera;
 		}
 	}
+	
+	
+	private MoveAndTurnSceneEditor sceneEditor;
 	
 	private Map<CameraView, CameraPair> cameraMap = new HashMap<CameraView, CameraPair>();
 	
@@ -180,6 +186,12 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	
 	public AbstractDragAdapter()
 	{
+		this(null);
+	}	
+	
+	public AbstractDragAdapter( MoveAndTurnSceneEditor sceneEditor )
+	{
+		this.sceneEditor = sceneEditor;
 		this.setUpControls();
 	}	
 	
@@ -254,14 +266,63 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		return this.animator;
 	}
 	
+	public Transformable getSelectedObject()
+	{
+		return this.selectedObject;
+	}
+	
+	public void setHandleShowingForObject( Transformable object, boolean handlesShowing)
+	{
+		if (this.selectedObject == object)
+		{
+			this.handleManager.setHandlesShowing(handlesShowing);
+		}
+	}
+	
 	public void setSelectedObject(Transformable selected)
 	{
 		if (this.selectedObject != selected)
 		{
+			org.alice.apis.moveandturn.Element newMoveAndTurnObject = org.alice.apis.moveandturn.Element.getElement( selected );
+			boolean isNewSelectedActiveCameraMarker = false;
+			if (newMoveAndTurnObject instanceof PerspectiveCameraMarker && this.sceneEditor != null)
+			{
+				isNewSelectedActiveCameraMarker = this.sceneEditor.isCameraMarkerActive((PerspectiveCameraMarker)newMoveAndTurnObject);
+			}
+			boolean isPreviousSelectedActiveCameraMarker = false;
+			org.alice.apis.moveandturn.Element previousMoveAndTurnObject = org.alice.apis.moveandturn.Element.getElement( this.selectedObject );
+			if (previousMoveAndTurnObject instanceof PerspectiveCameraMarker && this.sceneEditor != null)
+			{
+				isPreviousSelectedActiveCameraMarker = this.sceneEditor.isCameraMarkerActive((PerspectiveCameraMarker)previousMoveAndTurnObject);
+			}
+			
 			this.fireSelecting( new SelectionEvent(this, selected) );
+			
 			this.handleManager.setSelectedObject( selected );
-			this.currentInputState.setCurrentlySelectedObject( selected ); 
+			//Make the handles visible is we're not selecting the active camera marker
+			this.handleManager.setHandlesShowing(!isNewSelectedActiveCameraMarker);
+			
+			this.currentInputState.setCurrentlySelectedObject( selected );
+			
+			//If the previous object is a camera marker, make sure the state is appropriate
+			if (previousMoveAndTurnObject instanceof PerspectiveCameraMarker)
+			{
+				PerspectiveCameraMarker previousCameraMarker = (PerspectiveCameraMarker)previousMoveAndTurnObject;
+				previousCameraMarker.setDetailedViewShowing(false);
+//				//Turn off all marker visualizations if the marker is active
+//				previousCameraMarker.setShowing(!isPreviousSelectedActiveCameraMarker);
+			}
+			
 			selectedObject = selected;
+			
+			if (newMoveAndTurnObject instanceof PerspectiveCameraMarker && !isNewSelectedActiveCameraMarker)
+			{
+				PerspectiveCameraMarker currentCameraMarker = (PerspectiveCameraMarker)newMoveAndTurnObject;
+				currentCameraMarker.setDetailedViewShowing(true);
+//				//Turn off all marker visualizations if the marker is active
+//				currentCameraMarker.setShowing(!isNewSelectedActiveCameraMarker);
+			}
+			
 			this.fireSelected( new SelectionEvent(this, selected) );
 			this.handleStateChange();
 		}
@@ -323,6 +384,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		for (int i=0; i<this.manipulators.size(); i++)
 		{
 			ManipulatorConditionSet currentManipulatorSet = this.manipulators.get( i );
+			
 			if (currentManipulatorSet.stateChanged( this.currentInputState, this.previousInputState))
 			{
 				if ( currentManipulatorSet.shouldContinue( this.currentInputState, this.previousInputState ))
@@ -331,12 +393,6 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 				}
 				else if ( currentManipulatorSet.justStarted( this.currentInputState, this.previousInputState ) )
 				{
-//					System.out.println("Adding "+currentManipulatorSet.getName()+" to start array");
-//					if (currentManipulatorSet.getName().equals("Mouse Translate"))
-//					{
-//						boolean started = currentManipulatorSet.justStarted( this.currentInputState, this.previousInputState );
-//						System.out.println("Tested it again and it's "+started);
-//					}
 					toStart.add( currentManipulatorSet.getManipulator() );
 				}
 				else if ( currentManipulatorSet.justEnded( this.currentInputState, this.previousInputState ) )
@@ -345,8 +401,18 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 				}
 				else if ( currentManipulatorSet.clicked( this.currentInputState, this.previousInputState ) )
 				{
+//					System.out.println("Adding "+currentManipulatorSet.getManipulator()+" to click array");
+////					if (currentManipulatorSet.getName().equals("Mouse Translate"))
+//					{
+//						boolean started = currentManipulatorSet.clicked( this.currentInputState, this.previousInputState );
+//						System.out.println("Tested it again and it's "+started);
+//					}
 					toClick.add( currentManipulatorSet.getManipulator() );
 				}
+			}
+			else
+			{
+				boolean whyFailed = currentManipulatorSet.stateChanged( this.currentInputState, this.previousInputState);
 			}
 		}
 		//End manipulators first

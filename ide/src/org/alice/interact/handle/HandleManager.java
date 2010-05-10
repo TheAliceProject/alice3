@@ -136,6 +136,14 @@ public class HandleManager implements ManipulationListener{
 		}
 	}
 	
+	public void setHandlesShowing(boolean showing)
+	{
+		for (ManipulationHandle handle : this.handles)
+		{
+			handle.setHandleShowing(showing);
+		}
+	}
+	
 	public void setAnimator(Animator animator)
 	{
 		for (ManipulationHandle handle : this.handles)

@@ -556,6 +556,11 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 	}
 	
+	public void setHandleShowing(boolean showing)
+	{
+		this.sgVisual.isShowing.setValue(showing);
+	}
+	
 	public PickHint getPickHint()
 	{
 		return PickCondition.getPickType( this );

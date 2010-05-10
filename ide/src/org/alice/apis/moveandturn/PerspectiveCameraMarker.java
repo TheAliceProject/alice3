@@ -42,6 +42,9 @@
  */
 package org.alice.apis.moveandturn;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
@@ -50,7 +53,10 @@ import edu.cmu.cs.dennisc.scenegraph.Cylinder;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.LineArray;
 import edu.cmu.cs.dennisc.scenegraph.QuadArray;
+import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
+import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis;
@@ -61,9 +67,31 @@ import edu.cmu.cs.dennisc.texture.TextureCoordinate2f;
  */
 public class PerspectiveCameraMarker extends CameraMarker 
 {
+	private static final double VIEW_LINES_DEFAULT_DISPLACEMENT = 3;
+	private static final double VIEW_LINES_DEFAULT_DISTANCE_FROM_CAMERA = 3;
+	private static final float START_ALPHA = .5f;
+	private static final float END_ALPHA = 0f;
+	private static final double LENGTH = .75;
+	private static final double HEIGHT = .4;
+	private static final double WIDTH = .15;
+	private static final double LENS_HOOD_LENGTH = .2;
+	private static final float LINE_RED = 1;
+	private static final float LINE_GREEN = 1;
+	private static final float LINE_BLUE = 0;
+	
+	private double farClippingPlane;
+	private edu.cmu.cs.dennisc.math.Angle horizontalViewAngle;
+	private edu.cmu.cs.dennisc.math.Angle verticalViewAngle;
 	
 	private Vertex[] sgViewLineVertices;
 	private LineArray sgViewLines;
+	private SingleAppearance sgLinesFrontFacingAppearance;
+	private List<Component> sgDetailedComponents;
+	
+	public PerspectiveCameraMarker()
+	{
+		super();
+	}
 	
 	@Override
 	protected Color4f getMarkerColor()
@@ -71,19 +99,15 @@ public class PerspectiveCameraMarker extends CameraMarker
 		return Color4f.GRAY;
 	}
 	
-	private static final double VIEW_LINES_DISPLACEMENT = 3;
-	private static final double VIEW_LINES_DISTANCE_FROM_CAMERA = 3;
-	private static final float START_ALPHA = .5f;
-	private static final float END_ALPHA = 0f;
-	private static final double LENGTH = .75;
-	private static final double HEIGHT = .4;
-	private static final double WIDTH = .15;
-	private static final double LENS_HOOD_LENGTH = .2;
-	
 	@Override
 	protected void createVisuals()
 	{
 		super.createVisuals();
+		
+		this.farClippingPlane = 100;
+		this.horizontalViewAngle = new edu.cmu.cs.dennisc.math.AngleInDegrees(90);
+		this.verticalViewAngle = new edu.cmu.cs.dennisc.math.AngleInDegrees(90);
+		this.sgDetailedComponents = new LinkedList<Component>();
 		
 		Visual sgBoxVisual = new Visual();
 		sgBoxVisual.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
@@ -203,49 +227,90 @@ public class PerspectiveCameraMarker extends CameraMarker
 		sgLensGeometry.vertices.setValue( sgLensVertices );
 		sgLensVisual.geometries.setValue( new Geometry[] { sgLensGeometry } );
 		
+		this.sgLinesFrontFacingAppearance = new SingleAppearance();
+		this.sgLinesFrontFacingAppearance.diffuseColor.setValue( Color4f.YELLOW );
+		this.sgLinesFrontFacingAppearance.shadingStyle.setValue(ShadingStyle.NONE);
+		
+		
+		
 		this.sgViewLineVertices = new Vertex[8];
-		this.sgViewLineVertices[0] = Vertex.createXYZRGBA(0,0,0,0,0,0,START_ALPHA);
-		this.sgViewLineVertices[1] = Vertex.createXYZRGBA(-VIEW_LINES_DISPLACEMENT,VIEW_LINES_DISPLACEMENT,-VIEW_LINES_DISTANCE_FROM_CAMERA, 0,0,0,END_ALPHA);
-		this.sgViewLineVertices[2] = Vertex.createXYZRGBA(0,0,0,0,0,0,START_ALPHA);
-		this.sgViewLineVertices[3] = Vertex.createXYZRGBA(-VIEW_LINES_DISPLACEMENT,-VIEW_LINES_DISPLACEMENT,-VIEW_LINES_DISTANCE_FROM_CAMERA, 0,0,0,END_ALPHA);
-		this.sgViewLineVertices[4] = Vertex.createXYZRGBA(0,0,0,0,0,0,START_ALPHA);
-		this.sgViewLineVertices[5] = Vertex.createXYZRGBA(VIEW_LINES_DISPLACEMENT,VIEW_LINES_DISPLACEMENT,-VIEW_LINES_DISTANCE_FROM_CAMERA, 0,0,0,END_ALPHA);
-		this.sgViewLineVertices[6] = Vertex.createXYZRGBA(0,0,0,0,0,0,START_ALPHA);
-		this.sgViewLineVertices[7] = Vertex.createXYZRGBA(VIEW_LINES_DISPLACEMENT,-VIEW_LINES_DISPLACEMENT,-VIEW_LINES_DISTANCE_FROM_CAMERA, 0,0,0,END_ALPHA);
+		this.sgViewLineVertices[0] = Vertex.createXYZRGBA(0,0,0,LINE_RED,LINE_GREEN,LINE_BLUE,START_ALPHA);
+		this.sgViewLineVertices[1] = Vertex.createXYZRGBA(-VIEW_LINES_DEFAULT_DISPLACEMENT,VIEW_LINES_DEFAULT_DISPLACEMENT,-VIEW_LINES_DEFAULT_DISTANCE_FROM_CAMERA, LINE_RED,LINE_GREEN,LINE_BLUE,END_ALPHA);
+		this.sgViewLineVertices[2] = Vertex.createXYZRGBA(0,0,0,LINE_RED,LINE_GREEN,LINE_BLUE,START_ALPHA);
+		this.sgViewLineVertices[3] = Vertex.createXYZRGBA(-VIEW_LINES_DEFAULT_DISPLACEMENT,-VIEW_LINES_DEFAULT_DISPLACEMENT,-VIEW_LINES_DEFAULT_DISTANCE_FROM_CAMERA, LINE_RED,LINE_GREEN,LINE_BLUE,END_ALPHA);
+		this.sgViewLineVertices[4] = Vertex.createXYZRGBA(0,0,0,LINE_RED,LINE_GREEN,LINE_BLUE,START_ALPHA);
+		this.sgViewLineVertices[5] = Vertex.createXYZRGBA(VIEW_LINES_DEFAULT_DISPLACEMENT,VIEW_LINES_DEFAULT_DISPLACEMENT,-VIEW_LINES_DEFAULT_DISTANCE_FROM_CAMERA, LINE_RED,LINE_GREEN,LINE_BLUE,END_ALPHA);
+		this.sgViewLineVertices[6] = Vertex.createXYZRGBA(0,0,0,LINE_RED,LINE_GREEN,LINE_BLUE,START_ALPHA);
+		this.sgViewLineVertices[7] = Vertex.createXYZRGBA(VIEW_LINES_DEFAULT_DISPLACEMENT,-VIEW_LINES_DEFAULT_DISPLACEMENT,-VIEW_LINES_DEFAULT_DISTANCE_FROM_CAMERA, LINE_RED,LINE_GREEN,LINE_BLUE,END_ALPHA);
 		
 		
 		Visual sgViewLinesVisual = new Visual();
-		sgViewLinesVisual.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
+		sgViewLinesVisual.frontFacingAppearance.setValue( this.sgLinesFrontFacingAppearance );
 		this.sgViewLines = new LineArray();
 		sgViewLines.vertices.setValue(this.sgViewLineVertices);
 		sgViewLinesVisual.geometries.setValue(new Geometry[] { this.sgViewLines } );
 		
 		setViewingAngle(new AngleInDegrees(90), new AngleInDegrees(45));
 		
-		sgViewLinesVisual.setParent(this.sgVisualTransformable);
+		sgDetailedComponents.add(sgViewLinesVisual);
+		
 	    sgLensVisual.setParent( this.sgVisualTransformable );
 		sgTransformableCylinder1.setParent( this.sgVisualTransformable );
 		sgTransformableCylinder2.setParent( this.sgVisualTransformable );
 		sgBoxVisual.setParent( this.sgVisualTransformable );
 	}
 	
+	public void setDetailedViewShowing(boolean isShowing)
+	{
+		for (Component c : this.sgDetailedComponents)
+		{
+			if (isShowing)
+			{
+				c.setParent(this.sgVisualTransformable);
+			}
+			else
+			{
+				c.setParent(null);
+			}
+		}
+	}
+	
+	public void setFarClippingPlane(double farClippingPlane)
+	{
+		this.farClippingPlane = farClippingPlane;
+		updateViewGeometry();
+	}
+	
 	public void setViewingAngle( edu.cmu.cs.dennisc.math.Angle horizontalViewAngle, edu.cmu.cs.dennisc.math.Angle verticalViewAngle )
 	{
-		double halfHorizontalAngle = horizontalViewAngle.getAsRadians() * .5;
-		double halfVerticalAngle = verticalViewAngle.getAsRadians() * .5;
+		this.horizontalViewAngle.set(horizontalViewAngle);
+		this.verticalViewAngle.set(verticalViewAngle);
+		updateViewGeometry();
+	}
+	
+	private void updateViewGeometry()
+	{
+		double halfHorizontalAngle = this.horizontalViewAngle.getAsRadians() * .5;
+		double halfVerticalAngle = this.verticalViewAngle.getAsRadians() * .5;
 		
-		double xVal = Math.tan(halfHorizontalAngle) * VIEW_LINES_DISTANCE_FROM_CAMERA;
-		double yVal = Math.tan(halfVerticalAngle) * VIEW_LINES_DISTANCE_FROM_CAMERA;
+		double xVal = Math.tan(halfHorizontalAngle) * this.farClippingPlane;
+		double yVal = Math.tan(halfVerticalAngle) * this.farClippingPlane;
 		
 		this.sgViewLineVertices[1].position.x = -xVal;
 		this.sgViewLineVertices[1].position.y = yVal;
+		this.sgViewLineVertices[1].position.z = -this.farClippingPlane;
 		this.sgViewLineVertices[3].position.x = -xVal;
 		this.sgViewLineVertices[3].position.y = -yVal;
+		this.sgViewLineVertices[3].position.z = -this.farClippingPlane;
 		this.sgViewLineVertices[5].position.x = xVal;
 		this.sgViewLineVertices[5].position.y = yVal;
+		this.sgViewLineVertices[5].position.z = -this.farClippingPlane;
 		this.sgViewLineVertices[7].position.x = xVal;
 		this.sgViewLineVertices[7].position.y = -yVal;
+		this.sgViewLineVertices[7].position.z = -this.farClippingPlane;
 		
 		this.sgViewLines.vertices.setValue(this.sgViewLineVertices);
 	}
+	
+	
 }

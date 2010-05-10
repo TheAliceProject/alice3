@@ -1,9 +1,11 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
+import java.util.LinkedList;
 import java.util.List;
 
 
 import org.alice.apis.moveandturn.AsSeenBy;
+import org.alice.apis.moveandturn.CameraMarker;
 import org.alice.apis.moveandturn.OrthographicCameraMarker;
 import org.alice.apis.moveandturn.PerspectiveCameraMarker;
 import org.alice.interact.QuaternionAndTranslation;
@@ -11,6 +13,7 @@ import org.alice.interact.QuaternionAndTranslationTargetBasedAnimation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -25,12 +28,14 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
-public class LookingGlassViewSelector extends CameraViewSelector implements AbsoluteTransformationListener, PropertyListener
+public class LookingGlassViewSelector extends CameraViewSelector implements PropertyListener
 {
 	private SymmetricPerspectiveCamera perspectiveCamera;
 	private OrthographicCamera orthographicCamera;
 	private Animator animator;
 	private QuaternionAndTranslationTargetBasedAnimation cameraAnimation = null;
+	private PointOfViewAnimation pointOfViewAnimation = null;
+	private CameraMarker markerToUpdate = null;
 	
 	public LookingGlassViewSelector(MoveAndTurnSceneEditor sceneEditor, Animator animator, List<CameraFieldAndMarker> extraOptions)
 	{
@@ -43,16 +48,16 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Abso
 		this(sceneEditor, animator, null);
 	}
 	
-	public void setPersespectiveCamera(SymmetricPerspectiveCamera camera)
+	public void setPerspectiveCamera(SymmetricPerspectiveCamera camera)
 	{
-		if (this.perspectiveCamera != null)
-		{
-			this.perspectiveCamera.removeAbsoluteTransformationListener( this );
-		}
 		this.perspectiveCamera = camera;
 		if (this.perspectiveCamera != null)
 		{
-			this.perspectiveCamera.addAbsoluteTransformationListener( this );
+			if (doesMarkerMatchCamera(this.activeMarker, this.perspectiveCamera) && this.markerToUpdate == null)
+			{
+//				System.out.println("Set perspective camera!!!");
+				startTrackingCamera(this.perspectiveCamera, this.activeMarker);
+			}
 		}
 	}
 	
@@ -60,14 +65,16 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Abso
 	{
 		if (this.orthographicCamera != null)
 		{
-			this.orthographicCamera.removeAbsoluteTransformationListener( this );
 			this.orthographicCamera.picturePlane.removePropertyListener(this);
 		}
 		this.orthographicCamera = camera;
 		if (this.orthographicCamera != null)
 		{
-			this.orthographicCamera.addAbsoluteTransformationListener( this );
 			this.orthographicCamera.picturePlane.addPropertyListener(this);
+			if (doesMarkerMatchCamera(this.activeMarker, this.orthographicCamera) && this.markerToUpdate == null)
+			{
+				startTrackingCamera(this.orthographicCamera, this.activeMarker);
+			}
 		}
 	}
 	
@@ -98,27 +105,52 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Abso
 		
 	}
 	
+	private boolean doEpilogue = true;
+	
+	private boolean transformsAreWithinReasonableEpsilonOfEachOther( AffineMatrix4x4 a, AffineMatrix4x4 b)
+	{
+		if (a.orientation.isWithinReasonableEpsilonOf(b.orientation))
+		{
+			return a.translation.isWithinReasonableEpsilonOf(b.translation);
+		}
+		return false;
+	}
+	
 	private void animateToTargetView()
 	{
-		if (this.cameraAnimation == null)
-		{
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 currentTransform = LookingGlassViewSelector.this.perspectiveCamera.getAbsoluteTransformation();
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 targetTransform = LookingGlassViewSelector.this.activeMarker.getTransformation( AsSeenBy.SCENE );
-			this.cameraAnimation = new QuaternionAndTranslationTargetBasedAnimation(new QuaternionAndTranslation(currentTransform), new QuaternionAndTranslation(targetTransform))
-			{
-
-				@Override
-				protected void updateValue( QuaternionAndTranslation value ) {
-					Transformable cameraParent = (Transformable)LookingGlassViewSelector.this.perspectiveCamera.getParent();
-					cameraParent.setTransformation( value.getAffineMatrix(), LookingGlassViewSelector.this.perspectiveCamera.getRoot() );
-				}
-
-			};
-			this.animator.addFrameObserver( this.cameraAnimation );
-		}
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 currentTransform = this.perspectiveCamera.getAbsoluteTransformation();
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 targetTransform = this.activeMarker.getTransformation( AsSeenBy.SCENE );
 		
-		this.cameraAnimation.setCurrentValue( new QuaternionAndTranslation(LookingGlassViewSelector.this.perspectiveCamera.getAbsoluteTransformation()) );
-		this.cameraAnimation.setTarget( new QuaternionAndTranslation(LookingGlassViewSelector.this.activeMarker.getTransformation( AsSeenBy.SCENE ) ));
+//		System.out.println("Animating to target view!");
+		
+		if (this.pointOfViewAnimation != null)
+		{
+			this.doEpilogue = false;
+			this.pointOfViewAnimation.complete(null);
+			this.doEpilogue = true;
+		}
+		if (transformsAreWithinReasonableEpsilonOfEachOther( currentTransform, targetTransform))
+		{
+//			System.out.println("Instant set!!");
+			startTrackingCamera(LookingGlassViewSelector.this.perspectiveCamera, LookingGlassViewSelector.this.activeMarker);
+		}
+		else
+		{
+			Transformable cameraParent = (Transformable)this.perspectiveCamera.getParent();
+			this.pointOfViewAnimation = new PointOfViewAnimation(cameraParent, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE, currentTransform, targetTransform)
+										{
+											@Override
+											protected void epilogue() 
+											{
+												if (LookingGlassViewSelector.this.doEpilogue)
+												{
+//													System.out.println("Epilogue!!!!");
+													startTrackingCamera(LookingGlassViewSelector.this.perspectiveCamera, LookingGlassViewSelector.this.activeMarker);
+												}
+											}
+										};
+			this.animator.invokeLater(this.pointOfViewAnimation, null);
+		}
 	}
 	
 	private void switchToOrthographicView()
@@ -131,12 +163,56 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Abso
 		this.sceneEditor.switchToPerspectiveCamera();
 	}
 	
+	private CameraFieldAndMarker getAddedField(List<CameraFieldAndMarker> previousFields, List<CameraFieldAndMarker> currentFields)
+	{
+		for (CameraFieldAndMarker cfm : currentFields)
+		{
+			if (!previousFields.contains(cfm))
+			{
+				return cfm;
+			}
+		}
+		return null;
+	}
+	
+	private CameraFieldAndMarker getRemovedField(List<CameraFieldAndMarker> previousFields, List<CameraFieldAndMarker> currentFields)
+	{
+		for (CameraFieldAndMarker cfm : previousFields)
+		{
+			if (!currentFields.contains(cfm))
+			{
+				return cfm;
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public void refreshFields() 
+	{
+		int previousSelectedIndex = this.cameraViewComboBox.getSelectedIndex();
+		CameraFieldAndMarker previousSelectedMarker = this.getSelectedMarker();
+		List<CameraFieldAndMarker> previousFields = new LinkedList<CameraFieldAndMarker>(this.fieldBasedOptions);
+		super.refreshFields();
+		
+		CameraFieldAndMarker addedField = getAddedField(previousFields, this.fieldBasedOptions);
+		if (addedField != null)
+		{
+			int addedIndex = this.getIndexForCameraFieldAndMarker(addedField);
+			this.setSelectedIndex(addedIndex);
+		}
+		
+	}
+	
 	@Override
 	public void doSetSelectedView(int index)
 	{
+		CameraMarker previousMarker = this.activeMarker;
 		super.doSetSelectedView(index);
-		if (this.perspectiveCamera != null && this.activeMarker != null)
+		if (previousMarker != this.activeMarker && this.perspectiveCamera != null && this.activeMarker != null)
 		{
+//			System.out.println("Set selected view from: ");
+			stopTrackingCamera();
 			if (this.activeMarker instanceof OrthographicCameraMarker)
 			{
 				OrthographicCameraMarker orthoMarker = (OrthographicCameraMarker)this.activeMarker;
@@ -144,6 +220,8 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Abso
 				Transformable cameraParent = (Transformable)LookingGlassViewSelector.this.orthographicCamera.getParent();
 				LookingGlassViewSelector.this.orthographicCamera.picturePlane.setValue(new ClippedZPlane(orthoMarker.getPicturePlane()) );
 				cameraParent.setTransformation( LookingGlassViewSelector.this.activeMarker.getTransformation( AsSeenBy.SCENE ), LookingGlassViewSelector.this.orthographicCamera.getRoot() );
+				System.out.println("Set Selected View to an orthographic camera! "+index);
+				startTrackingCamera(this.orthographicCamera, orthoMarker);
 			}
 			else
 			{
@@ -154,6 +232,44 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Abso
 		}
 	}
 
+	//Sets the given camera to the absolute orientation of the given marker
+	//Parents the given marker to the camera and then zeros out the local transform
+	private void startTrackingCamera(AbstractCamera camera, CameraMarker markerToUpdate)
+	{
+		if (this.markerToUpdate != null)
+		{
+			stopTrackingCamera();
+//			System.out.println("Starting to track, but previous tracked camera isn't null!");
+		}
+		
+		this.markerToUpdate = markerToUpdate;
+		if (this.markerToUpdate != null)
+		{
+//			System.out.println("Start tracking "+this.markerToUpdate.getName());
+			Transformable cameraParent = (Transformable)camera.getParent();
+			cameraParent.setTransformation( this.markerToUpdate.getTransformation( AsSeenBy.SCENE ), camera.getRoot() );
+			
+			this.markerToUpdate.setLocalTransformation(AffineMatrix4x4.accessIdentity());
+			this.markerToUpdate.getSGTransformable().setParent(cameraParent);
+			this.markerToUpdate.setShowing(false);
+			this.sceneEditor.setHandleVisibilityForObject(this.markerToUpdate.getSGTransformable(), false);
+		}
+	}
+	
+	private void stopTrackingCamera()
+	{
+		if (this.markerToUpdate != null)
+		{
+//			System.out.println("Stop tracking "+this.markerToUpdate.getName());
+			
+			AffineMatrix4x4 previousMarkerTransform = this.markerToUpdate.getTransformation(AsSeenBy.SCENE);
+			this.markerToUpdate.getSGTransformable().setParent(this.markerToUpdate.getScene().getSGComposite());
+			this.markerToUpdate.getSGTransformable().setTransformation(previousMarkerTransform, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE);
+			this.markerToUpdate.setShowing(true);
+			this.sceneEditor.setHandleVisibilityForObject(this.markerToUpdate.getSGTransformable(), true);
+		}
+		this.markerToUpdate = null;
+	}
 	
 	private boolean doesMarkerMatchCamera(org.alice.apis.moveandturn.CameraMarker marker, AbstractCamera camera)
 	{
@@ -168,27 +284,6 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Abso
 		return false;
 	}
 	
-	public void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) 
-	{
-		AbstractCamera cameraSource = (AbstractCamera)absoluteTransformationEvent.getSource();
-		if (doesMarkerMatchCamera( this.activeMarker, cameraSource ))
-		{
-			if (cameraSource instanceof OrthographicCamera)
-			{
-				AffineMatrix4x4 cameraTransform = this.orthographicCamera.getAbsoluteTransformation();
-				Component root = this.orthographicCamera.getRoot();
-				this.activeMarker.getSGTransformable().setTransformation( cameraTransform, root );
-			}
-			else if (cameraSource instanceof SymmetricPerspectiveCamera)
-			{
-				if (!isAnimatingCamera())
-				{
-					this.activeMarker.getSGTransformable().setTransformation( this.perspectiveCamera.getAbsoluteTransformation(), this.perspectiveCamera.getRoot() );
-				}
-				
-			}
-		}
-	}
 
 	public void propertyChanged(PropertyEvent e) {
 		if (e.getOwner() == this.orthographicCamera && e.getTypedSource() == this.orthographicCamera.picturePlane)

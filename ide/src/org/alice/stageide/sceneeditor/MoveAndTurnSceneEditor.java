@@ -238,7 +238,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			
 			this.snapState = new SnapState();
 			this.sidePane.setSnapState(this.snapState);
-			this.globalDragAdapter = new org.alice.interact.GlobalDragAdapter();
+			this.globalDragAdapter = new org.alice.interact.GlobalDragAdapter(this);
 			this.globalDragAdapter.setSnapState(this.snapState);
 			this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 
@@ -379,6 +379,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		model.setOpacity( 1.0 );
 		camera.moveAndOrientTo( this.scene.createOffsetStandIn( pov.getInternal() ), 0.5 );
 	}
+	
 	private void handleSelection( org.alice.interact.event.SelectionEvent e ) {
 		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = e.getTransformable();
 		org.alice.apis.moveandturn.Element element = org.alice.apis.moveandturn.Element.getElement( sgTransformable );
@@ -584,6 +585,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instance;
 			this.globalDragAdapter.setSelectedObject( model.getSGTransformable() );
 		}
+		else if( instance instanceof org.alice.apis.moveandturn.Marker ) {
+			org.alice.apis.moveandturn.Marker marker = (org.alice.apis.moveandturn.Marker)instance;
+			this.globalDragAdapter.setSelectedObject( marker.getSGTransformable() );
+		}
 		this.updateFieldLabels();
 	}
 
@@ -643,7 +648,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				{
 					if (marker instanceof PerspectiveCameraMarker)
 					{
-						setViewingAngleOnMarker((PerspectiveCameraMarker)marker);
+						updateCameraMarkerToCamera((PerspectiveCameraMarker)marker, (SymmetricPerspectiveCamera)getSGCameraForCreatingMarker());
 					}
 				}
 			}
@@ -725,7 +730,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.globalDragAdapter.addCameraView( CameraView.MAIN, this.sgPerspectiveCamera, this.sgOrthographicCamera );
 		this.globalDragAdapter.makeCameraActive( this.sgPerspectiveCamera );
 		
-		this.mainViewSelector.setPersespectiveCamera( this.getSGPerspectiveCamera());
+		this.mainViewSelector.setSelectedIndex(0);
+		this.mainViewSelector.setPerspectiveCamera( this.getSGPerspectiveCamera());
 		this.mainViewSelector.setOrthographicCamera( this.getSGOrthographicCamera() );
 
 		return rv;
@@ -736,7 +742,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		//If we have any CameraMarker fields on the scene then that's good enough for us
 		for( AbstractField field : this.sceneType.fields ) 
 		{
-			if (field.getDesiredValueType().isAssignableFrom(org.alice.apis.moveandturn.CameraMarker.class))
+			if (field.getDesiredValueType().isAssignableTo(org.alice.apis.moveandturn.CameraMarker.class))
 			{
 				return false;
 			}
@@ -744,11 +750,16 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return true;
 	}
 	
-	private void setViewingAngleOnMarker( org.alice.apis.moveandturn.PerspectiveCameraMarker cameraMarker )
+	private void updateCameraMarkerToCamera( org.alice.apis.moveandturn.PerspectiveCameraMarker cameraMarker, SymmetricPerspectiveCamera perspectiveCamera)
 	{
-		if (getSGCameraForCreatingMarker() instanceof SymmetricPerspectiveCamera && this.onscreenLookingGlass != null)
+		setViewingAngleOnMarker(cameraMarker, perspectiveCamera);
+		cameraMarker.setFarClippingPlane(perspectiveCamera.farClippingPlaneDistance.getValue());
+	}
+	
+	private void setViewingAngleOnMarker( org.alice.apis.moveandturn.PerspectiveCameraMarker cameraMarker, SymmetricPerspectiveCamera perspectiveCamera )
+	{
+		if (this.onscreenLookingGlass != null)
 		{
-			SymmetricPerspectiveCamera perspectiveCamera = (SymmetricPerspectiveCamera)getSGCameraForCreatingMarker();
 			cameraMarker.setViewingAngle(this.onscreenLookingGlass.getActualHorizontalViewingAngle(perspectiveCamera), this.onscreenLookingGlass.getActualVerticalViewingAngle(perspectiveCamera));
 		}
 	}
@@ -761,10 +772,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			defaultViewMarker.setName( "defaultCameraView" );
 			defaultViewMarker.setLocalTransformation( getSGCameraForCreatingMarker().getTransformation( AsSeenBy.SCENE.getSGReferenceFrame() ) );
 			defaultViewMarker.setShowing(true);
-			setViewingAngleOnMarker(defaultViewMarker);
+			updateCameraMarkerToCamera(defaultViewMarker, (SymmetricPerspectiveCamera)getSGCameraForCreatingMarker());
 			
-			edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation(org.alice.apis.moveandturn.OrthographicCameraMarker.class);
-			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice defaultViewField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice("defaultCameraView", org.alice.apis.moveandturn.OrthographicCameraMarker.class, initializer);
+			edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation(org.alice.apis.moveandturn.PerspectiveCameraMarker.class);
+			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice defaultViewField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice("defaultCameraView", org.alice.apis.moveandturn.PerspectiveCameraMarker.class, initializer);
 			defaultViewField.finalVolatileOrNeither.setValue(edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL);
 			defaultViewField.access.setValue(edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE);
 			this.sceneType.fields.add( this.sceneType.fields.size(), defaultViewField );
@@ -968,7 +979,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		cameraMarker.setName( markerName );
 		cameraMarker.setShowing(true);
 		cameraMarker.setLocalTransformation( getSGCameraForCreatingMarker().getTransformation( AsSeenBy.SCENE.getSGReferenceFrame() ) );
-		setViewingAngleOnMarker(cameraMarker);
+		updateCameraMarkerToCamera(cameraMarker, (SymmetricPerspectiveCamera)getSGCameraForCreatingMarker());
 
 		edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.CameraMarker.class );
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraMarkerField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( markerName, org.alice.apis.moveandturn.CameraMarker.class, initializer );
@@ -1011,6 +1022,26 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				g.drawLine(0, horizonLinePixelVal, lookingGlassSize.width, horizonLinePixelVal);
 			}
 		}
+	}
+	
+	public void setHandleVisibilityForObject( edu.cmu.cs.dennisc.scenegraph.Transformable object, boolean handlesVisible)
+	{
+		this.globalDragAdapter.setHandleShowingForObject(object, handlesVisible);
+	}
+	
+	public boolean isObjectSelected( edu.cmu.cs.dennisc.scenegraph.Transformable object )
+	{
+		return this.globalDragAdapter.getSelectedObject() == object;
+	}
+	
+	public boolean isCameraMarkerActive( CameraMarker marker )
+	{
+		CameraFieldAndMarker fieldAndMarker = this.mainViewSelector.getSelectedMarker();
+		if (fieldAndMarker != null)
+		{
+			return fieldAndMarker.marker == marker;
+		}
+		return false;
 	}
 	
 	public SnapState getSnapState()

@@ -128,5 +128,11 @@ public class LinearTranslateHandle extends LinearDragHandle {
 		}
 		this.createShape( scale );
 	}
+	
+	@Override
+	public void setHandleShowing(boolean showing) {
+		super.setHandleShowing(showing);
+		this.arrow.setVisualShowing(showing);
+	}
 
 }

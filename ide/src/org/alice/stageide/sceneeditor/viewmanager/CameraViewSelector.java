@@ -41,6 +41,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.alice.stageide.sceneeditor.viewmanager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.LinkedList;
@@ -55,14 +57,14 @@ import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 /**
  * @author David Culyba
  */
-public class CameraViewSelector extends JPanel implements ItemListener{
+public class CameraViewSelector extends JPanel implements ItemListener, ActionListener{
 	
 	protected MoveAndTurnSceneEditor sceneEditor;
 	protected JComboBox cameraViewComboBox;
 	protected List<CameraFieldAndMarker> fieldBasedOptions = new LinkedList<CameraFieldAndMarker>();
 	protected List<CameraFieldAndMarker> extraOptions = new LinkedList<CameraFieldAndMarker>();
 	protected org.alice.apis.moveandturn.CameraMarker activeMarker;
-	protected int selectedIndex = -1;
+//	protected int selectedIndex = -1;
 
 	public CameraViewSelector(MoveAndTurnSceneEditor sceneEditor, List<CameraFieldAndMarker> extraOptions)
 	{
@@ -72,7 +74,7 @@ public class CameraViewSelector extends JPanel implements ItemListener{
 		this.sceneEditor = sceneEditor;
 		this.cameraViewComboBox = new JComboBox();
 		this.add(this.cameraViewComboBox);
-		this.cameraViewComboBox.addItemListener( this );
+		this.startListening();
 		if (extraOptions != null)
 		{
 			this.extraOptions.addAll(extraOptions);
@@ -110,7 +112,14 @@ public class CameraViewSelector extends JPanel implements ItemListener{
 	
 	public void refreshFields()
 	{
+		CameraFieldAndMarker oldSelected = this.getSelectedMarker();
+		
 		fieldBasedOptions.clear();
+		
+		int originalSelectedIndex = this.cameraViewComboBox.getSelectedIndex();
+		//Stop listening to changed on the combobox while we reorder stuff
+		this.stopListening();
+		
 		this.cameraViewComboBox.removeAllItems();
 		List<AbstractField> declaredFields = this.sceneEditor.getDeclaredFields();
 		for( AbstractField field : declaredFields) 
@@ -129,15 +138,33 @@ public class CameraViewSelector extends JPanel implements ItemListener{
 		{
 			this.cameraViewComboBox.addItem( extraView.toString() );
 		}
-		if (selectedIndex == -1 && this.fieldBasedOptions.size() > 0)
+		
+		int newCount = this.cameraViewComboBox.getItemCount();
+		if (originalSelectedIndex == -1 && newCount > 0)
 		{
-			this.cameraViewComboBox.setSelectedIndex( 0 );
+			this.cameraViewComboBox.setSelectedIndex(0);
 		}
+		else
+		{
+			this.cameraViewComboBox.setSelectedIndex( originalSelectedIndex );
+		}
+		
+		//Start listening again
+		this.startListening();
+//		CameraFieldAndMarker newSelected = this.getCameraAndMarkerForIndex(this.cameraViewComboBox.getSelectedIndex());
+//		CameraMarker oldMarker = (oldSelected != null) ? oldSelected.marker : null;
+//		CameraMarker newMarker = (newSelected != null) ? newSelected.marker : null;
+//		
+//		if (oldMarker != newMarker)
+//		{
+//			this.doSetSelectedView( this.cameraViewComboBox.getSelectedIndex() );
+//		}
 	}
+	
 
 	public CameraFieldAndMarker getSelectedMarker()
 	{
-		return getCameraAndMarkerForIndex(this.selectedIndex);
+		return getCameraAndMarkerForIndex(this.cameraViewComboBox.getSelectedIndex());
 	}
 	
 	public org.alice.apis.moveandturn.CameraMarker getActiveMarker()
@@ -197,17 +224,24 @@ public class CameraViewSelector extends JPanel implements ItemListener{
 	
 	private CameraFieldAndMarker getCameraAndMarkerForIndex(int index)
 	{
-		if (index > -1)
+		try
 		{
-			if (index < this.fieldBasedOptions.size())
+			if (index > -1)
 			{
-				return this.fieldBasedOptions.get(index);
+				if (index < this.fieldBasedOptions.size())
+				{
+					return this.fieldBasedOptions.get(index);
+				}
+				else
+				{
+					int orthoIndex = index - this.fieldBasedOptions.size();
+					return this.extraOptions.get(orthoIndex);
+				}
 			}
-			else
-			{
-				int orthoIndex = index - this.fieldBasedOptions.size();
-				return this.extraOptions.get(orthoIndex);
-			}
+		}
+		catch (IndexOutOfBoundsException e)
+		{
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -241,24 +275,53 @@ public class CameraViewSelector extends JPanel implements ItemListener{
 	
 	public int getSelectedIndex()
 	{
-		return this.selectedIndex;
+		return this.cameraViewComboBox.getSelectedIndex();
+	}
+	
+	public boolean isListening()
+	{
+		for (ItemListener listener : this.cameraViewComboBox.getItemListeners())
+		{
+			if (listener == this)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void startListening()
+	{
+		this.cameraViewComboBox.addItemListener(this);
+		this.cameraViewComboBox.addActionListener(this);
+	}
+	
+	public void stopListening()
+	{
+		this.cameraViewComboBox.removeItemListener(this);
+		this.cameraViewComboBox.removeActionListener(this);
 	}
 	
 	public void doSetSelectedView(int index)
 	{
-		this.selectedIndex = index;
-		this.activeMarker = getMarkerForIndex(this.selectedIndex);
-		if (this.activeMarker == null)
-		{
-			this.activeMarker = getMarkerForIndex(this.selectedIndex);
-		}
+		this.activeMarker = getMarkerForIndex(index);
+//		System.out.println("Set activeMarker to index "+index+", "+this.activeMarker.getName());
+//		if (this.activeMarker == null)
+//		{
+//			this.activeMarker = getMarkerForIndex(index);
+//		}
 		assert this.activeMarker != null;
 	}
 
 	public void itemStateChanged( ItemEvent e ) {
-		if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
+		if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) 
+		{
 			this.doSetSelectedView( this.cameraViewComboBox.getSelectedIndex() );
 		}
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		this.doSetSelectedView( this.cameraViewComboBox.getSelectedIndex() );
 	}
 
 

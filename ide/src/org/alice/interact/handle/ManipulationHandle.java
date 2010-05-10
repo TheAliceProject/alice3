@@ -85,6 +85,8 @@ public interface ManipulationHandle extends Cloneable {
 	
 	public void setHandleActive(boolean active);
 	
+	public void setHandleShowing(boolean showing);
+	
 	public boolean isRenderable();
 	
 	public boolean isPickable();

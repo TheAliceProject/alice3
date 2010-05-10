@@ -357,5 +357,11 @@ public class RotationRingHandle extends ManipulationHandle3D{
 			this.sgSphere.radius.setValue( MINOR_RADIUS * 2.0d * scale);
 		}
 	}
+	
+	@Override
+	public void setHandleShowing(boolean showing) {
+		super.setHandleShowing(showing);
+		this.sgSphereVisual.isShowing.setValue(showing);
+	}
 
 }

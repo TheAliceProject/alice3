@@ -108,6 +108,11 @@ public abstract class ManipulationHandle2D extends JLabel implements Manipulatio
 		}
 	}
 	
+	public void setHandleShowing(boolean showing)
+	{
+		//Do nothing
+	}
+	
 	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
 		this.dragAdapter = dragAdapter;
 		if (this.dragAdapter != null)
@@ -170,7 +175,7 @@ public abstract class ManipulationHandle2D extends JLabel implements Manipulatio
 	}
 
 	public PickHint getPickHint() {
-		return PickHint.THREE_D_HANDLES;
+		return PickHint.TWO_D_HANDLES;
 	}
 
 	public void setManipulation(AbstractManipulator manipulation)

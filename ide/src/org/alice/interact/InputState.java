@@ -235,6 +235,39 @@ public class InputState {
 		return this.clickPickResult;
 	}
 	
+	public PickHint getClickPickType()
+	{
+		//Evaluate handles first since they may be overlayed on the scene
+		if ( this.clickHandle != null )
+		{
+			return this.clickHandle.getPickHint();
+		}
+		else if (this.getClickPickResult() != null)
+		{
+			return PickCondition.getPickType(this.getClickPickResult());
+		}
+		else
+		{
+			return PickHint.NOTHING;
+		}
+	}
+	
+	public PickHint getRolloverPickType()
+	{
+		if (this.getRolloverPickResult() != null)
+		{
+			return PickCondition.getPickType(this.getRolloverPickResult());
+		}
+		else if ( this.rolloverHandle != null )
+		{
+			return this.rolloverHandle.getPickHint();
+		}
+		else
+		{
+			return PickHint.NOTHING;
+		}
+	}
+	
 	public PickResult getRolloverPickResult() {
 		return this.rolloverPickResult;
 	}

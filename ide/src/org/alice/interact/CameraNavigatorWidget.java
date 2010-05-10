@@ -99,66 +99,14 @@ public class CameraNavigatorWidget extends JPanel {
 		this.setOpaque(false);
 		this.dragAdapter = dragAdapter;
 		
-		this.cameraControlUpDown = new ManipulationHandle2DCameraTurnUpDown();
-		CameraDragUpDownRotateManipulator upDownManipulator = new CameraDragUpDownRotateManipulator(this.cameraControlUpDown);
-		upDownManipulator.setDesiredCameraView( attachedView );
-		this.cameraControlUpDown.setManipulation( upDownManipulator );
-		for (ManipulationEvent event : upDownManipulator.getManipulationEvents())
-		{
-			this.cameraControlUpDown.addCondition( new ManipulationEventCriteria(
-					event.getType(),
-					event.getMovementDescription(),
-					PickHint.CAMERA ) );
-		}
-		this.cameraControlUpDown.setDragAdapter( this.dragAdapter );
-		this.dragAdapter.addManipulationListener( this.cameraControlUpDown );
-		
-		this.cameraControlStrafe = new ManipulationHandle2DCameraStrafe();
-		CameraDragStrafeManipulator strafeManipulator = new CameraDragStrafeManipulator(this.cameraControlStrafe);
-		strafeManipulator.setDesiredCameraView( attachedView );
-		this.cameraControlStrafe.setManipulation( strafeManipulator );
-		for (ManipulationEvent event : strafeManipulator.getManipulationEvents())
-		{
-			this.cameraControlStrafe.addCondition( new ManipulationEventCriteria(
-					event.getType(),
-					event.getMovementDescription(),
-					PickHint.CAMERA ) );
-		}
-		this.dragAdapter.addManipulationListener( this.cameraControlStrafe );
-		this.cameraControlStrafe.setDragAdapter( this.dragAdapter );
-		
-		this.orthographicCameraControlStrafe = new ManipulationHandle2DCameraStrafe();
-		OrthographicCameraDragStrafeManipulator orthoStrafeManipulator = new OrthographicCameraDragStrafeManipulator(this.cameraControlStrafe);
-		orthoStrafeManipulator.setDesiredCameraView( attachedView );
-		this.orthographicCameraControlStrafe.setManipulation( orthoStrafeManipulator );
-		for (ManipulationEvent event : orthoStrafeManipulator.getManipulationEvents())
-		{
-			this.orthographicCameraControlStrafe.addCondition( new ManipulationEventCriteria(
-					event.getType(),
-					event.getMovementDescription(),
-					PickHint.CAMERA ) );
-		}
-		this.dragAdapter.addManipulationListener( this.orthographicCameraControlStrafe );
-		this.orthographicCameraControlStrafe.setDragAdapter( this.dragAdapter );
-		
-		
-		this.orthographicCameraControlZoom = new ManipulationHandle2CameraZoom();
-		OrthographicCameraDragZoomManipulator orthoZoomManipulator = new OrthographicCameraDragZoomManipulator(this.orthographicCameraControlZoom);
-		orthoZoomManipulator.setDesiredCameraView( attachedView );
-		this.orthographicCameraControlZoom.setManipulation( orthoZoomManipulator );
-		for (ManipulationEvent event : orthoZoomManipulator.getManipulationEvents())
-		{
-			this.orthographicCameraControlZoom.addCondition( new ManipulationEventCriteria(
-					event.getType(),
-					event.getMovementDescription(),
-					PickHint.CAMERA ) );
-		}
-		this.dragAdapter.addManipulationListener( this.orthographicCameraControlZoom );
-		this.orthographicCameraControlZoom.setDragAdapter( this.dragAdapter );
-		
+		//CAMERA DRIVER
+		//Create the new handle
 		this.cameraDriver = new ManipulationHandle2DCameraDriver();
+		//Create the manipulator
 		CameraDragDriveManipulator driverManipulator = new CameraDragDriveManipulator(this.cameraDriver);
+		//Set the desired view so the manipulator knows which camera to control 
 		driverManipulator.setDesiredCameraView( attachedView );
+		//Set up the handle to know about its own manipulator and conditions so the ObjectGlobalHandleDragManipulator can activate the control
 		this.cameraDriver.setManipulation( driverManipulator );
 		for (ManipulationEvent event : driverManipulator.getManipulationEvents())
 		{
@@ -167,21 +115,105 @@ public class CameraNavigatorWidget extends JPanel {
 					event.getMovementDescription(),
 					PickHint.CAMERA ) );
 		}
+		//Set the handle to listen to the relevant events so it can update its appearance as things happen
 		this.dragAdapter.addManipulationListener( this.cameraDriver );
+		//Set the dragAdapter on the handle which sets up listening and adds the handle to the dragAdapter
+		this.cameraDriver.setDragAdapter( this.dragAdapter );
 		
-		driverManipulator.setDragAdapter( this.dragAdapter );
-		ManipulatorConditionSet mouseHandleDrag_NoShift = new ManipulatorConditionSet( driverManipulator );
-		MouseDragCondition handleNoShiftCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.TWO_D_HANDLES ), new ModifierMask( ModifierKey.NOT_SHIFT ));
-		mouseHandleDrag_NoShift.addCondition( handleNoShiftCondition );
-		this.dragAdapter.addManipulator( mouseHandleDrag_NoShift );
+		//CAMERA ROTATE UP/DOWN
+		//Create the new handle
+		this.cameraControlUpDown = new ManipulationHandle2DCameraTurnUpDown();
+		//Create the manipulator
+		CameraDragUpDownRotateManipulator upDownManipulator = new CameraDragUpDownRotateManipulator(this.cameraControlUpDown);
+		//Set the desired view so the manipulator knows which camera to control 
+		upDownManipulator.setDesiredCameraView( attachedView );
+		//Set up the handle to know about its own manipulator and conditions so the ObjectGlobalHandleDragManipulator can activate the control
+		this.cameraControlUpDown.setManipulation( upDownManipulator );
+		for (ManipulationEvent event : upDownManipulator.getManipulationEvents())
+		{
+			this.cameraControlUpDown.addCondition( new ManipulationEventCriteria(
+					event.getType(),
+					event.getMovementDescription(),
+					PickHint.CAMERA ) );
+		}
+		//Set the handle to listen to the relevant events so it can update its appearance as things happen
+		this.dragAdapter.addManipulationListener( this.cameraControlUpDown );
+		//Set the dragAdapter on the handle which sets up listening and adds the handle to the dragAdapter
+		this.cameraControlUpDown.setDragAdapter( this.dragAdapter );
 		
+		//CAMERA STRAFE
+		//Create the new handle
+		this.cameraControlStrafe = new ManipulationHandle2DCameraStrafe();
+		//Create the manipulator
+		CameraDragStrafeManipulator strafeManipulator = new CameraDragStrafeManipulator(this.cameraControlStrafe);
+		//Set the desired view so the manipulator knows which camera to control 
+		strafeManipulator.setDesiredCameraView( attachedView );
+		//Set up the handle to know about its own manipulator and conditions so the ObjectGlobalHandleDragManipulator can activate the control
+		this.cameraControlStrafe.setManipulation( strafeManipulator );
+		for (ManipulationEvent event : strafeManipulator.getManipulationEvents())
+		{
+			this.cameraControlStrafe.addCondition( new ManipulationEventCriteria(
+					event.getType(),
+					event.getMovementDescription(),
+					PickHint.CAMERA ) );
+		}
+		//Set the handle to listen to the relevant events so it can update its appearance as things happen
+		this.dragAdapter.addManipulationListener( this.cameraControlStrafe );
+		//Set the dragAdapter on the handle which sets up listening and adds the handle to the dragAdapter
+		this.cameraControlStrafe.setDragAdapter( this.dragAdapter );
+		
+		//This is the manipulator used to strafe the camera when holding down shift and using the camera widget
+		//Note that this is the only manipulator directly added to the dragAdapter
+		//The dragAdapter will automatically activate the correct manipulator based on which handle was clicked
 		strafeManipulator.setDragAdapter( this.dragAdapter );
 		ManipulatorConditionSet mouseHandleDrag_Shift = new ManipulatorConditionSet( strafeManipulator );
 		MouseDragCondition handleShiftCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.TWO_D_HANDLES ), new ModifierMask( ModifierKey.SHIFT ));
 		mouseHandleDrag_Shift.addCondition( handleShiftCondition );
 		this.dragAdapter.addManipulator( mouseHandleDrag_Shift );
 		
-		this.cameraDriver.setDragAdapter( this.dragAdapter );
+		
+		
+		//ORTHOGRAPHIC STRAFE
+		//Create the new handle
+		this.orthographicCameraControlStrafe = new ManipulationHandle2DCameraStrafe();
+		//Create the manipulator
+		OrthographicCameraDragStrafeManipulator orthoStrafeManipulator = new OrthographicCameraDragStrafeManipulator(this.cameraControlStrafe);
+		//Set the desired view so the manipulator knows which camera to control 
+		orthoStrafeManipulator.setDesiredCameraView( attachedView );
+		//Set up the handle to know about its own manipulator and conditions so the ObjectGlobalHandleDragManipulator can activate the control
+		this.orthographicCameraControlStrafe.setManipulation( orthoStrafeManipulator );
+		for (ManipulationEvent event : orthoStrafeManipulator.getManipulationEvents())
+		{
+			this.orthographicCameraControlStrafe.addCondition( new ManipulationEventCriteria(
+					event.getType(),
+					event.getMovementDescription(),
+					PickHint.CAMERA ) );
+		}
+		//Set the handle to listen to the relevant events so it can update its appearance as things happen
+		this.dragAdapter.addManipulationListener( this.orthographicCameraControlStrafe );
+		//Set the dragAdapter on the handle which sets up listening and adds the handle to the dragAdapter
+		this.orthographicCameraControlStrafe.setDragAdapter( this.dragAdapter );
+		
+		//ORTHOGRAPHIC ZOOM
+		//Create the new handle
+		this.orthographicCameraControlZoom = new ManipulationHandle2CameraZoom();
+		//Create the manipulator
+		OrthographicCameraDragZoomManipulator orthoZoomManipulator = new OrthographicCameraDragZoomManipulator(this.orthographicCameraControlZoom);
+		//Set the desired view so the manipulator knows which camera to control 
+		orthoZoomManipulator.setDesiredCameraView( attachedView );
+		//Set up the handle to know about its own manipulator and conditions so the ObjectGlobalHandleDragManipulator can activate the control
+		this.orthographicCameraControlZoom.setManipulation( orthoZoomManipulator );
+		for (ManipulationEvent event : orthoZoomManipulator.getManipulationEvents())
+		{
+			this.orthographicCameraControlZoom.addCondition( new ManipulationEventCriteria(
+					event.getType(),
+					event.getMovementDescription(),
+					PickHint.CAMERA ) );
+		}
+		//Set the handle to listen to the relevant events so it can update its appearance as things happen
+		this.dragAdapter.addManipulationListener( this.orthographicCameraControlZoom );
+		//Set the dragAdapter on the handle which sets up listening and adds the handle to the dragAdapter
+		this.orthographicCameraControlZoom.setDragAdapter( this.dragAdapter );
 		
 		this.cameraMode = null;
 		setMode(CameraMode.PERSPECTIVE); //This will set the mode and also put the controls in the panel

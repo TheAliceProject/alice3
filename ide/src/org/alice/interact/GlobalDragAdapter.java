@@ -90,6 +90,16 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
  */
 public class GlobalDragAdapter extends AbstractDragAdapter {
 	
+	public GlobalDragAdapter( MoveAndTurnSceneEditor sceneEditor )
+	{
+		super(sceneEditor);
+	}
+	
+	public GlobalDragAdapter()
+	{
+		super();
+	}
+	
 	@Override
 	protected void setUpControls()
 	{
@@ -197,7 +207,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		this.manipulators.add( mouseRotateObjectLeftRight );
 		
 		ManipulatorConditionSet mouseHandleDrag = new ManipulatorConditionSet( new ObjectGlobalHandleDragManipulator() );
-		MouseDragCondition handleObjectCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.THREE_D_HANDLES));
+		MouseDragCondition handleObjectCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.ALL_HANDLES), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
 		mouseHandleDrag.addCondition( handleObjectCondition );
 		this.manipulators.add( mouseHandleDrag );
 		

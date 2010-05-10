@@ -72,6 +72,8 @@ public class EventCriteriaManager {
 	{
 		for (ManipulationEventCriteria condition : this.manipulationConditions)
 		{
+			boolean matches = condition.matches( event );
+//			System.out.println("checking "+condition+": "+matches);
 			if (condition.matches( event ))
 			{
 				return true;

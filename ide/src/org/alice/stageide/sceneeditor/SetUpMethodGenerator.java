@@ -42,6 +42,8 @@
  */
 package org.alice.stageide.sceneeditor;
 
+import org.alice.apis.moveandturn.AsSeenBy;
+import org.alice.apis.moveandturn.CameraMarker;
 import org.alice.apis.moveandturn.gallery.environments.Ground;
 import org.alice.apis.moveandturn.gallery.environments.grounds.DirtGround;
 import org.alice.apis.moveandturn.gallery.environments.grounds.GrassyGround;
@@ -168,7 +170,15 @@ public class SetUpMethodGenerator {
 			bodyStatementsProperty.add( createStatement( edu.cmu.cs.dennisc.pattern.AbstractElement.class, "setName", String.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( field.getName() ) ) );
 			if( instance instanceof org.alice.apis.moveandturn.Transformable ) {
 				org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)element;
-				bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.AbstractTransformable.class, "setLocalPointOfView", org.alice.apis.moveandturn.PointOfView.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( transformable.getLocalPointOfView() ) ) );
+				if (transformable instanceof CameraMarker)
+				{
+					//CameraMarkers are all fields of the Scene but may be parented to the camera while being edited in the scene editor. Because of this, make sure to get their LocalPointOfView as seen by the Scene
+					bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.AbstractTransformable.class, "setLocalPointOfView", org.alice.apis.moveandturn.PointOfView.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( transformable.getPointOfView(AsSeenBy.SCENE) ) ) );
+				}
+				else
+				{
+					bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.AbstractTransformable.class, "setLocalPointOfView", org.alice.apis.moveandturn.PointOfView.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( transformable.getLocalPointOfView() ) ) );
+				}
 				if( instance instanceof org.alice.apis.moveandturn.AbstractModel ) {
 					org.alice.apis.moveandturn.AbstractModel abstractModel = (org.alice.apis.moveandturn.AbstractModel)transformable;
 

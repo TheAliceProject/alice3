@@ -124,7 +124,7 @@ public class PickCondition {
 		}
 		else
 		{
-			PickHint clickedType = getPickType( input.getClickPickResult() );
+			PickHint clickedType = input.getClickPickType();
 			result = this.pickHint.intersects( clickedType );
 		}
 		if (isNot)
@@ -151,7 +151,7 @@ public class PickCondition {
 		}
 		else
 		{
-			PickHint clickedType = getPickType( input.getClickPickResult() );
+			PickHint clickedType = input.getClickPickType();
 			System.out.println("Clicked on "+clickedType+", looking for "+this.pickHint);
 			result = this.pickHint.intersects( clickedType );
 		}
