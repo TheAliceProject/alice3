@@ -62,18 +62,14 @@ public abstract class SplitPane extends Component< javax.swing.JSplitPane > {
 	
 	protected void setTopOrLeftComponent( Component<?> component ) {
 		if( component != null ) {
-			component.adding();
 			this.getJComponent().setTopComponent( component.getJComponent() );
-			component.added();
 		} else {
 			this.getJComponent().setTopComponent( null );
 		}
 	}
 	protected void setBottomOrRightComponent( Component<?> component ) {
 		if( component != null ) {
-			component.adding();
 			this.getJComponent().setBottomComponent( component.getJComponent() );
-			component.added();
 		} else {
 			this.getJComponent().setBottomComponent( null );
 		}

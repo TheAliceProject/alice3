@@ -77,15 +77,15 @@ public abstract class AbstractPopupMenuOperation extends AbstractActionOperation
 		Application.getSingleton().register( this );
 		PopupMenu rv = new PopupMenu() {
 			@Override
-			protected void adding() {
+			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				super.handleAddedTo( parent );
 				AbstractPopupMenuOperation.this.addPopupMenu(this);
-				super.adding();
 			}
 
 			@Override
-			protected void removed() {
-				super.removed();
+			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				AbstractPopupMenuOperation.this.removePopupMenu(this);
+				super.handleRemovedFrom( parent );
 			}
 		};
 		Application.addMenuElements( rv, this.getOperations() );

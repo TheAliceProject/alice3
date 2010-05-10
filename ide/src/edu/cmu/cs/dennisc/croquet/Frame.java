@@ -88,6 +88,11 @@ public final class Frame extends Root<javax.swing.JFrame> {
 	public void setTitle( String title ) {
 		this.getAwtWindow().setTitle( title );
 	}
+
+	public void setMenuBar(MenuBar menuBar) {
+		this.getAwtWindow().setJMenuBar(menuBar.getJComponent());
+	}
+
 	public void maximize() {
 		this.getAwtWindow().setExtendedState( this.getAwtWindow().getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH );
 	}

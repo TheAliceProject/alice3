@@ -170,14 +170,14 @@ public /*final*/ class BooleanStateOperation extends Operation {
 		Application.getSingleton().register( this );
 		return new RadioButton() {
 			@Override
-			protected void adding() {
+			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				super.handleAddedTo( parent );
 				BooleanStateOperation.this.addAbstractButton(this);
-				super.adding();
 			}
 
 			@Override
-			protected void removed() {
-				super.removed();
+			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				super.handleRemovedFrom( parent );
 				BooleanStateOperation.this.removeAbstractButton(this);
 			}
 		};
@@ -186,14 +186,14 @@ public /*final*/ class BooleanStateOperation extends Operation {
 		Application.getSingleton().register( this );
 		return new CheckBox() {
 			@Override
-			protected void adding() {
+			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				super.handleAddedTo( parent );
 				BooleanStateOperation.this.addAbstractButton(this);
-				super.adding();
 			}
 
 			@Override
-			protected void removed() {
-				super.removed();
+			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				super.handleRemovedFrom( parent );
 				BooleanStateOperation.this.removeAbstractButton(this);
 			}
 		};
@@ -203,14 +203,14 @@ public /*final*/ class BooleanStateOperation extends Operation {
 		// todo: return javax.swing.JMenuItem if true and false different
 		return new CheckBoxMenuItem() {
 			@Override
-			protected void adding() {
+			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				super.handleAddedTo( parent );
 				BooleanStateOperation.this.addAbstractButton(this);
-				super.adding();
 			}
 
 			@Override
-			protected void removed() {
-				super.removed();
+			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				super.handleRemovedFrom( parent );
 				BooleanStateOperation.this.removeAbstractButton(this);
 			}
 		};

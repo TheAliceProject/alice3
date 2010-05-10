@@ -293,8 +293,8 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	}
 	
 	@Override
-	protected void adding() {
-		super.adding();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		this.declarationNameTextField.setText( this.getDefaultNameText() );
 		this.declarationNameTextField.selectAll();
 		this.declarationNameTextField.requestFocus();

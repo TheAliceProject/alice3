@@ -267,14 +267,14 @@ public abstract class DragControl extends Control {
 		}
 	};
 	@Override
-	protected void adding() {
-		super.adding();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		this.getJComponent().addComponentListener( this.componentListener );
 	}
 	@Override
-	protected void removed() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		this.getJComponent().removeComponentListener( this.componentListener );
-		super.removed();
+		super.handleRemovedFrom( parent );
 	}
 	private boolean isActuallyPotentiallyDraggable() {
 		return true;

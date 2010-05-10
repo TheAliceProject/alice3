@@ -90,15 +90,15 @@ public abstract class TabIsSelectedStateOperation extends BooleanStateOperation 
 		Application.getSingleton().register( this );
 		return new TabTitle( this.isCloseAffordanceDesired() ) {
 			@Override
-			protected void adding() {
+			protected void handleAddedTo( Component<?> parent ) {
+				super.handleAddedTo( parent );
 				TabIsSelectedStateOperation.this.addAbstractButton(this);
-				super.adding();
 			}
 
 			@Override
-			protected void removed() {
-				super.removed();
+			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				TabIsSelectedStateOperation.this.removeAbstractButton(this);
+				super.handleRemovedFrom( parent );
 			}
 		};
 	}

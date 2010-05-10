@@ -170,15 +170,15 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 		Application.getSingleton().register( this );
 		return new ComboBox< E >() {
 			@Override
-			protected void adding() {
+			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				super.handleAddedTo( parent );
 				ItemSelectionOperation.this.addComboBox(this);
-				super.adding();
 			}
 
 			@Override
-			protected void removed() {
-				super.removed();
+			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				ItemSelectionOperation.this.removeComboBox(this);
+				super.handleRemovedFrom( parent );
 			}
 		};
 	}

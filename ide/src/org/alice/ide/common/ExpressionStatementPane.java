@@ -74,14 +74,14 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 	}
 	
 	@Override
-	protected void adding() {
-		super.adding();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		this.getExpressionStatement().expression.addPropertyListener( this.refreshAdapter );
 	}
 	@Override
-	protected void removed() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		this.getExpressionStatement().expression.removePropertyListener( this.refreshAdapter );
-		super.removed();
+		super.handleRemovedFrom( parent );
 	}
 
 	private void refresh() {

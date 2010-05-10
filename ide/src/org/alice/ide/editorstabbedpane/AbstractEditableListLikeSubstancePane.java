@@ -248,18 +248,18 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 	};
 	
 	@Override
-	protected void adding() {
-		super.adding();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		this.updateOperationsEnabledStates();
 		this.listLikeSubstance.addMouseListener( this.lenientMouseClickAdapter );
 		this.listLikeSubstance.addMouseMotionListener( this.lenientMouseClickAdapter );
 	}
 	
 	@Override
-	protected void removed() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		this.listLikeSubstance.removeMouseMotionListener( this.lenientMouseClickAdapter );
 		this.listLikeSubstance.removeMouseListener( this.lenientMouseClickAdapter );
-		super.removed();
+		super.handleRemovedFrom( parent );
 	}
 	
 	protected String getAddItemOperationName() {

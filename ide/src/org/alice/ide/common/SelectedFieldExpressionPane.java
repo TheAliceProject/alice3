@@ -104,14 +104,14 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 		return true;
 	}
 	@Override
-	protected void adding() {
-		super.adding();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		this.getIDE().addCodeInFocusObserver( this.codeInFocusObserver );
 		this.handleFieldChanged( getIDE().getFieldSelection() );
 	}
 	@Override
-	protected void removed() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		this.getIDE().removeCodeInFocusObserver( this.codeInFocusObserver );
-		super.removed();
+		super.handleRemovedFrom( parent );
 	}
 }

@@ -60,9 +60,7 @@ public abstract class Root<W extends java.awt.Window> {
 	private W window;
 	public Root( W window ) {
 		this.window = window;
-		this.contentPanel.adding();
 		this.getRootPane().setContentPane( this.contentPanel.getJComponent() );
-		this.contentPanel.added();
 		Root.map.put( window, this );
 	}
 

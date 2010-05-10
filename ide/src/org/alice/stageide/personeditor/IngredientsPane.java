@@ -228,14 +228,14 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	protected abstract void handleGenderSelection( int tabIndex );
 
 	@Override
-	protected void adding() {
-		super.adding();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		tabbedPane.addChangeListener( this.tabChangeAdapter );
 	}
 	@Override
-	protected void removed() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		tabbedPane.removeChangeListener( this.tabChangeAdapter );
-		super.removed();
+		super.handleRemovedFrom( parent );
 	}
 
 	public void refresh() {

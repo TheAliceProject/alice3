@@ -68,16 +68,16 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 	}
 
 	@Override
-	protected void adding() {
-		super.adding();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		this.factory.getStatementMap().put( this.statement, this );
 		this.statement.isEnabled.addPropertyListener( this.isEnabledListener );
 	}
 	@Override
-	protected void removed() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		this.statement.isEnabled.removePropertyListener( this.isEnabledListener );
 		this.factory.getStatementMap().remove( this.statement );
-		super.removed();
+		super.handleRemovedFrom( parent );
 	}
 	public edu.cmu.cs.dennisc.alice.ast.Statement getStatement() {
 		return this.statement;

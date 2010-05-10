@@ -54,8 +54,6 @@ public class MenuBar extends Component< javax.swing.JMenuBar > {
 		return new javax.swing.JMenuBar();
 	}
 	/*package-private*/ void addMenu( Menu menu ) {
-		menu.adding();
 		this.getJComponent().add( menu.getJComponent() );
-		menu.added();
 	}
 }

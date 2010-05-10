@@ -67,15 +67,15 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 	}
 	
 	@Override
-	protected void adding() {
-		super.adding();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		this.getIDE().addToConcealedBin( this.implementor.getIncompleteStatementPane() );
 	}
 
 	@Override
-	protected void removed() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		this.getIDE().removeFromConcealedBin( this.implementor.getIncompleteStatementPane() );
-		super.removed();
+		super.handleRemovedFrom( parent );
 	}
 //	@Override
 //	public java.awt.Dimension getMinimumSize() {

@@ -83,16 +83,16 @@ public abstract class Control extends Widget {
 	public Control() {
 	}
 	@Override
-	protected void adding() {
-		super.adding();
+	protected void handleAddedTo( Component<?> parent ) {
+		super.handleAddedTo( parent );
 		this.getJComponent().addMouseListener( this.mouseListener );
 		this.getJComponent().addMouseMotionListener( this.mouseMotionListener );
 	}
 	@Override
-	protected void removed() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		this.getJComponent().removeMouseMotionListener( this.mouseMotionListener );
 		this.getJComponent().removeMouseListener( this.mouseListener );
-		super.removed();
+		super.handleRemovedFrom( parent );
 	}
 
 	public boolean isActive() {

@@ -70,14 +70,14 @@ public abstract class PreviewInputPane<T> extends org.alice.ide.RowsInputPanel< 
 			return super.contains( x, y, jContains );
 		}
 		@Override
-		protected void adding() {
-			super.adding();
+		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+			super.handleAddedTo( parent );
 			this.refresh();
 		}
 		@Override
-		protected void removed() {
+		protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 			this.forgetAndRemoveAllComponents();
-			super.removed();
+			super.handleRemovedFrom( parent );
 		}
 	}
 

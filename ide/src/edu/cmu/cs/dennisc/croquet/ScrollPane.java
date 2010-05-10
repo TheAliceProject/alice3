@@ -86,9 +86,7 @@ public class ScrollPane extends Component< javax.swing.JScrollPane > {
 	}
 	public void setViewportView( Component<?> view ) {
 		if( view != null ) {
-			view.adding();
 			this.getJComponent().setViewportView( view.getJComponent() );
-			view.added();
 		} else {
 			this.getJComponent().setViewportView( null );
 		}

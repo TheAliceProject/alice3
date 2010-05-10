@@ -134,7 +134,7 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 		super.initialize(args);
 		edu.cmu.cs.dennisc.croquet.MenuBarOperation menuBarOperation = this.createMenuBarOperation();
 		edu.cmu.cs.dennisc.croquet.MenuBar menuBar = menuBarOperation.createMenuBar();
-		this.setMenuBar( menuBar );
+		this.getFrame().setMenuBar( menuBar );
 	}
 	private java.net.URI uri = null;
 	public java.net.URI getUri() {
@@ -256,7 +256,7 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 	protected void updateTitle() {
 		StringBuffer sb = new StringBuffer();
 		this.updateTitle( sb );
-		this.setTitle( sb.toString() );
+		this.getFrame().setTitle( sb.toString() );
 	}
 	
 	private void updateHistoryLengthAtLastFileOperation() {

@@ -89,15 +89,15 @@ public class FieldDeclarationPane extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 	};
 
 	@Override
-	protected void adding() {
-		super.adding();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		this.updateFinalLabel();
 		this.field.finalVolatileOrNeither.addPropertyListener( this.propertyListener );
 	}
 	@Override
-	protected void removed() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		this.field.finalVolatileOrNeither.addPropertyListener( this.propertyListener );
-		super.removed();
+		super.handleRemovedFrom( parent );
 	}
 	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getField() {
 		return this.field;

@@ -106,17 +106,17 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		}
 	}
 	@Override
-	protected void adding() {
-		super.adding();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		if( this.popupOperation != null ) {
 			this.nameLabel.addMouseListener( this.mouseAdapter );
 		}
 	}
 	@Override
-	protected void removed() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		if( this.popupOperation != null ) {
 			this.nameLabel.removeMouseListener( this.mouseAdapter );
 		}
-		super.removed();
+		super.handleRemovedFrom( parent );
 	}
 }

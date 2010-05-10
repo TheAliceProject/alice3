@@ -152,22 +152,6 @@ public abstract class Application {
 		}
 	}
 	
-	public void setMenuBar( MenuBar menuBar ) {
-		javax.swing.JFrame jFrame = this.frame.getAwtWindow();
-		javax.swing.JMenuBar jMenuBar = menuBar.getJComponent();
-		menuBar.adding();
-		jFrame.setJMenuBar(jMenuBar);
-		menuBar.added();
-		jFrame.pack();
-	}
-	public void setVisible(boolean isVisible) {
-		this.frame.setVisible(isVisible);
-	}
-
-	public void setTitle(String title) {
-		this.frame.getAwtWindow().setTitle( title );
-	}
-
 	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
 	protected abstract void handleAbout( java.util.EventObject e );
 	protected abstract void handlePreferences( java.util.EventObject e );

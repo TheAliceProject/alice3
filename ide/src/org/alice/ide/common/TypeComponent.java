@@ -114,18 +114,18 @@ public class TypeComponent extends DeclarationNameLabel {
 	}
 
 	@Override
-	protected void adding() {
-		super.adding();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		if( this.popupOperation != null ) {
 			this.addMouseListener( this.mouseAdapter );
 		}
 	}
 	@Override
-	protected void removed() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		if( this.popupOperation != null ) {
 			this.removeMouseListener( this.mouseAdapter );
 		}
-		super.removed();
+		super.handleRemovedFrom( parent );
 	}
 
 	public void setRollover( boolean isRollover ) {

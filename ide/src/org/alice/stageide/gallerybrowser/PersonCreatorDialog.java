@@ -64,8 +64,8 @@ class PersonCreatorDialog extends edu.cmu.cs.dennisc.progress.ProgressDialog {
 				this.publish( "opening person creator..." );
 				org.alice.stageide.personeditor.PersonEditorInputPane personEditorInputPane = new org.alice.stageide.personeditor.PersonEditorInputPane( null ) {
 					@Override
-					protected void added() {
-						super.added();
+					protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+						super.handleAddedTo( parent );
 						PersonCreatorDialog.this.setVisible( false );
 					}
 				};

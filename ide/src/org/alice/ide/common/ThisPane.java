@@ -61,15 +61,15 @@ public class ThisPane extends AccessiblePane {
 		this.setBackgroundColor( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class ) );
 	}
 	@Override
-	protected void adding() {
-		super.adding();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		this.updateBasedOnFocusedCode( org.alice.ide.IDE.getSingleton().getFocusedCode() );
 		this.getIDE().addCodeInFocusObserver( this.codeInFocusObserver );
 	}
 	@Override
-	protected void removed() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		this.getIDE().removeCodeInFocusObserver( this.codeInFocusObserver );
-		super.removed();
+		super.handleRemovedFrom( parent );
 	}
 	private void updateBasedOnFocusedCode( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		if( code != null ) {

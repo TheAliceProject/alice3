@@ -76,13 +76,13 @@ public abstract class AbstractEditableListPane< E > extends AbstractEditableList
 	};
 	
 	@Override
-	protected void adding() {
-		super.adding();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		this.getList().getJComponent().getSelectionModel().addListSelectionListener( this.listSelectionListener );
 	}
 	@Override
-	protected void removed() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		this.getList().getJComponent().getSelectionModel().removeListSelectionListener( this.listSelectionListener );
-		super.removed();
+		super.handleRemovedFrom( parent );
 	}
 }

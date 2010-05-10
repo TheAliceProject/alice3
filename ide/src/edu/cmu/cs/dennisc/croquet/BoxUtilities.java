@@ -132,9 +132,7 @@ public class BoxUtilities {
 				}
 			};
 			rv.setLayout( new java.awt.BorderLayout() );
-			this.component.adding();
 			rv.add( this.component.getJComponent(), java.awt.BorderLayout.CENTER );
-			this.component.added();
 			return rv;
 		}
 	}

@@ -94,14 +94,14 @@ public class MenuBarOperation extends Operation {
 		Application.getSingleton().register( this );
 		MenuBar rv = new MenuBar() {
 			@Override
-			protected void adding() {
+			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				super.handleAddedTo( parent );
 				MenuBarOperation.this.addMenuBar(this);
-				super.adding();
 			}
 
 			@Override
-			protected void removed() {
-				super.removed();
+			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				super.handleRemovedFrom( parent );
 				MenuBarOperation.this.removeMenuBar(this);
 			}
 		};

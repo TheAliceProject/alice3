@@ -73,8 +73,8 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 		return new org.alice.ide.operations.DefaultDragOperation();
 	}
 	@Override
-	protected void adding() {
-		super.adding();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		if( this.dragOperation != null ) {
 			//pass
 		} else {
@@ -83,9 +83,9 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 		this.setDragOperation( this.dragOperation );
 	}
 	@Override
-	protected void removed() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		this.setPopupOperation( null );
-		super.removed();
+		super.handleRemovedFrom( parent );
 	}
 	@Override
 	protected boolean contains( int x, int y, boolean jContains ) {

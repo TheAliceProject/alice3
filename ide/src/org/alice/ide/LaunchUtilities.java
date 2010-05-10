@@ -175,7 +175,7 @@ public class LaunchUtilities {
 				}
 				ide.setSplashScreen( splashScreen );
 				ide.initialize( args );
-				ide.setVisible( true );
+				ide.getFrame().setVisible( true );
 			}
 		} );
 		

@@ -67,7 +67,7 @@ public abstract class Widget extends Component< javax.swing.JPanel > {
 	
 	@Override
 	protected final javax.swing.JPanel createJComponent() {
-		javax.swing.JPanel rv = new javax.swing.JPanel() {
+		class JWidget extends javax.swing.JPanel {
 			@Override
 			public void paint( java.awt.Graphics g ) {
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
@@ -105,7 +105,8 @@ public abstract class Widget extends Component< javax.swing.JPanel > {
 			public boolean contains( int x, int y ) {
 				return Widget.this.contains( x, y, super.contains( x, y ) );
 			}
-		};
+		}
+		JWidget rv = new JWidget();
 		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
 		rv.setLayout( layoutManager );
 		rv.setOpaque( false );
@@ -116,8 +117,8 @@ public abstract class Widget extends Component< javax.swing.JPanel > {
 	}
 
 	@Override
-	protected void adding() {
-		super.adding();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		this.updateBorderIfNecessary();
 	}
 	private void updateBorderIfNecessary() {
@@ -140,16 +141,12 @@ public abstract class Widget extends Component< javax.swing.JPanel > {
 	@Deprecated
 	protected void addComponent( Component<?> component ) {
 		assert component != null;
-		component.adding();
 		this.getJComponent().add( component.getJComponent() );
-		component.added();
 	}
 	@Deprecated
 	protected void addComponent( Component<?> component, Object constraints ) {
 		assert component != null;
-		component.adding();
 		this.getJComponent().add( component.getJComponent(), constraints );
-		component.added();
 	}
 	
 	@Deprecated

@@ -228,9 +228,7 @@ public abstract class InputPanel< T > extends Panel {
 	@Deprecated
 	protected void addComponent( Component<?> component, Object constraints ) {
 		assert component != null;
-		component.adding();
 		this.getJComponent().add( component.getJComponent(), constraints );
-		component.added();
 	}
 	public void removeComponent( Component< ? > component ) {
 		this.internalRemoveComponent( component );

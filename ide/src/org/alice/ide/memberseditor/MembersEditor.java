@@ -257,15 +257,15 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		this.refresh();
 	}
 	@Override
-	protected void adding() {
-		super.adding();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		org.alice.ide.IDE.getSingleton().addFieldSelectionObserver( this.fieldSelectionObserver );
 		this.handleFieldSelection( org.alice.ide.IDE.getSingleton().getFieldSelection() );
 	}
 	@Override
-	protected void removed() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		org.alice.ide.IDE.getSingleton().removeFieldSelectionObserver( this.fieldSelectionObserver );
-		super.removed();
+		super.handleRemovedFrom( parent );
 	}
 	
 }

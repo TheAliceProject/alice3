@@ -120,15 +120,15 @@ public class MenuOperation extends Operation {
 		Application.getSingleton().register( this );
 		Menu rv = new Menu() {
 			@Override
-			protected void adding() {
+			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				super.handleAddedTo( parent );
 				MenuOperation.this.addMenu(this);
-				super.adding();
 			}
 
 			@Override
-			protected void removed() {
-				super.removed();
+			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				MenuOperation.this.removeMenu(this);
+				super.handleRemovedFrom( parent );
 			}
 		};
 		Application.addMenuElements( rv, this.getOperations() );

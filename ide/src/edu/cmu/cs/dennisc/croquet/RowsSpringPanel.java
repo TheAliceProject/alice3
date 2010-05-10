@@ -59,8 +59,8 @@ public abstract class RowsSpringPanel extends SpringPanel {
 		this.yPad = yPad;
 	}
 	@Override
-	protected void adding() {
-		super.adding();
+	protected void handleAddedTo( Component<?> parent ) {
+		super.handleAddedTo( parent );
 		if( this.componentRows != null ) {
 			//pass
 		} else {
@@ -70,8 +70,8 @@ public abstract class RowsSpringPanel extends SpringPanel {
 		}
 	}
 	@Override
-	protected void removed() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		//todo?
-		super.removed();
-	}
+		super.handleRemovedFrom( parent );
+	};
 }

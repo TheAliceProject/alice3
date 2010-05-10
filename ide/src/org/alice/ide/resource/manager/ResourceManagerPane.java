@@ -633,8 +633,8 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 	}
 
 	@Override
-	protected void adding() {
-		super.adding();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		this.table.getSelectionModel().addListSelectionListener( this.listSelectionAdapter );
 		this.table.addMouseListener( this.mouseAdapter );
 		this.table.addMouseMotionListener( this.mouseAdapter );
@@ -642,12 +642,12 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 	}
 
 	@Override
-	protected void removed() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		this.table.removeMouseMotionListener( this.mouseAdapter );
 		this.table.removeMouseListener( this.mouseAdapter );
 		this.table.getSelectionModel().removeListSelectionListener( this.listSelectionAdapter );
 		//this.table.getColumnModel().getSelectionModel().removeListSelectionListener( this.listSelectionAdapter );
-		super.removed();
+		super.handleRemovedFrom( parent );
 	}
 
 //	@Override

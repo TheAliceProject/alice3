@@ -138,55 +138,79 @@ public abstract class AbstractActionOperation extends Operation {
 //		abstractButton.setModel( null );
 		abstractButton.setAction( null );
 	}
+
 	
+	public < B extends AbstractButton<?> > B register( final B rv ) {
+		Application.getSingleton().register( this );
+		rv.addContainmentObserver( new Component.ContainmentObserver() {
+			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				AbstractActionOperation.this.addAbstractButton( rv );
+			}
+			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				AbstractActionOperation.this.removeAbstractButton( rv );
+			}
+		} );
+		return rv;
+	}
+
 	public Button createButton() {
-		Application.getSingleton().register( this );
-		return new Button() {
-			@Override
-			protected void adding() {
-				AbstractActionOperation.this.addAbstractButton(this);
-				super.adding();
-			}
-
-			@Override
-			protected void removed() {
-				super.removed();
-				AbstractActionOperation.this.removeAbstractButton(this);
-			}
-		};
+		return register( new Button() );
 	}
+
 	public Hyperlink createHyperlink() {
-		Application.getSingleton().register( this );
-		return new Hyperlink() {
-			@Override
-			protected void adding() {
-				AbstractActionOperation.this.addAbstractButton(this);
-				super.adding();
-			}
-
-			@Override
-			protected void removed() {
-				super.removed();
-				AbstractActionOperation.this.removeAbstractButton(this);
-			}
-		};
+		return register( new Hyperlink() );
 	}
-
 	public MenuItem createMenuItem() {
-		Application.getSingleton().register( this );
-		return new MenuItem() {
-			@Override
-			protected void adding() {
-				AbstractActionOperation.this.addAbstractButton(this);
-				super.adding();
-			}
-
-			@Override
-			protected void removed() {
-				super.removed();
-				AbstractActionOperation.this.removeAbstractButton(this);
-			}
-		};
+		return register( new MenuItem() );
 	}
+	
+//	public Button createButton() {
+//		Application.getSingleton().register( this );
+//		return new Button() {
+//			@Override
+//			protected void adding() {
+//				AbstractActionOperation.this.addAbstractButton(this);
+//				super.adding();
+//			}
+//
+//			@Override
+//			protected void removed() {
+//				super.removed();
+//				AbstractActionOperation.this.removeAbstractButton(this);
+//			}
+//		};
+//	}
+//	public Hyperlink createHyperlink() {
+//		Application.getSingleton().register( this );
+//		return new Hyperlink() {
+//			@Override
+//			protected void adding() {
+//				AbstractActionOperation.this.addAbstractButton(this);
+//				super.adding();
+//			}
+//
+//			@Override
+//			protected void removed() {
+//				super.removed();
+//				AbstractActionOperation.this.removeAbstractButton(this);
+//			}
+//		};
+//	}
+//	public MenuItem createMenuItem() {
+//		Application.getSingleton().register( this );
+//		return new MenuItem() {
+//			@Override
+//			protected void adding() {
+//				AbstractActionOperation.this.addAbstractButton(this);
+//				super.adding();
+//			}
+//
+//			@Override
+//			protected void removed() {
+//				super.removed();
+//				AbstractActionOperation.this.removeAbstractButton(this);
+//			}
+//		};
+//	}
 	
 }

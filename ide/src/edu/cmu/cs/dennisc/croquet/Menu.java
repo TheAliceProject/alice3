@@ -66,15 +66,11 @@ public class Menu extends AbstractMenu< javax.swing.JMenu > {
 	}
 	@Override
 	public void addMenu( Menu menu ) {
-		menu.adding();
 		this.getJComponent().add( menu.getJComponent() );
-		menu.added();
 	}
 	@Override
 	public void addMenuItem( AbstractMenuItem<?> menuItem ) {
-		menuItem.adding();
 		this.getJComponent().add( menuItem.getJComponent() );
-		menuItem.added();
 	}
 	@Override
 	public void addSeparator() {

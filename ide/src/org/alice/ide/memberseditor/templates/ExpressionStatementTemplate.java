@@ -53,14 +53,14 @@ public abstract class ExpressionStatementTemplate extends org.alice.ide.template
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression();
 	
 	@Override
-	protected void adding() {
-		super.adding();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		this.refresh();
 	}
 	@Override
-	protected void removed() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		this.removeAllComponents();
-		super.removed();
+		super.handleRemovedFrom( parent );
 	}
 	protected void refresh() {
 		this.removeAllComponents();

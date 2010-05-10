@@ -71,11 +71,9 @@ public class GetsPane extends edu.cmu.cs.dennisc.croquet.Label {
 			public int getIconWidth() {
 				return this.getIconHeight() * GetsPane.this.length + 1;
 			}
-
 			public int getIconHeight() {
 				return (int) (GetsPane.this.getFont().getSize2D() * 1.4f);
 			}
-
 			public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
 				int width = this.getIconWidth();
 				int height = this.getIconHeight();

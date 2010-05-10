@@ -47,6 +47,10 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Component<J extends javax.swing.JComponent> {
+	public interface ContainmentObserver {
+		public void addedTo( Component<?> parent );
+		public void removedFrom( Component<?> parent );
+	}
 	private static java.util.Map<java.awt.Component, Component<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
 
 	/* package-private */static Component<?> lookup(java.awt.Component component) {
@@ -57,19 +61,152 @@ public abstract class Component<J extends javax.swing.JComponent> {
 		}
 	}
 
+
+	private java.awt.Container awtParent;
+	
+//	private java.awt.event.ContainerListener containerListener = new java.awt.event.ContainerListener() {
+//		public void componentAdded(java.awt.event.ContainerEvent e) {
+//			assert e.getContainer() == Component.this.getJComponent();
+//			java.awt.Component awtComponent = e.getChild();
+//			Component<?> child = Component.lookup( awtComponent );
+//			if( child != null ) {
+//				child.handleAddedTo( Component.this );
+//			} else {
+//				if( awtComponent instanceof javax.swing.plaf.UIResource ) {
+//					//pass
+//				} else {
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "no croquet component for child" );
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "    parent:", Component.this );
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtChild:", awtComponent );
+//				}
+//			}
+//		}
+//		public void componentRemoved(java.awt.event.ContainerEvent e) {
+//			assert e.getContainer() == Component.this.getJComponent();
+//			java.awt.Component awtComponent = e.getChild();
+//			Component<?> child = Component.lookup( awtComponent );
+//			if( child != null ) {
+//				child.handleRemovedFrom( Component.this );
+//			} else {
+//				if( awtComponent instanceof javax.swing.plaf.UIResource ) {
+//					//pass
+//				} else {
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "no croquet component for child" );
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "    parent:", Component.this );
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtChild:", awtComponent );
+//				}
+//			}
+//		}
+//	};
+	
+	private java.awt.event.HierarchyListener hierarchyListener = new java.awt.event.HierarchyListener() {
+		public void hierarchyChanged(java.awt.event.HierarchyEvent e) {
+			long flags = e.getChangeFlags();
+			if( ( flags & java.awt.event.HierarchyEvent.PARENT_CHANGED ) != 0 ) {
+				java.awt.Component awtComponent = e.getComponent();
+				java.awt.Component awtChanged = e.getChanged();
+				java.awt.Container awtParent = e.getChangedParent();
+
+				assert awtComponent == Component.this.getJComponent();
+				
+				if( awtComponent == awtChanged ) {
+					if( awtParent != Component.this.awtParent ) {
+						Component.this.handleParentChange( awtParent );
+					} else {
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleParentChange" );
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
+						//edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtChanged:", awtChanged.getClass().getName(), awtChanged );
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtParent:", awtParent.getClass().getName(), awtParent.getLayout() );
+					}
+				}
+			}
+		}
+	};
+
+	private void handleParentChange( java.awt.Container awtParent ) {
+		if( this.awtParent != null ) {
+			Component<?> parent = Component.lookup( this.awtParent );
+			if( parent != null ) {
+				//pass
+			} else {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "no croquet component for parent" );
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtParent:", awtParent.getClass().getName(), awtParent.getLayout() );
+			}
+			this.handleRemovedFrom( parent );			
+		} else {
+			assert awtParent != null;
+		}
+		this.awtParent = awtParent;
+		if( this.awtParent != null ) {
+			Component<?> parent = Component.lookup( this.awtParent );
+			if( parent != null ) {
+				//pass
+			} else {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "no croquet component for parent" );
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtParent:", awtParent.getClass().getName(), awtParent.getLayout() );
+			}
+			this.handleAddedTo( parent );
+		}
+	}
+	private java.util.List< ContainmentObserver > containmentObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	public void addContainmentObserver( ContainmentObserver containmentObserver ) {
+		this.containmentObservers.add( containmentObserver );
+	}
+	public void removeContainmentObserver( ContainmentObserver containmentObserver ) {
+		this.containmentObservers.remove( containmentObserver );
+	}
+	
+	protected void handleAddedTo( Component<?> parent ) {
+		for( ContainmentObserver containmentObserver : this.containmentObservers ) {
+			containmentObserver.addedTo(parent);
+		}
+	}
+	protected void handleRemovedFrom( Component<?> parent ) {
+		for( ContainmentObserver containmentObserver : this.containmentObservers ) {
+			containmentObserver.removedFrom(parent);
+		}
+	}
+	
+//	@Deprecated
+//	/*package-private*/ final void adding() {
+//	}
+//
+//	@Deprecated
+//	/*package-private*/ final void added() {
+//	}
+//
+//	@Deprecated
+//	/*package-private*/ final void removing() {
+//	}
+//
+//	@Deprecated
+//	/*package-private*/ final void removed() {
+//	}
+
 	private J jComponent;
-
 	protected abstract J createJComponent();
-
-	// todo: reduce visibility
+	// todo: reduce visibility to /*package-private*/
 	public final J getJComponent() {
 		if (this.jComponent != null) {
 			// pass
 		} else {
 			this.jComponent = this.createJComponent();
+			this.jComponent.addHierarchyListener( this.hierarchyListener );
+			//this.jComponent.addContainerListener( this.containerListener );
 			Component.map.put(this.jComponent, this);
 		}
 		return this.jComponent;
+	}
+	
+	public void release() {
+		if( this.jComponent != null ) {
+			//this.jComponent.removeContainerListener( this.containerListener );
+			this.jComponent.removeHierarchyListener( this.hierarchyListener );
+			Component.map.remove(this.jComponent);
+			this.jComponent = null;
+		}
 	}
 
 	public java.util.Locale getLocale() {
@@ -277,18 +414,6 @@ public abstract class Component<J extends javax.swing.JComponent> {
 		return this.getJComponent().getComponentCount();
 	}
 
-	protected void adding() {
-	}
-
-	protected void added() {
-	}
-
-	protected void removing() {
-	}
-
-	protected void removed() {
-	}
-
 	@Deprecated
 	protected void forgetAndRemoveAllComponents() {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: forgetAndRemoveAllComponents");
@@ -353,22 +478,16 @@ public abstract class Component<J extends javax.swing.JComponent> {
 
 	protected void internalAddComponent(Component<?> component) {
 		assert component != null;
-		component.adding();
 		this.getJComponent().add(component.getJComponent());
-		component.added();
 	}
 
 	protected void internalAddComponent(Component<?> component, Object constraints) {
 		assert component != null;
-		component.adding();
 		this.getJComponent().add(component.getJComponent(), constraints);
-		component.added();
 	}
 
 	protected void internalRemoveComponent(Component<?> component) {
 		assert component != null;
-		component.removing();
 		this.getJComponent().remove(component.getJComponent());
-		component.removed();
 	}
 }
