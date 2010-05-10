@@ -47,21 +47,21 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class ScrollPane extends Component< javax.swing.JScrollPane > {
-	public enum KVerticalScrollbarPolicy {
+	public enum VerticalScrollbarPolicy {
 		NEVER( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_NEVER ),
 		AS_NEEDED( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED ),
 		ALWAYS( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
 		private int internal;
-		private KVerticalScrollbarPolicy( int internal ) {
+		private VerticalScrollbarPolicy( int internal ) {
 			this.internal = internal;
 		}
 	}
-	public enum KHorizontalScrollbarPolicy {
+	public enum HorizontalScrollbarPolicy {
 		NEVER( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ),
 		AS_NEEDED( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED ),
 		ALWAYS( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS );
 		private int internal;
-		private KHorizontalScrollbarPolicy( int internal ) {
+		private HorizontalScrollbarPolicy( int internal ) {
 			this.internal = internal;
 		}
 	}
@@ -72,12 +72,12 @@ public class ScrollPane extends Component< javax.swing.JScrollPane > {
 	public ScrollPane( Component<?> viewportView ) {
 		this.setViewportView( viewportView );
 	}
-	public ScrollPane( Component<?> viewportView, KVerticalScrollbarPolicy verticalScrollbarPolicy, KHorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
+	public ScrollPane( Component<?> viewportView, VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
 		this.setViewportView( viewportView );
 		this.setVerticalScrollbarPolicy( verticalScrollbarPolicy );
 		this.setHorizontalScrollbarPolicy( horizontalScrollbarPolicy );
 	}
-	public ScrollPane( KVerticalScrollbarPolicy verticalScrollbarPolicy, KHorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
+	public ScrollPane( VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
 		this.setVerticalScrollbarPolicy( verticalScrollbarPolicy );
 		this.setHorizontalScrollbarPolicy( horizontalScrollbarPolicy );
 	}
@@ -93,11 +93,11 @@ public class ScrollPane extends Component< javax.swing.JScrollPane > {
 			this.getJComponent().setViewportView( null );
 		}
 	}
-	public void setVerticalScrollbarPolicy( KVerticalScrollbarPolicy verticalScrollbarPolicy ) {
+	public void setVerticalScrollbarPolicy( VerticalScrollbarPolicy verticalScrollbarPolicy ) {
 		assert verticalScrollbarPolicy != null;
 		this.getJComponent().setVerticalScrollBarPolicy( verticalScrollbarPolicy.internal );
 	}
-	public void setHorizontalScrollbarPolicy( KHorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
+	public void setHorizontalScrollbarPolicy( HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
 		assert horizontalScrollbarPolicy != null;
 		this.getJComponent().setHorizontalScrollBarPolicy( horizontalScrollbarPolicy.internal );
 	}

@@ -54,12 +54,6 @@ public abstract class Application {
 		public void localeChanged( java.util.Locale previousLocale, java.util.Locale nextLocale );
 	}
 
-	//	private static class RootContext extends CompositeContext {
-//		public RootContext() {
-//			super( null, null, null, null );
-//		}
-//	};
-//	private RootContext rootContext = new RootContext();
 	private static Application singleton;
 	public static Application getSingleton() {
 		return singleton;

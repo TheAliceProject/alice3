@@ -51,9 +51,11 @@ public class TabbedPaneSelectionOperation extends Operation {
 		public void selected( TabIsSelectedStateOperation prev, TabIsSelectedStateOperation next );
 	}
 	private class TabIsSelectedObserver implements BooleanStateOperation.ValueObserver {
+		private TabIsSelectedStateOperation tabIsSelectedOperation;
 		private TabbedPane tabbedPane;
 		private edu.cmu.cs.dennisc.croquet.TabbedPane.Key key;
-		public TabIsSelectedObserver( TabbedPane tabbedPane, edu.cmu.cs.dennisc.croquet.TabbedPane.Key key ) {
+		public TabIsSelectedObserver( TabIsSelectedStateOperation tabIsSelectedOperation, TabbedPane tabbedPane, edu.cmu.cs.dennisc.croquet.TabbedPane.Key key ) {
+			this.tabIsSelectedOperation = tabIsSelectedOperation;
 			this.tabbedPane = tabbedPane;
 			this.key = key;
 		}
@@ -63,6 +65,7 @@ public class TabbedPaneSelectionOperation extends Operation {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( nextValue );
 			if( nextValue ) {
 				this.tabbedPane.selectTab( this.key );
+				TabbedPaneSelectionOperation.this.setCurrentSelectedTabOperation( this.tabIsSelectedOperation );
 			}
 		}
 	};
@@ -127,7 +130,7 @@ public class TabbedPaneSelectionOperation extends Operation {
 				if( tabIsSelectedOperation.getState() ) {
 					this.singletonTabbedPane.selectTab( key );
 				}
-				tabIsSelectedOperation.addValueObserver( new TabIsSelectedObserver(this.singletonTabbedPane, key) );
+				tabIsSelectedOperation.addValueObserver( new TabIsSelectedObserver( tabIsSelectedOperation, this.singletonTabbedPane, key) );
 			}
 		}
 		return this.singletonTabbedPane;

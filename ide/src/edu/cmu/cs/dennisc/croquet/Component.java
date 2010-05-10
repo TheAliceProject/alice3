@@ -47,25 +47,27 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Component<J extends javax.swing.JComponent> {
-	private static java.util.Map< java.awt.Component, Component< ? > > map = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
-	/*package-private*/ static Component< ? > lookup( java.awt.Component component ) {
-		if( component != null ) {
-			return Component.map.get( component );
+	private static java.util.Map<java.awt.Component, Component<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
+
+	/* package-private */static Component<?> lookup(java.awt.Component component) {
+		if (component != null) {
+			return Component.map.get(component);
 		} else {
 			return null;
 		}
 	}
-	
+
 	private J jComponent;
+
 	protected abstract J createJComponent();
 
-	//todo: reduce visibility
+	// todo: reduce visibility
 	public final J getJComponent() {
-		if( this.jComponent != null ) {
-			//pass
+		if (this.jComponent != null) {
+			// pass
 		} else {
 			this.jComponent = this.createJComponent();
-			Component.map.put( this.jComponent, this );
+			Component.map.put(this.jComponent, this);
 		}
 		return this.jComponent;
 	}
@@ -73,253 +75,300 @@ public abstract class Component<J extends javax.swing.JComponent> {
 	public java.util.Locale getLocale() {
 		return this.getJComponent().getLocale();
 	}
+
 	public java.awt.Font getFont() {
 		return this.getJComponent().getFont();
 	}
-	public void scaleFont( float scaleFactor ) {
-		edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToScaledFont( this.getJComponent(), scaleFactor );
+
+	public void scaleFont(float scaleFactor) {
+		edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToScaledFont(this.getJComponent(), scaleFactor);
 	}
-	public void setFontSize( float fontSize ) {
-		this.getFont().deriveFont( fontSize );
+
+	public void setFontSize(float fontSize) {
+		this.getFont().deriveFont(fontSize);
 	}
-	public void changeFont( edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? >... textAttributes ) {
-		edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToDerivedFont( this.getJComponent(), textAttributes );
+
+	public void changeFont(edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes) {
+		edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToDerivedFont(this.getJComponent(), textAttributes);
 	}
-	
-	
+
+	/*package-private*/ boolean isEnabled() {
+		return this.getJComponent().isEnabled();
+	}
+	/*package-private*/ void setEnabled(boolean isEnabled) {
+		this.getJComponent().setEnabled(isEnabled);
+	}
+
 	public java.awt.Color getForegroundColor() {
 		return this.getJComponent().getForeground();
 	}
-	public void setForegroundColor( java.awt.Color color ) {
-		this.getJComponent().setForeground( color );
+
+	public void setForegroundColor(java.awt.Color color) {
+		this.getJComponent().setForeground(color);
 	}
+
 	public java.awt.Color getBackgroundColor() {
 		return this.getJComponent().getBackground();
 	}
-	public void setBackgroundColor( java.awt.Color color ) {
-		this.getJComponent().setBackground( color );
+
+	public void setBackgroundColor(java.awt.Color color) {
+		this.getJComponent().setBackground(color);
 	}
+
 	public boolean isVisible() {
 		return this.getJComponent().isVisible();
 	}
-	public void setVisible( boolean isVisible ) {
-		this.getJComponent().setVisible( isVisible );
+
+	public void setVisible(boolean isVisible) {
+		this.getJComponent().setVisible(isVisible);
 	}
-	public boolean isEnabled() {
-		return this.getJComponent().isEnabled();
-	}
-	public void setEnabled( boolean isEnabled ) {
-		this.getJComponent().setEnabled( isEnabled );
-	}
+
 	public boolean isOpaque() {
 		return this.getJComponent().isOpaque();
 	}
-	public void setOpaque( boolean isOpaque ) {
-		this.getJComponent().setOpaque( isOpaque );
+
+	public void setOpaque(boolean isOpaque) {
+		this.getJComponent().setOpaque(isOpaque);
 	}
+
 	public boolean getIgnoreRepaint() {
 		return this.getJComponent().getIgnoreRepaint();
 	}
-	public void setIgnoreRepaint( boolean ignoreRepaint ) {
-		this.getJComponent().setIgnoreRepaint( ignoreRepaint );
+
+	public void setIgnoreRepaint(boolean ignoreRepaint) {
+		this.getJComponent().setIgnoreRepaint(ignoreRepaint);
 	}
 
 	public String getToolTipText() {
 		return this.getJComponent().getToolTipText();
 	}
-	public void setToolTipText( String toolTipText ) {
-		this.getJComponent().setToolTipText( toolTipText );
+
+	public void setToolTipText(String toolTipText) {
+		this.getJComponent().setToolTipText(toolTipText);
 	}
+
 	public javax.swing.border.Border getBorder() {
 		return this.getJComponent().getBorder();
 	}
-	public void setBorder( javax.swing.border.Border border ) {
-		this.getJComponent().setBorder( border );
+
+	public void setBorder(javax.swing.border.Border border) {
+		this.getJComponent().setBorder(border);
 	}
+
 	public java.awt.Cursor getCursor() {
 		return this.getJComponent().getCursor();
 	}
-	public void setCursor( java.awt.Cursor cursor ) {
-		this.getJComponent().setCursor( cursor );
+
+	public void setCursor(java.awt.Cursor cursor) {
+		this.getJComponent().setCursor(cursor);
 	}
 
 	public float getAlignmentX() {
 		return this.getJComponent().getAlignmentX();
 	}
-	public void setAlignmentX( float alignmentX ) {
-		this.getJComponent().setAlignmentX( alignmentX );
+
+	public void setAlignmentX(float alignmentX) {
+		this.getJComponent().setAlignmentX(alignmentX);
 	}
+
 	public float getAlignmentY() {
 		return this.getJComponent().getAlignmentY();
 	}
-	public void setAlignmentY( float alignmentY ) {
-		this.getJComponent().setAlignmentY( alignmentY );
+
+	public void setAlignmentY(float alignmentY) {
+		this.getJComponent().setAlignmentY(alignmentY);
 	}
 
-	private void scrollRectToVisible( java.awt.Rectangle rect ) {
-		this.getJComponent().scrollRectToVisible( rect );
+	private void scrollRectToVisible(java.awt.Rectangle rect) {
+		this.getJComponent().scrollRectToVisible(rect);
 	}
+
 	public void scrollToVisible() {
-		this.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( this.getJComponent() ) );
+		this.scrollRectToVisible(javax.swing.SwingUtilities.getLocalBounds(this.getJComponent()));
 	}
 
 	public int getX() {
 		return this.getJComponent().getX();
 	}
+
 	public int getY() {
 		return this.getJComponent().getY();
 	}
+
 	public java.awt.Point getLocationOnScreen() {
 		return this.getJComponent().getLocationOnScreen();
 	}
+
 	public java.awt.Insets getInsets() {
 		return this.getJComponent().getInsets();
 	}
+
 	public java.awt.Rectangle getBounds() {
 		return this.getJComponent().getBounds();
 	}
-	
-	public <T extends Component<?>> java.util.List< T > findAllMatches( Class<T> cls, edu.cmu.cs.dennisc.pattern.Criterion< T > criterion ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: findAllMatches" );
+
+	public <T extends Component<?>> java.util.List<T> findAllMatches(Class<T> cls, edu.cmu.cs.dennisc.pattern.Criterion<T> criterion) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: findAllMatches");
 		return java.util.Collections.emptyList();
 	}
-	public <T extends Component<?>> java.util.List< T > findAllMatches( Class<T> cls ) {
-		return this.findAllMatches( cls, null );
+
+	public <T extends Component<?>> java.util.List<T> findAllMatches(Class<T> cls) {
+		return this.findAllMatches(cls, null);
 	}
-	
+
 	@Deprecated
-	public java.awt.Point convertPoint( java.awt.Point pt, java.awt.Component destination ) {
-		return javax.swing.SwingUtilities.convertPoint( this.getJComponent(), pt, destination );
+	public java.awt.Point convertPoint(java.awt.Point pt, java.awt.Component destination) {
+		return javax.swing.SwingUtilities.convertPoint(this.getJComponent(), pt, destination);
 	}
-	public java.awt.Point convertPoint( java.awt.Point pt, Component< ? > destination ) {
-		return javax.swing.SwingUtilities.convertPoint( this.getJComponent(), pt, destination.getJComponent() );
+
+	public java.awt.Point convertPoint(java.awt.Point pt, Component<?> destination) {
+		return javax.swing.SwingUtilities.convertPoint(this.getJComponent(), pt, destination.getJComponent());
 	}
+
 	@Deprecated
-	public java.awt.Rectangle convertRectangle( java.awt.Rectangle rectangle, java.awt.Component destination ) {
-		return javax.swing.SwingUtilities.convertRectangle( this.getJComponent(), rectangle, destination );
+	public java.awt.Rectangle convertRectangle(java.awt.Rectangle rectangle, java.awt.Component destination) {
+		return javax.swing.SwingUtilities.convertRectangle(this.getJComponent(), rectangle, destination);
 	}
-	public java.awt.Rectangle convertRectangle( java.awt.Rectangle rectangle, Component< ? > destination ) {
-		return javax.swing.SwingUtilities.convertRectangle( this.getJComponent(), rectangle, destination.getJComponent() );
+
+	public java.awt.Rectangle convertRectangle(java.awt.Rectangle rectangle, Component<?> destination) {
+		return javax.swing.SwingUtilities.convertRectangle(this.getJComponent(), rectangle, destination.getJComponent());
 	}
+
 	@Deprecated
-	public java.awt.event.MouseEvent convertMouseEvent( java.awt.event.MouseEvent e, java.awt.Component destination ) {
-		return edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent( this.getJComponent(), e, destination );
+	public java.awt.event.MouseEvent convertMouseEvent(java.awt.event.MouseEvent e, java.awt.Component destination) {
+		return edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent(this.getJComponent(), e, destination);
 	}
-	public java.awt.event.MouseEvent convertMouseEvent( java.awt.event.MouseEvent e, Component< ? > destination ) {
-		return edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent( this.getJComponent(), e, destination.getJComponent() );
+
+	public java.awt.event.MouseEvent convertMouseEvent(java.awt.event.MouseEvent e, Component<?> destination) {
+		return edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent(this.getJComponent(), e, destination.getJComponent());
 	}
-	
-	public boolean isAncestorOf( Component< ? > other ) {
-		return this.getJComponent().isAncestorOf( other.getJComponent() );
+
+	public boolean isAncestorOf(Component<?> other) {
+		return this.getJComponent().isAncestorOf(other.getJComponent());
 	}
-	
+
 	@Deprecated
-	public Component< ? > getParent() {
-		return Component.lookup( this.getJComponent().getParent() );
+	public Component<?> getParent() {
+		return Component.lookup(this.getJComponent().getParent());
 	}
+
 	@Deprecated
 	public Root<?> getRoot() {
-		return Root.lookup( javax.swing.SwingUtilities.getRoot( this.getJComponent() ) );
+		return Root.lookup(javax.swing.SwingUtilities.getRoot(this.getJComponent()));
 	}
+
 	@Deprecated
-	public Component<?> getComponent( int i ) {
-		return Component.lookup( this.getJComponent().getComponent( i ) );
+	public Component<?> getComponent(int i) {
+		return Component.lookup(this.getJComponent().getComponent(i));
 	}
+
 	@Deprecated
 	public Component<?>[] getComponents() {
 		java.awt.Component[] components = this.getJComponent().getComponents();
 		final int N = components.length;
-		Component< ? >[] rv = new Component< ? >[ N ];
-		for( int i=0; i<N; i++ ) {
-			rv[ i ] = Component.lookup( components[ i ] );
+		Component<?>[] rv = new Component<?>[N];
+		for (int i = 0; i < N; i++) {
+			rv[i] = Component.lookup(components[i]);
 		}
 		return rv;
 	}
+
 	public int getComponentCount() {
 		return this.getJComponent().getComponentCount();
 	}
 
 	protected void adding() {
 	}
+
 	protected void added() {
 	}
+
 	protected void removing() {
 	}
+
 	protected void removed() {
 	}
-	
+
 	@Deprecated
 	protected void forgetAndRemoveAllComponents() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: forgetAndRemoveAllComponents" );
-		//throw new RuntimeException( "todo" );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: forgetAndRemoveAllComponents");
+		// throw new RuntimeException( "todo" );
 	}
-	
+
 	public int getWidth() {
 		return this.getJComponent().getWidth();
 	}
+
 	public int getHeight() {
 		return this.getJComponent().getHeight();
 	}
-	
+
 	protected void repaint() {
 		this.getJComponent().repaint();
 	}
+
 	private void revalidate() {
 		this.getJComponent().revalidate();
 	}
+
 	public void revalidateAndRepaint() {
 		this.revalidate();
 		this.repaint();
 	}
-	
+
 	@Deprecated
-	public void addMouseListener( java.awt.event.MouseListener listener ) {
-		this.getJComponent().addMouseListener( listener );
-	}
-	@Deprecated
-	public void removeMouseListener( java.awt.event.MouseListener listener ) {
-		this.getJComponent().removeMouseListener( listener );
-	}
-	@Deprecated
-	public void addMouseMotionListener( java.awt.event.MouseMotionListener listener ) {
-		this.getJComponent().addMouseMotionListener( listener );
-	}
-	@Deprecated
-	public void removeMouseMotionListener( java.awt.event.MouseMotionListener listener ) {
-		this.getJComponent().removeMouseMotionListener( listener );
-	}
-	@Deprecated
-	public void addMouseWheelListener( java.awt.event.MouseWheelListener listener ) {
-		this.getJComponent().addMouseWheelListener( listener );
-	}
-	@Deprecated
-	public void removeMouseWheelListener( java.awt.event.MouseWheelListener listener ) {
-		this.getJComponent().removeMouseWheelListener( listener );
-	}
-	
-	
-	@Deprecated 
-	public void setPreferredSize( java.awt.Dimension preferredSize ) {
-		this.getJComponent().setPreferredSize( preferredSize );
+	public void addMouseListener(java.awt.event.MouseListener listener) {
+		this.getJComponent().addMouseListener(listener);
 	}
 
-	protected void internalAddComponent( Component<?> component ) {
+	@Deprecated
+	public void removeMouseListener(java.awt.event.MouseListener listener) {
+		this.getJComponent().removeMouseListener(listener);
+	}
+
+	@Deprecated
+	public void addMouseMotionListener(java.awt.event.MouseMotionListener listener) {
+		this.getJComponent().addMouseMotionListener(listener);
+	}
+
+	@Deprecated
+	public void removeMouseMotionListener(java.awt.event.MouseMotionListener listener) {
+		this.getJComponent().removeMouseMotionListener(listener);
+	}
+
+	@Deprecated
+	public void addMouseWheelListener(java.awt.event.MouseWheelListener listener) {
+		this.getJComponent().addMouseWheelListener(listener);
+	}
+
+	@Deprecated
+	public void removeMouseWheelListener(java.awt.event.MouseWheelListener listener) {
+		this.getJComponent().removeMouseWheelListener(listener);
+	}
+
+	@Deprecated
+	public void setPreferredSize(java.awt.Dimension preferredSize) {
+		this.getJComponent().setPreferredSize(preferredSize);
+	}
+
+	protected void internalAddComponent(Component<?> component) {
 		assert component != null;
 		component.adding();
-		this.getJComponent().add( component.getJComponent() );
+		this.getJComponent().add(component.getJComponent());
 		component.added();
 	}
-	protected void internalAddComponent( Component<?> component, Object constraints ) {
+
+	protected void internalAddComponent(Component<?> component, Object constraints) {
 		assert component != null;
 		component.adding();
-		this.getJComponent().add( component.getJComponent(), constraints );
+		this.getJComponent().add(component.getJComponent(), constraints);
 		component.added();
 	}
-	protected void internalRemoveComponent( Component<?> component ) {
+
+	protected void internalRemoveComponent(Component<?> component) {
 		assert component != null;
 		component.removing();
-		this.getJComponent().remove( component.getJComponent() );
+		this.getJComponent().remove(component.getJComponent());
 		component.removed();
 	}
 }
-

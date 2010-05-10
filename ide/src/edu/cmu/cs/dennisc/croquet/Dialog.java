@@ -72,11 +72,15 @@ public final class Dialog extends Root< javax.swing.JDialog > {
 		javax.swing.JDialog rv;
 		if( owner != null ) {
 			Root<?> root = owner.getRoot();
-			java.awt.Window ownerWindow = root.getAwtWindow();
-			if( ownerWindow instanceof java.awt.Frame ) {
-				rv = new javax.swing.JDialog( (java.awt.Frame)ownerWindow );
-			} else 	if( ownerWindow instanceof java.awt.Dialog ) {
-				rv = new javax.swing.JDialog( (java.awt.Dialog)ownerWindow );
+			if( root != null ) {
+				java.awt.Window ownerWindow = root.getAwtWindow();
+				if( ownerWindow instanceof java.awt.Frame ) {
+					rv = new javax.swing.JDialog( (java.awt.Frame)ownerWindow );
+				} else 	if( ownerWindow instanceof java.awt.Dialog ) {
+					rv = new javax.swing.JDialog( (java.awt.Dialog)ownerWindow );
+				} else {
+					rv = null;
+				}
 			} else {
 				rv = null;
 			}

@@ -46,30 +46,61 @@ package org.alice.app.operations.file;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectAndLoadProjectOperation extends org.alice.app.operations.file.UriActionOperation {
+public abstract class SelectAndLoadProjectOperation extends org.alice.app.operations.file.UriInputPanelOperation {
+	private org.alice.app.openprojectpane.SelectProjectToOpenPanel selectProjectToOpenPanel;
 	public SelectAndLoadProjectOperation( java.util.UUID individualUUID ) {
-		super( individualUUID );
+		super( individualUUID, "Load Project" );
 	}
 	protected abstract boolean isNew();
+//	@Override
+//	public boolean isOKButtonValid() {
+//		return super.isOKButtonValid() && this.getActualInputValue() != null;
+//	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
-		org.alice.app.ProjectApplication application = this.getProjectApplication();
-		org.alice.app.openprojectpane.OpenProjectPane openProjectPane = application.getOpenProjectPane();
-		openProjectPane.selectAppropriateTab( this.isNew() );
-		while( true ) {
-			java.net.URI uri = openProjectPane.showInJDialog( button, "Open Project" );
-			//todo: just load default project
-			if( uri != null ) {
+	protected edu.cmu.cs.dennisc.croquet.Component<?> createContentPane() {
+		if( this.selectProjectToOpenPanel != null ) {
+			//pass
+		} else {
+			this.selectProjectToOpenPanel = new org.alice.app.openprojectpane.SelectProjectToOpenPanel();
+		}
+		return this.selectProjectToOpenPanel;
+	}
+	@Override
+	protected void prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+		this.selectProjectToOpenPanel.refresh();
+	}
+	@Override
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+		if( isOk ) {
+			java.net.URI uri = this.selectProjectToOpenPanel.getSelectedURI();
+			if (uri != null) {
 				context.commitAndInvokeDo( new LoadUriEdit( context, uri ) );
-				break;
 			} else {
-				if( application.getFile() == null ) {
-					application.showMessageDialog( "Please select a project to open." );
-				} else {
-					context.cancel();
-					break;
-				}
+				context.cancel();
 			}
+		} else {
+			context.cancel();
 		}
 	}
+//	@Override
+//	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+//		org.alice.app.ProjectApplication application = this.getProjectApplication();
+//		org.alice.app.openprojectpane.OpenProjectPane openProjectPane = application.getOpenProjectPane();
+//		openProjectPane.selectAppropriateTab( this.isNew() );
+//		while( true ) {
+//			java.net.URI uri = openProjectPane.showInJDialog( button, "Open Project" );
+//			//todo: just load default project
+//			if( uri != null ) {
+//				context.commitAndInvokeDo( new LoadUriEdit( context, uri ) );
+//				break;
+//			} else {
+//				if( application.getFile() == null ) {
+//					application.showMessageDialog( "Please select a project to open." );
+//				} else {
+//					context.cancel();
+//					break;
+//				}
+//			}
+//		}
+//	}
 }

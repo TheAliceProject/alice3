@@ -156,10 +156,10 @@ public /*final*/ class BooleanStateOperation extends Operation {
 				valueObserver.changing( nextValue );
 			}
 			this.buttonModel.setSelected(nextValue);
+			this.state = nextValue;
 			for( ValueObserver valueObserver : this.valueObservers ) {
 				valueObserver.changed( nextValue );
 			}
-			this.state = nextValue;
 
 			this.buttonModel.addItemListener(itemListener);
 			this.updateName();

@@ -60,6 +60,14 @@ public abstract class ListContentPanel extends TabContentPanel {
 				edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g, ListContentPanel.this.getTextForZeroProjects(), this.getSize() );
 			}
 		}
+		@Override
+		public java.awt.Dimension getPreferredSize() {
+			return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 400, 300 );
+		}
+//		@Override
+//		public java.awt.Dimension getMaximumSize() {
+//			return this.getPreferredSize();
+//		}
 	};
 	
 	private edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {

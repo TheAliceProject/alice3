@@ -96,16 +96,16 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 	}
 
 	protected abstract org.alice.app.openprojectpane.TabContentPanel createTemplatesTabContentPane();
-	private org.alice.app.openprojectpane.OpenProjectPane openProjectPane;
-	public org.alice.app.openprojectpane.OpenProjectPane getOpenProjectPane() {
-		if( this.openProjectPane != null ) {
-			//pass
-		} else {
-			this.openProjectPane = new org.alice.app.openprojectpane.OpenProjectPane(); 
-		}
-		this.openProjectPane.refresh();
-		return this.openProjectPane;
-	}
+//	private org.alice.app.openprojectpane.OpenProjectPane openProjectPane;
+//	public org.alice.app.openprojectpane.OpenProjectPane getOpenProjectPane() {
+//		if( this.openProjectPane != null ) {
+//			//pass
+//		} else {
+//			this.openProjectPane = new org.alice.app.openprojectpane.OpenProjectPane(); 
+//		}
+//		this.openProjectPane.refresh();
+//		return this.openProjectPane;
+//	}
 
 	private java.util.Map< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node > mapUUIDToNode = new java.util.HashMap< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node >();
 

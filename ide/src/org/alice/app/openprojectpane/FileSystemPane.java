@@ -40,67 +40,68 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+
+package org.alice.app.openprojectpane;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TabIsSelectedStateOperation extends BooleanStateOperation {
-	public TabIsSelectedStateOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, boolean initialState ) {
-		super( groupUUID, individualUUID, initialState );
-	}
-	public TabIsSelectedStateOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, boolean initialState, String title ) {
-		super( groupUUID, individualUUID, initialState, title );
-	}
-	
-	//todo: add scrollpane
-	
-	private edu.cmu.cs.dennisc.croquet.ScrollPane singletonScrollPane;
+class FileSystemPane extends TabContentPanel {
+	private javax.swing.JTextField textField = new javax.swing.JTextField();
 
-	protected ScrollPane createSingletonScrollPane() {
-		ScrollPane rv = new edu.cmu.cs.dennisc.croquet.ScrollPane( this.getSingletonView() );
-		rv.setOpaque( false );
-		rv.setBackgroundColor( this.getSingletonView().getBackgroundColor() );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		rv.getJComponent().getVerticalScrollBar().setUnitIncrement( 12 );
-		return rv;
-	}
-	public final ScrollPane getSingletonScrollPane() {
-		if( this.singletonScrollPane != null ) {
-			//pass
-		} else {
-			this.singletonScrollPane = this.createSingletonScrollPane();
-		}
-		return this.singletonScrollPane;
-	}
-	
-	private Component<?> singletonView;
-	public final Component<?> getSingletonView() {
-		if( this.singletonView != null ) {
-			//pass
-		} else {
-			this.singletonView = this.createSingletonView();
-		}
-		return this.singletonView;
-	}
-	protected abstract Component<?> createSingletonView();
-	protected abstract boolean isCloseAffordanceDesired();
+	public FileSystemPane() {
+		this.textField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+			private void handleUpdate(javax.swing.event.DocumentEvent e) {
+				FileSystemPane.this.updateOKButton();
+			}
 
-	/*package-private*/ TabTitle createTabTitle() {
-		Application.getSingleton().register( this );
-		return new TabTitle( this.isCloseAffordanceDesired() ) {
-			@Override
-			protected void adding() {
-				TabIsSelectedStateOperation.this.addAbstractButton(this);
-				super.adding();
+			public void changedUpdate(javax.swing.event.DocumentEvent e) {
+				this.handleUpdate(e);
+			}
+
+			public void insertUpdate(javax.swing.event.DocumentEvent e) {
+				this.handleUpdate(e);
+			}
+
+			public void removeUpdate(javax.swing.event.DocumentEvent e) {
+				this.handleUpdate(e);
+			}
+		});
+
+		class BrowseOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+			public BrowseOperation() {
+				super(edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString("67936a64-be55-44d5-9441-4cc3cce5cc75"));
+				this.setName("browse...");
 			}
 
 			@Override
-			protected void removed() {
-				super.removed();
-				TabIsSelectedStateOperation.this.removeAbstractButton(this);
+			protected void perform(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
+				java.io.File file = edu.cmu.cs.dennisc.croquet.Application.getSingleton().showOpenFileDialog(org.alice.app.ProjectApplication.getSingleton().getMyProjectsDirectory(), null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION, true);
+				if (file != null) {
+					FileSystemPane.this.textField.setText(edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible(file));
+				}
+				context.finish();
 			}
-		};
+		}
+
+		BrowseOperation browseOperation = new BrowseOperation();
+		edu.cmu.cs.dennisc.croquet.BorderPanel pane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		pane.setOpaque(false);
+		pane.addComponent(new edu.cmu.cs.dennisc.croquet.Label("file:"), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.WEST);
+		pane.addComponent(new edu.cmu.cs.dennisc.croquet.SwingAdapter(this.textField), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
+		pane.addComponent(browseOperation.createButton(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.EAST);
+
+		this.addComponent(pane, Constraint.NORTH);
 	}
-	
+
+	@Override
+	public java.net.URI getSelectedURI() {
+		String path = this.textField.getText();
+		java.io.File file = new java.io.File(path);
+		if (file.exists()) {
+			return file.toURI();
+		} else {
+			return null;
+		}
+	}
 }

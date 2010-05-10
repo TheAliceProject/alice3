@@ -47,16 +47,19 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public final class Window extends Root<javax.swing.JWindow> {
-
 	private static javax.swing.JWindow createJWindow( Component<?> owner ) {
 		javax.swing.JWindow rv;
 		if( owner != null ) {
 			Root<?> root = owner.getRoot();
-			java.awt.Window ownerWindow = root.getAwtWindow();
-			if( ownerWindow instanceof java.awt.Frame ) {
-				rv = new javax.swing.JWindow( (java.awt.Frame)ownerWindow );
+			if( root != null ) {
+				java.awt.Window ownerWindow = root.getAwtWindow();
+				if( ownerWindow instanceof java.awt.Frame ) {
+					rv = new javax.swing.JWindow( (java.awt.Frame)ownerWindow );
+				} else {
+					rv = new javax.swing.JWindow( ownerWindow );
+				}
 			} else {
-				rv = new javax.swing.JWindow( ownerWindow );
+				rv = new javax.swing.JWindow();
 			}
 		} else {
 			rv = new javax.swing.JWindow();

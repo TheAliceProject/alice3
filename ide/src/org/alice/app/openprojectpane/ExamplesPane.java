@@ -40,67 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+
+package org.alice.app.openprojectpane;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TabIsSelectedStateOperation extends BooleanStateOperation {
-	public TabIsSelectedStateOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, boolean initialState ) {
-		super( groupUUID, individualUUID, initialState );
+class ExamplesPane extends ApplicationRootDirectoryListPane {
+	@Override
+	public String getSubPath() {
+		return "projects/examples";
 	}
-	public TabIsSelectedStateOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, boolean initialState, String title ) {
-		super( groupUUID, individualUUID, initialState, title );
-	}
-	
-	//todo: add scrollpane
-	
-	private edu.cmu.cs.dennisc.croquet.ScrollPane singletonScrollPane;
-
-	protected ScrollPane createSingletonScrollPane() {
-		ScrollPane rv = new edu.cmu.cs.dennisc.croquet.ScrollPane( this.getSingletonView() );
-		rv.setOpaque( false );
-		rv.setBackgroundColor( this.getSingletonView().getBackgroundColor() );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		rv.getJComponent().getVerticalScrollBar().setUnitIncrement( 12 );
-		return rv;
-	}
-	public final ScrollPane getSingletonScrollPane() {
-		if( this.singletonScrollPane != null ) {
-			//pass
-		} else {
-			this.singletonScrollPane = this.createSingletonScrollPane();
-		}
-		return this.singletonScrollPane;
-	}
-	
-	private Component<?> singletonView;
-	public final Component<?> getSingletonView() {
-		if( this.singletonView != null ) {
-			//pass
-		} else {
-			this.singletonView = this.createSingletonView();
-		}
-		return this.singletonView;
-	}
-	protected abstract Component<?> createSingletonView();
-	protected abstract boolean isCloseAffordanceDesired();
-
-	/*package-private*/ TabTitle createTabTitle() {
-		Application.getSingleton().register( this );
-		return new TabTitle( this.isCloseAffordanceDesired() ) {
-			@Override
-			protected void adding() {
-				TabIsSelectedStateOperation.this.addAbstractButton(this);
-				super.adding();
-			}
-
-			@Override
-			protected void removed() {
-				super.removed();
-				TabIsSelectedStateOperation.this.removeAbstractButton(this);
-			}
-		};
-	}
-	
 }

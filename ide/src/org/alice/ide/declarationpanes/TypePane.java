@@ -93,7 +93,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 			}
 		};
 		
-		this.typeComboBox.setEnabled( isTypeComboBoxEnabled );
+		this.typeComboBox.getJComponent().setEnabled( isTypeComboBoxEnabled );
 		
 		isArrayProperty.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
@@ -138,7 +138,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 //		} else {
 //			this.typeComboBox.setSelectedItem( type );
 //		}
-		this.typeComboBox.setEnabled( false );
+		this.typeComboBox.getJComponent().setEnabled( false );
 //		this.isArrayCheckBox.setSelected( type.isArray() );
 //		this.isArrayCheckBox.setEnabled( false );
 	}
