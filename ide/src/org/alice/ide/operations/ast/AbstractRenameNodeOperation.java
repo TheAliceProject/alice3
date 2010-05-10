@@ -45,16 +45,22 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRenameNodeOperation extends org.alice.ide.operations.AbstractActionOperation {
+public abstract class AbstractRenameNodeOperation extends edu.cmu.cs.dennisc.croquet.InputPanelOperation {
+	private org.alice.ide.name.RenamePane renameNodePane;
 	public AbstractRenameNodeOperation( java.util.UUID groupUUID, java.util.UUID individualId, String name ) {
-		super( groupUUID, individualId );
-		this.setName( name );
+		super( groupUUID, individualId, name );
+		this.renameNodePane = new org.alice.ide.name.RenamePane();
 	}
-	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button, final edu.cmu.cs.dennisc.property.StringProperty nameProperty, org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
-		org.alice.ide.name.RenamePane renameNodePane = new org.alice.ide.name.RenamePane( nodeNameValidator );
-		renameNodePane.setAndSelectNameText( nameProperty.getValue() );
-		final String nextValue = renameNodePane.showInJDialog( button );
-		if( nextValue != null && nextValue.length() > 0 ) {
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+		this.renameNodePane.setAndSelectNameText( this.getNameProperty().getValue() );
+		return this.renameNodePane;
+	}
+	@Override
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+		if( isOk ) {
+			final String nextValue = this.renameNodePane.getNameText();
+			final edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNameProperty();
 			final String prevValue = nameProperty.getValue();
 			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
 				@Override
@@ -78,4 +84,35 @@ public abstract class AbstractRenameNodeOperation extends org.alice.ide.operatio
 			context.cancel();
 		}
 	}
+	protected abstract edu.cmu.cs.dennisc.property.StringProperty getNameProperty();
+	protected abstract org.alice.ide.name.validators.NodeNameValidator getNodeNameValidator();
+	
+//	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+//		org.alice.ide.name.RenamePane renameNodePane = new org.alice.ide.name.RenamePane( nodeNameValidator );
+//		renameNodePane.setAndSelectNameText( nameProperty.getValue() );
+//		final String nextValue = renameNodePane.showInJDialog( button );
+//		if( nextValue != null && nextValue.length() > 0 ) {
+//			final String prevValue = nameProperty.getValue();
+//			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+//				@Override
+//				public void doOrRedo( boolean isDo ) {
+//					nameProperty.setValue( nextValue );
+//				}
+//				@Override
+//				public void undo() {
+//					nameProperty.setValue( prevValue );
+//				}
+//				@Override
+//				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+//					rv.append( "rename: " );
+//					rv.append( prevValue );
+//					rv.append( " ===> " );
+//					rv.append( nextValue );
+//					return rv;
+//				}
+//			} );
+//		} else {
+//			context.cancel();
+//		}
+//	}
 }

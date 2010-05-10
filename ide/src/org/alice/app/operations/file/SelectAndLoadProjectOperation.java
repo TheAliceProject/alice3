@@ -57,17 +57,14 @@ public abstract class SelectAndLoadProjectOperation extends org.alice.app.operat
 //		return super.isOKButtonValid() && this.getActualInputValue() != null;
 //	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> createContentPane() {
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
 		if( this.selectProjectToOpenPanel != null ) {
 			//pass
 		} else {
 			this.selectProjectToOpenPanel = new org.alice.app.openprojectpane.SelectProjectToOpenPanel();
 		}
-		return this.selectProjectToOpenPanel;
-	}
-	@Override
-	protected void prologue(edu.cmu.cs.dennisc.croquet.Context context) {
 		this.selectProjectToOpenPanel.refresh();
+		return this.selectProjectToOpenPanel;
 	}
 	@Override
 	protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {

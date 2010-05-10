@@ -45,18 +45,17 @@ package org.alice.ide.name;
 /**
  * @author Dennis Cosgrove
  */
-public class RenamePane extends NameInputPane<String> {
+public class RenamePane extends NameInputPane {
 	private org.alice.ide.name.NameValidator nameValidator;
-	public RenamePane( org.alice.ide.name.NameValidator nameValidator ) {
+	public void setNameValidator( org.alice.ide.name.NameValidator nameValidator ) {
 		this.nameValidator = nameValidator;
 	}
 	@Override
-	protected String getActualInputValue() {
-		return this.getNameText();
-	}
-	
-	@Override
 	protected boolean isNameAcceptable( String name ) {
-		return this.nameValidator.isNameValidAndAvailable( name );
+		if( this.nameValidator != null ) {
+			return this.nameValidator.isNameValidAndAvailable( name );
+		} else {
+			return true;
+		}
 	}
 }

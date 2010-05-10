@@ -96,6 +96,35 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return IDE.singleton;
 	}
 
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation preferencesOperation = this.createPreferencesOperation();
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation aboutOperation = this.createAboutOperation();
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation runOperation = this.createRunOperation();
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation restartOperation = this.createRestartOperation();
+
+	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createRunOperation() {
+		return new org.alice.ide.operations.run.RunOperation();
+	}
+	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createRestartOperation() {
+		return new org.alice.ide.operations.run.RestartOperation();
+	}
+	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createPreferencesOperation() {
+		return new org.alice.ide.operations.preferences.PreferencesOperation();
+	}
+	protected abstract edu.cmu.cs.dennisc.croquet.AbstractActionOperation createAboutOperation();
+
+	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation getRunOperation() {
+		return this.runOperation;
+	}
+	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation getRestartOperation() {
+		return this.restartOperation;
+	}
+	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation getPreferencesOperation() {
+		return this.preferencesOperation;
+	}
+	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation getAboutOperation() {
+		return this.aboutOperation;
+	}
+
 	private static class FileMenuOperation extends edu.cmu.cs.dennisc.croquet.MenuOperation {
 		public FileMenuOperation( edu.cmu.cs.dennisc.croquet.Operation... operations ) {
 			super( IDE_GROUP, java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ), "File", java.awt.event.KeyEvent.VK_F, operations );
@@ -165,7 +194,49 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			this.runOperation 
 	);
 	
+	private org.alice.ide.operations.window.IsMemoryUsageShowingOperation isMemoryUsageShowingOperation = new org.alice.ide.operations.window.IsMemoryUsageShowingOperation();
+	private org.alice.ide.operations.window.IsHistoryShowingOperation isHistoryShowingOperation = new org.alice.ide.operations.window.IsHistoryShowingOperation();
+
+	private org.alice.ide.operations.window.IsSceneEditorExpandedOperation isSceneEditorExpandedOperation = new org.alice.ide.operations.window.IsSceneEditorExpandedOperation( false );
+	private org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation isExpressionTypeFeedbackDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation.class, true );
+	private org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation isOmissionOfThisForFieldAccessesDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation.class, false );
+	private org.alice.ide.operations.window.IsEmphasizingClassesOperation isEmphasizingClassesOperation = createBooleanOperation( org.alice.ide.operations.window.IsEmphasizingClassesOperation.class, true );
+	private org.alice.ide.operations.window.IsDefaultFieldNameGenerationDesiredOperation isDefaultFieldNameGenerationDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsDefaultFieldNameGenerationDesiredOperation.class, this.isDefaultFieldNameGenerationDesiredByDefault() );
+
+	public org.alice.ide.operations.window.IsSceneEditorExpandedOperation getIsSceneEditorExpandedOperation() {
+		return this.isSceneEditorExpandedOperation;
+	}
+	public boolean isExpressionTypeFeedbackDesired() {
+		return this.isExpressionTypeFeedbackDesiredOperation.getState();
+	}
+	public void setExpressionTypeFeedbackDesired( boolean isExpressionTypeFeedbackDesired ) {
+		org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorInFocus();
+		if( codeEditor != null ) {
+			codeEditor.refresh();
+		}
+	}
+	public boolean isEmphasizingClasses() {
+		return this.isEmphasizingClassesOperation.getState();
+	}
+	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
+		this.editorsTabbedPane.setEmphasizingClasses( isEmphasizingClasses );
+		this.membersEditor.setEmphasizingClasses( isEmphasizingClasses );
+	}
+	public boolean isOmittingThisFieldAccesses() {
+		return this.isOmissionOfThisForFieldAccessesDesiredOperation.getState();
+	}
+	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
+		this.editorsTabbedPane.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
+		this.membersEditor.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
+		this.sceneEditor.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
+	}
+	public boolean isDefaultFieldNameGenerationDesired() {
+		return this.isDefaultFieldNameGenerationDesiredOperation.getState();
+	}
+
 	private WindowMenuOperation windowMenuOperation = new WindowMenuOperation( 
+			this.isEmphasizingClassesOperation
+			
 //			class LocaleComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
 //				private java.util.Locale[] candidates = { new java.util.Locale( "en", "US" ), new java.util.Locale( "en", "US", "java" ) };
 //				private int selectedIndex;
@@ -296,45 +367,6 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return false;
 	}
 
-	private org.alice.ide.operations.window.IsMemoryUsageShowingOperation isMemoryUsageShowingOperation = new org.alice.ide.operations.window.IsMemoryUsageShowingOperation();
-	private org.alice.ide.operations.window.IsHistoryShowingOperation isHistoryShowingOperation = new org.alice.ide.operations.window.IsHistoryShowingOperation();
-
-	private org.alice.ide.operations.window.IsSceneEditorExpandedOperation isSceneEditorExpandedOperation = new org.alice.ide.operations.window.IsSceneEditorExpandedOperation( false );
-	private org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation isExpressionTypeFeedbackDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation.class, true );
-	private org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation isOmissionOfThisForFieldAccessesDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation.class, false );
-	private org.alice.ide.operations.window.IsEmphasizingClassesOperation isEmphasizingClassesOperation = createBooleanOperation( org.alice.ide.operations.window.IsEmphasizingClassesOperation.class, true );
-	private org.alice.ide.operations.window.IsDefaultFieldNameGenerationDesiredOperation isDefaultFieldNameGenerationDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsDefaultFieldNameGenerationDesiredOperation.class, this.isDefaultFieldNameGenerationDesiredByDefault() );
-
-	public org.alice.ide.operations.window.IsSceneEditorExpandedOperation getIsSceneEditorExpandedOperation() {
-		return this.isSceneEditorExpandedOperation;
-	}
-	public boolean isExpressionTypeFeedbackDesired() {
-		return this.isExpressionTypeFeedbackDesiredOperation.getButtonModel().isSelected();
-	}
-	public void setExpressionTypeFeedbackDesired( boolean isExpressionTypeFeedbackDesired ) {
-		org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorInFocus();
-		if( codeEditor != null ) {
-			codeEditor.refresh();
-		}
-	}
-	public boolean isEmphasizingClasses() {
-		return this.isEmphasizingClassesOperation.getButtonModel().isSelected();
-	}
-	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
-		this.editorsTabbedPane.setEmphasizingClasses( isEmphasizingClasses );
-		this.membersEditor.setEmphasizingClasses( isEmphasizingClasses );
-	}
-	public boolean isOmittingThisFieldAccesses() {
-		return this.isOmissionOfThisForFieldAccessesDesiredOperation.getButtonModel().isSelected();
-	}
-	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
-		this.editorsTabbedPane.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
-		this.membersEditor.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
-		this.sceneEditor.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
-	}
-	public boolean isDefaultFieldNameGenerationDesired() {
-		return this.isDefaultFieldNameGenerationDesiredOperation.getButtonModel().isSelected();
-	}
 
 	private int rootDividerLocation = 320;
 	private int leftDividerLocation = 240;
@@ -736,7 +768,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	//	private java.util.List< zoot.DropReceptor > dropReceptors = new java.util.LinkedList< zoot.DropReceptor >();
 
 	protected org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		return (org.alice.ide.codeeditor.CodeEditor)this.editorsTabbedPane.getCurrentSelectedTabOperation().getSingletonView();
+		return (org.alice.ide.codeeditor.CodeEditor)this.editorsTabbedPane.getCurrentTabStateOperation().getSingletonView();
 	}
 
 	private ComponentStencil stencil;
@@ -983,34 +1015,6 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return dst;
 	}
 
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation preferencesOperation = this.createPreferencesOperation();
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation aboutOperation = this.createAboutOperation();
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation runOperation = this.createRunOperation();
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation restartOperation = this.createRestartOperation();
-
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createRunOperation() {
-		return new org.alice.ide.operations.run.RunOperation();
-	}
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createRestartOperation() {
-		return new org.alice.ide.operations.run.RestartOperation();
-	}
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createPreferencesOperation() {
-		return new org.alice.ide.operations.preferences.PreferencesOperation();
-	}
-	protected abstract edu.cmu.cs.dennisc.croquet.AbstractActionOperation createAboutOperation();
-
-	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation getRunOperation() {
-		return this.runOperation;
-	}
-	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation getRestartOperation() {
-		return this.restartOperation;
-	}
-	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation getPreferencesOperation() {
-		return this.preferencesOperation;
-	}
-	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation getAboutOperation() {
-		return this.aboutOperation;
-	}
 
 	public abstract void handleRun( edu.cmu.cs.dennisc.croquet.Context context, edu.cmu.cs.dennisc.alice.ast.AbstractType programType );
 	public abstract void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.Context context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation );

@@ -253,9 +253,9 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 	private EditPreviousCodeOperation editPreviousCodeOperation;
 	
 	private SelectionObserver selectionObserver = new SelectionObserver() {
-		public void selecting(edu.cmu.cs.dennisc.croquet.TabIsSelectedStateOperation prev, edu.cmu.cs.dennisc.croquet.TabIsSelectedStateOperation next) {
+		public void selecting(edu.cmu.cs.dennisc.croquet.TabStateOperation prev, edu.cmu.cs.dennisc.croquet.TabStateOperation next) {
 		}
-		public void selected(edu.cmu.cs.dennisc.croquet.TabIsSelectedStateOperation prev, edu.cmu.cs.dennisc.croquet.TabIsSelectedStateOperation next) {
+		public void selected(edu.cmu.cs.dennisc.croquet.TabStateOperation prev, edu.cmu.cs.dennisc.croquet.TabStateOperation next) {
 			EditorsTabSelectionStateOperation.this.updateFocusedCode();
 		}
 	};
@@ -276,7 +276,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 	}
 	
 	private void updateFocusedCode() {
-		edu.cmu.cs.dennisc.croquet.Component< ? > component = this.getCurrentSelectedTabOperation().getSingletonView();
+		edu.cmu.cs.dennisc.croquet.Component< ? > component = this.getCurrentTabStateOperation().getSingletonView();
 		if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
 			org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)component;
 			edu.cmu.cs.dennisc.alice.ast.AbstractCode nextFocusedCode;
@@ -309,17 +309,18 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 //		}
 //	}
 	private void edit( final edu.cmu.cs.dennisc.alice.ast.AbstractCode code, boolean isOriginatedByPreviousCodeOperation ) {
-		for( edu.cmu.cs.dennisc.croquet.TabIsSelectedStateOperation tabIsSelectedOperation : this.getTabIsSelectedStateOperations() ) {
+		for( edu.cmu.cs.dennisc.croquet.TabStateOperation tabIsSelectedOperation : this.getTabStateOperations() ) {
 			edu.cmu.cs.dennisc.croquet.Component< ? > component = tabIsSelectedOperation.getSingletonView();
 			if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
 				org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)component;
 				if( codeEditor.getCode() == code ) {
-					this.setCurrentSelectedTabOperation( tabIsSelectedOperation );
+					tabIsSelectedOperation.setState( true );
+					//this.setCurrentTabStateOperation( tabIsSelectedOperation );
 					return;
 				}
 			}
 		}
-		class CodeTabIsSelectedOperation extends edu.cmu.cs.dennisc.croquet.TabIsSelectedStateOperation {
+		class CodeTabIsSelectedOperation extends edu.cmu.cs.dennisc.croquet.TabStateOperation {
 			public CodeTabIsSelectedOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 				super( org.alice.ide.IDE.IDE_GROUP,  java.util.UUID.fromString( "83fc2f34-a05f-48fd-941f-4e2ba08f45af" ), false, code.getName() );
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle constructor" );
@@ -353,8 +354,8 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 		}
 		
 		CodeTabIsSelectedOperation codeTabIsSelectedOperation = new CodeTabIsSelectedOperation( code );
-		this.addTabIsSelectedStateOperation( codeTabIsSelectedOperation );
-		this.setCurrentSelectedTabOperation( codeTabIsSelectedOperation );
+		this.addTabStateOperation( codeTabIsSelectedOperation );
+		codeTabIsSelectedOperation.setState( true );
 		if( isOriginatedByPreviousCodeOperation ) {
 			//pass
 		} else {
@@ -375,7 +376,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 
 	private org.alice.app.ProjectApplication.ProjectObserver projectObserver = new org.alice.app.ProjectApplication.ProjectObserver() {
 		public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
-			EditorsTabSelectionStateOperation.this.removeAllTabIsSelectedStateOperations();
+			EditorsTabSelectionStateOperation.this.removeAllTabStateOperations();
 			EditorsTabSelectionStateOperation.this.editedCodes.clear();
 			EditorsTabSelectionStateOperation.this.updateBackOperationsEnabled();
 		}
@@ -387,7 +388,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 		this.getSingletonTabbedPane().getJComponent().updateUI();
 	}
 	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
-		for( edu.cmu.cs.dennisc.croquet.TabIsSelectedStateOperation tabIsSelectedOperation : this.getTabIsSelectedStateOperations() ) {
+		for( edu.cmu.cs.dennisc.croquet.TabStateOperation tabIsSelectedOperation : this.getTabStateOperations() ) {
 			edu.cmu.cs.dennisc.croquet.Component< ? > component = tabIsSelectedOperation.getSingletonView();
 			if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
 				org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)component;

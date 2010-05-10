@@ -125,7 +125,6 @@ public abstract class Operation {
 		synchronized( this.components ) {
 			this.components.add( component );
 		}
-		component.setVisible( this.isVisible );
 		component.setEnabled( this.isEnabled );
 		component.setToolTipText( this.toolTipText );
 	}

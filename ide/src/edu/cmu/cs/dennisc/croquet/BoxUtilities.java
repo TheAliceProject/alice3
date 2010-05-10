@@ -116,18 +116,18 @@ public class BoxUtilities {
 				@Override
 				public java.awt.Dimension getPreferredSize() {
 					java.awt.Dimension rv = super.getPreferredSize();
-					edu.cmu.cs.dennisc.print.PrintUtilities.println();
-					edu.cmu.cs.dennisc.print.PrintUtilities.println();
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( rv );
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println();
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println();
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( rv );
 					if( ConstrainedComponent.this.minimumPreferredWidth != null ) {
 						rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( rv, ConstrainedComponent.this.minimumPreferredWidth );
 					}
 					if( ConstrainedComponent.this.minimumPreferredHeight != null ) {
 						rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumHeight( rv, ConstrainedComponent.this.minimumPreferredHeight );
 					}
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( rv );
-					edu.cmu.cs.dennisc.print.PrintUtilities.println();
-					edu.cmu.cs.dennisc.print.PrintUtilities.println();
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( rv );
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println();
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println();
 					return rv;
 				}
 			};

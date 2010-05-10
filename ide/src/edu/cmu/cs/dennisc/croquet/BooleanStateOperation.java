@@ -104,15 +104,31 @@ public /*final*/ class BooleanStateOperation extends Operation {
 	public Boolean getState() {
 		return this.buttonModel.isSelected();
 	}
+	/*package-private*/ void setValue(boolean nextValue) {
+		if( nextValue != this.state ) {
+			this.buttonModel.removeItemListener(itemListener);
 
-	public javax.swing.ButtonModel getButtonModel() {
-		return this.buttonModel;
+			for( ValueObserver valueObserver : this.valueObservers ) {
+				valueObserver.changing( nextValue );
+			}
+			this.buttonModel.setSelected(nextValue);
+			this.state = nextValue;
+			for( ValueObserver valueObserver : this.valueObservers ) {
+				valueObserver.changed( nextValue );
+			}
+
+			this.buttonModel.addItemListener(itemListener);
+			this.updateName();
+		}
+	}
+	@Deprecated
+	public void setState( boolean state ) {
+		this.setValue( state );
 	}
 
 	public String getTrueText() {
 		return this.trueText;
 	}
-
 	public void setTrueText(String trueText) {
 		this.trueText = trueText;
 		this.updateName();
@@ -148,72 +164,76 @@ public /*final*/ class BooleanStateOperation extends Operation {
 		}
 		this.action.putValue(javax.swing.Action.NAME, name);
 	}
-	/*package-private*/ void setValue(boolean nextValue) {
-		if( nextValue != this.state ) {
-			this.buttonModel.removeItemListener(itemListener);
-
-			for( ValueObserver valueObserver : this.valueObservers ) {
-				valueObserver.changing( nextValue );
-			}
-			this.buttonModel.setSelected(nextValue);
-			this.state = nextValue;
-			for( ValueObserver valueObserver : this.valueObservers ) {
-				valueObserver.changed( nextValue );
-			}
-
-			this.buttonModel.addItemListener(itemListener);
-			this.updateName();
-		}
-	}
 	
-	public RadioButton createRadioButton() {
+	public < B extends AbstractButton<?> > B register( final B rv ) {
 		Application.getSingleton().register( this );
-		return new RadioButton() {
-			@Override
-			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				super.handleAddedTo( parent );
-				BooleanStateOperation.this.addAbstractButton(this);
+		rv.addContainmentObserver( new Component.ContainmentObserver() {
+			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				BooleanStateOperation.this.addAbstractButton( rv );
 			}
-
-			@Override
-			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				super.handleRemovedFrom( parent );
-				BooleanStateOperation.this.removeAbstractButton(this);
+			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				BooleanStateOperation.this.removeAbstractButton( rv );
 			}
-		};
+		} );
+		return rv;
+	}
+	public RadioButton createRadioButton() {
+		return register(new RadioButton() );
 	}
 	public CheckBox createCheckBox() {
-		Application.getSingleton().register( this );
-		return new CheckBox() {
-			@Override
-			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				super.handleAddedTo( parent );
-				BooleanStateOperation.this.addAbstractButton(this);
-			}
-
-			@Override
-			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				super.handleRemovedFrom( parent );
-				BooleanStateOperation.this.removeAbstractButton(this);
-			}
-		};
+		return register(new CheckBox() );
 	}
 	public CheckBoxMenuItem createCheckBoxMenuItem() {
-		Application.getSingleton().register( this );
-		// todo: return javax.swing.JMenuItem if true and false different
-		return new CheckBoxMenuItem() {
-			@Override
-			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				super.handleAddedTo( parent );
-				BooleanStateOperation.this.addAbstractButton(this);
-			}
-
-			@Override
-			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				super.handleRemovedFrom( parent );
-				BooleanStateOperation.this.removeAbstractButton(this);
-			}
-		};
+		return register(new CheckBoxMenuItem() );
 	}
+//	public RadioButton createRadioButton() {
+//		Application.getSingleton().register( this );
+//		return new RadioButton() {
+//			@Override
+//			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+//				super.handleAddedTo( parent );
+//				BooleanStateOperation.this.addAbstractButton(this);
+//			}
+//
+//			@Override
+//			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+//				super.handleRemovedFrom( parent );
+//				BooleanStateOperation.this.removeAbstractButton(this);
+//			}
+//		};
+//	}
+//	public CheckBox createCheckBox() {
+//		Application.getSingleton().register( this );
+//		return new CheckBox() {
+//			@Override
+//			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+//				super.handleAddedTo( parent );
+//				BooleanStateOperation.this.addAbstractButton(this);
+//			}
+//
+//			@Override
+//			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+//				super.handleRemovedFrom( parent );
+//				BooleanStateOperation.this.removeAbstractButton(this);
+//			}
+//		};
+//	}
+//	public CheckBoxMenuItem createCheckBoxMenuItem() {
+//		Application.getSingleton().register( this );
+//		// todo: return javax.swing.JMenuItem if true and false different
+//		return new CheckBoxMenuItem() {
+//			@Override
+//			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+//				super.handleAddedTo( parent );
+//				BooleanStateOperation.this.addAbstractButton(this);
+//			}
+//
+//			@Override
+//			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+//				super.handleRemovedFrom( parent );
+//				BooleanStateOperation.this.removeAbstractButton(this);
+//			}
+//		};
+//	}
 	
 }

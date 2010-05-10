@@ -48,6 +48,7 @@ package edu.cmu.cs.dennisc.java.awt;
  */
 public class ComponentUtilities {
 	public static void makeStandOut( java.awt.Component component ) {
+		assert component != null;
 		if( component instanceof javax.swing.JComponent ) {
 			javax.swing.JComponent jComponent = (javax.swing.JComponent)component;
 			jComponent.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.RED, 4 ) );

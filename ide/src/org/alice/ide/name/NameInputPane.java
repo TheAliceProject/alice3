@@ -42,12 +42,10 @@
  */
 package org.alice.ide.name;
 
-import org.alice.ide.RowsInputPanel;
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NameInputPane<T> extends RowsInputPanel< T > {
+public abstract class NameInputPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 	private javax.swing.JTextField textField = new javax.swing.JTextField( 10 );
 
 	public void setAndSelectNameText( String text ) {
@@ -63,15 +61,15 @@ public abstract class NameInputPane<T> extends RowsInputPanel< T > {
 	public String getNameText() {
 		return this.textField.getText();
 	}
-	@Override
-	public boolean isOKButtonValid() {
-		return super.isOKButtonValid() && this.isNameAcceptable( this.textField.getText() );
-	}
+//	@Override
+//	public boolean isOKButtonValid() {
+//		return super.isOKButtonValid() && this.isNameAcceptable( this.textField.getText() );
+//	}
 	protected void handleNameTextChange( String nameText ) {
-		updateOKButton();
+//		updateOKButton();
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv, edu.cmu.cs.dennisc.croquet.RowsSpringPanel panel ) {
+	protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv) {
 		assert this.textField != null;
 		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
 			private void handleUpdate( javax.swing.event.DocumentEvent e ) {
@@ -94,7 +92,7 @@ public abstract class NameInputPane<T> extends RowsInputPanel< T > {
 		} );
 
 		rv.add( 
-				edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow(
+				edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
 						edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "name:" ),
 						new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.textField )
 				) 

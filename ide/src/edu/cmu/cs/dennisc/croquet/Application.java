@@ -161,7 +161,10 @@ public abstract class Application {
 		java.util.UUID id = operation.getIndividualUUID();
 		Operation prev = this.mapUUIDToOperation.get( id );
 		if( prev != null ) {
-			assert prev == operation;
+			//assert prev == operation;
+			if( prev == operation ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle multiple instances of operation ", operation );
+			}
 		} else {
 			this.mapUUIDToOperation.put( id, operation );
 		}

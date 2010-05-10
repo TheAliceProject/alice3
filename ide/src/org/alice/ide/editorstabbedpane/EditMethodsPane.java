@@ -78,15 +78,29 @@ public abstract class EditMethodsPane extends EditMembersPane< edu.cmu.cs.dennis
 	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createEditOperation( java.util.UUID groupUUID, String name ) {
 		return new org.alice.ide.operations.ast.AbstractRenameNodeOperation( groupUUID, java.util.UUID.fromString( "16fe1479-558c-4386-925c-0d9eb5aaf280" ), name ) {
 			@Override
-			protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+			protected edu.cmu.cs.dennisc.property.StringProperty getNameProperty() {
 				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = getSelectedItem();
 				if( method != null ) {
-					this.perform( context, e, button, method.name, new org.alice.ide.name.validators.MethodNameValidator( method ) );
-					getIDE().setFocusedCode( method );
+					return method.name;
 				} else {
-					context.cancel();
+					return null;
 				}
 			}
+			@Override
+			protected org.alice.ide.name.validators.NodeNameValidator getNodeNameValidator() {
+				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = getSelectedItem();
+				return new org.alice.ide.name.validators.MethodNameValidator( method );
+			}
+//			@Override
+//			protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+//				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = getSelectedItem();
+//				if( method != null ) {
+//					this.perform( context, e, button, method.name, new org.alice.ide.name.validators.MethodNameValidator( method ) );
+//					getIDE().setFocusedCode( method );
+//				} else {
+//					context.cancel();
+//				}
+//			}
 		};
 	}
 	protected abstract org.alice.ide.declarationpanes.CreateMethodPane createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType );

@@ -68,6 +68,7 @@ public class CardPanel extends Panel {
 		}
 	}
 	
+	private Key nullKey;
 	public Key createKey( Component<?> child, String cardLayoutKey ) {
 		return new Key( child, cardLayoutKey );
 	}
@@ -81,6 +82,16 @@ public class CardPanel extends Panel {
 		this.internalRemoveComponent( key.child );
 	}
 	public void show( Key key ) {
+		if( key != null ) {
+			//pass
+		} else {
+			if( this.nullKey != null ) {
+				
+			} else {
+				this.nullKey = this.createKey( new Label( "nothing to see here" ), java.util.UUID.randomUUID().toString() );
+			}
+			key = this.nullKey;
+		}
 		this.cardLayout.show( this.getJComponent(), key.cardLayoutKey );
 	}
 }

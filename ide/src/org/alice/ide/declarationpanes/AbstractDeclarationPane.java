@@ -238,7 +238,10 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	}
 
 	protected final edu.cmu.cs.dennisc.croquet.Component< ? >[] createNameRow() {
-		return edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "name:" ), new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.declarationNameTextField ) );
+		return edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
+				edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "name:" ), 
+				new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.declarationNameTextField ) 
+		);
 	}
 	
 	protected abstract boolean isEditableInitializerComponentDesired();

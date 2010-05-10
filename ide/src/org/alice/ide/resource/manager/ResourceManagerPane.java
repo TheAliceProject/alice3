@@ -290,7 +290,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		private E resource;
 
 		public RenameWithPreviewPane( E resource ) {
-			super( new org.alice.ide.name.validators.ResourceNameValidator( resource ) );
+			this.setNameValidator( new org.alice.ide.name.validators.ResourceNameValidator( resource ) );
 			this.resource = resource;
 		}
 		protected E getResource() {
@@ -298,8 +298,8 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		}
 		protected abstract javax.swing.JComponent createPreviewComponent();
 		@Override
-		protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv, edu.cmu.cs.dennisc.croquet.RowsSpringPanel panel) {
-			rv = super.updateComponentRows( rv, panel );
+		protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv) {
+			rv = super.updateComponentRows( rv );
 			rv.add( 
 					edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow(
 							edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "preview:" ),
@@ -352,52 +352,57 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		}
 	}
 
-	class RenameResourceOperation extends org.alice.ide.operations.AbstractActionOperation {
+	class RenameResourceOperation extends edu.cmu.cs.dennisc.croquet.InputPanelOperation {
+		private org.alice.ide.name.RenamePane renamePane;
+		private org.alice.virtualmachine.Resource resource;
 		public RenameResourceOperation() {
-			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "da920b16-65fc-48a4-9203-b3c2979b0a59" ) );
-			this.setName( "Rename..." );
+			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "da920b16-65fc-48a4-9203-b3c2979b0a59" ), "Rename..." );
 		}
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
-			final org.alice.virtualmachine.Resource resource = ResourceManagerPane.this.getSelectedResource();
-			if( resource != null ) {
-				org.alice.ide.name.RenamePane renamePane;
-				if( resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
+		protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+			this.resource = ResourceManagerPane.this.getSelectedResource();
+			if( this.resource != null ) {
+				if( this.resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
 					org.alice.virtualmachine.resources.ImageResource imageResource = (org.alice.virtualmachine.resources.ImageResource)resource;
-					renamePane = new RenameWithImagePreviewPane( imageResource );
-				} else if( resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
+					this.renamePane = new RenameWithImagePreviewPane( imageResource );
+				} else if( this.resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
 					org.alice.virtualmachine.resources.AudioResource audioResource = (org.alice.virtualmachine.resources.AudioResource)resource;
-					renamePane = new RenameWithAudioPreviewPane( audioResource );
+					this.renamePane = new RenameWithAudioPreviewPane( audioResource );
 				} else {
-					renamePane = new org.alice.ide.name.RenamePane( new org.alice.ide.name.validators.ResourceNameValidator( resource ) );
+					this.renamePane = new org.alice.ide.name.RenamePane();
+					this.renamePane.setNameValidator( new org.alice.ide.name.validators.ResourceNameValidator( resource ) );
 				}
-				renamePane.setAndSelectNameText( resource.getName() );
-				final String nextName = renamePane.showInJDialog( button, "Rename Resource" );
-				if( nextName != null && nextName.length() > 0 ) {
-					final String prevName = resource.getName();
-					context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
-						@Override
-						public void doOrRedo( boolean isDo ) {
-							resource.setName( nextName );
-							ResourceManagerPane.this.table.repaint();
-						}
-						@Override
-						public void undo() {
-							resource.setName( prevName );
-							ResourceManagerPane.this.table.repaint();
-						}
-						@Override
-						protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-							rv.append( "rename resource: " );
-							rv.append( prevName );
-							rv.append( " ===> " );
-							rv.append( nextName );
-							return rv;
-						}
-					} );
-				} else {
-					context.cancel();
-				}
+				this.renamePane.setAndSelectNameText( resource.getName() );
+				return this.renamePane;
+			} else {
+				return null;
+			}
+		}
+		@Override
+		protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+			final String nextName = this.renamePane.getNameText();
+			if( nextName != null && nextName.length() > 0 ) {
+				final String prevName = this.resource.getName();
+				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+					@Override
+					public void doOrRedo( boolean isDo ) {
+						resource.setName( nextName );
+						ResourceManagerPane.this.table.repaint();
+					}
+					@Override
+					public void undo() {
+						resource.setName( prevName );
+						ResourceManagerPane.this.table.repaint();
+					}
+					@Override
+					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+						rv.append( "rename resource: " );
+						rv.append( prevName );
+						rv.append( " ===> " );
+						rv.append( nextName );
+						return rv;
+					}
+				} );
 			} else {
 				context.cancel();
 			}

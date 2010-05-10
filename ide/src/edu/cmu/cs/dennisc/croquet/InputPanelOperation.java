@@ -96,8 +96,7 @@ public abstract class InputPanelOperation extends AbstractActionOperation {
 	}
 
 
-	protected abstract Component<?> createContentPane();
-	protected abstract void prologue( edu.cmu.cs.dennisc.croquet.Context context );
+	protected abstract edu.cmu.cs.dennisc.croquet.Component<?> prologue( edu.cmu.cs.dennisc.croquet.Context context );
 	protected abstract void epilogue( edu.cmu.cs.dennisc.croquet.Context context, boolean isOk );
 
 	public void addValidator(Validator validator) {
@@ -110,84 +109,86 @@ public abstract class InputPanelOperation extends AbstractActionOperation {
 
 	@Override
 	protected final void perform(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
-		class BottomPanel extends Panel {
-			private Button okButton = okOperation.createButton();
-			public BottomPanel() {
-				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-					this.internalAddComponent( okButton );
-					if( cancelOperation != null ) {
-						this.internalAddComponent( BoxUtilities.createHorizontalStrut( 4 ) );
-						this.internalAddComponent( cancelOperation.createButton() );
+		Component<?> contentPane = this.prologue(context);
+		if( contentPane != null ) {
+			class BottomPanel extends Panel {
+				private Button okButton = okOperation.createButton();
+				public BottomPanel() {
+					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+						this.internalAddComponent( okButton );
+						if( cancelOperation != null ) {
+							this.internalAddComponent( BoxUtilities.createHorizontalStrut( 4 ) );
+							this.internalAddComponent( cancelOperation.createButton() );
+						}
+					} else {
+						this.internalAddComponent( BoxUtilities.createHorizontalGlue() );
+						if( cancelOperation != null ) {
+							this.internalAddComponent( cancelOperation.createButton() );
+							this.internalAddComponent( BoxUtilities.createHorizontalStrut( 4 ) );
+						}
+						this.internalAddComponent( okButton );
 					}
-				} else {
-					this.internalAddComponent( BoxUtilities.createHorizontalGlue() );
-					if( cancelOperation != null ) {
-						this.internalAddComponent( cancelOperation.createButton() );
-						this.internalAddComponent( BoxUtilities.createHorizontalStrut( 4 ) );
+					this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
+				}
+				@Override
+				protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
+					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+						return new java.awt.FlowLayout();
+					} else {
+						return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
 					}
-					this.internalAddComponent( okButton );
 				}
-				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
-			}
-			@Override
-			protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
-				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-					return new java.awt.FlowLayout();
-				} else {
-					return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
+				public Button getOkButton() {
+					return this.okButton;
 				}
-			}
-			public Button getOkButton() {
-				return this.okButton;
-			}
-		};
-		
-		Component<?> contentPane = this.createContentPane();
+			};
+			
+			BottomPanel bottomPanel = new BottomPanel();
+			bottomPanel.setOpaque( false );
 
-		BottomPanel bottomPanel = new BottomPanel();
-		bottomPanel.setOpaque( false );
-
-		final Dialog dialog = new Dialog(button);
-		dialog.setTitle( this.getName() );
-		dialog.setDefaultButton( bottomPanel.getOkButton() );
-		dialog.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Dialog.DefaultCloseOperation.DISPOSE );
-//		dialog.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-//		dialog.addWindowListener(new java.awt.event.WindowListener() {
-//			public void windowActivated(java.awt.event.WindowEvent e) {
-//			}
-//			public void windowDeactivated(java.awt.event.WindowEvent e) {
-//			}
-//			public void windowIconified(java.awt.event.WindowEvent e) {
-//			}
-//			public void windowDeiconified(java.awt.event.WindowEvent e) {
-//			}
-//			public void windowOpened(java.awt.event.WindowEvent e) {
-//			}
-//			public void windowClosing(java.awt.event.WindowEvent e) {
-//				if (InputPanel.this.isDisposeDesired(e)) {
-//					e.getWindow().dispose();
+			final Dialog dialog = new Dialog(button);
+			dialog.setTitle( this.getName() );
+			dialog.setDefaultButton( bottomPanel.getOkButton() );
+			dialog.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Dialog.DefaultCloseOperation.DISPOSE );
+//			dialog.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+//			dialog.addWindowListener(new java.awt.event.WindowListener() {
+//				public void windowActivated(java.awt.event.WindowEvent e) {
 //				}
-//			}
-//			public void windowClosed(java.awt.event.WindowEvent e) {
-//			}
-//		});
+//				public void windowDeactivated(java.awt.event.WindowEvent e) {
+//				}
+//				public void windowIconified(java.awt.event.WindowEvent e) {
+//				}
+//				public void windowDeiconified(java.awt.event.WindowEvent e) {
+//				}
+//				public void windowOpened(java.awt.event.WindowEvent e) {
+//				}
+//				public void windowClosing(java.awt.event.WindowEvent e) {
+//					if (InputPanel.this.isDisposeDesired(e)) {
+//						e.getWindow().dispose();
+//					}
+//				}
+//				public void windowClosed(java.awt.event.WindowEvent e) {
+//				}
+//			});
 
-		
-		BorderPanel borderPanel = dialog.getContentPanel();
-		borderPanel.setBackgroundColor( contentPane.getBackgroundColor() );
-		borderPanel.addComponent( contentPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
-		borderPanel.addComponent( bottomPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.SOUTH );
-		
-		dialog.pack();
-		//edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin(dialog.getAwtWindow(), button.getRoot().getAwtWindow());
+			
+			this.okOperation.setDialog(dialog);
+			this.cancelOperation.setDialog(dialog);
+			this.isOk = false;
+			BorderPanel borderPanel = dialog.getContentPanel();
+			borderPanel.setBackgroundColor( contentPane.getBackgroundColor() );
+			borderPanel.addComponent( contentPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+			borderPanel.addComponent( bottomPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.SOUTH );
+			
+			dialog.pack();
+			//edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin(dialog.getAwtWindow(), button.getRoot().getAwtWindow());
 
-		this.okOperation.setDialog(dialog);
-		this.cancelOperation.setDialog(dialog);
-		this.isOk = false;
-		this.prologue(context);
-		dialog.setVisible( true );
-		this.epilogue(context, this.isOk);
-		this.okOperation.setDialog(null);
-		this.cancelOperation.setDialog(null);
+			dialog.setVisible( true );
+			this.epilogue(context, this.isOk);
+			this.okOperation.setDialog(null);
+			this.cancelOperation.setDialog(null);
+		} else {
+			this.epilogue(context, false);
+		}
 	}
 }

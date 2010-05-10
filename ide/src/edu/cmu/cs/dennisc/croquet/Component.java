@@ -113,6 +113,7 @@ public abstract class Component<J extends javax.swing.JComponent> {
 					if( awtParent != Component.this.awtParent ) {
 						Component.this.handleParentChange( awtParent );
 					} else {
+						Thread.dumpStack();
 						edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleParentChange" );
 						edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
 						//edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtChanged:", awtChanged.getClass().getName(), awtChanged );

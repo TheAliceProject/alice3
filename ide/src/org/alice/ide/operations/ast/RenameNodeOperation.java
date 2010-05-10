@@ -54,7 +54,11 @@ public abstract class RenameNodeOperation extends AbstractRenameNodeOperation {
 		this.nodeNameValidator = nodeNameValidator;
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
-		this.perform( context, e, button, this.nameProperty, this.nodeNameValidator );
+	protected edu.cmu.cs.dennisc.property.StringProperty getNameProperty() {
+		return this.nameProperty;
+	}
+	@Override
+	protected org.alice.ide.name.validators.NodeNameValidator getNodeNameValidator() {
+		return this.nodeNameValidator;
 	}
 }
