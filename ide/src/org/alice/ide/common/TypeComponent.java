@@ -89,6 +89,16 @@ public class TypeComponent extends DeclarationNameLabel {
 //			);
 		}
 	}
+	@Override
+	protected javax.swing.JLabel createJComponent() {
+		return new javax.swing.JLabel() {
+			@Override
+			public void paint( java.awt.Graphics g ) {
+				this.paintBorder( g );
+				this.paintComponent( g );
+			}
+		};
+	}
 	public TypeComponent( edu.cmu.cs.dennisc.alice.ast.AbstractType type, boolean isToolTipDesired ) {
 		this( type );
 		if( isToolTipDesired ) {
@@ -130,10 +140,5 @@ public class TypeComponent extends DeclarationNameLabel {
 //		} else {
 //			return super.getForeground();
 //		}
-//	}
-//	@Override
-//	public void paint( java.awt.Graphics g ) {
-//		this.paintBorder( g );
-//		this.paintComponent( g );
 //	}
 }
