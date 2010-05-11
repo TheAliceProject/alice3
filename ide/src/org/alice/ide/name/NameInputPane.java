@@ -46,55 +46,65 @@ package org.alice.ide.name;
  * @author Dennis Cosgrove
  */
 public abstract class NameInputPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
-	private javax.swing.JTextField textField = new javax.swing.JTextField( 10 );
+	private edu.cmu.cs.dennisc.croquet.StringStateOperation nameState = new edu.cmu.cs.dennisc.croquet.StringStateOperation(
+			edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP,
+			java.util.UUID.fromString( "482c237a-c2b3-48dc-a8e2-380edfdfffe3" ),
+			""
+	);
+	private edu.cmu.cs.dennisc.croquet.TextField textField;
+//	private javax.swing.JTextField textField = new javax.swing.JTextField( 10 );
 
 	public void setAndSelectNameText( String text ) {
 		if( text != null ) {
-			assert this.textField != null;
-			this.textField.setText( text );
-			this.textField.selectAll();
+			this.nameState.setState( text );
+			this.getTextField().selectAll();
 		}
 	}
 
 	protected abstract boolean isNameAcceptable( String name );
 
+	private edu.cmu.cs.dennisc.croquet.TextField getTextField() {
+		if( this.textField != null ) {
+			//pass
+		} else {
+			this.textField = this.nameState.createTextField();
+		}
+		return this.textField;
+	}
 	public String getNameText() {
-		return this.textField.getText();
+		return this.nameState.getState();
 	}
 //	@Override
 //	public boolean isOKButtonValid() {
 //		return super.isOKButtonValid() && this.isNameAcceptable( this.textField.getText() );
 //	}
-	protected void handleNameTextChange( String nameText ) {
-//		updateOKButton();
-	}
 	@Override
 	protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv) {
-		assert this.textField != null;
-		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
-			private void handleUpdate( javax.swing.event.DocumentEvent e ) {
-				javax.swing.text.Document document = e.getDocument();
-				try {
-					handleNameTextChange( document.getText( 0, document.getLength() ) );
-				} catch( javax.swing.text.BadLocationException ble ) {
-					throw new RuntimeException( ble );
-				}
-			}
-			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
-				this.handleUpdate( e );
-			}
-			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
-				this.handleUpdate( e );
-			}
-			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
-				this.handleUpdate( e );
-			}
-		} );
+//		assert this.textField != null;
+//		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
+//			private void handleUpdate( javax.swing.event.DocumentEvent e ) {
+//				javax.swing.text.Document document = e.getDocument();
+//				try {
+//					handleNameTextChange( document.getText( 0, document.getLength() ) );
+//				} catch( javax.swing.text.BadLocationException ble ) {
+//					throw new RuntimeException( ble );
+//				}
+//			}
+//			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
+//				this.handleUpdate( e );
+//			}
+//			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
+//				this.handleUpdate( e );
+//			}
+//			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
+//				this.handleUpdate( e );
+//			}
+//		} );
 
 		rv.add( 
 				edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
 						edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "name:" ),
-						new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.textField )
+						this.getTextField()
 				) 
 		);
 		return rv;

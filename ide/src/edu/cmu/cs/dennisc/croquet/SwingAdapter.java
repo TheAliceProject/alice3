@@ -47,8 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 @Deprecated
-public 
-class SwingAdapter extends Component< javax.swing.JComponent > {
+public class SwingAdapter extends Component< javax.swing.JComponent > {
 	private javax.swing.JComponent jComponent;
 	public SwingAdapter( javax.swing.JComponent jComponent ) {
 		this.jComponent = jComponent;
