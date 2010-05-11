@@ -62,8 +62,8 @@ public class TabbedPaneSelectionOperation extends Operation {
 		public void changed(boolean nextValue) {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( nextValue );
 			if( nextValue ) {
-				this.tabIsSelectedOperation.setValue( true );
-				//this.tabbedPane.selectTab( this.key );
+				//this.tabIsSelectedOperation.setValue( true );
+				TabbedPaneSelectionOperation.this.singletonTabbedPane.selectTab( this.key );
 				//TabbedPaneSelectionOperation.this.setCurrentTabStateOperation( this.tabIsSelectedOperation );
 			}
 		}

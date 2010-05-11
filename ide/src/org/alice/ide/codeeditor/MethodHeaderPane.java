@@ -55,7 +55,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		}
 		public void mousePressed( java.awt.event.MouseEvent e ) {
 			if( javax.swing.SwingUtilities.isRightMouseButton( e ) ) {
-				MethodHeaderPane.this.popupOperation.fire();
+				MethodHeaderPane.this.popupOperation.fire( e );
 			}
 		}
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
@@ -68,7 +68,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		super( methodDeclaredInAlice );
 		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
-			this.addComponent( new org.alice.ide.common.TypeComponent( methodDeclaredInAlice.getReturnType() ) );
+			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( methodDeclaredInAlice.getReturnType() ) );
 			this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( 8 ) );
 			//this.add( zoot.ZLabel.acquire( " {" ) );
 		} else {
@@ -77,7 +77,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			if( methodDeclaredInAlice.isProcedure() ) {
 				sb.append( " procedure " );
 			} else {
-				this.addComponent( new org.alice.ide.common.TypeComponent( methodDeclaredInAlice.getReturnType() ) );
+				this.addComponent( org.alice.ide.common.TypeComponent.createInstance( methodDeclaredInAlice.getReturnType() ) );
 				sb.append( " function " );
 			}
 			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( sb.toString(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );

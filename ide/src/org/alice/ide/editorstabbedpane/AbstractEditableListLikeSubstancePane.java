@@ -242,7 +242,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		@Override
 		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
 			if( quoteClickCountUnquote == 2 ) {
-				editItemOperation.fire();
+				editItemOperation.fire( e );
 			}
 		}
 	};

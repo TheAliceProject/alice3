@@ -73,8 +73,6 @@ public abstract class Panel extends Component< javax.swing.JPanel > {
 		return rv;
 	}
 	public void removeAllComponents() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: removeAllComponents invoke removing and removed" );
-		
 		this.getJComponent().removeAll();
 	}
 	protected boolean paintComponent( java.awt.Graphics2D g2 ) {

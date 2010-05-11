@@ -51,7 +51,7 @@ class LocalDeclarationPane extends TypedDeclarationPane {
 
 	public LocalDeclarationPane( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice, edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
 		this.localDeclaredInAlice = localDeclaredInAlice;
-		this.addComponent( new org.alice.ide.common.TypeComponent( this.localDeclaredInAlice.valueType.getValue() ) );
+		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( this.localDeclaredInAlice.valueType.getValue() ) );
 		this.addComponent( component );
 	}
 	

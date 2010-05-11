@@ -65,8 +65,12 @@ public abstract class AbstractActionOperation extends Operation {
 		AbstractActionOperation.this.perform( childContext, e, button );
 	}
 	@Deprecated
-	public void fire() {
+	public void fire( java.util.EventObject e ) {
 		fire( null, null );
+	}
+	@Deprecated
+	public void fire() {
+		fire( null );
 	}
 	
 //	private javax.swing.ButtonModel buttonModel = new javax.swing.DefaultButtonModel();

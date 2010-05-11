@@ -74,7 +74,7 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 		if( getIDE().isJava() ) {
 			edu.cmu.cs.dennisc.croquet.LineAxisPanel header = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
 					new edu.cmu.cs.dennisc.croquet.Label( "new " ),
-					new TypeComponent( anonymousConstructor.getDeclaringType().getSuperType() ),
+					TypeComponent.createInstance( anonymousConstructor.getDeclaringType().getSuperType() ),
 					new edu.cmu.cs.dennisc.croquet.Label( "() {" ) 
 			);
 			header.setAlignmentX( 0.0f );

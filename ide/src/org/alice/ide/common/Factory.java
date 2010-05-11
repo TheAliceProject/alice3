@@ -174,7 +174,7 @@ public abstract class Factory {
 			rv = new org.alice.ide.common.DeclarationNameLabel( argument.parameter.getValue() );
 		} else if( owner instanceof edu.cmu.cs.dennisc.alice.ast.AbstractConstructor && methodName.equals( "getDeclaringType" ) ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = (edu.cmu.cs.dennisc.alice.ast.AbstractConstructor)owner;
-			rv = new org.alice.ide.common.TypeComponent( constructor.getDeclaringType() );
+			rv = TypeComponent.createInstance( constructor.getDeclaringType() );
 //		} else if( owner instanceof edu.cmu.cs.dennisc.alice.ast.ResourceExpression && methodName.equals( "getResourceName" ) ) {
 //			edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = (edu.cmu.cs.dennisc.alice.ast.ResourceExpression)owner;
 //			org.alice.virtualmachine.Resource resource = resourceExpression.resource.getValue();
@@ -411,7 +411,7 @@ public abstract class Factory {
 			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
 				rv = this.createFieldAccessPane( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
 			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
-				rv = new TypeComponent( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
+				rv = TypeComponent.createInstance( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
 			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation ) {
 				rv = this.createInstanceCreationPane( (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)expression );
 //			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AbstractLiteral ) {

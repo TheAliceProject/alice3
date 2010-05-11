@@ -50,6 +50,6 @@ import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
  */
 public class TypedParameterPane extends org.alice.ide.common.TypedDeclarationPane {
 	public TypedParameterPane( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
-		super( new org.alice.ide.common.TypeComponent( parameter.getValueType() ), new org.alice.ide.common.ParameterPane( parametersProperty, parameter ) );
+		super( org.alice.ide.common.TypeComponent.createInstance( parameter.getValueType() ), new org.alice.ide.common.ParameterPane( parametersProperty, parameter ) );
 	}
 }

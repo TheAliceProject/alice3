@@ -98,7 +98,7 @@ public class MoveAndTurnRuntimeProgram extends org.alice.apis.moveandturn.Progra
 	protected void restart( java.util.EventObject e ) {
 		super.restart( e );
 		javax.swing.SwingUtilities.getRoot( this ).setVisible( false );
-		this.getRestartOperation().fire();
+		this.getRestartOperation().fire( e );
 	}
 	
 	@Override

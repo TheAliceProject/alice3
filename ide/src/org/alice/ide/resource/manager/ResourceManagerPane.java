@@ -551,7 +551,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickUnquoteCount ) {
 			if( quoteClickUnquoteCount == 2 ) {
 				if( table.getSelectedRow() >= 0 ) {
-					renameResourceOperation.fire();
+					renameResourceOperation.fire( e );
 				}
 			}
 		}

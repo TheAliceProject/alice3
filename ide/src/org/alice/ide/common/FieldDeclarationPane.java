@@ -51,7 +51,7 @@ public class FieldDeclarationPane extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 	public FieldDeclarationPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		this.field = field;
 		this.addComponent( finalLabel );
-		this.addComponent( new TypeComponent( field.getValueType() ) );
+		this.addComponent( TypeComponent.createInstance( field.getValueType() ) );
 		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( 8 ) );
 		org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( field );
 		nameLabel.scaleFont( 1.5f );

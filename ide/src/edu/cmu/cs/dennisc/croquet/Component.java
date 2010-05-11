@@ -113,7 +113,7 @@ public abstract class Component<J extends javax.swing.JComponent> {
 					if( awtParent != Component.this.awtParent ) {
 						Component.this.handleParentChange( awtParent );
 					} else {
-						Thread.dumpStack();
+						//Thread.dumpStack();
 						edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleParentChange" );
 						edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
 						//edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtChanged:", awtChanged.getClass().getName(), awtChanged );
@@ -170,22 +170,6 @@ public abstract class Component<J extends javax.swing.JComponent> {
 		}
 	}
 	
-//	@Deprecated
-//	/*package-private*/ final void adding() {
-//	}
-//
-//	@Deprecated
-//	/*package-private*/ final void added() {
-//	}
-//
-//	@Deprecated
-//	/*package-private*/ final void removing() {
-//	}
-//
-//	@Deprecated
-//	/*package-private*/ final void removed() {
-//	}
-
 	private J jComponent;
 	protected abstract J createJComponent();
 	// todo: reduce visibility to /*package-private*/

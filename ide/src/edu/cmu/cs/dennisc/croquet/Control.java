@@ -131,14 +131,14 @@ public abstract class Control extends Widget {
 		if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
 			this.leftButtonPressedEvent = e;
 			if( this.leftButtonPressOperation != null ) {
-				this.leftButtonPressOperation.fire();
+				this.leftButtonPressOperation.fire( e );
 			}
 		} else if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
 			if( Application.getSingleton().isDragInProgress() ) {
 				this.isWithinClickThreshold = false;
 			} else {
 				if( this.popupOperation != null ) {
-					this.popupOperation.fire();
+					this.popupOperation.fire( e );
 				}
 			}
 		}
@@ -149,7 +149,7 @@ public abstract class Control extends Widget {
 	protected void handleMouseClicked( java.awt.event.MouseEvent e ) {
 		if( e.getClickCount() == 2 ) {
 			if( this.leftButtonDoubleClickOperation != null ) {
-				this.leftButtonDoubleClickOperation.fire();
+				this.leftButtonDoubleClickOperation.fire( e );
 			}
 		}
 	}

@@ -222,7 +222,7 @@ class TypeFillIn extends edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.denni
 	}
 	@Override
 	protected javax.swing.JComponent createMenuProxy() {
-		return new org.alice.ide.common.TypeComponent( this.type ).getJComponent();
+		return org.alice.ide.common.TypeComponent.createInstance( this.type ).getJComponent();
 	}
 	@Override
 	protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {

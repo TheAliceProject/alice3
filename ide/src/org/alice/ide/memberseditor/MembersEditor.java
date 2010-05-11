@@ -122,6 +122,7 @@ abstract class MembersContentPanel extends edu.cmu.cs.dennisc.croquet.PageAxisPa
 //				this.add( component );
 //			}
 //		}
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() );
 		this.revalidateAndRepaint();
 	}
 }
@@ -241,7 +242,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new org.alice.ide.common.TypeComponent( type );
+			rv = org.alice.ide.common.TypeComponent.createInstance( type );
 			map.put( cls, type, rv );
 		}
 		return rv;

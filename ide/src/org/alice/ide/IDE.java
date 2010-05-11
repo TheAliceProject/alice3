@@ -517,7 +517,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 	public org.alice.ide.common.TypeComponent getComponentFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		//todo:
-		return new org.alice.ide.common.TypeComponent( type );
+		return org.alice.ide.common.TypeComponent.createInstance( type );
 	}
 	public String getTextFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		return null;
@@ -991,7 +991,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForRuntimeProgram;
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForSceneEditor;
 
-	private java.io.File file = null;
+//	private java.io.File file = null;
 	private edu.cmu.cs.dennisc.alice.Project project = null;
 
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = null;
@@ -1054,19 +1054,19 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		if( this.splashScreen != null ) {
 			this.splashScreen.setVisible( false );
 		}
-		if( this.file != null ) {
+		if( this.getUri() != null ) {
 			//pass
 		} else {
-			this.getNewProjectOperation().fire();
+			this.getNewProjectOperation().fire( e );
 		}
 	}
 	@Override
 	protected void handleAbout( java.util.EventObject e ) {
-		this.getAboutOperation().fire();
+		this.getAboutOperation().fire( e );
 	}
 	@Override
 	protected void handlePreferences( java.util.EventObject e ) {
-		this.getPreferencesOperation().fire();
+		this.getPreferencesOperation().fire( e );
 	}
 	@Override
 	protected void handleQuit( java.util.EventObject e ) {
@@ -1075,7 +1075,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		preservePreference( this.isOmissionOfThisForFieldAccessesDesiredOperation );
 		preservePreference( this.isDefaultFieldNameGenerationDesiredOperation );
 		
-		this.getExitOperation().fire();
+		this.getExitOperation().fire( e );
 		//this.performIfAppropriate( this.getExitOperation(), e, true );
 	}
 	//	protected abstract void handleWindowClosing();

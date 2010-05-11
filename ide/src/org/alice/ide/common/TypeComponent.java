@@ -45,30 +45,10 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeComponent extends DeclarationNameLabel {
-	private edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupOperation;
-	private java.awt.event.MouseListener mouseAdapter = new java.awt.event.MouseListener() {
-		public void mouseEntered( java.awt.event.MouseEvent e ) {
-			setRollover( true );
-		}
-		public void mouseExited( java.awt.event.MouseEvent e ) {
-			setRollover( false );
-		}
-		public void mousePressed( java.awt.event.MouseEvent e ) {
-			if( TypeComponent.this.popupOperation != null ) {
-				TypeComponent.this.popupOperation.fire();
-			}
-		}
-		public void mouseReleased( java.awt.event.MouseEvent e ) {
-		}
-		public void mouseClicked( java.awt.event.MouseEvent e ) {
-		}
-	};
-	private boolean isRollover = false;
-	public TypeComponent( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		super( type );
-		this.setCursor( java.awt.Cursor.getDefaultCursor() );
-		this.setBorder( TypeBorder.getSingletonFor( type ) );
+public class TypeComponent extends edu.cmu.cs.dennisc.croquet.AbstractButton<javax.swing.AbstractButton> {
+	private static final java.awt.Color ROLLOVER_COLOR = java.awt.Color.BLUE.darker();
+	public static TypeComponent createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		TypeComponent rv = new TypeComponent(type);
 		if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
 			
@@ -79,66 +59,84 @@ public class TypeComponent extends DeclarationNameLabel {
 			if( ide.isInstanceCreationAllowableFor( typeInAlice ) ) {
 				operations.add( new org.alice.ide.operations.ast.DeclareFieldOfPredeterminedTypeOperation( ide.getSceneType(), typeInAlice ) );
 			}
-			//operations.add( new org.alice.ide.operations.file.SaveAsTypeOperation( typeInAlice ) );
-			this.popupOperation = new edu.cmu.cs.dennisc.croquet.PopupMenuOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "9f84fe0c-ca20-45f1-8a25-c79bd8454dbd" ), operations );
-					
-//			this.popupOperation = new zoot.DefaultPopupActionOperation( 
-//					new org.alice.ide.operations.ast.RenameTypeOperation( typeInAlice ),
-//					new org.alice.ide.operations.ast.DeclareFieldOfPredeterminedTypeOperation( org.alice.ide.IDE.getSingleton().getSceneType(), typeInAlice ), 
-//					new org.alice.ide.operations.file.SaveAsTypeOperation( typeInAlice ) 
-//			);
+			operations.add( new org.alice.ide.operations.file.SaveAsTypeOperation( typeInAlice ) );
+			edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupOperation = new edu.cmu.cs.dennisc.croquet.PopupMenuOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "9f84fe0c-ca20-45f1-8a25-c79bd8454dbd" ), operations );
+			popupOperation.register( rv );
 		}
+		return rv;
 	}
+	
+	private java.awt.event.MouseListener mouseAdapter = new java.awt.event.MouseListener() {
+		public void mouseEntered( java.awt.event.MouseEvent e ) {
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton)e.getSource();
+			button.getModel().setRollover( true );
+		}
+		public void mouseExited( java.awt.event.MouseEvent e ) {
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton)e.getSource();
+			button.getModel().setRollover( false );
+		}
+		public void mousePressed( java.awt.event.MouseEvent e ) {
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton)e.getSource();
+			button.doClick();
+		}
+		public void mouseReleased( java.awt.event.MouseEvent e ) {
+		}
+		public void mouseClicked( java.awt.event.MouseEvent e ) {
+		}
+	};
+//	private boolean isRollover = false;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
+	private TypeComponent( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		this.type = type;
+//		this.setCursor( java.awt.Cursor.getDefaultCursor() );
+		this.setBorder( TypeBorder.getSingletonFor( type ) );
+	}
+//	public TypeComponent( edu.cmu.cs.dennisc.alice.ast.AbstractType type, boolean isToolTipDesired ) {
+//	this( type );
+//	if( isToolTipDesired ) {
+//		String typeName;
+//		if( type != null ) {
+//			//typeName = type.getName() + " " + type.hashCode();
+//			typeName = type.getName();
+//		} else {
+//			typeName = "<unset>";
+//		}
+//		this.setToolTipText( "class: " + typeName );
+//	}
+//}
+	
 	@Override
-	protected javax.swing.JLabel createJComponent() {
-		return new javax.swing.JLabel() {
+	protected javax.swing.AbstractButton createJComponent() {
+		final DeclarationNameLabel label = new DeclarationNameLabel( this.type );
+		javax.swing.AbstractButton rv = new javax.swing.AbstractButton() {
 			@Override
 			public void paint( java.awt.Graphics g ) {
+				if( this.getModel().isRollover() ) {
+					label.setForegroundColor( ROLLOVER_COLOR );
+				} else {
+					label.setForegroundColor( java.awt.Color.BLACK );
+				}
 				this.paintBorder( g );
-				this.paintComponent( g );
+				this.paintChildren( g );
 			}
 		};
-	}
-	public TypeComponent( edu.cmu.cs.dennisc.alice.ast.AbstractType type, boolean isToolTipDesired ) {
-		this( type );
-		if( isToolTipDesired ) {
-			String typeName;
-			if( type != null ) {
-				//typeName = type.getName() + " " + type.hashCode();
-				typeName = type.getName();
-			} else {
-				typeName = "<unset>";
-			}
-			this.setToolTipText( "class: " + typeName );
-		}
+		rv.setModel( new javax.swing.DefaultButtonModel() );
+		rv.add( label.getJComponent() );
+		return rv;
 	}
 
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
-		if( this.popupOperation != null ) {
-			this.addMouseListener( this.mouseAdapter );
+		if( this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
+			this.getJComponent().addMouseListener( this.mouseAdapter );
 		}
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		if( this.popupOperation != null ) {
-			this.removeMouseListener( this.mouseAdapter );
+		if( this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
+			this.getJComponent().removeMouseListener( this.mouseAdapter );
 		}
 		super.handleRemovedFrom( parent );
 	}
-
-	public void setRollover( boolean isRollover ) {
-		this.isRollover = isRollover;
-		this.repaint();
-	}
-//todo: croquet switch
-//	@Override
-//	public java.awt.Color getForeground() {
-//		if( this.isRollover ) {
-//			return java.awt.Color.BLUE.darker();
-//		} else {
-//			return super.getForeground();
-//		}
-//	}
 }
