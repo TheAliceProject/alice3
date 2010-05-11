@@ -46,7 +46,7 @@ package org.alice.app.operations.file;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectAndLoadProjectOperation extends org.alice.app.operations.file.UriInputPanelOperation {
+public abstract class SelectAndLoadProjectOperation extends org.alice.app.operations.file.UriInputDialogOperation {
 	private org.alice.app.openprojectpane.SelectProjectToOpenPanel selectProjectToOpenPanel;
 	public SelectAndLoadProjectOperation( java.util.UUID individualUUID ) {
 		super( individualUUID, "Load Project" );

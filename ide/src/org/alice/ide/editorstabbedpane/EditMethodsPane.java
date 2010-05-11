@@ -106,8 +106,9 @@ public abstract class EditMethodsPane extends EditMembersPane< edu.cmu.cs.dennis
 	protected abstract org.alice.ide.declarationpanes.CreateMethodPane createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType );
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice createMember( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+		//todo: convert to operation
 		org.alice.ide.declarationpanes.CreateMethodPane createMethodPane = this.createCreateMethodPane( declaringType );
-		return createMethodPane.showInJDialog();
+		return createMethodPane.getActualInputValue();
 	}
 	@Override
 	protected boolean isEditItemEnabledFor( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice e ) {

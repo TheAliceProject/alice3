@@ -52,7 +52,7 @@ public abstract class AbstractCreateFieldPane extends CreateDeclarationWithDecla
 		this.declaringType = declaringType;
 		this.setBackgroundColor( getIDE().getFieldColor() );
 	}
-	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getDeclaringType() {
+	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getDeclaringType() {
 		return this.declaringType;
 	}
 	@Override
@@ -64,7 +64,7 @@ public abstract class AbstractCreateFieldPane extends CreateDeclarationWithDecla
 		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getPreviewFactory(), this.getActualInputValue() );
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getActualInputValue() {
+	public final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getActualInputValue() {
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rv = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( this.getDeclarationName(), this.getValueType(), this.getInitializer() );
 		edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither value;
 		if( this.isReassignable() ) {

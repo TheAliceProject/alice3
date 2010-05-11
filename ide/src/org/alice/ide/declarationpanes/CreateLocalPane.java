@@ -77,7 +77,7 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement getActualInputValue() {
+	public edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement getActualInputValue() {
 		String name = this.getDeclarationName();
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getValueType();
 		boolean isFinal = this.isReassignable() == false;

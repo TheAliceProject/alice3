@@ -46,6 +46,7 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 abstract class CreateInstanceFromFileActionOperation extends AbstractGalleryDeclareFieldOperation {
+	private org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldPane;
 	public CreateInstanceFromFileActionOperation( java.util.UUID individualId ) {
 		super( individualId );
 	}
@@ -65,12 +66,12 @@ abstract class CreateInstanceFromFileActionOperation extends AbstractGalleryDecl
 		sb.append( " extension." );
 		this.getIDE().showMessageDialog( sb.toString(), "Cannot read file", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
 	}
-
+	
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+		this.createFieldPane = null;
 		java.io.File directory = this.getInitialDirectory();
 		java.io.File file = edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.getIDE().getJFrame(), directory, null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION, false );
-
 		if( file != null ) {
 			String lcFilename = file.getName().toLowerCase();
 			if( lcFilename.endsWith( ".a2c" ) ) {
@@ -96,7 +97,6 @@ abstract class CreateInstanceFromFileActionOperation extends AbstractGalleryDecl
 					try {
 						edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.AbstractType, java.util.Set< org.alice.virtualmachine.Resource > > tuple = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readType( zipFile );
 						type = tuple.getA();
-
 						edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO: add in resources" );
 					} catch( java.io.IOException ioe ) {
 						if( isWorthyOfException ) {
@@ -107,16 +107,76 @@ abstract class CreateInstanceFromFileActionOperation extends AbstractGalleryDecl
 						}
 					}
 					if( type != null ) {
-						org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane( ownerType, type );
-						edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog( button, "Create New Instance" );
-						if( field != null ) {
-							Object instanceInJava = createFieldPane.createInstanceInJava();
-							return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object >( field, instanceInJava );
-						}
+						this.createFieldPane = new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane( this.getOwnerType(), type );
 					}
 				}
 			}
 		}
-		return null;
+		return this.createFieldPane;
 	}
+
+	@Override
+	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(edu.cmu.cs.dennisc.croquet.Context context) {
+		//todo: dialog title: "Create New Instance"
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = this.createFieldPane.getActualInputValue();
+		if( field != null ) {
+			Object instanceInJava = this.createFieldPane.createInstanceInJava();
+			return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object >( field, instanceInJava );
+		} else {
+			return null;
+		}
+	}
+//	@Override
+//	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
+//		java.io.File directory = this.getInitialDirectory();
+//		java.io.File file = edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.getIDE().getJFrame(), directory, null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION, false );
+//
+//		if( file != null ) {
+//			String lcFilename = file.getName().toLowerCase();
+//			if( lcFilename.endsWith( ".a2c" ) ) {
+//				this.getIDE().showMessageDialog( "Alice3 does not load Alice2 characters", "Cannot read file", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
+//			} else if( lcFilename.endsWith( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION.toLowerCase() ) ) {
+//				this.getIDE().showMessageDialog( file.getAbsolutePath() + " appears to be a project file and not a class file.\n\nLook for files with an " + edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION + " extension.",
+//						"Incorrect File Type", edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION );
+//			} else {
+//				boolean isWorthyOfException = lcFilename.endsWith( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION.toLowerCase() );
+//				java.util.zip.ZipFile zipFile;
+//				try {
+//					zipFile = new java.util.zip.ZipFile( file );
+//				} catch( java.io.IOException ioe ) {
+//					if( isWorthyOfException ) {
+//						throw new RuntimeException( file.getAbsolutePath(), ioe );
+//					} else {
+//						this.showMessageDialog( file, false );
+//						zipFile = null;
+//					}
+//				}
+//				if( zipFile != null ) {
+//					edu.cmu.cs.dennisc.alice.ast.AbstractType type;
+//					try {
+//						edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.AbstractType, java.util.Set< org.alice.virtualmachine.Resource > > tuple = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readType( zipFile );
+//						type = tuple.getA();
+//
+//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO: add in resources" );
+//					} catch( java.io.IOException ioe ) {
+//						if( isWorthyOfException ) {
+//							throw new RuntimeException( file.getAbsolutePath(), ioe );
+//						} else {
+//							this.showMessageDialog( file, true );
+//							type = null;
+//						}
+//					}
+//					if( type != null ) {
+//						org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane( ownerType, type );
+//						edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog( button, "Create New Instance" );
+//						if( field != null ) {
+//							Object instanceInJava = createFieldPane.createInstanceInJava();
+//							return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object >( field, instanceInJava );
+//						}
+//					}
+//				}
+//			}
+//		}
+//		return null;
+//	}
 }

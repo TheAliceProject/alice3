@@ -46,8 +46,13 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 class CreateFieldFromPersonPane extends org.alice.ide.declarationpanes.CreateLargelyPredeterminedFieldPane {
+	private org.alice.apis.stage.Person person;
 	public CreateFieldFromPersonPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, org.alice.apis.stage.Person person ) {
 		super( declaringType, person.getClass(), null );
+		this.person = person;
+	}
+	public org.alice.apis.stage.Person getPerson() {
+		return this.person;
 	}
 }
 
@@ -55,20 +60,25 @@ class CreateFieldFromPersonPane extends org.alice.ide.declarationpanes.CreateLar
  * @author Dennis Cosgrove
  */
 class CreatePersonActionOperation extends AbstractGalleryDeclareFieldOperation {
-	private org.alice.apis.stage.Person person;
+	private CreateFieldFromPersonPane createFieldFromPersonPane;
 	public CreatePersonActionOperation( org.alice.apis.stage.Person person ) {
 		super( java.util.UUID.fromString( "7f4b7217-336c-4661-ac31-ed6ea7b963fe" ) );
-		this.person = person;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = ide.getSceneType();
-		CreateFieldFromPersonPane createFieldFromPersonPane = new CreateFieldFromPersonPane( declaringType, person );
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromPersonPane.showInJDialog( button );
+		this.createFieldFromPersonPane = new CreateFieldFromPersonPane( declaringType, person );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: refresh" );
+		return this.createFieldFromPersonPane;
+	}
+
+	@Override
+	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(edu.cmu.cs.dennisc.croquet.Context context) {
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = this.createFieldFromPersonPane.getActualInputValue();
 		if( field != null ) {
 			//ide.getSceneEditor().handleFieldCreation( declaringType, field, person );
-			return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object >( field, this.person );
+			return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object >( field, this.createFieldFromPersonPane.getPerson() );
 		} else {
 			return null;
 		}

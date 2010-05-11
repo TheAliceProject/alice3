@@ -45,7 +45,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInMoreOperation extends org.alice.ide.operations.AbstractActionOperation {
+public class FillInMoreOperation extends org.alice.ide.operations.ActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement;
 	public FillInMoreOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "e4cdc25b-d7a0-42b5-adc9-74e34db6b5fc" ) );

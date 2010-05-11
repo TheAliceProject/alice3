@@ -46,19 +46,22 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperation {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
+	private org.alice.ide.declarationpanes.CreateFieldPane createFieldPane;
 	public DeclareFieldOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
 		super( java.util.UUID.fromString( "e935b0ea-e927-49ff-b33b-2c8eaf5c8b57" ) );
-		this.ownerType = ownerType;
 		this.setName( "Declare Property..." );
+		this.createFieldPane = new org.alice.ide.declarationpanes.CreateFieldPane( ownerType );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
-		return this.ownerType;
+		return this.createFieldPane.getDeclaringType();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
-		org.alice.ide.declarationpanes.CreateFieldPane createFieldPane = new org.alice.ide.declarationpanes.CreateFieldPane( ownerType );
-		return createFieldPane.showInJDialog( button );
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+		return this.createFieldPane;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.croquet.Context context ) {
+		return this.createFieldPane.getActualInputValue();
 	}
 }

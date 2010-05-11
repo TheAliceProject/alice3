@@ -45,7 +45,7 @@ package org.alice.ide.operations.preferences;
 /**
  * @author Dennis Cosgrove
  */
-public class PreferencesOperation extends org.alice.ide.operations.AbstractActionOperation {
+public class PreferencesOperation extends org.alice.ide.operations.ActionOperation {
 	public PreferencesOperation() {
 		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "8662d722-9a02-47d5-a7ed-27d20528175a" ) );
 		this.setName( "Preferences..." );

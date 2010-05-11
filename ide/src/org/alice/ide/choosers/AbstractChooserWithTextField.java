@@ -75,19 +75,19 @@ public abstract class AbstractChooserWithTextField<E> extends AbstractChooser<E>
 		this.textField.setText( text );
 		this.textField.selectAll();
 	}
-	@Override
-	public void setInputPanel( final edu.cmu.cs.dennisc.croquet.InputPanel< ? > inputPanel ) {
-		super.setInputPanel( inputPanel );
-		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
-			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
-				inputPanel.updateOKButton();
-			}
-			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
-				inputPanel.updateOKButton();
-			}
-			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
-				inputPanel.updateOKButton();
-			}
-		} );
-	}
+//	@Override
+//	public void setInputPanel( final edu.cmu.cs.dennisc.croquet.InputPanel< ? > inputPanel ) {
+//		super.setInputPanel( inputPanel );
+//		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
+//			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
+//				inputPanel.updateOKButton();
+//			}
+//			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
+//				inputPanel.updateOKButton();
+//			}
+//			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
+//				inputPanel.updateOKButton();
+//			}
+//		} );
+//	}
 }

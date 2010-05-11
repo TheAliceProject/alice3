@@ -47,13 +47,12 @@ import org.alice.ide.choosers.ValueChooser;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression, F> extends org.alice.ide.preview.PreviewInputPane< E > {
+public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression, F> extends org.alice.ide.preview.PanelWithPreview {
 	private CustomFillIn< E, F > fillIn;
 	private ValueChooser< F > chooser;
 	public CustomInputPane( CustomFillIn< E, F > fillIn, ValueChooser< F > chooser ) {
 		this.fillIn = fillIn;
 		this.chooser = chooser;
-		this.chooser.setInputPanel( this );
 	}
 	
 	@Override
@@ -70,14 +69,13 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression, 
 			//re.printStackTrace();
 			expression = new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
 		}
-		return getIDE().getPreviewFactory().createExpressionPane( expression );
+		return org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( expression );
 	}
 	@Override
 	protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateInternalComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
 		this.chooser.updateRows( rv );
 		return rv;
 	}
-	@Override
 	protected E getActualInputValue() {
 		F value = this.chooser.getValue();
 		return this.fillIn.createExpression( value );

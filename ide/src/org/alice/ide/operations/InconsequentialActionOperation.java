@@ -46,7 +46,7 @@ package org.alice.ide.operations;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InconsequentialActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+public abstract class InconsequentialActionOperation extends org.alice.ide.operations.ActionOperation {
 	public InconsequentialActionOperation( java.util.UUID individualUUID ) {
 		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, individualUUID );
 	}

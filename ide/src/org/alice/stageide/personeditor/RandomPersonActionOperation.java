@@ -52,7 +52,7 @@ import org.alice.apis.stage.LifeStage;
 /**
  * @author Dennis Cosgrove
  */
-class RandomPersonActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+class RandomPersonActionOperation extends org.alice.ide.operations.ActionOperation {
 	public RandomPersonActionOperation() {
 		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "9ea00a57-0ea7-4c53-ac53-1e07220e76b9" ) );
 		this.setName( "Generate Random Selection" );

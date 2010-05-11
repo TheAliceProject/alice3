@@ -105,7 +105,7 @@ public class EditFieldPane extends AbstractDeclarationPane< edu.cmu.cs.dennisc.a
 		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getPreviewFactory(), this.getActualInputValue() );
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getActualInputValue() {
+	public final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getActualInputValue() {
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rv = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( this.getDeclarationName(), this.getValueType(), this.getInitializer() );
 		edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither value;
 		if( this.isReassignable() ) {

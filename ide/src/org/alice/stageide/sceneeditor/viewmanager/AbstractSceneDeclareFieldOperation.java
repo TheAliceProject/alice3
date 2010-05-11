@@ -42,13 +42,13 @@
  */
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import org.alice.ide.operations.ast.AbstractDeclareFieldOperation;
+import org.alice.ide.operations.ast.AbstractDeclareFieldActionOperation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 /**
  * @author David Culyba
  */
-public abstract class AbstractSceneDeclareFieldOperation extends AbstractDeclareFieldOperation {
+public abstract class AbstractSceneDeclareFieldOperation extends AbstractDeclareFieldActionOperation {
 
 	protected MoveAndTurnSceneEditor sceneEditor;
 	

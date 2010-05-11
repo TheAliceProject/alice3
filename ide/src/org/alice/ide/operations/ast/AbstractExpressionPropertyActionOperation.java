@@ -45,7 +45,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractExpressionPropertyActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+public abstract class AbstractExpressionPropertyActionOperation extends org.alice.ide.operations.ActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
 
 	public AbstractExpressionPropertyActionOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {

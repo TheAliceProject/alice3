@@ -40,33 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.run;
+package org.alice.ide.operations;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewMethodOperation extends org.alice.ide.operations.ActionOperation {
-	private org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate;
-	public PreviewMethodOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
-		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "9414c780-1ba2-4b00-8cb2-3c066f0063d5" ) );
-		this.setName( "Preview..." );
-		this.procedureInvocationTemplate = procedureInvocationTemplate;
+public abstract class InputDialogOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
+	public InputDialogOperation( java.util.UUID groupUUID, java.util.UUID individualId ) {
+		super( groupUUID, individualId );
 	}
-	@Override
-	protected void perform( final edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
-//		java.awt.event.MouseEvent mouseEvent = new java.awt.event.MouseEvent( this.procedureInvocationTemplate.getJComponent(), 0, 0, 0, this.procedureInvocationTemplate.getWidth(), this.procedureInvocationTemplate.getHeight(), 0, false );
-//		edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( this.procedureInvocationTemplate.getJComponent(), null, mouseEvent );
-//		this.procedureInvocationTemplate.createStatement( dragAndDropEvent, null, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement >() {
-//			public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-//				edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( statement, edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
-//				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( expressionStatement.expression.getValue(), edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class );
-//				methodInvocation.expression.setValue( null );
-//				PreviewMethodOperation.this.getIDE().handlePreviewMethod( context, methodInvocation );
-//				context.finish();
-//			}
-//			public void handleCancelation() {
-//				context.cancel();
-//			}
-//		} );
+	protected final org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
 	}
 }

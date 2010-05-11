@@ -42,7 +42,7 @@
  */
 package org.alice.ide.codeeditor;
 
-abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.operations.ActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody original;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody replacement;
@@ -103,7 +103,7 @@ class ConvertDoTogetherToDoInOrderActionOperation extends ConvertStatementWithBo
 	}
 }
 
-class DissolveStatementActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody;
 	public DissolveStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody ) {
@@ -151,7 +151,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.Abstract
 	}
 }
 
-class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 

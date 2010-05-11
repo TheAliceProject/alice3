@@ -78,8 +78,14 @@ public class TabbedPaneSelectionOperation extends Operation {
 	}
 	public void addTabStateOperation( TabStateOperation operation ) {
 		this.tabStateOperations.add( operation );
+		if( this.singletonTabbedPane != null ) {
+			this.addToTabbedPane( operation );
+		}
 	}
 	public void removeStateOperation( TabStateOperation operation ) {
+		if( this.singletonTabbedPane != null ) {
+			this.removeFromTabbedPane( operation );
+		}
 		this.tabStateOperations.remove( operation );
 	}
 	public Iterable< TabStateOperation > getTabStateOperations() {
@@ -113,6 +119,24 @@ public class TabbedPaneSelectionOperation extends Operation {
 	public void removeSelectionObserver( SelectionObserver selectionObserver ) { 
 		this.selectionObservers.remove( selectionObserver );
 	}
+	
+	private void addToTabbedPane( TabStateOperation tabState ) {
+		ScrollPane scrollPane = tabState.getSingletonScrollPane();
+		Component<?> mainComponent = tabState.getSingletonView();
+		AbstractButton<?> header = tabState.createTabTitle();
+		header.scaleFont( this.headerFontScalar );
+		header.setBackgroundColor( mainComponent.getBackgroundColor() );
+		scrollPane.setBackgroundColor( mainComponent.getBackgroundColor() );
+		TabbedPane.Key key = this.singletonTabbedPane.createKey(header, scrollPane, tabState );
+		this.singletonTabbedPane.addTab( key );
+		if( tabState.getState() ) {
+			this.singletonTabbedPane.selectTab( key );
+		}
+		tabState.addValueObserver( new TabIsSelectedObserver( tabState, key) );
+	}
+	private void removeFromTabbedPane( TabStateOperation tabState ) {
+		throw new RuntimeException( "todo" );
+	}
 
 	private TabbedPane singletonTabbedPane;
 	public TabbedPane getSingletonTabbedPane() {
@@ -121,18 +145,7 @@ public class TabbedPaneSelectionOperation extends Operation {
 		} else {
 			this.singletonTabbedPane = new TabbedPane();
 			for( TabStateOperation tabState : this.tabStateOperations ) {
-				ScrollPane scrollPane = tabState.getSingletonScrollPane();
-				Component<?> mainComponent = tabState.getSingletonView();
-				AbstractButton<?> header = tabState.createTabTitle();
-				header.scaleFont( this.headerFontScalar );
-				header.setBackgroundColor( mainComponent.getBackgroundColor() );
-				scrollPane.setBackgroundColor( mainComponent.getBackgroundColor() );
-				TabbedPane.Key key = this.singletonTabbedPane.createKey(header, scrollPane, tabState );
-				this.singletonTabbedPane.addTab( key );
-				if( tabState.getState() ) {
-					this.singletonTabbedPane.selectTab( key );
-				}
-				tabState.addValueObserver( new TabIsSelectedObserver( tabState, key) );
+				this.addToTabbedPane(tabState);
 			}
 		}
 		return this.singletonTabbedPane;

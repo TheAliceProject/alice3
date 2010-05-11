@@ -87,12 +87,13 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 	}
 	
 	private void handleChanged() {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				ArrayChooser.this.getInputPanel().updateOKButton();
-			}
-		} );
-		
+		throw new RuntimeException( "todo" );
+//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//			public void run() {
+//				ArrayChooser.this.getInputPanel().updateOKButton();
+//			}
+//		} );
+//		
 	}
 	public String getTitleDefault() {
 		return "Enter Custom Array";

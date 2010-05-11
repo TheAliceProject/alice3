@@ -81,7 +81,7 @@ public class PreferencesInputPane extends org.alice.ide.InputPanel<Void> {
 		CollectionOfPreferencesPane rootPreferencesPane = new CollectionOfPreferencesPane( "Root", rootPreferencesNode );
 		
 		
-		class ClearRecentProjectsOperation extends org.alice.ide.operations.AbstractActionOperation {
+		class ClearRecentProjectsOperation extends org.alice.ide.operations.ActionOperation {
 			public ClearRecentProjectsOperation() {
 				super( org.alice.ide.IDE.PREFERENCES_GROUP, java.util.UUID.fromString( "f8b4c080-88cf-41e5-ac7d-afc2bd340083" ) );
 				this.setName( "Clear Recent Projects" );

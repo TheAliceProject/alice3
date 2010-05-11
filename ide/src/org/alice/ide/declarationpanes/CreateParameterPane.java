@@ -86,7 +86,7 @@ public abstract class CreateParameterPane extends CreateDeclarationPane<edu.cmu.
 		return "Declare Parameter";
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice getActualInputValue() {
+	public edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice getActualInputValue() {
 		return new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( this.getDeclarationName(), this.getValueType() );
 	}
 }

@@ -45,7 +45,7 @@ package org.alice.ide.preview;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviewInputPane<T> extends org.alice.ide.RowsInputPanel< T > {
+public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //	protected static javax.swing.JLabel createLabel( String s ) {
 //		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( s );
 //		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
@@ -58,7 +58,7 @@ public abstract class PreviewInputPane<T> extends org.alice.ide.RowsInputPanel< 
 //					PreviewInputPane.this.createPreviewSubComponent(),
 //					javax.swing.Box.createHorizontalGlue()
 //			);
-			this.addComponent( PreviewInputPane.this.createPreviewSubComponent(), java.awt.BorderLayout.WEST );
+			this.addComponent( PanelWithPreview.this.createPreviewSubComponent(), java.awt.BorderLayout.WEST );
 			this.revalidateAndRepaint();
 		}
 		@Override
@@ -67,7 +67,7 @@ public abstract class PreviewInputPane<T> extends org.alice.ide.RowsInputPanel< 
 		}
 		@Override
 		protected boolean contains( int x, int y, boolean jContains ) {
-			return super.contains( x, y, jContains );
+			return false;
 		}
 		@Override
 		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
@@ -81,29 +81,42 @@ public abstract class PreviewInputPane<T> extends org.alice.ide.RowsInputPanel< 
 		}
 	}
 
-	private java.awt.Component rowsSpringPane;
 	private PreviewPane previewPane;
 	private edu.cmu.cs.dennisc.croquet.Component< ? > spacer;
-
-	public PreviewInputPane() {
+	private edu.cmu.cs.dennisc.croquet.Component<?> centerPanel;
+	public PanelWithPreview() {
 		final int INSET = 16;
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
+		edu.cmu.cs.dennisc.croquet.RowsSpringPanel rowsSpringPanel = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel() {
+			@Override
+			protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv) {
+				return PanelWithPreview.this.updateComponentRows( rv );
+			}
+		};
+		rowsSpringPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
+		this.centerPanel = edu.cmu.cs.dennisc.croquet.BoxUtilities.createConstrainedToMinimumPreferredWidthComponent(rowsSpringPanel, 320);
 	}
 	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent();
-	private void updatePreview() {
-		if( this.previewPane != null ) {
-			this.previewPane.refresh();
-		}
-	}
+	
+//	todo: croquet switch
 //	@Override
 //	public java.awt.Dimension getPreferredSize() {
 //		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
 //	}
+//	@Override
+//	public void updateOKButton() {
+//		super.updateOKButton();
+//		this.updatePreview();
+//		this.updateSizeIfNecessary();
+//	}
+//	private void updatePreview() {
+//		if( this.previewPane != null ) {
+//			this.previewPane.refresh();
+//		}
+//	}
 
 	protected abstract java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateInternalComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv );
 
-	@Override
-	protected final java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv, edu.cmu.cs.dennisc.croquet.RowsSpringPanel panel ) {
+	protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv) {
 		this.previewPane = new PreviewPane();
 		this.spacer = edu.cmu.cs.dennisc.croquet.BoxUtilities.createRigidArea( new java.awt.Dimension( 0, 32 ) );
 		rv.add( 
@@ -119,31 +132,12 @@ public abstract class PreviewInputPane<T> extends org.alice.ide.RowsInputPanel< 
 						null
 				) 
 		);
-		panel.setAlignmentX( 0.0f );
+		
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate setAlignmentX" );
+		this.setAlignmentX( 0.0f );
 		return rv;
 	}
-//	private java.awt.Component createRowsSpringPane() {
-//		return rv;
-//	}
-//	@Override
-//	public void addNotify() {
-//		super.addNotify();
-//		if( this.rowsSpringPane != null ) {
-//			//pass
-//		} else {
-//			this.rowsSpringPane = this.createRowsSpringPane();
-//			this.add( this.rowsSpringPane, java.awt.BorderLayout.WEST );
-//		}
-//		this.updateOKButton();
-//	}
 
-	@Override
-	public void updateOKButton() {
-		super.updateOKButton();
-		this.updatePreview();
-//todo: croquet switch
-//		this.updateSizeIfNecessary();
-	}
 	
 	@Override
 	protected boolean paintComponent( java.awt.Graphics2D g2 ) {
@@ -155,4 +149,33 @@ public abstract class PreviewInputPane<T> extends org.alice.ide.RowsInputPanel< 
 		}
 		return super.paintComponent( g2 );
 	}
+	
+	protected org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
+	}
+	@Deprecated
+	protected boolean isOKButtonValid() {
+		throw new RuntimeException("todo");
+//		return true;
+	}
+	@Deprecated
+	protected void updateOKButton() {
+		throw new RuntimeException("todo");
+	}
+	@Deprecated
+	protected String getTitleDefault() {
+		return null;
+	}
+	
+	@Override
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo(parent);
+		this.addComponent( this.centerPanel, Constraint.CENTER);
+	}
+	@Override
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		this.removeComponent( this.centerPanel );
+		super.handleRemovedFrom(parent);
+	}
+
 }

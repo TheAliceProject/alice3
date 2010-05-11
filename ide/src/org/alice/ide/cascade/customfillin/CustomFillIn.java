@@ -46,7 +46,7 @@ package org.alice.ide.cascade.customfillin;
  * @author Dennis Cosgrove
  */
 public abstract class CustomFillIn<E extends edu.cmu.cs.dennisc.alice.ast.Expression, F> extends edu.cmu.cs.dennisc.cascade.FillIn< E > {
-	protected abstract org.alice.ide.choosers.ValueChooser< ? > createCustomPane();
+	protected abstract org.alice.ide.choosers.ValueChooser< F > createCustomPane();
 	protected abstract E createExpression( F value );
 
 	@Override
@@ -55,9 +55,28 @@ public abstract class CustomFillIn<E extends edu.cmu.cs.dennisc.alice.ast.Expres
 	}
 	@Override
 	public E getValue() {
-		org.alice.ide.choosers.ValueChooser< ? > customPane = this.createCustomPane();
-		CustomInputPane<E,F> inputPane = new CustomInputPane( this, customPane );
-		E value = inputPane.showInJDialog();
+		org.alice.ide.choosers.ValueChooser< F > chooser = this.createCustomPane();
+		final CustomInputPane< E, F > customInputPane = new CustomInputPane<E,F>(this, chooser);
+		
+		edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation = new edu.cmu.cs.dennisc.croquet.InputDialogOperation( 
+				edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "0e69d792-3e5b-4a17-b670-465885ade615" ) ) {
+			@Override
+			protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+				return customInputPane;
+			}
+			@Override
+			protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+				if( isOk ) {
+					context.finish();
+				} else {
+					context.cancel();
+				}
+			}
+		};
+		
+		inputDialogOperation.fire();
+		
+		E value = (E)customInputPane.getActualInputValue();
 		if( value != null ) {
 			return value;
 		} else {

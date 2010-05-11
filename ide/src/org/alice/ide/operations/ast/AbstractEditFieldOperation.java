@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractEditFieldOperation extends org.alice.ide.operations.AbstractActionOperation {
+public abstract class AbstractEditFieldOperation extends org.alice.ide.operations.ActionOperation {
 	public AbstractEditFieldOperation( java.util.UUID groupUUID, java.util.UUID individualId, String name ) {
 		super( groupUUID, individualId );
 		this.setName( name );
@@ -58,8 +58,9 @@ public abstract class AbstractEditFieldOperation extends org.alice.ide.operation
 			final edu.cmu.cs.dennisc.alice.ast.AbstractType prevValueType = field.valueType.getValue();
 			final String prevName = field.getName();
 			final edu.cmu.cs.dennisc.alice.ast.Expression prevInitializer = field.initializer.getValue();
+			//todo: convert to operation
 			org.alice.ide.declarationpanes.EditFieldPane editFieldPane = new org.alice.ide.declarationpanes.EditFieldPane( field, referencedFields.contains( field ), reassignedFields.contains( field ) );
-			FieldDeclaredInAlice tempField = editFieldPane.showInJDialog( button );
+			FieldDeclaredInAlice tempField = editFieldPane.getActualInputValue();
 			if( tempField != null ) {
 				final edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither nextFinalVolatileOrNeither = tempField.finalVolatileOrNeither.getValue();
 				final edu.cmu.cs.dennisc.alice.ast.AbstractType nextValueType = tempField.valueType.getValue();

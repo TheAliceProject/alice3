@@ -240,7 +240,7 @@ class Cycle< E > {
  * @author Dennis Cosgrove
  */
 public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croquet.TabbedPaneSelectionOperation {
-	class EditPreviousCodeOperation extends org.alice.ide.operations.AbstractActionOperation {
+	class EditPreviousCodeOperation extends org.alice.ide.operations.ActionOperation {
 		public EditPreviousCodeOperation() {
 			super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "71ff1171-9e5e-443f-a7aa-cb4012f05fec" ) );
 			this.setName( "previous" );
@@ -361,6 +361,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 		} else {
 			this.editedCodes.add( code );
 		}
+		this.addTabStateOperation( codeTabIsSelectedOperation );
 		this.updateBackOperationsEnabled();
 	}
 

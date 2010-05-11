@@ -45,7 +45,7 @@ package org.alice.ide.declarationpanes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.PreviewInputPane< T > {
+public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.PanelWithPreview {
 	class IsReassignableStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 		public IsReassignableStateOperation( boolean initialValue ) {
 			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "c95e177e-8fea-4916-a401-1b865594b135" ), initialValue, "(is constant)", "(is variable)" );
@@ -136,6 +136,9 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	}
 	public AbstractDeclarationPane( org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
 		this( nodeNameValidator, null, null );
+	}
+	public void setNodeNameValidator(org.alice.ide.name.validators.NodeNameValidator nodeNameValidator) {
+		this.nodeNameValidator = nodeNameValidator;
 	}
 	private void handleChange() {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
@@ -310,7 +313,11 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		this.updateOKButton();
 	}
 	protected boolean isDeclarationNameValidAndAvailable() {
-		return this.nodeNameValidator.isNameValidAndAvailable( this.declarationNameTextField.getText() );
+		if( this.nodeNameValidator != null ) {
+			return this.nodeNameValidator.isNameValidAndAvailable( this.declarationNameTextField.getText() );
+		} else {
+			return true;
+		}
 	}
 	protected boolean isValueTypeValid() {
 		if( this.typePane != null ) {
@@ -323,4 +330,5 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	public boolean isOKButtonValid() {
 		return super.isOKButtonValid() && this.isDeclarationNameValidAndAvailable() && this.isValueTypeValid();
 	}
+	public abstract T getActualInputValue();
 }

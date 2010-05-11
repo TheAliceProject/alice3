@@ -45,7 +45,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FillInExpressionListPropertyItemOperation extends org.alice.ide.operations.AbstractActionOperation {
+public abstract class FillInExpressionListPropertyItemOperation extends org.alice.ide.operations.ActionOperation {
 //	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
 	private int index;

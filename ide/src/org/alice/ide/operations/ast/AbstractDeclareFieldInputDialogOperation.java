@@ -45,54 +45,23 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclareFieldOperation extends org.alice.ide.operations.AbstractActionOperation {
+public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice.ide.operations.InputDialogOperation {
 	protected abstract edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType();
-	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> createFieldAndInstance( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType );
+	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> createFieldAndInstance( edu.cmu.cs.dennisc.croquet.Context context );
 	protected abstract boolean isInstanceValid();
-	public AbstractDeclareFieldOperation( java.util.UUID individualId ) {
+	
+	public AbstractDeclareFieldInputDialogOperation( java.util.UUID individualId ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
 	}
 	@Override
-	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = this.getOwnerType();
-		final edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> tuple = this.createFieldAndInstance( context, e, button, ownerType );
+	protected final void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+		edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> tuple = this.createFieldAndInstance( context );
 		if( tuple != null ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
 			if( field != null ) {
-				class Edit extends org.alice.ide.ToDoEdit {
-					private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
-					private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
-					private int index;
-					
-					public Edit( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, int index ) {
-						this.ownerType = ownerType;
-						this.field = field;
-						this.index = index;
-					}
-					@Override
-					public void doOrRedo( boolean isDo ) {
-						this.ownerType.fields.add( this.index, this.field );
-						if( isInstanceValid() ) {
-							getIDE().getSceneEditor().handleFieldCreation(ownerType, tuple.getA(), tuple.getB(), isDo );
-						}
-					}
-					@Override
-					public void undo() {
-						if( this.ownerType.fields.get( this.index ) == this.field ) {
-							this.ownerType.fields.remove( this.index );
-						} else {
-							throw new javax.swing.undo.CannotUndoException();
-						}
-					}
-					@Override
-					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-						rv.append( "declare:" );
-						edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, field, locale);
-						return rv;
-					}
-				}
+				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = this.getOwnerType();
 				int index = ownerType.fields.size();
-				context.commitAndInvokeDo( new Edit( ownerType, field, index ) );
+				context.commitAndInvokeDo( new DeclareFieldEdit( ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
 			} else {
 				context.cancel();
 			}
@@ -100,4 +69,20 @@ public abstract class AbstractDeclareFieldOperation extends org.alice.ide.operat
 			context.cancel();
 		}
 	}
+//	@Override
+//	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+//		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = this.getOwnerType();
+//		final edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> tuple = this.createFieldAndInstance( context, e, button, ownerType );
+//		if( tuple != null ) {
+//			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
+//			if( field != null ) {
+//				int index = ownerType.fields.size();
+//				context.commitAndInvokeDo( new DeclareFieldEdit( ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
+//			} else {
+//				context.cancel();
+//			}
+//		} else {
+//			context.cancel();
+//		}
+//	}
 }

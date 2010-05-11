@@ -45,7 +45,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRenameNodeOperation extends edu.cmu.cs.dennisc.croquet.InputPanelOperation {
+public abstract class AbstractRenameNodeOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
 	private org.alice.ide.name.RenamePane renameNodePane;
 	public AbstractRenameNodeOperation( java.util.UUID groupUUID, java.util.UUID individualId, String name ) {
 		super( groupUUID, individualId, name );

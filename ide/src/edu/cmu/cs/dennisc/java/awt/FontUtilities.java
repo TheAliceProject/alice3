@@ -82,7 +82,11 @@ public class FontUtilities {
 	public static void setFontToScaledFont( java.awt.Component component, float scaleFactor ) {
 		if( scaleFactor != 1.0f ) {
 			java.awt.Font font = component.getFont();
-			component.setFont( font.deriveFont( font.getSize2D() * scaleFactor ) );
+			if( font != null ) {
+				component.setFont( font.deriveFont( font.getSize2D() * scaleFactor ) );
+			} else {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setFontToScaledFont" );
+			}
 		}
 	}
 }

@@ -45,41 +45,46 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareMethodParameterOperation extends AbstractCodeOperation {
+public class DeclareMethodParameterOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
+	private org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane;
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
-
 	public DeclareMethodParameterOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		super( java.util.UUID.fromString( "aa3d337d-b409-46ae-816f-54f139b32d86" ) );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "aa3d337d-b409-46ae-816f-54f139b32d86" ) );
 		this.method = method;
 		this.setName( "Add Parameter..." );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {
-		return this.method;
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+		//todo: create before hand and refresh at this point
+		this.createMethodParameterPane = new org.alice.ide.declarationpanes.CreateMethodParameterPane( method, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
+		return this.createMethodParameterPane;
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
-		org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = new org.alice.ide.declarationpanes.CreateMethodParameterPane( method, this.getIDE().getMethodInvocations( method ) );
-		final edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = createMethodParameterPane.showInJDialog( button );
-		if( parameter != null ) {
-			final int index = method.parameters.size();
-			final java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument >();
-			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
-				@Override
-				public void doOrRedo( boolean isDo ) {
-					org.alice.ide.ast.NodeUtilities.addParameter( map, method, parameter, index, getIDE().getMethodInvocations( method ) );
-				}
-				@Override
-				public void undo() {
-					org.alice.ide.ast.NodeUtilities.removeParameter( map, method, parameter, index, getIDE().getMethodInvocations( method ) );
-				}
-				@Override
-				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-					rv.append( "declare:" );
-					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, parameter, locale);
-					return rv;
-				}
-			} );
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+		if( isOk ) {
+			final edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = this.createMethodParameterPane.getActualInputValue();
+			if( parameter != null ) {
+				final int index = method.parameters.size();
+				final java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument >();
+				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+					@Override
+					public void doOrRedo( boolean isDo ) {
+						org.alice.ide.ast.NodeUtilities.addParameter( map, method, parameter, index, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
+					}
+					@Override
+					public void undo() {
+						org.alice.ide.ast.NodeUtilities.removeParameter( map, method, parameter, index, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
+					}
+					@Override
+					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+						rv.append( "declare:" );
+						edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, parameter, locale);
+						return rv;
+					}
+				} );
+			} else {
+				context.cancel();
+			}
 		} else {
 			context.cancel();
 		}

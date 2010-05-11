@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputPanelOperation extends AbstractActionOperation {
+public abstract class InputDialogOperation extends AbstractActionOperation {
 	private class ButtonOperation extends ActionOperation {
 		private boolean isOk;
 		private Dialog dialog;
@@ -63,7 +63,7 @@ public abstract class InputPanelOperation extends AbstractActionOperation {
 		@Override
 		protected void perform(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
 			assert this.dialog != null;
-			InputPanelOperation.this.isOk = this.isOk;
+			InputDialogOperation.this.isOk = this.isOk;
 //			if (this.isOk) {
 //				context.finish();
 //			} else {
@@ -81,7 +81,7 @@ public abstract class InputPanelOperation extends AbstractActionOperation {
 	private ButtonOperation cancelOperation;
 	private boolean isOk = false;
 	
-	public InputPanelOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, String name, boolean isCancelDesired) {
+	public InputDialogOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, String name, boolean isCancelDesired) {
 		super(groupUUID, individualUUID);
 		this.setName( name );
 		this.okOperation = new ButtonOperation(java.util.UUID.fromString("f6019ff0-cf2b-4d6c-8c8d-14cac8154ebc"), "OK", true);
@@ -91,8 +91,11 @@ public abstract class InputPanelOperation extends AbstractActionOperation {
 			this.cancelOperation = null;
 		}
 	}
-	public InputPanelOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, String title) {
+	public InputDialogOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, String title) {
 		this(groupUUID, individualUUID, title, true);
+	}
+	public InputDialogOperation(java.util.UUID groupUUID, java.util.UUID individualUUID) {
+		this(groupUUID, individualUUID, null);
 	}
 
 

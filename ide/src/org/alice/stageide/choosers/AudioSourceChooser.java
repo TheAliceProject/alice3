@@ -118,10 +118,11 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 			super.firePropertyChanged( e );
 			AudioSourceChooser.this.startTimeSlider.setTime( 0.0 );
 			AudioSourceChooser.this.stopTimeSlider.setTime( Double.NaN );
-			edu.cmu.cs.dennisc.croquet.InputPanel< ? > inputPanel = AudioSourceChooser.this.getInputPanel();
-			if( inputPanel != null ) {
-				inputPanel.updateOKButton();
-			}
+			throw new RuntimeException( "todo" );
+//			edu.cmu.cs.dennisc.croquet.InputPanel< ? > inputPanel = AudioSourceChooser.this.getInputPanel();
+//			if( inputPanel != null ) {
+//				inputPanel.updateOKButton();
+//			}
 		}
 	}
 	
@@ -142,7 +143,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 			org.alice.apis.moveandturn.AudioSource audioSource = getValue();
 			edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
 			edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( audioSource.getAudioResource(), audioSource.getVolume(), audioSource.getStartTime(), audioSource.getStopTime() );
-			player.test( AudioSourceChooser.this.getInputPanel().getJComponent() );
+			player.test( button.getJComponent() );
 		}
 	};
 	private TestOperation testOperation = new TestOperation();
@@ -216,7 +217,8 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 
 		this.volumeLevelControl.addChangeListener( new javax.swing.event.ChangeListener() {
 			public void stateChanged( javax.swing.event.ChangeEvent e ) {
-				AudioSourceChooser.this.getInputPanel().updateOKButton();
+				throw new RuntimeException( "todo" );
+//				AudioSourceChooser.this.getInputPanel().updateOKButton();
 			}
 		} );
 		this.startTimeSlider.addChangeListener( new javax.swing.event.ChangeListener() {
@@ -224,7 +226,8 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 				if( startTimeSlider.getValue() > stopTimeSlider.getValue() ) {
 					stopTimeSlider.setValue( startTimeSlider.getValue() );
 				}
-				AudioSourceChooser.this.getInputPanel().updateOKButton();
+				throw new RuntimeException( "todo" );
+//				AudioSourceChooser.this.getInputPanel().updateOKButton();
 			}
 		} );
 		this.stopTimeSlider.addChangeListener( new javax.swing.event.ChangeListener() {
@@ -232,7 +235,8 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 				if( startTimeSlider.getValue() > stopTimeSlider.getValue() ) {
 					startTimeSlider.setValue( stopTimeSlider.getValue() );
 				}
-				AudioSourceChooser.this.getInputPanel().updateOKButton();
+				throw new RuntimeException( "todo" );
+//				AudioSourceChooser.this.getInputPanel().updateOKButton();
 			}
 		} );
 	}

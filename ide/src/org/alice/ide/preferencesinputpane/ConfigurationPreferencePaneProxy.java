@@ -108,7 +108,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 	private edu.cmu.cs.dennisc.croquet.PageAxisPanel pane;
 	private ConfigurationPreview preview;
 	
-	abstract class PreferencesActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+	abstract class PreferencesActionOperation extends org.alice.ide.operations.ActionOperation {
 		public PreferencesActionOperation( java.util.UUID individualId ) {
 			super( org.alice.ide.IDE.PREFERENCES_GROUP, individualId );
 		}

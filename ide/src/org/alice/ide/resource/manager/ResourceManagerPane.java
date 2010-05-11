@@ -167,7 +167,7 @@ class ResourceNameTableCellRenderer extends ResourceTableCellRenderer< org.alice
  * @author Dennis Cosgrove
  */
 public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	abstract class ResourceOperation extends org.alice.ide.operations.AbstractActionOperation {
+	abstract class ResourceOperation extends org.alice.ide.operations.ActionOperation {
 		public ResourceOperation( java.util.UUID individualId ) {
 			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
 		}
@@ -321,7 +321,9 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		@Override
 		protected javax.swing.JComponent createPreviewComponent() {
 			java.awt.image.BufferedImage bufferedImage = edu.cmu.cs.dennisc.image.ImageFactory.getBufferedImage( this.getResource() );
-			return new edu.cmu.cs.dennisc.javax.swing.components.JImageView( bufferedImage, 256 );
+			edu.cmu.cs.dennisc.javax.swing.components.JImageView rv = new edu.cmu.cs.dennisc.javax.swing.components.JImageView( 256 );
+			rv.setBufferedImage(bufferedImage);
+			return rv;
 		}
 	}
 
@@ -352,7 +354,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		}
 	}
 
-	class RenameResourceOperation extends edu.cmu.cs.dennisc.croquet.InputPanelOperation {
+	class RenameResourceOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
 		private org.alice.ide.name.RenamePane renamePane;
 		private org.alice.virtualmachine.Resource resource;
 		public RenameResourceOperation() {
@@ -409,7 +411,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		}
 	}
 
-	class ReloadResourceOperation extends org.alice.ide.operations.AbstractActionOperation {
+	class ReloadResourceOperation extends org.alice.ide.operations.ActionOperation {
 		class Capsule<E extends org.alice.virtualmachine.Resource> {
 			private String originalFileName;
 			//private String name;

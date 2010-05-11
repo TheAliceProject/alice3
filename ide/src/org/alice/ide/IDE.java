@@ -219,14 +219,14 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return this.isEmphasizingClassesOperation.getState();
 	}
 	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
-		this.editorsTabbedPane.setEmphasizingClasses( isEmphasizingClasses );
+		this.editorsTabbedPaneOperation.setEmphasizingClasses( isEmphasizingClasses );
 		this.membersEditor.setEmphasizingClasses( isEmphasizingClasses );
 	}
 	public boolean isOmittingThisFieldAccesses() {
 		return this.isOmissionOfThisForFieldAccessesDesiredOperation.getState();
 	}
 	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
-		this.editorsTabbedPane.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
+		this.editorsTabbedPaneOperation.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
 		this.membersEditor.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
 		this.sceneEditor.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
 	}
@@ -375,7 +375,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor;
 	private org.alice.ide.gallerybrowser.AbstractGalleryBrowser galleryBrowser;
 	private org.alice.ide.memberseditor.MembersEditor membersEditor;
-	private org.alice.ide.editorstabbedpane.EditorsTabSelectionStateOperation editorsTabbedPane;
+	private org.alice.ide.editorstabbedpane.EditorsTabSelectionStateOperation editorsTabbedPaneOperation;
 	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
 
 	private edu.cmu.cs.dennisc.croquet.VerticalSplitPane left = new edu.cmu.cs.dennisc.croquet.VerticalSplitPane();
@@ -570,7 +570,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	protected org.alice.ide.memberseditor.MembersEditor createClassMembersEditor() {
 		return new org.alice.ide.memberseditor.MembersEditor();
 	}
-	protected org.alice.ide.editorstabbedpane.EditorsTabSelectionStateOperation createEditorsTabbedPane() {
+	protected org.alice.ide.editorstabbedpane.EditorsTabSelectionStateOperation createEditorsTabbedPaneOperation() {
 		return new org.alice.ide.editorstabbedpane.EditorsTabSelectionStateOperation();
 	}
 	protected org.alice.ide.ubiquitouspane.UbiquitousPane createUbiquitousPane() {
@@ -584,7 +584,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return this.ubiquitousPane;
 	}
 	protected org.alice.ide.editorstabbedpane.EditorsTabSelectionStateOperation getEditorsTabbedPane() {
-		return this.editorsTabbedPane;
+		return this.editorsTabbedPaneOperation;
 	}
 	protected org.alice.ide.memberseditor.MembersEditor getMembersEditor() {
 		return this.membersEditor;
@@ -635,11 +635,12 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		this.sceneEditor = this.createSceneEditor();
 		this.galleryBrowser = this.createGalleryBrowser( this.getGalleryRootDirectory() );
 		this.membersEditor = this.createClassMembersEditor();
-		this.editorsTabbedPane = this.createEditorsTabbedPane();
+		this.editorsTabbedPaneOperation = this.createEditorsTabbedPaneOperation();
 		this.ubiquitousPane = this.createUbiquitousPane();
 
 		this.right.addComponent( this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
-		this.right.addComponent( this.editorsTabbedPane.getSingletonTabbedPane(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		this.right.addComponent( this.editorsTabbedPaneOperation.getSingletonTabbedPane(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		//this.right.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "hello" ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 		
 		//edu.cmu.cs.dennisc.swing.InputPane.setDefaultOwnerFrame( this );
 		this.vmForRuntimeProgram = createVirtualMachineForRuntimeProgram();
@@ -768,7 +769,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	//	private java.util.List< zoot.DropReceptor > dropReceptors = new java.util.LinkedList< zoot.DropReceptor >();
 
 	protected org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		return (org.alice.ide.codeeditor.CodeEditor)this.editorsTabbedPane.getCurrentTabStateOperation().getSingletonView();
+		return (org.alice.ide.codeeditor.CodeEditor)this.editorsTabbedPaneOperation.getCurrentTabStateOperation().getSingletonView();
 	}
 
 	private ComponentStencil stencil;

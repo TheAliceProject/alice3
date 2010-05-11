@@ -45,8 +45,8 @@ package org.alice.app.operations.file;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UriInputPanelOperation extends edu.cmu.cs.dennisc.croquet.InputPanelOperation {
-	public UriInputPanelOperation( java.util.UUID individualUUID, String name ) {
+public abstract class UriInputDialogOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
+	public UriInputDialogOperation( java.util.UUID individualUUID, String name ) {
 		super( org.alice.app.ProjectApplication.URI_GROUP, individualUUID, name );
 	}
 	protected org.alice.app.ProjectApplication getProjectApplication() {

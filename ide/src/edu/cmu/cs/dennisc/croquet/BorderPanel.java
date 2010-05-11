@@ -83,8 +83,8 @@ public class BorderPanel extends Panel {
 	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.BorderLayout( this.hgap, this.vgap );
 	}
-	public void addComponent( Component<?> child, Constraint cardinalDirection ) {
-		this.internalAddComponent( child, cardinalDirection.internal );
+	public void addComponent( Component<?> child, Constraint constraint ) {
+		this.internalAddComponent( child, constraint.internal );
 	}
 	public void removeComponent( Component< ? > component ) {
 		this.internalRemoveComponent( component );

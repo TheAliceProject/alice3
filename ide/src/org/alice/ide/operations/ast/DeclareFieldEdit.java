@@ -45,9 +45,43 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCodeOperation extends org.alice.ide.operations.AbstractActionOperation {
-	public AbstractCodeOperation( java.util.UUID individualId ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
+public class DeclareFieldEdit extends org.alice.ide.ToDoEdit {
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
+	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
+	private int index;
+
+	private Object instance;
+	private boolean isInstanceValid;
+	
+	public DeclareFieldEdit(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, int index, Object instance, boolean isInstanceValid) {
+		this.ownerType = ownerType;
+		this.field = field;
+		this.index = index;
+		this.instance = instance;
+		this.isInstanceValid = isInstanceValid;
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode();
+
+	@Override
+	public void doOrRedo(boolean isDo) {
+		this.ownerType.fields.add(this.index, this.field);
+		if (this.isInstanceValid) {
+			org.alice.ide.IDE.getSingleton().getSceneEditor().handleFieldCreation(ownerType, this.field, this.instance, isDo);
+		}
+	}
+
+	@Override
+	public void undo() {
+		if (this.ownerType.fields.get(this.index) == this.field) {
+			this.ownerType.fields.remove(this.index);
+		} else {
+			throw new javax.swing.undo.CannotUndoException();
+		}
+	}
+
+	@Override
+	protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+		rv.append("declare:");
+		edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, field, locale);
+		return rv;
+	}
 }

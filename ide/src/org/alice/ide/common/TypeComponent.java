@@ -57,7 +57,10 @@ public class TypeComponent extends edu.cmu.cs.dennisc.croquet.AbstractButton<jav
 			
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 			if( ide.isInstanceCreationAllowableFor( typeInAlice ) ) {
-				operations.add( new org.alice.ide.operations.ast.DeclareFieldOfPredeterminedTypeOperation( ide.getSceneType(), typeInAlice ) );
+				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = ide.getSceneType();
+				if( ide.isDeclareFieldOfPredeterminedTypeSupported( ownerType ) ) {
+					operations.add( new org.alice.ide.operations.ast.DeclareFieldOfPredeterminedTypeOperation( ownerType, typeInAlice ) );
+				}
 			}
 			operations.add( new org.alice.ide.operations.file.SaveAsTypeOperation( typeInAlice ) );
 			edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupOperation = new edu.cmu.cs.dennisc.croquet.PopupMenuOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "9f84fe0c-ca20-45f1-8a25-c79bd8454dbd" ), operations );

@@ -46,27 +46,31 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class DeclareFieldOfPredeterminedTypeOperation extends AbstractNonGalleryDeclareFieldOperation {
+	private org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldPane;
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType;
+	
 	public DeclareFieldOfPredeterminedTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType ) {
 		super( java.util.UUID.fromString( "f3aeb501-8138-47dc-a839-83961ee1f26d" ) );
 		this.ownerType = ownerType;
 		this.valueType = valueType;
 		this.setSmallIcon( new org.alice.ide.common.TypeIcon( this.valueType ) );
 		this.setName( "Declare New Instance..." );
+		
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
+		this.createFieldPane = new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane( ownerType, typeInJava.getClassReflectionProxy().getReification() );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
-		return this.ownerType;
+		return this.createFieldPane.getDeclaringType();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType) {
-		if( this.getIDE().isDeclareFieldOfPredeterminedTypeSupported( ownerType ) ) {
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
-			org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane( ownerType, typeInJava.getClassReflectionProxy().getReification() );
-			return createFieldPane.showInJDialog( button, "Create New Instance" );
-		} else {
-			return null;
-		}
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+		return this.createFieldPane;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.croquet.Context context ) {
+		//dialog title: "Create New Instance"
+		return this.createFieldPane.getActualInputValue();
 	}
 }

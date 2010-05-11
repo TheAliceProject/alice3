@@ -45,42 +45,51 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclareMethodOperation extends org.alice.ide.operations.AbstractActionOperation {
+public abstract class DeclareMethodOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
+	private org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = this.createCreateMethodPane( this.type );
 	public DeclareMethodOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
 		this.type = type;
 	}
 	protected abstract org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
-		org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = this.createCreateMethodPane( this.type );
-		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.showInJDialog( button );
-		if( method != null ) {
-			final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = getIDE().getFocusedCode();
-			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
-				@Override
-				public void doOrRedo( boolean isDo ) {
-					type.methods.add( method );
-					getIDE().setFocusedCode( method );
-				}
-				@Override
-				public void undo() {
-					int index = type.methods.indexOf( method );
-					if( index != -1 ) {
-						type.methods.remove( index );
-						getIDE().setFocusedCode( prevCode );
-					} else {
-						throw new javax.swing.undo.CannotUndoException();
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+		return this.createMethodPane;
+	}
+	@Override
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+		if( isOk ) {
+			final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = this.createMethodPane.getActualInputValue();
+			if( method != null ) {
+				final org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+				final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = ide.getFocusedCode();
+				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+					@Override
+					public void doOrRedo( boolean isDo ) {
+						type.methods.add( method );
+						ide.setFocusedCode( method );
 					}
-				}
-				@Override
-				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-					rv.append( "declare:" );
-					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, method, locale);
-					return rv;
-				}
-			} );
+					@Override
+					public void undo() {
+						int index = type.methods.indexOf( method );
+						if( index != -1 ) {
+							type.methods.remove( index );
+							ide.setFocusedCode( prevCode );
+						} else {
+							throw new javax.swing.undo.CannotUndoException();
+						}
+					}
+					@Override
+					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+						rv.append( "declare:" );
+						edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, method, locale);
+						return rv;
+					}
+				} );
+			} else {
+				context.cancel();
+			}
 		} else {
 			context.cancel();
 		}

@@ -40,16 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations;
+package org.alice.ide.operations.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractActionOperation extends edu.cmu.cs.dennisc.croquet.AbstractActionOperation {
-	public AbstractActionOperation( java.util.UUID groupUUID, java.util.UUID individualId ) {
-		super( groupUUID, individualId );
+public abstract class AbstractDeclareFieldActionOperation extends org.alice.ide.operations.ActionOperation {
+	protected abstract edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType();
+	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> createFieldAndInstance( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType );
+	protected abstract boolean isInstanceValid();
+	public AbstractDeclareFieldActionOperation( java.util.UUID individualId ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
 	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+	@Override
+	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = this.getOwnerType();
+		final edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> tuple = this.createFieldAndInstance( context, e, button, ownerType );
+		if( tuple != null ) {
+			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
+			if( field != null ) {
+				int index = ownerType.fields.size();
+				context.commitAndInvokeDo( new DeclareFieldEdit( ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
+			} else {
+				context.cancel();
+			}
+		} else {
+			context.cancel();
+		}
 	}
 }
