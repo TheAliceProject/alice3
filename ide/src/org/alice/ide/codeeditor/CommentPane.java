@@ -49,7 +49,8 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 //class CommentLine extends javax.swing.JTextArea {
 	private edu.cmu.cs.dennisc.alice.ast.Comment comment;
 	public CommentLine( edu.cmu.cs.dennisc.alice.ast.Comment comment ) {
-		super( comment.text.getValue(), "enter your comment here" );
+		this.setText( comment.text.getValue() );
+		this.setTextForBlankCondition( "enter your comment here" );
 		//super( comment.text.getValue() );
 		this.comment = comment;
 		this.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {

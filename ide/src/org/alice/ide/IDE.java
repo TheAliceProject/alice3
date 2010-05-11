@@ -651,6 +651,14 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		//javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "en", "US", "java" ) );
 
 		this.expressionFillerInners = this.addExpressionFillerInners( new java.util.LinkedList< org.alice.ide.cascade.fillerinners.ExpressionFillerInner >() );
+		
+		this.isSceneEditorExpandedOperation.addValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanStateOperation.ValueObserver() {
+			public void changing(boolean nextValue) {
+			}
+			public void changed(boolean nextValue) {
+				setSceneEditorExpanded( nextValue );				
+			}
+		} );
 	}
 
 	
@@ -769,7 +777,12 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	//	private java.util.List< zoot.DropReceptor > dropReceptors = new java.util.LinkedList< zoot.DropReceptor >();
 
 	protected org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		return (org.alice.ide.codeeditor.CodeEditor)this.editorsTabbedPaneOperation.getCurrentTabStateOperation().getSingletonView();
+		edu.cmu.cs.dennisc.croquet.TabStateOperation tabStateOperation = this.editorsTabbedPaneOperation.getCurrentTabStateOperation();
+		if( tabStateOperation != null ) {
+			return (org.alice.ide.codeeditor.CodeEditor)tabStateOperation.getSingletonView();
+		} else {
+			return null;
+		}
 	}
 
 	private ComponentStencil stencil;

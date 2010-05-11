@@ -50,7 +50,7 @@ public abstract class AbstractButton< J extends javax.swing.AbstractButton> exte
 	private static final javax.swing.ButtonModel MODEL_FOR_NULL = new javax.swing.DefaultButtonModel();
 	public AbstractButton() {
 	}
-	/*package-private*/public void setModel( javax.swing.ButtonModel model ) {
+	/*package-private*/ void setModel( javax.swing.ButtonModel model ) {
 		if( model != null ) {
 			//pass
 		} else {
@@ -60,12 +60,15 @@ public abstract class AbstractButton< J extends javax.swing.AbstractButton> exte
 			this.getJComponent().setModel( model );
 		}
 	}
-	/*package-private*/public void setAction( javax.swing.Action action ) {
+	/*package-private*/ void setAction( javax.swing.Action action ) {
 		if( action != this.getJComponent().getAction() ) {
 			this.getJComponent().setAction( action );
 		}
 	}
 	
+	public void doClick() {
+		this.getJComponent().doClick();
+	}
 	public void setHorizontalTextPosition( HorizontalTextPosition horizontalTextPosition ) {
 		this.getJComponent().setHorizontalTextPosition( horizontalTextPosition.getInternal() );
 	}

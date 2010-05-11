@@ -46,7 +46,7 @@ package org.alice.ide.choosers;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractChooserWithTextField<E> extends AbstractChooser<E> {
-	private edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField textField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", "" ) {
+	private edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField textField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField() {
 		@Override
 		public java.awt.Dimension getPreferredSize() {
 			return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 240 );

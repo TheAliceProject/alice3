@@ -49,7 +49,7 @@ class SuggestiveTextUtilties {
 	public static void drawBlankTextIfNecessary( javax.swing.text.JTextComponent textComponent, java.awt.Graphics g, String textForBlankCondition ) {
 		if( textComponent.isEditable() && textComponent.isEnabled() ) {
 			String text = textComponent.getText();
-			if( text.length() > 0 ) {
+			if( text.length() > 0 || textForBlankCondition == null ) {
 				//pass
 			} else {
 				java.awt.Font font = textComponent.getFont().deriveFont( java.awt.Font.ITALIC );

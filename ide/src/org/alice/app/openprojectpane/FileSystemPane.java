@@ -47,26 +47,25 @@ package org.alice.app.openprojectpane;
  * @author Dennis Cosgrove
  */
 class FileSystemPane extends TabContentPanel {
-	private javax.swing.JTextField textField = new javax.swing.JTextField();
-
+	private edu.cmu.cs.dennisc.croquet.StringStateOperation textState = new edu.cmu.cs.dennisc.croquet.StringStateOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "a0051988-1f98-4401-a054-f87547d3faf3" ), "" );
 	public FileSystemPane() {
-		this.textField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-			private void handleUpdate(javax.swing.event.DocumentEvent e) {
-				FileSystemPane.this.updateOKButton();
-			}
-
-			public void changedUpdate(javax.swing.event.DocumentEvent e) {
-				this.handleUpdate(e);
-			}
-
-			public void insertUpdate(javax.swing.event.DocumentEvent e) {
-				this.handleUpdate(e);
-			}
-
-			public void removeUpdate(javax.swing.event.DocumentEvent e) {
-				this.handleUpdate(e);
-			}
-		});
+//		this.textField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+//			private void handleUpdate(javax.swing.event.DocumentEvent e) {
+//				FileSystemPane.this.updateOKButton();
+//			}
+//
+//			public void changedUpdate(javax.swing.event.DocumentEvent e) {
+//				this.handleUpdate(e);
+//			}
+//
+//			public void insertUpdate(javax.swing.event.DocumentEvent e) {
+//				this.handleUpdate(e);
+//			}
+//
+//			public void removeUpdate(javax.swing.event.DocumentEvent e) {
+//				this.handleUpdate(e);
+//			}
+//		});
 
 		class BrowseOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 			public BrowseOperation() {
@@ -78,7 +77,7 @@ class FileSystemPane extends TabContentPanel {
 			protected void perform(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
 				java.io.File file = edu.cmu.cs.dennisc.croquet.Application.getSingleton().showOpenFileDialog(org.alice.app.ProjectApplication.getSingleton().getMyProjectsDirectory(), null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION, true);
 				if (file != null) {
-					FileSystemPane.this.textField.setText(edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible(file));
+					FileSystemPane.this.textState.setState(edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible(file));
 				}
 				context.finish();
 			}
@@ -88,7 +87,7 @@ class FileSystemPane extends TabContentPanel {
 		edu.cmu.cs.dennisc.croquet.BorderPanel pane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		pane.setOpaque(false);
 		pane.addComponent(new edu.cmu.cs.dennisc.croquet.Label("file:"), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.WEST);
-		pane.addComponent(new edu.cmu.cs.dennisc.croquet.SwingAdapter(this.textField), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
+		pane.addComponent(this.textState.createTextField(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
 		pane.addComponent(browseOperation.createButton(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.EAST);
 
 		this.addComponent(pane, Constraint.NORTH);
@@ -96,7 +95,7 @@ class FileSystemPane extends TabContentPanel {
 
 	@Override
 	public java.net.URI getSelectedURI() {
-		String path = this.textField.getText();
+		String path = this.textState.getState();
 		java.io.File file = new java.io.File(path);
 		if (file.exists()) {
 			return file.toURI();

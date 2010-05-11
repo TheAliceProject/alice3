@@ -47,13 +47,16 @@ package edu.cmu.cs.dennisc.javax.swing.components;
  */
 public class JSuggestiveTextField extends javax.swing.JTextField {
 	private String textForBlankCondition;
-
-	public JSuggestiveTextField( String text, String textForBlankCondition ) {
-		super( text );
+	public JSuggestiveTextField() {
 		this.setBorder( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ) );
-		this.textForBlankCondition = textForBlankCondition;
 		this.addFocusListener( new SuggestiveTextFocusAdapter( this ) );
 		//setToolTipText( this.textForBlankCondition );
+	}
+	public String getTextForBlankCondition() {
+		return this.textForBlankCondition;
+	}
+	public void setTextForBlankCondition(String textForBlankCondition) {
+		this.textForBlankCondition = textForBlankCondition;
 	}
 	@Override
 	public java.awt.Dimension getMaximumSize() {

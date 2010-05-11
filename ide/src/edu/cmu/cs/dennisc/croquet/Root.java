@@ -94,6 +94,9 @@ public abstract class Root<W extends java.awt.Window> {
 		this.window.setVisible( isVisible );
 	}
 	
+	public Button getDefaultButton() {
+		return (Button)Component.lookup( this.getRootPane().getDefaultButton() );
+	}
 	public void setDefaultButton( Button button ) {
 		this.getRootPane().setDefaultButton( button.getJComponent() );
 	}

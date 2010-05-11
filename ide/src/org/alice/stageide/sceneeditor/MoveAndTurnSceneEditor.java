@@ -46,9 +46,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.alice.apis.moveandturn.AsSeenBy;
-import org.alice.apis.moveandturn.ReferenceFrame;
-import org.alice.ide.common.SelectedFieldExpressionPane;
-import org.alice.ide.memberseditor.MembersEditor;
 import org.alice.ide.name.validators.FieldNameValidator;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;

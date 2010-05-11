@@ -207,7 +207,7 @@ public abstract class Component<J extends javax.swing.JComponent> {
 	}
 
 	public void setFontSize(float fontSize) {
-		this.getFont().deriveFont(fontSize);
+		this.getJComponent().setFont( this.getFont().deriveFont(fontSize) );
 	}
 
 	public void changeFont(edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes) {
@@ -424,6 +424,19 @@ public abstract class Component<J extends javax.swing.JComponent> {
 	public void revalidateAndRepaint() {
 		this.revalidate();
 		this.repaint();
+	}
+
+	public void requestFocus() {
+		this.getJComponent().requestFocus();
+	}
+	@Deprecated
+	public void addKeyListener(java.awt.event.KeyListener listener) {
+		this.getJComponent().addKeyListener(listener);
+	}
+
+	@Deprecated
+	public void removeKeyListener(java.awt.event.KeyListener listener) {
+		this.getJComponent().removeKeyListener(listener);
 	}
 
 	@Deprecated

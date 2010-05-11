@@ -52,43 +52,46 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		}
 		@Override
 		protected void handleStateChange(boolean value) {
-			AbstractDeclarationPane.this.handleIsReassignableChange( value );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: undo/redo support for", this );
+//			AbstractDeclarationPane.this.handleIsReassignableChange( value );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: undo/redo support for", this );
 		}
 	}
-	class DeclarationNameTextField extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField {
-		public DeclarationNameTextField() {
-			super( "", "" );
-			this.setFont( this.getFont().deriveFont( 18.0f ) );
-			this.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
-				public void changedUpdate( javax.swing.event.DocumentEvent e ) {
-					DeclarationNameTextField.this.handleUpdate( e );
-				}
-				public void insertUpdate( javax.swing.event.DocumentEvent e ) {
-					DeclarationNameTextField.this.handleUpdate( e );
-				}
-				public void removeUpdate( javax.swing.event.DocumentEvent e ) {
-					DeclarationNameTextField.this.handleUpdate( e );
-				}
-			} );
-		}
-		@Override
-		public java.awt.Dimension getPreferredSize() {
-			return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 240 );
-		}
-		@Override
-		public java.awt.Dimension getMaximumSize() {
-			return this.getPreferredSize();
-		}
-		private void handleUpdate( javax.swing.event.DocumentEvent e ) {
-			AbstractDeclarationPane.this.handleDeclarationNameUpdate( e );
-		}
-	}
+	private edu.cmu.cs.dennisc.croquet.StringStateOperation declarationNameState = new edu.cmu.cs.dennisc.croquet.StringStateOperation(
+			edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "c63e8377-84e0-48b0-a77e-137879e398c1" ), ""
+	);
+//	class DeclarationNameTextField extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField {
+//		public DeclarationNameTextField() {
+//			super( "", "" );
+//			this.setFont( this.getFont().deriveFont( 18.0f ) );
+//			this.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
+//				public void changedUpdate( javax.swing.event.DocumentEvent e ) {
+//					DeclarationNameTextField.this.handleUpdate( e );
+//				}
+//				public void insertUpdate( javax.swing.event.DocumentEvent e ) {
+//					DeclarationNameTextField.this.handleUpdate( e );
+//				}
+//				public void removeUpdate( javax.swing.event.DocumentEvent e ) {
+//					DeclarationNameTextField.this.handleUpdate( e );
+//				}
+//			} );
+//		}
+//		@Override
+//		public java.awt.Dimension getPreferredSize() {
+//			return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 240 );
+//		}
+//		@Override
+//		public java.awt.Dimension getMaximumSize() {
+//			return this.getPreferredSize();
+//		}
+////		private void handleUpdate( javax.swing.event.DocumentEvent e ) {
+////			AbstractDeclarationPane.this.handleDeclarationNameUpdate( e );
+////		}
+//	}
 
 	private org.alice.ide.initializer.BogusNode bogusNode;
 	private IsReassignableStateOperation isReassignableStateOperation;
 	private TypePane typePane;
-	private DeclarationNameTextField declarationNameTextField = new DeclarationNameTextField();
+	private edu.cmu.cs.dennisc.croquet.TextField declarationNameTextField;
 	private org.alice.ide.initializer.InitializerPane initializerPane;
 
 	private org.alice.ide.name.validators.NodeNameValidator nodeNameValidator;
@@ -141,11 +144,11 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		this.nodeNameValidator = nodeNameValidator;
 	}
 	private void handleChange() {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				AbstractDeclarationPane.this.updateOKButton();
-			}
-		} );
+//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//			public void run() {
+//				AbstractDeclarationPane.this.updateOKButton();
+//			}
+//		} );
 	}
 	
 //	@Override
@@ -168,7 +171,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		}
 	}
 	protected final String getDeclarationName() {
-		return this.declarationNameTextField.getText();
+		return this.declarationNameState.getState();
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
 		if( this.initializerPane != null ) {
@@ -241,9 +244,12 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	}
 
 	protected final edu.cmu.cs.dennisc.croquet.Component< ? >[] createNameRow() {
+		this.declarationNameTextField = this.declarationNameState.createTextField();
+		//this.declarationNameTextField.setFontSize( 24.0f );
+		this.declarationNameTextField.scaleFont( 1.5f );
 		return edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
 				edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "name:" ), 
-				new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.declarationNameTextField ) 
+				this.declarationNameTextField 
 		);
 	}
 	
@@ -301,20 +307,20 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
-		this.declarationNameTextField.setText( this.getDefaultNameText() );
+		this.declarationNameState.setState( this.getDefaultNameText() );
 		this.declarationNameTextField.selectAll();
 		this.declarationNameTextField.requestFocus();
 	}
 
-	protected void handleIsReassignableChange( boolean value ) {
-		this.updateOKButton();
-	}
-	protected void handleDeclarationNameUpdate( javax.swing.event.DocumentEvent e ) {
-		this.updateOKButton();
-	}
+//	protected void handleIsReassignableChange( boolean value ) {
+//		this.updateOKButton();
+//	}
+//	protected void handleDeclarationNameUpdate( javax.swing.event.DocumentEvent e ) {
+//		this.updateOKButton();
+//	}
 	protected boolean isDeclarationNameValidAndAvailable() {
 		if( this.nodeNameValidator != null ) {
-			return this.nodeNameValidator.isNameValidAndAvailable( this.declarationNameTextField.getText() );
+			return this.nodeNameValidator.isNameValidAndAvailable( this.declarationNameState.getState() );
 		} else {
 			return true;
 		}
@@ -326,9 +332,9 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 			return true;
 		}
 	}
-	@Override
-	public boolean isOKButtonValid() {
-		return super.isOKButtonValid() && this.isDeclarationNameValidAndAvailable() && this.isValueTypeValid();
-	}
+//	@Override
+//	public boolean isOKButtonValid() {
+//		return super.isOKButtonValid() && this.isDeclarationNameValidAndAvailable() && this.isValueTypeValid();
+//	}
 	public abstract T getActualInputValue();
 }

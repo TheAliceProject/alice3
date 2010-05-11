@@ -47,35 +47,40 @@ package org.alice.app.openprojectpane;
  * @author Dennis Cosgrove
  */
 public abstract class ListContentPanel extends TabContentPanel {
-	private javax.swing.JList list = new javax.swing.JList() {
+	private edu.cmu.cs.dennisc.croquet.List<java.net.URI> list = new edu.cmu.cs.dennisc.croquet.List<java.net.URI>() {
 		@Override
-		public void paint(java.awt.Graphics g) {
-			super.paint( g );
-			if( this.getModel().getSize() > 0 ) {
-				//pass
-			} else {
-				java.awt.Font font = this.getFont();
-				font = font.deriveFont( java.awt.Font.ITALIC );
-				g.setFont( font );
-				edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g, ListContentPanel.this.getTextForZeroProjects(), this.getSize() );
-			}
+		protected javax.swing.JList createJComponent() {
+			return new javax.swing.JList() {
+				@Override
+				public void paint(java.awt.Graphics g) {
+					super.paint( g );
+					if( this.getModel().getSize() > 0 ) {
+						//pass
+					} else {
+						java.awt.Font font = this.getFont();
+						font = font.deriveFont( java.awt.Font.ITALIC );
+						g.setFont( font );
+						edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g, ListContentPanel.this.getTextForZeroProjects(), this.getSize() );
+					}
+				}
+				@Override
+				public java.awt.Dimension getPreferredSize() {
+					return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 400, 300 );
+				}
+				@Override
+				public java.awt.Dimension getMaximumSize() {
+					return this.getPreferredSize();
+				}
+			};
 		}
-		@Override
-		public java.awt.Dimension getPreferredSize() {
-			return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 400, 300 );
-		}
-//		@Override
-//		public java.awt.Dimension getMaximumSize() {
-//			return this.getPreferredSize();
-//		}
 	};
 	
 	private edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
 		@Override
 		protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
 			if( quoteClickCountUnquote == 2 ) {
-				javax.swing.JButton defaultButton = ListContentPanel.this.list.getRootPane().getDefaultButton();
-				if( defaultButton.isEnabled() ) {
+				edu.cmu.cs.dennisc.croquet.Button defaultButton = ListContentPanel.this.list.getRoot().getDefaultButton();
+				if( defaultButton != null ) {
 					defaultButton.doClick();
 				}
 			}
@@ -86,7 +91,7 @@ public abstract class ListContentPanel extends TabContentPanel {
 		this.refresh();
 		this.list.setOpaque( false );
 		this.list.setCellRenderer( new ProjectSnapshotListCellRenderer() );
-		this.list.setLayoutOrientation( javax.swing.JList.HORIZONTAL_WRAP );
+		this.list.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
 		this.list.setVisibleRowCount( -1 );
 		
 		this.list.addMouseListener( this.mouseAdapter );
@@ -111,7 +116,7 @@ public abstract class ListContentPanel extends TabContentPanel {
 				}
 			}
 		} );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.list ), Constraint.CENTER );
+		this.addComponent(  this.list, Constraint.CENTER );
 	}
 	protected abstract String getTextForZeroProjects();
 	

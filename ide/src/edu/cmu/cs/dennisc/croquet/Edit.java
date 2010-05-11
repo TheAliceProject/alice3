@@ -54,7 +54,12 @@ public abstract class Edit implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 	}
 	public Edit( Context context ) {
 		this.context = context;
-		this.contextId = context.getId();
+		if( this.context != null ) {
+			this.contextId = context.getId();
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: context" );
+			this.contextId = null;
+		}
 	}
 	protected java.util.UUID getContextId() {
 		return this.contextId;

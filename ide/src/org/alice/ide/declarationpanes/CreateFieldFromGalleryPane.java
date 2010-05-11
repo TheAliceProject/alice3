@@ -42,14 +42,19 @@
  */
 package org.alice.ide.declarationpanes;
 
-class GalleryIcon extends javax.swing.JLabel {
+class GalleryIcon extends edu.cmu.cs.dennisc.croquet.Label {
 	public GalleryIcon( java.io.File file ) {
 		this.setIcon( new javax.swing.ImageIcon( file.getAbsolutePath() ) );
-		this.setVerticalAlignment( BOTTOM );
+		this.setVerticalAlignment( edu.cmu.cs.dennisc.croquet.VerticalAlignment.BOTTOM );
 	}
 	@Override
-	public java.awt.Dimension getMaximumSize() {
-		return this.getPreferredSize();
+	protected javax.swing.JLabel createJComponent() {
+		return new javax.swing.JLabel() {
+			@Override
+			public java.awt.Dimension getMaximumSize() {
+				return this.getPreferredSize();
+			}
+		};
 	}
 }
 
@@ -63,7 +68,7 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 		if( file != null ) {
 			if( file.exists() ) {
 				this.galleryIcon = new GalleryIcon( file );
-				this.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.galleryIcon ), Constraint.EAST );
+				this.addComponent( this.galleryIcon, Constraint.EAST );
 			}
 		}
 	}

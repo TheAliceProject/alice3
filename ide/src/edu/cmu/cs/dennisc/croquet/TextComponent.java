@@ -46,16 +46,13 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public 
-class SwingAdapter extends Component< javax.swing.JComponent > {
-	private javax.swing.JComponent jComponent;
-	public SwingAdapter( javax.swing.JComponent jComponent ) {
-		this.jComponent = jComponent;
-		edu.cmu.cs.dennisc.java.awt.ComponentUtilities.makeStandOut( this.jComponent );
+public abstract class TextComponent< J extends javax.swing.text.JTextComponent> extends Component< J > {
+	public TextComponent() {
 	}
-	@Override
-	protected javax.swing.JComponent createJComponent() {
-		return this.jComponent;
+	/*package-private*/ void setDocument( javax.swing.text.Document document ) {
+		this.getJComponent().setDocument( document );
+	}
+	public void selectAll() {
+		this.getJComponent().selectAll();
 	}
 }

@@ -122,7 +122,7 @@ abstract class MembersContentPanel extends edu.cmu.cs.dennisc.croquet.PageAxisPa
 //				this.add( component );
 //			}
 //		}
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() );
+		//this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() );
 		this.revalidateAndRepaint();
 	}
 }

@@ -153,15 +153,15 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
-	@Deprecated
-	protected boolean isOKButtonValid() {
-		throw new RuntimeException("todo");
-//		return true;
-	}
-	@Deprecated
-	protected void updateOKButton() {
-		throw new RuntimeException("todo");
-	}
+//	@Deprecated
+//	protected boolean isOKButtonValid() {
+//		throw new RuntimeException("todo");
+////		return true;
+//	}
+//	@Deprecated
+//	protected void updateOKButton() {
+//		throw new RuntimeException("todo");
+//	}
 	@Deprecated
 	protected String getTitleDefault() {
 		return null;

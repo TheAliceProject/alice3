@@ -116,11 +116,12 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 		}
 	}
 
+//	private edu.cmu.cs.dennisc.croquet.StringStateOperation textState = new edu.cmu.cs.dennisc.croquet.StringStateOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "e1f5fa35-6ddb-4d9a-8a76-8ff9421cf4b4" ), "" );
+//	private edu.cmu.cs.dennisc.croquet.StringStateOperation instanceNameState = new edu.cmu.cs.dennisc.croquet.StringStateOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "1c29999d-003b-4f90-83da-67d21f93789a" ), "" );
+
 	private javax.swing.JTextField textVC;
 	private javax.swing.JTextField instanceNameVC;
-	//private javax.swing.JTextField classNameVC;
 	private edu.cmu.cs.dennisc.croquet.CheckBox constrainInstanceNameToTextVC;
-	//private javax.swing.JCheckBox constrainClassNameToInstanceNameVC;
 
 	private javax.swing.JTextField heightTextField;
 	private FamilyList familyList;
@@ -135,7 +136,8 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 		this.setOpaque( true );
 		class TextField extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField {
 			public TextField( String text, String textForBlankCondition ) {
-				super( text, textForBlankCondition );
+				this.setText( text );
+				this.setTextForBlankCondition( textForBlankCondition );
 			}
 			@Override
 			public java.awt.Dimension getPreferredSize() {

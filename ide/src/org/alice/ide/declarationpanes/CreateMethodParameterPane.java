@@ -53,7 +53,7 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 		}
 		@Override
 		protected void handleStateChange(boolean value) {
-			CreateMethodParameterPane.this.updateOKButton();
+//			CreateMethodParameterPane.this.updateOKButton();
 		}
 	}
 
@@ -120,8 +120,8 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 			return null;
 		}
 	}
-	@Override
-	public boolean isOKButtonValid() {
-		return super.isOKButtonValid() && ( this.checkBox == null || this.checkBox.getJComponent().isSelected() );
-	}
+//	@Override
+//	public boolean isOKButtonValid() {
+//		return super.isOKButtonValid() && ( this.checkBox == null || this.checkBox.getJComponent().isSelected() );
+//	}
 }
