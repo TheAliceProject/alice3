@@ -42,6 +42,8 @@
  */
 package org.alice.ide.editorstabbedpane;
 
+import edu.cmu.cs.dennisc.croquet.Component;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,7 +54,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 			this.setName( name );
 		}
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, Component<?> component ) {
 			try {
 				final E item = createItem();
 				final int index = getListSize();
@@ -84,7 +86,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 			this.setName( name );
 		}
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, Component<?> component ) {
 			final int index = getSelectedIndex();
 			if( index >= 0 ) {
 				final E item = getItemAt( index );
@@ -119,7 +121,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		protected abstract int getRedoSelectionIndexDelta();
 		protected abstract int getUndoSelectionIndexDelta();
 		@Override
-		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, Component<?> component ) {
 			final int index = this.getIndex( getSelectedIndex() );
 			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				private void swapWithNext( int index ) {

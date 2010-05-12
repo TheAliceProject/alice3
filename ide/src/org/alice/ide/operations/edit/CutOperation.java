@@ -52,7 +52,7 @@ public class CutOperation extends org.alice.ide.operations.InconsequentialAction
 		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_X, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button) {
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > button) {
 		String title = "Cut coming soon";
 		String message = "Cut is not yet implemented.  Apologies.";
 		this.getIDE().showMessageDialog( message, title, edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION ); 

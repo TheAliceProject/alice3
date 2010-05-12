@@ -98,6 +98,15 @@ class FieldSelectedState extends edu.cmu.cs.dennisc.croquet.BooleanStateOperatio
 		assert field != null;
 		this.field = field;
 		//this.setOpaque( false );
+		
+		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation(
+				edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP,
+				java.util.UUID.fromString( "8e3989b2-34d6-44cf-998c-dda26662b3a0" ) ) {
+			@Override
+			public edu.cmu.cs.dennisc.croquet.Operation[] getOperations() {
+				return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( FieldTile.this.createPopupOperations(), edu.cmu.cs.dennisc.croquet.Operation.class );
+			}
+		});
 	}
 
 	@Override

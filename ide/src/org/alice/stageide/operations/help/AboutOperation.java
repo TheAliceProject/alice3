@@ -52,7 +52,7 @@ public class AboutOperation extends org.alice.ide.operations.InconsequentialActi
 		this.setMnemonicKey( java.awt.event.KeyEvent.VK_A );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button) {
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > button) {
 		org.alice.stageide.aboutpane.AboutPane aboutPane = new org.alice.stageide.aboutpane.AboutPane();
 		this.getIDE().showMessageDialog( aboutPane, "About Alice 3", edu.cmu.cs.dennisc.croquet.MessageType.PLAIN );
 	}

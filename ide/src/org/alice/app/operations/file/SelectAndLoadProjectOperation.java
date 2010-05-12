@@ -85,7 +85,7 @@ public abstract class SelectAndLoadProjectOperation extends org.alice.app.operat
 		}
 	}
 //	@Override
-//	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+//	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, Component<?> component ) {
 //		org.alice.app.ProjectApplication application = this.getProjectApplication();
 //		org.alice.app.openprojectpane.OpenProjectPane openProjectPane = application.getOpenProjectPane();
 //		openProjectPane.selectAppropriateTab( this.isNew() );

@@ -74,7 +74,7 @@ class FileSystemPane extends TabContentPanel {
 			}
 
 			@Override
-			protected void perform(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
+			protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 				java.io.File file = edu.cmu.cs.dennisc.croquet.Application.getSingleton().showOpenFileDialog(org.alice.app.ProjectApplication.getSingleton().getMyProjectsDirectory(), null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION, true);
 				if (file != null) {
 					FileSystemPane.this.textState.setState(edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible(file));

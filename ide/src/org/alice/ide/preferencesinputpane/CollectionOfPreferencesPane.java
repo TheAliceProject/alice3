@@ -63,7 +63,7 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.croquet.Bord
 			this.setName( "Restore Defaults" );
 		}
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 			String name = CollectionOfPreferencesPane.this.getTitle();
 			
 			java.awt.Component parentComponent = org.alice.ide.IDE.getSingleton().getJFrame();
@@ -93,7 +93,7 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.croquet.Bord
 			this.setName( "Apply" );
 		}
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 			//todo
 		}
 	}

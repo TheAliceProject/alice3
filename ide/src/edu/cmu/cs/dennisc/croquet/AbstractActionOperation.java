@@ -57,16 +57,16 @@ public abstract class AbstractActionOperation extends Operation {
 	}
 	private java.util.Map< AbstractButton< ? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
-	private void fire( java.awt.event.ActionEvent e, AbstractButton< ? > button  ) {
+	public void fire( java.util.EventObject e, Component<?> component ) {
 		Application application = Application.getSingleton();
 		Context parentContext = application.getCurrentContext();
 		Context childContext = parentContext.createChildContext();
-		childContext.addChild( new ActionEvent( childContext, AbstractActionOperation.this, e, button ) );
-		AbstractActionOperation.this.perform( childContext, e, button );
+		childContext.addChild( new ActionEvent( childContext, AbstractActionOperation.this, e, component ) );
+		AbstractActionOperation.this.perform( childContext, e, component );
 	}
 	@Deprecated
 	public void fire( java.util.EventObject e ) {
-		fire( null, null );
+		fire( e, null );
 	}
 	@Deprecated
 	public void fire() {
@@ -85,7 +85,7 @@ public abstract class AbstractActionOperation extends Operation {
 //			}
 //		} );
 	}
-	protected abstract void perform( Context context, java.awt.event.ActionEvent e, AbstractButton< ? > button );
+	protected abstract void perform( Context context, java.util.EventObject e, Component<?> component );
 
 	public String getName() {
 		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );

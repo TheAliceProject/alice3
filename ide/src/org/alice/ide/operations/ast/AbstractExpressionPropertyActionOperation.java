@@ -42,6 +42,8 @@
  */
 package org.alice.ide.operations.ast;
 
+import edu.cmu.cs.dennisc.croquet.Component;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -57,7 +59,7 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 	}
 
 	@Override
-	protected void perform(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
+	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, Component<?> component ) {
 		class ExpressionPropertyEdit extends org.alice.ide.ToDoEdit {
 			private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 			private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;

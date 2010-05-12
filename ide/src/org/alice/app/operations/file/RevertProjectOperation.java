@@ -52,7 +52,7 @@ public class RevertProjectOperation extends UriActionOperation {
 		this.setMnemonicKey( java.awt.event.KeyEvent.VK_R );
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 		org.alice.app.ProjectApplication application = org.alice.app.ProjectApplication.getSingleton();
 		edu.cmu.cs.dennisc.croquet.YesNoCancelOption yesNoCancelOption = application.showYesNoCancelConfirmDialog( "WARNING: revert restores your project to the last saved version.\nWould you like to continue with revert?", "Revert?", edu.cmu.cs.dennisc.croquet.MessageType.WARNING );
 		if( yesNoCancelOption == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.YES ) {

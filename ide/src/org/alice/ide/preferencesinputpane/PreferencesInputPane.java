@@ -87,7 +87,7 @@ public class PreferencesInputPane extends org.alice.ide.InputPanel<Void> {
 				this.setName( "Clear Recent Projects" );
 			}
 			@Override
-			protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+			protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 				org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.clear();
 				context.finish();
 			}

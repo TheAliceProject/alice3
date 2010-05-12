@@ -64,11 +64,11 @@ abstract class EditMembersOperation< E extends edu.cmu.cs.dennisc.alice.ast.Memb
 	}
 	protected abstract EditMembersPane< E > createEditMembersPane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType );
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 		java.util.UUID groupUUID = java.util.UUID.randomUUID();
 		edu.cmu.cs.dennisc.history.HistoryManager historyManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( groupUUID );
 		EditMembersPane< E > editMembersPane = this.createEditMembersPane( groupUUID, this.declaringType );
-		Boolean isAccepted = editMembersPane.showInJDialog( button );
+		Boolean isAccepted = editMembersPane.showInJDialog( component );
 		if( isAccepted != null ) {
 			edu.cmu.cs.dennisc.croquet.Edit compositeEdit = historyManager.createDoIgnoringCompositeEdit( this.presentation + " " + this.declaringType.getName() );
 			if( compositeEdit != null ) {
@@ -269,7 +269,7 @@ class RootOperation extends org.alice.ide.operations.InconsequentialActionOperat
 		this.setName( "All" );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button) {
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > button) {
 		int x = 0;
 		int y = button.getHeight();
 		edu.cmu.cs.dennisc.alice.Project project = getIDE().getProject();

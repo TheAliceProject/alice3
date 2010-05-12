@@ -139,11 +139,11 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 			this.setName( "test" );
 		}
 		@Override
-		protected void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+		protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
 			org.alice.apis.moveandturn.AudioSource audioSource = getValue();
 			edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
 			edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( audioSource.getAudioResource(), audioSource.getVolume(), audioSource.getStartTime(), audioSource.getStopTime() );
-			player.test( button.getJComponent() );
+			player.test( component.getJComponent() );
 		}
 	};
 	private TestOperation testOperation = new TestOperation();

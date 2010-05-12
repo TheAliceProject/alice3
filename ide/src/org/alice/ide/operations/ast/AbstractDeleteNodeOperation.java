@@ -42,6 +42,8 @@
  */
 package org.alice.ide.operations.ast;
 
+import edu.cmu.cs.dennisc.croquet.Component;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,7 +58,7 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 	}
 	protected abstract boolean isClearToDelete( E node );
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, Component<?> component ) {
 		if( this.isClearToDelete( this.node ) ) {
 			final int index = this.owner.indexOf( this.node );
 			final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;

@@ -110,12 +110,12 @@ abstract class OperationEvent< O extends Operation, E extends java.util.EventObj
 		return rv;
 	}
 }
-/*package-private*/ class ActionEvent extends OperationEvent<AbstractActionOperation,java.awt.event.ActionEvent,AbstractButton< ? >> {
+/*package-private*/ class ActionEvent extends OperationEvent<AbstractActionOperation,java.util.EventObject,Component< ? >> {
 	public ActionEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public ActionEvent( Context parent, AbstractActionOperation actionOperation, java.awt.event.ActionEvent e, AbstractButton< ? > button ) {
-		super( parent, actionOperation, e, button );
+	public ActionEvent( Context parent, AbstractActionOperation actionOperation, java.util.EventObject e, Component< ? > component ) {
+		super( parent, actionOperation, e, component );
 	}
 }
 

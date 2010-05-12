@@ -51,7 +51,7 @@ public abstract class PostIssueOperation extends org.alice.ide.operations.Incons
 	}
 	protected abstract edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType();
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button) {
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > button) {
 		final org.alice.ide.issue.PostIssuePane pane = new org.alice.ide.issue.PostIssuePane( this.getIssueType() );
 
 		//final javax.swing.JFrame owner = org.alice.ide.IDE.getSingleton();

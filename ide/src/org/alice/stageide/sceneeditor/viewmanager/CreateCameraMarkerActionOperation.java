@@ -59,7 +59,7 @@ public class CreateCameraMarkerActionOperation extends AbstractSceneDeclareField
 	}
 	
 	@Override
-	protected Tuple2< FieldDeclaredInAlice, Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button, TypeDeclaredInAlice ownerType ) 
+	protected Tuple2< FieldDeclaredInAlice, Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component, TypeDeclaredInAlice ownerType ) 
 	{
 		return sceneEditor.createCameraMarkerField( ownerType );
 	}

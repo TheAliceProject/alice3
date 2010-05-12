@@ -158,14 +158,49 @@ public abstract class Component<J extends javax.swing.JComponent> {
 	public void removeContainmentObserver( ContainmentObserver containmentObserver ) {
 		this.containmentObservers.remove( containmentObserver );
 	}
+
+	private boolean isPopupMenuOperationLimitedToRightMouseButton = true;
+	public boolean isPopupMenuOperationLimitedToRightMouseButton() {
+		return this.isPopupMenuOperationLimitedToRightMouseButton;
+	}
+	public void setPopupMenuOperationLimitedToRightMouseButton(boolean isPopupMenuOperationLimitedToRightMouseButton) {
+		this.isPopupMenuOperationLimitedToRightMouseButton = isPopupMenuOperationLimitedToRightMouseButton;
+	}
+	
+	private AbstractPopupMenuOperation popupMenuOperation;
+	public final AbstractPopupMenuOperation getPopupMenuOperation() {
+		return this.popupMenuOperation;
+	}
+	public final void setPopupMenuOperation( AbstractPopupMenuOperation popupMenuOperation ) {
+		assert this.getJComponent().getParent() == null;
+		this.popupMenuOperation = popupMenuOperation;
+	}
+	
+	private edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter lenientMouseClickAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
+		@Override
+		protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote) {
+			assert Component.this.popupMenuOperation != null;
+			if( Component.this.isPopupMenuOperationLimitedToRightMouseButton==false || edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
+				Component.this.popupMenuOperation.fire( e, Component.this );
+			}
+		}
+	};
 	
 	protected void handleAddedTo( Component<?> parent ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "added:", this.hashCode(), parent != null ? parent.hashCode() : 0 );
 		for( ContainmentObserver containmentObserver : this.containmentObservers ) {
 			containmentObserver.addedTo(parent);
 		}
+		if( this.popupMenuOperation != null ) {
+			this.getJComponent().addMouseListener( this.lenientMouseClickAdapter );
+			this.getJComponent().addMouseMotionListener( this.lenientMouseClickAdapter );
+		}
 	}
 	protected void handleRemovedFrom( Component<?> parent ) {
+		if( this.popupMenuOperation != null ) {
+			this.getJComponent().removeMouseListener( this.lenientMouseClickAdapter );
+			this.getJComponent().removeMouseMotionListener( this.lenientMouseClickAdapter );
+		}
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "removed:", this.hashCode(), parent != null ? parent.hashCode() : 0 );
 		for( ContainmentObserver containmentObserver : this.containmentObservers ) {
 			containmentObserver.removedFrom(parent);

@@ -52,7 +52,7 @@ public class EditPersonActionOperation extends AbstractFieldTileActionOperation 
 	}
 	
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 		final org.alice.apis.stage.Person person = this.getMoveAndTurnSceneEditor().getInstanceInJavaForField( this.getField(), org.alice.apis.stage.Person.class );
 		if( person != null ) {
 			final org.alice.apis.stage.Gender prevGender;
@@ -69,7 +69,7 @@ public class EditPersonActionOperation extends AbstractFieldTileActionOperation 
 			prevFitnessLevel = person.getFitnessLevel(); 
 
 			org.alice.stageide.personeditor.PersonEditorInputPane inputPane = new org.alice.stageide.personeditor.PersonEditorInputPane( person );
-			org.alice.apis.stage.Person result = inputPane.showInJDialog( button );
+			org.alice.apis.stage.Person result = inputPane.showInJDialog( component );
 			if( result != null ) {
 				final org.alice.apis.stage.Gender nextGender;
 				final org.alice.apis.stage.SkinTone nextSkinTone;

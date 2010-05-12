@@ -53,7 +53,7 @@ public class WarningOperation extends org.alice.ide.operations.InconsequentialAc
 		this.isSolicited = isSolicited;
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
 		org.alice.ide.warningpane.WarningPane warningPane = new org.alice.ide.warningpane.WarningPane( this.isSolicited );
 		this.getIDE().showMessageDialog( warningPane, "Alice3 is currently under development", edu.cmu.cs.dennisc.croquet.MessageType.WARNING ); 
 	}

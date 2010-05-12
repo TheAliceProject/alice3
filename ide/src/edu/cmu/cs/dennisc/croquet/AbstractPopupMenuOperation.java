@@ -51,7 +51,7 @@ public abstract class AbstractPopupMenuOperation extends AbstractActionOperation
 	}
 	public abstract Operation[] getOperations();
  	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, AbstractButton< ? > button ) {
+	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, Component<?> component ) {
 		PopupMenu popupMenu = this.createPopupMenu();
 //		javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
 //		popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
@@ -62,8 +62,13 @@ public abstract class AbstractPopupMenuOperation extends AbstractActionOperation
 //			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
 //			}
 //		} );
-		
-		popupMenu.showBelow( button );
+
+		if (e instanceof java.awt.event.MouseEvent) {
+			java.awt.event.MouseEvent mouseEvent = (java.awt.event.MouseEvent) e;
+			popupMenu.showAtLocation( component, mouseEvent.getX(), mouseEvent.getY() );
+		} else {
+			popupMenu.showBelow( component );
+		}
 	}
 
 	private void addPopupMenu( PopupMenu popupMenu ) {

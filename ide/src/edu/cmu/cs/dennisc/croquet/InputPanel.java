@@ -110,13 +110,13 @@ public abstract class InputPanel< T > extends Panel {
 		}
 	}
 	
-	public T showInJDialog( AbstractButton< ? > button, String title ) {
+	public T showInJDialog( Component< ? > component, String title ) {
 		final javax.swing.JDialog dialog;
 		
 		
 		java.awt.Component root;
-		if( button != null ) {
-			root = javax.swing.SwingUtilities.getRoot( button.getJComponent() );
+		if( component != null ) {
+			root = javax.swing.SwingUtilities.getRoot( component.getJComponent() );
 		} else {
 			root = null;
 		}
@@ -219,8 +219,8 @@ public abstract class InputPanel< T > extends Panel {
 	}
 	
 	@Deprecated
-	public T showInJDialog( AbstractButton< ? > button ) {
-		return this.showInJDialog( button, null );
+	public T showInJDialog( Component< ? > component ) {
+		return this.showInJDialog( component, null );
 	}
 	@Deprecated
 	public T showInJDialog() {

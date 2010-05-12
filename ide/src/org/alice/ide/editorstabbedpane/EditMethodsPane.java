@@ -92,7 +92,7 @@ public abstract class EditMethodsPane extends EditMembersPane< edu.cmu.cs.dennis
 				return new org.alice.ide.name.validators.MethodNameValidator( method );
 			}
 //			@Override
-//			protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+//			protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, Component<?> component ) {
 //				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = getSelectedItem();
 //				if( method != null ) {
 //					this.perform( context, e, button, method.name, new org.alice.ide.name.validators.MethodNameValidator( method ) );

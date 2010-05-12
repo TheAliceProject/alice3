@@ -42,6 +42,8 @@
  */
 package org.alice.ide.operations.ast;
 
+import edu.cmu.cs.dennisc.croquet.Component;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,7 +56,7 @@ public abstract class AbstractIsEnabledStatementOperation extends org.alice.ide.
 	}
 	protected abstract boolean getDesiredValue();
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, Component<?> component ) {
 		final boolean nextValue = this.getDesiredValue();
 		final boolean prevValue = this.statement.isEnabled.getValue();
 		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {

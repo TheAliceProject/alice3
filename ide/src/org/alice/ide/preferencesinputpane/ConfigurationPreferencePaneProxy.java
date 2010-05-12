@@ -119,7 +119,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 			this.setName( "Edit..." );
 		}
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 		}
 	}
 	class RemoveVariantOperation extends PreferencesActionOperation {
@@ -128,7 +128,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 			this.setName( "Remove" );
 		}
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 		}
 	}
 	class NewVariantOperation extends PreferencesActionOperation {
@@ -137,7 +137,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 			this.setName( "New..." );
 		}
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 		}
 	}
 	class ImportVariantOperation extends PreferencesActionOperation {
@@ -146,7 +146,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 			this.setName( "Import..." );
 		}
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 		}
 	}
 	public ConfigurationPreferencePaneProxy( edu.cmu.cs.dennisc.preference.Preference<org.alice.ide.preferences.programming.Configuration> preference ) {

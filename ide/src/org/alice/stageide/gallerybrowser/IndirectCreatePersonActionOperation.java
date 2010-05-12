@@ -51,7 +51,7 @@ class IndirectCreatePersonActionOperation extends org.alice.ide.operations.Incon
 		this.setName( "Create Person..." );
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
 		PersonCreatorDialog dialog = new PersonCreatorDialog( this.getIDE().getJFrame() );
 		dialog.pack();
 		dialog.setVisible( true );

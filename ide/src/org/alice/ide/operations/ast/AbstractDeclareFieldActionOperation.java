@@ -47,15 +47,15 @@ package org.alice.ide.operations.ast;
  */
 public abstract class AbstractDeclareFieldActionOperation extends org.alice.ide.operations.ActionOperation {
 	protected abstract edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType();
-	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> createFieldAndInstance( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType );
+	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> createFieldAndInstance( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType );
 	protected abstract boolean isInstanceValid();
 	public AbstractDeclareFieldActionOperation( java.util.UUID individualId ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
 	}
 	@Override
-	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = this.getOwnerType();
-		final edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> tuple = this.createFieldAndInstance( context, e, button, ownerType );
+		final edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> tuple = this.createFieldAndInstance( context, e, component, ownerType );
 		if( tuple != null ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
 			if( field != null ) {

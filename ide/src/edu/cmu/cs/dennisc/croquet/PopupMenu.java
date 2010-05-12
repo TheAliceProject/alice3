@@ -68,19 +68,26 @@ public class PopupMenu extends AbstractMenu< javax.swing.JPopupMenu > {
 		this.getJComponent().addSeparator();
 	}
 	
-	public void showBelow( Component< ? > invoker ) {
-		int x;
-		int y;
+	
+	public void showAtLocation( Component< ? > invoker, int x, int y ) {
 		javax.swing.JComponent jInvoker;
 		if( invoker != null ) {
 			jInvoker = invoker.getJComponent();
+		} else {
+			jInvoker = null;
+		}
+		this.getJComponent().show( jInvoker, x, y );
+	}
+	public void showBelow( Component< ? > invoker ) {
+		int x;
+		int y;
+		if( invoker != null ) {
 			x = 0;
 			y = invoker.getHeight();
 		} else {
-			jInvoker = null;
 			x = 0;
 			y = 0;
 		}
-		this.getJComponent().show( jInvoker, x, y );
+		this.showAtLocation( invoker, x, y );
 	}
 }

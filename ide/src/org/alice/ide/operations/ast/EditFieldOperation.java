@@ -54,7 +54,7 @@ public class EditFieldOperation extends AbstractEditFieldOperation {
 		this.field = field;
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 		final java.util.Set< FieldDeclaredInAlice > referencedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 		final java.util.Set< FieldDeclaredInAlice > reassignedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
@@ -83,7 +83,7 @@ public class EditFieldOperation extends AbstractEditFieldOperation {
 					}
 				}
 			}
-			this.perform( context, e, button, field, referencedFields, reassignedFields );
+			this.perform( context, e, component, field, referencedFields, reassignedFields );
 		} else {
 			context.cancel();
 		}

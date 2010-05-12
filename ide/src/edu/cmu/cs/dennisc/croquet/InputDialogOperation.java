@@ -61,7 +61,7 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 			this.dialog = dialog;
 		}
 		@Override
-		protected void perform(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
+		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 			assert this.dialog != null;
 			InputDialogOperation.this.isOk = this.isOk;
 //			if (this.isOk) {
@@ -114,7 +114,7 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 		return null;
 	}
 	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
+	protected final void perform(Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
 		Component<?> contentPane = this.prologue(context);
 		if( contentPane != null ) {
 			class BottomPanel extends Panel {
@@ -153,8 +153,8 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 			bottomPanel.setOpaque( false );
 
 			Component<?> owner;
-			if( button != null ) {
-				owner = button;
+			if( component != null ) {
+				owner = component;
 			} else {
 				owner = Application.getSingleton().getFrame().getContentPanel();
 			}

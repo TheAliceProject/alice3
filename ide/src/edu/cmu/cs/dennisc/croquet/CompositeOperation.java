@@ -47,9 +47,9 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public abstract class CompositeOperation extends AbstractActionOperation {
 	@Override
-	protected final void perform( Context context, java.awt.event.ActionEvent e, AbstractButton< ? > button ) {
+	protected final void perform(Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
 		for( AbstractActionOperation operation : this.getOperations() ) {
-			operation.perform( context, e, button );
+			operation.perform( context, e, component );
 			if( context.isCanceled() ) {
 				break;
 			}
