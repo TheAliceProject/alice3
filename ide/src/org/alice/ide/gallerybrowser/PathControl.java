@@ -62,9 +62,9 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 			}
 		}
 
-		class SelectChildDirectoryActionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+		class SelectChildDirectoryActionOperation extends edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation {
 			public SelectChildDirectoryActionOperation() {
-				super( java.util.UUID.fromString( "cc6a0de7-91b1-4a2b-86ff-21ca9de14bed" ) );
+				super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "cc6a0de7-91b1-4a2b-86ff-21ca9de14bed" ) );
 				javax.swing.Icon icon = new javax.swing.Icon() {
 					public int getIconHeight() {
 						return ARROW_SIZE + ARROW_BORDER_HALF_SIZE + ARROW_BORDER_HALF_SIZE;
@@ -90,12 +90,10 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 				};
 				this.setSmallIcon( icon );
 			}
-
-			// public void respond( java.util.EventObject e ) {
-			// }
+			
 			@Override
-			protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
-				DirectoryControl.this.handleSelectChildDirectory( context, e, button );
+			public edu.cmu.cs.dennisc.croquet.Operation[] getOperations() {
+				return DirectoryControl.this.getOperations();
 			}
 		}
 
@@ -105,6 +103,7 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 		private edu.cmu.cs.dennisc.croquet.Button selectChildButton;
 
 		public DirectoryControl( java.io.File file ) {
+			this.setMaximumSizeClampedToPreferredSize( true );
 			this.file = file;
 			this.selectChildButton = new SelectChildDirectoryActionOperation().createButton();
 			selectChildButton.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.GRAY ) );
@@ -112,8 +111,8 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 			this.addComponent( selectChildButton, Constraint.EAST );
 		}
 
-		private void handleSelectChildDirectory(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
-			PathControl.this.handleSelectChildDirectory( context, e, button, this.file );
+		private edu.cmu.cs.dennisc.croquet.Operation[] getOperations() {
+			return PathControl.this.getOperations( this.file );
 		}
 
 	}
@@ -169,8 +168,10 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 		while( ancestors.size() > 0 ) {
 			java.io.File ancestor = ancestors.pop();
 			this.addComponent( new DirectoryControl( ancestor ) );
+			this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 2 ) );
 		}
 		this.addComponent( new DirectoryControl( nextDirectory ) );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() );
 		this.currentDirectory = nextDirectory;
 		this.revalidateAndRepaint();
 	}
@@ -181,14 +182,17 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 
 	protected abstract void handleSelectFile( java.io.File file );
 
-	private void handleSelectChildDirectory( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button, java.io.File directory ) {
+	private edu.cmu.cs.dennisc.croquet.Operation[] getOperations( java.io.File directory ) {
 		java.io.File[] packages = ThumbnailsPane.listPackages( directory );
+		java.util.Arrays.sort( packages, edu.cmu.cs.dennisc.java.io.FileUtilities.createComparator() );
 		java.io.File[] classes = ThumbnailsPane.listClasses( directory );
+		java.util.Arrays.sort( classes, edu.cmu.cs.dennisc.java.io.FileUtilities.createComparator() );
 
-		class SelectFileActionOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
+		class SelectFileActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 			private java.io.File file;
 
 			public SelectFileActionOperation( java.io.File file ) {
+				super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "b8a442d5-4a36-4d27-be67-061ea9a5d2b7" ) );
 				this.file = file;
 				this.setName( PathControl.this.getTextFor( this.file ) );
 				javax.swing.Icon icon;
@@ -201,7 +205,7 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 			}
 
 			@Override
-			protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+			protected void perform(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
 				if( this.file.isDirectory() ) {
 					PathControl.this.handleSelectDirectory( this.file );
 				} else {
@@ -210,14 +214,14 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 			}
 		}
 
-		java.util.List< edu.cmu.cs.dennisc.zoot.ActionOperation > operations = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.ActionOperation >();
+		edu.cmu.cs.dennisc.croquet.Operation[] rv = new edu.cmu.cs.dennisc.croquet.Operation[ packages.length + classes.length ];
+		int i=0;
 		for( java.io.File file : packages ) {
-			operations.add( new SelectFileActionOperation( file ) );
+			rv[ i++ ] = new SelectFileActionOperation( file );
 		}
 		for( java.io.File file : classes ) {
-			operations.add( new SelectFileActionOperation( file ) );
+			rv[ i++ ] = new SelectFileActionOperation( file );
 		}
-		javax.swing.JPopupMenu popupMenu = edu.cmu.cs.dennisc.zoot.ZManager.createPopupMenu( operations );
-		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu, button.getJComponent(), 0, button.getHeight() );
+		return rv;
 	}
 }

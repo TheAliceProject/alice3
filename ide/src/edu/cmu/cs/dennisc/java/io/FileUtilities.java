@@ -48,6 +48,41 @@ package edu.cmu.cs.dennisc.java.io;
 public class FileUtilities {
 	private static java.io.File s_defaultDirectory = null;
 
+	public static java.util.Comparator< java.io.File > createComparator() {
+		return new java.util.Comparator<java.io.File>() {
+			private int compareFileNames(java.io.File fileA, java.io.File fileB) {
+				return fileA.getName().compareToIgnoreCase(fileB.getName());
+			}
+			public int compare(java.io.File fileA, java.io.File fileB) {
+				if( fileA != null ) {
+					if( fileB != null ) {
+						if( fileA.isDirectory() ) {
+							if( fileB.isDirectory() ) {
+								return this.compareFileNames(fileA, fileB);
+							} else {
+								return -1;
+							}
+						} else {
+							if( fileB.isDirectory() ) {
+								return -1;
+							} else {
+								return this.compareFileNames(fileA, fileB);
+							}
+						}
+					} else {
+						return 1;
+					}
+				} else {
+					if( fileB != null ) {
+						return -1;
+					} else {
+						return 0;
+					}
+				}
+			}
+		};
+	}
+	
 	public static java.io.File getDefaultDirectory() {
 		if( s_defaultDirectory != null ) {
 			//pass

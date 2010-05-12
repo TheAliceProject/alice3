@@ -74,10 +74,15 @@ class SingleOrDoubleClickListUI extends javax.swing.plaf.basic.BasicListUI {
 	}
 }
 
-class SingleOrDoubleClickList extends javax.swing.JList {
+class SingleOrDoubleClickList<E> extends edu.cmu.cs.dennisc.croquet.List<E> {
 	@Override
-	public void updateUI() {
-		this.setUI( new SingleOrDoubleClickListUI() );
+	protected javax.swing.JList createJComponent() {
+		return new javax.swing.JList() {
+			@Override
+			public void updateUI() {
+				this.setUI( new SingleOrDoubleClickListUI() );
+			}
+		};
 	}
 }
 
@@ -124,12 +129,12 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.LineAxis
 			return rv;
 		}
 	}
-	private SingleOrDoubleClickList list = new SingleOrDoubleClickList();
+	private SingleOrDoubleClickList<java.io.File> list = new SingleOrDoubleClickList<java.io.File>();
 	private ThumbnailSnapshotListCellRenderer thumbnailSnapshotListCellRenderer = new ThumbnailSnapshotListCellRenderer();
 
 	public ThumbnailsPane() {
 		this.list.setCellRenderer( this.thumbnailSnapshotListCellRenderer );
-		this.list.setLayoutOrientation( javax.swing.JList.HORIZONTAL_WRAP );
+		this.list.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
 		this.list.setVisibleRowCount( 1 );
 		this.list.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
 			public void valueChanged(javax.swing.event.ListSelectionEvent e) {
@@ -156,7 +161,7 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.LineAxis
 			}
 		} );
 		
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.ScrollPane( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.list ) ) );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.ScrollPane( this.list ) );
 	}
 
 	protected abstract String getTextFor( java.io.File file );
@@ -189,6 +194,9 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.LineAxis
 		for( java.io.File file : thumbnails ) {
 			data.add( file );
 		}
+		
+		java.util.Collections.sort( data, edu.cmu.cs.dennisc.java.io.FileUtilities.createComparator() );
+		
 		this.list.setListData( data );
 	}
 }

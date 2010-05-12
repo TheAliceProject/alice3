@@ -76,6 +76,10 @@ public class List<E> extends Component< javax.swing.JList > {
 	public void setListData( E... values ) {
 		this.getJComponent().setListData( values );
 	}
+	@Deprecated
+	public void setListData( java.util.Vector<E> values ) {
+		this.getJComponent().setListData( values );
+	}
 
 	public javax.swing.ListCellRenderer getCellRenderer() {
 		return this.getJComponent().getCellRenderer();
@@ -97,6 +101,9 @@ public class List<E> extends Component< javax.swing.JList > {
 		this.getJComponent().setSelectedValue( value, shouldScroll );
 	}
 	
+	public void clearSelection() {
+		this.getJComponent().clearSelection();
+	}
 	public int getVisibleRowCount() {
 		return this.getJComponent().getVisibleRowCount();
 	}

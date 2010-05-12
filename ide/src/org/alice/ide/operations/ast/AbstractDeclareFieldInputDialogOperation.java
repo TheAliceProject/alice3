@@ -55,13 +55,17 @@ public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice
 	}
 	@Override
 	protected final void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
-		edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> tuple = this.createFieldAndInstance( context );
-		if( tuple != null ) {
-			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
-			if( field != null ) {
-				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = this.getOwnerType();
-				int index = ownerType.fields.size();
-				context.commitAndInvokeDo( new DeclareFieldEdit( ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
+		if( isOk ) {
+			edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> tuple = this.createFieldAndInstance( context );
+			if( tuple != null ) {
+				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
+				if( field != null ) {
+					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = this.getOwnerType();
+					int index = ownerType.fields.size();
+					context.commitAndInvokeDo( new DeclareFieldEdit( ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
+				} else {
+					context.cancel();
+				}
 			} else {
 				context.cancel();
 			}

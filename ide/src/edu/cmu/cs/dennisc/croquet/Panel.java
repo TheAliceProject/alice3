@@ -47,6 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Panel extends Component< javax.swing.JPanel > {
+	private boolean isMaximumSizeClampedToPreferredSize;
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
 	@Override
 	protected javax.swing.JPanel createJComponent() {
@@ -57,6 +58,14 @@ public abstract class Panel extends Component< javax.swing.JPanel > {
 				boolean isSuperPaintComponentDesired = Panel.this.paintComponent( g2 );
 				if( isSuperPaintComponentDesired ) {
 					super.paintComponent( g );
+				}
+			}
+			@Override
+			public java.awt.Dimension getMaximumSize() {
+				if( Panel.this.isMaximumSizeClampedToPreferredSize() ) {
+					return super.getPreferredSize();
+				} else {
+					return super.getMaximumSize();
 				}
 			}
 		};
@@ -75,4 +84,12 @@ public abstract class Panel extends Component< javax.swing.JPanel > {
 	protected boolean paintComponent( java.awt.Graphics2D g2 ) {
 		return true;
 	}
+	public boolean isMaximumSizeClampedToPreferredSize() {
+		return this.isMaximumSizeClampedToPreferredSize;
+	}
+	public void setMaximumSizeClampedToPreferredSize(boolean isMaximumSizeClampedToPreferredSize) {
+		this.isMaximumSizeClampedToPreferredSize = isMaximumSizeClampedToPreferredSize;
+		this.revalidateAndRepaint();
+	}
+	
 }
