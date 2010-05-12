@@ -40,44 +40,79 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
-
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-//todo: note, not really inconsequential
-class FitnessLevelActionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerStateOperation fitnessState;
-	private int value;
-	public FitnessLevelActionOperation( edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerStateOperation fitnessState, int value, String name ) {
-		super( java.util.UUID.fromString( "979d9be8-c24c-4921-93d4-23747bdf079d" ) );
-		this.fitnessState = fitnessState;
-		this.value = value;
-		this.setName( name );
+public final class BoundedRangeIntegerStateEdit extends Edit {
+	private BoundedRangeIntegerStateOperation operation;
+	private java.util.UUID operationId;
+	private int previousValue;
+	private int nextValue;
+	private boolean isDoDesired;
+	public BoundedRangeIntegerStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	public BoundedRangeIntegerStateEdit( Context context, javax.swing.event.ChangeEvent e, BoundedRangeIntegerStateOperation operation, int previousValue, int nextValue, boolean isDoDesired ) {
+		super( context );
+		this.operation = operation;
+		this.operationId = operation.getIndividualUUID();
+		this.previousValue = previousValue;
+		this.nextValue = nextValue;
+		this.isDoDesired = isDoDesired;
+	}
+
+	private BoundedRangeIntegerStateOperation getOperation() {
+		if( this.operation != null ) {
+			//pass
+		} else {
+			this.operation = Application.getSingleton().lookupOperation( this.operationId );
+		}
+		return this.operation;
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > button) {
-		this.fitnessState.setValue( this.value );
+	protected void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+		this.previousValue = binaryDecoder.decodeInt();
+		this.nextValue = binaryDecoder.decodeInt();
+		
+		
+		//todo?
+		this.isDoDesired = binaryDecoder.decodeBoolean();
+		
 	}
-}
+	@Override
+	protected void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+		binaryEncoder.encode( this.previousValue );
+		binaryEncoder.encode( this.nextValue );
+		binaryEncoder.encode( this.isDoDesired );
+	}
+	
+	@Override
+	public boolean canRedo() {
+		return this.getOperation() != null;
+	}
+	@Override
+	public boolean canUndo() {
+		return this.getOperation() != null;
+	}
 
-/**
- * @author Dennis Cosgrove
- */
-class FitnessLevelPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	private edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerStateOperation fitnessState = new edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerStateOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "8e172c61-c2b6-43e4-9777-e9d8fd2b0d65" ), 0, 50, 100 );
-	public FitnessLevelPane() {
-		this.addComponent( new FitnessLevelActionOperation( this.fitnessState, this.fitnessState.getMinimum(), "SOFT" ).createButton(), Constraint.WEST );
-		this.addComponent( this.fitnessState.createSlider(), Constraint.CENTER );
-		this.addComponent( new FitnessLevelActionOperation( this.fitnessState, this.fitnessState.getMaximum(), "CUT" ).createButton(), Constraint.EAST );
-		this.fitnessState.addValueObserver( new edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerStateOperation.ValueObserver() {
-			public void changed(int nextValue) {
-				PersonViewer.getSingleton().setFitnessLevel( nextValue*0.01 );
-			}
-		} );
+	@Override
+	public void doOrRedo(boolean isDo) {
+		if( isDo==false || this.isDoDesired ) {
+			this.getOperation().setValue(this.nextValue);
+		}
 	}
-	public void setFitnessLevel( Double fitnessLevel ) {
-		this.fitnessState.setValue( (int)((fitnessLevel+0.005)*100) );
+
+	@Override
+	public void undo() {
+		this.getOperation().setValue(this.previousValue);
+	}
+
+	@Override
+	protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+		rv.append("boolean: ");
+		rv.append(this.nextValue);
+		return rv;
 	}
 }

@@ -119,6 +119,15 @@ abstract class OperationEvent< O extends Operation, E extends java.util.EventObj
 	}
 }
 
+/*package-private*/ class BoundedRangeIntegerStateEvent extends OperationEvent {
+	public BoundedRangeIntegerStateEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	public BoundedRangeIntegerStateEvent( Context parent, BoundedRangeIntegerStateOperation boundedRangeIntegerStateOperation, javax.swing.event.ChangeEvent e ) {
+		super( parent, boundedRangeIntegerStateOperation, e, null );
+	}
+}
+
 /*package-private*/ class BooleanStateEvent extends OperationEvent {
 	public BooleanStateEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

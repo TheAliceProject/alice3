@@ -86,6 +86,7 @@ public class FontUtilities {
 				component.setFont( font.deriveFont( font.getSize2D() * scaleFactor ) );
 			} else {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setFontToScaledFont" );
+				Thread.dumpStack();
 			}
 		}
 	}

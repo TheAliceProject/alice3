@@ -42,28 +42,48 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-import edu.cmu.cs.dennisc.croquet.BooleanStateOperation.ValueObserver;
-
 /**
  * @author Dennis Cosgrove
  */
-public final class BoundedRangeStateOperation extends Operation {
+public final class BoundedRangeIntegerStateOperation extends Operation {
 	public static interface ValueObserver {
 		//public void changing( int nextValue );
 		public void changed( int nextValue );
 	};
 
+	private int previousValue;
 	private javax.swing.BoundedRangeModel boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
 	private javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+		private boolean previousValueIsAdjusting = false;
 		public void stateChanged(javax.swing.event.ChangeEvent e) {
-			BoundedRangeStateOperation.this.fireValueChanged( e );
+			Application application = Application.getSingleton();
+			Context parentContext = application.getCurrentContext();
+			Context context;
+			if( this.previousValueIsAdjusting ) {
+				context = parentContext;
+			} else {
+				Context childContext = parentContext.createChildContext();
+				context = childContext;
+			}
+			this.previousValueIsAdjusting = boundedRangeModel.getValueIsAdjusting();
+			context.addChild( new BoundedRangeIntegerStateEvent( context, BoundedRangeIntegerStateOperation.this, e ) );
+			BoundedRangeIntegerStateOperation.this.fireValueChanged( e );
+			
+			if( this.previousValueIsAdjusting ) {
+				//pass
+			} else {
+				int nextValue = boundedRangeModel.getValue();
+				context.commitAndInvokeDo( new BoundedRangeIntegerStateEdit( context, e, BoundedRangeIntegerStateOperation.this, BoundedRangeIntegerStateOperation.this.previousValue, nextValue, false ) );
+				BoundedRangeIntegerStateOperation.this.previousValue = nextValue;
+			}
 		}
 	};
-	public BoundedRangeStateOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, int minimum, int value, int maximum ) {
+	public BoundedRangeIntegerStateOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, int minimum, int value, int maximum ) {
 		super( groupUUID, individualUUID );
 		this.boundedRangeModel.setMinimum( minimum );
 		this.boundedRangeModel.setMaximum( maximum );
 		this.boundedRangeModel.setValue( value );
+		this.previousValue = this.boundedRangeModel.getValue();
 		this.boundedRangeModel.addChangeListener( this.changeListener );
 	}
 	
@@ -110,10 +130,10 @@ public final class BoundedRangeStateOperation extends Operation {
 		rv.getJComponent().setModel( this.boundedRangeModel );
 		rv.addContainmentObserver( new Component.ContainmentObserver() {
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				BoundedRangeStateOperation.this.addSlider( rv );
+				BoundedRangeIntegerStateOperation.this.addSlider( rv );
 			}
 			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				BoundedRangeStateOperation.this.removeSlider( rv );
+				BoundedRangeIntegerStateOperation.this.removeSlider( rv );
 			}
 		} );
 		return rv;
