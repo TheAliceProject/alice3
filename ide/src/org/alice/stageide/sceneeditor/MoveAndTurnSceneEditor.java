@@ -67,6 +67,17 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private static final int INSET = 8;
 
 	private edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createLightweightOnscreenLookingGlass();
+	private class LightweightLookingGlass extends edu.cmu.cs.dennisc.croquet.Component< javax.swing.JPanel > {
+		@Override
+		protected javax.swing.JPanel createJComponent() {
+			javax.swing.JPanel rv = MoveAndTurnSceneEditor.this.onscreenLookingGlass.getJPanel();
+			rv.setLayout( new javax.swing.SpringLayout() );
+			return rv;
+		}
+	}
+
+	
+	private LightweightLookingGlass lightweightLookingGlass = new LightweightLookingGlass();
 	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane();
 	private SidePane sidePane = new SidePane();
 
@@ -99,11 +110,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private javax.swing.ButtonGroup fieldTileGroup = new javax.swing.ButtonGroup();
 
 	public MoveAndTurnSceneEditor() {
-		javax.swing.JPanel lgPanel = this.getLGPanel();
-		javax.swing.SpringLayout springLayout = new javax.swing.SpringLayout();
-		lgPanel.setLayout( springLayout );
-
-		//		this.splitPane.setBackground( java.awt.Color.GRAY );
 		this.splitPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		this.splitPane.setResizeWeight( 1.0 );
 		this.splitPane.setDividerProportionalLocation( 1.0 );
@@ -167,7 +173,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.initializeIfNecessary();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
-		this.splitPane.setLeftComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.getLGPanel() ) );
+		this.splitPane.setLeftComponent( this.lightweightLookingGlass );
 		org.alice.ide.IDE.getSingleton().addCodeInFocusObserver( this.codeInFocusObserver );
 		org.alice.ide.IDE.getSingleton().addFieldSelectionObserver( this.fieldSelectionObserver );
 	}
@@ -182,12 +188,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		super.handleRemovedFrom( parent );
 	}
 
-	private javax.swing.JPanel getLGPanel() {
-		return this.onscreenLookingGlass.getJPanel();
-	}
-	private javax.swing.SpringLayout getLGSpringLayout() {
-		return (javax.swing.SpringLayout)this.getLGPanel().getLayout();
-	}
+//	private javax.swing.JPanel getLGPanel() {
+//		return this.onscreenLookingGlass.getJPanel();
+//	}
+//	private javax.swing.SpringLayout getLGSpringLayout() {
+//		return (javax.swing.SpringLayout)this.getLGPanel().getLayout();
+//	}
 
 	private void initializeIfNecessary() {
 		if( this.globalDragAdapter != null ) {
@@ -221,7 +227,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				}
 			} );
 
-			javax.swing.JPanel lgPanel = this.getLGPanel();
+			javax.swing.JPanel lgPanel = this.lightweightLookingGlass.getJComponent();
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouthEast( lgPanel, isSceneEditorExpandedCheckBox.getJComponent(), INSET );
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthEast( lgPanel, this.getIDE().getRunOperation().createButton().getJComponent(), INSET );
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouth( lgPanel, mainCameraNavigatorWidget, INSET );
@@ -415,8 +421,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return rv;
 	}
 	private void refreshFields() {
-		javax.swing.SpringLayout springLayout = this.getLGSpringLayout();
-		java.awt.Container lgPanel = this.onscreenLookingGlass.getJPanel();
+		javax.swing.JPanel lgPanel = this.lightweightLookingGlass.getJComponent(); 
+		javax.swing.SpringLayout springLayout = (javax.swing.SpringLayout)lgPanel.getLayout();
 		this.fieldTileGroup.clearSelection();
 		for( FieldTile fieldTile : this.fieldTiles ) {
 			springLayout.removeLayoutComponent( fieldTile.getJComponent() );

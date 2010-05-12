@@ -42,8 +42,6 @@
  */
 package org.alice.ide.sceneeditor;
 
-import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -64,7 +62,7 @@ public abstract class AbstractSceneEditor extends edu.cmu.cs.dennisc.croquet.Bor
 	
 	@Deprecated
 	public abstract void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance, boolean isAnimationDesired );
-	public abstract Object getInstanceInJavaForUndo( FieldDeclaredInAlice field );
+	public abstract Object getInstanceInJavaForUndo( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field );
 	
 	public abstract void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty );
 	
@@ -121,6 +119,10 @@ public abstract class AbstractSceneEditor extends edu.cmu.cs.dennisc.croquet.Bor
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
+		edu.cmu.cs.dennisc.alice.Project project = org.alice.app.ProjectApplication.getSingleton().getProject();
+		if( project != null ) {
+			this.projectObserver.projectOpened(null, project);
+		}
 		org.alice.app.ProjectApplication.getSingleton().addProjectObserver( this.projectObserver );
 	}
 	@Override

@@ -58,7 +58,7 @@ class TreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.DefaultM
  */
 public class PreferencesInputPane extends org.alice.ide.InputPanel<Void> {
 	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane();
-	private javax.swing.JTree tree = new javax.swing.JTree();
+	private edu.cmu.cs.dennisc.croquet.Tree<?> tree = new edu.cmu.cs.dennisc.croquet.Tree();
 	class TreeSelectionAdapter extends edu.cmu.cs.dennisc.javax.swing.event.DefaultMutableTreeNodeTreeSelectionAdapter<org.alice.ide.preferencesinputpane.CollectionOfPreferencesPane> {
 		@Override
 		protected void valueChangedUserObject(javax.swing.event.TreeSelectionEvent e, CollectionOfPreferencesPane oldLeadValue, org.alice.ide.preferencesinputpane.CollectionOfPreferencesPane newLeadValue) {
@@ -135,7 +135,7 @@ public class PreferencesInputPane extends org.alice.ide.InputPanel<Void> {
 		this.tree.setRootVisible( false );
 		this.tree.setCellRenderer( new TreeCellRenderer() );
 		this.tree.addTreeSelectionListener( new TreeSelectionAdapter() );
-		this.splitPane.setLeftComponent( new edu.cmu.cs.dennisc.croquet.ScrollPane( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.tree ) ) );
+		this.splitPane.setLeftComponent( new edu.cmu.cs.dennisc.croquet.ScrollPane( this.tree ) );
 		this.splitPane.setRightComponent( new edu.cmu.cs.dennisc.croquet.Label( "please select" ) );
 		this.splitPane.setDividerLocation( 200 );
 		this.addComponent( this.splitPane, java.awt.BorderLayout.CENTER );

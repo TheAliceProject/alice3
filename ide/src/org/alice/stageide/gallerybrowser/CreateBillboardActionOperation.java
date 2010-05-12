@@ -47,16 +47,11 @@ package org.alice.stageide.gallerybrowser;
  */
 class CreateFieldFromBillboardPane extends org.alice.ide.declarationpanes.CreateLargelyPredeterminedFieldPane {
 	private org.alice.apis.moveandturn.Billboard billboard;
-	private edu.cmu.cs.dennisc.javax.swing.components.JImageView imageView = new edu.cmu.cs.dennisc.javax.swing.components.JImageView( 240 );
+	private org.alice.ide.croquet.ImageView imageView = new org.alice.ide.croquet.ImageView( 240 );
 	public CreateFieldFromBillboardPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		super( declaringType, org.alice.apis.moveandturn.Billboard.class, null );
-		this.addComponent( 
-				new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
-						edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ), 
-						new edu.cmu.cs.dennisc.croquet.SwingAdapter( imageView ) 
-				)
-				, Constraint.EAST 
-		);
+		this.imageView.setBorder( javax.swing.BorderFactory.createEmptyBorder(0,0,0,8) );
+		this.addComponent( this.imageView, Constraint.EAST );
 	}
 	public org.alice.apis.moveandturn.Billboard getBillboard() {
 		return this.billboard;

@@ -55,6 +55,13 @@ public class Tree<E> extends Component< javax.swing.JTree > {
 		return new javax.swing.JTree();
 	}
 	
+	public javax.swing.tree.TreeCellRenderer getCellRenderer() {
+		return this.getJComponent().getCellRenderer();
+	}
+	public void setCellRenderer( javax.swing.tree.TreeCellRenderer listCellRenderer ) {
+		this.getJComponent().setCellRenderer( listCellRenderer );
+	}
+
 	public void expandAllRows() {
 		for( int i=0; i<this.getJComponent().getRowCount(); i++ ) {
 			this.getJComponent().expandRow( i );
@@ -66,21 +73,33 @@ public class Tree<E> extends Component< javax.swing.JTree > {
 		}
 	}
 
+	public void setRootVisible( boolean isRootVisible ) {
+		this.getJComponent().setRootVisible( isRootVisible );
+	}
+	
+	@Deprecated
+	public void addTreeSelectionListener( javax.swing.event.TreeSelectionListener treeSelectionListener ) {
+		this.getJComponent().addTreeSelectionListener( treeSelectionListener );
+	}
+	@Deprecated
+	public void removeTreeSelectionListener( javax.swing.event.TreeSelectionListener treeSelectionListener ) {
+		this.getJComponent().removeTreeSelectionListener( treeSelectionListener );
+	}
+
 	@Deprecated
 	public javax.swing.tree.TreeModel getModel() {
 		return this.getJComponent().getModel();
 	}
+
 	@Deprecated
 	public void setModel( javax.swing.tree.TreeModel model ) {
 		this.getJComponent().setModel( model );
 	}
+	@Deprecated
+	public void setSelectionRow( int selectionRow ) {
+		this.getJComponent().setSelectionRow( selectionRow );
+	}
 
-	public javax.swing.tree.TreeCellRenderer getCellRenderer() {
-		return this.getJComponent().getCellRenderer();
-	}
-	public void setCellRenderer( javax.swing.tree.TreeCellRenderer listCellRenderer ) {
-		this.getJComponent().setCellRenderer( listCellRenderer );
-	}
 	@Deprecated
 	public void setItemSelectionOperation( ItemSelectionOperation< E > operation ) {
 		throw new RuntimeException( "todo" );
