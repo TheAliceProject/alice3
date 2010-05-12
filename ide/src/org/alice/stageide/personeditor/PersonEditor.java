@@ -108,25 +108,26 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //		return new java.awt.Dimension( 1024, 700 );
 //	}
 	
-//	public static void main( String[] args ) {
-//		edu.cmu.cs.dennisc.javax.swing.ApplicationFrame frame = new edu.cmu.cs.dennisc.javax.swing.ApplicationFrame() {
-//			@Override
-//			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
-//			}
-//			@Override
-//			protected void handleAbout( java.util.EventObject e ) {
-//			}
-//			@Override
-//			protected void handlePreferences( java.util.EventObject e ) {
-//			}
-//
-//			@Override
-//			protected void handleQuit( java.util.EventObject e ) {
-//				System.exit( 0 );
-//			}
-//		};
-//		frame.setSize( new java.awt.Dimension( 1024, 768 ) );
-//		frame.getContentPane().add( new PersonEditor( null ) );
-//		frame.setVisible( true );
-//	}
+	public static void main( String[] args ) {
+		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
+		edu.cmu.cs.dennisc.javax.swing.ApplicationFrame frame = new edu.cmu.cs.dennisc.javax.swing.ApplicationFrame() {
+			@Override
+			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
+			}
+			@Override
+			protected void handleAbout( java.util.EventObject e ) {
+			}
+			@Override
+			protected void handlePreferences( java.util.EventObject e ) {
+			}
+
+			@Override
+			protected void handleQuit( java.util.EventObject e ) {
+				System.exit( 0 );
+			}
+		};
+		frame.setSize( new java.awt.Dimension( 1024, 768 ) );
+		frame.getContentPane().add( new PersonEditor( null ).getJComponent() );
+		frame.setVisible( true );
+	}
 }

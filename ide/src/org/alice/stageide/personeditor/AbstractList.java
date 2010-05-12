@@ -58,6 +58,7 @@ abstract class AbstractList<E> extends edu.cmu.cs.dennisc.croquet.List< E > {
 
 	public AbstractList( javax.swing.ComboBoxModel comboBoxModel ) {
 //		this.setItemSelectionOperation( new ItemSelectionOperation( comboBoxModel ) );
+		this.setModel( comboBoxModel );
 		this.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
 			public void valueChanged(javax.swing.event.ListSelectionEvent e) {
 				if( e.getValueIsAdjusting() ) {
