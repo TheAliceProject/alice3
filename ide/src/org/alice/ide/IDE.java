@@ -663,6 +663,14 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 				setSceneEditorExpanded( nextValue );				
 			}
 		} );
+		
+		this.addProjectObserver( new ProjectObserver() {
+			public void projectOpening(edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject) {
+			}
+			public void projectOpened(edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject) {
+				getRunOperation().setEnabled( nextProject != null ); 
+			}
+		} );
 	}
 
 	
@@ -1009,9 +1017,6 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForRuntimeProgram;
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForSceneEditor;
 
-//	private java.io.File file = null;
-	private edu.cmu.cs.dennisc.alice.Project project = null;
-
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = null;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField fieldSelection = null;
 	//private edu.cmu.cs.dennisc.alice.ast.AbstractTransient transientSelection = null;
@@ -1038,7 +1043,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	public abstract void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.Context context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation );
 	public abstract void handleRestart( edu.cmu.cs.dennisc.croquet.Context context );
 	public final void handleRun( edu.cmu.cs.dennisc.croquet.Context context ) {
-		if( this.project != null ) {
+		if( this.getProject() != null ) {
 			this.ensureProjectCodeUpToDate();
 			this.handleRun( context, this.getSceneType() );
 		} else {
