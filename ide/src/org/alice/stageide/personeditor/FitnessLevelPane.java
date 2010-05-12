@@ -68,9 +68,9 @@ class FitnessLevelActionOperation extends org.alice.ide.operations.Inconsequenti
 class FitnessLevelPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private edu.cmu.cs.dennisc.croquet.BoundedRangeStateOperation fitnessState = new edu.cmu.cs.dennisc.croquet.BoundedRangeStateOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "8e172c61-c2b6-43e4-9777-e9d8fd2b0d65" ), 0, 50, 100 );
 	public FitnessLevelPane() {
-		this.addComponent( new FitnessLevelActionOperation( this.fitnessState, fitnessState.getMinimum(), "SOFT" ).createButton(), Constraint.WEST );
+		this.addComponent( new FitnessLevelActionOperation( this.fitnessState, this.fitnessState.getMinimum(), "SOFT" ).createButton(), Constraint.WEST );
 		this.addComponent( this.fitnessState.createSlider(), Constraint.CENTER );
-		this.addComponent( new FitnessLevelActionOperation( this.fitnessState, fitnessState.getMaximum(), "CUT" ).createButton(), Constraint.EAST );
+		this.addComponent( new FitnessLevelActionOperation( this.fitnessState, this.fitnessState.getMaximum(), "CUT" ).createButton(), Constraint.EAST );
 		this.fitnessState.addValueObserver( new edu.cmu.cs.dennisc.croquet.BoundedRangeStateOperation.ValueObserver() {
 			public void changed(int nextValue) {
 				PersonViewer.getSingleton().setFitnessLevel( nextValue*0.01 );

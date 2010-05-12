@@ -42,14 +42,27 @@
  */
 package org.alice.ide.operations.project;
 
-public class ManageResourcesOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+public class ManageResourcesOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
 	public ManageResourcesOperation() {
-		super( java.util.UUID.fromString( "ec7dc4b0-d1f8-420d-b6f0-7a25bd92639d" ) );
+		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "ec7dc4b0-d1f8-420d-b6f0-7a25bd92639d" ) );
 		this.setName( "Manage Resources..." );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
-		org.alice.ide.resource.manager.ResourceManagerPane resourcesPane = new org.alice.ide.resource.manager.ResourceManagerPane();
-		this.getIDE().showMessageDialog( resourcesPane, "Project Resources", edu.cmu.cs.dennisc.croquet.MessageType.PLAIN, null );
-	}	
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle cancel" );
+		return new org.alice.ide.resource.manager.ResourceManagerPane();
+	}
+	@Override
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+		if( isOk ) {
+			context.finish();
+		} else {
+			context.cancel();
+		}
+	}
+//	@Override
+//	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
+//		org.alice.ide.resource.manager.ResourceManagerPane resourcesPane = new org.alice.ide.resource.manager.ResourceManagerPane();
+//		this.getIDE().showMessageDialog( resourcesPane, "Project Resources", edu.cmu.cs.dennisc.croquet.MessageType.PLAIN, null );
+//	}	
 }
