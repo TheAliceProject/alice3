@@ -45,66 +45,69 @@ package org.alice.stageide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class EditPersonActionOperation extends AbstractFieldTileActionOperation {
+public class EditPersonActionOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	public EditPersonActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "ad113b0e-acb2-4e43-8196-eba6a4961dc8" ), field );
+		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "ad113b0e-acb2-4e43-8196-eba6a4961dc8" ) );
 		this.setName( "Edit..." );
+		this.field = field;
 	}
 	
+	private org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor getMoveAndTurnSceneEditor() {
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.alice.ide.IDE.getSingleton().getSceneEditor(), org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor.class );
+	}
+	
+	private org.alice.stageide.personeditor.PersonEditor personEditor;
+	private org.alice.apis.stage.Gender prevGender;
+	private org.alice.apis.stage.SkinTone prevSkinTone;
+	private org.alice.apis.stage.EyeColor prevEyeColor;
+	private org.alice.apis.stage.Outfit prevOutfit;
+	private org.alice.apis.stage.Hair prevHair;
+	private Double prevFitnessLevel;
 	@Override
-	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
-		final org.alice.apis.stage.Person person = this.getMoveAndTurnSceneEditor().getInstanceInJavaForField( this.getField(), org.alice.apis.stage.Person.class );
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+		final org.alice.apis.stage.Person person = this.getMoveAndTurnSceneEditor().getInstanceInJavaForField( this.field, org.alice.apis.stage.Person.class );
 		if( person != null ) {
-			final org.alice.apis.stage.Gender prevGender;
-			final org.alice.apis.stage.SkinTone prevSkinTone;
-			final org.alice.apis.stage.EyeColor prevEyeColor;
-			final org.alice.apis.stage.Outfit prevOutfit;
-			final org.alice.apis.stage.Hair prevHair;
-			final Double prevFitnessLevel;
-			prevGender = person.getGender(); 
-			prevSkinTone = person.getSkinTone(); 
-			prevEyeColor = person.getEyeColor(); 
-			prevOutfit = person.getOutfit(); 
-			prevHair = person.getHair(); 
-			prevFitnessLevel = person.getFitnessLevel(); 
-
-			org.alice.stageide.personeditor.PersonEditorInputPane inputPane = new org.alice.stageide.personeditor.PersonEditorInputPane( person );
-			org.alice.apis.stage.Person result = inputPane.showInJDialog( component );
-			if( result != null ) {
-				final org.alice.apis.stage.Gender nextGender;
-				final org.alice.apis.stage.SkinTone nextSkinTone;
-				final org.alice.apis.stage.EyeColor nextEyeColor;
-				final org.alice.apis.stage.Outfit nextOutfit;
-				final org.alice.apis.stage.Hair nextHair;
-				final Double nextFitnessLevel;
-				nextGender = result.getGender();
-				nextSkinTone = result.getSkinTone();
-				nextEyeColor = result.getEyeColor();
-				nextOutfit = result.getOutfit();
-				nextHair = result.getHair();
-				nextFitnessLevel = result.getFitnessLevel();
-				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
-					@Override
-					public void doOrRedo( boolean isDo ) {
-						EditPersonActionOperation.set( person, nextGender, nextSkinTone, nextEyeColor, nextOutfit, nextHair, nextFitnessLevel );
-					}
-					@Override
-					public void undo() {
-						EditPersonActionOperation.set( person, prevGender, prevSkinTone, prevEyeColor, prevOutfit, prevHair, prevFitnessLevel );
-					}
-					@Override
-					protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
-						rv.append( "edit: " );
-						edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, getField(), locale );
-						return rv;
-					}
-				} );
-			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: remove" );
-				EditPersonActionOperation.set( person, prevGender, prevSkinTone, prevEyeColor, prevOutfit, prevHair, prevFitnessLevel );
-				context.cancel();
-			}
+			this.prevGender = person.getGender(); 
+			this.prevSkinTone = person.getSkinTone(); 
+			this.prevEyeColor = person.getEyeColor(); 
+			this.prevOutfit = person.getOutfit(); 
+			this.prevHair = person.getHair(); 
+			this.prevFitnessLevel = person.getFitnessLevel();
+			this.personEditor = new org.alice.stageide.personeditor.PersonEditor( person );
 		} else {
+			this.personEditor = null;
+		}
+		return this.personEditor; 
+	}
+	@Override
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+		final org.alice.apis.stage.Person person = this.personEditor.getPerson();
+		if( isOk ) {
+			final org.alice.apis.stage.Gender nextGender = person.getGender();
+			final org.alice.apis.stage.SkinTone nextSkinTone = person.getSkinTone();
+			final org.alice.apis.stage.EyeColor nextEyeColor = person.getEyeColor();
+			final org.alice.apis.stage.Outfit nextOutfit = person.getOutfit();
+			final org.alice.apis.stage.Hair nextHair = person.getHair();
+			final Double nextFitnessLevel = person.getFitnessLevel();
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+				@Override
+				public void doOrRedo( boolean isDo ) {
+					EditPersonActionOperation.set( person, nextGender, nextSkinTone, nextEyeColor, nextOutfit, nextHair, nextFitnessLevel );
+				}
+				@Override
+				public void undo() {
+					EditPersonActionOperation.set( person, prevGender, prevSkinTone, prevEyeColor, prevOutfit, prevHair, prevFitnessLevel );
+				}
+				@Override
+				protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+					rv.append( "edit: " );
+					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, field, locale );
+					return rv;
+				}
+			} );
+		} else {
+			EditPersonActionOperation.set( person, prevGender, prevSkinTone, prevEyeColor, prevOutfit, prevHair, prevFitnessLevel );
 			context.cancel();
 		}
 	}

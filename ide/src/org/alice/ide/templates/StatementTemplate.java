@@ -42,68 +42,88 @@
  */
 package org.alice.ide.templates;
 
+//public abstract class StatementTemplate extends edu.cmu.cs.dennisc.croquet.DragControl {
+//	public StatementTemplate(Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls) {
+//	}
+//
+//	protected final org.alice.ide.IDE getIDE() {
+//		return org.alice.ide.IDE.getSingleton();
+//	}
+//	@Override
+//	protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
+//		return new javax.swing.BoxLayout(jPanel, javax.swing.BoxLayout.LINE_AXIS);
+//	}
+//}
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class StatementTemplate extends org.alice.ide.common.StatementLikeSubstance {
-	public StatementTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
-		super( cls, javax.swing.BoxLayout.LINE_AXIS );
+	public StatementTemplate(Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls) {
+		super(cls, javax.swing.BoxLayout.LINE_AXIS);
 	}
 
-	public abstract void createStatement( edu.cmu.cs.dennisc.alice.ast.BlockStatement block, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver );
+	public abstract void createStatement(edu.cmu.cs.dennisc.alice.ast.BlockStatement block, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement> taskObserver);
+
 	private edu.cmu.cs.dennisc.croquet.DragOperation dragOperation;
 
-//	@Override
-//	protected boolean isFauxDragDesired() {
-//		return true;
-//	}
-	
+	// @Override
+	// protected boolean isFauxDragDesired() {
+	// return true;
+	// }
+
 	@Override
 	protected boolean isPressed() {
 		return false;
 	}
-	//	protected zoot.ActionOperation createPopupOperation() {
-	//		return new zoot.AbstractActionOperation() {
-	//			public void perform( zoot.ActionContext actionContext ) {
-	//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle popupOperation" );
-	//			}
-	//		};
-	//	}
+
+	// protected zoot.ActionOperation createPopupOperation() {
+	// return new zoot.AbstractActionOperation() {
+	// public void perform( zoot.ActionContext actionContext ) {
+	// edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: handle popupOperation"
+	// );
+	// }
+	// };
+	// }
 	protected edu.cmu.cs.dennisc.croquet.DragOperation createDragOperation() {
 		return new org.alice.ide.operations.DefaultDragOperation();
 	}
+
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo( parent );
-		if( this.dragOperation != null ) {
-			//pass
+		super.handleAddedTo(parent);
+		if (this.dragOperation != null) {
+			// pass
 		} else {
 			this.dragOperation = this.createDragOperation();
 		}
-		this.setDragOperation( this.dragOperation );
+		this.setDragOperation(this.dragOperation);
 	}
+
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		this.setPopupOperation( null );
-		super.handleRemovedFrom( parent );
+		this.setPopupMenuOperation(null);
+		super.handleRemovedFrom(parent);
 	}
+
 	@Override
-	protected boolean contains( int x, int y, boolean jContains ) {
-		if( getIDE().isSelectedFieldInScope() ) {
-			return super.contains( x, y, jContains );
+	protected boolean contains(int x, int y, boolean jContains) {
+		if (getIDE().isSelectedFieldInScope()) {
+			return super.contains(x, y, jContains);
 		} else {
 			return false;
 		}
 	}
+
 	@Override
-	public void paint( java.awt.Graphics g ) {
-		super.paint( g );
-		if( getIDE().isSelectedFieldInScope() ) {
-			//pass
+	public void paint(java.awt.Graphics g) {
+		super.paint(g);
+		if (getIDE().isSelectedFieldInScope()) {
+			// pass
 		} else {
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			g2.setPaint( edu.cmu.cs.dennisc.zoot.PaintUtilities.getDisabledTexturePaint() );
-			this.fillBounds( g2 );
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+			g2.setPaint(edu.cmu.cs.dennisc.zoot.PaintUtilities.getDisabledTexturePaint());
+			this.fillBounds(g2);
 		}
 	}
 }

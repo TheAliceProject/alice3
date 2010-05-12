@@ -45,7 +45,7 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractChooser<E> implements ValueChooser< E >, edu.cmu.cs.dennisc.croquet.InputPanel.Validator {
+public abstract class AbstractChooser<E> implements ValueChooser< E >, edu.cmu.cs.dennisc.croquet.InputDialogOperation.Validator {
 	private static final String[] LABEL_TEXTS = { "value:" };
 //	private edu.cmu.cs.dennisc.croquet.InputPanel< ? > inputPanel;
 	protected org.alice.ide.IDE getIDE() {

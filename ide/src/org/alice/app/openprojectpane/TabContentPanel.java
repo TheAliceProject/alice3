@@ -47,7 +47,7 @@ package org.alice.app.openprojectpane;
  * @author Dennis Cosgrove
  */
 public abstract class TabContentPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	private edu.cmu.cs.dennisc.croquet.InputPanel< java.net.URI > inputPanel;
+//	private edu.cmu.cs.dennisc.croquet.InputPanel< java.net.URI > inputPanel;
 	public TabContentPanel() {
 		this.setBackgroundColor( new java.awt.Color( 191, 191, 255 ) );
 		this.setOpaque( true );
@@ -55,17 +55,17 @@ public abstract class TabContentPanel extends edu.cmu.cs.dennisc.croquet.BorderP
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 	}
 	public abstract java.net.URI getSelectedURI();
-	public void setInputPanel( edu.cmu.cs.dennisc.croquet.InputPanel< java.net.URI > inputPanel ) {
-		this.inputPanel = inputPanel;
-	}
+//	public void setInputPanel( edu.cmu.cs.dennisc.croquet.InputPanel< java.net.URI > inputPanel ) {
+//		this.inputPanel = inputPanel;
+//	}
 //	public javax.swing.Icon getTabTitleIcon() {
 //		return null;
 //	}
-	protected void updateOKButton() {
-		if( this.inputPanel != null ) {
-			this.inputPanel.updateOKButton();
-		}
-	}
+//	protected void updateOKButton() {
+//		if( this.inputPanel != null ) {
+//			this.inputPanel.updateOKButton();
+//		}
+//	}
 //	protected void fireOKButtonIfPossible() {
 //		if( this.inputPanel != null ) {
 //			this.inputPanel.fireOKButtonIfPossible();

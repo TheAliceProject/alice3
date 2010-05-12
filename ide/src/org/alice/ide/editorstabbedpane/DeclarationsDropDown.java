@@ -53,7 +53,7 @@ package org.alice.ide.editorstabbedpane;
 //	}
 //}
 
-abstract class EditMembersOperation< E extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice > extends org.alice.ide.operations.ActionOperation {
+abstract class EditMembersOperation< E extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice > extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType;
 	private String presentation;
 	public EditMembersOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, String presentation ) {
@@ -63,25 +63,31 @@ abstract class EditMembersOperation< E extends edu.cmu.cs.dennisc.alice.ast.Memb
 		this.setName( this.presentation + "..." );
 	}
 	protected abstract EditMembersPane< E > createEditMembersPane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType );
+	
+	private edu.cmu.cs.dennisc.history.HistoryManager historyManager;
 	@Override
-	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
 		java.util.UUID groupUUID = java.util.UUID.randomUUID();
-		edu.cmu.cs.dennisc.history.HistoryManager historyManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( groupUUID );
-		EditMembersPane< E > editMembersPane = this.createEditMembersPane( groupUUID, this.declaringType );
-		Boolean isAccepted = editMembersPane.showInJDialog( component );
-		if( isAccepted != null ) {
+		this.historyManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( groupUUID );
+		return this.createEditMembersPane( groupUUID, this.declaringType );
+	}
+	@Override
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+		if( isOk ) {
 			edu.cmu.cs.dennisc.croquet.Edit compositeEdit = historyManager.createDoIgnoringCompositeEdit( this.presentation + " " + this.declaringType.getName() );
 			if( compositeEdit != null ) {
 				context.commitAndInvokeDo( compositeEdit );
 			} else {
+				//todo?
 				context.cancel();
 			}
 		} else {
-			historyManager.setInsertionIndex( 0 );
+			this.historyManager.setInsertionIndex( 0 );
 			context.cancel();
 		}
 	}
 }
+
 abstract class EditMethodsOperation< E extends edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > extends EditMembersOperation< E > {
 	public EditMethodsOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, String presentation ) {
 		super( individualId, type, presentation );

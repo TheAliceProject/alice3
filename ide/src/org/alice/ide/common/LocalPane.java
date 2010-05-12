@@ -48,7 +48,7 @@ package org.alice.ide.common;
 public abstract class LocalPane extends AccessiblePane {
 	public LocalPane( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local ) {
 		this.addComponent( new org.alice.ide.common.LocalNameLabel( local ) );
-		this.setPopupOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation(
+		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation(
 				edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP,
 				java.util.UUID.fromString( "b225cc92-f2c6-4a47-9818-1bbd0319091b" ),
 				new org.alice.ide.operations.ast.RenameLocalDeclarationOperation( local ) 

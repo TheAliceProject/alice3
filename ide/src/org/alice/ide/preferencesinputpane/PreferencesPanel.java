@@ -56,7 +56,7 @@ class TreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.DefaultM
 /**
  * @author Dennis Cosgrove
  */
-public class PreferencesInputPane extends org.alice.ide.InputPanel<Void> {
+public class PreferencesPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane();
 	private edu.cmu.cs.dennisc.croquet.Tree<?> tree = new edu.cmu.cs.dennisc.croquet.Tree();
 	class TreeSelectionAdapter extends edu.cmu.cs.dennisc.javax.swing.event.DefaultMutableTreeNodeTreeSelectionAdapter<org.alice.ide.preferencesinputpane.CollectionOfPreferencesPane> {
@@ -67,14 +67,14 @@ public class PreferencesInputPane extends org.alice.ide.InputPanel<Void> {
 //			}
 			if( newLeadValue != null ) {
 //				edu.cmu.cs.dennisc.print.PrintUtilities.println( "newLeadValue:", newLeadValue.getTitle() );
-				int dividerLocation = PreferencesInputPane.this.splitPane.getDividerLocation();
-				PreferencesInputPane.this.splitPane.setRightComponent( newLeadValue );
-				PreferencesInputPane.this.splitPane.setDividerLocation( dividerLocation );
+				int dividerLocation = PreferencesPanel.this.splitPane.getDividerLocation();
+				PreferencesPanel.this.splitPane.setRightComponent( newLeadValue );
+				PreferencesPanel.this.splitPane.setDividerLocation( dividerLocation );
 			}
 		}
 	}
 
-	public PreferencesInputPane() {
+	public PreferencesPanel() {
 		edu.cmu.cs.dennisc.preference.CollectionOfPreferences rootPreferencesNode = new edu.cmu.cs.dennisc.preference.CollectionOfPreferences() {};
 		rootPreferencesNode.initialize();
 		
@@ -138,17 +138,8 @@ public class PreferencesInputPane extends org.alice.ide.InputPanel<Void> {
 		this.splitPane.setLeftComponent( new edu.cmu.cs.dennisc.croquet.ScrollPane( this.tree ) );
 		this.splitPane.setRightComponent( new edu.cmu.cs.dennisc.croquet.Label( "please select" ) );
 		this.splitPane.setDividerLocation( 200 );
-		this.addComponent( this.splitPane, java.awt.BorderLayout.CENTER );
+		this.addComponent( this.splitPane, Constraint.CENTER );
 		//this.setPreferredSize( new java.awt.Dimension( 640, 480 ) );
 		this.tree.setSelectionRow( 1 );
-	}
-	@Override
-	protected Void getActualInputValue() {
-		return null;
-	}
-	public static void main(String[] args) {
-		PreferencesInputPane inputPane = new PreferencesInputPane();
-		inputPane.showInJDialog(null);
-		System.exit( 0 );
 	}
 }

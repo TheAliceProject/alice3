@@ -51,7 +51,7 @@ public class SetterTemplate extends ExpressionStatementTemplate {
 		this.field = field;
 		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
-			this.setPopupOperation( new FieldPopupOperation( fieldInAlice ) );
+			this.setPopupMenuOperation( new FieldPopupOperation( fieldInAlice ) );
 		}
 	}
 	@Override

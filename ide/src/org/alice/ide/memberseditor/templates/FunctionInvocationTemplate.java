@@ -60,7 +60,7 @@ public class FunctionInvocationTemplate extends org.alice.ide.templates.Cascadin
 		this.method = method;
 		if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
-			this.setPopupOperation( new MethodPopupOperation( methodInAlice ) );
+			this.setPopupMenuOperation( new MethodPopupOperation( methodInAlice ) );
 		}
 	}
 	@Override

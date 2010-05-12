@@ -63,7 +63,7 @@ public class ParameterPane extends AccessiblePane {
 			final org.alice.ide.operations.ast.DeleteParameterOperation deleteParameterOperation = new org.alice.ide.operations.ast.DeleteParameterOperation( this.parametersProperty, this.parameter );
 			final org.alice.ide.operations.ast.ForwardShiftParameterOperation forwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.ForwardShiftParameterOperation( this.parametersProperty, this.parameter );
 			final org.alice.ide.operations.ast.BackwardShiftParameterOperation backwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.BackwardShiftParameterOperation( this.parametersProperty, this.parameter );
-			this.setPopupOperation( new edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "5b9b75d7-ce04-4f3d-8915-b825f357cef2" ) ) {
+			this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "5b9b75d7-ce04-4f3d-8915-b825f357cef2" ) ) {
 				@Override
 				public edu.cmu.cs.dennisc.croquet.Operation[] getOperations() {
 					java.util.List< edu.cmu.cs.dennisc.croquet.Operation > operations = new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.Operation >();
@@ -80,7 +80,7 @@ public class ParameterPane extends AccessiblePane {
 				}
 			} );
 		} else {
-			this.setPopupOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "7a9b90a1-a645-4e13-aeef-9ca631baad55" ), renameParameterOperation ) );
+			this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "7a9b90a1-a645-4e13-aeef-9ca631baad55" ), renameParameterOperation ) );
 		}
 	}
 	@Override

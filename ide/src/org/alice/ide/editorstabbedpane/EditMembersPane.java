@@ -46,7 +46,7 @@ import edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice;;
 /**
 * @author Dennis Cosgrove
 */
-public abstract class EditMembersPane< T extends MemberDeclaredInAlice > extends org.alice.ide.InputPanel< Boolean > {
+public abstract class EditMembersPane< T extends MemberDeclaredInAlice > extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType;
 	private edu.cmu.cs.dennisc.croquet.List< T > list;
 	public EditMembersPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.property.ListProperty< T > listProperty ) {
@@ -121,10 +121,6 @@ public abstract class EditMembersPane< T extends MemberDeclaredInAlice > extends
 		AbstractEditableListPane< T > editableListPane = new EditableMemberListPane();
 		editableListPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 		this.addComponent( editableListPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
-	}
-	@Override
-	protected Boolean getActualInputValue() {
-		return Boolean.TRUE;
 	}
 	protected T getSelectedItem() {
 		return (T)this.list.getSelectedValue();

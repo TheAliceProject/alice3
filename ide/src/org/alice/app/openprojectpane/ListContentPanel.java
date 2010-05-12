@@ -110,15 +110,15 @@ public abstract class ListContentPanel extends TabContentPanel {
 			public void keyTyped( java.awt.event.KeyEvent e ) {
 			}
 		} );
-		this.list.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
-			public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-				if( e.getValueIsAdjusting() ) {
-					//pass
-				} else {
-					ListContentPanel.this.updateOKButton();
-				}
-			}
-		} );
+//		this.list.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
+//			public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+//				if( e.getValueIsAdjusting() ) {
+//					//pass
+//				} else {
+//					ListContentPanel.this.updateOKButton();
+//				}
+//			}
+//		} );
 		this.addComponent(  this.list, Constraint.CENTER );
 	}
 	protected abstract String getTextForZeroProjects();

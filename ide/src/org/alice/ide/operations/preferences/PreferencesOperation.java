@@ -45,21 +45,23 @@ package org.alice.ide.operations.preferences;
 /**
  * @author Dennis Cosgrove
  */
-public class PreferencesOperation extends org.alice.ide.operations.ActionOperation {
+public class PreferencesOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
 	public PreferencesOperation() {
 		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "8662d722-9a02-47d5-a7ed-27d20528175a" ) );
 		this.setName( "Preferences..." );
 	}
-	
+	private org.alice.ide.preferencesinputpane.PreferencesPanel preferencesInputPane = new org.alice.ide.preferencesinputpane.PreferencesPanel();
 	@Override
-	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
-		org.alice.ide.preferencesinputpane.PreferencesInputPane preferencesInputPane = new org.alice.ide.preferencesinputpane.PreferencesInputPane();
-		preferencesInputPane.showInJDialog( component );
-//		if( this.method != null ) {
-//			this.prevCode = getIDE().getFocusedCode();
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+		return this.preferencesInputPane;
+	}
+	@Override
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+		//todo
+		if( isOk ) {
 			context.finish();
-//		} else {
-//			actionContext.cancel();
-//		}
+		} else {
+			context.cancel();
+		}
 	}
 }

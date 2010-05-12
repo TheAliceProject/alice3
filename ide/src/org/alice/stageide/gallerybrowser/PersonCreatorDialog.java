@@ -62,16 +62,33 @@ class PersonCreatorDialog extends edu.cmu.cs.dennisc.progress.ProgressDialog {
 			@Override
 			protected Boolean doInBackground() throws Exception {
 				this.publish( "opening person creator..." );
-				org.alice.stageide.personeditor.PersonEditorInputPane personEditorInputPane = new org.alice.stageide.personeditor.PersonEditorInputPane( null ) {
-					@Override
-					protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-						super.handleAddedTo( parent );
-						PersonCreatorDialog.this.setVisible( false );
+				
+				class DeclarePersonInputDialogOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
+					private org.alice.stageide.personeditor.PersonEditor personEditor;
+					public DeclarePersonInputDialogOperation() {
+						super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "19c72f46-7b7a-4edd-b598-73f17c9044b8" ) );
 					}
-				};
+					@Override
+					protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+						this.personEditor = new org.alice.stageide.personeditor.PersonEditor( person ) {
+							@Override
+							protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+								PersonCreatorDialog.this.setVisible( false );
+								super.handleAddedTo(parent);
+							}
+						};
+						return this.personEditor;
+					}
+					@Override
+					protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+						if( isOk ) {
+							PersonCreatorDialog.this.person = this.personEditor.getPerson();
+						}
+					}
+				}
 
-				org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-				PersonCreatorDialog.this.person = personEditorInputPane.showInJDialog();
+				DeclarePersonInputDialogOperation declarePersonInputDialogOperation = new DeclarePersonInputDialogOperation();
+				declarePersonInputDialogOperation.fire();
 				return true;
 			}
 		}
