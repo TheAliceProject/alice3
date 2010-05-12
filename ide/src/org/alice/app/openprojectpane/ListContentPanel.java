@@ -50,7 +50,7 @@ public abstract class ListContentPanel extends TabContentPanel {
 	private edu.cmu.cs.dennisc.croquet.List<java.net.URI> list = new edu.cmu.cs.dennisc.croquet.List<java.net.URI>() {
 		@Override
 		protected javax.swing.JList createJComponent() {
-			return new javax.swing.JList() {
+			javax.swing.JList rv = new javax.swing.JList() {
 				@Override
 				public void paint(java.awt.Graphics g) {
 					super.paint( g );
@@ -63,18 +63,21 @@ public abstract class ListContentPanel extends TabContentPanel {
 						edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g, ListContentPanel.this.getTextForZeroProjects(), this.getSize() );
 					}
 				}
-				@Override
-				public java.awt.Dimension getPreferredSize() {
-					return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 400, 300 );
-				}
-				@Override
-				public java.awt.Dimension getMaximumSize() {
-					return this.getPreferredSize();
-				}
+//				@Override
+//				public java.awt.Dimension getPreferredSize() {
+//					return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 400, 300 );
+//				}
+//				@Override
+//				public java.awt.Dimension getMaximumSize() {
+//					return this.getPreferredSize();
+//				}
 			};
+			//rv.setVisibleRowCount( -1 );
+			return rv;
 		}
 	};
-	
+
+//	private edu.cmu.cs.dennisc.croquet.List<java.net.URI> list = new edu.cmu.cs.dennisc.croquet.List<java.net.URI>();
 	private edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
 		@Override
 		protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {

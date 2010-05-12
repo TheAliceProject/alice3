@@ -160,11 +160,13 @@ public abstract class Component<J extends javax.swing.JComponent> {
 	}
 	
 	protected void handleAddedTo( Component<?> parent ) {
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "added:", this.hashCode(), parent != null ? parent.hashCode() : 0 );
 		for( ContainmentObserver containmentObserver : this.containmentObservers ) {
 			containmentObserver.addedTo(parent);
 		}
 	}
 	protected void handleRemovedFrom( Component<?> parent ) {
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "removed:", this.hashCode(), parent != null ? parent.hashCode() : 0 );
 		for( ContainmentObserver containmentObserver : this.containmentObservers ) {
 			containmentObserver.removedFrom(parent);
 		}
@@ -400,9 +402,12 @@ public abstract class Component<J extends javax.swing.JComponent> {
 	}
 
 	@Deprecated
-	protected void forgetAndRemoveAllComponents() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: forgetAndRemoveAllComponents");
-		// throw new RuntimeException( "todo" );
+	protected final void forgetAndRemoveAllComponents() {
+		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this.getJComponent() );
+	}
+	@Deprecated
+	protected final void removeAllComponents() {
+		this.getJComponent().removeAll();
 	}
 
 	public int getWidth() {

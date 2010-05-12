@@ -311,6 +311,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 	private void edit( final edu.cmu.cs.dennisc.alice.ast.AbstractCode code, boolean isOriginatedByPreviousCodeOperation ) {
 		for( edu.cmu.cs.dennisc.croquet.TabStateOperation tabIsSelectedOperation : this.getTabStateOperations() ) {
 			edu.cmu.cs.dennisc.croquet.Component< ? > component = tabIsSelectedOperation.getSingletonView();
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( component.getClass() );
 			if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
 				org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)component;
 				if( codeEditor.getCode() == code ) {
@@ -361,7 +362,6 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 		} else {
 			this.editedCodes.add( code );
 		}
-		this.addTabStateOperation( codeTabIsSelectedOperation );
 		this.updateBackOperationsEnabled();
 	}
 

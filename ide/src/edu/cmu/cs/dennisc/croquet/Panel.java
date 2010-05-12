@@ -72,9 +72,6 @@ public abstract class Panel extends Component< javax.swing.JPanel > {
 //		rv.setOpaque( true );
 		return rv;
 	}
-	public void removeAllComponents() {
-		this.getJComponent().removeAll();
-	}
 	protected boolean paintComponent( java.awt.Graphics2D g2 ) {
 		return true;
 	}

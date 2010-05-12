@@ -52,9 +52,6 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 	public TabStateOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, boolean initialState, String title ) {
 		super( groupUUID, individualUUID, initialState, title );
 	}
-	
-	//todo: add scrollpane
-	
 	private edu.cmu.cs.dennisc.croquet.ScrollPane singletonScrollPane;
 
 	protected ScrollPane createSingletonScrollPane() {

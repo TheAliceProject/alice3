@@ -46,6 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public abstract class InputPanel< T > extends Panel {
 	public static interface Validator {
 		public boolean isInputValid();

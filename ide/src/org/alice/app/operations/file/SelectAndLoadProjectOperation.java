@@ -56,6 +56,11 @@ public abstract class SelectAndLoadProjectOperation extends org.alice.app.operat
 //	public boolean isOKButtonValid() {
 //		return super.isOKButtonValid() && this.getActualInputValue() != null;
 //	}
+	
+	@Override
+	protected void packDialog(edu.cmu.cs.dennisc.croquet.Dialog dialog) {
+		dialog.getAwtWindow().setSize( new java.awt.Dimension( 600, 430 ) );
+	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
 		if( this.selectProjectToOpenPanel != null ) {

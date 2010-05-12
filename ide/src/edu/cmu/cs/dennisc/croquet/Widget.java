@@ -150,12 +150,6 @@ public abstract class Widget extends Component< javax.swing.JPanel > {
 	}
 	
 	@Deprecated
-	protected void removeAllComponents() {
-		//todo
-		this.getJComponent().removeAll();
-	}
-
-	@Deprecated
 	protected void paintComponent( java.awt.Graphics g ) {
 		throw new RuntimeException( "todo" );
 	}

@@ -64,16 +64,20 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 	private java.util.List< FieldSelectionObserver > fieldSelectionObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	public void addFieldSelectionObserver( FieldSelectionObserver fieldSelectionObserver ) {
+		assert this.fieldSelectionObservers.contains( fieldSelectionObserver ) == false;
 		this.fieldSelectionObservers.add( fieldSelectionObserver );
 	}
 	public void removeFieldSelectionObserver( FieldSelectionObserver fieldSelectionObserver ) {
+		assert this.fieldSelectionObservers.contains( fieldSelectionObserver ) == false;
 		this.fieldSelectionObservers.remove( fieldSelectionObserver );
 	}
 	private java.util.List< CodeInFocusObserver > codeInFocusObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	public void addCodeInFocusObserver( CodeInFocusObserver codeInFocusObserver ) {
+		assert this.codeInFocusObservers.contains( codeInFocusObserver ) == false;
 		this.codeInFocusObservers.add( codeInFocusObserver );
 	}
 	public void removeCodeInFocusObserver( CodeInFocusObserver codeInFocusObserver ) {
+		assert this.codeInFocusObservers.contains( codeInFocusObserver ) == true;
 		this.codeInFocusObservers.remove( codeInFocusObserver );
 	}
 	

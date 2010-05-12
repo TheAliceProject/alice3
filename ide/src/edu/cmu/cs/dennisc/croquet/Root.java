@@ -64,7 +64,7 @@ public abstract class Root<W extends java.awt.Window> {
 		Root.map.put( window, this );
 	}
 
-	protected final W getAwtWindow() {
+	/*protected*/ public final W getAwtWindow() {
 		return this.window;
 	}
 	protected abstract javax.swing.JRootPane getRootPane();

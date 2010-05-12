@@ -121,6 +121,7 @@ public class TabbedPaneSelectionOperation extends Operation {
 	}
 	
 	private void addToTabbedPane( TabStateOperation tabState ) {
+		//Thread.dumpStack();
 		ScrollPane scrollPane = tabState.getSingletonScrollPane();
 		Component<?> mainComponent = tabState.getSingletonView();
 		AbstractButton<?> header = tabState.createTabTitle();

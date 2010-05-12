@@ -102,7 +102,7 @@ public class SelectProjectToOpenPanel extends edu.cmu.cs.dennisc.croquet.BorderP
 	};
 
 	private edu.cmu.cs.dennisc.croquet.TabbedPaneSelectionOperation tabSelectionOperation = new edu.cmu.cs.dennisc.croquet.TabbedPaneSelectionOperation(edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString("12e1d59b-2893-4144-b995-08090680a318"),
-			this.templatesOperation, 
+			this.templatesOperation,
 			this.myProjectsOperation, 
 			this.recentProjectsOperation, 
 			//this.tutorialOperation,
@@ -111,7 +111,13 @@ public class SelectProjectToOpenPanel extends edu.cmu.cs.dennisc.croquet.BorderP
 	);
 
 	public SelectProjectToOpenPanel() {
-		this.addComponent(this.tabSelectionOperation.getSingletonTabbedPane(), Constraint.CENTER);
+		this.templatesOperation.setState( true );
+		this.addComponent(
+				//edu.cmu.cs.dennisc.croquet.BoxUtilities.createConstrainedToMinimumPreferredSizeComponent(
+						this.tabSelectionOperation.getSingletonTabbedPane(), 
+				//		480, 
+				//		320),
+				Constraint.CENTER);
 		this.tutorialOperation.setEnabled(false);
 		this.textbookOperation.setEnabled(false);
 	}

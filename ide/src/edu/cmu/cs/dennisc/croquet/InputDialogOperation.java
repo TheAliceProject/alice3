@@ -110,6 +110,9 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 		this.validators.remove(validator);
 	}
 
+	protected void packDialog( Dialog dialog ) {
+		dialog.pack();
+	}
 	@Override
 	protected final void perform(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
 		Component<?> contentPane = this.prologue(context);
@@ -149,7 +152,13 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 			BottomPanel bottomPanel = new BottomPanel();
 			bottomPanel.setOpaque( false );
 
-			final Dialog dialog = new Dialog(button);
+			Component<?> owner;
+			if( button != null ) {
+				owner = button;
+			} else {
+				owner = Application.getSingleton().getFrame().getContentPanel();
+			}
+			final Dialog dialog = new Dialog( owner );
 			dialog.setTitle( this.getName() );
 			dialog.setDefaultButton( bottomPanel.getOkButton() );
 			dialog.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Dialog.DefaultCloseOperation.DISPOSE );
@@ -183,7 +192,8 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 			borderPanel.addComponent( contentPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 			borderPanel.addComponent( bottomPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.SOUTH );
 			
-			dialog.pack();
+			this.packDialog( dialog );
+			//dialog.pack();
 			//edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin(dialog.getAwtWindow(), button.getRoot().getAwtWindow());
 
 			dialog.setVisible( true );
