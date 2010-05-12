@@ -119,7 +119,7 @@ public final class StringStateOperation extends Operation {
 				StringStateOperation.this.addTextComponent( rv );
 			}
 			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				StringStateOperation.this.removeComponent( rv );
+				StringStateOperation.this.removeTextComponent( rv );
 			}
 		} );
 		return rv;

@@ -48,17 +48,17 @@ package org.alice.stageide.personeditor;
  */
 //todo: note, not really inconsequential
 class FitnessLevelActionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private javax.swing.JSlider slider;
+	private edu.cmu.cs.dennisc.croquet.BoundedRangeStateOperation fitnessState;
 	private int value;
-	public FitnessLevelActionOperation( javax.swing.JSlider slider, int value, String name ) {
+	public FitnessLevelActionOperation( edu.cmu.cs.dennisc.croquet.BoundedRangeStateOperation fitnessState, int value, String name ) {
 		super( java.util.UUID.fromString( "979d9be8-c24c-4921-93d4-23747bdf079d" ) );
-		this.slider = slider;
+		this.fitnessState = fitnessState;
 		this.value = value;
 		this.setName( name );
 	}
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > button) {
-		this.slider.setValue( this.value );
+		this.fitnessState.setValue( this.value );
 	}
 }
 
@@ -66,14 +66,18 @@ class FitnessLevelActionOperation extends org.alice.ide.operations.Inconsequenti
  * @author Dennis Cosgrove
  */
 class FitnessLevelPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	private FitnessLevelSlider slider = new FitnessLevelSlider();
+	private edu.cmu.cs.dennisc.croquet.BoundedRangeStateOperation fitnessState = new edu.cmu.cs.dennisc.croquet.BoundedRangeStateOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "8e172c61-c2b6-43e4-9777-e9d8fd2b0d65" ), 0, 50, 100 );
 	public FitnessLevelPane() {
-		this.addComponent( new FitnessLevelActionOperation( this.slider, 0, "SOFT" ).createButton(), Constraint.WEST );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.slider ), Constraint.CENTER );
-		this.addComponent( new FitnessLevelActionOperation( this.slider, 100, "CUT" ).createButton(), Constraint.EAST );
+		this.addComponent( new FitnessLevelActionOperation( this.fitnessState, fitnessState.getMinimum(), "SOFT" ).createButton(), Constraint.WEST );
+		this.addComponent( this.fitnessState.createSlider(), Constraint.CENTER );
+		this.addComponent( new FitnessLevelActionOperation( this.fitnessState, fitnessState.getMaximum(), "CUT" ).createButton(), Constraint.EAST );
+		this.fitnessState.addValueObserver( new edu.cmu.cs.dennisc.croquet.BoundedRangeStateOperation.ValueObserver() {
+			public void changed(int nextValue) {
+				PersonViewer.getSingleton().setFitnessLevel( nextValue*0.01 );
+			}
+		} );
 	}
-
 	public void setFitnessLevel( Double fitnessLevel ) {
-		this.slider.setValue( (int)((fitnessLevel+0.005)*100) );
+		this.fitnessState.setValue( (int)((fitnessLevel+0.005)*100) );
 	}
 }

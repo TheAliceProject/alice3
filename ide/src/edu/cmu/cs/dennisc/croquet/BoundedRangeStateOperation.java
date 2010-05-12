@@ -42,16 +42,84 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import edu.cmu.cs.dennisc.croquet.BooleanStateOperation.ValueObserver;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BoundedRangeOperation extends Operation {
+public final class BoundedRangeStateOperation extends Operation {
+	public static interface ValueObserver {
+		//public void changing( int nextValue );
+		public void changed( int nextValue );
+	};
+
 	private javax.swing.BoundedRangeModel boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
-	public BoundedRangeOperation( java.util.UUID groupUUID, java.util.UUID individualUUID ) {
+	private javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+		public void stateChanged(javax.swing.event.ChangeEvent e) {
+			BoundedRangeStateOperation.this.fireValueChanged( e );
+		}
+	};
+	public BoundedRangeStateOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, int minimum, int value, int maximum ) {
 		super( groupUUID, individualUUID );
+		this.boundedRangeModel.setMinimum( minimum );
+		this.boundedRangeModel.setMaximum( maximum );
+		this.boundedRangeModel.setValue( value );
+		this.boundedRangeModel.addChangeListener( this.changeListener );
 	}
-	public javax.swing.BoundedRangeModel getBoundedRangeModel() {
-		return this.boundedRangeModel;
+	
+	private java.util.List< ValueObserver > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	public void addValueObserver( ValueObserver valueObserver ) {
+		this.valueObservers.add( valueObserver );
+	}
+	public void removeValueObserver( ValueObserver valueObserver ) {
+		this.valueObservers.remove( valueObserver );
+	}
+	
+	private void fireValueChanged( javax.swing.event.ChangeEvent e ) {
+		for( ValueObserver valueObserver : this.valueObservers ) {
+			valueObserver.changed( this.boundedRangeModel.getValue() );
+		}
+	}
+	
+//	public javax.swing.BoundedRangeModel getBoundedRangeModel() {
+//		return this.boundedRangeModel;
+//	}
+	
+	public int getMinimum() {
+		return this.boundedRangeModel.getMinimum();
+	}
+	public int getMaximum() {
+		return this.boundedRangeModel.getMaximum();
+	}
+	public int getValue() {
+		return this.boundedRangeModel.getValue();
+	}
+	public void setValue( int value ) {
+		this.boundedRangeModel.setValue( value );
+	}
+	
+	protected void addSlider(Slider textComponent) {
+		this.addComponent(textComponent);
+	}
+	protected void removeSlider(Slider textComponent) {
+		this.removeComponent(textComponent);
+	}
+
+	private Slider register( final Slider rv ) {
+		Application.getSingleton().register( this );
+		rv.getJComponent().setModel( this.boundedRangeModel );
+		rv.addContainmentObserver( new Component.ContainmentObserver() {
+			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				BoundedRangeStateOperation.this.addSlider( rv );
+			}
+			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				BoundedRangeStateOperation.this.removeSlider( rv );
+			}
+		} );
+		return rv;
+	}
+	public Slider createSlider() {
+		return register( new Slider() );
 	}
 	//public abstract void perform( BoundedRangeContext boundedRangeContext );
 }

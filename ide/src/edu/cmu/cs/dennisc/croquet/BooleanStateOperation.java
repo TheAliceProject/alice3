@@ -52,7 +52,6 @@ public /*final*/ class BooleanStateOperation extends Operation {
 	};
 	
 	private java.util.List< ValueObserver > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	
 	public void addValueObserver( ValueObserver valueObserver ) {
 		this.valueObservers.add( valueObserver );
 	}
