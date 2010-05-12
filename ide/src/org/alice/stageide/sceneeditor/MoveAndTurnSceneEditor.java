@@ -95,6 +95,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			MoveAndTurnSceneEditor.this.handleFieldSelection( nextField );
 		}
 	};
+	
+	private javax.swing.ButtonGroup fieldTileGroup = new javax.swing.ButtonGroup();
 
 	public MoveAndTurnSceneEditor() {
 		javax.swing.JPanel lgPanel = this.getLGPanel();
@@ -407,14 +409,19 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	}
 	private FieldTile createFieldTile( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		assert field != null;
-		return new FieldTile( field );
+		FieldTile rv = FieldTile.createInstance( field );
+		this.fieldTileGroup.add( rv.getJComponent() );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.fieldTileGroup );
+		return rv;
 	}
 	private void refreshFields() {
 		javax.swing.SpringLayout springLayout = this.getLGSpringLayout();
 		java.awt.Container lgPanel = this.onscreenLookingGlass.getJPanel();
+		this.fieldTileGroup.clearSelection();
 		for( FieldTile fieldTile : this.fieldTiles ) {
 			springLayout.removeLayoutComponent( fieldTile.getJComponent() );
 			this.onscreenLookingGlass.getJPanel().remove( fieldTile.getJComponent() );
+			this.fieldTileGroup.remove( fieldTile.getJComponent() );
 		}
 		this.fieldTiles.clear();
 		if( this.rootField != null ) {

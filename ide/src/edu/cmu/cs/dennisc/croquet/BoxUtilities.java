@@ -117,11 +117,11 @@ public class BoxUtilities {
 	}
 	
 	//todo: use Short.MAX_VALUE instead of null?
-	private static class ConstrainedComponent extends Component< javax.swing.JComponent > {
+	private static class ClampedComponent extends Component< javax.swing.JComponent > {
 		private Component<?> component;
 		private Integer minimumPreferredWidth;
 		private Integer minimumPreferredHeight;
-		public ConstrainedComponent( Component<?> component, Integer minimumPreferredWidth, Integer minimumPreferredHeight ) {
+		public ClampedComponent( Component<?> component, Integer minimumPreferredWidth, Integer minimumPreferredHeight ) {
 			this.component = component;
 			this.minimumPreferredWidth = minimumPreferredWidth;
 			this.minimumPreferredHeight = minimumPreferredHeight;
@@ -135,11 +135,11 @@ public class BoxUtilities {
 //					edu.cmu.cs.dennisc.print.PrintUtilities.println();
 //					edu.cmu.cs.dennisc.print.PrintUtilities.println();
 //					edu.cmu.cs.dennisc.print.PrintUtilities.println( rv );
-					if( ConstrainedComponent.this.minimumPreferredWidth != null ) {
-						rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( rv, ConstrainedComponent.this.minimumPreferredWidth );
+					if( ClampedComponent.this.minimumPreferredWidth != null ) {
+						rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( rv, ClampedComponent.this.minimumPreferredWidth );
 					}
-					if( ConstrainedComponent.this.minimumPreferredHeight != null ) {
-						rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumHeight( rv, ConstrainedComponent.this.minimumPreferredHeight );
+					if( ClampedComponent.this.minimumPreferredHeight != null ) {
+						rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumHeight( rv, ClampedComponent.this.minimumPreferredHeight );
 					}
 //					edu.cmu.cs.dennisc.print.PrintUtilities.println( rv );
 //					edu.cmu.cs.dennisc.print.PrintUtilities.println();
@@ -152,13 +152,13 @@ public class BoxUtilities {
 			return rv;
 		}
 	}
-	public static Component< ? > createConstrainedToMinimumPreferredWidthComponent( Component<?> component, int width ) {
-		return new ConstrainedComponent( component, width, null );
+	public static Component< ? > createClampedToMinimumPreferredWidthComponent( Component<?> component, int width ) {
+		return new ClampedComponent( component, width, null );
 	}
-	public static Component< ? > createConstrainedToMinimumPreferredHeightComponent( Component<?> component, int height ) {
-		return new ConstrainedComponent( component, null, height );
+	public static Component< ? > createClampedToMinimumPreferredHeightComponent( Component<?> component, int height ) {
+		return new ClampedComponent( component, null, height );
 	}
-	public static Component< ? > createConstrainedToMinimumPreferredSizeComponent( Component<?> component, int width, int height ) {
-		return new ConstrainedComponent( component, width, height );
+	public static Component< ? > createClampedToMinimumPreferredSizeComponent( Component<?> component, int width, int height ) {
+		return new ClampedComponent( component, width, height );
 	}
 }

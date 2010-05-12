@@ -42,42 +42,94 @@
  */
 package org.alice.stageide.sceneeditor;
 
+class FieldSelectedState extends edu.cmu.cs.dennisc.croquet.BooleanStateOperation {
+	private static java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractField, FieldSelectedState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static FieldSelectedState getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		FieldSelectedState rv = map.get( field );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new FieldSelectedState( field );
+			map.put( field, rv );
+		}
+		return rv;
+	}
+	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+	private FieldSelectedState( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "c9df003e-6e4e-497c-822c-24c61ad07d6c" ), false, field.getName() );
+		this.field = field;
+		
+		this.addValueObserver( new ValueObserver() {
+			public void changing(boolean nextValue) {
+			}
+			public void changed(boolean nextValue) {
+				if( nextValue ) {
+					org.alice.ide.IDE.getSingleton().setFieldSelection( FieldSelectedState.this.field );
+				}
+			}
+		} );
+	}
+//	@Override
+//	public String getTrueText() {
+//		return this.field.getName();
+//	}
+//	@Override
+//	public String getFalseText() {
+//		return this.getTrueText();
+//	}
+}
 /**
  * @author Dennis Cosgrove
  */
-public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
-	private String text;
+public class FieldTile extends edu.cmu.cs.dennisc.croquet.AbstractButton<javax.swing.AbstractButton> {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	private org.alice.ide.operations.ast.SelectFieldActionOperation selectOperation;
-	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
-		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-		}
-		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-			FieldTile.this.updateLabel();
-		}
+//	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
+//		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+//		}
+//		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+//		}
+//	}
+	public static FieldTile createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		FieldSelectedState state = FieldSelectedState.getInstance(field);
+		return state.register( new FieldTile( field ) );
 	}
-	public FieldTile( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	
+	private FieldTile( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		assert field != null;
 		this.field = field;
-		this.selectOperation = new org.alice.ide.operations.ast.SelectFieldActionOperation( this.field );
-		this.setLeftButtonPressOperation( this.selectOperation );
-		this.setPopupOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "1b079c62-dd58-41dd-93cf-d85ab03a4d23" ), this.createPopupOperations() ) );
-		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-			((edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field).name.addPropertyListener( new NamePropertyAdapter() );
-		}
-		this.updateLabel();
+		//this.setOpaque( false );
 	}
 
 	@Override
-	protected int getInternalInsetLeft() {
-		return super.getInternalInsetLeft() + 2;
+	protected javax.swing.AbstractButton createJComponent() {
+		return new javax.swing.JRadioButton() {
+			@Override
+			public java.awt.Color getBackground() {
+				if( this.getModel().isSelected() ) {
+					return java.awt.Color.YELLOW;
+				} else {
+					return new java.awt.Color( 191, 191, 191, 127 );
+				}
+			}
+			@Override
+			public boolean isOpaque() {
+				return false;
+			}
+			@Override
+			public void updateUI() {
+				this.setUI( javax.swing.plaf.basic.BasicRadioButtonUI.createUI( this ) );
+			}
+			@Override
+			protected void paintComponent(java.awt.Graphics g) {
+				g.setColor( this.getBackground() );
+				g.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 8, 8 );
+				super.paintComponent(g);
+			}
+		};
 	}
-	@Override
-	protected int getInsetRight() {
-		return super.getInsetRight() + 4;
-	}
+
 	protected java.util.List< edu.cmu.cs.dennisc.croquet.Operation > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.croquet.Operation > rv ) {
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.getField();
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
 		edu.cmu.cs.dennisc.alice.ast.AbstractType fieldType = fieldInAlice.getValueType();
 		rv.add( new org.alice.ide.operations.ast.RenameFieldOperation( fieldInAlice ) );
 		if( fieldType.isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
@@ -99,23 +151,9 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 	private java.util.List< edu.cmu.cs.dennisc.croquet.Operation > createPopupOperations() {
 		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.Operation >() );
 	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		if( this.field != null ) {
-			return this.field.getValueType();
-		} else {
-			return null;
-		}
-	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractField getField() {
-		return this.field;
-	}
-//	public void setField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-//		this.field = field;
-//		this.updateLabel();
-//	}
+
 	protected java.awt.Color calculateColor() {
-		org.alice.ide.IDE ide = getIDE();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		java.awt.Color color = ide.getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
 		if( this.field == ide.getFieldSelection() ) {
 			color = java.awt.Color.YELLOW;
@@ -130,62 +168,155 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 		return color;
 	}
 
-	public void updateLabel() {
-		String prevText = this.text;
-		if( this.field != null ) {
-			String text = getIDE().getInstanceTextForField( this.field, false );
-			this.setBackgroundColor( this.calculateColor() );
-			this.text = text;
-		} else {
-			this.setBackgroundColor( java.awt.Color.RED );
-			this.text = "null";
-		}
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( prevText, this.text ) ) {
-			//pass
-		} else {
-			this.revalidateAndRepaint();
-		}
-		
-		//todo?
-		this.repaint();
-	}
 	protected boolean isInScope() {
-		return getIDE().isFieldInScope( field );
-	}
-	@Override
-	protected java.awt.Dimension getPreferedSize( java.awt.Dimension jPreferedSize ) {
-		java.awt.Dimension rv = new java.awt.Dimension( jPreferedSize );
-		java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
-		java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( this.text, g );
-		rv.width += (int)( bounds.getWidth()+0.5 );
-		rv.height += (int)( bounds.getHeight()+0.5 );
-		return rv;
+		return org.alice.ide.IDE.getSingleton().isFieldInScope( field );
 	}
 	
-	@Override
-	protected edu.cmu.cs.dennisc.java.awt.BevelState getBevelState() {
-		return edu.cmu.cs.dennisc.java.awt.BevelState.FLUSH;
-	}
-	@Override
-	protected boolean isExpressionTypeFeedbackDesired() {
-		return true;
-	}
-	@Override
-	protected void paintComponent( java.awt.Graphics g ) {
-		super.paintComponent( g );
-		java.awt.Insets insets = this.getBorder().getBorderInsets( this.getJComponent() );
-		java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( this.text, g );
-		g.drawString( this.text, insets.left-(int)bounds.getX(), insets.top-(int)bounds.getY() );
-	}
-	@Override
-	public void paint( java.awt.Graphics g ) {
-		super.paint( g );
-		if( isInScope() ) {
-			//pass
-		} else {
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			g2.setPaint( edu.cmu.cs.dennisc.zoot.PaintUtilities.getDisabledTexturePaint() );
-			this.fillBounds( g2 );
-		}
+	/*package-private*/ void updateLabel() {
 	}
 }
+//public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
+//	private String text;
+//	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+//	private org.alice.ide.operations.ast.SelectFieldActionOperation selectOperation;
+//	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
+//		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+//		}
+//		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+//			FieldTile.this.updateLabel();
+//		}
+//	}
+//	
+//	public FieldTile( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+//		assert field != null;
+//		this.field = field;
+//		this.selectOperation = new org.alice.ide.operations.ast.SelectFieldActionOperation( this.field );
+//		this.setLeftButtonPressOperation( this.selectOperation );
+//		this.setPopupOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "1b079c62-dd58-41dd-93cf-d85ab03a4d23" ), this.createPopupOperations() ) );
+//		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
+//			((edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field).name.addPropertyListener( new NamePropertyAdapter() );
+//		}
+//		this.updateLabel();
+//	}
+//
+//	@Override
+//	protected int getInternalInsetLeft() {
+//		return super.getInternalInsetLeft() + 2;
+//	}
+//	@Override
+//	protected int getInsetRight() {
+//		return super.getInsetRight() + 4;
+//	}
+//	protected java.util.List< edu.cmu.cs.dennisc.croquet.Operation > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.croquet.Operation > rv ) {
+//		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.getField();
+//		edu.cmu.cs.dennisc.alice.ast.AbstractType fieldType = fieldInAlice.getValueType();
+//		rv.add( new org.alice.ide.operations.ast.RenameFieldOperation( fieldInAlice ) );
+//		if( fieldType.isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
+//			if( fieldType.isAssignableTo( org.alice.apis.moveandturn.AbstractCamera.class ) ) {
+//				//pass
+//			} else {
+//				rv.add( new org.alice.ide.operations.ast.DeleteFieldOperation( fieldInAlice ) );
+//				rv.add( new org.alice.stageide.operations.ast.OrientToUprightActionOperation( fieldInAlice ) );
+//			}
+//		}
+//		if( fieldType.isAssignableTo( org.alice.apis.moveandturn.Model.class ) ) {
+//			rv.add( new org.alice.stageide.operations.ast.PlaceOnTopOfGroundActionOperation( fieldInAlice ) );
+//		}
+//		if( fieldType.isAssignableTo( org.alice.apis.stage.Person.class ) ) {
+//			rv.add( new org.alice.stageide.operations.ast.EditPersonActionOperation( fieldInAlice ) );
+//		}
+//		return rv;
+//	}
+//	private java.util.List< edu.cmu.cs.dennisc.croquet.Operation > createPopupOperations() {
+//		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.Operation >() );
+//	}
+//	@Override
+//	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+//		if( this.field != null ) {
+//			return this.field.getValueType();
+//		} else {
+//			return null;
+//		}
+//	}
+//	public edu.cmu.cs.dennisc.alice.ast.AbstractField getField() {
+//		return this.field;
+//	}
+////	public void setField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+////		this.field = field;
+////		this.updateLabel();
+////	}
+//	protected java.awt.Color calculateColor() {
+//		org.alice.ide.IDE ide = getIDE();
+//		java.awt.Color color = ide.getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
+//		if( this.field == ide.getFieldSelection() ) {
+//			color = java.awt.Color.YELLOW;
+//		} else {
+//			if( ide.isFieldInScope( this.field ) ) {
+//				color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 0.75, 0.75 );
+//			} else {
+//				color = java.awt.Color.GRAY;
+//			}
+//			//color = edu.cmu.cs.dennisc.awt.ColorUtilities.setAlpha( color, 191 );
+//		}
+//		return color;
+//	}
+//
+//	public void updateLabel() {
+//		String prevText = this.text;
+//		if( this.field != null ) {
+//			String text = getIDE().getInstanceTextForField( this.field, false );
+//			this.setBackgroundColor( this.calculateColor() );
+//			this.text = text;
+//		} else {
+//			this.setBackgroundColor( java.awt.Color.RED );
+//			this.text = "null";
+//		}
+//		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( prevText, this.text ) ) {
+//			//pass
+//		} else {
+//			this.revalidateAndRepaint();
+//		}
+//		
+//		//todo?
+//		this.repaint();
+//	}
+//	protected boolean isInScope() {
+//		return getIDE().isFieldInScope( field );
+//	}
+//	@Override
+//	protected java.awt.Dimension getPreferedSize( java.awt.Dimension jPreferedSize ) {
+//		java.awt.Dimension rv = new java.awt.Dimension( jPreferedSize );
+//		java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
+//		java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( this.text, g );
+//		rv.width += (int)( bounds.getWidth()+0.5 );
+//		rv.height += (int)( bounds.getHeight()+0.5 );
+//		return rv;
+//	}
+//	
+//	@Override
+//	protected edu.cmu.cs.dennisc.java.awt.BevelState getBevelState() {
+//		return edu.cmu.cs.dennisc.java.awt.BevelState.FLUSH;
+//	}
+//	@Override
+//	protected boolean isExpressionTypeFeedbackDesired() {
+//		return true;
+//	}
+//	@Override
+//	protected void paintComponent( java.awt.Graphics g ) {
+//		super.paintComponent( g );
+//		java.awt.Insets insets = this.getBorder().getBorderInsets( this.getJComponent() );
+//		java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( this.text, g );
+//		g.drawString( this.text, insets.left-(int)bounds.getX(), insets.top-(int)bounds.getY() );
+//	}
+//	@Override
+//	public void paint( java.awt.Graphics g ) {
+//		super.paint( g );
+//		if( isInScope() ) {
+//			//pass
+//		} else {
+//			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+//			g2.setPaint( edu.cmu.cs.dennisc.zoot.PaintUtilities.getDisabledTexturePaint() );
+//			this.fillBounds( g2 );
+//		}
+//	}
+//}

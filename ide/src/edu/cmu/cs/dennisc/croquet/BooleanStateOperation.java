@@ -147,15 +147,11 @@ public /*final*/ class BooleanStateOperation extends Operation {
 	}
 
 	protected void addAbstractButton(AbstractButton<?> abstractButton) {
-		abstractButton.setAction(this.action);
-		abstractButton.setModel(this.buttonModel);
 		this.addComponent(abstractButton);
 	}
 
 	protected void removeAbstractButton(AbstractButton<?> abstractButton) {
 		this.removeComponent(abstractButton);
-		abstractButton.setModel(null);
-		abstractButton.setAction(null);
 	}
 
 	private void updateName() {
@@ -170,6 +166,8 @@ public /*final*/ class BooleanStateOperation extends Operation {
 	
 	public < B extends AbstractButton<?> > B register( final B rv ) {
 		Application.getSingleton().register( this );
+		rv.setModel( this.buttonModel );
+		rv.setAction( this.action );
 		rv.addContainmentObserver( new Component.ContainmentObserver() {
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				BooleanStateOperation.this.addAbstractButton( rv );

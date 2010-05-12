@@ -228,9 +228,10 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 	private class TabTitle extends AbstractButton< javax.swing.AbstractButton > {
 		@Override
 		protected javax.swing.AbstractButton createJComponent() {
-			javax.swing.AbstractButton rv = new JTabTitle( TabStateOperation.this.isCloseAffordanceDesired() );
-			rv.setModel( TabStateOperation.this.getButtonModel() );
-			return rv;
+//			javax.swing.AbstractButton rv = new JTabTitle( TabStateOperation.this.isCloseAffordanceDesired() );
+//			rv.setModel( TabStateOperation.this.getButtonModel() );
+//			return rv;
+			return new JTabTitle( TabStateOperation.this.isCloseAffordanceDesired() );
 		}
 	}
 	

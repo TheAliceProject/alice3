@@ -93,7 +93,7 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 			}
 		};
 		rowsSpringPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
-		this.centerPanel = edu.cmu.cs.dennisc.croquet.BoxUtilities.createConstrainedToMinimumPreferredWidthComponent(rowsSpringPanel, 320);
+		this.centerPanel = edu.cmu.cs.dennisc.croquet.BoxUtilities.createClampedToMinimumPreferredWidthComponent(rowsSpringPanel, 320);
 	}
 	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent();
 	
