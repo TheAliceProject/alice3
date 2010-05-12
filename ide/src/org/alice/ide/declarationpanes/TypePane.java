@@ -64,7 +64,7 @@ class IsArrayStateOperation extends org.alice.ide.operations.AbstractBooleanStat
 
 public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	private DeclarationProperty< AbstractType > typeProperty;
-	private org.alice.ide.common.TypeComboBox typeComboBox;
+	private edu.cmu.cs.dennisc.croquet.ComboBox<AbstractType> typeComboBox;
 	private IsArrayStateOperation isArrayStateOperation;
 
 	public TypePane( DeclarationProperty< AbstractType > typeProperty, edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty, boolean isTypeComboBoxEnabled, boolean isArrayCheckBoxEnabled ) {
@@ -86,13 +86,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 //			isArrayCheckBoxSelected = isArrayCheckBoxSelectedIfTypeValueIsNull;
 		}
 		//todo: listen to changes on typeProperty
-		this.typeComboBox = new org.alice.ide.common.TypeComboBox( componentType ) {
-			@Override
-			protected void handleTypeChange() {
-				TypePane.this.updateTypeProperty();
-			}
-		};
-		
+		this.typeComboBox = org.alice.ide.common.TypeComboBox.createInstance( java.util.UUID.fromString( "ef5677ca-a5d9-49c4-90bb-5fb43ef15ba6" ), componentType );
 		this.typeComboBox.getJComponent().setEnabled( isTypeComboBoxEnabled );
 		
 		isArrayProperty.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {

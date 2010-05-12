@@ -81,7 +81,7 @@ class FieldSelectedState extends edu.cmu.cs.dennisc.croquet.BooleanStateOperatio
 /**
  * @author Dennis Cosgrove
  */
-public class FieldTile extends edu.cmu.cs.dennisc.croquet.AbstractButton<javax.swing.AbstractButton> {
+/*package-private*/ class FieldTile extends edu.cmu.cs.dennisc.croquet.AbstractButton<javax.swing.AbstractButton> {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 //	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
 //		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
@@ -102,13 +102,15 @@ public class FieldTile extends edu.cmu.cs.dennisc.croquet.AbstractButton<javax.s
 
 	@Override
 	protected javax.swing.AbstractButton createJComponent() {
+		final java.awt.Color SELECTED_COLOR = java.awt.Color.YELLOW;
+		final java.awt.Color UNSELECTED_COLOR = new java.awt.Color( 191, 191, 191, 127 );
 		return new javax.swing.JRadioButton() {
 			@Override
 			public java.awt.Color getBackground() {
 				if( this.getModel().isSelected() ) {
-					return java.awt.Color.YELLOW;
+					return SELECTED_COLOR;
 				} else {
-					return new java.awt.Color( 191, 191, 191, 127 );
+					return UNSELECTED_COLOR;
 				}
 			}
 			@Override

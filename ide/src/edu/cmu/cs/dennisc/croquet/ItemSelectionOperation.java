@@ -166,22 +166,21 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 	private void removeComboBox( ComboBox<E> comboBox ) {
 		this.removeComponent(comboBox);
 	}
-	public ComboBox< E > createComboBox() {
+	
+	public ComboBox<E> register( final ComboBox<E> rv ) {
 		Application.getSingleton().register( this );
-		return new ComboBox< E >() {
-			@Override
-			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				super.handleAddedTo( parent );
-				ItemSelectionOperation.this.addComboBox(this);
+		rv.getJComponent().setModel( this.getComboBoxModel() );
+		rv.addContainmentObserver( new Component.ContainmentObserver() {
+			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				ItemSelectionOperation.this.addComboBox(rv);
 			}
-
-			@Override
-			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				ItemSelectionOperation.this.removeComboBox(this);
-				super.handleRemovedFrom( parent );
+			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				ItemSelectionOperation.this.removeComboBox(rv);
 			}
-		};
+		} );
+		return rv;
 	}
-	
-	
+	public ComboBox<E> createComboBox() {
+		return register( new ComboBox< E >() );
+	}
 }

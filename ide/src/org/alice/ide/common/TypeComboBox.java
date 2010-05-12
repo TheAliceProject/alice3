@@ -45,47 +45,67 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-class TypeListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
-	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractType value, int index, boolean isSelected, boolean cellHasFocus ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		rv.setText( ide.getTextFor( value ) );
-		rv.setIcon( ide.getIconFor( value ) );
-//		if( value != null ) {
-//			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-//			rv.setText( ide.getTextFor( value ) );
-//			rv.setIcon( ide.getIconFor( value ) );
-////			rv.setHorizontalTextPosition( javax.swing.SwingConstants.TRAILING );
-//		} else {
-//			rv.setText( null );
-//			rv.setIcon( null );
-////			rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
-//		}
-		return rv;
+public class TypeComboBox {
+	/**
+	 * @author Dennis Cosgrove
+	 */
+	private static class TypeListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
+		@Override
+		protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractType value, int index, boolean isSelected, boolean cellHasFocus ) {
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			rv.setText( ide.getTextFor( value ) );
+			rv.setIcon( ide.getIconFor( value ) );
+//			if( value != null ) {
+//				org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+//				rv.setText( ide.getTextFor( value ) );
+//				rv.setIcon( ide.getIconFor( value ) );
+////				rv.setHorizontalTextPosition( javax.swing.SwingConstants.TRAILING );
+//			} else {
+//				rv.setText( null );
+//				rv.setIcon( null );
+////				rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
+//			}
+			return rv;
+		}
 	}
-}
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class TypeComboBox extends edu.cmu.cs.dennisc.croquet.ComboBox< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
-	public TypeComboBox( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public static edu.cmu.cs.dennisc.croquet.ComboBox< edu.cmu.cs.dennisc.alice.ast.AbstractType > createInstance( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		javax.swing.ComboBoxModel model = org.alice.ide.IDE.getSingleton().getTypeComboBoxModel();
-		model.setSelectedItem( type );
-		
-		this.setItemSelectionOperation( new org.alice.ide.operations.AbstractItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractType >( java.util.UUID.fromString( "ef5677ca-a5d9-49c4-90bb-5fb43ef15ba6" ), model ) {
+		edu.cmu.cs.dennisc.croquet.ItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractType > itemSelectionOperation = new org.alice.ide.operations.AbstractItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractType >( individualId, model ) {
 			@Override
 			protected void handleSelectionChange(edu.cmu.cs.dennisc.alice.ast.AbstractType value) {
-				TypeComboBox.this.handleTypeChange();
+				//TypeComboBox.this.handleTypeChange();
 			}
-		} );
-		//this.setModel( model );
+		};
+		model.setSelectedItem( type );
 		
+		edu.cmu.cs.dennisc.croquet.ComboBox< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv = new edu.cmu.cs.dennisc.croquet.ComboBox<edu.cmu.cs.dennisc.alice.ast.AbstractType>();
+		rv.setRenderer( new TypeListCellRenderer() );
+		rv.setMaximumRowCount( model.getSize() );
 		
-		this.setRenderer( new TypeListCellRenderer() );
-		this.setMaximumRowCount( model.getSize() );
-		//this.setSelectedIndex( -1 );
+		return itemSelectionOperation.register( rv );
 	}
 	
-	protected abstract void handleTypeChange();
+	private TypeComboBox() {
+		throw new AssertionError();
+	}
+	
+//	private TypeComboBox( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+//		javax.swing.ComboBoxModel model = org.alice.ide.IDE.getSingleton().getTypeComboBoxModel();
+//		
+//		this.setItemSelectionOperation( new org.alice.ide.operations.AbstractItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractType >( java.util.UUID.fromString( "ef5677ca-a5d9-49c4-90bb-5fb43ef15ba6" ), model ) {
+//			@Override
+//			protected void handleSelectionChange(edu.cmu.cs.dennisc.alice.ast.AbstractType value) {
+//				TypeComboBox.this.handleTypeChange();
+//			}
+//		} );
+//		//this.setModel( model );
+//		
+//		
+//		this.setRenderer( new TypeListCellRenderer() );
+//		this.setMaximumRowCount( model.getSize() );
+//		//this.setSelectedIndex( -1 );
+//	}
+//	
+//	protected abstract void handleTypeChange();
 }

@@ -124,8 +124,8 @@ public class List<E> extends Component< javax.swing.JList > {
 		this.getJComponent().removeListSelectionListener( listSelectionListener );
 	}
 	
-	@Deprecated
-	public void setItemSelectionOperation( ItemSelectionOperation< E > operation ) {
-		throw new RuntimeException( "todo" );
-	}
+//	@Deprecated
+//	public void setItemSelectionOperation( ItemSelectionOperation< E > operation ) {
+//		throw new RuntimeException( "todo" );
+//	}
 }

@@ -58,8 +58,8 @@ public abstract class SelectAndLoadProjectOperation extends org.alice.app.operat
 //	}
 	
 	@Override
-	protected void packDialog(edu.cmu.cs.dennisc.croquet.Dialog dialog) {
-		dialog.getAwtWindow().setSize( new java.awt.Dimension( 600, 430 ) );
+	protected java.awt.Dimension getDesiredDialogSize() {
+		return new java.awt.Dimension( 600, 430 );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {

@@ -46,18 +46,30 @@ package org.alice.stageide.personeditor;
  * @author Dennis Cosgrove
  */
 abstract class AbstractList<E> extends edu.cmu.cs.dennisc.croquet.List< E > {
-	private class ItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<E> {
-		public ItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
-			super( java.util.UUID.fromString( "a10c07e8-bd0a-45e2-87aa-a3715fefb847" ), comboBoxModel );
-		}
-		@Override
-		protected void handleSelectionChange(E value) {
-			AbstractList.this.handlePerformSelectionChange( value );
-		}
-	}
+//	private class ItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<E> {
+//		public ItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
+//			super( java.util.UUID.fromString( "a10c07e8-bd0a-45e2-87aa-a3715fefb847" ), comboBoxModel );
+//		}
+//		@Override
+//		protected void handleSelectionChange(E value) {
+//			AbstractList.this.handlePerformSelectionChange( value );
+//		}
+//	}
 
 	public AbstractList( javax.swing.ComboBoxModel comboBoxModel ) {
-		this.setItemSelectionOperation( new ItemSelectionOperation( comboBoxModel ) );
+//		this.setItemSelectionOperation( new ItemSelectionOperation( comboBoxModel ) );
+		this.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
+			public void valueChanged(javax.swing.event.ListSelectionEvent e) {
+				if( e.getValueIsAdjusting() ) {
+					//pass
+				} else {
+					E item = (E)AbstractList.this.getSelectedValue();
+					if( item != null ) {
+						AbstractList.this.handlePerformSelectionChange( item );
+					}
+				}
+			}
+		} );
 	}
 	public void randomize() {
 		final int N = this.getModel().getSize();

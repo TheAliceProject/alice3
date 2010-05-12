@@ -47,6 +47,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class ComboBox< E > extends Component< javax.swing.JComboBox > {
+	/*package-private*/public ComboBox() {
+	}
 	@Override
 	protected javax.swing.JComboBox createJComponent() {
 		return new javax.swing.JComboBox();
@@ -76,8 +78,8 @@ public class ComboBox< E > extends Component< javax.swing.JComboBox > {
 	public void setSelectedItem( E item ) {
 		this.getJComponent().setSelectedItem( item );
 	}
-	@Deprecated
-	public void setItemSelectionOperation( ItemSelectionOperation< E > operation ) {
-		throw new RuntimeException( "todo" );
-	}
+//	@Deprecated
+//	public void setItemSelectionOperation( ItemSelectionOperation< E > operation ) {
+//		throw new RuntimeException( "todo" );
+//	}
 }

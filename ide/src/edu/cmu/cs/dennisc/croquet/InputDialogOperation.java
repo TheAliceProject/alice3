@@ -110,8 +110,8 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 		this.validators.remove(validator);
 	}
 
-	protected void packDialog( Dialog dialog ) {
-		dialog.pack();
+	protected java.awt.Dimension getDesiredDialogSize() {
+		return null;
 	}
 	@Override
 	protected final void perform(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
@@ -191,8 +191,13 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 			borderPanel.setBackgroundColor( contentPane.getBackgroundColor() );
 			borderPanel.addComponent( contentPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 			borderPanel.addComponent( bottomPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.SOUTH );
-			
-			this.packDialog( dialog );
+
+			java.awt.Dimension size = this.getDesiredDialogSize();
+			if( size != null ) {
+				dialog.getAwtWindow().setSize( size );
+			} else {
+				dialog.pack();
+			}
 			//dialog.pack();
 			//edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin(dialog.getAwtWindow(), button.getRoot().getAwtWindow());
 
