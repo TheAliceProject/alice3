@@ -50,24 +50,24 @@ public class TabbedPaneSelectionOperation extends Operation {
 		public void selecting( TabStateOperation prev, TabStateOperation next );
 		public void selected( TabStateOperation prev, TabStateOperation next );
 	}
-	private class TabIsSelectedObserver implements BooleanStateOperation.ValueObserver {
-		private TabStateOperation tabIsSelectedOperation;
-		private edu.cmu.cs.dennisc.croquet.TabbedPane.Key key;
-		public TabIsSelectedObserver( TabStateOperation tabIsSelectedOperation, edu.cmu.cs.dennisc.croquet.TabbedPane.Key key ) {
-			this.tabIsSelectedOperation = tabIsSelectedOperation;
-			this.key = key;
-		}
-		public void changing(boolean nextValue) {
-		}
-		public void changed(boolean nextValue) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( nextValue );
-			if( nextValue ) {
-				//this.tabIsSelectedOperation.setValue( true );
-				TabbedPaneSelectionOperation.this.singletonTabbedPane.selectTab( this.key );
-				//TabbedPaneSelectionOperation.this.setCurrentTabStateOperation( this.tabIsSelectedOperation );
-			}
-		}
-	};
+//	private class TabIsSelectedObserver implements BooleanStateOperation.ValueObserver {
+//		private TabStateOperation tabIsSelectedOperation;
+//		private edu.cmu.cs.dennisc.croquet.TabbedPane.Key key;
+//		public TabIsSelectedObserver( TabStateOperation tabIsSelectedOperation, edu.cmu.cs.dennisc.croquet.TabbedPane.Key key ) {
+//			this.tabIsSelectedOperation = tabIsSelectedOperation;
+//			this.key = key;
+//		}
+//		public void changing(boolean nextValue) {
+//		}
+//		public void changed(boolean nextValue) {
+////			edu.cmu.cs.dennisc.print.PrintUtilities.println( nextValue );
+////			if( nextValue ) {
+////				//this.tabIsSelectedOperation.setValue( true );
+////				TabbedPaneSelectionOperation.this.singletonTabbedPane.selectTab( this.key );
+////				//TabbedPaneSelectionOperation.this.setCurrentTabStateOperation( this.tabIsSelectedOperation );
+////			}
+//		}
+//	};
 
 	private final java.util.List< SelectionObserver > selectionObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private final java.util.List< TabStateOperation > tabStateOperations;
@@ -132,7 +132,7 @@ public class TabbedPaneSelectionOperation extends Operation {
 		if( tabState.getState() ) {
 			this.singletonTabbedPane.selectTab( key );
 		}
-		tabState.addValueObserver( new TabIsSelectedObserver( tabState, key) );
+//		tabState.addValueObserver( new TabIsSelectedObserver( tabState, key) );
 	}
 	private void removeFromTabbedPane( TabStateOperation tabState ) {
 		throw new RuntimeException( "todo" );
@@ -147,6 +147,7 @@ public class TabbedPaneSelectionOperation extends Operation {
 			for( TabStateOperation tabState : this.tabStateOperations ) {
 				this.addToTabbedPane(tabState);
 			}
+//			this.singletonTabbedPane.selectTab( null );
 		}
 		return this.singletonTabbedPane;
 	}

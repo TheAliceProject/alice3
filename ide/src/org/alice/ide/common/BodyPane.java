@@ -48,7 +48,7 @@ public class BodyPane extends org.alice.ide.common.StatementLikeSubstance {
 		this.setOpaque( false );
 		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "do in order" ), java.awt.BorderLayout.NORTH );
 		this.addComponent( statementListComponent, java.awt.BorderLayout.CENTER );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( 8 ), java.awt.BorderLayout.WEST );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ), java.awt.BorderLayout.WEST );
 	}
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {

@@ -52,7 +52,7 @@ class CreateFieldFromBillboardPane extends org.alice.ide.declarationpanes.Create
 		super( declaringType, org.alice.apis.moveandturn.Billboard.class, null );
 		this.addComponent( 
 				new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
-						edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( 8 ), 
+						edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ), 
 						new edu.cmu.cs.dennisc.croquet.SwingAdapter( imageView ) 
 				)
 				, Constraint.EAST 

@@ -294,7 +294,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 			rv.add( initializerRow );
 		}
 		if( warningRow != null ) {
-			rv.add( new edu.cmu.cs.dennisc.croquet.Component< ? >[] { edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalStrut( 16 ), null } );
+			rv.add( new edu.cmu.cs.dennisc.croquet.Component< ? >[] { edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 16 ), null } );
 			rv.add( warningRow );
 		}
 		return rv;

@@ -230,7 +230,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 				this.constrainInstanceNameToTextVC 
 		) );
 		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
-				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalStrut( 24 ),
+				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 24 ),
 				null,
 				null 
 		) );
@@ -240,7 +240,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 				new edu.cmu.cs.dennisc.croquet.Label( "(meters)" ) 
 		) );
 		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
-				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalStrut( 4 ), 
+				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 4 ), 
 				null, 
 				null 
 		) );

@@ -53,6 +53,7 @@ public class CardPanel extends Panel {
 	}
 	public CardPanel( int hgap, int vgap ) {
 		this.cardLayout = new java.awt.CardLayout( hgap, vgap );
+		this.show( null );
 	}
 	@Override
 	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
@@ -86,9 +87,10 @@ public class CardPanel extends Panel {
 			//pass
 		} else {
 			if( this.nullKey != null ) {
-				
+				//pass
 			} else {
-				this.nullKey = this.createKey( new Label( "nothing to see here" ), java.util.UUID.randomUUID().toString() );
+				this.nullKey = this.createKey( new Label( "unset" ), java.util.UUID.randomUUID().toString() );
+				this.addComponent( this.nullKey );
 			}
 			key = this.nullKey;
 		}

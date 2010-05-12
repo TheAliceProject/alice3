@@ -148,14 +148,14 @@ public class DisplaySystemPropertiesOperation extends org.alice.ide.operations.I
 				rv.add( createComponentRowForSystemProperty( "os.version" ) );
 				rv.add( createComponentRowForSystemProperty( "os.arch" ) );
 				rv.add( createComponentRowForSystemProperty( "sun.arch.data.model" ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalStrut( 8 ), null ) );
+				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 ), null ) );
 				for( String propertyName : new String[] { "java.class.path", "java.library.path" } ) {				
 					rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
 							edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( propertyName+":" ), 
 							new PathPropertyOperation(propertyName).createHyperlink() 
 					) );
 				}
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalStrut( 8 ), null ) );
+				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 ), null ) );
 				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, new AllSystemPropertiesOperation().createHyperlink() ) );
 				return rv;
 			}

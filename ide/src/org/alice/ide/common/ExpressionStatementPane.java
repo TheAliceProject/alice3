@@ -107,7 +107,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 					edu.cmu.cs.dennisc.alice.ast.AbstractMember nextLonger = method.getNextLongerInChain();
 					if( nextLonger != null ) {
 						final edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)nextLonger;
-						this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( 8 ) );
+						this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
 						this.addComponent( new org.alice.ide.codeeditor.MoreDropDownPane( expressionStatement ) );
 					}
 				}
@@ -138,7 +138,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 		if( getIDE().isJava() ) {
 			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( ";" ) );
 		}
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( 8 ) );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
 		this.revalidateAndRepaint();
 	}
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getMethodDeclaredInAlice() {

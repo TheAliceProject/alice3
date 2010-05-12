@@ -71,6 +71,22 @@ public class BoxUtilities {
 			}
 		};
 	}
+	public static Component< javax.swing.Box.Filler > createHorizontalSliver( final int width ) {
+		return new Component< javax.swing.Box.Filler >() {
+			@Override
+			protected javax.swing.Box.Filler createJComponent() {
+				return new javax.swing.Box.Filler( new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, 0 ) );
+			}
+		};
+	}
+	public static Component< javax.swing.Box.Filler > createVerticalSliver( final int height ) {
+		return new Component< javax.swing.Box.Filler >() {
+			@Override
+			protected javax.swing.Box.Filler createJComponent() {
+				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, height ), new java.awt.Dimension( 0, height ), new java.awt.Dimension( 0, height ) );
+			}
+		};
+	}
 	public static Component< javax.swing.Box.Filler > createHorizontalStrut( final int width ) {
 		return new Component< javax.swing.Box.Filler >() {
 			@Override

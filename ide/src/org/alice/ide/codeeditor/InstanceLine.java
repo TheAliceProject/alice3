@@ -55,7 +55,7 @@ class InstanceLine extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 //		b.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
 //		this.add( b );
 		
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( 16 ) );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ) );
 		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "current instance: " ) );
 		org.alice.ide.common.ThisPane thisPane = new org.alice.ide.common.ThisPane();
 //		thisPane.setToolTipText( "the current instance of " + code.getDeclaringType().getName() + " is referred to as this"  );

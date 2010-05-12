@@ -576,7 +576,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		edu.cmu.cs.dennisc.croquet.Panel pane = edu.cmu.cs.dennisc.croquet.GridPanel.createSingleColumnGridPane(  
 				this.addResourceOperation.createButton(),
 				this.removeResourceOperation.createButton(), 
-				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalStrut( 8 ), 
+				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 ), 
 				this.renameResourceOperation.createButton(), 
 				this.replaceResourceOperation.createButton() 
 		);

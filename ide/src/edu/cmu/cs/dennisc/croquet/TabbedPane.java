@@ -207,21 +207,38 @@ public final class TabbedPane extends Component<javax.swing.JComponent> {
 
 	/* package-private */class Key {
 		private AbstractButton<?> headerComponent;
-		private Component<?> mainComponent;
 		private TabStateOperation tabStateOperation;
 		private edu.cmu.cs.dennisc.croquet.CardPanel.Key mainComponentKey;
 
 		private Key( AbstractButton<?> headerComponent, Component<?> mainComponent, TabStateOperation tabStateOperation ) {
 			this.headerComponent = headerComponent;
-			this.mainComponent = mainComponent;
-			this.tabStateOperation = tabStateOperation;
 			this.mainComponentKey = TabbedPane.this.cardPanel.createKey( mainComponent, tabStateOperation.getIndividualUUID().toString());
+			this.tabStateOperation = tabStateOperation;
 		}
 		public TabStateOperation getTabStateOperation() {
 			return this.tabStateOperation;
 		}
 	}
-	private java.util.Map<javax.swing.ButtonModel, Key> map = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
+	private final java.util.Map<javax.swing.ButtonModel, Key> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
+		public void itemStateChanged(java.awt.event.ItemEvent e) {
+			if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
+				java.awt.ItemSelectable itemSelectable = e.getItemSelectable();
+				Key key;
+				if( itemSelectable instanceof javax.swing.ButtonModel ) {
+					key = map.get( (javax.swing.ButtonModel)itemSelectable );
+					assert key != null;
+				} else {
+					assert false;
+					key = null;
+				}
+				TabbedPane.this.selectTab( key );
+			} else {
+				//pass
+			}
+		}
+	};
 
 	/* package-private */Key createKey(AbstractButton<?> header, Component<?> mainComponent, TabStateOperation tabStateOperation) {
 		Key rv = new Key(header, mainComponent, tabStateOperation);
@@ -233,22 +250,25 @@ public final class TabbedPane extends Component<javax.swing.JComponent> {
 		this.headerPane.addComponent(key.headerComponent);
 		this.buttonGroup.add(key.headerComponent.getJComponent());
 		this.cardPanel.addComponent(key.mainComponentKey);
+		key.headerComponent.getJComponent().getModel().addItemListener( this.itemListener );
 		this.revalidateAndRepaint();
 	}
 
 	/* package-private */void removeTab(Key key) {
+		key.headerComponent.getJComponent().getModel().removeItemListener( this.itemListener );
 		this.cardPanel.removeComponent(key.mainComponentKey);
 		this.buttonGroup.remove(key.headerComponent.getJComponent());
 		this.headerPane.removeComponent(key.headerComponent);
 		this.revalidateAndRepaint();
 	}
 
-	/* package-private */void selectTab(Key key) {
-		//key.headerComponent.getJComponent().getModel().setSelected(true);
-		key.getTabStateOperation().setState( true );
-		this.cardPanel.show(key.mainComponentKey);
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "selectTab", key );
-		//Thread.dumpStack();
+	/* package-private */ void selectTab(Key key) {
+		if( key != null ) {
+			this.cardPanel.show(key.mainComponentKey);
+		} else {
+			this.cardPanel.show( null );
+		}
+		
 	}
 	
 	/* package-private */Key getSelectedKey() {
@@ -258,110 +278,5 @@ public final class TabbedPane extends Component<javax.swing.JComponent> {
 		} else {
 			return null;
 		}
-	}	
-
-//	@Override
-//	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-//		super.handleAddedTo(parent);
-//		this.singleSelectionModel.addChangeListener( this.changeListener );
-//	}
-//	
-//	@Override
-//	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-//		this.singleSelectionModel.removeChangeListener( this.changeListener );
-//		super.handleRemovedFrom(parent);
-//	}
-	
-	// @Deprecated
-	// public void addTab( String title, Component< ? > component ) {
-	// edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: addTab" );
-	// //this.getJComponent().addTab( title, component.getJComponent() );
-	// //throw new RuntimeException( "todo" );
-	// }
-	// @Deprecated
-	// public void addTab( String title, javax.swing.Icon icon, Component< ? >
-	// component ) {
-	// edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: addTab" );
-	// //this.getJComponent().addTab( title, icon, component.getJComponent() );
-	// //throw new RuntimeException( "todo" );
-	// }
-	// @Deprecated
-	// public void setTitleAt( int index, String title ) {
-	// edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setTitleAt" );
-	// //this.getJComponent().setTitleAt( index, title );
-	// //throw new RuntimeException( "todo" );
-	// }
-	//	
-	// @Deprecated
-	// public java.awt.Color getContentAreaColor() {
-	// return java.awt.Color.MAGENTA;
-	// }
-	//	
-	// @Deprecated
-	// public void closeTab( int index, java.awt.event.MouseEvent e ) {
-	// throw new RuntimeException( "todo" );
-	// }
-	// @Deprecated
-	// public void remove( int index ) {
-	// throw new RuntimeException( "todo" );
-	// }
-	// @Deprecated
-	// public void removeAll() {
-	// throw new RuntimeException( "todo" );
-	// }
-	// @Deprecated
-	// public void updateUI() {
-	// throw new RuntimeException( "todo" );
-	// }
-	// @Deprecated
-	// protected edu.cmu.cs.dennisc.javax.swing.plaf.TabbedPaneUI
-	// createTabbedPaneUI() {
-	// throw new RuntimeException( "todo" );
-	// }
-	// @Deprecated
-	// public boolean isCloseButtonDesiredAt( int index ) {
-	// throw new RuntimeException( "todo" );
-	// }
-	//	
-	//
-	// @Deprecated
-	// public int getSelectedIndex() {
-	// //return this.getJComponent().getSelectedIndex();
-	// throw new RuntimeException( "todo" );
-	// }
-	// @Deprecated
-	// public Component< ? > getSelectedComponent() {
-	// edu.cmu.cs.dennisc.print.PrintUtilities.println(
-	// "todo: getSelectedComponent" );
-	// //return Component.lookup( this.getJComponent().getSelectedComponent() );
-	// return null;
-	// }
-	// @Deprecated
-	// public void setSelectedComponent( Component< ? > selectedComponent ) {
-	// edu.cmu.cs.dennisc.print.PrintUtilities.println(
-	// "todo: setSelectedComponent" );
-	// //this.getJComponent().setSelectedComponent(
-	// selectedComponent.getJComponent() );
-	// //throw new RuntimeException( "todo" );
-	// }
-	// @Deprecated
-	// public int indexOfComponent( Component< ? > component ) {
-	// //return this.getJComponent().indexOfComponent( component.getJComponent()
-	// );
-	// throw new RuntimeException( "todo" );
-	// }
-	//	
-	// @Deprecated
-	// public void addChangeListener( javax.swing.event.ChangeListener listener
-	// ) {
-	// edu.cmu.cs.dennisc.print.PrintUtilities.println(
-	// "todo: addChangeListener" );
-	// //throw new RuntimeException( "todo" );
-	// }
-	// @Deprecated
-	// public void setTabCloseOperation( AbstractActionOperation operation ) {
-	// edu.cmu.cs.dennisc.print.PrintUtilities.println(
-	// "todo: setTabCloseOperation" );
-	// //throw new RuntimeException( "todo" );
-	// }
+	}
 }

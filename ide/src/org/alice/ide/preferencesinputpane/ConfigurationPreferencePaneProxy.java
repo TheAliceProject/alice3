@@ -181,11 +181,11 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		this.preview.updateValues( (org.alice.ide.preferences.programming.Configuration)activeConfigurationComboBox.getSelectedItem() );
 		this.pane = new edu.cmu.cs.dennisc.croquet.PageAxisPanel(
 				new edu.cmu.cs.dennisc.croquet.Label( "active variant:" ),
-				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalStrut( 4 ),  
+				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 4 ),  
 				northTopPane, 
-				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalStrut( 4 ),  
+				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 4 ),  
 				northBottomPane,
-				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalStrut( 32 ),
+				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 32 ),
 				//edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "preview:" ),
 				//javax.swing.Box.createVerticalStrut( 4 ),  
 				this.preview

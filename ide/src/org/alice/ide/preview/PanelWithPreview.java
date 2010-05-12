@@ -118,7 +118,7 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 
 	protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv) {
 		this.previewPane = new PreviewPane();
-		this.spacer = edu.cmu.cs.dennisc.croquet.BoxUtilities.createRigidArea( new java.awt.Dimension( 0, 32 ) );
+		this.spacer = edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 32 );
 		rv.add( 
 				edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow(
 						edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "preview:" ),

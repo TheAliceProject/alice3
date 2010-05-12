@@ -55,7 +55,7 @@ public abstract class PreferenceLabeledPaneProxy< E > extends PreferenceProxy< E
 	protected void createPane( edu.cmu.cs.dennisc.croquet.Component< ? > control ) {
 		this.pane = new edu.cmu.cs.dennisc.croquet.LineAxisPanel(
 				new edu.cmu.cs.dennisc.croquet.Label( this.getPreference().getKey() + ":" ),
-				edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( 8 ),
+				edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ),
 				control 
 		);
 	}

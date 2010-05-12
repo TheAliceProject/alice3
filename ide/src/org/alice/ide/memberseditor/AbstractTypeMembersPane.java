@@ -118,7 +118,7 @@ abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.PageAx
 				Iterable< edu.cmu.cs.dennisc.croquet.Component< ? > > templates = this.createTemplates( field );
 				if( templates != null ) {
 					for( edu.cmu.cs.dennisc.croquet.Component< ? > template : templates ) {
-						page.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalStrut( 1 ) );
+						page.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 1 ) );
 						page.addComponent( template );
 					}
 				}
@@ -130,7 +130,7 @@ abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.PageAx
 				Iterable< edu.cmu.cs.dennisc.croquet.Component< ? > > templates = this.createTemplates( method );
 				if( templates != null ) {
 					for( edu.cmu.cs.dennisc.croquet.Component< ? > template : templates ) {
-						page.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalStrut( 1 ) );
+						page.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 1 ) );
 						page.addComponent( template );
 					}
 				}
@@ -149,12 +149,15 @@ abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.PageAx
 		}
 		int pad;
 		if( page.getComponentCount() > 0 ) {
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.LineAxisPanel( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( INDENT ), page ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
+					edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( INDENT ), 
+					page 
+			) );
 			pad = 8;
 		} else {
 			pad = 2;
 		}
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalStrut( pad ) );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( pad ) );
 		this.revalidateAndRepaint();
 	}
 }

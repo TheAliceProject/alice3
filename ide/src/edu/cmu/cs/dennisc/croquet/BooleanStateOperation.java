@@ -101,6 +101,9 @@ public /*final*/ class BooleanStateOperation extends Operation {
 		this(groupUUID, individualUUID, initialState, null, null );
 	}
 
+	/*package-private*/ javax.swing.ButtonModel getButtonModel() {
+		return this.buttonModel;
+	}
 	public Boolean getState() {
 		return this.buttonModel.isSelected();
 	}

@@ -268,14 +268,14 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 						new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.volumeLevelControl ), 
 						edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() 
 				), 
-				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalStrut( 16 ), 
+				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 16 ), 
 				new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.startTimeSlider ), 
 				new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.stopTimeSlider ) };
 	}
 	@Override
 	public java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
 		super.updateRows( rv );
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.BoxUtilities.createRigidArea( new java.awt.Dimension( 0, 32 ) ), null ) );
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 32 ), null ) );
 		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( testOperation.createButton(), null ) );
 		return rv;
 	}

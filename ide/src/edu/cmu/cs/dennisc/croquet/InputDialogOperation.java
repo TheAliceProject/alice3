@@ -120,14 +120,14 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 						this.internalAddComponent( okButton );
 						if( cancelOperation != null ) {
-							this.internalAddComponent( BoxUtilities.createHorizontalStrut( 4 ) );
+							this.internalAddComponent( BoxUtilities.createHorizontalSliver( 4 ) );
 							this.internalAddComponent( cancelOperation.createButton() );
 						}
 					} else {
 						this.internalAddComponent( BoxUtilities.createHorizontalGlue() );
 						if( cancelOperation != null ) {
 							this.internalAddComponent( cancelOperation.createButton() );
-							this.internalAddComponent( BoxUtilities.createHorizontalStrut( 4 ) );
+							this.internalAddComponent( BoxUtilities.createHorizontalSliver( 4 ) );
 						}
 						this.internalAddComponent( okButton );
 					}
