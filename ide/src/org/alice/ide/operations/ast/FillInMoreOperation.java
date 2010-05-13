@@ -54,6 +54,7 @@ public class FillInMoreOperation extends org.alice.ide.operations.ActionOperatio
 	}
 	@Override
 	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+		final java.awt.event.MouseEvent mouseEvent = (java.awt.event.MouseEvent)e;
 		class MoreEdit extends org.alice.ide.ToDoEdit {
 			private edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod;
 			private edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation;
@@ -88,7 +89,7 @@ public class FillInMoreOperation extends org.alice.ide.operations.ActionOperatio
 				rv.nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();
 				java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = rv.nextLongerMethod.getParameters();
 				edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
-				getIDE().promptUserForMore( lastParameter, context.getMouseEvent(), taskObserver );
+				getIDE().promptUserForMore( lastParameter, mouseEvent, taskObserver );
 
 				return rv;
 			}

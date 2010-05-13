@@ -691,8 +691,8 @@ public class Context extends HistoryTreeNode {
 //	public DropReceptor getCurrentDropReceptor() {
 //		throw new RuntimeException( "todo" );
 //	}
-	@Deprecated
-	public java.awt.event.MouseEvent getMouseEvent() {
-		throw new RuntimeException( "todo" );
-	}
+//	@Deprecated
+//	public java.awt.event.MouseEvent getMouseEvent() {
+//		throw new RuntimeException( "todo" );
+//	}
 }

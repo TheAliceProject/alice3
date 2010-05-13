@@ -60,6 +60,7 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 
 	@Override
 	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, Component<?> component ) {
+		final java.awt.event.MouseEvent mouseEvent = (java.awt.event.MouseEvent)e;
 		class ExpressionPropertyEdit extends org.alice.ide.ToDoEdit {
 			private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 			private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
@@ -89,7 +90,7 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 			}
 			public ExpressionPropertyEdit initialize(ExpressionPropertyEdit rv, edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver) {
 				rv.prevExpression = AbstractExpressionPropertyActionOperation.this.expressionProperty.getValue();
-				AbstractExpressionPropertyActionOperation.this.initializeInternal( context, id, taskObserver, rv.prevExpression );
+				AbstractExpressionPropertyActionOperation.this.initializeInternal( context, id, mouseEvent, taskObserver, rv.prevExpression );
 				return rv;
 			}
 			public ExpressionPropertyEdit handleCompletion( ExpressionPropertyEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
@@ -104,6 +105,6 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 			}
 		} );
 	}
-	protected abstract void initializeInternal( edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
+	protected abstract void initializeInternal( edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
 
 }

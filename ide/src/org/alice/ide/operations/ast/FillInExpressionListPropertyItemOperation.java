@@ -58,6 +58,7 @@ public abstract class FillInExpressionListPropertyItemOperation extends org.alic
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType();
 	@Override
 	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+		final java.awt.event.MouseEvent mouseEvent = (java.awt.event.MouseEvent)e;
 		class FillInExpressionEdit extends org.alice.ide.ToDoEdit {
 			private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 			private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
@@ -85,7 +86,7 @@ public abstract class FillInExpressionListPropertyItemOperation extends org.alic
 			public FillInExpressionEdit initialize(FillInExpressionEdit rv, edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver) {
 				rv.prevExpression = expressionListProperty.get( index );
 				edu.cmu.cs.dennisc.alice.ast.AbstractType type = getFillInType();
-				getIDE().promptUserForExpression( type, rv.prevExpression, context.getMouseEvent(), taskObserver );
+				getIDE().promptUserForExpression( type, rv.prevExpression, mouseEvent, taskObserver );
 				return rv;
 			}
 			public FillInExpressionEdit handleCompletion( FillInExpressionEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {

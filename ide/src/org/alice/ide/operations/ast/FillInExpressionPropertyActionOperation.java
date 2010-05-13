@@ -52,13 +52,13 @@ public class FillInExpressionPropertyActionOperation extends AbstractExpressionP
 		this.desiredType = desiredType;
 	}
 	@Override
-	protected void initializeInternal( edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
+	protected void initializeInternal( edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 		if( this.desiredType != null ) {
 			type = this.desiredType;
 		} else {
 			type = this.getExpressionProperty().getExpressionType();
 		}
-		getIDE().promptUserForExpression( type, prevExpression, context.getMouseEvent(), taskObserver );
+		getIDE().promptUserForExpression( type, prevExpression, e, taskObserver );
 	}
 }
