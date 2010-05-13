@@ -61,31 +61,31 @@ public abstract class Factory {
 //	}
 
 	
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createGetsComponent( boolean isTowardLeading ) { 
+	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createGetsComponent( boolean isTowardLeading ) { 
 		return new org.alice.ide.common.GetsPane( isTowardLeading );
 	}
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createTextComponent( String text ) { 
+	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createTextComponent( String text ) { 
 		return new edu.cmu.cs.dennisc.croquet.Label( text );
 	}
-	public abstract edu.cmu.cs.dennisc.croquet.Component< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType );
-	public edu.cmu.cs.dennisc.croquet.Component< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane ) {
+	public abstract edu.cmu.cs.dennisc.croquet.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType );
+	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane ) {
 		return createExpressionPropertyPane( expressionProperty, prefixPane, null );
 	}
-	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty );
+	protected abstract edu.cmu.cs.dennisc.croquet.JComponent< ? > createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty );
 	
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createVariableDeclarationPane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variableDeclaredInAlice ) {
+	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createVariableDeclarationPane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variableDeclaredInAlice ) {
 		return new VariableDeclarationPane( variableDeclaredInAlice );
 	}
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createConstantDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constantDeclaredInAlice ) {
+	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createConstantDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constantDeclaredInAlice ) {
 		return new ConstantDeclarationPane( constantDeclaredInAlice );
 	}
 	
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createPropertyComponent( edu.cmu.cs.dennisc.property.InstanceProperty< ? > property, int underscoreCount ) {
+	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createPropertyComponent( edu.cmu.cs.dennisc.property.InstanceProperty< ? > property, int underscoreCount ) {
 		//todo:
 		String propertyName = property.getName();
 		//
 		
-		edu.cmu.cs.dennisc.croquet.Component< ? > rv;
+		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv;
 		if( underscoreCount == 2 ) {
 			if( "variable".equals( propertyName ) ) {
 				rv = this.createVariableDeclarationPane( (edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice)property.getValue() );
@@ -147,21 +147,21 @@ public abstract class Factory {
 		return rv;
 	}
 	
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createComponent( org.alice.ide.i18n.GetsChunk getsChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createComponent( org.alice.ide.i18n.GetsChunk getsChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		return this.createGetsComponent( getsChunk.isTowardLeading() );
 	}
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createComponent( org.alice.ide.i18n.TextChunk textChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createComponent( org.alice.ide.i18n.TextChunk textChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		return new edu.cmu.cs.dennisc.croquet.Label( textChunk.getText() );
 	}	
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createComponent( org.alice.ide.i18n.PropertyChunk propertyChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createComponent( org.alice.ide.i18n.PropertyChunk propertyChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		int underscoreCount = propertyChunk.getUnderscoreCount();
 		String propertyName = propertyChunk.getPropertyName();
 		edu.cmu.cs.dennisc.property.InstanceProperty< ? > property = owner.getInstancePropertyNamed( propertyName );
 		return createPropertyComponent( property, underscoreCount );
 	}
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createComponent( org.alice.ide.i18n.MethodInvocationChunk methodInvocationChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createComponent( org.alice.ide.i18n.MethodInvocationChunk methodInvocationChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		String methodName = methodInvocationChunk.getMethodName();
-		edu.cmu.cs.dennisc.croquet.Component< ? > rv;
+		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv;
 		if( owner instanceof edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration && methodName.equals( "getName" ) ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration declaration = (edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration)owner;
 			org.alice.ide.common.DeclarationNameLabel label = new org.alice.ide.common.DeclarationNameLabel( declaration );
@@ -198,7 +198,7 @@ public abstract class Factory {
 		return rv;
 	}
 
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createComponent( org.alice.ide.i18n.Chunk chunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createComponent( org.alice.ide.i18n.Chunk chunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		if( chunk instanceof org.alice.ide.i18n.TextChunk ) {
 			return createComponent( (org.alice.ide.i18n.TextChunk)chunk, owner );
 		} else if( chunk instanceof org.alice.ide.i18n.PropertyChunk ) {
@@ -214,7 +214,7 @@ public abstract class Factory {
 	protected int getPixelsPerIndent() {
 		return 10;
 	}
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createComponent( org.alice.ide.i18n.Line line, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createComponent( org.alice.ide.i18n.Line line, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		int indentCount = line.getIndentCount();
 		org.alice.ide.i18n.Chunk[] chunks = line.getChunks();
 		assert chunks.length > 0;
@@ -232,12 +232,12 @@ public abstract class Factory {
 			return rv;
 		} else {
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "skipping line" );
-			edu.cmu.cs.dennisc.croquet.Component< ? > rv = createComponent( chunks[ 0 ], owner );
+			edu.cmu.cs.dennisc.croquet.JComponent< ? > rv = createComponent( chunks[ 0 ], owner );
 			assert rv != null : chunks[ 0 ].toString();
 			return rv;
 		}
 	}
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createComponent( org.alice.ide.i18n.Page page, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createComponent( org.alice.ide.i18n.Page page, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		org.alice.ide.i18n.Line[] lines = page.getLines();
 		final int N = lines.length;
 		assert N > 0;
@@ -249,8 +249,8 @@ public abstract class Factory {
 					java.awt.Color prev = g2.getColor();
 					if( isLoop ) {
 						int n = this.getComponentCount();
-						java.awt.Component cFirst = this.getJComponent().getComponent( 0 );
-						java.awt.Component cLast = this.getJComponent().getComponent( n-1 );
+						java.awt.Component cFirst = this.getAwtComponent().getComponent( 0 );
+						java.awt.Component cLast = this.getAwtComponent().getComponent( n-1 );
 						g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 160 ) );
 						int xB = Factory.this.getPixelsPerIndent();
 						int xA = xB/2;
@@ -281,8 +281,8 @@ public abstract class Factory {
 			return createComponent( lines[ 0 ], owner );
 		}
 	}
-	public edu.cmu.cs.dennisc.croquet.Component< ? > createComponent( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		edu.cmu.cs.dennisc.croquet.Component< ? > rv;
+	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createComponent( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv;
 		if( owner != null ) {
 //			if( owner instanceof org.alice.ide.ast.EmptyExpression ) {
 //				rv = new EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)owner );
@@ -332,8 +332,8 @@ public abstract class Factory {
 //	}
 	
 	
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createFieldAccessPane( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
-		edu.cmu.cs.dennisc.croquet.Component< ? > rv;
+	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createFieldAccessPane( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv;
 		FieldAccessPane fieldAccessPane = new FieldAccessPane( this, fieldAccess );
 		edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane = org.alice.ide.IDE.getSingleton().getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 		if( prefixPane != null ) {
@@ -343,7 +343,7 @@ public abstract class Factory {
 		}
 		return rv;
 	}
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createInstanceCreationPane( edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation ) {
+	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createInstanceCreationPane( edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 		if( constructor instanceof edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor ) {
 			return new AnonymousConstructorPane( this, (edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor)constructor );
@@ -352,7 +352,7 @@ public abstract class Factory {
 		}
 	}
 
-	public edu.cmu.cs.dennisc.croquet.Component< ? > createExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 //		java.awt.Component rv;
 //		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
 //			rv = new TypeComponent( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
@@ -361,7 +361,7 @@ public abstract class Factory {
 //		} else {
 //			rv = new ExpressionPane( this, expression );
 //		}
-		edu.cmu.cs.dennisc.croquet.Component< ? > rv = org.alice.ide.IDE.getSingleton().getOverrideComponent( this, expression );
+		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv = org.alice.ide.IDE.getSingleton().getOverrideComponent( this, expression );
 		if( rv != null ) {
 			//pass
 		} else {
@@ -379,8 +379,8 @@ public abstract class Factory {
 				
 				String value = resourceBundle.getString( e.name() );
 				org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( value );
-				edu.cmu.cs.dennisc.croquet.Component< ? > component = this.createComponent( page, infixExpression );
-				for( java.awt.Component child : component.getJComponent().getComponents() ) {
+				edu.cmu.cs.dennisc.croquet.JComponent< ? > component = this.createComponent( page, infixExpression );
+				for( java.awt.Component child : component.getAwtComponent().getComponents() ) {
 					if( child instanceof javax.swing.JLabel ) {
 						javax.swing.JLabel label = (javax.swing.JLabel)child;
 						String text = label.getText();
@@ -417,7 +417,7 @@ public abstract class Factory {
 //			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AbstractLiteral ) {
 //				rv = this.createComponent( expression );
 			} else {
-				edu.cmu.cs.dennisc.croquet.Component< ? > component = this.createComponent( expression );
+				edu.cmu.cs.dennisc.croquet.JComponent< ? > component = this.createComponent( expression );
 				if( org.alice.ide.IDE.getSingleton().isExpressionTypeFeedbackDesired() ) {
 					rv = new ExpressionPane( expression, component );
 				} else {

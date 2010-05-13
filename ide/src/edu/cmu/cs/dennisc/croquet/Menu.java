@@ -50,30 +50,30 @@ public class Menu extends AbstractMenu< javax.swing.JMenu > {
 	/*package-private*/ Menu() {
 	}
 	@Override
-	protected javax.swing.JMenu createJComponent() {
+	protected javax.swing.JMenu createAwtComponent() {
 		return new javax.swing.JMenu();
 	}
 	
 	public void setText( String text ) {
 		if( text != null ) {
-			this.getJComponent().setText( text );
+			this.getAwtComponent().setText( text );
 		} else {
 			//todo
 		}
 	}
 	public void setMnemonic( int mnemonic ) {
-		this.getJComponent().setMnemonic( mnemonic );
+		this.getAwtComponent().setMnemonic( mnemonic );
 	}
 	@Override
 	public void addMenu( Menu menu ) {
-		this.getJComponent().add( menu.getJComponent() );
+		this.getAwtComponent().add( menu.getAwtComponent() );
 	}
 	@Override
 	public void addMenuItem( AbstractMenuItem<?> menuItem ) {
-		this.getJComponent().add( menuItem.getJComponent() );
+		this.getAwtComponent().add( menuItem.getAwtComponent() );
 	}
 	@Override
 	public void addSeparator() {
-		this.getJComponent().addSeparator();
+		this.getAwtComponent().addSeparator();
 	}
 }

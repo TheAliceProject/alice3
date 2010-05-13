@@ -46,37 +46,37 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class ComboBox< E > extends Component< javax.swing.JComboBox > {
+public class ComboBox< E > extends JComponent< javax.swing.JComboBox > {
 	/*package-private*/public ComboBox() {
 	}
 	@Override
-	protected javax.swing.JComboBox createJComponent() {
+	protected javax.swing.JComboBox createAwtComponent() {
 		return new javax.swing.JComboBox();
 	}
 	public javax.swing.ListCellRenderer getRenderer() {
-		return this.getJComponent().getRenderer();
+		return this.getAwtComponent().getRenderer();
 	}
 	public void setRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
-		this.getJComponent().setRenderer( listCellRenderer );
+		this.getAwtComponent().setRenderer( listCellRenderer );
 	}
 	public int getMaximumRowCount() {
-		return this.getJComponent().getMaximumRowCount();
+		return this.getAwtComponent().getMaximumRowCount();
 	}
 	public void setMaximumRowCount( int maximumRowCount ) {
-		this.getJComponent().setMaximumRowCount( maximumRowCount );
+		this.getAwtComponent().setMaximumRowCount( maximumRowCount );
 	}
 
 	@Deprecated
 	public void setSelectedIndex( int index ) {
-		this.getJComponent().setSelectedIndex( index );
+		this.getAwtComponent().setSelectedIndex( index );
 	}
 	@Deprecated
 	public E getSelectedItem() {
-		return (E)this.getJComponent().getSelectedItem();
+		return (E)this.getAwtComponent().getSelectedItem();
 	}
 	@Deprecated
 	public void setSelectedItem( E item ) {
-		this.getJComponent().setSelectedItem( item );
+		this.getAwtComponent().setSelectedItem( item );
 	}
 //	@Deprecated
 //	public void setItemSelectionOperation( ItemSelectionOperation< E > operation ) {

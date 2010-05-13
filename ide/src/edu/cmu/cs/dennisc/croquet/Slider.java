@@ -46,11 +46,11 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class Slider extends Component< javax.swing.JSlider > {
+public class Slider extends JComponent< javax.swing.JSlider > {
 	/*package-private*/ Slider() {
 	}
 	@Override
-	protected javax.swing.JSlider createJComponent() {
+	protected javax.swing.JSlider createAwtComponent() {
 		return new javax.swing.JSlider();
 	}
 }

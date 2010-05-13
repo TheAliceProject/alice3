@@ -127,7 +127,7 @@ public final class BoundedRangeIntegerStateOperation extends Operation {
 
 	private Slider register( final Slider rv ) {
 		Application.getSingleton().register( this );
-		rv.getJComponent().setModel( this.boundedRangeModel );
+		rv.getAwtComponent().setModel( this.boundedRangeModel );
 		rv.addContainmentObserver( new Component.ContainmentObserver() {
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				BoundedRangeIntegerStateOperation.this.addSlider( rv );

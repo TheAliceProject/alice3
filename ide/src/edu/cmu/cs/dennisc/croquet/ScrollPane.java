@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class ScrollPane extends Component< javax.swing.JScrollPane > {
+public class ScrollPane extends JComponent< javax.swing.JScrollPane > {
 	public enum VerticalScrollbarPolicy {
 		NEVER( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_NEVER ),
 		AS_NEEDED( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED ),
@@ -66,7 +66,7 @@ public class ScrollPane extends Component< javax.swing.JScrollPane > {
 		}
 	}
 	@Override
-	protected javax.swing.JScrollPane createJComponent() {
+	protected javax.swing.JScrollPane createAwtComponent() {
 		return new javax.swing.JScrollPane();
 	}
 	public ScrollPane( Component<?> viewportView ) {
@@ -82,21 +82,21 @@ public class ScrollPane extends Component< javax.swing.JScrollPane > {
 		this.setHorizontalScrollbarPolicy( horizontalScrollbarPolicy );
 	}
 	public Component<?> getViewportView() {
-		return Component.lookup( this.getJComponent().getViewport().getView() );
+		return Component.lookup( this.getAwtComponent().getViewport().getView() );
 	}
 	public void setViewportView( Component<?> view ) {
 		if( view != null ) {
-			this.getJComponent().setViewportView( view.getJComponent() );
+			this.getAwtComponent().setViewportView( view.getAwtComponent() );
 		} else {
-			this.getJComponent().setViewportView( null );
+			this.getAwtComponent().setViewportView( null );
 		}
 	}
 	public void setVerticalScrollbarPolicy( VerticalScrollbarPolicy verticalScrollbarPolicy ) {
 		assert verticalScrollbarPolicy != null;
-		this.getJComponent().setVerticalScrollBarPolicy( verticalScrollbarPolicy.internal );
+		this.getAwtComponent().setVerticalScrollBarPolicy( verticalScrollbarPolicy.internal );
 	}
 	public void setHorizontalScrollbarPolicy( HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
 		assert horizontalScrollbarPolicy != null;
-		this.getJComponent().setHorizontalScrollBarPolicy( horizontalScrollbarPolicy.internal );
+		this.getAwtComponent().setHorizontalScrollBarPolicy( horizontalScrollbarPolicy.internal );
 	}
 }

@@ -50,7 +50,7 @@ public class Hyperlink extends AbstractButton< javax.swing.JButton > {
 	/*package-private*/ Hyperlink() {
 	}
 	@Override
-	protected javax.swing.JButton createJComponent() {
+	protected javax.swing.JButton createAwtComponent() {
 		javax.swing.JButton rv = new javax.swing.JButton() {
 			@Override
 			public void updateUI() {

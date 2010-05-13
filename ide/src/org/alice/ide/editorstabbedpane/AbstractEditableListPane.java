@@ -54,11 +54,11 @@ public abstract class AbstractEditableListPane< E > extends AbstractEditableList
 	}
 	@Override
 	protected int getSelectedIndex() {
-		return this.getList().getJComponent().getSelectionModel().getMinSelectionIndex();
+		return this.getList().getAwtComponent().getSelectionModel().getMinSelectionIndex();
 	}
 	@Override
 	protected void setSelectedIndex( int index ) {
-		this.getList().getJComponent().getSelectionModel().setSelectionInterval( index, index );
+		this.getList().getAwtComponent().getSelectionModel().setSelectionInterval( index, index );
 	}
 	@Override
 	protected E getItemAt( int index ) {
@@ -78,11 +78,11 @@ public abstract class AbstractEditableListPane< E > extends AbstractEditableList
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
-		this.getList().getJComponent().getSelectionModel().addListSelectionListener( this.listSelectionListener );
+		this.getList().getAwtComponent().getSelectionModel().addListSelectionListener( this.listSelectionListener );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		this.getList().getJComponent().getSelectionModel().removeListSelectionListener( this.listSelectionListener );
+		this.getList().getAwtComponent().getSelectionModel().removeListSelectionListener( this.listSelectionListener );
 		super.handleRemovedFrom( parent );
 	}
 }

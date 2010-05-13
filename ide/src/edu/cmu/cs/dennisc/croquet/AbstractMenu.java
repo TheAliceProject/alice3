@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractMenu< C extends javax.swing.JComponent > extends Component< C > {
+public abstract class AbstractMenu< C extends javax.swing.JComponent > extends JComponent< C > {
 	/*package-private*/ AbstractMenu() {
 	}
 	public abstract void addMenu( Menu menu );

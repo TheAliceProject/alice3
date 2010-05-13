@@ -47,77 +47,77 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class BoxUtilities {
-	public static Component< javax.swing.Box.Filler > createGlue() {
-		return new Component< javax.swing.Box.Filler >() {
+	public static JComponent< javax.swing.Box.Filler > createGlue() {
+		return new JComponent< javax.swing.Box.Filler >() {
 			@Override
-			protected javax.swing.Box.Filler createJComponent() {
+			protected javax.swing.Box.Filler createAwtComponent() {
 				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( Short.MAX_VALUE, Short.MAX_VALUE ) );
 			}
 		};
 	}
-	public static Component< javax.swing.Box.Filler > createHorizontalGlue() {
-		return new Component< javax.swing.Box.Filler >() {
+	public static JComponent< javax.swing.Box.Filler > createHorizontalGlue() {
+		return new JComponent< javax.swing.Box.Filler >() {
 			@Override
-			protected javax.swing.Box.Filler createJComponent() {
+			protected javax.swing.Box.Filler createAwtComponent() {
 				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( Short.MAX_VALUE, 0 ) );
 			}
 		};
 	}
-	public static Component< javax.swing.Box.Filler > createVerticalGlue() {
-		return new Component< javax.swing.Box.Filler >() {
+	public static JComponent< javax.swing.Box.Filler > createVerticalGlue() {
+		return new JComponent< javax.swing.Box.Filler >() {
 			@Override
-			protected javax.swing.Box.Filler createJComponent() {
+			protected javax.swing.Box.Filler createAwtComponent() {
 				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, Short.MAX_VALUE ) );
 			}
 		};
 	}
-	public static Component< javax.swing.Box.Filler > createHorizontalSliver( final int width ) {
-		return new Component< javax.swing.Box.Filler >() {
+	public static JComponent< javax.swing.Box.Filler > createHorizontalSliver( final int width ) {
+		return new JComponent< javax.swing.Box.Filler >() {
 			@Override
-			protected javax.swing.Box.Filler createJComponent() {
+			protected javax.swing.Box.Filler createAwtComponent() {
 				return new javax.swing.Box.Filler( new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, 0 ) );
 			}
 		};
 	}
-	public static Component< javax.swing.Box.Filler > createVerticalSliver( final int height ) {
-		return new Component< javax.swing.Box.Filler >() {
+	public static JComponent< javax.swing.Box.Filler > createVerticalSliver( final int height ) {
+		return new JComponent< javax.swing.Box.Filler >() {
 			@Override
-			protected javax.swing.Box.Filler createJComponent() {
+			protected javax.swing.Box.Filler createAwtComponent() {
 				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, height ), new java.awt.Dimension( 0, height ), new java.awt.Dimension( 0, height ) );
 			}
 		};
 	}
-	public static Component< javax.swing.Box.Filler > createHorizontalStrut( final int width ) {
-		return new Component< javax.swing.Box.Filler >() {
+	public static JComponent< javax.swing.Box.Filler > createHorizontalStrut( final int width ) {
+		return new JComponent< javax.swing.Box.Filler >() {
 			@Override
-			protected javax.swing.Box.Filler createJComponent() {
+			protected javax.swing.Box.Filler createAwtComponent() {
 				return new javax.swing.Box.Filler( new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, Short.MAX_VALUE ) );
 			}
 		};
 	}
-	public static Component< javax.swing.Box.Filler > createVerticalStrut( final int height ) {
-		return new Component< javax.swing.Box.Filler >() {
+	public static JComponent< javax.swing.Box.Filler > createVerticalStrut( final int height ) {
+		return new JComponent< javax.swing.Box.Filler >() {
 			@Override
-			protected javax.swing.Box.Filler createJComponent() {
+			protected javax.swing.Box.Filler createAwtComponent() {
 				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, height ), new java.awt.Dimension( 0, height ), new java.awt.Dimension( Short.MAX_VALUE, height ) );
 			}
 		};
 	}
 
-	public static Component< javax.swing.Box.Filler > createRigidArea( final java.awt.Dimension size ) {
-		return new Component< javax.swing.Box.Filler >() {
+	public static JComponent< javax.swing.Box.Filler > createRigidArea( final java.awt.Dimension size ) {
+		return new JComponent< javax.swing.Box.Filler >() {
 			@Override
-			protected javax.swing.Box.Filler createJComponent() {
+			protected javax.swing.Box.Filler createAwtComponent() {
 				return new javax.swing.Box.Filler( size, size, size );
 			}
 		};
 	}
-	public static Component< javax.swing.Box.Filler > createRigidArea( int width, int height ) {
+	public static JComponent< javax.swing.Box.Filler > createRigidArea( int width, int height ) {
 		return createRigidArea( new java.awt.Dimension( width, height ) );
 	}
 	
 	//todo: use Short.MAX_VALUE instead of null?
-	private static class ClampedComponent extends Component< javax.swing.JComponent > {
+	private static class ClampedComponent extends JComponent< javax.swing.JComponent > {
 		private Component<?> component;
 		private Integer minimumPreferredWidth;
 		private Integer minimumPreferredHeight;
@@ -127,7 +127,7 @@ public class BoxUtilities {
 			this.minimumPreferredHeight = minimumPreferredHeight;
 		}
 		@Override
-		protected javax.swing.JComponent createJComponent() {
+		protected javax.swing.JComponent createAwtComponent() {
 			javax.swing.JPanel rv = new javax.swing.JPanel() {
 				@Override
 				public java.awt.Dimension getPreferredSize() {
@@ -148,17 +148,17 @@ public class BoxUtilities {
 				}
 			};
 			rv.setLayout( new java.awt.BorderLayout() );
-			rv.add( this.component.getJComponent(), java.awt.BorderLayout.CENTER );
+			rv.add( this.component.getAwtComponent(), java.awt.BorderLayout.CENTER );
 			return rv;
 		}
 	}
-	public static Component< ? > createClampedToMinimumPreferredWidthComponent( Component<?> component, int width ) {
+	public static JComponent< ? > createClampedToMinimumPreferredWidthComponent( Component<?> component, int width ) {
 		return new ClampedComponent( component, width, null );
 	}
-	public static Component< ? > createClampedToMinimumPreferredHeightComponent( Component<?> component, int height ) {
+	public static JComponent< ? > createClampedToMinimumPreferredHeightComponent( Component<?> component, int height ) {
 		return new ClampedComponent( component, null, height );
 	}
-	public static Component< ? > createClampedToMinimumPreferredSizeComponent( Component<?> component, int width, int height ) {
+	public static JComponent< ? > createClampedToMinimumPreferredSizeComponent( Component<?> component, int width, int height ) {
 		return new ClampedComponent( component, width, height );
 	}
 }

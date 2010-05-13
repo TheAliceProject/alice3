@@ -127,7 +127,7 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			}
 		};
 		frame.setSize( new java.awt.Dimension( 1024, 768 ) );
-		frame.getContentPane().add( new PersonEditor( null ).getJComponent() );
+		frame.getContentPane().add( new PersonEditor( null ).getAwtComponent() );
 		frame.setVisible( true );
 	}
 }

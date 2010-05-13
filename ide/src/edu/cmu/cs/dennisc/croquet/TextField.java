@@ -50,7 +50,7 @@ public class TextField extends TextComponent< javax.swing.JTextField > {
 	/*package-private*/ TextField() {
 	}
 	@Override
-	protected javax.swing.JTextField createJComponent() {
+	protected javax.swing.JTextField createAwtComponent() {
 		return new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField();
 	}
 }

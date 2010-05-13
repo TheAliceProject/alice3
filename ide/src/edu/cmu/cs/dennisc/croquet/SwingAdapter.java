@@ -48,14 +48,14 @@ package edu.cmu.cs.dennisc.croquet;
  */
 @Deprecated
 public 
-class SwingAdapter extends Component< javax.swing.JComponent > {
+class SwingAdapter extends JComponent< javax.swing.JComponent > {
 	private javax.swing.JComponent jComponent;
 	public SwingAdapter( javax.swing.JComponent jComponent ) {
 		this.jComponent = jComponent;
-		//edu.cmu.cs.dennisc.java.awt.ComponentUtilities.makeStandOut( this.jComponent );
+		edu.cmu.cs.dennisc.java.awt.ComponentUtilities.makeStandOut( this.jComponent );
 	}
 	@Override
-	protected javax.swing.JComponent createJComponent() {
+	protected javax.swing.JComponent createAwtComponent() {
 		return this.jComponent;
 	}
 }

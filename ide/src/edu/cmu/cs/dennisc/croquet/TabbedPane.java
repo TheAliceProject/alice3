@@ -46,10 +46,10 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class TabbedPane extends Component<javax.swing.JComponent> {
+public final class TabbedPane extends JComponent<javax.swing.JComponent> {
 	private BorderPanel panel;
 
-	private static class HeaderPane extends Component<javax.swing.JPanel> {
+	private static class HeaderPane extends JComponent<javax.swing.JPanel> {
 		private static final int NORTH_AREA_PAD = 8;
 		private static final int EAST_TAB_PAD = 48;
 		// private static java.awt.Stroke SELECTED_STROKE = new
@@ -58,7 +58,7 @@ public final class TabbedPane extends Component<javax.swing.JComponent> {
 		private static java.awt.Color BORDER_COLOR = java.awt.Color.WHITE;
 
 		@Override
-		protected javax.swing.JPanel createJComponent() {
+		protected javax.swing.JPanel createAwtComponent() {
 			javax.swing.JPanel rv = new javax.swing.JPanel() {
 				private java.awt.geom.GeneralPath addToPath(java.awt.geom.GeneralPath rv, float x, float y, float width, float height, float a, boolean isContinuation) {
 					float x0 = x + width - EAST_TAB_PAD / 2;
@@ -196,13 +196,13 @@ public final class TabbedPane extends Component<javax.swing.JComponent> {
 //	};
 
 	@Override
-	protected javax.swing.JComponent createJComponent() {
+	protected javax.swing.JComponent createAwtComponent() {
 		this.headerPane.setBackgroundColor(new java.awt.Color(63, 63, 81));
 
 		this.panel = new BorderPanel();
 		this.panel.addComponent(this.headerPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH);
 		this.panel.addComponent(this.cardPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
-		return panel.getJComponent();
+		return panel.getAwtComponent();
 	}
 
 	/* package-private */class Key {
@@ -242,22 +242,22 @@ public final class TabbedPane extends Component<javax.swing.JComponent> {
 
 	/* package-private */Key createKey(AbstractButton<?> header, Component<?> mainComponent, TabStateOperation tabStateOperation) {
 		Key rv = new Key(header, mainComponent, tabStateOperation);
-		map.put( header.getJComponent().getModel(), rv);
+		map.put( header.getAwtComponent().getModel(), rv);
 		return rv;
 	}
 
 	/* package-private */void addTab(Key key) {
 		this.headerPane.addComponent(key.headerComponent);
-		this.buttonGroup.add(key.headerComponent.getJComponent());
+		this.buttonGroup.add(key.headerComponent.getAwtComponent());
 		this.cardPanel.addComponent(key.mainComponentKey);
-		key.headerComponent.getJComponent().getModel().addItemListener( this.itemListener );
+		key.headerComponent.getAwtComponent().getModel().addItemListener( this.itemListener );
 		this.revalidateAndRepaint();
 	}
 
 	/* package-private */void removeTab(Key key) {
-		key.headerComponent.getJComponent().getModel().removeItemListener( this.itemListener );
+		key.headerComponent.getAwtComponent().getModel().removeItemListener( this.itemListener );
 		this.cardPanel.removeComponent(key.mainComponentKey);
-		this.buttonGroup.remove(key.headerComponent.getJComponent());
+		this.buttonGroup.remove(key.headerComponent.getAwtComponent());
 		this.headerPane.removeComponent(key.headerComponent);
 		this.revalidateAndRepaint();
 	}

@@ -50,7 +50,7 @@ public class TextArea extends TextComponent< javax.swing.JTextArea > {
 	/*package-private*/ TextArea() {
 	}
 	@Override
-	protected javax.swing.JTextArea createJComponent() {
+	protected javax.swing.JTextArea createAwtComponent() {
 		return new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea();
 	}
 }

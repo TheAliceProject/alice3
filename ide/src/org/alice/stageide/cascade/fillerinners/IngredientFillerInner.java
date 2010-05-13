@@ -71,7 +71,7 @@ public abstract class IngredientFillerInner extends org.alice.ide.cascade.filler
 								}
 								@Override
 								protected javax.swing.JComponent createMenuProxy() {
-									return org.alice.ide.common.TypeComponent.createInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) ).getJComponent();
+									return org.alice.ide.common.TypeComponent.createInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) ).getAwtComponent();
 								}
 							} );
 						}

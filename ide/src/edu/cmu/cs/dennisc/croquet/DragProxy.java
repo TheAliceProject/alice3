@@ -103,7 +103,7 @@ class DragProxy extends Proxy {
 		fillBounds( g2 );
 		g2.translate( -DROP_SHADOW_SIZE, -DROP_SHADOW_SIZE );
 		g2.setPaint( prevPaint );
-		this.getSubject().getJComponent().print( g2 );
+		this.getSubject().getAwtComponent().print( g2 );
 
 		
 //		if( isOverDragAccepter ) {

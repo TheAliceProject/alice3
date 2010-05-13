@@ -46,12 +46,12 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Separator extends Component< javax.swing.JSeparator > {
+public abstract class Separator extends JComponent< javax.swing.JSeparator > {
 	protected Separator( int orientation ) {
-		this.getJComponent().setOrientation( orientation );
+		this.getAwtComponent().setOrientation( orientation );
 	}
 	@Override
-	protected javax.swing.JSeparator createJComponent() {
+	protected javax.swing.JSeparator createAwtComponent() {
 		return new javax.swing.JSeparator();
 	}
 }

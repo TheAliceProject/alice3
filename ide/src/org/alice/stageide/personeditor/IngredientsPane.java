@@ -192,12 +192,12 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		
 
 		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( this.fullBodyOutfitList );
-		scrollPane.getJComponent().getVerticalScrollBar().setUnitIncrement( 66 );
+		scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 66 );
 		//scrollPane.getVerticalScrollBar().setBlockIncrement( 10 );
 		
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		scrollPane.setOpaque( false );
-		scrollPane.getJComponent().getViewport().setOpaque( false );
+		scrollPane.getAwtComponent().getViewport().setOpaque( false );
 
 		edu.cmu.cs.dennisc.croquet.BorderPanel bodyPane = new edu.cmu.cs.dennisc.croquet.BorderPanel( 8, 8 );
 		bodyPane.addComponent( scrollPane, Constraint.CENTER );
@@ -211,8 +211,8 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		bodyPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8  ) );
 		headPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8  ) );
 		
-		this.tabbedPane.add( "Body", bodyPane.getJComponent() );
-		this.tabbedPane.add( "Head", headPane.getJComponent() );
+		this.tabbedPane.add( "Body", bodyPane.getAwtComponent() );
+		this.tabbedPane.add( "Head", headPane.getAwtComponent() );
 		this.tabbedPane.setOpaque( true );
 
 		java.awt.Font font = tabbedPane.getFont();

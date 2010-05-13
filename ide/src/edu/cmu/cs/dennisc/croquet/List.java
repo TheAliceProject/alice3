@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class List<E> extends Component< javax.swing.JList > {
+public class List<E> extends JComponent< javax.swing.JList > {
 	public enum LayoutOrientation {
 		VERTICAL ( javax.swing.JList.VERTICAL ),
 		VERTICAL_WRAP( javax.swing.JList.VERTICAL_WRAP ),
@@ -60,68 +60,68 @@ public class List<E> extends Component< javax.swing.JList > {
 //		}
 	}
 	@Override
-	protected javax.swing.JList createJComponent() {
+	protected javax.swing.JList createAwtComponent() {
 		return new javax.swing.JList();
 	}
 	
 	@Deprecated
 	public javax.swing.ListModel getModel() {
-		return this.getJComponent().getModel();
+		return this.getAwtComponent().getModel();
 	}
 	@Deprecated
 	public void setModel( javax.swing.ListModel model ) {
-		this.getJComponent().setModel( model );
+		this.getAwtComponent().setModel( model );
 	}
 	@Deprecated
 	public void setListData( E... values ) {
-		this.getJComponent().setListData( values );
+		this.getAwtComponent().setListData( values );
 	}
 	@Deprecated
 	public void setListData( java.util.Vector<E> values ) {
-		this.getJComponent().setListData( values );
+		this.getAwtComponent().setListData( values );
 	}
 
 	public javax.swing.ListCellRenderer getCellRenderer() {
-		return this.getJComponent().getCellRenderer();
+		return this.getAwtComponent().getCellRenderer();
 	}
 	public void setCellRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
-		this.getJComponent().setCellRenderer( listCellRenderer );
+		this.getAwtComponent().setCellRenderer( listCellRenderer );
 	}
 
 	@Deprecated
 	public E getSelectedValue() {
-		return (E)this.getJComponent().getSelectedValue();
+		return (E)this.getAwtComponent().getSelectedValue();
 	}
 	@Deprecated
 	public void setSelectedIndex( int index ) {
-		this.getJComponent().setSelectedIndex( index );
+		this.getAwtComponent().setSelectedIndex( index );
 	}
 	@Deprecated
 	public void setSelectedValue( E value, boolean shouldScroll ) {
-		this.getJComponent().setSelectedValue( value, shouldScroll );
+		this.getAwtComponent().setSelectedValue( value, shouldScroll );
 	}
 	
 	public void clearSelection() {
-		this.getJComponent().clearSelection();
+		this.getAwtComponent().clearSelection();
 	}
 	public int getVisibleRowCount() {
-		return this.getJComponent().getVisibleRowCount();
+		return this.getAwtComponent().getVisibleRowCount();
 	}
 	public void setVisibleRowCount( int visibleRowCount ) {
-		this.getJComponent().setVisibleRowCount( visibleRowCount );
+		this.getAwtComponent().setVisibleRowCount( visibleRowCount );
 	}
 	
 	public void setLayoutOrientation( LayoutOrientation layoutOrientation ) {
-		this.getJComponent().setLayoutOrientation( layoutOrientation.internal );
+		this.getAwtComponent().setLayoutOrientation( layoutOrientation.internal );
 	}
 
 	@Deprecated
 	public void addListSelectionListener( javax.swing.event.ListSelectionListener listSelectionListener ) {
-		this.getJComponent().addListSelectionListener( listSelectionListener );
+		this.getAwtComponent().addListSelectionListener( listSelectionListener );
 	}
 	@Deprecated
 	public void removeListSelectionListener( javax.swing.event.ListSelectionListener listSelectionListener ) {
-		this.getJComponent().removeListSelectionListener( listSelectionListener );
+		this.getAwtComponent().removeListSelectionListener( listSelectionListener );
 	}
 	
 //	@Deprecated

@@ -40,28 +40,54 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.cascade;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SimpleExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends edu.cmu.cs.dennisc.cascade.SimpleFillIn< E > {
-	public SimpleExpressionFillIn( E model ) {
-		super( model );
+public abstract class JComponent<J extends javax.swing.JComponent> extends Container<J> {
+	public void setOpaque(boolean isOpaque) {
+		this.getAwtComponent().setOpaque(isOpaque);
 	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+	public void setAlignmentX(float alignmentX) {
+		this.getAwtComponent().setAlignmentX(alignmentX);
 	}
-	@Override
-	protected javax.swing.JComponent createMenuProxy() {
-		javax.swing.JComponent rv;
-		org.alice.ide.common.Factory factory = getIDE().getPreviewFactory();
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.getModel();
-//		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-//			rv = new org.alice.ide.common.FieldAccessPane( factory, (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
-//		} else {
-			rv = factory.createExpressionPane( expression ).getAwtComponent();
-//		}
-		return rv;
+	public void setAlignmentY(float alignmentY) {
+		this.getAwtComponent().setAlignmentY(alignmentY);
+	}
+
+
+	public java.awt.Insets getInsets() {
+		return this.getAwtComponent().getInsets();
+	}
+	private void scrollRectToVisible(java.awt.Rectangle rect) {
+		this.getAwtComponent().scrollRectToVisible(rect);
+	}
+	public void scrollToVisible() {
+		this.scrollRectToVisible(javax.swing.SwingUtilities.getLocalBounds(this.getAwtComponent()));
+	}
+
+	public String getToolTipText() {
+		return this.getAwtComponent().getToolTipText();
+	}
+	public void setToolTipText(String toolTipText) {
+		this.getAwtComponent().setToolTipText(toolTipText);
+	}
+
+	public javax.swing.border.Border getBorder() {
+		return this.getAwtComponent().getBorder();
+	}
+	public void setBorder(javax.swing.border.Border border) {
+		this.getAwtComponent().setBorder(border);
+	}
+
+	private void revalidate() {
+		this.getAwtComponent().revalidate();
+	}
+
+	public void revalidateAndRepaint() {
+		this.revalidate();
+		this.repaint();
 	}
 }

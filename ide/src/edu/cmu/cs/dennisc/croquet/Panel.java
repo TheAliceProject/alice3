@@ -46,11 +46,11 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Panel extends Component< javax.swing.JPanel > {
+public abstract class Panel extends JComponent< javax.swing.JPanel > {
 	private boolean isMaximumSizeClampedToPreferredSize;
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
 	@Override
-	protected javax.swing.JPanel createJComponent() {
+	protected javax.swing.JPanel createAwtComponent() {
 		javax.swing.JPanel rv = new javax.swing.JPanel() {
 			@Override
 			protected void paintComponent( java.awt.Graphics g ) {

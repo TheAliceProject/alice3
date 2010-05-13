@@ -72,7 +72,7 @@ public abstract class EditMethodsPane extends EditMembersPane< edu.cmu.cs.dennis
 	}
 	@Override
 	protected java.awt.Component createCellRendererComponent( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice e ) {
-		return new org.alice.ide.codeeditor.MethodHeaderPane( e, null ).getJComponent();
+		return new org.alice.ide.codeeditor.MethodHeaderPane( e, null ).getAwtComponent();
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createEditOperation( java.util.UUID groupUUID, String name ) {

@@ -112,7 +112,7 @@ public class TypeComponent extends edu.cmu.cs.dennisc.croquet.AbstractButton<jav
 //}
 	
 	@Override
-	protected javax.swing.AbstractButton createJComponent() {
+	protected javax.swing.AbstractButton createAwtComponent() {
 		final DeclarationNameLabel label = new DeclarationNameLabel( this.type );
 		javax.swing.AbstractButton rv = new javax.swing.AbstractButton() {
 			@Override
@@ -127,7 +127,7 @@ public class TypeComponent extends edu.cmu.cs.dennisc.croquet.AbstractButton<jav
 			}
 		};
 		rv.setModel( new javax.swing.DefaultButtonModel() );
-		rv.add( label.getJComponent() );
+		rv.add( label.getAwtComponent() );
 		return rv;
 	}
 
@@ -135,13 +135,13 @@ public class TypeComponent extends edu.cmu.cs.dennisc.croquet.AbstractButton<jav
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
 		if( this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-			this.getJComponent().addMouseListener( this.mouseAdapter );
+			this.getAwtComponent().addMouseListener( this.mouseAdapter );
 		}
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		if( this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-			this.getJComponent().removeMouseListener( this.mouseAdapter );
+			this.getAwtComponent().removeMouseListener( this.mouseAdapter );
 		}
 		super.handleRemovedFrom( parent );
 	}

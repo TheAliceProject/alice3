@@ -49,7 +49,7 @@ package org.alice.app.openprojectpane;
 public abstract class ListContentPanel extends TabContentPanel {
 	private edu.cmu.cs.dennisc.croquet.List<java.net.URI> list = new edu.cmu.cs.dennisc.croquet.List<java.net.URI>() {
 		@Override
-		protected javax.swing.JList createJComponent() {
+		protected javax.swing.JList createAwtComponent() {
 			javax.swing.JList rv = new javax.swing.JList() {
 				@Override
 				public void paint(java.awt.Graphics g) {

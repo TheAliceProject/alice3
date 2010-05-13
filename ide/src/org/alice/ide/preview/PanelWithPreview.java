@@ -51,18 +51,18 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 //		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 //		return rv;
 //	}
-	class PreviewPane extends edu.cmu.cs.dennisc.croquet.Component<javax.swing.JPanel> {
+	class PreviewPane extends edu.cmu.cs.dennisc.croquet.JComponent<javax.swing.JPanel> {
 		public void refresh() {
 			this.forgetAndRemoveAllComponents();
 //			java.awt.Component component = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane(
 //					PreviewInputPane.this.createPreviewSubComponent(),
 //					javax.swing.Box.createHorizontalGlue()
 //			);
-			this.getJComponent().add( PanelWithPreview.this.createPreviewSubComponent().getJComponent(), java.awt.BorderLayout.WEST );
+			this.getAwtComponent().add( PanelWithPreview.this.createPreviewSubComponent().getAwtComponent(), java.awt.BorderLayout.WEST );
 			this.revalidateAndRepaint();
 		}
 		@Override
-		protected javax.swing.JPanel createJComponent() {
+		protected javax.swing.JPanel createAwtComponent() {
 			javax.swing.JPanel rv = new javax.swing.JPanel() {
 				@Override
 				public boolean contains(int x, int y) {

@@ -48,7 +48,7 @@ class GalleryIcon extends edu.cmu.cs.dennisc.croquet.Label {
 		this.setVerticalAlignment( edu.cmu.cs.dennisc.croquet.VerticalAlignment.BOTTOM );
 	}
 	@Override
-	protected javax.swing.JLabel createJComponent() {
+	protected javax.swing.JLabel createAwtComponent() {
 		return new javax.swing.JLabel() {
 			@Override
 			public java.awt.Dimension getMaximumSize() {

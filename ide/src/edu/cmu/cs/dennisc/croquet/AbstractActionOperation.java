@@ -130,14 +130,14 @@ public abstract class AbstractActionOperation extends Operation {
 		assert this.mapButtonToListener.containsKey( abstractButton ) == false;
 		ButtonActionListener buttonActionListener = new ButtonActionListener( abstractButton );
 		this.mapButtonToListener.put( abstractButton, buttonActionListener );
-		abstractButton.getJComponent().addActionListener( buttonActionListener );
+		abstractButton.getAwtComponent().addActionListener( buttonActionListener );
 		this.addComponent(abstractButton);
 	}
 	private void removeAbstractButton( AbstractButton<?> abstractButton ) {
 		this.removeComponent(abstractButton);
 		ButtonActionListener buttonActionListener = this.mapButtonToListener.get( abstractButton );
 		assert buttonActionListener != null;
-		abstractButton.getJComponent().removeActionListener( buttonActionListener );
+		abstractButton.getAwtComponent().removeActionListener( buttonActionListener );
 		mapButtonToListener.remove( abstractButton );
 //		abstractButton.setModel( null );
 		abstractButton.setAction( null );

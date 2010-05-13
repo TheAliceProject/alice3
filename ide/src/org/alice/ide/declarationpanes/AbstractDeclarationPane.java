@@ -189,7 +189,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		return true;
 	}
 	protected final edu.cmu.cs.dennisc.croquet.Component< ? > createIsReassignableComponent() {
-		edu.cmu.cs.dennisc.croquet.Component< ? > rv;
+		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv;
 		if( isIsReassignableComponentDesired() ) {
 			this.isReassignableStateOperation = new IsReassignableStateOperation( this.getIsReassignableInitialState() );
 			this.isReassignableStateOperation.setTrueText( "yes" );

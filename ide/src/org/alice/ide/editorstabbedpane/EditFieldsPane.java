@@ -85,7 +85,7 @@ public class EditFieldsPane extends EditMembersPane< edu.cmu.cs.dennisc.alice.as
 	}
 	@Override
 	protected java.awt.Component createCellRendererComponent( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldDeclaredInAlice ) {
-		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), fieldDeclaredInAlice ).getJComponent();
+		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), fieldDeclaredInAlice ).getAwtComponent();
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createEditOperation( java.util.UUID groupUUID, String name ) {

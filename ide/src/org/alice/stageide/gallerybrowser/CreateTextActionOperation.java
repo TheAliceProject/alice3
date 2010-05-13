@@ -168,7 +168,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 		//this.instanceNameVC.getDocument().addDocumentListener( ecc.dennisc.swing.event.FilteredDocumentAdapter( this.handleInstanceNameChange ) );
 
 		this.constrainInstanceNameToTextVC = new ConstrainInstanceNameToTextBooleanStateOperation().createCheckBox();
-		this.constrainInstanceNameToTextVC.getJComponent().setSelected( true );
+		this.constrainInstanceNameToTextVC.getAwtComponent().setSelected( true );
 		this.constrainInstanceNameToTextVC.setOpaque( false );
 		this.heightTextField = new TextField( "1.0", " enter height in meters here" );
 //		this.heightTextField.getDocument().addDocumentListener( new edu.cmu.cs.dennisc.javax.swing.event.SimplifiedDocumentAdapter() {
@@ -268,7 +268,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 		org.alice.apis.moveandturn.font.FamilyAttribute familyAttribute = this.familyList.getFamilyAttribute();
 		org.alice.apis.moveandturn.font.WeightAttribute weightAttribute = this.styleList.getWeightAttribute();
 		org.alice.apis.moveandturn.font.PostureAttribute postureAttribute = this.styleList.getPostureAttribute();
-		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( this.sample.getJComponent(), familyAttribute.getKey(), familyAttribute.getValue(), weightAttribute.getKey(), weightAttribute.getValue(), postureAttribute.getKey(), postureAttribute.getValue() );
+		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( this.sample.getAwtComponent(), familyAttribute.getKey(), familyAttribute.getValue(), weightAttribute.getKey(), weightAttribute.getValue(), postureAttribute.getKey(), postureAttribute.getValue() );
 	}
 //	@Override
 //	public boolean isOKButtonValid() {
@@ -281,7 +281,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 //		return super.isOKButtonValid() && isInstanceNameValid;
 //	}
 	private void handleTextChange( javax.swing.event.DocumentEvent e ) {
-		if( this.constrainInstanceNameToTextVC.getJComponent().isSelected() ) {
+		if( this.constrainInstanceNameToTextVC.getAwtComponent().isSelected() ) {
 			String text = this.textVC.getText();
 			String instanceName = edu.cmu.cs.dennisc.alice.ast.IdentifierUtilities.getConventionalInstanceName( text );
 			this.instanceNameVC.setText( instanceName );

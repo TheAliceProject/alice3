@@ -98,8 +98,8 @@ public class MenuOperation extends Operation {
 		assert mapMenuToListener.containsKey( menu ) == false;
 		MenuListener menuListener = new MenuListener( menu );
 		this.mapMenuToListener.put( menu, menuListener );
-		menu.getJComponent().addMenuListener( menuListener );
-		menu.getJComponent().addActionListener( new java.awt.event.ActionListener() {
+		menu.getAwtComponent().addMenuListener( menuListener );
+		menu.getAwtComponent().addActionListener( new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "actionPerformed", e );
 			}
@@ -110,7 +110,7 @@ public class MenuOperation extends Operation {
 		this.removeComponent( menu );
 		MenuListener menuListener = this.mapMenuToListener.get( menu );
 		assert menuListener != null;
-		menu.getJComponent().removeMenuListener( menuListener );
+		menu.getAwtComponent().removeMenuListener( menuListener );
 		this.mapMenuToListener.remove( menu );
 		menu.setMnemonic( 0 );
 		menu.setText( null );

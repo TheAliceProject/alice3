@@ -509,7 +509,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 	}
 
-	public edu.cmu.cs.dennisc.croquet.Component< ? > getOverrideComponent( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+	public edu.cmu.cs.dennisc.croquet.JComponent< ? > getOverrideComponent( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		return null;
 	}
 
@@ -711,11 +711,11 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 
 	public void addToConcealedBin( edu.cmu.cs.dennisc.croquet.Component<?> component ) {
-		this.concealedBin.add( component.getJComponent() );
+		this.concealedBin.add( component.getAwtComponent() );
 		this.concealedBin.revalidate();
 	}
 	public void removeFromConcealedBin( edu.cmu.cs.dennisc.croquet.Component<?> component ) {
-		this.concealedBin.remove( component.getJComponent() );
+		this.concealedBin.remove( component.getAwtComponent() );
 	}
 
 	public boolean isJava() {
@@ -1787,7 +1787,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 					}
 				} );
 			}
-			return rv.getJComponent();
+			return rv.getAwtComponent();
 		} else {
 			return null;
 		}

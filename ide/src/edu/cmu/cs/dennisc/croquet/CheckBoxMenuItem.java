@@ -50,7 +50,7 @@ public class CheckBoxMenuItem extends AbstractMenuItem< javax.swing.JCheckBoxMen
 	/*package-private*/ CheckBoxMenuItem() {
 	}
 	@Override
-	protected javax.swing.JCheckBoxMenuItem createJComponent() {
+	protected javax.swing.JCheckBoxMenuItem createAwtComponent() {
 		return new javax.swing.JCheckBoxMenuItem();
 	}
 }

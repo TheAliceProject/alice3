@@ -76,7 +76,7 @@ class SingleOrDoubleClickListUI extends javax.swing.plaf.basic.BasicListUI {
 
 class SingleOrDoubleClickList<E> extends edu.cmu.cs.dennisc.croquet.List<E> {
 	@Override
-	protected javax.swing.JList createJComponent() {
+	protected javax.swing.JList createAwtComponent() {
 		return new javax.swing.JList() {
 			@Override
 			public void updateUI() {

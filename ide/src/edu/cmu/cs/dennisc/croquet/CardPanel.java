@@ -94,6 +94,6 @@ public class CardPanel extends Panel {
 			}
 			key = this.nullKey;
 		}
-		this.cardLayout.show( this.getJComponent(), key.cardLayoutKey );
+		this.cardLayout.show( this.getAwtComponent(), key.cardLayoutKey );
 	}
 }

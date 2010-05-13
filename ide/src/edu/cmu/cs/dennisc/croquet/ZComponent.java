@@ -42,7 +42,7 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-public abstract class ZComponent extends Component<javax.swing.JPanel> {
+public abstract class ZComponent extends JComponent<javax.swing.JPanel> {
 	protected abstract int getInsetTop();
 	protected abstract int getInsetLeft();
 	protected abstract int getInsetBottom();
@@ -78,7 +78,7 @@ public abstract class ZComponent extends Component<javax.swing.JPanel> {
 
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
 	@Override
-	protected javax.swing.JPanel createJComponent() {
+	protected javax.swing.JPanel createAwtComponent() {
 		javax.swing.JPanel rv = new javax.swing.JPanel() {
 			@Override
 			public void addNotify() {
@@ -138,10 +138,10 @@ public abstract class ZComponent extends Component<javax.swing.JPanel> {
 		return rv;
 	}
 	public void addComponentListener( java.awt.event.ComponentListener componentListener ) {
-		this.getJComponent().addComponentListener( componentListener );
+		this.getAwtComponent().addComponentListener( componentListener );
 	}
 	public void removeComponentListener( java.awt.event.ComponentListener componentListener ) {
-		this.getJComponent().removeComponentListener( componentListener );
+		this.getAwtComponent().removeComponentListener( componentListener );
 	}
 	
 	protected boolean contains( int x, int y, boolean jContains ) {

@@ -50,7 +50,7 @@ public class CheckBox extends AbstractButton< javax.swing.JCheckBox > {
 	/*package-private*/ CheckBox() {
 	}
 	@Override
-	protected javax.swing.JCheckBox createJComponent() {
+	protected javax.swing.JCheckBox createAwtComponent() {
 		return new javax.swing.JCheckBox();
 	}
 }

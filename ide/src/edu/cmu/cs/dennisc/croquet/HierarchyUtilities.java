@@ -79,20 +79,15 @@ public class HierarchyUtilities {
 			rv = (E)component;
 		} else {
 			if( isChildACandidate ) {
-				for( Component<?> componentI : component.getComponents() ) {
-					rv = getFirstToAccept( isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, componentI, cls, criterions );
-					if( rv != null ) {
-						break;
+				if (component instanceof Container<?>) {
+					Container<?> container = (Container<?>) component;
+					for( Component<?> componentI : container.getComponents() ) {
+						rv = getFirstToAccept( isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, componentI, cls, criterions );
+						if( rv != null ) {
+							break;
+						}
 					}
 				}
-//				if( component instanceof java.awt.Container ) {
-//					for( Component<?> componentI : ((java.awt.Container)component).getComponents() ) {
-//						rv = getFirstToAccept( isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, componentI, cls, criterions );
-//						if( rv != null ) {
-//							break;
-//						}
-//					}
-//				}
 			}
 		}
 		return rv;
@@ -123,14 +118,12 @@ public class HierarchyUtilities {
 		}
 
 		if( isChildACandidate ) {
-			for( Component<?> componentI : component.getComponents() ) {
-				updateAllToAccept( isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, list, componentI, cls, criterions );
+			if (component instanceof Container<?>) {
+				Container<?> container = (Container<?>) component;
+				for( Component<?> componentI : container.getComponents() ) {
+					updateAllToAccept( isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, list, componentI, cls, criterions );
+				}
 			}
-//			if( component instanceof java.awt.Container ) {
-//				for( Component<?> componentI : ((java.awt.Container)component).getComponents() ) {
-//					updateAllToAccept( isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, list, componentI, cls, criterions );
-//				}
-//			}
 		}
 	}
 	private static <E extends Component<?>> E getFirstToAccept( edu.cmu.cs.dennisc.pattern.HowMuch candidateMask, Component<?> component, Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {

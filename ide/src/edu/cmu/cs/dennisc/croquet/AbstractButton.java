@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractButton< J extends javax.swing.AbstractButton> extends Component< J > {
+public abstract class AbstractButton< J extends javax.swing.AbstractButton> extends JComponent< J > {
 	private static final javax.swing.ButtonModel MODEL_FOR_NULL = new javax.swing.DefaultButtonModel();
 	public AbstractButton() {
 	}
@@ -56,29 +56,29 @@ public abstract class AbstractButton< J extends javax.swing.AbstractButton> exte
 		} else {
 			model = MODEL_FOR_NULL;
 		}
-		if( model != this.getJComponent().getModel() ) {
-			this.getJComponent().setModel( model );
+		if( model != this.getAwtComponent().getModel() ) {
+			this.getAwtComponent().setModel( model );
 		}
 	}
 	/*package-private*/ void setAction( javax.swing.Action action ) {
-		if( action != this.getJComponent().getAction() ) {
-			this.getJComponent().setAction( action );
+		if( action != this.getAwtComponent().getAction() ) {
+			this.getAwtComponent().setAction( action );
 		}
 	}
 	
 	public void doClick() {
-		this.getJComponent().doClick();
+		this.getAwtComponent().doClick();
 	}
 	public void setHorizontalTextPosition( HorizontalTextPosition horizontalTextPosition ) {
-		this.getJComponent().setHorizontalTextPosition( horizontalTextPosition.getInternal() );
+		this.getAwtComponent().setHorizontalTextPosition( horizontalTextPosition.getInternal() );
 	}
 	public void setVerticalTextPosition( VerticalTextPosition verticalTextPosition ) {
-		this.getJComponent().setVerticalTextPosition( verticalTextPosition.getInternal() );
+		this.getAwtComponent().setVerticalTextPosition( verticalTextPosition.getInternal() );
 	}
 	public void setHorizontalAlignment( HorizontalAlignment horizontalAlignment ) {
-		this.getJComponent().setHorizontalAlignment( horizontalAlignment.getInternal() );
+		this.getAwtComponent().setHorizontalAlignment( horizontalAlignment.getInternal() );
 	}
 	public void setVerticalAlignment( VerticalAlignment verticalAlignment ) {
-		this.getJComponent().setVerticalAlignment( verticalAlignment.getInternal() );
+		this.getAwtComponent().setVerticalAlignment( verticalAlignment.getInternal() );
 	}
 }

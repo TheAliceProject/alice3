@@ -59,7 +59,7 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 		rv.setOpaque( false );
 		rv.setBackgroundColor( this.getSingletonView().getBackgroundColor() );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		rv.getJComponent().getVerticalScrollBar().setUnitIncrement( 12 );
+		rv.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
 		return rv;
 	}
 	public final ScrollPane getSingletonScrollPane() {
@@ -227,7 +227,7 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 
 	private class TabTitle extends AbstractButton< javax.swing.AbstractButton > {
 		@Override
-		protected javax.swing.AbstractButton createJComponent() {
+		protected javax.swing.AbstractButton createAwtComponent() {
 //			javax.swing.AbstractButton rv = new JTabTitle( TabStateOperation.this.isCloseAffordanceDesired() );
 //			rv.setModel( TabStateOperation.this.getButtonModel() );
 //			return rv;

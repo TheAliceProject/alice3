@@ -52,7 +52,7 @@ public class HeavyweightAdapter extends Component< javax.swing.JComponent > {
 		this.heavyweightComponent = heavyweightComponent;
 	}
 	@Override
-	protected final javax.swing.JComponent createJComponent() {
+	protected final javax.swing.JComponent createAwtComponent() {
 		javax.swing.JPanel rv = new javax.swing.JPanel();
 		rv.setLayout( new java.awt.BorderLayout() );
 		rv.add( this.heavyweightComponent, java.awt.BorderLayout.CENTER );

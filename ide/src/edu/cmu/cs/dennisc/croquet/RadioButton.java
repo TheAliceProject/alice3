@@ -50,7 +50,7 @@ public class RadioButton extends AbstractButton< javax.swing.JRadioButton > {
 	/*package-private*/ RadioButton() {
 	}
 	@Override
-	protected javax.swing.JRadioButton createJComponent() {
+	protected javax.swing.JRadioButton createAwtComponent() {
 		return new javax.swing.JRadioButton();
 	}
 }

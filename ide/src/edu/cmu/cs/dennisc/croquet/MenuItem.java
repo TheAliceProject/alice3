@@ -50,7 +50,7 @@ public class MenuItem extends AbstractMenuItem< javax.swing.JMenuItem > {
 	/*package-private*/ MenuItem() {
 	}
 	@Override
-	protected javax.swing.JMenuItem createJComponent() {
+	protected javax.swing.JMenuItem createAwtComponent() {
 		return new javax.swing.JMenuItem();
 	}
 }

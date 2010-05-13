@@ -110,7 +110,7 @@ class FieldSelectedState extends edu.cmu.cs.dennisc.croquet.BooleanStateOperatio
 	}
 
 	@Override
-	protected javax.swing.AbstractButton createJComponent() {
+	protected javax.swing.AbstractButton createAwtComponent() {
 		final java.awt.Color SELECTED_COLOR = java.awt.Color.YELLOW;
 		final java.awt.Color UNSELECTED_COLOR = new java.awt.Color( 191, 191, 191, 127 );
 		return new javax.swing.JRadioButton() {

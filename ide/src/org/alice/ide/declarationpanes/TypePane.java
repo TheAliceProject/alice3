@@ -87,7 +87,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 		}
 		//todo: listen to changes on typeProperty
 		this.typeComboBox = org.alice.ide.common.TypeComboBox.createInstance( java.util.UUID.fromString( "ef5677ca-a5d9-49c4-90bb-5fb43ef15ba6" ), componentType );
-		this.typeComboBox.getJComponent().setEnabled( isTypeComboBoxEnabled );
+		this.typeComboBox.getAwtComponent().setEnabled( isTypeComboBoxEnabled );
 		
 		isArrayProperty.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
@@ -132,7 +132,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 //		} else {
 //			this.typeComboBox.setSelectedItem( type );
 //		}
-		this.typeComboBox.getJComponent().setEnabled( false );
+		this.typeComboBox.getAwtComponent().setEnabled( false );
 //		this.isArrayCheckBox.setSelected( type.isArray() );
 //		this.isArrayCheckBox.setEnabled( false );
 	}

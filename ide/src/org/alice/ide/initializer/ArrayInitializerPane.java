@@ -310,7 +310,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		
 		public void setSelectedIndex( int index ) {
 			if( index >= 0 ) {
-				FauxItem fauxItem = (FauxItem)this.getJComponent().getComponent( index );
+				FauxItem fauxItem = (FauxItem)this.getAwtComponent().getComponent( index );
 				fauxItem.setSelected( true );
 			} else {
 				javax.swing.ButtonModel model = this.group.getSelection();
@@ -342,7 +342,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 				this.group.add( fauxItem );
 			}
 			for( int i=N; i<M; i++ ) {
-				FauxItem fauxItem = (FauxItem)this.getJComponent().getComponent( i );
+				FauxItem fauxItem = (FauxItem)this.getAwtComponent().getComponent( i );
 				this.group.remove( fauxItem );
 			}
 			this.removeAllComponents();

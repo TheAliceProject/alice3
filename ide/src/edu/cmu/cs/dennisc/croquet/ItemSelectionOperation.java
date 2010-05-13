@@ -169,7 +169,7 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 	
 	public ComboBox<E> register( final ComboBox<E> rv ) {
 		Application.getSingleton().register( this );
-		rv.getJComponent().setModel( this.getComboBoxModel() );
+		rv.getAwtComponent().setModel( this.getComboBoxModel() );
 		rv.addContainmentObserver( new Component.ContainmentObserver() {
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				ItemSelectionOperation.this.addComboBox(rv);

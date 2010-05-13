@@ -96,12 +96,12 @@ public abstract class SpringPanel extends Panel {
 		protected abstract int getValue( java.awt.Dimension dimension );
 		@Override
 		public int getPreferredValue() {
-			int macro = getValue( SpringPanel.this.getJComponent().getSize() );
+			int macro = getValue( SpringPanel.this.getAwtComponent().getSize() );
 			java.awt.Dimension size;
-			if( this.component.getJComponent().isValid() ) {
-				size = this.component.getJComponent().getSize();
+			if( this.component.getAwtComponent().isValid() ) {
+				size = this.component.getAwtComponent().getSize();
 			} else {
-				size = this.component.getJComponent().getPreferredSize();
+				size = this.component.getAwtComponent().getPreferredSize();
 			}
 			int micro = getValue( size );
 			return this.offset + (macro - micro) / 2;
@@ -137,14 +137,14 @@ public abstract class SpringPanel extends Panel {
 		String horizontalConstraint = horizontal.getInternal();
 		String verticalConstraint = vertical.getInternal();
 		if( horizontalConstraint != null ) {
-			this.springLayout.putConstraint( horizontalConstraint, component.getJComponent(), x, horizontalConstraint, this.getJComponent() );
+			this.springLayout.putConstraint( horizontalConstraint, component.getAwtComponent(), x, horizontalConstraint, this.getAwtComponent() );
 		} else {
-			this.springLayout.putConstraint( javax.swing.SpringLayout.WEST, component.getJComponent(), new HorizontalCenterSpring( component, x ), javax.swing.SpringLayout.WEST, this.getJComponent() );
+			this.springLayout.putConstraint( javax.swing.SpringLayout.WEST, component.getAwtComponent(), new HorizontalCenterSpring( component, x ), javax.swing.SpringLayout.WEST, this.getAwtComponent() );
 		}
 		if( verticalConstraint != null ) {
-			this.springLayout.putConstraint( verticalConstraint, component.getJComponent(), y, verticalConstraint, this.getJComponent() );
+			this.springLayout.putConstraint( verticalConstraint, component.getAwtComponent(), y, verticalConstraint, this.getAwtComponent() );
 		} else {
-			this.springLayout.putConstraint( javax.swing.SpringLayout.NORTH, component.getJComponent(), new VerticalCenterSpring( component, y ), javax.swing.SpringLayout.NORTH, this.getJComponent() );
+			this.springLayout.putConstraint( javax.swing.SpringLayout.NORTH, component.getAwtComponent(), new VerticalCenterSpring( component, y ), javax.swing.SpringLayout.NORTH, this.getAwtComponent() );
 		}
 	}
 	
@@ -154,6 +154,6 @@ public abstract class SpringPanel extends Panel {
 	}
 	public void removeComponent( edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
 		this.internalRemoveComponent( component );
-		this.springLayout.removeLayoutComponent( component.getJComponent() );
+		this.springLayout.removeLayoutComponent( component.getAwtComponent() );
 	}
 }

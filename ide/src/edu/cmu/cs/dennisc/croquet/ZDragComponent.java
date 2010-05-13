@@ -170,7 +170,7 @@ public abstract class ZDragComponent extends ZControl {
 			for( DropReceptor dropReceptor : potentialDropReceptors ) {
 				Component<?> dropComponent = dropReceptor.getComponent();
 				java.awt.Rectangle bounds = dropComponent.getBounds();
-				bounds = javax.swing.SwingUtilities.convertRectangle( dropComponent.getJComponent().getParent(), bounds, this.getDragSource().getJComponent() );
+				bounds = javax.swing.SwingUtilities.convertRectangle( dropComponent.getAwtComponent().getParent(), bounds, this.getDragSource().getAwtComponent() );
 				this.potentialDropReceptorInfos[ i ] = new DropReceptorInfo( dropReceptor, bounds );
 				i++;
 			}
@@ -246,7 +246,7 @@ public abstract class ZDragComponent extends ZControl {
 			} else {
 				if( ZDragComponent.this.dragProxy != null ) {
 					java.awt.Rectangle dragBounds = ZDragComponent.this.dragProxy.getBounds();
-					dragBounds = javax.swing.SwingUtilities.convertRectangle( ZDragComponent.this.dragProxy.getParent(), dragBounds, this.getDragSource().getJComponent() );
+					dragBounds = javax.swing.SwingUtilities.convertRectangle( ZDragComponent.this.dragProxy.getParent(), dragBounds, this.getDragSource().getAwtComponent() );
 					int x = dragBounds.x;
 					int y = dragBounds.y + dragBounds.height / 2;
 					rv = getDropReceptorUnder( x, y );
@@ -410,7 +410,7 @@ public abstract class ZDragComponent extends ZControl {
 						isDrop = this.isFauxDrag;
 						this.isFauxDrag = !this.isFauxDrag;
 						if( focusedComponent != null ) {
-							edu.cmu.cs.dennisc.java.awt.MouseFocusEventQueue.getSingleton().pushComponentWithMouseFocus( focusedComponent.getJComponent() );
+							edu.cmu.cs.dennisc.java.awt.MouseFocusEventQueue.getSingleton().pushComponentWithMouseFocus( focusedComponent.getAwtComponent() );
 						} else {
 							edu.cmu.cs.dennisc.java.awt.MouseFocusEventQueue.getSingleton().popComponentWithMouseFocus();
 						}
@@ -422,7 +422,7 @@ public abstract class ZDragComponent extends ZControl {
 				}
 				if( isDrop ) {
 					Application.getSingleton().setDragInProgress( false );
-					this.setActive( this.getJComponent().contains( e.getPoint() ) );
+					this.setActive( this.getAwtComponent().contains( e.getPoint() ) );
 					javax.swing.JLayeredPane layeredPane = getLayeredPane();
 					java.awt.Rectangle bounds = this.dragProxy.getBounds();
 					layeredPane.remove( this.dragProxy );
@@ -437,7 +437,7 @@ public abstract class ZDragComponent extends ZControl {
 
 	public void setDropProxyLocationAndShowIfNecessary( java.awt.Point p, Component<?> asSeenBy, Integer heightToAlignLeftCenterOn ) {
 		javax.swing.JLayeredPane layeredPane = getLayeredPane();
-		p = javax.swing.SwingUtilities.convertPoint( asSeenBy.getJComponent(), p, layeredPane );
+		p = javax.swing.SwingUtilities.convertPoint( asSeenBy.getAwtComponent(), p, layeredPane );
 
 		if( heightToAlignLeftCenterOn != null ) {
 			java.awt.Rectangle dropBounds = this.dropProxy.getBounds();

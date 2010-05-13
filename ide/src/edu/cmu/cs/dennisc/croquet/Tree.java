@@ -46,58 +46,58 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class Tree<E> extends Component< javax.swing.JTree > {
+public class Tree<E> extends JComponent< javax.swing.JTree > {
 //	public KTree( javax.swing.tree.TreeModel treeModel ) {
 //		this.getJComponent().setModel( treeModel );
 //	}
 	@Override
-	protected javax.swing.JTree createJComponent() {
+	protected javax.swing.JTree createAwtComponent() {
 		return new javax.swing.JTree();
 	}
 	
 	public javax.swing.tree.TreeCellRenderer getCellRenderer() {
-		return this.getJComponent().getCellRenderer();
+		return this.getAwtComponent().getCellRenderer();
 	}
 	public void setCellRenderer( javax.swing.tree.TreeCellRenderer listCellRenderer ) {
-		this.getJComponent().setCellRenderer( listCellRenderer );
+		this.getAwtComponent().setCellRenderer( listCellRenderer );
 	}
 
 	public void expandAllRows() {
-		for( int i=0; i<this.getJComponent().getRowCount(); i++ ) {
-			this.getJComponent().expandRow( i );
+		for( int i=0; i<this.getAwtComponent().getRowCount(); i++ ) {
+			this.getAwtComponent().expandRow( i );
 		}
 	}
 	public void collapseAllRows() {
-		for( int i=0; i<this.getJComponent().getRowCount(); i++ ) {
-			this.getJComponent().collapseRow( i );
+		for( int i=0; i<this.getAwtComponent().getRowCount(); i++ ) {
+			this.getAwtComponent().collapseRow( i );
 		}
 	}
 
 	public void setRootVisible( boolean isRootVisible ) {
-		this.getJComponent().setRootVisible( isRootVisible );
+		this.getAwtComponent().setRootVisible( isRootVisible );
 	}
 	
 	@Deprecated
 	public void addTreeSelectionListener( javax.swing.event.TreeSelectionListener treeSelectionListener ) {
-		this.getJComponent().addTreeSelectionListener( treeSelectionListener );
+		this.getAwtComponent().addTreeSelectionListener( treeSelectionListener );
 	}
 	@Deprecated
 	public void removeTreeSelectionListener( javax.swing.event.TreeSelectionListener treeSelectionListener ) {
-		this.getJComponent().removeTreeSelectionListener( treeSelectionListener );
+		this.getAwtComponent().removeTreeSelectionListener( treeSelectionListener );
 	}
 
 	@Deprecated
 	public javax.swing.tree.TreeModel getModel() {
-		return this.getJComponent().getModel();
+		return this.getAwtComponent().getModel();
 	}
 
 	@Deprecated
 	public void setModel( javax.swing.tree.TreeModel model ) {
-		this.getJComponent().setModel( model );
+		this.getAwtComponent().setModel( model );
 	}
 	@Deprecated
 	public void setSelectionRow( int selectionRow ) {
-		this.getJComponent().setSelectionRow( selectionRow );
+		this.getAwtComponent().setSelectionRow( selectionRow );
 	}
 
 	@Deprecated

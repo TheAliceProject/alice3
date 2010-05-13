@@ -46,54 +46,54 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SplitPane extends Component< javax.swing.JSplitPane > {
+public abstract class SplitPane extends JComponent< javax.swing.JSplitPane > {
 	protected SplitPane( int orientation ) {
 		this( orientation, null, null );
 	}
 	protected SplitPane( int orientation, Component<?> topOrLeftComponent, Component<?> bottomOrRightComponent ) {
-		this.getJComponent().setOrientation( orientation );
+		this.getAwtComponent().setOrientation( orientation );
 		this.setTopOrLeftComponent( topOrLeftComponent );
 		this.setBottomOrRightComponent( bottomOrRightComponent );
 	}
 	@Override
-	protected javax.swing.JSplitPane createJComponent() {
+	protected javax.swing.JSplitPane createAwtComponent() {
 		return new javax.swing.JSplitPane();
 	}
 	
 	protected void setTopOrLeftComponent( Component<?> component ) {
 		if( component != null ) {
-			this.getJComponent().setTopComponent( component.getJComponent() );
+			this.getAwtComponent().setTopComponent( component.getAwtComponent() );
 		} else {
-			this.getJComponent().setTopComponent( null );
+			this.getAwtComponent().setTopComponent( null );
 		}
 	}
 	protected void setBottomOrRightComponent( Component<?> component ) {
 		if( component != null ) {
-			this.getJComponent().setBottomComponent( component.getJComponent() );
+			this.getAwtComponent().setBottomComponent( component.getAwtComponent() );
 		} else {
-			this.getJComponent().setBottomComponent( null );
+			this.getAwtComponent().setBottomComponent( null );
 		}
 	}
 	
 	public double getResizeWeight() {
-		return this.getJComponent().getResizeWeight();
+		return this.getAwtComponent().getResizeWeight();
 	}
 	public void setResizeWeight( double resizeWeight ) {
-		this.getJComponent().setResizeWeight( resizeWeight );
+		this.getAwtComponent().setResizeWeight( resizeWeight );
 	}
 	public int getDividerSize() {
-		return this.getJComponent().getDividerSize();
+		return this.getAwtComponent().getDividerSize();
 	}
 	public void setDividerSize( int dividerSize ) {
-		this.getJComponent().setDividerSize( dividerSize );
+		this.getAwtComponent().setDividerSize( dividerSize );
 	}
 	public int getDividerLocation() {
-		return this.getJComponent().getDividerLocation();
+		return this.getAwtComponent().getDividerLocation();
 	}
 	public void setDividerLocation( int dividerLocation ) {
-		this.getJComponent().setDividerLocation( dividerLocation );
+		this.getAwtComponent().setDividerLocation( dividerLocation );
 	}
 	public void setDividerProportionalLocation( double proportionalLocation ) {
-		this.getJComponent().setDividerLocation( proportionalLocation );
+		this.getAwtComponent().setDividerLocation( proportionalLocation );
 	}
 }

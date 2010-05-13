@@ -93,7 +93,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		return rv;
 	}	
 	public java.awt.Rectangle getDropBounds() {
-		java.awt.Rectangle rv = javax.swing.SwingUtilities.getLocalBounds( this.getJComponent() );
+		java.awt.Rectangle rv = javax.swing.SwingUtilities.getLocalBounds( this.getAwtComponent() );
 		final int DELTA = this.getFont().getSize() + 4;
 		rv.y -= DELTA;
 		rv.height += DELTA;
@@ -125,7 +125,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 	}
 
 	private int getCenterYOfComponentAt( int i ) {
-		java.awt.Component componentI = this.getJComponent().getComponent( i );
+		java.awt.Component componentI = this.getAwtComponent().getComponent( i );
 		return componentI.getY() + componentI.getHeight() / 2;
 	}
 	public int calculateIndex( java.awt.Point p ) {

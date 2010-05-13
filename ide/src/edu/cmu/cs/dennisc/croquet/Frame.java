@@ -90,7 +90,7 @@ public final class Frame extends Root<javax.swing.JFrame> {
 	}
 
 	public void setMenuBar(MenuBar menuBar) {
-		this.getAwtWindow().setJMenuBar(menuBar.getJComponent());
+		this.getAwtWindow().setJMenuBar(menuBar.getAwtComponent());
 	}
 
 	public void maximize() {

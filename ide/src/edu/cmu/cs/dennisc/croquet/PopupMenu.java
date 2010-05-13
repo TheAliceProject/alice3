@@ -51,32 +51,32 @@ public class PopupMenu extends AbstractMenu< javax.swing.JPopupMenu > {
 	}
 	
 	@Override
-	protected javax.swing.JPopupMenu createJComponent() {
+	protected javax.swing.JPopupMenu createAwtComponent() {
 		return new javax.swing.JPopupMenu();
 	}
 
 	@Override
 	public void addMenu( Menu menu ) {
-		this.getJComponent().add( menu.getJComponent() );
+		this.getAwtComponent().add( menu.getAwtComponent() );
 	}
 	@Override
 	public void addMenuItem( AbstractMenuItem<?> menuItem ) {
-		this.getJComponent().add( menuItem.getJComponent() );
+		this.getAwtComponent().add( menuItem.getAwtComponent() );
 	}
 	@Override
 	public void addSeparator() {
-		this.getJComponent().addSeparator();
+		this.getAwtComponent().addSeparator();
 	}
 	
 	
 	public void showAtLocation( Component< ? > invoker, int x, int y ) {
-		javax.swing.JComponent jInvoker;
+		java.awt.Component awtInvoker;
 		if( invoker != null ) {
-			jInvoker = invoker.getJComponent();
+			awtInvoker = invoker.getAwtComponent();
 		} else {
-			jInvoker = null;
+			awtInvoker = null;
 		}
-		this.getJComponent().show( jInvoker, x, y );
+		this.getAwtComponent().show( awtInvoker, x, y );
 	}
 	public void showBelow( Component< ? > invoker ) {
 		int x;

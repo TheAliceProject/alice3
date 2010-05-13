@@ -199,10 +199,10 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 			//			panel.add( bodyPane );
 
 			this.scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( bodyPane );
-			this.scrollPane.getJComponent().getVerticalScrollBar().setUnitIncrement( 12 );
+			this.scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
 			this.scrollPane.setBorder( null );
 			this.scrollPane.setOpaque( false );
-			this.scrollPane.getJComponent().getViewport().setOpaque( false );
+			this.scrollPane.getAwtComponent().getViewport().setOpaque( false );
 			//this.scrollPane.setBackground( java.awt.Color.RED );
 			this.scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
 			this.addComponent( header );
@@ -337,7 +337,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 				} else {
 					java.awt.event.MouseEvent eUnder = this.getAsSeenBy().convertMouseEvent( eAsSeenBy, this.currentUnder );
 					Integer height = 0;
-					java.awt.Insets insets = this.currentUnder.getBorder().getBorderInsets( this.currentUnder.getJComponent() );
+					java.awt.Insets insets = this.currentUnder.getBorder().getBorderInsets( this.currentUnder.getAwtComponent() );
 					int x = insets.left;
 					java.awt.Point p = new java.awt.Point( x, 0 );
 					if( this.currentUnder.isFigurativelyEmpty() ) {
@@ -351,9 +351,9 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 								//java.awt.Component firstComponent = this.currentUnder.getComponent( 0 );
 								p.y = 0;
 							} else if( index < n ) {
-								p.y = this.currentUnder.getJComponent().getComponent( index ).getY();
+								p.y = this.currentUnder.getAwtComponent().getComponent( index ).getY();
 							} else {
-								java.awt.Component lastComponent = this.currentUnder.getJComponent().getComponent( n - 1 );
+								java.awt.Component lastComponent = this.currentUnder.getAwtComponent().getComponent( n - 1 );
 								p.y = lastComponent.getY() + lastComponent.getHeight();
 								p.y += StatementListPropertyPane.INTRASTICIAL_PAD;
 								if( this.currentUnder.getProperty() == ((edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code).getBodyProperty().getValue().statements ) {
@@ -372,7 +372,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 
 	}
 	public final void dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
-		final java.awt.Point viewPosition = this.scrollPane.getJComponent().getViewport().getViewPosition();
+		final java.awt.Point viewPosition = this.scrollPane.getAwtComponent().getViewport().getViewPosition();
 		final edu.cmu.cs.dennisc.croquet.ZDragComponent source = context.getDragSource();
 		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
 		final StatementListPropertyPane statementListPropertyPane = CodeEditor.this.currentUnder;
@@ -596,7 +596,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 	private void resetScrollPane( final java.awt.Point viewPosition ) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				CodeEditor.this.scrollPane.getJComponent().getViewport().setViewPosition( viewPosition );
+				CodeEditor.this.scrollPane.getAwtComponent().getViewport().setViewPosition( viewPosition );
 				CodeEditor.this.repaint();
 			}
 		} );

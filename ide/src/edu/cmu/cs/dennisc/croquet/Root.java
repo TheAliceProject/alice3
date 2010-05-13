@@ -60,7 +60,7 @@ public abstract class Root<W extends java.awt.Window> {
 	private W window;
 	public Root( W window ) {
 		this.window = window;
-		this.getRootPane().setContentPane( this.contentPanel.getJComponent() );
+		this.getRootPane().setContentPane( this.contentPanel.getAwtComponent() );
 		Root.map.put( window, this );
 	}
 
@@ -98,7 +98,7 @@ public abstract class Root<W extends java.awt.Window> {
 		return (Button)Component.lookup( this.getRootPane().getDefaultButton() );
 	}
 	public void setDefaultButton( Button button ) {
-		this.getRootPane().setDefaultButton( button.getJComponent() );
+		this.getRootPane().setDefaultButton( button.getAwtComponent() );
 	}
 	
 	public void pack() {

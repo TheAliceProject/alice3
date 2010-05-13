@@ -50,7 +50,7 @@ public class Button extends AbstractButton< javax.swing.JButton > {
 	/*package-private*/ Button() {
 	}
 	@Override
-	protected javax.swing.JButton createJComponent() {
+	protected javax.swing.JButton createAwtComponent() {
 		return new javax.swing.JButton();
 	}
 }

@@ -95,7 +95,7 @@ public abstract class Operation {
 		if( this.isEnabled != isEnabled ) {
 			this.isEnabled = isEnabled;
 			synchronized( this.components ) {
-				for( Component<?> component : this.components ) {
+				for( JComponent<?> component : this.components ) {
 					component.setEnabled( this.isEnabled );
 				}
 			}
@@ -112,23 +112,23 @@ public abstract class Operation {
 		} else {
 			this.toolTipText = toolTipText;
 			synchronized( this.components ) {
-				for( Component<?> component : this.components ) {
+				for( JComponent<?> component : this.components ) {
 					component.setToolTipText( this.toolTipText );
 				}
 			}
 		}
 	}
 
-	private java.util.List< Component<?> > components = new java.util.LinkedList< Component<?> >();
+	private java.util.List< JComponent<?> > components = new java.util.LinkedList< JComponent<?> >();
 	
-	protected void addComponent( Component<?> component ) {
+	protected void addComponent( JComponent<?> component ) {
 		synchronized( this.components ) {
 			this.components.add( component );
 		}
 		component.setEnabled( this.isEnabled );
 		component.setToolTipText( this.toolTipText );
 	}
-	protected void removeComponent( Component<?> component ) {
+	protected void removeComponent( JComponent<?> component ) {
 		synchronized( this.components ) {
 			this.components.remove( component );
 		}
