@@ -423,7 +423,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private void refreshFields() {
 		javax.swing.JPanel lgPanel = this.lightweightLookingGlass.getAwtComponent(); 
 		javax.swing.SpringLayout springLayout = (javax.swing.SpringLayout)lgPanel.getLayout();
-		this.fieldTileGroup.clearSelection();
+		javax.swing.ButtonModel selection = this.fieldTileGroup.getSelection();
+		if( selection != null ) {
+			this.fieldTileGroup.setSelected( selection, false );
+		}
 		for( FieldTile fieldTile : this.fieldTiles ) {
 			springLayout.removeLayoutComponent( fieldTile.getAwtComponent() );
 			this.onscreenLookingGlass.getJPanel().remove( fieldTile.getAwtComponent() );

@@ -66,7 +66,8 @@ public class BorderPanel extends Panel {
 		private Constraint( String internal ) {
 			this.internal = internal;
 		}
-		/*package-private*/ String getInternal() {
+		//todo: reduce visibility? /*package-private*/
+		public String getInternal() {
 			return this.internal;
 		}
 	}
