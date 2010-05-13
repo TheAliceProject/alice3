@@ -42,21 +42,45 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public interface DropReceptor {
-	public boolean isPotentiallyAcceptingOf( ZDragComponent source );
-	public Component getComponent();
-	public void dragStarted( DragAndDropContext dragAndDropContext );
-	public void dragEntered( DragAndDropContext dragAndDropContext );
-	public void dragUpdated( DragAndDropContext dragAndDropContext );
-	
-	//todo: Dropped or Exited but not both?
-	public void dragDropped( DragAndDropContext dragAndDropContext );
-	public void dragExited( DragAndDropContext dragAndDropContext, boolean isDropRecipient );
-	
-	
-	public void dragStopped( DragAndDropContext dragAndDropContext );
+public class PaintUtilities {
+	private static java.awt.Paint disabledTexturePaint = null;
+	public static java.awt.Paint getDisabledTexturePaint() {
+		if( PaintUtilities.disabledTexturePaint != null ) {
+			//pass
+		} else {
+			int width = 8;
+			int height = 8;
+			java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
+			java.awt.Graphics g = image.getGraphics();
+			g.setColor( new java.awt.Color( 128, 128, 128, 96 ) );
+			g.fillRect( 0, 0, width, height );
+			g.setColor( java.awt.Color.DARK_GRAY );
+			g.drawLine( 0, height, width, 0 );
+			g.drawLine( 0, 0, 0, 0 );
+			g.dispose();
+			PaintUtilities.disabledTexturePaint = new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
+		}
+		return PaintUtilities.disabledTexturePaint;
+	}
+	private static java.awt.TexturePaint copyTexturePaint = null;
+
+	public static java.awt.TexturePaint getCopyTexturePaint() {
+		if( PaintUtilities.copyTexturePaint != null ) {
+			//pass
+		} else {
+			int width = 8;
+			int height = 8;
+			java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
+			java.awt.Graphics g = image.getGraphics();
+			g.setColor( new java.awt.Color( 0, 0, 255, 96 ) );
+			g.drawLine( 2, 4, 6, 4 );
+			g.drawLine( 4, 2, 4, 6 );
+			g.dispose();
+			PaintUtilities.copyTexturePaint = new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
+		}
+		return PaintUtilities.copyTexturePaint;
+	}
 }

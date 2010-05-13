@@ -42,21 +42,16 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public interface DropReceptor {
-	public boolean isPotentiallyAcceptingOf( ZDragComponent source );
-	public Component getComponent();
-	public void dragStarted( DragAndDropContext dragAndDropContext );
-	public void dragEntered( DragAndDropContext dragAndDropContext );
-	public void dragUpdated( DragAndDropContext dragAndDropContext );
+public abstract class DragAndDropContext extends Context {
+	public DragAndDropContext( Context parent ) {
+		super( parent );
+	}
+	public abstract java.awt.event.MouseEvent getOriginalMouseEvent();
+	public abstract java.awt.event.MouseEvent getLatestMouseEvent();
 	
-	//todo: Dropped or Exited but not both?
-	public void dragDropped( DragAndDropContext dragAndDropContext );
-	public void dragExited( DragAndDropContext dragAndDropContext, boolean isDropRecipient );
-	
-	
-	public void dragStopped( DragAndDropContext dragAndDropContext );
+	public abstract ZDragComponent getDragSource();
+	public abstract DropReceptor getCurrentDropReceptor();
 }

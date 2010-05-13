@@ -119,7 +119,7 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 		g2.setStroke( prevStroke );
 	}
 	@Override
-	protected final void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		super.paintEpilogue( g2, x, y, width, height );
 		this.paintOutline( g2, new java.awt.geom.RoundRectangle2D.Float( x+1, y+1, width-3, height-3, 8, 8 ) );
 	}

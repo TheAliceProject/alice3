@@ -45,19 +45,13 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DragOperation extends Operation {
-	private Operation dropOperation;
-	public DragOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, Operation dropOperation ) {
-		super( groupUUID, individualUUID );
-		this.dropOperation = dropOperation;
+public abstract class DragAndDropOperation extends Operation {
+	public DragAndDropOperation( java.util.UUID groupUUID, java.util.UUID inividualUUID ) {
+		super( groupUUID, inividualUUID );
 	}
-	public Operation getDropOperation() {
-		return dropOperation;
-	}
-	/*package-private*/ void addDragComponent( DragControl dragComponent ) {
-		this.addComponent( dragComponent );
-	}
-	/*package-private*/ void removeDragComponent( DragControl dragComponent ) {
-		this.removeComponent( dragComponent );
-	}
+	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( ZDragComponent dragSource );
+	public abstract void handleDragStarted( DragAndDropContext dragAndDropContext );
+	public abstract void handleDragEnteredDropReceptor( DragAndDropContext dragAndDropContext );
+	public abstract void handleDragExitedDropReceptor( DragAndDropContext dragAndDropContext );
+	public abstract void handleDragStopped( DragAndDropContext dragAndDropContext );
 }

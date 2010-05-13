@@ -47,26 +47,31 @@ package org.alice.ide.operations;
  * @author Dennis Cosgrove
  */
 @Deprecated
-public class DefaultDragOperation extends edu.cmu.cs.dennisc.croquet.DragOperation {
+public class DefaultDragOperation extends edu.cmu.cs.dennisc.croquet.DragAndDropOperation {
 	public DefaultDragOperation() {
-		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, null, null );
+		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "002705e1-18e6-49ca-b261-0e9c79e8f080" ) );
 	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
-	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.DragControl dragSource ) {
+	@Override
+	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.ZDragComponent dragSource ) {
 		return getIDE().createListOfPotentialDropReceptors( dragSource );
 	}
-	public void handleDragStarted( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+	@Override
+	public void handleDragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
 		getIDE().handleDragStarted( dragAndDropContext );
 	}
-	public void handleDragEnteredDropReceptor( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+	@Override
+	public void handleDragEnteredDropReceptor( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
 		getIDE().handleDragEnteredDropReceptor( dragAndDropContext );
 	}
-	public void handleDragExitedDropReceptor( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+	@Override
+	public void handleDragExitedDropReceptor( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
 		getIDE().handleDragExitedDropReceptor( dragAndDropContext );
 	}
-	public void handleDragStopped( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+	@Override
+	public void handleDragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
 		getIDE().handleDragStopped( dragAndDropContext );
 	}
 }

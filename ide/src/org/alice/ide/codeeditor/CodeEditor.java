@@ -242,25 +242,25 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 			}
 		} );
 	}
-	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.croquet.DragControl source ) {
+	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.croquet.ZDragComponent source ) {
 		if( source instanceof org.alice.ide.templates.StatementTemplate ) {
 			return getIDE().getFocusedCode() == this.code;
 		} else {
 			return false;
 		}
 	}
-	public void dragStarted( edu.cmu.cs.dennisc.croquet.Context context ) {
+	public void dragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 	}
 
-	public void dragEntered( edu.cmu.cs.dennisc.croquet.Context context ) {
-		edu.cmu.cs.dennisc.croquet.DragControl source = context.getDragSource();
+	public void dragEntered( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+		edu.cmu.cs.dennisc.croquet.ZDragComponent source = context.getDragSource();
 		this.statementListPropertyPaneInfos = createStatementListPropertyPaneInfos( source );
 		this.repaint();
 	}
 	private edu.cmu.cs.dennisc.croquet.Component< ? > getAsSeenBy() {
 		return this.scrollPane.getViewportView();
 	}
-	private StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( edu.cmu.cs.dennisc.croquet.DragControl source ) {
+	private StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( edu.cmu.cs.dennisc.croquet.ZDragComponent source ) {
 		java.util.List< StatementListPropertyPane > statementListPropertyPanes = this.findAllMatches( StatementListPropertyPane.class );
 		StatementListPropertyPaneInfo[] rv = new StatementListPropertyPaneInfo[ statementListPropertyPanes.size() ];
 		int i = 0;
@@ -298,8 +298,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 		}
 		return rv;
 	}
-	public void dragUpdated( edu.cmu.cs.dennisc.croquet.Context context ) {
-		edu.cmu.cs.dennisc.croquet.DragControl source = context.getDragSource();
+	public void dragUpdated( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+		edu.cmu.cs.dennisc.croquet.ZDragComponent source = context.getDragSource();
 		if( source != null ) {
 			java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
 			java.awt.event.MouseEvent eAsSeenBy = source.convertMouseEvent( eSource, this.getAsSeenBy() );
@@ -371,7 +371,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 		this.repaint();
 
 	}
-	public void dragDropped( edu.cmu.cs.dennisc.croquet.Context context ) {
+	public void dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 //		final java.awt.Point viewPosition = this.scrollPane.getJComponent().getViewport().getViewPosition();
 //		final edu.cmu.cs.dennisc.croquet.KDragControl source = dragAndDropContext.getDragSource();
 //		final java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
@@ -601,20 +601,20 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 			}
 		} );
 	}
-	public void dragExited( edu.cmu.cs.dennisc.croquet.Context context, boolean isDropRecipient ) {
+	public void dragExited( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, boolean isDropRecipient ) {
 		this.statementListPropertyPaneInfos = null;
 		this.currentUnder = null;
 		this.repaint();
 		if( isDropRecipient ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.croquet.DragControl source = context.getDragSource();
+			edu.cmu.cs.dennisc.croquet.ZDragComponent source = context.getDragSource();
 			if( source != null ) {
 				source.hideDropProxyIfNecessary();
 			}
 		}
 	}
-	public void dragStopped( edu.cmu.cs.dennisc.croquet.Context context ) {
+	public void dragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 	}
 	//	@Override
 	//	public void paint( java.awt.Graphics g ) {

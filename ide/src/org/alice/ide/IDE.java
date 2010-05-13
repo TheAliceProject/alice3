@@ -799,7 +799,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 	private ComponentStencil stencil;
 	private java.util.List< ? extends edu.cmu.cs.dennisc.croquet.Component< ? > > holes = null;
-	private edu.cmu.cs.dennisc.croquet.DragControl potentialDragSource;
+	private edu.cmu.cs.dennisc.croquet.ZDragComponent potentialDragSource;
 	private edu.cmu.cs.dennisc.croquet.Component< ? > currentDropReceptorComponent;
 
 	protected boolean isFauxStencilDesired() {
@@ -903,7 +903,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 	//public abstract void handleDelete( edu.cmu.cs.dennisc.alice.ast.Node node );
 
-	public void showStencilOver( edu.cmu.cs.dennisc.croquet.DragControl potentialDragSource, final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public void showStencilOver( edu.cmu.cs.dennisc.croquet.ZDragComponent potentialDragSource, final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorInFocus();
 		if( codeEditor != null ) {
 			this.holes = codeEditor.createListOfPotentialDropReceptors( type );
@@ -965,7 +965,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 //		this.sceneEditor.setRenderingEnabled( isRenderingEnabled, isDrag );
 //	}
 
-	public void handleDragStarted( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+	public void handleDragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
 		this.potentialDragSource = null;
 		if( this.stencil != null && this.holes != null ) {
 			this.stencil.repaint();
@@ -978,19 +978,19 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 		this.disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
-	public void handleDragEnteredDropReceptor( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+	public void handleDragEnteredDropReceptor( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
 //		this.currentDropReceptorComponent = dragAndDropContext.getCurrentDropReceptor().getAWTComponent();
 //		if( this.stencil != null && this.holes != null ) {
 //			this.stencil.repaint();
 //		}
 	}
-	public void handleDragExitedDropReceptor( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+	public void handleDragExitedDropReceptor( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
 		this.currentDropReceptorComponent = null;
 		if( this.stencil != null && this.holes != null ) {
 			this.stencil.repaint();
 		}
 	}
-	public void handleDragStopped( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+	public void handleDragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
 		this.enableRendering();
 //		new Thread() {
 //			@Override
@@ -1103,7 +1103,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 	//	protected abstract void handleWindowClosing();
 
-	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.DragControl source ) {
+	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.ZDragComponent source ) {
 		assert source != null;
 		org.alice.ide.codeeditor.CodeEditor codeEditor = this.getCodeEditorInFocus();
 		if( codeEditor != null ) {

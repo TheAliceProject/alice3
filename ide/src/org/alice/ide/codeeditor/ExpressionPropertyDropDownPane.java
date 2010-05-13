@@ -84,18 +84,18 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 	}
 
 
-	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.croquet.DragControl source ) {
+	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.croquet.ZDragComponent source ) {
 		return source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance;
 	}
-	public void dragStarted( edu.cmu.cs.dennisc.croquet.Context context ) {
+	public void dragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 	}
-	public void dragEntered( edu.cmu.cs.dennisc.croquet.Context context ) {
+	public void dragEntered( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 //		zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 //		source.setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), this.getMainComponent(), this.getBounds().height );
 	}
-	public void dragUpdated( edu.cmu.cs.dennisc.croquet.Context context ) {
+	public void dragUpdated( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 	}
-	public void dragDropped( edu.cmu.cs.dennisc.croquet.Context context ) {
+	public void dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 //		edu.cmu.cs.dennisc.croquet.KDragControl source = context.getDragSource();
 //		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
 //		if( source.getSubject() instanceof org.alice.ide.common.ExpressionCreatorPane ) {
@@ -115,11 +115,11 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 //			source.hideDropProxyIfNecessary();
 //		}
 	}
-	public void dragExited( edu.cmu.cs.dennisc.croquet.Context context, boolean isDropRecipient ) {
-		edu.cmu.cs.dennisc.croquet.DragControl source = context.getDragSource();
+	public void dragExited( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, boolean isDropRecipient ) {
+		edu.cmu.cs.dennisc.croquet.ZDragComponent source = context.getDragSource();
 		source.hideDropProxyIfNecessary();
 	}
-	public void dragStopped( edu.cmu.cs.dennisc.croquet.Context context ) {
+	public void dragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 	}
 	
 	public edu.cmu.cs.dennisc.croquet.Component< ? > getComponent() {

@@ -240,7 +240,11 @@ public abstract class Component<J extends javax.swing.JComponent> {
 	}
 
 	public void scaleFont(float scaleFactor) {
-		edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToScaledFont(this.getJComponent(), scaleFactor);
+		if( this.getJComponent() != null ) {
+			edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToScaledFont(this.getJComponent(), scaleFactor);
+		} else {
+			Thread.dumpStack();
+		}
 	}
 
 	public void setFontSize(float fontSize) {

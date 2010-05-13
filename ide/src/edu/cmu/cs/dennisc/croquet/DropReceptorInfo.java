@@ -46,17 +46,29 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface DropReceptor {
-	public boolean isPotentiallyAcceptingOf( ZDragComponent source );
-	public Component getComponent();
-	public void dragStarted( DragAndDropContext dragAndDropContext );
-	public void dragEntered( DragAndDropContext dragAndDropContext );
-	public void dragUpdated( DragAndDropContext dragAndDropContext );
-	
-	//todo: Dropped or Exited but not both?
-	public void dragDropped( DragAndDropContext dragAndDropContext );
-	public void dragExited( DragAndDropContext dragAndDropContext, boolean isDropRecipient );
-	
-	
-	public void dragStopped( DragAndDropContext dragAndDropContext );
+class DropReceptorInfo {
+	private DropReceptor dropReceptor;
+	private java.awt.Rectangle bounds;
+	public DropReceptorInfo( DropReceptor dropReceptor, java.awt.Rectangle bounds ) {
+		this.dropReceptor = dropReceptor;
+		this.bounds = bounds;
+	}
+	public boolean contains( int x, int y ) {
+		return this.bounds.contains( x, y );
+	}
+	public boolean intersects( java.awt.Rectangle rectangle ) {
+		return this.bounds.intersects( rectangle );
+	}
+	public DropReceptor getDropReceptor() {
+		return this.dropReceptor;
+	}
+	public void setDropReceptor( DropReceptor dropReceptor ) {
+		this.dropReceptor = dropReceptor;
+	}
+	public java.awt.Rectangle getBounds() {
+		return this.bounds;
+	}
+	public void setBounds( java.awt.Rectangle bounds ) {
+		this.bounds = bounds;
+	}
 }

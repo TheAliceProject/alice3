@@ -42,21 +42,21 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public interface DropReceptor {
-	public boolean isPotentiallyAcceptingOf( ZDragComponent source );
-	public Component getComponent();
-	public void dragStarted( DragAndDropContext dragAndDropContext );
-	public void dragEntered( DragAndDropContext dragAndDropContext );
-	public void dragUpdated( DragAndDropContext dragAndDropContext );
-	
-	//todo: Dropped or Exited but not both?
-	public void dragDropped( DragAndDropContext dragAndDropContext );
-	public void dragExited( DragAndDropContext dragAndDropContext, boolean isDropRecipient );
-	
-	
-	public void dragStopped( DragAndDropContext dragAndDropContext );
+class DropProxy extends Proxy {
+	public DropProxy( ZDragComponent dragComponent ) {
+		super( dragComponent );
+	}
+	@Override
+	protected float getAlpha() {
+		return 0.75f;
+	}
+	@Override
+	protected void paintProxy( java.awt.Graphics2D g2 ) {
+		this.getSubject().getJComponent().print( g2 );
+		g2.setColor( new java.awt.Color( 0, 0, 0, 127 ) );
+		fillBounds( g2 );
+	}
 }

@@ -85,6 +85,9 @@ public final class BoundedRangeIntegerStateEdit extends Edit {
 	protected void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
 		binaryEncoder.encode( this.previousValue );
 		binaryEncoder.encode( this.nextValue );
+
+		
+		//todo?
 		binaryEncoder.encode( this.isDoDesired );
 	}
 	

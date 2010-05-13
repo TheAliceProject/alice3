@@ -118,11 +118,10 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 ////			popupMenu.show( this, e.getX(), e.getY() );
 //		}
 //	}
-
+	
 	@Override
-	public void paint( java.awt.Graphics g ) {
-		super.paint( g );
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+	protected void paintEpilogue(java.awt.Graphics2D g2, int x, int y, int width, int height) {
+		super.paintEpilogue(g2, x, y, width, height);
 		if( this.statement.isEnabled.getValue() ) {
 			//pass
 		} else {

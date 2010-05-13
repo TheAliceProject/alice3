@@ -664,19 +664,12 @@ public class Context extends HistoryTreeNode {
 //			KDragControl.this.hideDropProxyIfNecessary();
 //		}
 //	}
-	public java.awt.event.MouseEvent getOriginalMouseEvent() {
-		throw new RuntimeException( "todo" );
-	}
-	public java.awt.event.MouseEvent getLatestMouseEvent() {
-		throw new RuntimeException( "todo" );
-	}
-	
-	public DragControl getDragSource() {
-		throw new RuntimeException( "todo" );
-	}
-	public DropReceptor getCurrentDropReceptor() {
-		throw new RuntimeException( "todo" );
-	}
+//	public DragControl getDragSource() {
+//		throw new RuntimeException( "todo" );
+//	}
+//	public DropReceptor getCurrentDropReceptor() {
+//		throw new RuntimeException( "todo" );
+//	}
 	@Deprecated
 	public java.awt.event.MouseEvent getMouseEvent() {
 		throw new RuntimeException( "todo" );

@@ -51,23 +51,26 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 //		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 //		return rv;
 //	}
-	class PreviewPane extends org.alice.ide.Component {
+	class PreviewPane extends edu.cmu.cs.dennisc.croquet.Component<javax.swing.JPanel> {
 		public void refresh() {
 			this.forgetAndRemoveAllComponents();
 //			java.awt.Component component = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane(
 //					PreviewInputPane.this.createPreviewSubComponent(),
 //					javax.swing.Box.createHorizontalGlue()
 //			);
-			this.addComponent( PanelWithPreview.this.createPreviewSubComponent(), java.awt.BorderLayout.WEST );
+			this.getJComponent().add( PanelWithPreview.this.createPreviewSubComponent().getJComponent(), java.awt.BorderLayout.WEST );
 			this.revalidateAndRepaint();
 		}
 		@Override
-		protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-			return new java.awt.BorderLayout();
-		}
-		@Override
-		protected boolean contains( int x, int y, boolean jContains ) {
-			return false;
+		protected javax.swing.JPanel createJComponent() {
+			javax.swing.JPanel rv = new javax.swing.JPanel() {
+				@Override
+				public boolean contains(int x, int y) {
+					return false;
+				}
+			};
+			rv.setLayout(new java.awt.BorderLayout());
+			return rv;
 		}
 		@Override
 		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {

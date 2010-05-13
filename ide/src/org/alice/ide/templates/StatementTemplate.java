@@ -65,7 +65,7 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 
 	public abstract void createStatement(edu.cmu.cs.dennisc.alice.ast.BlockStatement block, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement> taskObserver);
 
-	private edu.cmu.cs.dennisc.croquet.DragOperation dragOperation;
+	private edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation;
 
 	// @Override
 	// protected boolean isFauxDragDesired() {
@@ -85,7 +85,7 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 	// }
 	// };
 	// }
-	protected edu.cmu.cs.dennisc.croquet.DragOperation createDragOperation() {
+	protected edu.cmu.cs.dennisc.croquet.DragAndDropOperation createDragOperation() {
 		return new org.alice.ide.operations.DefaultDragOperation();
 	}
 
@@ -97,7 +97,7 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 		} else {
 			this.dragOperation = this.createDragOperation();
 		}
-		this.setDragOperation(this.dragOperation);
+		this.setDragAndDropOperation(this.dragOperation);
 	}
 
 	@Override
@@ -116,12 +116,11 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 	}
 
 	@Override
-	public void paint(java.awt.Graphics g) {
-		super.paint(g);
+	protected void paintEpilogue(java.awt.Graphics2D g2, int x, int y, int width, int height) {
+		super.paintEpilogue(g2, x, y, width, height);
 		if (getIDE().isSelectedFieldInScope()) {
 			// pass
 		} else {
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
 			g2.setPaint(edu.cmu.cs.dennisc.zoot.PaintUtilities.getDisabledTexturePaint());
 			this.fillBounds(g2);
 		}
