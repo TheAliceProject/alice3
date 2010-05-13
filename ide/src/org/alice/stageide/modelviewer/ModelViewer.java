@@ -54,7 +54,7 @@ abstract class AbstractViewer extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private org.alice.apis.moveandturn.Scene scene = new org.alice.apis.moveandturn.Scene();
 	private org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera = new org.alice.apis.moveandturn.SymmetricPerspectiveCamera();
 	private org.alice.apis.moveandturn.DirectionalLight sunLight = new org.alice.apis.moveandturn.DirectionalLight();
-	private edu.cmu.cs.dennisc.croquet.HeavyweightAdapter adapter;
+	private edu.cmu.cs.dennisc.croquet.Component<?> adapter;
 
 	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
 		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
@@ -70,7 +70,12 @@ abstract class AbstractViewer extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	protected void initialize() {
 		this.onscreenLookingGlass.addCamera( camera.getSGCamera() );
 		
-		this.adapter = new edu.cmu.cs.dennisc.croquet.HeavyweightAdapter( this.onscreenLookingGlass.getAWTComponent() );
+		this.adapter = new edu.cmu.cs.dennisc.croquet.Component<java.awt.Component>() {
+			@Override
+			protected java.awt.Component createAwtComponent() {
+				return AbstractViewer.this.onscreenLookingGlass.getAWTComponent();
+			}
+		};
 	}
 	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
 		return this.onscreenLookingGlass;
