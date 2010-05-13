@@ -170,7 +170,7 @@ public abstract class ZDragComponent extends ZControl {
 			for( DropReceptor dropReceptor : potentialDropReceptors ) {
 				Component<?> dropComponent = dropReceptor.getComponent();
 				java.awt.Rectangle bounds = dropComponent.getBounds();
-				bounds = javax.swing.SwingUtilities.convertRectangle( dropComponent.getParent().getJComponent(), bounds, this.getDragSource().getJComponent() );
+				bounds = javax.swing.SwingUtilities.convertRectangle( dropComponent.getJComponent().getParent(), bounds, this.getDragSource().getJComponent() );
 				this.potentialDropReceptorInfos[ i ] = new DropReceptorInfo( dropReceptor, bounds );
 				i++;
 			}
@@ -196,7 +196,7 @@ public abstract class ZDragComponent extends ZControl {
 		public ZDragComponent getDragSource() {
 			java.util.EventObject e = this.originalMouseEvent;
 			if( e != null ) {
-				return (ZDragComponent)e.getSource();
+				return (ZDragComponent)Component.lookup( (java.awt.Component)e.getSource() );
 			} else {
 				return null;
 			}

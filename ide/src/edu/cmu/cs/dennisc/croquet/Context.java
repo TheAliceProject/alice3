@@ -378,7 +378,28 @@ public class Context extends HistoryTreeNode {
 	
 	@Deprecated
 	public void pend( Resolver< ?, ? > resolver ) {
-		throw new RuntimeException( "todo" );
+		class PendTaskObserver< E extends Edit,F > implements edu.cmu.cs.dennisc.task.TaskObserver< F > {
+			private Context context;
+			private Resolver<E,F> resolver;
+			private E edit;
+			public PendTaskObserver( Context context, Resolver<E,F> resolver ) {
+				this.context = context;
+				this.resolver = resolver;
+				this.edit = this.resolver.createEdit();
+				java.util.UUID id = null;
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: pend id" );
+				this.edit = this.resolver.initialize( this.edit, this.context, id, this );
+			}
+			public void handleCompletion(F f) {
+				this.edit = this.resolver.handleCompletion( this.edit, f);
+				this.context.commitAndInvokeDo( this.edit );
+			}
+			public void handleCancelation() {
+				this.resolver.handleCancelation();
+				this.context.cancel();
+			}
+		}
+		new PendTaskObserver(this, resolver);
 	}
 	@Deprecated
 	public void todo() {

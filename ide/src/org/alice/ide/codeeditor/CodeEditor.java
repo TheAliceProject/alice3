@@ -220,7 +220,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 		return org.alice.ide.IDE.getSingleton();
 	}
 	public java.util.List< ? extends ExpressionPropertyDropDownPane > createListOfPotentialDropReceptors( final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		return this.findAllMatches( ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
+		return edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
 			public boolean accept( ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractType expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
 				if( expressionType.isAssignableFrom( type ) ) {
@@ -242,17 +242,17 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 			}
 		} );
 	}
-	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.croquet.ZDragComponent source ) {
+	public final boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.croquet.ZDragComponent source ) {
 		if( source instanceof org.alice.ide.templates.StatementTemplate ) {
 			return getIDE().getFocusedCode() == this.code;
 		} else {
 			return false;
 		}
 	}
-	public void dragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public final void dragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 	}
 
-	public void dragEntered( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public final void dragEntered( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 		edu.cmu.cs.dennisc.croquet.ZDragComponent source = context.getDragSource();
 		this.statementListPropertyPaneInfos = createStatementListPropertyPaneInfos( source );
 		this.repaint();
@@ -261,7 +261,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 		return this.scrollPane.getViewportView();
 	}
 	private StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( edu.cmu.cs.dennisc.croquet.ZDragComponent source ) {
-		java.util.List< StatementListPropertyPane > statementListPropertyPanes = this.findAllMatches( StatementListPropertyPane.class );
+		java.util.List< StatementListPropertyPane > statementListPropertyPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, StatementListPropertyPane.class );
 		StatementListPropertyPaneInfo[] rv = new StatementListPropertyPaneInfo[ statementListPropertyPanes.size() ];
 		int i = 0;
 		for( StatementListPropertyPane statementListPropertyPane : statementListPropertyPanes ) {
@@ -280,7 +280,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 	}
 	private StatementListPropertyPane getStatementListPropertyPaneUnder( java.awt.event.MouseEvent e, StatementListPropertyPaneInfo[] statementListPropertyPaneInfos ) {
 		StatementListPropertyPane rv = null;
-		for( StatementListPropertyPaneInfo statementListPropertyPaneInfo : statementListPropertyPaneInfos ) {
+		for( StatementListPropertyPaneInfo statementListPropertyPaneInfo : this.statementListPropertyPaneInfos ) {
 			if( statementListPropertyPaneInfo != null ) {
 				if( statementListPropertyPaneInfo.contains( e ) ) {
 					StatementListPropertyPane slpp = statementListPropertyPaneInfo.getStatementListPropertyPane();
@@ -298,7 +298,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 		}
 		return rv;
 	}
-	public void dragUpdated( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public final void dragUpdated( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 		edu.cmu.cs.dennisc.croquet.ZDragComponent source = context.getDragSource();
 		if( source != null ) {
 			java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
@@ -371,227 +371,227 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 		this.repaint();
 
 	}
-	public void dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
-//		final java.awt.Point viewPosition = this.scrollPane.getJComponent().getViewport().getViewPosition();
-//		final edu.cmu.cs.dennisc.croquet.KDragControl source = dragAndDropContext.getDragSource();
-//		final java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
-//		final StatementListPropertyPane statementListPropertyPane = CodeEditor.this.currentUnder;
-//		if( statementListPropertyPane != null ) {
-//			final int index = statementListPropertyPane.calculateIndex( source.convertPoint( eSource.getPoint(), statementListPropertyPane ) );
-//			if( source instanceof org.alice.ide.templates.StatementTemplate ) {
-//				final org.alice.ide.templates.StatementTemplate statementTemplate = (org.alice.ide.templates.StatementTemplate)source;
-//				if( this.currentUnder != null ) {
-//					final edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( source, CodeEditor.this, eSource );
-//					class DropOperation extends org.alice.ide.operations.AbstractActionOperation {
-//						public DropOperation() {
-//							super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "ad0e5d93-8bc2-4ad8-8dd5-37768eaa5319" ) );
-//						}
-//						@Override
-//						protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
-//							class DropEdit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
-//								private edu.cmu.cs.dennisc.alice.ast.Statement statement;
-//								@Override
-//								public void doOrRedo( boolean isDo ) {
-//									statementListPropertyPane.getProperty().add( index, statement );
-//									CodeEditor.this.refresh();
-//									CodeEditor.this.resetScrollPane( viewPosition );
-//								}
-//
-//								@Override
-//								public void undo() {
-//									if( statementListPropertyPane.getProperty().get( index ) == statement ) {
-//										statementListPropertyPane.getProperty().remove( index );
-//										CodeEditor.this.refresh();
-//										CodeEditor.this.resetScrollPane( viewPosition );
-//									} else {
-//										throw new javax.swing.undo.CannotUndoException();
-//									}
-//								}
-//								
-//								@Override
-//								protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
-//									//super.updatePresentation( rv, locale );
-//									rv.append( "drop: " );
-//									edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, statement, locale );
-//									return rv;
-//								}
-//							}
-//							context.pend( new edu.cmu.cs.dennisc.zoot.Resolver< DropEdit, edu.cmu.cs.dennisc.alice.ast.Statement >() {
-//								public DropEdit createEdit() {
-//									return new DropEdit();
-//								}
-//								public DropEdit initialize(DropEdit rv, edu.cmu.cs.dennisc.zoot.Context<? extends edu.cmu.cs.dennisc.zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement> taskObserver) {
-//									edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
-//									if( propertyOwner instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
-//										edu.cmu.cs.dennisc.alice.ast.BlockStatement block = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)propertyOwner;
-//										statementTemplate.createStatement( dragAndDropEvent, block, taskObserver );
-//									}
-//									return rv;
-//								}
-//								
-//								public DropEdit handleCompletion(DropEdit rv, edu.cmu.cs.dennisc.alice.ast.Statement statement) {
-//									rv.statement = statement;
-//									source.hideDropProxyIfNecessary();
-//									return rv;
-//								}
-//								public void handleCancelation() {
-//									source.hideDropProxyIfNecessary();
-//								}
-//							} );
-//						}
-//					}
-//					dragAndDropContext.perform( new DropOperation(), dragAndDropEvent, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
-//				} else {
-//					source.hideDropProxyIfNecessary();
-//				}
-//			} else if( source != null && source.getSubject() instanceof org.alice.ide.common.AbstractStatementPane ) {
-//				source.hideDropProxyIfNecessary();
-//				if( this.currentUnder != null ) {
-//					final edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( source, CodeEditor.this, eSource );
-//					org.alice.ide.common.AbstractStatementPane abstractStatementPane = (org.alice.ide.common.AbstractStatementPane)source.getSubject();
-//					final edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
-//					final edu.cmu.cs.dennisc.alice.ast.StatementListProperty prevOwner = abstractStatementPane.getOwner();
-//					final edu.cmu.cs.dennisc.alice.ast.StatementListProperty nextOwner = this.currentUnder.getProperty();
-//					final int prevIndex = prevOwner.indexOf( statement );
-//					final int nextIndex = this.currentUnder.calculateIndex( source.convertPoint( eSource.getPoint(), this.currentUnder ) );
-//
-//					
-//					abstract class CodeEdit extends org.alice.ide.ToDoEdit {
-//						protected abstract void redoInternal();
-//						protected abstract void undoInternal();
-//
-//						protected void refreshAndResetScrollPane() {
-//							CodeEditor.this.refresh();
-//							CodeEditor.this.resetScrollPane( viewPosition );
-//						}
-//						@Override
-//						public final void doOrRedo( boolean isFirstTime ) {
-//							this.redoInternal();
-//							this.refreshAndResetScrollPane();
-//						}
-//						@Override
-//						public final void undo() {
-//							this.undoInternal();
-//							this.refreshAndResetScrollPane();
-//						}
-//					}
-//					
-//					edu.cmu.cs.dennisc.croquet.AbstractActionOperation operation;
-//					if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
-//						class CopyOperation extends org.alice.ide.operations.AbstractActionOperation {
-//							public CopyOperation() {
-//								super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "ef6143be-5de3-4a55-aed3-f61d8ebbbef2" ) );
-//							}
-//							@Override
-//							protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
-//								final edu.cmu.cs.dennisc.alice.ast.Statement copy = (edu.cmu.cs.dennisc.alice.ast.Statement)getIDE().createCopy( statement );
-//								class CopyEdit extends CodeEdit {
-//									@Override
-//									protected void redoInternal() {
-//										nextOwner.add( nextIndex, copy );
-//									}
-//									@Override
-//									protected void undoInternal() {
-//										if( nextOwner.get( nextIndex ) == copy ) {
-//											nextOwner.remove( nextIndex );
-//										} else {
-//											throw new javax.swing.undo.CannotUndoException();
-//										}
-//									}
-//									@Override
-//									protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-//										rv.append( "copy code" );
-//										return rv;
-//									}
-//									
-//								}
-//								context.commitAndInvokeDo( new CopyEdit() );
-//							}
-//						}
-//						operation = new CopyOperation();
-//					} else {
-//						if( prevOwner == nextOwner ) {
-//							if( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) {
-//								operation = null;
-//							} else {
-//								class ReorderOperation extends org.alice.ide.operations.AbstractActionOperation {
-//									public ReorderOperation() {
-//										super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "e2cffe11-be24-4b5c-9ca4-ac0d71ecd16c" ) );
-//									}
-//									@Override
-//									protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
-//										class ReorderEdit extends CodeEdit {
-//											private edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner;
-//											private int aIndex;
-//											private int bIndex;
-//											
-//											public ReorderEdit() {
-//												assert prevOwner == nextOwner;
-//												this.owner = prevOwner;
-//												this.aIndex = prevIndex;
-//												if( prevIndex < nextIndex ) {
-//													this.bIndex = nextIndex - 1;
-//												} else {
-//													this.bIndex = nextIndex;
-//												}
-//											}
-//											@Override
-//											protected void redoInternal() {
-//												this.owner.remove( this.aIndex );
-//												this.owner.add( this.bIndex, statement );
-//											}
-//											@Override
-//											protected void undoInternal() {
-//												this.owner.remove( this.bIndex );
-//												this.owner.add( this.aIndex, statement );
-//											}
-//											@Override
-//											protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-//												rv.append( "move code" );
-//												return rv;
-//											}
-//										}
-//										context.commitAndInvokeDo( new ReorderEdit() );
-//									}
-//								}
-//								operation = new ReorderOperation();
-//							}
-//						} else {
-//							class ReparentOperation extends org.alice.ide.operations.AbstractActionOperation {
-//								public ReparentOperation() {
-//									super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "6049a378-2972-4672-a211-1f3fcda45025" ) );
-//								}
-//								@Override
-//								protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
-//									class ReparentEdit extends CodeEdit {
-//										@Override
-//										protected void redoInternal() {
-//											prevOwner.remove( prevIndex );
-//											nextOwner.add( nextIndex, statement );
-//										}
-//										@Override
-//										protected void undoInternal() {
-//											prevOwner.add( prevIndex, statement );
-//											nextOwner.remove( nextIndex );
-//										}
-//										@Override
-//										protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-//											rv.append( "move code" );
-//											return rv;
-//										}
-//									}
-//									context.commitAndInvokeDo( new ReparentEdit() );
-//								}
-//							}
-//							operation = new ReparentOperation();
-//						}
-//					}
-//					if( operation != null ) {
-//						dragAndDropContext.perform( operation, dragAndDropEvent, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
-//					}
-//				}
-//			}
-//		}
+	public final void dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+		final java.awt.Point viewPosition = this.scrollPane.getJComponent().getViewport().getViewPosition();
+		final edu.cmu.cs.dennisc.croquet.ZDragComponent source = context.getDragSource();
+		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
+		final StatementListPropertyPane statementListPropertyPane = CodeEditor.this.currentUnder;
+		if( statementListPropertyPane != null ) {
+			final int index = statementListPropertyPane.calculateIndex( source.convertPoint( eSource.getPoint(), statementListPropertyPane ) );
+			if( source instanceof org.alice.ide.templates.StatementTemplate ) {
+				final org.alice.ide.templates.StatementTemplate statementTemplate = (org.alice.ide.templates.StatementTemplate)source;
+				if( this.currentUnder != null ) {
+					//final edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( source, CodeEditor.this, eSource );
+					class DropOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+						public DropOperation() {
+							super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "ad0e5d93-8bc2-4ad8-8dd5-37768eaa5319" ) );
+						}
+						@Override
+						protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
+							final java.awt.event.MouseEvent mouseEvent = (java.awt.event.MouseEvent)e;
+							class DropEdit extends org.alice.ide.ToDoEdit {
+								private edu.cmu.cs.dennisc.alice.ast.Statement statement;
+								@Override
+								public void doOrRedo( boolean isDo ) {
+									statementListPropertyPane.getProperty().add( index, statement );
+									CodeEditor.this.refresh();
+									CodeEditor.this.resetScrollPane( viewPosition );
+								}
+
+								@Override
+								public void undo() {
+									if( statementListPropertyPane.getProperty().get( index ) == statement ) {
+										statementListPropertyPane.getProperty().remove( index );
+										CodeEditor.this.refresh();
+										CodeEditor.this.resetScrollPane( viewPosition );
+									} else {
+										throw new javax.swing.undo.CannotUndoException();
+									}
+								}
+								
+								@Override
+								protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+									//super.updatePresentation( rv, locale );
+									rv.append( "drop: " );
+									edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, statement, locale );
+									return rv;
+								}
+							}
+							context.pend( new edu.cmu.cs.dennisc.croquet.Resolver< DropEdit, edu.cmu.cs.dennisc.alice.ast.Statement >() {
+								public DropEdit createEdit() {
+									return new DropEdit();
+								}
+								public DropEdit initialize(DropEdit rv, edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement> taskObserver) {
+									edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
+									if( propertyOwner instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
+										edu.cmu.cs.dennisc.alice.ast.BlockStatement block = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)propertyOwner;
+										statementTemplate.createStatement( mouseEvent, block, taskObserver );
+									}
+									return rv;
+								}
+								
+								public DropEdit handleCompletion(DropEdit rv, edu.cmu.cs.dennisc.alice.ast.Statement statement) {
+									rv.statement = statement;
+									source.hideDropProxyIfNecessary();
+									return rv;
+								}
+								public void handleCancelation() {
+									source.hideDropProxyIfNecessary();
+								}
+							} );
+						}
+					}
+					new DropOperation().fire(context.getLatestMouseEvent(), this);
+				} else {
+					source.hideDropProxyIfNecessary();
+				}
+			} else if( source != null && source.getSubject() instanceof org.alice.ide.common.AbstractStatementPane ) {
+				source.hideDropProxyIfNecessary();
+				if( this.currentUnder != null ) {
+					org.alice.ide.common.AbstractStatementPane abstractStatementPane = (org.alice.ide.common.AbstractStatementPane)source.getSubject();
+					final edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
+					final edu.cmu.cs.dennisc.alice.ast.StatementListProperty prevOwner = abstractStatementPane.getOwner();
+					final edu.cmu.cs.dennisc.alice.ast.StatementListProperty nextOwner = this.currentUnder.getProperty();
+					final int prevIndex = prevOwner.indexOf( statement );
+					final int nextIndex = this.currentUnder.calculateIndex( source.convertPoint( eSource.getPoint(), this.currentUnder ) );
+
+					
+					abstract class CodeEdit extends org.alice.ide.ToDoEdit {
+						protected abstract void redoInternal();
+						protected abstract void undoInternal();
+
+						protected void refreshAndResetScrollPane() {
+							CodeEditor.this.refresh();
+							CodeEditor.this.resetScrollPane( viewPosition );
+						}
+						@Override
+						public final void doOrRedo( boolean isFirstTime ) {
+							this.redoInternal();
+							this.refreshAndResetScrollPane();
+						}
+						@Override
+						public final void undo() {
+							this.undoInternal();
+							this.refreshAndResetScrollPane();
+						}
+					}
+					
+					edu.cmu.cs.dennisc.croquet.AbstractActionOperation operation;
+					if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
+						class CopyOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+							public CopyOperation() {
+								super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "ef6143be-5de3-4a55-aed3-f61d8ebbbef2" ) );
+							}
+							@Override
+							protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
+								final edu.cmu.cs.dennisc.alice.ast.Statement copy = (edu.cmu.cs.dennisc.alice.ast.Statement)getIDE().createCopy( statement );
+								class CopyEdit extends CodeEdit {
+									@Override
+									protected void redoInternal() {
+										nextOwner.add( nextIndex, copy );
+									}
+									@Override
+									protected void undoInternal() {
+										if( nextOwner.get( nextIndex ) == copy ) {
+											nextOwner.remove( nextIndex );
+										} else {
+											throw new javax.swing.undo.CannotUndoException();
+										}
+									}
+									@Override
+									protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+										rv.append( "copy code" );
+										return rv;
+									}
+									
+								}
+								context.commitAndInvokeDo( new CopyEdit() );
+							}
+						}
+						operation = new CopyOperation();
+					} else {
+						if( prevOwner == nextOwner ) {
+							if( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) {
+								operation = null;
+							} else {
+								class ReorderOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+									public ReorderOperation() {
+										super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "e2cffe11-be24-4b5c-9ca4-ac0d71ecd16c" ) );
+									}
+									@Override
+									protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
+										class ReorderEdit extends CodeEdit {
+											private edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner;
+											private int aIndex;
+											private int bIndex;
+											
+											public ReorderEdit() {
+												assert prevOwner == nextOwner;
+												this.owner = prevOwner;
+												this.aIndex = prevIndex;
+												if( prevIndex < nextIndex ) {
+													this.bIndex = nextIndex - 1;
+												} else {
+													this.bIndex = nextIndex;
+												}
+											}
+											@Override
+											protected void redoInternal() {
+												this.owner.remove( this.aIndex );
+												this.owner.add( this.bIndex, statement );
+											}
+											@Override
+											protected void undoInternal() {
+												this.owner.remove( this.bIndex );
+												this.owner.add( this.aIndex, statement );
+											}
+											@Override
+											protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+												rv.append( "move code" );
+												return rv;
+											}
+										}
+										context.commitAndInvokeDo( new ReorderEdit() );
+									}
+								}
+								operation = new ReorderOperation();
+							}
+						} else {
+							class ReparentOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+								public ReparentOperation() {
+									super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "6049a378-2972-4672-a211-1f3fcda45025" ) );
+								}
+								@Override
+								protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
+									class ReparentEdit extends CodeEdit {
+										@Override
+										protected void redoInternal() {
+											prevOwner.remove( prevIndex );
+											nextOwner.add( nextIndex, statement );
+										}
+										@Override
+										protected void undoInternal() {
+											prevOwner.add( prevIndex, statement );
+											nextOwner.remove( nextIndex );
+										}
+										@Override
+										protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+											rv.append( "move code" );
+											return rv;
+										}
+									}
+									context.commitAndInvokeDo( new ReparentEdit() );
+								}
+							}
+							operation = new ReparentOperation();
+						}
+					}
+					if( operation != null ) {
+						operation.fire( context.getLatestMouseEvent(), this );
+					}
+				}
+			}
+		}
 	}
 	private void resetScrollPane( final java.awt.Point viewPosition ) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
@@ -601,7 +601,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 			}
 		} );
 	}
-	public void dragExited( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, boolean isDropRecipient ) {
+	public final void dragExited( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, boolean isDropRecipient ) {
 		this.statementListPropertyPaneInfos = null;
 		this.currentUnder = null;
 		this.repaint();
@@ -614,7 +614,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 			}
 		}
 	}
-	public void dragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public final void dragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 	}
 	//	@Override
 	//	public void paint( java.awt.Graphics g ) {

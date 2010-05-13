@@ -55,15 +55,36 @@ public abstract class Component<J extends javax.swing.JComponent> {
 
 	/* package-private */static Component<?> lookup(java.awt.Component component) {
 		if (component != null) {
-			return Component.map.get(component);
+			Component<?> rv = Component.map.get(component);
+			if( rv != null ) {
+				//pass
+			} else {
+				if (component instanceof javax.swing.JComponent) {
+					javax.swing.JComponent jComponent = (javax.swing.JComponent) component;
+					class SwingAdapter extends Component< javax.swing.JComponent > {
+						private javax.swing.JComponent jComponent;
+						public SwingAdapter( javax.swing.JComponent jComponent ) {
+							this.jComponent = jComponent;
+							edu.cmu.cs.dennisc.print.PrintUtilities.println( "creating adapter for: ", jComponent );
+						}
+						@Override
+						protected javax.swing.JComponent createJComponent() {
+							return this.jComponent;
+						}
+					}
+					rv = new SwingAdapter( jComponent );
+				} else {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: create adapter for:", component.getClass() );
+					rv = null;
+				}
+			}
+			return rv;
 		} else {
 			return null;
 		}
 	}
 
 
-	private java.awt.Container awtParent;
-	
 //	private java.awt.event.ContainerListener containerListener = new java.awt.event.ContainerListener() {
 //		public void componentAdded(java.awt.event.ContainerEvent e) {
 //			assert e.getContainer() == Component.this.getJComponent();
@@ -124,6 +145,7 @@ public abstract class Component<J extends javax.swing.JComponent> {
 		}
 	};
 
+	private java.awt.Container awtParent;
 	private void handleParentChange( java.awt.Container awtParent ) {
 		if( this.awtParent != null ) {
 			Component<?> parent = Component.lookup( this.awtParent );
@@ -240,11 +262,7 @@ public abstract class Component<J extends javax.swing.JComponent> {
 	}
 
 	public void scaleFont(float scaleFactor) {
-		if( this.getJComponent() != null ) {
-			edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToScaledFont(this.getJComponent(), scaleFactor);
-		} else {
-			Thread.dumpStack();
-		}
+		edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToScaledFont(this.getJComponent(), scaleFactor);
 	}
 
 	public void setFontSize(float fontSize) {
@@ -368,15 +386,6 @@ public abstract class Component<J extends javax.swing.JComponent> {
 
 	public java.awt.Rectangle getBounds() {
 		return this.getJComponent().getBounds();
-	}
-
-	public <T extends Component<?>> java.util.List<T> findAllMatches(Class<T> cls, edu.cmu.cs.dennisc.pattern.Criterion<T> criterion) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: findAllMatches");
-		return java.util.Collections.emptyList();
-	}
-
-	public <T extends Component<?>> java.util.List<T> findAllMatches(Class<T> cls) {
-		return this.findAllMatches(cls, null);
 	}
 
 	@Deprecated

@@ -68,6 +68,10 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 				public boolean contains(int x, int y) {
 					return false;
 				}
+				@Override
+				public java.awt.Dimension getPreferredSize() {
+					return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+				}
 			};
 			rv.setLayout(new java.awt.BorderLayout());
 			return rv;
@@ -101,10 +105,6 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent();
 	
 //	todo: croquet switch
-//	@Override
-//	public java.awt.Dimension getPreferredSize() {
-//		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
-//	}
 //	@Override
 //	public void updateOKButton() {
 //		super.updateOKButton();
