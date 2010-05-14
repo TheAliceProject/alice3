@@ -318,11 +318,11 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 //	protected void handleDeclarationNameUpdate( javax.swing.event.DocumentEvent e ) {
 //		this.updateOKButton();
 //	}
-	protected boolean isDeclarationNameValidAndAvailable() {
+	protected String getExplanationIfOkButtonShouldBeDisabled(String name) {
 		if( this.nodeNameValidator != null ) {
-			return this.nodeNameValidator.isNameValidAndAvailable( this.declarationNameState.getState() );
+			return this.nodeNameValidator.getExplanationIfOkButtonShouldBeDisabled( this.declarationNameState.getState() );
 		} else {
-			return true;
+			return null;
 		}
 	}
 	protected boolean isValueTypeValid() {

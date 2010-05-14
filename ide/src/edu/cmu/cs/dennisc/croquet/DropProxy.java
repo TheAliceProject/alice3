@@ -45,8 +45,8 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-class DropProxy extends Proxy {
-	public DropProxy( ZDragComponent dragComponent ) {
+/*package-private*/ class DropProxy extends Proxy {
+	public DropProxy( DragComponent dragComponent ) {
 		super( dragComponent );
 	}
 	@Override

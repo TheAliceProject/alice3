@@ -799,7 +799,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 	private ComponentStencil stencil;
 	private java.util.List< ? extends edu.cmu.cs.dennisc.croquet.Component< ? > > holes = null;
-	private edu.cmu.cs.dennisc.croquet.ZDragComponent potentialDragSource;
+	private edu.cmu.cs.dennisc.croquet.DragComponent potentialDragSource;
 	private edu.cmu.cs.dennisc.croquet.Component< ? > currentDropReceptorComponent;
 
 	protected boolean isFauxStencilDesired() {
@@ -903,7 +903,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 	//public abstract void handleDelete( edu.cmu.cs.dennisc.alice.ast.Node node );
 
-	public void showStencilOver( edu.cmu.cs.dennisc.croquet.ZDragComponent potentialDragSource, final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public void showStencilOver( edu.cmu.cs.dennisc.croquet.DragComponent potentialDragSource, final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorInFocus();
 		if( codeEditor != null ) {
 			this.holes = codeEditor.createListOfPotentialDropReceptors( type );
@@ -1103,7 +1103,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 	//	protected abstract void handleWindowClosing();
 
-	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.ZDragComponent source ) {
+	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.DragComponent source ) {
 		assert source != null;
 		org.alice.ide.codeeditor.CodeEditor codeEditor = this.getCodeEditorInFocus();
 		if( codeEditor != null ) {
@@ -1853,7 +1853,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 		int i = 2;
 		String rv = baseName;
-		while( validator.isNameValidAndAvailable( rv ) == false ) {
+		while( validator.getExplanationIfOkButtonShouldBeDisabled( rv ) != null ) {
 			rv = baseName + i;
 			i++;
 		}

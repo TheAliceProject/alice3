@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-class DragProxy extends Proxy {
+/*package-private*/ class DragProxy extends Proxy {
 	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
 		public void keyPressed( java.awt.event.KeyEvent e ) {
 		}
@@ -58,7 +58,7 @@ class DragProxy extends Proxy {
 		}
 	};
 	private boolean isAlphaDesiredWhenOverDropReceptor;
-	public DragProxy( ZDragComponent dragComponent, boolean isAlphaDesiredWhenOverDropReceptor ) {
+	public DragProxy( DragComponent dragComponent, boolean isAlphaDesiredWhenOverDropReceptor ) {
 		super( dragComponent );
 		this.isAlphaDesiredWhenOverDropReceptor = isAlphaDesiredWhenOverDropReceptor;
 	}

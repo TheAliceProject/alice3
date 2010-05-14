@@ -49,10 +49,8 @@ package org.alice.ide.choosers;
  */
 public interface ValueChooser<E> {
 	public String getTitleDefault();
-//	public void setInputPanel( edu.cmu.cs.dennisc.croquet.InputPanel< ? > inputPane );
+	public String getExplanationIfOkButtonShouldBeDisabled();
 	public java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv );
-//	public String[] getLabelTexts();
-//	public java.awt.Component[] getComponents();
 	public E getValue();
 }
 

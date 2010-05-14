@@ -51,11 +51,11 @@ public class RenamePane extends NameInputPane {
 		this.nameValidator = nameValidator;
 	}
 	@Override
-	protected boolean isNameAcceptable( String name ) {
+	protected String getExplanationIfOkButtonShouldBeDisabled(String name) {
 		if( this.nameValidator != null ) {
-			return this.nameValidator.isNameValidAndAvailable( name );
+			return this.nameValidator.getExplanationIfOkButtonShouldBeDisabled( name );
 		} else {
-			return true;
+			return null;
 		}
 	}
 }

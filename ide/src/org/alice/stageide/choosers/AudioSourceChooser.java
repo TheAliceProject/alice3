@@ -243,12 +243,17 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	public String getTitleDefault() {
 		return "Enter Custom Audio Source";
 	}
-	public boolean isInputValid() {
+	
+	public String getExplanationIfOkButtonShouldBeDisabled() {
 		edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = (edu.cmu.cs.dennisc.alice.ast.ResourceExpression)bogusNode.bogusProperty.getValue();
 		if( resourceExpression != null ) {
-			return resourceExpression.resource.getValue() instanceof org.alice.virtualmachine.resources.AudioResource;
+			if( resourceExpression.resource.getValue() instanceof org.alice.virtualmachine.resources.AudioResource ) {
+				return null;
+			} else {
+				return "resource is not audio";
+			}
 		} else {
-			return false;
+			return "resource is not set";
 		}
 	}
 	@Override

@@ -46,6 +46,17 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class InputDialogOperation extends AbstractActionOperation {
+//	public static interface Validator {
+//		public String getExplanationForInvalidOkButton();
+//	}
+//	private java.util.List<Validator> validators = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+//	public void addValidator(Validator validator) {
+//		this.validators.add(validator);
+//	}
+//	public void removeValidator(Validator validator) {
+//		this.validators.remove(validator);
+//	}
+
 	private class ButtonOperation extends ActionOperation {
 		private boolean isOk;
 		private Dialog dialog;
@@ -64,21 +75,16 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 			assert this.dialog != null;
 			InputDialogOperation.this.isOk = this.isOk;
-//			if (this.isOk) {
-//				context.finish();
-//			} else {
-//				context.cancel();
-//			}
 			this.dialog.setVisible( false );
 		}
 	}
-	public static interface Validator {
-		public boolean isInputValid();
-	}
 
-	private java.util.List<Validator> validators = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
+	private static final String NULL_EXPLANATION = "good to go";
+	//private StringStateOperation explanationState = new StringStateOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "e9bb246f-f65d-487b-b226-230bbd4d4fdb" ), NULL_EXPLANATION );
 	private ButtonOperation okOperation;
 	private ButtonOperation cancelOperation;
+	private Label explanationLabel = new Label( NULL_EXPLANATION );
 	private boolean isOk = false;
 	
 	public InputDialogOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, String name, boolean isCancelDesired) {
@@ -90,6 +96,8 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 		} else {
 			this.cancelOperation = null;
 		}
+		this.explanationLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
+		this.explanationLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 0 ) );
 	}
 	public InputDialogOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, String title) {
 		this(groupUUID, individualUUID, title, true);
@@ -99,23 +107,43 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 	}
 
 
+	protected String getExplanationIfOkButtonShouldBeDisabled() {
+		return null;
+	}
 	protected abstract edu.cmu.cs.dennisc.croquet.Component<?> prologue( edu.cmu.cs.dennisc.croquet.Context context );
 	protected abstract void epilogue( edu.cmu.cs.dennisc.croquet.Context context, boolean isOk );
 
-	public void addValidator(Validator validator) {
-		this.validators.add(validator);
+	protected void updateOkOperationAndExplanation() {
+		String explanation = this.getExplanationIfOkButtonShouldBeDisabled();
+		this.okOperation.setEnabled( explanation == null );
+		if( explanation != null ) {
+			this.explanationLabel.setText( explanation );
+			this.explanationLabel.setForegroundColor( java.awt.Color.RED.darker().darker() );
+		} else {
+			this.explanationLabel.setText( NULL_EXPLANATION );
+			this.explanationLabel.setForegroundColor( this.explanationLabel.getBackgroundColor() );
+		}
 	}
 
-	public void removeValidator(Validator validator) {
-		this.validators.remove(validator);
-	}
-
-	protected java.awt.Dimension getDesiredDialogSize() {
+	protected java.awt.Dimension getDesiredDialogSize( Dialog dialog ) {
 		return null;
 	}
 	@Override
 	protected final void perform(Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
-		Component<?> contentPane = this.prologue(context);
+		Context childContext = context.createChildContext();
+		edu.cmu.cs.dennisc.croquet.Context.ChildrenObserver childrenObserver = new edu.cmu.cs.dennisc.croquet.Context.ChildrenObserver() {
+			public void addingChild(edu.cmu.cs.dennisc.croquet.HistoryTreeNode child) {
+			}
+			public void addedChild(edu.cmu.cs.dennisc.croquet.HistoryTreeNode child) {
+				InputDialogOperation.this.updateOkOperationAndExplanation();
+			}
+		};
+		this.updateOkOperationAndExplanation();
+		
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate.  observer should not need to be added to the root" );
+		Application.getSingleton().getRootContext().addChildrenObserver( childrenObserver );
+		
+		Component<?> contentPane = this.prologue(childContext);
 		if( contentPane != null ) {
 			class BottomPanel extends Panel {
 				private Button okButton = okOperation.createButton();
@@ -187,12 +215,18 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 			this.okOperation.setDialog(dialog);
 			this.cancelOperation.setDialog(dialog);
 			this.isOk = false;
+			
+			
+			PageAxisPanel southPanel = new PageAxisPanel();
+			southPanel.addComponent( this.explanationLabel );
+			southPanel.addComponent( bottomPanel );
+
 			BorderPanel borderPanel = dialog.getContentPanel();
 			borderPanel.setBackgroundColor( contentPane.getBackgroundColor() );
 			borderPanel.addComponent( contentPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
-			borderPanel.addComponent( bottomPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.SOUTH );
+			borderPanel.addComponent( southPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.SOUTH );
 
-			java.awt.Dimension size = this.getDesiredDialogSize();
+			java.awt.Dimension size = this.getDesiredDialogSize( dialog );
 			if( size != null ) {
 				dialog.getAwtWindow().setSize( size );
 			} else {
@@ -202,11 +236,14 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 			//edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin(dialog.getAwtWindow(), button.getRoot().getAwtWindow());
 
 			dialog.setVisible( true );
-			this.epilogue(context, this.isOk);
+			this.epilogue(childContext, this.isOk);
+
 			this.okOperation.setDialog(null);
 			this.cancelOperation.setDialog(null);
 		} else {
-			this.epilogue(context, false);
+			this.epilogue(childContext, false);
 		}
+		Application.getSingleton().getRootContext().removeChildrenObserver( childrenObserver );
+		context.finish();
 	}
 }

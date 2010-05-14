@@ -145,13 +145,6 @@ public /*final*/ class BooleanStateOperation extends Operation {
 		this.updateName();
 	}
 
-	protected void addAbstractButton(AbstractButton<?> abstractButton) {
-		this.addComponent(abstractButton);
-	}
-
-	protected void removeAbstractButton(AbstractButton<?> abstractButton) {
-		this.removeComponent(abstractButton);
-	}
 
 	private void updateName() {
 		String name;
@@ -163,6 +156,12 @@ public /*final*/ class BooleanStateOperation extends Operation {
 		this.action.putValue(javax.swing.Action.NAME, name);
 	}
 	
+	protected void addAbstractButton(AbstractButton<?> abstractButton) {
+		this.addComponent(abstractButton);
+	}
+	protected void removeAbstractButton(AbstractButton<?> abstractButton) {
+		this.removeComponent(abstractButton);
+	}
 	public < B extends AbstractButton<?> > B register( final B rv ) {
 		Application.getSingleton().register( this );
 		rv.setModel( this.buttonModel );

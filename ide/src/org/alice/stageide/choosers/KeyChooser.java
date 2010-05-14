@@ -111,8 +111,12 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractChooser< org.alic
 	public org.alice.apis.moveandturn.Key getValue() {
 		return this.key;
 	}
-	public boolean isInputValid() {
-		return getValue() != null;
+	public String getExplanationIfOkButtonShouldBeDisabled() {
+		if( this.getValue() != null ) {
+			return null;
+		} else {
+			return "value not set";
+		}
 	}
 	public String getTitleDefault() {
 		return "Press Key on Keyboard To Enter Custom Key";

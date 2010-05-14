@@ -50,13 +50,13 @@ public class HorizontalSplitPane extends SplitPane {
 	public HorizontalSplitPane() {
 		super( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	}
-	public HorizontalSplitPane( Component topComponent, Component bottomComponent ) {
+	public HorizontalSplitPane( Component<?> topComponent, Component<?> bottomComponent ) {
 		super( javax.swing.JSplitPane.HORIZONTAL_SPLIT, topComponent, bottomComponent );
 	}
-	public void setLeftComponent( Component component ) {
+	public void setLeftComponent( Component<?> component ) {
 		this.setTopOrLeftComponent( component );
 	}
-	public void setRightComponent( Component component ) {
+	public void setRightComponent( Component<?> component ) {
 		this.setBottomOrRightComponent( component );
 	}
 }

@@ -52,6 +52,6 @@ public abstract class DragAndDropContext extends Context {
 	public abstract java.awt.event.MouseEvent getOriginalMouseEvent();
 	public abstract java.awt.event.MouseEvent getLatestMouseEvent();
 	
-	public abstract ZDragComponent getDragSource();
+	public abstract DragComponent getDragSource();
 	public abstract DropReceptor getCurrentDropReceptor();
 }

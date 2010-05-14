@@ -59,8 +59,8 @@ public class VolumeLevelChooser extends org.alice.ide.choosers.AbstractChooser< 
 	public org.alice.apis.moveandturn.VolumeLevel getValue() {
 		return new org.alice.apis.moveandturn.VolumeLevel( this.volumeLevelControl.getVolumeLevel() );
 	}
-	public boolean isInputValid() {
-		return true;
+	public String getExplanationIfOkButtonShouldBeDisabled() {
+		return null;
 	}
 	public String getTitleDefault() {
 		return "Enter Custom Volume Level";

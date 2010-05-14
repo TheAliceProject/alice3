@@ -62,16 +62,19 @@ public final class StringStateOperation extends Operation {
 	
 	private javax.swing.text.Document document;
 	private javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
+		private void handleUpdate(javax.swing.event.DocumentEvent e) {
+			Application application = Application.getSingleton();
+			Context context = application.getCurrentContext();
+			context.addChild( new StringStateEvent( context, StringStateOperation.this, e ) );
+		}
 		public void changedUpdate(javax.swing.event.DocumentEvent e) {
-//			Application application = Application.getSingleton();
-//			Context parentContext = application.getCurrentContext();
-//			Context childContext = parentContext.createChildContext();
-//			childContext.addChild( new BooleanStateEvent( childContext, BooleanStateOperation.this, e ) );
-//			BooleanStateOperation.this.perform( childContext, e );
+			this.handleUpdate(e);
 		}
 		public void insertUpdate(javax.swing.event.DocumentEvent e) {
+			this.handleUpdate(e);
 		}
 		public void removeUpdate(javax.swing.event.DocumentEvent e) {
+			this.handleUpdate(e);
 		}
 	};
 
@@ -103,17 +106,18 @@ public final class StringStateOperation extends Operation {
 	}
 
 	protected void addTextComponent(TextComponent<?> textComponent) {
-		textComponent.setDocument(this.document);
+		//textComponent.setDocument(this.document);
 		this.addComponent(textComponent);
 	}
 
 	protected void removeTextComponent(TextComponent<?> textComponent) {
 		this.removeComponent(textComponent);
-		textComponent.setDocument(null);
+		//textComponent.setDocument(null);
 	}
 
 	private < T extends TextComponent<?> > T register( final T rv ) {
 		Application.getSingleton().register( this );
+		rv.setDocument(this.document);
 		rv.addContainmentObserver( new Component.ContainmentObserver() {
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				StringStateOperation.this.addTextComponent( rv );

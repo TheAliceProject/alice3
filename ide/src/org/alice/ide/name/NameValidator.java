@@ -46,7 +46,16 @@ package org.alice.ide.name;
 public abstract class NameValidator {
 	public abstract boolean isNameValid( String name );
 	protected abstract boolean isNameAvailable( String name );
-	public final boolean isNameValidAndAvailable( String name ) {
-		return this.isNameValid( name ) && this.isNameAvailable( name );
+	
+	public final String getExplanationIfOkButtonShouldBeDisabled( String name ) {
+		if( this.isNameValid( name ) ) {
+			if( this.isNameAvailable( name ) ) {
+				return null;
+			} else {
+				return "\"" + name + "\"" + " is not available.";
+			}
+		} else {
+			return "\"" + name + "\"" + " is not a valid name.";
+		}
 	}
 }

@@ -84,7 +84,7 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 	}
 
 
-	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.croquet.ZDragComponent source ) {
+	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.croquet.DragComponent source ) {
 		return source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance;
 	}
 	public void dragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
@@ -116,7 +116,7 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 //		}
 	}
 	public void dragExited( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, boolean isDropRecipient ) {
-		edu.cmu.cs.dennisc.croquet.ZDragComponent source = context.getDragSource();
+		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
 		source.hideDropProxyIfNecessary();
 	}
 	public void dragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
