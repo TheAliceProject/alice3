@@ -99,9 +99,14 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 		return "Enter Custom Array";
 	}
 	
-	public boolean isInputValid() {
-		return this.typePane.getValueType() != null;
+	public String getExplanationIfOkButtonShouldBeDisabled() {
+		if( this.typePane.getValueType() != null ) {
+			return null;
+		} else {
+			return "type is not set";
+		}
 	}
+	
 	@Override
 	public String[] getLabelTexts() {
 		return LABEL_TEXTS;

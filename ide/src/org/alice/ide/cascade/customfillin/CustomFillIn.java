@@ -60,6 +60,16 @@ public abstract class CustomFillIn<E extends edu.cmu.cs.dennisc.alice.ast.Expres
 		
 		edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation = new edu.cmu.cs.dennisc.croquet.InputDialogOperation( 
 				edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "0e69d792-3e5b-4a17-b670-465885ade615" ) ) {
+			
+			@Override
+			protected String getExplanationIfOkButtonShouldBeDisabled() {
+				String explanation = customInputPane.getExplanationIfOkButtonShouldBeDisabled();
+				if( explanation != null ) {
+					return explanation;
+				} else {
+					return super.getExplanationIfOkButtonShouldBeDisabled();
+				}
+			}
 			@Override
 			protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
 				return customInputPane;

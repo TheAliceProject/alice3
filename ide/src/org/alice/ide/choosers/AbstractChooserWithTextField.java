@@ -46,13 +46,16 @@ package org.alice.ide.choosers;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractChooserWithTextField<E> extends AbstractChooser<E> {
-	private edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField textField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField() {
-		@Override
-		public java.awt.Dimension getPreferredSize() {
-			return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 240 );
-		}
-	};
-	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components = { new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.textField ) };
+	private edu.cmu.cs.dennisc.croquet.StringStateOperation stringState = new edu.cmu.cs.dennisc.croquet.StringStateOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "6213f5a4-b4b4-4c49-a5e3-2db644edb2cd" ), "" );
+	
+//	private edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField textField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField() {
+//		@Override
+//		public java.awt.Dimension getPreferredSize() {
+//			return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 240 );
+//		}
+//	};
+	private edu.cmu.cs.dennisc.croquet.TextField textField = stringState.createTextField();
+	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components = { this.textField };
 
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
@@ -60,19 +63,20 @@ public abstract class AbstractChooserWithTextField<E> extends AbstractChooser<E>
 	}
 	protected abstract E valueOf( String text );
 	public final E getValue() {
-		return this.valueOf( this.textField.getText() );
+		return this.valueOf( this.stringState.getState() );
 	}
-	public boolean isInputValid() {
+	
+	public String getExplanationIfOkButtonShouldBeDisabled() {
 		try {
-			this.valueOf( this.textField.getText() );
-			return true;
+			this.valueOf( this.stringState.getState() );
+			return null;
 		} catch( RuntimeException re ) {
-			return false;
+			return "invalid value";
 		}
 	}
 
 	public void setAndSelectText( String text ) {
-		this.textField.setText( text );
+		this.stringState.setState( text );
 		this.textField.selectAll();
 	}
 //	@Override

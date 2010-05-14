@@ -42,7 +42,7 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-public abstract class ZComponent extends JComponent<javax.swing.JPanel> {
+public abstract class Widget extends JComponent<javax.swing.JPanel> {
 	protected abstract int getInsetTop();
 	protected abstract int getInsetLeft();
 	protected abstract int getInsetBottom();
@@ -52,7 +52,7 @@ public abstract class ZComponent extends JComponent<javax.swing.JPanel> {
 	protected abstract void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height );
 	protected abstract void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height );
 
-	public ZComponent() {
+	public Widget() {
 		//this.setDoubleBuffered( false );
 	}
 	
@@ -83,20 +83,25 @@ public abstract class ZComponent extends JComponent<javax.swing.JPanel> {
 			@Override
 			public void addNotify() {
 				super.addNotify();
-				ZComponent.this.addNotify();
+				Widget.this.addNotify();
 			}
 			@Override
 			public void removeNotify() {
-				ZComponent.this.removeNotify();
+				Widget.this.removeNotify();
 				super.removeNotify();
 			}
 			@Override
+			public void doLayout() {
+				Widget.this.doLayout();
+				super.doLayout();
+			}
+			@Override
 			public boolean contains(int x, int y) {
-				return ZComponent.this.contains(x, y, super.contains(x, y) );
+				return Widget.this.contains(x, y, super.contains(x, y) );
 			}
 			@Override
 			public javax.swing.JToolTip createToolTip() {
-				return ZComponent.this.createToolTip( super.createToolTip() );
+				return Widget.this.createToolTip( super.createToolTip() );
 			}
 			@Override
 			public void paint(java.awt.Graphics g) {
@@ -109,17 +114,17 @@ public abstract class ZComponent extends JComponent<javax.swing.JPanel> {
 				java.awt.Paint prevPaint;
 				prevPaint = g2.getPaint();
 				try {
-					g2.setPaint( ZComponent.this.getBackgroundPaint( x, y, width, height ) );
-					ZComponent.this.paintPrologue( g2, x, y, width, height );
+					g2.setPaint( Widget.this.getBackgroundPaint( x, y, width, height ) );
+					Widget.this.paintPrologue( g2, x, y, width, height );
 				} finally {
 					g2.setPaint( prevPaint );
 				}
-				ZComponent.this.paintEpilogue(g2, x, y, width, height);
+				Widget.this.paintEpilogue(g2, x, y, width, height);
 				super.paint(g);
 				prevPaint = g2.getPaint();
-				g2.setPaint( ZComponent.this.getForegroundPaint( x, y, width, height ) );
+				g2.setPaint( Widget.this.getForegroundPaint( x, y, width, height ) );
 				try {
-					ZComponent.this.paintEpilogue( g2, x, y, width, height );
+					Widget.this.paintEpilogue( g2, x, y, width, height );
 				} finally {
 					g2.setPaint( prevPaint );
 				}
@@ -148,16 +153,16 @@ public abstract class ZComponent extends JComponent<javax.swing.JPanel> {
 		return jContains;
 	}
 
-	public void doLayout() {
+	protected void doLayout() {
 		this.updateBorderIfNecessary();
 		//super.doLayout();
 	}
 	
-	public void addNotify() {
+	protected void addNotify() {
 		this.updateBorderIfNecessary();
 		//super.addNotify();
 	}
-	public void removeNotify() {
+	protected void removeNotify() {
 		//super.removeNotify();
 	}
 	

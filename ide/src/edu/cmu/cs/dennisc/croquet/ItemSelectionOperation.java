@@ -46,51 +46,78 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ItemSelectionOperation<E> extends Operation {
-	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-	private javax.swing.Action[] actions;
-	private javax.swing.ButtonModel[] buttonModels;
-	private java.awt.event.ItemListener[] itemListeners;
+//	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
+//	private javax.swing.Action[] actions;
+//	private javax.swing.ButtonModel[] buttonModels;
+//	private java.awt.event.ItemListener[] itemListeners;
 	private javax.swing.ComboBoxModel comboBoxModel;
-	
+	private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
+		public void itemStateChanged(java.awt.event.ItemEvent e) {
+			Application application = Application.getSingleton();
+			Context parentContext = application.getCurrentContext();
+			Context childContext = parentContext.createChildContext();
+			childContext.addChild( new ItemSelectionEvent< E >( childContext, ItemSelectionOperation.this, e ) );
+			ItemSelectionOperation.this.perform( childContext, e );
+		}
+	};
+	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+		public void valueChanged(javax.swing.event.ListSelectionEvent e) {
+			if( e.getValueIsAdjusting() ) {
+				//pass
+			} else {
+				Application application = Application.getSingleton();
+				Context parentContext = application.getCurrentContext();
+				Context childContext = parentContext.createChildContext();
+				childContext.addChild( new ItemSelectionEvent< E >( childContext, ItemSelectionOperation.this, e ) );
+				ItemSelectionOperation.this.perform( childContext, e );
+			}
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
+		}
+	};
 	private E previousSelection;
 
 	public ItemSelectionOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, javax.swing.ComboBoxModel comboBoxModel ) {
 		super( groupUUID, individualUUID );
 		this.comboBoxModel = comboBoxModel;
-		int N = this.comboBoxModel.getSize();
-		this.actions = new javax.swing.Action[ N ];
-		this.buttonModels = new javax.swing.ButtonModel[ N ];
-		this.itemListeners = new java.awt.event.ItemListener[ N ];
-		this.previousSelection = (E)comboBoxModel.getSelectedItem();
-		for( int i=0; i<N; i++ ) {
-			class Action extends javax.swing.AbstractAction {
-				public Action( int i, E item ) {
-					this.putValue( NAME, getNameFor( i, item ) );
-				}
-				public void actionPerformed( java.awt.event.ActionEvent e ) {
-				}
-			}
-			E item = (E)this.comboBoxModel.getElementAt( i );
-			this.actions[ i ] = new Action( i, item ); 
-			this.buttonModels[ i ] = new javax.swing.JToggleButton.ToggleButtonModel();
-			this.buttonModels[ i ].setGroup( buttonGroup );
-			if( item == this.previousSelection ) {
-				this.buttonModels[ i ].setSelected( true );
-			}
-			this.itemListeners[ i ] = new java.awt.event.ItemListener() {
-				public void itemStateChanged( java.awt.event.ItemEvent e ) {
-					Application application = Application.getSingleton();
-					Context parentContext = application.getCurrentContext();
-					Context childContext = parentContext.createChildContext();
-					childContext.addChild( new ItemSelectionEvent< E >( childContext, ItemSelectionOperation.this, e ) );
-					ItemSelectionOperation.this.perform( childContext, e );
-				}
-			};
-			this.buttonModels[ i ].addItemListener( this.itemListeners[ i ] );
+//		int N = this.comboBoxModel.getSize();
+//		this.actions = new javax.swing.Action[ N ];
+//		this.buttonModels = new javax.swing.ButtonModel[ N ];
+//		this.itemListeners = new java.awt.event.ItemListener[ N ];
+//		this.previousSelection = (E)comboBoxModel.getSelectedItem();
+//		for( int i=0; i<N; i++ ) {
+//			class Action extends javax.swing.AbstractAction {
+//				public Action( int i, E item ) {
+//					this.putValue( NAME, getNameFor( i, item ) );
+//				}
+//				public void actionPerformed( java.awt.event.ActionEvent e ) {
+//				}
+//			}
+//			E item = (E)this.comboBoxModel.getElementAt( i );
+//			this.actions[ i ] = new Action( i, item ); 
+//			this.buttonModels[ i ] = new javax.swing.JToggleButton.ToggleButtonModel();
+//			this.buttonModels[ i ].setGroup( buttonGroup );
+//			if( item == this.previousSelection ) {
+//				this.buttonModels[ i ].setSelected( true );
+//			}
+//			this.itemListeners[ i ] = new java.awt.event.ItemListener() {
+//				public void itemStateChanged( java.awt.event.ItemEvent e ) {
+//					Application application = Application.getSingleton();
+//					Context parentContext = application.getCurrentContext();
+//					Context childContext = parentContext.createChildContext();
+//					childContext.addChild( new ItemSelectionEvent< E >( childContext, ItemSelectionOperation.this, e ) );
+//					ItemSelectionOperation.this.perform( childContext, e );
+//				}
+//			};
+//			this.buttonModels[ i ].addItemListener( this.itemListeners[ i ] );
+//		}
+	}
+	public ItemSelectionOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, int selectedIndex, E... items ) {
+		this( groupUUID, individualUUID, new javax.swing.DefaultComboBoxModel(items) );
+		if( selectedIndex != -1 ) {
+			this.comboBoxModel.setSelectedItem( items[ selectedIndex ] );
 		}
 	}
-
-	protected abstract ItemSelectionEdit< E > createItemSelectionEdit( Context context, java.awt.event.ItemEvent e, E previousSelection, E nextSelection );
+	protected abstract ItemSelectionEdit< E > createItemSelectionEdit( Context context, java.util.EventObject e, E previousSelection, E nextSelection );
 //	public final void performSelectionChange(ItemSelectionContext<T> context) {
 //		context.commitAndInvokeDo( new ItemSelectionEdit< T >( this, context.getPreviousSelection(), context.getNextSelection() ) {
 //			@Override
@@ -103,6 +130,8 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 //			}
 //		} );
 //	}
+
+	
 //	@Override
 //	protected ItemSelectionContext createContext( CompositeContext parentContext, java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
 //		assert e instanceof java.awt.event.ItemEvent;
@@ -113,74 +142,117 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 //		return rv;
 //	}
 
-	/*package-private*/ final void perform( Context context, java.awt.event.ItemEvent e ) {
+	/*package-private*/ final void perform( Context context, java.util.EventObject e ) {
 		E nextSelection = (E)this.comboBoxModel.getSelectedItem();
 		context.commitAndInvokeDo( this.createItemSelectionEdit( context, e, this.previousSelection, nextSelection ) );
 		this.previousSelection = nextSelection;
 	}
 
-	protected String getNameFor( int index, E item ) {
-		if( item != null ) {
-			return item.toString();
-		} else {
-			return "null";
-		}
+//	protected String getNameFor( int index, E item ) {
+//		if( item != null ) {
+//			return item.toString();
+//		} else {
+//			return "null";
+//		}
+//	}
+//	public javax.swing.KeyStroke getAcceleratorForConfiguringSwing( int index ) {
+//		return null;
+//	}
+//	public javax.swing.Action getActionForConfiguringSwing( int index ) {
+//		return this.actions[ index ];
+//	}
+//	public javax.swing.ButtonModel getButtonModelForConfiguringSwing( int index ) {
+//		return this.buttonModels[ index ];
+//	}
+//	public javax.swing.ComboBoxModel getComboBoxModel() {
+//		return this.comboBoxModel;
+//	}
+//	public void handleKeyPressed( java.awt.event.KeyEvent e ) {
+//		int N = this.comboBoxModel.getSize();
+//		for( int i=0; i<N; i++ ) {
+//			javax.swing.KeyStroke acceleratorI = this.getAcceleratorForConfiguringSwing( i );
+//			if( acceleratorI != null ) {
+//				if( e.getKeyCode() == acceleratorI.getKeyCode() && e.getModifiersEx() == acceleratorI.getModifiers() ) {
+//					this.getButtonModelForConfiguringSwing( i ).setSelected( true );
+//				}
+//			}
+//		}
+//	}
+	
+	public E getValue() {
+		return (E)this.comboBoxModel.getSelectedItem();
 	}
-	public javax.swing.KeyStroke getAcceleratorForConfiguringSwing( int index ) {
-		return null;
-	}
-	public javax.swing.Action getActionForConfiguringSwing( int index ) {
-		return this.actions[ index ];
-	}
-	public javax.swing.ButtonModel getButtonModelForConfiguringSwing( int index ) {
-		return this.buttonModels[ index ];
-	}
-	public javax.swing.ComboBoxModel getComboBoxModel() {
-		return this.comboBoxModel;
-	}
-	public void handleKeyPressed( java.awt.event.KeyEvent e ) {
-		int N = this.comboBoxModel.getSize();
-		for( int i=0; i<N; i++ ) {
-			javax.swing.KeyStroke acceleratorI = this.getAcceleratorForConfiguringSwing( i );
-			if( acceleratorI != null ) {
-				if( e.getKeyCode() == acceleratorI.getKeyCode() && e.getModifiersEx() == acceleratorI.getModifiers() ) {
-					this.getButtonModelForConfiguringSwing( i ).setSelected( true );
-				}
-			}
-		}
-	}
-	/*package-private*/ void setValue(E value) {
-		int N = this.buttonModels.length;
-		for( int i=0; i<N; i++ ) {
-			this.buttonModels[ i ].removeItemListener( this.itemListeners[ i ] );
-		}
+	
+	/*package-private*/ void internalSetValue(E value) {
+//		int N = this.buttonModels.length;
+//		for( int i=0; i<N; i++ ) {
+//			this.buttonModels[ i ].removeItemListener( this.itemListeners[ i ] );
+//		}
 		this.comboBoxModel.setSelectedItem(value);
-		for( int i=0; i<N; i++ ) {
-			this.buttonModels[ i ].addItemListener( this.itemListeners[ i ] );
+//		for( int i=0; i<N; i++ ) {
+//			this.buttonModels[ i ].addItemListener( this.itemListeners[ i ] );
+//		}
+	}
+	
+	public void setValue( E value ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ItemSelectionOperation setValue" );
+		this.internalSetValue(value);
+	}
+
+	public void randomize() {
+		final int N = this.comboBoxModel.getSize();
+		int i;
+		if( N > 0 ) {
+			i = org.alice.random.RandomUtilities.nextIntegerFrom0ToNExclusive( N );
+		} else {
+			i = -1;
 		}
+		this.comboBoxModel.setSelectedItem( this.comboBoxModel.getElementAt( i ) );
 	}
 	
-	private void addComboBox( ComboBox<E> comboBox ) {
-		this.addComponent(comboBox);
-	}
-	private void removeComboBox( ComboBox<E> comboBox ) {
-		this.removeComponent(comboBox);
-	}
-	
-	public ComboBox<E> register( final ComboBox<E> rv ) {
+	public < L extends ItemSelectable<E,?> > L register( final L rv ) {
 		Application.getSingleton().register( this );
-		rv.getAwtComponent().setModel( this.getComboBoxModel() );
-		rv.addContainmentObserver( new Component.ContainmentObserver() {
-			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				ItemSelectionOperation.this.addComboBox(rv);
-			}
-			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				ItemSelectionOperation.this.removeComboBox(rv);
-			}
-		} );
+		rv.setModel( this.comboBoxModel );
 		return rv;
 	}
 	public ComboBox<E> createComboBox() {
-		return register( new ComboBox< E >() );
+		return register( new ComboBox< E >() {
+			@Override
+			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				super.handleAddedTo(parent);
+				ItemSelectionOperation.this.addComponent( this );
+				this.addItemListener( ItemSelectionOperation.this.itemListener );
+			};
+			@Override
+			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				this.removeItemListener( ItemSelectionOperation.this.itemListener );
+				ItemSelectionOperation.this.removeComponent( this );
+				super.handleRemovedFrom(parent);
+			}
+		});
 	}
+	public List<E> createList() {
+		return register( new List< E >() {
+			@Override
+			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				super.handleAddedTo(parent);
+				ItemSelectionOperation.this.addComponent( this );
+				this.addListSelectionListener( ItemSelectionOperation.this.listSelectionListener );
+			};
+			@Override
+			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				this.removeListSelectionListener( ItemSelectionOperation.this.listSelectionListener );
+				ItemSelectionOperation.this.removeComponent( this );
+				super.handleRemovedFrom(parent);
+			}
+		} );
+	}
+	
+	@Deprecated
+	public void addListSelectionListener(javax.swing.event.ListSelectionListener listSelectionListener) {
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: addListSelectionListener" );
+		throw new RuntimeException( "todo" );
+	}
+	
+	
 }

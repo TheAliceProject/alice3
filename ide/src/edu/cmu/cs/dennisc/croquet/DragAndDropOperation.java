@@ -49,7 +49,7 @@ public abstract class DragAndDropOperation extends Operation {
 	public DragAndDropOperation( java.util.UUID groupUUID, java.util.UUID inividualUUID ) {
 		super( groupUUID, inividualUUID );
 	}
-	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( ZDragComponent dragSource );
+	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( DragComponent dragSource );
 	public abstract void handleDragStarted( DragAndDropContext dragAndDropContext );
 	public abstract void handleDragEnteredDropReceptor( DragAndDropContext dragAndDropContext );
 	public abstract void handleDragExitedDropReceptor( DragAndDropContext dragAndDropContext );

@@ -52,7 +52,7 @@ public abstract class EditMembersPane< T extends MemberDeclaredInAlice > extends
 	public EditMembersPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.property.ListProperty< T > listProperty ) {
 		this.declaringType = declaringType;
 		this.list = new edu.cmu.cs.dennisc.croquet.List< T >();
-		list.setCellRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ContentsCachingListCellRenderer< T >() {
+		this.list.setRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ContentsCachingListCellRenderer< T >() {
 			@Override
 			protected java.awt.Component createComponent(T value) {
 				return createCellRendererComponent( value );
@@ -66,7 +66,12 @@ public abstract class EditMembersPane< T extends MemberDeclaredInAlice > extends
 		} );
 
 		final edu.cmu.cs.dennisc.javax.swing.models.ListPropertyListModel< T > listModel = edu.cmu.cs.dennisc.javax.swing.models.ListPropertyListModel.createInstance( listProperty );
-		list.setModel( listModel );
+		
+		
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: list.getAwtComponent().setModel" );
+		list.getAwtComponent().setModel( listModel );
+		
+		
 		class EditableMemberListPane extends AbstractEditableListPane< T > {
 			public EditableMemberListPane() {
 				super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, list );

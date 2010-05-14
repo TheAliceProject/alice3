@@ -58,9 +58,20 @@ public abstract class SelectAndLoadProjectOperation extends org.alice.app.operat
 //	}
 	
 	@Override
-	protected java.awt.Dimension getDesiredDialogSize() {
-		return new java.awt.Dimension( 600, 430 );
+	protected java.awt.Dimension getDesiredDialogSize( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+		return new java.awt.Dimension( 620, 460 );
 	}
+	
+	@Override
+	protected String getExplanationIfOkButtonShouldBeDisabled() {
+		assert this.selectProjectToOpenPanel != null;
+		if( this.selectProjectToOpenPanel.getSelectedURI() != null ) {
+			return super.getExplanationIfOkButtonShouldBeDisabled();
+		} else {
+			return "must select project to open.";
+		}
+	}
+	
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
 		if( this.selectProjectToOpenPanel != null ) {

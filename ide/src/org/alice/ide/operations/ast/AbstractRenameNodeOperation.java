@@ -84,9 +84,24 @@ public abstract class AbstractRenameNodeOperation extends edu.cmu.cs.dennisc.cro
 			context.cancel();
 		}
 	}
+	
+	@Override
+	protected java.awt.Dimension getDesiredDialogSize(edu.cmu.cs.dennisc.croquet.Dialog dialog) {
+		return new java.awt.Dimension( 300, 150 );
+	}
 	protected abstract edu.cmu.cs.dennisc.property.StringProperty getNameProperty();
 	protected abstract org.alice.ide.name.validators.NodeNameValidator getNodeNameValidator();
 	
+	@Override
+	protected String getExplanationIfOkButtonShouldBeDisabled() {
+		org.alice.ide.name.validators.NodeNameValidator nodeNameValidator = this.getNodeNameValidator();
+		String rv = nodeNameValidator.getExplanationIfOkButtonShouldBeDisabled( this.renameNodePane.getNameText() );
+		if( rv != null ) {
+			return rv;
+		} else {
+			return super.getExplanationIfOkButtonShouldBeDisabled();
+		}
+	}
 //	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 //		org.alice.ide.name.RenamePane renameNodePane = new org.alice.ide.name.RenamePane( nodeNameValidator );
 //		renameNodePane.setAndSelectNameText( nameProperty.getValue() );

@@ -50,13 +50,13 @@ public class VerticalSplitPane extends SplitPane {
 	public VerticalSplitPane() {
 		super( javax.swing.JSplitPane.VERTICAL_SPLIT );
 	}
-	public VerticalSplitPane( Component topComponent, Component bottomComponent ) {
+	public VerticalSplitPane( Component<?> topComponent, Component<?> bottomComponent ) {
 		super( javax.swing.JSplitPane.VERTICAL_SPLIT, topComponent, bottomComponent );
 	}
-	public void setTopComponent( Component component ) {
+	public void setTopComponent( Component<?> component ) {
 		this.setTopOrLeftComponent( component );
 	}
-	public void setBottomComponent( Component component ) {
+	public void setBottomComponent( Component<?> component ) {
 		this.setBottomOrRightComponent( component );
 	}
 }

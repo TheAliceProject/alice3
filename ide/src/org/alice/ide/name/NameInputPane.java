@@ -61,7 +61,7 @@ public abstract class NameInputPane extends edu.cmu.cs.dennisc.croquet.RowsSprin
 		}
 	}
 
-	protected abstract boolean isNameAcceptable( String name );
+	protected abstract String getExplanationIfOkButtonShouldBeDisabled( String name );
 
 	private edu.cmu.cs.dennisc.croquet.TextField getTextField() {
 		if( this.textField != null ) {

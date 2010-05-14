@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class List<E> extends JComponent< javax.swing.JList > {
+public class List<E> extends ItemSelectable< E, javax.swing.JList > {
 	public enum LayoutOrientation {
 		VERTICAL ( javax.swing.JList.VERTICAL ),
 		VERTICAL_WRAP( javax.swing.JList.VERTICAL_WRAP ),
@@ -59,19 +59,47 @@ public class List<E> extends JComponent< javax.swing.JList > {
 //			return this.internal;
 //		}
 	}
+	
+	/*package-private*/ public List() {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of List constructor" );
+	}
+
 	@Override
 	protected javax.swing.JList createAwtComponent() {
 		return new javax.swing.JList();
 	}
 	
-	@Deprecated
-	public javax.swing.ListModel getModel() {
-		return this.getAwtComponent().getModel();
+	@Override
+	public javax.swing.ListCellRenderer getRenderer() {
+		return this.getAwtComponent().getCellRenderer();
 	}
-	@Deprecated
-	public void setModel( javax.swing.ListModel model ) {
+	@Override
+	public void setRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
+		this.getAwtComponent().setCellRenderer( listCellRenderer );
+	}
+
+
+	public int getVisibleRowCount() {
+		return this.getAwtComponent().getVisibleRowCount();
+	}
+	public void setVisibleRowCount( int visibleRowCount ) {
+		this.getAwtComponent().setVisibleRowCount( visibleRowCount );
+	}
+	public void setLayoutOrientation( LayoutOrientation layoutOrientation ) {
+		this.getAwtComponent().setLayoutOrientation( layoutOrientation.internal );
+	}
+
+	@Override
+	/*package-private*/ void setModel( javax.swing.ComboBoxModel model ) {
 		this.getAwtComponent().setModel( model );
 	}
+	/*package-private*/ void addListSelectionListener( javax.swing.event.ListSelectionListener listSelectionListener ) {
+		this.getAwtComponent().addListSelectionListener( listSelectionListener );
+	}
+	/*package-private*/ void removeListSelectionListener( javax.swing.event.ListSelectionListener listSelectionListener ) {
+		this.getAwtComponent().removeListSelectionListener( listSelectionListener );
+	}
+
 	@Deprecated
 	public void setListData( E... values ) {
 		this.getAwtComponent().setListData( values );
@@ -80,14 +108,6 @@ public class List<E> extends JComponent< javax.swing.JList > {
 	public void setListData( java.util.Vector<E> values ) {
 		this.getAwtComponent().setListData( values );
 	}
-
-	public javax.swing.ListCellRenderer getCellRenderer() {
-		return this.getAwtComponent().getCellRenderer();
-	}
-	public void setCellRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
-		this.getAwtComponent().setCellRenderer( listCellRenderer );
-	}
-
 	@Deprecated
 	public E getSelectedValue() {
 		return (E)this.getAwtComponent().getSelectedValue();
@@ -100,28 +120,9 @@ public class List<E> extends JComponent< javax.swing.JList > {
 	public void setSelectedValue( E value, boolean shouldScroll ) {
 		this.getAwtComponent().setSelectedValue( value, shouldScroll );
 	}
-	
+	@Deprecated
 	public void clearSelection() {
 		this.getAwtComponent().clearSelection();
-	}
-	public int getVisibleRowCount() {
-		return this.getAwtComponent().getVisibleRowCount();
-	}
-	public void setVisibleRowCount( int visibleRowCount ) {
-		this.getAwtComponent().setVisibleRowCount( visibleRowCount );
-	}
-	
-	public void setLayoutOrientation( LayoutOrientation layoutOrientation ) {
-		this.getAwtComponent().setLayoutOrientation( layoutOrientation.internal );
-	}
-
-	@Deprecated
-	public void addListSelectionListener( javax.swing.event.ListSelectionListener listSelectionListener ) {
-		this.getAwtComponent().addListSelectionListener( listSelectionListener );
-	}
-	@Deprecated
-	public void removeListSelectionListener( javax.swing.event.ListSelectionListener listSelectionListener ) {
-		this.getAwtComponent().removeListSelectionListener( listSelectionListener );
 	}
 	
 //	@Deprecated

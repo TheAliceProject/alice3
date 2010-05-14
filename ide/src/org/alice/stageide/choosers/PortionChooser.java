@@ -75,8 +75,8 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractChooser< org.
 		double value = this.slider.getValue() / 100.0;
 		return new org.alice.apis.moveandturn.Portion( value );
 	}
-	public boolean isInputValid() {
-		return true;
+	public String getExplanationIfOkButtonShouldBeDisabled() {
+		return null;
 	}
 	public String getTitleDefault() {
 		return "Enter Custom Portion";

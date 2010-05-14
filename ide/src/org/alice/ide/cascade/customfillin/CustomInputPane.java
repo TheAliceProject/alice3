@@ -42,15 +42,13 @@
  */
 package org.alice.ide.cascade.customfillin;
 
-import org.alice.ide.choosers.ValueChooser;
-
 /**
  * @author Dennis Cosgrove
  */
 public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression, F> extends org.alice.ide.preview.PanelWithPreview {
 	private CustomFillIn< E, F > fillIn;
-	private ValueChooser< F > chooser;
-	public CustomInputPane( CustomFillIn< E, F > fillIn, ValueChooser< F > chooser ) {
+	private org.alice.ide.choosers.ValueChooser< F > chooser;
+	public CustomInputPane( CustomFillIn< E, F > fillIn, org.alice.ide.choosers.ValueChooser< F > chooser ) {
 		this.fillIn = fillIn;
 		this.chooser = chooser;
 	}
@@ -58,6 +56,10 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression, 
 	@Override
 	protected String getTitleDefault() {
 		return this.chooser.getTitleDefault();
+	}
+	
+	protected String getExplanationIfOkButtonShouldBeDisabled() {
+		return this.chooser.getExplanationIfOkButtonShouldBeDisabled();
 	}
 	
 	@Override

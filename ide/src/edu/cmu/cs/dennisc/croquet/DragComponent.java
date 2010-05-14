@@ -42,7 +42,7 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-public abstract class ZDragComponent extends ZControl {
+public abstract class DragComponent extends Control {
 	private DragAndDropOperation dragAndDropOperation;
 
 	private DragProxy dragProxy = null;
@@ -54,13 +54,13 @@ public abstract class ZDragComponent extends ZControl {
 		public void componentMoved( java.awt.event.ComponentEvent e ) {
 		}
 		public void componentResized( java.awt.event.ComponentEvent e ) {
-			ZDragComponent.this.updateProxySizes();
+			DragComponent.this.updateProxySizes();
 		}
 		public void componentShown( java.awt.event.ComponentEvent e ) {
 		}
 	};
 
-	public ZDragComponent() {
+	public DragComponent() {
 		this.updateProxySizes();
 	}
 	@Override
@@ -193,10 +193,10 @@ public abstract class ZDragComponent extends ZControl {
 		}
 
 		@Override
-		public ZDragComponent getDragSource() {
+		public DragComponent getDragSource() {
 			java.util.EventObject e = this.originalMouseEvent;
 			if( e != null ) {
-				return (ZDragComponent)Component.lookup( (java.awt.Component)e.getSource() );
+				return (DragComponent)Component.lookup( (java.awt.Component)e.getSource() );
 			} else {
 				return null;
 			}
@@ -244,9 +244,9 @@ public abstract class ZDragComponent extends ZControl {
 			if( rv != null ) {
 				//pass
 			} else {
-				if( ZDragComponent.this.dragProxy != null ) {
-					java.awt.Rectangle dragBounds = ZDragComponent.this.dragProxy.getBounds();
-					dragBounds = javax.swing.SwingUtilities.convertRectangle( ZDragComponent.this.dragProxy.getParent(), dragBounds, this.getDragSource().getAwtComponent() );
+				if( DragComponent.this.dragProxy != null ) {
+					java.awt.Rectangle dragBounds = DragComponent.this.dragProxy.getBounds();
+					dragBounds = javax.swing.SwingUtilities.convertRectangle( DragComponent.this.dragProxy.getParent(), dragBounds, this.getDragSource().getAwtComponent() );
 					int x = dragBounds.x;
 					int y = dragBounds.y + dragBounds.height / 2;
 					rv = getDropReceptorUnder( x, y );
@@ -264,17 +264,17 @@ public abstract class ZDragComponent extends ZControl {
 			DropReceptor nextDropReceptor = getDropReceptorUnder( e );
 			if( this.currentDropReceptor != nextDropReceptor ) {
 				if( this.currentDropReceptor != null ) {
-					ZDragComponent.this.dragAndDropOperation.handleDragExitedDropReceptor( this );
+					DragComponent.this.dragAndDropOperation.handleDragExitedDropReceptor( this );
 					this.currentDropReceptor.dragExited( this, false );
 				}
 				this.currentDropReceptor = nextDropReceptor;
 				if( this.currentDropReceptor != null ) {
 					this.currentDropReceptor.dragEntered( this );
-					ZDragComponent.this.dragAndDropOperation.handleDragEnteredDropReceptor( this );
+					DragComponent.this.dragAndDropOperation.handleDragEnteredDropReceptor( this );
 				}
 			}
-			if( ZDragComponent.this.dragProxy != null ) {
-				ZDragComponent.this.dragProxy.setOverDropAcceptor( this.currentDropReceptor != null );
+			if( DragComponent.this.dragProxy != null ) {
+				DragComponent.this.dragProxy.setOverDropAcceptor( this.currentDropReceptor != null );
 			}
 			if( this.currentDropReceptor != null ) {
 				this.currentDropReceptor.dragUpdated( this );
@@ -289,7 +289,7 @@ public abstract class ZDragComponent extends ZControl {
 			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
 				dropReceptorInfo.getDropReceptor().dragStopped( this );
 			}
-			ZDragComponent.this.dragAndDropOperation.handleDragStopped( this );
+			DragComponent.this.dragAndDropOperation.handleDragStopped( this );
 			this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
 		}
 		public void handleCancel( java.util.EventObject e ) {
@@ -299,9 +299,9 @@ public abstract class ZDragComponent extends ZControl {
 			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
 				dropReceptorInfo.getDropReceptor().dragStopped( this );
 			}
-			ZDragComponent.this.dragAndDropOperation.handleDragStopped( this );
+			DragComponent.this.dragAndDropOperation.handleDragStopped( this );
 			this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
-			ZDragComponent.this.hideDropProxyIfNecessary();
+			DragComponent.this.hideDropProxyIfNecessary();
 		}
 	}
 
@@ -374,10 +374,10 @@ public abstract class ZDragComponent extends ZControl {
 
 	private static boolean isFauxDragDesired = false;
 	public static boolean isFauxDragDesired() {
-		return ZDragComponent.isFauxDragDesired;
+		return DragComponent.isFauxDragDesired;
 	}
 	public static void setFauxDragDesired( boolean isFauxDragDesired ) {
-		ZDragComponent.isFauxDragDesired = isFauxDragDesired;
+		DragComponent.isFauxDragDesired = isFauxDragDesired;
 	}
 	
 //	protected boolean isFauxDragDesired() {
@@ -400,7 +400,7 @@ public abstract class ZDragComponent extends ZControl {
 			if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
 				boolean isDrop;
 				if( this.isWithinClickThreshold() ) {
-					if( ZDragComponent.isFauxDragDesired && this.isClickReservedForSelection()==false ) {
+					if( DragComponent.isFauxDragDesired && this.isClickReservedForSelection()==false ) {
 						Component<?> focusedComponent;
 						if( this.isFauxDrag ) {
 							focusedComponent = null;

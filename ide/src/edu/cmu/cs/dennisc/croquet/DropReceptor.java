@@ -47,8 +47,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public interface DropReceptor {
-	public boolean isPotentiallyAcceptingOf( ZDragComponent source );
-	public Component getComponent();
+	public boolean isPotentiallyAcceptingOf( DragComponent source );
+	public Component<?> getComponent();
 	public void dragStarted( DragAndDropContext dragAndDropContext );
 	public void dragEntered( DragAndDropContext dragAndDropContext );
 	public void dragUpdated( DragAndDropContext dragAndDropContext );

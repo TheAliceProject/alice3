@@ -137,11 +137,21 @@ abstract class OperationEvent< O extends Operation, E extends java.util.EventObj
 	}
 }
 
+/*package-private*/ class StringStateEvent extends OperationEvent {
+	public StringStateEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	public StringStateEvent( Context parent, StringStateOperation stringStateOperation, javax.swing.event.DocumentEvent e ) {
+		super( parent, stringStateOperation, null, null );
+		//note: document event not java.util.EventObject 
+	}
+}
+
 /*package-private*/ class ItemSelectionEvent< T > extends OperationEvent {
 	public ItemSelectionEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public ItemSelectionEvent( Context parent, ItemSelectionOperation< T > itemSelectionOperation, java.awt.event.ItemEvent e ) {
+	public ItemSelectionEvent( Context parent, ItemSelectionOperation< T > itemSelectionOperation, java.util.EventObject e ) {
 		super( parent, itemSelectionOperation, e, null );
 	}
 }
@@ -258,7 +268,12 @@ public class Context extends HistoryTreeNode {
 		public void committing( Edit edit );
 		public void committed( Edit edit );
 	}
+	public interface ChildrenObserver {
+		public void addingChild( HistoryTreeNode child );
+		public void addedChild( HistoryTreeNode child );
+	}
 	private java.util.List< CommitObserver > commitObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private java.util.List< ChildrenObserver > childrenObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private java.util.List< HistoryTreeNode > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	//todo: reduce visibility?
 	public Context( Context parent ) {
@@ -269,6 +284,12 @@ public class Context extends HistoryTreeNode {
 	}
 	public void removeCommitObserver( CommitObserver commitObserver ) {
 		this.commitObservers.remove( commitObserver );
+	}
+	public void addChildrenObserver( ChildrenObserver childrenObserver ) {
+		this.childrenObservers.add( childrenObserver );
+	}
+	public void removeChildrenObserver( ChildrenObserver childrenObserver ) {
+		this.childrenObservers.remove( childrenObserver );
 	}
 
 	public boolean isLeaf() {
@@ -290,7 +311,7 @@ public class Context extends HistoryTreeNode {
 		return this.children.indexOf( node );
 	}
 
-	protected void fireComitting( Edit edit ) {
+	protected void fireCommitting( Edit edit ) {
 		if( this.commitObservers.size() > 0 ) {
 			for( CommitObserver commitObserver : this.commitObservers ) {
 				commitObserver.committing( edit );
@@ -298,10 +319,10 @@ public class Context extends HistoryTreeNode {
 		}
 		Context parent = this.getParent();
 		if( parent != null ) {
-			parent.fireComitting( edit );
+			parent.fireCommitting( edit );
 		}
 	}
-	protected void fireComitted( Edit edit ) {
+	protected void fireCommitted( Edit edit ) {
 		if( this.commitObservers.size() > 0 ) {
 			for( CommitObserver commitObserver : this.commitObservers ) {
 				commitObserver.committed( edit );
@@ -309,10 +330,33 @@ public class Context extends HistoryTreeNode {
 		}
 		Context parent = this.getParent();
 		if( parent != null ) {
-			parent.fireComitted( edit );
+			parent.fireCommitted( edit );
 		}
 	}
 	
+	protected void fireAddingChild( HistoryTreeNode child ) {
+		if( this.commitObservers.size() > 0 ) {
+			for( ChildrenObserver childObserver : this.childrenObservers ) {
+				childObserver.addingChild( child );
+			}
+		}
+		Context parent = this.getParent();
+		if( parent != null ) {
+			parent.fireAddingChild( child );
+		}
+	}
+	protected void fireAddedChild( HistoryTreeNode child ) {
+		if( this.commitObservers.size() > 0 ) {
+			for( ChildrenObserver childObserver : this.childrenObservers ) {
+				childObserver.addedChild( child );
+			}
+		}
+		Context parent = this.getParent();
+		if( parent != null ) {
+			parent.fireAddedChild( child );
+		}
+	}
+
 	@Override
 	public State getState() {
 		final int N = this.children.size();
@@ -352,9 +396,11 @@ public class Context extends HistoryTreeNode {
 	}
 
 	/*package-private*/ void addChild( HistoryTreeNode child ) {
+		this.fireAddingChild( child );
 		synchronized( this.children ) {
 			this.children.add( child );
 		}
+		this.fireAddedChild( child );
 	}
 	
 	/*package-private*/Context createChildContext() {
@@ -367,9 +413,9 @@ public class Context extends HistoryTreeNode {
 	}
 	public void commitAndInvokeDo( Edit edit ) {
 		assert edit != null;
-		this.fireComitting( edit );
+		this.fireCommitting( edit );
 		edit.doOrRedo( true );
-		this.fireComitted( edit );
+		this.fireCommitted( edit );
 		this.addChild( new CommitEvent( this, edit ) );
 	}
 	public void cancel() {

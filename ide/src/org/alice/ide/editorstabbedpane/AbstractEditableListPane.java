@@ -62,11 +62,11 @@ public abstract class AbstractEditableListPane< E > extends AbstractEditableList
 	}
 	@Override
 	protected E getItemAt( int index ) {
-		return (E)this.getList().getModel().getElementAt( index );
+		return (E)this.getList().getAwtComponent().getModel().getElementAt( index );
 	}
 	@Override
 	protected int getListSize() {
-		return this.getList().getModel().getSize();
+		return this.getList().getAwtComponent().getModel().getSize();
 	}
 	
 	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {

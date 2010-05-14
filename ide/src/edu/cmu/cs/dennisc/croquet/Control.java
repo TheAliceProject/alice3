@@ -42,7 +42,7 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-public abstract class ZControl extends ZComponent {
+public abstract class Control extends Widget {
 	private AbstractActionOperation leftButtonPressOperation;
 	private AbstractActionOperation leftButtonDoubleClickOperation;
 	private AbstractActionOperation popupOperation;
@@ -52,8 +52,8 @@ public abstract class ZControl extends ZComponent {
 	//private boolean isSelected = false;
 
 	private static class ControlAdapter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
-		private ZControl control;
-		public ControlAdapter( ZControl control ) {
+		private Control control;
+		public ControlAdapter( Control control ) {
 			this.control = control;
 		}
 //		@Override
@@ -95,7 +95,7 @@ public abstract class ZControl extends ZComponent {
 //	}
 	
 	@Override
-	public void addNotify() {
+	protected void addNotify() {
 		super.addNotify();
 		if( isMouseListeningDesired() ) {
 			this.controlAdapter = new ControlAdapter( this );
@@ -104,7 +104,7 @@ public abstract class ZControl extends ZComponent {
 		}
 	}
 	@Override
-	public void removeNotify() {
+	protected void removeNotify() {
 		super.removeNotify();
 		if( this.controlAdapter != null ) {
 			this.removeMouseListener( this.controlAdapter );

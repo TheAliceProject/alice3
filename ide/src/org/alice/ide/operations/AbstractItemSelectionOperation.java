@@ -53,8 +53,8 @@ public abstract class AbstractItemSelectionOperation<E> extends edu.cmu.cs.denni
 		return org.alice.ide.IDE.getSingleton();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.ItemSelectionEdit<E> createItemSelectionEdit(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ItemEvent e, E previousSelection, E nextSelection) {
-		throw new RuntimeException();
+	protected edu.cmu.cs.dennisc.croquet.ItemSelectionEdit<E> createItemSelectionEdit(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, E previousSelection, E nextSelection) {
+		throw new RuntimeException( "todo" );
 	}
 	@Deprecated
 	protected abstract void handleSelectionChange(E value);

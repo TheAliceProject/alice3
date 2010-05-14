@@ -625,7 +625,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		FieldNameValidator nameValidator = new FieldNameValidator( ownerType );
 		int count = 0;
 		String markerName = DEFAULT_CAMERA_MARKER_NAME;
-		while( !nameValidator.isNameValidAndAvailable( markerName ) ) {
+		while( nameValidator.getExplanationIfOkButtonShouldBeDisabled( markerName ) != null ) {
 			count++;
 			markerName = DEFAULT_CAMERA_MARKER_NAME + "_" + Integer.toString( count );
 		}

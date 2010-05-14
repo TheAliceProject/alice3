@@ -98,12 +98,12 @@ public final class BooleanStateEdit extends Edit {
 
 	@Override
 	public void doOrRedo(boolean isDo) {
-		this.getOperation().setValue(this.nextValue);
+		this.getOperation().internalSetValue(this.nextValue);
 	}
 
 	@Override
 	public void undo() {
-		this.getOperation().setValue(this.previousValue);
+		this.getOperation().internalSetValue(this.previousValue);
 	}
 
 	@Override

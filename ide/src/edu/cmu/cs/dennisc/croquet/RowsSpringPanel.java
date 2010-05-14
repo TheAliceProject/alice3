@@ -57,6 +57,7 @@ public abstract class RowsSpringPanel extends SpringPanel {
 	public RowsSpringPanel( int xPad, int yPad ) {
 		this.xPad = xPad;
 		this.yPad = yPad;
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 	}
 	@Override
 	protected void handleAddedTo( Component<?> parent ) {

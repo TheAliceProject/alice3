@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-abstract class Proxy extends javax.swing.JPanel {
+/*package-private*/ abstract class Proxy extends javax.swing.JPanel {
 	private static java.awt.image.BufferedImage image;
 	private static java.awt.image.BufferedImage getOffscreenImage( int width, int height ) {
 		if( image == null || image.getWidth() != width || image.getHeight() != height ) {
@@ -54,17 +54,17 @@ abstract class Proxy extends javax.swing.JPanel {
 		}
 		return image;
 	}
-	private ZDragComponent dragComponent;
+	private DragComponent dragComponent;
 	private boolean isOverDropAcceptor = false;
 	private boolean isCopyDesired = false;
 	
 
-	public Proxy( ZDragComponent dragComponent ) {
+	public Proxy( DragComponent dragComponent ) {
 		this.dragComponent = dragComponent;
 		this.setOpaque( false );
 	}
 	
-	protected ZDragComponent getDragComponent() {
+	protected DragComponent getDragComponent() {
 		return this.dragComponent;
 	}
 	protected Component<?> getSubject() {
@@ -84,8 +84,8 @@ abstract class Proxy extends javax.swing.JPanel {
 		int y = 0;
 		int width = subject.getWidth();
 		int height = subject.getHeight();
-		if( subject instanceof ZComponent ) {
-			ZComponent component = (ZComponent)subject;
+		if( subject instanceof Widget ) {
+			Widget component = (Widget)subject;
 			component.fillBounds( g2, x, y, width, height );
 		} else {
 			g2.fillRect( x, y, width, height );

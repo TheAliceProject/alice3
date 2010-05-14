@@ -118,22 +118,15 @@ public final class BoundedRangeIntegerStateOperation extends Operation {
 		this.boundedRangeModel.setValue( value );
 	}
 	
-	protected void addSlider(Slider textComponent) {
-		this.addComponent(textComponent);
-	}
-	protected void removeSlider(Slider textComponent) {
-		this.removeComponent(textComponent);
-	}
-
 	private Slider register( final Slider rv ) {
 		Application.getSingleton().register( this );
 		rv.getAwtComponent().setModel( this.boundedRangeModel );
 		rv.addContainmentObserver( new Component.ContainmentObserver() {
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				BoundedRangeIntegerStateOperation.this.addSlider( rv );
+				BoundedRangeIntegerStateOperation.this.addComponent( rv );
 			}
 			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				BoundedRangeIntegerStateOperation.this.removeSlider( rv );
+				BoundedRangeIntegerStateOperation.this.removeComponent( rv );
 			}
 		} );
 		return rv;
