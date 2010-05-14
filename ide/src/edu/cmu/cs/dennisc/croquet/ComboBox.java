@@ -46,16 +46,18 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class ComboBox< E > extends JComponent< javax.swing.JComboBox > {
+public class ComboBox< E > extends ItemSelectable< E, javax.swing.JComboBox > {
 	/*package-private*/public ComboBox() {
 	}
 	@Override
 	protected javax.swing.JComboBox createAwtComponent() {
 		return new javax.swing.JComboBox();
 	}
+	@Override
 	public javax.swing.ListCellRenderer getRenderer() {
 		return this.getAwtComponent().getRenderer();
 	}
+	@Override
 	public void setRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
 		this.getAwtComponent().setRenderer( listCellRenderer );
 	}
@@ -66,6 +68,19 @@ public class ComboBox< E > extends JComponent< javax.swing.JComboBox > {
 		this.getAwtComponent().setMaximumRowCount( maximumRowCount );
 	}
 
+	@Override
+	/*package-private*/ void setModel( javax.swing.ComboBoxModel model ) {
+		this.getAwtComponent().setModel( model );
+	}
+	
+	/*package-private*/ void addItemListener(java.awt.event.ItemListener itemListener) {
+		this.getAwtComponent().addItemListener( itemListener );
+	}
+	/*package-private*/ void removeItemListener(java.awt.event.ItemListener itemListener) {
+		this.getAwtComponent().removeItemListener( itemListener );
+	}
+	
+	
 	@Deprecated
 	public void setSelectedIndex( int index ) {
 		this.getAwtComponent().setSelectedIndex( index );

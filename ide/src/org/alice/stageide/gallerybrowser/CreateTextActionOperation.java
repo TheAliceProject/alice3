@@ -46,13 +46,21 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
-	class FamilyList extends edu.cmu.cs.dennisc.croquet.List< String > {
-		public FamilyList() {
-			this.setListData( "Serif", "SansSerif" );
-			this.setSelectedIndex( 0 );
+	private static abstract class TextAttributeSelectionOperation extends edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<String> {
+		public TextAttributeSelectionOperation( java.util.UUID individualId, int selectedIndex, String... items ) {
+			super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, individualId, selectedIndex, items );
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.croquet.ItemSelectionEdit<String> createItemSelectionEdit(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, String previousSelection, String nextSelection) {
+			throw new RuntimeException( "todo" );
+		}
+	}
+	private static class FamilySelectionOperation extends TextAttributeSelectionOperation {
+		public FamilySelectionOperation() {
+			super( java.util.UUID.fromString( "a5678cc6-78b0-4cc1-adbb-e90969d42823" ), 0, "Serif", "SansSerif" );
 		}
 		public org.alice.apis.moveandturn.font.FamilyAttribute getFamilyAttribute() {
-			Object value = this.getSelectedValue();
+			Object value = this.getValue();
 			org.alice.apis.moveandturn.font.FamilyAttribute rv;
 			if( value.equals( "Serif" ) ) {
 				rv = org.alice.apis.moveandturn.font.FamilyConstant.SERIF;
@@ -63,20 +71,19 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 		}
 		public void setFamilyAttribute( org.alice.apis.moveandturn.font.FamilyAttribute familyAttribute ) {
 			if( familyAttribute == org.alice.apis.moveandturn.font.FamilyConstant.SERIF ) {
-				this.setSelectedValue( "Serif", true );
+				this.setValue( "Serif" );
 			} else {
-				this.setSelectedValue( "SansSerif", true );
+				this.setValue( "SansSerif" );
 			}
 		}
 	}
 
-	class StyleList extends edu.cmu.cs.dennisc.croquet.List< String > {
-		public StyleList() {
-			this.setListData( "Regular", "Bold", "Italic", "Bold Italic" );
-			this.setSelectedIndex( 0 );
+	private static class StyleSelectionOperation extends TextAttributeSelectionOperation {
+		public StyleSelectionOperation() {
+			super( java.util.UUID.fromString( "a5678cc6-78b0-4cc1-adbb-e90969d42823" ), 0, "Regular", "Bold", "Italic", "Bold Italic" );
 		}
 		public org.alice.apis.moveandturn.font.WeightAttribute getWeightAttribute() {
-			Object value = this.getSelectedValue();
+			Object value = this.getValue();
 			org.alice.apis.moveandturn.font.WeightAttribute rv;
 			if( value != null && (value.equals( "Bold" ) || value.equals( "Bold Italic" )) ) {
 				rv = org.alice.apis.moveandturn.font.WeightConstant.BOLD;
@@ -86,7 +93,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 			return rv;
 		}
 		public org.alice.apis.moveandturn.font.PostureAttribute getPostureAttribute() {
-			Object value = this.getSelectedValue();
+			Object value = this.getValue();
 			org.alice.apis.moveandturn.font.PostureAttribute rv;
 			if( value != null && (value.equals( "Italic" ) || value.equals( "Bold Italic" )) ) {
 				rv = org.alice.apis.moveandturn.font.PostureConstant.OBLIQUE;
@@ -112,7 +119,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 					selectedValue = "Regular";
 				}
 			}
-			this.setSelectedValue( selectedValue, true );
+			this.setValue( selectedValue );
 		}
 	}
 
@@ -124,8 +131,8 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 	private edu.cmu.cs.dennisc.croquet.CheckBox constrainInstanceNameToTextVC;
 
 	private javax.swing.JTextField heightTextField;
-	private FamilyList familyList;
-	private StyleList styleList;
+	private FamilySelectionOperation familySelection;
+	private StyleSelectionOperation styleSelection;
 
 	private edu.cmu.cs.dennisc.croquet.Label sample;
 
@@ -177,8 +184,8 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 //				CreateTextPane.this.updateOKButton();
 //			}
 //		} );
-		this.familyList = new FamilyList();
-		this.styleList = new StyleList();
+		this.familySelection = new FamilySelectionOperation();
+		this.styleSelection = new StyleSelectionOperation();
 
 		this.sample = new edu.cmu.cs.dennisc.croquet.Label( "AaBbYyZz", 1.2f );
 		this.updateSample();
@@ -194,8 +201,8 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 		}
 		ListSelectionAdapter listSelectionAdapter = new ListSelectionAdapter();
 
-		this.familyList.addListSelectionListener( listSelectionAdapter );
-		this.styleList.addListSelectionListener( listSelectionAdapter );
+		this.familySelection.addListSelectionListener( listSelectionAdapter );
+		this.styleSelection.addListSelectionListener( listSelectionAdapter );
 
 //		edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane( 16, 4 ) {
 //			@Override
@@ -246,12 +253,12 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 		) );
 		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
 				edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "family:" ), 
-				this.familyList, 
+				this.familySelection.createList(), 
 				null 
 		) );
 		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
 				edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "style:" ), 
-				this.styleList, 
+				this.styleSelection.createList(), 
 				null 
 		) );
 		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
@@ -265,9 +272,9 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 	}
 
 	private void updateSample() {
-		org.alice.apis.moveandturn.font.FamilyAttribute familyAttribute = this.familyList.getFamilyAttribute();
-		org.alice.apis.moveandturn.font.WeightAttribute weightAttribute = this.styleList.getWeightAttribute();
-		org.alice.apis.moveandturn.font.PostureAttribute postureAttribute = this.styleList.getPostureAttribute();
+		org.alice.apis.moveandturn.font.FamilyAttribute familyAttribute = this.familySelection.getFamilyAttribute();
+		org.alice.apis.moveandturn.font.WeightAttribute weightAttribute = this.styleSelection.getWeightAttribute();
+		org.alice.apis.moveandturn.font.PostureAttribute postureAttribute = this.styleSelection.getPostureAttribute();
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( this.sample.getAwtComponent(), familyAttribute.getKey(), familyAttribute.getValue(), weightAttribute.getKey(), weightAttribute.getValue(), postureAttribute.getKey(), postureAttribute.getValue() );
 	}
 //	@Override
@@ -289,9 +296,9 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 	}
 	protected org.alice.apis.moveandturn.Text getActualInputValue() {
 		org.alice.apis.moveandturn.Text rv = new org.alice.apis.moveandturn.Text();
-		org.alice.apis.moveandturn.font.FamilyAttribute familyAttribute = this.familyList.getFamilyAttribute();
-		org.alice.apis.moveandturn.font.WeightAttribute weightAttribute = this.styleList.getWeightAttribute();
-		org.alice.apis.moveandturn.font.PostureAttribute postureAttribute = this.styleList.getPostureAttribute();
+		org.alice.apis.moveandturn.font.FamilyAttribute familyAttribute = this.familySelection.getFamilyAttribute();
+		org.alice.apis.moveandturn.font.WeightAttribute weightAttribute = this.styleSelection.getWeightAttribute();
+		org.alice.apis.moveandturn.font.PostureAttribute postureAttribute = this.styleSelection.getPostureAttribute();
 
 		rv.setName( this.instanceNameVC.getText() );
 		rv.setValue( this.textVC.getText() );
@@ -312,14 +319,14 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
  * @author Dennis Cosgrove
  */
 class CreateTextActionOperation extends AbstractGalleryDeclareFieldOperation {
-	private CreateTextPane createTextPane = new CreateTextPane();
+	private CreateTextPane createTextPane;
 	public CreateTextActionOperation() {
 		super( java.util.UUID.fromString( "37c0a6d6-a21b-4abb-829b-bd3621cada8d" ) );
 		this.setName( "Create Text..." );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
-		//todo: reset
+		this.createTextPane = new CreateTextPane(); 
 		return this.createTextPane;
 	}
 	@Override

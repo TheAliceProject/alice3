@@ -45,12 +45,18 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-class GenderList extends AbstractList< org.alice.apis.stage.Gender > {
-	public GenderList() {
-		super( new EnumConstantsComboBoxModel( org.alice.apis.stage.Gender.class ) );
+abstract class HairColorSelectionOperation extends AbstractItemSelectionOperation< String > {
+	public HairColorSelectionOperation( java.util.UUID individualId, javax.swing.ComboBoxModel comboBoxModel ) {
+		super( individualId, comboBoxModel );
 	}
 	@Override
-	protected void handlePerformSelectionChange( org.alice.apis.stage.Gender value ) {
-		PersonViewer.getSingleton().setGender( value );
+	protected void handlePerformSelectionChange( String value ) {
+		PersonViewer.getSingleton().setHairColor( value );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.List<String> createList() {
+		edu.cmu.cs.dennisc.croquet.List<String> rv = super.createList();
+		rv.setRenderer( new HairListCellRenderer() );
+		return rv;
 	}
 }

@@ -45,45 +45,23 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractList<E> extends edu.cmu.cs.dennisc.croquet.List< E > {
-//	private class ItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<E> {
-//		public ItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
-//			super( java.util.UUID.fromString( "a10c07e8-bd0a-45e2-87aa-a3715fefb847" ), comboBoxModel );
-//		}
-//		@Override
-//		protected void handleSelectionChange(E value) {
-//			AbstractList.this.handlePerformSelectionChange( value );
-//		}
-//	}
-
-	public AbstractList( javax.swing.ComboBoxModel comboBoxModel ) {
-//		this.setItemSelectionOperation( new ItemSelectionOperation( comboBoxModel ) );
-		this.setModel( comboBoxModel );
-		this.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
-			public void valueChanged(javax.swing.event.ListSelectionEvent e) {
-				if( e.getValueIsAdjusting() ) {
-					//pass
-				} else {
-					E item = (E)AbstractList.this.getSelectedValue();
-					if( item != null ) {
-						AbstractList.this.handlePerformSelectionChange( item );
-					}
-				}
-			}
-		} );
+class FullBodyOutfitSelectionOperation extends AbstractItemSelectionOperation<Enum> {
+	public FullBodyOutfitSelectionOperation( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
+		super(  java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ), new FullBodyOutfitComboBoxModel( lifeStage, gender ) );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: FullBodyOutfitSelectionOperation handle encode/decode" );
 	}
-	public void randomize() {
-		final int N = this.getModel().getSize();
-		int i;
-		if( N > 0 ) {
-			i = org.alice.random.RandomUtilities.nextIntegerFrom0ToNExclusive( N );
-		} else {
-			i = -1;
-		}
-		this.setSelectedIndex( i );
+	@Override
+	protected void handlePerformSelectionChange( Enum value ) {
+		PersonViewer.getSingleton().setFullBodyOutfit( (org.alice.apis.stage.FullBodyOutfit)value );
 	}
-	public E getSelectedTypedValue() {
-		return (E)this.getSelectedValue();
+	@Override
+	protected int getVisibleRowCount() {
+		return -1;
 	}
-	protected abstract void handlePerformSelectionChange( E value );
+	@Override
+	public edu.cmu.cs.dennisc.croquet.List<Enum> createList() {
+		edu.cmu.cs.dennisc.croquet.List<Enum> rv = super.createList();
+		rv.setRenderer( new FullBodyOutfitListCellRenderer() );
+		return rv;
+	}
 }

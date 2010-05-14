@@ -49,7 +49,7 @@ public class LocalePreferenceComboBoxProxy extends PreferenceLabeledPaneProxy< j
 	class LocaleSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation< java.util.Locale > {
 		public LocaleSelectionOperation() {
 			super( java.util.UUID.fromString( "5cbe1b25-a5fc-4c54-8381-bfbc7c39a4ba" ), new javax.swing.DefaultComboBoxModel( edu.cmu.cs.dennisc.java.util.LocaleUtilities.alphabetizeByDisplayName( java.util.Locale.getAvailableLocales() ) ) );
-			this.getComboBoxModel().setSelectedItem( java.util.Locale.getDefault() );
+			this.setValue( java.util.Locale.getDefault() );
 		}
 
 		@Override
@@ -68,6 +68,6 @@ public class LocalePreferenceComboBoxProxy extends PreferenceLabeledPaneProxy< j
 
 	@Override
 	public void setAndCommitValue() {
-		this.getPreference().setAndCommitValue( (java.util.Locale)this.localeSelectionOperation.getComboBoxModel().getSelectedItem() );
+		this.getPreference().setAndCommitValue( (java.util.Locale)this.localeSelectionOperation.getValue() );
 	}
 }

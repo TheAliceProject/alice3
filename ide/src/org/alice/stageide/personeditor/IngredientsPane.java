@@ -47,19 +47,18 @@ package org.alice.stageide.personeditor;
  */
 abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private RandomPersonActionOperation randomPersonActionOperation = new RandomPersonActionOperation();
-	private LifeStageList lifeStageList = new LifeStageList();
-	private GenderList genderList = new GenderList();
+	private LifeStageSelectionOperation lifeStageSelection = new LifeStageSelectionOperation();
+	private GenderSelectionOperation genderSelection = new GenderSelectionOperation();
+	private BaseSkinToneSelectionOperation baseSkinToneSelection = new BaseSkinToneSelectionOperation();
+	private BaseEyeColorSelectionOperation baseEyeColorSelection = new BaseEyeColorSelectionOperation();
+	private HairColorCardPanel hairColorCardPanel = new HairColorCardPanel();
+	private HairCardPanel hairCardPanel = new HairCardPanel();
+	private FullBodyOutfitCardPanel fullBodyOutfitCardPanel = new FullBodyOutfitCardPanel();
 	private FitnessLevelPane fitnessLevelPane = new FitnessLevelPane();
-	private BaseSkinToneList baseSkinToneList = new BaseSkinToneList();
-	private BaseEyeColorList baseEyeColorList = new BaseEyeColorList();
-	private HairColorList hairColorList = new HairColorList();
-	private HairList hairList = new HairList();
-	private FullBodyOutfitList fullBodyOutfitList = new FullBodyOutfitList();
 
 	private static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 220, 220, 255 );
 	/*package private*/ static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
-	private static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
-	
+	/*package private*/ static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
 	private edu.cmu.cs.dennisc.zoot.ZTabbedPane tabbedPane = new edu.cmu.cs.dennisc.zoot.ZTabbedPane() {
 		@Override
 		public java.awt.Color getContentAreaColor() {
@@ -74,18 +73,11 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	};
 	
 	public IngredientsPane() {
-		this.hairList.setOpaque( false );
-		this.fullBodyOutfitList.setOpaque( false );
-
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.setBackgroundColor( BACKGROUND_COLOR );
 		this.setOpaque( true );
 
-		this.lifeStageList.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
-		this.lifeStageList.setVisibleRowCount( 1 );
-		this.lifeStageList.setOpaque( false );
-
-		this.lifeStageList.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
+		this.lifeStageSelection.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
 			public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
 				if( e.getValueIsAdjusting() ) {
 					//pass
@@ -101,12 +93,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			}
 		} );
 		
-		
-		this.genderList.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
-		this.genderList.setVisibleRowCount( 1 );
-		this.genderList.setOpaque( false );
-
-		this.genderList.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
+		this.genderSelection.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
 			public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
 				if( e.getValueIsAdjusting() ) {
 					//pass
@@ -122,54 +109,16 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			}
 		} );
 		
-		this.baseSkinToneList.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
-		this.baseSkinToneList.setVisibleRowCount( 1 );
-		this.baseSkinToneList.setOpaque( false );
-		this.hairColorList.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
-		this.hairColorList.setVisibleRowCount( 1 );
-		this.hairColorList.setOpaque( false );
-		this.baseEyeColorList.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
-		this.baseEyeColorList.setVisibleRowCount( 1 );
-		this.baseEyeColorList.setOpaque( false );
 		
-		class ListCellRenderer implements javax.swing.ListCellRenderer {
-			private edu.cmu.cs.dennisc.javax.swing.components.JBorderPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane();
-			private javax.swing.JLabel label = new javax.swing.JLabel();
-			public ListCellRenderer() {
-				label.setHorizontalAlignment( javax.swing.SwingUtilities.CENTER );
-				label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 8, 2, 8 ) );
-				label.setOpaque( true );
-				pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
-				pane.setOpaque( false );
-				pane.add( label, java.awt.BorderLayout.CENTER );
-			}
-			public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-				this.label.setText( value.toString() );
-				if( isSelected ) {
-					this.label.setBackground( SELECTED_COLOR );
-				} else {
-					this.label.setBackground( UNSELECTED_COLOR );
-				}
-				return this.pane;
-			}
-		}
-		
-		ListCellRenderer listCellRenderer = new ListCellRenderer();
-		this.genderList.setCellRenderer( listCellRenderer );
-		this.lifeStageList.setCellRenderer( listCellRenderer );
-		this.baseSkinToneList.setCellRenderer( listCellRenderer );
-		this.hairColorList.setCellRenderer( listCellRenderer );
-		this.baseEyeColorList.setCellRenderer( listCellRenderer );
-
 		edu.cmu.cs.dennisc.croquet.BorderPanel northPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		northPane.addComponent(  this.randomPersonActionOperation.createButton(), Constraint.NORTH );
 		
 		edu.cmu.cs.dennisc.croquet.RowsSpringPanel ubiquitousPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 8 ) {
 			@Override
 			protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "life stage:", IngredientsPane.this.lifeStageList ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "gender:", IngredientsPane.this.genderList ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "skin tone:", IngredientsPane.this.baseSkinToneList ) );
+				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "life stage:", IngredientsPane.this.lifeStageSelection.createList() ) );
+				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "gender:", IngredientsPane.this.genderSelection.createList() ) );
+				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "skin tone:", IngredientsPane.this.baseSkinToneSelection.createList() ) );
 				return rv;
 			}
 		};
@@ -182,16 +131,16 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		edu.cmu.cs.dennisc.croquet.RowsSpringPanel headPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 8 ) {
 			@Override
 			protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "hair:", hairColorList ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, hairList ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "eye color:", baseEyeColorList ) );
+				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "hair:", hairColorCardPanel ) );
+				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, hairCardPanel ) );
+				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "eye color:", baseEyeColorSelection.createList() ) );
 				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() ) );
 				return rv;
 			}
 		};
 		
 
-		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( this.fullBodyOutfitList );
+		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( this.fullBodyOutfitCardPanel );
 		scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 66 );
 		//scrollPane.getVerticalScrollBar().setBlockIncrement( 10 );
 		
@@ -239,32 +188,29 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	}
 
 	public void refresh() {
-		final boolean shouldScroll = true;
 		final PersonViewer personViewer = PersonViewer.getSingleton();
 		org.alice.apis.stage.LifeStage lifeStage = personViewer.getLifeStage();
 		org.alice.apis.stage.Gender gender = personViewer.getGender();
 		org.alice.apis.stage.Hair hair = personViewer.getHair();
 		if( hair != null ) {
 			String hairColor = hair.toString();
-			this.lifeStageList.setSelectedValue( lifeStage, shouldScroll );
-			this.genderList.setSelectedValue( gender, shouldScroll );
-			this.fullBodyOutfitList.handleEpicChange( lifeStage, gender, hairColor );
-			this.hairList.handleEpicChange( lifeStage, gender, hairColor );
-			this.hairList.setSelectedValue( (Enum)hair, shouldScroll );
-			this.hairColorList.handleEpicChange( lifeStage, gender, hairColor );
-			this.hairColorList.setSelectedValue( hairColor, shouldScroll );
-			this.fullBodyOutfitList.setSelectedValue( (Enum)personViewer.getFullBodyOutfit(), shouldScroll );
-			this.baseSkinToneList.setSelectedValue( personViewer.getBaseSkinTone(), shouldScroll );
-			this.baseEyeColorList.setSelectedValue( personViewer.getBaseEyeColor(), shouldScroll );
-			this.fitnessLevelPane.setFitnessLevel( personViewer.getFitnessLevel() );
+			this.lifeStageSelection.setValue( lifeStage );
+			this.genderSelection.setValue( gender );
 			
-//			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//				public void run() {
-//					IngredientsPane.this.fullBodyOutfitList.setSelectedValue( personViewer.getFullBodyOutfit(), shouldScroll );
-//					IngredientsPane.this.baseSkinToneList.setSelectedValue( personViewer.getBaseSkinTone(), shouldScroll );
-//					IngredientsPane.this.baseEyeColorList.setSelectedValue( personViewer.getBaseEyeColor(), shouldScroll );
-//				}
-//			} );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: IngredientsPane investigate ordering" );
+			this.fullBodyOutfitCardPanel.handleEpicChange( lifeStage, gender, hairColor );
+			this.hairCardPanel.handleEpicChange( lifeStage, gender, hairColor );
+			
+			this.hairCardPanel.setValue( (Enum)hair );
+			
+			this.hairColorCardPanel.handleEpicChange( lifeStage, gender, hairColor );
+			
+			this.hairColorCardPanel.setValue( hairColor );
+			this.fullBodyOutfitCardPanel.setValue( (Enum)personViewer.getFullBodyOutfit() );
+			
+			this.baseSkinToneSelection.setValue( personViewer.getBaseSkinTone() );
+			this.baseEyeColorSelection.setValue( personViewer.getBaseEyeColor() );
+			this.fitnessLevelPane.setFitnessLevel( personViewer.getFitnessLevel() );
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "hair is null" );
 		}

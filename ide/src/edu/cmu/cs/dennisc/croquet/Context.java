@@ -151,7 +151,7 @@ abstract class OperationEvent< O extends Operation, E extends java.util.EventObj
 	public ItemSelectionEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public ItemSelectionEvent( Context parent, ItemSelectionOperation< T > itemSelectionOperation, java.awt.event.ItemEvent e ) {
+	public ItemSelectionEvent( Context parent, ItemSelectionOperation< T > itemSelectionOperation, java.util.EventObject e ) {
 		super( parent, itemSelectionOperation, e, null );
 	}
 }

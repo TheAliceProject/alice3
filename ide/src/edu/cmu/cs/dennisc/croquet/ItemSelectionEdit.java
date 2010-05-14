@@ -93,11 +93,11 @@ public abstract class ItemSelectionEdit<T> extends Edit {
 
 	@Override
 	public void doOrRedo( boolean isDo ) {
-		this.getOperation().setValue( this.nextValue );
+		this.getOperation().internalSetValue( this.nextValue );
 	}
 	@Override
 	public void undo() {
-		this.getOperation().setValue( this.prevValue );
+		this.getOperation().internalSetValue( this.prevValue );
 	}
 	@Override
 	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {

@@ -47,35 +47,34 @@ package org.alice.app.openprojectpane;
  * @author Dennis Cosgrove
  */
 public abstract class ListContentPanel extends TabContentPanel {
-	private edu.cmu.cs.dennisc.croquet.List<java.net.URI> list = new edu.cmu.cs.dennisc.croquet.List<java.net.URI>() {
+	private edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<java.net.URI> uriSelection = new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<java.net.URI>( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "68a17b6d-353d-4473-abd3-1c78ff88e1cd" ), new javax.swing.DefaultComboBoxModel() ) {
 		@Override
-		protected javax.swing.JList createAwtComponent() {
-			javax.swing.JList rv = new javax.swing.JList() {
-				@Override
-				public void paint(java.awt.Graphics g) {
-					super.paint( g );
-					if( this.getModel().getSize() > 0 ) {
-						//pass
-					} else {
-						java.awt.Font font = this.getFont();
-						font = font.deriveFont( java.awt.Font.ITALIC );
-						g.setFont( font );
-						edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g, ListContentPanel.this.getTextForZeroProjects(), this.getSize() );
-					}
-				}
-//				@Override
-//				public java.awt.Dimension getPreferredSize() {
-//					return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 400, 300 );
-//				}
-//				@Override
-//				public java.awt.Dimension getMaximumSize() {
-//					return this.getPreferredSize();
-//				}
-			};
-			//rv.setVisibleRowCount( -1 );
-			return rv;
+		protected edu.cmu.cs.dennisc.croquet.ItemSelectionEdit<java.net.URI> createItemSelectionEdit(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, java.net.URI previousSelection, java.net.URI nextSelection) {
+			return null;
 		}
 	};
+	private edu.cmu.cs.dennisc.croquet.List<java.net.URI> list = this.uriSelection.createList();
+//	register( new edu.cmu.cs.dennisc.croquet.List<java.net.URI>() {
+//		@Override
+//		protected javax.swing.JList createAwtComponent() {
+//			javax.swing.JList rv = new javax.swing.JList() {
+//				@Override
+//				public void paint(java.awt.Graphics g) {
+//					super.paint( g );
+//					if( this.getModel().getSize() > 0 ) {
+//						//pass
+//					} else {
+//						java.awt.Font font = this.getFont();
+//						font = font.deriveFont( java.awt.Font.ITALIC );
+//						g.setFont( font );
+//						edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g, ListContentPanel.this.getTextForZeroProjects(), this.getSize() );
+//					}
+//				}
+//			};
+//			//rv.setVisibleRowCount( -1 );
+//			return rv;
+//		}
+//	} );
 
 //	private edu.cmu.cs.dennisc.croquet.List<java.net.URI> list = new edu.cmu.cs.dennisc.croquet.List<java.net.URI>();
 	private edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
@@ -93,7 +92,7 @@ public abstract class ListContentPanel extends TabContentPanel {
 	public ListContentPanel() {
 		this.refresh();
 		this.list.setOpaque( false );
-		this.list.setCellRenderer( new ProjectSnapshotListCellRenderer() );
+		this.list.setRenderer( new ProjectSnapshotListCellRenderer() );
 		this.list.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
 		this.list.setVisibleRowCount( -1 );
 		

@@ -45,20 +45,18 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-class HairList extends AbstractArrayOfEnumConstantsList<Enum> {
-	public HairList() {
-		this.setCellRenderer( new HairListCellRenderer() );
+class BaseSkinToneSelectionOperation extends AbstractItemSelectionOperation< org.alice.apis.stage.BaseSkinTone > {
+	public BaseSkinToneSelectionOperation() {
+		super( java.util.UUID.fromString( "16db5f23-5fa8-41e5-8477-de0f9271e797" ), new EnumConstantsComboBoxModel( org.alice.apis.stage.BaseSkinTone.class ) );
 	}
 	@Override
-	protected String getKey( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor ) {
-		return lifeStage.name() + " " + gender.name() + " " + hairColor;
+	protected void handlePerformSelectionChange( org.alice.apis.stage.BaseSkinTone value ) {
+		PersonViewer.getSingleton().setBaseSkinTone( value );
 	}
 	@Override
-	protected javax.swing.ListModel createListModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor ) {
-		return new HairComboBoxModel( lifeStage, gender, hairColor );
-	}
-	@Override
-	protected void handlePerformSelectionChange( Enum value ) {
-		PersonViewer.getSingleton().setHair( (org.alice.apis.stage.Hair)value );
+	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseSkinTone> createList() {
+		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseSkinTone> rv = super.createList();
+		rv.setRenderer( SimpleListCellRenderer.SINGLETON );
+		return rv;
 	}
 }

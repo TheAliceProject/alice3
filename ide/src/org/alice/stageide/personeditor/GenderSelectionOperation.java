@@ -45,20 +45,18 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-class FullBodyOutfitList extends AbstractArrayOfEnumConstantsList<Enum> {
-	public FullBodyOutfitList() {
-		this.setCellRenderer( new FullBodyOutfitListCellRenderer() );
+class GenderSelectionOperation extends AbstractItemSelectionOperation< org.alice.apis.stage.Gender > {
+	public GenderSelectionOperation() {
+		super( java.util.UUID.fromString( "0a4c1622-e482-46bb-bb00-be3916f5549c" ), new EnumConstantsComboBoxModel( org.alice.apis.stage.Gender.class ) );
 	}
 	@Override
-	protected String getKey( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor ) {
-		return lifeStage.name() + " " + gender.name();
+	protected void handlePerformSelectionChange( org.alice.apis.stage.Gender value ) {
+		PersonViewer.getSingleton().setGender( value );
 	}
 	@Override
-	protected javax.swing.ListModel createListModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor ) {
-		return new FullBodyOutfitComboBoxModel( lifeStage, gender );
-	}
-	@Override
-	protected void handlePerformSelectionChange( Enum value ) {
-		PersonViewer.getSingleton().setFullBodyOutfit( (org.alice.apis.stage.FullBodyOutfit)value );
+	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Gender> createList() {
+		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Gender> rv = super.createList();
+		rv.setRenderer( SimpleListCellRenderer.SINGLETON );
+		return rv;
 	}
 }

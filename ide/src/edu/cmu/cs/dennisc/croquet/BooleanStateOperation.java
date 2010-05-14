@@ -106,7 +106,7 @@ public /*final*/ class BooleanStateOperation extends Operation {
 	public Boolean getState() {
 		return this.buttonModel.isSelected();
 	}
-	/*package-private*/ void setValue(boolean nextValue) {
+	/*package-private*/ void internalSetValue(boolean nextValue) {
 		if( nextValue != this.state ) {
 			this.buttonModel.removeItemListener(itemListener);
 
@@ -125,7 +125,8 @@ public /*final*/ class BooleanStateOperation extends Operation {
 	}
 	@Deprecated
 	public void setState( boolean state ) {
-		this.setValue( state );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: BooleanStateOperation setValue" );
+		this.internalSetValue( state );
 	}
 
 	public String getTrueText() {
@@ -156,22 +157,16 @@ public /*final*/ class BooleanStateOperation extends Operation {
 		this.action.putValue(javax.swing.Action.NAME, name);
 	}
 	
-	protected void addAbstractButton(AbstractButton<?> abstractButton) {
-		this.addComponent(abstractButton);
-	}
-	protected void removeAbstractButton(AbstractButton<?> abstractButton) {
-		this.removeComponent(abstractButton);
-	}
 	public < B extends AbstractButton<?> > B register( final B rv ) {
 		Application.getSingleton().register( this );
 		rv.setModel( this.buttonModel );
 		rv.setAction( this.action );
 		rv.addContainmentObserver( new Component.ContainmentObserver() {
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				BooleanStateOperation.this.addAbstractButton( rv );
+				BooleanStateOperation.this.addComponent( rv );
 			}
 			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				BooleanStateOperation.this.removeAbstractButton( rv );
+				BooleanStateOperation.this.removeComponent( rv );
 			}
 		} );
 		return rv;

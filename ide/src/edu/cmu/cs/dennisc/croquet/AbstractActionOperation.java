@@ -124,34 +124,28 @@ public abstract class AbstractActionOperation extends Operation {
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 	}
 
-	private void addAbstractButton( AbstractButton<?> abstractButton ) {
-		abstractButton.setAction( this.action );
-//		abstractButton.setModel( this.buttonModel );
-		assert this.mapButtonToListener.containsKey( abstractButton ) == false;
-		ButtonActionListener buttonActionListener = new ButtonActionListener( abstractButton );
-		this.mapButtonToListener.put( abstractButton, buttonActionListener );
-		abstractButton.getAwtComponent().addActionListener( buttonActionListener );
-		this.addComponent(abstractButton);
-	}
-	private void removeAbstractButton( AbstractButton<?> abstractButton ) {
-		this.removeComponent(abstractButton);
-		ButtonActionListener buttonActionListener = this.mapButtonToListener.get( abstractButton );
-		assert buttonActionListener != null;
-		abstractButton.getAwtComponent().removeActionListener( buttonActionListener );
-		mapButtonToListener.remove( abstractButton );
-//		abstractButton.setModel( null );
-		abstractButton.setAction( null );
-	}
 
 	
 	public < B extends AbstractButton<?> > B register( final B rv ) {
 		Application.getSingleton().register( this );
 		rv.addContainmentObserver( new Component.ContainmentObserver() {
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				AbstractActionOperation.this.addAbstractButton( rv );
+				rv.setAction( AbstractActionOperation.this.action );
+//				rv.setModel( this.buttonModel );
+				assert AbstractActionOperation.this.mapButtonToListener.containsKey( rv ) == false;
+				ButtonActionListener buttonActionListener = new ButtonActionListener( rv );
+				AbstractActionOperation.this.mapButtonToListener.put( rv, buttonActionListener );
+				rv.getAwtComponent().addActionListener( buttonActionListener );
+				AbstractActionOperation.this.addComponent(rv);
 			}
 			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				AbstractActionOperation.this.removeAbstractButton( rv );
+				AbstractActionOperation.this.removeComponent(rv);
+				ButtonActionListener buttonActionListener = AbstractActionOperation.this.mapButtonToListener.get( rv );
+				assert buttonActionListener != null;
+				rv.getAwtComponent().removeActionListener( buttonActionListener );
+				mapButtonToListener.remove( rv );
+//				rv.setModel( null );
+				rv.setAction( null );
 			}
 		} );
 		return rv;
@@ -160,61 +154,10 @@ public abstract class AbstractActionOperation extends Operation {
 	public Button createButton() {
 		return register( new Button() );
 	}
-
 	public Hyperlink createHyperlink() {
 		return register( new Hyperlink() );
 	}
 	public MenuItem createMenuItem() {
 		return register( new MenuItem() );
 	}
-	
-//	public Button createButton() {
-//		Application.getSingleton().register( this );
-//		return new Button() {
-//			@Override
-//			protected void adding() {
-//				AbstractActionOperation.this.addAbstractButton(this);
-//				super.adding();
-//			}
-//
-//			@Override
-//			protected void removed() {
-//				super.removed();
-//				AbstractActionOperation.this.removeAbstractButton(this);
-//			}
-//		};
-//	}
-//	public Hyperlink createHyperlink() {
-//		Application.getSingleton().register( this );
-//		return new Hyperlink() {
-//			@Override
-//			protected void adding() {
-//				AbstractActionOperation.this.addAbstractButton(this);
-//				super.adding();
-//			}
-//
-//			@Override
-//			protected void removed() {
-//				super.removed();
-//				AbstractActionOperation.this.removeAbstractButton(this);
-//			}
-//		};
-//	}
-//	public MenuItem createMenuItem() {
-//		Application.getSingleton().register( this );
-//		return new MenuItem() {
-//			@Override
-//			protected void adding() {
-//				AbstractActionOperation.this.addAbstractButton(this);
-//				super.adding();
-//			}
-//
-//			@Override
-//			protected void removed() {
-//				super.removed();
-//				AbstractActionOperation.this.removeAbstractButton(this);
-//			}
-//		};
-//	}
-	
 }

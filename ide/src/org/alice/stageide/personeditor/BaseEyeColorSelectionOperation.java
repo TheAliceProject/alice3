@@ -45,12 +45,18 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-class BaseEyeColorList extends AbstractList< org.alice.apis.stage.BaseEyeColor > {
-	public BaseEyeColorList() {
-		super( new EnumConstantsComboBoxModel( org.alice.apis.stage.BaseEyeColor.class ) );
+class BaseEyeColorSelectionOperation extends AbstractItemSelectionOperation<org.alice.apis.stage.BaseEyeColor> {
+	public BaseEyeColorSelectionOperation() {
+		super(java.util.UUID.fromString("04672192-417f-4446-abbc-16c3ee015802"), new EnumConstantsComboBoxModel(org.alice.apis.stage.BaseEyeColor.class));
 	}
 	@Override
-	protected void handlePerformSelectionChange( org.alice.apis.stage.BaseEyeColor value ) {
-		PersonViewer.getSingleton().setBaseEyeColor( value );
+	protected void handlePerformSelectionChange(org.alice.apis.stage.BaseEyeColor value) {
+		PersonViewer.getSingleton().setBaseEyeColor(value);
+	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseEyeColor> createList() {
+		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseEyeColor> rv = super.createList();
+		rv.setRenderer( SimpleListCellRenderer.SINGLETON );
+		return rv;
 	}
 }

@@ -105,25 +105,15 @@ public final class StringStateOperation extends Operation {
 		}
 	}
 
-	protected void addTextComponent(TextComponent<?> textComponent) {
-		//textComponent.setDocument(this.document);
-		this.addComponent(textComponent);
-	}
-
-	protected void removeTextComponent(TextComponent<?> textComponent) {
-		this.removeComponent(textComponent);
-		//textComponent.setDocument(null);
-	}
-
 	private < T extends TextComponent<?> > T register( final T rv ) {
 		Application.getSingleton().register( this );
 		rv.setDocument(this.document);
 		rv.addContainmentObserver( new Component.ContainmentObserver() {
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				StringStateOperation.this.addTextComponent( rv );
+				StringStateOperation.this.addComponent( rv );
 			}
 			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				StringStateOperation.this.removeTextComponent( rv );
+				StringStateOperation.this.removeComponent( rv );
 			}
 		} );
 		return rv;

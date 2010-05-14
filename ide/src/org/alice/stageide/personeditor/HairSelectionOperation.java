@@ -45,28 +45,23 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractArrayOfEnumConstantsList<E extends Enum> extends ArrayOfEnumConstantsList<E> {
-	private java.util.Map< String, javax.swing.ListModel > map = new java.util.HashMap< String, javax.swing.ListModel >();
-	protected abstract String getKey( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor );
-	public AbstractArrayOfEnumConstantsList() {
-		super( new javax.swing.DefaultComboBoxModel() );
+class HairSelectionOperation extends AbstractItemSelectionOperation<Enum> {
+	public HairSelectionOperation( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor ) {
+		super( java.util.UUID.fromString( "682e4dea-91f3-4b0a-8004-51942613c643" ), new HairComboBoxModel( lifeStage, gender, hairColor ) );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: HairSelectionOperation handle encode/decode" );
 	}
-	public void handleEpicChange( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor  ) {
-		assert lifeStage != null;
-		assert gender != null;
-		String key = getKey( lifeStage, gender, hairColor );
-		javax.swing.ListModel listModel = this.map.get( key );
-		if( listModel != null ) {
-			//pass
-		} else {
-			listModel = this.createListModel( lifeStage, gender, hairColor );
-			this.map.put( key, listModel );
-		}
-		if( this.getModel() == listModel ) {
-			//pass
-		} else {
-			this.setModel( listModel );
-		}
+	@Override
+	protected void handlePerformSelectionChange( Enum value ) {
+		PersonViewer.getSingleton().setHair( (org.alice.apis.stage.Hair)value );
 	}
-	protected abstract javax.swing.ListModel createListModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor );
+	@Override
+	protected int getVisibleRowCount() {
+		return -1;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.List<Enum> createList() {
+		edu.cmu.cs.dennisc.croquet.List<Enum> rv = super.createList();
+		rv.setRenderer( new HairListCellRenderer() );
+		return rv;
+	}
 }

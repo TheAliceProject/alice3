@@ -133,10 +133,11 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.LineAxis
 	private ThumbnailSnapshotListCellRenderer thumbnailSnapshotListCellRenderer = new ThumbnailSnapshotListCellRenderer();
 
 	public ThumbnailsPane() {
-		this.list.setCellRenderer( this.thumbnailSnapshotListCellRenderer );
+		this.list.setRenderer( this.thumbnailSnapshotListCellRenderer );
 		this.list.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
 		this.list.setVisibleRowCount( 1 );
-		this.list.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ThumbnailsPane" );
+		this.list.getAwtComponent().addListSelectionListener( new javax.swing.event.ListSelectionListener() {
 			public void valueChanged(javax.swing.event.ListSelectionEvent e) {
 				if( e.getValueIsAdjusting() ) {
 					//pass

@@ -45,13 +45,47 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-class LifeStageList extends AbstractList< org.alice.apis.stage.LifeStage > {
-	public LifeStageList() {
-		//super( new EnumConstantsComboBoxModel( org.alice.apis.stage.LifeStage.class ) );
-		super( new ArrayComboBoxModel( org.alice.apis.stage.LifeStage.CHILD, org.alice.apis.stage.LifeStage.ADULT ) );
+abstract class AbstractItemSelectionOperation<E> extends edu.cmu.cs.dennisc.croquet.ItemSelectionOperation< E > {
+//	private class ItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<E> {
+//		public ItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
+//			super( java.util.UUID.fromString( "a10c07e8-bd0a-45e2-87aa-a3715fefb847" ), comboBoxModel );
+//		}
+//		@Override
+//		protected void handleSelectionChange(E value) {
+//			AbstractList.this.handlePerformSelectionChange( value );
+//		}
+//	}
+
+	public AbstractItemSelectionOperation( java.util.UUID individualId, javax.swing.ComboBoxModel comboBoxModel ) {
+		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, individualId, comboBoxModel );
+//		this.setItemSelectionOperation( new ItemSelectionOperation( comboBoxModel ) );
+		this.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
+			public void valueChanged(javax.swing.event.ListSelectionEvent e) {
+				if( e.getValueIsAdjusting() ) {
+					//pass
+				} else {
+					E item = (E)AbstractItemSelectionOperation.this.getValue();
+					if( item != null ) {
+						AbstractItemSelectionOperation.this.handlePerformSelectionChange( item );
+					}
+				}
+			}
+		} );
 	}
 	@Override
-	protected void handlePerformSelectionChange( org.alice.apis.stage.LifeStage value ) {
-		PersonViewer.getSingleton().setLifeStage( value );
+	protected edu.cmu.cs.dennisc.croquet.ItemSelectionEdit<E> createItemSelectionEdit(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, E previousSelection, E nextSelection) {
+		throw new RuntimeException( "todo" );
 	}
+	protected abstract void handlePerformSelectionChange( E value );
+	protected int getVisibleRowCount() {
+		return 1;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.List<E> createList() {
+		edu.cmu.cs.dennisc.croquet.List<E> rv = super.createList();
+		rv.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
+		rv.setVisibleRowCount( this.getVisibleRowCount() );
+		rv.setOpaque( false );
+		return rv;
+	}	
 }

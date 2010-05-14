@@ -45,10 +45,19 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class ArrayOfEnumConstantsList<E extends Enum> extends AbstractList< E > {
-	public ArrayOfEnumConstantsList( javax.swing.ComboBoxModel comboBoxModel ) {
-		super( comboBoxModel );
-		this.setLayoutOrientation( LayoutOrientation.HORIZONTAL_WRAP );
-		this.setVisibleRowCount( -1 );
+class LifeStageSelectionOperation extends AbstractItemSelectionOperation< org.alice.apis.stage.LifeStage > {
+	public LifeStageSelectionOperation() {
+		//super( new EnumConstantsComboBoxModel( org.alice.apis.stage.LifeStage.class ) );
+		super( java.util.UUID.fromString( "ee61b76d-b154-4e45-a07c-fb2eac906895" ), new ArrayComboBoxModel( org.alice.apis.stage.LifeStage.CHILD, org.alice.apis.stage.LifeStage.ADULT ) );
+	}
+	@Override
+	protected void handlePerformSelectionChange( org.alice.apis.stage.LifeStage value ) {
+		PersonViewer.getSingleton().setLifeStage( value );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.LifeStage> createList() {
+		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.LifeStage> rv = super.createList();
+		rv.setRenderer( SimpleListCellRenderer.SINGLETON );
+		return rv;
 	}
 }

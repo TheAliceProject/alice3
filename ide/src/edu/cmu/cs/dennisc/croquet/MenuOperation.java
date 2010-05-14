@@ -92,29 +92,6 @@ public class MenuOperation extends Operation {
 	public Operation[] getOperations() {
 		return this.operations;
 	}
-	private void addMenu( Menu menu ) {
-		menu.setText( this.text );
-		menu.setMnemonic( this.mnemonic );
-		assert mapMenuToListener.containsKey( menu ) == false;
-		MenuListener menuListener = new MenuListener( menu );
-		this.mapMenuToListener.put( menu, menuListener );
-		menu.getAwtComponent().addMenuListener( menuListener );
-		menu.getAwtComponent().addActionListener( new java.awt.event.ActionListener() {
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "actionPerformed", e );
-			}
-		} );
-		this.addComponent( menu );
-	}
-	private void removeMenu( Menu menu ) {
-		this.removeComponent( menu );
-		MenuListener menuListener = this.mapMenuToListener.get( menu );
-		assert menuListener != null;
-		menu.getAwtComponent().removeMenuListener( menuListener );
-		this.mapMenuToListener.remove( menu );
-		menu.setMnemonic( 0 );
-		menu.setText( null );
-	}
 	
 	public Menu createMenu() {
 		Application.getSingleton().register( this );
@@ -122,12 +99,28 @@ public class MenuOperation extends Operation {
 			@Override
 			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				super.handleAddedTo( parent );
-				MenuOperation.this.addMenu(this);
+				this.setText( MenuOperation.this.text );
+				this.setMnemonic( MenuOperation.this.mnemonic );
+				assert mapMenuToListener.containsKey( this ) == false;
+				MenuListener menuListener = new MenuListener( this );
+				MenuOperation.this.mapMenuToListener.put( this, menuListener );
+				this.getAwtComponent().addMenuListener( menuListener );
+				this.getAwtComponent().addActionListener( new java.awt.event.ActionListener() {
+					public void actionPerformed( java.awt.event.ActionEvent e ) {
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( "actionPerformed", e );
+					}
+				} );
 			}
 
 			@Override
 			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				MenuOperation.this.removeMenu(this);
+				MenuOperation.this.removeComponent( this );
+				MenuListener menuListener = MenuOperation.this.mapMenuToListener.get( this );
+				assert menuListener != null;
+				this.getAwtComponent().removeMenuListener( menuListener );
+				MenuOperation.this.mapMenuToListener.remove( this );
+				this.setMnemonic( 0 );
+				this.setText( null );
 				super.handleRemovedFrom( parent );
 			}
 		};
