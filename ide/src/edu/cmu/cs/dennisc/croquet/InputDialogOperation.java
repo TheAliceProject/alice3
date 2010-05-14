@@ -131,18 +131,6 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 	@Override
 	protected final void perform(Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
 		Context childContext = context.createChildContext();
-		edu.cmu.cs.dennisc.croquet.Context.ChildrenObserver childrenObserver = new edu.cmu.cs.dennisc.croquet.Context.ChildrenObserver() {
-			public void addingChild(edu.cmu.cs.dennisc.croquet.HistoryTreeNode child) {
-			}
-			public void addedChild(edu.cmu.cs.dennisc.croquet.HistoryTreeNode child) {
-				InputDialogOperation.this.updateOkOperationAndExplanation();
-			}
-		};
-		this.updateOkOperationAndExplanation();
-		
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate.  observer should not need to be added to the root" );
-		Application.getSingleton().getRootContext().addChildrenObserver( childrenObserver );
-		
 		Component<?> contentPane = this.prologue(childContext);
 		if( contentPane != null ) {
 			class BottomPanel extends Panel {
@@ -235,15 +223,25 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 			//dialog.pack();
 			//edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin(dialog.getAwtWindow(), button.getRoot().getAwtWindow());
 
+			edu.cmu.cs.dennisc.croquet.Context.ChildrenObserver childrenObserver = new edu.cmu.cs.dennisc.croquet.Context.ChildrenObserver() {
+				public void addingChild(edu.cmu.cs.dennisc.croquet.HistoryTreeNode child) {
+				}
+				public void addedChild(edu.cmu.cs.dennisc.croquet.HistoryTreeNode child) {
+					InputDialogOperation.this.updateOkOperationAndExplanation();
+				}
+			};
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate.  observer should not need to be added to the root" );
+			Application.getSingleton().getRootContext().addChildrenObserver( childrenObserver );
+			this.updateOkOperationAndExplanation();
 			dialog.setVisible( true );
 			this.epilogue(childContext, this.isOk);
+			Application.getSingleton().getRootContext().removeChildrenObserver( childrenObserver );
 
 			this.okOperation.setDialog(null);
 			this.cancelOperation.setDialog(null);
 		} else {
 			this.epilogue(childContext, false);
 		}
-		Application.getSingleton().getRootContext().removeChildrenObserver( childrenObserver );
 		context.finish();
 	}
 }

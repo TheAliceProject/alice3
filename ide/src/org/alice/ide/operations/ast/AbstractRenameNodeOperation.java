@@ -87,7 +87,7 @@ public abstract class AbstractRenameNodeOperation extends edu.cmu.cs.dennisc.cro
 	
 	@Override
 	protected java.awt.Dimension getDesiredDialogSize(edu.cmu.cs.dennisc.croquet.Dialog dialog) {
-		return new java.awt.Dimension( 320, 240 );
+		return new java.awt.Dimension( 300, 150 );
 	}
 	protected abstract edu.cmu.cs.dennisc.property.StringProperty getNameProperty();
 	protected abstract org.alice.ide.name.validators.NodeNameValidator getNodeNameValidator();
