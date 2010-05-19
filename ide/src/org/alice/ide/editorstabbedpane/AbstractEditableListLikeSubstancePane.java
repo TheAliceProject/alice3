@@ -198,14 +198,14 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 	protected abstract void setSelectedIndex( int index );
 	
 
-	private edu.cmu.cs.dennisc.croquet.Component< ? > listLikeSubstance;
+	private javax.swing.JComponent listLikeSubstance;
 	private AddItemOperation addItemOperation;
 	private RemoveItemOperation removeItemOperation;
 	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation editItemOperation;
 	private MoveItemUpOperation moveItemUpOperation;
 	private MoveItemDownOperation moveItemDownOperation;
 
-	public AbstractEditableListLikeSubstancePane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.croquet.Component< ? > listLikeSubstance ) {
+	public AbstractEditableListLikeSubstancePane( java.util.UUID groupUUID, javax.swing.JComponent listLikeSubstance ) {
 		super( 8, 0 );
 		this.listLikeSubstance = listLikeSubstance;
 		this.addItemOperation = new AddItemOperation( groupUUID, this.getAddItemOperationName() );
@@ -231,12 +231,12 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 
 		this.addComponent( buttonPane, Constraint.EAST );
 
-		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( this.listLikeSubstance );
+		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.listLikeSubstance ) );
 		scrollPane.setBorder( null );
 		this.addComponent( scrollPane, Constraint.CENTER );
 	}
 
-	public edu.cmu.cs.dennisc.croquet.Component< ? > getListLikeSubstance() {
+	public javax.swing.JComponent getListLikeSubstance() {
 		return this.listLikeSubstance;
 	}
 	

@@ -45,10 +45,6 @@ package org.alice.ide.declarationpanes;
 /**
  * @author Dennis Cosgrove
  */
-import edu.cmu.cs.dennisc.alice.ast.AbstractType;
-import edu.cmu.cs.dennisc.alice.ast.DeclarationProperty;
-
-
 //todo: BooleanPropertyOperation
 class IsArrayStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 	private edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty;
@@ -62,16 +58,61 @@ class IsArrayStateOperation extends org.alice.ide.operations.AbstractBooleanStat
 	}
 }
 
-public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
-	private DeclarationProperty< AbstractType > typeProperty;
-	private edu.cmu.cs.dennisc.croquet.ComboBox<AbstractType> typeComboBox;
-	private IsArrayStateOperation isArrayStateOperation;
 
-	public TypePane( DeclarationProperty< AbstractType > typeProperty, edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty, boolean isTypeComboBoxEnabled, boolean isArrayCheckBoxEnabled ) {
+public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
+	private static class TypeSelectionOperation extends edu.cmu.cs.dennisc.croquet.ItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
+		private static class TypeListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
+			@Override
+			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractType value, int index, boolean isSelected, boolean cellHasFocus ) {
+				org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+				rv.setText( ide.getTextFor( value ) );
+				rv.setIcon( ide.getIconFor( value ) );
+//				if( value != null ) {
+//					org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+//					rv.setText( ide.getTextFor( value ) );
+//					rv.setIcon( ide.getIconFor( value ) );
+////					rv.setHorizontalTextPosition( javax.swing.SwingConstants.TRAILING );
+//				} else {
+//					rv.setText( null );
+//					rv.setIcon( null );
+////					rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
+//				}
+				return rv;
+			}
+		}
+
+		public TypeSelectionOperation() {
+			super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "ef5677ca-a5d9-49c4-90bb-5fb43ef15ba6" ) );
+			edu.cmu.cs.dennisc.alice.ast.AbstractType[] types = org.alice.ide.IDE.getSingleton().getTypesForComboBoxes();
+			//int selectedIndex = java.util.Arrays.binarySearch( types, type );
+			this.setListData( -1, types );
+		}
+		@Override
+		public edu.cmu.cs.dennisc.croquet.ComboBox<edu.cmu.cs.dennisc.alice.ast.AbstractType> createComboBox() {
+			edu.cmu.cs.dennisc.croquet.ComboBox<edu.cmu.cs.dennisc.alice.ast.AbstractType> rv = super.createComboBox();
+			rv.setRenderer( new TypeListCellRenderer() );
+			rv.setMaximumRowCount( this.getItemCount() );
+			return rv;
+		}
+		@Override
+		protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.alice.ast.AbstractType value) {
+			throw new RuntimeException( "todo" );
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.alice.ast.AbstractType decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+			throw new RuntimeException( "todo" );
+		}
+	}
+
+	private edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType > typeProperty;
+	private IsArrayStateOperation isArrayStateOperation;
+	private TypeSelectionOperation typeSelectionOperation = new TypeSelectionOperation();
+	
+	public TypePane( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType > typeProperty, edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty, boolean isTypeComboBoxEnabled, boolean isArrayCheckBoxEnabled ) {
 		assert typeProperty != null;
 		this.typeProperty = typeProperty;
-		AbstractType type = this.typeProperty.getValue();
-		AbstractType componentType;
+		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.typeProperty.getValue();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType componentType;
 //		boolean isArrayCheckBoxSelected;
 		if( type != null ) {
 			if( type.isArray() ) {
@@ -85,10 +126,11 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 			componentType = null;
 //			isArrayCheckBoxSelected = isArrayCheckBoxSelectedIfTypeValueIsNull;
 		}
+
+		this.typeSelectionOperation.setEnabled( isTypeComboBoxEnabled );
+		this.typeSelectionOperation.setValue( componentType );
 		//todo: listen to changes on typeProperty
-		this.typeComboBox = org.alice.ide.common.TypeComboBox.createInstance( java.util.UUID.fromString( "ef5677ca-a5d9-49c4-90bb-5fb43ef15ba6" ), componentType );
-		this.typeComboBox.getAwtComponent().setEnabled( isTypeComboBoxEnabled );
-		
+
 		isArrayProperty.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			}
@@ -102,7 +144,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			}
 			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-				typeComboBox.setSelectedItem( (AbstractType)e.getValue() );
+				typeSelectionOperation.setValue( (edu.cmu.cs.dennisc.alice.ast.AbstractType)e.getValue() );
 			}
 		} );
 		
@@ -112,12 +154,12 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 		edu.cmu.cs.dennisc.croquet.CheckBox isArrayCheckBox = this.isArrayStateOperation.createCheckBox();
 		isArrayCheckBox.setOpaque( false );
 		
-		this.addComponent( this.typeComboBox );
+		this.addComponent( this.typeSelectionOperation.createComboBox() );
 		this.addComponent( isArrayCheckBox );
 	}
 	
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType rv = (edu.cmu.cs.dennisc.alice.ast.AbstractType)this.typeComboBox.getSelectedItem();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType rv = (edu.cmu.cs.dennisc.alice.ast.AbstractType)this.typeSelectionOperation.getValue();
 		if( rv != null ) {
 			if( this.isArrayStateOperation.getState() ) {
 				rv = rv.getArrayType();
@@ -132,12 +174,12 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 //		} else {
 //			this.typeComboBox.setSelectedItem( type );
 //		}
-		this.typeComboBox.getAwtComponent().setEnabled( false );
+		this.typeSelectionOperation.setEnabled( false );
 //		this.isArrayCheckBox.setSelected( type.isArray() );
 //		this.isArrayCheckBox.setEnabled( false );
 	}
 	
 	private void updateTypeProperty() {
-		this.typeProperty.setValue( (edu.cmu.cs.dennisc.alice.ast.AbstractType)this.typeComboBox.getSelectedItem() );
+		this.typeProperty.setValue( this.typeSelectionOperation.getValue() );
 	}
 }

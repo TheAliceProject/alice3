@@ -74,15 +74,17 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 			}
 		}
 		public void setSelectedItem(Object item) {
-			final int N = this.getSize();
-			int selectedIndex = -1;
-			for( int i=0; i<N; i++ ) {
-				if( this.items[ i ] == item ) {
-					selectedIndex = i;
-					break;
+			if( item != this.getSelectedItem() ) {
+				final int N = this.getSize();
+				int selectedIndex = -1;
+				for( int i=0; i<N; i++ ) {
+					if( this.items[ i ] == item ) {
+						selectedIndex = i;
+						break;
+					}
 				}
+				this.setSelectedIndex(selectedIndex);
 			}
-			this.setSelectedIndex(selectedIndex);
 		}
 		public Object getElementAt(int index) {
 			return this.items[ index ];
@@ -94,15 +96,19 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 				return 0;
 			}
 		}
-		private void setSelectedIndex( int selectedIndex ) {
+		private void setSelectedIndex( final int selectedIndex ) {
 			ItemSelectionOperation.this.listSelectionModel.setValueIsAdjusting( true );
-			ItemSelectionOperation.this.listSelectionModel.setSelectionInterval( selectedIndex, selectedIndex );
+			if( selectedIndex >= 0 ) {
+				ItemSelectionOperation.this.listSelectionModel.setSelectionInterval( selectedIndex, selectedIndex );
+			} else {
+				ItemSelectionOperation.this.listSelectionModel.clearSelection();
+			}
 			ItemSelectionOperation.this.listSelectionModel.setValueIsAdjusting( false );
 		}
 		private void setListData( int selectedIndex, Object[] items ) {
 			this.items = items;
-			this.setSelectedIndex(selectedIndex);
 			this.fireContentsChanged( this, 0, this.getSize()-1 );
+			this.setSelectedIndex(selectedIndex);
 		}
 		private void setListData( int selectedIndex, java.util.Collection<E> items ) {
 			this.setListData(selectedIndex, items.toArray());
@@ -242,6 +248,10 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ItemSelectionOperation setValue" );
 		this.internalSetValue(value);
 	}
+	
+	public int getItemCount() {
+		return this.comboBoxModel.getSize();
+	}
 
 	public void setRandomSelectedValue() {
 		final int N = this.comboBoxModel.getSize();
@@ -266,13 +276,8 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 		}
 	}
 
-	public < L extends ItemSelectable<E,?> > L register( final L rv ) {
-		Application.getSingleton().register( this );
-		rv.setModel( this.comboBoxModel );
-		return rv;
-	}
 	public ComboBox<E> createComboBox() {
-		return register( new ComboBox< E >() {
+		ComboBox<E> rv = new ComboBox< E >() {
 			@Override
 			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				super.handleAddedTo(parent);
@@ -285,10 +290,13 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 				ItemSelectionOperation.this.removeComponent( this );
 				super.handleRemovedFrom(parent);
 			}
-		});
+		};
+		Application.getSingleton().register( this );
+		rv.setModel( this.comboBoxModel );
+		return rv;
 	}
 	public List<E> createList() {
-		List<E> rv = register( new List< E >() {
+		List<E> rv = new List< E >() {
 			@Override
 			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				super.handleAddedTo(parent);
@@ -301,8 +309,10 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 				ItemSelectionOperation.this.removeComponent( this );
 				super.handleRemovedFrom(parent);
 			}
-		} );
-		rv.getAwtComponent().setSelectionModel( this.listSelectionModel );
+		};
+		Application.getSingleton().register( this );
+		rv.setModel( this.comboBoxModel );
+		rv.setSelectionModel( this.listSelectionModel );
 		return rv;
 	}
 }

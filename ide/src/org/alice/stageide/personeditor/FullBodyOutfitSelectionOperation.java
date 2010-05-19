@@ -69,7 +69,7 @@ class FullBodyOutfitSelectionOperation extends AbstractItemSelectionOperation<or
 	@Override
 	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.FullBodyOutfit> createList() {
 		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.FullBodyOutfit> rv = super.createList();
-		rv.setRenderer( new FullBodyOutfitListCellRenderer() );
+		rv.setCellRenderer( new FullBodyOutfitListCellRenderer() );
 		return rv;
 	}
 }

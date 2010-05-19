@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class List<E> extends ItemSelectable< E, javax.swing.JList > {
+public class List<E> extends JComponent<javax.swing.JList > {
 	private long tModelChange;
 	private class ListUI extends javax.swing.plaf.basic.BasicListUI {
 		@Override
@@ -61,7 +61,6 @@ public class List<E> extends ItemSelectable< E, javax.swing.JList > {
 				public void mousePressed( java.awt.event.MouseEvent e ) {
 					long tCurrent = e.getWhen();
 					long tDelta = tCurrent - List.this.tModelChange;
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "mousePressed", tDelta );
 					if( tDelta > 400 ) {
 						int row = ListUI.this.locationToIndex( list, e.getPoint() );
 		                list.setValueIsAdjusting( true );
@@ -92,10 +91,7 @@ public class List<E> extends ItemSelectable< E, javax.swing.JList > {
 //		}
 	}
 	
-//	/*package-private*/ List() {
-//	}
-	public List() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of List constructor" );
+	/*package-private*/ List() {
 	}
 
 	@Override
@@ -121,12 +117,10 @@ public class List<E> extends ItemSelectable< E, javax.swing.JList > {
 //		this.doubleClickBehavior = doubleClickBehavior;
 //	}
 
-	@Override
-	public javax.swing.ListCellRenderer getRenderer() {
+	public javax.swing.ListCellRenderer getCellRenderer() {
 		return this.getAwtComponent().getCellRenderer();
 	}
-	@Override
-	public void setRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
+	public void setCellRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
 		this.getAwtComponent().setCellRenderer( listCellRenderer );
 	}
 
@@ -137,6 +131,7 @@ public class List<E> extends ItemSelectable< E, javax.swing.JList > {
 	public void setVisibleRowCount( int visibleRowCount ) {
 		this.getAwtComponent().setVisibleRowCount( visibleRowCount );
 	}
+	
 	public void setLayoutOrientation( LayoutOrientation layoutOrientation ) {
 		this.getAwtComponent().setLayoutOrientation( layoutOrientation.internal );
 	}
@@ -157,9 +152,8 @@ public class List<E> extends ItemSelectable< E, javax.swing.JList > {
 		}
 	}
 	private ListDataListener listDataListener = new ListDataListener();
-	private javax.swing.ComboBoxModel model;
-	@Override
-	/*package-private*/ void setModel( javax.swing.ComboBoxModel model ) {
+	private javax.swing.ListModel model;
+	/*package-private*/ void setModel( javax.swing.ListModel model ) {
 		if( this.model != null ) {
 			this.model.removeListDataListener( this.listDataListener );
 		}
@@ -169,6 +163,9 @@ public class List<E> extends ItemSelectable< E, javax.swing.JList > {
 		if( this.model != null ) {
 			this.model.addListDataListener( this.listDataListener );
 		}
+	}
+	/*package-private*/ void setSelectionModel( javax.swing.ListSelectionModel listSelectionModel ) {
+		this.getAwtComponent().setSelectionModel( listSelectionModel );
 	}
 	/*package-private*/ void addListSelectionListener( javax.swing.event.ListSelectionListener listSelectionListener ) {
 		this.getAwtComponent().addListSelectionListener( listSelectionListener );

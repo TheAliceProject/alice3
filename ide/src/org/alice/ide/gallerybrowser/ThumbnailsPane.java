@@ -143,14 +143,21 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.LineAxis
 	private ThumbnailSnapshotListCellRenderer thumbnailSnapshotListCellRenderer = new ThumbnailSnapshotListCellRenderer();
 
 	public ThumbnailsPane() {
-		edu.cmu.cs.dennisc.croquet.List<java.io.File> list = itemSelection.createList();
-		list.setRenderer( this.thumbnailSnapshotListCellRenderer );
+		final edu.cmu.cs.dennisc.croquet.List<java.io.File> list = itemSelection.createList();
+		list.setCellRenderer( this.thumbnailSnapshotListCellRenderer );
 		list.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
 		list.setVisibleRowCount( 1 );
 		itemSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver<java.io.File>() {
-			public void changed(java.io.File nextValue) {
+			public void changed(final java.io.File nextValue) {
 				if( nextValue != null ) {
+//					itemSelection.setValue( null );
 					ThumbnailsPane.this.handleFileActivation( nextValue );
+//					ThumbnailsPane.this.handleFileActivation( nextValue );
+//					javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//						public void run() {
+//							list.revalidateAndRepaint();
+//						}
+//					} );
 				}
 			}
 		} );

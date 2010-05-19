@@ -46,27 +46,27 @@ package org.alice.ide.editorstabbedpane;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractEditableListPane< E > extends AbstractEditableListLikeSubstancePane< E > {
-	public AbstractEditableListPane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.croquet.List< E > list ) {
+	public AbstractEditableListPane( java.util.UUID groupUUID, javax.swing.JList list ) {
 		super( groupUUID, list );
 	}
-	public edu.cmu.cs.dennisc.croquet.List< E > getList() {
-		return (edu.cmu.cs.dennisc.croquet.List< E >)this.getListLikeSubstance();
+	public javax.swing.JList getList() {
+		return (javax.swing.JList)this.getListLikeSubstance();
 	}
 	@Override
 	protected int getSelectedIndex() {
-		return this.getList().getAwtComponent().getSelectionModel().getMinSelectionIndex();
+		return this.getList().getSelectionModel().getMinSelectionIndex();
 	}
 	@Override
 	protected void setSelectedIndex( int index ) {
-		this.getList().getAwtComponent().getSelectionModel().setSelectionInterval( index, index );
+		this.getList().getSelectionModel().setSelectionInterval( index, index );
 	}
 	@Override
 	protected E getItemAt( int index ) {
-		return (E)this.getList().getAwtComponent().getModel().getElementAt( index );
+		return (E)this.getList().getModel().getElementAt( index );
 	}
 	@Override
 	protected int getListSize() {
-		return this.getList().getAwtComponent().getModel().getSize();
+		return this.getList().getModel().getSize();
 	}
 	
 	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
@@ -78,11 +78,11 @@ public abstract class AbstractEditableListPane< E > extends AbstractEditableList
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
-		this.getList().getAwtComponent().getSelectionModel().addListSelectionListener( this.listSelectionListener );
+		this.getList().getSelectionModel().addListSelectionListener( this.listSelectionListener );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		this.getList().getAwtComponent().getSelectionModel().removeListSelectionListener( this.listSelectionListener );
+		this.getList().getSelectionModel().removeListSelectionListener( this.listSelectionListener );
 		super.handleRemovedFrom( parent );
 	}
 }

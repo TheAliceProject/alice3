@@ -57,7 +57,7 @@ class LifeStageSelectionOperation extends AbstractItemSelectionOperation< org.al
 	@Override
 	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.LifeStage> createList() {
 		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.LifeStage> rv = super.createList();
-		rv.setRenderer( SimpleListCellRenderer.SINGLETON );
+		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
 		return rv;
 	}
 }

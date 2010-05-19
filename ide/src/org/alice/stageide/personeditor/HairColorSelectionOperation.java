@@ -56,7 +56,7 @@ abstract class HairColorSelectionOperation extends AbstractItemSelectionOperatio
 	@Override
 	public edu.cmu.cs.dennisc.croquet.List<String> createList() {
 		edu.cmu.cs.dennisc.croquet.List<String> rv = super.createList();
-		rv.setRenderer( new HairListCellRenderer() );
+		rv.setCellRenderer( new HairListCellRenderer() );
 		return rv;
 	}
 }

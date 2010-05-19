@@ -56,7 +56,7 @@ class GenderSelectionOperation extends AbstractItemSelectionOperation< org.alice
 	@Override
 	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Gender> createList() {
 		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Gender> rv = super.createList();
-		rv.setRenderer( SimpleListCellRenderer.SINGLETON );
+		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
 		return rv;
 	}
 }

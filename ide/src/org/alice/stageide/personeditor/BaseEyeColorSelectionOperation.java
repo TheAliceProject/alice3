@@ -56,7 +56,7 @@ class BaseEyeColorSelectionOperation extends AbstractItemSelectionOperation<org.
 	@Override
 	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseEyeColor> createList() {
 		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseEyeColor> rv = super.createList();
-		rv.setRenderer( SimpleListCellRenderer.SINGLETON );
+		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
 		return rv;
 	}
 }

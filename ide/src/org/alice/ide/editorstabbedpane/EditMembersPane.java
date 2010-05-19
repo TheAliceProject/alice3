@@ -47,11 +47,11 @@ package org.alice.ide.editorstabbedpane;
 */
 public abstract class EditMembersPane< T extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice > extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType;
-	private edu.cmu.cs.dennisc.croquet.List< T > list;
+	private javax.swing.JList list;
 	public EditMembersPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.property.ListProperty< T > listProperty ) {
 		this.declaringType = declaringType;
-		this.list = new edu.cmu.cs.dennisc.croquet.List< T >();
-		this.list.setRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ContentsCachingListCellRenderer< T >() {
+		this.list = new javax.swing.JList();
+		this.list.setCellRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ContentsCachingListCellRenderer< T >() {
 			@Override
 			protected java.awt.Component createComponent(T value) {
 				return createCellRendererComponent( value );
@@ -67,8 +67,8 @@ public abstract class EditMembersPane< T extends edu.cmu.cs.dennisc.alice.ast.Me
 		final edu.cmu.cs.dennisc.javax.swing.models.ListPropertyListModel< T > listModel = edu.cmu.cs.dennisc.javax.swing.models.ListPropertyListModel.createInstance( listProperty );
 		
 		
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: list.getAwtComponent().setModel" );
-		list.getAwtComponent().setModel( listModel );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: EditMembersPane" );
+		list.setModel( listModel );
 		
 		
 		class EditableMemberListPane extends AbstractEditableListPane< T > {
@@ -127,7 +127,7 @@ public abstract class EditMembersPane< T extends edu.cmu.cs.dennisc.alice.ast.Me
 		this.addComponent( editableListPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 	}
 	protected T getSelectedItem() {
-		return (T)this.list.getAwtComponent().getSelectedValue();
+		return (T)this.list.getSelectedValue();
 	}
 	protected abstract java.awt.Component createCellRendererComponent( T item );
 	protected abstract edu.cmu.cs.dennisc.croquet.AbstractActionOperation createEditOperation( java.util.UUID groupUUID, String name );

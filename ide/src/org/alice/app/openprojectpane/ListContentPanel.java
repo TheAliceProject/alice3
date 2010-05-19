@@ -85,7 +85,7 @@ public abstract class ListContentPanel extends TabContentPanel {
 		this.refresh();
 		final edu.cmu.cs.dennisc.croquet.List<java.net.URI> list = this.uriSelection.createList();
 		list.setOpaque( false );
-		list.setRenderer( new ProjectSnapshotListCellRenderer() );
+		list.setCellRenderer( new ProjectSnapshotListCellRenderer() );
 		list.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
 		list.setVisibleRowCount( -1 );
 		

@@ -73,7 +73,7 @@ class HairSelectionOperation extends AbstractItemSelectionOperation<org.alice.ap
 	@Override
 	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Hair> createList() {
 		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Hair> rv = super.createList();
-		rv.setRenderer( new HairListCellRenderer() );
+		rv.setCellRenderer( new HairListCellRenderer() );
 		return rv;
 	}
 }

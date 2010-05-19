@@ -56,7 +56,7 @@ class BaseSkinToneSelectionOperation extends AbstractItemSelectionOperation< org
 	@Override
 	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseSkinTone> createList() {
 		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseSkinTone> rv = super.createList();
-		rv.setRenderer( SimpleListCellRenderer.SINGLETON );
+		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
 		return rv;
 	}
 }
