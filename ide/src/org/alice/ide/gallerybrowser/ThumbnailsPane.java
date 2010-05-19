@@ -129,29 +129,32 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.LineAxis
 			return rv;
 		}
 	}
-	//private SingleOrDoubleClickList<java.io.File> list = new SingleOrDoubleClickList<java.io.File>();
-	private edu.cmu.cs.dennisc.croquet.List<java.io.File> list = new edu.cmu.cs.dennisc.croquet.List<java.io.File>();
+	
+	private edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<java.io.File> itemSelection = new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<java.io.File>( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "1814e4cc-1463-4191-bd85-72b61893d1e5" ) ) {
+		@Override
+		protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.io.File value) {
+			throw new RuntimeException("todo");
+		}
+		@Override
+		protected java.io.File decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+			throw new RuntimeException("todo");
+		}
+	};
 	private ThumbnailSnapshotListCellRenderer thumbnailSnapshotListCellRenderer = new ThumbnailSnapshotListCellRenderer();
 
 	public ThumbnailsPane() {
-		this.list.setRenderer( this.thumbnailSnapshotListCellRenderer );
-		this.list.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
-		this.list.setVisibleRowCount( 1 );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ThumbnailsPane" );
-		this.list.getAwtComponent().addListSelectionListener( new javax.swing.event.ListSelectionListener() {
-			public void valueChanged(javax.swing.event.ListSelectionEvent e) {
-				if( e.getValueIsAdjusting() ) {
-					//pass
-				} else {
-					java.io.File file = (java.io.File)ThumbnailsPane.this.list.getSelectedValue();
-					if( file != null ) {
-						ThumbnailsPane.this.handleFileActivation( file );
-						ThumbnailsPane.this.list.clearSelection();
-					}
+		edu.cmu.cs.dennisc.croquet.List<java.io.File> list = itemSelection.createList();
+		list.setRenderer( this.thumbnailSnapshotListCellRenderer );
+		list.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
+		list.setVisibleRowCount( 1 );
+		itemSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver<java.io.File>() {
+			public void changed(java.io.File nextValue) {
+				if( nextValue != null ) {
+					ThumbnailsPane.this.handleFileActivation( nextValue );
 				}
 			}
 		} );
-		this.list.addKeyListener( new java.awt.event.KeyListener() {
+		list.addKeyListener( new java.awt.event.KeyListener() {
 			public void keyPressed(java.awt.event.KeyEvent e) {
 				if( e.getKeyCode() == java.awt.event.KeyEvent.VK_BACK_SPACE ) {
 					ThumbnailsPane.this.handleBackSpaceKey();
@@ -163,7 +166,7 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.LineAxis
 			}
 		} );
 		
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.ScrollPane( this.list ) );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.ScrollPane( list ) );
 	}
 
 	protected abstract String getTextFor( java.io.File file );
@@ -199,6 +202,6 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.LineAxis
 		
 		java.util.Collections.sort( data, edu.cmu.cs.dennisc.java.io.FileUtilities.createComparator() );
 		
-		this.list.setListData( data );
+		this.itemSelection.setListData( -1, data );
 	}
 }

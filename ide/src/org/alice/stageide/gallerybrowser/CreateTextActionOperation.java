@@ -48,7 +48,8 @@ package org.alice.stageide.gallerybrowser;
 class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 	private static abstract class TextAttributeSelectionOperation extends edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<String> {
 		public TextAttributeSelectionOperation( java.util.UUID individualId, int selectedIndex, String... items ) {
-			super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, individualId, selectedIndex, items );
+			super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, individualId );
+			this.setListData(selectedIndex, items);
 		}
 		@Override
 		protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, String value) {

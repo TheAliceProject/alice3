@@ -144,6 +144,7 @@ public class List<E> extends ItemSelectable< E, javax.swing.JList > {
 	private class ListDataListener implements javax.swing.event.ListDataListener { 
 		private void handleChanged() {
 			List.this.tModelChange = System.currentTimeMillis();
+			List.this.revalidateAndRepaint();
 		}
 		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
 			this.handleChanged();
@@ -174,30 +175,5 @@ public class List<E> extends ItemSelectable< E, javax.swing.JList > {
 	}
 	/*package-private*/ void removeListSelectionListener( javax.swing.event.ListSelectionListener listSelectionListener ) {
 		this.getAwtComponent().removeListSelectionListener( listSelectionListener );
-	}
-
-	@Deprecated
-	public void setListData( E... values ) {
-		this.getAwtComponent().setListData( values );
-	}
-	@Deprecated
-	public void setListData( java.util.Vector<E> values ) {
-		this.getAwtComponent().setListData( values );
-	}
-	@Deprecated
-	public E getSelectedValue() {
-		return (E)this.getAwtComponent().getSelectedValue();
-	}
-	@Deprecated
-	public void setSelectedIndex( int index ) {
-		this.getAwtComponent().setSelectedIndex( index );
-	}
-	@Deprecated
-	public void setSelectedValue( E value, boolean shouldScroll ) {
-		this.getAwtComponent().setSelectedValue( value, shouldScroll );
-	}
-	@Deprecated
-	public void clearSelection() {
-		this.getAwtComponent().clearSelection();
 	}
 }

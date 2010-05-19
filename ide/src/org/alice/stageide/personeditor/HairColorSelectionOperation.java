@@ -47,7 +47,7 @@ package org.alice.stageide.personeditor;
  */
 abstract class HairColorSelectionOperation extends AbstractItemSelectionOperation< String > {
 	public HairColorSelectionOperation( java.util.UUID individualId, String... colorNames ) {
-		super( individualId, -1, colorNames );
+		super( individualId, colorNames );
 	}
 	@Override
 	protected void handlePerformSelectionChange( String value ) {

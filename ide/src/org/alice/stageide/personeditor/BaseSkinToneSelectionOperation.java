@@ -47,7 +47,7 @@ package org.alice.stageide.personeditor;
  */
 class BaseSkinToneSelectionOperation extends AbstractItemSelectionOperation< org.alice.apis.stage.BaseSkinTone > {
 	public BaseSkinToneSelectionOperation() {
-		super( java.util.UUID.fromString( "16db5f23-5fa8-41e5-8477-de0f9271e797" ), -1, org.alice.apis.stage.BaseSkinTone.values() );
+		super( java.util.UUID.fromString( "16db5f23-5fa8-41e5-8477-de0f9271e797" ), org.alice.apis.stage.BaseSkinTone.values() );
 	}
 	@Override
 	protected void handlePerformSelectionChange( org.alice.apis.stage.BaseSkinTone value ) {

@@ -127,7 +127,7 @@ public abstract class EditMembersPane< T extends edu.cmu.cs.dennisc.alice.ast.Me
 		this.addComponent( editableListPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 	}
 	protected T getSelectedItem() {
-		return (T)this.list.getSelectedValue();
+		return (T)this.list.getAwtComponent().getSelectedValue();
 	}
 	protected abstract java.awt.Component createCellRendererComponent( T item );
 	protected abstract edu.cmu.cs.dennisc.croquet.AbstractActionOperation createEditOperation( java.util.UUID groupUUID, String name );

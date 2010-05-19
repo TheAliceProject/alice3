@@ -49,7 +49,6 @@ class FullBodyOutfitSelectionOperation extends AbstractItemSelectionOperation<or
 	public FullBodyOutfitSelectionOperation( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
 		super( 
 			java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ), 
-			-1,
 			edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
 					edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
 							org.alice.apis.stage.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
