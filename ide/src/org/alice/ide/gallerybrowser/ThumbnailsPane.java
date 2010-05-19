@@ -42,49 +42,49 @@
  */
 package org.alice.ide.gallerybrowser;
 
-class SingleOrDoubleClickListUI extends javax.swing.plaf.basic.BasicListUI {
-	@Override
-	protected javax.swing.event.MouseInputListener createMouseInputListener() {
-		return new javax.swing.event.MouseInputListener() {
-			private long tPrevious = System.currentTimeMillis();
-			public void mouseClicked( java.awt.event.MouseEvent e ) {
-			}
-			public void mouseEntered( java.awt.event.MouseEvent e ) {
-			}
-			public void mouseExited( java.awt.event.MouseEvent e ) {
-			}
-			public void mousePressed( java.awt.event.MouseEvent e ) {
-				long tCurrent = e.getWhen();
-				long tDelta = tCurrent - tPrevious;
-				if( tDelta > 400 ) {
-					int row = SingleOrDoubleClickListUI.this.locationToIndex( list, e.getPoint() );
-	                list.setValueIsAdjusting( true );
-	                list.setSelectionInterval(row, row);
-					tPrevious = tCurrent;
-				}
-			}
-			public void mouseReleased( java.awt.event.MouseEvent e ) {
-                list.setValueIsAdjusting( false );
-			}
-			public void mouseMoved( java.awt.event.MouseEvent e ) {
-			}
-			public void mouseDragged( java.awt.event.MouseEvent e ) {
-			}
-		};
-	}
-}
-
-class SingleOrDoubleClickList<E> extends edu.cmu.cs.dennisc.croquet.List<E> {
-	@Override
-	protected javax.swing.JList createAwtComponent() {
-		return new javax.swing.JList() {
-			@Override
-			public void updateUI() {
-				this.setUI( new SingleOrDoubleClickListUI() );
-			}
-		};
-	}
-}
+//class SingleOrDoubleClickListUI extends javax.swing.plaf.basic.BasicListUI {
+//	@Override
+//	protected javax.swing.event.MouseInputListener createMouseInputListener() {
+//		return new javax.swing.event.MouseInputListener() {
+//			private long tPrevious = System.currentTimeMillis();
+//			public void mouseClicked( java.awt.event.MouseEvent e ) {
+//			}
+//			public void mouseEntered( java.awt.event.MouseEvent e ) {
+//			}
+//			public void mouseExited( java.awt.event.MouseEvent e ) {
+//			}
+//			public void mousePressed( java.awt.event.MouseEvent e ) {
+//				long tCurrent = e.getWhen();
+//				long tDelta = tCurrent - tPrevious;
+//				if( tDelta > 400 ) {
+//					int row = SingleOrDoubleClickListUI.this.locationToIndex( list, e.getPoint() );
+//	                list.setValueIsAdjusting( true );
+//	                list.setSelectionInterval(row, row);
+//					tPrevious = tCurrent;
+//				}
+//			}
+//			public void mouseReleased( java.awt.event.MouseEvent e ) {
+//                list.setValueIsAdjusting( false );
+//			}
+//			public void mouseMoved( java.awt.event.MouseEvent e ) {
+//			}
+//			public void mouseDragged( java.awt.event.MouseEvent e ) {
+//			}
+//		};
+//	}
+//}
+//
+//class SingleOrDoubleClickList<E> extends edu.cmu.cs.dennisc.croquet.List<E> {
+//	@Override
+//	protected javax.swing.JList createAwtComponent() {
+//		return new javax.swing.JList() {
+//			@Override
+//			public void updateUI() {
+//				this.setUI( new SingleOrDoubleClickListUI() );
+//			}
+//		};
+//	}
+//}
 
 /**
  * @author Dennis Cosgrove
@@ -129,7 +129,8 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.LineAxis
 			return rv;
 		}
 	}
-	private SingleOrDoubleClickList<java.io.File> list = new SingleOrDoubleClickList<java.io.File>();
+	//private SingleOrDoubleClickList<java.io.File> list = new SingleOrDoubleClickList<java.io.File>();
+	private edu.cmu.cs.dennisc.croquet.List<java.io.File> list = new edu.cmu.cs.dennisc.croquet.List<java.io.File>();
 	private ThumbnailSnapshotListCellRenderer thumbnailSnapshotListCellRenderer = new ThumbnailSnapshotListCellRenderer();
 
 	public ThumbnailsPane() {

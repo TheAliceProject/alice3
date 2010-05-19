@@ -47,13 +47,16 @@ package org.alice.app.openprojectpane;
  * @author Dennis Cosgrove
  */
 public abstract class ListContentPanel extends TabContentPanel {
-	private edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<java.net.URI> uriSelection = new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<java.net.URI>( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "68a17b6d-353d-4473-abd3-1c78ff88e1cd" ), new javax.swing.DefaultComboBoxModel() ) {
+	private edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<java.net.URI> uriSelection = new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<java.net.URI>( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "68a17b6d-353d-4473-abd3-1c78ff88e1cd" ), -1 ) {
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.ItemSelectionEdit<java.net.URI> createItemSelectionEdit(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, java.net.URI previousSelection, java.net.URI nextSelection) {
-			return null;
+		protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.net.URI value) {
+			throw new RuntimeException( "todo" );
+		}
+		@Override
+		protected java.net.URI decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			throw new RuntimeException( "todo" );
 		}
 	};
-	private edu.cmu.cs.dennisc.croquet.List<java.net.URI> list = this.uriSelection.createList();
 //	register( new edu.cmu.cs.dennisc.croquet.List<java.net.URI>() {
 //		@Override
 //		protected javax.swing.JList createAwtComponent() {
@@ -77,28 +80,29 @@ public abstract class ListContentPanel extends TabContentPanel {
 //	} );
 
 //	private edu.cmu.cs.dennisc.croquet.List<java.net.URI> list = new edu.cmu.cs.dennisc.croquet.List<java.net.URI>();
-	private edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
-		@Override
-		protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
-			if( quoteClickCountUnquote == 2 ) {
-				edu.cmu.cs.dennisc.croquet.Button defaultButton = ListContentPanel.this.list.getRoot().getDefaultButton();
-				if( defaultButton != null ) {
-					defaultButton.doClick();
-				}
-			}
-		}
-	};
 	
 	public ListContentPanel() {
 		this.refresh();
-		this.list.setOpaque( false );
-		this.list.setRenderer( new ProjectSnapshotListCellRenderer() );
-		this.list.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
-		this.list.setVisibleRowCount( -1 );
+		final edu.cmu.cs.dennisc.croquet.List<java.net.URI> list = this.uriSelection.createList();
+		list.setOpaque( false );
+		list.setRenderer( new ProjectSnapshotListCellRenderer() );
+		list.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
+		list.setVisibleRowCount( -1 );
 		
-		this.list.addMouseListener( this.mouseAdapter );
-		this.list.addMouseMotionListener( this.mouseAdapter );
-		this.list.addKeyListener( new java.awt.event.KeyListener() {
+		edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
+			@Override
+			protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
+				if( quoteClickCountUnquote == 2 ) {
+					edu.cmu.cs.dennisc.croquet.Button defaultButton = list.getRoot().getDefaultButton();
+					if( defaultButton != null ) {
+						defaultButton.doClick();
+					}
+				}
+			}
+		};
+		list.addMouseListener( mouseAdapter );
+		list.addMouseMotionListener( mouseAdapter );
+		list.addKeyListener( new java.awt.event.KeyListener() {
 			public void keyPressed( java.awt.event.KeyEvent e ) {
 				if( e.getKeyCode() == java.awt.event.KeyEvent.VK_F5 ) {
 					ListContentPanel.this.refresh();
@@ -109,7 +113,7 @@ public abstract class ListContentPanel extends TabContentPanel {
 			public void keyTyped( java.awt.event.KeyEvent e ) {
 			}
 		} );
-//		this.list.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
+//		list.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
 //			public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
 //				if( e.getValueIsAdjusting() ) {
 //					//pass
@@ -118,23 +122,17 @@ public abstract class ListContentPanel extends TabContentPanel {
 //				}
 //			}
 //		} );
-		this.addComponent(  this.list, Constraint.CENTER );
+		this.addComponent(  list, Constraint.CENTER );
 	}
 	protected abstract String getTextForZeroProjects();
 	
 	protected abstract java.net.URI[] getURIs();
 	public void refresh() {
-		this.list.setListData( this.getURIs() );
+		this.uriSelection.setListData( -1, this.getURIs() );
 	}
 	@Override
 	public java.net.URI getSelectedURI() {
-		Object selectedValue = this.list.getSelectedValue();
-		if( selectedValue instanceof java.net.URI ) {
-			java.net.URI uri = (java.net.URI)selectedValue;
-			return uri;
-		} else {
-			return null;
-		}
+		return this.uriSelection.getValue();
 	}
 }
 

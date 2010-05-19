@@ -42,11 +42,10 @@
  */
 package org.alice.ide.editorstabbedpane;
 
-import edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice;;
 /**
 * @author Dennis Cosgrove
 */
-public abstract class EditMembersPane< T extends MemberDeclaredInAlice > extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+public abstract class EditMembersPane< T extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice > extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType;
 	private edu.cmu.cs.dennisc.croquet.List< T > list;
 	public EditMembersPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.property.ListProperty< T > listProperty ) {

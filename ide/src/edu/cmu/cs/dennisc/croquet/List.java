@@ -47,6 +47,38 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class List<E> extends ItemSelectable< E, javax.swing.JList > {
+	private long tModelChange;
+	private class ListUI extends javax.swing.plaf.basic.BasicListUI {
+		@Override
+		protected javax.swing.event.MouseInputListener createMouseInputListener() {
+			return new javax.swing.event.MouseInputListener() {
+				public void mouseClicked( java.awt.event.MouseEvent e ) {
+				}
+				public void mouseEntered( java.awt.event.MouseEvent e ) {
+				}
+				public void mouseExited( java.awt.event.MouseEvent e ) {
+				}
+				public void mousePressed( java.awt.event.MouseEvent e ) {
+					long tCurrent = e.getWhen();
+					long tDelta = tCurrent - List.this.tModelChange;
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "mousePressed", tDelta );
+					if( tDelta > 400 ) {
+						int row = ListUI.this.locationToIndex( list, e.getPoint() );
+		                list.setValueIsAdjusting( true );
+		                list.setSelectionInterval(row, row);
+					}
+				}
+				public void mouseReleased( java.awt.event.MouseEvent e ) {
+	                list.setValueIsAdjusting( false );
+				}
+				public void mouseMoved( java.awt.event.MouseEvent e ) {
+				}
+				public void mouseDragged( java.awt.event.MouseEvent e ) {
+				}
+			};
+		}
+	}
+
 	public enum LayoutOrientation {
 		VERTICAL ( javax.swing.JList.VERTICAL ),
 		VERTICAL_WRAP( javax.swing.JList.VERTICAL_WRAP ),
@@ -60,15 +92,35 @@ public class List<E> extends ItemSelectable< E, javax.swing.JList > {
 //		}
 	}
 	
-	/*package-private*/ public List() {
+//	/*package-private*/ List() {
+//	}
+	public List() {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of List constructor" );
 	}
 
 	@Override
 	protected javax.swing.JList createAwtComponent() {
-		return new javax.swing.JList();
+		return new javax.swing.JList() {
+			@Override
+			public void updateUI() {
+				this.setUI( new ListUI() );
+			}
+		};
 	}
 	
+//	public enum DoubleClickBehavior {
+//		DO_NOTHING,
+//		DO_DEFAULT_BUTTON_CLICK,
+//	}
+//	private DoubleClickBehavior doubleClickBehavior = DoubleClickBehavior.DO_NOTHING;
+//	public DoubleClickBehavior getDoubleClickBehavior() {
+//		return this.doubleClickBehavior;
+//	}
+//	public void setDoubleClickBehavior( DoubleClickBehavior doubleClickBehavior ) {
+//		assert doubleClickBehavior != null;
+//		this.doubleClickBehavior = doubleClickBehavior;
+//	}
+
 	@Override
 	public javax.swing.ListCellRenderer getRenderer() {
 		return this.getAwtComponent().getCellRenderer();
@@ -89,9 +141,33 @@ public class List<E> extends ItemSelectable< E, javax.swing.JList > {
 		this.getAwtComponent().setLayoutOrientation( layoutOrientation.internal );
 	}
 
+	private class ListDataListener implements javax.swing.event.ListDataListener { 
+		private void handleChanged() {
+			List.this.tModelChange = System.currentTimeMillis();
+		}
+		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
+			this.handleChanged();
+		}
+		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
+			this.handleChanged();
+		}
+		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
+			this.handleChanged();
+		}
+	}
+	private ListDataListener listDataListener = new ListDataListener();
+	private javax.swing.ComboBoxModel model;
 	@Override
 	/*package-private*/ void setModel( javax.swing.ComboBoxModel model ) {
+		if( this.model != null ) {
+			this.model.removeListDataListener( this.listDataListener );
+		}
+		this.model = model;
 		this.getAwtComponent().setModel( model );
+		this.listDataListener.handleChanged();
+		if( this.model != null ) {
+			this.model.addListDataListener( this.listDataListener );
+		}
 	}
 	/*package-private*/ void addListSelectionListener( javax.swing.event.ListSelectionListener listSelectionListener ) {
 		this.getAwtComponent().addListSelectionListener( listSelectionListener );
@@ -124,9 +200,4 @@ public class List<E> extends ItemSelectable< E, javax.swing.JList > {
 	public void clearSelection() {
 		this.getAwtComponent().clearSelection();
 	}
-	
-//	@Deprecated
-//	public void setItemSelectionOperation( ItemSelectionOperation< E > operation ) {
-//		throw new RuntimeException( "todo" );
-//	}
 }

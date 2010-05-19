@@ -47,7 +47,7 @@ package org.alice.stageide.personeditor;
  */
 class GenderSelectionOperation extends AbstractItemSelectionOperation< org.alice.apis.stage.Gender > {
 	public GenderSelectionOperation() {
-		super( java.util.UUID.fromString( "0a4c1622-e482-46bb-bb00-be3916f5549c" ), new EnumConstantsComboBoxModel( org.alice.apis.stage.Gender.class ) );
+		super( java.util.UUID.fromString( "0a4c1622-e482-46bb-bb00-be3916f5549c" ), -1, org.alice.apis.stage.Gender.values() );
 	}
 	@Override
 	protected void handlePerformSelectionChange( org.alice.apis.stage.Gender value ) {

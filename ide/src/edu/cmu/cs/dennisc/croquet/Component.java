@@ -209,6 +209,8 @@ public abstract class Component<J extends java.awt.Component> {
 	
 	private J jComponent;
 	protected abstract J createAwtComponent();
+
+	///*package-private*/ final J getAwtComponent() {
 	// todo: reduce visibility to /*package-private*/
 	public final J getAwtComponent() {
 		if (this.jComponent != null) {

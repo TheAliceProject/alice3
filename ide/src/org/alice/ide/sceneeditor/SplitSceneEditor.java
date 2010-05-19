@@ -98,7 +98,7 @@ class TreeCellRenderer extends javax.swing.tree.DefaultTreeCellRenderer {
 class Tree extends edu.cmu.cs.dennisc.croquet.Tree {
 	private TreeModel model = new TreeModel( null ); 
 	public Tree() {
-		this.setItemSelectionOperation( new org.alice.ide.operations.ast.FieldItemSelectionOperation( new javax.swing.DefaultComboBoxModel() ) );
+		//this.setItemSelectionOperation( new org.alice.ide.operations.ast.FieldItemSelectionOperation( new javax.swing.DefaultComboBoxModel() ) );
 		this.setModel( this.model );
 		this.setCellRenderer( new TreeCellRenderer() );
 	}

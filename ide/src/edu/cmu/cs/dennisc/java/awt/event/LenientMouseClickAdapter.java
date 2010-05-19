@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.java.awt.event;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LenientMouseClickAdapter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
+public abstract class LenientMouseClickAdapter implements javax.swing.event.MouseInputListener /*java.awt.event.MouseListener, java.awt.event.MouseMotionListener*/ {
 	private static final long CLICK_THRESHOLD_MILLIS = 1000; //todo: query windowing system 
 	private static final long CLICK_THRESHOLD_PIXELS_SQUARED = 25; //todo: query windowing system 
 	private boolean isStillClick = false;

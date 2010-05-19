@@ -40,13 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+
+package edu.cmu.cs.dennisc.java.lang;
 
 /**
  * @author Dennis Cosgrove
  */
-class EnumConstantsComboBoxModel extends ArrayComboBoxModel { 
-	public EnumConstantsComboBoxModel( Class<? extends Enum> cls ) {
-		super( (Object[])cls.getEnumConstants() );
+public class EnumUtilities {
+	private EnumUtilities() {
+		throw new AssertionError();
 	}
+	public static <E> java.util.List< E > getEnumConstants( Class<? extends E>[] clses, edu.cmu.cs.dennisc.pattern.Criterion<E> criterion ) {
+		java.util.List< E > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		for( Class<?> cls : clses ) {
+			for( E e : (E[])cls.getEnumConstants() ) {
+				if( criterion == null || criterion.accept( e ) ) {
+					rv.add( e );
+				}
+			}
+		}
+		return rv;
+	}
+//	public static <E> E[] getEnumConstants( Class<E>[] clses, edu.cmu.cs.dennisc.pattern.Criterion<E> criterion, Class<E> componentCls ) {
+//		return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( getEnumConstants( clses, criterion ), componentCls );
+//	}
 }

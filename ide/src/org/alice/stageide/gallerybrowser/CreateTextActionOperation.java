@@ -51,8 +51,12 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 			super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, individualId, selectedIndex, items );
 		}
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.ItemSelectionEdit<String> createItemSelectionEdit(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, String previousSelection, String nextSelection) {
-			throw new RuntimeException( "todo" );
+		protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, String value) {
+			binaryEncoder.encode( value );
+		}
+		@Override
+		protected String decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			return binaryDecoder.decodeString();
 		}
 	}
 	private static class FamilySelectionOperation extends TextAttributeSelectionOperation {
@@ -190,19 +194,31 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 		this.sample = new edu.cmu.cs.dennisc.croquet.Label( "AaBbYyZz", 1.2f );
 		this.updateSample();
 
-		class ListSelectionAdapter implements javax.swing.event.ListSelectionListener {
-			public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-				if( e.getValueIsAdjusting() ) {
-					//pass
-				} else {
+		edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< String > valueObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< String >() { 
+			public void changed( String nextValue ) {
+//				if( e.getValueIsAdjusting() ) {
+//					//pass
+//				} else {
 					CreateTextPane.this.updateSample();
-				}
+//				}
 			}
-		}
-		ListSelectionAdapter listSelectionAdapter = new ListSelectionAdapter();
-
-		this.familySelection.addListSelectionListener( listSelectionAdapter );
-		this.styleSelection.addListSelectionListener( listSelectionAdapter );
+		};
+		
+		this.familySelection.addValueObserver( valueObserver );
+		this.styleSelection.addValueObserver( valueObserver );
+//		class ListSelectionAdapter implements javax.swing.event.ListSelectionListener {
+//			public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+//				if( e.getValueIsAdjusting() ) {
+//					//pass
+//				} else {
+//					CreateTextPane.this.updateSample();
+//				}
+//			}
+//		}
+//		ListSelectionAdapter listSelectionAdapter = new ListSelectionAdapter();
+//
+//		this.familySelection.addListSelectionListener( listSelectionAdapter );
+//		this.styleSelection.addListSelectionListener( listSelectionAdapter );
 
 //		edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane( 16, 4 ) {
 //			@Override

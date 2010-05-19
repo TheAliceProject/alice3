@@ -70,18 +70,17 @@ public class TypeComboBox {
 	}
 
 	public static edu.cmu.cs.dennisc.croquet.ComboBox< edu.cmu.cs.dennisc.alice.ast.AbstractType > createInstance( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		javax.swing.ComboBoxModel model = org.alice.ide.IDE.getSingleton().getTypeComboBoxModel();
-		edu.cmu.cs.dennisc.croquet.ItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractType > itemSelectionOperation = new org.alice.ide.operations.AbstractItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractType >( individualId, model ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType[] types = org.alice.ide.IDE.getSingleton().getTypesForComboBoxes();
+		int selectedIndex = java.util.Arrays.binarySearch( types, type );
+		edu.cmu.cs.dennisc.croquet.ItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractType > itemSelectionOperation = new org.alice.ide.operations.AbstractItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractType >( individualId, selectedIndex, types ) {
 			@Override
 			protected void handleSelectionChange(edu.cmu.cs.dennisc.alice.ast.AbstractType value) {
 				//TypeComboBox.this.handleTypeChange();
 			}
 		};
-		model.setSelectedItem( type );
-		
 		edu.cmu.cs.dennisc.croquet.ComboBox< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv = new edu.cmu.cs.dennisc.croquet.ComboBox<edu.cmu.cs.dennisc.alice.ast.AbstractType>();
 		rv.setRenderer( new TypeListCellRenderer() );
-		rv.setMaximumRowCount( model.getSize() );
+		rv.setMaximumRowCount( types.length );
 		
 		return itemSelectionOperation.register( rv );
 	}

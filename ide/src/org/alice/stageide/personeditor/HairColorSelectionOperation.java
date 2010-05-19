@@ -46,8 +46,8 @@ package org.alice.stageide.personeditor;
  * @author Dennis Cosgrove
  */
 abstract class HairColorSelectionOperation extends AbstractItemSelectionOperation< String > {
-	public HairColorSelectionOperation( java.util.UUID individualId, javax.swing.ComboBoxModel comboBoxModel ) {
-		super( individualId, comboBoxModel );
+	public HairColorSelectionOperation( java.util.UUID individualId, String... colorNames ) {
+		super( individualId, -1, colorNames );
 	}
 	@Override
 	protected void handlePerformSelectionChange( String value ) {

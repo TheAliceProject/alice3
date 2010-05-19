@@ -240,8 +240,8 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 	}
 
 	class ItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.Expression > {
-		public ItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
-			super( java.util.UUID.fromString( "cd4c10ba-3c46-4344-b0df-39a3926e8c9d" ), comboBoxModel );
+		public ItemSelectionOperation( int selectedIndex, edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+			super( java.util.UUID.fromString( "cd4c10ba-3c46-4344-b0df-39a3926e8c9d" ), selectedIndex, expressions );
 		}
 		@Override
 		protected void handleSelectionChange(edu.cmu.cs.dennisc.alice.ast.Expression value) {
@@ -282,8 +282,9 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		private javax.swing.ButtonGroup group;
 		private java.awt.GridBagConstraints gbc;
 
-		public ExpressionList( edu.cmu.cs.dennisc.croquet.ItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.Expression > itemSelectionOperation ) {
-			//			super( itemSelectionOperation );
+		public ExpressionList( javax.swing.ComboBoxModel comboBoxModel ) {
+			
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ExpressionList", comboBoxModel );
 			this.group = new javax.swing.ButtonGroup();
 			this.gbc = new java.awt.GridBagConstraints();
 			this.gbc.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -386,7 +387,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 			}
 		} );
 		ListPropertyComboBoxModel< edu.cmu.cs.dennisc.alice.ast.Expression > comboBoxModel = new ListPropertyComboBoxModel< edu.cmu.cs.dennisc.alice.ast.Expression >( this.arrayExpressions );
-		this.list = new ExpressionList( new ItemSelectionOperation( comboBoxModel ) );
+		this.list = new ExpressionList( comboBoxModel );
 		this.updateButtons();
 
 		edu.cmu.cs.dennisc.croquet.GridBagPanel buttonPane = new edu.cmu.cs.dennisc.croquet.GridBagPanel();

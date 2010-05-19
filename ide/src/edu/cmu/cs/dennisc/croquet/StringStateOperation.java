@@ -47,17 +47,19 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public final class StringStateOperation extends Operation {
 	public static interface ValueObserver {
-		public void changing( boolean nextValue );
-		public void changed( boolean nextValue );
+		public void changed( String nextValue );
 	};
-	
 	private java.util.List< ValueObserver > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	
 	public void addValueObserver( ValueObserver valueObserver ) {
 		this.valueObservers.add( valueObserver );
 	}
 	public void removeValueObserver( ValueObserver valueObserver ) {
 		this.valueObservers.remove( valueObserver );
+	}
+	private void fireValueChanged( String nextValue ) {
+		for( ValueObserver valueObserver : this.valueObservers ) {
+			valueObserver.changed( nextValue );
+		}
 	}
 	
 	private javax.swing.text.Document document;

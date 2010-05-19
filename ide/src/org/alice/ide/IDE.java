@@ -494,7 +494,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 
 	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava superType ) {
-		java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > aliceTypes = this.addAliceTypes( new java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType >() );
+		java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > aliceTypes = this.addAliceTypes( new java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.AbstractType >() );
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : aliceTypes ) {
 			assert type != null;
 			if( type.getFirstTypeEncounteredDeclaredInJava() == superType ) {
@@ -530,9 +530,9 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return new org.alice.ide.common.TypeIcon( type );
 	}
 
-	private javax.swing.ComboBoxModel typeComboBoxModel;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType[] typesForComboBoxes;
 
-	protected java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > addJavaTypes( java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
+	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > addJavaTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
 		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE );
 		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE );
 		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE );
@@ -540,7 +540,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return rv;
 	}
 
-	protected java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > addAliceTypes( java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
+	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > addAliceTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = this.getSceneType();
 		if( sceneType != null ) {
 			rv.add( sceneType );
@@ -557,16 +557,16 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 		return rv;
 	}
-	public javax.swing.ComboBoxModel getTypeComboBoxModel() {
-		if( this.typeComboBoxModel != null ) {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType[] getTypesForComboBoxes() {
+		if( this.typesForComboBoxes != null ) {
 			//pass
 		} else {
-			java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > types = new java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType >();
-			this.addJavaTypes( types );
-			this.addAliceTypes( types );
-			typeComboBoxModel = new javax.swing.DefaultComboBoxModel( types );
+			java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			this.addJavaTypes( list );
+			this.addAliceTypes( list );
+			this.typesForComboBoxes = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( list, edu.cmu.cs.dennisc.alice.ast.AbstractType.class );
 		}
-		return this.typeComboBoxModel;
+		return this.typesForComboBoxes;
 	}
 	protected abstract org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor();
 	public abstract java.io.File getGalleryRootDirectory();

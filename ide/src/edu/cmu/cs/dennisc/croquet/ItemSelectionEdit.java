@@ -45,22 +45,22 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemSelectionEdit<T> extends Edit {
-	private ItemSelectionOperation<T> operation;
+public final class ItemSelectionEdit<E> extends Edit {
+	private ItemSelectionOperation<E> operation;
 	private java.util.UUID operationId;
-	private T prevValue;
-	private T nextValue;
+	private E prevValue;
+	private E nextValue;
 	public ItemSelectionEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public ItemSelectionEdit( Context context, T prevValue, T nextValue, ItemSelectionOperation< T > operation ) {
+	public ItemSelectionEdit( Context context, java.util.EventObject e, E prevValue, E nextValue, ItemSelectionOperation< E > operation ) {
 		super( context );
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
 		this.operation = operation;
 		this.operationId = operation.getIndividualUUID();
 	}
-	private ItemSelectionOperation<T> getOperation() {
+	private ItemSelectionOperation<E> getOperation() {
 		if( this.operation != null ) {
 			//pass
 		} else {
@@ -78,17 +78,15 @@ public abstract class ItemSelectionEdit<T> extends Edit {
 		return this.getOperation() != null;
 	}
 
-	protected abstract T decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder);
-	protected abstract void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value);
 	@Override
 	protected final void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		this.prevValue = this.decodeValue( binaryDecoder );
-		this.nextValue = this.decodeValue( binaryDecoder );
+		this.prevValue = this.getOperation().decodeValue( binaryDecoder );
+		this.nextValue = this.getOperation().decodeValue( binaryDecoder );
 	}
 	@Override
 	protected final void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		this.encodeValue( binaryEncoder, this.prevValue );
-		this.encodeValue( binaryEncoder, this.nextValue );
+		this.getOperation().encodeValue( binaryEncoder, this.prevValue );
+		this.getOperation().encodeValue( binaryEncoder, this.nextValue );
 	}
 
 	@Override

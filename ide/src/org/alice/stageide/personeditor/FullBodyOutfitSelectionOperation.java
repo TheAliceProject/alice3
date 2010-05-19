@@ -45,22 +45,31 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-class FullBodyOutfitSelectionOperation extends AbstractItemSelectionOperation<Enum> {
+class FullBodyOutfitSelectionOperation extends AbstractItemSelectionOperation<org.alice.apis.stage.FullBodyOutfit> {
 	public FullBodyOutfitSelectionOperation( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
-		super(  java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ), new FullBodyOutfitComboBoxModel( lifeStage, gender ) );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: FullBodyOutfitSelectionOperation handle encode/decode" );
+		super( 
+			java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ), 
+			-1,
+			edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
+					edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
+							org.alice.apis.stage.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
+							null 
+					),
+					org.alice.apis.stage.FullBodyOutfit.class
+			) 
+		);
 	}
 	@Override
-	protected void handlePerformSelectionChange( Enum value ) {
-		PersonViewer.getSingleton().setFullBodyOutfit( (org.alice.apis.stage.FullBodyOutfit)value );
+	protected void handlePerformSelectionChange( org.alice.apis.stage.FullBodyOutfit value ) {
+		PersonViewer.getSingleton().setFullBodyOutfit( value );
 	}
 	@Override
 	protected int getVisibleRowCount() {
 		return -1;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.List<Enum> createList() {
-		edu.cmu.cs.dennisc.croquet.List<Enum> rv = super.createList();
+	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.FullBodyOutfit> createList() {
+		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.FullBodyOutfit> rv = super.createList();
 		rv.setRenderer( new FullBodyOutfitListCellRenderer() );
 		return rv;
 	}

@@ -47,6 +47,10 @@ package edu.cmu.cs.dennisc.map;
  */
 public class MapToMapToMap< A, B, C, E > {
 	private MapToMap< A, B, java.util.Map< C, E > > m_outerMapToMap = new MapToMap< A, B, java.util.Map< C, E > >();
+
+	public static <A,B,C,E> MapToMapToMap< A, B, C, E > newInstance() {
+		return new MapToMapToMap< A, B, C, E >();
+	}
 	//todo: add addtional map methods
 	public E get( A a, B b, C c ) {
 		 java.util.Map< C, E > innerMap = m_outerMapToMap.get( a, b );

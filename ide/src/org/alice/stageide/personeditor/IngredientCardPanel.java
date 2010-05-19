@@ -66,6 +66,7 @@ abstract class IngredientCardPanel<E> extends edu.cmu.cs.dennisc.croquet.CardPan
 	}
 	
 	public void setValue( E value ) {
-		throw new RuntimeException( "todo" );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setValue", value );
+		//throw new RuntimeException( "todo" );
 	}
 }

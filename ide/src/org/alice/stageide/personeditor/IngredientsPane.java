@@ -77,11 +77,11 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		this.setBackgroundColor( BACKGROUND_COLOR );
 		this.setOpaque( true );
 
-		this.lifeStageSelection.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
-			public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-				if( e.getValueIsAdjusting() ) {
-					//pass
-				} else {
+		this.lifeStageSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< org.alice.apis.stage.LifeStage >() { 
+			public void changed( org.alice.apis.stage.LifeStage nextValue ) {
+//				if( e.getValueIsAdjusting() ) {
+//					//pass
+//				} else {
 					if( IngredientsPane.this.tabbedPane != null ) {
 						javax.swing.SwingUtilities.invokeLater( new Runnable() {
 							public void run() {
@@ -89,15 +89,14 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 							}
 						} );
 					}
-				}
+//				}
 			}
 		} );
-		
-		this.genderSelection.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
-			public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-				if( e.getValueIsAdjusting() ) {
-					//pass
-				} else {
+		this.genderSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< org.alice.apis.stage.Gender >() { 
+			public void changed( org.alice.apis.stage.Gender nextValue ) {
+//				if( e.getValueIsAdjusting() ) {
+//					//pass
+//				} else {
 					if( IngredientsPane.this.tabbedPane != null ) {
 						javax.swing.SwingUtilities.invokeLater( new Runnable() {
 							public void run() {
@@ -105,10 +104,42 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 							}
 						} );
 					}
-				}
+//				}
 			}
 		} );
-		
+//
+//		this.lifeStageSelection.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
+//			public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+//				if( e.getValueIsAdjusting() ) {
+//					//pass
+//				} else {
+//					if( IngredientsPane.this.tabbedPane != null ) {
+//						javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//							public void run() {
+//								IngredientsPane.this.handleLifeStageSelection( IngredientsPane.this.tabbedPane.getSelectedIndex() );
+//							}
+//						} );
+//					}
+//				}
+//			}
+//		} );
+//		
+//		this.genderSelection.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
+//			public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+//				if( e.getValueIsAdjusting() ) {
+//					//pass
+//				} else {
+//					if( IngredientsPane.this.tabbedPane != null ) {
+//						javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//							public void run() {
+//								IngredientsPane.this.handleGenderSelection( IngredientsPane.this.tabbedPane.getSelectedIndex() );
+//							}
+//						} );
+//					}
+//				}
+//			}
+//		} );
+//		
 		
 		edu.cmu.cs.dennisc.croquet.BorderPanel northPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		northPane.addComponent(  this.randomPersonActionOperation.createButton(), Constraint.NORTH );
@@ -201,12 +232,12 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			this.fullBodyOutfitCardPanel.handleEpicChange( lifeStage, gender, hairColor );
 			this.hairCardPanel.handleEpicChange( lifeStage, gender, hairColor );
 			
-			this.hairCardPanel.setValue( (Enum)hair );
+			this.hairCardPanel.setValue( hair );
 			
 			this.hairColorCardPanel.handleEpicChange( lifeStage, gender, hairColor );
 			
 			this.hairColorCardPanel.setValue( hairColor );
-			this.fullBodyOutfitCardPanel.setValue( (Enum)personViewer.getFullBodyOutfit() );
+			this.fullBodyOutfitCardPanel.setValue( personViewer.getFullBodyOutfit() );
 			
 			this.baseSkinToneSelection.setValue( personViewer.getBaseSkinTone() );
 			this.baseEyeColorSelection.setValue( personViewer.getBaseEyeColor() );

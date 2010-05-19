@@ -45,9 +45,17 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-class HairCardPanel extends IngredientCardPanel<Enum> {
+class HairCardPanel extends IngredientCardPanel<org.alice.apis.stage.Hair> {
+	private edu.cmu.cs.dennisc.map.MapToMapToMap< org.alice.apis.stage.LifeStage, org.alice.apis.stage.Gender, String, edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<org.alice.apis.stage.Hair> > mapToMapToMap = edu.cmu.cs.dennisc.map.MapToMapToMap.newInstance();
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<Enum> getItemSelectionOperation( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor ) {
-		return null;
+	protected synchronized edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<org.alice.apis.stage.Hair> getItemSelectionOperation( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor ) {
+		edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<org.alice.apis.stage.Hair> rv = this.mapToMapToMap.get( lifeStage, gender, hairColor );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new HairSelectionOperation( lifeStage, gender, hairColor );
+			this.mapToMapToMap.put( lifeStage, gender, hairColor, rv );
+		}
+		return rv;
 	}
 }

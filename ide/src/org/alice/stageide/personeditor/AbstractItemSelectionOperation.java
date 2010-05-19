@@ -56,24 +56,40 @@ abstract class AbstractItemSelectionOperation<E> extends edu.cmu.cs.dennisc.croq
 //		}
 //	}
 
-	public AbstractItemSelectionOperation( java.util.UUID individualId, javax.swing.ComboBoxModel comboBoxModel ) {
-		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, individualId, comboBoxModel );
+	public AbstractItemSelectionOperation( java.util.UUID individualId, int selectedIndex, E... items ) {
+		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, individualId, selectedIndex, items );
 //		this.setItemSelectionOperation( new ItemSelectionOperation( comboBoxModel ) );
-		this.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
-			public void valueChanged(javax.swing.event.ListSelectionEvent e) {
-				if( e.getValueIsAdjusting() ) {
-					//pass
-				} else {
+		this.addValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< E >() {
+			public void changed(E nextValue) {
+//				if( e.getValueIsAdjusting() ) {
+//					//pass
+//				} else {
 					E item = (E)AbstractItemSelectionOperation.this.getValue();
 					if( item != null ) {
 						AbstractItemSelectionOperation.this.handlePerformSelectionChange( item );
 					}
-				}
+//				}
 			}
 		} );
+//		this.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
+//			public void valueChanged(javax.swing.event.ListSelectionEvent e) {
+//				if( e.getValueIsAdjusting() ) {
+//					//pass
+//				} else {
+//					E item = (E)AbstractItemSelectionOperation.this.getValue();
+//					if( item != null ) {
+//						AbstractItemSelectionOperation.this.handlePerformSelectionChange( item );
+//					}
+//				}
+//			}
+//		} );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.ItemSelectionEdit<E> createItemSelectionEdit(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, E previousSelection, E nextSelection) {
+	protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, E value) {
+		throw new RuntimeException( "todo" );
+	}
+	@Override
+	protected E decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
 	protected abstract void handlePerformSelectionChange( E value );

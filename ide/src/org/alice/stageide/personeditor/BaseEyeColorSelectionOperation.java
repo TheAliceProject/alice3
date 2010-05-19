@@ -47,7 +47,7 @@ package org.alice.stageide.personeditor;
  */
 class BaseEyeColorSelectionOperation extends AbstractItemSelectionOperation<org.alice.apis.stage.BaseEyeColor> {
 	public BaseEyeColorSelectionOperation() {
-		super(java.util.UUID.fromString("04672192-417f-4446-abbc-16c3ee015802"), new EnumConstantsComboBoxModel(org.alice.apis.stage.BaseEyeColor.class));
+		super(java.util.UUID.fromString("04672192-417f-4446-abbc-16c3ee015802"), -1, org.alice.apis.stage.BaseEyeColor.values() );
 	}
 	@Override
 	protected void handlePerformSelectionChange(org.alice.apis.stage.BaseEyeColor value) {
