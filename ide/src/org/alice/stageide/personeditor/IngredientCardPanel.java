@@ -49,7 +49,9 @@ abstract class IngredientCardPanel<E> extends edu.cmu.cs.dennisc.croquet.CardPan
 	private java.util.Map< edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<E>, Key > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	protected abstract edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<E> getItemSelectionOperation( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor );
-	
+	public IngredientCardPanel() {
+		this.setOpaque( false );
+	}
 	public void handleEpicChange( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor  ) {
 		assert lifeStage != null;
 		assert gender != null;

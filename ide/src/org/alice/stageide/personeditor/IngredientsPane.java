@@ -46,29 +46,93 @@ package org.alice.stageide.personeditor;
  * @author Dennis Cosgrove
  */
 abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+	private static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 220, 220, 255 );
+	/*package private*/ static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
+	/*package private*/ static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
+
 	private RandomPersonActionOperation randomPersonActionOperation = new RandomPersonActionOperation();
 	private LifeStageSelectionOperation lifeStageSelection = new LifeStageSelectionOperation();
 	private GenderSelectionOperation genderSelection = new GenderSelectionOperation();
 	private BaseSkinToneSelectionOperation baseSkinToneSelection = new BaseSkinToneSelectionOperation();
 	private BaseEyeColorSelectionOperation baseEyeColorSelection = new BaseEyeColorSelectionOperation();
-	private HairColorCardPanel hairColorCardPanel = new HairColorCardPanel();
 	private HairCardPanel hairCardPanel = new HairCardPanel();
+	private HairColorCardPanel hairColorCardPanel = new HairColorCardPanel();
 	private FullBodyOutfitCardPanel fullBodyOutfitCardPanel = new FullBodyOutfitCardPanel();
 	private FitnessLevelPane fitnessLevelPane = new FitnessLevelPane();
 
-	private static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 220, 220, 255 );
-	/*package private*/ static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
-	/*package private*/ static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
-	private edu.cmu.cs.dennisc.zoot.ZTabbedPane tabbedPane = new edu.cmu.cs.dennisc.zoot.ZTabbedPane() {
+	private static abstract class ContentTabStateOperation extends edu.cmu.cs.dennisc.croquet.TabStateOperation {
+		public ContentTabStateOperation(java.util.UUID individualId, boolean initialValue, String title) {
+			super(PersonEditor.GROUP_ID, individualId, initialValue, title);
+		}
 		@Override
-		public java.awt.Color getContentAreaColor() {
-			return BACKGROUND_COLOR;
+		protected edu.cmu.cs.dennisc.croquet.ScrollPane createSingletonScrollPane() {
+			edu.cmu.cs.dennisc.croquet.ScrollPane rv = super.createSingletonScrollPane();
+			rv.setVerticalScrollbarPolicy( edu.cmu.cs.dennisc.croquet.ScrollPane.VerticalScrollbarPolicy.NEVER );
+			rv.setHorizontalScrollbarPolicy( edu.cmu.cs.dennisc.croquet.ScrollPane.HorizontalScrollbarPolicy.NEVER );
+			rv.setOpaque( false );
+			return rv;
+		}
+		@Override
+		protected final boolean isCloseAffordanceDesired() {
+			return false;
+		}
+	}
+
+	private ContentTabStateOperation bodyTabState = new ContentTabStateOperation(java.util.UUID.fromString( "10c0d057-a5d7-4a36-8cd7-c30f46f5aac2" ), true, "Body") {
+		@Override
+		protected edu.cmu.cs.dennisc.croquet.Component<?> createSingletonView() {
+			edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( IngredientsPane.this.fullBodyOutfitCardPanel );
+			scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 66 );
+			//scrollPane.getVerticalScrollBar().setBlockIncrement( 10 );
+			
+			scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+			scrollPane.setOpaque( false );
+			scrollPane.getAwtComponent().getViewport().setOpaque( false );
+
+			edu.cmu.cs.dennisc.croquet.BorderPanel bodyPane = new edu.cmu.cs.dennisc.croquet.BorderPanel( 8, 8 );
+			bodyPane.addComponent( scrollPane, Constraint.CENTER );
+			bodyPane.addComponent( IngredientsPane.this.fitnessLevelPane, Constraint.SOUTH );
+			bodyPane.setBackgroundColor( BACKGROUND_COLOR );
+			bodyPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8  ) );
+			return bodyPane;
 		}
 	};
-	private javax.swing.event.ChangeListener tabChangeAdapter = new javax.swing.event.ChangeListener() {
-		public void stateChanged( javax.swing.event.ChangeEvent e ) {
-			int index = tabbedPane.getSelectedIndex();
-			handleTabSelection( index );
+	private ContentTabStateOperation headTabState = new ContentTabStateOperation(java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ), false, "Head") {
+		@Override
+		protected edu.cmu.cs.dennisc.croquet.Component<?> createSingletonView() {
+			edu.cmu.cs.dennisc.croquet.RowsSpringPanel rv = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 8 ) {
+				@Override
+				protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
+					rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "hair:", IngredientsPane.this.hairColorCardPanel ) );
+					rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, hairCardPanel ) );
+					rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "eye color:", IngredientsPane.this.baseEyeColorSelection.createList() ) );
+					rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() ) );
+					return rv;
+				}
+			};
+			rv.setBackgroundColor( BACKGROUND_COLOR );
+			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8  ) );
+			return rv;
+		}
+	};
+
+	private edu.cmu.cs.dennisc.croquet.TabbedPaneSelectionOperation tabbedPaneSelection = new edu.cmu.cs.dennisc.croquet.TabbedPaneSelectionOperation( 
+			PersonEditor.GROUP_ID, 
+			java.util.UUID.fromString( "d525f0c5-9f39-4807-a9d3-f66775f9eb2d" ), 
+			bodyTabState, headTabState );
+	
+
+	private edu.cmu.cs.dennisc.croquet.TabbedPaneSelectionOperation.SelectionObserver tabChangeAdapter = new edu.cmu.cs.dennisc.croquet.TabbedPaneSelectionOperation.SelectionObserver() {
+		public void selecting( edu.cmu.cs.dennisc.croquet.TabStateOperation prev, edu.cmu.cs.dennisc.croquet.TabStateOperation next ) {
+		}
+		public void selected( edu.cmu.cs.dennisc.croquet.TabStateOperation prev, edu.cmu.cs.dennisc.croquet.TabStateOperation next ) {
+			int index;
+			if( next == IngredientsPane.this.bodyTabState ) {
+				index = 0;
+			} else {
+				index = 1;
+			}
+			IngredientsPane.this.handleTabSelection( index );
 		}
 	};
 	
@@ -79,68 +143,17 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 
 		this.lifeStageSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< org.alice.apis.stage.LifeStage >() { 
 			public void changed( org.alice.apis.stage.LifeStage nextValue ) {
-//				if( e.getValueIsAdjusting() ) {
-//					//pass
-//				} else {
-					if( IngredientsPane.this.tabbedPane != null ) {
-						javax.swing.SwingUtilities.invokeLater( new Runnable() {
-							public void run() {
-								IngredientsPane.this.handleLifeStageSelection( IngredientsPane.this.tabbedPane.getSelectedIndex() );
-							}
-						} );
-					}
-//				}
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handleLifeStageSelection" );
+				IngredientsPane.this.handleLifeStageSelection( 0 );
 			}
 		} );
 		this.genderSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< org.alice.apis.stage.Gender >() { 
 			public void changed( org.alice.apis.stage.Gender nextValue ) {
-//				if( e.getValueIsAdjusting() ) {
-//					//pass
-//				} else {
-					if( IngredientsPane.this.tabbedPane != null ) {
-						javax.swing.SwingUtilities.invokeLater( new Runnable() {
-							public void run() {
-								IngredientsPane.this.handleGenderSelection( IngredientsPane.this.tabbedPane.getSelectedIndex() );
-							}
-						} );
-					}
-//				}
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handleGenderSelection" );
+				IngredientsPane.this.handleGenderSelection( 0 );
 			}
 		} );
-//
-//		this.lifeStageSelection.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
-//			public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-//				if( e.getValueIsAdjusting() ) {
-//					//pass
-//				} else {
-//					if( IngredientsPane.this.tabbedPane != null ) {
-//						javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//							public void run() {
-//								IngredientsPane.this.handleLifeStageSelection( IngredientsPane.this.tabbedPane.getSelectedIndex() );
-//							}
-//						} );
-//					}
-//				}
-//			}
-//		} );
-//		
-//		this.genderSelection.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
-//			public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-//				if( e.getValueIsAdjusting() ) {
-//					//pass
-//				} else {
-//					if( IngredientsPane.this.tabbedPane != null ) {
-//						javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//							public void run() {
-//								IngredientsPane.this.handleGenderSelection( IngredientsPane.this.tabbedPane.getSelectedIndex() );
-//							}
-//						} );
-//					}
-//				}
-//			}
-//		} );
-//		
-		
+
 		edu.cmu.cs.dennisc.croquet.BorderPanel northPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		northPane.addComponent(  this.randomPersonActionOperation.createButton(), Constraint.NORTH );
 		
@@ -154,52 +167,13 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			}
 		};
 		northPane.addComponent( ubiquitousPane, Constraint.CENTER );
-		
-//		final swing.BorderPane hairPane = new swing.BorderPane();
-//		hairPane.add( this.hairColorList, java.awt.BorderLayout.NORTH );
-//		hairPane.add( this.hairList, java.awt.BorderLayout.CENTER );
-		
-		edu.cmu.cs.dennisc.croquet.RowsSpringPanel headPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 8 ) {
-			@Override
-			protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "hair:", hairColorCardPanel ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, hairCardPanel ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "eye color:", baseEyeColorSelection.createList() ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() ) );
-				return rv;
-			}
-		};
-		
-
-		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( this.fullBodyOutfitCardPanel );
-		scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 66 );
-		//scrollPane.getVerticalScrollBar().setBlockIncrement( 10 );
-		
-		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		scrollPane.setOpaque( false );
-		scrollPane.getAwtComponent().getViewport().setOpaque( false );
-
-		edu.cmu.cs.dennisc.croquet.BorderPanel bodyPane = new edu.cmu.cs.dennisc.croquet.BorderPanel( 8, 8 );
-		bodyPane.addComponent( scrollPane, Constraint.CENTER );
-		bodyPane.addComponent( this.fitnessLevelPane, Constraint.SOUTH );
-		
-		//java.awt.Color color = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
-		java.awt.Color color = BACKGROUND_COLOR;
-		
-		bodyPane.setBackgroundColor( color );
-		headPane.setBackgroundColor( color );
-		bodyPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8  ) );
-		headPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8  ) );
-		
-		this.tabbedPane.add( "Body", bodyPane.getAwtComponent() );
-		this.tabbedPane.add( "Head", headPane.getAwtComponent() );
-		this.tabbedPane.setOpaque( true );
-
-		java.awt.Font font = tabbedPane.getFont();
-		this.tabbedPane.setFont( font.deriveFont( font.getSize2D() * 1.5f ) );
+				
+		edu.cmu.cs.dennisc.croquet.TabbedPane tabbedPane = this.tabbedPaneSelection.getSingletonTabbedPane();
+		tabbedPane.setOpaque( true );
+		tabbedPane.scaleFont( 1.5f );
 
 		this.addComponent( northPane, Constraint.NORTH );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( tabbedPane ), Constraint.CENTER );
+		this.addComponent( tabbedPane, Constraint.CENTER );
 		
 	}
 	
@@ -210,11 +184,11 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
-		tabbedPane.addChangeListener( this.tabChangeAdapter );
+		this.tabbedPaneSelection.addSelectionObserver( this.tabChangeAdapter );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		tabbedPane.removeChangeListener( this.tabChangeAdapter );
+		this.tabbedPaneSelection.removeSelectionObserver( this.tabChangeAdapter );
 		super.handleRemovedFrom( parent );
 	}
 
