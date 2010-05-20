@@ -15,11 +15,13 @@ import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 public class StartingCameraViewManager extends JPanel {
 	
 	private CameraViewSelector viewSelector;
+	private AbstractField desiredSelectedField;
 	
 	public StartingCameraViewManager(MoveAndTurnSceneEditor sceneEditor)
 	{
 		super();
 		this.setOpaque(false);
+		this.desiredSelectedField = null;
 		this.viewSelector = new CameraViewSelector(sceneEditor);
 		
 		JLabel startingViewLabel = new JLabel("Starting View: ");
@@ -57,6 +59,16 @@ public class StartingCameraViewManager extends JPanel {
 		
 	}
 	
+	public void setDesiredSelectedView(AbstractField desiredView)
+	{
+		this.desiredSelectedField = desiredView;
+	}
+	
+	public void setSelectedView(AbstractField view)
+	{
+		this.viewSelector.setSelectedView(view);
+	}
+	
 	public CameraFieldAndMarker getSelectedView()
 	{
 		return this.viewSelector.getSelectedMarker();
@@ -65,6 +77,15 @@ public class StartingCameraViewManager extends JPanel {
 	public void refreshFields()
 	{
 		this.viewSelector.refreshFields();
+		if (this.desiredSelectedField != null)
+		{
+			int desiredIndex = this.viewSelector.getIndexForField(this.desiredSelectedField);
+			if (desiredIndex != -1)
+			{
+				this.viewSelector.setSelectedIndex(desiredIndex);
+				this.desiredSelectedField = null;
+			}
+		}
 	}
 
 }

@@ -43,12 +43,14 @@
 package org.alice.interact.handle;
 
 
+import org.alice.ide.IDE;
 import org.alice.interact.DoubleTargetBasedAnimation;
 import org.alice.interact.GlobalDragAdapter;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -85,6 +87,16 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	public LinearDragHandle( MovementDescription dragDescription )
 	{
 		super();
+		this.standUpReference.setName("Linear StandUp Reference");
+		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
+		{
+			this.standUpReference.putBonusDataFor(ManipulationHandle3D.VIRTUAL_PARENT_KEY, this);
+		}
+		this.snapReference.setName("Linear Snap Reference");
+		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
+		{
+			this.snapReference.putBonusDataFor(ManipulationHandle3D.VIRTUAL_PARENT_KEY, this);
+		}
 		this.dragDescription = dragDescription;
 		this.dragAxis = new Vector3(this.dragDescription.direction.getVector());
 		this.localTransformation.setValue( this.getTransformationForAxis( this.dragAxis ) );

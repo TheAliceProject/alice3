@@ -51,14 +51,13 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Prop
 	public void setPerspectiveCamera(SymmetricPerspectiveCamera camera)
 	{
 		this.perspectiveCamera = camera;
-		if (this.perspectiveCamera != null)
-		{
-			if (doesMarkerMatchCamera(this.activeMarker, this.perspectiveCamera) && this.markerToUpdate == null)
-			{
-//				System.out.println("Set perspective camera!!!");
-				startTrackingCamera(this.perspectiveCamera, this.activeMarker);
-			}
-		}
+//		if (this.perspectiveCamera != null)
+//		{
+//			if (doesMarkerMatchCamera(this.activeMarker, this.perspectiveCamera) && this.markerToUpdate == null)
+//			{
+//				startTrackingCamera(this.perspectiveCamera, this.activeMarker);
+//			}
+//		}
 	}
 	
 	public void setOrthographicCamera(OrthographicCamera camera)
@@ -121,8 +120,6 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Prop
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 currentTransform = this.perspectiveCamera.getAbsoluteTransformation();
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 targetTransform = this.activeMarker.getTransformation( AsSeenBy.SCENE );
 		
-//		System.out.println("Animating to target view!");
-		
 		if (this.pointOfViewAnimation != null)
 		{
 			this.doEpilogue = false;
@@ -131,7 +128,6 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Prop
 		}
 		if (transformsAreWithinReasonableEpsilonOfEachOther( currentTransform, targetTransform))
 		{
-//			System.out.println("Instant set!!");
 			startTrackingCamera(LookingGlassViewSelector.this.perspectiveCamera, LookingGlassViewSelector.this.activeMarker);
 		}
 		else
@@ -144,7 +140,6 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Prop
 											{
 												if (LookingGlassViewSelector.this.doEpilogue)
 												{
-//													System.out.println("Epilogue!!!!");
 													startTrackingCamera(LookingGlassViewSelector.this.perspectiveCamera, LookingGlassViewSelector.this.activeMarker);
 												}
 											}
@@ -190,8 +185,6 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Prop
 	@Override
 	public void refreshFields() 
 	{
-		int previousSelectedIndex = this.cameraViewComboBox.getSelectedIndex();
-		CameraFieldAndMarker previousSelectedMarker = this.getSelectedMarker();
 		List<CameraFieldAndMarker> previousFields = new LinkedList<CameraFieldAndMarker>(this.fieldBasedOptions);
 		super.refreshFields();
 		
@@ -211,7 +204,6 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Prop
 		super.doSetSelectedView(index);
 		if (previousMarker != this.activeMarker && this.perspectiveCamera != null && this.activeMarker != null)
 		{
-//			System.out.println("Set selected view from: ");
 			stopTrackingCamera();
 			if (this.activeMarker instanceof OrthographicCameraMarker)
 			{
@@ -220,7 +212,6 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Prop
 				Transformable cameraParent = (Transformable)LookingGlassViewSelector.this.orthographicCamera.getParent();
 				LookingGlassViewSelector.this.orthographicCamera.picturePlane.setValue(new ClippedZPlane(orthoMarker.getPicturePlane()) );
 				cameraParent.setTransformation( LookingGlassViewSelector.this.activeMarker.getTransformation( AsSeenBy.SCENE ), LookingGlassViewSelector.this.orthographicCamera.getRoot() );
-				System.out.println("Set Selected View to an orthographic camera! "+index);
 				startTrackingCamera(this.orthographicCamera, orthoMarker);
 			}
 			else
@@ -239,19 +230,16 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Prop
 		if (this.markerToUpdate != null)
 		{
 			stopTrackingCamera();
-//			System.out.println("Starting to track, but previous tracked camera isn't null!");
 		}
 		
 		this.markerToUpdate = markerToUpdate;
 		if (this.markerToUpdate != null)
 		{
-//			System.out.println("Start tracking "+this.markerToUpdate.getName());
 			Transformable cameraParent = (Transformable)camera.getParent();
 			cameraParent.setTransformation( this.markerToUpdate.getTransformation( AsSeenBy.SCENE ), camera.getRoot() );
-			
+			this.markerToUpdate.setShowing(false);
 			this.markerToUpdate.setLocalTransformation(AffineMatrix4x4.accessIdentity());
 			this.markerToUpdate.getSGTransformable().setParent(cameraParent);
-			this.markerToUpdate.setShowing(false);
 			this.sceneEditor.setHandleVisibilityForObject(this.markerToUpdate.getSGTransformable(), false);
 		}
 	}
@@ -260,8 +248,6 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Prop
 	{
 		if (this.markerToUpdate != null)
 		{
-//			System.out.println("Stop tracking "+this.markerToUpdate.getName());
-			
 			AffineMatrix4x4 previousMarkerTransform = this.markerToUpdate.getTransformation(AsSeenBy.SCENE);
 			this.markerToUpdate.getSGTransformable().setParent(this.markerToUpdate.getScene().getSGComposite());
 			this.markerToUpdate.getSGTransformable().setTransformation(previousMarkerTransform, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE);
@@ -295,9 +281,9 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Prop
 		}		
 	}
 
-	public void propertyChanging(PropertyEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void propertyChanging(PropertyEvent e) 
+	{
+		//Do Nothing
 	}
 
 }

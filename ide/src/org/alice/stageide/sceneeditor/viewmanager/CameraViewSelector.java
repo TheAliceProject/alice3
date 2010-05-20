@@ -64,8 +64,7 @@ public class CameraViewSelector extends JPanel implements ItemListener, ActionLi
 	protected List<CameraFieldAndMarker> fieldBasedOptions = new LinkedList<CameraFieldAndMarker>();
 	protected List<CameraFieldAndMarker> extraOptions = new LinkedList<CameraFieldAndMarker>();
 	protected org.alice.apis.moveandturn.CameraMarker activeMarker;
-//	protected int selectedIndex = -1;
-
+	
 	public CameraViewSelector(MoveAndTurnSceneEditor sceneEditor, List<CameraFieldAndMarker> extraOptions)
 	{
 		super();
@@ -151,14 +150,6 @@ public class CameraViewSelector extends JPanel implements ItemListener, ActionLi
 		
 		//Start listening again
 		this.startListening();
-//		CameraFieldAndMarker newSelected = this.getCameraAndMarkerForIndex(this.cameraViewComboBox.getSelectedIndex());
-//		CameraMarker oldMarker = (oldSelected != null) ? oldSelected.marker : null;
-//		CameraMarker newMarker = (newSelected != null) ? newSelected.marker : null;
-//		
-//		if (oldMarker != newMarker)
-//		{
-//			this.doSetSelectedView( this.cameraViewComboBox.getSelectedIndex() );
-//		}
 	}
 	
 

@@ -32,6 +32,8 @@ import edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities;
 
 public class SnapUtilities 
 {
+	public static final double SNAP_LINE_VISUAL_HEIGHT = .01d;
+	
 	public static final double SNAP_TO_GROUND_DISTANCE = .05d;
 	public static final double SNAP_TO_GRID_DISTANCE = .1d;
 	public static final double DEFAULT_GRID_SPACING = .5d;
@@ -272,9 +274,9 @@ public class SnapUtilities
 		{
 			linePosition.y = snapPosition.y;
 			//If the position is too close to the ground to show up well, bump it up a little bit
-			if (Math.abs(linePosition.y) < 0.05)
+			if (Math.abs(linePosition.y) < SNAP_LINE_VISUAL_HEIGHT)
 			{
-				linePosition.y = .05d; 
+				linePosition.y = SNAP_LINE_VISUAL_HEIGHT; 
 			}
 			if (Math.abs(snapVector.x) > MIN_SNAP_DELTA)
 			{

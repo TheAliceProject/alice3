@@ -43,6 +43,9 @@
 
 package org.alice.apis.moveandturn;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.alice.interact.PickHint;
 
 import edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate;
@@ -58,33 +61,42 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 public class Marker extends Transformable 
 {
 	protected SingleAppearance sgFrontFacingAppearance = new SingleAppearance();
-	protected edu.cmu.cs.dennisc.scenegraph.Transformable sgVisualTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
+	
+	protected List<Visual> sgVisuals = new LinkedList<Visual>();
+	protected boolean isShowing = true;
 	
 	public Marker()
 	{
-		this.sgVisualTransformable.localTransformation.setValue(AffineMatrix4x4.createIdentity());
+		super();
 		sgFrontFacingAppearance.diffuseColor.setValue( this.getMarkerColor() );
 		sgFrontFacingAppearance.opacity.setValue( new Float(this.getMarkerOpacity()) );
 		createVisuals();
 		this.getSGTransformable().putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.MARKERS );
-		this.setShowing(false);
+		this.setShowing(true);
 	}
 	
 	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
 	public Boolean isShowing() {
-		return this.sgVisualTransformable.getParent() != null;
+		return this.isShowing;
 	}
 	
 	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
-	public void setShowing( Boolean isShowing ) {
-		if (isShowing)
+	public void setShowing( Boolean isShowing ) {	
+		if (this.isShowing != isShowing)
 		{
-			this.sgVisualTransformable.setParent(this.getSGTransformable());
+			this.isShowing = isShowing;
+//			System.out.println("Setting visibility of "+this+":"+this.hashCode());
+			for (Visual v : this.sgVisuals)
+			{
+//				System.out.println("  Setting "+v+":"+v.hashCode()+"->"+v.getParent()+"->"+v.getParent().getRoot()+", showing to "+this.isShowing);
+				v.isShowing.setValue(this.isShowing);
+			}
 		}
-		else
-		{
-			this.sgVisualTransformable.setParent(null);
-		}
+	}
+	
+	@Override
+	protected void handleVehicleChange(Composite vehicle) {
+		super.handleVehicleChange(vehicle);
 	}
 	
 	protected void createVisuals()

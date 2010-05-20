@@ -79,6 +79,8 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  */
 public abstract class ManipulationHandle3D extends Transformable implements ManipulationHandle, ManipulationListener, Cloneable{
 
+	public static final String VIRTUAL_PARENT_KEY = "VIRTUAL_PARENT_KEY";
+	
 	protected Visual sgVisual = new Visual();
 	protected SingleAppearance sgFrontFacingAppearance = new SingleAppearance();
 	protected Transformable manipulatedObject;
@@ -113,17 +115,6 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	 * @param manipulatedObject the manipulatedObject to set
 	 */
 	public void setManipulatedObject( Transformable manipulatedObjectIn ) {
-//		String manipulatedObjectString = "null";
-//		if (manipulatedObjectIn != null)
-//		{
-//			manipulatedObjectString = manipulatedObjectIn.getName();
-//		}
-//		String currentObjectString = "null";
-//		if (this.manipulatedObject != null)
-//		{
-//			currentObjectString = this.manipulatedObject.getName();
-//		}
-//		System.out.println("trying to set manipulated object from "+currentObjectString+" to "+manipulatedObjectString);
 		if (this.manipulatedObject != null)
 		{
 			Visual visualElement = this.getSGVisualForTransformable( this.manipulatedObject );
@@ -135,7 +126,15 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		if (this.manipulatedObject != manipulatedObjectIn)
 		{
 			this.manipulatedObject = manipulatedObjectIn;
-			this.setParent( this.manipulatedObject );
+			if (this.manipulatedObject != null)
+			{
+				this.setParent( this.manipulatedObject );
+				this.setHandleShowing(true);
+			}
+			else
+			{
+				this.setHandleShowing(false);
+			}
 			this.setScale( this.getObjectScale() );
 		}
 		if (this.manipulatedObject != null)
@@ -186,7 +185,6 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		sgFrontFacingAppearance.opacity.setValue( new Float(this.getDesiredOpacity(renderState)) );
 		sgVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
 		sgVisual.setParent( this );
-		this.setParent( null );
 		this.putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.THREE_D_HANDLES );
 	}
 
@@ -235,6 +233,11 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 			}
 		}
 		return null;
+	}
+	
+	@Override
+	public void setParent(Composite parent) {
+		super.setParent(parent);
 	}
 	
 	protected void createAnimations()
@@ -529,12 +532,8 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		return false;
 	}
 	
-	public void setHandleActive( boolean active ) {
-//		if (active && this.manipulatedObject == null)
-//		{
-//			PrintUtilities.println("HANDLES ARE NOT ASSIGNED AND BEING SET TO VISIBLE");
-////			return;
-//		}
+	public void setHandleActive( boolean active ) 
+	{
 		this.state.setActive(active);
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 		
@@ -546,12 +545,8 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		
 	}
 
-	public void setHandleVisible( boolean visible ) {
-//		if (visible && this.manipulatedObject == null)
-//		{
-//			PrintUtilities.println("HANDLES ARE NOT ASSIGNED AND BEING SET TO VISIBLE");
-////			return;
-//		}
+	public void setHandleVisible( boolean visible ) 
+	{
 		this.state.setVisible(visible);
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 	}

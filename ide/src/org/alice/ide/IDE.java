@@ -131,12 +131,14 @@ public abstract class IDE extends edu.cmu.cs.dennisc.javax.swing.ApplicationFram
 	public static final java.util.UUID IO_GROUP = java.util.UUID.fromString( "669018cd-2097-4568-9ce3-38cd102f6a2f" );
 	public static final java.util.UUID INTERFACE_GROUP = java.util.UUID.fromString( "9d0f4665-a40e-4e0c-9139-6f54f288c016" );
 
+	public static final String DEBUG_PROPERTY_KEY = "org.alice.ide.DebugMode";
+	
 	private static org.alice.ide.issue.ExceptionHandler exceptionHandler;
 	private static IDE singleton;
 	private static java.util.HashSet< String > performSceneEditorGeneratedSetUpMethodNameSet = new java.util.HashSet< String >();
 
 	//public static String IS_PROJECT_CHANGED_KEY = "IS_PROJECT_AFFECTED_KEY";
-	protected static final String GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
+	public static final String GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
 	static {
 		IDE.exceptionHandler = new org.alice.ide.issue.ExceptionHandler();
 		Thread.setDefaultUncaughtExceptionHandler( IDE.exceptionHandler );

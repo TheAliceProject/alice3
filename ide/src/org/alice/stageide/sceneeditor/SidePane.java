@@ -42,16 +42,32 @@
  */
 package org.alice.stageide.sceneeditor;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
 
 import org.alice.stageide.sceneeditor.viewmanager.ManipulationHandleControlPanel;
 import org.alice.stageide.sceneeditor.viewmanager.SceneViewManagerPanel;
 import org.alice.stageide.sceneeditor.viewmanager.SnapControlPanel;
 import org.alice.stageide.sceneeditor.viewmanager.StartingCameraViewManager;
+import org.alice.ide.IDE;
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.SnapState;
+
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.scenegraph.Component;
+import edu.cmu.cs.dennisc.toolkit.scenegraph.SceneGraphViewerPanel;
 
 /**
  * @author Dennis Cosgrove
@@ -62,16 +78,36 @@ class SidePane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
 	private SceneViewManagerPanel viewManagerPanel = null;
 	private StartingCameraViewManager startingCameraViewManager = null;
 	private SnapControlPanel snapControlPanel = null;
-
+	private MoveAndTurnSceneEditor sceneEditor = null;
+	private JPanel mainPanel = null;
+	
+	private SceneGraphViewerPanel sceneGraphViewer = null;
+//	private JSplitPane sceneGraphViewSplitPane = null;
+	private JDialog sceneGraphViewDialog = null;
+	private JButton showSceneGraphButton = null;
+	
 	public SidePane(MoveAndTurnSceneEditor sceneEditor) {
+		this.sceneEditor = sceneEditor;
+		this.mainPanel = new JPanel();
 		this.handleControlPanel = new ManipulationHandleControlPanel();
 		this.viewManagerPanel = new SceneViewManagerPanel(sceneEditor);
 		this.startingCameraViewManager = new StartingCameraViewManager(sceneEditor);
-		this.snapControlPanel = new SnapControlPanel(sceneEditor.getSnapState());
+		this.snapControlPanel = new SnapControlPanel(sceneEditor.getSnapState(), sceneEditor);
 
-		this.setLayout(new GridBagLayout());
+		this.showSceneGraphButton = new JButton("Show Scene Graph");
+		this.showSceneGraphButton.addActionListener(new ActionListener()
+		{
 
-		this.add(this.startingCameraViewManager, new GridBagConstraints(
+			public void actionPerformed(ActionEvent e) {
+				showSceneGraphView();
+			}
+			
+		}
+		);
+		
+		this.mainPanel.setLayout(new GridBagLayout());
+
+		this.mainPanel.add(this.startingCameraViewManager, new GridBagConstraints(
 				0, // gridX
 				0, // gridY
 				1, // gridWidth
@@ -85,7 +121,7 @@ class SidePane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
 				0) // ipadY
 				);
 		
-		this.add(this.viewManagerPanel, new GridBagConstraints(
+		this.mainPanel.add(this.viewManagerPanel, new GridBagConstraints(
 				0, // gridX
 				1, // gridY
 				1, // gridWidth
@@ -99,7 +135,7 @@ class SidePane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
 				0) // ipadY
 				);
 
-		this.add(this.handleControlPanel, new GridBagConstraints(
+		this.mainPanel.add(this.handleControlPanel, new GridBagConstraints(
 				0, // gridX
 				2, // gridY
 				1, // gridWidth
@@ -112,7 +148,7 @@ class SidePane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
 				0, // ipadX
 				0) // ipadY
 				);
-		this.add(this.snapControlPanel, new GridBagConstraints(
+		this.mainPanel.add(this.snapControlPanel, new GridBagConstraints(
 				0, // gridX
 				3, // gridY
 				1, // gridWidth
@@ -126,7 +162,28 @@ class SidePane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
 				0) // ipadY
 				);
 		
-		this.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
+		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
+		{
+			this.mainPanel.add(showSceneGraphButton, new GridBagConstraints(
+					0, // gridX
+					4, // gridY
+					1, // gridWidth
+					1, // gridHeight
+					1.0, // weightX
+					0.0, // weightY
+					GridBagConstraints.NORTH, // anchor
+					GridBagConstraints.NONE, // fill
+					new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
+					0, // ipadX
+					0) // ipadY
+					);
+		}
+		
+		this.mainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
+		
+		this.setLayout(new BorderLayout());
+		this.add(mainPanel, BorderLayout.CENTER);
+		
 	}
 
 	public boolean isExpanded() {
@@ -140,6 +197,43 @@ class SidePane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
 		// this.doLayout();
 	}
 
+	public void showSceneGraphView()
+	{
+		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
+		{
+			if (this.sceneGraphViewDialog == null)
+			{
+				showSceneGraphView(this.sceneEditor.getScene().getSGComposite());
+			}
+			else
+			{
+				this.sceneGraphViewDialog.setVisible(true);
+			}
+		}
+	}
+	
+	public void showSceneGraphView( Component root )
+	{
+		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
+		{
+			if (this.sceneGraphViewer == null)
+			{
+				this.sceneGraphViewer = new SceneGraphViewerPanel();
+			}
+			this.sceneGraphViewer.setRoot(root);
+			if (this.sceneGraphViewDialog == null)
+			{
+	//			this.sceneGraphViewDialog = new JDialog();
+				this.sceneGraphViewDialog = new JDialog(edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getRootJFrame(this), "Scene Graph Viewer", false);
+				this.sceneGraphViewDialog.getContentPane().add(this.sceneGraphViewer);
+				this.sceneGraphViewDialog.setSize(new Dimension(1024, 768));
+	//			this.sceneGraphViewDialog.setMinimumSize(new Dimension(800, 600));
+				this.sceneGraphViewDialog.setLocation(100, 100);
+			}
+			this.sceneGraphViewDialog.setVisible(true);
+		}
+	}
+	
 	public void setDragAdapter(AbstractDragAdapter dragAdapter) {
 		this.handleControlPanel.setDragAdapter(dragAdapter);
 	}

@@ -21,6 +21,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.alice.interact.SnapState;
+import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.math.Angle;
 import edu.cmu.cs.dennisc.math.AngleInDegrees;
@@ -28,22 +29,25 @@ import edu.cmu.cs.dennisc.math.AngleInDegrees;
 public class SnapControlPanel extends JPanel implements ChangeListener, ActionListener
 {
 	private SnapState snapState;
+	private MoveAndTurnSceneEditor sceneEditor; 
 	
-	protected JCheckBox snapOnOffCheckBox;
-	protected JCheckBox snapToGroundCheckBox;
+	private JCheckBox snapOnOffCheckBox;
+	private JCheckBox snapToGroundCheckBox;
+	private JCheckBox showSnapGridCheckBox;
 	
-	protected JCheckBox snapToGridCheckBox;
-	protected JSpinner gridSizeSpinner;
-	protected JLabel gridSpacingLabel;
-	protected SpinnerNumberModel gridSizeModel;
+	private JCheckBox snapToGridCheckBox;
+	private JSpinner gridSizeSpinner;
+	private JLabel gridSpacingLabel;
+	private SpinnerNumberModel gridSizeModel;
 	
-	protected JCheckBox rotationSnapCheckBox;
-	protected JSpinner snapAngleSpinner;
-	protected JLabel snapAngleLabel;
-	protected SpinnerListModel snapAngleModel;
+	private JCheckBox rotationSnapCheckBox;
+	private JSpinner snapAngleSpinner;
+	private JLabel snapAngleLabel;
+	private SpinnerListModel snapAngleModel;
 	
-	public SnapControlPanel(SnapState snapState)
+	public SnapControlPanel(SnapState snapState, MoveAndTurnSceneEditor sceneEditor)
 	{
+		this.sceneEditor = sceneEditor;
 		this.snapState = snapState;
 		this.snapOnOffCheckBox = new JCheckBox("Use Snap: ", snapState.isSnapEnabled());
 		this.snapOnOffCheckBox.addActionListener(this);
@@ -54,6 +58,9 @@ public class SnapControlPanel extends JPanel implements ChangeListener, ActionLi
 		this.snapToGridCheckBox = new JCheckBox("Snap to grid", snapState.isSnapToGridEnabled());
 		this.snapToGridCheckBox.addActionListener(this);
 		
+		this.showSnapGridCheckBox =  new JCheckBox("Show Snap Grid", true);
+		this.showSnapGridCheckBox.addActionListener(this);
+		
 		Dimension spinnerSize = new Dimension(50, 26);
 		
 		this.gridSizeModel = new SpinnerNumberModel(this.snapState.getGridSpacing(), .01d, 10d, .05d);
@@ -62,6 +69,7 @@ public class SnapControlPanel extends JPanel implements ChangeListener, ActionLi
 		this.gridSizeSpinner.setMinimumSize(spinnerSize);
 		this.gridSizeSpinner.setMaximumSize(spinnerSize);
 		this.gridSizeSpinner.addChangeListener(this);
+		this.gridSizeModel.addChangeListener(this);
 		this.gridSpacingLabel = new JLabel("Grid Spacing: ");
 		this.gridSpacingLabel.setFont(this.gridSpacingLabel.getFont().deriveFont(Font.PLAIN, 12));
 		
@@ -109,10 +117,23 @@ public class SnapControlPanel extends JPanel implements ChangeListener, ActionLi
 				0, //ipadX
 				0 ) //ipadY
 		);
+		this.add(this.showSnapGridCheckBox , new GridBagConstraints( 
+				1, //gridX
+				0, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				1.0, //weightX
+				0.0, //weightY
+				GridBagConstraints.WEST, //anchor 
+				GridBagConstraints.NONE, //fill
+				new Insets(0,0,0,0), //insets (top, left, bottom, right)
+				0, //ipadX
+				0 ) //ipadY
+		);
 		this.add(snapToGridPanel , new GridBagConstraints( 
 				0, //gridX
 				1, //gridY
-				1, //gridWidth
+				2, //gridWidth
 				1, //gridHeight
 				1.0, //weightX
 				0.0, //weightY
@@ -125,7 +146,7 @@ public class SnapControlPanel extends JPanel implements ChangeListener, ActionLi
 		this.add(rotationSnapPanel , new GridBagConstraints( 
 				0, //gridX
 				2, //gridY
-				1, //gridWidth
+				2, //gridWidth
 				1, //gridHeight
 				1.0, //weightX
 				0.0, //weightY
@@ -138,7 +159,7 @@ public class SnapControlPanel extends JPanel implements ChangeListener, ActionLi
 		this.add(snapToGroundCheckBox , new GridBagConstraints( 
 				0, //gridX
 				3, //gridY
-				1, //gridWidth
+				2, //gridWidth
 				1, //gridHeight
 				1.0, //weightX
 				0.0, //weightY
@@ -188,11 +209,25 @@ public class SnapControlPanel extends JPanel implements ChangeListener, ActionLi
 	}
 
 	public void stateChanged(ChangeEvent e) {
+		if (e.getSource() == this.gridSizeModel)
+		{
+			if (this.sceneEditor != null)
+			{
+				this.sceneEditor.setSnapGridSpacing(this.gridSizeModel.getNumber().doubleValue());
+			}
+		}
 		updateSnapStateFromUI();
 		updateUIFromSnapState();
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == this.showSnapGridCheckBox)
+		{
+			if (this.sceneEditor != null)
+			{
+				this.sceneEditor.setShowSnapGrid(this.showSnapGridCheckBox.isSelected());
+			}
+		}
 		updateSnapStateFromUI();
 		updateUIFromSnapState();
 	}

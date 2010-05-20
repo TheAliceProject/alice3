@@ -50,6 +50,11 @@ package org.alice.apis.moveandturn;
 public class CameraMarker extends Marker 
 {
 	
+	public CameraMarker()
+	{
+		super();
+	}
+	
 	@Override
 	protected void createVisuals()
 	{

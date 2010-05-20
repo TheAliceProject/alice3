@@ -45,6 +45,8 @@ package org.alice.apis.moveandturn;
 import java.util.LinkedList;
 import java.util.List;
 
+import edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate;
+import edu.cmu.cs.dennisc.alice.annotations.Visibility;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
@@ -78,6 +80,9 @@ public class PerspectiveCameraMarker extends CameraMarker
 	private static final float LINE_RED = 1;
 	private static final float LINE_GREEN = 1;
 	private static final float LINE_BLUE = 0;
+	private static final float LASER_LINE_RED = 1;
+	private static final float LASER_LINE_GREEN = 0;
+	private static final float LASER_LINE_BLUE = 0;
 	
 	private double farClippingPlane;
 	private edu.cmu.cs.dennisc.math.Angle horizontalViewAngle;
@@ -86,11 +91,19 @@ public class PerspectiveCameraMarker extends CameraMarker
 	private Vertex[] sgViewLineVertices;
 	private LineArray sgViewLines;
 	private SingleAppearance sgLinesFrontFacingAppearance;
-	private List<Component> sgDetailedComponents;
+	
+	private Vertex[] sgLaserLineVertices;
+	private LineArray sgLaserLine;
+	private SingleAppearance sgLaserLinesFrontFacingAppearance;
+	
+	private List<Visual> sgDetailedComponents;
+	
+	protected boolean showDetail = false;
 	
 	public PerspectiveCameraMarker()
 	{
 		super();
+		this.showDetail = false;
 	}
 	
 	@Override
@@ -103,13 +116,13 @@ public class PerspectiveCameraMarker extends CameraMarker
 	protected void createVisuals()
 	{
 		super.createVisuals();
-		
+		this.sgDetailedComponents = new LinkedList<Visual>();
 		this.farClippingPlane = 100;
 		this.horizontalViewAngle = new edu.cmu.cs.dennisc.math.AngleInDegrees(90);
 		this.verticalViewAngle = new edu.cmu.cs.dennisc.math.AngleInDegrees(90);
-		this.sgDetailedComponents = new LinkedList<Component>();
-		
+
 		Visual sgBoxVisual = new Visual();
+		sgBoxVisual.setName("Camera Box Visual");
 		sgBoxVisual.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
 		edu.cmu.cs.dennisc.scenegraph.Box sgBox = new edu.cmu.cs.dennisc.scenegraph.Box();
 		sgBox.setMinimum(new Point3( -WIDTH/2, -HEIGHT/2, 0));
@@ -119,6 +132,7 @@ public class PerspectiveCameraMarker extends CameraMarker
 		final double radius = LENGTH / 4;
 		
 		Visual sgCylinder1Visual= new Visual();
+		sgCylinder1Visual.setName("Camera Cylinder 1 Visual");
 		sgCylinder1Visual.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
 		Cylinder sgCylinder1 = new Cylinder();
 		sgCylinder1.topRadius.setValue( radius );
@@ -129,11 +143,13 @@ public class PerspectiveCameraMarker extends CameraMarker
 		sgCylinder1.hasBottomCap.setValue( true );
 		Vector3 cylinder1Translation = new Vector3(-WIDTH/2, HEIGHT/2 + radius , radius);
 		Transformable sgTransformableCylinder1 = new Transformable();
+		sgTransformableCylinder1.setName("Camera Cylinder 1");
 		sgTransformableCylinder1.applyTranslation( cylinder1Translation );
 		sgCylinder1Visual.geometries.setValue( new Geometry[] { sgCylinder1 } );
 		sgCylinder1Visual.setParent(sgTransformableCylinder1);
 		
 		Visual sgCylinder2Visual= new Visual();
+		sgCylinder2Visual.setName("Camera Cylinder 2 Visual");
 		sgCylinder2Visual.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
 		Cylinder sgCylinder2 = new Cylinder();
 		sgCylinder2.topRadius.setValue( radius );
@@ -144,11 +160,13 @@ public class PerspectiveCameraMarker extends CameraMarker
 		sgCylinder2.hasBottomCap.setValue( true );
 		Vector3 cylinder2Translation = new Vector3(-WIDTH/2, HEIGHT/2 + radius , radius*3);
 		Transformable sgTransformableCylinder2 = new Transformable();
+		sgTransformableCylinder2.setName("Camera Cylinder 2");
 		sgTransformableCylinder2.applyTranslation( cylinder2Translation );
 		sgCylinder2Visual.geometries.setValue( new Geometry[] { sgCylinder2 } );
 		sgCylinder2Visual.setParent(sgTransformableCylinder2);
 		
 		Visual sgLensVisual= new Visual();
+		sgLensVisual.setName("Camera Lens Hood Visual");
 		sgLensVisual.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
 		QuadArray sgLensGeometry = new QuadArray();
 		Vertex[] sgLensVertices = new Vertex[32];
@@ -245,35 +263,82 @@ public class PerspectiveCameraMarker extends CameraMarker
 		
 		
 		Visual sgViewLinesVisual = new Visual();
+		sgViewLinesVisual.setName("Camera View Lines Visual");
 		sgViewLinesVisual.frontFacingAppearance.setValue( this.sgLinesFrontFacingAppearance );
 		this.sgViewLines = new LineArray();
 		sgViewLines.vertices.setValue(this.sgViewLineVertices);
 		sgViewLinesVisual.geometries.setValue(new Geometry[] { this.sgViewLines } );
 		
+		this.sgLaserLinesFrontFacingAppearance = new SingleAppearance();
+		this.sgLaserLinesFrontFacingAppearance.diffuseColor.setValue( Color4f.RED );
+		this.sgLaserLinesFrontFacingAppearance.shadingStyle.setValue(ShadingStyle.NONE);
+		
+		
+		
+		this.sgLaserLineVertices = new Vertex[2];
+		this.sgLaserLineVertices[0] = Vertex.createXYZRGBA(0,0,0,LASER_LINE_RED,LASER_LINE_GREEN,LASER_LINE_BLUE,START_ALPHA);
+		this.sgLaserLineVertices[1] = Vertex.createXYZRGBA(0,0,-VIEW_LINES_DEFAULT_DISTANCE_FROM_CAMERA, LASER_LINE_RED,LASER_LINE_GREEN,LASER_LINE_BLUE,END_ALPHA);
+		
+		
+		Visual sgLaserLineVisual = new Visual();
+		sgLaserLineVisual.setName("Camera Laser Line Visual");
+		sgLaserLineVisual.frontFacingAppearance.setValue( this.sgLaserLinesFrontFacingAppearance );
+		this.sgLaserLine = new LineArray();
+		sgLaserLine.vertices.setValue(this.sgLaserLineVertices);
+		sgLaserLineVisual.geometries.setValue(new Geometry[] { this.sgLaserLine } );
+
 		setViewingAngle(new AngleInDegrees(90), new AngleInDegrees(45));
 		
 		sgDetailedComponents.add(sgViewLinesVisual);
+		sgDetailedComponents.add(sgLaserLineVisual);
 		
-	    sgLensVisual.setParent( this.sgVisualTransformable );
-		sgTransformableCylinder1.setParent( this.sgVisualTransformable );
-		sgTransformableCylinder2.setParent( this.sgVisualTransformable );
-		sgBoxVisual.setParent( this.sgVisualTransformable );
+		sgVisuals.add(sgBoxVisual);
+		sgVisuals.add(sgCylinder1Visual);
+		sgVisuals.add(sgCylinder2Visual);
+		sgVisuals.add(sgLensVisual);
+		
+		sgLaserLineVisual.setParent( this.getSGTransformable() );
+		sgViewLinesVisual.setParent( this.getSGTransformable() );
+	    sgLensVisual.setParent( this.getSGTransformable() );
+		sgTransformableCylinder1.setParent( this.getSGTransformable() );
+		sgTransformableCylinder2.setParent( this.getSGTransformable() );
+		sgBoxVisual.setParent( this.getSGTransformable() );
+		
+//		setDetailedViewShowing(false);
+//		updateDetailIsShowing();
+		
 	}
 	
 	public void setDetailedViewShowing(boolean isShowing)
 	{
-		for (Component c : this.sgDetailedComponents)
+		if (this.showDetail != isShowing)
 		{
-			if (isShowing)
-			{
-				c.setParent(this.sgVisualTransformable);
-			}
-			else
-			{
-				c.setParent(null);
-			}
+			this.showDetail = isShowing;
+			this.updateDetailIsShowing();
+		}
+		
+	}
+	
+	private void updateDetailIsShowing()
+	{
+//		System.out.println("Doing detail showing.");
+//		for (Visual v : this.sgDetailedComponents)
+//		{
+//			v.isShowing.setValue(this.showDetail && this.isShowing);
+//		}
+	}
+	
+	
+	@Override
+	public void setShowing( Boolean isShowing ) {
+		boolean applyValue = isShowing != this.isShowing;
+		super.setShowing(isShowing);
+		if (applyValue)
+		{
+			updateDetailIsShowing();
 		}
 	}
+	
 	
 	public void setFarClippingPlane(double farClippingPlane)
 	{
@@ -296,20 +361,26 @@ public class PerspectiveCameraMarker extends CameraMarker
 		double xVal = Math.tan(halfHorizontalAngle) * this.farClippingPlane;
 		double yVal = Math.tan(halfVerticalAngle) * this.farClippingPlane;
 		
-		this.sgViewLineVertices[1].position.x = -xVal;
-		this.sgViewLineVertices[1].position.y = yVal;
-		this.sgViewLineVertices[1].position.z = -this.farClippingPlane;
-		this.sgViewLineVertices[3].position.x = -xVal;
-		this.sgViewLineVertices[3].position.y = -yVal;
-		this.sgViewLineVertices[3].position.z = -this.farClippingPlane;
-		this.sgViewLineVertices[5].position.x = xVal;
-		this.sgViewLineVertices[5].position.y = yVal;
-		this.sgViewLineVertices[5].position.z = -this.farClippingPlane;
-		this.sgViewLineVertices[7].position.x = xVal;
-		this.sgViewLineVertices[7].position.y = -yVal;
-		this.sgViewLineVertices[7].position.z = -this.farClippingPlane;
-		
-		this.sgViewLines.vertices.setValue(this.sgViewLineVertices);
+		if (this.sgViewLineVertices != null && this.sgLaserLineVertices != null && this.sgLaserLine != null && this.sgViewLines != null)
+		{
+			this.sgViewLineVertices[1].position.x = -xVal;
+			this.sgViewLineVertices[1].position.y = yVal;
+			this.sgViewLineVertices[1].position.z = -this.farClippingPlane;
+			this.sgViewLineVertices[3].position.x = -xVal;
+			this.sgViewLineVertices[3].position.y = -yVal;
+			this.sgViewLineVertices[3].position.z = -this.farClippingPlane;
+			this.sgViewLineVertices[5].position.x = xVal;
+			this.sgViewLineVertices[5].position.y = yVal;
+			this.sgViewLineVertices[5].position.z = -this.farClippingPlane;
+			this.sgViewLineVertices[7].position.x = xVal;
+			this.sgViewLineVertices[7].position.y = -yVal;
+			this.sgViewLineVertices[7].position.z = -this.farClippingPlane;
+			
+			this.sgLaserLineVertices[1].position.z = -this.farClippingPlane;
+			
+			this.sgLaserLine.vertices.setValue(this.sgLaserLineVertices);
+			this.sgViewLines.vertices.setValue(this.sgViewLineVertices);
+		}
 	}
 	
 	

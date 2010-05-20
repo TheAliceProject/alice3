@@ -361,7 +361,6 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	@Override
 	public void setHandleShowing(boolean showing) {
 		super.setHandleShowing(showing);
-		this.sgSphereVisual.isShowing.setValue(showing);
 	}
 
 }

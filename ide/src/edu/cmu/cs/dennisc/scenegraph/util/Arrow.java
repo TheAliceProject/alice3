@@ -51,12 +51,14 @@ public class Arrow extends Transformable {
 	
 	private Visual sgVisualCylinder;
 	private Visual sgVisualCone;
+	private Cylinder sgCone;
+	private Cylinder sgCylinder;
 	
 	public Arrow( double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone, Cylinder.BottomToTopAxis bottomToTopAxis, SingleAppearance frontFacingAppearance, boolean isBottomCapDesired ) {
 		this.sgVisualCylinder = new Visual();
 		sgVisualCylinder.frontFacingAppearance.setValue( frontFacingAppearance );
 		
-		Cylinder sgCylinder = new Cylinder();
+		this.sgCylinder = new Cylinder();
 		sgCylinder.topRadius.setValue( radiusCylinder );
 		sgCylinder.bottomRadius.setValue( radiusCylinder );
 		sgCylinder.length.setValue( lengthCylinder );
@@ -77,7 +79,7 @@ public class Arrow extends Transformable {
 		this.sgVisualCone = new Visual();
 		sgVisualCone.frontFacingAppearance.setValue( frontFacingAppearance );
 
-		Cylinder sgCone = new Cylinder();
+		this.sgCone = new Cylinder();
 	    sgCone.topRadius.setValue( 0.0 );
 	    sgCone.bottomRadius.setValue( radiusCone );
 	    sgCone.length.setValue( lengthCone );
@@ -85,12 +87,30 @@ public class Arrow extends Transformable {
 	    sgCone.hasTopCap.setValue( false ); //redundant
 	    sgCone.hasBottomCap.setValue( true );
 	    
+	    
 	    sgVisualCylinder.geometries.setValue( new Geometry[] { sgCylinder } );
 	    sgVisualCone.geometries.setValue( new Geometry[] { sgCone } );
 	    
 	    sgVisualCylinder.setParent( this );
 	    sgTransformableCone.setParent( this );
 	    sgVisualCone.setParent( sgTransformableCone );
+	}
+	
+	public void resize( double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone )
+	{
+		this.sgCylinder.topRadius.setValue( radiusCylinder );
+		this.sgCylinder.bottomRadius.setValue( radiusCylinder );
+		this.sgCylinder.length.setValue( lengthCylinder );
+		this.sgCone.topRadius.setValue( 0.0 );
+	    this.sgCone.bottomRadius.setValue( radiusCone );
+	    this.sgCone.length.setValue( lengthCone );
+		
+	}
+	
+	public void setFrontFacingAppearance( SingleAppearance frontFacingAppearance )
+	{
+		this.sgVisualCone.frontFacingAppearance.setValue(frontFacingAppearance);
+		this.sgVisualCylinder.frontFacingAppearance.setValue(frontFacingAppearance);
 	}
 	
 	public void setVisualShowing(boolean isShowing)
