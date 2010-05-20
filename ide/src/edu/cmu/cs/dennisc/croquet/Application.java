@@ -253,10 +253,10 @@ public abstract class Application {
 	public <T> T showInJDialog( edu.cmu.cs.dennisc.inputpane.KInputPane<T> inputPane, String title, boolean isModal ) {
 		return inputPane.showInJDialog( this.frame.getAwtWindow(), title, isModal);
 	}
-	@Deprecated
-	public javax.swing.JFrame getJFrame() {
-		return (javax.swing.JFrame)this.getFrame().getAwtWindow();
-	}
+//	@Deprecated
+//	public javax.swing.JFrame getJFrame() {
+//		return (javax.swing.JFrame)this.getFrame().getAwtWindow();
+//	}
 	
 	@Deprecated
 	public abstract boolean isDragInProgress();

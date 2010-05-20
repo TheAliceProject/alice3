@@ -51,11 +51,9 @@ public abstract class PostIssueOperation extends org.alice.ide.operations.Incons
 	}
 	protected abstract edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType();
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > button) {
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, final edu.cmu.cs.dennisc.croquet.Component< ? > button) {
 		final org.alice.ide.issue.PostIssuePane pane = new org.alice.ide.issue.PostIssuePane( this.getIssueType() );
 
-		//final javax.swing.JFrame owner = org.alice.ide.IDE.getSingleton();
-		final java.awt.Frame owner = org.alice.ide.IDE.getSingleton().getJFrame();
 		javax.swing.JFrame window = edu.cmu.cs.dennisc.javax.swing.JFrameUtilities.createPackedJFrame( pane, "Report Issue", javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
 		edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( window, button.getAwtComponent() );
 		window.getRootPane().setDefaultButton( pane.getSubmitButton() );
@@ -92,9 +90,9 @@ public abstract class PostIssueOperation extends org.alice.ide.operations.Incons
 							} else {
 								message = MESSAGE;
 							}
-							javax.swing.JOptionPane.showMessageDialog( owner, message, title, javax.swing.JOptionPane.PLAIN_MESSAGE );
+							org.alice.ide.IDE.getSingleton().showMessageDialog( message, title, edu.cmu.cs.dennisc.croquet.MessageType.PLAIN );
 						} else {
-							javax.swing.JOptionPane.showMessageDialog( owner, "Your issue report FAILED to submit.  Thank you for trying.", "Report Submission Failed", javax.swing.JOptionPane.ERROR_MESSAGE );
+							org.alice.ide.IDE.getSingleton().showMessageDialog( "Your issue report FAILED to submit.  Thank you for trying.", "Report Submission Failed", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
 						}
 					}
 				}

@@ -396,7 +396,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			this.left.setBottomComponent( this.galleryBrowser );
 			this.root.setRightComponent( null );
 			this.root.setDividerSize( 0 );
-			this.left.setDividerLocation( this.getJFrame().getHeight() - 300 );
+			this.left.setDividerLocation( this.getFrame().getHeight() - 300 );
 		} else {
 			this.left.setResizeWeight( 0.0 );
 			this.root.setLeftComponent( this.left );
@@ -719,7 +719,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 
 	public boolean isJava() {
-		return this.getJFrame().getLocale().getVariant().equals( "java" );
+		return this.getFrame().getAwtWindow().getLocale().getVariant().equals( "java" );
 	}
 	public String getTextForNull() {
 		if( isJava() ) {
@@ -911,7 +911,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			//java.awt.Rectangle bounds = codeEditor.getBounds();
 			//bounds = javax.swing.SwingUtilities.convertRectangle( codeEditor, bounds, layeredPane );
 			//this.stencil.setBounds( bounds );
-			javax.swing.JLayeredPane layeredPane = this.getJFrame().getLayeredPane();
+			javax.swing.JLayeredPane layeredPane = this.getFrame().getAwtWindow().getLayeredPane();
 			if( this.stencil != null ) {
 				//pass
 			} else {
@@ -925,7 +925,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 	}
 	public void hideStencil() {
-		javax.swing.JLayeredPane layeredPane = this.getJFrame().getLayeredPane();
+		javax.swing.JLayeredPane layeredPane = this.getFrame().getAwtWindow().getLayeredPane();
 		if( this.stencil != null && this.stencil.getParent() == layeredPane ) {
 			layeredPane.remove( this.stencil );
 			layeredPane.repaint();

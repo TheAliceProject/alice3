@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class Dialog extends Root< javax.swing.JDialog > {
+public final class Dialog extends AbstractWindow< javax.swing.JDialog > {
 	/**
 	 * @author Dennis Cosgrove
 	 */
@@ -71,7 +71,7 @@ public final class Dialog extends Root< javax.swing.JDialog > {
 	private static javax.swing.JDialog createJDialog( Component<?> owner ) {
 		javax.swing.JDialog rv;
 		if( owner != null ) {
-			Root<?> root = owner.getRoot();
+			AbstractWindow<?> root = owner.getRoot();
 			if( root != null ) {
 				java.awt.Window ownerWindow = root.getAwtWindow();
 				if( ownerWindow instanceof java.awt.Frame ) {

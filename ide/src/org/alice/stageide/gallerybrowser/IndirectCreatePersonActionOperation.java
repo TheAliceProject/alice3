@@ -52,7 +52,7 @@ class IndirectCreatePersonActionOperation extends org.alice.ide.operations.Incon
 	}
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
-		PersonCreatorDialog dialog = new PersonCreatorDialog( this.getIDE().getJFrame() );
+		PersonCreatorDialog dialog = new PersonCreatorDialog( this.getIDE().getFrame().getAwtWindow() );
 		dialog.pack();
 		dialog.setVisible( true );
 		dialog.createAndExecuteWorker();

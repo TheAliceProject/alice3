@@ -216,18 +216,18 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		}
 		@Override
 		public org.alice.virtualmachine.Resource selectResource() {
-			int result = javax.swing.JOptionPane.showOptionDialog( this.getIDE().getJFrame(), "What type of resource would you like to import?", "Select Type", javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.QUESTION_MESSAGE, null, new String[] {
+			int result = javax.swing.JOptionPane.showOptionDialog( this.getIDE().getFrame().getAwtWindow(), "What type of resource would you like to import?", "Select Type", javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.QUESTION_MESSAGE, null, new String[] {
 					"Import Audio...", "Import Image..." }, null );
 			switch( result ) {
 			case javax.swing.JOptionPane.YES_OPTION:
 				try {
-					return org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton().promptUserForResource( this.getIDE().getJFrame() );
+					return org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton().promptUserForResource( this.getIDE().getFrame() );
 				} catch( java.io.IOException ioe ) {
 					throw new RuntimeException( ioe );
 				}
 			case javax.swing.JOptionPane.NO_OPTION:
 				try {
-					return org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton().promptUserForResource( this.getIDE().getJFrame() );
+					return org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton().promptUserForResource( this.getIDE().getFrame() );
 				} catch( java.io.IOException ioe ) {
 					throw new RuntimeException( ioe );
 				}
@@ -479,7 +479,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 				if( resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
 					org.alice.virtualmachine.resources.ImageResource prevImageResource = (org.alice.virtualmachine.resources.ImageResource)resource;
 					try {
-						org.alice.virtualmachine.resources.ImageResource nextImageResource = org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton().promptUserForResource( this.getIDE().getJFrame() );
+						org.alice.virtualmachine.resources.ImageResource nextImageResource = org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton().promptUserForResource( this.getIDE().getFrame() );
 						if( nextImageResource != null ) {
 							prevCapsule = new ImageCapsule( prevImageResource );
 							nextCapsule = new ImageCapsule( nextImageResource );
@@ -493,7 +493,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 				} else if( resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
 					org.alice.virtualmachine.resources.AudioResource prevAudioResource = (org.alice.virtualmachine.resources.AudioResource)resource;
 					try {
-						org.alice.virtualmachine.resources.AudioResource nextAudioResource = org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton().promptUserForResource( this.getIDE().getJFrame() );
+						org.alice.virtualmachine.resources.AudioResource nextAudioResource = org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton().promptUserForResource( this.getIDE().getFrame() );
 						if( nextAudioResource != null ) {
 							prevCapsule = new AudioCapsule( prevAudioResource );
 							nextCapsule = new AudioCapsule( nextAudioResource );

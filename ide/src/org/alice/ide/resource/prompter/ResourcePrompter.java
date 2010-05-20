@@ -51,8 +51,8 @@ public abstract class ResourcePrompter<E extends org.alice.virtualmachine.Resour
 	protected abstract E createResourceFromFile( java.io.File file ) throws java.io.IOException;
 	protected abstract String getFileDialogTitle();
 	protected abstract java.io.FilenameFilter createFilenameFilter();
-	public E promptUserForResource( java.awt.Component owner ) throws java.io.IOException {
-		java.awt.FileDialog fileDialog = new java.awt.FileDialog( org.alice.ide.IDE.getSingleton().getJFrame() );
+	public E promptUserForResource( edu.cmu.cs.dennisc.croquet.Frame owner ) throws java.io.IOException {
+		java.awt.FileDialog fileDialog = new java.awt.FileDialog( owner.getAwtWindow() );
 		fileDialog.setTitle( this.getFileDialogTitle() );
 		fileDialog.setFilenameFilter( this.createFilenameFilter() );
 		fileDialog.setFile( this.getInitialFileText() );

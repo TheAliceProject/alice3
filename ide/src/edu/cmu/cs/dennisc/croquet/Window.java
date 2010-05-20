@@ -46,11 +46,11 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class Window extends Root<javax.swing.JWindow> {
+public final class Window extends AbstractWindow<javax.swing.JWindow> {
 	private static javax.swing.JWindow createJWindow( Component<?> owner ) {
 		javax.swing.JWindow rv;
 		if( owner != null ) {
-			Root<?> root = owner.getRoot();
+			AbstractWindow<?> root = owner.getRoot();
 			if( root != null ) {
 				java.awt.Window ownerWindow = root.getAwtWindow();
 				if( ownerWindow instanceof java.awt.Frame ) {

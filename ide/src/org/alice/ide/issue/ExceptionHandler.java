@@ -71,7 +71,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 //				} else {
 //					frame = new javax.swing.JFrame();
 //				}
-				java.awt.Component owner = org.alice.ide.IDE.getSingleton().getJFrame();
+				java.awt.Component owner = org.alice.ide.IDE.getSingleton().getFrame().getAwtWindow();
 //				while( true ) {
 					javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( bugReportPane, owner, this.title, true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
 					dialog.getRootPane().setDefaultButton( bugReportPane.getSubmitButton() );

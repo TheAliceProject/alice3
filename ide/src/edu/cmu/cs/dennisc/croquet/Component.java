@@ -366,8 +366,8 @@ public abstract class Component<J extends java.awt.Component> {
 	}
 
 	@Deprecated
-	public Root<?> getRoot() {
-		return Root.lookup(javax.swing.SwingUtilities.getRoot(this.getAwtComponent()));
+	public AbstractWindow<?> getRoot() {
+		return AbstractWindow.lookup(javax.swing.SwingUtilities.getRoot(this.getAwtComponent()));
 	}
 
 	public int getWidth() {

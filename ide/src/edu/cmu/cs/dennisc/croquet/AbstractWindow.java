@@ -47,21 +47,21 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 //todo: better name
-public abstract class Root<W extends java.awt.Window> {
-	private static java.util.Map< java.awt.Component, Root<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
-	/*package-private*/ static Root<?> lookup( java.awt.Component component ) {
+public abstract class AbstractWindow<W extends java.awt.Window> {
+	private static java.util.Map< java.awt.Component, AbstractWindow<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
+	/*package-private*/ static AbstractWindow<?> lookup( java.awt.Component component ) {
 		if( component != null ) {
-			return Root.map.get( component );
+			return AbstractWindow.map.get( component );
 		} else {
 			return null;
 		}
 	}
 
 	private W window;
-	public Root( W window ) {
+	public AbstractWindow( W window ) {
 		this.window = window;
 		this.getRootPane().setContentPane( this.contentPanel.getAwtComponent() );
-		Root.map.put( window, this );
+		AbstractWindow.map.put( window, this );
 	}
 
 	/*protected*/ public final W getAwtWindow() {
@@ -92,6 +92,38 @@ public abstract class Root<W extends java.awt.Window> {
 	}
 	public void setVisible( boolean isVisible ) {
 		this.window.setVisible( isVisible );
+	}
+	
+	public int getX() {
+		return this.window.getX();
+	}
+	public int getY() {
+		return this.window.getY();
+	}
+	public java.awt.Point getLocation() {
+		return this.window.getLocation();
+	}
+	public void setLocation( java.awt.Point location ) {
+		this.window.setLocation( location );
+	}
+	public void setLocation( int x, int y ) {
+		this.window.setLocation( x, y );
+	}
+
+	public int getWidth() {
+		return this.window.getWidth();
+	}
+	public int getHeight() {
+		return this.window.getHeight();
+	}
+	public java.awt.Dimension getSize() {
+		return this.window.getSize();
+	}
+	public void setSize( java.awt.Dimension size ) {
+		this.window.setSize( size );
+	}
+	public void setSize( int width, int height ) {
+		this.window.setSize( width, height );
 	}
 	
 	public Button getDefaultButton() {

@@ -87,7 +87,7 @@ class CreateBillboardActionOperation extends AbstractGalleryDeclareFieldOperatio
 	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
 		org.alice.ide.resource.prompter.ImageResourcePrompter imageResourcePrompter = org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton();
 		try {
-			org.alice.virtualmachine.resources.ImageResource frontImageResource = imageResourcePrompter.promptUserForResource( this.getIDE().getJFrame() );
+			org.alice.virtualmachine.resources.ImageResource frontImageResource = imageResourcePrompter.promptUserForResource( this.getIDE().getFrame() );
 			if( frontImageResource != null ) {
 				edu.cmu.cs.dennisc.alice.Project project = this.getIDE().getProject();
 				if( project != null ) {

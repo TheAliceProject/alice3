@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class Frame extends Root<javax.swing.JFrame> {
+public final class Frame extends AbstractWindow<javax.swing.JFrame> {
 	/**
 	 * @author Dennis Cosgrove
 	 */

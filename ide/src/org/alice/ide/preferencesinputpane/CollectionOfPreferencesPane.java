@@ -66,7 +66,7 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.croquet.Bord
 		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 			String name = CollectionOfPreferencesPane.this.getTitle();
 			
-			java.awt.Component parentComponent = org.alice.ide.IDE.getSingleton().getJFrame();
+			java.awt.Component parentComponent = org.alice.ide.IDE.getSingleton().getFrame().getAwtWindow();
 			String message = "To what extent would you like to restore defaults?";
 			String title = "Restore Defaults";
 			int optionType = javax.swing.JOptionPane.YES_NO_CANCEL_OPTION;

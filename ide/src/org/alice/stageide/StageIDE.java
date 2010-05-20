@@ -321,7 +321,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	protected void showInJDialog( MoveAndTurnRuntimeProgram rtProgram ) {
 		this.disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
 		try {
-			rtProgram.showInJDialog( this.getJFrame(), true, new String[] { "X_LOCATION=" + xLocation, "Y_LOCATION=" + yLocation } );
+			rtProgram.showInJDialog( this.getFrame().getAwtWindow(), true, new String[] { "X_LOCATION=" + xLocation, "Y_LOCATION=" + yLocation } );
 		} finally {
 			this.enableRendering();
 			try {
@@ -365,7 +365,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		TestMethodProgram testProgram = new TestMethodProgram( this.getSceneType(), field, emptyExpressionMethodInvocation );
 		this.disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
 		try {
-			testProgram.showInJDialog( this.getJFrame(), true, new String[] { "X_LOCATION=" + xLocation, "Y_LOCATION=" + yLocation } );
+			testProgram.showInJDialog( this.getFrame().getAwtWindow(), true, new String[] { "X_LOCATION=" + xLocation, "Y_LOCATION=" + yLocation } );
 		} finally {
 			this.enableRendering();
 			try {

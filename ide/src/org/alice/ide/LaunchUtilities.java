@@ -167,8 +167,8 @@ public class LaunchUtilities {
 						}
 					}
 				}
-				ide.getJFrame().setLocation( xLocation, yLocation );
-				ide.getJFrame().setSize( width, height );
+				ide.getFrame().setLocation( xLocation, yLocation );
+				ide.getFrame().setSize( width, height );
 				
 				if( isMaximizationDesired ) {
 					ide.getFrame().maximize();
