@@ -15,6 +15,7 @@ public class SnapState
 	private boolean isSnapToGridEnabled = true;
 	private boolean isRotationSnapEnabled = true;
 	private double gridSpacing = .5d;
+	private boolean showSnapGrid = true;
 	private Angle rotationSnapAngle = new AngleInDegrees(45); //In degrees
 	
 	
@@ -113,6 +114,21 @@ public class SnapState
 	public Angle getRotationSnapAngle()
 	{
 		return this.rotationSnapAngle;
+	}
+	
+	public boolean shouldShowSnapGrid()
+	{
+		return this.isSnapEnabled && this.showSnapGrid;
+	}
+	
+	public boolean isShowSnapGridEnabled()
+	{
+		return this.showSnapGrid;
+	}
+	
+	public void setShowSnapGrid( boolean showSnapGrid )
+	{
+		this.showSnapGrid = showSnapGrid;
 	}
 	
 }

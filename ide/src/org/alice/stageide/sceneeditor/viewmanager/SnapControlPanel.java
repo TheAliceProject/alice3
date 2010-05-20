@@ -58,7 +58,7 @@ public class SnapControlPanel extends JPanel implements ChangeListener, ActionLi
 		this.snapToGridCheckBox = new JCheckBox("Snap to grid", snapState.isSnapToGridEnabled());
 		this.snapToGridCheckBox.addActionListener(this);
 		
-		this.showSnapGridCheckBox =  new JCheckBox("Show Snap Grid", true);
+		this.showSnapGridCheckBox =  new JCheckBox("Show Snap Grid", snapState.isShowSnapGridEnabled());
 		this.showSnapGridCheckBox.addActionListener(this);
 		
 		Dimension spinnerSize = new Dimension(50, 26);
@@ -179,6 +179,9 @@ public class SnapControlPanel extends JPanel implements ChangeListener, ActionLi
 		this.snapToGroundCheckBox.setSelected(this.snapState.isSnapToGroundEnabled());
 		this.snapToGroundCheckBox.setEnabled(this.snapState.isSnapEnabled());
 		
+		this.showSnapGridCheckBox.setSelected(this.snapState.isShowSnapGridEnabled());
+		this.showSnapGridCheckBox.setEnabled(this.snapState.isSnapEnabled());
+		
 		this.gridSizeModel.setValue(new Double(this.snapState.getGridSpacing()));
 		this.snapToGridCheckBox.setSelected(this.snapState.isSnapToGridEnabled());
 		this.snapToGridCheckBox.setEnabled(this.snapState.isSnapEnabled());
@@ -200,6 +203,13 @@ public class SnapControlPanel extends JPanel implements ChangeListener, ActionLi
 		this.snapState.setShouldSnapToGroundEnabled(this.snapToGroundCheckBox.isSelected());
 		this.snapState.setRotationSnapEnabled(this.rotationSnapCheckBox.isSelected());
 		this.snapState.setRotationSnapAngle(new AngleInDegrees(((Integer)this.snapAngleModel.getValue()).doubleValue()));
+		this.snapState.setShowSnapGrid(this.showSnapGridCheckBox.isSelected());
+		
+		if (this.sceneEditor != null)
+		{
+			this.sceneEditor.setShowSnapGrid(this.snapState.shouldShowSnapGrid());
+			this.sceneEditor.setSnapGridSpacing(this.snapState.getGridSpacing());
+		}
 	}
 	
 	public void setSnapState(SnapState snapState)
@@ -209,25 +219,11 @@ public class SnapControlPanel extends JPanel implements ChangeListener, ActionLi
 	}
 
 	public void stateChanged(ChangeEvent e) {
-		if (e.getSource() == this.gridSizeModel)
-		{
-			if (this.sceneEditor != null)
-			{
-				this.sceneEditor.setSnapGridSpacing(this.gridSizeModel.getNumber().doubleValue());
-			}
-		}
 		updateSnapStateFromUI();
 		updateUIFromSnapState();
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == this.showSnapGridCheckBox)
-		{
-			if (this.sceneEditor != null)
-			{
-				this.sceneEditor.setShowSnapGrid(this.showSnapGridCheckBox.isSelected());
-			}
-		}
 		updateSnapStateFromUI();
 		updateUIFromSnapState();
 	}

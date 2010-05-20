@@ -198,8 +198,11 @@ public class SnapGrid extends Transformable implements PropertyListener{
 	
 	public void setSpacing(double spacing)
 	{
-		setGridLines(spacing);
-		setSnapGridBasedOnCameraPosition();
+		if (spacing != this.gridSpacing)
+		{
+			setGridLines(spacing);
+			setSnapGridBasedOnCameraPosition();
+		}
 	}
 	
 	private Point3 getClosestSnapLocation( Point3 point )

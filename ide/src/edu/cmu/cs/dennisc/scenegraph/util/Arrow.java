@@ -42,7 +42,9 @@
  */
 package edu.cmu.cs.dennisc.scenegraph.util;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.*;
+import edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis;
 
 /**
  * @author Dennis Cosgrove
@@ -53,8 +55,12 @@ public class Arrow extends Transformable {
 	private Visual sgVisualCone;
 	private Cylinder sgCone;
 	private Cylinder sgCylinder;
+	private Transformable sgTransformableCone;
+	private BottomToTopAxis bottomToTopAxis;
 	
 	public Arrow( double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone, Cylinder.BottomToTopAxis bottomToTopAxis, SingleAppearance frontFacingAppearance, boolean isBottomCapDesired ) {
+		this.bottomToTopAxis = bottomToTopAxis;
+		
 		this.sgVisualCylinder = new Visual();
 		sgVisualCylinder.frontFacingAppearance.setValue( frontFacingAppearance );
 		
@@ -62,19 +68,13 @@ public class Arrow extends Transformable {
 		sgCylinder.topRadius.setValue( radiusCylinder );
 		sgCylinder.bottomRadius.setValue( radiusCylinder );
 		sgCylinder.length.setValue( lengthCylinder );
-		sgCylinder.bottomToTopAxis.setValue( bottomToTopAxis );
+		sgCylinder.bottomToTopAxis.setValue( this.bottomToTopAxis );
 		sgCylinder.hasTopCap.setValue( false );
 		//todo?
 		sgCylinder.hasBottomCap.setValue( isBottomCapDesired );
 		
-		
-		edu.cmu.cs.dennisc.math.Vector3 translation = edu.cmu.cs.dennisc.math.Vector3.createMultiplication(  
-			new edu.cmu.cs.dennisc.math.Vector3( lengthCylinder, lengthCylinder, lengthCylinder ), 
-			bottomToTopAxis.accessVector() 
-		);
-		
-		Transformable sgTransformableCone = new Transformable();
-		sgTransformableCone.applyTranslation( translation );
+		this.sgTransformableCone = new Transformable();		
+		setConeTranslation(lengthCylinder);
 
 		this.sgVisualCone = new Visual();
 		sgVisualCone.frontFacingAppearance.setValue( frontFacingAppearance );
@@ -83,7 +83,7 @@ public class Arrow extends Transformable {
 	    sgCone.topRadius.setValue( 0.0 );
 	    sgCone.bottomRadius.setValue( radiusCone );
 	    sgCone.length.setValue( lengthCone );
-	    sgCone.bottomToTopAxis.setValue( bottomToTopAxis );
+	    sgCone.bottomToTopAxis.setValue( this.bottomToTopAxis );
 	    sgCone.hasTopCap.setValue( false ); //redundant
 	    sgCone.hasBottomCap.setValue( true );
 	    
@@ -96,6 +96,17 @@ public class Arrow extends Transformable {
 	    sgVisualCone.setParent( sgTransformableCone );
 	}
 	
+	private void setConeTranslation(double lengthCylinder)
+	{
+		edu.cmu.cs.dennisc.math.Vector3 translation = edu.cmu.cs.dennisc.math.Vector3.createMultiplication(  
+				new edu.cmu.cs.dennisc.math.Vector3( lengthCylinder, lengthCylinder, lengthCylinder ), 
+				this.bottomToTopAxis.accessVector() 
+			);
+			AffineMatrix4x4 currentTransform = this.sgTransformableCone.localTransformation.getValue();
+			currentTransform.translation.set(translation);
+			this.sgTransformableCone.localTransformation.setValue(currentTransform);
+	}
+	
 	public void resize( double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone )
 	{
 		this.sgCylinder.topRadius.setValue( radiusCylinder );
@@ -104,6 +115,7 @@ public class Arrow extends Transformable {
 		this.sgCone.topRadius.setValue( 0.0 );
 	    this.sgCone.bottomRadius.setValue( radiusCone );
 	    this.sgCone.length.setValue( lengthCone );
+	    setConeTranslation(lengthCylinder);
 		
 	}
 	

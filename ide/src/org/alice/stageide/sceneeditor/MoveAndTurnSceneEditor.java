@@ -247,8 +247,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			//pass
 		} else {
 			
-			
-			
 			createOrthographicCameraMarkers();
 			
 			this.snapState = new SnapState();
@@ -300,18 +298,23 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 			this.sidePane.setDragAdapter( this.globalDragAdapter );
 		}
+		createOrthographicCamera();
+	}
+	
+	
+	private void createOrthographicCamera()
+	{
 		if( this.sgOrthographicCamera != null ) {
 			//pass
 		} else {
-			this.sgOrthographicCamera = new edu.cmu.cs.dennisc.scenegraph.OrthographicCamera();
+			//We need to make a MoveAndTurn orthographic camera because the scene is fundamentally a MoveAndTurn scene
+			org.alice.apis.moveandturn.OrthographicCamera moveAndTurnOrthographicCamera = new org.alice.apis.moveandturn.OrthographicCamera();
+			this.sgOrthographicCamera = moveAndTurnOrthographicCamera.getSGOrthographicCamera();
 			this.sgOrthographicCamera.nearClippingPlaneDistance.setValue(.01d);
-			edu.cmu.cs.dennisc.scenegraph.Transformable orthographicSGTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
-			orthographicSGTransformable.setName("OrthographicCamera.sgTransformable");
-			this.sgOrthographicCamera.setParent( orthographicSGTransformable );
 			this.sgOrthographicCamera.putBonusDataFor(org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.CAMERA);
-			orthographicSGTransformable.putBonusDataFor(org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.CAMERA);
 		}
 	}
+	
 	@Override
 	public void handleExpandContractChange( boolean isExpanded ) {
 		this.sidePane.setExpanded( isExpanded );
@@ -1188,15 +1191,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	
 	public void setSnapGridSpacing( final double spacing )
 	{
-		SwingUtilities.invokeLater( new Runnable()
-		{
-
-			public void run() {
-				snapGrid.setSpacing(spacing);
-			}
-			
-		});
-		
+		snapGrid.setSpacing(spacing);
 	}
 	
 	
