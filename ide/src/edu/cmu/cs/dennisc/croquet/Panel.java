@@ -91,5 +91,7 @@ public abstract class Panel extends JComponent< javax.swing.JPanel > {
 		this.isMaximumSizeClampedToPreferredSize = isMaximumSizeClampedToPreferredSize;
 		this.revalidateAndRepaint();
 	}
-	
+	public void removeComponent( Component< ? > component ) {
+		this.internalRemoveComponent( component );
+	}
 }

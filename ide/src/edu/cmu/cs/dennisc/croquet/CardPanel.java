@@ -68,11 +68,18 @@ public class CardPanel extends Panel {
 			this.cardLayoutKey = cardLayoutKey;
 		}
 	}
-	
+	private java.util.Map< String, Key > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private Key nullKey;
 	public Key createKey( Component<?> child, String cardLayoutKey ) {
-		return new Key( child, cardLayoutKey );
+		assert map.containsKey( cardLayoutKey ) == false;
+		Key rv = new Key( child, cardLayoutKey );
+		this.map.put( cardLayoutKey, rv );
+		return rv;
 	}
+	public Key getKey( String cardLayoutKey ) {
+		return this.map.get( cardLayoutKey );
+	}
+	
 //	public Key createKey( Component<?> child, java.util.UUID id ) {
 //		return new Key( child, id.toString() );
 //	}

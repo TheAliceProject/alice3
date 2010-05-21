@@ -54,10 +54,14 @@ public class HyperlinkUI extends javax.swing.plaf.basic.BasicButtonUI {
 	protected void paintText( java.awt.Graphics g, javax.swing.AbstractButton b, java.awt.Rectangle textRect, String text ) {
 		javax.swing.ButtonModel model = b.getModel();
 		java.awt.Color color;
-		if( model.isArmed() ) {
-			color = java.awt.Color.BLUE;
+		if( b.isEnabled() ) {
+			if( model.isArmed() ) {
+				color = java.awt.Color.BLUE;
+			} else {
+				color = java.awt.Color.BLACK;
+			}
 		} else {
-			color = java.awt.Color.BLACK;
+			color = java.awt.Color.LIGHT_GRAY;
 		}
 		g.setColor( color );
 		java.awt.FontMetrics fm = g.getFontMetrics();

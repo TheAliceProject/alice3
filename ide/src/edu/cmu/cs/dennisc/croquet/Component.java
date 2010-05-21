@@ -331,6 +331,9 @@ public abstract class Component<J extends java.awt.Component> {
 	public java.awt.Rectangle getBounds() {
 		return this.getAwtComponent().getBounds();
 	}
+	public java.awt.Rectangle getBounds( Component< ? > destination ) {
+		return this.getParent().convertRectangle( this.getBounds(), destination );
+	}
 
 	@Deprecated
 	public java.awt.Point convertPoint(java.awt.Point pt, java.awt.Component destination) {

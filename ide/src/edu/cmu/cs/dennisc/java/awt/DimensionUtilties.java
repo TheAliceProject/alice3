@@ -72,4 +72,12 @@ public class DimensionUtilties {
 		rv = constrainToMaximumHeight( rv, maximumHeight );
 		return rv;
 	}
+	public static java.awt.Dimension constrainToWidth( java.awt.Dimension rv, int width ) {
+		rv.width = width;
+		return rv;
+	}
+	public static java.awt.Dimension constrainToHeight( java.awt.Dimension rv, int height ) {
+		rv.height = height;
+		return rv;
+	}
 }

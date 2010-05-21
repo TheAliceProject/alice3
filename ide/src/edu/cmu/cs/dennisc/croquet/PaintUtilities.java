@@ -54,13 +54,14 @@ public class PaintUtilities {
 			int width = 8;
 			int height = 8;
 			java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
-			java.awt.Graphics g = image.getGraphics();
-			g.setColor( new java.awt.Color( 128, 128, 128, 96 ) );
-			g.fillRect( 0, 0, width, height );
-			g.setColor( java.awt.Color.DARK_GRAY );
-			g.drawLine( 0, height, width, 0 );
-			g.drawLine( 0, 0, 0, 0 );
-			g.dispose();
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)image.getGraphics();
+			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+			g2.setColor( new java.awt.Color( 128, 128, 128, 96 ) );
+			g2.fillRect( 0, 0, width, height );
+			g2.setColor( java.awt.Color.DARK_GRAY );
+			g2.drawLine( 0, height, width, 0 );
+			g2.drawLine( 0, 0, 0, 0 );
+			g2.dispose();
 			PaintUtilities.disabledTexturePaint = new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
 		}
 		return PaintUtilities.disabledTexturePaint;
@@ -74,11 +75,12 @@ public class PaintUtilities {
 			int width = 8;
 			int height = 8;
 			java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
-			java.awt.Graphics g = image.getGraphics();
-			g.setColor( new java.awt.Color( 0, 0, 255, 96 ) );
-			g.drawLine( 2, 4, 6, 4 );
-			g.drawLine( 4, 2, 4, 6 );
-			g.dispose();
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)image.getGraphics();
+			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+			g2.setColor( new java.awt.Color( 0, 0, 255, 96 ) );
+			g2.drawLine( 2, 4, 6, 4 );
+			g2.drawLine( 4, 2, 4, 6 );
+			g2.dispose();
 			PaintUtilities.copyTexturePaint = new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
 		}
 		return PaintUtilities.copyTexturePaint;

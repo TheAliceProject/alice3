@@ -57,7 +57,4 @@ public class GridBagPanel extends Panel {
 	public void addComponent( Component< ? > component, java.awt.GridBagConstraints gbc ) {
 		this.internalAddComponent( component, gbc );
 	}
-	public void removeComponent( Component< ? > component ) {
-		this.internalRemoveComponent( component );
-	}
 }

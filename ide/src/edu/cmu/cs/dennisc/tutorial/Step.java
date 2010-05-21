@@ -40,51 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.tutorial;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BorderPanel extends Panel {
-	public enum Constraint {
-		CENTER( java.awt.BorderLayout.CENTER ),
-		
-		NORTH( java.awt.BorderLayout.NORTH ),
-		PAGE_START( java.awt.BorderLayout.PAGE_START ),
-		
-		SOUTH( java.awt.BorderLayout.SOUTH ),
-		PAGE_END( java.awt.BorderLayout.PAGE_END ),
-		
-		WEST( java.awt.BorderLayout.WEST ),
-		LINE_START( java.awt.BorderLayout.LINE_START ),
-
-		EAST( java.awt.BorderLayout.EAST ),
-		LINE_END( java.awt.BorderLayout.LINE_END );
-		
-		private String internal;
-		private Constraint( String internal ) {
-			this.internal = internal;
-		}
-		//todo: reduce visibility? /*package-private*/
-		public String getInternal() {
-			return this.internal;
-		}
+public abstract class Step {
+	private java.util.UUID id = java.util.UUID.randomUUID();
+	private Tutorial tutorial;
+	public abstract edu.cmu.cs.dennisc.croquet.Component< ? > getComponent();
+	public Step( Tutorial tutorial ) {
+		this.tutorial = tutorial;
 	}
-	private int hgap;
-	private int vgap;
-	public BorderPanel() {
-		this( 0, 0 );
+	public String getCardLayoutKey() {
+		return this.id.toString();
 	}
-	public BorderPanel( int hgap, int vgap ) {
-		this.hgap = hgap;
-		this.vgap = vgap;
+	public Tutorial getTutorial() {
+		return this.tutorial;
 	}
-	@Override
-	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.BorderLayout( this.hgap, this.vgap );
-	}
-	public void addComponent( Component<?> child, Constraint constraint ) {
-		this.internalAddComponent( child, constraint.internal );
-	}
+	public abstract java.awt.geom.Area subtractHoleIfAppropriate( java.awt.geom.Area rv, edu.cmu.cs.dennisc.croquet.Panel panel );
+//	public void setTutorial( Tutorial tutorial ) {
+//		this.tutorial = tutorial;
+//	}
 }

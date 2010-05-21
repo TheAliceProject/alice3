@@ -119,7 +119,7 @@ public abstract class Operation {
 		}
 	}
 
-	private java.util.List< JComponent<?> > components = new java.util.LinkedList< JComponent<?> >();
+	private java.util.List< JComponent<?> > components = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	
 	protected void addComponent( JComponent<?> component ) {
 		synchronized( this.components ) {
@@ -132,6 +132,11 @@ public abstract class Operation {
 		synchronized( this.components ) {
 			this.components.remove( component );
 		}
+	}
+	
+	@Deprecated
+	public Component< ? > getFirstComponent() {
+		return this.components.get( 0 );
 	}
 	
 //	protected abstract void perform( C context );

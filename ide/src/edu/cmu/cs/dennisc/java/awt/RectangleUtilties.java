@@ -42,6 +42,7 @@
  */
 package edu.cmu.cs.dennisc.java.awt;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,5 +60,46 @@ public class RectangleUtilties {
 	}
 	public static java.awt.Rectangle createCenteredRectangle( java.awt.Rectangle bound, java.awt.Dimension size ) {
 		return createCenteredRectangle( bound, size.width, size.height );
+	}
+	
+	public static java.awt.Rectangle grow( java.awt.Rectangle rv, int xPad, int yPad ) {
+		rv.x -= xPad;
+		rv.y -= yPad;
+		rv.width += xPad + xPad;
+		rv.height += yPad + yPad;
+		return rv;
+	}
+	public static java.awt.Rectangle grow( java.awt.Rectangle rv, int pad ) {
+		return grow( rv, pad, pad );
+	}
+	public static java.awt.Point getPoint( java.awt.Rectangle rect, int xConstraint, int yConstraint ) {
+		java.awt.Point rv = new java.awt.Point();
+		switch( xConstraint ) {
+		case javax.swing.SwingConstants.LEADING:
+			rv.x = rect.x;
+			break;
+		case javax.swing.SwingConstants.TRAILING:
+			rv.x = rect.x + rect.width;
+			break;
+		case javax.swing.SwingConstants.CENTER:
+			rv.x = rect.x + rect.width / 2;
+			break;
+		default:
+			assert false : xConstraint;
+		}
+		switch( yConstraint ) {
+		case javax.swing.SwingConstants.LEADING:
+			rv.y = rect.y;
+			break;
+		case javax.swing.SwingConstants.TRAILING:
+			rv.y = rect.y + rect.height;
+			break;
+		case javax.swing.SwingConstants.CENTER:
+			rv.y = rect.y + rect.height / 2;
+			break;
+		default:
+			assert false : xConstraint;
+		}
+		return rv;
 	}
 }
