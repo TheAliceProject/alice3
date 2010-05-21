@@ -187,7 +187,7 @@ public abstract class AbstractManipulator {
 		else if (this.getManipulatedTransformable() != null)
 		{
 			AffineMatrix4x4 newTransformation = this.getManipulatedTransformable().getLocalTransformation();
-			if (!newTransformation.equals( originalTransformation ))
+			if (!newTransformation.equals( originalTransformation ) && originalTransformation != null)
 			{
 				PrintUtilities.println("Skipping undoable action for a manipulation that actually changed the transformation.");
 			}

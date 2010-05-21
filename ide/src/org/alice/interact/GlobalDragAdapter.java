@@ -64,6 +64,7 @@ import org.alice.interact.handle.LinearTranslateHandle;
 import org.alice.interact.handle.ManipulationHandleIndirection;
 import org.alice.interact.handle.RotationRingHandle;
 import org.alice.interact.handle.StoodUpRotationRingHandle;
+import org.alice.interact.manipulator.CameraOrbitDragManipulator;
 import org.alice.interact.manipulator.CameraRotateKeyManipulator;
 import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
@@ -181,14 +182,14 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 			AndInputCondition keyAndNotSelected = new AndInputCondition( new KeyPressCondition( turnKeys[i].keyValue), new SelectedObjectCondition( PickHint.NON_INTERACTIVE, InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH  ) );
 			cameraRotate.addCondition( keyAndNotSelected );
 		}
-//		this.manipulators.add( cameraRotate );
+		this.manipulators.add( cameraRotate );
 	
-//		ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet( new CameraOrbitDragManipulator() );
-//		MouseDragCondition leftAndNoModifiers = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1 , new PickCondition( PickHint.NON_INTERACTIVE ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
-//		//cameraOrbit.addCondition( new MousePressCondition( java.awt.event.MouseEvent.BUTTON1 , new NotPickCondition( PickCondition.PickType.MOVEABLE_OBJECT ) ) );
-//		cameraOrbit.addCondition(leftAndNoModifiers);
-//		cameraOrbit.addCondition( new MouseDragCondition( java.awt.event.MouseEvent.BUTTON3 , new PickCondition( PickHint.EVERYTHING ) ) );
-//		this.manipulators.add(cameraOrbit);
+		ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet( new CameraOrbitDragManipulator() );
+		MouseDragCondition leftAndNoModifiers = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1 , new PickCondition( PickHint.NON_INTERACTIVE ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
+		//cameraOrbit.addCondition( new MousePressCondition( java.awt.event.MouseEvent.BUTTON1 , new NotPickCondition( PickCondition.PickType.MOVEABLE_OBJECT ) ) );
+		cameraOrbit.addCondition(leftAndNoModifiers);
+		cameraOrbit.addCondition( new MouseDragCondition( java.awt.event.MouseEvent.BUTTON3 , new PickCondition( PickHint.EVERYTHING ) ) );
+		this.manipulators.add(cameraOrbit);
 		
 //		ManipulatorConditionSet mouseTranslateObject = new ManipulatorConditionSet( new ObjectTranslateDragManipulator() );
 		ManipulatorConditionSet mouseTranslateObject = new ManipulatorConditionSet( new OmniDirectionalDragManipulator(), "Mouse Translate" );
