@@ -46,6 +46,29 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class NoteStep extends Step {
+	private static java.awt.Paint highlightPaint = null;
+	private static java.awt.Paint getHighlightPaint() {
+		if( NoteStep.highlightPaint != null ) {
+			//pass
+		} else {
+			int width = 8;
+			int height = 8;
+			java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)image.getGraphics();
+			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+			java.awt.Color c = Tutorial.STENCIL_BASE_COLOR;
+			g2.setColor( new java.awt.Color( c.getRed(), c.getGreen(), c.getBlue(), 63 ) );
+			g2.fillRect( 0, 0, width, height );
+			g2.setColor( Tutorial.STENCIL_LINE_COLOR );
+			g2.drawLine( 0, height, width, 0 );
+			g2.drawLine( 0, 0, 0, 0 );
+//			g2.drawLine( 0, 0, width, height );
+			g2.dispose();
+			NoteStep.highlightPaint = new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
+		}
+		return NoteStep.highlightPaint;
+	}
+
 	private static final java.awt.Stroke STROKE = new java.awt.BasicStroke( 2.0f ); 
 
 	private static java.awt.Color BASE_COLOR = new java.awt.Color( 255, 255, 100 ); 
@@ -63,20 +86,37 @@ package edu.cmu.cs.dennisc.tutorial;
 			javax.swing.JPanel rv = new javax.swing.JPanel() {
 				@Override
 				protected void paintComponent( java.awt.Graphics g ) {
+					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+					
 					int w = this.getWidth();
 					int h = this.getHeight();
+					
+
+					g2.setPaint( java.awt.Color.GRAY );
+					java.awt.geom.GeneralPath pathShadow = new java.awt.geom.GeneralPath();
+					pathShadow.moveTo( w-4, 0 );
+					pathShadow.lineTo( w, h );
+					pathShadow.lineTo( 0, h-4 );
+					pathShadow.lineTo( w-4, h-4 );
+					pathShadow.closePath();
+					g2.fill( pathShadow );
+
+					
 					int x1 = w-20;
 					int y1 = h-20;
 					java.awt.Paint paint = new java.awt.GradientPaint( x1, y1, HIGHLIGHT_COLOR, x1-200, y1-200, BASE_COLOR );
-					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 					g2.setPaint( paint );
-					g2.fill( g2.getClip() );
+					
+					g2.fillRect( 0, 0, w-4, h-4 );
+					
 					super.paintComponent( g );
-					g2.setPaint( java.awt.Color.LIGHT_GRAY );
-					g2.fillRect( w-1, 0, 1, h );
-					g2.setPaint( java.awt.Color.DARK_GRAY );
-					g2.fillRect( 0, h-1, w-1, 1 );
 				}
+//				@Override
+//				public void paint(java.awt.Graphics g) {
+//					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+//					g2.rotate( Math.PI / 90 );
+//					super.paint(g);
+//				}
 				@Override
 				public java.awt.Dimension getPreferredSize() {
 					java.awt.Dimension rv = super.getPreferredSize();
@@ -180,15 +220,28 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 		@Override
 		protected boolean paintComponent( java.awt.Graphics2D g2 ) {
-			return NoteStep.this.paintComponent( g2, this, this.note );
+			return NoteStep.this.paintComponent( g2, this, this.note.getComponent( 0 ) );
 		}
 	}
 	
+	private static final int HOLE_PAD = 4;
 	private edu.cmu.cs.dennisc.croquet.Component< ? > component;
 	private StepPanel notePanel = new StepPanel();
 	private String title;
 	private boolean isHole;
 
+//	private static float generateNoise() {
+//		return (float)(( Math.random() * 3.0 ) - 1.5 );
+//	}
+//	private float x0ADelta = generateNoise();
+//	private float x0BDelta = generateNoise();
+//	private float x1ADelta = generateNoise();
+//	private float x1BDelta = generateNoise();
+//	private float y0ADelta = generateNoise();
+//	private float y0BDelta = generateNoise();
+//	private float y1ADelta = generateNoise();
+//	private float y1BDelta = generateNoise();
+	
 	public static NoteStep createMessageNoteStep( Tutorial tutorial, String title, String text ) {
 		return new NoteStep( tutorial, title, text, null, false );
 	}
@@ -216,32 +269,182 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	
 	@Override
-	public java.awt.geom.Area subtractHoleIfAppropriate( java.awt.geom.Area rv, edu.cmu.cs.dennisc.croquet.Panel panel ) {
+	public java.awt.geom.Area subtractIfAppropriate( java.awt.geom.Area rv, edu.cmu.cs.dennisc.croquet.Component<?> panel, boolean isStrict ) {
 		if( this.component != null ) {
+			java.awt.Rectangle componentBounds = this.component.getBounds( panel );
 			if( this.isHole ) {
-				java.awt.Rectangle componentBounds = this.component.getBounds( panel );
-				edu.cmu.cs.dennisc.java.awt.RectangleUtilties.grow( componentBounds, 3 );
+				if( isStrict ) {
+					//pass
+				} else {
+					edu.cmu.cs.dennisc.java.awt.RectangleUtilties.grow( componentBounds, HOLE_PAD );
+				}
+			} else {
+				if( isStrict ) {
+					componentBounds = null;
+				}
+			}
+			if( componentBounds != null ) {
 				rv.subtract( new java.awt.geom.Area( componentBounds ) );
 			}
 		}
 		return rv;
 	}
+
+//	public java.awt.geom.GeneralPath createNoisyRectangle( Rectangle componentBounds, int noise ) {
+//		int x0 = componentBounds.x;
+//		int y0 = componentBounds.y;
+//		int x1 = componentBounds.x + componentBounds.width;
+//		int y1 = componentBounds.y + componentBounds.height;
+//		
+//		java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
+//		rv.moveTo( x0 + x0ADelta, y0 + y0ADelta );
+//		rv.lineTo( x1 + x1ADelta, y0 + y0BDelta );
+//		rv.lineTo( x1 + x1BDelta, y1 + y1ADelta );
+//		rv.lineTo( x0 + x0BDelta, y1 + y1BDelta );
+//		rv.closePath();
+//		return rv;
+//	}
+	
+	private static void drawPath( java.awt.Graphics2D g2, float xFrom, float yFrom, float xTo, float yTo ) {
+//		float xDistance = Math.abs( ptComponent.x - ptNote.x );
+//		float yDistance = Math.abs( ptComponent.y - ptNote.y );
+//		
+//		float x1 = ptComponent.x + xDistance*0.15f;
+//		float y1 = ptComponent.y + yDistance*0.85f;
+//		float x2 = ptComponent.x + xDistance*0.85f;
+//		float y2 = ptComponent.y + yDistance*0.0f;
+//
+//		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+//		path.moveTo( ptNote.x, ptNote.y );
+//		path.curveTo( x1, y1, x2, y2, ptComponent.x+ARROW_WIDTH-1, ptComponent.y-1 );
+//		//path.closePath();
+//		
+
+		float xVector = xTo-xFrom; 
+		float yVector = yTo-yFrom;
+		
+		final float A = 0.15f;
+		final float B = 1.0f;
+		
+		float xA = xFrom + xVector*A;
+		float yA = yFrom + yVector*A;
+
+		float xB = xFrom + xVector*B;
+		float yB = yFrom + yVector*B;
+		
+		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+		path.moveTo( xFrom, yFrom );
+		path.curveTo( xB, yA, xA, yB, xTo, yTo );
+
+		g2.draw( path );
+		//g2.drawLine( (int)xB, (int)yA, (int)xA, (int)yB );
+	}
+
 	protected boolean paintComponent( java.awt.Graphics2D g2, edu.cmu.cs.dennisc.croquet.Panel panel, edu.cmu.cs.dennisc.croquet.Component<?> note ) {
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 		if( this.component != null ) {
 			java.awt.Rectangle componentBounds = this.component.getBounds( panel );
-			edu.cmu.cs.dennisc.java.awt.RectangleUtilties.grow( componentBounds, 3 );
-			
-			java.awt.Paint paint;
 			if( this.isHole ) {
-				paint = java.awt.Color.BLACK;
-			} else {
-				paint = java.awt.Color.RED;
+				edu.cmu.cs.dennisc.java.awt.RectangleUtilties.grow( componentBounds, HOLE_PAD );
 			}
-			g2.setPaint( paint );
 			
 			java.awt.Stroke prevStroke = g2.getStroke();
+			
+			if( this.isHole ) {
+				java.awt.Shape prevClip = g2.getClip();
+				
+				java.awt.geom.Area area = new java.awt.geom.Area( prevClip );
+				area.subtract( new java.awt.geom.Area( componentBounds ) );
+				
+				g2.setClip( area );
+
+				g2.setPaint( new java.awt.Color( 255, 255, 0, 15 ) );
+				for( float width = 1.0f; width<49.0f; width+=7.0f ) {
+					g2.setStroke( new java.awt.BasicStroke( width, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND ) );
+					g2.drawRect( componentBounds.x, componentBounds.y, componentBounds.width, componentBounds.height );
+				}
+
+				g2.setClip( prevClip );
+			}
+	
 			g2.setStroke( STROKE );
-			g2.drawRect( componentBounds.x, componentBounds.y, componentBounds.width, componentBounds.height );
+			
+//			java.awt.Paint paint;
+			if( this.isHole ) {
+//				paint = java.awt.Color.BLACK;
+				int x0 = componentBounds.x;
+				int y0 = componentBounds.y;
+				int x1 = componentBounds.x + componentBounds.width;
+				int y1 = componentBounds.y + componentBounds.height;
+				g2.setPaint( java.awt.Color.WHITE );
+				g2.drawLine( x1, y0, x1, y1 );
+				g2.drawLine( x1, y1, x0, y1 );
+				g2.setPaint( java.awt.Color.DARK_GRAY );
+				g2.drawLine( x0, y1, x0, y0 );
+				g2.drawLine( x0, y0, x1, y0 );
+			} else {
+				g2.setStroke( prevStroke );
+				g2.setPaint( java.awt.Color.GRAY );
+				g2.drawRect( componentBounds.x, componentBounds.y, componentBounds.width, componentBounds.height );
+				//g2.draw3DRect( componentBounds.x, componentBounds.y, componentBounds.width, componentBounds.height, true );
+				g2.setPaint( getHighlightPaint() );
+				g2.fillRect( componentBounds.x, componentBounds.y, componentBounds.width, componentBounds.height );
+				g2.setPaint( java.awt.Color.BLACK );
+
+				java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+				path.moveTo( -2, -2 );
+				path.lineTo( -2, HOLE_PAD+4 );
+				path.lineTo( 2, HOLE_PAD+2 );
+				path.lineTo( 2, 2 );
+				path.lineTo( HOLE_PAD+2, 2 );
+				path.lineTo( HOLE_PAD+4, -2 );
+				path.closePath();
+
+				float xt;
+				float yt;
+				float theta;
+				
+				xt = componentBounds.x;
+				yt = componentBounds.y;
+				theta = 0;
+				
+				g2.translate( xt, yt );
+				g2.fill( path );
+				g2.translate( -xt, -yt );
+
+				xt = componentBounds.x + componentBounds.width;
+				yt = componentBounds.y;
+				theta = (float)Math.PI/2;
+				g2.translate( xt, yt );
+				g2.rotate( theta );
+				g2.fill( path );
+				g2.rotate( -theta );
+				g2.translate( -xt, -yt );
+
+				xt = componentBounds.x + componentBounds.width;
+				yt = componentBounds.y + componentBounds.height;
+				theta = (float)Math.PI;
+				g2.translate( xt, yt );
+				g2.rotate( theta );
+				g2.fill( path );
+				g2.rotate( -theta );
+				g2.translate( -xt, -yt );
+
+				xt = componentBounds.x;
+				yt = componentBounds.y + componentBounds.height;
+				theta = (float)-Math.PI/2;
+				g2.translate( xt, yt );
+				g2.rotate( theta );
+				g2.fill( path );
+				g2.rotate( -theta );
+				g2.translate( -xt, -yt );
+				
+				g2.setStroke( STROKE );
+			}
+			g2.setPaint( java.awt.Color.BLACK );
+
+					
+			//g2.draw( createNoisyRectangle( componentBounds, HOLE_PAD ) );
 
 			java.awt.Rectangle noteBounds = note.getBounds( panel );
 			
@@ -251,24 +454,7 @@ package edu.cmu.cs.dennisc.tutorial;
 			final int ARROW_WIDTH = 19;
 			final int ARROW_HALF_HEIGHT = 6;
 			
-			float xDistance = Math.abs( ptComponent.x - ptNote.x );
-			float yDistance = Math.abs( ptComponent.y - ptNote.y );
-			
-			float x1 = ptComponent.x + xDistance*0.15f;
-			float y1 = ptComponent.y + yDistance*0.85f;
-			float x2 = ptComponent.x + xDistance*0.85f;
-			float y2 = ptComponent.y + yDistance*0.0f;
-
-			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-			java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-			path.moveTo( ptNote.x, ptNote.y );
-			path.curveTo( x1, y1, x2, y2, ptComponent.x+ARROW_WIDTH-1, ptComponent.y-1 );
-			//path.closePath();
-			
-			g2.draw( path );
-			
-			//g2.drawLine( (int)x1, (int)y1, (int)x2, (int)y2 );
-			
+			drawPath( g2, ptNote.x, ptNote.y, ptComponent.x+ARROW_WIDTH-1, ptComponent.y-1);
 			g2.setStroke( prevStroke );
 
 			int x = ptComponent.x;

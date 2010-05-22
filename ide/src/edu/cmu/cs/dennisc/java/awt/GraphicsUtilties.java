@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.java.awt;
 
+import java.awt.Rectangle;
+
 /**
  * @author Dennis Cosgrove
  */

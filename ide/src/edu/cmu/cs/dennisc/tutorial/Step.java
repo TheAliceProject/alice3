@@ -58,7 +58,7 @@ public abstract class Step {
 	public Tutorial getTutorial() {
 		return this.tutorial;
 	}
-	public abstract java.awt.geom.Area subtractHoleIfAppropriate( java.awt.geom.Area rv, edu.cmu.cs.dennisc.croquet.Panel panel );
+	public abstract java.awt.geom.Area subtractIfAppropriate( java.awt.geom.Area rv, edu.cmu.cs.dennisc.croquet.Component<?> panel, boolean isStrict );
 //	public void setTutorial( Tutorial tutorial ) {
 //		this.tutorial = tutorial;
 //	}

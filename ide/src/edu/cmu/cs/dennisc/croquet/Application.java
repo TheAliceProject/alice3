@@ -236,6 +236,36 @@ public abstract class Application {
 		return showYesNoConfirmDialog( message, null );
 	}
 	
+	public Object showOptionDialog( String text, String title, MessageType messageType, javax.swing.Icon icon, Object optionA, Object optionB, int initialValueIndex ) {
+		Object[] options = { optionA, optionB };
+		Object initialValue = initialValueIndex >= 0 ? options[ initialValueIndex ] : null;
+		int result = javax.swing.JOptionPane.showOptionDialog( this.frame.getAwtWindow(), text, title, javax.swing.JOptionPane.YES_NO_OPTION, messageType.internal, icon, options, initialValue );
+		switch( result ) {
+		case javax.swing.JOptionPane.YES_OPTION:
+			return options[ 0 ];
+		case javax.swing.JOptionPane.NO_OPTION:
+			return options[ 1 ];
+		default:
+			return null;
+		}
+	}
+	public Object showOptionDialog( String text, String title, MessageType messageType, javax.swing.Icon icon, Object optionA, Object optionB, Object optionC, int initialValueIndex ) {
+		Object[] options = { optionA, optionB, optionC };
+		Object initialValue = initialValueIndex >= 0 ? options[ initialValueIndex ] : null;
+		int result = javax.swing.JOptionPane.showOptionDialog( this.frame.getAwtWindow(), text, title, javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, messageType.internal, icon, options, initialValue );
+		switch( result ) {
+		case javax.swing.JOptionPane.YES_OPTION:
+			return options[ 0 ];
+		case javax.swing.JOptionPane.NO_OPTION:
+			return options[ 1 ];
+		case javax.swing.JOptionPane.CANCEL_OPTION:
+			return options[ 2 ];
+		default:
+			return null;
+		}
+		
+	}
+	
 	public java.io.File showOpenFileDialog( String directoryPath, String filename, String extension, boolean isSharingDesired ) {
 		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.frame.getAwtWindow(), directoryPath, filename, extension, isSharingDesired ); 
 	}
