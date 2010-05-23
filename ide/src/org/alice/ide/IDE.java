@@ -584,13 +584,13 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > expressionFillerInners;
 
 
-	protected org.alice.ide.ubiquitouspane.UbiquitousPane getUbiquitousPane() {
+	public org.alice.ide.ubiquitouspane.UbiquitousPane getUbiquitousPane() {
 		return this.ubiquitousPane;
 	}
-	protected org.alice.ide.editorstabbedpane.EditorsTabSelectionStateOperation getEditorsTabbedPane() {
+	public org.alice.ide.editorstabbedpane.EditorsTabSelectionStateOperation getEditorsTabbedPane() {
 		return this.editorsTabbedPaneOperation;
 	}
-	protected org.alice.ide.memberseditor.MembersEditor getMembersEditor() {
+	public org.alice.ide.memberseditor.MembersEditor getMembersEditor() {
 		return this.membersEditor;
 	}
 	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser getGalleryBrowser() {

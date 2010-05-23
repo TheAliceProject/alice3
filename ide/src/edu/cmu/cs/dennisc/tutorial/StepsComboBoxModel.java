@@ -45,26 +45,55 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Step {
-	private java.util.UUID id = java.util.UUID.randomUUID();
-	private Tutorial tutorial;
-	public Step( Tutorial tutorial ) {
-		this.tutorial = tutorial;
+/*package-private*/ class StepsComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
+	private int selectedIndex = -1;
+	private java.util.List<Step> steps = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
+	public Object getElementAt(int index) {
+		return this.steps.get(index);
 	}
-	public String getCardLayoutKey() {
-		return this.id.toString();
+
+	public int getSize() {
+		return this.steps.size();
 	}
-	public Tutorial getTutorial() {
-		return this.tutorial;
+
+	public Object getSelectedItem() {
+		if (this.selectedIndex >= 0) {
+			return this.getElementAt(this.selectedIndex);
+		} else {
+			return null;
+		}
 	}
-	
-	private java.util.List< Feature > features = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	protected void addFeature( Feature feature ) {
-		this.features.add( feature );
+
+	/*package-private*/ int getSelectedIndex() {
+		return this.selectedIndex;
 	}
-	public Iterable< Feature > getFeatures() {
-		return this.features;
+
+	/*package-private*/ void setSelectedIndex(int selectedIndex) {
+		this.selectedIndex = selectedIndex;
+		this.fireContentsChanged(this, -1, -1);
 	}
-	public abstract edu.cmu.cs.dennisc.croquet.Component< ? > getCard();
-	public abstract edu.cmu.cs.dennisc.croquet.Component< ? > getNote();
+
+	/*package-private*/ void decrementSelectedIndex() {
+		this.setSelectedIndex(this.selectedIndex - 1);
+	}
+
+	/*package-private*/ void incrementSelectedIndex() {
+		this.setSelectedIndex(this.selectedIndex + 1);
+	}
+
+	public void setSelectedItem(Object item) {
+		this.selectedIndex = -1;
+		final int N = this.steps.size();
+		for (int i = 0; i < N; i++) {
+			if (this.steps.get(i) == item) {
+				this.selectedIndex = i;
+				break;
+			}
+		}
+	}
+
+	/*package-private*/ void addStep(Step step) {
+		this.steps.add(step);
+	}
 }

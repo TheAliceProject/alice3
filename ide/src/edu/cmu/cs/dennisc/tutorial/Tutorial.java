@@ -46,322 +46,202 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 public class Tutorial {
-	private static java.util.UUID TUTORIAL_GROUP = java.util.UUID.fromString( "7bfa86e3-234e-4bd1-9177-d4acac0b12d9" );
-	private static java.awt.Color CONTROL_COLOR = new java.awt.Color( 255, 255, 191 );
+	/*package-private*/ static java.util.UUID TUTORIAL_GROUP = java.util.UUID.fromString( "7bfa86e3-234e-4bd1-9177-d4acac0b12d9" );
 	
-	private abstract class TutorialOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-		public TutorialOperation( java.util.UUID individualId, String name ) {
-			super( TUTORIAL_GROUP, individualId );
-			this.setName( name );
+	private static java.awt.Color CONTROL_COLOR = new java.awt.Color(255, 255, 191);
+
+	private abstract static class TutorialOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+		public TutorialOperation(java.util.UUID individualId, String name) {
+			super(Tutorial.TUTORIAL_GROUP, individualId);
+			this.setName(name);
 		}
+
 		@Override
 		public edu.cmu.cs.dennisc.croquet.Button createButton() {
 			edu.cmu.cs.dennisc.croquet.Button rv = super.createButton();
-			rv.setBackgroundColor( CONTROL_COLOR );
+			rv.setBackgroundColor(CONTROL_COLOR);
 			return rv;
 		}
 	}
-	private class PreviousStepOperation extends TutorialOperation {
-		public PreviousStepOperation() {
-			super( java.util.UUID.fromString( "dbb7a622-95b4-48b9-ad86-db9350503aee" ), "\u2190 Previous" );
-			//this.setName( "\u21E6 Previous" );
+
+	private static class PreviousStepOperation extends TutorialOperation {
+		private StepsComboBoxModel stepsComboBoxModel;
+
+		public PreviousStepOperation(StepsComboBoxModel stepsComboBoxModel) {
+			super(java.util.UUID.fromString("dbb7a622-95b4-48b9-ad86-db9350503aee"), "\u2190 Previous");
+			this.stepsComboBoxModel = stepsComboBoxModel;
+			// this.setName( "\u21E6 Previous" );
 		}
+
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
-			stepsComboBoxModel.decrementSelectedIndex();
-		}
-	}
-	private class NextStepOperation extends TutorialOperation {
-		public NextStepOperation() {
-			super( java.util.UUID.fromString( "114060ef-1231-433b-9084-48faa024d1ba" ), "Next \u2192" );
-			//this.setName( "Next \u21E8" );
-		}
-		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
-			stepsComboBoxModel.incrementSelectedIndex();
+		protected void perform(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
+			this.stepsComboBoxModel.decrementSelectedIndex();
+			context.finish();
 		}
 	}
 
-	private class ExitOperation extends TutorialOperation {
-		public ExitOperation() {
-			super( java.util.UUID.fromString( "5393bf32-899a-49a5-b6c9-1e6ebc1daddf" ), "Exit Tutorial" );
+	private static class NextStepOperation extends TutorialOperation {
+		private StepsComboBoxModel stepsComboBoxModel;
+
+		public NextStepOperation(StepsComboBoxModel stepsComboBoxModel) {
+			super(java.util.UUID.fromString("114060ef-1231-433b-9084-48faa024d1ba"), "Next \u2192");
+			this.stepsComboBoxModel = stepsComboBoxModel;
+			// this.setName( "Next \u21E8" );
 		}
+
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
+		protected void perform(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
+			this.stepsComboBoxModel.incrementSelectedIndex();
+			context.finish();
+		}
+	}
+
+	private static class ExitOperation extends TutorialOperation {
+		public ExitOperation() {
+			super(java.util.UUID.fromString("5393bf32-899a-49a5-b6c9-1e6ebc1daddf"), "Exit Tutorial");
+		}
+
+		@Override
+		protected void perform(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
 			Object optionExit = "Exit Tutorial";
 			Object optionDisable = "Disable Stencil";
 			Object optionCancel = "Cancel";
-			Object value = edu.cmu.cs.dennisc.croquet.Application.getSingleton().showOptionDialog( "Would you like to exit the tutorial or temporarily disable the stencil to work around a problem?", "Exit Tutorial or Disable Stencil", edu.cmu.cs.dennisc.croquet.MessageType.QUESTION, null, optionExit, optionDisable, optionCancel, -1 );
-			if( value == optionExit ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: exit" );
-			} else if( value == optionDisable ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: disable" );
+			Object value = edu.cmu.cs.dennisc.croquet.Application.getSingleton().showOptionDialog("Would you like to exit the tutorial or temporarily disable the stencil to work around a problem?", "Exit Tutorial or Disable Stencil",
+					edu.cmu.cs.dennisc.croquet.MessageType.QUESTION, null, optionExit, optionDisable, optionCancel, -1);
+			if (value == optionExit) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: exit");
+			} else if (value == optionDisable) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: disable");
 			}
+			context.finish();
 		}
-	}
-	
-	private class StepCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< Step > {
-		@Override
-		protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.tutorial.Step value, int index, boolean isSelected, boolean cellHasFocus ) {
-			assert list != null;
-			if( value != null ) {
-				StringBuilder sb = new StringBuilder();
-				int i;
-				if( index >= 0 ) {
-					i = index;
-				} else {
-					i = stepsComboBoxModel.selectedIndex;
-//					if( i >= 0 ) {
-//						assert value == stepsComboBoxModel.getElementAt( i ) : stepsComboBoxModel.getElementAt( i );
-//					}
-				}
-				sb.append( "Step " );
-				sb.append( i+1 );
-				sb.append( ": " );
-				sb.append( value );
-				rv.setText( sb.toString() );
-			}
-			return rv;
-		}
-	}
-	/*package-private*/ static final java.awt.Color STENCIL_BASE_COLOR =  new java.awt.Color( 127, 127, 255, 127 );
-	/*package-private*/ static final java.awt.Color STENCIL_LINE_COLOR =  new java.awt.Color( 63, 63, 127, 31 );
-	private static java.awt.Paint stencilPaint = null;
-	private static java.awt.Paint getStencilPaint() {
-		if( Tutorial.stencilPaint != null ) {
-			//pass
-		} else {
-			int width = 8;
-			int height = 8;
-			java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)image.getGraphics();
-			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-			g2.setColor( STENCIL_BASE_COLOR );
-			g2.fillRect( 0, 0, width, height );
-			g2.setColor( STENCIL_LINE_COLOR );
-			g2.drawLine( 0, height, width, 0 );
-			g2.drawLine( 0, 0, 0, 0 );
-			g2.dispose();
-			Tutorial.stencilPaint = new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
-		}
-		return Tutorial.stencilPaint;
 	}
 
-	
-	private class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JPanel > {
-		private PreviousStepOperation previousStepOperation = new PreviousStepOperation();
-		private NextStepOperation nextStepOperation = new NextStepOperation();
-		private ExitOperation exitOperation = new ExitOperation();
-		
+	private StepsComboBoxModel stepsComboBoxModel = new StepsComboBoxModel();
+	private PreviousStepOperation previousStepOperation = new PreviousStepOperation( this.stepsComboBoxModel );
+	private NextStepOperation nextStepOperation = new NextStepOperation( this.stepsComboBoxModel );
+	private ExitOperation exitOperation = new ExitOperation();
+
+	class StepsComboBox extends edu.cmu.cs.dennisc.croquet.JComponent<javax.swing.JComboBox> {
+		@Override
+		protected javax.swing.JComboBox createAwtComponent() {
+			javax.swing.JComboBox rv = new javax.swing.JComboBox(stepsComboBoxModel);
+			rv.setRenderer(new StepCellRenderer( Tutorial.this.stepsComboBoxModel ));
+			rv.setBackground(CONTROL_COLOR);
+			return rv;
+		}
+	};
+
+
+	private class TutorialStencil extends Stencil {
 		private edu.cmu.cs.dennisc.croquet.CardPanel cardPanel = new edu.cmu.cs.dennisc.croquet.CardPanel();
+		private StepsComboBox comboBox = new StepsComboBox();
 		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
-			public void itemStateChanged( java.awt.event.ItemEvent e ) {
-				if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
-					Stencil.this.handleStepChanged( (Step)e.getItem() );
+			public void itemStateChanged(java.awt.event.ItemEvent e) {
+				if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+					TutorialStencil.this.handleStepChanged((Step) e.getItem());
 				} else {
-					//pass
+					// pass
 				}
 			}
 		};
-		
-		class StepsComboBox extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JComboBox > {
-			@Override
-			protected javax.swing.JComboBox createAwtComponent() {
-				javax.swing.JComboBox rv = new javax.swing.JComboBox( stepsComboBoxModel ); 
-				rv.setRenderer( new StepCellRenderer() );
-				rv.setBackground( CONTROL_COLOR );
-				return rv;
-			}
-		};
-		private StepsComboBox comboBox = new StepsComboBox();
-		public Stencil() {
-			edu.cmu.cs.dennisc.croquet.FlowPanel controlPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel( edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.CENTER, 2, 0 );
-			controlPanel.addComponent( this.previousStepOperation.createButton() );
-			controlPanel.addComponent( comboBox );
-			controlPanel.addComponent( this.nextStepOperation.createButton() );
+		public TutorialStencil() {
+			edu.cmu.cs.dennisc.croquet.FlowPanel controlPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.CENTER, 2, 0);
+			controlPanel.addComponent(Tutorial.this.previousStepOperation.createButton());
+			controlPanel.addComponent(comboBox);
+			controlPanel.addComponent(Tutorial.this.nextStepOperation.createButton());
 
 			edu.cmu.cs.dennisc.croquet.BorderPanel panel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-			panel.addComponent( controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
-			panel.addComponent( this.exitOperation.createButton(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.EAST );
-			panel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,4,4,4 ) );
+			panel.addComponent(controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
+			panel.addComponent(Tutorial.this.exitOperation.createButton(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.EAST);
+			panel.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 0, 4));
 
-			this.internalAddComponent( panel, java.awt.BorderLayout.SOUTH );
-			this.internalAddComponent( this.cardPanel, java.awt.BorderLayout.CENTER );
+			this.internalAddComponent(panel, java.awt.BorderLayout.NORTH);
+			this.internalAddComponent(this.cardPanel, java.awt.BorderLayout.CENTER);
 		}
-		
-		@Override
-		protected javax.swing.JPanel createAwtComponent() {
-			class JStencil extends javax.swing.JPanel {
-				@Override
-				protected void paintComponent( java.awt.Graphics g ) {
-					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-					Step step = (Step)stepsComboBoxModel.getSelectedItem();
-					
-					java.awt.geom.Area area = new java.awt.geom.Area( g2.getClip() );
-					if( step != null ) {
-						step.subtractIfAppropriate( area, Stencil.this, false );
-					}
-					g2.setPaint( getStencilPaint() );
-					g2.fill( area );
-					super.paintComponent( g );
-				}
-				@Override
-				public boolean contains( int x, int y ) {
-					java.awt.geom.Area area = new java.awt.geom.Area( new java.awt.Rectangle( 0, 0, this.getWidth(), this.getHeight() ) );
-					Step step = (Step)stepsComboBoxModel.getSelectedItem();
-					if( step != null ) {
-						step.subtractIfAppropriate( area, Stencil.this, true );
-					}
-					return area.contains( x, y );
-				}
-				private void redispatch( java.awt.event.MouseEvent e ) {
-					java.awt.Point p = e.getPoint();
-					if( this.contains( p.x, p.y ) ) {
-						//pass
-					} else {
-						java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt( application.getSingleton().getFrame().getAwtWindow().getLayeredPane(), p.x, p.y );
-						if( component != null ) {
-							java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint( this, p, component );
-							component.dispatchEvent( new java.awt.event.MouseEvent( component, e.getID(), e.getWhen(), e.getModifiers() + e.getModifiersEx(), pComponent.x, pComponent.y, e.getClickCount(), e.isPopupTrigger() ) );
-						}
-					}
-				}
-			};
-			final JStencil rv = new JStencil();
-			rv.addMouseListener( new java.awt.event.MouseListener() {
-				public void mouseClicked( java.awt.event.MouseEvent e ) {
-					rv.redispatch( e );
-				}
-				public void mouseEntered( java.awt.event.MouseEvent e ) {
-					rv.redispatch( e );
-				}
-				public void mouseExited( java.awt.event.MouseEvent e ) {
-					rv.redispatch( e );
-				}
-				public void mousePressed( java.awt.event.MouseEvent e ) {
-					rv.redispatch( e );
-				}
-				public void mouseReleased( java.awt.event.MouseEvent e ) {
-					rv.redispatch( e );
-				}
-			} );
-			rv.addMouseMotionListener( new java.awt.event.MouseMotionListener() {
-				public void mouseMoved( java.awt.event.MouseEvent e ) {
-					rv.redispatch( e );
-				}
-				public void mouseDragged( java.awt.event.MouseEvent e ) {
-					rv.redispatch( e );
-				}
-			} );
-			rv.setLayout( new java.awt.BorderLayout() );
-			rv.setOpaque( false );
-			return rv;
-		}
-		
-		@Override
-		protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-			super.handleAddedTo( parent );
-			this.comboBox.getAwtComponent().addItemListener( this.itemListener );
-			this.handleStepChanged( (Step)stepsComboBoxModel.getSelectedItem() );
-		}
-		@Override
-		protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-			this.comboBox.getAwtComponent().addItemListener( this.itemListener );
-			super.handleRemovedFrom( parent );
-		}
-		private void handleStepChanged( Step step ) {
+		private void handleStepChanged(Step step) {
 			String cardLayoutKey = step.getCardLayoutKey();
-			edu.cmu.cs.dennisc.croquet.CardPanel.Key key = this.cardPanel.getKey( cardLayoutKey );
-			if( key != null ) {
-				//pass
+			edu.cmu.cs.dennisc.croquet.CardPanel.Key key = this.cardPanel.getKey(cardLayoutKey);
+			if (key != null) {
+				// pass
 			} else {
-				key = this.cardPanel.createKey( step.getComponent(), cardLayoutKey );
-				this.cardPanel.addComponent( key );
+				key = this.cardPanel.createKey(step.getCard(), cardLayoutKey);
+				this.cardPanel.addComponent(key);
 			}
-			this.cardPanel.show( key );
+			this.cardPanel.show(key);
 			this.revalidateAndRepaint();
-			
+
 			int selectedIndex = stepsComboBoxModel.getSelectedIndex();
-			this.nextStepOperation.setEnabled( 0 <= selectedIndex && selectedIndex < stepsComboBoxModel.getSize()-1 );
-			this.previousStepOperation.setEnabled( 1 <= selectedIndex );
+			Tutorial.this.nextStepOperation.setEnabled(0 <= selectedIndex && selectedIndex < stepsComboBoxModel.getSize() - 1);
+			Tutorial.this.previousStepOperation.setEnabled(1 <= selectedIndex);
 			this.revalidateAndRepaint();
 		}
-	}
-	private edu.cmu.cs.dennisc.croquet.Application application;
-	private class StepsComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
-		private int selectedIndex = -1;
-		private java.util.List< Step > steps = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-		public Object getElementAt( int index ) {
-			return this.steps.get( index );
+		@Override
+		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+			super.handleAddedTo(parent);
+			this.comboBox.getAwtComponent().addItemListener(this.itemListener);
+			this.handleStepChanged((Step) stepsComboBoxModel.getSelectedItem());
 		}
-		public int getSize() {
-			return this.steps.size();
-		}
-		public Object getSelectedItem() {
-			if( this.selectedIndex >= 0 ) {
-				return this.getElementAt( this.selectedIndex );
-			} else {
-				return null;
-			}
+
+		@Override
+		protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+			this.comboBox.getAwtComponent().addItemListener(this.itemListener);
+			super.handleRemovedFrom(parent);
 		}
 		
-		private int getSelectedIndex() {
-			return this.selectedIndex;
-		}
-		private void setSelectedIndex( int selectedIndex ) {
-			this.selectedIndex = selectedIndex;
-			this.fireContentsChanged( this, -1, -1 );
-		}
-		
-		private void decrementSelectedIndex() {
-			this.setSelectedIndex( this.selectedIndex - 1 );
-		}
-		private void incrementSelectedIndex() {
-			this.setSelectedIndex( this.selectedIndex + 1 );
-		}
-		
-		public void setSelectedItem( Object item ) {
-			this.selectedIndex = -1;
-			final int N = this.steps.size();
-			for( int i=0; i<N; i++ ) {
-				if( this.steps.get( i ) == item ) {
-					this.selectedIndex = i;
-					break;
-				}
-			}
-		}
-		private void addStep( Step step ) {
-			this.steps.add( step );
+		@Override
+		protected Step getCurrentStep() {
+			return (Step)stepsComboBoxModel.getSelectedItem();
 		}
 	}
-	private StepsComboBoxModel stepsComboBoxModel = new StepsComboBoxModel();
-	public Tutorial( edu.cmu.cs.dennisc.croquet.Application application ) {
-		this.application = application;
+	private final TutorialStencil stencil = new TutorialStencil();
+	
+	private void addStep( Step step ) {
+		this.stepsComboBoxModel.addStep( step );
+	}
+	public void setSelectedIndex( int index ) {
+		this.stepsComboBoxModel.setSelectedIndex( index );
 	}
 	public void createAndAddMessageStep( String title, String text ) {
 		Step step = NoteStep.createMessageNoteStep( this, title, text );
-		this.stepsComboBoxModel.addStep( step );
+		this.addStep( step );
 	}
 	public void createAndAddSpotlightStep( String title, String text, edu.cmu.cs.dennisc.croquet.Component< ? > componentToSpotlight ) {
 		Step step = NoteStep.createSpotlightMessageNoteStep( this, title, text, componentToSpotlight );
-		this.stepsComboBoxModel.addStep( step );
+		this.addStep( step );
 	}
 	public void createAndAddActionStep( String title, String text, edu.cmu.cs.dennisc.croquet.AbstractActionOperation operation ) {
 		edu.cmu.cs.dennisc.croquet.Component< ? > component = operation.getFirstComponent();
 		Step step = NoteStep.createActionMessageNoteStep( this, title, text, component );
-		this.stepsComboBoxModel.addStep( step );
+		this.addStep( step );
 	}
 	
-	public void setSelectedIndex( int index ) {
-		this.stepsComboBoxModel.setSelectedIndex( index );
-	}
-	
-	private final Stencil stencil = new Stencil();
 	/*package-private*/ edu.cmu.cs.dennisc.croquet.ActionOperation getNextOperation() {
-		return stencil.nextStepOperation;
+		return this.nextStepOperation;
 	}
 	public void setVisible( boolean isVisible ) {
 		if( isVisible ) {
+			class StencilRepaintManager extends javax.swing.RepaintManager {
+				@Override
+				public void addDirtyRegion(javax.swing.JComponent c, int x, int y, int w, int h) {
+					super.addDirtyRegion(c, x, y, w, h);
+					final javax.swing.JComponent jStencil = stencil.getAwtComponent();
+					if( jStencil == c || jStencil.isAncestorOf( c ) ) {
+						//pass
+					} else {
+						final java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle( c, new java.awt.Rectangle(x,y,w,h), jStencil );
+//						javax.swing.SwingUtilities.invokeLater(new Runnable() {
+//							public void run() {
+								jStencil.repaint( rect.x, rect.y, rect.width, rect.height );
+								//StencilRepaintManager.super.addDirtyRegion( jStencil, rect.x, rect.y, rect.width, rect.height);
+//							}
+//						} );
+					}
+				}
+			};
+			javax.swing.RepaintManager repaintManager = new StencilRepaintManager();
+			javax.swing.RepaintManager.setCurrentManager( repaintManager );
+			
 			java.awt.event.ComponentListener componentListener = new java.awt.event.ComponentListener() {
 				public void componentResized( java.awt.event.ComponentEvent e ) {
 					stencil.getAwtComponent().setBounds( e.getComponent().getBounds() );
@@ -375,7 +255,7 @@ public class Tutorial {
 				}
 			};
 			
-			javax.swing.JFrame frame = this.application.getFrame().getAwtWindow();
+			javax.swing.JFrame frame = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getAwtWindow();
 			javax.swing.JLayeredPane layeredPane = frame.getLayeredPane();
 
 			stencil.getAwtComponent().setBounds( layeredPane.getBounds() );
@@ -385,8 +265,8 @@ public class Tutorial {
 			layeredPane.setLayer( stencil.getAwtComponent(), javax.swing.JLayeredPane.POPUP_LAYER - 1 );
 
 			final int PAD = 4;
-			frame.getJMenuBar().setBorder( javax.swing.BorderFactory.createEmptyBorder(PAD,PAD,0,PAD));
-			((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder(0,PAD,PAD+32,PAD));
+			frame.getJMenuBar().setBorder( javax.swing.BorderFactory.createEmptyBorder(PAD+32,PAD,0,PAD));
+			((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder(0,PAD,PAD,PAD));
 			
 			stencil.getAwtComponent().repaint();
 		}

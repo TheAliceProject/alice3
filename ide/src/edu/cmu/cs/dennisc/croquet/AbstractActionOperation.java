@@ -58,11 +58,13 @@ public abstract class AbstractActionOperation extends Operation {
 	private java.util.Map< AbstractButton< ? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
 	public void fire( java.util.EventObject e, Component<?> component ) {
-		Application application = Application.getSingleton();
-		Context parentContext = application.getCurrentContext();
-		Context childContext = parentContext.createChildContext();
-		childContext.addChild( new ActionEvent( childContext, AbstractActionOperation.this, e, component ) );
-		AbstractActionOperation.this.perform( childContext, e, component );
+		if( this.isEnabled() ) {
+			Application application = Application.getSingleton();
+			Context parentContext = application.getCurrentContext();
+			Context childContext = parentContext.createChildContext();
+			childContext.addChild( new ActionEvent( childContext, AbstractActionOperation.this, e, component ) );
+			AbstractActionOperation.this.perform( childContext, e, component );
+		}
 	}
 	@Deprecated
 	public void fire( java.util.EventObject e ) {

@@ -45,26 +45,32 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Step {
-	private java.util.UUID id = java.util.UUID.randomUUID();
-	private Tutorial tutorial;
-	public Step( Tutorial tutorial ) {
-		this.tutorial = tutorial;
+/*package-private*/ class StepCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<Step> {
+	private StepsComboBoxModel stepsComboBoxModel;
+	public StepCellRenderer( StepsComboBoxModel stepsComboBoxModel ) {
+		this.stepsComboBoxModel = stepsComboBoxModel;
 	}
-	public String getCardLayoutKey() {
-		return this.id.toString();
+	@Override
+	protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.tutorial.Step value, int index, boolean isSelected, boolean cellHasFocus) {
+		assert list != null;
+		if (value != null) {
+			StringBuilder sb = new StringBuilder();
+			int i;
+			if (index >= 0) {
+				i = index;
+			} else {
+				i = stepsComboBoxModel.getSelectedIndex();
+				// if( i >= 0 ) {
+				// assert value == stepsComboBoxModel.getElementAt( i ) :
+				// stepsComboBoxModel.getElementAt( i );
+				// }
+			}
+			sb.append("Step ");
+			sb.append(i + 1);
+			sb.append(": ");
+			sb.append(value);
+			rv.setText(sb.toString());
+		}
+		return rv;
 	}
-	public Tutorial getTutorial() {
-		return this.tutorial;
-	}
-	
-	private java.util.List< Feature > features = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	protected void addFeature( Feature feature ) {
-		this.features.add( feature );
-	}
-	public Iterable< Feature > getFeatures() {
-		return this.features;
-	}
-	public abstract edu.cmu.cs.dennisc.croquet.Component< ? > getCard();
-	public abstract edu.cmu.cs.dennisc.croquet.Component< ? > getNote();
 }

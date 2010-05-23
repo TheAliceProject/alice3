@@ -45,26 +45,67 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Step {
-	private java.util.UUID id = java.util.UUID.randomUUID();
-	private Tutorial tutorial;
-	public Step( Tutorial tutorial ) {
-		this.tutorial = tutorial;
+/* package-private */class Hole extends Feature {
+	private static final int PAD = 4;
+	private static final java.awt.Paint HIGHLIGHT_PAINT = new java.awt.Color(255, 255, 0, 23);
+	private static final java.awt.Stroke HOLE_BEVEL_STROKE = new java.awt.BasicStroke(2.0f);
+	private static final java.awt.Stroke[] HIGHLIGHT_STROKES;
+	static {
+		final int N = 8;
+		HIGHLIGHT_STROKES = new java.awt.Stroke[N];
+		for (int i = 0; i < N; i++) {
+			HIGHLIGHT_STROKES[i] = new java.awt.BasicStroke((i + 1) * 5.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND);
+		}
+	};
+
+	public Hole(edu.cmu.cs.dennisc.croquet.Component<?> component, ConnectionPreference connectionPreference) {
+		super(component, connectionPreference);
 	}
-	public String getCardLayoutKey() {
-		return this.id.toString();
+
+	@Override
+	protected java.awt.Rectangle updateBoundsForContains(java.awt.Rectangle rv) {
+		return rv;
 	}
-	public Tutorial getTutorial() {
-		return this.tutorial;
+
+	@Override
+	protected java.awt.Rectangle updateBoundsForPaint(java.awt.Rectangle rv) {
+		return edu.cmu.cs.dennisc.java.awt.RectangleUtilties.grow(rv, PAD);
 	}
-	
-	private java.util.List< Feature > features = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	protected void addFeature( Feature feature ) {
-		this.features.add( feature );
+
+	@Override
+	protected void paint(java.awt.Graphics2D g2, java.awt.Rectangle componentBounds) {
+		java.awt.Stroke prevStroke = g2.getStroke();
+		java.awt.Shape prevClip = g2.getClip();
+
+		java.awt.geom.Area area = new java.awt.geom.Area(prevClip);
+		area.subtract(new java.awt.geom.Area(componentBounds));
+
+		g2.setClip(area);
+
+		g2.setPaint(HIGHLIGHT_PAINT);
+		for (java.awt.Stroke stroke : HIGHLIGHT_STROKES) {
+			g2.setStroke(stroke);
+			g2.drawRect(componentBounds.x, componentBounds.y, componentBounds.width, componentBounds.height);
+		}
+
+		g2.setClip(prevClip);
+		g2.setStroke(HOLE_BEVEL_STROKE);
+
+		// g2.setPaint( java.awt.Color.GRAY );
+		// g2.draw3DRect(componentBounds.x, componentBounds.y,
+		// componentBounds.width, componentBounds.height, false);
+
+		int x0 = componentBounds.x;
+		int y0 = componentBounds.y;
+		int x1 = componentBounds.x + componentBounds.width;
+		int y1 = componentBounds.y + componentBounds.height;
+		g2.setPaint(java.awt.Color.LIGHT_GRAY);
+		g2.drawLine(x1, y0, x1, y1);
+		g2.drawLine(x1, y1, x0, y1);
+		g2.setPaint(java.awt.Color.DARK_GRAY);
+		g2.drawLine(x0, y1, x0, y0);
+		g2.drawLine(x0, y0, x1, y0);
+
+		g2.setStroke(prevStroke);
 	}
-	public Iterable< Feature > getFeatures() {
-		return this.features;
-	}
-	public abstract edu.cmu.cs.dennisc.croquet.Component< ? > getCard();
-	public abstract edu.cmu.cs.dennisc.croquet.Component< ? > getNote();
 }

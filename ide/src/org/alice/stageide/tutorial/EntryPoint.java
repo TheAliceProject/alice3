@@ -40,31 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.tutorial;
+package org.alice.stageide.tutorial;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Step {
-	private java.util.UUID id = java.util.UUID.randomUUID();
-	private Tutorial tutorial;
-	public Step( Tutorial tutorial ) {
-		this.tutorial = tutorial;
+public class EntryPoint {
+	public static void main( final String[] args ) {
+		org.alice.stageide.StageIDE ide = new org.alice.stageide.StageIDE();
+		ide.initialize(args);
+		ide.loadProjectFrom( args[ 0 ] );
+		ide.getFrame().maximize();
+		ide.getFrame().setVisible( true );
+		
+		edu.cmu.cs.dennisc.tutorial.Tutorial tutorial = new edu.cmu.cs.dennisc.tutorial.Tutorial();
+		tutorial.createAndAddMessageStep( "Welcome", "<html><b><center>Welcome To The Tutorial</center></b><p>First we'll show you around a bit.</html>" );
+//		tutorial.createAndAddMessageStep( "Tutorial Controls", "<html>The tutorial controls are at the bottom</html>" );
+		tutorial.createAndAddSpotlightStep( "Scene Editor", "<html>This is the scene editor.</html>", ide.getSceneEditor() );
+		tutorial.createAndAddSpotlightStep( "Instance Details", "<html>This is the currently selected instance methods and fields pane.</html>", ide.getMembersEditor() );
+		tutorial.createAndAddSpotlightStep( "Constructs", "<html>This where loops a locals live.</html>", ide.getUbiquitousPane() );
+		tutorial.createAndAddActionStep( "Run", "<html>Press the <b>Run</b> button</html>", ide.getRunOperation() );
+		tutorial.setSelectedIndex( 4 );
+		tutorial.setVisible( true );
 	}
-	public String getCardLayoutKey() {
-		return this.id.toString();
-	}
-	public Tutorial getTutorial() {
-		return this.tutorial;
-	}
-	
-	private java.util.List< Feature > features = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	protected void addFeature( Feature feature ) {
-		this.features.add( feature );
-	}
-	public Iterable< Feature > getFeatures() {
-		return this.features;
-	}
-	public abstract edu.cmu.cs.dennisc.croquet.Component< ? > getCard();
-	public abstract edu.cmu.cs.dennisc.croquet.Component< ? > getNote();
 }
