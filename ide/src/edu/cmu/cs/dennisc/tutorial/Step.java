@@ -67,4 +67,95 @@ public abstract class Step {
 	}
 	public abstract edu.cmu.cs.dennisc.croquet.Component< ? > getCard();
 	public abstract edu.cmu.cs.dennisc.croquet.Component< ? > getNote();
+
+	private static int getXForWestLayout( java.awt.Rectangle noteBounds, java.awt.Rectangle featureComponentBounds ) {
+		int x = featureComponentBounds.x;
+		x -= 200;
+		x -= noteBounds.width;
+		return x;
+	}
+	private static int getXForEastLayout( java.awt.Rectangle noteBounds, java.awt.Rectangle featureComponentBounds ) {
+		int x = featureComponentBounds.x;
+		x += featureComponentBounds.width;
+		x += 200;
+		return x;
+	}
+
+	private static int getYForNorthLayout( java.awt.Rectangle noteBounds, java.awt.Rectangle featureComponentBounds ) {
+		int y = featureComponentBounds.y;
+		y -= 200;
+		y -= noteBounds.height;
+		return y;
+	}
+	private static int getYForSouthLayout( java.awt.Rectangle noteBounds, java.awt.Rectangle featureComponentBounds ) {
+		int y = featureComponentBounds.y;
+		y += featureComponentBounds.height;
+		y += 200;
+		return y;
+	}
+	
+	protected void layoutNote( edu.cmu.cs.dennisc.croquet.Component< ? > note ) {
+		edu.cmu.cs.dennisc.croquet.Component< ? > card = this.getCard();
+		assert card == note.getParent();
+		
+		javax.swing.JLayeredPane layeredPane = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getAwtWindow().getLayeredPane();
+		java.awt.Rectangle cardBounds = javax.swing.SwingUtilities.getLocalBounds( layeredPane );
+		
+//		java.awt.Rectangle cardBounds = card.getLocalBounds();
+		java.awt.Rectangle noteBounds = note.getLocalBounds();
+		int x = 20;
+		int y = 20;
+		if( this.features.size() > 0 ) {
+			Feature feature = this.features.get( 0 );
+			Feature.Connection actualConnection = null;
+			edu.cmu.cs.dennisc.croquet.Component<?> featureComponent = feature.getComponent();
+			if( featureComponent != null ) {
+				java.awt.Rectangle featureComponentBounds = featureComponent.getBounds( note.getParent() );
+				Feature.ConnectionPreference connectionPreference = feature.getConnectionPreference();
+				if( connectionPreference == Feature.ConnectionPreference.EAST_WEST ) {
+					x = getXForWestLayout( noteBounds, featureComponentBounds );
+					if( x >= 32 ) {
+						actualConnection = Feature.Connection.WEST;
+					} else {
+						x = getXForEastLayout(noteBounds, featureComponentBounds);
+						if( x <= ( cardBounds.width - noteBounds.width - 32 ) ) {
+							actualConnection = Feature.Connection.EAST;
+						}
+					}
+					y = featureComponentBounds.y + 200;
+				}
+				if( actualConnection != null ) {
+					//pass
+				} else {
+					y = getYForNorthLayout( noteBounds, featureComponentBounds );
+					if( y >= 32 ) {
+						actualConnection = Feature.Connection.NORTH;
+					} else {
+						y = getYForSouthLayout( noteBounds, featureComponentBounds);
+						if( y <= ( cardBounds.height - noteBounds.height - 32 ) ) {
+							actualConnection = Feature.Connection.SOUTH;
+						} else {
+							//todo
+							actualConnection = Feature.Connection.SOUTH;
+							y = 200;
+						}
+					}
+					int xFeatureComponentCenter = ( featureComponentBounds.x + featureComponentBounds.width ) / 2;
+					int xCardCenter = ( cardBounds.x + cardBounds.width ) / 2;
+					x = xFeatureComponentCenter;
+					if( xFeatureComponentCenter < xCardCenter ) {
+						x += 200;
+					} else {
+						x -= noteBounds.width;
+						x -= 200;
+					}
+				}
+			}
+			feature.setActualConnection( actualConnection );
+		} else {
+			x = (cardBounds.width-noteBounds.width)/2;
+			y = 64;
+		}
+		note.getAwtComponent().setLocation( x, y );
+	}
 }

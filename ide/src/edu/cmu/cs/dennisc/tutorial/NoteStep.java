@@ -173,6 +173,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	
 
 	private class StepLayoutManager implements java.awt.LayoutManager {
+		private java.util.Set<java.awt.Component> set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet(); 
 		public void addLayoutComponent( java.lang.String name, java.awt.Component comp ) {
 		}
 		public void removeLayoutComponent( java.awt.Component comp ) {
@@ -184,11 +185,20 @@ package edu.cmu.cs.dennisc.tutorial;
 			return parent.getPreferredSize();
 		}
 		public void layoutContainer( java.awt.Container parent ) {
-			int x = 500;
-			int y = 360;
-			for( java.awt.Component component : parent.getComponents() ) {
-				component.setSize( component.getPreferredSize() );
-				component.setLocation( x, y );
+			for( java.awt.Component awtComponent : parent.getComponents() ) {
+				awtComponent.setSize( awtComponent.getPreferredSize() );
+				if( set.contains( awtComponent ) ) {
+					//pass
+				} else {
+					edu.cmu.cs.dennisc.croquet.Component<?> component = edu.cmu.cs.dennisc.croquet.Component.lookup( awtComponent );
+					if (component instanceof Note) {
+						Note note = (Note) component;
+						NoteStep.this.layoutNote( note );
+					} else {
+						awtComponent.setLocation( 10, 10 );
+					}
+					set.add( awtComponent );
+				}
 			}
 		}
 	}

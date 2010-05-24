@@ -75,7 +75,8 @@ public abstract class Component<J extends java.awt.Component> {
 		}
 	}
 
-	/* package-private */static Component<?> lookup(java.awt.Component awtComponent) {
+	//todo reduce visibility to /* package-private */
+	public static Component<?> lookup(java.awt.Component awtComponent) {
 		if (awtComponent != null) {
 			Component<?> rv = Component.map.get(awtComponent);
 			if( rv != null ) {
@@ -328,6 +329,9 @@ public abstract class Component<J extends java.awt.Component> {
 		return this.getAwtComponent().getLocationOnScreen();
 	}
 
+	public java.awt.Rectangle getLocalBounds() {
+		return javax.swing.SwingUtilities.getLocalBounds( this.getAwtComponent() );
+	}
 	public java.awt.Rectangle getBounds() {
 		return this.getAwtComponent().getBounds();
 	}

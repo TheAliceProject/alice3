@@ -60,7 +60,7 @@ public class EntryPoint {
 		tutorial.createAndAddSpotlightStep( "Instance Details", "<html>This is the currently selected instance methods and fields pane.</html>", ide.getMembersEditor() );
 		tutorial.createAndAddSpotlightStep( "Constructs", "<html>This where loops a locals live.</html>", ide.getUbiquitousPane() );
 		tutorial.createAndAddActionStep( "Run", "<html>Press the <b>Run</b> button</html>", ide.getRunOperation() );
-		tutorial.setSelectedIndex( 4 );
+		tutorial.setSelectedIndex( 3 );
 		tutorial.setVisible( true );
 	}
 }

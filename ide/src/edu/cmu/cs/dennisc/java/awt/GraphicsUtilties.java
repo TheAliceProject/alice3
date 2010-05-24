@@ -68,7 +68,6 @@ public class GraphicsUtilties {
 	}
 	
 	private static void renderTriangle( java.awt.Graphics g, Heading heading, int x, int y, int width, int height, boolean isFill ) {
-		
 		if( heading != null ) {
 			int x0 = x;
 			int x1 = x + width-1;
