@@ -53,22 +53,65 @@ public class EntryPoint {
 		ide.getFrame().maximize();
 		ide.getFrame().setVisible( true );
 		
-		ide.getMembersEditor().getFunctionsTabStateOperation().setState( true );
-		
-		
 		edu.cmu.cs.dennisc.tutorial.Tutorial tutorial = new edu.cmu.cs.dennisc.tutorial.Tutorial();
-		tutorial.createAndAddMessageStep( "Welcome", "<html><b><center>Welcome To The Tutorial</center></b><p>First we'll show you around a bit.</html>" );
-		tutorial.createAndAddSpotlightStep( "Scene Editor", "<html>This is the scene editor.</html>", ide.getSceneEditor() );
-		tutorial.createAndAddSpotlightStep( "Constructs", "<html>This where loops a locals live.</html>", ide.getUbiquitousPane() );
-		tutorial.createAndAddActionStep( "Run", "<html>Press the <b>Run</b> button</html>", ide.getRunOperation() );
-		tutorial.createAndAddSpotlightStep( "Instance Details", "<html>This is the currently selected instance methods and fields pane.</html>", ide.getMembersEditor() );
-		tutorial.createAndAddTabStateStep( "Select Functions Tab", "<html>Select the <b>Functions</b> tab.</html>", ide.getMembersEditor().getFunctionsTabStateOperation() );
-		tutorial.createAndAddSpotlightStep( "Note Functions Tab", "<html>Now the functions are now available.</html>", ide.getMembersEditor().getFunctionsTabStateOperation().getSingletonView() );
-		tutorial.createAndAddTabStateStep( "Properies Tab", "<html>Select the <b>Properies</b> tab.</html>", ide.getMembersEditor().getFieldsTabStateOperation() );
-		tutorial.createAndAddSpotlightStep( "Note Properies Tab", "<html>Now the properties are now available.</html>", ide.getMembersEditor().getFieldsTabStateOperation().getSingletonScrollPane() );
-		tutorial.createAndAddTabStateStep( "Procedures Tab", "<html>Select the <b>Procedures</b> tab.</html>", ide.getMembersEditor().getProceduresTabStateOperation() );
-		tutorial.createAndAddSpotlightStep( "Note Procedures Tab", "<html>Now the procedures are now available.</html>", ide.getMembersEditor().getProceduresTabStateOperation().getSingletonView() );
+		tutorial.createAndAddMessageStep( 
+				"Welcome", 
+				"<html><b><center>Welcome To The Tutorial</center></b><p>First we'll show you around a bit.</html>" 
+		);
+		tutorial.createAndAddSpotlightStep( 
+				"Scene Editor", 
+				"<html>This is the scene editor.</html>", 
+				ide.getSceneEditor() 
+		);
+		tutorial.createAndAddSpotlightStep( 
+				"Constructs",
+				"<html>This where loops a locals live.</html>", 
+				ide.getUbiquitousPane() 
+		);
+		tutorial.createAndAddActionStep( 
+				"Run", 
+				"<html>Press the <b>Run</b> button</html>", 
+				ide.getRunOperation() 
+		);
+		tutorial.createAndAddSpotlightStep( 
+				"Instance Details", 
+				"<html>This is the currently selected instance methods and fields pane.</html>", 
+				ide.getMembersEditor() 
+		);
+		tutorial.createAndAddTabStateStep( 
+				"Select Functions Tab", 
+				"<html>Select the <b>Functions</b> tab.</html>", 
+				ide.getMembersEditor().getFunctionsTabStateOperation() 
+		);
+		tutorial.createAndAddSpotlightStep( 
+				"Note Functions Tab", 
+				"<html>Now the functions are now available.</html>", 
+				ide.getMembersEditor().getFunctionsTabStateOperation().getSingletonView() 
+		);
+		tutorial.createAndAddTabStateStep( 
+				"Properies Tab", 
+				"<html>Select the <b>Properies</b> tab.</html>", 
+				ide.getMembersEditor().getFieldsTabStateOperation() 
+		);
+		tutorial.createAndAddSpotlightStep( 
+				"Note Properies Tab", 
+				"<html>Now the properties are now available.</html>", 
+				ide.getMembersEditor().getFieldsTabStateOperation().getSingletonScrollPane() 
+		);
+		tutorial.createAndAddTabStateStep( 
+				"Procedures Tab", 
+				"<html>Select the <b>Procedures</b> tab.</html>", 
+				ide.getMembersEditor().getProceduresTabStateOperation() 
+		);
+		tutorial.createAndAddSpotlightStep( 
+				"Note Procedures Tab", 
+				"<html>Now the procedures are now available.</html>", 
+				ide.getMembersEditor().getProceduresTabStateOperation().getSingletonView() 
+		);
+
+		ide.getMembersEditor().getFunctionsTabStateOperation().setState( true );
 		tutorial.setSelectedIndex( 6 );
+		
 		tutorial.setVisible( true );
 	}
 }
