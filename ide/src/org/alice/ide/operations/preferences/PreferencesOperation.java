@@ -47,7 +47,7 @@ package org.alice.ide.operations.preferences;
  */
 public class PreferencesOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
 	public PreferencesOperation() {
-		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "8662d722-9a02-47d5-a7ed-27d20528175a" ) );
+		super( org.alice.ide.IDE.PREFERENCES_GROUP, java.util.UUID.fromString( "8662d722-9a02-47d5-a7ed-27d20528175a" ) );
 		this.setName( "Preferences..." );
 	}
 	private org.alice.ide.preferencesinputpane.PreferencesPanel preferencesInputPane = new org.alice.ide.preferencesinputpane.PreferencesPanel();

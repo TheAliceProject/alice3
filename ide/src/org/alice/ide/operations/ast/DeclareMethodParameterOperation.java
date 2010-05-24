@@ -49,7 +49,7 @@ public class DeclareMethodParameterOperation extends edu.cmu.cs.dennisc.croquet.
 	private org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane;
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
 	public DeclareMethodParameterOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "aa3d337d-b409-46ae-816f-54f139b32d86" ) );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "aa3d337d-b409-46ae-816f-54f139b32d86" ) );
 		this.method = method;
 		this.setName( "Add Parameter..." );
 	}

@@ -56,9 +56,9 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 		ProjectApplication.singleton = this;
 	}
 
-	public static final java.util.UUID HISTORY_GROUP = java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" );
-	public static final java.util.UUID URI_GROUP = java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" );
-	public static final java.util.UUID IDE_GROUP = java.util.UUID.fromString( "d92c1a48-a6ae-473b-9b9f-94734e1606c1" );
+	public static final edu.cmu.cs.dennisc.croquet.Group HISTORY_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ) );
+	public static final edu.cmu.cs.dennisc.croquet.Group URI_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ) );
+	public static final edu.cmu.cs.dennisc.croquet.Group IDE_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "d92c1a48-a6ae-473b-9b9f-94734e1606c1" ) );
 
 	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation saveProjectOperation = new org.alice.app.operations.file.SaveProjectOperation();
 	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation saveAsProjectOperation = new org.alice.app.operations.file.SaveAsProjectOperation();
@@ -215,7 +215,7 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 	private edu.cmu.cs.dennisc.alice.Project project = null;
 	
 	public final edu.cmu.cs.dennisc.history.HistoryManager getProjectHistoryManager() {
-		return edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+		return edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP );
 	}
 	
 	private int projectHistoryInsertionIndexOfCurrentFile = 0;
@@ -260,7 +260,7 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 	}
 	
 	private void updateHistoryLengthAtLastFileOperation() {
-		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP );
 		this.projectHistoryInsertionIndexOfCurrentFile = projectHistoryManager.getInsertionIndex();
 		this.updateTitle();
 	}
@@ -300,7 +300,7 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 	
 	public void loadProjectFrom( java.net.URI uri ) {
 		this.mapUUIDToNode.clear();
-		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP );
 		projectHistoryManager.performClear();
 		this.updateHistoryLengthAtLastFileOperation();
 		this.restoreProjectProperties();

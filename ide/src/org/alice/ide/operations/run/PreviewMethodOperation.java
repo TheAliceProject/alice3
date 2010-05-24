@@ -48,7 +48,7 @@ package org.alice.ide.operations.run;
 public class PreviewMethodOperation extends org.alice.ide.operations.ActionOperation {
 	private org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate;
 	public PreviewMethodOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
-		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "9414c780-1ba2-4b00-8cb2-3c066f0063d5" ) );
+		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "9414c780-1ba2-4b00-8cb2-3c066f0063d5" ) );
 		this.setName( "Preview..." );
 		this.procedureInvocationTemplate = procedureInvocationTemplate;
 	}

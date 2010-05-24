@@ -46,14 +46,14 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Operation {
-	private java.util.UUID groupUUID;
+	private Group group;
 	private java.util.UUID inividualUUID;
-	public Operation( java.util.UUID groupUUID, java.util.UUID inividualUUID ) {
-		this.groupUUID = groupUUID;
+	public Operation( Group group, java.util.UUID inividualUUID ) {
+		this.group = group;
 		this.inividualUUID = inividualUUID;
 	}
-	public java.util.UUID getGroupUUID() {
-		return this.groupUUID;
+	public Group getGroup() {
+		return this.group;
 	}
 	public java.util.UUID getIndividualUUID() {
 		return this.inividualUUID;

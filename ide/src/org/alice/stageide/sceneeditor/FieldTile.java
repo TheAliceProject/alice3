@@ -100,7 +100,6 @@ class FieldSelectedState extends edu.cmu.cs.dennisc.croquet.BooleanStateOperatio
 		//this.setOpaque( false );
 		
 		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation(
-				edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP,
 				java.util.UUID.fromString( "8e3989b2-34d6-44cf-998c-dda26662b3a0" ) ) {
 			@Override
 			public edu.cmu.cs.dennisc.croquet.Operation[] getOperations() {

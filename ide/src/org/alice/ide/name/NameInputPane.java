@@ -47,7 +47,7 @@ package org.alice.ide.name;
  */
 public abstract class NameInputPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 	private edu.cmu.cs.dennisc.croquet.StringStateOperation nameState = new edu.cmu.cs.dennisc.croquet.StringStateOperation(
-			edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP,
+			edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP,
 			java.util.UUID.fromString( "482c237a-c2b3-48dc-a8e2-380edfdfffe3" ),
 			""
 	);

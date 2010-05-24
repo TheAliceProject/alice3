@@ -66,7 +66,7 @@ class PersonCreatorDialog extends edu.cmu.cs.dennisc.progress.ProgressDialog {
 				class DeclarePersonInputDialogOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
 					private org.alice.stageide.personeditor.PersonEditor personEditor;
 					public DeclarePersonInputDialogOperation() {
-						super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "19c72f46-7b7a-4edd-b598-73f17c9044b8" ) );
+						super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "19c72f46-7b7a-4edd-b598-73f17c9044b8" ) );
 					}
 					@Override
 					protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {

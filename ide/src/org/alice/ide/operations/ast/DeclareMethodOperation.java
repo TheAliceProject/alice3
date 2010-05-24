@@ -49,7 +49,7 @@ public abstract class DeclareMethodOperation extends edu.cmu.cs.dennisc.croquet.
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
 	private org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = this.createCreateMethodPane( this.type );
 	public DeclareMethodOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 		this.type = type;
 	}
 	protected abstract org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );

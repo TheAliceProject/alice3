@@ -92,7 +92,6 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			//pass
 		} else {
 			this.popupOperation = new edu.cmu.cs.dennisc.croquet.PopupMenuOperation(
-					edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP,
 					java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ),
 					new org.alice.ide.operations.ast.RenameMethodOperation( methodDeclaredInAlice ) 
 			);

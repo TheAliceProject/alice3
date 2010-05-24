@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 public class Tutorial {
-	/*package-private*/ static java.util.UUID TUTORIAL_GROUP = java.util.UUID.fromString( "7bfa86e3-234e-4bd1-9177-d4acac0b12d9" );
+	/*package-private*/ static edu.cmu.cs.dennisc.croquet.Group TUTORIAL_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "7bfa86e3-234e-4bd1-9177-d4acac0b12d9" ) );
 	
 	private static java.awt.Color CONTROL_COLOR = new java.awt.Color(255, 255, 191);
 

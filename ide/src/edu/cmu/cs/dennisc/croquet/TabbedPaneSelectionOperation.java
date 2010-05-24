@@ -72,8 +72,8 @@ public class TabbedPaneSelectionOperation extends Operation {
 	private final java.util.List< SelectionObserver > selectionObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private final java.util.List< TabStateOperation > tabStateOperations;
 	private float headerFontScalar = 1.0f;
-	public TabbedPaneSelectionOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, TabStateOperation... operations ) {
-		super( groupUUID, individualUUID );
+	public TabbedPaneSelectionOperation( Group group, java.util.UUID individualUUID, TabStateOperation... operations ) {
+		super( group, individualUUID );
 		this.tabStateOperations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( operations );
 	}
 	public void addTabStateOperation( TabStateOperation operation ) {

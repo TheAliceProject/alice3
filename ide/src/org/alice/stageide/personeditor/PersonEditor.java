@@ -46,7 +46,7 @@ package org.alice.stageide.personeditor;
  * @author Dennis Cosgrove
  */
 public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	public static final java.util.UUID GROUP_ID = java.util.UUID.fromString( "2d7d725d-1806-40d1-ac2b-d9cd48cb0abb" );
+	public static final edu.cmu.cs.dennisc.croquet.Group GROUP_ID = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "2d7d725d-1806-40d1-ac2b-d9cd48cb0abb" ) );
 	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane splitPane;
 	private PersonViewer personViewer = PersonViewer.getSingleton();
 	private IngredientsPane ingredientsPane = new IngredientsPane() {

@@ -57,19 +57,19 @@ abstract class EditMembersOperation< E extends edu.cmu.cs.dennisc.alice.ast.Memb
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType;
 	private String presentation;
 	public EditMembersOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, String presentation ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 		this.declaringType = declaringType;
 		this.presentation = presentation;
 		this.setName( this.presentation + "..." );
 	}
-	protected abstract EditMembersPane< E > createEditMembersPane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType );
+	protected abstract EditMembersPane< E > createEditMembersPane( edu.cmu.cs.dennisc.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType );
 	
 	private edu.cmu.cs.dennisc.history.HistoryManager historyManager;
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
-		java.util.UUID groupUUID = java.util.UUID.randomUUID();
-		this.historyManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( groupUUID );
-		return this.createEditMembersPane( groupUUID, this.declaringType );
+		edu.cmu.cs.dennisc.croquet.Group group = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.randomUUID() );
+		this.historyManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( group );
+		return this.createEditMembersPane( group, this.declaringType );
 	}
 	@Override
 	protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
@@ -98,7 +98,7 @@ class EditProceduresOperation extends EditMethodsOperation< edu.cmu.cs.dennisc.a
 		super( java.util.UUID.fromString( "f3160b4c-d060-4e60-839c-3dfd761f71ce" ), type, "Edit Procedures" );
 	}
 	@Override
-	protected EditProceduresPane createEditMembersPane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+	protected EditProceduresPane createEditMembersPane( edu.cmu.cs.dennisc.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		return new EditProceduresPane( declaringType );
 	}
 }
@@ -107,7 +107,7 @@ class EditFunctionsOperation extends EditMethodsOperation< edu.cmu.cs.dennisc.al
 		super( java.util.UUID.fromString( "f911b1ae-3ceb-4749-99de-dee5f40a8109" ), type, "Edit Functions" );
 	}
 	@Override
-	protected EditFunctionsPane createEditMembersPane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+	protected EditFunctionsPane createEditMembersPane( edu.cmu.cs.dennisc.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		return new EditFunctionsPane( declaringType );
 	}
 }
@@ -117,7 +117,7 @@ class EditFieldsOperation extends EditMembersOperation< edu.cmu.cs.dennisc.alice
 		super( java.util.UUID.fromString( "64816bc1-6c0f-4675-bb77-2e53086b2f74" ), type, "Edit Properties" );
 	}
 	@Override
-	protected EditFieldsPane createEditMembersPane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+	protected EditFieldsPane createEditMembersPane( edu.cmu.cs.dennisc.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		return new EditFieldsPane( declaringType );
 	}
 }

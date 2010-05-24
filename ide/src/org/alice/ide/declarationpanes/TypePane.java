@@ -49,7 +49,7 @@ package org.alice.ide.declarationpanes;
 class IsArrayStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 	private edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty;
 	public IsArrayStateOperation( edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty ) {
-		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "ffa22de2-eb3e-46d2-8ccc-ada365f29205" ), isArrayProperty.getValue(), "is array" );
+		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "ffa22de2-eb3e-46d2-8ccc-ada365f29205" ), isArrayProperty.getValue(), "is array" );
 		this.isArrayProperty = isArrayProperty;
 	}
 	@Override
@@ -82,7 +82,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 		}
 
 		public TypeSelectionOperation() {
-			super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "ef5677ca-a5d9-49c4-90bb-5fb43ef15ba6" ) );
+			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "ef5677ca-a5d9-49c4-90bb-5fb43ef15ba6" ) );
 			edu.cmu.cs.dennisc.alice.ast.AbstractType[] types = org.alice.ide.IDE.getSingleton().getTypesForComboBoxes();
 			//int selectedIndex = java.util.Arrays.binarySearch( types, type );
 			this.setListData( -1, types );

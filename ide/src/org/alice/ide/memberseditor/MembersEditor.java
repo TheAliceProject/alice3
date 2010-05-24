@@ -178,7 +178,7 @@ class FieldsContentPanel extends MembersContentPanel {
 public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private static abstract class MemberTabStateOperation extends edu.cmu.cs.dennisc.croquet.TabStateOperation {
 		public MemberTabStateOperation( java.util.UUID individualId, boolean initialState ) {
-			super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, individualId, initialState );
+			super( org.alice.app.ProjectApplication.IDE_GROUP, individualId, initialState );
 			MembersContentPanel memberTab = (MembersContentPanel)this.getSingletonView();
 			String trueAndFalseText = memberTab.getTitle();
 			this.setTrueText( trueAndFalseText );
@@ -227,7 +227,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	};
 
 	private edu.cmu.cs.dennisc.croquet.TabbedPaneSelectionOperation tabbedPaneSelectionOperation = new edu.cmu.cs.dennisc.croquet.TabbedPaneSelectionOperation( 
-			edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, 
+			org.alice.ide.IDE.IDE_GROUP, 
 			java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ),
 			this.proceduresTabStateOperation,
 			this.functionsTabStateOperation,

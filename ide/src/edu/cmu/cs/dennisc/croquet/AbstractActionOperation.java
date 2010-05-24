@@ -80,8 +80,8 @@ public abstract class AbstractActionOperation extends Operation {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 		}
 	};
-	public AbstractActionOperation( java.util.UUID groupUUID, java.util.UUID individualUUID ) {
-		super( groupUUID, individualUUID );
+	public AbstractActionOperation( Group group, java.util.UUID individualUUID ) {
+		super( group, individualUUID );
 //		this.buttonModel.addActionListener( new java.awt.event.ActionListener() {
 //			public void actionPerformed( java.awt.event.ActionEvent e ) {
 //			}

@@ -50,7 +50,7 @@ public abstract class AbstractDeclareFieldActionOperation extends org.alice.ide.
 	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> createFieldAndInstance( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType );
 	protected abstract boolean isInstanceValid();
 	public AbstractDeclareFieldActionOperation( java.util.UUID individualId ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 	}
 	@Override
 	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {

@@ -169,7 +169,7 @@ class ResourceNameTableCellRenderer extends ResourceTableCellRenderer< org.alice
 public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	abstract class ResourceOperation extends org.alice.ide.operations.ActionOperation {
 		public ResourceOperation( java.util.UUID individualId ) {
-			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
+			super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 		}
 		protected abstract edu.cmu.cs.dennisc.croquet.Edit createEdit( org.alice.virtualmachine.Resource resource );
 
@@ -358,7 +358,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		private org.alice.ide.name.RenamePane renamePane;
 		private org.alice.virtualmachine.Resource resource;
 		public RenameResourceOperation() {
-			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "da920b16-65fc-48a4-9203-b3c2979b0a59" ), "Rename..." );
+			super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "da920b16-65fc-48a4-9203-b3c2979b0a59" ), "Rename..." );
 		}
 		@Override
 		protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
@@ -467,7 +467,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		}
 
 		public ReloadResourceOperation() {
-			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "05f5ede7-194a-45b2-bb97-c3d23aedf5b9" ) );
+			super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "05f5ede7-194a-45b2-bb97-c3d23aedf5b9" ) );
 			this.setName( "Reload Content..." );
 		}
 		@Override

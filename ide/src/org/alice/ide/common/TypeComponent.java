@@ -63,7 +63,7 @@ public class TypeComponent extends edu.cmu.cs.dennisc.croquet.AbstractButton<jav
 				}
 			}
 			operations.add( new org.alice.ide.operations.file.SaveAsTypeOperation( typeInAlice ) );
-			edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupOperation = new edu.cmu.cs.dennisc.croquet.PopupMenuOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "9f84fe0c-ca20-45f1-8a25-c79bd8454dbd" ), operations );
+			edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupOperation = new edu.cmu.cs.dennisc.croquet.PopupMenuOperation( java.util.UUID.fromString( "9f84fe0c-ca20-45f1-8a25-c79bd8454dbd" ), operations );
 
 			rv.setPopupMenuOperationLimitedToRightMouseButton( false );
 			rv.setPopupMenuOperation( popupOperation );

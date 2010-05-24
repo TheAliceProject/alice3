@@ -46,8 +46,8 @@ package org.alice.ide.operations;
  * @author Dennis Cosgrove
  */
 public abstract class InputDialogOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
-	public InputDialogOperation( java.util.UUID groupUUID, java.util.UUID individualId ) {
-		super( groupUUID, individualId );
+	public InputDialogOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId ) {
+		super( group, individualId );
 	}
 	protected final org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();

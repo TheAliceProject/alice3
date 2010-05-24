@@ -130,7 +130,7 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.LineAxis
 		}
 	}
 	
-	private edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<java.io.File> itemSelection = new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<java.io.File>( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "1814e4cc-1463-4191-bd85-72b61893d1e5" ) ) {
+	private edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<java.io.File> itemSelection = new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<java.io.File>( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "1814e4cc-1463-4191-bd85-72b61893d1e5" ) ) {
 		@Override
 		protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.io.File value) {
 			throw new RuntimeException("todo");

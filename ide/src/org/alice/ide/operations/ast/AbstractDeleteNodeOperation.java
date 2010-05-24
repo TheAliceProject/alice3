@@ -51,7 +51,7 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 	private E node;
 	private edu.cmu.cs.dennisc.alice.ast.NodeListProperty owner;
 	public AbstractDeleteNodeOperation( java.util.UUID individualId, E node, edu.cmu.cs.dennisc.alice.ast.NodeListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.Node > owner ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 		this.node = node;
 		this.owner = owner;
 		this.setName( "Delete" );

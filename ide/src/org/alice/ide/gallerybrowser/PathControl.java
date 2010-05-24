@@ -64,7 +64,7 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 
 		class SelectChildDirectoryActionOperation extends edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation {
 			public SelectChildDirectoryActionOperation() {
-				super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "cc6a0de7-91b1-4a2b-86ff-21ca9de14bed" ) );
+				super( java.util.UUID.fromString( "cc6a0de7-91b1-4a2b-86ff-21ca9de14bed" ) );
 				javax.swing.Icon icon = new javax.swing.Icon() {
 					public int getIconHeight() {
 						return ARROW_SIZE + ARROW_BORDER_HALF_SIZE + ARROW_BORDER_HALF_SIZE;
@@ -192,7 +192,7 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 			private java.io.File file;
 
 			public SelectFileActionOperation( java.io.File file ) {
-				super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "b8a442d5-4a36-4d27-be67-061ea9a5d2b7" ) );
+				super( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "b8a442d5-4a36-4d27-be67-061ea9a5d2b7" ) );
 				this.file = file;
 				this.setName( PathControl.this.getTextFor( this.file ) );
 				javax.swing.Icon icon;

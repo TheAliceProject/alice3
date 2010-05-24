@@ -87,8 +87,8 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 	private Label explanationLabel = new Label( NULL_EXPLANATION );
 	private boolean isOk = false;
 	
-	public InputDialogOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, String name, boolean isCancelDesired) {
-		super(groupUUID, individualUUID);
+	public InputDialogOperation(Group group, java.util.UUID individualUUID, String name, boolean isCancelDesired) {
+		super(group, individualUUID);
 		this.setName( name );
 		this.okOperation = new ButtonOperation(java.util.UUID.fromString("f6019ff0-cf2b-4d6c-8c8d-14cac8154ebc"), "OK", true);
 		if( isCancelDesired ) {
@@ -99,11 +99,11 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 		this.explanationLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
 		this.explanationLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 0 ) );
 	}
-	public InputDialogOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, String title) {
-		this(groupUUID, individualUUID, title, true);
+	public InputDialogOperation(Group group, java.util.UUID individualUUID, String title) {
+		this(group, individualUUID, title, true);
 	}
-	public InputDialogOperation(java.util.UUID groupUUID, java.util.UUID individualUUID) {
-		this(groupUUID, individualUUID, null);
+	public InputDialogOperation(Group group, java.util.UUID individualUUID) {
+		this(group, individualUUID, null);
 	}
 
 

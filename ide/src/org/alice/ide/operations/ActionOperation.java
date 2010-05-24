@@ -46,8 +46,8 @@ package org.alice.ide.operations;
  * @author Dennis Cosgrove
  */
 public abstract class ActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-	public ActionOperation( java.util.UUID groupUUID, java.util.UUID individualId ) {
-		super( groupUUID, individualId );
+	public ActionOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId ) {
+		super( group, individualId );
 	}
 	protected final org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();

@@ -48,8 +48,8 @@ package org.alice.ide.operations;
  */
 @Deprecated
 public class DefaultDragOperation extends edu.cmu.cs.dennisc.croquet.DragAndDropOperation {
-	public DefaultDragOperation() {
-		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "002705e1-18e6-49ca-b261-0e9c79e8f080" ) );
+	public DefaultDragOperation( edu.cmu.cs.dennisc.croquet.Group group ) {
+		super( group, java.util.UUID.fromString( "002705e1-18e6-49ca-b261-0e9c79e8f080" ) );
 	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();

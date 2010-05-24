@@ -63,8 +63,8 @@ public class MenuBarOperation extends Operation {
 //	};
 //	private java.util.Map< KMenuBar, MenuBarChangeListener > mapMenuBarToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.concurrent.CopyOnWriteArrayList< MenuOperation > menuOperations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public MenuBarOperation( java.util.UUID groupUUID, java.util.UUID individualUUID ) {
-		super( groupUUID, individualUUID );
+	public MenuBarOperation( Group group, java.util.UUID individualUUID ) {
+		super( group, individualUUID );
 	}
 
 	public void addMenuOperation( MenuOperation menuOperation ) {

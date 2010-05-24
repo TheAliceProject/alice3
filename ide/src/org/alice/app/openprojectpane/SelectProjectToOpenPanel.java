@@ -49,7 +49,7 @@ package org.alice.app.openprojectpane;
 public class SelectProjectToOpenPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private static abstract class ContentTabStateOperation extends edu.cmu.cs.dennisc.croquet.TabStateOperation {
 		public ContentTabStateOperation(java.util.UUID individualId, boolean initialValue, String title) {
-			super(edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, individualId, initialValue, title);
+			super(edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId, initialValue, title);
 		}
 //		@Override
 //		protected edu.cmu.cs.dennisc.croquet.ScrollPane createSingletonScrollPane() {
@@ -101,7 +101,7 @@ public class SelectProjectToOpenPanel extends edu.cmu.cs.dennisc.croquet.BorderP
 		}
 	};
 
-	private edu.cmu.cs.dennisc.croquet.TabbedPaneSelectionOperation tabSelectionOperation = new edu.cmu.cs.dennisc.croquet.TabbedPaneSelectionOperation(edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString("12e1d59b-2893-4144-b995-08090680a318"),
+	private edu.cmu.cs.dennisc.croquet.TabbedPaneSelectionOperation tabSelectionOperation = new edu.cmu.cs.dennisc.croquet.TabbedPaneSelectionOperation(edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString("12e1d59b-2893-4144-b995-08090680a318"),
 			this.templatesOperation,
 			this.myProjectsOperation, 
 			this.recentProjectsOperation, 

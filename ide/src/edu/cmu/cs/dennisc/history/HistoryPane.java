@@ -114,8 +114,8 @@ public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBord
 
 	private javax.swing.JList list = new javax.swing.JList();
 	private HistoryStackModel historyStackModel;
-	public HistoryPane( java.util.UUID uuid ) {
-		final HistoryManager historyManager = HistoryManager.getInstance( uuid );
+	public HistoryPane( edu.cmu.cs.dennisc.croquet.Group group ) {
+		final HistoryManager historyManager = HistoryManager.getInstance( group );
 		this.historyStackModel = new HistoryStackModel( historyManager );
 		this.list.setModel( this.historyStackModel );
 		this.list.setCellRenderer( new HistoryCellRenderer() );

@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ActionOperation extends AbstractActionOperation {
-	public ActionOperation( java.util.UUID groupUUID, java.util.UUID individualUUID ) {
-		super( groupUUID, individualUUID );
+	public ActionOperation( Group group, java.util.UUID individualUUID ) {
+		super( group, individualUUID );
 	}
 }

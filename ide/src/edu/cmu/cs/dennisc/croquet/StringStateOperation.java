@@ -80,8 +80,8 @@ public final class StringStateOperation extends Operation {
 		}
 	};
 
-	public StringStateOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, String initialState) {
-		super(groupUUID, individualUUID);
+	public StringStateOperation(Group group, java.util.UUID individualUUID, String initialState) {
+		super(group, individualUUID);
 		this.document = new javax.swing.text.PlainDocument();
 		try {
 			this.document.insertString(0, initialState, null);

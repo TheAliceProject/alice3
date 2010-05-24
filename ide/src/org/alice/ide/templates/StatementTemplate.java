@@ -86,7 +86,7 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 	// };
 	// }
 	protected edu.cmu.cs.dennisc.croquet.DragAndDropOperation createDragOperation() {
-		return new org.alice.ide.operations.DefaultDragOperation();
+		return new org.alice.ide.operations.DefaultDragOperation( edu.cmu.cs.dennisc.alice.Project.GROUP );
 	}
 
 	@Override

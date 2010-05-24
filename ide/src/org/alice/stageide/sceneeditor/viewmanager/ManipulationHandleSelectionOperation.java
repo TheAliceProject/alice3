@@ -56,7 +56,7 @@ public class ManipulationHandleSelectionOperation extends edu.cmu.cs.dennisc.zoo
 	private AbstractDragAdapter dragAdapter;
 	
 	public ManipulationHandleSelectionOperation(AbstractDragAdapter dragAdapter) {
-		super( org.alice.app.ProjectApplication.IDE_GROUP, new ManipulationHandleControlComboBoxModel() );
+		super( org.alice.app.ProjectApplication.IDE_GROUP.getId(), new ManipulationHandleControlComboBoxModel() );
 		this.dragAdapter = dragAdapter;
 	}
 	@Override

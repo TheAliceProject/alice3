@@ -48,7 +48,7 @@ package org.alice.ide.declarationpanes;
 public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.PanelWithPreview {
 	class IsReassignableStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 		public IsReassignableStateOperation( boolean initialValue ) {
-			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "c95e177e-8fea-4916-a401-1b865594b135" ), initialValue, "(is constant)", "(is variable)" );
+			super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "c95e177e-8fea-4916-a401-1b865594b135" ), initialValue, "(is constant)", "(is variable)" );
 		}
 		@Override
 		protected void handleStateChange(boolean value) {
@@ -57,7 +57,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		}
 	}
 	private edu.cmu.cs.dennisc.croquet.StringStateOperation declarationNameState = new edu.cmu.cs.dennisc.croquet.StringStateOperation(
-			edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "c63e8377-84e0-48b0-a77e-137879e398c1" ), ""
+			edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "c63e8377-84e0-48b0-a77e-137879e398c1" ), ""
 	);
 //	class DeclarationNameTextField extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField {
 //		public DeclarationNameTextField() {

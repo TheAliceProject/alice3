@@ -47,7 +47,7 @@ package org.alice.ide.templates;
  */
 public abstract class ExpressionTemplate extends org.alice.ide.common.ExpressionCreatorPane {
 	public ExpressionTemplate() {
-		this.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragOperation() );
+		this.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragOperation( edu.cmu.cs.dennisc.alice.Project.GROUP ) );
 //		
 //		//todo
 //		this.setPopupOperation( new org.alice.ide.operations.InconsequentialActionOperation( java.util.UUID.fromString( "20e0121d-2166-4479-af43-d45e6ae425e6" ) ) {

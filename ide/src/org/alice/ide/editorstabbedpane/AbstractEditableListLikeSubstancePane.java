@@ -42,19 +42,17 @@
  */
 package org.alice.ide.editorstabbedpane;
 
-import edu.cmu.cs.dennisc.croquet.Component;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	class AddItemOperation extends edu.cmu.cs.dennisc.croquet.AbstractActionOperation {
-		public AddItemOperation( java.util.UUID groupUUID, String name ) {
-			super( groupUUID, java.util.UUID.fromString( "118ab33a-8c1a-4207-80d1-88edd555ca61" ) );
+		public AddItemOperation( edu.cmu.cs.dennisc.croquet.Group group, String name ) {
+			super( group, java.util.UUID.fromString( "118ab33a-8c1a-4207-80d1-88edd555ca61" ) );
 			this.setName( name );
 		}
 		@Override
-		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, Component<?> component ) {
+		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 			try {
 				final E item = createItem();
 				final int index = getListSize();
@@ -81,12 +79,12 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 	}
 
 	class RemoveItemOperation extends edu.cmu.cs.dennisc.croquet.AbstractActionOperation {
-		public RemoveItemOperation( java.util.UUID groupUUID, String name ) {
-			super( groupUUID, java.util.UUID.fromString( "230c56bc-6735-486c-a6f7-0451ee3714e7" ) );
+		public RemoveItemOperation( edu.cmu.cs.dennisc.croquet.Group group, String name ) {
+			super( group, java.util.UUID.fromString( "230c56bc-6735-486c-a6f7-0451ee3714e7" ) );
 			this.setName( name );
 		}
 		@Override
-		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, Component<?> component ) {
+		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 			final int index = getSelectedIndex();
 			if( index >= 0 ) {
 				final E item = getItemAt( index );
@@ -113,15 +111,15 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 	}
 
 	abstract class AbstractMoveItemOperation extends edu.cmu.cs.dennisc.croquet.AbstractActionOperation {
-		public AbstractMoveItemOperation( java.util.UUID groupId, java.util.UUID individualId, String name ) {
-			super( groupId, individualId );
+		public AbstractMoveItemOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, String name ) {
+			super( group, individualId );
 			this.setName( name );
 		}
 		protected abstract int getIndex( int selectedIndex );
 		protected abstract int getRedoSelectionIndexDelta();
 		protected abstract int getUndoSelectionIndexDelta();
 		@Override
-		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, Component<?> component ) {
+		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 			final int index = this.getIndex( getSelectedIndex() );
 			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				private void swapWithNext( int index ) {
@@ -152,8 +150,8 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 	}
 
 	class MoveItemUpOperation extends AbstractMoveItemOperation {
-		public MoveItemUpOperation( java.util.UUID groupUUID, String name ) {
-			super( groupUUID, java.util.UUID.fromString( "d0174767-da0b-42ed-9174-1c3a1e6ed09d" ), name );
+		public MoveItemUpOperation( edu.cmu.cs.dennisc.croquet.Group group, String name ) {
+			super( group, java.util.UUID.fromString( "d0174767-da0b-42ed-9174-1c3a1e6ed09d" ), name );
 		}
 		@Override
 		protected int getIndex(int selectedIndex) {
@@ -170,8 +168,8 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 	}
 
 	class MoveItemDownOperation extends AbstractMoveItemOperation {
-		public MoveItemDownOperation( java.util.UUID groupUUID, String name ) {
-			super( groupUUID, java.util.UUID.fromString( "2443e57e-f8ff-4a80-8fcb-9d8bf72f13d7" ), name );
+		public MoveItemDownOperation( edu.cmu.cs.dennisc.croquet.Group group, String name ) {
+			super( group, java.util.UUID.fromString( "2443e57e-f8ff-4a80-8fcb-9d8bf72f13d7" ), name );
 		}
 		@Override
 		protected int getIndex(int selectedIndex) {
@@ -187,7 +185,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		}
 	}
 
-	protected abstract edu.cmu.cs.dennisc.croquet.AbstractActionOperation createEditOperation( java.util.UUID groupUUID );
+	protected abstract edu.cmu.cs.dennisc.croquet.AbstractActionOperation createEditOperation( edu.cmu.cs.dennisc.croquet.Group group );
 	protected abstract E createItem() throws Exception;
 	protected abstract void add( int index, E e );
 	protected abstract void remove( int index, E e );
@@ -205,14 +203,14 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 	private MoveItemUpOperation moveItemUpOperation;
 	private MoveItemDownOperation moveItemDownOperation;
 
-	public AbstractEditableListLikeSubstancePane( java.util.UUID groupUUID, javax.swing.JComponent listLikeSubstance ) {
+	public AbstractEditableListLikeSubstancePane( edu.cmu.cs.dennisc.croquet.Group group, javax.swing.JComponent listLikeSubstance ) {
 		super( 8, 0 );
 		this.listLikeSubstance = listLikeSubstance;
-		this.addItemOperation = new AddItemOperation( groupUUID, this.getAddItemOperationName() );
-		this.editItemOperation = this.createEditOperation( groupUUID );
-		this.removeItemOperation = new RemoveItemOperation( groupUUID, this.getRemoveItemOperationName() );
-		this.moveItemUpOperation = new MoveItemUpOperation( groupUUID, this.getMoveItemUpOperationName() );
-		this.moveItemDownOperation = new MoveItemDownOperation( groupUUID, this.getMoveItemDownOperationName() );
+		this.addItemOperation = new AddItemOperation( group, this.getAddItemOperationName() );
+		this.editItemOperation = this.createEditOperation( group );
+		this.removeItemOperation = new RemoveItemOperation( group, this.getRemoveItemOperationName() );
+		this.moveItemUpOperation = new MoveItemUpOperation( group, this.getMoveItemUpOperationName() );
+		this.moveItemDownOperation = new MoveItemDownOperation( group, this.getMoveItemDownOperationName() );
 		
 
 		edu.cmu.cs.dennisc.croquet.GridBagPanel buttonPane = new edu.cmu.cs.dennisc.croquet.GridBagPanel();

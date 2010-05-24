@@ -47,12 +47,12 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public class PopupMenuOperation extends AbstractPopupMenuOperation {
 	private Operation[] operations;
-	public PopupMenuOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, Operation... operations ) {
-		super( groupUUID, individualUUID );
+	public PopupMenuOperation( java.util.UUID individualId, Operation... operations ) {
+		super( individualId );
 		this.operations = operations;
 	}
-	public PopupMenuOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, java.util.Collection< Operation > operations ) {
-		this( groupUUID, individualUUID, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(operations, Operation.class ) );
+	public PopupMenuOperation( java.util.UUID individualId, java.util.Collection< Operation > operations ) {
+		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(operations, Operation.class ) );
 	}
 	@Override
 	public Operation[] getOperations() {

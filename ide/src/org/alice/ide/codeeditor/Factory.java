@@ -47,7 +47,7 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody original;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody replacement;
 	public ConvertStatementWithBodyActionOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody original, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody replacement ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 		this.property = property;
 		this.original = original;
 		this.replacement = replacement;
@@ -107,7 +107,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOp
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody;
 	public DissolveStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody ) {
-		super( java.util.UUID.fromString( "b48d1d87-9dbf-4fc5-bb07-daa56ae6bd7d" ), edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "b48d1d87-9dbf-4fc5-bb07-daa56ae6bd7d" ) );
 		this.setName( "Dissolve " + abstractStatementWithBody.getClass().getSimpleName() );
 		this.property = property;
 		this.abstractStatementWithBody = abstractStatementWithBody;
@@ -156,7 +156,7 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOper
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 
 	public DeleteStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "c2b2810b-68ad-4935-b47f-458fe90f877b" ) );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "c2b2810b-68ad-4935-b47f-458fe90f877b" ) );
 		StringBuffer sb = new StringBuffer();
 		sb.append( "Delete " );
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
@@ -204,7 +204,7 @@ class StatementEnabledStateOperation extends org.alice.ide.operations.AbstractBo
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 
 	public StatementEnabledStateOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue(), "Is Enabled" );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue(), "Is Enabled" );
 		this.statement = statement;
 		//update();
 	}
@@ -244,9 +244,8 @@ public class Factory extends org.alice.ide.common.Factory {
 	@Override
 	public org.alice.ide.common.AbstractStatementPane createStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
 		org.alice.ide.common.AbstractStatementPane abstractStatementPane = super.createStatementPane( statement, statementListProperty );
-		abstractStatementPane.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragOperation() );
+		abstractStatementPane.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragOperation( edu.cmu.cs.dennisc.alice.Project.GROUP ) );
 		abstractStatementPane.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation(
-				edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP,
 				java.util.UUID.fromString( "6190553d-309e-453f-b9eb-ded8aaf7ce63" ),
 				this.createPopupOperations( abstractStatementPane ) 
 		) );

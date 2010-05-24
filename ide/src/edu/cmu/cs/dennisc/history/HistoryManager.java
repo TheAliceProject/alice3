@@ -54,21 +54,21 @@ public class HistoryManager {
 		edu.cmu.cs.dennisc.croquet.Application.getSingleton().getRootContext().addCommitObserver( HistoryManager.commitObserver );
 	}
 
-	private static java.util.Map< java.util.UUID, HistoryManager > map = new java.util.HashMap< java.util.UUID, HistoryManager >();
+	private static java.util.Map< edu.cmu.cs.dennisc.croquet.Group, HistoryManager > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public static HistoryManager getInstance( java.util.UUID uuid ) {
-		HistoryManager rv = HistoryManager.map.get( uuid );
+	public static HistoryManager getInstance( edu.cmu.cs.dennisc.croquet.Group group ) {
+		HistoryManager rv = HistoryManager.map.get( group );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new HistoryManager( uuid );
-			HistoryManager.map.put( uuid, rv );
+			rv = new HistoryManager( group );
+			HistoryManager.map.put( group, rv );
 		}
 		return rv;
 	}
 	private static void handleOperationPerformed( edu.cmu.cs.dennisc.croquet.Edit edit ) {
 		if( edit != null ) {
-			HistoryManager historyManager = HistoryManager.getInstance( edit.getGroupId() );
+			HistoryManager historyManager = HistoryManager.getInstance( edit.getGroup() );
 			historyManager.push( edit );
 		} else {
 			//todo?
@@ -78,19 +78,19 @@ public class HistoryManager {
 
 	private java.util.Stack< edu.cmu.cs.dennisc.croquet.Edit > stack = new java.util.Stack< edu.cmu.cs.dennisc.croquet.Edit >();
 	private int insertionIndex = 0;
-	private java.util.UUID uuid;
+	private edu.cmu.cs.dennisc.croquet.Group group;
 
-	private HistoryManager( java.util.UUID uuid ) {
-		this.uuid = uuid;
+	private HistoryManager( edu.cmu.cs.dennisc.croquet.Group group ) {
+		this.group = group;
 	}
-	public java.util.UUID getUuid() {
-		return this.uuid;
+	public edu.cmu.cs.dennisc.croquet.Group getGroup() {
+		return this.group;
 	}
 	public java.util.Stack< edu.cmu.cs.dennisc.croquet.Edit > getStack() {
 		return this.stack;
 	}
 	private void push( edu.cmu.cs.dennisc.croquet.Edit edit ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( edit.getGroupId(), this.uuid ) ) {
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( edit.getGroup(), this.group ) ) {
 			edu.cmu.cs.dennisc.history.event.HistoryPushEvent historyPushEvent = new edu.cmu.cs.dennisc.history.event.HistoryPushEvent( this, edit );
 			this.fireOperationPushing( historyPushEvent );
 			this.stack.setSize( this.insertionIndex );

@@ -43,6 +43,7 @@
 package org.alice.interact.operations;
 
 import edu.cmu.cs.dennisc.croquet.Component;
+import edu.cmu.cs.dennisc.croquet.Group;
 
 /**
  * @author Dennis Cosgrove
@@ -50,8 +51,8 @@ import edu.cmu.cs.dennisc.croquet.Component;
 public abstract class AbstractSetLocalTransformationActionOperation extends edu.cmu.cs.dennisc.croquet.AbstractActionOperation {
 	private boolean isDoRequired;
 	private edu.cmu.cs.dennisc.animation.Animator animator;
-	public AbstractSetLocalTransformationActionOperation( java.util.UUID groupUUID, java.util.UUID individualId, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator ) {
-		super( groupUUID, individualId );
+	public AbstractSetLocalTransformationActionOperation( Group group, java.util.UUID individualId, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator ) {
+		super( group, individualId );
 		this.isDoRequired = isDoRequired;
 		this.animator = animator;
 	}

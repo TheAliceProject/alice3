@@ -154,13 +154,13 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 	};
 	private E previousSelection;
 
-	private ItemSelectionOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, int selectedIndex, E... items ) {
-		super( groupUUID, individualUUID );
+	private ItemSelectionOperation( Group group, java.util.UUID individualUUID, int selectedIndex, E... items ) {
+		super( group, individualUUID );
 		this.listSelectionModel.setSelectionMode( javax.swing.ListSelectionModel.SINGLE_SELECTION );
 		this.comboBoxModel.setListData(selectedIndex, items);
 	}
-	public ItemSelectionOperation( java.util.UUID groupUUID, java.util.UUID individualUUID ) {
-		this( groupUUID, individualUUID, -1 );
+	public ItemSelectionOperation( Group group, java.util.UUID individualUUID ) {
+		this( group, individualUUID, -1 );
 	}
 	
 	

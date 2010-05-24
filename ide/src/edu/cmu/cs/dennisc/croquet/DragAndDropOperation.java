@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class DragAndDropOperation extends Operation {
-	public DragAndDropOperation( java.util.UUID groupUUID, java.util.UUID inividualUUID ) {
-		super( groupUUID, inividualUUID );
+	public DragAndDropOperation( Group group, java.util.UUID inividualUUID ) {
+		super( group, inividualUUID );
 	}
 	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( DragComponent dragSource );
 	public abstract void handleDragStarted( DragAndDropContext dragAndDropContext );

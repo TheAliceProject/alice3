@@ -88,8 +88,8 @@ public class EditFieldsPane extends EditMembersPane< edu.cmu.cs.dennisc.alice.as
 		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), fieldDeclaredInAlice ).getAwtComponent();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createEditOperation( java.util.UUID groupUUID, String name ) {
-		return new org.alice.ide.operations.ast.AbstractEditFieldOperation( groupUUID, java.util.UUID.fromString( "f4ff2dde-185f-4de0-8c90-6ab725184dca" ), "Edit..." ) {
+	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createEditOperation( edu.cmu.cs.dennisc.croquet.Group group, String name ) {
+		return new org.alice.ide.operations.ast.AbstractEditFieldOperation( group, java.util.UUID.fromString( "f4ff2dde-185f-4de0-8c90-6ab725184dca" ), "Edit..." ) {
 			@Override
 			protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = getSelectedItem();

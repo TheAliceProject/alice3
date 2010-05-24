@@ -46,8 +46,8 @@ package org.alice.ide.editorstabbedpane;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractEditableListPane< E > extends AbstractEditableListLikeSubstancePane< E > {
-	public AbstractEditableListPane( java.util.UUID groupUUID, javax.swing.JList list ) {
-		super( groupUUID, list );
+	public AbstractEditableListPane( edu.cmu.cs.dennisc.croquet.Group group, javax.swing.JList list ) {
+		super( group, list );
 	}
 	public javax.swing.JList getList() {
 		return (javax.swing.JList)this.getListLikeSubstance();

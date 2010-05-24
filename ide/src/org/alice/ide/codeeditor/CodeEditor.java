@@ -384,7 +384,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 					//final edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( source, CodeEditor.this, eSource );
 					class DropOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 						public DropOperation() {
-							super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "ad0e5d93-8bc2-4ad8-8dd5-37768eaa5319" ) );
+							super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "ad0e5d93-8bc2-4ad8-8dd5-37768eaa5319" ) );
 						}
 						@Override
 						protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
@@ -480,7 +480,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 					if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
 						class CopyOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 							public CopyOperation() {
-								super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "ef6143be-5de3-4a55-aed3-f61d8ebbbef2" ) );
+								super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "ef6143be-5de3-4a55-aed3-f61d8ebbbef2" ) );
 							}
 							@Override
 							protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
@@ -516,7 +516,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 							} else {
 								class ReorderOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 									public ReorderOperation() {
-										super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "e2cffe11-be24-4b5c-9ca4-ac0d71ecd16c" ) );
+										super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "e2cffe11-be24-4b5c-9ca4-ac0d71ecd16c" ) );
 									}
 									@Override
 									protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
@@ -559,7 +559,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 						} else {
 							class ReparentOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 								public ReparentOperation() {
-									super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "6049a378-2972-4672-a211-1f3fcda45025" ) );
+									super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "6049a378-2972-4672-a211-1f3fcda45025" ) );
 								}
 								@Override
 								protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > component ) {

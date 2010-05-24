@@ -51,7 +51,7 @@ public abstract class AbstractIsEnabledStatementOperation extends org.alice.ide.
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 
 	public AbstractIsEnabledStatementOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "340f585a-80de-4930-9b53-6c71a5f5c2be" ) );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "340f585a-80de-4930-9b53-6c71a5f5c2be" ) );
 		this.statement = statement;
 	}
 	protected abstract boolean getDesiredValue();

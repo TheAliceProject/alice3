@@ -48,7 +48,7 @@ package org.alice.stageide.operations.ast;
 public class EditPersonActionOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	public EditPersonActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "ad113b0e-acb2-4e43-8196-eba6a4961dc8" ) );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "ad113b0e-acb2-4e43-8196-eba6a4961dc8" ) );
 		this.setName( "Edit..." );
 		this.field = field;
 	}

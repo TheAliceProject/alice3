@@ -67,7 +67,7 @@ class FitnessLevelActionOperation extends org.alice.ide.operations.Inconsequenti
  * @author Dennis Cosgrove
  */
 class FitnessLevelPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	private edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerStateOperation fitnessState = new edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerStateOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "8e172c61-c2b6-43e4-9777-e9d8fd2b0d65" ), 0, 50, 100 );
+	private edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerStateOperation fitnessState = new edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerStateOperation( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8e172c61-c2b6-43e4-9777-e9d8fd2b0d65" ), 0, 50, 100 );
 	public FitnessLevelPane() {
 		this.addComponent( new FitnessLevelActionOperation( this.fitnessState, this.fitnessState.getMinimum(), "SOFT" ).createButton(), Constraint.WEST );
 		this.addComponent( this.fitnessState.createSlider(), Constraint.CENTER );

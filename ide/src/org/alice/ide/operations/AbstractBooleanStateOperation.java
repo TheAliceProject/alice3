@@ -46,11 +46,11 @@ package org.alice.ide.operations;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractBooleanStateOperation extends edu.cmu.cs.dennisc.croquet.BooleanStateOperation {
-	public AbstractBooleanStateOperation( java.util.UUID groupUUID, java.util.UUID individualId, Boolean initialValue, String trueText, String falseText ) {
-		super( groupUUID, individualId, initialValue, trueText, falseText );
+	public AbstractBooleanStateOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, Boolean initialValue, String trueText, String falseText ) {
+		super( group, individualId, initialValue, trueText, falseText );
 	}
-	public AbstractBooleanStateOperation( java.util.UUID groupUUID, java.util.UUID individualId, Boolean initialValue, String trueAndFalseText ) {
-		super( groupUUID, individualId, initialValue, trueAndFalseText );
+	public AbstractBooleanStateOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, Boolean initialValue, String trueAndFalseText ) {
+		super( group, individualId, initialValue, trueAndFalseText );
 	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();

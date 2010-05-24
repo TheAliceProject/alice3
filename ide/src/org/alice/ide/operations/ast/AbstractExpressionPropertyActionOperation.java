@@ -51,7 +51,7 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
 
 	public AbstractExpressionPropertyActionOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 		this.expressionProperty = expressionProperty;
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {

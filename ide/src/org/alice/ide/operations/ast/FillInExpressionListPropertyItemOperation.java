@@ -50,7 +50,7 @@ public abstract class FillInExpressionListPropertyItemOperation extends org.alic
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
 	private int index;
 	public FillInExpressionListPropertyItemOperation( java.util.UUID individualId, int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 		//this.type = type;
 		this.index = index;
 		this.expressionListProperty = expressionListProperty;

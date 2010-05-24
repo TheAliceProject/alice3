@@ -57,7 +57,7 @@ abstract class AbstractItemSelectionOperation<E> extends edu.cmu.cs.dennisc.croq
 //	}
 
 	public AbstractItemSelectionOperation( java.util.UUID individualId, E... items ) {
-		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, individualId );
+		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId );
 		this.setListData( -1, items );
 //		this.setItemSelectionOperation( new ItemSelectionOperation( comboBoxModel ) );
 		this.addValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< E >() {

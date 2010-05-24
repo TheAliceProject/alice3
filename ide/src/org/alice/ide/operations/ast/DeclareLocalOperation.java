@@ -50,7 +50,7 @@ public class DeclareLocalOperation extends edu.cmu.cs.dennisc.croquet.InputDialo
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement block;
 	private edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement localDeclarationStatement;
 	public DeclareLocalOperation( edu.cmu.cs.dennisc.alice.ast.BlockStatement block ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "aa3d337d-b409-46ae-816f-54f139b32d86" ) );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "aa3d337d-b409-46ae-816f-54f139b32d86" ) );
 		this.block = block;
 	}
 	@Override

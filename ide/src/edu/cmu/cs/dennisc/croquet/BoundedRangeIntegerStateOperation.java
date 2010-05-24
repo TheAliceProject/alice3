@@ -78,8 +78,8 @@ public final class BoundedRangeIntegerStateOperation extends Operation {
 			}
 		}
 	};
-	public BoundedRangeIntegerStateOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, int minimum, int value, int maximum ) {
-		super( groupUUID, individualUUID );
+	public BoundedRangeIntegerStateOperation( Group group, java.util.UUID individualUUID, int minimum, int value, int maximum ) {
+		super( group, individualUUID );
 		this.boundedRangeModel.setMinimum( minimum );
 		this.boundedRangeModel.setMaximum( maximum );
 		this.boundedRangeModel.setValue( value );

@@ -106,7 +106,7 @@ class ListPropertyComboBoxModel<E> extends javax.swing.AbstractListModel impleme
 public class ArrayInitializerPane extends AbstractInitializerPane {
 	class AddItemOperation extends org.alice.ide.operations.ActionOperation {
 		public AddItemOperation() {
-			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "a93199db-d9f7-4c95-b82d-f6ac6720f29b" ) );
+			super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "a93199db-d9f7-4c95-b82d-f6ac6720f29b" ) );
 			this.setName( "Add" );
 		}
 		@Override
@@ -140,7 +140,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 
 	class RemoveItemOperation extends org.alice.ide.operations.ActionOperation {
 		public RemoveItemOperation() {
-			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "a87ae96c-07fb-4a78-94c3-177ec3d642ce" ) );
+			super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "a87ae96c-07fb-4a78-94c3-177ec3d642ce" ) );
 			this.setName( "Remove" );
 		}
 		@Override
@@ -171,7 +171,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 	}
 	abstract class AbstractMoveItemOperation extends org.alice.ide.operations.ActionOperation {
 		public AbstractMoveItemOperation( java.util.UUID individualId ) {
-			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
+			super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 		}
 		protected abstract int getIndex( int selectedIndex );
 		protected abstract int getRedoSelectionIndexDelta();

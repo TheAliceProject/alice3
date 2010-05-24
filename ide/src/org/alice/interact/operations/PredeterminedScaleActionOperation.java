@@ -42,6 +42,8 @@
  */
 package org.alice.interact.operations;
 
+import edu.cmu.cs.dennisc.croquet.Group;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,8 +56,8 @@ public class PredeterminedScaleActionOperation extends edu.cmu.cs.dennisc.croque
 	private edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > criterion;
 	
 	private String editPresentationKey;
-	public PredeterminedScaleActionOperation( java.util.UUID groupUUID, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable, edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > criterion, String editPresentationKey ) {
-		super( groupUUID, java.util.UUID.fromString( "455cae50-c329-44e3-ba7c-9ef10f69d965" ) );
+	public PredeterminedScaleActionOperation( Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable, edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > criterion, String editPresentationKey ) {
+		super( group, java.util.UUID.fromString( "455cae50-c329-44e3-ba7c-9ef10f69d965" ) );
 		this.isDoRequired = isDoRequired;
 		this.animator = animator;
 		this.sgTransformable = sgTransformable;

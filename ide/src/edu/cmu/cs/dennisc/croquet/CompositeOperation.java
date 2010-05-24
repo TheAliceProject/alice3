@@ -55,8 +55,8 @@ public abstract class CompositeOperation extends AbstractActionOperation {
 			}
 		}
 	}
-	public CompositeOperation( java.util.UUID groupUUID, java.util.UUID individualUUID ) {
-		super( groupUUID, individualUUID );
+	public CompositeOperation( Group group, java.util.UUID individualUUID ) {
+		super( group, individualUUID );
 	}
 	protected abstract java.util.List< AbstractActionOperation > getOperations();
 }

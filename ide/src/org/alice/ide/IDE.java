@@ -46,7 +46,8 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public abstract class IDE extends org.alice.app.ProjectApplication {
-	public static final java.util.UUID PREFERENCES_GROUP = java.util.UUID.fromString( "c090cda0-4a77-4e2c-a839-faf28c98c10c" );
+	public static final edu.cmu.cs.dennisc.croquet.Group PREFERENCES_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "c090cda0-4a77-4e2c-a839-faf28c98c10c" ) );
+	public static final edu.cmu.cs.dennisc.croquet.Group RUN_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "f7a87645-567c-42c6-bf5f-ab218d93a226" ) );
 
 	public static interface FieldSelectionObserver {
 		public void fieldSelectionChanging( edu.cmu.cs.dennisc.alice.ast.AbstractField previousField, edu.cmu.cs.dennisc.alice.ast.AbstractField nextField );
@@ -603,7 +604,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private int projectHistoryInsertionIndexOfCurrentFile = 0;
 
 	private void updateHistoryLengthAtLastFileOperation() {
-		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP );
 		this.projectHistoryInsertionIndexOfCurrentFile = projectHistoryManager.getInsertionIndex();
 		this.updateTitle();
 	}
@@ -618,7 +619,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		//org.alice.ide.preferences.GeneralPreferences.getSingleton().desiredRecentProjectCount.setAndCommitValue( 10 );
 		//org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.clear();
 		
-		edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID ).addHistoryListener( new edu.cmu.cs.dennisc.history.event.HistoryListener() {
+		edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP ).addHistoryListener( new edu.cmu.cs.dennisc.history.event.HistoryListener() {
 			public void operationPushing( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
 			}
 			public void operationPushed( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {

@@ -46,11 +46,11 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class TabStateOperation extends BooleanStateOperation {
-	public TabStateOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, boolean initialState ) {
-		super( groupUUID, individualUUID, initialState );
+	public TabStateOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualUUID, boolean initialState ) {
+		super( group, individualUUID, initialState );
 	}
-	public TabStateOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, boolean initialState, String title ) {
-		super( groupUUID, individualUUID, initialState, title );
+	public TabStateOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualUUID, boolean initialState, String title ) {
+		super( group, individualUUID, initialState, title );
 	}
 	private edu.cmu.cs.dennisc.croquet.ScrollPane singletonScrollPane;
 

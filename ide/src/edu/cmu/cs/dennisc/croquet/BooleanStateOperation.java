@@ -84,8 +84,8 @@ public /*final*/ class BooleanStateOperation extends Operation {
 	private String trueText = null;
 	private String falseText = null;
 
-	public BooleanStateOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, boolean initialState, String trueText, String falseText) {
-		super(groupUUID, individualUUID);
+	public BooleanStateOperation(Group group, java.util.UUID individualUUID, boolean initialState, String trueText, String falseText) {
+		super(group, individualUUID);
 		this.state = initialState;
 		this.buttonModel.setSelected(initialState);
 		this.buttonModel.addItemListener(this.itemListener);
@@ -93,11 +93,11 @@ public /*final*/ class BooleanStateOperation extends Operation {
 		this.setFalseText(falseText);
 	}
 
-	public BooleanStateOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, boolean initialState, String trueAndFalseText) {
-		this(groupUUID, individualUUID, initialState, trueAndFalseText, trueAndFalseText);
+	public BooleanStateOperation(Group group, java.util.UUID individualUUID, boolean initialState, String trueAndFalseText) {
+		this(group, individualUUID, initialState, trueAndFalseText, trueAndFalseText);
 	}
-	public BooleanStateOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, boolean initialState ) {
-		this(groupUUID, individualUUID, initialState, null, null );
+	public BooleanStateOperation(Group group, java.util.UUID individualUUID, boolean initialState ) {
+		this(group, individualUUID, initialState, null, null );
 	}
 
 	/*package-private*/ javax.swing.ButtonModel getButtonModel() {

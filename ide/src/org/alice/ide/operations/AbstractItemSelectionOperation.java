@@ -47,7 +47,7 @@ package org.alice.ide.operations;
  */
 public abstract class AbstractItemSelectionOperation<E> extends edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<E> {
 	public AbstractItemSelectionOperation( java.util.UUID individualId, int selectedIndex, E... items ) {
-		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, individualId );
+		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId );
 		this.setListData(selectedIndex, items);
 	}
 	protected org.alice.ide.IDE getIDE() {

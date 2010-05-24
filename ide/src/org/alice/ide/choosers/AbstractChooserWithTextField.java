@@ -46,7 +46,7 @@ package org.alice.ide.choosers;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractChooserWithTextField<E> extends AbstractChooser<E> {
-	private edu.cmu.cs.dennisc.croquet.StringStateOperation stringState = new edu.cmu.cs.dennisc.croquet.StringStateOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "6213f5a4-b4b4-4c49-a5e3-2db644edb2cd" ), "" );
+	private edu.cmu.cs.dennisc.croquet.StringStateOperation stringState = new edu.cmu.cs.dennisc.croquet.StringStateOperation( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "6213f5a4-b4b4-4c49-a5e3-2db644edb2cd" ), "" );
 	
 //	private edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField textField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField() {
 //		@Override
