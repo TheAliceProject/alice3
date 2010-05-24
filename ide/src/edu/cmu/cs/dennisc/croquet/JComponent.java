@@ -57,6 +57,12 @@ public abstract class JComponent<J extends javax.swing.JComponent> extends Conta
 		this.getAwtComponent().setAlignmentY(alignmentY);
 	}
 
+	public java.awt.Rectangle getVisibleRectangle() {
+		return this.getAwtComponent().getVisibleRect();
+	}
+	public java.awt.Rectangle getVisibleRectangle( Component< ? > destination ) {
+		return this.convertRectangle( this.getVisibleRectangle(), destination );
+	}
 
 	public java.awt.Insets getInsets() {
 		return this.getAwtComponent().getInsets();

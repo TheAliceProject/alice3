@@ -58,7 +58,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	};
 
-	public Hole(edu.cmu.cs.dennisc.croquet.Component<?> component, ConnectionPreference connectionPreference) {
+	public Hole(edu.cmu.cs.dennisc.croquet.JComponent<?> component, ConnectionPreference connectionPreference) {
 		super(component, connectionPreference);
 	}
 

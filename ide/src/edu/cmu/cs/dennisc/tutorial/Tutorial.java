@@ -206,13 +206,18 @@ public class Tutorial {
 		Step step = NoteStep.createMessageNoteStep( this, title, text );
 		this.addStep( step );
 	}
-	public void createAndAddSpotlightStep( String title, String text, edu.cmu.cs.dennisc.croquet.Component< ? > componentToSpotlight ) {
+	public void createAndAddSpotlightStep( String title, String text, edu.cmu.cs.dennisc.croquet.JComponent< ? > componentToSpotlight ) {
 		Step step = NoteStep.createSpotlightMessageNoteStep( this, title, text, componentToSpotlight );
 		this.addStep( step );
 	}
 	public void createAndAddActionStep( String title, String text, edu.cmu.cs.dennisc.croquet.AbstractActionOperation operation ) {
-		edu.cmu.cs.dennisc.croquet.Component< ? > component = operation.getFirstComponent();
+		edu.cmu.cs.dennisc.croquet.JComponent< ? > component = operation.getFirstComponent();
 		Step step = NoteStep.createActionMessageNoteStep( this, title, text, component );
+		this.addStep( step );
+	}
+	public void createAndAddTabStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.TabStateOperation operation ) {
+		edu.cmu.cs.dennisc.croquet.JComponent< ? > component = operation.getFirstComponent();
+		Step step = NoteStep.createTabStateMessageNoteStep( this, title, text, component );
 		this.addStep( step );
 	}
 	

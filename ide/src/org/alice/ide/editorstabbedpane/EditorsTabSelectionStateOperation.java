@@ -335,7 +335,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 //				return index > 0 || org.alice.ide.IDE.getSingleton().isEmphasizingClasses();
 //			}
 			@Override
-			protected edu.cmu.cs.dennisc.croquet.Component<?> createSingletonView() {
+			protected edu.cmu.cs.dennisc.croquet.JComponent<?> createSingletonView() {
 				final org.alice.ide.codeeditor.CodeEditor codeEditor = new org.alice.ide.codeeditor.CodeEditor( code );
 				if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 					edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;

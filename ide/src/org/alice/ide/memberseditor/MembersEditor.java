@@ -191,22 +191,33 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	}
 	private MemberTabStateOperation proceduresTabStateOperation = new MemberTabStateOperation( java.util.UUID.fromString( "2731d704-1f80-444e-a610-e6e5866c0b9a" ), true ) {
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.Component<?> createSingletonView() {
+		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createSingletonView() {
 			return new ProceduresContentPanel();
 		}
 	};
 	private MemberTabStateOperation functionsTabStateOperation = new MemberTabStateOperation( java.util.UUID.fromString( "0f5d1f93-fc67-4109-9aff-0e7b232f201c" ), false ) {
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.Component<?> createSingletonView() {
+		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createSingletonView() {
 			return new FunctionsContentPanel();
 		}
 	};
 	private MemberTabStateOperation fieldsTabStateOperation = new MemberTabStateOperation( java.util.UUID.fromString( "6cb9c5a1-dc60-48e7-9a52-534009a093b8" ), false ) {
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.Component<?> createSingletonView() {
+		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createSingletonView() {
 			return new FieldsContentPanel();
 		}
 	};
+	
+	public edu.cmu.cs.dennisc.croquet.TabStateOperation getProceduresTabStateOperation() {
+		return this.proceduresTabStateOperation;
+	}
+	public edu.cmu.cs.dennisc.croquet.TabStateOperation getFunctionsTabStateOperation() {
+		return this.functionsTabStateOperation;
+	}
+	public edu.cmu.cs.dennisc.croquet.TabStateOperation getFieldsTabStateOperation() {
+		return this.fieldsTabStateOperation;
+	}
+	
 	private org.alice.ide.IDE.FieldSelectionObserver fieldSelectionObserver = new org.alice.ide.IDE.FieldSelectionObserver() {
 		public void fieldSelectionChanging( edu.cmu.cs.dennisc.alice.ast.AbstractField previousField, edu.cmu.cs.dennisc.alice.ast.AbstractField nextField ) {
 		}

@@ -80,7 +80,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 
 	private ContentTabStateOperation bodyTabState = new ContentTabStateOperation(java.util.UUID.fromString( "10c0d057-a5d7-4a36-8cd7-c30f46f5aac2" ), true, "Body") {
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.Component<?> createSingletonView() {
+		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createSingletonView() {
 			edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( IngredientsPane.this.fullBodyOutfitCardPanel );
 			scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 66 );
 			//scrollPane.getVerticalScrollBar().setBlockIncrement( 10 );
@@ -99,7 +99,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	};
 	private ContentTabStateOperation headTabState = new ContentTabStateOperation(java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ), false, "Head") {
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.Component<?> createSingletonView() {
+		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createSingletonView() {
 			edu.cmu.cs.dennisc.croquet.RowsSpringPanel rv = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 8 ) {
 				@Override
 				protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {

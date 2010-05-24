@@ -65,8 +65,8 @@ public abstract class Step {
 	public Iterable< Feature > getFeatures() {
 		return this.features;
 	}
-	public abstract edu.cmu.cs.dennisc.croquet.Component< ? > getCard();
-	public abstract edu.cmu.cs.dennisc.croquet.Component< ? > getNote();
+	public abstract edu.cmu.cs.dennisc.croquet.JComponent< ? > getCard();
+	public abstract edu.cmu.cs.dennisc.croquet.JComponent< ? > getNote();
 
 	private static int getXForWestLayout( java.awt.Rectangle noteBounds, java.awt.Rectangle featureComponentBounds ) {
 		int x = featureComponentBounds.x;

@@ -71,8 +71,8 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 		return this.singletonScrollPane;
 	}
 	
-	private Component<?> singletonView;
-	public final Component<?> getSingletonView() {
+	private JComponent<?> singletonView;
+	public final JComponent<?> getSingletonView() {
 		if( this.singletonView != null ) {
 			//pass
 		} else {
@@ -80,7 +80,7 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 		}
 		return this.singletonView;
 	}
-	protected abstract Component<?> createSingletonView();
+	protected abstract JComponent<?> createSingletonView();
 	protected abstract boolean isCloseAffordanceDesired();
 
 	private static class CloseButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
@@ -238,5 +238,4 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 	/*package-private*/AbstractButton<?> createTabTitle() {
 		return register( new TabTitle() );
 	}
-	
 }

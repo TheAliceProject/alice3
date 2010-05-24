@@ -67,7 +67,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	};
 	private static final java.awt.Stroke STROKE = new java.awt.BasicStroke( 3.0f ); 
 
-	public Frame( edu.cmu.cs.dennisc.croquet.Component<?> component, ConnectionPreference connectionPreference ) {
+	public Frame( edu.cmu.cs.dennisc.croquet.JComponent<?> component, ConnectionPreference connectionPreference ) {
 		super( component, connectionPreference );
 	}
 	@Override

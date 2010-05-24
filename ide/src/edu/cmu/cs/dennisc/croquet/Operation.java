@@ -135,8 +135,8 @@ public abstract class Operation {
 	}
 	
 	@Deprecated
-	public Component< ? > getFirstComponent() {
-		return this.components.get( 0 );
+	public JComponent< ? > getFirstComponent() {
+		return (JComponent<?>)this.components.get( 0 );
 	}
 	
 //	protected abstract void perform( C context );
