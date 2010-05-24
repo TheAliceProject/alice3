@@ -117,6 +117,20 @@ public class Tutorial {
 		}
 	}
 
+	private edu.cmu.cs.dennisc.croquet.Context.ChildrenObserver childrenObserver = new edu.cmu.cs.dennisc.croquet.Context.ChildrenObserver() {
+		public void addingChild(edu.cmu.cs.dennisc.croquet.HistoryTreeNode child) {
+			
+		}
+		public void addedChild(edu.cmu.cs.dennisc.croquet.HistoryTreeNode child) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( child );
+//			String simpleName = child.getClass().getSimpleName();
+//			if( simpleName.contains( "CommitEvent" ) ) {
+//				Thread.dumpStack();
+//				nextStepOperation.fire();
+//			}
+		}
+	};
+	
 	private StepsComboBoxModel stepsComboBoxModel = new StepsComboBoxModel();
 	private PreviousStepOperation previousStepOperation = new PreviousStepOperation( this.stepsComboBoxModel );
 	private NextStepOperation nextStepOperation = new NextStepOperation( this.stepsComboBoxModel );
@@ -230,19 +244,20 @@ public class Tutorial {
 				@Override
 				public void addDirtyRegion(javax.swing.JComponent c, int x, int y, int w, int h) {
 					super.addDirtyRegion(c, x, y, w, h);
+					//edu.cmu.cs.dennisc.print.PrintUtilities.println( "addDirtyRegion", c, x, y, w, h );
 					final javax.swing.JComponent jStencil = stencil.getAwtComponent();
 					if( jStencil == c || jStencil.isAncestorOf( c ) ) {
 						//pass
 					} else {
 						final java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle( c, new java.awt.Rectangle(x,y,w,h), jStencil );
-//						javax.swing.SwingUtilities.invokeLater(new Runnable() {
-//							public void run() {
+						javax.swing.SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
 								jStencil.repaint( rect.x, rect.y, rect.width, rect.height );
 								//StencilRepaintManager.super.addDirtyRegion( jStencil, rect.x, rect.y, rect.width, rect.height);
-//							}
-//						} );
+							}
+						} );
 					}
-				}
+				}				
 			};
 			javax.swing.RepaintManager repaintManager = new StencilRepaintManager();
 			javax.swing.RepaintManager.setCurrentManager( repaintManager );
@@ -260,7 +275,11 @@ public class Tutorial {
 				}
 			};
 			
-			javax.swing.JFrame frame = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getAwtWindow();
+			
+			edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
+			application.getRootContext().addChildrenObserver( this.childrenObserver );
+			
+			javax.swing.JFrame frame = application.getFrame().getAwtWindow();
 			javax.swing.JLayeredPane layeredPane = frame.getLayeredPane();
 
 			stencil.getAwtComponent().setBounds( layeredPane.getBounds() );
