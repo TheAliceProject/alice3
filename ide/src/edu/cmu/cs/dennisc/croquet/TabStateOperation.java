@@ -235,7 +235,14 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 		}
 	}
 	
-	/*package-private*/AbstractButton<?> createTabTitle() {
-		return register( new TabTitle() );
+	private TabTitle tabTitle;
+	/*package-private*/AbstractButton<?> getSingletonTabTitle() {
+		if( this.tabTitle != null ) {
+			//pass
+		} else {
+			this.tabTitle = new TabTitle();
+			register( this.tabTitle );
+		}
+		return this.tabTitle;
 	}
 }

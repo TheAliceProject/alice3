@@ -46,9 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class TabbedPane extends JComponent<javax.swing.JComponent> {
-	private BorderPanel panel;
-
+public final class TabbedPane extends AbstractSingleSelectionPane {
 	private static class HeaderPane extends JComponent<javax.swing.JPanel> {
 		private static final int NORTH_AREA_PAD = 8;
 		private static final int EAST_TAB_PAD = 48;
@@ -185,9 +183,9 @@ public final class TabbedPane extends JComponent<javax.swing.JComponent> {
 		}
 	}
 
+	private BorderPanel panel;
 	private CardPanel cardPanel = new CardPanel();
 	private HeaderPane headerPane = new HeaderPane();
-	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 //	private javax.swing.SingleSelectionModel singleSelectionModel = new javax.swing.DefaultSingleSelectionModel();
 //	private javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
 //		public void stateChanged(javax.swing.event.ChangeEvent e) {
@@ -219,64 +217,76 @@ public final class TabbedPane extends JComponent<javax.swing.JComponent> {
 			return this.tabStateOperation;
 		}
 	}
-	private final java.util.Map<javax.swing.ButtonModel, Key> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-
-	private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
-		public void itemStateChanged(java.awt.event.ItemEvent e) {
-			if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
-				java.awt.ItemSelectable itemSelectable = e.getItemSelectable();
-				Key key;
-				if( itemSelectable instanceof javax.swing.ButtonModel ) {
-					key = map.get( (javax.swing.ButtonModel)itemSelectable );
-					assert key != null;
-				} else {
-					assert false;
-					key = null;
-				}
-				TabbedPane.this.selectTab( key );
-			} else {
-				//pass
-			}
+	
+	private java.util.Map<TabStateOperation, edu.cmu.cs.dennisc.croquet.CardPanel.Key> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private edu.cmu.cs.dennisc.croquet.CardPanel.Key getKey( TabStateOperation tabStateOperation ) {
+		edu.cmu.cs.dennisc.croquet.CardPanel.Key rv = this.map.get( tabStateOperation );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = this.cardPanel.createKey( tabStateOperation.getSingletonScrollPane(), tabStateOperation.getIndividualUUID().toString() );
+			this.map.put( tabStateOperation, rv );
 		}
-	};
-
-	/* package-private */Key createKey(AbstractButton<?> header, Component<?> mainComponent, TabStateOperation tabStateOperation) {
-		Key rv = new Key(header, mainComponent, tabStateOperation);
-		map.put( header.getAwtComponent().getModel(), rv);
 		return rv;
 	}
-
-	/* package-private */void addTab(Key key) {
-		this.headerPane.addComponent(key.headerComponent);
-		this.buttonGroup.add(key.headerComponent.getAwtComponent());
-		this.cardPanel.addComponent(key.mainComponentKey);
-		key.headerComponent.getAwtComponent().getModel().addItemListener( this.itemListener );
-		this.revalidateAndRepaint();
+	@Override
+	/* package-private */ void addTab(TabStateOperation tabStateOperation) {
+		super.addTab(tabStateOperation);
+		this.headerPane.addComponent(tabStateOperation.getSingletonTabTitle());
+		this.cardPanel.addComponent(this.getKey(tabStateOperation));
+	}
+	
+	@Override
+	/* package-private */ void removeTab(edu.cmu.cs.dennisc.croquet.TabStateOperation tabStateOperation) {
+		super.removeTab(tabStateOperation);
+		this.cardPanel.removeComponent(this.getKey(tabStateOperation));
+		this.headerPane.removeComponent(tabStateOperation.getSingletonTabTitle());
 	}
 
-	/* package-private */void removeTab(Key key) {
-		key.headerComponent.getAwtComponent().getModel().removeItemListener( this.itemListener );
-		this.cardPanel.removeComponent(key.mainComponentKey);
-		this.buttonGroup.remove(key.headerComponent.getAwtComponent());
-		this.headerPane.removeComponent(key.headerComponent);
-		this.revalidateAndRepaint();
-	}
-
-	/* package-private */ void selectTab(Key key) {
-		if( key != null ) {
-			this.cardPanel.show(key.mainComponentKey);
+	@Override
+	/* package-private */ void selectTab(edu.cmu.cs.dennisc.croquet.TabStateOperation tabStateOperation) {
+		if( tabStateOperation != null ) {
+			this.cardPanel.show(this.getKey(tabStateOperation));
 		} else {
 			this.cardPanel.show( null );
 		}
-		
 	}
-	
-	/* package-private */Key getSelectedKey() {
-		javax.swing.ButtonModel model = this.buttonGroup.getSelection();
-		if( model != null ) {
-			return this.map.get( model );
-		} else {
-			return null;
-		}
-	}
+//	/* package-private */Key createKey(AbstractButton<?> header, Component<?> mainComponent, TabStateOperation tabStateOperation) {
+//		Key rv = new Key(header, mainComponent, tabStateOperation);
+//		map.put( header.getAwtComponent().getModel(), rv);
+//		return rv;
+//	}
+
+//	/* package-private */void addTab(Key key) {
+//		this.buttonGroup.add(key.headerComponent.getAwtComponent());
+//		this.headerPane.addComponent(key.headerComponent);
+//		this.cardPanel.addComponent(key.mainComponentKey);
+//		key.headerComponent.getAwtComponent().getModel().addItemListener( this.itemListener );
+//		this.revalidateAndRepaint();
+//	}
+//
+//	/* package-private */void removeTab(Key key) {
+//		key.headerComponent.getAwtComponent().getModel().removeItemListener( this.itemListener );
+//		this.cardPanel.removeComponent(key.mainComponentKey);
+//		this.buttonGroup.remove(key.headerComponent.getAwtComponent());
+//		this.headerPane.removeComponent(key.headerComponent);
+//		this.revalidateAndRepaint();
+//	}
+//
+//	/* package-private */ void selectTab(Key key) {
+//		if( key != null ) {
+//			this.cardPanel.show(key.mainComponentKey);
+//		} else {
+//			this.cardPanel.show( null );
+//		}
+//		
+//	}
+//	/* package-private */Key getSelectedKey() {
+//		javax.swing.ButtonModel model = this.buttonGroup.getSelection();
+//		if( model != null ) {
+//			return this.map.get( model );
+//		} else {
+//			return null;
+//		}
+//	}
 }

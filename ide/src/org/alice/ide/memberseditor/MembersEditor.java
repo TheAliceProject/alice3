@@ -226,7 +226,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	};
 
-	private edu.cmu.cs.dennisc.croquet.TabbedPaneSelectionOperation tabbedPaneSelectionOperation = new edu.cmu.cs.dennisc.croquet.TabbedPaneSelectionOperation( 
+	private edu.cmu.cs.dennisc.croquet.SingleTabSelectionOperation tabbedPaneSelectionOperation = new edu.cmu.cs.dennisc.croquet.SingleTabSelectionOperation( 
 			org.alice.ide.IDE.IDE_GROUP, 
 			java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ),
 			this.proceduresTabStateOperation,
@@ -260,7 +260,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	}
 	
 	public MembersEditor() {
-		this.addComponent( this.tabbedPaneSelectionOperation.getSingletonTabbedPane(), Constraint.CENTER );
+		this.addComponent( this.tabbedPaneSelectionOperation.getSingletonTabbedPane( false ), Constraint.CENTER );
 	}
 	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
 		this.refresh();

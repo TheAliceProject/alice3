@@ -239,7 +239,7 @@ class Cycle< E > {
 /**
  * @author Dennis Cosgrove
  */
-public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croquet.TabbedPaneSelectionOperation {
+public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croquet.SingleTabSelectionOperation {
 	class EditPreviousCodeOperation extends org.alice.ide.operations.ActionOperation {
 		public EditPreviousCodeOperation() {
 			super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "71ff1171-9e5e-443f-a7aa-cb4012f05fec" ) );
@@ -386,7 +386,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 	};
 
 	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
-		this.getSingletonTabbedPane().getAwtComponent().updateUI();
+		this.getSingletonTabbedPane( true ).getAwtComponent().updateUI();
 	}
 	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
 		for( edu.cmu.cs.dennisc.croquet.TabStateOperation tabIsSelectedOperation : this.getTabStateOperations() ) {
