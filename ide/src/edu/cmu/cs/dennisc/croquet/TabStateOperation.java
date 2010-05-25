@@ -179,7 +179,9 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 		private javax.swing.JLabel label = new javax.swing.JLabel();
 		private javax.swing.JButton closeButton = new javax.swing.JButton();
 		private javax.swing.Action action;
-		public JTabTitle( boolean isCloseAffordanceDesired ) {
+		private AbstractSingleSelectionPane singleSelectionPane;
+		public JTabTitle( AbstractSingleSelectionPane singleSelectionPane, boolean isCloseAffordanceDesired ) {
+			this.singleSelectionPane = singleSelectionPane;
 			this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
 			this.add( this.label );
 			
@@ -192,10 +194,50 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 			}
 
 			
-			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 4, 4, 8 ) );
-			this.setOpaque( false );
+			if( this.singleSelectionPane instanceof SingleSelectionToolPalette ) {
+				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 32, 4, 4 ) );
+			} else {
+				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 4, 4, 8 ) );
+			}
+			
+			this.setOpaque( this.singleSelectionPane instanceof SingleSelectionToolPalette );
 		}
-		
+		@Override
+		protected void paintComponent(java.awt.Graphics g) {
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			if( this.singleSelectionPane instanceof SingleSelectionToolPalette ) {
+				java.awt.Color color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB(this.getBackground(), 1.0, 0.9, 0.9 );
+				g2.setPaint( color );
+				g2.fill( g2.getClip() );
+			}
+			super.paintComponent(g);
+			if( this.singleSelectionPane instanceof SingleSelectionToolPalette ) {
+				int height = this.getHeight();
+				final int SIZE = 6;
+				java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+				path.moveTo( SIZE, 0 );
+				path.lineTo( -SIZE, SIZE );
+				path.lineTo( -SIZE, -SIZE );
+				path.closePath();
+				
+				int x = 18;
+				int y = height/2;
+				
+				java.awt.geom.AffineTransform m = g2.getTransform();
+				
+				
+				g.translate(x, y);
+				if( this.getModel().isSelected() ) {
+					g2.rotate( Math.PI/2 );
+				}
+				g2.setPaint( java.awt.Color.WHITE );
+				g2.fill( path );
+				g2.setPaint( java.awt.Color.BLACK );
+				g2.draw( path );
+				
+				g2.setTransform( m );
+			}
+		}
 		private void updateLabel() {
 			if( this.action != null ) {
 				this.label.setText( (String)action.getValue( javax.swing.Action.NAME ) );
@@ -225,22 +267,25 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 		}
 	}
 
-	private class TabTitle extends AbstractButton< javax.swing.AbstractButton > {
+	private static class TabTitle extends AbstractButton< javax.swing.AbstractButton > {
+		private AbstractSingleSelectionPane singleSelectionPane;
+		private boolean isCloseAffordanceDesired;
+		public TabTitle( AbstractSingleSelectionPane singleSelectionPane, boolean isCloseAffordanceDesired ) {
+			this.singleSelectionPane = singleSelectionPane;
+			this.isCloseAffordanceDesired = isCloseAffordanceDesired;
+		}
 		@Override
 		protected javax.swing.AbstractButton createAwtComponent() {
-//			javax.swing.AbstractButton rv = new JTabTitle( TabStateOperation.this.isCloseAffordanceDesired() );
-//			rv.setModel( TabStateOperation.this.getButtonModel() );
-//			return rv;
-			return new JTabTitle( TabStateOperation.this.isCloseAffordanceDesired() );
+			return new JTabTitle( this.singleSelectionPane, this.isCloseAffordanceDesired );
 		}
 	}
 	
 	private TabTitle tabTitle;
-	/*package-private*/AbstractButton<?> getSingletonTabTitle() {
+	/*package-private*/AbstractButton<?> getSingletonTabTitle( AbstractSingleSelectionPane singleSelectionPane ) {
 		if( this.tabTitle != null ) {
 			//pass
 		} else {
-			this.tabTitle = new TabTitle();
+			this.tabTitle = new TabTitle( singleSelectionPane, this.isCloseAffordanceDesired() );
 			register( this.tabTitle );
 		}
 		return this.tabTitle;

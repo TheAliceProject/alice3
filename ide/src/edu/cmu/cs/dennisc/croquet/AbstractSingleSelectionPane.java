@@ -70,8 +70,7 @@ public abstract class AbstractSingleSelectionPane extends JComponent<javax.swing
 	};
 
 	/* package-private */ void addTab( TabStateOperation tabStateOperation ) {
-		
-		AbstractButton<?> tabTitle = tabStateOperation.getSingletonTabTitle();
+		AbstractButton<?> tabTitle = tabStateOperation.getSingletonTabTitle( this );
 		this.map.put( tabTitle.getAwtComponent().getModel(), tabStateOperation);
 		this.buttonGroup.add(tabTitle.getAwtComponent());
 		tabTitle.getAwtComponent().getModel().addItemListener( this.itemListener );
@@ -79,7 +78,7 @@ public abstract class AbstractSingleSelectionPane extends JComponent<javax.swing
 	}
 
 	/* package-private */ void removeTab( TabStateOperation tabStateOperation ) {
-		AbstractButton<?> tabTitle = tabStateOperation.getSingletonTabTitle();
+		AbstractButton<?> tabTitle = tabStateOperation.getSingletonTabTitle( this );
 		tabTitle.getAwtComponent().getModel().removeItemListener( this.itemListener );
 		this.buttonGroup.remove(tabTitle.getAwtComponent());
 		this.map.remove( tabTitle.getAwtComponent().getModel() );

@@ -118,7 +118,7 @@ public class SingleTabSelectionOperation extends Operation {
 		//Thread.dumpStack();
 		ScrollPane scrollPane = tabState.getSingletonScrollPane();
 		Component<?> mainComponent = tabState.getSingletonView();
-		AbstractButton<?> titleButton = tabState.getSingletonTabTitle();
+		AbstractButton<?> titleButton = tabState.getSingletonTabTitle( this.singletonTabbedPane );
 		titleButton.scaleFont( this.headerFontScalar );
 		titleButton.setBackgroundColor( mainComponent.getBackgroundColor() );
 		scrollPane.setBackgroundColor( mainComponent.getBackgroundColor() );

@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public final class SingleSelectionToolPalette extends AbstractSingleSelectionPane {
-	private PageAxisPanel panel = new PageAxisPanel();
+	private GridBagPanel panel = new GridBagPanel();
 	@Override
 	protected javax.swing.JComponent createAwtComponent() {
 		return this.panel.getAwtComponent();
@@ -57,14 +57,21 @@ public final class SingleSelectionToolPalette extends AbstractSingleSelectionPan
 	/*package-private*/ void addTab(edu.cmu.cs.dennisc.croquet.TabStateOperation tabStateOperation) {
 		super.addTab(tabStateOperation);
 		this.tabStateOperations.add( tabStateOperation );
-		this.panel.addComponent( tabStateOperation.getSingletonTabTitle() );
-		this.panel.addComponent( tabStateOperation.getSingletonScrollPane() );
+		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+		gbc.fill = java.awt.GridBagConstraints.BOTH;
+		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		gbc.weightx = 1.0f;
+		gbc.weighty = 0.0f;
+		this.panel.addComponent( tabStateOperation.getSingletonTabTitle( this ), gbc );
+		gbc.weighty = 1.0f;
+		this.panel.addComponent( tabStateOperation.getSingletonScrollPane(), gbc );
+		tabStateOperation.getSingletonScrollPane().setVisible( tabStateOperation.getState() );
 	}
 	@Override
 	/*package-private*/ void removeTab(edu.cmu.cs.dennisc.croquet.TabStateOperation tabStateOperation) {
 		super.removeTab(tabStateOperation);
 		this.tabStateOperations.remove( tabStateOperation );
-		this.panel.removeComponent( tabStateOperation.getSingletonTabTitle() );
+		this.panel.removeComponent( tabStateOperation.getSingletonTabTitle( this ) );
 		this.panel.removeComponent( tabStateOperation.getSingletonScrollPane() );
 	}
 	@Override

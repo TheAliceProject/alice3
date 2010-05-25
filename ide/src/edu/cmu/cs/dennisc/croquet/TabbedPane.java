@@ -232,7 +232,7 @@ public final class TabbedPane extends AbstractSingleSelectionPane {
 	@Override
 	/* package-private */ void addTab(TabStateOperation tabStateOperation) {
 		super.addTab(tabStateOperation);
-		this.headerPane.addComponent(tabStateOperation.getSingletonTabTitle());
+		this.headerPane.addComponent(tabStateOperation.getSingletonTabTitle( this ));
 		this.cardPanel.addComponent(this.getKey(tabStateOperation));
 	}
 	
@@ -240,7 +240,7 @@ public final class TabbedPane extends AbstractSingleSelectionPane {
 	/* package-private */ void removeTab(edu.cmu.cs.dennisc.croquet.TabStateOperation tabStateOperation) {
 		super.removeTab(tabStateOperation);
 		this.cardPanel.removeComponent(this.getKey(tabStateOperation));
-		this.headerPane.removeComponent(tabStateOperation.getSingletonTabTitle());
+		this.headerPane.removeComponent(tabStateOperation.getSingletonTabTitle( this ));
 	}
 
 	@Override
