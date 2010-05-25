@@ -164,6 +164,7 @@ public class List<E> extends JComponent<javax.swing.JList > {
 			this.model.addListDataListener( this.listDataListener );
 		}
 	}
+	
 	/*package-private*/ void setSelectionModel( javax.swing.ListSelectionModel listSelectionModel ) {
 		this.getAwtComponent().setSelectionModel( listSelectionModel );
 	}
