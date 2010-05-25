@@ -128,7 +128,7 @@ public abstract class Application {
 				Application.this.handleQuit( e );
 			}
 		} );
-		this.frame.pack();
+		//this.frame.pack();
 	}
 
 	private java.util.List< LocaleObserver > localeObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();

@@ -133,6 +133,21 @@ public abstract class Operation {
 			this.components.remove( component );
 		}
 	}
+
+	protected void repaintAllComponents() {
+		synchronized( this.components ) {
+			for( JComponent<?> component : this.components ) {
+				component.repaint();
+			}
+		}
+	}
+	protected void revalidateAndRepaintAllComponents() {
+		synchronized( this.components ) {
+			for( JComponent<?> component : this.components ) {
+				component.revalidateAndRepaint();
+			}
+		}
+	}
 	
 	@Deprecated
 	public JComponent< ? > getFirstComponent() {

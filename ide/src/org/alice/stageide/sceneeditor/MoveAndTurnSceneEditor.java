@@ -232,6 +232,17 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthEast( lgPanel, this.getIDE().getRunOperation().createButton().getAwtComponent(), INSET );
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouth( lgPanel, mainCameraNavigatorWidget, INSET );
 
+			
+//			edu.cmu.cs.dennisc.croquet.GridPanel testPanel = edu.cmu.cs.dennisc.croquet.GridPanel.createSingleColumnGridPane();
+//			
+//			javax.swing.JRadioButton a = new javax.swing.JRadioButton( "scene" );
+//			javax.swing.JRadioButton b = new javax.swing.JRadioButton( "ground" );
+//			a.setOpaque( false );
+//			b.setOpaque( false );
+//			testPanel.getAwtComponent().add( a );
+//			testPanel.getAwtComponent().add( b );
+//			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouthWest( lgPanel, testPanel.getAwtComponent(), INSET );
+			
 			this.globalDragAdapter.setAnimator( animator );
 			this.globalDragAdapter.addPropertyListener( new org.alice.interact.event.SelectionListener() {
 				public void selecting( org.alice.interact.event.SelectionEvent e ) {

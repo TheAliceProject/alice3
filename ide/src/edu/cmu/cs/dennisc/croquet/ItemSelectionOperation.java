@@ -196,6 +196,7 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 		context.commitAndInvokeDo( new ItemSelectionEdit< E >( context, e, this.previousSelection, nextSelection, this ) );
 		this.fireValueChanged( nextSelection );
 		this.previousSelection = nextSelection;
+		this.repaintAllComponents();
 	}
 
 //	protected String getNameFor( int index, E item ) {
@@ -315,4 +316,10 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 		rv.setSelectionModel( this.listSelectionModel );
 		return rv;
 	}
+	
+//todo:
+//	public Menu createMenu() {
+//		Menu rv = new Menu();
+//		return rv;
+//	}
 }

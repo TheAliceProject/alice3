@@ -51,7 +51,14 @@ public class ComboBox< E > extends JComponent<javax.swing.JComboBox> {
 	}
 	@Override
 	protected javax.swing.JComboBox createAwtComponent() {
-		return new javax.swing.JComboBox();
+		return new javax.swing.JComboBox() {
+			@Override
+			public java.awt.Dimension getMaximumSize() {
+				java.awt.Dimension rv = super.getMaximumSize();
+				rv.height = this.getPreferredSize().height;
+				return rv;
+			}
+		};
 	}
 	public javax.swing.ListCellRenderer getRenderer() {
 		return this.getAwtComponent().getRenderer();
