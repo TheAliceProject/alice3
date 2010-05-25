@@ -78,12 +78,12 @@ public class SingleTabSelectionOperation extends Operation {
 	}
 	public void addTabStateOperation( TabStateOperation operation ) {
 		this.tabStateOperations.add( operation );
-		if( this.singletonTabbedPane != null ) {
+		if( this.singletonSingleSelectionPane != null ) {
 			this.addToTabbedPane( operation );
 		}
 	}
 	public void removeStateOperation( TabStateOperation operation ) {
-		if( this.singletonTabbedPane != null ) {
+		if( this.singletonSingleSelectionPane != null ) {
 			this.removeFromTabbedPane( operation );
 		}
 		this.tabStateOperations.remove( operation );
@@ -101,7 +101,7 @@ public class SingleTabSelectionOperation extends Operation {
 	}
 	
 	public TabStateOperation getCurrentTabStateOperation() {
-		return this.singletonTabbedPane.getSelectedTabStateOperation();
+		return this.singletonSingleSelectionPane.getSelectedTabStateOperation();
 	}
 //	public void setCurrentTabStateOperation( TabStateOperation operation ) {
 //		operation.setValue( true );
@@ -118,13 +118,13 @@ public class SingleTabSelectionOperation extends Operation {
 		//Thread.dumpStack();
 		ScrollPane scrollPane = tabState.getSingletonScrollPane();
 		Component<?> mainComponent = tabState.getSingletonView();
-		AbstractButton<?> titleButton = tabState.getSingletonTabTitle( this.singletonTabbedPane );
+		AbstractButton<?> titleButton = tabState.getSingletonTabTitle( this.singletonSingleSelectionPane );
 		titleButton.scaleFont( this.headerFontScalar );
 		titleButton.setBackgroundColor( mainComponent.getBackgroundColor() );
 		scrollPane.setBackgroundColor( mainComponent.getBackgroundColor() );
-		this.singletonTabbedPane.addTab( tabState );
+		this.singletonSingleSelectionPane.addTab( tabState );
 		if( tabState.getState() ) {
-			this.singletonTabbedPane.selectTab( tabState );
+			this.singletonSingleSelectionPane.selectTab( tabState );
 		}
 //		tabState.addValueObserver( new TabIsSelectedObserver( tabState, key) );
 	}
@@ -132,21 +132,27 @@ public class SingleTabSelectionOperation extends Operation {
 		throw new RuntimeException( "todo" );
 	}
 
-	private AbstractSingleSelectionPane singletonTabbedPane;
-	public AbstractSingleSelectionPane getSingletonTabbedPane( boolean isTabbedPaneDesired ) {
-		if( this.singletonTabbedPane != null ) {
-			//pass
-		} else {
-			if( isTabbedPaneDesired ) {
-				this.singletonTabbedPane = new TabbedPane();
-			} else {
-				this.singletonTabbedPane = new SingleSelectionToolPalette();
-			}
-			for( TabStateOperation tabState : this.tabStateOperations ) {
-				this.addToTabbedPane(tabState);
-			}
-//			this.singletonTabbedPane.selectTab( null );
+	private AbstractSingleSelectionPane singletonSingleSelectionPane;
+	public AbstractSingleSelectionPane getSingletonSingleSelectionPane() {
+		assert this.singletonSingleSelectionPane != null;
+		return this.singletonSingleSelectionPane;
+	}
+	private void setSingletonSingleSelectionPane( AbstractSingleSelectionPane singleSelectionPane ) {
+		assert this.singletonSingleSelectionPane == null;
+		this.singletonSingleSelectionPane = singleSelectionPane;
+		this.addComponent( this.singletonSingleSelectionPane );
+		for( TabStateOperation tabState : this.tabStateOperations ) {
+			this.addToTabbedPane(tabState);
 		}
-		return this.singletonTabbedPane;
+	}
+	public TabbedPane createTabbedPane() {
+		TabbedPane rv = new TabbedPane();
+		this.setSingletonSingleSelectionPane(rv);
+		return rv;
+	}
+	public SingleSelectionToolPalette createSingleSelectionToolPalette() {
+		SingleSelectionToolPalette rv = new SingleSelectionToolPalette();
+		this.setSingletonSingleSelectionPane(rv);
+		return rv;
 	}
 }

@@ -184,7 +184,7 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 			this.singleSelectionPane = singleSelectionPane;
 			this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
 			this.add( this.label );
-			
+			edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( this.label, 1.5f );
 			if( isCloseAffordanceDesired ) {
 				this.closeButton = new javax.swing.JButton();
 				this.closeButton.setUI( new CloseButtonUI() );
@@ -206,8 +206,10 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 		protected void paintComponent(java.awt.Graphics g) {
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 			if( this.singleSelectionPane instanceof SingleSelectionToolPalette ) {
-				java.awt.Color color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB(this.getBackground(), 1.0, 0.9, 0.9 );
-				g2.setPaint( color );
+				java.awt.Color colorA = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB(this.getBackground(), 1.0, 1.1, 1.1 );
+				java.awt.Color colorB = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB(this.getBackground(), 1.0, 0.9, 0.9 );
+				java.awt.Paint paint = new java.awt.GradientPaint(0,0, colorA, 0, this.getHeight(), colorB );
+				g2.setPaint( paint );
 				g2.fill( g2.getClip() );
 			}
 			super.paintComponent(g);

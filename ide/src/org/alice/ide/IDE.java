@@ -644,7 +644,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		this.ubiquitousPane = this.createUbiquitousPane();
 
 		this.right.addComponent( this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
-		this.right.addComponent( this.editorsTabbedPaneOperation.getSingletonTabbedPane( true ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		this.right.addComponent( this.editorsTabbedPaneOperation.createTabbedPane(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 		//this.right.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "hello" ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 		
 		//edu.cmu.cs.dennisc.swing.InputPane.setDefaultOwnerFrame( this );

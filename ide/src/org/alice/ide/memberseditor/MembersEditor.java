@@ -260,7 +260,10 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	}
 	
 	public MembersEditor() {
-		this.addComponent( this.tabbedPaneSelectionOperation.getSingletonTabbedPane( false ), Constraint.CENTER );
+		edu.cmu.cs.dennisc.croquet.AbstractSingleSelectionPane singleSelectionPane 
+			= this.tabbedPaneSelectionOperation.createSingleSelectionToolPalette();
+			//= this.tabbedPaneSelectionOperation.createTabbedPane();
+		this.addComponent( singleSelectionPane, Constraint.CENTER );
 	}
 	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
 		this.refresh();

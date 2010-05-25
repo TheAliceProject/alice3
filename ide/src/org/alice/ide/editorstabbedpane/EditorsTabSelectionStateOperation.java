@@ -386,7 +386,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 	};
 
 	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
-		this.getSingletonTabbedPane( true ).getAwtComponent().updateUI();
+		this.getSingletonSingleSelectionPane().getAwtComponent().updateUI();
 	}
 	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
 		for( edu.cmu.cs.dennisc.croquet.TabStateOperation tabIsSelectedOperation : this.getTabStateOperations() ) {

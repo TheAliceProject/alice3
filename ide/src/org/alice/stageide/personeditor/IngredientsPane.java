@@ -168,7 +168,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		};
 		northPane.addComponent( ubiquitousPane, Constraint.CENTER );
 				
-		edu.cmu.cs.dennisc.croquet.AbstractSingleSelectionPane tabbedPane = this.tabbedPaneSelection.getSingletonTabbedPane( true );
+		edu.cmu.cs.dennisc.croquet.TabbedPane tabbedPane = this.tabbedPaneSelection.createTabbedPane();
 		tabbedPane.setOpaque( true );
 		tabbedPane.scaleFont( 1.5f );
 

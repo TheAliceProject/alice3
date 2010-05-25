@@ -114,7 +114,7 @@ public class SelectProjectToOpenPanel extends edu.cmu.cs.dennisc.croquet.BorderP
 		//this.templatesOperation.setState( true );
 		this.addComponent(
 				//edu.cmu.cs.dennisc.croquet.BoxUtilities.createConstrainedToMinimumPreferredSizeComponent(
-						this.tabSelectionOperation.getSingletonTabbedPane( true ), 
+						this.tabSelectionOperation.createTabbedPane(), 
 				//		480, 
 				//		320),
 				Constraint.CENTER);
