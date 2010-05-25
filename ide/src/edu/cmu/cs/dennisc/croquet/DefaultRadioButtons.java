@@ -46,42 +46,25 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class ComboBox< E > extends JComponent<javax.swing.JComboBox> {
-	/*package-private*/ ComboBox() {
+public class DefaultRadioButtons< E > extends AbstractRadioButtons< E > {
+	private static final java.awt.GridBagConstraints GBC;
+	static {
+		GBC = new java.awt.GridBagConstraints();
+		GBC.fill = java.awt.GridBagConstraints.BOTH;
+		GBC.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		GBC.weightx = 1.0f;
+		GBC.weighty = 0.0f;
 	}
 	@Override
-	protected javax.swing.JComboBox createAwtComponent() {
-		javax.swing.JComboBox rv = new javax.swing.JComboBox() {
-			@Override
-			public java.awt.Dimension getMaximumSize() {
-				java.awt.Dimension rv = super.getMaximumSize();
-				rv.height = this.getPreferredSize().height;
-				return rv;
-			}
-		};
-		return rv;
+	protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
+		return new java.awt.GridBagLayout();
 	}
-	public javax.swing.ListCellRenderer getRenderer() {
-		return this.getAwtComponent().getRenderer();
+	@Override
+	protected javax.swing.AbstractButton createButton( E item ) {
+		return new javax.swing.JRadioButton( item.toString() );
 	}
-	public void setRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
-		this.getAwtComponent().setRenderer( listCellRenderer );
-	}
-	public int getMaximumRowCount() {
-		return this.getAwtComponent().getMaximumRowCount();
-	}
-	public void setMaximumRowCount( int maximumRowCount ) {
-		this.getAwtComponent().setMaximumRowCount( maximumRowCount );
-	}
-
-	/*package-private*/ void setModel( javax.swing.ComboBoxModel model ) {
-		this.getAwtComponent().setModel( model );
-	}
-	
-	/*package-private*/ void addItemListener(java.awt.event.ItemListener itemListener) {
-		this.getAwtComponent().addItemListener( itemListener );
-	}
-	/*package-private*/ void removeItemListener(java.awt.event.ItemListener itemListener) {
-		this.getAwtComponent().removeItemListener( itemListener );
+	@Override
+	protected void addButton(javax.swing.AbstractButton button) {
+		this.getAwtComponent().add( button, GBC );
 	}
 }
