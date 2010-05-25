@@ -218,11 +218,9 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		return this.fieldsTabStateOperation;
 	}
 	
-	private org.alice.ide.IDE.FieldSelectionObserver fieldSelectionObserver = new org.alice.ide.IDE.FieldSelectionObserver() {
-		public void fieldSelectionChanging( edu.cmu.cs.dennisc.alice.ast.AbstractField previousField, edu.cmu.cs.dennisc.alice.ast.AbstractField nextField ) {
-		}
-		public void fieldSelectionChanged( edu.cmu.cs.dennisc.alice.ast.AbstractField previousField, edu.cmu.cs.dennisc.alice.ast.AbstractField nextField ) {
-			MembersEditor.this.handleFieldSelection( nextField );
+	private edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractField> fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractField>() {
+		public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractField nextValue) {
+			MembersEditor.this.handleFieldSelection( nextValue );
 		}
 	};
 
@@ -274,12 +272,12 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
-		org.alice.ide.IDE.getSingleton().addFieldSelectionObserver( this.fieldSelectionObserver );
-		this.handleFieldSelection( org.alice.ide.IDE.getSingleton().getFieldSelection() );
+		
+		org.alice.ide.IDE.getSingleton().getFieldSelectionState().addAndInvokeValueObserver( this.fieldSelectionObserver );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		org.alice.ide.IDE.getSingleton().removeFieldSelectionObserver( this.fieldSelectionObserver );
+		org.alice.ide.IDE.getSingleton().getFieldSelectionState().removeValueObserver( this.fieldSelectionObserver );
 		super.handleRemovedFrom( parent );
 	}
 	

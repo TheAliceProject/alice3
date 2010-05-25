@@ -42,42 +42,42 @@
  */
 package org.alice.stageide.sceneeditor;
 
-class FieldSelectedState extends edu.cmu.cs.dennisc.croquet.BooleanStateOperation {
-	private static java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractField, FieldSelectedState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static FieldSelectedState getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		FieldSelectedState rv = map.get( field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FieldSelectedState( field );
-			map.put( field, rv );
-		}
-		return rv;
-	}
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	private FieldSelectedState( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "c9df003e-6e4e-497c-822c-24c61ad07d6c" ), false, field.getName() );
-		this.field = field;
-		
-		this.addValueObserver( new ValueObserver() {
-			public void changing(boolean nextValue) {
-			}
-			public void changed(boolean nextValue) {
-				if( nextValue ) {
-					org.alice.ide.IDE.getSingleton().setFieldSelection( FieldSelectedState.this.field );
-				}
-			}
-		} );
-	}
-//	@Override
-//	public String getTrueText() {
-//		return this.field.getName();
+//class FieldSelectedState extends edu.cmu.cs.dennisc.croquet.BooleanStateOperation {
+//	private static java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractField, FieldSelectedState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+//	public static FieldSelectedState getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+//		FieldSelectedState rv = map.get( field );
+//		if( rv != null ) {
+//			//pass
+//		} else {
+//			rv = new FieldSelectedState( field );
+//			map.put( field, rv );
+//		}
+//		return rv;
 //	}
-//	@Override
-//	public String getFalseText() {
-//		return this.getTrueText();
+//	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+//	private FieldSelectedState( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+//		super( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "c9df003e-6e4e-497c-822c-24c61ad07d6c" ), false, field.getName() );
+//		this.field = field;
+//		
+//		this.addValueObserver( new ValueObserver() {
+//			public void changing(boolean nextValue) {
+//			}
+//			public void changed(boolean nextValue) {
+//				if( nextValue ) {
+//					org.alice.ide.IDE.getSingleton().getFieldSelectionState().setValue( FieldSelectedState.this.field );
+//				}
+//			}
+//		} );
 //	}
-}
+////	@Override
+////	public String getTrueText() {
+////		return this.field.getName();
+////	}
+////	@Override
+////	public String getFalseText() {
+////		return this.getTrueText();
+////	}
+//}
 /**
  * @author Dennis Cosgrove
  */
@@ -89,12 +89,12 @@ class FieldSelectedState extends edu.cmu.cs.dennisc.croquet.BooleanStateOperatio
 //		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 //		}
 //	}
-	public static FieldTile createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		FieldSelectedState state = FieldSelectedState.getInstance(field);
-		return state.register( new FieldTile( field ) );
-	}
+//	public static FieldTile createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+//		FieldSelectedState state = FieldSelectedState.getInstance(field);
+//		return state.register( new FieldTile( field ) );
+//	}
 	
-	private FieldTile( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	public FieldTile( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		assert field != null;
 		this.field = field;
 		//this.setOpaque( false );
@@ -106,6 +106,8 @@ class FieldSelectedState extends edu.cmu.cs.dennisc.croquet.BooleanStateOperatio
 				return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( FieldTile.this.createPopupOperations(), edu.cmu.cs.dennisc.croquet.Operation.class );
 			}
 		});
+		
+		this.updateLabel();
 	}
 
 	@Override
@@ -165,7 +167,7 @@ class FieldSelectedState extends edu.cmu.cs.dennisc.croquet.BooleanStateOperatio
 	protected java.awt.Color calculateColor() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		java.awt.Color color = ide.getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
-		if( this.field == ide.getFieldSelection() ) {
+		if( this.field == ide.getFieldSelectionState().getValue() ) {
 			color = java.awt.Color.YELLOW;
 		} else {
 			if( ide.isFieldInScope( this.field ) ) {
@@ -183,6 +185,24 @@ class FieldSelectedState extends edu.cmu.cs.dennisc.croquet.BooleanStateOperatio
 	}
 	
 	/*package-private*/ void updateLabel() {
+		String prevText = this.getAwtComponent().getText();
+		String nextText;
+		if( this.field != null ) {
+			nextText = org.alice.ide.IDE.getSingleton().getInstanceTextForField( this.field, false );
+			this.setBackgroundColor( this.calculateColor() );
+		} else {
+			this.setBackgroundColor( java.awt.Color.RED );
+			nextText = "null";
+		}
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( prevText, nextText ) ) {
+			//pass
+		} else {
+			this.getAwtComponent().setText( nextText );
+			//this.revalidateAndRepaint();
+		}
+		
+		//todo?
+		this.repaint();
 	}
 }
 //public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {

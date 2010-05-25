@@ -69,7 +69,7 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractField field = getIDE().getFieldSelection();
+		edu.cmu.cs.dennisc.alice.ast.AbstractField field = getIDE().getFieldSelectionState().getValue();
 		if( field != null ) {
 			return field.getValueType();
 		} else {
@@ -107,7 +107,7 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
 		this.getIDE().addCodeInFocusObserver( this.codeInFocusObserver );
-		this.handleFieldChanged( getIDE().getFieldSelection() );
+		this.handleFieldChanged( getIDE().getFieldSelectionState().getValue() );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {

@@ -46,12 +46,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.alice.apis.moveandturn.AsSeenBy;
+import org.alice.ide.memberseditor.MembersEditor;
 import org.alice.ide.name.validators.FieldNameValidator;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava;
+import edu.cmu.cs.dennisc.croquet.AbstractButton;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
@@ -84,8 +86,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 
 	private org.alice.apis.moveandturn.Scene scene;
-	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField;
-	private java.util.List< FieldTile > fieldTiles = new java.util.LinkedList< FieldTile >();
+//	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField;
+//	private java.util.List< FieldTile > fieldTiles = new java.util.LinkedList< FieldTile >();
 
 	private edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgOrthographicCamera = null;
 	private edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgPerspectiveCamera = null;
@@ -99,47 +101,44 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			MoveAndTurnSceneEditor.this.handleFocusedCodeChanged( nextCode );
 		}
 	};
-	private org.alice.ide.IDE.FieldSelectionObserver fieldSelectionObserver = new org.alice.ide.IDE.FieldSelectionObserver() {
-		public void fieldSelectionChanging( edu.cmu.cs.dennisc.alice.ast.AbstractField previousField, edu.cmu.cs.dennisc.alice.ast.AbstractField nextField ) {
-		}
-		public void fieldSelectionChanged( edu.cmu.cs.dennisc.alice.ast.AbstractField previousField, edu.cmu.cs.dennisc.alice.ast.AbstractField nextField ) {
-			MoveAndTurnSceneEditor.this.handleFieldSelection( nextField );
+	private edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractField> fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractField>() {
+		public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractField nextValue) {
+			MoveAndTurnSceneEditor.this.handleFieldSelection( nextValue );
 		}
 	};
 	
-	private javax.swing.ButtonGroup fieldTileGroup = new javax.swing.ButtonGroup();
+//	private org.alice.ide.IDE.FieldSelectionObserver fieldSelectionObserver = new org.alice.ide.IDE.FieldSelectionObserver() {
+//		public void fieldSelectionChanging( edu.cmu.cs.dennisc.alice.ast.AbstractField previousField, edu.cmu.cs.dennisc.alice.ast.AbstractField nextField ) {
+//		}
+//		public void fieldSelectionChanged( edu.cmu.cs.dennisc.alice.ast.AbstractField previousField, edu.cmu.cs.dennisc.alice.ast.AbstractField nextField ) {
+//			MoveAndTurnSceneEditor.this.handleFieldSelection( nextField );
+//		}
+//	};
+//	
+//	private javax.swing.ButtonGroup fieldTileGroup = new javax.swing.ButtonGroup();
 
+	private edu.cmu.cs.dennisc.croquet.BorderPanel borderPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+	private edu.cmu.cs.dennisc.croquet.ComboBox< AbstractField > comboBox;
+	private FieldRadioButtons fieldRadioButtons;
+	
 	public MoveAndTurnSceneEditor() {
 		this.splitPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		this.splitPane.setResizeWeight( 1.0 );
 		this.splitPane.setDividerProportionalLocation( 1.0 );
+
+		this.comboBox = org.alice.ide.IDE.getSingleton().getFieldSelectionState().createComboBox();
+		this.comboBox.setRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< AbstractField >() {
+			@Override
+			protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractField value, int index, boolean isSelected, boolean cellHasFocus) {
+				rv.setText( value.getName() );
+				return rv;
+			}
+		} );
+		this.borderPanel.addComponent( this.lightweightLookingGlass, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		this.borderPanel.addComponent( this.comboBox, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.SOUTH );
+
 		this.addComponent( this.splitPane, Constraint.CENTER );
 	}
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > fieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
-		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-		}
-		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-			MoveAndTurnSceneEditor.this.refreshFields();
-		}
-
-		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-		}
-		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-			MoveAndTurnSceneEditor.this.refreshFields();
-		}
-
-		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-		}
-		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-			MoveAndTurnSceneEditor.this.refreshFields();
-		}
-
-		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-		}
-		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-			MoveAndTurnSceneEditor.this.refreshFields();
-		}
-	};
 
 	//	private boolean isRenderingEnabled = true;
 	//	@Override
@@ -167,15 +166,18 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	};
 
+	
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
 		this.initializeIfNecessary();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
-		this.splitPane.setLeftComponent( this.lightweightLookingGlass );
+
+		this.splitPane.setLeftComponent( this.borderPanel );
+		
 		org.alice.ide.IDE.getSingleton().addCodeInFocusObserver( this.codeInFocusObserver );
-		org.alice.ide.IDE.getSingleton().addFieldSelectionObserver( this.fieldSelectionObserver );
+		org.alice.ide.IDE.getSingleton().getFieldSelectionState().addAndInvokeValueObserver( this.fieldSelectionObserver );
 	}
 
 	@Override
@@ -184,7 +186,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().removeAutomaticDisplayListener( this.automaticDisplayListener );
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
 		org.alice.ide.IDE.getSingleton().removeCodeInFocusObserver( this.codeInFocusObserver );
-		org.alice.ide.IDE.getSingleton().removeFieldSelectionObserver( this.fieldSelectionObserver );
+		org.alice.ide.IDE.getSingleton().getFieldSelectionState().removeValueObserver( this.fieldSelectionObserver );
 		super.handleRemovedFrom( parent );
 	}
 
@@ -194,6 +196,96 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 //	private javax.swing.SpringLayout getLGSpringLayout() {
 //		return (javax.swing.SpringLayout)this.getLGPanel().getLayout();
 //	}
+//	private void refreshFields() {
+//	javax.swing.JPanel lgPanel = this.lightweightLookingGlass.getAwtComponent(); 
+//	javax.swing.SpringLayout springLayout = (javax.swing.SpringLayout)lgPanel.getLayout();
+//	javax.swing.ButtonModel selection = this.fieldTileGroup.getSelection();
+//	if( selection != null ) {
+//		this.fieldTileGroup.setSelected( selection, false );
+//	}
+//	for( FieldTile fieldTile : this.fieldTiles ) {
+//		springLayout.removeLayoutComponent( fieldTile.getAwtComponent() );
+//		this.onscreenLookingGlass.getJPanel().remove( fieldTile.getAwtComponent() );
+//		this.fieldTileGroup.remove( fieldTile.getAwtComponent() );
+//	}
+//	this.fieldTiles.clear();
+//	if( this.rootField != null ) {
+//		FieldTile rootFieldTile = this.createFieldTile( this.rootField );
+//		//rootFieldTile.setOpaque( true );
+//		edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthWest( lgPanel, rootFieldTile.getAwtComponent(), INSET );
+//		this.fieldTiles.add( rootFieldTile );
+//		java.awt.Component prev = rootFieldTile.getAwtComponent();
+//		if( rootField != null ) {
+//			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : rootField.valueType.getValue().getDeclaredFields() ) {
+//				FieldTile fieldTile = createFieldTile( field );
+//				//fieldTile.setOpaque( true );
+//				this.onscreenLookingGlass.getJPanel().add( fieldTile.getAwtComponent() );
+//				this.fieldTiles.add( fieldTile );
+//				springLayout.putConstraint( javax.swing.SpringLayout.NORTH, fieldTile.getAwtComponent(), 1, javax.swing.SpringLayout.SOUTH, prev );
+//				springLayout.putConstraint( javax.swing.SpringLayout.WEST, fieldTile.getAwtComponent(), 10, javax.swing.SpringLayout.WEST, rootFieldTile.getAwtComponent() );
+//				prev = fieldTile.getAwtComponent();
+//			}
+//		}
+//	}
+
+	private static class FieldRadioButtons extends edu.cmu.cs.dennisc.croquet.AbstractRadioButtons< AbstractField > {
+		private static final int SUB_FIELD_LEFT_INSET = 10;
+		private static final int INTRA_FIELD_PAD = 1;
+		private javax.swing.SpringLayout springLayout;
+		@Override
+		protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
+			this.springLayout = new javax.swing.SpringLayout() {
+				@Override
+				public java.awt.Dimension preferredLayoutSize(java.awt.Container parent) {
+					java.awt.Dimension rv = new java.awt.Dimension( 0, 0 );
+					for( java.awt.Component component : parent.getComponents() ) {
+						java.awt.Dimension componentSize = component.getPreferredSize();
+						rv.width = Math.max( rv.width, componentSize.width );
+						rv.height += componentSize.height;
+						rv.height += INTRA_FIELD_PAD;
+					}
+					rv.width += SUB_FIELD_LEFT_INSET;
+					rv.width += INSET;
+					rv.height += INSET;
+
+//					java.awt.Dimension superSize = super.preferredLayoutSize( parent );
+//					rv.width += superSize.width;
+//					rv.height += superSize.height;
+					return rv;
+				}
+			};
+			return this.springLayout;
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.croquet.AbstractButton<?> createButton(edu.cmu.cs.dennisc.alice.ast.AbstractField item) {
+			return new FieldTile( item );
+		}
+		
+		private edu.cmu.cs.dennisc.croquet.Component<?> previousComponent;
+		private edu.cmu.cs.dennisc.croquet.Component<?> rootComponent;
+		@Override
+		protected void addPrologue(int count) {
+			this.previousComponent = null;
+			this.rootComponent = null;
+		}
+		@Override
+		protected void addButton(AbstractButton<?> button) {
+			if( this.previousComponent != null ) {
+				this.springLayout.putConstraint( javax.swing.SpringLayout.NORTH, button.getAwtComponent(), INTRA_FIELD_PAD, javax.swing.SpringLayout.SOUTH, this.previousComponent.getAwtComponent() );
+				this.springLayout.putConstraint( javax.swing.SpringLayout.WEST, button.getAwtComponent(), SUB_FIELD_LEFT_INSET, javax.swing.SpringLayout.WEST, this.rootComponent.getAwtComponent() );
+				this.internalAddComponent(button);
+			} else {
+				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthWest( this.getAwtComponent(), button.getAwtComponent(), INSET );
+				this.rootComponent = button;
+			}
+			this.previousComponent = button;
+		}
+		@Override
+		protected void addEpilogue() {
+			this.previousComponent = null;
+			this.rootComponent = null;
+		}
+	}
 
 	private void initializeIfNecessary() {
 		if( this.globalDragAdapter != null ) {
@@ -232,6 +324,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthEast( lgPanel, this.getIDE().getRunOperation().createButton().getAwtComponent(), INSET );
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouth( lgPanel, mainCameraNavigatorWidget, INSET );
 
+			this.fieldRadioButtons = new FieldRadioButtons();
+			this.getIDE().getFieldSelectionState().register( this.fieldRadioButtons );
+			
 			
 //			edu.cmu.cs.dennisc.croquet.GridPanel testPanel = edu.cmu.cs.dennisc.croquet.GridPanel.createSingleColumnGridPane();
 //			
@@ -265,10 +360,16 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	@Override
 	public void handleExpandContractChange( boolean isExpanded ) {
 		this.sidePane.setExpanded( isExpanded );
+		javax.swing.JPanel lgPanel = this.lightweightLookingGlass.getAwtComponent();
 		if( isExpanded ) {
+			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthWest( lgPanel, fieldRadioButtons.getAwtComponent(), INSET );
+			this.borderPanel.removeComponent( this.comboBox );
 			this.splitPane.setRightComponent( this.sidePane );
 			this.splitPane.setDividerSize( 10 );
 		} else {
+			lgPanel.remove( fieldRadioButtons.getAwtComponent() );
+			this.borderPanel.addComponent( this.comboBox, Constraint.SOUTH );
+			
 			this.splitPane.setRightComponent( null );
 			this.splitPane.setDividerSize( 0 );
 		}
@@ -281,7 +382,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		final org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instance;
 		//declaringType.fields.add( field );
 		this.putInstanceForField( field, transformable );
-		this.getIDE().setFieldSelection( field );
+		this.getIDE().getFieldSelectionState().setValue( field );
 		final org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera = this.scene.findFirstMatch( org.alice.apis.moveandturn.SymmetricPerspectiveCamera.class );
 		if( isAnimationDesired && camera != null && transformable instanceof org.alice.apis.moveandturn.Model ) {
 			new Thread() {
@@ -308,7 +409,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		org.alice.apis.moveandturn.Element element = org.alice.apis.moveandturn.Element.getElement( sgTransformable );
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldForInstanceInJava( element );
 		if( field != null ) {
-			this.getIDE().setFieldSelection( field );
+			this.getIDE().getFieldSelectionState().setValue( field );
 		}
 	}
 
@@ -375,7 +476,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		if( code != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType type = code.getDeclaringType();
 			if( type != null ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractField selectedField = this.getIDE().getFieldSelection();
+				edu.cmu.cs.dennisc.alice.ast.AbstractField selectedField = this.getIDE().getFieldSelectionState().getValue();
 				if( selectedField != null ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractType selectedType = selectedField.getValueType();
 					if( type.isAssignableFrom( selectedType ) ) {
@@ -389,7 +490,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 							} else {
 								for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
 									if( type.isAssignableFrom( field.getValueType() ) ) {
-										this.getIDE().setFieldSelection( field );
+										this.getIDE().getFieldSelectionState().setValue( field );
 										break;
 									}
 								}
@@ -403,67 +504,65 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	}
 
 	private void updateFieldLabels() {
-		for( FieldTile fieldTile : this.fieldTiles ) {
-			fieldTile.updateLabel();
-		}
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "update field labels" );
 	}
-
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getRootTypeDeclaredInAlice() {
-		return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)this.rootField.valueType.getValue();
-	}
-	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getRootField() {
-		return this.rootField;
-	}
-	public void setRootField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField ) {
-		if( this.rootField != null ) {
-			getRootTypeDeclaredInAlice().fields.removeListPropertyListener( this.fieldsAdapter );
-		}
-		this.rootField = rootField;
-		if( this.getRootField() != null ) {
-			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
-		}
-		this.refreshFields();
-	}
-	private FieldTile createFieldTile( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		assert field != null;
-		FieldTile rv = FieldTile.createInstance( field );
-		this.fieldTileGroup.add( rv.getAwtComponent() );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.fieldTileGroup );
-		return rv;
-	}
-	private void refreshFields() {
-		javax.swing.JPanel lgPanel = this.lightweightLookingGlass.getAwtComponent(); 
-		javax.swing.SpringLayout springLayout = (javax.swing.SpringLayout)lgPanel.getLayout();
-		javax.swing.ButtonModel selection = this.fieldTileGroup.getSelection();
-		if( selection != null ) {
-			this.fieldTileGroup.setSelected( selection, false );
-		}
-		for( FieldTile fieldTile : this.fieldTiles ) {
-			springLayout.removeLayoutComponent( fieldTile.getAwtComponent() );
-			this.onscreenLookingGlass.getJPanel().remove( fieldTile.getAwtComponent() );
-			this.fieldTileGroup.remove( fieldTile.getAwtComponent() );
-		}
-		this.fieldTiles.clear();
-		if( this.rootField != null ) {
-			FieldTile rootFieldTile = this.createFieldTile( this.rootField );
-			//rootFieldTile.setOpaque( true );
-			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthWest( lgPanel, rootFieldTile.getAwtComponent(), INSET );
-			this.fieldTiles.add( rootFieldTile );
-			java.awt.Component prev = rootFieldTile.getAwtComponent();
-			if( rootField != null ) {
-				for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : rootField.valueType.getValue().getDeclaredFields() ) {
-					FieldTile fieldTile = createFieldTile( field );
-					//fieldTile.setOpaque( true );
-					this.onscreenLookingGlass.getJPanel().add( fieldTile.getAwtComponent() );
-					this.fieldTiles.add( fieldTile );
-					springLayout.putConstraint( javax.swing.SpringLayout.NORTH, fieldTile.getAwtComponent(), 1, javax.swing.SpringLayout.SOUTH, prev );
-					springLayout.putConstraint( javax.swing.SpringLayout.WEST, fieldTile.getAwtComponent(), 10, javax.swing.SpringLayout.WEST, rootFieldTile.getAwtComponent() );
-					prev = fieldTile.getAwtComponent();
-				}
-			}
-		}
-		this.revalidateAndRepaint();
-	}
+//
+//	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getRootTypeDeclaredInAlice() {
+//		return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)this.rootField.valueType.getValue();
+//	}
+//	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getRootField() {
+//		return this.rootField;
+//	}
+//	public void setRootField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField ) {
+//		if( this.rootField != null ) {
+//			getRootTypeDeclaredInAlice().fields.removeListPropertyListener( this.fieldsAdapter );
+//		}
+//		this.rootField = rootField;
+//		if( this.getRootField() != null ) {
+//			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
+//		}
+//		this.refreshFields();
+//	}
+//	private FieldTile createFieldTile( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+//		assert field != null;
+//		FieldTile rv = FieldTile.createInstance( field );
+//		this.fieldTileGroup.add( rv.getAwtComponent() );
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.fieldTileGroup );
+//		return rv;
+//	}
+//	private void refreshFields() {
+//		javax.swing.JPanel lgPanel = this.lightweightLookingGlass.getAwtComponent(); 
+//		javax.swing.SpringLayout springLayout = (javax.swing.SpringLayout)lgPanel.getLayout();
+//		javax.swing.ButtonModel selection = this.fieldTileGroup.getSelection();
+//		if( selection != null ) {
+//			this.fieldTileGroup.setSelected( selection, false );
+//		}
+//		for( FieldTile fieldTile : this.fieldTiles ) {
+//			springLayout.removeLayoutComponent( fieldTile.getAwtComponent() );
+//			this.onscreenLookingGlass.getJPanel().remove( fieldTile.getAwtComponent() );
+//			this.fieldTileGroup.remove( fieldTile.getAwtComponent() );
+//		}
+//		this.fieldTiles.clear();
+//		if( this.rootField != null ) {
+//			FieldTile rootFieldTile = this.createFieldTile( this.rootField );
+//			//rootFieldTile.setOpaque( true );
+//			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthWest( lgPanel, rootFieldTile.getAwtComponent(), INSET );
+//			this.fieldTiles.add( rootFieldTile );
+//			java.awt.Component prev = rootFieldTile.getAwtComponent();
+//			if( rootField != null ) {
+//				for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : rootField.valueType.getValue().getDeclaredFields() ) {
+//					FieldTile fieldTile = createFieldTile( field );
+//					//fieldTile.setOpaque( true );
+//					this.onscreenLookingGlass.getJPanel().add( fieldTile.getAwtComponent() );
+//					this.fieldTiles.add( fieldTile );
+//					springLayout.putConstraint( javax.swing.SpringLayout.NORTH, fieldTile.getAwtComponent(), 1, javax.swing.SpringLayout.SOUTH, prev );
+//					springLayout.putConstraint( javax.swing.SpringLayout.WEST, fieldTile.getAwtComponent(), 10, javax.swing.SpringLayout.WEST, rootFieldTile.getAwtComponent() );
+//					prev = fieldTile.getAwtComponent();
+//				}
+//			}
+//		}
+//		this.revalidateAndRepaint();
+//	}
 
 	@Override
 	protected void putFieldForInstanceInJava( Object instanceInJava, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
@@ -577,7 +676,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO:" );
 		this.initializeIfNecessary();
 		this.scene.getSGComposite().addComponent( this.sgOrthographicCamera.getParent() );
-		this.setRootField( sceneField );
+		
+		
+		//this.setRootField( sceneField );
 
 		//		createInitialOrthographicCameraMarkers();
 		//this.cameraNavigationDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
@@ -759,8 +860,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 	public List< edu.cmu.cs.dennisc.alice.ast.AbstractField > getDeclaredFields() {
 		List< edu.cmu.cs.dennisc.alice.ast.AbstractField > declaredFields = new LinkedList< edu.cmu.cs.dennisc.alice.ast.AbstractField >();
-		if( this.rootField != null ) {
-			declaredFields.addAll( rootField.valueType.getValue().getDeclaredFields() );
+		if( org.alice.ide.IDE.getSingleton().getSceneType() != null ) {
+			declaredFields.addAll( org.alice.ide.IDE.getSingleton().getSceneType().getDeclaredFields() );
 		}
 		return declaredFields;
 	}

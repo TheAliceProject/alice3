@@ -53,6 +53,10 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 	public void addValueObserver( ValueObserver<E> valueObserver ) {
 		this.valueObservers.add( valueObserver );
 	}
+	public void addAndInvokeValueObserver( ValueObserver<E> valueObserver ) {
+		this.addValueObserver( valueObserver );
+		valueObserver.changed( this.getValue() );
+	}
 	public void removeValueObserver( ValueObserver<E> valueObserver ) {
 		this.valueObservers.remove( valueObserver );
 	}
@@ -246,28 +250,24 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 		return rv;
 	}
 	
-	private <R extends AbstractRadioButtons<E> > R register( R rv ) {
+	public <R extends AbstractRadioButtons<E> > R register( final R rv ) {
 		Application.getSingleton().register( this );
 		rv.setModel( this.comboBoxModel );
 		rv.setSelectionModel( this.listSelectionModel );
+		rv.addContainmentObserver( new Component.ContainmentObserver() {
+			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				ItemSelectionOperation.this.addComponent( rv );
+				rv.addItemListener( ItemSelectionOperation.this.itemListener );
+			}
+			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				rv.removeItemListener( ItemSelectionOperation.this.itemListener );
+				ItemSelectionOperation.this.removeComponent( rv );
+			}
+		} );
 		return rv;
 	}
 	public DefaultRadioButtons<E> createDefaultRadioButtons() {
-		DefaultRadioButtons<E> rv = new DefaultRadioButtons< E >() {
-			@Override
-			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				super.handleAddedTo(parent);
-				ItemSelectionOperation.this.addComponent( this );
-				this.addItemListener( ItemSelectionOperation.this.itemListener );
-			};
-			@Override
-			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				this.removeItemListener( ItemSelectionOperation.this.itemListener );
-				ItemSelectionOperation.this.removeComponent( this );
-				super.handleRemovedFrom(parent);
-			}
-		};
-		return register( rv );
+		return register( new DefaultRadioButtons< E >() );
 	}
 //todo:
 //	public Menu createMenu() {

@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public abstract class AbstractRadioButtons< E > extends Panel {
 	private class RadioButton {
-		private javax.swing.AbstractButton jButton;
+		private AbstractButton<?> button;
 		private E item;
 		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 			public void itemStateChanged(java.awt.event.ItemEvent e) {
@@ -56,24 +56,26 @@ public abstract class AbstractRadioButtons< E > extends Panel {
 				AbstractRadioButtons.this.fireItemStateChanged( e );
 			}
 		};
-		public RadioButton( javax.swing.AbstractButton jButton, E item ) {
-			this.jButton = jButton;
+		public RadioButton( AbstractButton<?> button, E item ) {
+			this.button = button;
 			this.item = item;
 		}
 		
 		public void add() {
-			this.jButton.addItemListener( this.itemListener );
-			AbstractRadioButtons.this.buttonGroup.add( this.jButton );
-			AbstractRadioButtons.this.addButton( this.jButton );
+			this.button.getAwtComponent().addItemListener( this.itemListener );
+			AbstractRadioButtons.this.buttonGroup.add( this.button.getAwtComponent() );
+			AbstractRadioButtons.this.addButton( this.button );
 		}
 		public void remove() {
 			//note: should already be removed by removeAllComponents()
-			assert this.jButton.getParent() == null;
-			this.jButton.removeItemListener( this.itemListener );
-			AbstractRadioButtons.this.buttonGroup.remove( this.jButton );
+			assert this.button.getParent() == null;
+			this.button.getAwtComponent().removeItemListener( this.itemListener );
+			AbstractRadioButtons.this.buttonGroup.remove( this.button.getAwtComponent() );
 		}
 		public void setSelected( boolean isSelected ) {
-			this.jButton.setSelected( isSelected );
+			if( this.button.getAwtComponent().isSelected() != isSelected ) {
+				this.button.getAwtComponent().setSelected( isSelected );
+			}
 		}
 	}
 	
@@ -97,14 +99,25 @@ public abstract class AbstractRadioButtons< E > extends Panel {
 			AbstractRadioButtons.this.handleListSelectionChanged();
 		}
 	};
+	private void fireItemStateChanged( java.awt.event.ItemEvent e ) {
+		for( java.awt.event.ItemListener itemListener : this.itemListeners ) {
+			itemListener.itemStateChanged(e);
+		}
+	}
+
 	public AbstractRadioButtons() {
 	}
-	protected abstract javax.swing.AbstractButton createButton( E item );
-	protected abstract void addButton( javax.swing.AbstractButton button );
+	
+	protected abstract AbstractButton<?> createButton( E item );
+	protected abstract void addPrologue( int count );
+	protected abstract void addButton( AbstractButton<?> button );
+	protected abstract void addEpilogue();
+	
 	private void handleListDataChanged() {
 		synchronized( this.model ) {
 			final int N = this.model.getSize();
 			this.removeAllComponents();
+			this.addPrologue( N );
 			for( int i=0; i<N; i++ ) {
 				E item = (E)this.model.getElementAt( i );
 				RadioButton radioButton = this.map.get( item );
@@ -116,6 +129,7 @@ public abstract class AbstractRadioButtons< E > extends Panel {
 				}
 				radioButton.add();
 			}
+			this.addEpilogue();
 		}
 		this.revalidateAndRepaint();
 	}
@@ -166,10 +180,5 @@ public abstract class AbstractRadioButtons< E > extends Panel {
 	}
 	/*package-private*/ void removeItemListener(java.awt.event.ItemListener itemListener) {
 		this.itemListeners.remove( itemListener );
-	}
-	private void fireItemStateChanged( java.awt.event.ItemEvent e ) {
-		for( java.awt.event.ItemListener itemListener : this.itemListeners ) {
-			itemListener.itemStateChanged(e);
-		}
 	}
 }

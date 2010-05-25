@@ -51,16 +51,16 @@ public class SelectFieldActionOperation extends AbstractFieldActionOperation {
 	}
 	@Override
 	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
-		final edu.cmu.cs.dennisc.alice.ast.AbstractField prevField = getIDE().getFieldSelection();
+		final edu.cmu.cs.dennisc.alice.ast.AbstractField prevField = getIDE().getFieldSelectionState().getValue();
 		final edu.cmu.cs.dennisc.alice.ast.AbstractField nextField = getField();
 		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
 			@Override
 			public void doOrRedo( boolean isDo ) {
-				getIDE().setFieldSelection( nextField );
+				getIDE().getFieldSelectionState().setValue( nextField );
 			}
 			@Override
 			public void undo() {
-				getIDE().setFieldSelection( prevField );
+				getIDE().getFieldSelectionState().setValue( prevField );
 			}
 			@Override
 			protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
