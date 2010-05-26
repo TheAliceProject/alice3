@@ -42,42 +42,27 @@
  */
 package org.alice.ide;
 
-import edu.cmu.cs.dennisc.alice.ast.AbstractField;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class IDE extends org.alice.app.ProjectApplication {
 	public static final edu.cmu.cs.dennisc.croquet.Group PREFERENCES_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "c090cda0-4a77-4e2c-a839-faf28c98c10c" ) );
 	public static final edu.cmu.cs.dennisc.croquet.Group RUN_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "f7a87645-567c-42c6-bf5f-ab218d93a226" ) );
-
-//	public static interface FieldSelectionObserver {
-//		public void fieldSelectionChanging( edu.cmu.cs.dennisc.alice.ast.AbstractField previousField, edu.cmu.cs.dennisc.alice.ast.AbstractField nextField );
-//		public void fieldSelectionChanged( edu.cmu.cs.dennisc.alice.ast.AbstractField previousField, edu.cmu.cs.dennisc.alice.ast.AbstractField nextField );
+//
+//	private edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = null;
+//	public static interface CodeInFocusObserver {
+//		public void focusedCodeChanging( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode );
+//		public void focusedCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode );
 //	}
-//	private java.util.List< FieldSelectionObserver > fieldSelectionObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-//	public void addFieldSelectionObserver( FieldSelectionObserver fieldSelectionObserver ) {
-//		assert this.fieldSelectionObservers.contains( fieldSelectionObserver ) == false;
-//		this.fieldSelectionObservers.add( fieldSelectionObserver );
+//	private java.util.List< CodeInFocusObserver > codeInFocusObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+//	public void addCodeInFocusObserver( CodeInFocusObserver codeInFocusObserver ) {
+//		assert this.codeInFocusObservers.contains( codeInFocusObserver ) == false;
+//		this.codeInFocusObservers.add( codeInFocusObserver );
 //	}
-//	public void removeFieldSelectionObserver( FieldSelectionObserver fieldSelectionObserver ) {
-//		assert this.fieldSelectionObservers.contains( fieldSelectionObserver ) == false;
-//		this.fieldSelectionObservers.remove( fieldSelectionObserver );
+//	public void removeCodeInFocusObserver( CodeInFocusObserver codeInFocusObserver ) {
+//		assert this.codeInFocusObservers.contains( codeInFocusObserver ) == true;
+//		this.codeInFocusObservers.remove( codeInFocusObserver );
 //	}
-
-	public static interface CodeInFocusObserver {
-		public void focusedCodeChanging( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode );
-		public void focusedCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode );
-	}
-	private java.util.List< CodeInFocusObserver > codeInFocusObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public void addCodeInFocusObserver( CodeInFocusObserver codeInFocusObserver ) {
-		assert this.codeInFocusObservers.contains( codeInFocusObserver ) == false;
-		this.codeInFocusObservers.add( codeInFocusObserver );
-	}
-	public void removeCodeInFocusObserver( CodeInFocusObserver codeInFocusObserver ) {
-		assert this.codeInFocusObservers.contains( codeInFocusObserver ) == true;
-		this.codeInFocusObservers.remove( codeInFocusObserver );
-	}
 	
 
 	public static final String DEBUG_PROPERTY_KEY = "org.alice.ide.DebugMode";
@@ -585,7 +570,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	public org.alice.ide.ubiquitouspane.UbiquitousPane getUbiquitousPane() {
 		return this.ubiquitousPane;
 	}
-	public org.alice.ide.editorstabbedpane.EditorsTabSelectionStateOperation getEditorsTabbedPane() {
+	public org.alice.ide.editorstabbedpane.EditorsTabSelectionStateOperation getEditorsTabSelectionState() {
 		return this.editorsTabbedPaneOperation;
 	}
 	public org.alice.ide.memberseditor.MembersEditor getMembersEditor() {
@@ -1062,19 +1047,6 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getRootTypeDeclaredInAlice() {
 		return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)this.rootField.valueType.getValue();
 	}
-	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getRootField() {
-		return this.rootField;
-	}
-	public void setRootField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField ) {
-		if( this.rootField != null ) {
-			getRootTypeDeclaredInAlice().fields.removeListPropertyListener( this.fieldsAdapter );
-		}
-		this.rootField = rootField;
-		if( this.getRootField() != null ) {
-			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
-		}
-		this.refreshFields();
-	}
 	private void refreshFields() {
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( this.rootField != null ) {
@@ -1085,6 +1057,16 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 		this.fieldSelectionState.setListData( -1, fields );
 	}
+	private void setRootField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField ) {
+		if( this.rootField != null ) {
+			getRootTypeDeclaredInAlice().fields.removeListPropertyListener( this.fieldsAdapter );
+		}
+		this.rootField = rootField;
+		if( this.rootField != null ) {
+			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
+		}
+		this.refreshFields();
+	}
 	@Override
 	public void setProject(edu.cmu.cs.dennisc.alice.Project project) {
 		super.setProject(project);
@@ -1092,9 +1074,6 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 	
 	
-	private edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = null;
-	//private edu.cmu.cs.dennisc.alice.ast.AbstractField fieldSelection = null;
-	//private edu.cmu.cs.dennisc.alice.ast.AbstractTransient transientSelection = null;
 
 	public edu.cmu.cs.dennisc.alice.ast.Node createCopy( edu.cmu.cs.dennisc.alice.ast.Node original ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice root = this.getProgramType();
@@ -1538,24 +1517,33 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 
 	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getFocusedCode() {
-		return this.focusedCode;
+		return this.getEditorsTabSelectionState().getCurrentValue();
+//		org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)this.getEditorsTabSelectionState().getCurrentTabStateOperation().getSingletonView();
+//		if( codeEditor != null ) {
+//			return codeEditor.getCode();
+//		} else {
+//			return null;
+//		}
 	}
-
 	public void setFocusedCode( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextFocusedCode ) {
-		if( nextFocusedCode == this.focusedCode ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode = this.focusedCode;
-			for( CodeInFocusObserver codeInFocusObserver : this.codeInFocusObservers ) {
-				codeInFocusObserver.focusedCodeChanging( previousCode, nextFocusedCode );
-			}
-			this.focusedCode = nextFocusedCode;
-			for( CodeInFocusObserver codeInFocusObserver : this.codeInFocusObservers ) {
-				codeInFocusObserver.focusedCodeChanged( previousCode, nextFocusedCode );
-			}
-
-		}
+		this.getEditorsTabSelectionState().edit( nextFocusedCode, false );
 	}
+//
+//	public void setFocusedCode( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextFocusedCode ) {
+//		if( nextFocusedCode == this.focusedCode ) {
+//			//pass
+//		} else {
+//			edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode = this.focusedCode;
+//			for( CodeInFocusObserver codeInFocusObserver : this.codeInFocusObservers ) {
+//				codeInFocusObserver.focusedCodeChanging( previousCode, nextFocusedCode );
+//			}
+//			this.focusedCode = nextFocusedCode;
+//			for( CodeInFocusObserver codeInFocusObserver : this.codeInFocusObservers ) {
+//				codeInFocusObserver.focusedCodeChanged( previousCode, nextFocusedCode );
+//			}
+//
+//		}
+//	}
 
 //	@Deprecated
 //	public edu.cmu.cs.dennisc.alice.ast.AbstractField getFieldSelection() {

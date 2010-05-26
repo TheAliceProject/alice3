@@ -60,9 +60,9 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private FullBodyOutfitCardPanel fullBodyOutfitCardPanel = new FullBodyOutfitCardPanel();
 	private FitnessLevelPane fitnessLevelPane = new FitnessLevelPane();
 
-	private static abstract class ContentTabStateOperation extends edu.cmu.cs.dennisc.croquet.TabStateOperation {
-		public ContentTabStateOperation(java.util.UUID individualId, boolean initialValue, String title) {
-			super(PersonEditor.GROUP_ID, individualId, initialValue, title);
+	private static abstract class ContentTabStateOperation extends edu.cmu.cs.dennisc.croquet.TabStateOperation<String> {
+		public ContentTabStateOperation(java.util.UUID individualId, String title) {
+			super(PersonEditor.GROUP_ID, individualId, title);
 		}
 		@Override
 		protected edu.cmu.cs.dennisc.croquet.ScrollPane createSingletonScrollPane() {
@@ -78,7 +78,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	}
 
-	private ContentTabStateOperation bodyTabState = new ContentTabStateOperation(java.util.UUID.fromString( "10c0d057-a5d7-4a36-8cd7-c30f46f5aac2" ), true, "Body") {
+	private ContentTabStateOperation bodyTabState = new ContentTabStateOperation(java.util.UUID.fromString( "10c0d057-a5d7-4a36-8cd7-c30f46f5aac2" ), "Body") {
 		@Override
 		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createSingletonView() {
 			edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( IngredientsPane.this.fullBodyOutfitCardPanel );
@@ -97,7 +97,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			return bodyPane;
 		}
 	};
-	private ContentTabStateOperation headTabState = new ContentTabStateOperation(java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ), false, "Head") {
+	private ContentTabStateOperation headTabState = new ContentTabStateOperation(java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ), "Head") {
 		@Override
 		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createSingletonView() {
 			edu.cmu.cs.dennisc.croquet.RowsSpringPanel rv = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 8 ) {

@@ -46,11 +46,9 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
-	private org.alice.ide.IDE.CodeInFocusObserver codeInFocusObserver = new org.alice.ide.IDE.CodeInFocusObserver() {
-		public void focusedCodeChanging( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
-		}
-		public void focusedCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
-			SelectedFieldExpressionPane.this.handleCodeChanged( nextCode );
+	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
+		public void selected( edu.cmu.cs.dennisc.croquet.TabStateOperation< edu.cmu.cs.dennisc.alice.ast.AbstractCode > next ) {
+			SelectedFieldExpressionPane.this.handleCodeChanged( next != null ? next.getValue() : null );
 		}
 	};
 	private edu.cmu.cs.dennisc.property.event.PropertyListener namePropertyAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
@@ -106,12 +104,13 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
-		this.getIDE().addCodeInFocusObserver( this.codeInFocusObserver );
+		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeSelectionObserver( this.codeSelectionObserver );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate field listening" );
 		this.handleFieldChanged( getIDE().getFieldSelectionState().getValue() );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		this.getIDE().removeCodeInFocusObserver( this.codeInFocusObserver );
+		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeSelectionObserver( this.codeSelectionObserver );
 		super.handleRemovedFrom( parent );
 	}
 }

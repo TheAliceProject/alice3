@@ -42,6 +42,8 @@
  */
 package org.alice.ide.editorstabbedpane;
 
+import org.alice.ide.ubiquitouspane.UbiquitousPane;
+
 //class EditFieldOperation extends org.alice.ide.operations.AbstractActionOperation {
 //	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
 //
@@ -360,13 +362,12 @@ class OperationDropDown extends org.alice.ide.common.AbstractDropDownPane {
 }
 
 public class DeclarationsDropDown extends OperationDropDown {
-	private org.alice.ide.IDE.CodeInFocusObserver codeInFocusObserver = new org.alice.ide.IDE.CodeInFocusObserver() {
-		public void focusedCodeChanging( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
-		}
-		public void focusedCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
-			DeclarationsDropDown.this.updateOperation( nextCode );
+	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode> selectionObserver = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode>() {
+		public void selected( edu.cmu.cs.dennisc.croquet.TabStateOperation<edu.cmu.cs.dennisc.alice.ast.AbstractCode> next ) {
+			DeclarationsDropDown.this.updateOperation( next.getValue() );
 		}
 	};
+
 	public DeclarationsDropDown() {
 		super( new RootOperation() );
 	}
@@ -375,11 +376,11 @@ public class DeclarationsDropDown extends OperationDropDown {
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
 		this.updateOperation( org.alice.ide.IDE.getSingleton().getFocusedCode() );
-		this.getIDE().addCodeInFocusObserver( this.codeInFocusObserver );
+		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeSelectionObserver( this.selectionObserver );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		this.getIDE().removeCodeInFocusObserver( this.codeInFocusObserver );
+		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeSelectionObserver( this.selectionObserver );
 		super.handleRemovedFrom( parent );
 	}
 	@Override

@@ -52,9 +52,9 @@ public final class ToolPaletteTabbedPane extends AbstractTabbedPane {
 	protected javax.swing.JComponent createAwtComponent() {
 		return this.panel.getAwtComponent();
 	}
-	private java.util.List< TabStateOperation > tabStateOperations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private java.util.List< TabStateOperation<?> > tabStateOperations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	@Override
-	/*package-private*/ void addTab(edu.cmu.cs.dennisc.croquet.TabStateOperation tabStateOperation) {
+	/*package-private*/ void addTab(edu.cmu.cs.dennisc.croquet.TabStateOperation<?> tabStateOperation) {
 		super.addTab(tabStateOperation);
 		this.tabStateOperations.add( tabStateOperation );
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
@@ -65,17 +65,17 @@ public final class ToolPaletteTabbedPane extends AbstractTabbedPane {
 		this.panel.addComponent( tabStateOperation.getSingletonTabTitle( this ), gbc );
 		gbc.weighty = 1.0f;
 		this.panel.addComponent( tabStateOperation.getSingletonScrollPane(), gbc );
-		tabStateOperation.getSingletonScrollPane().setVisible( tabStateOperation.getState() );
+		//tabStateOperation.getSingletonScrollPane().setVisible( tabStateOperation.getState() );
 	}
 	@Override
-	/*package-private*/ void removeTab(edu.cmu.cs.dennisc.croquet.TabStateOperation tabStateOperation) {
+	/*package-private*/ void removeTab(edu.cmu.cs.dennisc.croquet.TabStateOperation<?> tabStateOperation) {
 		super.removeTab(tabStateOperation);
 		this.tabStateOperations.remove( tabStateOperation );
 		this.panel.removeComponent( tabStateOperation.getSingletonTabTitle( this ) );
 		this.panel.removeComponent( tabStateOperation.getSingletonScrollPane() );
 	}
 	@Override
-	/*package-private*/ void selectTab(edu.cmu.cs.dennisc.croquet.TabStateOperation nextTabStateOperation) {
+	/*package-private*/ void selectTab(edu.cmu.cs.dennisc.croquet.TabStateOperation<?> nextTabStateOperation) {
 		for( TabStateOperation tabStateOperation : this.tabStateOperations ) {
 			tabStateOperation.getSingletonScrollPane().setVisible( tabStateOperation == nextTabStateOperation );
 		}

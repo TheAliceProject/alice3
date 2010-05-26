@@ -109,7 +109,7 @@ public class EntryPoint {
 				ide.getMembersEditor().getProceduresTabStateOperation().getSingletonView() 
 		);
 
-		ide.getMembersEditor().getFunctionsTabStateOperation().setState( true );
+		//ide.getMembersEditor().getFunctionsTabStateOperation().setState( true );
 		tutorial.setSelectedIndex( 6 );
 		
 		tutorial.setVisible( true );

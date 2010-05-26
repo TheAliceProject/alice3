@@ -55,11 +55,11 @@ public abstract class AbstractTabbedPane extends JComponent<javax.swing.JCompone
 		}
 	}
 	protected abstract Component<?>[] getTabTitles();
-	/* package-private */ void addTab( TabStateOperation tabStateOperation ) {
+	/* package-private */ void addTab( TabStateOperation<?> tabStateOperation ) {
 		this.revalidateAndRepaint();
 	}
-	/* package-private */ void removeTab( TabStateOperation tabStateOperation ) {
+	/* package-private */ void removeTab( TabStateOperation<?> tabStateOperation ) {
 		this.revalidateAndRepaint();
 	}
-	/* package-private */ abstract void selectTab( TabStateOperation tabStateOperation );
+	/* package-private */ abstract void selectTab( TabStateOperation<?> tabStateOperation );
 }

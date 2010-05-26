@@ -45,13 +45,33 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TabStateOperation extends BooleanStateOperation {
-	public TabStateOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualUUID, boolean initialState ) {
-		super( group, individualUUID, initialState );
+public abstract class TabStateOperation<T> extends Operation {
+	private T value;
+	public TabStateOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualUUID, T value ) {
+		super( group, individualUUID );
+		this.value = value;
 	}
-	public TabStateOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualUUID, boolean initialState, String title ) {
-		super( group, individualUUID, initialState, title );
+	
+	public T getValue() {
+		return this.value;
 	}
+	
+	protected String getTextFor( T t ) {
+		if( t != null ) {
+			return t.toString();
+		} else {
+			return null;
+		}
+	}
+//	@Deprecated
+//	public void setState( boolean state ) {
+//		throw new RuntimeException( "todo" );
+//	}
+//	@Deprecated
+//	public void setTrueText( String trueText ) {
+//		throw new RuntimeException( "todo" );
+//	}
+	
 	private edu.cmu.cs.dennisc.croquet.ScrollPane singletonScrollPane;
 
 	protected ScrollPane createSingletonScrollPane() {
@@ -157,7 +177,7 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 		}
 	}
 
-	private static class JTabTitle extends javax.swing.AbstractButton {
+	private class JTabTitle extends javax.swing.AbstractButton {
 		private java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
 			public void mouseEntered( java.awt.event.MouseEvent e ) {
 				JTabTitle.this.getModel().setArmed( true );
@@ -175,11 +195,11 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 				JTabTitle.this.select();
 			}
 		};
-		private java.beans.PropertyChangeListener propertyChangeListener = new java.beans.PropertyChangeListener() {
-			public void propertyChange(java.beans.PropertyChangeEvent e) {
-				JTabTitle.this.updateLabel();
-			}
-		};
+//		private java.beans.PropertyChangeListener propertyChangeListener = new java.beans.PropertyChangeListener() {
+//			public void propertyChange(java.beans.PropertyChangeEvent e) {
+//				JTabTitle.this.updateLabel();
+//			}
+//		};
 		
 		private void select() {
 			this.setSelected( true );
@@ -187,11 +207,19 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 			//this.getParent().repaint( this.getX(), this.getY(), this.getWidth() + EAST_TAB_PAD, this.getHeight() );
 		}
 
-		private javax.swing.JLabel label = new javax.swing.JLabel();
+		private javax.swing.JLabel label = new javax.swing.JLabel() {
+			@Override
+			public String getText() {
+				T value = TabStateOperation.this.getValue();
+				return TabStateOperation.this.getTextFor( value );
+			}
+		};
 		private javax.swing.JButton closeButton = new javax.swing.JButton();
-		private javax.swing.Action action;
+		//private javax.swing.Action action;
 		private AbstractTabbedPane singleSelectionPane;
 		public JTabTitle( AbstractTabbedPane singleSelectionPane, boolean isCloseAffordanceDesired ) {
+			assert singleSelectionPane != null;
+			this.setModel( new javax.swing.JToggleButton.ToggleButtonModel() );
 			this.singleSelectionPane = singleSelectionPane;
 			this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
 			this.add( this.label );
@@ -202,14 +230,11 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 				this.closeButton.setOpaque( false );
 				this.add( this.closeButton );
 			}
-
-			
 			if( this.singleSelectionPane instanceof ToolPaletteTabbedPane ) {
 				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 32, 4, 4 ) );
 			} else {
 				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 4, 4, 8 ) );
 			}
-			
 			this.setOpaque( this.singleSelectionPane instanceof ToolPaletteTabbedPane );
 		}
 		@Override
@@ -256,7 +281,7 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 				
 				
 				g.translate(x, y);
-				if( this.getModel().isSelected() ) {
+				if( this.getModel().isSelected() || this.getModel().isPressed() ) {
 					g2.rotate( Math.PI/2 );
 				}
 				java.awt.Paint fillPaint = java.awt.Color.WHITE;
@@ -279,23 +304,23 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 				g2.setTransform( m );
 			}
 		}
-		private void updateLabel() {
-			if( this.action != null ) {
-				this.label.setText( (String)action.getValue( javax.swing.Action.NAME ) );
-			}
-		}
-		@Override
-		public void setAction(javax.swing.Action action) {
-			if( this.action != null ) {
-				this.action.removePropertyChangeListener( this.propertyChangeListener );
-			}
-			super.setAction(action);
-			this.action = action;
-			this.updateLabel();
-			if( this.action != null ) {
-				this.action.addPropertyChangeListener( this.propertyChangeListener );
-			}
-		}
+//		private void updateLabel() {
+//			if( this.action != null ) {
+//				this.label.setText( (String)action.getValue( javax.swing.Action.NAME ) );
+//			}
+//		}
+//		@Override
+//		public void setAction(javax.swing.Action action) {
+//			if( this.action != null ) {
+//				this.action.removePropertyChangeListener( this.propertyChangeListener );
+//			}
+//			super.setAction(action);
+//			this.action = action;
+//			this.updateLabel();
+//			if( this.action != null ) {
+//				this.action.addPropertyChangeListener( this.propertyChangeListener );
+//			}
+//		}
 		@Override
 		public void addNotify() {
 			super.addNotify();
@@ -308,7 +333,7 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 		}
 	}
 
-	private static class TabTitle extends AbstractButton< javax.swing.AbstractButton > {
+	private class TabTitle extends AbstractButton< javax.swing.AbstractButton > {
 		private AbstractTabbedPane singleSelectionPane;
 		private boolean isCloseAffordanceDesired;
 		public TabTitle( AbstractTabbedPane singleSelectionPane, boolean isCloseAffordanceDesired ) {
@@ -326,8 +351,18 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 		if( this.tabTitle != null ) {
 			//pass
 		} else {
-			this.tabTitle = new TabTitle( singleSelectionPane, this.isCloseAffordanceDesired() );
-			register( this.tabTitle );
+			this.tabTitle = new TabTitle( singleSelectionPane, this.isCloseAffordanceDesired() ) {
+				@Override
+				protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+					super.handleAddedTo( parent );
+					TabStateOperation.this.addComponent( this );
+				}
+				@Override
+				protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+					TabStateOperation.this.removeComponent( this );
+					super.handleRemovedFrom( parent );
+				}
+			};
 		}
 		return this.tabTitle;
 	}

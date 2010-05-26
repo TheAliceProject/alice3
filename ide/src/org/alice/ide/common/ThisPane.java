@@ -48,11 +48,9 @@ package org.alice.ide.common;
 public class ThisPane extends AccessiblePane {
 	private static final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava TYPE_FOR_NULL = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Void.class );
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type = TYPE_FOR_NULL;
-	private org.alice.ide.IDE.CodeInFocusObserver codeInFocusObserver = new org.alice.ide.IDE.CodeInFocusObserver() {
-		public void focusedCodeChanging( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
-		}
-		public void focusedCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
-			ThisPane.this.updateBasedOnFocusedCode( nextCode );
+	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
+		public void selected( edu.cmu.cs.dennisc.croquet.TabStateOperation< edu.cmu.cs.dennisc.alice.ast.AbstractCode > next ) {
+			ThisPane.this.updateBasedOnFocusedCode( next != null ? next.getValue() : null );
 		}
 	};
 
@@ -64,11 +62,11 @@ public class ThisPane extends AccessiblePane {
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
 		this.updateBasedOnFocusedCode( org.alice.ide.IDE.getSingleton().getFocusedCode() );
-		this.getIDE().addCodeInFocusObserver( this.codeInFocusObserver );
+		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeSelectionObserver( this.codeSelectionObserver );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		this.getIDE().removeCodeInFocusObserver( this.codeInFocusObserver );
+		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeSelectionObserver( this.codeSelectionObserver );
 		super.handleRemovedFrom( parent );
 	}
 	private void updateBasedOnFocusedCode( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {

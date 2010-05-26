@@ -193,6 +193,7 @@ public final class FolderTabbedPane extends AbstractTabbedPane {
 //		}
 //	};
 
+	@Override
 	protected Component<?>[] getTabTitles() {
 		return this.headerPane.getComponents();
 	}
@@ -233,21 +234,21 @@ public final class FolderTabbedPane extends AbstractTabbedPane {
 		return rv;
 	}
 	@Override
-	/* package-private */ void addTab(TabStateOperation tabStateOperation) {
+	/* package-private */ void addTab(TabStateOperation<?> tabStateOperation) {
 		super.addTab(tabStateOperation);
 		this.headerPane.addComponent(tabStateOperation.getSingletonTabTitle( this ));
 		this.cardPanel.addComponent(this.getKey(tabStateOperation));
 	}
 	
 	@Override
-	/* package-private */ void removeTab(edu.cmu.cs.dennisc.croquet.TabStateOperation tabStateOperation) {
+	/* package-private */ void removeTab(TabStateOperation<?> tabStateOperation) {
 		super.removeTab(tabStateOperation);
 		this.cardPanel.removeComponent(this.getKey(tabStateOperation));
 		this.headerPane.removeComponent(tabStateOperation.getSingletonTabTitle( this ));
 	}
 
 	@Override
-	/* package-private */ void selectTab(edu.cmu.cs.dennisc.croquet.TabStateOperation tabStateOperation) {
+	/* package-private */ void selectTab(TabStateOperation<?> tabStateOperation) {
 		if( tabStateOperation != null ) {
 			this.cardPanel.show(this.getKey(tabStateOperation));
 		} else {

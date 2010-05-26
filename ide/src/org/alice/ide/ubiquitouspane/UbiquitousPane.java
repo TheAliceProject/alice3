@@ -149,10 +149,8 @@ public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	private ReturnStatementWrapper returnStatementWrapper = new ReturnStatementWrapper();
 	private TransientStatementsWrapper transientStatementsWrapper = new TransientStatementsWrapper();
 
-	private org.alice.ide.IDE.CodeInFocusObserver codeInFocusObserver = new org.alice.ide.IDE.CodeInFocusObserver() {
-		public void focusedCodeChanging( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
-		}
-		public void focusedCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
+	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver selectionObserver = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver() {
+		public void selected( edu.cmu.cs.dennisc.croquet.TabStateOperation next ) {
 			UbiquitousPane.this.refresh();
 		}
 	};
@@ -184,12 +182,11 @@ public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
-		org.alice.ide.IDE.getSingleton().addCodeInFocusObserver( this.codeInFocusObserver );
-		this.refresh();
+		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeSelectionObserver( this.selectionObserver );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		org.alice.ide.IDE.getSingleton().removeCodeInFocusObserver( this.codeInFocusObserver );
+		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeSelectionObserver( this.selectionObserver );
 		super.handleRemovedFrom( parent );
 	}
 

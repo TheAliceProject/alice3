@@ -178,13 +178,16 @@ class FieldsContentPanel extends MembersContentPanel {
  * @author Dennis Cosgrove
  */
 public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	private static abstract class MemberTabStateOperation extends edu.cmu.cs.dennisc.croquet.TabStateOperation {
-		public MemberTabStateOperation( java.util.UUID individualId, boolean initialState ) {
-			super( org.alice.app.ProjectApplication.IDE_GROUP, individualId, initialState );
+	private static abstract class MemberTabStateOperation extends edu.cmu.cs.dennisc.croquet.TabStateOperation<String> {
+		public MemberTabStateOperation( java.util.UUID individualId ) {
+			super( org.alice.app.ProjectApplication.IDE_GROUP, individualId, null );
+		}
+		
+		@Override
+		public String getValue() {
+			//todo
 			MembersContentPanel memberTab = (MembersContentPanel)this.getSingletonView();
-			String trueAndFalseText = memberTab.getTitle();
-			this.setTrueText( trueAndFalseText );
-			this.setFalseText( trueAndFalseText );
+			return memberTab.getTitle();
 		}
 		@Override
 		protected final boolean isCloseAffordanceDesired() {
@@ -192,32 +195,32 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	}
 
-	private MemberTabStateOperation proceduresTabStateOperation = new MemberTabStateOperation( java.util.UUID.fromString( "2731d704-1f80-444e-a610-e6e5866c0b9a" ), true ) {
+	private MemberTabStateOperation proceduresTabStateOperation = new MemberTabStateOperation( java.util.UUID.fromString( "2731d704-1f80-444e-a610-e6e5866c0b9a" ) ) {
 		@Override
 		protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createSingletonView() {
 			return new ProceduresContentPanel();
 		}
 	};
-	private MemberTabStateOperation functionsTabStateOperation = new MemberTabStateOperation( java.util.UUID.fromString( "0f5d1f93-fc67-4109-9aff-0e7b232f201c" ), false ) {
+	private MemberTabStateOperation functionsTabStateOperation = new MemberTabStateOperation( java.util.UUID.fromString( "0f5d1f93-fc67-4109-9aff-0e7b232f201c" ) ) {
 		@Override
 		protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createSingletonView() {
 			return new FunctionsContentPanel();
 		}
 	};
-	private MemberTabStateOperation fieldsTabStateOperation = new MemberTabStateOperation( java.util.UUID.fromString( "6cb9c5a1-dc60-48e7-9a52-534009a093b8" ), false ) {
+	private MemberTabStateOperation fieldsTabStateOperation = new MemberTabStateOperation( java.util.UUID.fromString( "6cb9c5a1-dc60-48e7-9a52-534009a093b8" ) ) {
 		@Override
 		protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createSingletonView() {
 			return new FieldsContentPanel();
 		}
 	};
 
-	public edu.cmu.cs.dennisc.croquet.TabStateOperation getProceduresTabStateOperation() {
+	public edu.cmu.cs.dennisc.croquet.TabStateOperation<String> getProceduresTabStateOperation() {
 		return this.proceduresTabStateOperation;
 	}
-	public edu.cmu.cs.dennisc.croquet.TabStateOperation getFunctionsTabStateOperation() {
+	public edu.cmu.cs.dennisc.croquet.TabStateOperation<String> getFunctionsTabStateOperation() {
 		return this.functionsTabStateOperation;
 	}
-	public edu.cmu.cs.dennisc.croquet.TabStateOperation getFieldsTabStateOperation() {
+	public edu.cmu.cs.dennisc.croquet.TabStateOperation<String> getFieldsTabStateOperation() {
 		return this.fieldsTabStateOperation;
 	}
 
@@ -227,17 +230,17 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	};
 
-	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabbedPaneSelectionOperation = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ),
+	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation<String> tabbedPaneSelectionOperation = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation<String>( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ),
 			this.fieldsTabStateOperation, this.functionsTabStateOperation, this.proceduresTabStateOperation );
 
 	private void handleFieldSelection( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		for( edu.cmu.cs.dennisc.croquet.TabStateOperation tabStateOperation : this.tabbedPaneSelectionOperation.getTabStateOperations() ) {
+		for( edu.cmu.cs.dennisc.croquet.TabStateOperation<String> tabStateOperation : this.tabbedPaneSelectionOperation.getTabStateOperations() ) {
 			MembersContentPanel membersTab = (MembersContentPanel)tabStateOperation.getSingletonView();
 			membersTab.handleFieldSelection( field );
 		}
 	}
 	private void refresh() {
-		for( edu.cmu.cs.dennisc.croquet.TabStateOperation tabStateOperation : this.tabbedPaneSelectionOperation.getTabStateOperations() ) {
+		for( edu.cmu.cs.dennisc.croquet.TabStateOperation<String> tabStateOperation : this.tabbedPaneSelectionOperation.getTabStateOperations() ) {
 			MembersContentPanel membersTab = (MembersContentPanel)tabStateOperation.getSingletonView();
 			membersTab.refresh();
 		}
@@ -287,7 +290,9 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		
 		this.tabbedPaneSelectionOperation.addAndInvokeSelectionObserver( new edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver() {
 			public void selected( edu.cmu.cs.dennisc.croquet.TabStateOperation next ) {
-				MembersEditor.this.setBackgroundColor( next.getSingletonView().getBackgroundColor() );
+				if( next != null ) {
+					MembersEditor.this.setBackgroundColor( next.getSingletonView().getBackgroundColor() );
+				}
 				MembersEditor.this.repaint();
 			}
 		} );

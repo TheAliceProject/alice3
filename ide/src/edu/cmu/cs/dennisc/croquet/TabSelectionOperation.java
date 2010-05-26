@@ -42,14 +42,12 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-import edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver;
-
 /**
  * @author Dennis Cosgrove
  */
-public class TabSelectionOperation extends Operation {
-	public interface SelectionObserver {
-		public void selected( TabStateOperation next );
+public class TabSelectionOperation<T> extends Operation {
+	public interface SelectionObserver<T> {
+		public void selected( TabStateOperation<T> next );
 	}
 	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 	private final java.util.Map<javax.swing.ButtonModel, TabStateOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -71,7 +69,8 @@ public class TabSelectionOperation extends Operation {
 			}
 		}
 	};
-	private void addTab( TabStateOperation tabStateOperation ) {
+	
+	private void addTab( TabStateOperation<T> tabStateOperation ) {
 		AbstractButton<?> tabTitle = tabStateOperation.getSingletonTabTitle( this.singletonSingleSelectionPane );
 		this.map.put( tabTitle.getAwtComponent().getModel(), tabStateOperation);
 		this.buttonGroup.add(tabTitle.getAwtComponent());
@@ -79,7 +78,7 @@ public class TabSelectionOperation extends Operation {
 		this.singletonSingleSelectionPane.addTab( tabStateOperation );
 	}
 
-	private void removeTab( TabStateOperation tabStateOperation ) {
+	private void removeTab( TabStateOperation<T> tabStateOperation ) {
 		AbstractButton<?> tabTitle = tabStateOperation.getSingletonTabTitle( this.singletonSingleSelectionPane );
 		tabTitle.getAwtComponent().getModel().removeItemListener( this.itemListener );
 		this.buttonGroup.remove(tabTitle.getAwtComponent());
@@ -87,42 +86,51 @@ public class TabSelectionOperation extends Operation {
 		this.singletonSingleSelectionPane.removeTab( tabStateOperation );
 	}
 	
-	private void selectTab( TabStateOperation tabStateOperation ) {
+	@Deprecated
+	public void selectTab( TabStateOperation<T> tabStateOperation ) {
 		this.singletonSingleSelectionPane.selectTab( tabStateOperation );
-		for( SelectionObserver selectionObserver : this.selectionObservers ) {
+		for( SelectionObserver<T> selectionObserver : this.selectionObservers ) {
 			selectionObserver.selected( tabStateOperation );
 		}
 	}
 
-	private final java.util.List< SelectionObserver > selectionObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private final java.util.List< TabStateOperation > tabStateOperations;
-	public TabSelectionOperation( Group group, java.util.UUID individualUUID, TabStateOperation... operations ) {
+	private final java.util.List< SelectionObserver<T> > selectionObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List< TabStateOperation<T> > tabStateOperations;
+	public TabSelectionOperation( Group group, java.util.UUID individualUUID, TabStateOperation<T>... operations ) {
 		super( group, individualUUID );
 		this.tabStateOperations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( operations );
 	}
-	public void addTabStateOperation( TabStateOperation operation ) {
+	public void addTabStateOperation( TabStateOperation<T> operation ) {
 		this.tabStateOperations.add( operation );
 		if( this.singletonSingleSelectionPane != null ) {
 			this.addToTabbedPane( operation );
 		}
 	}
-	public void removeStateOperation( TabStateOperation operation ) {
+	public void removeStateOperation( TabStateOperation<T> operation ) {
 		if( this.singletonSingleSelectionPane != null ) {
 			this.removeFromTabbedPane( operation );
 		}
 		this.tabStateOperations.remove( operation );
 	}
-	public Iterable< TabStateOperation > getTabStateOperations() {
+	public Iterable< TabStateOperation<T> > getTabStateOperations() {
 		return this.tabStateOperations;
 	}
 	public void removeAllTabStateOperations() {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: removeAllTabStateOperations" );
 		this.tabStateOperations.clear();
 	}
-	public TabStateOperation getCurrentTabStateOperation() {
+	public TabStateOperation<T> getCurrentTabStateOperation() {
 		javax.swing.ButtonModel model = this.buttonGroup.getSelection();
 		if( model != null ) {
 			return this.map.get( model );
+		} else {
+			return null;
+		}
+	}
+	public T getCurrentValue() {
+		TabStateOperation<T> currentTabStateOperation = this.getCurrentTabStateOperation();
+		if( currentTabStateOperation != null ) {
+			return currentTabStateOperation.getValue();
 		} else {
 			return null;
 		}
@@ -131,18 +139,18 @@ public class TabSelectionOperation extends Operation {
 //		operation.setValue( true );
 //	}
 	
-	public void addSelectionObserver( SelectionObserver selectionObserver ) { 
+	public void addSelectionObserver( SelectionObserver<T> selectionObserver ) { 
 		this.selectionObservers.add( selectionObserver );
 	}
-	public void addAndInvokeSelectionObserver( SelectionObserver selectionObserver ) {
+	public void addAndInvokeSelectionObserver( SelectionObserver<T> selectionObserver ) {
 		this.addSelectionObserver( selectionObserver );
 		selectionObserver.selected( this.getCurrentTabStateOperation() );
 	}
-	public void removeSelectionObserver( SelectionObserver selectionObserver ) { 
+	public void removeSelectionObserver( SelectionObserver <T>selectionObserver ) { 
 		this.selectionObservers.remove( selectionObserver );
 	}
 	
-	private void addToTabbedPane( TabStateOperation tabState ) {
+	private void addToTabbedPane( TabStateOperation<T> tabState ) {
 		ScrollPane scrollPane = tabState.getSingletonScrollPane();
 		Component<?> mainComponent = tabState.getSingletonView();
 		AbstractButton<?> titleButton = tabState.getSingletonTabTitle( this.singletonSingleSelectionPane );
@@ -150,9 +158,9 @@ public class TabSelectionOperation extends Operation {
 		scrollPane.setBackgroundColor( mainComponent.getBackgroundColor() );
 		this.addTab( tabState );
 		titleButton.setFont( this.singletonSingleSelectionPane.getFont() );
-		if( tabState.getState() ) {
-			this.selectTab( tabState );
-		}
+//		if( tabState.getState() ) {
+//			this.selectTab( tabState );
+//		}
 //		tabState.addValueObserver( new TabIsSelectedObserver( tabState, key) );
 	}
 	private void removeFromTabbedPane( TabStateOperation tabState ) {
