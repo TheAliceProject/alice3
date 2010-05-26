@@ -87,6 +87,10 @@ public abstract class InputCondition {
 		return false;
 	}
 	
+	protected void update( InputState currentState, InputState previousState )
+	{
+	}
+	
 	protected abstract boolean testState( InputState state );
 	
 }

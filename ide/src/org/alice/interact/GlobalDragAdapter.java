@@ -48,6 +48,8 @@ import java.util.Map;
 
 import org.alice.interact.ModifierMask.ModifierKey;
 import org.alice.interact.condition.AndInputCondition;
+import org.alice.interact.condition.ClickedObjectCondition;
+import org.alice.interact.condition.DoubleClickedObjectCondition;
 import org.alice.interact.condition.KeyPressCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MousePressCondition;
@@ -64,9 +66,11 @@ import org.alice.interact.handle.LinearTranslateHandle;
 import org.alice.interact.handle.ManipulationHandleIndirection;
 import org.alice.interact.handle.RotationRingHandle;
 import org.alice.interact.handle.StoodUpRotationRingHandle;
+import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraOrbitDragManipulator;
 import org.alice.interact.manipulator.CameraRotateKeyManipulator;
 import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
+import org.alice.interact.manipulator.GetAGoodLookAtManipulator;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
 import org.alice.interact.manipulator.LinearDragManipulator;
 import org.alice.interact.manipulator.ObjectGlobalHandleDragManipulator;
@@ -221,6 +225,10 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		ManipulatorConditionSet selectObject = new ManipulatorConditionSet( new SelectObjectDragManipulator(this) );
 		selectObject.addCondition( new MousePressCondition(java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.EVERYTHING)) );
 		this.manipulators.add( selectObject );
+		
+		ManipulatorConditionSet getAGoodLookAtObject = new ManipulatorConditionSet( new GetAGoodLookAtManipulator());
+		getAGoodLookAtObject.addCondition( new DoubleClickedObjectCondition(java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS)) );
+		this.manipulators.add( getAGoodLookAtObject );
 		
 		for (int i=0; i<this.manipulators.size(); i++)
 		{

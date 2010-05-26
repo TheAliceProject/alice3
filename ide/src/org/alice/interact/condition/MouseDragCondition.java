@@ -50,21 +50,12 @@ import org.alice.interact.ModifierMask;
 /**
  * @author David Culyba
  */
-public class MouseDragCondition extends ModifierSensitiveCondition{
+public class MouseDragCondition extends MousePickBasedCondition{
 	
 	protected static final double MIN_MOUSE_MOVE = 2.0d;
-	private int mouseButton = 0;
-	private PickCondition pickCondition = null;
 	protected Point mouseDownLocation;
 	protected boolean hasStarted = false;
 	
-	
-	enum PickClasses
-	{
-		ANYTHING,
-		MOVEABLE_OBJECTS,
-		NOTHING,
-	}
 	
 	public MouseDragCondition( int mouseButton, PickCondition pickCondition )
 	{
@@ -73,9 +64,7 @@ public class MouseDragCondition extends ModifierSensitiveCondition{
 	
 	public MouseDragCondition( int mouseButton, PickCondition pickCondition, ModifierMask modifierMask )
 	{
-		super(modifierMask);
-		this.pickCondition = pickCondition;
-		this.mouseButton = mouseButton;
+		super(mouseButton, pickCondition, modifierMask);
 	}
 
 	@Override
@@ -111,7 +100,7 @@ public class MouseDragCondition extends ModifierSensitiveCondition{
 	@Override
 	public boolean justStarted( InputState currentState, InputState previousState ) 
 	{
-		boolean testClickVal = testClick(currentState);
+		boolean testClickVal = testInputsAndPick(currentState);
 		boolean testPreviousInputVal = testInputs(previousState);
 //System.out.println("Checking justStarted in mouse drag.\n  click val: "+testClickVal+", previous input: "+testPreviousInputVal);
 		if (testClickVal && !testPreviousInputVal)
@@ -156,39 +145,7 @@ public class MouseDragCondition extends ModifierSensitiveCondition{
 		return false;
 	}
 	
-	protected boolean testClick(InputState state)
-	{
-		if (testInputs(state))
-		{
-			return testPick(state);
-		}
-		return false;
-	}
 	
-	protected boolean testPick(InputState state)
-	{
-		boolean pickValid = pickCondition.evalutateChain( state );
-		return pickValid; 
-	}
-	
-	protected boolean testPick_debug(InputState state)
-	{
-		boolean pickValid = pickCondition.evalutateChain_debug( state );
-		return pickValid; 
-	}
-	
-	protected boolean testMouse( InputState state )
-	{
-		boolean mouseTest = state.isMouseDown( this.mouseButton );
-		return mouseTest;
-	}
-	
-	protected boolean testInputs( InputState state )
-	{
-		boolean superTest = super.testState( state );
-		boolean mouseTest = testMouse( state );
-		return (superTest && mouseTest);
-	}
 	
 	
 }

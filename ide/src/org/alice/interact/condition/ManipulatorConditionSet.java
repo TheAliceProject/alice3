@@ -83,6 +83,14 @@ public class ManipulatorConditionSet {
 		return this.manipulator;
 	}
 	
+	public void update( InputState current, InputState previous )
+	{
+		for (int i=0; i<this.inputConditions.size(); i++)
+		{
+			this.inputConditions.get(i).update(current, previous);
+		}
+	}
+	
 	private boolean checkCondition( RunningState state, InputState current, InputState previous )
 	{
 //		if (previous.isAnyMouseButtonDown() && !current.isAnyMouseButtonDown())

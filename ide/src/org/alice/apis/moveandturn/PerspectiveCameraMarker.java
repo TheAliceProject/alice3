@@ -304,8 +304,8 @@ public class PerspectiveCameraMarker extends CameraMarker
 		sgTransformableCylinder2.setParent( this.getSGTransformable() );
 		sgBoxVisual.setParent( this.getSGTransformable() );
 		
-//		setDetailedViewShowing(false);
-//		updateDetailIsShowing();
+		setDetailedViewShowing(false);
+		updateDetailIsShowing();
 		
 	}
 	
@@ -321,11 +321,11 @@ public class PerspectiveCameraMarker extends CameraMarker
 	
 	private void updateDetailIsShowing()
 	{
-//		System.out.println("Doing detail showing.");
-//		for (Visual v : this.sgDetailedComponents)
-//		{
-//			v.isShowing.setValue(this.showDetail && this.isShowing);
-//		}
+		//System.out.println("Doing detail showing.");
+		for (Visual v : this.sgDetailedComponents)
+		{
+			v.isShowing.setValue(this.showDetail && this.isShowing);
+		}
 	}
 	
 	

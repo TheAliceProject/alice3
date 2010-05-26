@@ -760,6 +760,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.snapGrid.addCamera(this.getSGPerspectiveCamera());
 		this.snapGrid.addCamera(this.getSGOrthographicCamera());
 		this.snapGrid.setCurrentCamera(this.getSGPerspectiveCamera());
+		this.snapGrid.setShowing(this.snapState.shouldShowSnapGrid());
 		
 		upgradeSceneToStateOfTheArt();
 		
@@ -774,9 +775,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		
 		doDelayedSceneSetupStuff();
 		
-		sidePane.showSceneGraphView(this.scene.getSGComposite());
+		//sidePane.showSceneGraphView(this.scene.getSGComposite());
 		
-//		this.needToDoSomeSceneSetupStuff = true;
+		//this.needToDoSomeSceneSetupStuff = true;
 		
 		return rv;
 	}

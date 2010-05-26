@@ -96,7 +96,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	
 	public void setDesiredCameraView( CameraView cameraView )
 	{
-		//this can only be ACTIVE_VIEW
+		//this can only be PICK_CAMERA
 	}
 	
 	public CameraView getDesiredCameraView() {

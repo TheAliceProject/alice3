@@ -81,6 +81,7 @@ public class InputState {
 	private Transformable currentlySelectedObject = null;
 	private ManipulationHandle clickHandle = null;
 	private ManipulationHandle rolloverHandle = null;
+	private long timeCaptured = 0;
 	
 	
 
@@ -131,6 +132,13 @@ public class InputState {
 	public InputState()
 	{
 	}
+	
+	public InputState(InputState other)
+	{
+		this();
+		copyState(other);
+	}
+	
 	
 	public boolean isKeyDown( int keyIndex )
 	{
@@ -370,6 +378,21 @@ public class InputState {
 		return this.getPickedTransformable( this.rolloverPickResult, getFirstClassObject );
 	}
 	
+	public long getTimeCaptured()
+	{
+		return this.timeCaptured;
+	}
+	
+	public void setTimeCaptured()
+	{
+		this.timeCaptured = System.currentTimeMillis();
+	}
+	
+	public void setTimeCaptured( long currentTime )
+	{
+		this.timeCaptured = currentTime;
+	}
+	
 	public void copyState( InputState sourceState )
 	{
 		this.currentKeysToStatesMap = (java.util.HashMap< Integer, Boolean >)sourceState.currentKeysToStatesMap.clone();
@@ -384,6 +407,7 @@ public class InputState {
 		this.rolloverPickResult = sourceState.rolloverPickResult;
 		this.rolloverHandle = sourceState.rolloverHandle;
 		this.clickHandle = sourceState.clickHandle;
+		this.timeCaptured = sourceState.timeCaptured;
 	}
 	
 	@Override

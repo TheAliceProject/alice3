@@ -10,7 +10,7 @@ public class SnapState
 	
 	
 	
-	private boolean isSnapEnabled = true;
+	private boolean isSnapEnabled = false;
 	private boolean isSnapToGroundEnabled = true;
 	private boolean isSnapToGridEnabled = true;
 	private boolean isRotationSnapEnabled = true;

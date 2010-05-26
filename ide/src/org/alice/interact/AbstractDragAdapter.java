@@ -303,6 +303,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			this.handleManager.setHandlesShowing(!isNewSelectedActiveCameraMarker);
 			
 			this.currentInputState.setCurrentlySelectedObject( selected );
+			this.currentInputState.setTimeCaptured();
 			
 			//If the previous object is a camera marker, make sure the state is appropriate
 			if (previousMoveAndTurnObject instanceof PerspectiveCameraMarker)
@@ -381,9 +382,12 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		java.util.Vector< AbstractManipulator > toEnd = new java.util.Vector< AbstractManipulator >();
 		java.util.Vector< AbstractManipulator > toUpdate = new java.util.Vector< AbstractManipulator >();
 		java.util.Vector< AbstractManipulator > toClick = new java.util.Vector< AbstractManipulator >();
+		java.util.Vector< AbstractManipulator > toDoubleClick = new java.util.Vector< AbstractManipulator >();
 		for (int i=0; i<this.manipulators.size(); i++)
 		{
 			ManipulatorConditionSet currentManipulatorSet = this.manipulators.get( i );
+			
+			currentManipulatorSet.update(this.currentInputState, this.previousInputState );
 			
 			if (currentManipulatorSet.stateChanged( this.currentInputState, this.previousInputState))
 			{
@@ -693,6 +697,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		{
 			this.currentInputState.setClickHandle( this.getHandleForComponent( e.getComponent() ) );
 		}
+		this.currentInputState.setTimeCaptured();
 		this.handleStateChange();
 	}
 	
@@ -709,6 +714,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		{
 			this.currentInputState.setRolloverHandle( this.getHandleForComponent( this.currentRolloverComponent ));
 		}
+		this.currentInputState.setTimeCaptured();
 		this.handleStateChange();
 	}
 	
@@ -726,6 +732,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		try {
 			this.currentInputState.setMouseLocation( e.getPoint() );
 			this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_DRAGGED );
+			this.currentInputState.setTimeCaptured();
 			this.handleStateChange();
 		} catch( RuntimeException re ) {
 			re.printStackTrace();
@@ -746,12 +753,14 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		{
 			this.currentInputState.setRolloverHandle( this.getHandleForComponent( e.getComponent() ));
 		}
+		this.currentInputState.setTimeCaptured();
 		this.handleStateChange();
 	}
 	
 	public void mouseWheelMoved( MouseWheelEvent e ) {
 		this.currentInputState.setMouseWheelState( e.getWheelRotation() );
 		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_WHEEL );
+		this.currentInputState.setTimeCaptured();
 		this.handleStateChange();
 		this.currentInputState.setMouseWheelState( 0 );
 	}
@@ -759,6 +768,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	public void keyPressed( java.awt.event.KeyEvent e ) {
 		this.currentInputState.setKeyState( e.getKeyCode(), true );
 		this.currentInputState.setInputEventType( InputState.InputEventType.KEY_DOWN );
+		this.currentInputState.setTimeCaptured();
 		handleStateChange();
 		
 	}
@@ -766,6 +776,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	public void keyReleased( java.awt.event.KeyEvent e ) {
 		this.currentInputState.setKeyState( e.getKeyCode(), false );
 		this.currentInputState.setInputEventType( InputState.InputEventType.KEY_UP );
+		this.currentInputState.setTimeCaptured();
 		handleStateChange();
 
 	}
@@ -788,6 +799,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			{
 				this.currentInputState.setRolloverHandle( this.getHandleForComponent( e.getComponent() ));
 			}
+			this.currentInputState.setTimeCaptured();
 			this.handleStateChange();
 		}
 	}
@@ -799,6 +811,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			this.currentInputState.setMouseLocation( e.getPoint() );
 			this.currentInputState.setRolloverHandle( null );
 			this.currentInputState.setRolloverPickResult( null );
+			this.currentInputState.setTimeCaptured();
 			this.handleStateChange();
 		}
 		
