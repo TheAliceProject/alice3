@@ -193,6 +193,9 @@ public final class FolderTabbedPane extends AbstractTabbedPane {
 //		}
 //	};
 
+	protected Component<?>[] getTabTitles() {
+		return this.headerPane.getComponents();
+	}
 	@Override
 	protected javax.swing.JComponent createAwtComponent() {
 		this.headerPane.setBackgroundColor(new java.awt.Color(63, 63, 81));

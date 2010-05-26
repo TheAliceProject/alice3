@@ -123,9 +123,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	
 
 	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver tabChangeAdapter = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver() {
-		public void selecting( edu.cmu.cs.dennisc.croquet.TabStateOperation prev, edu.cmu.cs.dennisc.croquet.TabStateOperation next ) {
-		}
-		public void selected( edu.cmu.cs.dennisc.croquet.TabStateOperation prev, edu.cmu.cs.dennisc.croquet.TabStateOperation next ) {
+		public void selected( edu.cmu.cs.dennisc.croquet.TabStateOperation next ) {
 			int index;
 			if( next == IngredientsPane.this.bodyTabState ) {
 				index = 0;

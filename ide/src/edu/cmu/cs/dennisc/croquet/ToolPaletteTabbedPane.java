@@ -81,4 +81,13 @@ public final class ToolPaletteTabbedPane extends AbstractTabbedPane {
 		}
 		this.revalidateAndRepaint();
 	}
+	@Override
+	protected Component< ? >[] getTabTitles() {
+		final int N = this.tabStateOperations.size();
+		Component< ? >[] rv = new Component< ? >[ N ];
+		for( int i=0; i<N; i++ ) {
+			rv[ i ] = this.tabStateOperations.get( i ).getSingletonTabTitle( this );
+		}
+		return rv;
+	}
 }

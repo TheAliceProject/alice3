@@ -253,9 +253,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 	private EditPreviousCodeOperation editPreviousCodeOperation;
 	
 	private SelectionObserver selectionObserver = new SelectionObserver() {
-		public void selecting(edu.cmu.cs.dennisc.croquet.TabStateOperation prev, edu.cmu.cs.dennisc.croquet.TabStateOperation next) {
-		}
-		public void selected(edu.cmu.cs.dennisc.croquet.TabStateOperation prev, edu.cmu.cs.dennisc.croquet.TabStateOperation next) {
+		public void selected(edu.cmu.cs.dennisc.croquet.TabStateOperation next) {
 			EditorsTabSelectionStateOperation.this.updateFocusedCode();
 		}
 	};
