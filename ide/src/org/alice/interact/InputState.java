@@ -46,6 +46,7 @@ import org.alice.interact.condition.PickCondition;
 import org.alice.interact.handle.ManipulationHandle;
 
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -80,6 +81,7 @@ public class InputState {
 	private Transformable currentlySelectedObject = null;
 	private ManipulationHandle clickHandle = null;
 	private ManipulationHandle rolloverHandle = null;
+	private long timeCaptured = 0;
 	
 	
 
@@ -88,6 +90,18 @@ public class InputState {
 		return this.rolloverHandle;
 	}
 
+	public AbstractCamera getPickCamera()
+	{
+		if (this.rolloverPickResult != null && this.rolloverPickResult.getSource() instanceof AbstractCamera)
+		{
+			return (AbstractCamera)this.rolloverPickResult.getSource(); 
+		}
+		else if (this.clickPickResult != null && this.clickPickResult.getSource() instanceof AbstractCamera)
+		{
+			return (AbstractCamera)this.clickPickResult.getSource(); 
+		}
+		return null;
+	}
 
 	public void setRolloverHandle( ManipulationHandle rolloverHandle ) {
 		this.rolloverHandle = rolloverHandle;
@@ -118,6 +132,13 @@ public class InputState {
 	public InputState()
 	{
 	}
+	
+	public InputState(InputState other)
+	{
+		this();
+		copyState(other);
+	}
+	
 	
 	public boolean isKeyDown( int keyIndex )
 	{
@@ -222,6 +243,39 @@ public class InputState {
 		return this.clickPickResult;
 	}
 	
+	public PickHint getClickPickType()
+	{
+		//Evaluate handles first since they may be overlayed on the scene
+		if ( this.clickHandle != null )
+		{
+			return this.clickHandle.getPickHint();
+		}
+		else if (this.getClickPickResult() != null)
+		{
+			return PickCondition.getPickType(this.getClickPickResult());
+		}
+		else
+		{
+			return PickHint.NOTHING;
+		}
+	}
+	
+	public PickHint getRolloverPickType()
+	{
+		if (this.getRolloverPickResult() != null)
+		{
+			return PickCondition.getPickType(this.getRolloverPickResult());
+		}
+		else if ( this.rolloverHandle != null )
+		{
+			return this.rolloverHandle.getPickHint();
+		}
+		else
+		{
+			return PickHint.NOTHING;
+		}
+	}
+	
 	public PickResult getRolloverPickResult() {
 		return this.rolloverPickResult;
 	}
@@ -324,6 +378,21 @@ public class InputState {
 		return this.getPickedTransformable( this.rolloverPickResult, getFirstClassObject );
 	}
 	
+	public long getTimeCaptured()
+	{
+		return this.timeCaptured;
+	}
+	
+	public void setTimeCaptured()
+	{
+		this.timeCaptured = System.currentTimeMillis();
+	}
+	
+	public void setTimeCaptured( long currentTime )
+	{
+		this.timeCaptured = currentTime;
+	}
+	
 	public void copyState( InputState sourceState )
 	{
 		this.currentKeysToStatesMap = (java.util.HashMap< Integer, Boolean >)sourceState.currentKeysToStatesMap.clone();
@@ -338,6 +407,7 @@ public class InputState {
 		this.rolloverPickResult = sourceState.rolloverPickResult;
 		this.rolloverHandle = sourceState.rolloverHandle;
 		this.clickHandle = sourceState.clickHandle;
+		this.timeCaptured = sourceState.timeCaptured;
 	}
 	
 	@Override

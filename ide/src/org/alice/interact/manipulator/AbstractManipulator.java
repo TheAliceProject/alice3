@@ -133,6 +133,7 @@ public abstract class AbstractManipulator {
 			HandleSet setToShow = this.getHandleSetToEnable();
 			if (setToShow != null && this.dragAdapter != null)
 			{
+//				System.out.println("Push on start:");
 				this.dragAdapter.pushHandleSet( setToShow );
 			}
 		}
@@ -156,20 +157,13 @@ public abstract class AbstractManipulator {
 		}
 	}
 	
-	public void endManipulator(InputState endInput, InputState previousInput  )
+	public void clickManipulator( InputState clickInput, InputState previousInput )
 	{
-		doEndManipulator( endInput, previousInput );
+		startManipulator( clickInput );
+		doClickManipulator(clickInput, previousInput);
 		if (isUndoable())
 		{
 			undoRedoEndManipulation();
-		}
-		else if (this.getManipulatedTransformable() != null)
-		{
-			AffineMatrix4x4 newTransformation = this.getManipulatedTransformable().getLocalTransformation();
-			if (!newTransformation.equals( originalTransformation ))
-			{
-				PrintUtilities.println("Skipping undoable action for a manipulation that actually changed the transformation.");
-			}
 		}
 		if (this.hasStarted)
 		{
@@ -181,7 +175,35 @@ public abstract class AbstractManipulator {
 			}
 		}
 		triggerAllDeactivateEvents();
-		
+	}
+	
+	public void endManipulator(InputState endInput, InputState previousInput  )
+	{
+		doEndManipulator( endInput, previousInput );
+		if (isUndoable())
+		{
+			undoRedoEndManipulation();
+		}
+		else if (this.getManipulatedTransformable() != null)
+		{
+			AffineMatrix4x4 newTransformation = this.getManipulatedTransformable().getLocalTransformation();
+			if (!newTransformation.equals( originalTransformation ) && originalTransformation != null)
+			{
+				PrintUtilities.println("Skipping undoable action for a manipulation that actually changed the transformation.");
+			}
+		}
+		if (this.hasStarted)
+		{
+			this.hasStarted = false;
+			HandleSet setToShow = this.getHandleSetToEnable();
+			if (setToShow != null && this.dragAdapter != null)
+			{
+//				System.out.println("Pop on manip end:");
+				this.dragAdapter.popHandleSet();
+			}
+		}
+		SnapUtilities.hideMovementSnapVisualization();
+		triggerAllDeactivateEvents();
 	}
 	
 	public abstract String getUndoRedoDescription();
@@ -216,6 +238,10 @@ public abstract class AbstractManipulator {
 			} else {
 				animator = null;
 			}
+			if (originalTransformation == null || newTransformation == null)
+			{
+				System.out.println("boom");
+			}
 			PredeterminedSetLocalTransformationActionOperation undoOperation = new PredeterminedSetLocalTransformationActionOperation(Project.GROUP, false, animator, this.getManipulatedTransformable(), originalTransformation, newTransformation, getUndoRedoDescription());
 			undoOperation.fire();
 		}
@@ -234,5 +260,6 @@ public abstract class AbstractManipulator {
 	
 	public abstract void doEndManipulator( InputState endInput, InputState previousInput  );
 	
+	public abstract void doClickManipulator( InputState endInput, InputState previousInput );
 
 }

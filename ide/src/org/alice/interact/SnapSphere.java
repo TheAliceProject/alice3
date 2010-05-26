@@ -40,51 +40,66 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.sceneeditor.viewmanager;
+package org.alice.interact;
 
-import java.awt.Dimension;
-import java.awt.image.BufferedImage;
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.LineArray;
+import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
+import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.Sphere;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.Vertex;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+/**
+ * @author Administrator
+ *
+ */
+public class SnapSphere extends Transformable {
 
-public class PointOfViewButton extends JButton {
-
-	private PointOfView pointOfView;
-	private ImageIcon imageIcon;
+	public static final double DEFAULT_RADIUS = .06d; 
 	
-	public PointOfViewButton( PointOfView pointOfView )
-	{
-		super();
-		this.imageIcon = new ImageIcon();
-		this.pointOfView = pointOfView;
-//		this.setText("POV");
-		this.setIcon( this.imageIcon );
-		this.setPreferredSize( new Dimension(60, 45) );
-		this.setMinimumSize( new Dimension(60, 45) );
-		this.setMaximumSize( new Dimension(60, 45) );
-	}
+	private Sphere sgSphere = new Sphere();
+	private Visual sgSphereVisual = new Visual();
+	private LineArray sgLineArray = new LineArray();
+	private SingleAppearance sgFrontFacingAppearance = new SingleAppearance();
 
-	public PointOfView getPointOfView() {
-		return pointOfView;
-	}
-
-	public void setPointOfView(PointOfView pointOfView) {
-		this.pointOfView = pointOfView;
-	}
-	
-	public void setAllSizes(Dimension d)
+	public SnapSphere()
 	{
-		this.setPreferredSize( d );
-		this.setMinimumSize( d );
-		this.setMaximumSize( d );
+		this(DEFAULT_RADIUS);
 	}
 	
-	public void setImage(BufferedImage image)
-	{
-		Dimension newSize = new Dimension(image.getWidth(), image.getHeight());
-		setAllSizes(newSize);
-		this.imageIcon.setImage( image );
-//		this.setIcon( new ImageIcon(image) );
+	public SnapSphere(double radius) {
+		this.sgSphere.radius.setValue( radius );
+		sgFrontFacingAppearance.shadingStyle.setValue(ShadingStyle.NONE);
+		sgFrontFacingAppearance.diffuseColor.setValue( Color4f.GREEN );
+		sgFrontFacingAppearance.opacity.setValue( new Float(1f) );
+		this.sgSphereVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
+		this.sgSphereVisual.geometries.setValue( new Geometry[] { this.sgSphere, this.sgLineArray } );
+		this.sgSphereVisual.setParent( this );
 	}
+	
+	public void setColor(Color4f color)
+	{
+		sgFrontFacingAppearance.setDiffuseColor(color);
+	}
+	
+	//Since this visual is rooted at the location of the sphere (and is therefore centered on the rotation ring), we need to make the line extend back to the center of the ring
+	public void setLineDirection(Point3 rootOrigin, Point3 sphereEndPoint)
+	{
+		Vertex[] vertices = new Vertex[ 2 ];
+		Vector3 lineOffset = Vector3.createSubtraction(rootOrigin, sphereEndPoint);
+	    vertices[ 0 ] = Vertex.createXYZ( 0, 0, 0);
+	    vertices[ 1 ] = Vertex.createXYZ( lineOffset.x, lineOffset.y, lineOffset.z);
+	    
+	    this.sgLineArray.vertices.setValue( vertices );
+	}
+
 }

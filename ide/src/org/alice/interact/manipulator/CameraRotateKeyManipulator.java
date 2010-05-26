@@ -42,7 +42,9 @@
  */
 package org.alice.interact.manipulator;
 
+import org.alice.interact.InputState;
 import org.alice.interact.MovementKey;
+import org.alice.interact.AbstractDragAdapter.CameraView;
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
@@ -72,7 +74,15 @@ public class CameraRotateKeyManipulator extends RotateKeyManipulator implements 
 		{
 			this.manipulatedTransformable = (Transformable)this.camera.getParent();
 		}
-		
+	}
+	
+	public void setDesiredCameraView( CameraView cameraView )
+	{
+		//this can only be ACTIVE_VIEW
+	}
+	
+	public CameraView getDesiredCameraView() {
+		return CameraView.ACTIVE_VIEW;
 	}
 
 }

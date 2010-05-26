@@ -43,6 +43,10 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import org.alice.ide.IDE;
+
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,6 +59,17 @@ public abstract class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstance
 
 	private java.util.HashMap< Object, Object > m_runtimeDataMap = new java.util.HashMap< Object, Object >();
 
+	public static final String DEBUG_STACK_TRACK_PROPERTY_NAME = "DEBUG_STACK_TRACK_PROPERTY";
+	
+	public Element()
+	{
+		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
+		{
+			StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+			this.putBonusDataFor(DEBUG_STACK_TRACK_PROPERTY_NAME, stackTrace);
+		}
+	}
+	
 	@Override
 	public boolean isComposedOfGetterAndSetterProperties() {
 		return false;

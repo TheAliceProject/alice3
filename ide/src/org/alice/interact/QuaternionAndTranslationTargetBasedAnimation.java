@@ -49,36 +49,31 @@ import edu.cmu.cs.dennisc.print.PrintUtilities;
 /**
  * @author David Culyba
  */
-public abstract class AffineMatrix4x4TargetBasedAnimation extends TargetBasedFrameObserver< AffineMatrix4x4 > {
+public abstract class QuaternionAndTranslationTargetBasedAnimation extends TargetBasedFrameObserver< QuaternionAndTranslation > {
 
-	private edu.cmu.cs.dennisc.math.UnitQuaternion m_qBuffer;
-	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_mBuffer;
-	
 	private static final double CUSTOM_SPEED = 5.0d;
 	
 	private boolean shouldAnimate = false;
 	
-	public AffineMatrix4x4TargetBasedAnimation( AffineMatrix4x4 currentValue )
+	public QuaternionAndTranslationTargetBasedAnimation( QuaternionAndTranslation currentValue )
 	{
 		this(currentValue, currentValue, CUSTOM_SPEED);
 	}
 	
-	public AffineMatrix4x4TargetBasedAnimation( AffineMatrix4x4 currentValue, double speed )
+	public QuaternionAndTranslationTargetBasedAnimation( QuaternionAndTranslation currentValue, double speed )
 	{
 		this(currentValue, currentValue, speed);
 	}
 	
-	public AffineMatrix4x4TargetBasedAnimation( AffineMatrix4x4 currentValue, AffineMatrix4x4 targetValue )
+	public QuaternionAndTranslationTargetBasedAnimation( QuaternionAndTranslation currentValue, QuaternionAndTranslation targetValue )
 	{
 		this(currentValue, targetValue, CUSTOM_SPEED);
 	}
 	
-	public AffineMatrix4x4TargetBasedAnimation( AffineMatrix4x4 currentValue, AffineMatrix4x4 targetValue, double speed )
+	public QuaternionAndTranslationTargetBasedAnimation( QuaternionAndTranslation currentValue, QuaternionAndTranslation targetValue, double speed )
 	{
 		super(currentValue, targetValue, speed);
-		m_qBuffer = edu.cmu.cs.dennisc.math.UnitQuaternion.createNaN();
-		m_mBuffer = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
-		if (getDistanceToDone() > MIN_DISTANCE_TO_DONE)
+		if (isCloseEnoughToBeDone())
 		{
 			this.shouldAnimate = true;
 		}
@@ -89,19 +84,19 @@ public abstract class AffineMatrix4x4TargetBasedAnimation extends TargetBasedFra
 	}
 
 	@Override
-	protected double getDistanceToDone() {
-		edu.cmu.cs.dennisc.math.UnitQuaternion currentQ = this.currentValue.orientation.createUnitQuaternion();
-		edu.cmu.cs.dennisc.math.UnitQuaternion targetQ = this.targetValue.orientation.createUnitQuaternion();
+	protected boolean isCloseEnoughToBeDone() 
+	{
+		edu.cmu.cs.dennisc.math.UnitQuaternion currentQ = this.currentValue.getQuaternion();
+		edu.cmu.cs.dennisc.math.UnitQuaternion targetQ = this.targetValue.getQuaternion();
 		
-		double xDif = currentQ.x - targetQ.x;
-		double yDif = currentQ.y - targetQ.y;
-		double zDif = currentQ.z - targetQ.z;
-		double wDif = currentQ.w - targetQ.w;
+		edu.cmu.cs.dennisc.math.UnitQuaternion targetQNegative = new edu.cmu.cs.dennisc.math.UnitQuaternion(targetQ);
+		targetQNegative.multiply(-1.0);
+		boolean quaternionDone = currentQ.isWithinEpsilonOrIsNegativeWithinEpsilon(targetQ, MIN_DISTANCE_TO_DONE) || currentQ.isWithinEpsilonOrIsNegativeWithinEpsilon(targetQNegative, MIN_DISTANCE_TO_DONE);
+		double translationDist = Point3.calculateDistanceBetween( this.currentValue.getTranslation(), this.targetValue.getTranslation() );
 		
-		double angleDist = Math.sqrt( xDif*xDif + yDif*yDif + zDif*zDif + wDif*wDif );
-		double translationDist = Point3.calculateDistanceBetween( this.currentValue.translation, this.targetValue.translation );
+		boolean translationDone = translationDist < MIN_DISTANCE_TO_DONE;
 		
-		return angleDist + translationDist;
+		return quaternionDone && translationDone;
 	}
 
 //	@Override
@@ -114,26 +109,24 @@ public abstract class AffineMatrix4x4TargetBasedAnimation extends TargetBasedFra
 //	}
 	
 	@Override
-	protected AffineMatrix4x4 interpolate( AffineMatrix4x4 v0, AffineMatrix4x4 v1, double deltaSinceLastUpdate ) 
+	protected QuaternionAndTranslation interpolate( QuaternionAndTranslation v0, QuaternionAndTranslation v1, double deltaSinceLastUpdate ) 
 	{
 		float portion = (float)(deltaSinceLastUpdate*this.speed);
 		portion = Math.min( portion, 1.0f );
 		portion = Math.max( -1.0f, portion );
-		m_mBuffer.translation.setToInterpolation( v0.translation, v1.translation, portion );
-		m_qBuffer.setToInterpolation( v0.orientation.createUnitQuaternion(), v1.orientation.createUnitQuaternion(), portion );
-		AffineMatrix4x4 toReturn = new AffineMatrix4x4(m_mBuffer);
-		toReturn.orientation.setValue( m_qBuffer );
-		toReturn.orientation.normalizeColumns();
-		return toReturn;
+		
+		QuaternionAndTranslation rv = new QuaternionAndTranslation();
+		rv.setToInterpolation(v0, v1, portion);
+		return rv;
 	}
 
 	@Override
 	public boolean isDone() {
-		return ( this.getDistanceToDone() < .000001);
+		return this.isCloseEnoughToBeDone();
 	}
 
 	@Override
-	protected AffineMatrix4x4 newE( AffineMatrix4x4 other ) {
-		return new AffineMatrix4x4(other);
+	protected QuaternionAndTranslation newE( QuaternionAndTranslation other ) {
+		return new QuaternionAndTranslation(other);
 	}
 }

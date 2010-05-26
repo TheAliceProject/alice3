@@ -58,10 +58,11 @@ public class PickHint extends BitSet{
 		NOTHING(0),
 		MOVEABLE_OBJECT(1),
 		GROUND(2),
-		HANDLE(3),
+		THREE_D_HANDLE(3),
 		CAMERA(4),
 		LIGHT(5),
-		MUTLIMODE_HANDLE(6),
+		TWO_D_HANDLE(6),
+		MARKER(7),
 		;
 		
 		public int index;
@@ -81,14 +82,17 @@ public class PickHint extends BitSet{
 	
 	
 	public static final PickHint NOTHING = new PickHint( PickType.NOTHING );
-	public static final PickHint MOVEABLE_OBJECTS = new PickHint( PickType.MOVEABLE_OBJECT );
-	public static final PickHint HANDLES = new PickHint( PickType.HANDLE );
+	public static final PickHint THREE_D_HANDLES = new PickHint( PickType.THREE_D_HANDLE );
 	public static final PickHint GROUND = new PickHint( PickType.GROUND );
 	public static final PickHint LIGHT = new PickHint( PickType.LIGHT );
 	public static final PickHint CAMERA = new PickHint( PickType.CAMERA );
-	public static final PickHint MULTIMODE_HANDLES = new PickHint( PickType.MUTLIMODE_HANDLE );
+	public static final PickHint TWO_D_HANDLES = new PickHint( PickType.TWO_D_HANDLE );
+	public static final PickHint MARKERS = new PickHint( PickType.MARKER );
 	public static final PickHint EVERYTHING = createEverythingHint();
 	
+	public static final PickHint MOVEABLE_OBJECTS = new PickHint( PickType.MOVEABLE_OBJECT, PickType.MARKER );
+	
+	public static final PickHint ALL_HANDLES = new PickHint( PickType.TWO_D_HANDLE, PickType.THREE_D_HANDLE );
 	public static final PickHint NON_INTERACTIVE = new PickHint( PickType.NOTHING, PickType.GROUND ,PickType.LIGHT, PickType.CAMERA);
 	
 	public PickHint()
@@ -137,4 +141,38 @@ public class PickHint extends BitSet{
 		}
 		return getMatchingTransformable( composite.getParent() );
 	}
+	
+	@Override
+	public String toString() {
+		if (this.intersects(NOTHING))
+		{
+			return "pick:NOTHING";
+		}
+		if (this.intersects(MOVEABLE_OBJECTS))
+		{
+			return "pick:MOVEABLE_OBJECTS";
+		}
+		if (this.intersects(THREE_D_HANDLES))
+		{
+			return "pick:THREE_D_HANDLES";
+		}
+		if (this.intersects(GROUND))
+		{
+			return "pick:GROUND";
+		}
+		if (this.intersects(LIGHT))
+		{
+			return "pick:LIGHT";
+		}
+		if (this.intersects(CAMERA))
+		{
+			return "pick:CAMERA";
+		}
+		if (this.intersects(TWO_D_HANDLES))
+		{
+			return "pick:TWO_D_HANDLES";
+		}
+		return "pick:UNKNOWN";
+	}
+	
 }

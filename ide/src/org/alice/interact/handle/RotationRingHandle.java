@@ -45,6 +45,7 @@ package org.alice.interact.handle;
 import org.alice.interact.DoubleTargetBasedAnimation;
 import org.alice.interact.GlobalDragAdapter;
 import org.alice.interact.MovementDirection;
+import org.alice.interact.MovementType;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.VectorUtilities;
 
@@ -55,6 +56,7 @@ import edu.cmu.cs.dennisc.math.Matrix3x3;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
@@ -93,6 +95,8 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	protected MovementDirection rotationAxisDirection;
 	protected Vector3 sphereDirection = new Vector3();
 	protected Vector3 handleOffset =  new Vector3();
+	
+	protected Transformable snapReference = new Transformable();
 	
 	protected HandlePosition handlePosition = HandlePosition.ORIGIN;
 	
@@ -186,6 +190,19 @@ public class RotationRingHandle extends ManipulationHandle3D{
 		}
 	}
 	
+	public void initializeSnapReferenceFrame()
+	{
+		this.snapReference.setParent( this.manipulatedObject.getRoot() );
+		this.snapReference.setTransformation(this.manipulatedObject.getAbsoluteTransformation(), AsSeenBy.SCENE);
+		this.snapReference.setTranslationOnly(0, 0, 0, AsSeenBy.SCENE);
+	}
+	
+	@Override
+	public ReferenceFrame getSnapReferenceFrame()
+	{
+		return this.snapReference;
+	}
+	
 	@Override
 	public void setManipulatedObject( Transformable manipulatedObject ) {
 		super.setManipulatedObject( manipulatedObject );
@@ -206,6 +223,11 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	public Point3 getSphereLocation(ReferenceFrame referenceFrame)
 	{
 		return this.sphereTransformable.getTranslation( referenceFrame );
+	}
+	
+	public double getRadius()
+	{
+		return this.sgTorus.majorRadius.getValue();
 	}
 	
 	protected void placeSphere()
@@ -334,6 +356,11 @@ public class RotationRingHandle extends ManipulationHandle3D{
 		{
 			this.sgSphere.radius.setValue( MINOR_RADIUS * 2.0d * scale);
 		}
+	}
+	
+	@Override
+	public void setHandleShowing(boolean showing) {
+		super.setHandleShowing(showing);
 	}
 
 }

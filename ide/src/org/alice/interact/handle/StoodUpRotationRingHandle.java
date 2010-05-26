@@ -42,8 +42,10 @@
  */
 package org.alice.interact.handle;
 
+import org.alice.ide.IDE;
 import org.alice.interact.MovementDirection;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
@@ -61,16 +63,45 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 	public StoodUpRotationRingHandle()
 	{
 		super();
+		this.standUpReference.setName("Rotation StandUp Reference");
+		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
+		{
+			this.standUpReference.putBonusDataFor(ManipulationHandle3D.VIRTUAL_PARENT_KEY, this);
+		}
+	}
+	
+	public StoodUpRotationRingHandle( StoodUpRotationRingHandle handle )
+	{
+		this(handle.rotationAxisDirection, handle.handlePosition);
+		this.initFromHandle( handle );
+		this.handleOffset.set( handle.handleOffset );
 	}
 	
 	public StoodUpRotationRingHandle( MovementDirection rotationAxisDirection )
 	{
 		super( rotationAxisDirection );
+		this.standUpReference.setName("Rotation StandUp Reference");
+		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
+		{
+			this.standUpReference.putBonusDataFor(ManipulationHandle3D.VIRTUAL_PARENT_KEY, this);
+		}
 	}
 	
 	public StoodUpRotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition )
 	{
 		super(rotationAxisDirection, handlePosition);
+		this.standUpReference.setName("Rotation StandUp Reference");
+		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
+		{
+			this.standUpReference.putBonusDataFor(ManipulationHandle3D.VIRTUAL_PARENT_KEY, this);
+		}
+	}
+	
+	@Override
+	public StoodUpRotationRingHandle clone()
+	{
+		StoodUpRotationRingHandle newHandle = new StoodUpRotationRingHandle(this);
+		return newHandle;
 	}
 	
 	@Override
@@ -86,6 +117,7 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 			{
 				this.manipulatedObject.localTransformation.addPropertyListener( this );
 			}
+			positionRelativeToObject();
 		}
 	}
 	

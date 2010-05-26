@@ -41,405 +41,279 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.alice.stageide.sceneeditor.viewmanager;
-
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
-
-import org.alice.apis.moveandturn.AsSeenBy;
-import org.alice.apis.moveandturn.Composite;
 import org.alice.apis.moveandturn.CameraMarker;
-import org.alice.apis.moveandturn.OrthographicCameraMarker;
-import org.alice.apis.moveandturn.PerspectiveCameraMarker;
-import org.alice.interact.AffineMatrix4x4TargetBasedAnimation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
-import edu.cmu.cs.dennisc.animation.Animator;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.Component;
-import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
-import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
 /**
  * @author David Culyba
  */
-public class CameraViewSelector extends JPanel implements ItemListener, AbsoluteTransformationListener{
+public class CameraViewSelector extends JPanel implements ItemListener, ActionListener{
 	
-	private MoveAndTurnSceneEditor sceneEditor;
-	private JComboBox cameraViewComboBox;
-	private List<edu.cmu.cs.dennisc.alice.ast.AbstractField> cameraFields = new LinkedList<edu.cmu.cs.dennisc.alice.ast.AbstractField>();
-	private org.alice.apis.moveandturn.CameraMarker activeMarker;
-	private SymmetricPerspectiveCamera perspectiveCamera;
-	private OrthographicCamera orthographicCamera;
-	private Animator animator;
-	private int selectedIndex = -1;
-	private AffineMatrix4x4TargetBasedAnimation cameraAnimation = null;
+	protected MoveAndTurnSceneEditor sceneEditor;
+	protected JComboBox cameraViewComboBox;
+	protected List<CameraFieldAndMarker> fieldBasedOptions = new LinkedList<CameraFieldAndMarker>();
+	protected List<CameraFieldAndMarker> extraOptions = new LinkedList<CameraFieldAndMarker>();
+	protected org.alice.apis.moveandturn.CameraMarker activeMarker;
 	
-	private JPanel orthographicControlPanel;
-	
-	
-	public CameraViewSelector(MoveAndTurnSceneEditor sceneEditor, Animator animator)
+	public CameraViewSelector(MoveAndTurnSceneEditor sceneEditor, List<CameraFieldAndMarker> extraOptions)
 	{
 		super();
-		this.animator = animator;
+		this.setOpaque(false);
+		this.setBorder(null);
 		this.sceneEditor = sceneEditor;
 		this.cameraViewComboBox = new JComboBox();
 		this.add(this.cameraViewComboBox);
-		this.cameraViewComboBox.addItemListener( this );
-		initializeOrthographicControls();
+		this.startListening();
+		if (extraOptions != null)
+		{
+			this.extraOptions.addAll(extraOptions);
+		}
 		refreshFields();
 	}
 	
-	private void initializeOrthographicControls()
+	public CameraViewSelector(MoveAndTurnSceneEditor sceneEditor)
 	{
-		final double MOVEMENT_AMOUNT = .1d;
-		this.orthographicControlPanel = new JPanel();
-		this.orthographicControlPanel.setLayout( new GridBagLayout() );
-		
-		JButton leftButton = new JButton("<-");
-		leftButton.addActionListener( new ActionListener(){
-			public void actionPerformed( ActionEvent arg0 ) {
-				moveOrthographicCamera( new Point3(-MOVEMENT_AMOUNT, 0, 0) );
-			}
-		});
-		JButton rightButton = new JButton("->");
-		rightButton.addActionListener( new ActionListener(){
-			public void actionPerformed( ActionEvent arg0 ) {
-				moveOrthographicCamera( new Point3(MOVEMENT_AMOUNT, 0, 0) );
-			}
-		});
-		JButton upButton = new JButton("^");
-		upButton.addActionListener( new ActionListener(){
-			public void actionPerformed( ActionEvent arg0 ) {
-				moveOrthographicCamera( new Point3(0, MOVEMENT_AMOUNT, 0) );
-			}
-		});
-		JButton downButton = new JButton("v");
-		downButton.addActionListener( new ActionListener(){
-			public void actionPerformed( ActionEvent arg0 ) {
-				moveOrthographicCamera( new Point3(0, -MOVEMENT_AMOUNT, 0) );
-			}
-		});
-		JButton backButton = new JButton("-");
-		backButton.addActionListener( new ActionListener(){
-			public void actionPerformed( ActionEvent arg0 ) {
-				zoomOrthographicCamera( -MOVEMENT_AMOUNT );
-			}
-		});
-		JButton forwardButton = new JButton("+");
-		forwardButton.addActionListener( new ActionListener(){
-			public void actionPerformed( ActionEvent arg0 ) {
-				zoomOrthographicCamera( MOVEMENT_AMOUNT );
-			}
-		});
-		
-		this.orthographicControlPanel.add(upButton, new GridBagConstraints( 
-				1, //gridX
-				0, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.CENTER, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.orthographicControlPanel.add(leftButton, new GridBagConstraints( 
-				0, //gridX
-				1, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.CENTER, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.orthographicControlPanel.add(rightButton, new GridBagConstraints( 
-				2, //gridX
-				1, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.CENTER, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.orthographicControlPanel.add(downButton, new GridBagConstraints( 
-				1, //gridX
-				2, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.CENTER, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.orthographicControlPanel.add(forwardButton, new GridBagConstraints( 
-				3, //gridX
-				1, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.orthographicControlPanel.add(backButton, new GridBagConstraints( 
-				3, //gridX
-				2, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		
-		
+		this(sceneEditor, null);
 	}
 	
-	private void zoomOrthographicCamera(double zoom)
+	public void setExtraOptions(List<CameraFieldAndMarker> options)
 	{
-		if (this.orthographicCamera != null)
+		this.extraOptions.clear();
+		if (options != null)
 		{
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: zoomOrthographicCamera", zoom );
-			//this.orthographicCamera.picturePlane.getValue().setWidth( todo );
-//			this.orthographicCamera.picturePlane.getValue().setXMaximum( this.orthographicCamera.picturePlane.getValue().getXMaximum() + zoom );
-//			this.orthographicCamera.picturePlane.getValue().setXMinimum( this.orthographicCamera.picturePlane.getValue().getXMinimum() - zoom );
+			this.extraOptions.addAll(options);
+			refreshFields();
 		}
 	}
 	
-	private void moveOrthographicCamera(Point3 direction)
+	public void setExtraMarkerOptions(List<CameraMarker> markers)
 	{
-		if (this.orthographicCamera != null)
+		this.extraOptions.clear();
+		if (markers != null)
 		{
-			Transformable cameraParent = (Transformable)CameraViewSelector.this.orthographicCamera.getParent();
-			AffineMatrix4x4 localTransform = cameraParent.localTransformation.getValue();
-			localTransform.applyTranslation( direction );
-			cameraParent.localTransformation.setValue( localTransform );
-		}
-	}
-	
-	public void setPersespectiveCamera(SymmetricPerspectiveCamera camera)
-	{
-		if (this.perspectiveCamera != null)
-		{
-			this.perspectiveCamera.removeAbsoluteTransformationListener( this );
-		}
-		this.perspectiveCamera = camera;
-		if (this.perspectiveCamera != null)
-		{
-			this.perspectiveCamera.addAbsoluteTransformationListener( this );
-		}
-	}
-	
-	public void setOrthographicCamera(OrthographicCamera camera)
-	{
-		if (this.orthographicCamera != null)
-		{
-			this.orthographicCamera.removeAbsoluteTransformationListener( this );
-		}
-		this.orthographicCamera = camera;
-		if (this.orthographicCamera != null)
-		{
-			this.orthographicCamera.addAbsoluteTransformationListener( this );
+			for (CameraMarker marker : markers)
+			{
+				this.extraOptions.add(new CameraFieldAndMarker(null, marker));
+			}
+			refreshFields();
 		}
 	}
 	
 	public void refreshFields()
 	{
-		cameraFields.clear();
+		CameraFieldAndMarker oldSelected = this.getSelectedMarker();
+		
+		fieldBasedOptions.clear();
+		
+		int originalSelectedIndex = this.cameraViewComboBox.getSelectedIndex();
+		//Stop listening to changed on the combobox while we reorder stuff
+		this.stopListening();
+		
 		this.cameraViewComboBox.removeAllItems();
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : this.sceneEditor.getDeclaredFields()) 
+		List<AbstractField> declaredFields = this.sceneEditor.getDeclaredFields();
+		for( AbstractField field : declaredFields) 
 		{
-			System.out.println(field.getName());
 			if (field.getValueType().isAssignableTo( org.alice.apis.moveandturn.CameraMarker.class ))
 			{
-				cameraFields.add( field );
-				this.cameraViewComboBox.addItem( field.getName() );
+				fieldBasedOptions.add( new CameraFieldAndMarker(field, getMarkerForField(field)) );
 			}
 		}
-		if (selectedIndex == -1 && this.cameraFields.size() > 0)
+		//Populate the combobox with the elements
+		for (CameraFieldAndMarker view : this.fieldBasedOptions)
 		{
-			this.cameraViewComboBox.setSelectedIndex( 0 );
+			this.cameraViewComboBox.addItem( view.toString() );
 		}
+		for (CameraFieldAndMarker extraView : this.extraOptions)
+		{
+			this.cameraViewComboBox.addItem( extraView.toString() );
+		}
+		
+		int newCount = this.cameraViewComboBox.getItemCount();
+		if (originalSelectedIndex == -1 && newCount > 0)
+		{
+			this.cameraViewComboBox.setSelectedIndex(0);
+		}
+		else
+		{
+			this.cameraViewComboBox.setSelectedIndex( originalSelectedIndex );
+		}
+		
+		//Start listening again
+		this.startListening();
 	}
+	
 
+	public CameraFieldAndMarker getSelectedMarker()
+	{
+		return getCameraAndMarkerForIndex(this.cameraViewComboBox.getSelectedIndex());
+	}
+	
 	public org.alice.apis.moveandturn.CameraMarker getActiveMarker()
 	{
 		return this.activeMarker;
 	}
 	
-	private org.alice.apis.moveandturn.CameraMarker retrieveActiveMarker()
+	public int getIndexForField(AbstractField field)
 	{
-		if (this.selectedIndex > -1)
+		int index = 0;
+		for (CameraFieldAndMarker fieldAndMarker : this.fieldBasedOptions)
 		{
-			AbstractField selectedField = this.cameraFields.get( this.selectedIndex );
-			CameraMarker marker = this.sceneEditor.getInstanceInJavaForField(selectedField, org.alice.apis.moveandturn.CameraMarker.class);
-			System.out.println("Set selected marker to "+marker.getName()+":"+marker.hashCode());
-			return marker;
+			if (fieldAndMarker.field == field)
+			{
+				return index;
+			}
+			index++;
+		}
+		for (CameraFieldAndMarker fieldAndMarker : this.extraOptions)
+		{
+			if (fieldAndMarker.field == field)
+			{
+				return index;
+			}
+			index++;
+		}
+		return -1;
+	}
+	
+	private CameraMarker getMarkerForField(AbstractField field)
+	{
+		CameraMarker marker = this.sceneEditor.getInstanceInJavaForField(field, org.alice.apis.moveandturn.CameraMarker.class);
+		return marker;
+	}
+	
+	public int getIndexForCameraFieldAndMarker( CameraFieldAndMarker cfAm )
+	{
+		int index = 0;
+		for (CameraFieldAndMarker option : this.fieldBasedOptions)
+		{
+			if (option == cfAm)
+			{
+				return index;
+			}
+			index++;
+		}
+		for (CameraFieldAndMarker option : this.extraOptions)
+		{
+			if (option == cfAm)
+			{
+				return index;
+			}
+			index++;
+		}
+		return -1;
+	}
+	
+	private CameraFieldAndMarker getCameraAndMarkerForIndex(int index)
+	{
+		try
+		{
+			if (index > -1)
+			{
+				if (index < this.fieldBasedOptions.size())
+				{
+					return this.fieldBasedOptions.get(index);
+				}
+				else
+				{
+					int orthoIndex = index - this.fieldBasedOptions.size();
+					return this.extraOptions.get(orthoIndex);
+				}
+			}
+		}
+		catch (IndexOutOfBoundsException e)
+		{
+			e.printStackTrace();
 		}
 		return null;
 	}
 	
-	
-	private synchronized boolean isAnimatingCamera()
+	private CameraMarker getMarkerForIndex(int index)
 	{
-		return (this.cameraAnimation != null && !this.cameraAnimation.isDone());
+		CameraFieldAndMarker cfAm = getCameraAndMarkerForIndex(index);
+		if (cfAm != null)
+		{
+			return cfAm.marker;
+		}
+		return null;
 	}
 	
-	private void animateToTargetView()
+	public void setSelectedView(AbstractField field)
 	{
-		if (this.cameraAnimation == null)
+		int index = getIndexForField(field);
+		if (index != -1)
 		{
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 currentTransform = CameraViewSelector.this.perspectiveCamera.getAbsoluteTransformation();
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 targetTransform = CameraViewSelector.this.activeMarker.getTransformation( AsSeenBy.SCENE );
-			this.cameraAnimation = new AffineMatrix4x4TargetBasedAnimation(currentTransform, targetTransform)
+			this.cameraViewComboBox.setSelectedIndex(index);
+		}
+	}
+	
+	public void setSelectedIndex(int index)
+	{
+		if (index != -1)
+		{
+			this.cameraViewComboBox.setSelectedIndex(index);
+		}
+	}
+	
+	public int getSelectedIndex()
+	{
+		return this.cameraViewComboBox.getSelectedIndex();
+	}
+	
+	public boolean isListening()
+	{
+		for (ItemListener listener : this.cameraViewComboBox.getItemListeners())
+		{
+			if (listener == this)
 			{
-
-				@Override
-				protected void updateValue( AffineMatrix4x4 value ) {
-					Transformable cameraParent = (Transformable)CameraViewSelector.this.perspectiveCamera.getParent();
-					cameraParent.setTransformation( value, CameraViewSelector.this.perspectiveCamera.getRoot() );
-				}
-
-			};
-			this.animator.addFrameObserver( this.cameraAnimation );
-		}
-		else
-		{
-			this.cameraAnimation.setCurrentValue( CameraViewSelector.this.perspectiveCamera.getAbsoluteTransformation() );
-			this.cameraAnimation.setTarget( CameraViewSelector.this.activeMarker.getTransformation( AsSeenBy.SCENE ) );
-		}
-	}
-	
-	private void switchToOrthographicView()
-	{
-		this.sceneEditor.switchToOthographicCamera();
-		if (this.orthographicControlPanel.getParent() != this)
-		{
-			this.add( this.orthographicControlPanel );
-			this.revalidate();
-		}
-	}
-	
-	private void switchToPerspectiveView()
-	{
-		this.sceneEditor.switchToPerspectiveCamera();
-		if (this.orthographicControlPanel.getParent() == this)
-		{
-			this.remove( this.orthographicControlPanel );
-			this.revalidate();
-		}
-	}
-	
-	private void setSelectedView(int index)
-	{
-		this.selectedIndex = index;
-		this.activeMarker = retrieveActiveMarker();
-		if (this.perspectiveCamera != null && this.activeMarker != null)
-		{
-			if (this.activeMarker instanceof OrthographicCameraMarker)
-			{
-				switchToOrthographicView();
-				Transformable cameraParent = (Transformable)CameraViewSelector.this.orthographicCamera.getParent();
-				cameraParent.setTransformation( CameraViewSelector.this.activeMarker.getTransformation( AsSeenBy.SCENE ), CameraViewSelector.this.orthographicCamera.getRoot() );
+				return true;
 			}
-			else
-			{
-				switchToPerspectiveView();
-				animateToTargetView();
-			}
-			
-		}
-	}
-
-	public void itemStateChanged( ItemEvent e ) {
-		if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
-			this.setSelectedView( this.cameraViewComboBox.getSelectedIndex() );
-		}
-	}
-
-	
-	private String printTransformable( AffineMatrix4x4 t )
-	{
-		String s = "\n";
-		s += t.orientation.right.toString() + "\n";
-		s += t.orientation.up.toString() + "\n";
-		s += t.orientation.backward.toString() + "\n";
-		s += t.translation.toString() + "\n";
-		return s;
-	}
-	
-	private boolean doesMarkerMatchCamera(org.alice.apis.moveandturn.CameraMarker marker, AbstractCamera camera)
-	{
-		if (camera instanceof OrthographicCamera)
-		{
-			return marker instanceof OrthographicCameraMarker;
-		}
-		else if (camera instanceof SymmetricPerspectiveCamera)
-		{
-			return marker instanceof PerspectiveCameraMarker;
 		}
 		return false;
 	}
 	
-	public void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) 
+	public void startListening()
 	{
-		AbstractCamera cameraSource = (AbstractCamera)absoluteTransformationEvent.getSource();
-		if (doesMarkerMatchCamera( this.activeMarker, cameraSource ))
+		this.cameraViewComboBox.addItemListener(this);
+		this.cameraViewComboBox.addActionListener(this);
+	}
+	
+	public void stopListening()
+	{
+		this.cameraViewComboBox.removeItemListener(this);
+		this.cameraViewComboBox.removeActionListener(this);
+	}
+	
+	public void doSetSelectedView(int index)
+	{
+		this.activeMarker = getMarkerForIndex(index);
+//		System.out.println("Set activeMarker to index "+index+", "+this.activeMarker.getName());
+//		if (this.activeMarker == null)
+//		{
+//			this.activeMarker = getMarkerForIndex(index);
+//		}
+		assert this.activeMarker != null;
+	}
+
+	public void itemStateChanged( ItemEvent e ) {
+		if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) 
 		{
-			if (cameraSource instanceof OrthographicCamera)
-			{
-				AffineMatrix4x4 cameraTransform = this.orthographicCamera.getAbsoluteTransformation();
-				Component root = this.orthographicCamera.getRoot();
-				Composite vehicle = this.activeMarker.getVehicle();
-				System.out.println("trying to update marker position: "+this.activeMarker.getName());
-				this.activeMarker.getSGTransformable().setTransformation( cameraTransform, root );
-			}
-			else if (cameraSource instanceof SymmetricPerspectiveCamera)
-			{
-				if (!isAnimatingCamera())
-				{
-					this.activeMarker.getSGTransformable().setTransformation( this.perspectiveCamera.getAbsoluteTransformation(), this.perspectiveCamera.getRoot() );
-				}
-				
-			}
+			this.doSetSelectedView( this.cameraViewComboBox.getSelectedIndex() );
 		}
 	}
+
+	public void actionPerformed(ActionEvent e) {
+		this.doSetSelectedView( this.cameraViewComboBox.getSelectedIndex() );
+	}
+
 
 }

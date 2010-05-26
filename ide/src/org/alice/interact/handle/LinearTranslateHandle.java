@@ -51,6 +51,8 @@ import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Matrix3x3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis;
 import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
 
@@ -90,7 +92,14 @@ public class LinearTranslateHandle extends LinearDragHandle {
 	}
 	
 	protected void createShape(double scale) {
-		this.arrow = new Arrow(.05*scale, 0.1*scale, 0.15*scale, 0.15*scale, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true);
+		if (this.arrow == null)
+		{
+			this.arrow = new Arrow(.05*scale, 0.1*scale, 0.15*scale, 0.15*scale, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true);
+		}
+		else
+		{
+			this.arrow.resize(.05*scale, 0.1*scale, 0.15*scale, 0.15*scale);
+		}
 		this.arrow.setParent( this );
 	}
 	
@@ -127,6 +136,12 @@ public class LinearTranslateHandle extends LinearDragHandle {
 			this.arrow.setParent( null );
 		}
 		this.createShape( scale );
+	}
+	
+	@Override
+	public void setHandleShowing(boolean showing) {
+		super.setHandleShowing(showing);
+		this.arrow.setVisualShowing(showing);
 	}
 
 }

@@ -105,10 +105,14 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 		this.setPopupMenuOperation(null);
 		super.handleRemovedFrom(parent);
 	}
+	protected boolean isFieldInScope()
+	{
+		return getIDE().isSelectedFieldInScope();
+	}
 
 	@Override
 	protected boolean contains(int x, int y, boolean jContains) {
-		if (getIDE().isSelectedFieldInScope()) {
+		if( this.isFieldInScope() ) {
 			return super.contains(x, y, jContains);
 		} else {
 			return false;
@@ -118,8 +122,8 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 	@Override
 	protected void paintEpilogue(java.awt.Graphics2D g2, int x, int y, int width, int height) {
 		super.paintEpilogue(g2, x, y, width, height);
-		if (getIDE().isSelectedFieldInScope()) {
-			// pass
+		if( this.isFieldInScope() ) {
+			//pass
 		} else {
 			g2.setPaint(edu.cmu.cs.dennisc.zoot.PaintUtilities.getDisabledTexturePaint());
 			this.fillBounds(g2);

@@ -42,9 +42,27 @@
  */
 package org.alice.apis.moveandturn;
 
+import edu.cmu.cs.dennisc.math.ClippedZPlane;
+
 /**
  * @author David Culyba
  */
 public class OrthographicCameraMarker extends CameraMarker {
+
+	private ClippedZPlane picturePlane;
+	
+	public OrthographicCameraMarker() {
+		picturePlane = new ClippedZPlane();
+	}
+	
+	public void setPicturePlane(ClippedZPlane picturePlane)
+	{
+		this.picturePlane.set(picturePlane);
+	}
+	
+	public ClippedZPlane getPicturePlane()
+	{
+		return this.picturePlane;
+	}
 
 }

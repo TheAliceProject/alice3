@@ -42,30 +42,217 @@
  */
 package org.alice.stageide.sceneeditor;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
+
 import org.alice.stageide.sceneeditor.viewmanager.ManipulationHandleControlPanel;
+import org.alice.stageide.sceneeditor.viewmanager.SceneViewManagerPanel;
+import org.alice.stageide.sceneeditor.viewmanager.SnapControlPanel;
+import org.alice.stageide.sceneeditor.viewmanager.StartingCameraViewManager;
+import org.alice.ide.IDE;
 import org.alice.interact.AbstractDragAdapter;
+import org.alice.interact.SnapState;
+
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.scenegraph.Component;
+import edu.cmu.cs.dennisc.toolkit.scenegraph.SceneGraphViewerPanel;
 
 /**
  * @author Dennis Cosgrove
  */
-class SidePane extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
+class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private boolean isExpanded = false;
 	private ManipulationHandleControlPanel handleControlPanel;
-
-	public SidePane() {
+	private SceneViewManagerPanel viewManagerPanel = null;
+	private StartingCameraViewManager startingCameraViewManager = null;
+	private SnapControlPanel snapControlPanel = null;
+	private MoveAndTurnSceneEditor sceneEditor = null;
+	private JPanel mainPanel = null;
+	
+	private SceneGraphViewerPanel sceneGraphViewer = null;
+//	private JSplitPane sceneGraphViewSplitPane = null;
+	private JDialog sceneGraphViewDialog = null;
+	private JButton showSceneGraphButton = null;
+	
+	public SidePane(MoveAndTurnSceneEditor sceneEditor) {
+		this.sceneEditor = sceneEditor;
+		this.mainPanel = new JPanel();
 		this.handleControlPanel = new ManipulationHandleControlPanel();
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.handleControlPanel ) );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+		this.viewManagerPanel = new SceneViewManagerPanel(sceneEditor);
+		this.startingCameraViewManager = new StartingCameraViewManager(sceneEditor);
+		this.snapControlPanel = new SnapControlPanel(sceneEditor.getSnapState(), sceneEditor);
+
+		this.showSceneGraphButton = new JButton("Show Scene Graph");
+		this.showSceneGraphButton.addActionListener(new ActionListener()
+		{
+
+			public void actionPerformed(ActionEvent e) {
+				showSceneGraphView();
+			}
+			
+		}
+		);
+		
+		this.mainPanel.setLayout(new GridBagLayout());
+
+		this.mainPanel.add(this.startingCameraViewManager, new GridBagConstraints(
+				0, // gridX
+				0, // gridY
+				1, // gridWidth
+				1, // gridHeight
+				1.0, // weightX
+				0.0, // weightY
+				GridBagConstraints.NORTH, // anchor
+				GridBagConstraints.HORIZONTAL, // fill
+				new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
+				0, // ipadX
+				0) // ipadY
+				);
+		
+		this.mainPanel.add(this.viewManagerPanel, new GridBagConstraints(
+				0, // gridX
+				1, // gridY
+				1, // gridWidth
+				1, // gridHeight
+				1.0, // weightX
+				1.0, // weightY
+				GridBagConstraints.NORTH, // anchor
+				GridBagConstraints.BOTH, // fill
+				new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
+				0, // ipadX
+				0) // ipadY
+				);
+
+		this.mainPanel.add(this.handleControlPanel, new GridBagConstraints(
+				0, // gridX
+				2, // gridY
+				1, // gridWidth
+				1, // gridHeight
+				1.0, // weightX
+				0.0, // weightY
+				GridBagConstraints.NORTH, // anchor
+				GridBagConstraints.HORIZONTAL, // fill
+				new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
+				0, // ipadX
+				0) // ipadY
+				);
+		this.mainPanel.add(this.snapControlPanel, new GridBagConstraints(
+				0, // gridX
+				3, // gridY
+				1, // gridWidth
+				1, // gridHeight
+				1.0, // weightX
+				0.0, // weightY
+				GridBagConstraints.NORTH, // anchor
+				GridBagConstraints.HORIZONTAL, // fill
+				new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
+				0, // ipadX
+				0) // ipadY
+				);
+		
+		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
+		{
+			this.mainPanel.add(showSceneGraphButton, new GridBagConstraints(
+					0, // gridX
+					4, // gridY
+					1, // gridWidth
+					1, // gridHeight
+					1.0, // weightX
+					0.0, // weightY
+					GridBagConstraints.NORTH, // anchor
+					GridBagConstraints.NONE, // fill
+					new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
+					0, // ipadX
+					0) // ipadY
+					);
+		}
+		
+		this.mainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
+		
+//		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( mainPanel ), Constraint.CENTER);
 	}
+
 	public boolean isExpanded() {
 		return this.isExpanded;
 	}
-	public void setExpanded( boolean isExpanded ) {
+
+	public void setExpanded(boolean isExpanded) {
 		this.isExpanded = isExpanded;
 		this.revalidateAndRepaint();
 	}
-	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
-		this.handleControlPanel.setDragAdapter( dragAdapter );
+
+	public void showSceneGraphView()
+	{
+		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
+		{
+			if (this.sceneGraphViewDialog == null)
+			{
+				showSceneGraphView(this.sceneEditor.getScene().getSGComposite());
+			}
+			else
+			{
+				this.sceneGraphViewDialog.setVisible(true);
+			}
+		}
+	}
+	
+	public void showSceneGraphView( Component root )
+	{
+		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
+		{
+			if (this.sceneGraphViewer == null)
+			{
+				this.sceneGraphViewer = new SceneGraphViewerPanel();
+			}
+			this.sceneGraphViewer.setRoot(root);
+			if (this.sceneGraphViewDialog == null)
+			{
+	//			this.sceneGraphViewDialog = new JDialog();
+				this.sceneGraphViewDialog = new JDialog(edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getRootJFrame(this.getAwtComponent()), "Scene Graph Viewer", false);
+				this.sceneGraphViewDialog.getContentPane().add(this.sceneGraphViewer);
+				this.sceneGraphViewDialog.setSize(new Dimension(1024, 768));
+	//			this.sceneGraphViewDialog.setMinimumSize(new Dimension(800, 600));
+				this.sceneGraphViewDialog.setLocation(100, 100);
+			}
+			this.sceneGraphViewDialog.setVisible(true);
+		}
+	}
+	
+	public void setDragAdapter(AbstractDragAdapter dragAdapter) {
+		this.handleControlPanel.setDragAdapter(dragAdapter);
+	}
+
+	public void refreshFields() {
+		this.viewManagerPanel.refreshFields();
+		this.startingCameraViewManager.refreshFields();
+	}
+
+	public SceneViewManagerPanel getViewManager() {
+		return this.viewManagerPanel;
+	}
+
+	public void setSnapState(SnapState snapState)
+	{
+		this.snapControlPanel.setSnapState(snapState);
+	}
+	
+	
+	
+	public StartingCameraViewManager getStartingCameraViewManager() {
+		return this.startingCameraViewManager;
 	}
 
 }

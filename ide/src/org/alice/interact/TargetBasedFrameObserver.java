@@ -58,7 +58,9 @@ public abstract class TargetBasedFrameObserver<E> implements FrameObserver {
 	protected double speed;
 	protected double timeOfLastFrame = Double.NaN;
 	protected double deltaSinceLastFrame = Double.NaN;
-
+	private boolean isDone = true;
+	
+	
 	public TargetBasedFrameObserver() {
 		speed = DEFAULT_SPEED;
 	}
@@ -83,10 +85,17 @@ public abstract class TargetBasedFrameObserver<E> implements FrameObserver {
 
 	public void setTarget( E target ) {
 		this.targetValue = this.newE( target );
+		this.isDone = this.isDone();
 	}
 
+	public E getCurrentValue()
+	{
+		return this.currentValue;
+	}
+	
 	public void setCurrentValue( E value ) {
 		this.currentValue = this.newE( value );
+		this.isDone = this.isDone();
 	}
 
 	public void setSpeed( double speed ) {
@@ -98,7 +107,7 @@ public abstract class TargetBasedFrameObserver<E> implements FrameObserver {
 	}
 
 	protected abstract void updateValue( E value );
-	protected abstract double getDistanceToDone();
+	protected abstract boolean isCloseEnoughToBeDone();
 	public abstract boolean isDone();
 	protected abstract E interpolate( E v0, E v1, double deltaSinceLastUpdate );
 	protected abstract E newE( E other );
@@ -119,16 +128,17 @@ public abstract class TargetBasedFrameObserver<E> implements FrameObserver {
 			deltaSinceLastFrame = tCurrent - timeOfLastFrame;
 			timeOfLastFrame = tCurrent;
 		}
-		if( !isDone() ) {
+		if( !this.isDone ) {
 			if( !Double.isNaN( deltaSinceLastFrame ) ) {
 				if( deltaSinceLastFrame > MAX_FRAME_LENGTH )
 					deltaSinceLastFrame = MAX_FRAME_LENGTH;
 				this.currentValue = this.interpolate( this.currentValue, this.targetValue, deltaSinceLastFrame );
 			}
-			if( this.getDistanceToDone() < MIN_DISTANCE_TO_DONE ) {
+			if( this.isCloseEnoughToBeDone() ) {
 				this.currentValue = newE( this.targetValue );
 			}
 			this.updateValue( this.currentValue );
+			this.isDone = this.isDone();
 		}
 	}
 

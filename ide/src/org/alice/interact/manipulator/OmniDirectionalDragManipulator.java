@@ -49,17 +49,20 @@ import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.VectorUtilities;
+import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
+import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
@@ -68,8 +71,11 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 public class OmniDirectionalDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnScreenLookingGlassInformedManipulator {
 
 	protected Plane pickPlane = new edu.cmu.cs.dennisc.math.Plane( 0.0d, 1.0d, 0.0d, 0.0d );
+	protected Plane orthographicPickPlane = new edu.cmu.cs.dennisc.math.Plane( 0.0d, 1.0d, 0.0d, 0.0d );
+	protected Point3 orthographicOffsetToOrigin = null;
 	protected Point3 offsetToOrigin = null;
 	protected Boolean hasMoved = false;
+	protected Point3 originalPosition = null;
 	
 	protected AbstractCamera camera = null;
 	protected OnscreenLookingGlass onscreenLookingGlass = null;
@@ -86,7 +92,15 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		{
 			this.manipulatedTransformable = (Transformable)this.camera.getParent();
 		}
-		
+	}
+	
+	public void setDesiredCameraView( CameraView cameraView )
+	{
+		//this can only be PICK_CAMERA
+	}
+	
+	public CameraView getDesiredCameraView() {
+		return CameraView.PICK_CAMERA;
 	}
 	
 	public OnscreenLookingGlass getOnscreenLookingGlass()
@@ -155,7 +169,28 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		return mouseRelativeMovement;
 	}
 	
-	private Point3 getPickBasedVector(InputState currentInput, InputState previousInput)
+	private Point3 getMovementVectorBasedOnCamera(InputState currentInput, InputState previousInput)
+	{
+		if (this.getCamera() instanceof OrthographicCamera)
+		{
+			return getOthographicMovementVector(currentInput, previousInput);
+		}
+		else
+		{
+			return getPerspectiveMovementVector(currentInput, previousInput);
+		}
+	}
+	
+	private Point3 getOthographicMovementVector(InputState currentInput, InputState previousInput)
+	{
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y );
+		Point3 pickPoint = PlaneUtilities.getPointInPlane( this.orthographicPickPlane, pickRay );
+		Point3 newPosition = Point3.createAddition(pickPoint, this.orthographicOffsetToOrigin);
+		
+		return Point3.createSubtraction(newPosition, this.getManipulatedTransformable().getAbsoluteTransformation().translation);
+	}
+	
+	private Point3 getPerspectiveMovementVector(InputState currentInput, InputState previousInput)
 	{
 		boolean usePickForVertical = true;
 		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y );
@@ -265,9 +300,12 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 				this.hasMoved = true;
 			}
 				
-			Point3 movementVector = getPickBasedVector( currentInput, previousInput );
+			Point3 movementVector = getMovementVectorBasedOnCamera( currentInput, previousInput );
 			Point3 currentPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation;
 			Point3 newPosition = Point3.createAddition( currentPosition, movementVector );
+			
+			newPosition = SnapUtilities.doMovementSnapping(this.manipulatedTransformable, newPosition, this.dragAdapter, this.manipulatedTransformable.getRoot(), this.getCamera());
+			
 			//Send manipulation events
 			Vector3 movementDif = Vector3.createSubtraction( newPosition, this.manipulatedTransformable.getAbsoluteTransformation().translation);
 			movementDif.normalize();
@@ -289,6 +327,11 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 			}
 		}
 	}
+	
+	@Override
+	public void doClickManipulator(InputState clickInput, InputState previousInput) {
+		//Do nothing
+	}
 
 	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput  ) 
@@ -302,15 +345,24 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		{
 			this.initializeEventMessages();
 			this.hasMoved = false;
+			this.originalPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation;
+			this.orthographicPickPlane = new Plane( this.originalPosition, this.getCamera().getAxes( AsSeenBy.SCENE ).backward );
+			
+			Ray orthoPickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
+			Point3 orthoPickPoint = PlaneUtilities.getPointInPlane( orthographicPickPlane, orthoPickRay );
+			this.orthographicOffsetToOrigin = Point3.createSubtraction(this.originalPosition, orthoPickPoint);
+			
 			Point3 initialClickPoint = new Point3();
 			startInput.getClickPickResult().getPositionInSource(initialClickPoint);
 			startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn( initialClickPoint, startInput.getClickPickResult().getSource().getRoot() );
 			this.pickPlane = createCameraPickPlane(initialClickPoint);
 			
+			
+			
 			Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
 			if (pickRay != null)
 			{
-				this.offsetToOrigin = Point3.createSubtraction( this.manipulatedTransformable.getAbsoluteTransformation().translation, initialClickPoint );
+				this.offsetToOrigin = Point3.createSubtraction( this.originalPosition, initialClickPoint );
 			}
 			else 
 			{

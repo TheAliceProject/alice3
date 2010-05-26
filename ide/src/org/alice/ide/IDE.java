@@ -80,12 +80,14 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 	
 
+	public static final String DEBUG_PROPERTY_KEY = "org.alice.ide.DebugMode";
+	
 	private static org.alice.ide.issue.ExceptionHandler exceptionHandler;
 	private static IDE singleton;
 	private static java.util.HashSet< String > performSceneEditorGeneratedSetUpMethodNameSet = new java.util.HashSet< String >();
 
 	//public static String IS_PROJECT_CHANGED_KEY = "IS_PROJECT_AFFECTED_KEY";
-	protected static final String GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
+	public static final String GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
 	static {
 		IDE.exceptionHandler = new org.alice.ide.issue.ExceptionHandler();
 		Thread.setDefaultUncaughtExceptionHandler( IDE.exceptionHandler );
@@ -646,7 +648,9 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		comboBox.setRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< AbstractField >() {
 			@Override
 			protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractField value, int index, boolean isSelected, boolean cellHasFocus) {
-				rv.setText( value.getName() );
+				if( value != null ) {
+					rv.setText( value.getName() );
+				}
 				return rv;
 			}
 		} );

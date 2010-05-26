@@ -43,11 +43,16 @@
 
 package org.alice.interact;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.alice.interact.ModifierMask.ModifierKey;
 import org.alice.interact.condition.AndInputCondition;
+import org.alice.interact.condition.ClickedObjectCondition;
+import org.alice.interact.condition.DoubleClickedObjectCondition;
 import org.alice.interact.condition.KeyPressCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
-import org.alice.interact.condition.MouseClickCondition;
+import org.alice.interact.condition.MousePressCondition;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.condition.PickCondition;
@@ -61,8 +66,11 @@ import org.alice.interact.handle.LinearTranslateHandle;
 import org.alice.interact.handle.ManipulationHandleIndirection;
 import org.alice.interact.handle.RotationRingHandle;
 import org.alice.interact.handle.StoodUpRotationRingHandle;
+import org.alice.interact.manipulator.AbstractManipulator;
+import org.alice.interact.manipulator.CameraOrbitDragManipulator;
 import org.alice.interact.manipulator.CameraRotateKeyManipulator;
 import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
+import org.alice.interact.manipulator.GetAGoodLookAtManipulator;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
 import org.alice.interact.manipulator.LinearDragManipulator;
 import org.alice.interact.manipulator.ObjectGlobalHandleDragManipulator;
@@ -73,14 +81,29 @@ import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
 import org.alice.interact.manipulator.OmniDirectionalDragManipulator;
 import org.alice.interact.manipulator.ScaleDragManipulator;
 import org.alice.interact.manipulator.SelectObjectDragManipulator;
+import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
+
+import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.pattern.Tuple2;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 /**
  * @author David Culyba
  */
 public class GlobalDragAdapter extends AbstractDragAdapter {
 	
+	public GlobalDragAdapter( MoveAndTurnSceneEditor sceneEditor )
+	{
+		super(sceneEditor);
+	}
+	
+	public GlobalDragAdapter()
+	{
+		super();
+	}
 	
 	@Override
 	protected void setUpControls()
@@ -163,17 +186,17 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 			AndInputCondition keyAndNotSelected = new AndInputCondition( new KeyPressCondition( turnKeys[i].keyValue), new SelectedObjectCondition( PickHint.NON_INTERACTIVE, InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH  ) );
 			cameraRotate.addCondition( keyAndNotSelected );
 		}
-//		this.manipulators.add( cameraRotate );
+		this.manipulators.add( cameraRotate );
 	
-//		ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet( new CameraOrbitDragManipulator() );
-//		MouseDragCondition leftAndNoModifiers = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1 , new PickCondition( PickHint.NON_INTERACTIVE ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
-//		//cameraOrbit.addCondition( new MousePressCondition( java.awt.event.MouseEvent.BUTTON1 , new NotPickCondition( PickCondition.PickType.MOVEABLE_OBJECT ) ) );
-//		cameraOrbit.addCondition(leftAndNoModifiers);
-//		cameraOrbit.addCondition( new MouseDragCondition( java.awt.event.MouseEvent.BUTTON3 , new PickCondition( PickHint.EVERYTHING ) ) );
-//		this.manipulators.add(cameraOrbit);
+		ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet( new CameraOrbitDragManipulator() );
+		MouseDragCondition leftAndNoModifiers = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1 , new PickCondition( PickHint.NON_INTERACTIVE ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
+		//cameraOrbit.addCondition( new MousePressCondition( java.awt.event.MouseEvent.BUTTON1 , new NotPickCondition( PickCondition.PickType.MOVEABLE_OBJECT ) ) );
+		cameraOrbit.addCondition(leftAndNoModifiers);
+		cameraOrbit.addCondition( new MouseDragCondition( java.awt.event.MouseEvent.BUTTON3 , new PickCondition( PickHint.EVERYTHING ) ) );
+		this.manipulators.add(cameraOrbit);
 		
 //		ManipulatorConditionSet mouseTranslateObject = new ManipulatorConditionSet( new ObjectTranslateDragManipulator() );
-		ManipulatorConditionSet mouseTranslateObject = new ManipulatorConditionSet( new OmniDirectionalDragManipulator() );
+		ManipulatorConditionSet mouseTranslateObject = new ManipulatorConditionSet( new OmniDirectionalDragManipulator(), "Mouse Translate" );
 		MouseDragCondition moveableObject = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
 		mouseTranslateObject.addCondition( moveableObject );
 		this.manipulators.add( mouseTranslateObject );
@@ -189,13 +212,23 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		this.manipulators.add( mouseRotateObjectLeftRight );
 		
 		ManipulatorConditionSet mouseHandleDrag = new ManipulatorConditionSet( new ObjectGlobalHandleDragManipulator() );
-		MouseDragCondition handleObjectCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.HANDLES));
+		MouseDragCondition handleObjectCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.ALL_HANDLES), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
 		mouseHandleDrag.addCondition( handleObjectCondition );
 		this.manipulators.add( mouseHandleDrag );
 		
+//		ManipulatorConditionSet mouseHandleClick = new ManipulatorConditionSet( new ObjectGlobalHandleDragManipulator() );
+//		MousePressCondition handleObjectClickCondition = new MousePressCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.TWO_D_HANDLES));
+//		System.out.println("Looking for condition: "+handleObjectCondition.hashCode()+", in set "+mouseHandleClick.hashCode());
+//		mouseHandleClick.addCondition( handleObjectClickCondition );
+//		this.manipulators.add( mouseHandleClick );
+		
 		ManipulatorConditionSet selectObject = new ManipulatorConditionSet( new SelectObjectDragManipulator(this) );
-		selectObject.addCondition( new MouseClickCondition(java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.EVERYTHING)) );
+		selectObject.addCondition( new MousePressCondition(java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.EVERYTHING)) );
 		this.manipulators.add( selectObject );
+		
+		ManipulatorConditionSet getAGoodLookAtObject = new ManipulatorConditionSet( new GetAGoodLookAtManipulator());
+		getAGoodLookAtObject.addCondition( new DoubleClickedObjectCondition(java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS)) );
+		this.manipulators.add( getAGoodLookAtObject );
 		
 		for (int i=0; i<this.manipulators.size(); i++)
 		{
@@ -344,6 +377,5 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		
 		this.setHandleSet( HandleSet.DEFAULT_INTERACTION );
 	}
-	
 	
 }

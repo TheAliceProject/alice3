@@ -143,6 +143,10 @@ public class HandleSet extends BitSet
 		{
 			return "Default";
 		}
+		else if (set == GROUND_TRANSLATION_VISUALIZATION)
+		{
+			return "Ground Translation";
+		}
 		else
 		{
 			return "NO STRING SET";
@@ -167,4 +171,9 @@ public class HandleSet extends BitSet
 		}
 	}
 	
+	
+	@Override
+	public String toString() {
+		return getStringForSet(this);
+	}
 }

@@ -81,6 +81,10 @@ public class ObjectUpDownDragManipulator extends ObjectTranslateDragManipulator 
 		Vector3 badPlaneNormal = Vector3.createPositiveYAxis();
 		badPlaneNormal.subtract( cameraUp );
 		badPlaneNormal.normalize();
+		if (badPlaneNormal.isNaN())
+		{
+			badPlaneNormal = Vector3.createPositiveYAxis();
+		}
 		return new Plane( clickPoint, badPlaneNormal );
 	}
 	

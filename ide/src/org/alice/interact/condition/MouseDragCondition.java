@@ -50,21 +50,12 @@ import org.alice.interact.ModifierMask;
 /**
  * @author David Culyba
  */
-public class MouseDragCondition extends ModifierSensitiveCondition{
+public class MouseDragCondition extends MousePickBasedCondition{
 	
 	protected static final double MIN_MOUSE_MOVE = 2.0d;
-	private int mouseButton = 0;
-	private PickCondition pickCondition = null;
 	protected Point mouseDownLocation;
 	protected boolean hasStarted = false;
 	
-	
-	enum PickClasses
-	{
-		ANYTHING,
-		MOVEABLE_OBJECTS,
-		NOTHING,
-	}
 	
 	public MouseDragCondition( int mouseButton, PickCondition pickCondition )
 	{
@@ -73,19 +64,28 @@ public class MouseDragCondition extends ModifierSensitiveCondition{
 	
 	public MouseDragCondition( int mouseButton, PickCondition pickCondition, ModifierMask modifierMask )
 	{
-		super(modifierMask);
-		this.pickCondition = pickCondition;
-		this.mouseButton = mouseButton;
+		super(mouseButton, pickCondition, modifierMask);
 	}
 
 	@Override
 	public boolean stateChanged( InputState currentState, InputState previousState ) {
+		//Null out the cached mouseDownLocation when the current state becomes invalid
+		if (!testInputs(currentState))
+		{
+			this.mouseDownLocation = null;
+		}
 		return ( super.stateChanged( currentState, previousState ) || !currentState.getMouseLocation().equals( previousState.getMouseLocation() ) );
 	}
 
 	@Override
 	protected boolean testState( InputState state ) {
-		return testInputs(state) && testPick( state );
+		boolean inputTest = testInputs(state);
+		boolean pickTest = false;
+		if (inputTest)
+		{
+			pickTest = testPick( state );
+		}
+		return  inputTest && pickTest;
 	}
 	
 	@Override
@@ -100,14 +100,21 @@ public class MouseDragCondition extends ModifierSensitiveCondition{
 	@Override
 	public boolean justStarted( InputState currentState, InputState previousState ) 
 	{
-		if (testClick(currentState) && !testInputs(previousState))
+		boolean testClickVal = testInputsAndPick(currentState);
+		boolean testPreviousInputVal = testInputs(previousState);
+//System.out.println("Checking justStarted in mouse drag.\n  click val: "+testClickVal+", previous input: "+testPreviousInputVal);
+		if (testClickVal && !testPreviousInputVal)
 		{
+//			System.out.println("Setting mouseDownLocation: "+this.hashCode());
 			this.mouseDownLocation = new Point(currentState.getMouseLocation());
 		}
-		if (testInputs(currentState))
+		boolean testCurrentInputs = testInputs(currentState);
+//System.out.println("  current input: "+testCurrentInputs);
+		if (testCurrentInputs)
 		{
 			if (this.mouseDownLocation != null &&  currentState.getMouseLocation().distance( this.mouseDownLocation ) >= MIN_MOUSE_MOVE)
 			{
+//				System.out.println("valid drag: "+this.hashCode());
 				this.mouseDownLocation = null;
 				this.hasStarted = true;
 				return true;
@@ -126,29 +133,19 @@ public class MouseDragCondition extends ModifierSensitiveCondition{
 		return false;
 	}
 	
-	protected boolean testClick(InputState state)
-	{
-		if (testInputs(state))
+	@Override
+	public boolean clicked( InputState currentState, InputState previousState ) {
+		if (!this.hasStarted && !testState(currentState) && testState(previousState))
 		{
-			return testPick(state);
+			if (!testMouse(currentState) && testMouse(previousState))
+			{
+				return true;
+			}
 		}
 		return false;
 	}
 	
-	protected boolean testPick(InputState state)
-	{
-		return pickCondition.evalutateChain( state );
-	}
 	
-	protected boolean testMouse( InputState state )
-	{
-		return state.isMouseDown( this.mouseButton );
-	}
-	
-	protected boolean testInputs( InputState state )
-	{
-		return (super.testState( state ) && testMouse( state ) );
-	}
 	
 	
 }

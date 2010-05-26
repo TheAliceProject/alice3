@@ -42,44 +42,51 @@
  */
 package edu.cmu.cs.dennisc.scenegraph.util;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.*;
+import edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis;
 
 /**
  * @author Dennis Cosgrove
  */
 public class Arrow extends Transformable {
+	
+	private Visual sgVisualCylinder;
+	private Visual sgVisualCone;
+	private Cylinder sgCone;
+	private Cylinder sgCylinder;
+	private Transformable sgTransformableCone;
+	private BottomToTopAxis bottomToTopAxis;
+	
 	public Arrow( double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone, Cylinder.BottomToTopAxis bottomToTopAxis, SingleAppearance frontFacingAppearance, boolean isBottomCapDesired ) {
-		Visual sgVisualCylinder = new Visual();
+		this.bottomToTopAxis = bottomToTopAxis;
+		
+		this.sgVisualCylinder = new Visual();
 		sgVisualCylinder.frontFacingAppearance.setValue( frontFacingAppearance );
 		
-		Cylinder sgCylinder = new Cylinder();
+		this.sgCylinder = new Cylinder();
 		sgCylinder.topRadius.setValue( radiusCylinder );
 		sgCylinder.bottomRadius.setValue( radiusCylinder );
 		sgCylinder.length.setValue( lengthCylinder );
-		sgCylinder.bottomToTopAxis.setValue( bottomToTopAxis );
+		sgCylinder.bottomToTopAxis.setValue( this.bottomToTopAxis );
 		sgCylinder.hasTopCap.setValue( false );
 		//todo?
 		sgCylinder.hasBottomCap.setValue( isBottomCapDesired );
 		
-		
-		edu.cmu.cs.dennisc.math.Vector3 translation = edu.cmu.cs.dennisc.math.Vector3.createMultiplication(  
-			new edu.cmu.cs.dennisc.math.Vector3( lengthCylinder, lengthCylinder, lengthCylinder ), 
-			bottomToTopAxis.accessVector() 
-		);
-		
-		Transformable sgTransformableCone = new Transformable();
-		sgTransformableCone.applyTranslation( translation );
+		this.sgTransformableCone = new Transformable();		
+		setConeTranslation(lengthCylinder);
 
-		Visual sgVisualCone = new Visual();
+		this.sgVisualCone = new Visual();
 		sgVisualCone.frontFacingAppearance.setValue( frontFacingAppearance );
 
-		Cylinder sgCone = new Cylinder();
+		this.sgCone = new Cylinder();
 	    sgCone.topRadius.setValue( 0.0 );
 	    sgCone.bottomRadius.setValue( radiusCone );
 	    sgCone.length.setValue( lengthCone );
-	    sgCone.bottomToTopAxis.setValue( bottomToTopAxis );
+	    sgCone.bottomToTopAxis.setValue( this.bottomToTopAxis );
 	    sgCone.hasTopCap.setValue( false ); //redundant
 	    sgCone.hasBottomCap.setValue( true );
+	    
 	    
 	    sgVisualCylinder.geometries.setValue( new Geometry[] { sgCylinder } );
 	    sgVisualCone.geometries.setValue( new Geometry[] { sgCone } );
@@ -87,5 +94,40 @@ public class Arrow extends Transformable {
 	    sgVisualCylinder.setParent( this );
 	    sgTransformableCone.setParent( this );
 	    sgVisualCone.setParent( sgTransformableCone );
+	}
+	
+	private void setConeTranslation(double lengthCylinder)
+	{
+		edu.cmu.cs.dennisc.math.Vector3 translation = edu.cmu.cs.dennisc.math.Vector3.createMultiplication(  
+				new edu.cmu.cs.dennisc.math.Vector3( lengthCylinder, lengthCylinder, lengthCylinder ), 
+				this.bottomToTopAxis.accessVector() 
+			);
+			AffineMatrix4x4 currentTransform = this.sgTransformableCone.localTransformation.getValue();
+			currentTransform.translation.set(translation);
+			this.sgTransformableCone.localTransformation.setValue(currentTransform);
+	}
+	
+	public void resize( double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone )
+	{
+		this.sgCylinder.topRadius.setValue( radiusCylinder );
+		this.sgCylinder.bottomRadius.setValue( radiusCylinder );
+		this.sgCylinder.length.setValue( lengthCylinder );
+		this.sgCone.topRadius.setValue( 0.0 );
+	    this.sgCone.bottomRadius.setValue( radiusCone );
+	    this.sgCone.length.setValue( lengthCone );
+	    setConeTranslation(lengthCylinder);
+		
+	}
+	
+	public void setFrontFacingAppearance( SingleAppearance frontFacingAppearance )
+	{
+		this.sgVisualCone.frontFacingAppearance.setValue(frontFacingAppearance);
+		this.sgVisualCylinder.frontFacingAppearance.setValue(frontFacingAppearance);
+	}
+	
+	public void setVisualShowing(boolean isShowing)
+	{
+		this.sgVisualCone.isShowing.setValue(isShowing);
+		this.sgVisualCylinder.isShowing.setValue(isShowing);
 	}
 }

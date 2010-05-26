@@ -57,6 +57,7 @@ import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
  */
 public class RuntimeDragAdapter extends AbstractDragAdapter {
 
+	
 	@Override
 	protected void setUpControls()
 	{

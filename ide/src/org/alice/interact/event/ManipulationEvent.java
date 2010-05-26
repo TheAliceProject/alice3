@@ -57,6 +57,7 @@ public class ManipulationEvent {
 		Translate,
 		Scale,
 		Rotate,
+		Zoom,
 	}
 	
 	private EventType type;

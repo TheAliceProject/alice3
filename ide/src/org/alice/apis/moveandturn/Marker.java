@@ -43,8 +43,74 @@
 
 package org.alice.apis.moveandturn;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.alice.interact.PickHint;
+
+import edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate;
+import edu.cmu.cs.dennisc.alice.annotations.Visibility;
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+
 /**
  * @author Dennis Cosgrove
  */
-public class Marker extends Transformable {
+public class Marker extends Transformable 
+{
+	protected SingleAppearance sgFrontFacingAppearance = new SingleAppearance();
+	
+	protected List<Visual> sgVisuals = new LinkedList<Visual>();
+	protected boolean isShowing = true;
+	
+	public Marker()
+	{
+		super();
+		sgFrontFacingAppearance.diffuseColor.setValue( this.getMarkerColor() );
+		sgFrontFacingAppearance.opacity.setValue( new Float(this.getMarkerOpacity()) );
+		createVisuals();
+		this.getSGTransformable().putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.MARKERS );
+		this.setShowing(true);
+	}
+	
+	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
+	public Boolean isShowing() {
+		return this.isShowing;
+	}
+	
+	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
+	public void setShowing( Boolean isShowing ) {	
+		if (this.isShowing != isShowing)
+		{
+			this.isShowing = isShowing;
+//			System.out.println("Setting visibility of "+this+":"+this.hashCode());
+			for (Visual v : this.sgVisuals)
+			{
+//				System.out.println("  Setting "+v+":"+v.hashCode()+"->"+v.getParent()+"->"+v.getParent().getRoot()+", showing to "+this.isShowing);
+				v.isShowing.setValue(this.isShowing);
+			}
+		}
+	}
+	
+	@Override
+	protected void handleVehicleChange(Composite vehicle) {
+		super.handleVehicleChange(vehicle);
+	}
+	
+	protected void createVisuals()
+	{
+	}
+	
+	protected Color4f getMarkerColor()
+	{
+		return Color4f.CYAN;
+	}
+	
+	protected float getMarkerOpacity()
+	{
+		return 1;
+	}
+	
 }

@@ -48,18 +48,28 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import org.alice.ide.common.FieldDeclarationPane;
 
+import edu.cmu.cs.dennisc.alice.ast.AbstractField;
+import edu.cmu.cs.dennisc.alice.ast.ThisExpression;
 import edu.cmu.cs.dennisc.zoot.ZManager;
 
 /**
@@ -71,11 +81,10 @@ public class SceneViewManagerPanel extends JPanel{
 	
 	private JPanel cameraMarkerPanel;
 	private JButton addCameraMarkerButton;
-	private JPanel startingViewPanel;
-
 	private CreateCameraMarkerActionOperation createCameraMarkerAction = null;
-	
+	private Map<AbstractField,  JComponent> fieldComponentMap = new HashMap<AbstractField,  JComponent>();
 	private org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor sceneEditor;
+	private JScrollPane markerScrollPane = null;
 	
 	
 	
@@ -88,12 +97,6 @@ public class SceneViewManagerPanel extends JPanel{
 		this.sceneEditor = sceneEditor;
 		this.createCameraMarkerAction = new CreateCameraMarkerActionOperation(this.sceneEditor);	
 		
-		JLabel title = new JLabel( "Starting View = ");
-		title.setFont( title.getFont().deriveFont( Font.BOLD, 18f ) );
-		
-		startingViewPanel = new JPanel();
-		startingViewPanel.add( new JLabel("Not implemented yet."));
-		
 		JLabel cameraMarkerTitle = new JLabel( "Camera Markers:");
 		cameraMarkerTitle.setFont( cameraMarkerTitle.getFont().deriveFont( Font.BOLD, 18f ) );
 		
@@ -102,35 +105,11 @@ public class SceneViewManagerPanel extends JPanel{
 		cameraMarkerPanel = new JPanel();
 		cameraMarkerPanel.setLayout( new GridBagLayout()  );
 		
-		this.add(title, new GridBagConstraints( 
-				0, //gridX
-				0, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.add(startingViewPanel, new GridBagConstraints( 
-				1, //gridX
-				0, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
+		markerScrollPane = new JScrollPane(cameraMarkerPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		markerScrollPane.setBorder(null);
 		this.add( cameraMarkerTitle, new GridBagConstraints( 
 				0, //gridX
-				1, //gridY
+				0, //gridY
 				1, //gridWidth
 				1, //gridHeight
 				1.0, //weightX
@@ -143,7 +122,7 @@ public class SceneViewManagerPanel extends JPanel{
 		);
 		this.add( addCameraMarkerButton, new GridBagConstraints( 
 				1, //gridX
-				1, //gridY
+				0, //gridY
 				1, //gridWidth
 				1, //gridHeight
 				1.0, //weightX
@@ -154,9 +133,9 @@ public class SceneViewManagerPanel extends JPanel{
 				0, //ipadX
 				0 ) //ipadY
 		);
-		this.add(cameraMarkerPanel, new GridBagConstraints( 
+		this.add(markerScrollPane, new GridBagConstraints( 
 				0, //gridX
-				2, //gridY
+				1, //gridY
 				2, //gridWidth
 				1, //gridHeight
 				1.0, //weightX
@@ -169,14 +148,49 @@ public class SceneViewManagerPanel extends JPanel{
 		);
 	}
 	
-	private Component makeCameraMarkerComponent(final edu.cmu.cs.dennisc.alice.ast.AbstractField field)
+	private void syncComponentsWithFields(List<AbstractField> cameraFields)
 	{
-		JPanel componentPanel = new JPanel();
-		componentPanel.add( new JLabel(field.getName()) );
-		JButton deleteViewButton = new org.alice.ide.operations.ast.DeleteFieldOperation( (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice) field ).createButton().getAwtComponent();
-		componentPanel.add( deleteViewButton );
+		//Make new UI components as needed
+		for (AbstractField field : cameraFields)
+		{
+			if (!this.fieldComponentMap.containsKey(field))
+			{
+				JComponent viewComponent = makeCameraMarkerComponent(field);
+				this.fieldComponentMap.put(field, viewComponent);
+			}
+		}
 		
-		return componentPanel;
+		//Remove components no longer needed
+		List<AbstractField> toRemove = new LinkedList<AbstractField>();
+		for (Entry<AbstractField, JComponent> entry : this.fieldComponentMap.entrySet())
+		{
+			if (!cameraFields.contains(entry.getKey()))
+			{
+				toRemove.add(entry.getKey());
+			}
+		}
+		for (AbstractField field : toRemove)
+		{
+			this.fieldComponentMap.remove(field);
+		}
+	}
+	
+	private JComponent makeCameraMarkerComponent(final edu.cmu.cs.dennisc.alice.ast.AbstractField field)
+	{
+		org.alice.ide.memberseditor.templates.GetterTemplate fieldComponent = new CameraViewFieldComponent(field);
+		fieldComponent.setActive(true);
+		return fieldComponent.getAwtComponent();
+	}
+	
+	public void scrollToField(AbstractField field)
+	{
+		if (this.fieldComponentMap.containsKey(field))
+		{
+			JComponent viewComponent = this.fieldComponentMap.get(field);
+			Rectangle viewRect = viewComponent.getBounds();
+			viewComponent.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( viewComponent ) );
+//			this.markerScrollPane.scrollRectToVisible(viewRect);
+		}
 	}
 	
 	public void refreshFields()
@@ -184,27 +198,37 @@ public class SceneViewManagerPanel extends JPanel{
 		if (this.sceneEditor != null)
 		{
 			this.cameraMarkerPanel.removeAll();
-			int count = 0;
+			List<AbstractField> cameraFields = new LinkedList<AbstractField>();
 			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : this.sceneEditor.getDeclaredFields()) 
 			{
 				if (field.getValueType().isAssignableTo( org.alice.apis.moveandturn.CameraMarker.class ))
 				{
-					cameraMarkerPanel.add(makeCameraMarkerComponent(field), new GridBagConstraints( 
-							0, //gridX
-							count, //gridY
-							1, //gridWidth
-							1, //gridHeight
-							1.0, //weightX
-							0.0, //weightY
-							GridBagConstraints.WEST, //anchor 
-							GridBagConstraints.NONE, //fill
-							new Insets(2,10,2,2), //insets (top, left, bottom, right)
-							0, //ipadX
-							0 ) //ipadY
-					);
-					count++;
+					cameraFields.add(field);
 				}
 			}
+			syncComponentsWithFields(cameraFields);
+			int count = 0;
+			for (AbstractField cameraField : cameraFields)
+			{
+				assert this.fieldComponentMap.containsKey(cameraField);
+				Component c = this.fieldComponentMap.get(cameraField);
+				assert c != null;
+				cameraMarkerPanel.add(c, new GridBagConstraints( 
+						0, //gridX
+						count, //gridY
+						1, //gridWidth
+						1, //gridHeight
+						1.0, //weightX
+						0.0, //weightY
+						GridBagConstraints.WEST, //anchor 
+						GridBagConstraints.NONE, //fill
+						new Insets(2,10,2,2), //insets (top, left, bottom, right)
+						0, //ipadX
+						0 ) //ipadY
+				);
+				count++;
+			}
+			
 			cameraMarkerPanel.add(Box.createVerticalGlue(), new GridBagConstraints( 
 					0, //gridX
 					count, //gridY

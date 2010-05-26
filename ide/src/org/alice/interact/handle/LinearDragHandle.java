@@ -43,12 +43,14 @@
 package org.alice.interact.handle;
 
 
+import org.alice.ide.IDE;
 import org.alice.interact.DoubleTargetBasedAnimation;
 import org.alice.interact.GlobalDragAdapter;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -59,6 +61,7 @@ import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.ui.DragStyle;
 
 /**
  * @author David Culyba
@@ -72,7 +75,8 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	protected Vector3 dragAxis;
 	protected double distanceFromOrigin;
 	protected Transformable standUpReference = new Transformable();
-
+	protected Transformable snapReference = new Transformable();
+	
 	protected DoubleTargetBasedAnimation lengthAnimation;
 	
 	public LinearDragHandle( )
@@ -83,6 +87,16 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	public LinearDragHandle( MovementDescription dragDescription )
 	{
 		super();
+		this.standUpReference.setName("Linear StandUp Reference");
+		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
+		{
+			this.standUpReference.putBonusDataFor(ManipulationHandle3D.VIRTUAL_PARENT_KEY, this);
+		}
+		this.snapReference.setName("Linear Snap Reference");
+		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
+		{
+			this.snapReference.putBonusDataFor(ManipulationHandle3D.VIRTUAL_PARENT_KEY, this);
+		}
 		this.dragDescription = dragDescription;
 		this.dragAxis = new Vector3(this.dragDescription.direction.getVector());
 		this.localTransformation.setValue( this.getTransformationForAxis( this.dragAxis ) );
@@ -218,6 +232,37 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 			}
 		}
 		return this;
+	}
+	
+	@Override
+	public ReferenceFrame getSnapReferenceFrame()
+	{
+		if (this.manipulatedObject != null)
+		{
+			if (this.dragDescription.type == MovementType.STOOD_UP)
+			{
+				this.snapReference.setParent( this.manipulatedObject.getRoot() );
+				this.snapReference.setTransformation(this.manipulatedObject.getAbsoluteTransformation(), AsSeenBy.SCENE);
+				this.snapReference.setAxesOnlyToStandUp();
+				this.snapReference.setTranslationOnly(0, 0, 0, AsSeenBy.SCENE);
+				return this.snapReference;
+			}
+			else if (this.dragDescription.type == MovementType.ABSOLUTE)
+			{
+				this.snapReference.setParent( this.manipulatedObject.getRoot() );
+				AffineMatrix4x4 location = AffineMatrix4x4.createIdentity();
+				this.snapReference.localTransformation.setValue( location );
+				return this.snapReference;
+			}
+			else
+			{
+				this.snapReference.setParent( this.manipulatedObject.getRoot() );
+				this.snapReference.setTransformation(this.manipulatedObject.getAbsoluteTransformation(), AsSeenBy.SCENE);
+				this.snapReference.setTranslationOnly(0, 0, 0, AsSeenBy.SCENE);
+				return this.snapReference;
+			}
+		}
+		return this.getRoot();
 	}
 	
 	@Override

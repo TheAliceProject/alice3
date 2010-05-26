@@ -49,6 +49,7 @@ import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.VectorUtilities;
+import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
@@ -96,6 +97,15 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 			this.manipulatedTransformable = (Transformable)this.camera.getParent();
 		}
 		
+	}
+	
+	public void setDesiredCameraView( CameraView cameraView )
+	{
+		//this can only be ACTIVE_VIEW
+	}
+	
+	public CameraView getDesiredCameraView() {
+		return CameraView.PICK_CAMERA;
 	}
 	
 	public OnscreenLookingGlass getOnscreenLookingGlass()
@@ -230,7 +240,10 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 			}
 				
 			Point3 newPosition = getPositionBasedonOnMouseLocation( currentInput.getMouseLocation() );
-			//Send manipulation events
+
+			newPosition = SnapUtilities.doMovementSnapping(this.manipulatedTransformable, newPosition, this.dragAdapter, this.manipulatedTransformable.getRoot(), this.getCamera());
+			
+			
 			Vector3 movementDif = Vector3.createSubtraction( newPosition, this.manipulatedTransformable.getAbsoluteTransformation().translation);
 			movementDif.normalize();
 			for (ManipulationEvent event : this.manipulationEvents)
@@ -252,6 +265,12 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 			}
 		}
 	}
+	
+	@Override
+	public void doClickManipulator(InputState clickInput, InputState previousInput) {
+		//Do nothing
+	}
+
 
 	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput  ) 

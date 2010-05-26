@@ -76,9 +76,9 @@ public abstract class DoubleTargetBasedAnimation extends TargetBasedFrameObserve
 	}
 	
 	@Override
-	protected double getDistanceToDone()
+	protected boolean isCloseEnoughToBeDone()
 	{
-		return Math.abs(this.currentValue - this.targetValue);
+		return (Math.abs(this.currentValue - this.targetValue) < MIN_DISTANCE_TO_DONE);
 	}
 	
 	@Override

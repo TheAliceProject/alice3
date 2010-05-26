@@ -40,36 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.sceneeditor.viewmanager;
+package org.alice.interact.condition;
 
-
-import org.alice.apis.moveandturn.AbstractCamera;
-
-import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
-import edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener;
+import org.alice.interact.InputState;
 
 /**
  * @author David Culyba
  */
-public class CameraViewPort 
-{
-	private OnscreenLookingGlass lookingGlass;
-	private AbstractCamera camera;
-	
-	public CameraViewPort(OnscreenLookingGlass lookingGlass, AbstractCamera camera)
-	{
-		this.camera = camera;
-		this.lookingGlass = lookingGlass;
+public class MousePressCondition extends MouseDragCondition {
+
+	/**
+	 * @param mouseButton
+	 * @param pickCondition
+	 */
+	public MousePressCondition( int mouseButton, PickCondition pickCondition ) {
+		super( mouseButton, pickCondition );
+		// TODO Auto-generated constructor stub
 	}
 	
-	public void addAutomaticDisplayListener(AutomaticDisplayListener automaticDisplayListener)
-	{
-		this.lookingGlass.getLookingGlassFactory().addAutomaticDisplayListener( automaticDisplayListener );
+	@Override
+	public boolean stateChanged( InputState currentState, InputState previousState ) {
+		boolean currentStateStatus = testState(currentState);
+		boolean previousStateStatus = testState(previousState);
+		if (currentStateStatus != previousStateStatus)
+		{
+			return true;
+		}
+		return false;
 	}
 	
-	public void removeAutomaticDisplayListener(AutomaticDisplayListener automaticDisplayListener)
-	{
-		this.lookingGlass.getLookingGlassFactory().removeAutomaticDisplayListener( automaticDisplayListener );
+	@Override
+	public boolean justStarted( InputState currentState, InputState previousState ) {
+		if (testState(currentState) && !testState(previousState))
+		{
+			this.hasStarted = true;
+			return true;
+		}
+		return false;
 	}
 
 }

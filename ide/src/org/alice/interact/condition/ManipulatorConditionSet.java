@@ -55,14 +55,22 @@ public class ManipulatorConditionSet {
 		IS_RUNNING,
 		JUST_ENDED,
 		CHANGED,
+		CLICKED,
 	}
 	
+	private String name = "NO NAME";
 	private AbstractManipulator manipulator;
 	private java.util.Vector< InputCondition > inputConditions = new java.util.Vector< InputCondition >();
 	
+	public ManipulatorConditionSet( AbstractManipulator manipulator, String name )
+	{
+		this.name = name;
+		this.manipulator = manipulator;
+	}
+	
 	public ManipulatorConditionSet( AbstractManipulator manipulator )
 	{
-		this.manipulator = manipulator;
+		this(manipulator, "NO NAME");
 	}
 	
 	public void addCondition( InputCondition inputCondition )
@@ -75,8 +83,20 @@ public class ManipulatorConditionSet {
 		return this.manipulator;
 	}
 	
+	public void update( InputState current, InputState previous )
+	{
+		for (int i=0; i<this.inputConditions.size(); i++)
+		{
+			this.inputConditions.get(i).update(current, previous);
+		}
+	}
+	
 	private boolean checkCondition( RunningState state, InputState current, InputState previous )
 	{
+//		if (previous.isAnyMouseButtonDown() && !current.isAnyMouseButtonDown())
+//		{
+//			System.out.println("stopping? "+this.hashCode());
+//		}
 		switch (state)
 		{
 		case CHANGED:
@@ -115,6 +135,15 @@ public class ManipulatorConditionSet {
 				}
 			}
 			break;
+		case CLICKED:
+			for (int i=0; i<this.inputConditions.size(); i++)
+			{
+				if (this.inputConditions.get( i ).clicked( current, previous ))
+				{
+					return true;
+				}
+			}
+			break;
 		}
 		return false;
 		
@@ -132,6 +161,7 @@ public class ManipulatorConditionSet {
 	
 	public boolean justStarted(InputState current, InputState previous)
 	{
+//		System.out.println("Checking justStarted for "+this.getName());
 		boolean someoneIsRunning = this.checkCondition(RunningState.IS_RUNNING, current, previous);
 		boolean someoneJustStarted = this.checkCondition(RunningState.JUST_STARTED, current, previous);
 		return (!someoneIsRunning && someoneJustStarted);
@@ -144,4 +174,24 @@ public class ManipulatorConditionSet {
 		boolean someoneJustEnded = this.checkCondition(RunningState.JUST_ENDED, current, previous);
 		return (!someoneIsRunning && !someoneJustStarted && someoneJustEnded);
 	}
+	
+	public boolean clicked(InputState current, InputState previous)
+	{
+//		boolean someoneIsRunning = this.checkCondition(RunningState.IS_RUNNING, current, previous);
+//		boolean someoneJustStarted = this.checkCondition(RunningState.JUST_STARTED, current, previous);
+//		boolean someoneJustEnded = this.checkCondition(RunningState.JUST_ENDED, current, previous);
+		boolean clicked = this.checkCondition(RunningState.CLICKED, current, previous);
+		return (clicked);
+	}
+	
+	public String getName()
+	{
+		return this.name;
+	}
+	
+	@Override
+	public String toString() {
+		return "ManipulatorConditionSet:"+this.name;
+	}
+	
 }

@@ -42,6 +42,7 @@
  */
 package org.alice.interact.manipulator;
 
+import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.LinearScaleHandle;
@@ -72,7 +73,7 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 			if( c == null )
 				return false;
 			Object bonusData = c.getBonusDataFor( PickHint.PICK_HINT_KEY );
-			if( bonusData instanceof PickHint && ((PickHint)bonusData).intersects( PickHint.HANDLES ) )
+			if( bonusData instanceof PickHint && ((PickHint)bonusData).intersects( PickHint.THREE_D_HANDLES ) )
 				return true;
 			else
 				return isHandle( c.getParent() );
@@ -83,10 +84,40 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 		}
 	};
 
-	@Override
-	protected void updateBasedOnHandlePull( double previousPull, double newPull ) 
+	private Vector3 getInvertedScaleVector( Vector3 scaleVector )
 	{
-		double pullDif = (newPull) / (previousPull);
+		Vector3 invertedScale = new Vector3();
+		if (scaleVector.x != 0)
+		{
+			invertedScale.x = 1.0 / scaleVector.x;
+		}
+		else
+		{
+			invertedScale.x = 1;
+		}
+		if (scaleVector.y != 0)
+		{
+			invertedScale.y = 1.0 / scaleVector.y;
+		}
+		else
+		{
+			invertedScale.y = 1;
+		}
+		if (scaleVector.z != 0)
+		{
+			invertedScale.z = 1.0 / scaleVector.z;
+		}
+		else
+		{
+			invertedScale.z = 1;
+		}
+		return invertedScale;
+	}
+	
+	@Override
+	protected void updateBasedOnHandlePull( double initialPull, double newPull ) 
+	{
+		double pullDif = (newPull) / (initialPull);
 		LinearScaleHandle scaleHandle = (LinearScaleHandle)this.linearHandle;
 		Vector3 scaleVector;
 		if( scaleHandle.applyAlongAxis() ) {
@@ -102,12 +133,15 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 		}
 
 		//Don't scale if the handles are pulled past their origin
-		if( previousPull <= MIN_HANDLE_PULL || newPull <= MIN_HANDLE_PULL ) {
+		if( newPull <= MIN_HANDLE_PULL ) {
 			scaleVector = new Vector3( 1.0d, 1.0d, 1.0d );
 		}
 		
-		accumulatedScaleVector.multiply( scaleVector );
-		
+		//First remove the old scale
+		Vector3 inverseScale = getInvertedScaleVector(accumulatedScaleVector);
+		ScaleUtilities.applyScale( this.manipulatedTransformable, inverseScale, handleCriterion );
+		//Now apply the new scale
+		accumulatedScaleVector.set( scaleVector );
 		ScaleUtilities.applyScale( this.manipulatedTransformable, scaleVector, handleCriterion );
 
 	}

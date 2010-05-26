@@ -164,6 +164,22 @@ public abstract class AbstractAnimator implements Animator {
 		}
 	}
 
+	public void cancelAnimation() {
+		synchronized( this.waitingAnimations ) {
+			java.util.Iterator< WaitingAnimation > iterator = this.waitingAnimations.iterator();
+			while( iterator.hasNext() ) {
+				WaitingAnimation waitingAnimation = iterator.next();
+				Thread thread = waitingAnimation.getThread();
+				if( thread != null ) {
+					synchronized( thread ) {
+						thread.notify();
+					}
+				}
+				iterator.remove();
+			}
+		}
+	}
+
 	public void completeAnimations( AnimationObserver animationObserver ) {
 		synchronized( this.waitingAnimations ) {
 			java.util.Iterator< WaitingAnimation > iterator = this.waitingAnimations.iterator();
