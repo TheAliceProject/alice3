@@ -258,10 +258,11 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	}
 
 	public MembersEditor() {
-		final float FONT_SCALAR = 1.5f;
+		final float FONT_SCALAR = 1.4f;
 		edu.cmu.cs.dennisc.croquet.ComboBox< edu.cmu.cs.dennisc.alice.ast.AbstractField > comboBox = org.alice.ide.IDE.getSingleton().getFieldSelectionState().createComboBox();
 		comboBox.scaleFont( FONT_SCALAR );
-		comboBox.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		//comboBox.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		
 		comboBox.setRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.AbstractField >() {
 			@Override
 			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractField value, int index, boolean isSelected, boolean cellHasFocus ) {
@@ -273,7 +274,6 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		} );
 		edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label( "instance:" );
 		label.scaleFont( FONT_SCALAR );
-
 		edu.cmu.cs.dennisc.croquet.LineAxisPanel instancePanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( label, comboBox );
 
 		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.tabbedPaneSelectionOperation.createToolPaletteTabbedPane();

@@ -158,8 +158,19 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 	}
 
 	private static class JTabTitle extends javax.swing.AbstractButton {
-		private java.awt.event.MouseListener mouseListener = new java.awt.event.MouseAdapter() {
-			@Override
+		private java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+			public void mouseEntered( java.awt.event.MouseEvent e ) {
+				JTabTitle.this.getModel().setArmed( true );
+			}
+			public void mouseExited( java.awt.event.MouseEvent e ) {
+				JTabTitle.this.getModel().setArmed( false );
+			}
+			public void mousePressed( java.awt.event.MouseEvent e ) {
+				JTabTitle.this.getModel().setPressed( true );
+			}
+			public void mouseReleased( java.awt.event.MouseEvent e ) {
+				JTabTitle.this.getModel().setPressed( false );
+			}
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				JTabTitle.this.select();
 			}
@@ -210,11 +221,21 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 		protected void paintComponent(java.awt.Graphics g) {
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 			if( this.singleSelectionPane instanceof ToolPaletteTabbedPane ) {
-				final double FACTOR = 1.2;
-				final double INVERSE_FACTOR = 1.0 / FACTOR;
-				java.awt.Color colorA = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB(this.getBackground(), 1.0, FACTOR, FACTOR );
-				java.awt.Color colorB = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB(this.getBackground(), 1.0, INVERSE_FACTOR, INVERSE_FACTOR );
-				java.awt.Paint paint = new java.awt.GradientPaint(0,0, colorA, 0, this.getHeight(), colorB );
+				java.awt.Paint paint;
+//				if( this.isSelected()) {
+//					paint = this.getBackground();
+//				} else {
+					final double FACTOR;
+					if( this.getModel().isArmed() ) {
+						FACTOR = 1.3;
+					} else {
+						FACTOR = 1.15;
+					}
+					final double INVERSE_FACTOR = 1.0 / FACTOR;
+					java.awt.Color colorA = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB(this.getBackground(), 1.0, FACTOR, FACTOR );
+					java.awt.Color colorB = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB(this.getBackground(), 1.0, INVERSE_FACTOR, INVERSE_FACTOR );
+					paint = new java.awt.GradientPaint(0,0, colorA, 0, this.getHeight(), colorB );
+//				}
 				g2.setPaint( paint );
 				g2.fill( g2.getClip() );
 			}
@@ -238,7 +259,19 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 				if( this.getModel().isSelected() ) {
 					g2.rotate( Math.PI/2 );
 				}
-				g2.setPaint( java.awt.Color.WHITE );
+				java.awt.Paint fillPaint = java.awt.Color.WHITE;
+				if( this.getModel().isSelected() ) {
+					//pass
+				} else {
+					if( this.getModel().isPressed() ) {
+						fillPaint = java.awt.Color.YELLOW.darker();
+					} else {
+						if( this.getModel().isArmed() ) {
+							fillPaint = java.awt.Color.YELLOW;
+						}
+					}
+				}
+				g2.setPaint( fillPaint );
 				g2.fill( path );
 				g2.setPaint( java.awt.Color.BLACK );
 				g2.draw( path );
