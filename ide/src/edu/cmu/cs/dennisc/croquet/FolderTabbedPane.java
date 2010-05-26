@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class TabbedPane extends AbstractSingleSelectionPane {
+public final class FolderTabbedPane extends AbstractTabbedPane {
 	private static class HeaderPane extends JComponent<javax.swing.JPanel> {
 		private static final int NORTH_AREA_PAD = 8;
 		private static final int EAST_TAB_PAD = 48;
@@ -210,7 +210,7 @@ public final class TabbedPane extends AbstractSingleSelectionPane {
 
 		private Key( AbstractButton<?> headerComponent, Component<?> mainComponent, TabStateOperation tabStateOperation ) {
 			this.headerComponent = headerComponent;
-			this.mainComponentKey = TabbedPane.this.cardPanel.createKey( mainComponent, tabStateOperation.getIndividualUUID().toString());
+			this.mainComponentKey = FolderTabbedPane.this.cardPanel.createKey( mainComponent, tabStateOperation.getIndividualUUID().toString());
 			this.tabStateOperation = tabStateOperation;
 		}
 		public TabStateOperation getTabStateOperation() {

@@ -46,53 +46,39 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSingleSelectionPane extends JComponent<javax.swing.JComponent> {
-	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-	private final java.util.Map<javax.swing.ButtonModel, TabStateOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-
-	private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
-		public void itemStateChanged(java.awt.event.ItemEvent e) {
-			if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
-				java.awt.ItemSelectable itemSelectable = e.getItemSelectable();
-				TabStateOperation tabStateOperation;
-				if( itemSelectable instanceof javax.swing.ButtonModel ) {
-					tabStateOperation = map.get( (javax.swing.ButtonModel)itemSelectable );
-					assert tabStateOperation != null;
-				} else {
-					assert false;
-					tabStateOperation = null;
-				}
-				AbstractSingleSelectionPane.this.selectTab( tabStateOperation );
-			} else {
-				//pass
-			}
-		}
-	};
-
-	/* package-private */ void addTab( TabStateOperation tabStateOperation ) {
-		AbstractButton<?> tabTitle = tabStateOperation.getSingletonTabTitle( this );
-		this.map.put( tabTitle.getAwtComponent().getModel(), tabStateOperation);
-		this.buttonGroup.add(tabTitle.getAwtComponent());
-		tabTitle.getAwtComponent().getModel().addItemListener( this.itemListener );
-		this.revalidateAndRepaint();
+public final class ToolPaletteTabbedPane extends AbstractTabbedPane {
+	private GridBagPanel panel = new GridBagPanel();
+	@Override
+	protected javax.swing.JComponent createAwtComponent() {
+		return this.panel.getAwtComponent();
 	}
-
-	/* package-private */ void removeTab( TabStateOperation tabStateOperation ) {
-		AbstractButton<?> tabTitle = tabStateOperation.getSingletonTabTitle( this );
-		tabTitle.getAwtComponent().getModel().removeItemListener( this.itemListener );
-		this.buttonGroup.remove(tabTitle.getAwtComponent());
-		this.map.remove( tabTitle.getAwtComponent().getModel() );
-		this.revalidateAndRepaint();
+	private java.util.List< TabStateOperation > tabStateOperations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	@Override
+	/*package-private*/ void addTab(edu.cmu.cs.dennisc.croquet.TabStateOperation tabStateOperation) {
+		super.addTab(tabStateOperation);
+		this.tabStateOperations.add( tabStateOperation );
+		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+		gbc.fill = java.awt.GridBagConstraints.BOTH;
+		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		gbc.weightx = 1.0f;
+		gbc.weighty = 0.0f;
+		this.panel.addComponent( tabStateOperation.getSingletonTabTitle( this ), gbc );
+		gbc.weighty = 1.0f;
+		this.panel.addComponent( tabStateOperation.getSingletonScrollPane(), gbc );
+		tabStateOperation.getSingletonScrollPane().setVisible( tabStateOperation.getState() );
 	}
-
-	/* package-private */ abstract void selectTab( TabStateOperation tabStateOperation );
-	
-	/* package-private */ final TabStateOperation getSelectedTabStateOperation() {
-		javax.swing.ButtonModel model = this.buttonGroup.getSelection();
-		if( model != null ) {
-			return this.map.get( model );
-		} else {
-			return null;
+	@Override
+	/*package-private*/ void removeTab(edu.cmu.cs.dennisc.croquet.TabStateOperation tabStateOperation) {
+		super.removeTab(tabStateOperation);
+		this.tabStateOperations.remove( tabStateOperation );
+		this.panel.removeComponent( tabStateOperation.getSingletonTabTitle( this ) );
+		this.panel.removeComponent( tabStateOperation.getSingletonScrollPane() );
+	}
+	@Override
+	/*package-private*/ void selectTab(edu.cmu.cs.dennisc.croquet.TabStateOperation nextTabStateOperation) {
+		for( TabStateOperation tabStateOperation : this.tabStateOperations ) {
+			tabStateOperation.getSingletonScrollPane().setVisible( tabStateOperation == nextTabStateOperation );
 		}
+		this.revalidateAndRepaint();
 	}
 }

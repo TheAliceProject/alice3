@@ -116,13 +116,13 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	};
 
-	private edu.cmu.cs.dennisc.croquet.SingleTabSelectionOperation tabbedPaneSelection = new edu.cmu.cs.dennisc.croquet.SingleTabSelectionOperation( 
+	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabbedPaneSelection = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( 
 			PersonEditor.GROUP_ID, 
 			java.util.UUID.fromString( "d525f0c5-9f39-4807-a9d3-f66775f9eb2d" ), 
 			bodyTabState, headTabState );
 	
 
-	private edu.cmu.cs.dennisc.croquet.SingleTabSelectionOperation.SelectionObserver tabChangeAdapter = new edu.cmu.cs.dennisc.croquet.SingleTabSelectionOperation.SelectionObserver() {
+	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver tabChangeAdapter = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver() {
 		public void selecting( edu.cmu.cs.dennisc.croquet.TabStateOperation prev, edu.cmu.cs.dennisc.croquet.TabStateOperation next ) {
 		}
 		public void selected( edu.cmu.cs.dennisc.croquet.TabStateOperation prev, edu.cmu.cs.dennisc.croquet.TabStateOperation next ) {
@@ -168,7 +168,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		};
 		northPane.addComponent( ubiquitousPane, Constraint.CENTER );
 				
-		edu.cmu.cs.dennisc.croquet.TabbedPane tabbedPane = this.tabbedPaneSelection.createTabbedPane();
+		edu.cmu.cs.dennisc.croquet.FolderTabbedPane tabbedPane = this.tabbedPaneSelection.createFolderTabbedPane();
 		tabbedPane.setOpaque( true );
 		tabbedPane.scaleFont( 1.5f );
 

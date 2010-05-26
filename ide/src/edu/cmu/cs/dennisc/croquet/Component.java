@@ -242,16 +242,22 @@ public abstract class Component<J extends java.awt.Component> {
 		return this.getAwtComponent().getFont();
 	}
 
-	public void scaleFont(float scaleFactor) {
-		edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToScaledFont(this.getAwtComponent(), scaleFactor);
+	public void setFont( java.awt.Font font ) {
+		if( font != null ) {
+			this.getAwtComponent().setFont( font );
+		} else {
+			throw new NullPointerException();
+		}
 	}
-
-	public void setFontSize(float fontSize) {
-		this.getAwtComponent().setFont( this.getFont().deriveFont(fontSize) );
+	
+	public final void scaleFont(float scaleFactor) {
+		this.setFont( edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont(this.getAwtComponent(), scaleFactor) );
 	}
-
-	public void changeFont(edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes) {
-		edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToDerivedFont(this.getAwtComponent(), textAttributes);
+	public final void setFontSize(float fontSize) {
+		this.setFont( this.getFont().deriveFont(fontSize) );
+	}
+	public final void changeFont(edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes) {
+		this.setFont( edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont(this.getAwtComponent(), textAttributes ) );
 	}
 
 	/*package-private*/ boolean isEnabled() {

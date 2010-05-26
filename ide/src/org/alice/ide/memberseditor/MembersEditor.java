@@ -224,7 +224,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	};
 
-	private edu.cmu.cs.dennisc.croquet.SingleTabSelectionOperation tabbedPaneSelectionOperation = new edu.cmu.cs.dennisc.croquet.SingleTabSelectionOperation( 
+	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabbedPaneSelectionOperation = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( 
 			org.alice.ide.IDE.IDE_GROUP, 
 			java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ),
 			this.proceduresTabStateOperation,
@@ -258,10 +258,11 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	}
 	
 	public MembersEditor() {
-		edu.cmu.cs.dennisc.croquet.AbstractSingleSelectionPane singleSelectionPane 
-			= this.tabbedPaneSelectionOperation.createSingleSelectionToolPalette();
-			//= this.tabbedPaneSelectionOperation.createTabbedPane();
-		this.addComponent( singleSelectionPane, Constraint.CENTER );
+		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane 
+			= this.tabbedPaneSelectionOperation.createToolPaletteTabbedPane();
+			//= this.tabbedPaneSelectionOperation.createFolderTabbedPane();
+		this.addComponent( tabbedPane, Constraint.CENTER );
+		tabbedPane.scaleFont( 1.5f );
 	}
 	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
 		this.refresh();
@@ -280,5 +281,4 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		org.alice.ide.IDE.getSingleton().getFieldSelectionState().removeValueObserver( this.fieldSelectionObserver );
 		super.handleRemovedFrom( parent );
 	}
-	
 }

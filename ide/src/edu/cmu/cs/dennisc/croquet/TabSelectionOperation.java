@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class SingleTabSelectionOperation extends Operation {
+public class TabSelectionOperation extends Operation {
 	public interface SelectionObserver {
 		public void selecting( TabStateOperation prev, TabStateOperation next );
 		public void selected( TabStateOperation prev, TabStateOperation next );
@@ -71,8 +71,7 @@ public class SingleTabSelectionOperation extends Operation {
 
 	private final java.util.List< SelectionObserver > selectionObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private final java.util.List< TabStateOperation > tabStateOperations;
-	private float headerFontScalar = 1.0f;
-	public SingleTabSelectionOperation( Group group, java.util.UUID individualUUID, TabStateOperation... operations ) {
+	public TabSelectionOperation( Group group, java.util.UUID individualUUID, TabStateOperation... operations ) {
 		super( group, individualUUID );
 		this.tabStateOperations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( operations );
 	}
@@ -95,11 +94,6 @@ public class SingleTabSelectionOperation extends Operation {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: removeAllTabStateOperations" );
 		this.tabStateOperations.clear();
 	}
-	
-	protected void setHeaderFontScalar( float headerFontScalar ) {
-		this.headerFontScalar = headerFontScalar;
-	}
-	
 	public TabStateOperation getCurrentTabStateOperation() {
 		return this.singletonSingleSelectionPane.getSelectedTabStateOperation();
 	}
@@ -119,10 +113,10 @@ public class SingleTabSelectionOperation extends Operation {
 		ScrollPane scrollPane = tabState.getSingletonScrollPane();
 		Component<?> mainComponent = tabState.getSingletonView();
 		AbstractButton<?> titleButton = tabState.getSingletonTabTitle( this.singletonSingleSelectionPane );
-		titleButton.scaleFont( this.headerFontScalar );
 		titleButton.setBackgroundColor( mainComponent.getBackgroundColor() );
 		scrollPane.setBackgroundColor( mainComponent.getBackgroundColor() );
 		this.singletonSingleSelectionPane.addTab( tabState );
+		titleButton.setFont( this.singletonSingleSelectionPane.getFont() );
 		if( tabState.getState() ) {
 			this.singletonSingleSelectionPane.selectTab( tabState );
 		}
@@ -132,12 +126,12 @@ public class SingleTabSelectionOperation extends Operation {
 		throw new RuntimeException( "todo" );
 	}
 
-	private AbstractSingleSelectionPane singletonSingleSelectionPane;
-	public AbstractSingleSelectionPane getSingletonSingleSelectionPane() {
+	private AbstractTabbedPane singletonSingleSelectionPane;
+	public AbstractTabbedPane getSingletonSingleSelectionPane() {
 		assert this.singletonSingleSelectionPane != null;
 		return this.singletonSingleSelectionPane;
 	}
-	private void setSingletonSingleSelectionPane( AbstractSingleSelectionPane singleSelectionPane ) {
+	private void setSingletonSingleSelectionPane( AbstractTabbedPane singleSelectionPane ) {
 		assert this.singletonSingleSelectionPane == null;
 		this.singletonSingleSelectionPane = singleSelectionPane;
 		this.addComponent( this.singletonSingleSelectionPane );
@@ -145,13 +139,13 @@ public class SingleTabSelectionOperation extends Operation {
 			this.addToTabbedPane(tabState);
 		}
 	}
-	public TabbedPane createTabbedPane() {
-		TabbedPane rv = new TabbedPane();
+	public FolderTabbedPane createFolderTabbedPane() {
+		FolderTabbedPane rv = new FolderTabbedPane();
 		this.setSingletonSingleSelectionPane(rv);
 		return rv;
 	}
-	public SingleSelectionToolPalette createSingleSelectionToolPalette() {
-		SingleSelectionToolPalette rv = new SingleSelectionToolPalette();
+	public ToolPaletteTabbedPane createToolPaletteTabbedPane() {
+		ToolPaletteTabbedPane rv = new ToolPaletteTabbedPane();
 		this.setSingletonSingleSelectionPane(rv);
 		return rv;
 	}

@@ -179,12 +179,11 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 		private javax.swing.JLabel label = new javax.swing.JLabel();
 		private javax.swing.JButton closeButton = new javax.swing.JButton();
 		private javax.swing.Action action;
-		private AbstractSingleSelectionPane singleSelectionPane;
-		public JTabTitle( AbstractSingleSelectionPane singleSelectionPane, boolean isCloseAffordanceDesired ) {
+		private AbstractTabbedPane singleSelectionPane;
+		public JTabTitle( AbstractTabbedPane singleSelectionPane, boolean isCloseAffordanceDesired ) {
 			this.singleSelectionPane = singleSelectionPane;
 			this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
 			this.add( this.label );
-			edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( this.label, 1.5f );
 			if( isCloseAffordanceDesired ) {
 				this.closeButton = new javax.swing.JButton();
 				this.closeButton.setUI( new CloseButtonUI() );
@@ -194,26 +193,33 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 			}
 
 			
-			if( this.singleSelectionPane instanceof SingleSelectionToolPalette ) {
+			if( this.singleSelectionPane instanceof ToolPaletteTabbedPane ) {
 				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 32, 4, 4 ) );
 			} else {
 				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 4, 4, 8 ) );
 			}
 			
-			this.setOpaque( this.singleSelectionPane instanceof SingleSelectionToolPalette );
+			this.setOpaque( this.singleSelectionPane instanceof ToolPaletteTabbedPane );
+		}
+		@Override
+		public void setFont(java.awt.Font font) {
+			super.setFont(font);
+			this.label.setFont( font );
 		}
 		@Override
 		protected void paintComponent(java.awt.Graphics g) {
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			if( this.singleSelectionPane instanceof SingleSelectionToolPalette ) {
-				java.awt.Color colorA = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB(this.getBackground(), 1.0, 1.1, 1.1 );
-				java.awt.Color colorB = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB(this.getBackground(), 1.0, 0.9, 0.9 );
+			if( this.singleSelectionPane instanceof ToolPaletteTabbedPane ) {
+				final double FACTOR = 1.2;
+				final double INVERSE_FACTOR = 1.0 / FACTOR;
+				java.awt.Color colorA = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB(this.getBackground(), 1.0, FACTOR, FACTOR );
+				java.awt.Color colorB = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB(this.getBackground(), 1.0, INVERSE_FACTOR, INVERSE_FACTOR );
 				java.awt.Paint paint = new java.awt.GradientPaint(0,0, colorA, 0, this.getHeight(), colorB );
 				g2.setPaint( paint );
 				g2.fill( g2.getClip() );
 			}
 			super.paintComponent(g);
-			if( this.singleSelectionPane instanceof SingleSelectionToolPalette ) {
+			if( this.singleSelectionPane instanceof ToolPaletteTabbedPane ) {
 				int height = this.getHeight();
 				final int SIZE = 6;
 				java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
@@ -270,9 +276,9 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 	}
 
 	private static class TabTitle extends AbstractButton< javax.swing.AbstractButton > {
-		private AbstractSingleSelectionPane singleSelectionPane;
+		private AbstractTabbedPane singleSelectionPane;
 		private boolean isCloseAffordanceDesired;
-		public TabTitle( AbstractSingleSelectionPane singleSelectionPane, boolean isCloseAffordanceDesired ) {
+		public TabTitle( AbstractTabbedPane singleSelectionPane, boolean isCloseAffordanceDesired ) {
 			this.singleSelectionPane = singleSelectionPane;
 			this.isCloseAffordanceDesired = isCloseAffordanceDesired;
 		}
@@ -283,7 +289,7 @@ public abstract class TabStateOperation extends BooleanStateOperation {
 	}
 	
 	private TabTitle tabTitle;
-	/*package-private*/AbstractButton<?> getSingletonTabTitle( AbstractSingleSelectionPane singleSelectionPane ) {
+	/*package-private*/AbstractButton<?> getSingletonTabTitle( AbstractTabbedPane singleSelectionPane ) {
 		if( this.tabTitle != null ) {
 			//pass
 		} else {

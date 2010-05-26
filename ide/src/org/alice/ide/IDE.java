@@ -636,8 +636,10 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		this.editorsTabbedPaneOperation = this.createEditorsTabbedPaneOperation();
 		this.ubiquitousPane = this.createUbiquitousPane();
 
+		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.editorsTabbedPaneOperation.createFolderTabbedPane();
+		tabbedPane.scaleFont( 2.0f );
 		this.right.addComponent( this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
-		this.right.addComponent( this.editorsTabbedPaneOperation.createTabbedPane(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		this.right.addComponent( tabbedPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 		//this.right.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "hello" ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 		
 		//edu.cmu.cs.dennisc.swing.InputPane.setDefaultOwnerFrame( this );
