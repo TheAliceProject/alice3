@@ -42,6 +42,8 @@
  */
 package org.alice.ide.memberseditor;
 
+import edu.cmu.cs.dennisc.alice.ast.AbstractField;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -258,9 +260,22 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	}
 	
 	public MembersEditor() {
+		edu.cmu.cs.dennisc.croquet.ComboBox< AbstractField > comboBox = org.alice.ide.IDE.getSingleton().getFieldSelectionState().createComboBox();
+		comboBox.scaleFont( 2.0f );
+		comboBox.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		comboBox.setRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< AbstractField >() {
+			@Override
+			protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractField value, int index, boolean isSelected, boolean cellHasFocus) {
+				if( value != null ) {
+					rv.setText( value.getName() );
+				}
+				return rv;
+			}
+		} );
 		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane 
 			= this.tabbedPaneSelectionOperation.createToolPaletteTabbedPane();
 			//= this.tabbedPaneSelectionOperation.createFolderTabbedPane();
+		this.addComponent( comboBox, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
 		this.addComponent( tabbedPane, Constraint.CENTER );
 		tabbedPane.scaleFont( 1.5f );
 	}
