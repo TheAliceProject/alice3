@@ -69,7 +69,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private static final int INSET = 8;
 
 	private edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createLightweightOnscreenLookingGlass();
-	private class LightweightLookingGlass extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JPanel > {
+	
+	private class LookingGlassPanel extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JPanel > {
 		@Override
 		protected javax.swing.JPanel createAwtComponent() {
 			javax.swing.JPanel rv = MoveAndTurnSceneEditor.this.onscreenLookingGlass.getJPanel();
@@ -77,9 +78,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			return rv;
 		}
 	}
-
-	
-	private LightweightLookingGlass lightweightLookingGlass = new LightweightLookingGlass();
+	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
 	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane();
 	private SidePane sidePane = new SidePane();
 
@@ -117,25 +116,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 //	
 //	private javax.swing.ButtonGroup fieldTileGroup = new javax.swing.ButtonGroup();
 
-	private edu.cmu.cs.dennisc.croquet.BorderPanel borderPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-	private edu.cmu.cs.dennisc.croquet.ComboBox< AbstractField > comboBox;
 	private FieldRadioButtons fieldRadioButtons;
 	
 	public MoveAndTurnSceneEditor() {
 		this.splitPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		this.splitPane.setResizeWeight( 1.0 );
 		this.splitPane.setDividerProportionalLocation( 1.0 );
-
-		this.comboBox = org.alice.ide.IDE.getSingleton().getFieldSelectionState().createComboBox();
-		this.comboBox.setRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< AbstractField >() {
-			@Override
-			protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractField value, int index, boolean isSelected, boolean cellHasFocus) {
-				rv.setText( value.getName() );
-				return rv;
-			}
-		} );
-		this.borderPanel.addComponent( this.lightweightLookingGlass, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
-		this.borderPanel.addComponent( this.comboBox, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.SOUTH );
 
 		this.addComponent( this.splitPane, Constraint.CENTER );
 	}
@@ -174,7 +160,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
 
-		this.splitPane.setLeftComponent( this.borderPanel );
+		this.splitPane.setLeftComponent( this.lookingGlassPanel );
 		
 		org.alice.ide.IDE.getSingleton().addCodeInFocusObserver( this.codeInFocusObserver );
 		org.alice.ide.IDE.getSingleton().getFieldSelectionState().addAndInvokeValueObserver( this.fieldSelectionObserver );
@@ -319,7 +305,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				}
 			} );
 
-			javax.swing.JPanel lgPanel = this.lightweightLookingGlass.getAwtComponent();
+			javax.swing.JPanel lgPanel = this.lookingGlassPanel.getAwtComponent();
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouthEast( lgPanel, isSceneEditorExpandedCheckBox.getAwtComponent(), INSET );
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthEast( lgPanel, this.getIDE().getRunOperation().createButton().getAwtComponent(), INSET );
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouth( lgPanel, mainCameraNavigatorWidget, INSET );
@@ -360,16 +346,13 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	@Override
 	public void handleExpandContractChange( boolean isExpanded ) {
 		this.sidePane.setExpanded( isExpanded );
-		javax.swing.JPanel lgPanel = this.lightweightLookingGlass.getAwtComponent();
+		javax.swing.JPanel lgPanel = this.lookingGlassPanel.getAwtComponent();
 		if( isExpanded ) {
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthWest( lgPanel, fieldRadioButtons.getAwtComponent(), INSET );
-			this.borderPanel.removeComponent( this.comboBox );
 			this.splitPane.setRightComponent( this.sidePane );
 			this.splitPane.setDividerSize( 10 );
 		} else {
 			lgPanel.remove( fieldRadioButtons.getAwtComponent() );
-			this.borderPanel.addComponent( this.comboBox, Constraint.SOUTH );
-			
 			this.splitPane.setRightComponent( null );
 			this.splitPane.setDividerSize( 0 );
 		}

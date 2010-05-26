@@ -42,6 +42,8 @@
  */
 package org.alice.ide;
 
+import edu.cmu.cs.dennisc.alice.ast.AbstractField;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -376,10 +378,12 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private org.alice.ide.editorstabbedpane.EditorsTabSelectionStateOperation editorsTabbedPaneOperation;
 	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
 
+	private edu.cmu.cs.dennisc.croquet.BorderPanel detailsPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+	
 	private edu.cmu.cs.dennisc.croquet.VerticalSplitPane left = new edu.cmu.cs.dennisc.croquet.VerticalSplitPane();
 	private edu.cmu.cs.dennisc.croquet.BorderPanel right = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane root = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane( left, right );
-
+	
 	public void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
 		if( isSceneEditorExpanded ) {
 			this.left.setResizeWeight( 1.0 );
@@ -398,7 +402,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			this.root.setDividerLocation( this.rootDividerLocation );
 			this.left.setDividerLocation( this.leftDividerLocation );
 			this.left.setTopComponent( this.sceneEditor );
-			this.left.setBottomComponent( this.membersEditor );
+			this.left.setBottomComponent( this.detailsPanel );
 			//			if( this.right.getComponentCount() == 0 ) {
 			//				this.right.add( this.ubiquitousPane, java.awt.BorderLayout.SOUTH );
 			//				this.right.add( this.editorsTabbedPane, java.awt.BorderLayout.CENTER );
@@ -635,6 +639,19 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		this.membersEditor = this.createClassMembersEditor();
 		this.editorsTabbedPaneOperation = this.createEditorsTabbedPaneOperation();
 		this.ubiquitousPane = this.createUbiquitousPane();
+
+		edu.cmu.cs.dennisc.croquet.ComboBox< AbstractField > comboBox = org.alice.ide.IDE.getSingleton().getFieldSelectionState().createComboBox();
+		comboBox.scaleFont( 2.0f );
+		comboBox.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		comboBox.setRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< AbstractField >() {
+			@Override
+			protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractField value, int index, boolean isSelected, boolean cellHasFocus) {
+				rv.setText( value.getName() );
+				return rv;
+			}
+		} );
+		this.detailsPanel.addComponent( comboBox, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
+		this.detailsPanel.addComponent( this.membersEditor, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 
 		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.editorsTabbedPaneOperation.createFolderTabbedPane();
 		tabbedPane.scaleFont( 2.0f );
