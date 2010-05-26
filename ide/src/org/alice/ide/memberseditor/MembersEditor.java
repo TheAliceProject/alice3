@@ -285,7 +285,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
 		this.setOpaque( true );
 		
-		this.tabbedPaneSelectionOperation.addSelectionObserver( new edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver() {
+		this.tabbedPaneSelectionOperation.addAndInvokeSelectionObserver( new edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver() {
 			public void selected( edu.cmu.cs.dennisc.croquet.TabStateOperation next ) {
 				MembersEditor.this.setBackgroundColor( next.getSingletonView().getBackgroundColor() );
 				MembersEditor.this.repaint();

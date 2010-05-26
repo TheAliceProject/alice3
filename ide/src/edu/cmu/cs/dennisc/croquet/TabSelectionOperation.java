@@ -151,7 +151,7 @@ public class TabSelectionOperation extends Operation {
 		this.addTab( tabState );
 		titleButton.setFont( this.singletonSingleSelectionPane.getFont() );
 		if( tabState.getState() ) {
-			this.singletonSingleSelectionPane.selectTab( tabState );
+			this.selectTab( tabState );
 		}
 //		tabState.addValueObserver( new TabIsSelectedObserver( tabState, key) );
 	}
