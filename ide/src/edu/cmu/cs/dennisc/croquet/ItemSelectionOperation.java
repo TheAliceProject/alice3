@@ -400,9 +400,59 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 	public DefaultRadioButtons< E > createDefaultRadioButtons() {
 		return register( new DefaultRadioButtons< E >() );
 	}
-	//todo:
-	//	public Menu createMenu() {
-	//		Menu rv = new Menu();
-	//		return rv;
-	//	}
+
+	
+	private javax.swing.Action action = new javax.swing.AbstractAction() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		}
+	};
+	public String getName() {
+		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );
+	}
+	public void setName( String name ) {
+		this.action.putValue( javax.swing.Action.NAME, name );
+	}
+	public javax.swing.Icon getSmallIcon() {
+		return javax.swing.Icon.class.cast( this.action.getValue( javax.swing.Action.SMALL_ICON ) );
+	}
+	public void setSmallIcon( javax.swing.Icon icon ) {
+		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
+	}
+	public int getMnemonicKey() {
+		return Integer.class.cast( this.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
+	}
+	public void setMnemonicKey( int mnemonicKey ) {
+		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
+	}
+	
+	public Menu createMenu() {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ItemSelectionOperation createMenu()" );
+		Menu rv = new Menu() {
+			@Override
+			protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+				super.handleAddedTo( parent );
+				javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
+				for( final Object item : ItemSelectionOperation.this.comboBoxModel.items ) {
+					javax.swing.Action action = new javax.swing.AbstractAction() {
+						public void actionPerformed( java.awt.event.ActionEvent e ) {
+							comboBoxModel.setSelectedItem( item );
+						}
+					};
+					action.putValue( javax.swing.Action.NAME, item.toString() );
+					javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem( action );
+					buttonGroup.add( jMenuItem );
+					jMenuItem.setSelected( comboBoxModel.getSelectedItem() == item );
+					this.getAwtComponent().add( jMenuItem );
+				}
+			}
+			
+			@Override
+			protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+				super.handleRemovedFrom( parent );
+				this.getAwtComponent().removeAll();
+			}
+		};
+		rv.getAwtComponent().setAction( this.action );
+		return rv;
+	}
 }

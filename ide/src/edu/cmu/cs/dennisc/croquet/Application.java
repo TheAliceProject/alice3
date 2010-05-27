@@ -48,25 +48,25 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public abstract class Application {
 	public static final Group INHERIT_GROUP = new Group( java.util.UUID.fromString( "488f8cf9-30cd-49fc-ab72-7fd6a3e13c3f" ) );
-	
+
 	public static interface LocaleObserver {
 		public void localeChanging( java.util.Locale previousLocale, java.util.Locale nextLocale );
 		public void localeChanged( java.util.Locale previousLocale, java.util.Locale nextLocale );
 	}
 
 	private static Application singleton;
+
 	public static Application getSingleton() {
 		return singleton;
 	}
 
 	private Context rootContext = new Context( null );
-	private java.util.Map<java.util.UUID, Operation> mapUUIDToOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	
+	private java.util.Map< java.util.UUID, Operation > mapUUIDToOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public Application() {
 		assert Application.singleton == null;
 		Application.singleton = this;
-		
+
 		rootContext.addCommitObserver( new Context.CommitObserver() {
 			public void committing( Edit edit ) {
 			}
@@ -75,7 +75,7 @@ public abstract class Application {
 			}
 		} );
 	}
-	
+
 	public Context getRootContext() {
 		return this.rootContext;
 	}
@@ -88,33 +88,33 @@ public abstract class Application {
 		return (O)this.mapUUIDToOperation.get( id );
 	}
 
-	protected abstract Component<?> createContentPane();
+	protected abstract Component< ? > createContentPane();
 
 	private Frame frame = new Frame();
-	
+
 	public Frame getFrame() {
 		return this.frame;
 	}
 
-	public void initialize(String[] args) {
+	public void initialize( String[] args ) {
 		this.frame.getContentPanel().addComponent( this.createContentPane(), BorderPanel.Constraint.CENTER );
 		this.frame.setDefaultCloseOperation( Frame.DefaultCloseOperation.DO_NOTHING );
-		this.frame.addWindowListener(new java.awt.event.WindowListener() {
-			public void windowOpened(java.awt.event.WindowEvent e) {
-				Application.this.handleWindowOpened(e);
+		this.frame.addWindowListener( new java.awt.event.WindowListener() {
+			public void windowOpened( java.awt.event.WindowEvent e ) {
+				Application.this.handleWindowOpened( e );
 			}
-			public void windowClosing(java.awt.event.WindowEvent e) {
-				Application.this.handleQuit(e);
+			public void windowClosing( java.awt.event.WindowEvent e ) {
+				Application.this.handleQuit( e );
 			}
-			public void windowClosed(java.awt.event.WindowEvent e) {
+			public void windowClosed( java.awt.event.WindowEvent e ) {
 			}
-			public void windowActivated(java.awt.event.WindowEvent e) {
+			public void windowActivated( java.awt.event.WindowEvent e ) {
 			}
-			public void windowDeactivated(java.awt.event.WindowEvent e) {
+			public void windowDeactivated( java.awt.event.WindowEvent e ) {
 			}
-			public void windowIconified(java.awt.event.WindowEvent e) {
+			public void windowIconified( java.awt.event.WindowEvent e ) {
 			}
-			public void windowDeiconified(java.awt.event.WindowEvent e) {
+			public void windowDeiconified( java.awt.event.WindowEvent e ) {
 			}
 		} );
 		edu.cmu.cs.dennisc.apple.AppleUtilities.addApplicationListener( new edu.cmu.cs.dennisc.apple.event.ApplicationListener() {
@@ -132,6 +132,7 @@ public abstract class Application {
 	}
 
 	private java.util.List< LocaleObserver > localeObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
 	public void addLocaleObserver( LocaleObserver localeObserver ) {
 		this.localeObservers.add( localeObserver );
 	}
@@ -140,7 +141,7 @@ public abstract class Application {
 	}
 	public void setLocale( java.util.Locale locale ) {
 		java.util.Locale previousLocale = this.frame.getAwtWindow().getLocale();
-		
+
 		for( LocaleObserver localeObserver : this.localeObservers ) {
 			localeObserver.localeChanging( previousLocale, locale );
 		}
@@ -151,13 +152,13 @@ public abstract class Application {
 			localeObserver.localeChanged( previousLocale, locale );
 		}
 	}
-	
+
 	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
 	protected abstract void handleAbout( java.util.EventObject e );
 	protected abstract void handlePreferences( java.util.EventObject e );
 	protected abstract void handleQuit( java.util.EventObject e );
 
-	/*package-private*/ void register( Operation operation ) {
+	/*package-private*/void register( Operation operation ) {
 		java.util.UUID id = operation.getIndividualUUID();
 		Operation prev = this.mapUUIDToOperation.get( id );
 		if( prev != null ) {
@@ -169,21 +170,24 @@ public abstract class Application {
 			this.mapUUIDToOperation.put( id, operation );
 		}
 	}
-	
-	/*package-private*/ static AbstractMenu< ? > addMenuElements( AbstractMenu< ? > rv, Operation[] operations ) {
+
+	/*package-private*/static AbstractMenu< ? > addMenuElements( AbstractMenu< ? > rv, Operation[] operations ) {
 		for( Operation operation : operations ) {
 			if( operation != null ) {
 				if( operation instanceof MenuOperation ) {
 					MenuOperation menuOperation = (MenuOperation)operation;
 					rv.addMenu( menuOperation.createMenu() );
+				} else if( operation instanceof ItemSelectionOperation< ? > ) {
+					ItemSelectionOperation< ? > itemSelectionOperation = (ItemSelectionOperation< ? >)operation;
+					rv.addMenu( itemSelectionOperation.createMenu() );
 				} else {
-					AbstractMenuItem<?> menuItem = null;
-					if (operation instanceof AbstractActionOperation) {
-						AbstractActionOperation abstractActionOperation = (AbstractActionOperation) operation;
+					AbstractMenuItem< ? > menuItem = null;
+					if( operation instanceof AbstractActionOperation ) {
+						AbstractActionOperation abstractActionOperation = (AbstractActionOperation)operation;
 						menuItem = abstractActionOperation.createMenuItem();
-					} else if (operation instanceof BooleanStateOperation) {
+					} else if( operation instanceof BooleanStateOperation ) {
 						BooleanStateOperation booleanStateOperation = (BooleanStateOperation)operation;
-						menuItem = booleanStateOperation.createCheckBoxMenuItem();				
+						menuItem = booleanStateOperation.createCheckBoxMenuItem();
 					} else {
 						throw new RuntimeException();
 					}
@@ -195,8 +199,6 @@ public abstract class Application {
 		}
 		return rv;
 	}
-	
-	
 
 	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
 		javax.swing.JOptionPane.showMessageDialog( this.frame.getAwtWindow(), message, title, messageType.internal, icon );
@@ -235,7 +237,7 @@ public abstract class Application {
 	public YesNoOption showYesNoConfirmDialog( Object message ) {
 		return showYesNoConfirmDialog( message, null );
 	}
-	
+
 	public Object showOptionDialog( String text, String title, MessageType messageType, javax.swing.Icon icon, Object optionA, Object optionB, int initialValueIndex ) {
 		Object[] options = { optionA, optionB };
 		Object initialValue = initialValueIndex >= 0 ? options[ initialValueIndex ] : null;
@@ -263,31 +265,31 @@ public abstract class Application {
 		default:
 			return null;
 		}
-		
+
 	}
-	
+
 	public java.io.File showOpenFileDialog( String directoryPath, String filename, String extension, boolean isSharingDesired ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.frame.getAwtWindow(), directoryPath, filename, extension, isSharingDesired ); 
+		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.frame.getAwtWindow(), directoryPath, filename, extension, isSharingDesired );
 	}
 	public java.io.File showSaveFileDialog( String directoryPath, String filename, String extension, boolean isSharingDesired ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( this.frame.getAwtWindow(), directoryPath, filename, extension, isSharingDesired ); 
+		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( this.frame.getAwtWindow(), directoryPath, filename, extension, isSharingDesired );
 	}
 	public java.io.File showOpenFileDialog( java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.frame.getAwtWindow(), directory, filename, extension, isSharingDesired ); 
+		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.frame.getAwtWindow(), directory, filename, extension, isSharingDesired );
 	}
 	public java.io.File showSaveFileDialog( java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( this.frame.getAwtWindow(), directory, filename, extension, isSharingDesired ); 
+		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( this.frame.getAwtWindow(), directory, filename, extension, isSharingDesired );
 	}
-	
+
 	@Deprecated
-	public <T> T showInJDialog( edu.cmu.cs.dennisc.inputpane.KInputPane<T> inputPane, String title, boolean isModal ) {
-		return inputPane.showInJDialog( this.frame.getAwtWindow(), title, isModal);
+	public <T> T showInJDialog( edu.cmu.cs.dennisc.inputpane.KInputPane< T > inputPane, String title, boolean isModal ) {
+		return inputPane.showInJDialog( this.frame.getAwtWindow(), title, isModal );
 	}
-//	@Deprecated
-//	public javax.swing.JFrame getJFrame() {
-//		return (javax.swing.JFrame)this.getFrame().getAwtWindow();
-//	}
-	
+	//	@Deprecated
+	//	public javax.swing.JFrame getJFrame() {
+	//		return (javax.swing.JFrame)this.getFrame().getAwtWindow();
+	//	}
+
 	@Deprecated
 	public abstract boolean isDragInProgress();
 	@Deprecated

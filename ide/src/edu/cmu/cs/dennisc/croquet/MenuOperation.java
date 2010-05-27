@@ -107,7 +107,7 @@ public class MenuOperation extends Operation {
 				this.getAwtComponent().addMenuListener( menuListener );
 				this.getAwtComponent().addActionListener( new java.awt.event.ActionListener() {
 					public void actionPerformed( java.awt.event.ActionEvent e ) {
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "actionPerformed", e );
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( "Menu actionPerformed", e );
 					}
 				} );
 			}
