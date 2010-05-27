@@ -148,11 +148,21 @@ abstract class OperationEvent< O extends Operation, E extends java.util.EventObj
 }
 
 /*package-private*/ class ItemSelectionEvent< T > extends OperationEvent {
+	private T prevItem;
+	private T nextItem;
 	public ItemSelectionEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public ItemSelectionEvent( Context parent, ItemSelectionOperation< T > itemSelectionOperation, java.util.EventObject e ) {
+	public ItemSelectionEvent( Context parent, ItemSelectionOperation< T > itemSelectionOperation, java.util.EventObject e, T prevItem, T nextItem ) {
 		super( parent, itemSelectionOperation, e, null );
+		this.prevItem = prevItem;
+		this.nextItem = nextItem;
+	}
+	@Override
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		rv = super.appendRepr( rv );
+		rv.append( this.nextItem );
+		return rv;
 	}
 }
 

@@ -79,10 +79,6 @@ public class CardPanel extends Panel {
 	public Key getKey( String cardLayoutKey ) {
 		return this.map.get( cardLayoutKey );
 	}
-	
-//	public Key createKey( Component<?> child, java.util.UUID id ) {
-//		return new Key( child, id.toString() );
-//	}
 	public void addComponent( Key key ) {
 		this.internalAddComponent( key.child, key.cardLayoutKey );
 	}
