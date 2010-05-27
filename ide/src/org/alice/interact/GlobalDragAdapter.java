@@ -74,6 +74,7 @@ import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
 import org.alice.interact.manipulator.GetAGoodLookAtManipulator;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
 import org.alice.interact.manipulator.LinearDragManipulator;
+import org.alice.interact.manipulator.MouseRelativeObjectDragManipulator;
 import org.alice.interact.manipulator.ObjectGlobalHandleDragManipulator;
 import org.alice.interact.manipulator.ObjectRotateDragManipulator;
 import org.alice.interact.manipulator.ObjectTranslateDragManipulator;
@@ -204,7 +205,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		this.manipulators.add(cameraMouseTranslate);
 		
 //		ManipulatorConditionSet mouseTranslateObject = new ManipulatorConditionSet( new ObjectTranslateDragManipulator() );
-		ManipulatorConditionSet mouseTranslateObject = new ManipulatorConditionSet( new OmniDirectionalDragManipulator(), "Mouse Translate" );
+		ManipulatorConditionSet mouseTranslateObject = new ManipulatorConditionSet( new MouseRelativeObjectDragManipulator(), "Mouse Translate" );
 		MouseDragCondition moveableObject = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
 		mouseTranslateObject.addCondition( moveableObject );
 		this.manipulators.add( mouseTranslateObject );
