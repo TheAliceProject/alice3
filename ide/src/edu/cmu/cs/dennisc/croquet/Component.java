@@ -442,4 +442,9 @@ public abstract class Component<J extends java.awt.Component> {
 	public void setPreferredSize(java.awt.Dimension preferredSize) {
 		this.getAwtComponent().setPreferredSize(preferredSize);
 	}
+	
+	@Override
+	public String toString() {
+		return this.getAwtComponent().getClass().toString();
+	}
 }

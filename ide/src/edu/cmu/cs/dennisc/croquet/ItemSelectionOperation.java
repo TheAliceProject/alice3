@@ -74,6 +74,14 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 		private int indexOfLastPerform = -1;
 		private boolean isAdjusting;
 
+		private Component< ? > mostRecentComponent;
+		private java.util.EventObject mostRecentEvent;
+		
+		public void setMostRecentEventAndComponent( java.util.EventObject mostRecentEvent, Component< ? > mostRecentComponent ) {
+			this.mostRecentEvent = mostRecentEvent;
+			this.mostRecentComponent = mostRecentComponent;
+		}
+		
 		public int getSelectionMode() {
 			return javax.swing.ListSelectionModel.SINGLE_SELECTION;
 		}
@@ -138,8 +146,9 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 				E prevSelection = this.getSelection( this.indexOfLastPerform );
 				E nextSelection = this.getSelection( nextIndex );
 				this.indexOfLastPerform = nextIndex;
-				java.util.EventObject event = null;
-				ItemSelectionOperation.this.perform( event, prevSelection, nextSelection );
+				ItemSelectionOperation.this.perform( this.mostRecentEvent, this.mostRecentComponent, prevIndex, prevSelection, nextIndex, nextSelection );
+				this.mostRecentEvent = null;
+				this.mostRecentComponent = null;
 			}
 		}
 		public void clearSelection() {
@@ -169,56 +178,10 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 		}
 
 	};
-
-	//	private final javax.swing.DefaultListSelectionModel listSelectionModel = new javax.swing.DefaultListSelectionModel() {
-	//		@Override
-	//		protected void fireValueChanged(int firstIndex, int lastIndex, boolean isAdjusting) {
-	//			super.fireValueChanged( firstIndex, lastIndex, isAdjusting );
-	//			if( isAdjusting ) {
-	//				//pass
-	//			} else {
-	//				assert this.getMinSelectionIndex() == this.getMaxSelectionIndex();
-	//				ItemSelectionOperation.this.comboBoxModel.setSelectedIndex( this.getAnchorSelectionIndex() );
-	//			}
-	//		}
-	//	};
 	private SingleListSelectionModel listSelectionModel = new SingleListSelectionModel();
 
 	class ComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
 		private Object[] items;
-
-		//		private int prevIndex = -1;
-		//		private E prevSelection = null;
-		//		private boolean isWorking = false;
-		//		private void setSelectedIndex( int nextIndex ) {
-		//			if( nextIndex != this.prevIndex ) {
-		//				if( this.isWorking ) {
-		//					//pass
-		//				} else {
-		//					this.isWorking = true;
-		//					try {
-		//						if( ItemSelectionOperation.this.listSelectionModel.getMinSelectionIndex() != nextIndex ) {
-		//							ItemSelectionOperation.this.listSelectionModel.setValueIsAdjusting( true );
-		//							if( nextIndex >= 0 ) {
-		//								ItemSelectionOperation.this.listSelectionModel.setSelectionInterval( nextIndex, nextIndex );
-		//							} else {
-		//								ItemSelectionOperation.this.listSelectionModel.clearSelection();
-		//							}
-		//							ItemSelectionOperation.this.listSelectionModel.setValueIsAdjusting( false );
-		//						}
-		//						
-		//						E nextSelection = nextIndex != -1 ? (E)comboBoxModel.getElementAt( nextIndex ) : null;
-		//						this.prevIndex = nextIndex;
-		//						this.prevSelection = nextSelection;
-		//
-		//						java.util.EventObject e = null;
-		//						ItemSelectionOperation.this.perform( e, prevSelection, nextSelection );
-		//					} finally {
-		//						this.isWorking = false;
-		//					}
-		//				}
-		//			}
-		//		}
 		public Object getSelectedItem() {
 			int index = ItemSelectionOperation.this.listSelectionModel.getMaxSelectionIndex();
 			if( index >= 0 ) {
@@ -263,29 +226,6 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 
 	private final ComboBoxModel comboBoxModel = new ComboBoxModel();
 
-	private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
-		public void itemStateChanged( java.awt.event.ItemEvent e ) {
-			//			Application application = Application.getSingleton();
-			//			Context parentContext = application.getCurrentContext();
-			//			Context childContext = parentContext.createChildContext();
-			//			childContext.addChild( new ItemSelectionEvent< E >( childContext, ItemSelectionOperation.this, e ) );
-			//			ItemSelectionOperation.this.perform( childContext, e );
-		}
-	};
-	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
-		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-			//			if( e.getValueIsAdjusting() ) {
-			//				//pass
-			//			} else {
-			//				Application application = Application.getSingleton();
-			//				Context parentContext = application.getCurrentContext();
-			//				Context childContext = parentContext.createChildContext();
-			//				childContext.addChild( new ItemSelectionEvent< E >( childContext, ItemSelectionOperation.this, e ) );
-			//				ItemSelectionOperation.this.perform( childContext, e );
-			//			}
-		}
-	};
-
 	private ItemSelectionOperation( Group group, java.util.UUID individualUUID, int selectedIndex, E... items ) {
 		super( group, individualUUID );
 		this.listSelectionModel.setSelectionMode( javax.swing.ListSelectionModel.SINGLE_SELECTION );
@@ -298,11 +238,11 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 	protected abstract E decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
 	protected abstract void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, E value );
 
-	private void perform( java.util.EventObject e, E prevSelection, E nextSelection ) {
+	private void perform( java.util.EventObject e, Component< ? > component, int prevIndex, E prevSelection, int nextIndex, E nextSelection ) {
 		Application application = Application.getSingleton();
 		Context parentContext = application.getCurrentContext();
 		Context childContext = parentContext.createChildContext();
-		childContext.addChild( new ItemSelectionEvent< E >( childContext, ItemSelectionOperation.this, e, prevSelection, nextSelection ) );
+		childContext.addChild( new ItemSelectionEvent< E >( childContext, ItemSelectionOperation.this, e, component, prevIndex, prevSelection, nextIndex, nextSelection ) );
 		childContext.commitAndInvokeDo( new ItemSelectionEdit< E >( childContext, e, prevSelection, nextSelection, this ) );
 		this.fireValueChanged( nextSelection );
 	}
@@ -341,17 +281,37 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 		}
 	}
 
+//	private class ItemListener implements java.awt.event.ItemListener {
+//		private Component< ? > component;
+//		public ItemListener( Component< ? > component ) {
+//			this.component = component;
+//		}
+//		public void itemStateChanged( java.awt.event.ItemEvent e ) {
+//			ItemSelectionOperation.this.listSelectionModel.setMostRecentEventAndComponent( e, this.component );
+//		}
+//	};
+//	private class ListSelectionListener implements javax.swing.event.ListSelectionListener {
+//		private Component< ? > component;
+//		public ListSelectionListener( Component< ? > component ) {
+//			this.component = component;
+//		}
+//		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+//			ItemSelectionOperation.this.listSelectionModel.setMostRecentEventAndComponent( e, this.component );
+//		}
+//	};
+
 	public ComboBox< E > createComboBox() {
 		ComboBox< E > rv = new ComboBox< E >() {
+//			private ItemListener itemListener = new ItemListener( this );
 			@Override
 			protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
 				super.handleAddedTo( parent );
 				ItemSelectionOperation.this.addComponent( this );
-				this.addItemListener( ItemSelectionOperation.this.itemListener );
+//				this.addItemListener( this.itemListener );
 			};
 			@Override
 			protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-				this.removeItemListener( ItemSelectionOperation.this.itemListener );
+//				this.removeItemListener( this.itemListener );
 				ItemSelectionOperation.this.removeComponent( this );
 				super.handleRemovedFrom( parent );
 			}
@@ -362,15 +322,16 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 	}
 	public List< E > createList() {
 		List< E > rv = new List< E >() {
+//			private ListSelectionListener listSelectionListener = new ListSelectionListener( this );
 			@Override
 			protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
 				super.handleAddedTo( parent );
 				ItemSelectionOperation.this.addComponent( this );
-				this.addListSelectionListener( ItemSelectionOperation.this.listSelectionListener );
+//				this.addListSelectionListener( this.listSelectionListener );
 			};
 			@Override
 			protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-				this.removeListSelectionListener( ItemSelectionOperation.this.listSelectionListener );
+//				this.removeListSelectionListener( this.listSelectionListener );
 				ItemSelectionOperation.this.removeComponent( this );
 				super.handleRemovedFrom( parent );
 			}
@@ -386,12 +347,13 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 		rv.setModel( this.comboBoxModel );
 		rv.setSelectionModel( this.listSelectionModel );
 		rv.addContainmentObserver( new Component.ContainmentObserver() {
+//			private ItemListener itemListener = new ItemListener( rv );
 			public void addedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
 				ItemSelectionOperation.this.addComponent( rv );
-				rv.addItemListener( ItemSelectionOperation.this.itemListener );
+//				rv.addItemListener( this.itemListener );
 			}
 			public void removedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-				rv.removeItemListener( ItemSelectionOperation.this.itemListener );
+//				rv.removeItemListener( this.itemListener );
 				ItemSelectionOperation.this.removeComponent( rv );
 			}
 		} );
@@ -400,6 +362,15 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 	public DefaultRadioButtons< E > createDefaultRadioButtons() {
 		return register( new DefaultRadioButtons< E >() );
 	}
+
+//	public interface TabCreator<E> {
+//		public java.util.UUID getId( E item );
+//		public Component< ? > createTitleComponent( E item );
+//		public Component< ? > createMainComponent( E item );
+//	}
+//	public FolderTabbedPane createFolderTabbedPane( TabCreator< E > tabCreator ) {
+//		return null;
+//	};
 
 	
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
@@ -454,5 +425,5 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 		};
 		rv.getAwtComponent().setAction( this.action );
 		return rv;
-	}
+	}	
 }

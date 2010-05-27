@@ -106,7 +106,7 @@ abstract class OperationEvent< O extends Operation, E extends java.util.EventObj
 	protected StringBuilder appendRepr( StringBuilder rv ) {
 		super.appendRepr( rv );
 		rv.append( " operation:" );
-		rv.append( this.operation.getClass().getSimpleName() );
+		rv.append( this.operation );
 		return rv;
 	}
 }
@@ -148,20 +148,27 @@ abstract class OperationEvent< O extends Operation, E extends java.util.EventObj
 }
 
 /*package-private*/ class ItemSelectionEvent< T > extends OperationEvent {
+	private int prevIndex;
 	private T prevItem;
+	private int nextIndex;
 	private T nextItem;
 	public ItemSelectionEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public ItemSelectionEvent( Context parent, ItemSelectionOperation< T > itemSelectionOperation, java.util.EventObject e, T prevItem, T nextItem ) {
-		super( parent, itemSelectionOperation, e, null );
+	public ItemSelectionEvent( Context parent, ItemSelectionOperation< T > itemSelectionOperation, java.util.EventObject e, Component< ? > component, int prevIndex, T prevItem, int nextIndex, T nextItem ) {
+		super( parent, itemSelectionOperation, e, component );
+		this.prevIndex = prevIndex;
 		this.prevItem = prevItem;
+		this.nextIndex = nextIndex;
 		this.nextItem = nextItem;
 	}
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv ) {
 		rv = super.appendRepr( rv );
+		rv.append( " " );
 		rv.append( this.nextItem );
+		rv.append( " " );
+		rv.append( this.getComponent() );
 		return rv;
 	}
 }
