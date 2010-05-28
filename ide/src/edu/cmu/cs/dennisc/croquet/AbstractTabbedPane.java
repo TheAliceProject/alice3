@@ -43,23 +43,227 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTabbedPane extends JComponent<javax.swing.JComponent> {
+public abstract class AbstractTabbedPane<E> extends AbstractRadioButtons<E> {
+	private static class CloseButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
+		private static final java.awt.Color BASE_COLOR = new java.awt.Color( 127, 63, 63 );
+		private static final java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, +0.25f );
+		private static final java.awt.Color PRESS_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, -0.125f );
+
+		private int getIconWidth() {
+			return 14;
+		}
+		private int getIconHeight() {
+			return getIconWidth();
+		}
+
+		@Override
+		public void paint(java.awt.Graphics g, javax.swing.JComponent c) {
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+			javax.swing.ButtonModel model = button.getModel();
+
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+
+			float size = Math.min( this.getIconWidth(), this.getIconHeight() ) * 0.9f;
+
+			float w = size;
+			float h = size * 0.25f;
+			float xC = -w * 0.5f;
+			float yC = -h * 0.5f;
+			java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( xC, yC, w, h, h, h );
+
+			java.awt.geom.Area area0 = new java.awt.geom.Area( rr );
+			java.awt.geom.Area area1 = new java.awt.geom.Area( rr );
+
+			java.awt.geom.AffineTransform m0 = new java.awt.geom.AffineTransform();
+			m0.rotate( Math.PI * 0.25 );
+			area0.transform( m0 );
+
+			java.awt.geom.AffineTransform m1 = new java.awt.geom.AffineTransform();
+			m1.rotate( Math.PI * 0.75 );
+			area1.transform( m1 );
+
+			area0.add( area1 );
+
+			int x0 = 0;
+			int y0 = 0;
+			
+			java.awt.geom.AffineTransform m = new java.awt.geom.AffineTransform();
+			m.translate( x0 + getIconWidth() / 2, y0 + getIconWidth() / 2 );
+			area0.transform( m );
+
+			java.awt.Paint prevPaint = g2.getPaint();
+			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+			if( model.isRollover() ) {
+				if( model.isPressed() ) {
+					g2.setPaint( PRESS_COLOR );
+				} else {
+					g2.setPaint( HIGHLIGHT_COLOR );
+				}
+			} else {
+				g2.setPaint( java.awt.Color.WHITE );
+			}
+			javax.swing.AbstractButton parent = (javax.swing.AbstractButton)button.getParent();
+			if( parent.isSelected() ) {
+				g2.fill( area0 );
+				g2.setPaint( java.awt.Color.BLACK );
+			} else {
+				g2.setPaint( java.awt.Color.DARK_GRAY );
+			}
+			g2.draw( area0 );
+			g2.setPaint( prevPaint );
+		}
+		@Override
+		public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) {
+			return new java.awt.Dimension( this.getIconWidth(), this.getIconHeight() );
+		}
+	}
+
+	protected static abstract class JTabTitle extends javax.swing.AbstractButton {
+		private java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+			public void mouseEntered( java.awt.event.MouseEvent e ) {
+				JTabTitle.this.getModel().setArmed( true );
+			}
+			public void mouseExited( java.awt.event.MouseEvent e ) {
+				JTabTitle.this.getModel().setArmed( false );
+			}
+			public void mousePressed( java.awt.event.MouseEvent e ) {
+				JTabTitle.this.getModel().setPressed( true );
+			}
+			public void mouseReleased( java.awt.event.MouseEvent e ) {
+				JTabTitle.this.getModel().setPressed( false );
+			}
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				JTabTitle.this.select();
+			}
+		};
+		private void select() {
+			this.setSelected( true );
+			this.getParent().repaint();
+			//this.getParent().repaint( this.getX(), this.getY(), this.getWidth() + EAST_TAB_PAD, this.getHeight() );
+		}
+
+		private javax.swing.JComponent jComponent;
+		private javax.swing.JButton closeButton = new javax.swing.JButton();
+
+		public JTabTitle( javax.swing.JComponent jComponent, boolean isCloseAffordanceDesired ) {
+			this.jComponent = jComponent;
+			this.setModel( new javax.swing.JToggleButton.ToggleButtonModel() );
+			this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
+			this.add( this.jComponent );
+			if( isCloseAffordanceDesired ) {
+				this.closeButton = new javax.swing.JButton();
+				this.closeButton.setUI( new CloseButtonUI() );
+				this.closeButton.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+				this.closeButton.setOpaque( false );
+				this.add( this.closeButton );
+			}
+		}
+		@Override
+		public void setFont(java.awt.Font font) {
+			super.setFont(font);
+			this.jComponent.setFont( font );
+		}
+		@Override
+		public void addNotify() {
+			super.addNotify();
+			this.addMouseListener( this.mouseListener );
+		}
+		@Override
+		public void removeNotify() {
+			this.removeMouseListener( this.mouseListener );
+			super.removeNotify();
+		}
+	}
+
+	protected static abstract class TabTitle extends AbstractButton< javax.swing.AbstractButton > {
+		private boolean isCloseAffordanceDesired;
+		public TabTitle( boolean isCloseAffordanceDesired ) {
+			this.isCloseAffordanceDesired = isCloseAffordanceDesired;
+		}
+		protected boolean isCloseAffordanceDesired() {
+			return this.isCloseAffordanceDesired;
+		}
+	}
+
+	protected static abstract class Tab<E> {
+		private E item;
+		private JComponent<?> titleComponent;
+		private JComponent<?> mainComponent;
+		private ScrollPane scrollPane;
+		private boolean isCloseButtonDesired;
+		public Tab( E item, ItemSelectionOperation.TabCreator< E > tabCreator ) {
+			this.item = item;
+			this.titleComponent = tabCreator.createInnerTitleComponent( this.item );
+			this.mainComponent = tabCreator.createMainComponent( this.item );
+			this.scrollPane = tabCreator.createScrollPane( this.item );
+			this.scrollPane.setViewportView( this.mainComponent );
+			this.isCloseButtonDesired = tabCreator.isCloseAffordanceDesired();
+		}
+		public E getItem() {
+			return this.item;
+		}
+		public JComponent< ? > getInnerTitleComponent() {
+			return this.titleComponent;
+		}
+		public JComponent< ? > getMainComponent() {
+			return this.mainComponent;
+		}
+		public ScrollPane getScrollPane() {
+			return this.scrollPane;
+		}
+		public boolean isCloseButtonDesired() {
+			return this.isCloseButtonDesired;
+		}
+		public abstract AbstractButton< ? > getOuterTitleComponent();
+		public abstract void select();
+	}
+	private java.util.Map< E,Tab<E> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private ItemSelectionOperation.TabCreator< E > tabCreator;
+	public AbstractTabbedPane( ItemSelectionOperation.TabCreator< E > tabCreator ) {
+		this.tabCreator = tabCreator;
+	}
 	@Override
 	public void setFont(java.awt.Font font) {
 		super.setFont( font );
-		for( Component< ? > tabTitle : this.getTabTitles() ) {
-			tabTitle.setFont( font );
+		for( Tab<E> tab : this.map.values() ) {
+			tab.getInnerTitleComponent().setFont( font );
 		}
 	}
-	protected abstract Component<?>[] getTabTitles();
-	/* package-private */ void addTab( TabStateOperation<?> tabStateOperation ) {
-		this.revalidateAndRepaint();
+
+	protected abstract Tab<E> createTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator );
+	
+	@Override
+	protected AbstractButton<?> createButton(E item) {
+		Tab< E > tab = createTab( item, this.tabCreator );
+		return tab.getOuterTitleComponent();
 	}
-	/* package-private */ void removeTab( TabStateOperation<?> tabStateOperation ) {
-		this.revalidateAndRepaint();
+	@Override
+	protected void addPrologue( int count ) {
 	}
-	/* package-private */ abstract void selectTab( TabStateOperation<?> tabStateOperation );
+	@Override
+	protected void addEpilogue() {
+	}
+	
+//	/* package-private */ void addTab( E item ) {
+//		Tab<E> tab = this.map.get( item );
+//		if( tab != null ) {
+//			//pass
+//		} else {
+//			tab = this.createTab( item, this.tabCreator );
+//			this.map.put( item, tab );
+//		}
+//		this.revalidateAndRepaint();
+//	}
+//	/* package-private */ void removeTab( E item ) {
+//		this.revalidateAndRepaint();
+//	}
+//	/* package-private */ void selectTab( E item ) {
+//		Tab<E> tab = this.map.get( item );
+//		assert tab != null;
+//		tab.select();
+//	}
 }

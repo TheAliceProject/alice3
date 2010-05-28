@@ -114,14 +114,17 @@ public abstract class Container<J extends java.awt.Container> extends Component<
 	}
 
 	protected void internalAddComponent(Component<?> component) {
-		getAwtComponent().add(component.getAwtComponent());
+		assert component != null;
+		this.getAwtComponent().add(component.getAwtComponent());
 	}
 
 	protected void internalAddComponent(Component<?> component, Object constraints) {
-		getAwtComponent().add(component.getAwtComponent(), constraints);
+		assert component != null;
+		this.getAwtComponent().add(component.getAwtComponent(), constraints);
 	}
 
 	protected void internalRemoveComponent(Component<?> component) {
-		getAwtComponent().remove(component.getAwtComponent());
+		assert component != null;
+		this.getAwtComponent().remove(component.getAwtComponent());
 	}
 }

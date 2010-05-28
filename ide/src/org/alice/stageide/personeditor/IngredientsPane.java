@@ -65,8 +65,8 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			super(individualId, title);
 		}
 		@Override
-		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane( edu.cmu.cs.dennisc.croquet.JComponent<?> mainComponent ) {
-			edu.cmu.cs.dennisc.croquet.ScrollPane rv = super.createScrollPane(mainComponent);
+		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane() {
+			edu.cmu.cs.dennisc.croquet.ScrollPane rv = super.createScrollPane();
 			rv.setVerticalScrollbarPolicy( edu.cmu.cs.dennisc.croquet.ScrollPane.VerticalScrollbarPolicy.NEVER );
 			rv.setHorizontalScrollbarPolicy( edu.cmu.cs.dennisc.croquet.ScrollPane.HorizontalScrollbarPolicy.NEVER );
 			rv.setOpaque( false );

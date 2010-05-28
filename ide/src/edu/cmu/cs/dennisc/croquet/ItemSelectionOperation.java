@@ -370,18 +370,31 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 		return register( new DefaultRadioButtons< E >() );
 	}
 
+
 	public interface TabCreator<E> {
 		public java.util.UUID getId( E item );
-		public JComponent< ? > createTitleComponent( E item );
+		public JComponent< ? > createInnerTitleComponent( E item );
 		public JComponent< ? > createMainComponent( E item );
-		public ScrollPane createScrollPane( E item, JComponent<?> mainComponent );
+		public ScrollPane createScrollPane( E item );
 		public boolean isCloseAffordanceDesired();
 	}
-	public FolderTabbedPane createFolderTabbedPane( TabCreator< E > tabCreator ) {
-		return null;
+	public < T extends AbstractTabbedPane<E> > T register( final T rv ) {
+		Application.getSingleton().register( this );
+		rv.addContainmentObserver( new Component.ContainmentObserver() {
+			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				ItemSelectionOperation.this.addComponent(rv);
+			}
+			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				ItemSelectionOperation.this.removeComponent(rv);
+			}
+		} );
+		return rv;
+	}
+	public FolderTabbedPane<E> createFolderTabbedPane( TabCreator< E > tabCreator ) {
+		return register( new FolderTabbedPane<E>( tabCreator ) );
 	};
-	public ToolPaletteTabbedPane createToolPaletteTabbedPane( TabCreator< E > tabCreator ) {
-		return null;
+	public ToolPaletteTabbedPane<E> createToolPaletteTabbedPane( TabCreator< E > tabCreator ) {
+		return register( new ToolPaletteTabbedPane<E>( tabCreator ) );
 	};
 
 	

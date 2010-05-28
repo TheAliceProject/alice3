@@ -344,7 +344,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		Object[] arguments = { initialValue };
 		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls, parameterClses, arguments );
 	}
-	private static void preservePreference( org.alice.ide.operations.AbstractBooleanStateOperation operation ) {
+	private static void preservePreference( edu.cmu.cs.dennisc.croquet.BooleanStateOperation operation ) {
 		if( operation != null ) {
 			Class< ? > cls = operation.getClass();
 			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
@@ -627,9 +627,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		this.editorsTabbedPaneOperation = this.createEditorsTabbedPaneOperation();
 		this.ubiquitousPane = this.createUbiquitousPane();
 
-		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.editorsTabbedPaneOperation.createFolderTabbedPane(
-				null
-		);
+		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.editorsTabbedPaneOperation.createEditorsFolderTabbedPane();
 		tabbedPane.scaleFont( 2.0f );
 		this.right.addComponent( this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
 		this.right.addComponent( tabbedPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );

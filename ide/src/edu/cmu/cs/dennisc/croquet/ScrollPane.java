@@ -69,6 +69,8 @@ public class ScrollPane extends JComponent< javax.swing.JScrollPane > {
 	protected javax.swing.JScrollPane createAwtComponent() {
 		return new javax.swing.JScrollPane();
 	}
+	public ScrollPane() {
+	}
 	public ScrollPane( Component<?> viewportView ) {
 		this.setViewportView( viewportView );
 	}

@@ -500,15 +500,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				
 				//Switch the main view to the starting view
 				CameraFieldAndMarker cfAm = this.sidePane.getStartingCameraViewManager().getSelectedView();
-				if( cfAm != null ) {
-					int startingViewIndex = this.mainViewSelector.getIndexForField(cfAm.field);
-					assert startingViewIndex != -1;
-					if (startingViewIndex != -1)
-					{
-						this.mainViewSelector.setSelectedIndex(startingViewIndex);
-					}
-				} else {
-					PrintUtilities.println( "todo: handle cfAm == null" );
+				assert cfAm != null;
+				int startingViewIndex = this.mainViewSelector.getIndexForField(cfAm.field);
+				//assert startingViewIndex != -1;
+				if (startingViewIndex != -1)
+				{
+					this.mainViewSelector.setSelectedIndex(startingViewIndex);
 				}
 			}
 		}
@@ -894,8 +891,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		
 		doDelayedSceneSetupStuff();
 		
-		//sidePane.showSceneGraphView(this.scene.getSGComposite());
+		sidePane.showSceneGraphView(this.scene.getSGComposite());
 		
+		PrintUtilities.println( "todo: investigate this.sidePane.refreshFields()" );
+		this.sidePane.refreshFields();
 		//this.needToDoSomeSceneSetupStuff = true;
 		
 		return rv;

@@ -53,11 +53,11 @@ public final class TabSelectionOperation extends ItemSelectionOperation<Predeter
 		public final JComponent<?> createMainComponent(PredeterminedTab item) {
 			return item.createMainComponent();
 		}
-		public final JComponent<?> createTitleComponent(PredeterminedTab item) {
+		public final JComponent<?> createInnerTitleComponent(PredeterminedTab item) {
 			return item.getTitleComponent();
 		}
-		public final ScrollPane createScrollPane( PredeterminedTab item, JComponent<?> mainComponent ) {
-			return item.createScrollPane( mainComponent );
+		public final ScrollPane createScrollPane( PredeterminedTab item ) {
+			return item.createScrollPane();
 		}
 		public final boolean isCloseAffordanceDesired() {
 			return false;
@@ -78,11 +78,11 @@ public final class TabSelectionOperation extends ItemSelectionOperation<Predeter
 		throw new RuntimeException( "todo" );
 	}
 	
-	public FolderTabbedPane createDefaultFolderTabbedPane() {
+	public FolderTabbedPane<PredeterminedTab> createDefaultFolderTabbedPane() {
 		return this.createFolderTabbedPane( new PredeterminedTabCreator() );
 	}
 
-	public ToolPaletteTabbedPane createDefaultToolPaletteTabbedPane() {
+	public ToolPaletteTabbedPane<PredeterminedTab> createDefaultToolPaletteTabbedPane() {
 		return this.createToolPaletteTabbedPane( new PredeterminedTabCreator() );
 	}
 

@@ -250,11 +250,11 @@ public class Tutorial {
 		Step step = NoteStep.createActionMessageNoteStep( this, title, text, component );
 		this.addStep( step );
 	}
-	public void createAndAddTabStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.TabStateOperation operation ) {
-		edu.cmu.cs.dennisc.croquet.JComponent< ? > component = operation.getFirstComponent();
-		Step step = NoteStep.createTabStateMessageNoteStep( this, title, text, component );
-		this.addStep( step );
-	}
+//	public void createAndAddTabStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.TabStateOperation operation ) {
+//		edu.cmu.cs.dennisc.croquet.JComponent< ? > component = operation.getFirstComponent();
+//		Step step = NoteStep.createTabStateMessageNoteStep( this, title, text, component );
+//		this.addStep( step );
+//	}
 	
 	/*package-private*/ edu.cmu.cs.dennisc.croquet.ActionOperation getNextOperation() {
 		return this.nextStepOperation;

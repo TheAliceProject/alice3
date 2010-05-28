@@ -274,6 +274,30 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 		org.alice.ide.IDE.getSingleton().addProjectObserver( this.projectObserver );
 //		org.alice.ide.IDE.getSingleton().addCodeInFocusObserver( this.codeInFocusObserver );
 	}
+	private class EditorTabCreator implements TabCreator< edu.cmu.cs.dennisc.alice.ast.AbstractCode > {
+		public java.util.UUID getId( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+			return code.getUUID();
+		}
+		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+			return new edu.cmu.cs.dennisc.croquet.ScrollPane();
+		}
+		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+			return null;
+		}
+		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createInnerTitleComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+			return null;
+		}
+		public boolean isCloseAffordanceDesired() {
+			return true;
+		}
+	};
+	private edu.cmu.cs.dennisc.croquet.FolderTabbedPane singleton;
+	private EditorTabCreator editorTabCreator = new EditorTabCreator();
+	public edu.cmu.cs.dennisc.croquet.FolderTabbedPane createEditorsFolderTabbedPane() {
+		assert this.singleton == null;
+		this.singleton = this.createFolderTabbedPane( this.editorTabCreator );
+		return this.singleton;
+	}
 	public EditPreviousCodeOperation getEditPreviousCodeOperation() {
 		if( this.editPreviousCodeOperation != null ) {
 			//pass
@@ -318,75 +342,75 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 //	}
 	@Deprecated
 	public void edit( final edu.cmu.cs.dennisc.alice.ast.AbstractCode code, boolean isOriginatedByPreviousCodeOperation ) {
-		for( edu.cmu.cs.dennisc.croquet.TabStateOperation tabIsSelectedOperation : this.getTabStateOperations() ) {
-			edu.cmu.cs.dennisc.croquet.Component< ? > component = tabIsSelectedOperation.getSingletonView();
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( component.getClass() );
-			if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
-				org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)component;
-				if( codeEditor.getCode() == code ) {
-					//tabIsSelectedOperation.setState( true );
-					//this.setCurrentTabStateOperation( tabIsSelectedOperation );
-					return;
-				}
-			}
-		}
-		class CodeTabIsSelectedOperation extends edu.cmu.cs.dennisc.croquet.TabStateOperation<edu.cmu.cs.dennisc.alice.ast.AbstractCode> {
-			public CodeTabIsSelectedOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-				super( org.alice.ide.IDE.IDE_GROUP,  java.util.UUID.fromString( "83fc2f34-a05f-48fd-941f-4e2ba08f45af" ), code );
-			}
-			@Override
-			protected String getTextFor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-				if( code != null ) {
-					if( code instanceof edu.cmu.cs.dennisc.alice.ast.AbstractConstructor ) {
-						return "constructor";
-					} else {
-						return code.getName();
-					}
-				} else {
-					return super.getTextFor( code );
-				}
-			}
-			@Override
-			protected boolean isCloseAffordanceDesired() {
-				return true;
-			}
-//			@Override
-//			public boolean isCloseButtonDesiredAt( int index ) {
-//				return index > 0 || org.alice.ide.IDE.getSingleton().isEmphasizingClasses();
+//		for( edu.cmu.cs.dennisc.croquet.TabStateOperation tabIsSelectedOperation : this.getTabStateOperations() ) {
+//			edu.cmu.cs.dennisc.croquet.Component< ? > component = tabIsSelectedOperation.getSingletonView();
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( component.getClass() );
+//			if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
+//				org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)component;
+//				if( codeEditor.getCode() == code ) {
+//					//tabIsSelectedOperation.setState( true );
+//					//this.setCurrentTabStateOperation( tabIsSelectedOperation );
+//					return;
+//				}
 //			}
-			@Override
-			protected edu.cmu.cs.dennisc.croquet.JComponent<?> createSingletonView() {
-				final org.alice.ide.codeeditor.CodeEditor codeEditor = new org.alice.ide.codeeditor.CodeEditor( code );
-				if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-					edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
-					
-					//todo: remove this property listener when tab is closed
-					
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: listen to code name change" );
-//					method.name.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-//						public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-//						}
-//						public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-//							CodeTabIsSelectedOperation.this.setTrueText( code.getName() );
-//						}
-//					} );
-				}
-				return codeEditor;
-			}
-		}
-		
-		CodeTabIsSelectedOperation codeTabIsSelectedOperation = new CodeTabIsSelectedOperation( code );
-		this.addTabStateOperation( codeTabIsSelectedOperation );
-		
-		this.setValue( code );
-		//codeTabIsSelectedOperation.setState( true );
-
-		if( isOriginatedByPreviousCodeOperation ) {
-			//pass
-		} else {
-			this.editedCodes.add( code );
-		}
-		this.updateBackOperationsEnabled();
+//		}
+//		class CodeTabIsSelectedOperation extends edu.cmu.cs.dennisc.croquet.TabStateOperation<edu.cmu.cs.dennisc.alice.ast.AbstractCode> {
+//			public CodeTabIsSelectedOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+//				super( org.alice.ide.IDE.IDE_GROUP,  java.util.UUID.fromString( "83fc2f34-a05f-48fd-941f-4e2ba08f45af" ), code );
+//			}
+//			@Override
+//			protected String getTextFor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+//				if( code != null ) {
+//					if( code instanceof edu.cmu.cs.dennisc.alice.ast.AbstractConstructor ) {
+//						return "constructor";
+//					} else {
+//						return code.getName();
+//					}
+//				} else {
+//					return super.getTextFor( code );
+//				}
+//			}
+//			@Override
+//			protected boolean isCloseAffordanceDesired() {
+//				return true;
+//			}
+////			@Override
+////			public boolean isCloseButtonDesiredAt( int index ) {
+////				return index > 0 || org.alice.ide.IDE.getSingleton().isEmphasizingClasses();
+////			}
+//			@Override
+//			protected edu.cmu.cs.dennisc.croquet.JComponent<?> createSingletonView() {
+//				final org.alice.ide.codeeditor.CodeEditor codeEditor = new org.alice.ide.codeeditor.CodeEditor( code );
+//				if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+//					edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
+//					
+//					//todo: remove this property listener when tab is closed
+//					
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: listen to code name change" );
+////					method.name.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+////						public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+////						}
+////						public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+////							CodeTabIsSelectedOperation.this.setTrueText( code.getName() );
+////						}
+////					} );
+//				}
+//				return codeEditor;
+//			}
+//		}
+//		
+//		CodeTabIsSelectedOperation codeTabIsSelectedOperation = new CodeTabIsSelectedOperation( code );
+//		this.addTabStateOperation( codeTabIsSelectedOperation );
+//		
+//		this.setValue( code );
+//		//codeTabIsSelectedOperation.setState( true );
+//
+//		if( isOriginatedByPreviousCodeOperation ) {
+//			//pass
+//		} else {
+//			this.editedCodes.add( code );
+//		}
+//		this.updateBackOperationsEnabled();
 	}
 
 //	private org.alice.ide.IDE.CodeInFocusObserver codeInFocusObserver = new org.alice.ide.IDE.CodeInFocusObserver() {
@@ -409,7 +433,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 		}
 	};
 	public CodeEditor getCodeEditorInFocus() {
-		throw new RuntimeException( "todo" );
+		return null;
 	}
 
 //	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {

@@ -45,6 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 public abstract class PredeterminedTab {
 	private java.util.UUID id;
 	private JComponent<?> titleComponent;
+	private JComponent< ? > mainComponent;
 	public PredeterminedTab( java.util.UUID id, JComponent<?> titleComponent ) {
 		this.id = id;
 		this.titleComponent = titleComponent;
@@ -60,9 +61,14 @@ public abstract class PredeterminedTab {
 	}
 	protected abstract JComponent<?> createMainComponent();
 	public JComponent<?> getMainComponent() {
-		throw new RuntimeException( "todo" );
+		if( this.mainComponent != null ) {
+			//pass
+		} else {
+			this.mainComponent = this.createMainComponent();
+		}
+		return this.mainComponent;
 	}
-	public ScrollPane createScrollPane( JComponent<?> mainComponent ) {
-		return new ScrollPane( mainComponent );
+	public ScrollPane createScrollPane() {
+		return new ScrollPane();
 	}
 };
