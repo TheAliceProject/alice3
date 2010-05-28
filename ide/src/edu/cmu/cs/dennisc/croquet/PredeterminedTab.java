@@ -40,17 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.window;
+package edu.cmu.cs.dennisc.croquet;
 
-/**
- * @author Dennis Cosgrove
- */
-public class IsEmphasizingClassesOperation extends edu.cmu.cs.dennisc.croquet.BooleanStateOperation {
-	public IsEmphasizingClassesOperation( Boolean initialValue ) {
-		super( org.alice.ide.IDE.PREFERENCES_GROUP, java.util.UUID.fromString( "c6d27bf1-f8c0-470d-b9ef-3c9fa7e6f4b0" ), initialValue, "Is Emphasizing Classes" );
+public abstract class PredeterminedTab {
+	private java.util.UUID id;
+	private JComponent<?> titleComponent;
+	public PredeterminedTab( java.util.UUID id, JComponent<?> titleComponent ) {
+		this.id = id;
+		this.titleComponent = titleComponent;
 	}
-//	@Override
-//	protected void handleStateChange(boolean value) {
-//		this.getIDE().setEmphasizingClasses( value );
-//	}
-}
+	public PredeterminedTab( java.util.UUID id, String title ) {
+		this( id, new Label( title ) );
+	}
+	public java.util.UUID getId() {
+		return this.id;
+	}
+	public JComponent<?> getTitleComponent() {
+		return this.titleComponent;
+	}
+	protected abstract JComponent<?> createMainComponent();
+	public JComponent<?> getMainComponent() {
+		throw new RuntimeException( "todo" );
+	}
+	public ScrollPane createScrollPane( JComponent<?> mainComponent ) {
+		return new ScrollPane( mainComponent );
+	}
+};

@@ -78,36 +78,36 @@ public class EntryPoint {
 				"<html>This is the currently selected instance methods and fields pane.</html>", 
 				ide.getMembersEditor() 
 		);
-		tutorial.createAndAddTabStateStep( 
-				"Select Functions Tab", 
-				"<html>Select the <b>Functions</b> tab.</html>", 
-				ide.getMembersEditor().getFunctionsTabStateOperation() 
-		);
-		tutorial.createAndAddSpotlightStep( 
-				"Note Functions Tab", 
-				"<html>Now the functions are now available.</html>", 
-				ide.getMembersEditor().getFunctionsTabStateOperation().getSingletonView() 
-		);
-		tutorial.createAndAddTabStateStep( 
-				"Properies Tab", 
-				"<html>Select the <b>Properies</b> tab.</html>", 
-				ide.getMembersEditor().getFieldsTabStateOperation() 
-		);
-		tutorial.createAndAddSpotlightStep( 
-				"Note Properies Tab", 
-				"<html>Now the properties are now available.</html>", 
-				ide.getMembersEditor().getFieldsTabStateOperation().getSingletonScrollPane() 
-		);
-		tutorial.createAndAddTabStateStep( 
-				"Procedures Tab", 
-				"<html>Select the <b>Procedures</b> tab.</html>", 
-				ide.getMembersEditor().getProceduresTabStateOperation() 
-		);
-		tutorial.createAndAddSpotlightStep( 
-				"Note Procedures Tab", 
-				"<html>Now the procedures are now available.</html>", 
-				ide.getMembersEditor().getProceduresTabStateOperation().getSingletonView() 
-		);
+//		tutorial.createAndAddTabStateStep( 
+//				"Select Functions Tab", 
+//				"<html>Select the <b>Functions</b> tab.</html>", 
+//				ide.getMembersEditor().getFunctionsTabStateOperation() 
+//		);
+//		tutorial.createAndAddSpotlightStep( 
+//				"Note Functions Tab", 
+//				"<html>Now the functions are now available.</html>", 
+//				ide.getMembersEditor().getFunctionsTabStateOperation().getSingletonView() 
+//		);
+//		tutorial.createAndAddTabStateStep( 
+//				"Properies Tab", 
+//				"<html>Select the <b>Properies</b> tab.</html>", 
+//				ide.getMembersEditor().getFieldsTabStateOperation() 
+//		);
+//		tutorial.createAndAddSpotlightStep( 
+//				"Note Properies Tab", 
+//				"<html>Now the properties are now available.</html>", 
+//				ide.getMembersEditor().getFieldsTabStateOperation().getSingletonScrollPane() 
+//		);
+//		tutorial.createAndAddTabStateStep( 
+//				"Procedures Tab", 
+//				"<html>Select the <b>Procedures</b> tab.</html>", 
+//				ide.getMembersEditor().getProceduresTabStateOperation() 
+//		);
+//		tutorial.createAndAddSpotlightStep( 
+//				"Note Procedures Tab", 
+//				"<html>Now the procedures are now available.</html>", 
+//				ide.getMembersEditor().getProceduresTabStateOperation().getSingletonView() 
+//		);
 
 		//ide.getMembersEditor().getFunctionsTabStateOperation().setState( true );
 		tutorial.setSelectedIndex( 6 );

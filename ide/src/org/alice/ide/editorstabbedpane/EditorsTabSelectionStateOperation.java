@@ -42,6 +42,8 @@
  */
 package org.alice.ide.editorstabbedpane;
 
+import org.alice.ide.codeeditor.CodeEditor;
+
 class Cycle< E > {
 	private java.util.LinkedList< E > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private int index = -1;
@@ -239,7 +241,7 @@ class Cycle< E > {
 /**
  * @author Dennis Cosgrove
  */
-public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croquet.TabSelectionOperation<edu.cmu.cs.dennisc.alice.ast.AbstractCode> {
+public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<edu.cmu.cs.dennisc.alice.ast.AbstractCode> {
 	class EditPreviousCodeOperation extends org.alice.ide.operations.ActionOperation {
 		public EditPreviousCodeOperation() {
 			super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "71ff1171-9e5e-443f-a7aa-cb4012f05fec" ) );
@@ -251,6 +253,15 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 		}
 	}
 	private EditPreviousCodeOperation editPreviousCodeOperation;
+	@Override
+	protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.alice.ast.AbstractCode value) {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractCode decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+		throw new RuntimeException( "todo" );
+	}
 	
 //	private SelectionObserver selectionObserver = new SelectionObserver() {
 //		public void selected(edu.cmu.cs.dennisc.croquet.TabStateOperation next) {
@@ -367,7 +378,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 		CodeTabIsSelectedOperation codeTabIsSelectedOperation = new CodeTabIsSelectedOperation( code );
 		this.addTabStateOperation( codeTabIsSelectedOperation );
 		
-		this.selectTab( codeTabIsSelectedOperation );
+		this.setValue( code );
 		//codeTabIsSelectedOperation.setState( true );
 
 		if( isOriginatedByPreviousCodeOperation ) {
@@ -390,26 +401,29 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 
 	private org.alice.app.ProjectApplication.ProjectObserver projectObserver = new org.alice.app.ProjectApplication.ProjectObserver() {
 		public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
-			EditorsTabSelectionStateOperation.this.removeAllTabStateOperations();
+			EditorsTabSelectionStateOperation.this.clear();
 			EditorsTabSelectionStateOperation.this.editedCodes.clear();
 			EditorsTabSelectionStateOperation.this.updateBackOperationsEnabled();
 		}
 		public void projectOpened( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
 		}
 	};
+	public CodeEditor getCodeEditorInFocus() {
+		throw new RuntimeException( "todo" );
+	}
 
-	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
-		this.getSingletonSingleSelectionPane().getAwtComponent().updateUI();
-	}
-	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
-		for( edu.cmu.cs.dennisc.croquet.TabStateOperation tabIsSelectedOperation : this.getTabStateOperations() ) {
-			edu.cmu.cs.dennisc.croquet.Component< ? > component = tabIsSelectedOperation.getSingletonView();
-			if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
-				org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)component;
-				codeEditor.refresh();
-			}
-		}
-	}
+//	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
+//		this.getSingletonSingleSelectionPane().getAwtComponent().updateUI();
+//	}
+//	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
+//		for( edu.cmu.cs.dennisc.croquet.TabStateOperation tabIsSelectedOperation : this.getTabStateOperations() ) {
+//			edu.cmu.cs.dennisc.croquet.Component< ? > component = tabIsSelectedOperation.getSingletonView();
+//			if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
+//				org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)component;
+//				codeEditor.refresh();
+//			}
+//		}
+//	}
 	
 //	@Override
 //	protected void adding() {

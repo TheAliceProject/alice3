@@ -202,21 +202,23 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			codeEditor.refresh();
 		}
 	}
+	@Deprecated
 	public boolean isEmphasizingClasses() {
 		return this.isEmphasizingClassesOperation.getState();
 	}
-	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
-		this.editorsTabbedPaneOperation.setEmphasizingClasses( isEmphasizingClasses );
-		this.membersEditor.setEmphasizingClasses( isEmphasizingClasses );
-	}
+//	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
+//		this.editorsTabbedPaneOperation.setEmphasizingClasses( isEmphasizingClasses );
+//		this.membersEditor.setEmphasizingClasses( isEmphasizingClasses );
+//	}
+	@Deprecated
 	public boolean isOmittingThisFieldAccesses() {
 		return this.isOmissionOfThisForFieldAccessesDesiredOperation.getState();
 	}
-	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
-		this.editorsTabbedPaneOperation.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
-		this.membersEditor.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
-		this.sceneEditor.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
-	}
+//	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
+//		this.editorsTabbedPaneOperation.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
+//		this.membersEditor.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
+//		this.sceneEditor.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
+//	}
 	public boolean isDefaultFieldNameGenerationDesired() {
 		return this.isDefaultFieldNameGenerationDesiredOperation.getState();
 	}
@@ -625,7 +627,9 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		this.editorsTabbedPaneOperation = this.createEditorsTabbedPaneOperation();
 		this.ubiquitousPane = this.createUbiquitousPane();
 
-		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.editorsTabbedPaneOperation.createFolderTabbedPane();
+		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.editorsTabbedPaneOperation.createFolderTabbedPane(
+				null
+		);
 		tabbedPane.scaleFont( 2.0f );
 		this.right.addComponent( this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
 		this.right.addComponent( tabbedPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
@@ -774,12 +778,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	//	private java.util.List< zoot.DropReceptor > dropReceptors = new java.util.LinkedList< zoot.DropReceptor >();
 
 	protected org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		edu.cmu.cs.dennisc.croquet.TabStateOperation tabStateOperation = this.editorsTabbedPaneOperation.getCurrentTabStateOperation();
-		if( tabStateOperation != null ) {
-			return (org.alice.ide.codeeditor.CodeEditor)tabStateOperation.getSingletonView();
-		} else {
-			return null;
-		}
+		return this.editorsTabbedPaneOperation.getCodeEditorInFocus();
 	}
 
 	private ComponentStencil stencil;
@@ -1517,7 +1516,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 
 	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getFocusedCode() {
-		return this.getEditorsTabSelectionState().getCurrentValue();
+		return this.getEditorsTabSelectionState().getValue();
 //		org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)this.getEditorsTabSelectionState().getCurrentTabStateOperation().getSingletonView();
 //		if( codeEditor != null ) {
 //			return codeEditor.getCode();
@@ -1645,7 +1644,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 				if( field.getValueType() == scopeType ) {
 					text = "this (a.k.a. " + text + ")";
 				} else if( field.getDeclaringType() == scopeType ) {
-					if( this.isOmittingThisFieldAccesses() ) {
+					if( this.isOmissionOfThisForFieldAccessesDesiredOperation.getState() ) {
 						//pass
 					} else {
 						text = "this." + text;

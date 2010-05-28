@@ -60,27 +60,23 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private FullBodyOutfitCardPanel fullBodyOutfitCardPanel = new FullBodyOutfitCardPanel();
 	private FitnessLevelPane fitnessLevelPane = new FitnessLevelPane();
 
-	private static abstract class ContentTabStateOperation extends edu.cmu.cs.dennisc.croquet.TabStateOperation<String> {
+	private static abstract class ContentTabStateOperation extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
 		public ContentTabStateOperation(java.util.UUID individualId, String title) {
-			super(PersonEditor.GROUP_ID, individualId, title);
+			super(individualId, title);
 		}
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.ScrollPane createSingletonScrollPane() {
-			edu.cmu.cs.dennisc.croquet.ScrollPane rv = super.createSingletonScrollPane();
+		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane( edu.cmu.cs.dennisc.croquet.JComponent<?> mainComponent ) {
+			edu.cmu.cs.dennisc.croquet.ScrollPane rv = super.createScrollPane(mainComponent);
 			rv.setVerticalScrollbarPolicy( edu.cmu.cs.dennisc.croquet.ScrollPane.VerticalScrollbarPolicy.NEVER );
 			rv.setHorizontalScrollbarPolicy( edu.cmu.cs.dennisc.croquet.ScrollPane.HorizontalScrollbarPolicy.NEVER );
 			rv.setOpaque( false );
 			return rv;
 		}
-		@Override
-		protected final boolean isCloseAffordanceDesired() {
-			return false;
-		}
 	}
 
 	private ContentTabStateOperation bodyTabState = new ContentTabStateOperation(java.util.UUID.fromString( "10c0d057-a5d7-4a36-8cd7-c30f46f5aac2" ), "Body") {
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createSingletonView() {
+		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createMainComponent() {
 			edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( IngredientsPane.this.fullBodyOutfitCardPanel );
 			scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 66 );
 			//scrollPane.getVerticalScrollBar().setBlockIncrement( 10 );
@@ -99,7 +95,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	};
 	private ContentTabStateOperation headTabState = new ContentTabStateOperation(java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ), "Head") {
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createSingletonView() {
+		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createMainComponent() {
 			edu.cmu.cs.dennisc.croquet.RowsSpringPanel rv = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 8 ) {
 				@Override
 				protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
@@ -122,10 +118,10 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			bodyTabState, headTabState );
 	
 
-	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver tabChangeAdapter = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver() {
-		public void selected( edu.cmu.cs.dennisc.croquet.TabStateOperation next ) {
+	private edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver<edu.cmu.cs.dennisc.croquet.PredeterminedTab> tabChangeAdapter = new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver<edu.cmu.cs.dennisc.croquet.PredeterminedTab>() {
+		public void changed(edu.cmu.cs.dennisc.croquet.PredeterminedTab nextValue) {
 			int index;
-			if( next == IngredientsPane.this.bodyTabState ) {
+			if( nextValue == IngredientsPane.this.bodyTabState ) {
 				index = 0;
 			} else {
 				index = 1;
@@ -166,7 +162,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		};
 		northPane.addComponent( ubiquitousPane, Constraint.CENTER );
 				
-		edu.cmu.cs.dennisc.croquet.FolderTabbedPane tabbedPane = this.tabbedPaneSelection.createFolderTabbedPane();
+		edu.cmu.cs.dennisc.croquet.FolderTabbedPane tabbedPane = this.tabbedPaneSelection.createDefaultFolderTabbedPane();
 		tabbedPane.setOpaque( true );
 		tabbedPane.scaleFont( 1.5f );
 
@@ -182,11 +178,11 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
-		this.tabbedPaneSelection.addSelectionObserver( this.tabChangeAdapter );
+		this.tabbedPaneSelection.addValueObserver( this.tabChangeAdapter );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		this.tabbedPaneSelection.removeSelectionObserver( this.tabChangeAdapter );
+		this.tabbedPaneSelection.removeValueObserver( this.tabChangeAdapter );
 		super.handleRemovedFrom( parent );
 	}
 

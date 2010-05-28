@@ -362,9 +362,9 @@ class OperationDropDown extends org.alice.ide.common.AbstractDropDownPane {
 }
 
 public class DeclarationsDropDown extends OperationDropDown {
-	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode> selectionObserver = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode>() {
-		public void selected( edu.cmu.cs.dennisc.croquet.TabStateOperation<edu.cmu.cs.dennisc.alice.ast.AbstractCode> next ) {
-			DeclarationsDropDown.this.updateOperation( next.getValue() );
+	private edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode> selectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode>() {
+		public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractCode nextValue) {
+			DeclarationsDropDown.this.updateOperation( nextValue );
 		}
 	};
 
@@ -376,11 +376,11 @@ public class DeclarationsDropDown extends OperationDropDown {
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
 		this.updateOperation( org.alice.ide.IDE.getSingleton().getFocusedCode() );
-		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeSelectionObserver( this.selectionObserver );
+		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeValueObserver( this.selectionObserver );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeSelectionObserver( this.selectionObserver );
+		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeValueObserver( this.selectionObserver );
 		super.handleRemovedFrom( parent );
 	}
 	@Override

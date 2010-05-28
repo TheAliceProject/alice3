@@ -145,9 +145,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	protected SnapGrid snapGrid;
 
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
-	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
-		public void selected( edu.cmu.cs.dennisc.croquet.TabStateOperation< edu.cmu.cs.dennisc.alice.ast.AbstractCode > next ) {
-			MoveAndTurnSceneEditor.this.handleFocusedCodeChanged( next != null ? next.getValue() : null );
+	private edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
+		public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractCode next ) {
+			MoveAndTurnSceneEditor.this.handleFocusedCodeChanged( next );
 		}
 	};
 	private edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractField> fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractField>() {
@@ -233,7 +233,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 		this.splitPane.setLeftComponent( this.lookingGlassPanel );
 		
-		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeSelectionObserver( this.codeSelectionObserver );
+		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeValueObserver( this.codeSelectionObserver );
 		org.alice.ide.IDE.getSingleton().getFieldSelectionState().addAndInvokeValueObserver( this.fieldSelectionObserver );
 	}
 
@@ -242,7 +242,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.splitPane.setLeftComponent( null );
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().removeAutomaticDisplayListener( this.automaticDisplayListener );
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
-		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeSelectionObserver( this.codeSelectionObserver );
+		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeValueObserver( this.codeSelectionObserver );
 		org.alice.ide.IDE.getSingleton().getFieldSelectionState().removeValueObserver( this.fieldSelectionObserver );
 		super.handleRemovedFrom( parent );
 	}

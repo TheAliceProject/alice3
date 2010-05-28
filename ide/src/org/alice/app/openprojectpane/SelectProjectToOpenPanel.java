@@ -47,9 +47,9 @@ package org.alice.app.openprojectpane;
  * @author Dennis Cosgrove
  */
 public class SelectProjectToOpenPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	private static abstract class ContentTabStateOperation extends edu.cmu.cs.dennisc.croquet.TabStateOperation<String> {
+	private static abstract class ContentTabStateOperation extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
 		public ContentTabStateOperation(java.util.UUID individualId, String title) {
-			super(edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId, title);
+			super(individualId, title);
 		}
 //		@Override
 //		protected edu.cmu.cs.dennisc.croquet.ScrollPane createSingletonScrollPane() {
@@ -58,45 +58,41 @@ public class SelectProjectToOpenPanel extends edu.cmu.cs.dennisc.croquet.BorderP
 //			rv.setVerticalScrollbarPolicy( edu.cmu.cs.dennisc.croquet.ScrollPane.VerticalScrollbarPolicy.AS_NEEDED );
 //			return rv;
 //		}
-		@Override
-		protected final boolean isCloseAffordanceDesired() {
-			return false;
-		}
 	}
 
 	private ContentTabStateOperation templatesOperation = new ContentTabStateOperation(java.util.UUID.fromString("e658dbd1-c58b-42ec-9338-49f186aecc71"), "Templates") {
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createSingletonView() {
+		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createMainComponent() {
 			return new org.alice.stageide.openprojectpane.templates.TemplatesTabContentPane();
 		}
 	};
 	private ContentTabStateOperation myProjectsOperation = new ContentTabStateOperation(java.util.UUID.fromString("c7fb9c47-f215-47dc-941e-872842ce397e"), "My Projects") {
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createSingletonView() {
+		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createMainComponent() {
 			return new MyProjectsPane();
 		}
 	};
 	private ContentTabStateOperation recentProjectsOperation = new ContentTabStateOperation(java.util.UUID.fromString("b490bb6c-f74f-422b-b9a6-5ef643b02b58"), "Recent") {
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createSingletonView() {
+		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createMainComponent() {
 			return new RecentPane();
 		}
 	};
 	private ContentTabStateOperation tutorialOperation = new ContentTabStateOperation(java.util.UUID.fromString("f4ff59f1-cf15-4301-a17a-2d80a4ea6fa4"), "Tutorial") {
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createSingletonView() {
+		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createMainComponent() {
 			return new TutorialPane();
 		}
 	};
 	private ContentTabStateOperation textbookOperation = new ContentTabStateOperation(java.util.UUID.fromString("033afcdf-29b9-4fbf-b9f5-fb5c496a7860"), "Textbook") {
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createSingletonView() {
+		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createMainComponent() {
 			return new TextbookPane();
 		}
 	};
 	private ContentTabStateOperation fileSystemOperation = new ContentTabStateOperation(java.util.UUID.fromString("b1698424-1f0e-4499-852a-da627fa9e789"), "File System") {
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createSingletonView() {
+		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createMainComponent() {
 			return new FileSystemPane();
 		}
 	};
@@ -114,21 +110,21 @@ public class SelectProjectToOpenPanel extends edu.cmu.cs.dennisc.croquet.BorderP
 		//this.templatesOperation.setState( true );
 		this.addComponent(
 				//edu.cmu.cs.dennisc.croquet.BoxUtilities.createConstrainedToMinimumPreferredSizeComponent(
-						this.tabSelectionOperation.createFolderTabbedPane(), 
+						this.tabSelectionOperation.createDefaultFolderTabbedPane(), 
 				//		480, 
 				//		320),
 				Constraint.CENTER);
-		this.tutorialOperation.setEnabled(false);
-		this.textbookOperation.setEnabled(false);
+		//this.tutorialOperation.setEnabled(false);
+		//this.textbookOperation.setEnabled(false);
 	}
 
 	public void refresh() {
-		((MyProjectsPane) this.myProjectsOperation.getSingletonView()).refresh();
+		((MyProjectsPane) this.myProjectsOperation.getMainComponent()).refresh();
 	}
 	public java.net.URI getSelectedURI() {
-		edu.cmu.cs.dennisc.croquet.TabStateOperation<?> current = this.tabSelectionOperation.getCurrentTabStateOperation();
+		edu.cmu.cs.dennisc.croquet.PredeterminedTab current = this.tabSelectionOperation.getValue();
 		if( current != null ) {
-			return ((TabContentPanel)(current.getSingletonView())).getSelectedURI();
+			return ((TabContentPanel)(current.getMainComponent())).getSelectedURI();
 		} else {
 			return null;
 		}
@@ -140,7 +136,7 @@ public class SelectProjectToOpenPanel extends edu.cmu.cs.dennisc.croquet.BorderP
 		} else {
 			tab = this.myProjectsOperation; // todo: recentPane?
 		}
-		this.tabSelectionOperation.selectTab( tab );
+		this.tabSelectionOperation.setValue( tab );
 		//operation.setState( true );
 //		this.tabSelectionOperation.setCurrentTabStateOperation(operation);
 	}

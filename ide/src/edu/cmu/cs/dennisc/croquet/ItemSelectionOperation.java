@@ -255,6 +255,9 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 		this.comboBoxModel.setSelectedItem( value );
 	}
 
+	public E getItemAt( int index ) {
+		return (E)this.comboBoxModel.getElementAt( index );
+	}
 	public int getItemCount() {
 		return this.comboBoxModel.getSize();
 	}
@@ -281,6 +284,10 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 		}
 	}
 
+	public void clear() {
+		java.util.Collection< E > items = java.util.Collections.emptyList();
+		this.setListData( -1, items );
+	}
 //	private class ItemListener implements java.awt.event.ItemListener {
 //		private Component< ? > component;
 //		public ItemListener( Component< ? > component ) {
@@ -363,14 +370,19 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 		return register( new DefaultRadioButtons< E >() );
 	}
 
-//	public interface TabCreator<E> {
-//		public java.util.UUID getId( E item );
-//		public Component< ? > createTitleComponent( E item );
-//		public Component< ? > createMainComponent( E item );
-//	}
-//	public FolderTabbedPane createFolderTabbedPane( TabCreator< E > tabCreator ) {
-//		return null;
-//	};
+	public interface TabCreator<E> {
+		public java.util.UUID getId( E item );
+		public JComponent< ? > createTitleComponent( E item );
+		public JComponent< ? > createMainComponent( E item );
+		public ScrollPane createScrollPane( E item, JComponent<?> mainComponent );
+		public boolean isCloseAffordanceDesired();
+	}
+	public FolderTabbedPane createFolderTabbedPane( TabCreator< E > tabCreator ) {
+		return null;
+	};
+	public ToolPaletteTabbedPane createToolPaletteTabbedPane( TabCreator< E > tabCreator ) {
+		return null;
+	};
 
 	
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
