@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E> {
+public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, AbstractTabbedPane.TabItemDetails> {
 	private static class JToolPaletteTabTitle extends JTabTitle {
 		public JToolPaletteTabTitle( javax.swing.JComponent jComponent, boolean isCloseAffordanceDesired ) {
 			super( jComponent, isCloseAffordanceDesired );
@@ -121,56 +121,88 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E> {
 		}
 	}
 
-	private class ToolPaletteTab<E> extends Tab< E > {
-		private ToolPaletteTabTitle outerTileComponent;
-		public ToolPaletteTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator ) {
-			super( item, tabCreator );
-			this.outerTileComponent = new ToolPaletteTabTitle( this.getInnerTitleComponent(), this.isCloseButtonDesired() );
-			this.outerTileComponent.getAwtComponent().getModel().addChangeListener( new javax.swing.event.ChangeListener() {
-				public void stateChanged(javax.swing.event.ChangeEvent e) {
-					getScrollPane().setVisible( outerTileComponent.getAwtComponent().getModel().isSelected() );
-					ToolPaletteTabbedPane.this.revalidateAndRepaint();
-				}
-			} );
-		}
-		@Override
-		public AbstractButton< ? > getOuterTitleComponent() {
-			return this.outerTileComponent;
-		}
-		@Override
-		public void select() {
-			throw new RuntimeException( "todo" );
-		}
-	}
-
+//	private class ToolPaletteTab<E> extends Tab< E > {
+//		private ToolPaletteTabTitle outerTileComponent;
+//		public ToolPaletteTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator ) {
+//			super( item, tabCreator );
+//			this.outerTileComponent = new ToolPaletteTabTitle( this.getInnerTitleComponent(), this.isCloseButtonDesired() );
+//			this.outerTileComponent.getAwtComponent().getModel().addChangeListener( new javax.swing.event.ChangeListener() {
+//				public void stateChanged(javax.swing.event.ChangeEvent e) {
+//					getScrollPane().setVisible( outerTileComponent.getAwtComponent().getModel().isSelected() );
+//					ToolPaletteTabbedPane.this.revalidateAndRepaint();
+//				}
+//			} );
+//		}
+//		@Override
+//		public AbstractButton< ? > getOuterTitleComponent() {
+//			return this.outerTileComponent;
+//		}
+//		@Override
+//		public void select() {
+//			throw new RuntimeException( "todo" );
+//		}
+//	}
+//
 	public ToolPaletteTabbedPane( ItemSelectionOperation.TabCreator< E > tabCreator ) {
 		super( tabCreator );
 	}
+//	@Override
+//	protected AbstractTabbedPane.Tab< E > createTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator ) {
+//		return new ToolPaletteTab<E>( item, tabCreator );
+//	}
+
 	@Override
-	protected AbstractTabbedPane.Tab< E > createTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator ) {
-		return new ToolPaletteTab<E>( item, tabCreator );
-	}
+	protected AbstractTabbedPane.TabItemDetails createTabItemDetails( E item, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, boolean isCloseAffordanceDesired ) {
+		AbstractButton<?> button = new ToolPaletteTabTitle(innerTitleComponent, isCloseAffordanceDesired);
+		scrollPane.setVisible( false );
+		return new TabItemDetails( item, button, id, innerTitleComponent, scrollPane, mainComponent, isCloseAffordanceDesired );
+	};
+	
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.GridBagLayout();
 	}
+
 	@Override
-	protected void addTab(edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.Tab<E> tab) {
+	protected void removeAllDetails() {
+		this.removeAllComponents();
+	}
+	@Override
+	protected void addPrologue(int count) {
+	}
+	@Override
+	protected void addItem(edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.TabItemDetails itemDetails) {
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
 		gbc.weightx = 1.0f;
 		gbc.weighty = 0.0f;
-		this.internalAddComponent( tab.getOuterTitleComponent(), gbc );
+		this.internalAddComponent( itemDetails.getButton(), gbc );
 		gbc.weighty = 1.0f;
-		this.internalAddComponent( tab.getScrollPane(), gbc );
+		this.internalAddComponent( itemDetails.getScrollPane(), gbc );
+	}
+	@Override
+	protected void addEpilogue() {
 	}
 	
-	@Override
-	protected void removeTab(edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.Tab<E> tab) {
-		this.removeComponent( tab.getOuterTitleComponent() );
-		this.removeComponent( tab.getScrollPane() );
-	}
+	
+//	@Override
+//	protected void addTab(edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.Tab<E> tab) {
+//		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+//		gbc.fill = java.awt.GridBagConstraints.BOTH;
+//		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+//		gbc.weightx = 1.0f;
+//		gbc.weighty = 0.0f;
+//		this.internalAddComponent( tab.getOuterTitleComponent(), gbc );
+//		gbc.weighty = 1.0f;
+//		this.internalAddComponent( tab.getScrollPane(), gbc );
+//	}
+//	
+//	@Override
+//	protected void removeTab(edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.Tab<E> tab) {
+//		this.removeComponent( tab.getOuterTitleComponent() );
+//		this.removeComponent( tab.getScrollPane() );
+//	}
 	
 	
 //	private java.util.List< TabStateOperation<?> > tabStateOperations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();

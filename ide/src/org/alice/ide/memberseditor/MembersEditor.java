@@ -207,7 +207,8 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	};
 
 	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabbedPaneSelectionOperation = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( 
-			org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ),
+			org.alice.ide.IDE.IDE_GROUP, 
+			java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ),
 			this.fieldsTabStateOperation, this.functionsTabStateOperation, this.proceduresTabStateOperation );
 
 	private void handleFieldSelection( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {

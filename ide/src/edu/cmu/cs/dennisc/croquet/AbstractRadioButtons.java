@@ -46,136 +46,146 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRadioButtons< E > extends Panel {
-	private class RadioButton {
-		private AbstractButton<?> button;
-		private E item;
-		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
-			public void itemStateChanged(java.awt.event.ItemEvent e) {
-				AbstractRadioButtons.this.model.setSelectedItem( RadioButton.this.item );
-				AbstractRadioButtons.this.fireItemStateChanged( e );
-			}
-		};
-		public RadioButton( AbstractButton<?> button, E item ) {
-			this.button = button;
-			this.item = item;
-		}
-		
-		public void add() {
-			this.button.getAwtComponent().addItemListener( this.itemListener );
-			AbstractRadioButtons.this.buttonGroup.add( this.button.getAwtComponent() );
-			AbstractRadioButtons.this.addButton( this.button );
-		}
-		public void remove() {
-			//note: should already be removed by removeAllComponents()
-			assert this.button.getParent() == null;
-			this.button.getAwtComponent().removeItemListener( this.itemListener );
-			AbstractRadioButtons.this.buttonGroup.remove( this.button.getAwtComponent() );
-		}
-		public void setSelected( boolean isSelected ) {
-			if( this.button.getAwtComponent().isSelected() != isSelected ) {
-				this.button.getAwtComponent().setSelected( isSelected );
-			}
-		}
-	}
-	
-	private java.util.Map<E, RadioButton > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-	private javax.swing.ComboBoxModel model;
-	private javax.swing.ListSelectionModel listSelectionModel;
-	private javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
-		public void intervalAdded(javax.swing.event.ListDataEvent e) {
-			AbstractRadioButtons.this.handleListDataChanged();
-		}
-		public void intervalRemoved(javax.swing.event.ListDataEvent e) {
-			AbstractRadioButtons.this.handleListDataChanged();
-		}
-		public void contentsChanged(javax.swing.event.ListDataEvent e) {
-			AbstractRadioButtons.this.handleListDataChanged();
-		}
-	};
-	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
-		public void valueChanged(javax.swing.event.ListSelectionEvent e) {
-			AbstractRadioButtons.this.handleListSelectionChanged();
-		}
-	};
-	private void fireItemStateChanged( java.awt.event.ItemEvent e ) {
-		for( java.awt.event.ItemListener itemListener : this.itemListeners ) {
-			itemListener.itemStateChanged(e);
-		}
-	}
-
-	protected abstract void removeAllButtons();
+public abstract class AbstractRadioButtons< E > extends ItemSelectable< E, ItemSelectable.ItemDetails > {
 	protected abstract AbstractButton<?> createButton( E item );
-	protected abstract void addPrologue( int count );
-	protected abstract void addButton( AbstractButton<?> button );
-	protected abstract void addEpilogue();
-	
-	private void handleListDataChanged() {
-		synchronized( this.model ) {
-			final int N = this.model.getSize();
-			this.addPrologue( N );
-			for( int i=0; i<N; i++ ) {
-				E item = (E)this.model.getElementAt( i );
-				RadioButton radioButton = this.map.get( item );
-				if( radioButton != null ) {
-					//pass
-				} else {
-					radioButton = new RadioButton( this.createButton( item ), item );
-					this.map.put( item, radioButton );
-				}
-				radioButton.add();
-			}
-			this.addEpilogue();
-		}
-		this.revalidateAndRepaint();
-	}
-	private void handleListSelectionChanged() {
-		E item = (E)this.model.getSelectedItem();
-		if( item != null ) {
-			RadioButton radioButton = this.map.get( item );
-			assert radioButton != null;
-			radioButton.setSelected( true );
-		} else {
-			javax.swing.ButtonModel model = this.buttonGroup.getSelection();
-			if( model != null ) {
-				this.buttonGroup.setSelected(model, false);
-			}
-		}
-	}
-	private java.util.List<java.awt.event.ItemListener> itemListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList(); 
-	/*package-private*/ void setModel( javax.swing.ComboBoxModel model ) {
-		if( this.model != null ) {
-			synchronized( this.model ) {
-				this.model.removeListDataListener( this.listDataListener );
-			}
-		}
-		this.model = model;
-		this.handleListDataChanged();
-		if( this.model != null ) {
-			synchronized( this.model ) {
-				this.model.addListDataListener( this.listDataListener );
-			}
-		}
-	}
-	/*package-private*/ void setSelectionModel( javax.swing.ListSelectionModel listSelectionModel ) {
-		if( this.listSelectionModel != null ) {
-			synchronized( this.listSelectionModel ) {
-				this.listSelectionModel.removeListSelectionListener( this.listSelectionListener );
-			}
-		}
-		this.listSelectionModel = listSelectionModel;
-		this.handleListSelectionChanged();
-		if( this.listSelectionModel != null ) {
-			synchronized( this.listSelectionModel ) {
-				this.listSelectionModel.addListSelectionListener( this.listSelectionListener );
-			}
-		}
-	}
-	/*package-private*/ void addItemListener(java.awt.event.ItemListener itemListener) {
-		this.itemListeners.add( itemListener );
-	}
-	/*package-private*/ void removeItemListener(java.awt.event.ItemListener itemListener) {
-		this.itemListeners.remove( itemListener );
-	}
+	@Override
+	protected final ItemDetails createItemDetails( E item ) {
+		return new ItemDetails( item, this.createButton( item ) );
+	};
 }
+
+//public abstract class AbstractRadioButtons< E > extends Panel {
+//	private class RadioButton {
+//		private AbstractButton<?> button;
+//		private E item;
+//		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
+//			public void itemStateChanged(java.awt.event.ItemEvent e) {
+//				AbstractRadioButtons.this.model.setSelectedItem( RadioButton.this.item );
+//				AbstractRadioButtons.this.fireItemStateChanged( e );
+//			}
+//		};
+//		public RadioButton( AbstractButton<?> button, E item ) {
+//			this.button = button;
+//			this.item = item;
+//		}
+//		
+//		public void add() {
+//			this.button.getAwtComponent().addItemListener( this.itemListener );
+//			AbstractRadioButtons.this.buttonGroup.add( this.button.getAwtComponent() );
+//			AbstractRadioButtons.this.addButton( this.button );
+//		}
+//		public void remove() {
+//			//note: should already be removed by removeAllComponents()
+//			assert this.button.getParent() == null;
+//			this.button.getAwtComponent().removeItemListener( this.itemListener );
+//			AbstractRadioButtons.this.buttonGroup.remove( this.button.getAwtComponent() );
+//		}
+//		public void setSelected( boolean isSelected ) {
+//			if( this.button.getAwtComponent().isSelected() != isSelected ) {
+//				this.button.getAwtComponent().setSelected( isSelected );
+//			}
+//		}
+//	}
+//	
+//	private java.util.Map<E, RadioButton > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+//	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
+//	private javax.swing.ComboBoxModel model;
+//	private javax.swing.ListSelectionModel listSelectionModel;
+//	private javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
+//		public void intervalAdded(javax.swing.event.ListDataEvent e) {
+//			AbstractRadioButtons.this.handleListDataChanged();
+//		}
+//		public void intervalRemoved(javax.swing.event.ListDataEvent e) {
+//			AbstractRadioButtons.this.handleListDataChanged();
+//		}
+//		public void contentsChanged(javax.swing.event.ListDataEvent e) {
+//			AbstractRadioButtons.this.handleListDataChanged();
+//		}
+//	};
+//	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+//		public void valueChanged(javax.swing.event.ListSelectionEvent e) {
+//			AbstractRadioButtons.this.handleListSelectionChanged();
+//		}
+//	};
+//	private void fireItemStateChanged( java.awt.event.ItemEvent e ) {
+//		for( java.awt.event.ItemListener itemListener : this.itemListeners ) {
+//			itemListener.itemStateChanged(e);
+//		}
+//	}
+//
+//	protected abstract void removeAllButtons();
+//	protected abstract AbstractButton<?> createButton( E item );
+//	protected abstract void addPrologue( int count );
+//	protected abstract void addButton( AbstractButton<?> button );
+//	protected abstract void addEpilogue();
+//	
+//	private void handleListDataChanged() {
+//		synchronized( this.model ) {
+//			final int N = this.model.getSize();
+//			this.addPrologue( N );
+//			for( int i=0; i<N; i++ ) {
+//				E item = (E)this.model.getElementAt( i );
+//				RadioButton radioButton = this.map.get( item );
+//				if( radioButton != null ) {
+//					//pass
+//				} else {
+//					radioButton = new RadioButton( this.createButton( item ), item );
+//					this.map.put( item, radioButton );
+//				}
+//				radioButton.add();
+//			}
+//			this.addEpilogue();
+//		}
+//		this.revalidateAndRepaint();
+//	}
+//	protected void handleItemSelected( E item ) {
+//		if( item != null ) {
+//			RadioButton radioButton = this.map.get( item );
+//			assert radioButton != null;
+//			radioButton.setSelected( true );
+//		} else {
+//			javax.swing.ButtonModel model = this.buttonGroup.getSelection();
+//			if( model != null ) {
+//				this.buttonGroup.setSelected(model, false);
+//			}
+//		}
+//	}
+//	private void handleListSelectionChanged() {
+//		this.handleItemSelected( (E)this.model.getSelectedItem() );
+//	}
+//	private java.util.List<java.awt.event.ItemListener> itemListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList(); 
+//	/*package-private*/ void setModel( javax.swing.ComboBoxModel model ) {
+//		if( this.model != null ) {
+//			synchronized( this.model ) {
+//				this.model.removeListDataListener( this.listDataListener );
+//			}
+//		}
+//		this.model = model;
+//		this.handleListDataChanged();
+//		if( this.model != null ) {
+//			synchronized( this.model ) {
+//				this.model.addListDataListener( this.listDataListener );
+//			}
+//		}
+//	}
+//	/*package-private*/ void setSelectionModel( javax.swing.ListSelectionModel listSelectionModel ) {
+//		if( this.listSelectionModel != null ) {
+//			synchronized( this.listSelectionModel ) {
+//				this.listSelectionModel.removeListSelectionListener( this.listSelectionListener );
+//			}
+//		}
+//		this.listSelectionModel = listSelectionModel;
+//		this.handleListSelectionChanged();
+//		if( this.listSelectionModel != null ) {
+//			synchronized( this.listSelectionModel ) {
+//				this.listSelectionModel.addListSelectionListener( this.listSelectionListener );
+//			}
+//		}
+//	}
+//	/*package-private*/ void addItemListener(java.awt.event.ItemListener itemListener) {
+//		this.itemListeners.add( itemListener );
+//	}
+//	/*package-private*/ void removeItemListener(java.awt.event.ItemListener itemListener) {
+//		this.itemListeners.remove( itemListener );
+//	}
+//}

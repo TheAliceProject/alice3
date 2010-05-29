@@ -321,7 +321,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		private edu.cmu.cs.dennisc.croquet.Component<?> previousComponent;
 		private edu.cmu.cs.dennisc.croquet.Component<?> rootComponent;
 		@Override
-		protected void removeAllButtons() {
+		protected void removeAllDetails() {
 			this.removeAllComponents();
 		}
 		@Override
@@ -330,7 +330,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.rootComponent = null;
 		}
 		@Override
-		protected void addButton(AbstractButton<?> button) {
+		protected void addItem( edu.cmu.cs.dennisc.croquet.ItemSelectable.ItemDetails itemDetails) {
+			AbstractButton<?> button = itemDetails.getButton();
 			if( this.previousComponent != null ) {
 				this.springLayout.putConstraint( javax.swing.SpringLayout.NORTH, button.getAwtComponent(), INTRA_FIELD_PAD, javax.swing.SpringLayout.SOUTH, this.previousComponent.getAwtComponent() );
 				this.springLayout.putConstraint( javax.swing.SpringLayout.WEST, button.getAwtComponent(), SUB_FIELD_LEFT_INSET, javax.swing.SpringLayout.WEST, this.rootComponent.getAwtComponent() );

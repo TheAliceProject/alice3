@@ -282,10 +282,12 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 			return new edu.cmu.cs.dennisc.croquet.ScrollPane();
 		}
 		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-			return null;
+			edu.cmu.cs.dennisc.croquet.Panel rv = new edu.cmu.cs.dennisc.croquet.PageAxisPanel();
+			edu.cmu.cs.dennisc.java.awt.ComponentUtilities.makeStandOut( rv.getAwtComponent() );
+			return rv;
 		}
 		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createInnerTitleComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-			return null;
+			return new edu.cmu.cs.dennisc.croquet.Label( code.getName() );
 		}
 		public boolean isCloseAffordanceDesired() {
 			return true;

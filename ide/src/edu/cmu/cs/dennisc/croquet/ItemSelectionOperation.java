@@ -349,7 +349,7 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 		return rv;
 	}
 
-	public <R extends AbstractRadioButtons< E >> R register( final R rv ) {
+	public <R extends ItemSelectable< E, ? > > R register( final R rv ) {
 		Application.getSingleton().register( this );
 		rv.setModel( this.comboBoxModel );
 		rv.setSelectionModel( this.listSelectionModel );

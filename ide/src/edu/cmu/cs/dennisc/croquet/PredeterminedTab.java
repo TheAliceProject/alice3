@@ -47,6 +47,7 @@ public abstract class PredeterminedTab {
 	private JComponent<?> titleComponent;
 	private JComponent< ? > mainComponent;
 	public PredeterminedTab( java.util.UUID id, JComponent<?> titleComponent ) {
+		assert id != null;
 		this.id = id;
 		this.titleComponent = titleComponent;
 	}

@@ -48,10 +48,12 @@ package edu.cmu.cs.dennisc.croquet;
 public final class TabSelectionOperation extends ItemSelectionOperation<PredeterminedTab> {
 	private static class PredeterminedTabCreator implements TabCreator< PredeterminedTab > {
 		public final java.util.UUID getId(PredeterminedTab item) {
-			return item.getId();
+			java.util.UUID rv = item.getId();
+			assert rv != null;
+			return rv;
 		}
 		public final JComponent<?> createMainComponent(PredeterminedTab item) {
-			return item.createMainComponent();
+			return item.getMainComponent();
 		}
 		public final JComponent<?> createInnerTitleComponent(PredeterminedTab item) {
 			return item.getTitleComponent();

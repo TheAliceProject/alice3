@@ -43,11 +43,10 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTabbedPane<E> extends AbstractRadioButtons<E> {
+public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemDetails> extends ItemSelectable<E, D> {
 	private static class CloseButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
 		private static final java.awt.Color BASE_COLOR = new java.awt.Color( 127, 63, 63 );
 		private static final java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, +0.25f );
@@ -194,30 +193,29 @@ public abstract class AbstractTabbedPane<E> extends AbstractRadioButtons<E> {
 		}
 	}
 
-	protected static abstract class Tab<E> {
-		private E item;
+	
+	protected class TabItemDetails extends ItemDetails {
 		private java.util.UUID id;
-		private JComponent<?> titleComponent;
+		private JComponent<?> innerTitleComponent;
 		private JComponent<?> mainComponent;
 		private ScrollPane scrollPane;
-		private boolean isCloseButtonDesired;
-		public Tab( E item, ItemSelectionOperation.TabCreator< E > tabCreator ) {
-			this.item = item;
-			this.id = tabCreator.getId( this.item );
-			this.titleComponent = tabCreator.createInnerTitleComponent( this.item );
-			this.mainComponent = tabCreator.createMainComponent( this.item );
-			this.scrollPane = tabCreator.createScrollPane( this.item );
+		private boolean isCloseAffordanceDesired;
+		public TabItemDetails( E item, AbstractButton< ? > button, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, boolean isCloseAffordanceDesired ) {
+			super( item, button );
+			assert id != null;
+			this.id = id;
+			this.innerTitleComponent = innerTitleComponent;
+			this.mainComponent = mainComponent;
+			this.scrollPane = scrollPane;
+			this.isCloseAffordanceDesired = isCloseAffordanceDesired;
+
 			this.scrollPane.setViewportView( this.mainComponent );
-			this.isCloseButtonDesired = tabCreator.isCloseAffordanceDesired();
-		}
-		public E getItem() {
-			return this.item;
 		}
 		public java.util.UUID getId() {
 			return this.id;
 		}
 		public JComponent< ? > getInnerTitleComponent() {
-			return this.titleComponent;
+			return this.innerTitleComponent;
 		}
 		public JComponent< ? > getMainComponent() {
 			return this.mainComponent;
@@ -225,13 +223,10 @@ public abstract class AbstractTabbedPane<E> extends AbstractRadioButtons<E> {
 		public ScrollPane getScrollPane() {
 			return this.scrollPane;
 		}
-		public boolean isCloseButtonDesired() {
-			return this.isCloseButtonDesired;
+		public boolean isCloseAffordanceDesired() {
+			return this.isCloseAffordanceDesired;
 		}
-		public abstract AbstractButton< ? > getOuterTitleComponent();
-		public abstract void select();
 	}
-	private java.util.Map< AbstractButton<?>, Tab<E> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private ItemSelectionOperation.TabCreator< E > tabCreator;
 	public AbstractTabbedPane( ItemSelectionOperation.TabCreator< E > tabCreator ) {
 		this.tabCreator = tabCreator;
@@ -239,39 +234,53 @@ public abstract class AbstractTabbedPane<E> extends AbstractRadioButtons<E> {
 	@Override
 	public void setFont(java.awt.Font font) {
 		super.setFont( font );
-		for( Tab<E> tab : this.map.values() ) {
-			tab.getInnerTitleComponent().setFont( font );
+		for( D tabItemDetails : this.getItemDetails() ) {
+			tabItemDetails.getInnerTitleComponent().setFont( font );
 		}
 	}
 
-	protected abstract Tab<E> createTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator );
-	protected abstract void addTab( Tab<E> tab );
-	protected abstract void removeTab( Tab<E> tab );
+	protected abstract D createTabItemDetails( E item, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, boolean isCloseAffordanceDesired );
 	@Override
-	protected AbstractButton<?> createButton(E item) {
-		Tab< E > tab = createTab( item, this.tabCreator );
-		AbstractButton<?> rv = tab.getOuterTitleComponent();
-		map.put(rv, tab);
-		return rv;
+	protected final D createItemDetails(E item) {
+		java.util.UUID id = this.tabCreator.getId( item );
+		assert id != null : item;
+		return createTabItemDetails( item, id, this.tabCreator.createInnerTitleComponent( item ), this.tabCreator.createScrollPane( item ), this.tabCreator.createMainComponent( item ), this.tabCreator.isCloseAffordanceDesired() );
 	}
-	@Override
-	protected void removeAllButtons() {
-		for( Tab<E> tab : this.map.values() ) {
-			this.removeTab( tab );
-		}
-	}
-	@Override
-	protected void addPrologue( int count ) {
-	}
-	@Override
-	protected final void addButton(edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
-		Tab< E > tab = this.map.get( button );
-		assert tab != null;
-		this.addTab( tab );
-	}
-	@Override
-	protected void addEpilogue() {
-	}
+	
+	
+//	protected abstract Tab<E> createTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator );
+//	protected abstract void addTab( Tab<E> tab );
+//	protected abstract void removeTab( Tab<E> tab );
+//	@Override
+//	protected AbstractButton<?> createButton(E item) {
+//		Tab< E > tab = createTab( item, this.tabCreator );
+//		AbstractButton<?> rv = tab.getOuterTitleComponent();
+//		map.put(rv, tab);
+//		return rv;
+//	}
+//	@Override
+//	protected void removeAllButtons() {
+//		for( Tab<E> tab : this.map.values() ) {
+//			this.removeTab( tab );
+//		}
+//	}
+//	@Override
+//	protected void addPrologue( int count ) {
+//	}
+//	@Override
+//	protected final void addButton(edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
+//		Tab< E > tab = this.map.get( button );
+//		assert tab != null;
+//		this.addTab( tab );
+//	}
+//	@Override
+//	protected void addEpilogue() {
+//	}
+//	
+//	@Override
+//	protected void handleItemSelected(E item) {
+//		javax.swing.JOptionPane.showMessageDialog( null, "todo: handleItemSelected" );
+//	}
 	
 //	/* package-private */ void addTab( E item ) {
 //		Tab<E> tab = this.map.get( item );

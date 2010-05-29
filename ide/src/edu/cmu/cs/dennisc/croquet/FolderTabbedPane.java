@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class FolderTabbedPane<E> extends AbstractTabbedPane< E > {
+public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabbedPane.FolderTabItemDetails > {
 	private static class JFolderTabTitle extends JTabTitle {
 		public JFolderTabTitle( javax.swing.JComponent jComponent, boolean isCloseAffordanceDesired ) {
 			super( jComponent, isCloseAffordanceDesired );
@@ -204,33 +204,20 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E > {
 	private HeaderPane headerPane = new HeaderPane();
 	//private LineAxisPanel headerPane = new LineAxisPanel();
 
-	private class FolderTab<E> extends Tab< E > {
+	/*package-private*/ class FolderTabItemDetails extends TabItemDetails {
 		private FolderTabTitle outerTileComponent;
 		private edu.cmu.cs.dennisc.croquet.CardPanel.Key cardPanelKey;
-		public FolderTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator ) {
-			super( item, tabCreator );
-			this.outerTileComponent = new FolderTabTitle( this.getInnerTitleComponent(), this.isCloseButtonDesired() );
+		public FolderTabItemDetails( E item, AbstractButton< ? > button, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, boolean isCloseAffordanceDesired ) {
+			super( item, button, id, innerTitleComponent, scrollPane, mainComponent, isCloseAffordanceDesired );
 			this.cardPanelKey = cardPanel.createKey( this.getScrollPane(), this.getId() );
-		}
-		@Override
-		public AbstractButton< ? > getOuterTitleComponent() {
-			return this.outerTileComponent;
 		}
 		public edu.cmu.cs.dennisc.croquet.CardPanel.Key getCardPanelKey() {
 			return cardPanelKey;
-		}
-		@Override
-		public void select() {
-			throw new RuntimeException( "todo" );
 		}
 	}
 
 	public FolderTabbedPane( ItemSelectionOperation.TabCreator< E > tabCreator ) {
 		super( tabCreator );
-	}
-	@Override
-	protected AbstractTabbedPane.Tab< E > createTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator ) {
-		return new FolderTab<E>( item, tabCreator );
 	}
 
 	@Override
@@ -247,16 +234,47 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E > {
 	}
 
 	@Override
-	protected void addTab(AbstractTabbedPane.Tab<E> tab) {
-		this.headerPane.addComponent( tab.getOuterTitleComponent() );
-		this.cardPanel.addComponent( ((FolderTab<E>)tab).getCardPanelKey() );
-//		this.revalidateAndRepaint();
+	protected FolderTabItemDetails createTabItemDetails( E item, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, boolean isCloseAffordanceDesired ) {
+		AbstractButton<?> button = new FolderTabTitle(innerTitleComponent, isCloseAffordanceDesired);
+		scrollPane.setVisible( false );
+		return new FolderTabItemDetails( item, button, id, innerTitleComponent, scrollPane, mainComponent, isCloseAffordanceDesired );
+	};
+	
+
+	@Override
+	protected void removeAllDetails() {
+		this.headerPane.removeAllComponents();
+		this.cardPanel.removeAllComponents();
 	}
 	@Override
-	protected void removeTab(edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.Tab<E> tab) {
-		this.headerPane.removeComponent( tab.getOuterTitleComponent() );
-		this.cardPanel.removeComponent( ((FolderTab<E>)tab).getCardPanelKey() );
+	protected void addPrologue(int count) {
 	}
+	@Override
+	protected void addItem(edu.cmu.cs.dennisc.croquet.FolderTabbedPane.FolderTabItemDetails folderTabItemDetails) {
+		this.headerPane.addComponent( folderTabItemDetails.getButton() );
+		this.cardPanel.addComponent( folderTabItemDetails.getCardPanelKey() );
+	}
+	@Override
+	protected void addEpilogue() {
+	}
+	
+//	@Override
+//	protected AbstractTabbedPane.Tab< E > createTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator ) {
+//		return new FolderTab<E>( item, tabCreator );
+//	}
+//	@Override
+//	protected void addTab(AbstractTabbedPane.Tab<E> tab) {
+//		this.headerPane.addComponent( tab.getOuterTitleComponent() );
+//		this.cardPanel.addComponent( ((FolderTab<E>)tab).getCardPanelKey() );
+////		this.revalidateAndRepaint();
+//	}
+//	@Override
+//	protected void removeTab(edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.Tab<E> tab) {
+//		this.headerPane.removeComponent( tab.getOuterTitleComponent() );
+//		this.cardPanel.removeComponent( ((FolderTab<E>)tab).getCardPanelKey() );
+//	}
+
+	
 	//
 	//	/* package-private */class Key {
 	//		private AbstractButton<?> headerComponent;
