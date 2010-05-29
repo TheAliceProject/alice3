@@ -70,13 +70,15 @@ public class CardPanel extends Panel {
 	}
 	private java.util.Map< String, Key > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private Key nullKey;
-	public Key createKey( Component<?> child, String cardLayoutKey ) {
+	public Key createKey( Component<?> child, java.util.UUID id ) {
+		String cardLayoutKey = id.toString();
 		assert map.containsKey( cardLayoutKey ) == false;
 		Key rv = new Key( child, cardLayoutKey );
 		this.map.put( cardLayoutKey, rv );
 		return rv;
 	}
-	public Key getKey( String cardLayoutKey ) {
+	public Key getKey( java.util.UUID id ) {
+		String cardLayoutKey = id.toString();
 		return this.map.get( cardLayoutKey );
 	}
 	public void addComponent( Key key ) {
@@ -92,7 +94,7 @@ public class CardPanel extends Panel {
 			if( this.nullKey != null ) {
 				//pass
 			} else {
-				this.nullKey = this.createKey( new Label( "unset" ), java.util.UUID.randomUUID().toString() );
+				this.nullKey = this.createKey( new Label( "unset" ), java.util.UUID.randomUUID() );
 				this.addComponent( this.nullKey );
 			}
 			key = this.nullKey;

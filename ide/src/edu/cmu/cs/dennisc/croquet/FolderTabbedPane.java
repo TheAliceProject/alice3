@@ -43,7 +43,6 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -57,12 +56,12 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E > {
 	}
 
 	private static class FolderTabTitle extends TabTitle {
-		public FolderTabTitle( boolean isCloseAffordanceDesired ) {
-			super( isCloseAffordanceDesired );
+		public FolderTabTitle( JComponent<?> innerTitleComponent, boolean isCloseAffordanceDesired ) {
+			super( innerTitleComponent, isCloseAffordanceDesired );
 		}
 		@Override
 		protected javax.swing.AbstractButton createAwtComponent() {
-			return new JFolderTabTitle( this.getAwtComponent(), this.isCloseAffordanceDesired() );
+			return new JFolderTabTitle( this.getInnerTitleComponent().getAwtComponent(), this.isCloseAffordanceDesired() );
 		}
 	}
 
@@ -200,24 +199,31 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E > {
 		}
 	}
 
-	private static class FolderTab<E> extends Tab< E > {
+
+	private CardPanel cardPanel = new CardPanel();
+	private HeaderPane headerPane = new HeaderPane();
+	//private LineAxisPanel headerPane = new LineAxisPanel();
+
+	private class FolderTab<E> extends Tab< E > {
 		private FolderTabTitle outerTileComponent;
+		private edu.cmu.cs.dennisc.croquet.CardPanel.Key cardPanelKey;
 		public FolderTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator ) {
 			super( item, tabCreator );
-			this.outerTileComponent = new FolderTabTitle( this.isCloseButtonDesired() );
+			this.outerTileComponent = new FolderTabTitle( this.getInnerTitleComponent(), this.isCloseButtonDesired() );
+			this.cardPanelKey = cardPanel.createKey( this.getScrollPane(), this.getId() );
 		}
 		@Override
 		public AbstractButton< ? > getOuterTitleComponent() {
 			return this.outerTileComponent;
+		}
+		public edu.cmu.cs.dennisc.croquet.CardPanel.Key getCardPanelKey() {
+			return cardPanelKey;
 		}
 		@Override
 		public void select() {
 			throw new RuntimeException( "todo" );
 		}
 	}
-
-	private CardPanel cardPanel = new CardPanel();
-	private HeaderPane headerPane = new HeaderPane();
 
 	public FolderTabbedPane( ItemSelectionOperation.TabCreator< E > tabCreator ) {
 		super( tabCreator );
@@ -241,7 +247,15 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E > {
 	}
 
 	@Override
-	protected void addButton( edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+	protected void addTab(AbstractTabbedPane.Tab<E> tab) {
+		this.headerPane.addComponent( tab.getOuterTitleComponent() );
+		this.cardPanel.addComponent( ((FolderTab<E>)tab).getCardPanelKey() );
+//		this.revalidateAndRepaint();
+	}
+	@Override
+	protected void removeTab(edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.Tab<E> tab) {
+		this.headerPane.removeComponent( tab.getOuterTitleComponent() );
+		this.cardPanel.removeComponent( ((FolderTab<E>)tab).getCardPanelKey() );
 	}
 	//
 	//	/* package-private */class Key {

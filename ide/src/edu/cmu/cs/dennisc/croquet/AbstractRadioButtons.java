@@ -105,9 +105,7 @@ public abstract class AbstractRadioButtons< E > extends Panel {
 		}
 	}
 
-	public AbstractRadioButtons() {
-	}
-	
+	protected abstract void removeAllButtons();
 	protected abstract AbstractButton<?> createButton( E item );
 	protected abstract void addPrologue( int count );
 	protected abstract void addButton( AbstractButton<?> button );
@@ -116,7 +114,6 @@ public abstract class AbstractRadioButtons< E > extends Panel {
 	private void handleListDataChanged() {
 		synchronized( this.model ) {
 			final int N = this.model.getSize();
-			this.removeAllComponents();
 			this.addPrologue( N );
 			for( int i=0; i<N; i++ ) {
 				E item = (E)this.model.getElementAt( i );

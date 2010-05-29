@@ -112,20 +112,26 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E> {
 	}
 
 	private static class ToolPaletteTabTitle extends TabTitle {
-		public ToolPaletteTabTitle( boolean isCloseAffordanceDesired ) {
-			super( isCloseAffordanceDesired );
+		public ToolPaletteTabTitle( JComponent<?> innerTitleComponent, boolean isCloseAffordanceDesired ) {
+			super( innerTitleComponent, isCloseAffordanceDesired );
 		}
 		@Override
 		protected javax.swing.AbstractButton createAwtComponent() {
-			return new JToolPaletteTabTitle( this.getAwtComponent(), this.isCloseAffordanceDesired() );
+			return new JToolPaletteTabTitle( this.getInnerTitleComponent().getAwtComponent(), this.isCloseAffordanceDesired() );
 		}
 	}
 
-	private static class ToolPaletteTab<E> extends Tab< E > {
+	private class ToolPaletteTab<E> extends Tab< E > {
 		private ToolPaletteTabTitle outerTileComponent;
 		public ToolPaletteTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator ) {
 			super( item, tabCreator );
-			this.outerTileComponent = new ToolPaletteTabTitle( this.isCloseButtonDesired() );
+			this.outerTileComponent = new ToolPaletteTabTitle( this.getInnerTitleComponent(), this.isCloseButtonDesired() );
+			this.outerTileComponent.getAwtComponent().getModel().addChangeListener( new javax.swing.event.ChangeListener() {
+				public void stateChanged(javax.swing.event.ChangeEvent e) {
+					getScrollPane().setVisible( outerTileComponent.getAwtComponent().getModel().isSelected() );
+					ToolPaletteTabbedPane.this.revalidateAndRepaint();
+				}
+			} );
 		}
 		@Override
 		public AbstractButton< ? > getOuterTitleComponent() {
@@ -149,13 +155,21 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E> {
 		return new java.awt.GridBagLayout();
 	}
 	@Override
-	protected void addButton( edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+	protected void addTab(edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.Tab<E> tab) {
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
 		gbc.weightx = 1.0f;
 		gbc.weighty = 0.0f;
-		this.internalAddComponent( button, gbc );
+		this.internalAddComponent( tab.getOuterTitleComponent(), gbc );
+		gbc.weighty = 1.0f;
+		this.internalAddComponent( tab.getScrollPane(), gbc );
+	}
+	
+	@Override
+	protected void removeTab(edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.Tab<E> tab) {
+		this.removeComponent( tab.getOuterTitleComponent() );
+		this.removeComponent( tab.getScrollPane() );
 	}
 	
 	

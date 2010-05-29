@@ -61,7 +61,7 @@ abstract class IngredientCardPanel<E> extends edu.cmu.cs.dennisc.croquet.CardPan
 			//pass
 		} else {
 			edu.cmu.cs.dennisc.croquet.List<E> list = itemSelectionOperation.createList();
-			key = this.createKey(list, itemSelectionOperation.getIndividualUUID().toString() );
+			key = this.createKey(list, itemSelectionOperation.getIndividualUUID() );
 			this.map.put(itemSelectionOperation, key);
 			this.show( key );
 		}

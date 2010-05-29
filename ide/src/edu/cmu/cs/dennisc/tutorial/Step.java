@@ -51,8 +51,8 @@ public abstract class Step {
 	public Step( Tutorial tutorial ) {
 		this.tutorial = tutorial;
 	}
-	public String getCardLayoutKey() {
-		return this.id.toString();
+	public java.util.UUID getId() {
+		return this.id;
 	}
 	public Tutorial getTutorial() {
 		return this.tutorial;

@@ -174,12 +174,12 @@ public class Tutorial {
 			this.internalAddComponent(this.cardPanel, java.awt.BorderLayout.CENTER);
 		}
 		private void handleStepChanged(Step step) {
-			String cardLayoutKey = step.getCardLayoutKey();
-			edu.cmu.cs.dennisc.croquet.CardPanel.Key key = this.cardPanel.getKey(cardLayoutKey);
+			java.util.UUID stepId = step.getId();
+			edu.cmu.cs.dennisc.croquet.CardPanel.Key key = this.cardPanel.getKey(stepId);
 			if (key != null) {
 				// pass
 			} else {
-				key = this.cardPanel.createKey(step.getCard(), cardLayoutKey);
+				key = this.cardPanel.createKey(step.getCard(), stepId);
 				this.cardPanel.addComponent(key);
 			}
 			this.cardPanel.show(key);

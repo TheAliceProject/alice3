@@ -66,6 +66,10 @@ public class DefaultRadioButtons< E > extends AbstractRadioButtons< E > {
 		return rv;
 	}
 	@Override
+	protected void removeAllButtons() {
+		this.removeAllComponents();
+	}
+	@Override
 	protected void addPrologue(int count) {
 	}
 	@Override

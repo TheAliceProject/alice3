@@ -180,9 +180,14 @@ public abstract class AbstractTabbedPane<E> extends AbstractRadioButtons<E> {
 	}
 
 	protected static abstract class TabTitle extends AbstractButton< javax.swing.AbstractButton > {
+		private JComponent<?> innerTitleComponent;
 		private boolean isCloseAffordanceDesired;
-		public TabTitle( boolean isCloseAffordanceDesired ) {
+		public TabTitle( JComponent<?> innerTitleComponent, boolean isCloseAffordanceDesired ) {
+			this.innerTitleComponent = innerTitleComponent;
 			this.isCloseAffordanceDesired = isCloseAffordanceDesired;
+		}
+		protected JComponent<?> getInnerTitleComponent() {
+			return innerTitleComponent;
 		}
 		protected boolean isCloseAffordanceDesired() {
 			return this.isCloseAffordanceDesired;
@@ -191,12 +196,14 @@ public abstract class AbstractTabbedPane<E> extends AbstractRadioButtons<E> {
 
 	protected static abstract class Tab<E> {
 		private E item;
+		private java.util.UUID id;
 		private JComponent<?> titleComponent;
 		private JComponent<?> mainComponent;
 		private ScrollPane scrollPane;
 		private boolean isCloseButtonDesired;
 		public Tab( E item, ItemSelectionOperation.TabCreator< E > tabCreator ) {
 			this.item = item;
+			this.id = tabCreator.getId( this.item );
 			this.titleComponent = tabCreator.createInnerTitleComponent( this.item );
 			this.mainComponent = tabCreator.createMainComponent( this.item );
 			this.scrollPane = tabCreator.createScrollPane( this.item );
@@ -205,6 +212,9 @@ public abstract class AbstractTabbedPane<E> extends AbstractRadioButtons<E> {
 		}
 		public E getItem() {
 			return this.item;
+		}
+		public java.util.UUID getId() {
+			return this.id;
 		}
 		public JComponent< ? > getInnerTitleComponent() {
 			return this.titleComponent;
@@ -221,7 +231,7 @@ public abstract class AbstractTabbedPane<E> extends AbstractRadioButtons<E> {
 		public abstract AbstractButton< ? > getOuterTitleComponent();
 		public abstract void select();
 	}
-	private java.util.Map< E,Tab<E> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map< AbstractButton<?>, Tab<E> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private ItemSelectionOperation.TabCreator< E > tabCreator;
 	public AbstractTabbedPane( ItemSelectionOperation.TabCreator< E > tabCreator ) {
 		this.tabCreator = tabCreator;
@@ -235,14 +245,29 @@ public abstract class AbstractTabbedPane<E> extends AbstractRadioButtons<E> {
 	}
 
 	protected abstract Tab<E> createTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator );
-	
+	protected abstract void addTab( Tab<E> tab );
+	protected abstract void removeTab( Tab<E> tab );
 	@Override
 	protected AbstractButton<?> createButton(E item) {
 		Tab< E > tab = createTab( item, this.tabCreator );
-		return tab.getOuterTitleComponent();
+		AbstractButton<?> rv = tab.getOuterTitleComponent();
+		map.put(rv, tab);
+		return rv;
+	}
+	@Override
+	protected void removeAllButtons() {
+		for( Tab<E> tab : this.map.values() ) {
+			this.removeTab( tab );
+		}
 	}
 	@Override
 	protected void addPrologue( int count ) {
+	}
+	@Override
+	protected final void addButton(edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
+		Tab< E > tab = this.map.get( button );
+		assert tab != null;
+		this.addTab( tab );
 	}
 	@Override
 	protected void addEpilogue() {

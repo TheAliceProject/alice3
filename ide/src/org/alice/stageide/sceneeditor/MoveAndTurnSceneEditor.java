@@ -321,6 +321,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		private edu.cmu.cs.dennisc.croquet.Component<?> previousComponent;
 		private edu.cmu.cs.dennisc.croquet.Component<?> rootComponent;
 		@Override
+		protected void removeAllButtons() {
+			this.removeAllComponents();
+		}
+		@Override
 		protected void addPrologue(int count) {
 			this.previousComponent = null;
 			this.rootComponent = null;
@@ -500,12 +504,16 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				
 				//Switch the main view to the starting view
 				CameraFieldAndMarker cfAm = this.sidePane.getStartingCameraViewManager().getSelectedView();
-				assert cfAm != null;
-				int startingViewIndex = this.mainViewSelector.getIndexForField(cfAm.field);
-				//assert startingViewIndex != -1;
-				if (startingViewIndex != -1)
-				{
-					this.mainViewSelector.setSelectedIndex(startingViewIndex);
+				//assert cfAm != null;
+				if( cfAm != null ) {
+					int startingViewIndex = this.mainViewSelector.getIndexForField(cfAm.field);
+					//assert startingViewIndex != -1;
+					if (startingViewIndex != -1)
+					{
+						this.mainViewSelector.setSelectedIndex(startingViewIndex);
+					}
+				} else {
+					PrintUtilities.println( "todo: handle cfAm == null" );
 				}
 			}
 		}
