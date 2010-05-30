@@ -345,10 +345,11 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 	@Deprecated
 	public void edit( final edu.cmu.cs.dennisc.alice.ast.AbstractCode code, boolean isOriginatedByPreviousCodeOperation ) {
 		if( this.containsItem( code ) ) {
-			this.setValue( code );
+			//pass
 		} else {
 			this.addItem( code );
 		}
+		this.setValue( code );
 //		for( edu.cmu.cs.dennisc.croquet.TabStateOperation tabIsSelectedOperation : this.getTabStateOperations() ) {
 //			edu.cmu.cs.dennisc.croquet.Component< ? > component = tabIsSelectedOperation.getSingletonView();
 //			edu.cmu.cs.dennisc.print.PrintUtilities.println( component.getClass() );
