@@ -59,7 +59,7 @@ public abstract class SelectAndLoadProjectOperation extends org.alice.app.operat
 	
 	@Override
 	protected java.awt.Dimension getDesiredDialogSize( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
-		return new java.awt.Dimension( 620, 460 );
+		return new java.awt.Dimension( 620, 480 );
 	}
 	
 	@Override
@@ -79,6 +79,7 @@ public abstract class SelectAndLoadProjectOperation extends org.alice.app.operat
 		} else {
 			this.selectProjectToOpenPanel = new org.alice.app.openprojectpane.SelectProjectToOpenPanel();
 		}
+		this.selectProjectToOpenPanel.selectAppropriateTab( this.isNew() );
 		this.selectProjectToOpenPanel.refresh();
 		return this.selectProjectToOpenPanel;
 	}

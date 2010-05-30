@@ -115,8 +115,9 @@ public abstract class Component<J extends java.awt.Component> {
 					} else {
 						//Thread.dumpStack();
 						edu.cmu.cs.dennisc.print.PrintUtilities.println( "investigate: hierarchyChanged seems to not be actually changing the parent" );
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( "    flags:", flags );
 						edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
-						//edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtChanged:", awtChanged.getClass().getName(), awtChanged );
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtChanged:", awtChanged.getClass().getName(), awtChanged );
 						edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtParent:", awtParent.getClass().getName(), awtParent.getLayout() );
 					}
 				}

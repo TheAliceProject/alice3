@@ -50,7 +50,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	private static class JFolderTabTitle extends JTabTitle {
 		public JFolderTabTitle( javax.swing.JComponent jComponent, boolean isCloseAffordanceDesired ) {
 			super( jComponent, isCloseAffordanceDesired );
-			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 32, 4, 4 ) );
+			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 4, 4, 8 ) );
 			this.setOpaque( false );
 		}
 	}
@@ -202,10 +202,8 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 
 	private CardPanel cardPanel = new CardPanel();
 	private HeaderPane headerPane = new HeaderPane();
-	//private LineAxisPanel headerPane = new LineAxisPanel();
 
 	/*package-private*/ class FolderTabItemDetails extends TabItemDetails {
-		private FolderTabTitle outerTileComponent;
 		private edu.cmu.cs.dennisc.croquet.CardPanel.Key cardPanelKey;
 		public FolderTabItemDetails( E item, AbstractButton< ? > button, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, boolean isCloseAffordanceDesired ) {
 			super( item, button, id, innerTitleComponent, scrollPane, mainComponent, isCloseAffordanceDesired );
@@ -213,6 +211,15 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		}
 		public edu.cmu.cs.dennisc.croquet.CardPanel.Key getCardPanelKey() {
 			return cardPanelKey;
+		}
+		@Override
+		public void setSelected(boolean isSelected) {
+			super.setSelected(isSelected);
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "setSelected", this, isSelected ); 
+			if( isSelected ) {
+				cardPanel.show( this.cardPanelKey );
+				cardPanel.revalidateAndRepaint();
+			}
 		}
 	}
 

@@ -161,43 +161,43 @@ class FieldsContentPanel extends MembersContentPanel {
  * @author Dennis Cosgrove
  */
 public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	private static abstract class MemberTabStateOperation extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
+	private static abstract class MemberTab extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
 		private static String getTitle( String key ) {
 			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "org.alice.ide.memberseditor.TabTitles", javax.swing.JComponent.getDefaultLocale() );
 			return resourceBundle.getString( key );
 		}
-		public MemberTabStateOperation( java.util.UUID individualId, String key ) {
+		public MemberTab( java.util.UUID individualId, String key ) {
 			super( individualId, getTitle( key ) );
 		}
 	}
 
-	private MemberTabStateOperation proceduresTabStateOperation = new MemberTabStateOperation( java.util.UUID.fromString( "2731d704-1f80-444e-a610-e6e5866c0b9a" ), "procedure" ) {
+	private MemberTab proceduresTab = new MemberTab( java.util.UUID.fromString( "2731d704-1f80-444e-a610-e6e5866c0b9a" ), "procedure" ) {
 		@Override
 		protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
 			return new ProceduresContentPanel();
 		}
 	};
-	private MemberTabStateOperation functionsTabStateOperation = new MemberTabStateOperation( java.util.UUID.fromString( "0f5d1f93-fc67-4109-9aff-0e7b232f201c" ), "function" ) {
+	private MemberTab functionsTab = new MemberTab( java.util.UUID.fromString( "0f5d1f93-fc67-4109-9aff-0e7b232f201c" ), "function" ) {
 		@Override
 		protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
 			return new FunctionsContentPanel();
 		}
 	};
-	private MemberTabStateOperation fieldsTabStateOperation = new MemberTabStateOperation( java.util.UUID.fromString( "6cb9c5a1-dc60-48e7-9a52-534009a093b8" ), "field" ) {
+	private MemberTab fieldsTab = new MemberTab( java.util.UUID.fromString( "6cb9c5a1-dc60-48e7-9a52-534009a093b8" ), "field" ) {
 		@Override
 		protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
 			return new FieldsContentPanel();
 		}
 	};
 
-	public MemberTabStateOperation getProceduresTabStateOperation() {
-		return this.proceduresTabStateOperation;
+	public MemberTab getProceduresTab() {
+		return this.proceduresTab;
 	}
-	public MemberTabStateOperation getFunctionsTabStateOperation() {
-		return this.functionsTabStateOperation;
+	public MemberTab getFunctionsTab() {
+		return this.functionsTab;
 	}
-	public MemberTabStateOperation getFieldsTabStateOperation() {
-		return this.fieldsTabStateOperation;
+	public MemberTab getFieldsTab() {
+		return this.fieldsTab;
 	}
 
 	private edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractField > fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractField >() {
@@ -206,22 +206,22 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	};
 
-	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabbedPaneSelectionOperation = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( 
+	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabbedPaneSelectionState = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( 
 			org.alice.ide.IDE.IDE_GROUP, 
 			java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ),
-			this.fieldsTabStateOperation, this.functionsTabStateOperation, this.proceduresTabStateOperation );
+			this.fieldsTab, this.functionsTab, this.proceduresTab );
 
 	private void handleFieldSelection( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		final int N = this.tabbedPaneSelectionOperation.getItemCount();
+		final int N = this.tabbedPaneSelectionState.getItemCount();
 		for( int i=0; i<N; i++ ) {
-			MembersContentPanel membersTab = (MembersContentPanel)this.tabbedPaneSelectionOperation.getItemAt( i ).getMainComponent();
+			MembersContentPanel membersTab = (MembersContentPanel)this.tabbedPaneSelectionState.getItemAt( i ).getMainComponent();
 			membersTab.handleFieldSelection( field );
 		}
 	}
 	private void refresh() {
-		final int N = this.tabbedPaneSelectionOperation.getItemCount();
+		final int N = this.tabbedPaneSelectionState.getItemCount();
 		for( int i=0; i<N; i++ ) {
-			MembersContentPanel membersTab = (MembersContentPanel)this.tabbedPaneSelectionOperation.getItemAt( i ).getMainComponent();
+			MembersContentPanel membersTab = (MembersContentPanel)this.tabbedPaneSelectionState.getItemAt( i ).getMainComponent();
 			membersTab.refresh();
 		}
 	}
@@ -259,7 +259,8 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		label.scaleFont( FONT_SCALAR );
 		edu.cmu.cs.dennisc.croquet.LineAxisPanel instancePanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( label, comboBox );
 
-		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.tabbedPaneSelectionOperation.createDefaultToolPaletteTabbedPane();
+		this.tabbedPaneSelectionState.setValue( this.proceduresTab );
+		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.tabbedPaneSelectionState.createDefaultToolPaletteTabbedPane();
 		this.addComponent( instancePanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
 		this.addComponent( tabbedPane, Constraint.CENTER );
 		tabbedPane.scaleFont( 1.5f );
@@ -267,7 +268,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
 		this.setOpaque( true );
 		
-		this.tabbedPaneSelectionOperation.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< edu.cmu.cs.dennisc.croquet.PredeterminedTab >() {
+		this.tabbedPaneSelectionState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< edu.cmu.cs.dennisc.croquet.PredeterminedTab >() {
 			public void changed(edu.cmu.cs.dennisc.croquet.PredeterminedTab nextValue) {
 				if( nextValue != null ) {
 					MembersEditor.this.setBackgroundColor( nextValue.getMainComponent().getBackgroundColor() );

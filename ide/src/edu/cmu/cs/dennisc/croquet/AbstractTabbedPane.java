@@ -209,6 +209,7 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 			this.scrollPane = scrollPane;
 			this.isCloseAffordanceDesired = isCloseAffordanceDesired;
 
+			button.setBackgroundColor( this.mainComponent.getBackgroundColor() );
 			this.scrollPane.setViewportView( this.mainComponent );
 		}
 		public java.util.UUID getId() {
@@ -246,8 +247,7 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 		assert id != null : item;
 		return createTabItemDetails( item, id, this.tabCreator.createInnerTitleComponent( item ), this.tabCreator.createScrollPane( item ), this.tabCreator.createMainComponent( item ), this.tabCreator.isCloseAffordanceDesired() );
 	}
-	
-	
+		
 //	protected abstract Tab<E> createTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator );
 //	protected abstract void addTab( Tab<E> tab );
 //	protected abstract void removeTab( Tab<E> tab );

@@ -117,24 +117,57 @@ public abstract class ItemSelectable< E, D extends ItemSelectable.ItemDetails > 
 	protected abstract void addItem( D itemDetails );
 	protected abstract void addEpilogue();
 	
+	private java.util.ArrayList<E> prevItems = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+	
 	private void handleListDataChanged() {
 		synchronized( this.model ) {
-			this.removeAllDetails();
 			final int N = this.model.getSize();
-			this.addPrologue( N );
-			for( int i=0; i<N; i++ ) {
-				E item = (E)this.model.getElementAt( i );
-				D itemDetails = this.map.get( item );
-				if( itemDetails != null ) {
-					//pass
-				} else {
-					itemDetails = this.createItemDetails( item );
-					this.map.put( item, itemDetails );
+			
+			boolean isActuallyChanged;
+			if( N == prevItems.size() ) {
+				isActuallyChanged = false;
+				for( int i=0; i<N; i++ ) {
+					E item = (E)this.model.getElementAt( i );
+					if( item == prevItems.get( i ) ) {
+						//pass
+					} else {
+						isActuallyChanged = true;
+						break;
+					}
 				}
-				itemDetails.add();
-				this.addItem( itemDetails );
+			} else {
+				isActuallyChanged = true;;
 			}
-			this.addEpilogue();
+			
+			if( isActuallyChanged ) {
+				this.removeAllDetails();
+				this.prevItems.clear();
+				this.prevItems.ensureCapacity( N );
+				this.addPrologue( N );
+				for( int i=0; i<N; i++ ) {
+					E item = (E)this.model.getElementAt( i );
+					D itemDetails = this.map.get( item );
+					if( itemDetails != null ) {
+						//pass
+					} else {
+						itemDetails = this.createItemDetails( item );
+						this.map.put( item, itemDetails );
+					}
+					itemDetails.add();
+					this.addItem( itemDetails );
+					this.prevItems.add( item );
+				}
+				this.addEpilogue();
+			}
+			
+//			int i = this.listSelectionModel.getLeadSelectionIndex();
+//			E selectedItem;
+//			if( i > 0 ) {
+//				selectedItem = (E)this.model.getElementAt( i );
+//			} else {
+//				selectedItem = null;
+//			}
+//			this.handleItemSelected( selectedItem );
 		}
 		this.revalidateAndRepaint();
 	}

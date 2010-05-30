@@ -152,10 +152,18 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, Abstra
 //	}
 
 	@Override
-	protected AbstractTabbedPane.TabItemDetails createTabItemDetails( E item, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, boolean isCloseAffordanceDesired ) {
+	protected TabItemDetails createTabItemDetails( E item, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, boolean isCloseAffordanceDesired ) {
 		AbstractButton<?> button = new ToolPaletteTabTitle(innerTitleComponent, isCloseAffordanceDesired);
 		scrollPane.setVisible( false );
-		return new TabItemDetails( item, button, id, innerTitleComponent, scrollPane, mainComponent, isCloseAffordanceDesired );
+		return new TabItemDetails( item, button, id, innerTitleComponent, scrollPane, mainComponent, isCloseAffordanceDesired ) {
+			@Override
+			public void setSelected(boolean isSelected) {
+				super.setSelected(isSelected);
+				for( TabItemDetails tabItemDetails : getItemDetails() ) {
+					tabItemDetails.getScrollPane().setVisible( tabItemDetails == this );
+				}
+			}
+		};
 	};
 	
 	@Override
@@ -171,7 +179,7 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, Abstra
 	protected void addPrologue(int count) {
 	}
 	@Override
-	protected void addItem(edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.TabItemDetails itemDetails) {
+	protected void addItem( AbstractTabbedPane.TabItemDetails itemDetails) {
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;

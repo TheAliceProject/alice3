@@ -70,6 +70,8 @@ public abstract class PredeterminedTab {
 		return this.mainComponent;
 	}
 	public ScrollPane createScrollPane() {
-		return new ScrollPane();
+		ScrollPane rv = new ScrollPane();
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		return rv;
 	}
 };
