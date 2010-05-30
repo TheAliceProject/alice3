@@ -293,9 +293,9 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 			return true;
 		}
 	};
-	private edu.cmu.cs.dennisc.croquet.FolderTabbedPane singleton;
+	private edu.cmu.cs.dennisc.croquet.FolderTabbedPane<edu.cmu.cs.dennisc.alice.ast.AbstractCode> singleton;
 	private EditorTabCreator editorTabCreator = new EditorTabCreator();
-	public edu.cmu.cs.dennisc.croquet.FolderTabbedPane createEditorsFolderTabbedPane() {
+	public edu.cmu.cs.dennisc.croquet.FolderTabbedPane<edu.cmu.cs.dennisc.alice.ast.AbstractCode> createEditorsFolderTabbedPane() {
 		assert this.singleton == null;
 		this.singleton = this.createFolderTabbedPane( this.editorTabCreator );
 		return this.singleton;
@@ -441,7 +441,12 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 		}
 	};
 	public CodeEditor getCodeEditorInFocus() {
-		return null;
+		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getValue();
+		if( code != null ) {
+			return (CodeEditor)this.singleton.getMainComponent( code );
+		} else {
+			return null;
+		}
 	}
 
 //	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {

@@ -109,9 +109,22 @@ public abstract class ItemSelectable< E, D extends ItemSelectable.ItemDetails > 
 		}
 	}
 
-	protected Iterable<D> getItemDetails() {
+	protected D getItemDetails( E item ) {
+		return this.map.get( item );
+	}
+	protected Iterable<D> getAllItemDetails() {
 		return this.map.values();
 	}
+//	public D getSelectedItemDetails() {
+//		for( D details : this.getAllItemDetails() ) {
+//			AbstractButton<?> button = details.getButton();
+//			if( button.getAwtComponent().getModel().isSelected() ) {
+//				return details;
+//			}
+//		}
+//		return null;
+//	}
+	
 	protected abstract void removeAllDetails();
 	protected abstract void addPrologue( int count );
 	protected abstract void addItem( D itemDetails );

@@ -200,17 +200,21 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		return this.fieldsTab;
 	}
 
-	private edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractField > fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractField >() {
-		public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractField nextValue ) {
-			MembersEditor.this.handleFieldSelection( nextValue );
-		}
-	};
 
 	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabbedPaneSelectionState = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( 
 			org.alice.ide.IDE.IDE_GROUP, 
 			java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ),
 			this.fieldsTab, this.functionsTab, this.proceduresTab );
 
+
+	public edu.cmu.cs.dennisc.croquet.TabSelectionOperation getTabbedPaneSelectionState() {
+		return this.tabbedPaneSelectionState;
+	}
+	private edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractField > fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractField >() {
+		public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractField nextValue ) {
+			MembersEditor.this.handleFieldSelection( nextValue );
+		}
+	};
 	private void handleFieldSelection( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		final int N = this.tabbedPaneSelectionState.getItemCount();
 		for( int i=0; i<N; i++ ) {

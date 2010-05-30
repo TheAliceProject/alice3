@@ -48,22 +48,6 @@ package org.alice.ide;
 public abstract class IDE extends org.alice.app.ProjectApplication {
 	public static final edu.cmu.cs.dennisc.croquet.Group PREFERENCES_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "c090cda0-4a77-4e2c-a839-faf28c98c10c" ) );
 	public static final edu.cmu.cs.dennisc.croquet.Group RUN_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "f7a87645-567c-42c6-bf5f-ab218d93a226" ) );
-//
-//	private edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = null;
-//	public static interface CodeInFocusObserver {
-//		public void focusedCodeChanging( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode );
-//		public void focusedCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode );
-//	}
-//	private java.util.List< CodeInFocusObserver > codeInFocusObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-//	public void addCodeInFocusObserver( CodeInFocusObserver codeInFocusObserver ) {
-//		assert this.codeInFocusObservers.contains( codeInFocusObserver ) == false;
-//		this.codeInFocusObservers.add( codeInFocusObserver );
-//	}
-//	public void removeCodeInFocusObserver( CodeInFocusObserver codeInFocusObserver ) {
-//		assert this.codeInFocusObservers.contains( codeInFocusObserver ) == true;
-//		this.codeInFocusObservers.remove( codeInFocusObserver );
-//	}
-	
 
 	public static final String DEBUG_PROPERTY_KEY = "org.alice.ide.DebugMode";
 	
@@ -71,7 +55,6 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private static IDE singleton;
 	private static java.util.HashSet< String > performSceneEditorGeneratedSetUpMethodNameSet = new java.util.HashSet< String >();
 
-	//public static String IS_PROJECT_CHANGED_KEY = "IS_PROJECT_AFFECTED_KEY";
 	public static final String GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
 	static {
 		IDE.exceptionHandler = new org.alice.ide.issue.ExceptionHandler();
@@ -202,10 +185,15 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			codeEditor.refresh();
 		}
 	}
+	
+	public edu.cmu.cs.dennisc.croquet.BooleanStateOperation getEmphasizingClassesState() {
+		return this.isEmphasizingClassesOperation;
+	}
 	@Deprecated
 	public boolean isEmphasizingClasses() {
 		return this.isEmphasizingClassesOperation.getState();
 	}
+	
 //	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
 //		this.editorsTabbedPaneOperation.setEmphasizingClasses( isEmphasizingClasses );
 //		this.membersEditor.setEmphasizingClasses( isEmphasizingClasses );

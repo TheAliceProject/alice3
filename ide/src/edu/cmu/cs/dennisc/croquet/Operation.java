@@ -150,8 +150,13 @@ public abstract class Operation {
 	}
 	
 	@Deprecated
-	public JComponent< ? > getFirstComponent() {
-		return (JComponent<?>)this.components.get( 0 );
+	public <J extends Component<?>> J getFirstComponent( Class<J> cls ) {
+		for( Component<?> component : this.components ) {
+			if( cls.isAssignableFrom( component.getClass() ) ) {
+				return (J)component;
+			}
+		}
+		return null;
 	}
 	
 //	protected abstract void perform( C context );

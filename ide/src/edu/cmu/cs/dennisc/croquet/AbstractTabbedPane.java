@@ -235,7 +235,7 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 	@Override
 	public void setFont(java.awt.Font font) {
 		super.setFont( font );
-		for( D tabItemDetails : this.getItemDetails() ) {
+		for( D tabItemDetails : this.getAllItemDetails() ) {
 			tabItemDetails.getInnerTitleComponent().setFont( font );
 		}
 	}
@@ -247,6 +247,35 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 		assert id != null : item;
 		return createTabItemDetails( item, id, this.tabCreator.createInnerTitleComponent( item ), this.tabCreator.createScrollPane( item ), this.tabCreator.createMainComponent( item ), this.tabCreator.isCloseAffordanceDesired() );
 	}
+	
+	@Deprecated
+	public AbstractButton<?> getTabTitle( E item ) {
+		TabItemDetails tabItemDetails = this.getItemDetails( item );
+		if( tabItemDetails != null ) {
+			return tabItemDetails.getButton();
+		} else {
+			return null;
+		}
+	}
+	@Deprecated
+	public JComponent<?> getMainComponent( E item ) {
+		TabItemDetails tabItemDetails = this.getItemDetails( item );
+		if( tabItemDetails != null ) {
+			return tabItemDetails.getMainComponent();
+		} else {
+			return null;
+		}
+	}
+	@Deprecated
+	public ScrollPane getScrollPane( E item ) {
+		TabItemDetails tabItemDetails = this.getItemDetails( item );
+		if( tabItemDetails != null ) {
+			return tabItemDetails.getScrollPane();
+		} else {
+			return null;
+		}
+	}
+	
 		
 //	protected abstract Tab<E> createTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator );
 //	protected abstract void addTab( Tab<E> tab );

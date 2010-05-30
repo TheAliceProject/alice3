@@ -159,7 +159,7 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, Abstra
 			@Override
 			public void setSelected(boolean isSelected) {
 				super.setSelected(isSelected);
-				for( TabItemDetails tabItemDetails : getItemDetails() ) {
+				for( TabItemDetails tabItemDetails : getAllItemDetails() ) {
 					tabItemDetails.getScrollPane().setVisible( tabItemDetails == this );
 				}
 			}
