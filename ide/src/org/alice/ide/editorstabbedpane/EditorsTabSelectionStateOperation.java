@@ -279,12 +279,12 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 			return code.getUUID();
 		}
 		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-			return new edu.cmu.cs.dennisc.croquet.ScrollPane();
+			edu.cmu.cs.dennisc.croquet.ScrollPane rv = new edu.cmu.cs.dennisc.croquet.ScrollPane();
+			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+			return rv;
 		}
 		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-			edu.cmu.cs.dennisc.croquet.Panel rv = new edu.cmu.cs.dennisc.croquet.PageAxisPanel();
-			edu.cmu.cs.dennisc.java.awt.ComponentUtilities.makeStandOut( rv.getAwtComponent() );
-			return rv;
+			return new CodeEditor( code );
 		}
 		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createInnerTitleComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 			return new edu.cmu.cs.dennisc.croquet.Label( code.getName() );
@@ -344,6 +344,11 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 //	}
 	@Deprecated
 	public void edit( final edu.cmu.cs.dennisc.alice.ast.AbstractCode code, boolean isOriginatedByPreviousCodeOperation ) {
+		if( this.containsItem( code ) ) {
+			this.setValue( code );
+		} else {
+			this.addItem( code );
+		}
 //		for( edu.cmu.cs.dennisc.croquet.TabStateOperation tabIsSelectedOperation : this.getTabStateOperations() ) {
 //			edu.cmu.cs.dennisc.croquet.Component< ? > component = tabIsSelectedOperation.getSingletonView();
 //			edu.cmu.cs.dennisc.print.PrintUtilities.println( component.getClass() );

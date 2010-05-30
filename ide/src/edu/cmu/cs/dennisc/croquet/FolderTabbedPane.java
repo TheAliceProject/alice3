@@ -225,6 +225,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 
 	public FolderTabbedPane( ItemSelectionOperation.TabCreator< E > tabCreator ) {
 		super( tabCreator );
+		this.cardPanel.setBorder( javax.swing.BorderFactory.createMatteBorder( 0, 1, 0, 0, java.awt.Color.WHITE ) );
 	}
 
 	@Override
