@@ -277,6 +277,11 @@ public class Tutorial {
 		Step step = new ActionNoteStep( this, title, text, operation );
 		this.addStep( step );
 	}
+	public void addActionStep( String title, String text, java.util.UUID id ) {
+		edu.cmu.cs.dennisc.croquet.Model model = edu.cmu.cs.dennisc.croquet.Application.getSingleton().lookupOperation( id );
+		assert model != null;
+		addActionStep( title, text, (edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?>)model );
+	}
 	public void addBooleanStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.BooleanState booleanState ) {
 		Step step = new BooleanStateNoteStep( this, title, text, booleanState );
 		this.addStep( step );

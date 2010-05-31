@@ -547,7 +547,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	public org.alice.ide.memberseditor.MembersEditor getMembersEditor() {
 		return this.membersEditor;
 	}
-	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser getGalleryBrowser() {
+	public org.alice.ide.gallerybrowser.AbstractGalleryBrowser getGalleryBrowser() {
 		return this.galleryBrowser;
 	}
 	public org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor() {
