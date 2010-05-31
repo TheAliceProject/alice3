@@ -98,10 +98,11 @@ public abstract class Step {
 		edu.cmu.cs.dennisc.croquet.Component< ? > card = this.getCard();
 		assert card == note.getParent();
 		
-		javax.swing.JLayeredPane layeredPane = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getAwtWindow().getLayeredPane();
+		javax.swing.JFrame jFrame = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getAwtWindow();
+		javax.swing.JLayeredPane layeredPane = jFrame.getLayeredPane();
 		java.awt.Rectangle cardBounds = javax.swing.SwingUtilities.getLocalBounds( layeredPane );
+		assert cardBounds.width > 0 && cardBounds.height > 0;
 		
-//		java.awt.Rectangle cardBounds = card.getLocalBounds();
 		java.awt.Rectangle noteBounds = note.getLocalBounds();
 		int x = 20;
 		int y = 20;
@@ -122,10 +123,17 @@ public abstract class Step {
 							actualConnection = Feature.Connection.EAST;
 						}
 					}
-					y = featureComponentBounds.y + 200;
 				}
 				if( actualConnection != null ) {
-					//pass
+					int yFeatureComponentCenter = featureComponentBounds.y + featureComponentBounds.height/2;
+					int yCardCenter = ( cardBounds.y + cardBounds.height ) / 2;
+					y = yFeatureComponentCenter;
+					if( yFeatureComponentCenter < yCardCenter ) {
+						y += 200;
+					} else {
+						y -= noteBounds.height;
+						y -= 200;
+					}
 				} else {
 					y = getYForNorthLayout( noteBounds, featureComponentBounds );
 					if( y >= 32 ) {
@@ -135,12 +143,11 @@ public abstract class Step {
 						if( y <= ( cardBounds.height - noteBounds.height - 32 ) ) {
 							actualConnection = Feature.Connection.SOUTH;
 						} else {
-							//todo
 							actualConnection = Feature.Connection.SOUTH;
 							y = 200;
 						}
 					}
-					int xFeatureComponentCenter = ( featureComponentBounds.x + featureComponentBounds.width ) / 2;
+					int xFeatureComponentCenter = featureComponentBounds.x + featureComponentBounds.width/2;
 					int xCardCenter = ( cardBounds.x + cardBounds.width ) / 2;
 					x = xFeatureComponentCenter;
 					if( xFeatureComponentCenter < xCardCenter ) {

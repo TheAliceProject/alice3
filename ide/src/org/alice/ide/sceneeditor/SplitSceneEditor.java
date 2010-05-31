@@ -109,7 +109,7 @@ class LookingGlass extends edu.cmu.cs.dennisc.croquet.CornerSpringPanel {
 	public LookingGlass() {
 		this.setBackgroundColor( java.awt.Color.RED );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		this.isSceneEditorExpandedCheckBox = ide.getIsSceneEditorExpandedOperation().createCheckBoxMenuItem();
+		this.isSceneEditorExpandedCheckBox = ide.getIsSceneEditorExpandedState().createCheckBoxMenuItem();
 		this.setSouthEastComponent( this.isSceneEditorExpandedCheckBox );
 	}
 }

@@ -57,7 +57,6 @@ public abstract class AbstractSceneEditor extends edu.cmu.cs.dennisc.croquet.Bor
 	};
 	public abstract void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering );
 	public abstract void enableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering );
-	public abstract void handleExpandContractChange( boolean isExpanded );
 	public abstract void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses );
 	
 	@Deprecated

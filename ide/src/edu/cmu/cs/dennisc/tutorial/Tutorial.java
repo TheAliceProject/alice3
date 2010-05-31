@@ -196,9 +196,13 @@ public class Tutorial {
 				int keyCode = e.getKeyCode();
 				switch( keyCode ) {
 				case java.awt.event.KeyEvent.VK_SPACE:
+				case java.awt.event.KeyEvent.VK_RIGHT:
+				case java.awt.event.KeyEvent.VK_DOWN:
 					nextStepOperation.fire( e );
 					break;
 				case java.awt.event.KeyEvent.VK_BACK_SPACE:
+				case java.awt.event.KeyEvent.VK_LEFT:
+				case java.awt.event.KeyEvent.VK_UP:
 					previousStepOperation.fire( e );
 					break;
 				}

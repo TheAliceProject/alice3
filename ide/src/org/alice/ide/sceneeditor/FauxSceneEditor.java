@@ -54,9 +54,6 @@ public class FauxSceneEditor extends AbstractSceneEditor {
 	public void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance, boolean isAnimationDesired ) {
 	}
 	@Override
-	public void handleExpandContractChange( boolean isExpanded ) {
-	}
-	@Override
 	public void enableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
 	}
 	@Override

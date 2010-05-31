@@ -164,17 +164,19 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			this.runOperation 
 	);
 	
+	private edu.cmu.cs.dennisc.croquet.BooleanStateOperation isSceneEditorExpandedState = new edu.cmu.cs.dennisc.croquet.BooleanStateOperation( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "704ea7d2-9da8-461f-b7dd-d086815c3e52" ), false, "Edit Code", "Edit Scene" );
+
+	
 	private org.alice.ide.operations.window.IsMemoryUsageShowingOperation isMemoryUsageShowingOperation = new org.alice.ide.operations.window.IsMemoryUsageShowingOperation();
 	private org.alice.ide.operations.window.IsHistoryShowingOperation isHistoryShowingOperation = new org.alice.ide.operations.window.IsHistoryShowingOperation();
 
-	private org.alice.ide.operations.window.IsSceneEditorExpandedOperation isSceneEditorExpandedOperation = new org.alice.ide.operations.window.IsSceneEditorExpandedOperation( false );
 	private org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation isExpressionTypeFeedbackDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation.class, true );
 	private org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation isOmissionOfThisForFieldAccessesDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation.class, false );
 	private org.alice.ide.operations.window.IsEmphasizingClassesOperation isEmphasizingClassesOperation = createBooleanOperation( org.alice.ide.operations.window.IsEmphasizingClassesOperation.class, true );
 	private org.alice.ide.operations.window.IsDefaultFieldNameGenerationDesiredOperation isDefaultFieldNameGenerationDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsDefaultFieldNameGenerationDesiredOperation.class, this.isDefaultFieldNameGenerationDesiredByDefault() );
 
-	public org.alice.ide.operations.window.IsSceneEditorExpandedOperation getIsSceneEditorExpandedOperation() {
-		return this.isSceneEditorExpandedOperation;
+	public edu.cmu.cs.dennisc.croquet.BooleanStateOperation getIsSceneEditorExpandedState() {
+		return this.isSceneEditorExpandedState;
 	}
 	public boolean isExpressionTypeFeedbackDesired() {
 		return this.isExpressionTypeFeedbackDesiredOperation.getState();
@@ -385,7 +387,6 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			//			}
 			this.root.setDividerSize( this.left.getDividerSize() );
 		}
-		this.sceneEditor.handleExpandContractChange( isSceneEditorExpanded );
 	}
 
 	@Override
@@ -631,7 +632,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 		this.expressionFillerInners = this.addExpressionFillerInners( new java.util.LinkedList< org.alice.ide.cascade.fillerinners.ExpressionFillerInner >() );
 		
-		this.isSceneEditorExpandedOperation.addValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanStateOperation.ValueObserver() {
+		this.isSceneEditorExpandedState.addValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanStateOperation.ValueObserver() {
 			public void changing(boolean nextValue) {
 			}
 			public void changed(boolean nextValue) {

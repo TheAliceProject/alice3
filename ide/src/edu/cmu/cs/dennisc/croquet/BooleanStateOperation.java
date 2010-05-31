@@ -55,6 +55,10 @@ public /*final*/ class BooleanStateOperation extends Operation {
 	public void addValueObserver( ValueObserver valueObserver ) {
 		this.valueObservers.add( valueObserver );
 	}
+	public void addAndInvokeValueObserver(ValueObserver valueObserver) {
+		this.addValueObserver(valueObserver);
+		valueObserver.changed(this.getState());
+	}
 	public void removeValueObserver( ValueObserver valueObserver ) {
 		this.valueObservers.remove( valueObserver );
 	}

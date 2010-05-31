@@ -51,9 +51,8 @@ public class EntryPoint {
 		ide.initialize(args);
 		ide.loadProjectFrom( args[ 0 ] );
 		ide.getFrame().maximize();
-		ide.getFrame().setVisible( true );
 		
-		edu.cmu.cs.dennisc.tutorial.Tutorial tutorial = new edu.cmu.cs.dennisc.tutorial.Tutorial();
+		final edu.cmu.cs.dennisc.tutorial.Tutorial tutorial = new edu.cmu.cs.dennisc.tutorial.Tutorial();
 		tutorial.createAndAddMessageStep( 
 				"Welcome", 
 				"<html><b><center>Welcome To The Tutorial</center></b><p>First we'll show you around a bit.</html>" 
@@ -73,50 +72,69 @@ public class EntryPoint {
 				"<html>Press the <b>Run</b> button</html>", 
 				ide.getRunOperation() 
 		);
+		
+		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 		tutorial.createAndAddSpotlightStep( 
 				"Instance Details", 
 				"<html>This is the currently selected instance methods and fields pane.</html>", 
-				ide.getMembersEditor() 
+				membersEditor 
+		);
+		tutorial.createAndAddSpotlightStep( 
+				"Curent Instance", 
+				"<html>The current instance is show here.</html>", 
+				ide.getFieldSelectionState().getFirstComponent( edu.cmu.cs.dennisc.croquet.ComboBox.class ) 
 		);
 		tutorial.createAndAddSelectTabTitleStep( 
 				"Select Functions Tab", 
 				"<html>Select the <b>Functions</b> tab.</html>", 
-				ide.getMembersEditor().getTabbedPaneSelectionState(),
-				ide.getMembersEditor().getFunctionsTab()
+				membersEditor.getTabbedPaneSelectionState(),
+				membersEditor.getFunctionsTab()
 		);
 		tutorial.createAndAddSpotlightTabScrollPaneStep( 
 				"Note Functions Tab", 
 				"<html>Now the functions are now available.</html>", 
-				ide.getMembersEditor().getTabbedPaneSelectionState(),
-				ide.getMembersEditor().getFunctionsTab()
+				membersEditor.getTabbedPaneSelectionState(),
+				membersEditor.getFunctionsTab()
 		);
 		tutorial.createAndAddSelectTabTitleStep( 
 				"Properies Tab", 
 				"<html>Select the <b>Properies</b> tab.</html>", 
-				ide.getMembersEditor().getTabbedPaneSelectionState(),
-				ide.getMembersEditor().getFieldsTab()
+				membersEditor.getTabbedPaneSelectionState(),
+				membersEditor.getFieldsTab()
 		);
 		tutorial.createAndAddSpotlightTabScrollPaneStep( 
 				"Note Properies Tab", 
 				"<html>Now the properties are now available.</html>", 
-				ide.getMembersEditor().getTabbedPaneSelectionState(),
-				ide.getMembersEditor().getFieldsTab()
+				membersEditor.getTabbedPaneSelectionState(),
+				membersEditor.getFieldsTab()
 		);
 		tutorial.createAndAddSelectTabTitleStep( 
 				"Procedures Tab", 
 				"<html>Select the <b>Procedures</b> tab.</html>", 
-				ide.getMembersEditor().getTabbedPaneSelectionState(),
-				ide.getMembersEditor().getProceduresTab()
+				membersEditor.getTabbedPaneSelectionState(),
+				membersEditor.getProceduresTab()
 		);
 		tutorial.createAndAddSpotlightTabScrollPaneStep( 
 				"Note Procedures Tab", 
 				"<html>Now the procedures are now available.</html>", 
-				ide.getMembersEditor().getTabbedPaneSelectionState(),
-				ide.getMembersEditor().getProceduresTab()
+				membersEditor.getTabbedPaneSelectionState(),
+				membersEditor.getProceduresTab()
 		);
-		//ide.getMembersEditor().getFunctionsTabStateOperation().setState( true );
+		membersEditor.getTabbedPaneSelectionState().setValue( membersEditor.getFunctionsTab() );
 		tutorial.setSelectedIndex( 6 );
 		
-		tutorial.setVisible( true );
+		
+		ide.getFrame().addWindowListener( new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowOpened(java.awt.event.WindowEvent e) {
+//				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//					public void run() {
+						tutorial.setVisible( true );
+//					}
+//				} );
+			}
+		} );
+
+		ide.getFrame().setVisible( true );
 	}
 }

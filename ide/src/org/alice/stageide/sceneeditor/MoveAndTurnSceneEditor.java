@@ -381,7 +381,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.mainViewSelector = new LookingGlassViewSelector(this, animator);
 			this.mainViewSelector.setExtraMarkerOptions(this.orthographicCameraMarkers);
 			
-			edu.cmu.cs.dennisc.croquet.BooleanStateOperation isSceneEditorExpandedOperation = this.getIDE().getIsSceneEditorExpandedOperation();
+			edu.cmu.cs.dennisc.croquet.BooleanStateOperation isSceneEditorExpandedOperation = this.getIDE().getIsSceneEditorExpandedState();
 			final edu.cmu.cs.dennisc.croquet.CheckBox isSceneEditorExpandedCheckBox = isSceneEditorExpandedOperation.createCheckBox();
 			isSceneEditorExpandedCheckBox.getAwtComponent().setUI( new IsExpandedCheckBoxUI() );
 			final int X_PAD = 16;
@@ -390,17 +390,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			isSceneEditorExpandedCheckBox.setFontSize( 18.0f );
 			isSceneEditorExpandedCheckBox.setBorder( javax.swing.BorderFactory.createEmptyBorder( Y_PAD, X_PAD, Y_PAD, X_PAD ) );
 			
-			
-			if( mainCameraNavigatorWidget != null ) {
-				mainCameraNavigatorWidget.setExpanded( isSceneEditorExpandedOperation.getState() );
-			}
 			isSceneEditorExpandedOperation.addValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanStateOperation.ValueObserver() {
 				public void changing(boolean nextValue) {
 				}
 				public void changed(boolean nextValue) {
-					if( mainCameraNavigatorWidget != null ) {
-						mainCameraNavigatorWidget.setExpanded( nextValue );
-					}
+					handleExpandContractChange( nextValue );
 				}
 			} );
 
@@ -457,8 +451,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 	
-	@Override
-	public void handleExpandContractChange( boolean isExpanded ) {
+	private void handleExpandContractChange( boolean isExpanded ) {
 		this.sidePane.setExpanded( isExpanded );
 		javax.swing.JPanel lgPanel = this.lookingGlassPanel.getAwtComponent();
 		if( mainCameraNavigatorWidget != null ) {
@@ -519,6 +512,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			}
 		}
 		this.updateSceneBasedOnScope();
+		
+		if( this.mainCameraNavigatorWidget != null ) {
+			this.mainCameraNavigatorWidget.setExpanded( isExpanded );
+		}
 	}
 
 	@Override
