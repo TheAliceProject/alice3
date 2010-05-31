@@ -53,9 +53,15 @@ public abstract class InputDialogWithPreviewOperation extends edu.cmu.cs.dennisc
 	@Override
 	protected String getExplanationIfOkButtonShouldBeDisabled() {
 		org.alice.ide.preview.PanelWithPreview panelWithPreview = this.getPanelWithPreview();
+		String rv = null;
 		if( panelWithPreview != null ) {
 			panelWithPreview.updatePreview();
+			rv = panelWithPreview.getExplanationIfOkButtonShouldBeDisabled();
 		}
-		return super.getExplanationIfOkButtonShouldBeDisabled();
+		if( rv != null ) {
+			return rv;
+		} else {
+			return super.getExplanationIfOkButtonShouldBeDisabled();
+		}
 	}
 }

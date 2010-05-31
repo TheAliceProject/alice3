@@ -58,7 +58,8 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression, 
 		return this.chooser.getTitleDefault();
 	}
 	
-	protected String getExplanationIfOkButtonShouldBeDisabled() {
+	@Override
+	public String getExplanationIfOkButtonShouldBeDisabled() {
 		return this.chooser.getExplanationIfOkButtonShouldBeDisabled();
 	}
 	

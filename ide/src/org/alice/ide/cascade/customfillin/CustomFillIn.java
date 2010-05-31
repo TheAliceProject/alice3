@@ -58,17 +58,11 @@ public abstract class CustomFillIn<E extends edu.cmu.cs.dennisc.alice.ast.Expres
 		org.alice.ide.choosers.ValueChooser< F > chooser = this.createCustomPane();
 		final CustomInputPane< E, F > customInputPane = new CustomInputPane<E,F>(this, chooser);
 		
-		edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation = new edu.cmu.cs.dennisc.croquet.InputDialogOperation( 
+		org.alice.ide.operations.InputDialogWithPreviewOperation inputDialogOperation = new org.alice.ide.operations.InputDialogWithPreviewOperation( 
 				edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "0e69d792-3e5b-4a17-b670-465885ade615" ) ) {
-			
 			@Override
-			protected String getExplanationIfOkButtonShouldBeDisabled() {
-				String explanation = customInputPane.getExplanationIfOkButtonShouldBeDisabled();
-				if( explanation != null ) {
-					return explanation;
-				} else {
-					return super.getExplanationIfOkButtonShouldBeDisabled();
-				}
+			protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
+				return customInputPane;
 			}
 			@Override
 			protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
