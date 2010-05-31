@@ -45,7 +45,7 @@ package org.alice.stageide.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-public class EntryPoint {
+public class IntroductionTutorial {
 	public static void main( final String[] args ) {
 		org.alice.stageide.StageIDE ide = new org.alice.stageide.StageIDE();
 		ide.initialize(args);
