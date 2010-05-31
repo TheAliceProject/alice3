@@ -92,7 +92,7 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 			}
 			
 			@Override
-			public edu.cmu.cs.dennisc.croquet.Operation[] getOperations() {
+			public edu.cmu.cs.dennisc.croquet.Model[] getOperations() {
 				return DirectoryControl.this.getOperations();
 			}
 		}
@@ -111,7 +111,7 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 			this.addComponent( selectChildButton, Constraint.EAST );
 		}
 
-		private edu.cmu.cs.dennisc.croquet.Operation[] getOperations() {
+		private edu.cmu.cs.dennisc.croquet.Model[] getOperations() {
 			return PathControl.this.getOperations( this.file );
 		}
 
@@ -182,7 +182,7 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 
 	protected abstract void handleSelectFile( java.io.File file );
 
-	private edu.cmu.cs.dennisc.croquet.Operation[] getOperations( java.io.File directory ) {
+	private edu.cmu.cs.dennisc.croquet.Model[] getOperations( java.io.File directory ) {
 		java.io.File[] packages = ThumbnailsPane.listPackages( directory );
 		java.util.Arrays.sort( packages, edu.cmu.cs.dennisc.java.io.FileUtilities.createComparator() );
 		java.io.File[] classes = ThumbnailsPane.listClasses( directory );
@@ -214,7 +214,7 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 			}
 		}
 
-		edu.cmu.cs.dennisc.croquet.Operation[] rv = new edu.cmu.cs.dennisc.croquet.Operation[ packages.length + classes.length ];
+		edu.cmu.cs.dennisc.croquet.Model[] rv = new edu.cmu.cs.dennisc.croquet.Model[ packages.length + classes.length ];
 		int i=0;
 		for( java.io.File file : packages ) {
 			rv[ i++ ] = new SelectFileActionOperation( file );

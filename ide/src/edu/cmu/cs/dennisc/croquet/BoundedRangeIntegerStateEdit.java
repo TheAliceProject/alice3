@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public final class BoundedRangeIntegerStateEdit extends Edit {
-	private BoundedRangeIntegerStateOperation operation;
+	private BoundedRangeIntegerState operation;
 	private java.util.UUID operationId;
 	private int previousValue;
 	private int nextValue;
@@ -54,7 +54,7 @@ public final class BoundedRangeIntegerStateEdit extends Edit {
 	public BoundedRangeIntegerStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public BoundedRangeIntegerStateEdit( Context context, javax.swing.event.ChangeEvent e, BoundedRangeIntegerStateOperation operation, int previousValue, int nextValue, boolean isDoDesired ) {
+	public BoundedRangeIntegerStateEdit( Context context, javax.swing.event.ChangeEvent e, BoundedRangeIntegerState operation, int previousValue, int nextValue, boolean isDoDesired ) {
 		super( context );
 		this.operation = operation;
 		this.operationId = operation.getIndividualUUID();
@@ -63,7 +63,7 @@ public final class BoundedRangeIntegerStateEdit extends Edit {
 		this.isDoDesired = isDoDesired;
 	}
 
-	private BoundedRangeIntegerStateOperation getOperation() {
+	private BoundedRangeIntegerState getOperation() {
 		if( this.operation != null ) {
 			//pass
 		} else {

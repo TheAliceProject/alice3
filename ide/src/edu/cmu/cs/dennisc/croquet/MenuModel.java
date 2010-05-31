@@ -45,8 +45,8 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuOperation extends Operation {
-	public static final Operation SEPARATOR = null;
+public class MenuModel extends Model {
+	public static final Model SEPARATOR = null;
 	private class MenuListener implements javax.swing.event.MenuListener {
 		private Menu menu;
 		public MenuListener( Menu menu ) {
@@ -62,35 +62,35 @@ public class MenuOperation extends Operation {
 			} else {
 				context = application.getCurrentContext();
 			}
-			context.addChild( new MenuSelectedEvent( context, MenuOperation.this, e, this.menu ) );
+			context.addChild( new MenuSelectedEvent( context, MenuModel.this, e, this.menu ) );
 		}
 		public void menuDeselected( javax.swing.event.MenuEvent e ) {
 			Application application = Application.getSingleton();
 			Context context = application.getCurrentContext();
-			context.addChild( new MenuDeselectedEvent( context, MenuOperation.this, e, this.menu ) );
+			context.addChild( new MenuDeselectedEvent( context, MenuModel.this, e, this.menu ) );
 		}
 		public void menuCanceled( javax.swing.event.MenuEvent e ) {
 			Application application = Application.getSingleton();
 			Context context = application.getCurrentContext();
-			context.addChild( new MenuCanceledEvent( context, MenuOperation.this, e, this.menu ) );
+			context.addChild( new MenuCanceledEvent( context, MenuModel.this, e, this.menu ) );
 		}
 	};
 	private java.util.Map< Menu, MenuListener > mapMenuToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private String text;
 	private int mnemonic;
-	private Operation[] operations;
-	public MenuOperation( Group group, java.util.UUID individualId, String text, int mnemonic, Operation... operations ) {
+	private Model[] models;
+	public MenuModel( Group group, java.util.UUID individualId, String text, int mnemonic, Model... models ) {
 		super( group, individualId );
 		this.text = text;
 		this.mnemonic = mnemonic;
-		this.operations = operations;
+		this.models = models;
 	}
-	public MenuOperation( Group group, java.util.UUID individualId, String text, int mnemonic, java.util.List< Operation > operations ) {
-		this( group, individualId, text, mnemonic, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(operations, Operation.class) );
+	public MenuModel( Group group, java.util.UUID individualId, String text, int mnemonic, java.util.List< Model > models ) {
+		this( group, individualId, text, mnemonic, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(models, Model.class) );
 	}
 
-	public Operation[] getOperations() {
-		return this.operations;
+	public Model[] getOperations() {
+		return this.models;
 	}
 	
 	public Menu createMenu() {
@@ -99,11 +99,11 @@ public class MenuOperation extends Operation {
 			@Override
 			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				super.handleAddedTo( parent );
-				this.setText( MenuOperation.this.text );
-				this.setMnemonic( MenuOperation.this.mnemonic );
+				this.setText( MenuModel.this.text );
+				this.setMnemonic( MenuModel.this.mnemonic );
 				assert mapMenuToListener.containsKey( this ) == false;
 				MenuListener menuListener = new MenuListener( this );
-				MenuOperation.this.mapMenuToListener.put( this, menuListener );
+				MenuModel.this.mapMenuToListener.put( this, menuListener );
 				this.getAwtComponent().addMenuListener( menuListener );
 				this.getAwtComponent().addActionListener( new java.awt.event.ActionListener() {
 					public void actionPerformed( java.awt.event.ActionEvent e ) {
@@ -114,11 +114,11 @@ public class MenuOperation extends Operation {
 
 			@Override
 			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				MenuOperation.this.removeComponent( this );
-				MenuListener menuListener = MenuOperation.this.mapMenuToListener.get( this );
+				MenuModel.this.removeComponent( this );
+				MenuListener menuListener = MenuModel.this.mapMenuToListener.get( this );
 				assert menuListener != null;
 				this.getAwtComponent().removeMenuListener( menuListener );
-				MenuOperation.this.mapMenuToListener.remove( this );
+				MenuModel.this.mapMenuToListener.remove( this );
 				this.setMnemonic( 0 );
 				this.setText( null );
 				super.handleRemovedFrom( parent );

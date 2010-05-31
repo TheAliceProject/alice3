@@ -69,7 +69,7 @@ package edu.cmu.cs.dennisc.croquet;
 	}
 }
 
-abstract class OperationEvent< O extends Operation, E extends java.util.EventObject, C extends Component< ? > > extends Event {
+abstract class OperationEvent< O extends Model, E extends java.util.EventObject, C extends Component< ? > > extends Event {
 	private O operation;
 	private E event;
 	private C component;
@@ -123,7 +123,7 @@ abstract class OperationEvent< O extends Operation, E extends java.util.EventObj
 	public BoundedRangeIntegerStateEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public BoundedRangeIntegerStateEvent( Context parent, BoundedRangeIntegerStateOperation boundedRangeIntegerStateOperation, javax.swing.event.ChangeEvent e ) {
+	public BoundedRangeIntegerStateEvent( Context parent, BoundedRangeIntegerState boundedRangeIntegerStateOperation, javax.swing.event.ChangeEvent e ) {
 		super( parent, boundedRangeIntegerStateOperation, e, null );
 	}
 }
@@ -132,7 +132,7 @@ abstract class OperationEvent< O extends Operation, E extends java.util.EventObj
 	public BooleanStateEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public BooleanStateEvent( Context parent, BooleanStateOperation booleanStateOperation, java.awt.event.ItemEvent e ) {
+	public BooleanStateEvent( Context parent, BooleanState booleanStateOperation, java.awt.event.ItemEvent e ) {
 		super( parent, booleanStateOperation, e, null );
 	}
 }
@@ -141,7 +141,7 @@ abstract class OperationEvent< O extends Operation, E extends java.util.EventObj
 	public StringStateEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public StringStateEvent( Context parent, StringStateOperation stringStateOperation, javax.swing.event.DocumentEvent e ) {
+	public StringStateEvent( Context parent, StringState stringStateOperation, javax.swing.event.DocumentEvent e ) {
 		super( parent, stringStateOperation, null, null );
 		//note: document event not java.util.EventObject 
 	}
@@ -155,7 +155,7 @@ abstract class OperationEvent< O extends Operation, E extends java.util.EventObj
 	public ItemSelectionEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public ItemSelectionEvent( Context parent, ItemSelectionOperation< T > itemSelectionOperation, java.util.EventObject e, Component< ? > component, int prevIndex, T prevItem, int nextIndex, T nextItem ) {
+	public ItemSelectionEvent( Context parent, ItemSelectionState< T > itemSelectionOperation, java.util.EventObject e, Component< ? > component, int prevIndex, T prevItem, int nextIndex, T nextItem ) {
 		super( parent, itemSelectionOperation, e, component );
 		this.prevIndex = prevIndex;
 		this.prevItem = prevItem;
@@ -185,7 +185,7 @@ abstract class OperationEvent< O extends Operation, E extends java.util.EventObj
 	public MenuEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public MenuEvent( Context parent, MenuOperation menuOperation, javax.swing.event.MenuEvent e, Menu menu ) {
+	public MenuEvent( Context parent, MenuModel menuOperation, javax.swing.event.MenuEvent e, Menu menu ) {
 		super( parent, menuOperation, e, menu );
 	}
 }
@@ -194,7 +194,7 @@ abstract class OperationEvent< O extends Operation, E extends java.util.EventObj
 	public MenuSelectedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public MenuSelectedEvent( Context parent, MenuOperation menuOperation, javax.swing.event.MenuEvent e, Menu menu ) {
+	public MenuSelectedEvent( Context parent, MenuModel menuOperation, javax.swing.event.MenuEvent e, Menu menu ) {
 		super( parent, menuOperation, e, menu );
 	}
 }
@@ -202,7 +202,7 @@ abstract class OperationEvent< O extends Operation, E extends java.util.EventObj
 	public MenuDeselectedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public MenuDeselectedEvent( Context parent, MenuOperation menuOperation, javax.swing.event.MenuEvent e, Menu menu ) {
+	public MenuDeselectedEvent( Context parent, MenuModel menuOperation, javax.swing.event.MenuEvent e, Menu menu ) {
 		super( parent, menuOperation, e, menu );
 	}
 }
@@ -210,7 +210,7 @@ abstract class OperationEvent< O extends Operation, E extends java.util.EventObj
 	public MenuCanceledEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public MenuCanceledEvent( Context parent, MenuOperation menuOperation, javax.swing.event.MenuEvent e, Menu menu ) {
+	public MenuCanceledEvent( Context parent, MenuModel menuOperation, javax.swing.event.MenuEvent e, Menu menu ) {
 		super( parent, menuOperation, e, menu );
 	}
 }
@@ -274,8 +274,6 @@ abstract class OperationEvent< O extends Operation, E extends java.util.EventObj
 		return State.CANCELED;
 	}
 }
-
-
 
 /**
  * @author Dennis Cosgrove

@@ -47,7 +47,7 @@ package org.alice.app.openprojectpane;
  * @author Dennis Cosgrove
  */
 public abstract class ListContentPanel extends TabContentPanel {
-	private edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<java.net.URI> uriSelection = new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<java.net.URI>( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "68a17b6d-353d-4473-abd3-1c78ff88e1cd" ) ) {
+	private edu.cmu.cs.dennisc.croquet.ItemSelectionState<java.net.URI> uriSelection = new edu.cmu.cs.dennisc.croquet.ItemSelectionState<java.net.URI>( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "68a17b6d-353d-4473-abd3-1c78ff88e1cd" ) ) {
 		@Override
 		protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.net.URI value) {
 			throw new RuntimeException( "todo" );

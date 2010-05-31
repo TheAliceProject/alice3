@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DragAndDropOperation extends Operation {
+public abstract class DragAndDropOperation extends Model {
 	public DragAndDropOperation( Group group, java.util.UUID inividualUUID ) {
 		super( group, inividualUUID );
 	}

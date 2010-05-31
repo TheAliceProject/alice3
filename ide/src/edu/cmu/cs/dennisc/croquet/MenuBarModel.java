@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuBarOperation extends Operation {
+public class MenuBarModel extends Model {
 //	private class MenuBarChangeListener implements javax.swing.event.ChangeListener {
 //		private KMenuBar menuBar;
 //		public MenuBarChangeListener( KMenuBar menuBar ) {
@@ -57,24 +57,24 @@ public class MenuBarOperation extends Operation {
 //			Context childContext = parentContext.open();
 //			javax.swing.SingleSelectionModel singleSelectionModel = (javax.swing.SingleSelectionModel)e.getSource();
 //			int index = singleSelectionModel.getSelectedIndex();
-//			MenuOperation menuOperationAtIndex = MenuBarOperation.this.menuOperations.get( index );
-//			childContext.addChild( new MenuBarStateChangeEvent( childContext, MenuBarOperation.this, e, this.menuBar, singleSelectionModel, index, menuOperationAtIndex ) );
+//			MenuModel menuModelAtIndex = MenuBarOperation.this.menuModels.get( index );
+//			childContext.addChild( new MenuBarStateChangeEvent( childContext, MenuBarOperation.this, e, this.menuBar, singleSelectionModel, index, menuModelAtIndex ) );
 //		}
 //	};
 //	private java.util.Map< KMenuBar, MenuBarChangeListener > mapMenuBarToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private java.util.concurrent.CopyOnWriteArrayList< MenuOperation > menuOperations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public MenuBarOperation( Group group, java.util.UUID individualUUID ) {
+	private java.util.concurrent.CopyOnWriteArrayList< MenuModel > menuModels = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	public MenuBarModel( Group group, java.util.UUID individualUUID ) {
 		super( group, individualUUID );
 	}
 
-	public void addMenuOperation( MenuOperation menuOperation ) {
-		this.menuOperations.add( menuOperation );
+	public void addMenuModel( MenuModel menuModel ) {
+		this.menuModels.add( menuModel );
 	}
-	public void removeMenuOperation( MenuOperation menuOperation ) {
-		this.menuOperations.remove( menuOperation );
+	public void removeMenuModel( MenuModel menuModel ) {
+		this.menuModels.remove( menuModel );
 	}
-	public java.util.concurrent.CopyOnWriteArrayList< MenuOperation > getMenuOperations() {
-		return this.menuOperations;
+	public java.util.concurrent.CopyOnWriteArrayList< MenuModel > getMenuModels() {
+		return this.menuModels;
 	}
 	public MenuBar createMenuBar() {
 		Application.getSingleton().register( this );
@@ -86,21 +86,21 @@ public class MenuBarOperation extends Operation {
 //				MenuBarChangeListener listener = new MenuBarChangeListener( menuBar );
 //				this.mapMenuBarToListener.put( menuBar, listener );
 //				menuBar.getJComponent().getSelectionModel().addChangeListener( listener );
-				MenuBarOperation.this.addComponent(this);
+				MenuBarModel.this.addComponent(this);
 			}
 
 			@Override
 			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				super.handleRemovedFrom( parent );
-				MenuBarOperation.this.removeComponent(this);
+				MenuBarModel.this.removeComponent(this);
 //				MenuBarChangeListener listener = this.mapMenuBarToListener.get( menuBar );
 //				assert listener != null;
 //				menuBar.getJComponent().getSelectionModel().removeChangeListener( listener );
 //				this.mapMenuBarToListener.remove( menuBar );
 			}
 		};
-		for( MenuOperation menuOperation : this.getMenuOperations() ) {
-			rv.addMenu( menuOperation.createMenu() );
+		for( MenuModel menuModel : this.getMenuModels() ) {
+			rv.addMenu( menuModel.createMenu() );
 		}
 		return rv;
 	}

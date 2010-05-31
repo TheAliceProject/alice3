@@ -45,7 +45,7 @@ package org.alice.ide.operations;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractItemSelectionOperation<E> extends edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<E> {
+public abstract class AbstractItemSelectionOperation<E> extends edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> {
 	public AbstractItemSelectionOperation( java.util.UUID individualId, int selectedIndex, E... items ) {
 		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId );
 		this.setListData(selectedIndex, items);

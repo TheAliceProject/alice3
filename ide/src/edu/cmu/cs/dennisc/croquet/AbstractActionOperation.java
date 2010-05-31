@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractActionOperation extends Operation {
+public abstract class AbstractActionOperation extends Model {
 	private class ButtonActionListener implements java.awt.event.ActionListener {
 		private AbstractButton< ? > button;
 		public ButtonActionListener( AbstractButton< ? > button ) {

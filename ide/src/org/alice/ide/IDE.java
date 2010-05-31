@@ -97,74 +97,74 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return this.aboutOperation;
 	}
 
-	private static class FileMenuOperation extends edu.cmu.cs.dennisc.croquet.MenuOperation {
-		public FileMenuOperation( edu.cmu.cs.dennisc.croquet.Operation... operations ) {
+	private static class FileMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+		public FileMenuModel( edu.cmu.cs.dennisc.croquet.Model... operations ) {
 			super( IDE_GROUP, java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ), "File", java.awt.event.KeyEvent.VK_F, operations );
 		}
 	}
-	private static class RecentProjectsMenuOperation extends edu.cmu.cs.dennisc.croquet.MenuOperation {
-		public RecentProjectsMenuOperation() {
+	private static class RecentProjectsMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+		public RecentProjectsMenuModel() {
 			super( IDE_GROUP, java.util.UUID.fromString( "f94dda45-71e1-48df-9291-a8681b08f1c0" ), "Recent Projects", java.awt.event.KeyEvent.VK_R );
 		}
 	}
-	private static class EditMenuOperation extends edu.cmu.cs.dennisc.croquet.MenuOperation {
-		public EditMenuOperation( edu.cmu.cs.dennisc.croquet.Operation... operations ) {
+	private static class EditMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+		public EditMenuModel( edu.cmu.cs.dennisc.croquet.Model... operations ) {
 			super( IDE_GROUP, java.util.UUID.fromString( "dbfe00f8-a401-4858-be5c-a544cad7c938" ), "Edit", java.awt.event.KeyEvent.VK_E, operations );
 		}
 	}
-	private static class ProjectMenuOperation extends edu.cmu.cs.dennisc.croquet.MenuOperation {
-		public ProjectMenuOperation( edu.cmu.cs.dennisc.croquet.Operation... operations ) {
+	private static class ProjectMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+		public ProjectMenuModel( edu.cmu.cs.dennisc.croquet.Model... operations ) {
 			super( IDE_GROUP, java.util.UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ), "Project", java.awt.event.KeyEvent.VK_P, operations );
 		}
 	}
-	private static class RunMenuOperation extends edu.cmu.cs.dennisc.croquet.MenuOperation {
-		public RunMenuOperation( edu.cmu.cs.dennisc.croquet.Operation... operations ) {
+	private static class RunMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+		public RunMenuModel( edu.cmu.cs.dennisc.croquet.Model... operations ) {
 			super( IDE_GROUP, java.util.UUID.fromString( "e441d150-d53b-4bc1-9dbf-a61843a53a34" ), "Run", java.awt.event.KeyEvent.VK_R, operations );
 		}
 	}
-	private static class WindowMenuOperation extends edu.cmu.cs.dennisc.croquet.MenuOperation {
-		public WindowMenuOperation( edu.cmu.cs.dennisc.croquet.Operation... operations ) {
+	private static class WindowMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+		public WindowMenuModel( edu.cmu.cs.dennisc.croquet.Model... operations ) {
 			super( IDE_GROUP, java.util.UUID.fromString( "58a7297b-a5f8-499a-abd1-db6fca4083c8" ), "Window", java.awt.event.KeyEvent.VK_W, operations );
 		}
 	}
-	private static class HelpMenuOperation extends edu.cmu.cs.dennisc.croquet.MenuOperation {
-		public HelpMenuOperation( edu.cmu.cs.dennisc.croquet.Operation... operations ) {
+	private static class HelpMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+		public HelpMenuModel( edu.cmu.cs.dennisc.croquet.Model... operations ) {
 			super( IDE_GROUP, java.util.UUID.fromString( "435770a7-fb94-49ee-8c4d-b55a80618a09" ), "Help", java.awt.event.KeyEvent.VK_H, operations );
 		}
 	}
 
-	private FileMenuOperation fileMenuOperation = new FileMenuOperation( 
+	private FileMenuModel fileMenuModel = new FileMenuModel( 
 			this.getNewProjectOperation(), 
 			this.getOpenProjectOperation(), 
-			edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR,
-			new RecentProjectsMenuOperation(),
-			edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR, 
+			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
+			new RecentProjectsMenuModel(),
+			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, 
 			this.getSaveProjectOperation(), 
 			this.getSaveAsProjectOperation(), 
-			edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR, 
+			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, 
 			this.getRevertProjectOperation(), 
-			edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR, 
+			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, 
 			new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation(), 
-			edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR, 
+			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, 
 			this.getExitOperation() 
 	);
-	private EditMenuOperation editMenuOperation = new EditMenuOperation( 
+	private EditMenuModel editMenuModel = new EditMenuModel( 
 			this.getUndoOperation(), 
 			this.getRedoOperation(), 
-			edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR,
+			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
 			new org.alice.ide.operations.edit.CutOperation(),
 			new org.alice.ide.operations.edit.CopyOperation(),
 			new org.alice.ide.operations.edit.PasteOperation()
 	);
 
-	private ProjectMenuOperation projectMenuOperation = new ProjectMenuOperation( 
+	private ProjectMenuModel projectMenuModel = new ProjectMenuModel( 
 			new org.alice.ide.operations.project.ManageResourcesOperation() 
 	);
-	private RunMenuOperation runMenuOperation = new RunMenuOperation( 
+	private RunMenuModel runMenuModel = new RunMenuModel( 
 			this.runOperation 
 	);
 	
-	private edu.cmu.cs.dennisc.croquet.BooleanStateOperation isSceneEditorExpandedState = new edu.cmu.cs.dennisc.croquet.BooleanStateOperation( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "704ea7d2-9da8-461f-b7dd-d086815c3e52" ), false, "Edit Code", "Edit Scene" );
+	private edu.cmu.cs.dennisc.croquet.BooleanState isSceneEditorExpandedState = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "704ea7d2-9da8-461f-b7dd-d086815c3e52" ), false, "Edit Code", "Edit Scene" );
 
 	
 	private org.alice.ide.operations.window.IsMemoryUsageShowingOperation isMemoryUsageShowingOperation = new org.alice.ide.operations.window.IsMemoryUsageShowingOperation();
@@ -175,7 +175,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private org.alice.ide.operations.window.IsEmphasizingClassesOperation isEmphasizingClassesOperation = createBooleanOperation( org.alice.ide.operations.window.IsEmphasizingClassesOperation.class, true );
 	private org.alice.ide.operations.window.IsDefaultFieldNameGenerationDesiredOperation isDefaultFieldNameGenerationDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsDefaultFieldNameGenerationDesiredOperation.class, this.isDefaultFieldNameGenerationDesiredByDefault() );
 
-	public edu.cmu.cs.dennisc.croquet.BooleanStateOperation getIsSceneEditorExpandedState() {
+	public edu.cmu.cs.dennisc.croquet.BooleanState getIsSceneEditorExpandedState() {
 		return this.isSceneEditorExpandedState;
 	}
 	public boolean isExpressionTypeFeedbackDesired() {
@@ -188,7 +188,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.BooleanStateOperation getEmphasizingClassesState() {
+	public edu.cmu.cs.dennisc.croquet.BooleanState getEmphasizingClassesState() {
 		return this.isEmphasizingClassesOperation;
 	}
 	@Deprecated
@@ -213,7 +213,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return this.isDefaultFieldNameGenerationDesiredOperation.getState();
 	}
 
-	private WindowMenuOperation windowMenuOperation = new WindowMenuOperation( 
+	private WindowMenuModel windowMenuModel = new WindowMenuModel( 
 			this.isEmphasizingClassesOperation
 			
 //			class LocaleComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
@@ -278,9 +278,9 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 //
 //			java.util.List< edu.cmu.cs.dennisc.zoot.Operation > windowOperations = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >();
 //
-//			windowOperations.add( edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR );
+//			windowOperations.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 //			windowOperations.add( this.isHistoryShowingOperation );
-//			windowOperations.add( edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR );
+//			windowOperations.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 //			windowOperations.add( this.isEmphasizingClassesOperation );
 //			windowOperations.add( this.isOmissionOfThisForFieldAccessesDesiredOperation );
 //			windowOperations.add( this.isExpressionTypeFeedbackDesiredOperation );
@@ -289,33 +289,33 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 //			//		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
 //			//			//pass
 //			//		} else {
-//			//			windowOperations.add( edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR );
+//			//			windowOperations.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 //			//			windowOperations.add( this.getPreferencesOperation() );
 //			//		}
 //
-//			windowOperations.add( edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR );
+//			windowOperations.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 //			windowOperations.add( this.isMemoryUsageShowingOperation );
-//			windowOperations.add( edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR );
+//			windowOperations.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 //			windowOperations.add( this.isSceneEditorExpandedOperation );
 	);
-	private HelpMenuOperation helpMenuOperation = new HelpMenuOperation( 
+	private HelpMenuModel helpMenuModel = new HelpMenuModel( 
 			new org.alice.ide.operations.help.HelpOperation(),
-			edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR,
+			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
 //			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isBogusExceptionGenerationDesired" ) ) {
 //				helpOperations.add( new org.alice.ide.operations.help.ThrowBogusExceptionOperation() );
-//				helpOperations.add( edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR );
+//				helpOperations.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 //			}
 			new org.alice.ide.operations.help.ReportBugOperation(),
 			new org.alice.ide.operations.help.SuggestImprovementOperation(),
 			new org.alice.ide.operations.help.RequestNewFeatureOperation(),
-			edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR,
+			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
 			new org.alice.ide.operations.help.WarningOperation( true ),
 			new org.alice.ide.operations.help.DisplaySystemPropertiesOperation(),
 			new org.alice.ide.operations.help.ReleaseNotesOperation()
 //			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 //				//pass
 //			} else {
-//				helpOperations.add( edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR );
+//				helpOperations.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 //				helpOperations.add( this.getAboutOperation() );
 //			}
 	);
@@ -334,7 +334,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		Object[] arguments = { initialValue };
 		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls, parameterClses, arguments );
 	}
-	private static void preservePreference( edu.cmu.cs.dennisc.croquet.BooleanStateOperation operation ) {
+	private static void preservePreference( edu.cmu.cs.dennisc.croquet.BooleanState operation ) {
 		if( operation != null ) {
 			Class< ? > cls = operation.getClass();
 			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
@@ -390,14 +390,14 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.MenuBarOperation createMenuBarOperation() {
-		edu.cmu.cs.dennisc.croquet.MenuBarOperation rv = new edu.cmu.cs.dennisc.croquet.MenuBarOperation( IDE_GROUP, java.util.UUID.fromString( "f621208a-244e-4cbe-8263-52ebb6916c2d" ) );
-		rv.addMenuOperation( this.fileMenuOperation );
-		rv.addMenuOperation( this.editMenuOperation );
-		rv.addMenuOperation( this.projectMenuOperation );
-		rv.addMenuOperation( this.runMenuOperation );
-		rv.addMenuOperation( this.windowMenuOperation );
-		rv.addMenuOperation( this.helpMenuOperation );
+	protected edu.cmu.cs.dennisc.croquet.MenuBarModel createMenuBarOperation() {
+		edu.cmu.cs.dennisc.croquet.MenuBarModel rv = new edu.cmu.cs.dennisc.croquet.MenuBarModel( IDE_GROUP, java.util.UUID.fromString( "f621208a-244e-4cbe-8263-52ebb6916c2d" ) );
+		rv.addMenuModel( this.fileMenuModel );
+		rv.addMenuModel( this.editMenuModel );
+		rv.addMenuModel( this.projectMenuModel );
+		rv.addMenuModel( this.runMenuModel );
+		rv.addMenuModel( this.windowMenuModel );
+		rv.addMenuModel( this.helpMenuModel );
 		return rv;
 	}
 
@@ -632,7 +632,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 		this.expressionFillerInners = this.addExpressionFillerInners( new java.util.LinkedList< org.alice.ide.cascade.fillerinners.ExpressionFillerInner >() );
 		
-		this.isSceneEditorExpandedState.addValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanStateOperation.ValueObserver() {
+		this.isSceneEditorExpandedState.addValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
 			public void changing(boolean nextValue) {
 			}
 			public void changed(boolean nextValue) {
@@ -988,7 +988,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForRuntimeProgram;
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForSceneEditor;
 
-	private edu.cmu.cs.dennisc.croquet.ItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractField > fieldSelectionState = new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<edu.cmu.cs.dennisc.alice.ast.AbstractField> ( IDE_GROUP, java.util.UUID.fromString( "a6d09409-82b8-4dfe-b156-588f1983893c" ) ) {
+	private edu.cmu.cs.dennisc.croquet.ItemSelectionState< edu.cmu.cs.dennisc.alice.ast.AbstractField > fieldSelectionState = new edu.cmu.cs.dennisc.croquet.ItemSelectionState<edu.cmu.cs.dennisc.alice.ast.AbstractField> ( IDE_GROUP, java.util.UUID.fromString( "a6d09409-82b8-4dfe-b156-588f1983893c" ) ) {
 		@Override
 		protected edu.cmu.cs.dennisc.alice.ast.AbstractField decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 			throw new RuntimeException( "todo" );
@@ -999,7 +999,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 	};
 	
-	public edu.cmu.cs.dennisc.croquet.ItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractField > getFieldSelectionState() {
+	public edu.cmu.cs.dennisc.croquet.ItemSelectionState< edu.cmu.cs.dennisc.alice.ast.AbstractField > getFieldSelectionState() {
 		return this.fieldSelectionState;
 	}
 

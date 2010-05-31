@@ -48,9 +48,9 @@ package org.alice.stageide.personeditor;
  */
 //todo: note, not really inconsequential
 class FitnessLevelActionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerStateOperation fitnessState;
+	private edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState fitnessState;
 	private int value;
-	public FitnessLevelActionOperation( edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerStateOperation fitnessState, int value, String name ) {
+	public FitnessLevelActionOperation( edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState fitnessState, int value, String name ) {
 		super( java.util.UUID.fromString( "979d9be8-c24c-4921-93d4-23747bdf079d" ) );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: FitnessLevelActionOperation" );
 		this.fitnessState = fitnessState;
@@ -67,12 +67,12 @@ class FitnessLevelActionOperation extends org.alice.ide.operations.Inconsequenti
  * @author Dennis Cosgrove
  */
 class FitnessLevelPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	private edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerStateOperation fitnessState = new edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerStateOperation( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8e172c61-c2b6-43e4-9777-e9d8fd2b0d65" ), 0, 50, 100 );
+	private edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState fitnessState = new edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8e172c61-c2b6-43e4-9777-e9d8fd2b0d65" ), 0, 50, 100 );
 	public FitnessLevelPane() {
 		this.addComponent( new FitnessLevelActionOperation( this.fitnessState, this.fitnessState.getMinimum(), "SOFT" ).createButton(), Constraint.WEST );
 		this.addComponent( this.fitnessState.createSlider(), Constraint.CENTER );
 		this.addComponent( new FitnessLevelActionOperation( this.fitnessState, this.fitnessState.getMaximum(), "CUT" ).createButton(), Constraint.EAST );
-		this.fitnessState.addValueObserver( new edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerStateOperation.ValueObserver() {
+		this.fitnessState.addValueObserver( new edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState.ValueObserver() {
 			public void changed(int nextValue) {
 				PersonViewer.getSingleton().setFitnessLevel( nextValue*0.01 );
 			}

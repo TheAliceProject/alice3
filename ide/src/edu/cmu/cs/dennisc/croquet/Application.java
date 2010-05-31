@@ -61,7 +61,7 @@ public abstract class Application {
 	}
 
 	private Context rootContext = new Context( null );
-	private java.util.Map< java.util.UUID, Operation > mapUUIDToOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map< java.util.UUID, Model > mapUUIDToOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public Application() {
 		assert Application.singleton == null;
@@ -83,7 +83,7 @@ public abstract class Application {
 		return this.rootContext.getCurrentContext();
 	}
 
-	public <O extends Operation> O lookupOperation( java.util.UUID id ) {
+	public <O extends Model> O lookupOperation( java.util.UUID id ) {
 		//todo
 		return (O)this.mapUUIDToOperation.get( id );
 	}
@@ -158,9 +158,9 @@ public abstract class Application {
 	protected abstract void handlePreferences( java.util.EventObject e );
 	protected abstract void handleQuit( java.util.EventObject e );
 
-	/*package-private*/void register( Operation operation ) {
+	/*package-private*/void register( Model operation ) {
 		java.util.UUID id = operation.getIndividualUUID();
-		Operation prev = this.mapUUIDToOperation.get( id );
+		Model prev = this.mapUUIDToOperation.get( id );
 		if( prev != null ) {
 			//assert prev == operation;
 			if( prev == operation ) {
@@ -171,22 +171,22 @@ public abstract class Application {
 		}
 	}
 
-	/*package-private*/static AbstractMenu< ? > addMenuElements( AbstractMenu< ? > rv, Operation[] operations ) {
-		for( Operation operation : operations ) {
+	/*package-private*/static AbstractMenu< ? > addMenuElements( AbstractMenu< ? > rv, Model[] operations ) {
+		for( Model operation : operations ) {
 			if( operation != null ) {
-				if( operation instanceof MenuOperation ) {
-					MenuOperation menuOperation = (MenuOperation)operation;
+				if( operation instanceof MenuModel ) {
+					MenuModel menuOperation = (MenuModel)operation;
 					rv.addMenu( menuOperation.createMenu() );
-				} else if( operation instanceof ItemSelectionOperation< ? > ) {
-					ItemSelectionOperation< ? > itemSelectionOperation = (ItemSelectionOperation< ? >)operation;
+				} else if( operation instanceof ItemSelectionState< ? > ) {
+					ItemSelectionState< ? > itemSelectionOperation = (ItemSelectionState< ? >)operation;
 					rv.addMenu( itemSelectionOperation.createMenu() );
 				} else {
 					AbstractMenuItem< ? > menuItem = null;
 					if( operation instanceof AbstractActionOperation ) {
 						AbstractActionOperation abstractActionOperation = (AbstractActionOperation)operation;
 						menuItem = abstractActionOperation.createMenuItem();
-					} else if( operation instanceof BooleanStateOperation ) {
-						BooleanStateOperation booleanStateOperation = (BooleanStateOperation)operation;
+					} else if( operation instanceof BooleanState ) {
+						BooleanState booleanStateOperation = (BooleanState)operation;
 						menuItem = booleanStateOperation.createCheckBoxMenuItem();
 					} else {
 						throw new RuntimeException();

@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.croquet.Group;
 /**
  * @author Dennis Cosgrove
  */
-public class PredeterminedScaleActionOperation extends edu.cmu.cs.dennisc.croquet.AbstractActionOperation {
+public class PredeterminedScaleActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 	private boolean isDoRequired;
 	private edu.cmu.cs.dennisc.animation.Animator animator;
 	private edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable;

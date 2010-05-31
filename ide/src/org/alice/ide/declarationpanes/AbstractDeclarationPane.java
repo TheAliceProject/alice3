@@ -56,7 +56,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 //			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: undo/redo support for", this );
 		}
 	}
-	private edu.cmu.cs.dennisc.croquet.StringStateOperation declarationNameState = new edu.cmu.cs.dennisc.croquet.StringStateOperation(
+	private edu.cmu.cs.dennisc.croquet.StringState declarationNameState = new edu.cmu.cs.dennisc.croquet.StringState(
 			edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "c63e8377-84e0-48b0-a77e-137879e398c1" ), ""
 	);
 //	class DeclarationNameTextField extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField {

@@ -58,7 +58,7 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 	};
 	public ProcedureInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		this.method = method;
-		java.util.List< edu.cmu.cs.dennisc.croquet.Operation > operations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List< edu.cmu.cs.dennisc.croquet.Model > operations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		operations.add( new org.alice.ide.operations.run.PreviewMethodOperation( this ) );
 		if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;

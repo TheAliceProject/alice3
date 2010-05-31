@@ -45,10 +45,10 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Operation {
+public abstract class Model {
 	private Group group;
 	private java.util.UUID inividualUUID;
-	public Operation( Group group, java.util.UUID inividualUUID ) {
+	public Model( Group group, java.util.UUID inividualUUID ) {
 		this.group = group;
 		this.inividualUUID = inividualUUID;
 	}

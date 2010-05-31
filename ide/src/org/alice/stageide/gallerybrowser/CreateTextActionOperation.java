@@ -46,7 +46,7 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
-	private static abstract class TextAttributeSelectionOperation extends edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<String> {
+	private static abstract class TextAttributeSelectionOperation extends edu.cmu.cs.dennisc.croquet.ItemSelectionState<String> {
 		public TextAttributeSelectionOperation( java.util.UUID individualId, int selectedIndex, String... items ) {
 			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId );
 			this.setListData(selectedIndex, items);
@@ -195,7 +195,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 		this.sample = new edu.cmu.cs.dennisc.croquet.Label( "AaBbYyZz", 1.2f );
 		this.updateSample();
 
-		edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< String > valueObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< String >() { 
+		edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< String > valueObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< String >() { 
 			public void changed( String nextValue ) {
 //				if( e.getValueIsAdjusting() ) {
 //					//pass

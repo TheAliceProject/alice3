@@ -362,7 +362,7 @@ class OperationDropDown extends org.alice.ide.common.AbstractDropDownPane {
 }
 
 public class DeclarationsDropDown extends OperationDropDown {
-	private edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode> selectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode>() {
+	private edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode> selectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode>() {
 		public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractCode nextValue) {
 			DeclarationsDropDown.this.updateOperation( nextValue );
 		}

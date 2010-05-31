@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class BoundedRangeIntegerStateOperation extends Operation {
+public final class BoundedRangeIntegerState extends Model {
 	public static interface ValueObserver {
 		//public void changing( int nextValue );
 		public void changed( int nextValue );
@@ -66,19 +66,19 @@ public final class BoundedRangeIntegerStateOperation extends Operation {
 				context = childContext;
 			}
 			this.previousValueIsAdjusting = boundedRangeModel.getValueIsAdjusting();
-			context.addChild( new BoundedRangeIntegerStateEvent( context, BoundedRangeIntegerStateOperation.this, e ) );
-			BoundedRangeIntegerStateOperation.this.fireValueChanged( e );
+			context.addChild( new BoundedRangeIntegerStateEvent( context, BoundedRangeIntegerState.this, e ) );
+			BoundedRangeIntegerState.this.fireValueChanged( e );
 			
 			if( this.previousValueIsAdjusting ) {
 				//pass
 			} else {
 				int nextValue = boundedRangeModel.getValue();
-				context.commitAndInvokeDo( new BoundedRangeIntegerStateEdit( context, e, BoundedRangeIntegerStateOperation.this, BoundedRangeIntegerStateOperation.this.previousValue, nextValue, false ) );
-				BoundedRangeIntegerStateOperation.this.previousValue = nextValue;
+				context.commitAndInvokeDo( new BoundedRangeIntegerStateEdit( context, e, BoundedRangeIntegerState.this, BoundedRangeIntegerState.this.previousValue, nextValue, false ) );
+				BoundedRangeIntegerState.this.previousValue = nextValue;
 			}
 		}
 	};
-	public BoundedRangeIntegerStateOperation( Group group, java.util.UUID individualUUID, int minimum, int value, int maximum ) {
+	public BoundedRangeIntegerState( Group group, java.util.UUID individualUUID, int minimum, int value, int maximum ) {
 		super( group, individualUUID );
 		this.boundedRangeModel.setMinimum( minimum );
 		this.boundedRangeModel.setMaximum( maximum );
@@ -123,10 +123,10 @@ public final class BoundedRangeIntegerStateOperation extends Operation {
 		rv.getAwtComponent().setModel( this.boundedRangeModel );
 		rv.addContainmentObserver( new Component.ContainmentObserver() {
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				BoundedRangeIntegerStateOperation.this.addComponent( rv );
+				BoundedRangeIntegerState.this.addComponent( rv );
 			}
 			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				BoundedRangeIntegerStateOperation.this.removeComponent( rv );
+				BoundedRangeIntegerState.this.removeComponent( rv );
 			}
 		} );
 		return rv;

@@ -51,7 +51,7 @@ public abstract class AbstractPopupMenuOperation extends AbstractActionOperation
 	public AbstractPopupMenuOperation( java.util.UUID individualUUID ) {
 		super( POPUP_MENU_GROUP, individualUUID );
 	}
-	public abstract Operation[] getOperations();
+	public abstract Model[] getOperations();
  	@Override
 	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, Component<?> component ) {
 		PopupMenu popupMenu = this.createPopupMenu();
@@ -80,7 +80,7 @@ public abstract class AbstractPopupMenuOperation extends AbstractActionOperation
 		this.removeComponent( popupMenu );
 	}
 
-	public PopupMenu createPopupMenu() {
+	private PopupMenu createPopupMenu() {
 		Application.getSingleton().register( this );
 		PopupMenu rv = new PopupMenu() {
 			@Override

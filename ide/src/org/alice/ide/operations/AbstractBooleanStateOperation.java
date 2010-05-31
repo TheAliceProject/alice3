@@ -46,7 +46,7 @@ package org.alice.ide.operations;
  * @author Dennis Cosgrove
  */
 @Deprecated
-public abstract class AbstractBooleanStateOperation extends edu.cmu.cs.dennisc.croquet.BooleanStateOperation {
+public abstract class AbstractBooleanStateOperation extends edu.cmu.cs.dennisc.croquet.BooleanState {
 	public AbstractBooleanStateOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, Boolean initialValue, String trueText, String falseText ) {
 		super( group, individualId, initialValue, trueText, falseText );
 	}

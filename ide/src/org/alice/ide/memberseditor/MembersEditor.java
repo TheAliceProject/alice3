@@ -209,7 +209,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	public edu.cmu.cs.dennisc.croquet.TabSelectionOperation getTabbedPaneSelectionState() {
 		return this.tabbedPaneSelectionState;
 	}
-	private edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractField > fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractField >() {
+	private edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractField > fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractField >() {
 		public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractField nextValue ) {
 			MembersEditor.this.handleFieldSelection( nextValue );
 		}
@@ -271,7 +271,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
 		this.setOpaque( true );
 		
-		this.tabbedPaneSelectionState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionOperation.ValueObserver< edu.cmu.cs.dennisc.croquet.PredeterminedTab >() {
+		this.tabbedPaneSelectionState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< edu.cmu.cs.dennisc.croquet.PredeterminedTab >() {
 			public void changed(edu.cmu.cs.dennisc.croquet.PredeterminedTab nextValue) {
 				if( nextValue != null ) {
 					MembersEditor.this.setBackgroundColor( nextValue.getMainComponent().getBackgroundColor() );

@@ -228,8 +228,8 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 			return this.isCloseAffordanceDesired;
 		}
 	}
-	private ItemSelectionOperation.TabCreator< E > tabCreator;
-	public AbstractTabbedPane( ItemSelectionOperation.TabCreator< E > tabCreator ) {
+	private ItemSelectionState.TabCreator< E > tabCreator;
+	public AbstractTabbedPane( ItemSelectionState.TabCreator< E > tabCreator ) {
 		this.tabCreator = tabCreator;
 	}
 	@Override

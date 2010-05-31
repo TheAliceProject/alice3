@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public /*final*/ class BooleanStateOperation extends Operation {
+public /*final*/ class BooleanState extends Model {
 	public static interface ValueObserver {
 		public void changing( boolean nextValue );
 		public void changed( boolean nextValue );
@@ -76,19 +76,16 @@ public /*final*/ class BooleanStateOperation extends Operation {
 			Application application = Application.getSingleton();
 			Context parentContext = application.getCurrentContext();
 			Context childContext = parentContext.createChildContext();
-			childContext.addChild( new BooleanStateEvent( childContext, BooleanStateOperation.this, e ) );
-			BooleanStateOperation.this.perform( childContext, e );
+			childContext.addChild( new BooleanStateEvent( childContext, BooleanState.this, e ) );
+			childContext.commitAndInvokeDo( new BooleanStateEdit( childContext, e, BooleanState.this ) );
 		}
 	};
-	/*package-private*/ final void perform( Context context, java.awt.event.ItemEvent e ) {
-		context.commitAndInvokeDo( new BooleanStateEdit( context, e, this ) );
-	}
 
 	private boolean state;
 	private String trueText = null;
 	private String falseText = null;
 
-	public BooleanStateOperation(Group group, java.util.UUID individualUUID, boolean initialState, String trueText, String falseText) {
+	public BooleanState(Group group, java.util.UUID individualUUID, boolean initialState, String trueText, String falseText) {
 		super(group, individualUUID);
 		this.state = initialState;
 		this.buttonModel.setSelected(initialState);
@@ -97,10 +94,10 @@ public /*final*/ class BooleanStateOperation extends Operation {
 		this.setFalseText(falseText);
 	}
 
-	public BooleanStateOperation(Group group, java.util.UUID individualUUID, boolean initialState, String trueAndFalseText) {
+	public BooleanState(Group group, java.util.UUID individualUUID, boolean initialState, String trueAndFalseText) {
 		this(group, individualUUID, initialState, trueAndFalseText, trueAndFalseText);
 	}
-	public BooleanStateOperation(Group group, java.util.UUID individualUUID, boolean initialState ) {
+	public BooleanState(Group group, java.util.UUID individualUUID, boolean initialState ) {
 		this(group, individualUUID, initialState, null, null );
 	}
 
@@ -167,10 +164,10 @@ public /*final*/ class BooleanStateOperation extends Operation {
 		rv.setAction( this.action );
 		rv.addContainmentObserver( new Component.ContainmentObserver() {
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				BooleanStateOperation.this.addComponent( rv );
+				BooleanState.this.addComponent( rv );
 			}
 			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				BooleanStateOperation.this.removeComponent( rv );
+				BooleanState.this.removeComponent( rv );
 			}
 		} );
 		return rv;

@@ -46,21 +46,21 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public final class ItemSelectionEdit<E> extends Edit {
-	private ItemSelectionOperation<E> operation;
+	private ItemSelectionState<E> operation;
 	private java.util.UUID operationId;
 	private E prevValue;
 	private E nextValue;
 	public ItemSelectionEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public ItemSelectionEdit( Context context, java.util.EventObject e, E prevValue, E nextValue, ItemSelectionOperation< E > operation ) {
+	public ItemSelectionEdit( Context context, java.util.EventObject e, E prevValue, E nextValue, ItemSelectionState< E > operation ) {
 		super( context );
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
 		this.operation = operation;
 		this.operationId = operation.getIndividualUUID();
 	}
-	private ItemSelectionOperation<E> getOperation() {
+	private ItemSelectionState<E> getOperation() {
 		if( this.operation != null ) {
 			//pass
 		} else {

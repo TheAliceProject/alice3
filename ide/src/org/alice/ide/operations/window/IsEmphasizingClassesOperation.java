@@ -45,7 +45,7 @@ package org.alice.ide.operations.window;
 /**
  * @author Dennis Cosgrove
  */
-public class IsEmphasizingClassesOperation extends edu.cmu.cs.dennisc.croquet.BooleanStateOperation {
+public class IsEmphasizingClassesOperation extends edu.cmu.cs.dennisc.croquet.BooleanState {
 	public IsEmphasizingClassesOperation( Boolean initialValue ) {
 		super( org.alice.ide.IDE.PREFERENCES_GROUP, java.util.UUID.fromString( "c6d27bf1-f8c0-470d-b9ef-3c9fa7e6f4b0" ), initialValue, "Is Emphasizing Classes" );
 	}

@@ -52,7 +52,7 @@ public class TypeComponent extends edu.cmu.cs.dennisc.croquet.AbstractButton<jav
 		if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
 			
-			java.util.List< edu.cmu.cs.dennisc.croquet.Operation > operations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List< edu.cmu.cs.dennisc.croquet.Model > operations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			operations.add( new org.alice.ide.operations.ast.RenameTypeOperation( typeInAlice ) );
 			
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();

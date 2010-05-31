@@ -143,7 +143,7 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, Abstra
 //		}
 //	}
 //
-	public ToolPaletteTabbedPane( ItemSelectionOperation.TabCreator< E > tabCreator ) {
+	public ToolPaletteTabbedPane( ItemSelectionState.TabCreator< E > tabCreator ) {
 		super( tabCreator );
 	}
 //	@Override

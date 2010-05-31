@@ -128,11 +128,11 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 		this.showMessageDialog( sb.toString(), "Cannot read file", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
 	}
 
-	protected abstract edu.cmu.cs.dennisc.croquet.MenuBarOperation createMenuBarOperation();
+	protected abstract edu.cmu.cs.dennisc.croquet.MenuBarModel createMenuBarOperation();
 	@Override
 	public void initialize(java.lang.String[] args) {
 		super.initialize(args);
-		edu.cmu.cs.dennisc.croquet.MenuBarOperation menuBarOperation = this.createMenuBarOperation();
+		edu.cmu.cs.dennisc.croquet.MenuBarModel menuBarOperation = this.createMenuBarOperation();
 		edu.cmu.cs.dennisc.croquet.MenuBar menuBar = menuBarOperation.createMenuBar();
 		this.getFrame().setMenuBar( menuBar );
 	}

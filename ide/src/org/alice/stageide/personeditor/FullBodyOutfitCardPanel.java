@@ -46,10 +46,10 @@ package org.alice.stageide.personeditor;
  * @author Dennis Cosgrove
  */
 class FullBodyOutfitCardPanel extends IngredientCardPanel<org.alice.apis.stage.FullBodyOutfit> {
-	private edu.cmu.cs.dennisc.map.MapToMap< org.alice.apis.stage.LifeStage, org.alice.apis.stage.Gender, edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<org.alice.apis.stage.FullBodyOutfit> > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private edu.cmu.cs.dennisc.map.MapToMap< org.alice.apis.stage.LifeStage, org.alice.apis.stage.Gender, edu.cmu.cs.dennisc.croquet.ItemSelectionState<org.alice.apis.stage.FullBodyOutfit> > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	@Override
-	protected synchronized edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<org.alice.apis.stage.FullBodyOutfit> getItemSelectionOperation( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor ) {
-		edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<org.alice.apis.stage.FullBodyOutfit> rv = this.mapToMap.get( lifeStage, gender );
+	protected synchronized edu.cmu.cs.dennisc.croquet.ItemSelectionState<org.alice.apis.stage.FullBodyOutfit> getItemSelectionOperation( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor ) {
+		edu.cmu.cs.dennisc.croquet.ItemSelectionState<org.alice.apis.stage.FullBodyOutfit> rv = this.mapToMap.get( lifeStage, gender );
 		if( rv != null ) {
 			//pass
 		} else {

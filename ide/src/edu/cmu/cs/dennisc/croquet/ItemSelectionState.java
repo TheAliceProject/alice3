@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemSelectionOperation<E> extends Operation {
+public abstract class ItemSelectionState<E> extends Model {
 	public static interface ValueObserver<E> {
 		public void changed(E nextValue);
 	};
@@ -160,7 +160,14 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 				E prevSelection = this.getSelection(this.indexOfLastPerform);
 				E nextSelection = this.getSelection(nextIndex);
 				this.indexOfLastPerform = nextIndex;
-				ItemSelectionOperation.this.perform(this.mostRecentEvent, this.mostRecentComponent, prevIndex, prevSelection, nextIndex, nextSelection);
+
+				Application application = Application.getSingleton();
+				Context parentContext = application.getCurrentContext();
+				Context childContext = parentContext.createChildContext();
+				childContext.addChild(new ItemSelectionEvent<E>(childContext, ItemSelectionState.this, this.mostRecentEvent, this.mostRecentComponent, prevIndex, prevSelection, nextIndex, nextSelection));
+				childContext.commitAndInvokeDo(new ItemSelectionEdit<E>( childContext, this.mostRecentEvent, prevSelection, nextSelection, ItemSelectionState.this ));
+				ItemSelectionState.this.fireValueChanged(nextSelection);
+
 				this.mostRecentEvent = null;
 				this.mostRecentComponent = null;
 			}
@@ -207,7 +214,7 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 		private java.util.ArrayList<E> items = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 
 		public Object getSelectedItem() {
-			int index = ItemSelectionOperation.this.listSelectionModel.getMaxSelectionIndex();
+			int index = ItemSelectionState.this.listSelectionModel.getMaxSelectionIndex();
 			if (index >= 0) {
 				return this.items.get( index );
 			} else {
@@ -225,7 +232,7 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 						break;
 					}
 				}
-				ItemSelectionOperation.this.listSelectionModel.setSelectedIndex(selectedIndex);
+				ItemSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex);
 				this.fireContentsChanged(this, -1, -1);
 			}
 		}
@@ -246,7 +253,7 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 				this.items.add( item );
 			}
 			this.fireContentsChanged(this, 0, this.getSize() - 1);
-			ItemSelectionOperation.this.listSelectionModel.setSelectedIndex(selectedIndex);
+			ItemSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex);
 		}
 
 		private void setListData(int selectedIndex, java.util.Collection<E> items) {
@@ -256,7 +263,7 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 				this.items.add( item );
 			}
 			this.fireContentsChanged(this, 0, this.getSize() - 1);
-			ItemSelectionOperation.this.listSelectionModel.setSelectedIndex(selectedIndex);
+			ItemSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex);
 		}
 		
 		private void addItem( E item ) {
@@ -268,13 +275,13 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 
 	private final ComboBoxModel comboBoxModel = new ComboBoxModel();
 
-	private ItemSelectionOperation(Group group, java.util.UUID individualUUID, int selectedIndex, E... items) {
+	private ItemSelectionState(Group group, java.util.UUID individualUUID, int selectedIndex, E... items) {
 		super(group, individualUUID);
 		this.listSelectionModel.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		this.comboBoxModel.setListData(selectedIndex, items);
 	}
 
-	public ItemSelectionOperation(Group group, java.util.UUID individualUUID) {
+	public ItemSelectionState(Group group, java.util.UUID individualUUID) {
 		this(group, individualUUID, -1);
 	}
 
@@ -282,14 +289,6 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 
 	protected abstract void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, E value);
 
-	private void perform(java.util.EventObject e, Component<?> component, int prevIndex, E prevSelection, int nextIndex, E nextSelection) {
-		Application application = Application.getSingleton();
-		Context parentContext = application.getCurrentContext();
-		Context childContext = parentContext.createChildContext();
-		childContext.addChild(new ItemSelectionEvent<E>(childContext, ItemSelectionOperation.this, e, component, prevIndex, prevSelection, nextIndex, nextSelection));
-		childContext.commitAndInvokeDo(new ItemSelectionEdit<E>(childContext, e, prevSelection, nextSelection, this));
-		this.fireValueChanged(nextSelection);
-	}
 
 	public E getValue() {
 		return (E) this.comboBoxModel.getSelectedItem();
@@ -381,14 +380,14 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 			@Override
 			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				super.handleAddedTo(parent);
-				ItemSelectionOperation.this.addComponent(this);
+				ItemSelectionState.this.addComponent(this);
 				// this.addItemListener( this.itemListener );
 			};
 
 			@Override
 			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				// this.removeItemListener( this.itemListener );
-				ItemSelectionOperation.this.removeComponent(this);
+				ItemSelectionState.this.removeComponent(this);
 				super.handleRemovedFrom(parent);
 			}
 		};
@@ -404,7 +403,7 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 			@Override
 			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				super.handleAddedTo(parent);
-				ItemSelectionOperation.this.addComponent(this);
+				ItemSelectionState.this.addComponent(this);
 				// this.addListSelectionListener( this.listSelectionListener );
 			};
 
@@ -412,7 +411,7 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				// this.removeListSelectionListener( this.listSelectionListener
 				// );
-				ItemSelectionOperation.this.removeComponent(this);
+				ItemSelectionState.this.removeComponent(this);
 				super.handleRemovedFrom(parent);
 			}
 		};
@@ -429,13 +428,13 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 		rv.addContainmentObserver(new Component.ContainmentObserver() {
 			// private ItemListener itemListener = new ItemListener( rv );
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				ItemSelectionOperation.this.addComponent(rv);
+				ItemSelectionState.this.addComponent(rv);
 				// rv.addItemListener( this.itemListener );
 			}
 
 			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				// rv.removeItemListener( this.itemListener );
-				ItemSelectionOperation.this.removeComponent(rv);
+				ItemSelectionState.this.removeComponent(rv);
 			}
 		});
 		return rv;
@@ -501,7 +500,7 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				super.handleAddedTo(parent);
 				javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-				for (final Object item : ItemSelectionOperation.this.comboBoxModel.items) {
+				for (final Object item : ItemSelectionState.this.comboBoxModel.items) {
 					javax.swing.Action action = new javax.swing.AbstractAction() {
 						public void actionPerformed(java.awt.event.ActionEvent e) {
 							comboBoxModel.setSelectedItem(item);

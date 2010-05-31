@@ -47,7 +47,7 @@ package org.alice.app.openprojectpane;
  * @author Dennis Cosgrove
  */
 class FileSystemPane extends TabContentPanel {
-	private edu.cmu.cs.dennisc.croquet.StringStateOperation textState = new edu.cmu.cs.dennisc.croquet.StringStateOperation( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "a0051988-1f98-4401-a054-f87547d3faf3" ), "" );
+	private edu.cmu.cs.dennisc.croquet.StringState textState = new edu.cmu.cs.dennisc.croquet.StringState( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "a0051988-1f98-4401-a054-f87547d3faf3" ), "" );
 	public FileSystemPane() {
 //		this.textField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
 //			private void handleUpdate(javax.swing.event.DocumentEvent e) {

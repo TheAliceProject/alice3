@@ -258,25 +258,25 @@ public class Tutorial {
 //	}
 //	public <E> void createAndAddSelectItemSelectionStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<E> operation, E item ) {
 //	}
-	public <E> void createAndAddSpotlightTabTitleStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<E> operation, E item ) {
+	public <E> void createAndAddSpotlightTabTitleStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> operation, E item ) {
 		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = operation.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.class );
 		edu.cmu.cs.dennisc.croquet.AbstractButton<?> tabTitle = tabbedPane.getTabTitle( item );
 		Step step = NoteStep.createSpotlightMessageNoteStep( this, title, text, tabTitle );
 		this.addStep( step );
 	}
-	public <E> void createAndAddSelectTabTitleStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<E> operation, E item ) {
+	public <E> void createAndAddSelectTabTitleStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> operation, E item ) {
 		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = operation.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.class );
 		edu.cmu.cs.dennisc.croquet.AbstractButton<?> tabTitle = tabbedPane.getTabTitle( item );
 		Step step = NoteStep.createActionMessageNoteStep( this, title, text, tabTitle );
 		this.addStep( step );
 	}
-	public <E> void createAndAddSpotlightTabMainComponentStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<E> operation, E item ) {
+	public <E> void createAndAddSpotlightTabMainComponentStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> operation, E item ) {
 		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = operation.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.class );
 		edu.cmu.cs.dennisc.croquet.JComponent<?> mainComponent = tabbedPane.getTabTitle( item );
 		Step step = NoteStep.createSpotlightMessageNoteStep( this, title, text, mainComponent );
 		this.addStep( step );
 	}
-	public <E> void createAndAddSpotlightTabScrollPaneStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<E> operation, E item ) {
+	public <E> void createAndAddSpotlightTabScrollPaneStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> operation, E item ) {
 		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = operation.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.class );
 		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = tabbedPane.getScrollPane( item );
 		Step step = NoteStep.createSpotlightMessageNoteStep( this, title, text, scrollPane );

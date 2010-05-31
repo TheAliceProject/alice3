@@ -101,7 +101,7 @@ public class Tree<E> extends JComponent< javax.swing.JTree > {
 	}
 
 	@Deprecated
-	public void setItemSelectionOperation( ItemSelectionOperation< E > operation ) {
+	public void setItemSelectionOperation( ItemSelectionState< E > operation ) {
 		throw new RuntimeException( "todo" );
 	}
 }

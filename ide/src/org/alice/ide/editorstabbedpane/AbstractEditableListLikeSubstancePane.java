@@ -46,7 +46,7 @@ package org.alice.ide.editorstabbedpane;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	class AddItemOperation extends edu.cmu.cs.dennisc.croquet.AbstractActionOperation {
+	class AddItemOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 		public AddItemOperation( edu.cmu.cs.dennisc.croquet.Group group, String name ) {
 			super( group, java.util.UUID.fromString( "118ab33a-8c1a-4207-80d1-88edd555ca61" ) );
 			this.setName( name );
@@ -78,7 +78,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		}
 	}
 
-	class RemoveItemOperation extends edu.cmu.cs.dennisc.croquet.AbstractActionOperation {
+	class RemoveItemOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 		public RemoveItemOperation( edu.cmu.cs.dennisc.croquet.Group group, String name ) {
 			super( group, java.util.UUID.fromString( "230c56bc-6735-486c-a6f7-0451ee3714e7" ) );
 			this.setName( name );
@@ -110,7 +110,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		}
 	}
 
-	abstract class AbstractMoveItemOperation extends edu.cmu.cs.dennisc.croquet.AbstractActionOperation {
+	abstract class AbstractMoveItemOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 		public AbstractMoveItemOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, String name ) {
 			super( group, individualId );
 			this.setName( name );

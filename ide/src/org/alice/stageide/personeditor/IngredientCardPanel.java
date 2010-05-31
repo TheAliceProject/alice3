@@ -46,16 +46,16 @@ package org.alice.stageide.personeditor;
  * @author Dennis Cosgrove
  */
 abstract class IngredientCardPanel<E> extends edu.cmu.cs.dennisc.croquet.CardPanel {
-	private java.util.Map< edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<E>, Key > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map< edu.cmu.cs.dennisc.croquet.ItemSelectionState<E>, Key > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	protected abstract edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<E> getItemSelectionOperation( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor );
+	protected abstract edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> getItemSelectionOperation( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor );
 	public IngredientCardPanel() {
 		this.setOpaque( false );
 	}
 	public void handleEpicChange( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor  ) {
 		assert lifeStage != null;
 		assert gender != null;
-		edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<E> itemSelectionOperation = getItemSelectionOperation( lifeStage, gender, hairColor );
+		edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionOperation = getItemSelectionOperation( lifeStage, gender, hairColor );
 		Key key = this.map.get( itemSelectionOperation );
 		if( key != null ) {
 			//pass

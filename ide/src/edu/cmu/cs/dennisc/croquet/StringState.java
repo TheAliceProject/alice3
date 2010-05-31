@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class StringStateOperation extends Operation {
+public final class StringState extends Model {
 	public static interface ValueObserver {
 		public void changed( String nextValue );
 	};
@@ -67,7 +67,7 @@ public final class StringStateOperation extends Operation {
 		private void handleUpdate(javax.swing.event.DocumentEvent e) {
 			Application application = Application.getSingleton();
 			Context context = application.getCurrentContext();
-			context.addChild( new StringStateEvent( context, StringStateOperation.this, e ) );
+			context.addChild( new StringStateEvent( context, StringState.this, e ) );
 		}
 		public void changedUpdate(javax.swing.event.DocumentEvent e) {
 			this.handleUpdate(e);
@@ -80,7 +80,7 @@ public final class StringStateOperation extends Operation {
 		}
 	};
 
-	public StringStateOperation(Group group, java.util.UUID individualUUID, String initialState) {
+	public StringState(Group group, java.util.UUID individualUUID, String initialState) {
 		super(group, individualUUID);
 		this.document = new javax.swing.text.PlainDocument();
 		try {
@@ -112,10 +112,10 @@ public final class StringStateOperation extends Operation {
 		rv.setDocument(this.document);
 		rv.addContainmentObserver( new Component.ContainmentObserver() {
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				StringStateOperation.this.addComponent( rv );
+				StringState.this.addComponent( rv );
 			}
 			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				StringStateOperation.this.removeComponent( rv );
+				StringState.this.removeComponent( rv );
 			}
 		} );
 		return rv;

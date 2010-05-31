@@ -45,7 +45,7 @@ package org.alice.ide.operations.window;
 /**
  * @author Dennis Cosgrove
  */
-public class IsOmissionOfThisForFieldAccessesDesiredOperation extends edu.cmu.cs.dennisc.croquet.BooleanStateOperation {
+public class IsOmissionOfThisForFieldAccessesDesiredOperation extends edu.cmu.cs.dennisc.croquet.BooleanState {
 	public IsOmissionOfThisForFieldAccessesDesiredOperation( Boolean initialValue ) {
 		super( org.alice.ide.IDE.PREFERENCES_GROUP, java.util.UUID.fromString( "bcf1ce48-f54a-4e80-8b9e-42c2cc302b01" ), initialValue, "Is Omission Of This For Field Accesses Desired" );
 	}
