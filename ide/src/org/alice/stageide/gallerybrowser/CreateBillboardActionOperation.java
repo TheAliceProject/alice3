@@ -112,6 +112,10 @@ class CreateBillboardActionOperation extends AbstractGalleryDeclareFieldOperatio
 		}
 		return this.createFieldFromBillboardPane;
 	}
+	@Override
+	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
+		return this.createFieldFromBillboardPane;
+	}
 	
 	@Override
 	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.ModelContext context ) {

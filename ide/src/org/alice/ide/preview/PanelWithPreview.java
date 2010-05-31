@@ -111,11 +111,11 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 //		this.updatePreview();
 //		this.updateSizeIfNecessary();
 //	}
-//	private void updatePreview() {
-//		if( this.previewPane != null ) {
-//			this.previewPane.refresh();
-//		}
-//	}
+	public void updatePreview() {
+		if( this.previewPane != null ) {
+			this.previewPane.refresh();
+		}
+	}
 
 	protected abstract java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateInternalComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv );
 

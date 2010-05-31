@@ -56,6 +56,10 @@ class GalleryFileActionOperation extends AbstractGalleryDeclareFieldOperation {
 		return this.createFieldPane;
 	}
 	@Override
+	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
+		return this.createFieldPane;
+	}
+	@Override
 	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(edu.cmu.cs.dennisc.croquet.ModelContext context) {
 		//"Create New Instance"
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.getActualInputValue();

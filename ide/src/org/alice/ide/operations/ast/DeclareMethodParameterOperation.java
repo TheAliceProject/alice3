@@ -45,7 +45,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareMethodParameterOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
+public class DeclareMethodParameterOperation extends org.alice.ide.operations.InputDialogWithPreviewOperation {
 	private org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane;
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
 	public DeclareMethodParameterOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
@@ -57,6 +57,10 @@ public class DeclareMethodParameterOperation extends edu.cmu.cs.dennisc.croquet.
 	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
 		//todo: create before hand and refresh at this point
 		this.createMethodParameterPane = new org.alice.ide.declarationpanes.CreateMethodParameterPane( method, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
+		return this.createMethodParameterPane;
+	}
+	@Override
+	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
 		return this.createMethodParameterPane;
 	}
 	@Override

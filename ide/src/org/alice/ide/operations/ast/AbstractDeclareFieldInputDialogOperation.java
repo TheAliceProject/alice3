@@ -45,13 +45,17 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice.ide.operations.InputDialogOperation {
+public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice.ide.operations.InputDialogWithPreviewOperation {
 	protected abstract edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType();
 	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> createFieldAndInstance( edu.cmu.cs.dennisc.croquet.ModelContext context );
 	protected abstract boolean isInstanceValid();
 	
 	public AbstractDeclareFieldInputDialogOperation( java.util.UUID individualId ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
+	}
+	
+	protected org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
 	}
 	@Override
 	protected final void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {

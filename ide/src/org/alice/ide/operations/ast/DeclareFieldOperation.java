@@ -46,11 +46,12 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperation {
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
 	private org.alice.ide.declarationpanes.CreateFieldPane createFieldPane;
 	public DeclareFieldOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
 		super( java.util.UUID.fromString( "e935b0ea-e927-49ff-b33b-2c8eaf5c8b57" ) );
 		this.setName( "Declare Property..." );
-		this.createFieldPane = new org.alice.ide.declarationpanes.CreateFieldPane( ownerType );
+		this.ownerType = ownerType;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
@@ -58,6 +59,11 @@ public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperati
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
+		this.createFieldPane = new org.alice.ide.declarationpanes.CreateFieldPane( this.ownerType );
+		return this.createFieldPane;
+	}
+	@Override
+	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
 		return this.createFieldPane;
 	}
 	@Override

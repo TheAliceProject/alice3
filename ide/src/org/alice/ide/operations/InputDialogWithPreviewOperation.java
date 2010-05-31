@@ -45,11 +45,17 @@ package org.alice.ide.operations;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
-	public InputDialogOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId ) {
+public abstract class InputDialogWithPreviewOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
+	public InputDialogWithPreviewOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId ) {
 		super( group, individualId );
 	}
-	protected final org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+	protected abstract org.alice.ide.preview.PanelWithPreview getPanelWithPreview();
+	@Override
+	protected String getExplanationIfOkButtonShouldBeDisabled() {
+		org.alice.ide.preview.PanelWithPreview panelWithPreview = this.getPanelWithPreview();
+		if( panelWithPreview != null ) {
+			panelWithPreview.updatePreview();
+		}
+		return super.getExplanationIfOkButtonShouldBeDisabled();
 	}
 }

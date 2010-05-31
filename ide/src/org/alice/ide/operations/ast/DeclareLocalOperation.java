@@ -45,7 +45,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareLocalOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
+public class DeclareLocalOperation extends org.alice.ide.operations.InputDialogWithPreviewOperation {
 	private org.alice.ide.declarationpanes.CreateLocalPane createLocalPane;
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement block;
 	private edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement localDeclarationStatement;
@@ -57,6 +57,10 @@ public class DeclareLocalOperation extends edu.cmu.cs.dennisc.croquet.InputDialo
 	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
 		this.localDeclarationStatement = null;
 		this.createLocalPane = new org.alice.ide.declarationpanes.CreateLocalPane( this.block );
+		return this.createLocalPane;
+	}
+	@Override
+	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
 		return this.createLocalPane;
 	}
 	

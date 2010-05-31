@@ -45,16 +45,21 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclareMethodOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
+public abstract class DeclareMethodOperation extends org.alice.ide.operations.InputDialogWithPreviewOperation {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
-	private org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = this.createCreateMethodPane( this.type );
+	private org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane;
 	public DeclareMethodOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 		this.type = type;
 	}
+	@Override
+	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
+		return this.createMethodPane;
+	}
 	protected abstract org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
+		this.createMethodPane = this.createCreateMethodPane( this.type );
 		return this.createMethodPane;
 	}
 	@Override

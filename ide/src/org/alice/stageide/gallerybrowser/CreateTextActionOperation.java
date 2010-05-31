@@ -347,6 +347,10 @@ class CreateTextActionOperation extends AbstractGalleryDeclareFieldOperation {
 		return this.createTextPane;
 	}
 	@Override
+	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
+		return null;
+	}
+	@Override
 	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.ModelContext context ) {
 		//"Create Text"
 		org.alice.apis.moveandturn.Text text = this.createTextPane.getActualInputValue();

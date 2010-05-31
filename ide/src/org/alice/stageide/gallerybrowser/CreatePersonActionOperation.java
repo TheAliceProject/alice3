@@ -60,16 +60,21 @@ class CreateFieldFromPersonPane extends org.alice.ide.declarationpanes.CreateLar
  * @author Dennis Cosgrove
  */
 class CreatePersonActionOperation extends AbstractGalleryDeclareFieldOperation {
+	private org.alice.apis.stage.Person person;
 	private CreateFieldFromPersonPane createFieldFromPersonPane;
 	public CreatePersonActionOperation( org.alice.apis.stage.Person person ) {
 		super( java.util.UUID.fromString( "7f4b7217-336c-4661-ac31-ed6ea7b963fe" ) );
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = ide.getSceneType();
-		this.createFieldFromPersonPane = new CreateFieldFromPersonPane( declaringType, person );
+		this.person = person;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: refresh" );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = ide.getSceneType();
+		this.createFieldFromPersonPane = new CreateFieldFromPersonPane( declaringType, person );
+		return this.createFieldFromPersonPane;
+	}
+	@Override
+	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
 		return this.createFieldFromPersonPane;
 	}
 
