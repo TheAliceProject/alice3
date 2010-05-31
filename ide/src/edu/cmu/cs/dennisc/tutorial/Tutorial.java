@@ -134,7 +134,11 @@ public class Tutorial {
 						}
 						if( nextStepOperation.isEnabled() ) {
 							if( step.isAutoAdvanceDesired() ) {
-								nextStepOperation.fire();
+								javax.swing.SwingUtilities.invokeLater(new Runnable() {
+									public void run() {
+										nextStepOperation.fire();
+									}
+								} );
 							}
 						}
 					}

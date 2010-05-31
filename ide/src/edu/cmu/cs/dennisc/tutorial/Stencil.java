@@ -74,7 +74,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	protected javax.swing.JPanel createAwtComponent() {
 		class JStencil extends javax.swing.JPanel {
 			@Override
-			public void paint(java.awt.Graphics g) {
+			protected void paintComponent(java.awt.Graphics g) {
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
 				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 
@@ -88,7 +88,7 @@ package edu.cmu.cs.dennisc.tutorial;
 				}
 				g2.setPaint(getStencilPaint());
 				g2.fill(area);
-				super.paint(g);
+				super.paintComponent(g);
 				for( Feature feature : step.getFeatures() ) {
 					feature.paint( g2, Stencil.this, step.getNote() );
 				}
