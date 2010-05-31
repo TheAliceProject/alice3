@@ -79,32 +79,40 @@ package edu.cmu.cs.dennisc.tutorial;
 				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 
 				Step step = Stencil.this.getCurrentStep();
-				java.awt.geom.Area area = new java.awt.geom.Area(g2.getClip());
-				for( Feature feature : step.getFeatures() ) {
-					java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( Stencil.this );
-					if( featureArea != null ) {
-						area.subtract( featureArea );
+				if( step != null ) {
+					java.awt.geom.Area area = new java.awt.geom.Area(g2.getClip());
+					for( Feature feature : step.getFeatures() ) {
+						java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( Stencil.this );
+						if( featureArea != null ) {
+							area.subtract( featureArea );
+						}
 					}
+					g2.setPaint(getStencilPaint());
+					g2.fill(area);
 				}
-				g2.setPaint(getStencilPaint());
-				g2.fill(area);
 				super.paintComponent(g);
-				for( Feature feature : step.getFeatures() ) {
-					feature.paint( g2, Stencil.this, step.getNote() );
+				if( step != null ) {
+					for( Feature feature : step.getFeatures() ) {
+						feature.paint( g2, Stencil.this, step.getNote() );
+					}
 				}
 			}
 
 			@Override
 			public boolean contains(int x, int y) {
-				java.awt.geom.Area area = new java.awt.geom.Area(new java.awt.Rectangle(0, 0, this.getWidth(), this.getHeight()));
 				Step step = Stencil.this.getCurrentStep();
-				for( Feature feature : step.getFeatures() ) {
-					java.awt.geom.Area featureArea = feature.getAreaToSubstractForContains( Stencil.this );
-					if( featureArea != null ) {
-						area.subtract( featureArea );
+				if( step != null ) {
+					java.awt.geom.Area area = new java.awt.geom.Area(new java.awt.Rectangle(0, 0, this.getWidth(), this.getHeight()));
+					for( Feature feature : step.getFeatures() ) {
+						java.awt.geom.Area featureArea = feature.getAreaToSubstractForContains( Stencil.this );
+						if( featureArea != null ) {
+							area.subtract( featureArea );
+						}
 					}
+					return area.contains(x, y);
+				} else {
+					return super.contains( x, y );
 				}
-				return area.contains(x, y);
 			}
 
 			private void redispatch(java.awt.event.MouseEvent e) {

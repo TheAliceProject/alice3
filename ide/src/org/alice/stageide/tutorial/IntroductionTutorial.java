@@ -142,7 +142,7 @@ public class IntroductionTutorial {
 		
 
 		//membersEditor.getTabbedPaneSelectionState().setValue( membersEditor.getFunctionsTab() );
-		tutorial.setSelectedIndex( 8 );
+		tutorial.setSelectedIndex( 0 );
 		
 		
 		ide.getFrame().addWindowListener( new java.awt.event.WindowAdapter() {

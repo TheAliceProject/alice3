@@ -190,30 +190,32 @@ public class Tutorial {
 			this.internalAddComponent(this.cardPanel, java.awt.BorderLayout.CENTER);
 		}
 		private void handleStepChanged(Step step) {
-			java.util.UUID stepId = step.getId();
-			edu.cmu.cs.dennisc.croquet.CardPanel.Key key = this.cardPanel.getKey(stepId);
-			if (key != null) {
-				// pass
-			} else {
-				key = this.cardPanel.createKey(step.getCard(), stepId);
-				this.cardPanel.addComponent(key);
-			}
-			this.cardPanel.show(key);
-			this.revalidateAndRepaint();
-
-			int selectedIndex = stepsComboBoxModel.getSelectedIndex();
-
-			edu.cmu.cs.dennisc.croquet.Model waitingOnModel;
 			if( step != null ) {
-				waitingOnModel = step.getModelWaitingOn();
-			} else {
-				waitingOnModel = null;
+				java.util.UUID stepId = step.getId();
+				edu.cmu.cs.dennisc.croquet.CardPanel.Key key = this.cardPanel.getKey(stepId);
+				if (key != null) {
+					// pass
+				} else {
+					key = this.cardPanel.createKey(step.getCard(), stepId);
+					this.cardPanel.addComponent(key);
+				}
+				this.cardPanel.show(key);
+				this.revalidateAndRepaint();
+
+				int selectedIndex = stepsComboBoxModel.getSelectedIndex();
+
+				edu.cmu.cs.dennisc.croquet.Model waitingOnModel;
+				if( step != null ) {
+					waitingOnModel = step.getModelWaitingOn();
+				} else {
+					waitingOnModel = null;
+				}
+				
+				Tutorial.this.nextStepOperation.setEnabled(0 <= selectedIndex && selectedIndex < stepsComboBoxModel.getSize() - 1 && waitingOnModel == null );
+				Tutorial.this.previousStepOperation.setEnabled(1 <= selectedIndex);
+				this.revalidateAndRepaint();
+				this.requestFocus();
 			}
-			
-			Tutorial.this.nextStepOperation.setEnabled(0 <= selectedIndex && selectedIndex < stepsComboBoxModel.getSize() - 1 && waitingOnModel == null );
-			Tutorial.this.previousStepOperation.setEnabled(1 <= selectedIndex);
-			this.revalidateAndRepaint();
-			this.requestFocus();
 		}
 		private java.awt.event.KeyListener keyListener = new java.awt.event.KeyListener() {
 			public void keyPressed(java.awt.event.KeyEvent e) {
