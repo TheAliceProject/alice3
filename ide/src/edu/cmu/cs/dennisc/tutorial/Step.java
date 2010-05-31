@@ -58,6 +58,11 @@ public abstract class Step {
 		return this.tutorial;
 	}
 	
+	public abstract edu.cmu.cs.dennisc.croquet.Model getModelWaitingOn();
+	
+	public boolean isAutoAdvanceDesired() {
+		return true;
+	}
 	private java.util.List< Feature > features = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	protected void addFeature( Feature feature ) {
 		this.features.add( feature );

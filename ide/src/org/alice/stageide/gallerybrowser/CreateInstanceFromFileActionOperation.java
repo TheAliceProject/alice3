@@ -68,7 +68,7 @@ abstract class CreateInstanceFromFileActionOperation extends AbstractGalleryDecl
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
 		this.createFieldPane = null;
 		java.io.File directory = this.getInitialDirectory();
 		java.io.File file = edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.getIDE().getFrame().getAwtWindow(), directory, null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION, false );
@@ -116,7 +116,7 @@ abstract class CreateInstanceFromFileActionOperation extends AbstractGalleryDecl
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(edu.cmu.cs.dennisc.croquet.Context context) {
+	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(edu.cmu.cs.dennisc.croquet.ModelContext context) {
 		//todo: dialog title: "Create New Instance"
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = this.createFieldPane.getActualInputValue();
 		if( field != null ) {

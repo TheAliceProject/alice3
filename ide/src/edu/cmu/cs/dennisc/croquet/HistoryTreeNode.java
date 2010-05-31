@@ -177,17 +177,17 @@ public abstract class HistoryTreeNode implements edu.cmu.cs.dennisc.codec.Binary
 		PENDING
 	}
 
-	private Context parent;
+	private ModelContext parent;
 	private java.util.UUID id;
 
 	public HistoryTreeNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.decode( binaryDecoder );
 	}
-	public HistoryTreeNode( Context parent ) {
+	public HistoryTreeNode( ModelContext parent ) {
 		this.parent = parent;
 		this.id = java.util.UUID.randomUUID();
 	}
-	public Context getParent() {
+	public ModelContext getParent() {
 		return this.parent;
 	}
 	public java.util.UUID getId() {

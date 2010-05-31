@@ -48,12 +48,12 @@ public class ManageResourcesOperation extends edu.cmu.cs.dennisc.croquet.InputDi
 		this.setName( "Manage Resources..." );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle cancel" );
 		return new org.alice.ide.resource.manager.ResourceManagerPane();
 	}
 	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {
 		if( isOk ) {
 			context.finish();
 		} else {

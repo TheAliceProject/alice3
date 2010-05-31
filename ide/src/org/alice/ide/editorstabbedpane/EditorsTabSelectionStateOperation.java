@@ -248,7 +248,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 			this.setName( "previous" );
 		}
 		@Override
-		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 			EditorsTabSelectionStateOperation.this.editPreviousCode();
 		}
 	}

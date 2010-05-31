@@ -119,7 +119,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 			this.setName( "Edit..." );
 		}
 		@Override
-		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		}
 	}
 	class RemoveVariantOperation extends PreferencesActionOperation {
@@ -128,7 +128,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 			this.setName( "Remove" );
 		}
 		@Override
-		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		}
 	}
 	class NewVariantOperation extends PreferencesActionOperation {
@@ -137,7 +137,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 			this.setName( "New..." );
 		}
 		@Override
-		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		}
 	}
 	class ImportVariantOperation extends PreferencesActionOperation {
@@ -146,7 +146,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 			this.setName( "Import..." );
 		}
 		@Override
-		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		}
 	}
 	public ConfigurationPreferencePaneProxy( edu.cmu.cs.dennisc.preference.Preference<org.alice.ide.preferences.programming.Configuration> preference ) {

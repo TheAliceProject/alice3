@@ -47,14 +47,14 @@ package org.alice.ide.operations.ast;
  */
 public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice.ide.operations.InputDialogOperation {
 	protected abstract edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType();
-	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> createFieldAndInstance( edu.cmu.cs.dennisc.croquet.Context context );
+	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> createFieldAndInstance( edu.cmu.cs.dennisc.croquet.ModelContext context );
 	protected abstract boolean isInstanceValid();
 	
 	public AbstractDeclareFieldInputDialogOperation( java.util.UUID individualId ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 	}
 	@Override
-	protected final void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+	protected final void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {
 		if( isOk ) {
 			edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> tuple = this.createFieldAndInstance( context );
 			if( tuple != null ) {

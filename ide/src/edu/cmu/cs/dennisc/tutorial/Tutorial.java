@@ -74,7 +74,7 @@ public class Tutorial {
 		}
 
 		@Override
-		protected void perform(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
+		protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 			this.stepsComboBoxModel.decrementSelectedIndex();
 			context.finish();
 		}
@@ -90,7 +90,7 @@ public class Tutorial {
 		}
 
 		@Override
-		protected void perform(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
+		protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 			this.stepsComboBoxModel.incrementSelectedIndex();
 			context.finish();
 		}
@@ -102,7 +102,7 @@ public class Tutorial {
 		}
 
 		@Override
-		protected void perform(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
+		protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 			Object optionExit = "Exit Tutorial";
 			Object optionDisable = "Disable Stencil";
 			Object optionCancel = "Cancel";
@@ -117,17 +117,29 @@ public class Tutorial {
 		}
 	}
 
-	private edu.cmu.cs.dennisc.croquet.Context.ChildrenObserver childrenObserver = new edu.cmu.cs.dennisc.croquet.Context.ChildrenObserver() {
+	private edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver childrenObserver = new edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver() {
 		public void addingChild(edu.cmu.cs.dennisc.croquet.HistoryTreeNode child) {
 			
 		}
 		public void addedChild(edu.cmu.cs.dennisc.croquet.HistoryTreeNode child) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( child );
-//			String simpleName = child.getClass().getSimpleName();
-//			if( simpleName.contains( "CommitEvent" ) ) {
-//				Thread.dumpStack();
-//				nextStepOperation.fire();
-//			}
+			Step step = (Step)stepsComboBoxModel.getSelectedItem();
+			if( step != null ) {
+				if (child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent) {
+					edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent completeEvent = (edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent) child;
+					edu.cmu.cs.dennisc.croquet.Model stepModel = step.getModelWaitingOn();
+					edu.cmu.cs.dennisc.croquet.Model eventModel = completeEvent.getModel();
+					if( stepModel == eventModel ) {
+						if( stepsComboBoxModel.getSelectedIndex() < stepsComboBoxModel.getSize() - 1 ) {
+							nextStepOperation.setEnabled( true );
+						}
+						if( nextStepOperation.isEnabled() ) {
+							if( step.isAutoAdvanceDesired() ) {
+								nextStepOperation.fire();
+							}
+						}
+					}
+				}
+			}
 		}
 	};
 	
@@ -186,7 +198,15 @@ public class Tutorial {
 			this.revalidateAndRepaint();
 
 			int selectedIndex = stepsComboBoxModel.getSelectedIndex();
-			Tutorial.this.nextStepOperation.setEnabled(0 <= selectedIndex && selectedIndex < stepsComboBoxModel.getSize() - 1);
+
+			edu.cmu.cs.dennisc.croquet.Model waitingOnModel;
+			if( step != null ) {
+				waitingOnModel = step.getModelWaitingOn();
+			} else {
+				waitingOnModel = null;
+			}
+			
+			Tutorial.this.nextStepOperation.setEnabled(0 <= selectedIndex && selectedIndex < stepsComboBoxModel.getSize() - 1 && waitingOnModel == null );
 			Tutorial.this.previousStepOperation.setEnabled(1 <= selectedIndex);
 			this.revalidateAndRepaint();
 			this.requestFocus();
@@ -251,10 +271,16 @@ public class Tutorial {
 	}
 	public void createAndAddActionStep( String title, String text, edu.cmu.cs.dennisc.croquet.AbstractActionOperation operation ) {
 		edu.cmu.cs.dennisc.croquet.JComponent< ? > component = operation.getFirstComponent( edu.cmu.cs.dennisc.croquet.JComponent.class );
-		Step step = NoteStep.createActionMessageNoteStep( this, title, text, component );
+		Step step = NoteStep.createActionMessageNoteStep( this, title, text, component, operation );
 		this.addStep( step );
 	}
-//	public <E> void createAndAddSpotlightItemSelectionStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<E> operation, E item ) {
+	public void createAndAddBooleanStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.BooleanState booleanState ) {
+		edu.cmu.cs.dennisc.croquet.AbstractButton<?> component = booleanState.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractButton.class );
+		Step step = NoteStep.createBooleanStateMessageNoteStep( this, title, text, component, booleanState );
+		this.addStep( step );
+	}
+
+	//	public <E> void createAndAddSpotlightItemSelectionStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<E> operation, E item ) {
 //	}
 //	public <E> void createAndAddSelectItemSelectionStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionOperation<E> operation, E item ) {
 //	}
@@ -267,7 +293,7 @@ public class Tutorial {
 	public <E> void createAndAddSelectTabTitleStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> operation, E item ) {
 		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = operation.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.class );
 		edu.cmu.cs.dennisc.croquet.AbstractButton<?> tabTitle = tabbedPane.getTabTitle( item );
-		Step step = NoteStep.createActionMessageNoteStep( this, title, text, tabTitle );
+		Step step = NoteStep.createActionMessageNoteStep( this, title, text, tabTitle, operation );
 		this.addStep( step );
 	}
 	public <E> void createAndAddSpotlightTabMainComponentStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> operation, E item ) {
@@ -282,7 +308,7 @@ public class Tutorial {
 		Step step = NoteStep.createSpotlightMessageNoteStep( this, title, text, scrollPane );
 		this.addStep( step );
 	}
-	
+		
 	/*package-private*/ edu.cmu.cs.dennisc.croquet.ActionOperation getNextOperation() {
 		return this.nextStepOperation;
 	}

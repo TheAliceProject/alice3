@@ -87,7 +87,7 @@ public class PreferencesPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				this.setName( "Clear Recent Projects" );
 			}
 			@Override
-			protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+			protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 				org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.clear();
 				context.finish();
 			}

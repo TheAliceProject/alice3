@@ -73,7 +73,7 @@ public abstract class SelectAndLoadProjectOperation extends org.alice.app.operat
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
 		if( this.selectProjectToOpenPanel != null ) {
 			//pass
 		} else {
@@ -84,7 +84,7 @@ public abstract class SelectAndLoadProjectOperation extends org.alice.app.operat
 		return this.selectProjectToOpenPanel;
 	}
 	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {
 		if( isOk ) {
 			java.net.URI uri = this.selectProjectToOpenPanel.getSelectedURI();
 			if (uri != null) {

@@ -60,14 +60,14 @@ public abstract class Application {
 		return singleton;
 	}
 
-	private Context rootContext = new Context( null );
+	private ModelContext rootContext = new ModelContext( null );
 	private java.util.Map< java.util.UUID, Model > mapUUIDToOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public Application() {
 		assert Application.singleton == null;
 		Application.singleton = this;
 
-		rootContext.addCommitObserver( new Context.CommitObserver() {
+		rootContext.addCommitObserver( new ModelContext.CommitObserver() {
 			public void committing( Edit edit ) {
 			}
 			public void committed( Edit edit ) {
@@ -76,10 +76,10 @@ public abstract class Application {
 		} );
 	}
 
-	public Context getRootContext() {
+	public ModelContext getRootContext() {
 		return this.rootContext;
 	}
-	public Context getCurrentContext() {
+	public ModelContext getCurrentContext() {
 		return this.rootContext.getCurrentContext();
 	}
 

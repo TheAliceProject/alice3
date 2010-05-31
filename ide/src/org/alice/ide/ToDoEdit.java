@@ -50,7 +50,7 @@ public abstract class ToDoEdit extends edu.cmu.cs.dennisc.croquet.Edit {
 	public ToDoEdit() {
 		this( null );
 	}
-	public ToDoEdit( edu.cmu.cs.dennisc.croquet.Context context ) {
+	public ToDoEdit( edu.cmu.cs.dennisc.croquet.ModelContext context ) {
 		super( context );
 	}
 	@Override

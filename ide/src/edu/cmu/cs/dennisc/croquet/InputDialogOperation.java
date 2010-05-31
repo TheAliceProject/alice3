@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogOperation extends AbstractActionOperation {
+public abstract class InputDialogOperation extends AbstractActionOperation<InputDialogOperationContext> {
 //	public static interface Validator {
 //		public String getExplanationForInvalidOkButton();
 //	}
@@ -72,7 +72,7 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 			this.dialog = dialog;
 		}
 		@Override
-		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 			assert this.dialog != null;
 			InputDialogOperation.this.isOk = this.isOk;
 			this.dialog.setVisible( false );
@@ -106,12 +106,17 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 		this(group, individualUUID, null);
 	}
 
+	@Override
+	protected InputDialogOperationContext createContext( ModelContext parent ) {
+		return new InputDialogOperationContext( parent );
+	}
+
 
 	protected String getExplanationIfOkButtonShouldBeDisabled() {
 		return null;
 	}
-	protected abstract edu.cmu.cs.dennisc.croquet.Component<?> prologue( edu.cmu.cs.dennisc.croquet.Context context );
-	protected abstract void epilogue( edu.cmu.cs.dennisc.croquet.Context context, boolean isOk );
+	protected abstract edu.cmu.cs.dennisc.croquet.Component<?> prologue( edu.cmu.cs.dennisc.croquet.ModelContext context );
+	protected abstract void epilogue( edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk );
 
 	protected void updateOkOperationAndExplanation() {
 		String explanation = this.getExplanationIfOkButtonShouldBeDisabled();
@@ -129,8 +134,8 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 		return null;
 	}
 	@Override
-	protected final void perform(Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
-		Context childContext = context.createChildContext();
+	protected final void perform(InputDialogOperationContext context) {
+		ModelContext childContext = context.createChildContext();
 		Component<?> contentPane = this.prologue(childContext);
 		if( contentPane != null ) {
 			class BottomPanel extends Panel {
@@ -168,6 +173,7 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 			BottomPanel bottomPanel = new BottomPanel();
 			bottomPanel.setOpaque( false );
 
+			Component<?> component = context.getComponent();
 			Component<?> owner;
 			if( component != null ) {
 				owner = component;
@@ -223,7 +229,7 @@ public abstract class InputDialogOperation extends AbstractActionOperation {
 			//dialog.pack();
 			//edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin(dialog.getAwtWindow(), button.getRoot().getAwtWindow());
 
-			edu.cmu.cs.dennisc.croquet.Context.ChildrenObserver childrenObserver = new edu.cmu.cs.dennisc.croquet.Context.ChildrenObserver() {
+			edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver childrenObserver = new edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver() {
 				public void addingChild(edu.cmu.cs.dennisc.croquet.HistoryTreeNode child) {
 				}
 				public void addedChild(edu.cmu.cs.dennisc.croquet.HistoryTreeNode child) {

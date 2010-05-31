@@ -54,7 +54,7 @@ public class DeclareLocalOperation extends edu.cmu.cs.dennisc.croquet.InputDialo
 		this.block = block;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
 		this.localDeclarationStatement = null;
 		this.createLocalPane = new org.alice.ide.declarationpanes.CreateLocalPane( this.block );
 		return this.createLocalPane;
@@ -64,7 +64,7 @@ public class DeclareLocalOperation extends edu.cmu.cs.dennisc.croquet.InputDialo
 		return this.localDeclarationStatement;
 	}
 	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {
 		if( isOk ) {
 			this.localDeclarationStatement = this.createLocalPane.getActualInputValue();
 			context.finish();

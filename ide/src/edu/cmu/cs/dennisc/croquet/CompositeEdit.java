@@ -49,7 +49,7 @@ public class CompositeEdit extends Edit {
 	private Edit[] edits;
 	private boolean isDoToBeIgnored;
 	private String presentation;
-	public CompositeEdit( Context context, Edit[] edits, boolean isDoToBeIgnored, String presentation ) {
+	public CompositeEdit( ModelContext context, Edit[] edits, boolean isDoToBeIgnored, String presentation ) {
 		super( context );
 		this.edits = edits;
 		this.isDoToBeIgnored = isDoToBeIgnored;

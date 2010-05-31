@@ -68,13 +68,13 @@ class CreatePersonActionOperation extends AbstractGalleryDeclareFieldOperation {
 		this.createFieldFromPersonPane = new CreateFieldFromPersonPane( declaringType, person );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: refresh" );
 		return this.createFieldFromPersonPane;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(edu.cmu.cs.dennisc.croquet.Context context) {
+	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(edu.cmu.cs.dennisc.croquet.ModelContext context) {
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = this.createFieldFromPersonPane.getActualInputValue();
 		if( field != null ) {
 			//ide.getSceneEditor().handleFieldCreation( declaringType, field, person );

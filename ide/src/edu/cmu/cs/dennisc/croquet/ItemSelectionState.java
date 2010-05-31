@@ -162,8 +162,8 @@ public abstract class ItemSelectionState<E> extends Model {
 				this.indexOfLastPerform = nextIndex;
 
 				Application application = Application.getSingleton();
-				Context parentContext = application.getCurrentContext();
-				Context childContext = parentContext.createChildContext();
+				ModelContext parentContext = application.getCurrentContext();
+				ModelContext childContext = parentContext.createChildContext();
 				childContext.addChild(new ItemSelectionEvent<E>(childContext, ItemSelectionState.this, this.mostRecentEvent, this.mostRecentComponent, prevIndex, prevSelection, nextIndex, nextSelection));
 				childContext.commitAndInvokeDo(new ItemSelectionEdit<E>( childContext, this.mostRecentEvent, prevSelection, nextSelection, ItemSelectionState.this ));
 				ItemSelectionState.this.fireValueChanged(nextSelection);

@@ -52,12 +52,12 @@ public abstract class AbstractRenameNodeOperation extends edu.cmu.cs.dennisc.cro
 		this.renameNodePane = new org.alice.ide.name.RenamePane();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
 		this.renameNodePane.setAndSelectNameText( this.getNameProperty().getValue() );
 		return this.renameNodePane;
 	}
 	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {
 		if( isOk ) {
 			final String nextValue = this.renameNodePane.getNameText();
 			final edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNameProperty();

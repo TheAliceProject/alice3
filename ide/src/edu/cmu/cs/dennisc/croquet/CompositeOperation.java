@@ -45,11 +45,12 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CompositeOperation extends AbstractActionOperation {
+public abstract class CompositeOperation extends AbstractActionOperation<CompositeOperationContext> {
+	
 	@Override
-	protected final void perform(Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
+	protected final void perform(CompositeOperationContext context) {
 		for( AbstractActionOperation operation : this.getOperations() ) {
-			operation.perform( context, e, component );
+			operation.handleFire(context, context.getEvent(), context.getComponent());
 			if( context.isCanceled() ) {
 				break;
 			}
@@ -58,5 +59,9 @@ public abstract class CompositeOperation extends AbstractActionOperation {
 	public CompositeOperation( Group group, java.util.UUID individualUUID ) {
 		super( group, individualUUID );
 	}
-	protected abstract java.util.List< AbstractActionOperation > getOperations();
+	@Override
+	protected CompositeOperationContext createContext( ModelContext parent ) {
+		return new CompositeOperationContext( parent );
+	}
+	protected abstract java.util.List< AbstractActionOperation<?> > getOperations();
 }

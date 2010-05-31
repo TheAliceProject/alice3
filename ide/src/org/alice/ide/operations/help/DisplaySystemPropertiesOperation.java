@@ -51,7 +51,7 @@ class AllSystemPropertiesOperation extends org.alice.ide.operations.Inconsequent
 		this.setName( "Show All Properties..." );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		java.util.Properties properties = System.getProperties();
 		java.util.Map< String, String > map = new java.util.HashMap< String, String >();
 		java.util.Enumeration< String > nameEnum = (java.util.Enumeration< String >)properties.propertyNames();
@@ -91,7 +91,7 @@ class PathPropertyOperation extends org.alice.ide.operations.InconsequentialActi
 		this.setName( "Show..." );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		edu.cmu.cs.dennisc.croquet.RowsSpringPanel formPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 2 ) {
 			private edu.cmu.cs.dennisc.croquet.Component< ? >[][] createComponentRowsForSystemProperty( String name, String separator ) {
 				String value = System.getProperty( name );
@@ -131,7 +131,7 @@ public class DisplaySystemPropertiesOperation extends org.alice.ide.operations.I
 		this.setName( "Display System Properties..." );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		edu.cmu.cs.dennisc.croquet.RowsSpringPanel formPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 2 ) {
 			private edu.cmu.cs.dennisc.croquet.Component< ? >[] createComponentRowForSystemProperty( String name ) {
 				String value = System.getProperty( name );

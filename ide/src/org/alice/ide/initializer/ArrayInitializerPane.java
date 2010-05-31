@@ -110,7 +110,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 			this.setName( "Add" );
 		}
 		@Override
-		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 			assert ArrayInitializerPane.this.type != null;
 			final edu.cmu.cs.dennisc.alice.ast.Expression expression = ExpressionUtilities.createDefaultExpression( ArrayInitializerPane.this.type.getComponentType() );
 			final int index = ArrayInitializerPane.this.arrayExpressions.size();
@@ -144,7 +144,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 			this.setName( "Remove" );
 		}
 		@Override
-		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 			final int index = ArrayInitializerPane.this.list.getSelectedIndex();
 			final edu.cmu.cs.dennisc.alice.ast.Expression expression = ArrayInitializerPane.this.list.getItemAt( index );
 			context.commitAndInvokeDo(new org.alice.ide.ToDoEdit( context ) {
@@ -177,7 +177,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		protected abstract int getRedoSelectionIndexDelta();
 		protected abstract int getUndoSelectionIndexDelta();
 		@Override
-		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 			final int index = this.getIndex( ArrayInitializerPane.this.list.getSelectedIndex() );
 			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
 				@Override

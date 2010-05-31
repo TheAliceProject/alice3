@@ -387,8 +387,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 							super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "ad0e5d93-8bc2-4ad8-8dd5-37768eaa5319" ) );
 						}
 						@Override
-						protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
-							final java.awt.event.MouseEvent mouseEvent = (java.awt.event.MouseEvent)e;
+						protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+							final java.awt.event.MouseEvent mouseEvent = context.getMouseEvent();
 							class DropEdit extends org.alice.ide.ToDoEdit {
 								private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 								@Override
@@ -421,7 +421,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 								public DropEdit createEdit() {
 									return new DropEdit();
 								}
-								public DropEdit initialize(DropEdit rv, edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement> taskObserver) {
+								public DropEdit initialize(DropEdit rv, edu.cmu.cs.dennisc.croquet.ModelContext context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement> taskObserver) {
 									edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
 									if( propertyOwner instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
 										edu.cmu.cs.dennisc.alice.ast.BlockStatement block = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)propertyOwner;
@@ -483,7 +483,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 								super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "ef6143be-5de3-4a55-aed3-f61d8ebbbef2" ) );
 							}
 							@Override
-							protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
+							protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 								final edu.cmu.cs.dennisc.alice.ast.Statement copy = (edu.cmu.cs.dennisc.alice.ast.Statement)getIDE().createCopy( statement );
 								class CopyEdit extends CodeEdit {
 									@Override
@@ -519,7 +519,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 										super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "e2cffe11-be24-4b5c-9ca4-ac0d71ecd16c" ) );
 									}
 									@Override
-									protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
+									protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 										class ReorderEdit extends CodeEdit {
 											private edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner;
 											private int aIndex;
@@ -562,7 +562,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 									super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "6049a378-2972-4672-a211-1f3fcda45025" ) );
 								}
 								@Override
-								protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
+								protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 									class ReparentEdit extends CodeEdit {
 										@Override
 										protected void redoInternal() {

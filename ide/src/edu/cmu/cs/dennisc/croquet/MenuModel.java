@@ -54,10 +54,10 @@ public class MenuModel extends Model {
 		}
 		public void menuSelected( javax.swing.event.MenuEvent e ) {
 			Application application = Application.getSingleton();
-			Context context;
+			ModelContext context;
 			Component< ? > parent = this.menu.getParent();
 			if( parent instanceof MenuBar ) {
-				Context rootContext = application.getRootContext();
+				ModelContext rootContext = application.getRootContext();
 				context = rootContext.createChildContext();
 			} else {
 				context = application.getCurrentContext();
@@ -66,12 +66,12 @@ public class MenuModel extends Model {
 		}
 		public void menuDeselected( javax.swing.event.MenuEvent e ) {
 			Application application = Application.getSingleton();
-			Context context = application.getCurrentContext();
+			ModelContext context = application.getCurrentContext();
 			context.addChild( new MenuDeselectedEvent( context, MenuModel.this, e, this.menu ) );
 		}
 		public void menuCanceled( javax.swing.event.MenuEvent e ) {
 			Application application = Application.getSingleton();
-			Context context = application.getCurrentContext();
+			ModelContext context = application.getCurrentContext();
 			context.addChild( new MenuCanceledEvent( context, MenuModel.this, e, this.menu ) );
 		}
 	};

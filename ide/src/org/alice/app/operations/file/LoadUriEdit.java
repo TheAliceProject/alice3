@@ -2,7 +2,7 @@ package org.alice.app.operations.file;
 
 public class LoadUriEdit extends edu.cmu.cs.dennisc.croquet.Edit {
 	private java.net.URI uri;
-	public LoadUriEdit( edu.cmu.cs.dennisc.croquet.Context context, java.net.URI uri ) {
+	public LoadUriEdit( edu.cmu.cs.dennisc.croquet.ModelContext context, java.net.URI uri ) {
 		super( context );
 		this.uri = uri;
 	}

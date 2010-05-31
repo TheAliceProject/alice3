@@ -57,11 +57,11 @@ public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperati
 		return this.createFieldPane.getDeclaringType();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
 		return this.createFieldPane;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.croquet.Context context ) {
+	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.croquet.ModelContext context ) {
 		return this.createFieldPane.getActualInputValue();
 	}
 }

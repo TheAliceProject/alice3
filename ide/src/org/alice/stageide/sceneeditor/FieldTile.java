@@ -102,8 +102,8 @@ package org.alice.stageide.sceneeditor;
 		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation(
 				java.util.UUID.fromString( "8e3989b2-34d6-44cf-998c-dda26662b3a0" ) ) {
 			@Override
-			public edu.cmu.cs.dennisc.croquet.Operation[] getOperations() {
-				return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( FieldTile.this.createPopupOperations(), edu.cmu.cs.dennisc.croquet.Operation.class );
+			public edu.cmu.cs.dennisc.croquet.Model[] getOperations() {
+				return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( FieldTile.this.createPopupOperations(), edu.cmu.cs.dennisc.croquet.Model.class );
 			}
 		});
 		
@@ -140,7 +140,7 @@ package org.alice.stageide.sceneeditor;
 		};
 	}
 
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.Operation > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.croquet.Operation > rv ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.Model > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.croquet.Model > rv ) {
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
 		edu.cmu.cs.dennisc.alice.ast.AbstractType fieldType = fieldInAlice.getValueType();
 		rv.add( new org.alice.ide.operations.ast.RenameFieldOperation( fieldInAlice ) );
@@ -160,8 +160,8 @@ package org.alice.stageide.sceneeditor;
 		}
 		return rv;
 	}
-	private java.util.List< edu.cmu.cs.dennisc.croquet.Operation > createPopupOperations() {
-		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.Operation >() );
+	private java.util.List< edu.cmu.cs.dennisc.croquet.Model > createPopupOperations() {
+		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.Model >() );
 	}
 
 	protected java.awt.Color calculateColor() {

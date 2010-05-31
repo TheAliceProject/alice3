@@ -54,13 +54,13 @@ public class DeclareMethodParameterOperation extends edu.cmu.cs.dennisc.croquet.
 		this.setName( "Add Parameter..." );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
 		//todo: create before hand and refresh at this point
 		this.createMethodParameterPane = new org.alice.ide.declarationpanes.CreateMethodParameterPane( method, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
 		return this.createMethodParameterPane;
 	}
 	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {
 		if( isOk ) {
 			final edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = this.createMethodParameterPane.getActualInputValue();
 			if( parameter != null ) {

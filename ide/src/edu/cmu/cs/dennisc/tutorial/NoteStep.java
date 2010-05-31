@@ -219,26 +219,37 @@ package edu.cmu.cs.dennisc.tutorial;
 	private StepPanel notePanel = new StepPanel();
 	private String title;
 
+	private edu.cmu.cs.dennisc.croquet.Model modelWaitingOn;
 	public static NoteStep createMessageNoteStep( Tutorial tutorial, String title, String text ) {
-		return new NoteStep( tutorial, title, text, null );
+		return new NoteStep( tutorial, title, text, null, null );
 	}
 	public static NoteStep createSpotlightMessageNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.JComponent< ? > component ) {
-		return new NoteStep( tutorial, title, text, new Frame(component, Feature.ConnectionPreference.EAST_WEST ) );
+		return new NoteStep( tutorial, title, text, new Frame(component, Feature.ConnectionPreference.EAST_WEST ), null );
 	}
-	public static NoteStep createActionMessageNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.JComponent< ? > component ) {
-		return new NoteStep( tutorial, title, text, new Hole(component, Feature.ConnectionPreference.EAST_WEST) );
+	public static NoteStep createActionMessageNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.JComponent< ? > component, edu.cmu.cs.dennisc.croquet.Model modelWaitingOn ) {
+		return new NoteStep( tutorial, title, text, new Hole(component, Feature.ConnectionPreference.EAST_WEST), modelWaitingOn );
+	}
+	public static NoteStep createBooleanStateMessageNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.JComponent< ? > component, edu.cmu.cs.dennisc.croquet.Model modelWaitingOn ) {
+		return new NoteStep( tutorial, title, text, new Hole(component, Feature.ConnectionPreference.EAST_WEST), modelWaitingOn );
 	}
 	public static NoteStep createTabStateMessageNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.JComponent< ? > component ) {
-		return new NoteStep( tutorial, title, text, new Hole(component, Feature.ConnectionPreference.NORTH_SOUTH) );
+		return new NoteStep( tutorial, title, text, new Hole(component, Feature.ConnectionPreference.NORTH_SOUTH), null );
 	}
-	private NoteStep( Tutorial tutorial, String title, String text, Feature feature ) {
+	private NoteStep( Tutorial tutorial, String title, String text, Feature feature, edu.cmu.cs.dennisc.croquet.Model modelWaitingOn ) {
 		super( tutorial );
 		this.title = title;
 		this.notePanel.note.setText( text );
 		if( feature != null ) {
 			this.addFeature( feature );
 		}
+		this.modelWaitingOn = modelWaitingOn;
 	}
+	
+	@Override
+	public edu.cmu.cs.dennisc.croquet.Model getModelWaitingOn() {
+		return this.modelWaitingOn;
+	}
+	
 	@Override
 	public String toString() {
 		return this.title;

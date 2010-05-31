@@ -43,7 +43,7 @@
 package edu.cmu.cs.dennisc.history;
 
 public class HistoryManager {
-	private static edu.cmu.cs.dennisc.croquet.Context.CommitObserver commitObserver = new edu.cmu.cs.dennisc.croquet.Context.CommitObserver() {
+	private static edu.cmu.cs.dennisc.croquet.ModelContext.CommitObserver commitObserver = new edu.cmu.cs.dennisc.croquet.ModelContext.CommitObserver() {
 		public void committing(edu.cmu.cs.dennisc.croquet.Edit edit) {
 		}
 		public void committed(edu.cmu.cs.dennisc.croquet.Edit edit) {

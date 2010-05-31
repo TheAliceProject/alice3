@@ -69,7 +69,7 @@ class PersonCreatorDialog extends edu.cmu.cs.dennisc.progress.ProgressDialog {
 						super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "19c72f46-7b7a-4edd-b598-73f17c9044b8" ) );
 					}
 					@Override
-					protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+					protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
 						this.personEditor = new org.alice.stageide.personeditor.PersonEditor( person ) {
 							@Override
 							protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
@@ -80,7 +80,7 @@ class PersonCreatorDialog extends edu.cmu.cs.dennisc.progress.ProgressDialog {
 						return this.personEditor;
 					}
 					@Override
-					protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+					protected void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {
 						if( isOk ) {
 							PersonCreatorDialog.this.person = this.personEditor.getPerson();
 						}

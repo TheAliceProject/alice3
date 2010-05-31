@@ -59,8 +59,8 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 	}
 
 	@Override
-	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, Component<?> component ) {
-		final java.awt.event.MouseEvent mouseEvent = (java.awt.event.MouseEvent)e;
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		final java.awt.event.MouseEvent mouseEvent = context.getMouseEvent();
 		class ExpressionPropertyEdit extends org.alice.ide.ToDoEdit {
 			private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 			private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
@@ -88,7 +88,7 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 			public ExpressionPropertyEdit createEdit() {
 				return new ExpressionPropertyEdit();
 			}
-			public ExpressionPropertyEdit initialize(ExpressionPropertyEdit rv, edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver) {
+			public ExpressionPropertyEdit initialize(ExpressionPropertyEdit rv, edu.cmu.cs.dennisc.croquet.ModelContext context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver) {
 				rv.prevExpression = AbstractExpressionPropertyActionOperation.this.expressionProperty.getValue();
 				AbstractExpressionPropertyActionOperation.this.initializeInternal( context, id, mouseEvent, taskObserver, rv.prevExpression );
 				return rv;
@@ -105,6 +105,6 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 			}
 		} );
 	}
-	protected abstract void initializeInternal( edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
+	protected abstract void initializeInternal( edu.cmu.cs.dennisc.croquet.ModelContext context, java.util.UUID id, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
 
 }

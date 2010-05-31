@@ -68,13 +68,13 @@ abstract class EditMembersOperation< E extends edu.cmu.cs.dennisc.alice.ast.Memb
 	
 	private edu.cmu.cs.dennisc.history.HistoryManager historyManager;
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
 		edu.cmu.cs.dennisc.croquet.Group group = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.randomUUID() );
 		this.historyManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( group );
 		return this.createEditMembersPane( group, this.declaringType );
 	}
 	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {
 		if( isOk ) {
 			edu.cmu.cs.dennisc.croquet.Edit compositeEdit = historyManager.createDoIgnoringCompositeEdit( this.presentation + " " + this.declaringType.getName() );
 			if( compositeEdit != null ) {
@@ -277,12 +277,13 @@ class RootOperation extends org.alice.ide.operations.InconsequentialActionOperat
 		this.setName( "All" );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > button) {
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		edu.cmu.cs.dennisc.croquet.Component<?> component = context.getComponent();
 		int x = 0;
-		int y = button.getHeight();
+		int y = component.getHeight();
 		edu.cmu.cs.dennisc.alice.Project project = getIDE().getProject();
 		if( project != null ) {
-			new ProjectBlank( project ).showPopupMenu( button.getAwtComponent(), x, y, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.zoot.ActionOperation >() {
+			new ProjectBlank( project ).showPopupMenu( component.getAwtComponent(), x, y, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.zoot.ActionOperation >() {
 				public void handleCompletion( edu.cmu.cs.dennisc.zoot.ActionOperation actionOperation ) {
 					edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( actionOperation, null, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
 				}

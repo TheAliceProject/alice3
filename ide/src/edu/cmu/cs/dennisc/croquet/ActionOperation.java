@@ -45,8 +45,12 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ActionOperation extends AbstractActionOperation {
+public abstract class ActionOperation extends AbstractActionOperation<ActionOperationContext> {
 	public ActionOperation( Group group, java.util.UUID individualUUID ) {
 		super( group, individualUUID );
+	}
+	@Override
+	protected ActionOperationContext createContext( ModelContext parent ) {
+		return new ActionOperationContext( parent );
 	}
 }

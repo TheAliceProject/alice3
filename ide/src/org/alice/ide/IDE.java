@@ -1079,10 +1079,10 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 
 
-	public abstract void handleRun( edu.cmu.cs.dennisc.croquet.Context context, edu.cmu.cs.dennisc.alice.ast.AbstractType programType );
-	public abstract void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.Context context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation );
-	public abstract void handleRestart( edu.cmu.cs.dennisc.croquet.Context context );
-	public final void handleRun( edu.cmu.cs.dennisc.croquet.Context context ) {
+	public abstract void handleRun( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType programType );
+	public abstract void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation );
+	public abstract void handleRestart( edu.cmu.cs.dennisc.croquet.ModelContext context );
+	public final void handleRun( edu.cmu.cs.dennisc.croquet.ModelContext context ) {
 		if( this.getProject() != null ) {
 			this.ensureProjectCodeUpToDate();
 			this.handleRun( context, this.getSceneType() );

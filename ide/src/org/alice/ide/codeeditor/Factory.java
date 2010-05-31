@@ -53,7 +53,7 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 		this.replacement = replacement;
 	}
 	@Override
-	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		final int index = this.property.indexOf( this.original );
 		final edu.cmu.cs.dennisc.alice.ast.BlockStatement body = this.original.body.getValue();
 		if( index >= 0 ) {
@@ -113,7 +113,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOp
 		this.abstractStatementWithBody = abstractStatementWithBody;
 	}
 	@Override
-	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		final int index = this.property.indexOf( this.abstractStatementWithBody );
 		if( index >= 0 ) {
 			final int N = this.abstractStatementWithBody.body.getValue().statements.size();
@@ -171,7 +171,7 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOper
 		this.statement = statement;
 	}
 @Override
-	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		final int index = this.property.indexOf( this.statement );
 		if( index >= 0 ) {
 			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {

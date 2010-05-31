@@ -66,14 +66,14 @@ public class FauxIDE extends IDE {
 		return new org.alice.ide.gallerybrowser.FauxGalleryBrowser( galleryRootDirectory );
 	}
 	@Override
-	public void handleRun( edu.cmu.cs.dennisc.croquet.Context context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
+	public void handleRun( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
 		this.showMessageDialog( "imagine the program running here..." );
 	}
 	@Override
-	public void handleRestart( edu.cmu.cs.dennisc.croquet.Context context ) {
+	public void handleRestart( edu.cmu.cs.dennisc.croquet.ModelContext context ) {
 	}
 	@Override
-	public void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.Context context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
+	public void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
 		this.showMessageDialog( "imagine testing method here..." );
 	}
 	@Override

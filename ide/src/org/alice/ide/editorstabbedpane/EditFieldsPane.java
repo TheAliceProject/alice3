@@ -91,10 +91,10 @@ public class EditFieldsPane extends EditMembersPane< edu.cmu.cs.dennisc.alice.as
 	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createEditOperation( edu.cmu.cs.dennisc.croquet.Group group, String name ) {
 		return new org.alice.ide.operations.ast.AbstractEditFieldOperation( group, java.util.UUID.fromString( "f4ff2dde-185f-4de0-8c90-6ab725184dca" ), "Edit..." ) {
 			@Override
-			protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+			protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = getSelectedItem();
 				if( field != null ) {
-					this.perform( context, e, component, field, referencedFields, reassignedFields );
+					this.perform( context, field, referencedFields, reassignedFields );
 				} else {
 					context.cancel();
 				}

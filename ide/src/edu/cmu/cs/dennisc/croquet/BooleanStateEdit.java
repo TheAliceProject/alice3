@@ -55,7 +55,7 @@ public final class BooleanStateEdit extends Edit {
 	public BooleanStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public BooleanStateEdit( Context context, java.awt.event.ItemEvent e, BooleanState operation ) {
+	public BooleanStateEdit( ModelContext context, java.awt.event.ItemEvent e, BooleanState operation ) {
 		super( context );
 		this.operation = operation;
 		this.operationId = operation.getIndividualUUID();

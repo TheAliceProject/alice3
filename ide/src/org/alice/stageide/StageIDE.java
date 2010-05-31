@@ -338,7 +338,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 
 	@Override
-	public void handleRun( edu.cmu.cs.dennisc.croquet.Context context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
+	public void handleRun( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
 		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = this.createVirtualMachineForRuntimeProgram();
 		vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.MouseButtonListener.class, org.alice.stageide.apis.moveandturn.event.MouseButtonAdapter.class );
 		vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.KeyListener.class, org.alice.stageide.apis.moveandturn.event.KeyAdapter.class );
@@ -347,7 +347,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		showInJDialog( rtProgram );
 	}
 	@Override
-	public void handleRestart( final edu.cmu.cs.dennisc.croquet.Context context ) {
+	public void handleRestart( final edu.cmu.cs.dennisc.croquet.ModelContext context ) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				handleRun( context );
@@ -356,7 +356,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 
 	@Override
-	public void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.Context context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
+	public void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
 		this.ensureProjectCodeUpToDate();
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldSelectionState().getValue();
 		if( field == this.getSceneField() ) {

@@ -57,7 +57,7 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 			}
 
 			@Override
-			protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
+			protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 				PathControl.this.handleSelectDirectory( DirectoryControl.this.file );
 			}
 		}
@@ -205,7 +205,7 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 			}
 
 			@Override
-			protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+			protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 				if( this.file.isDirectory() ) {
 					PathControl.this.handleSelectDirectory( this.file );
 				} else {

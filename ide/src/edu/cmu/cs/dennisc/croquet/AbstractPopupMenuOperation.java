@@ -45,15 +45,19 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPopupMenuOperation extends AbstractActionOperation {
+public abstract class AbstractPopupMenuOperation extends AbstractActionOperation<PopupMenuOperationContext> {
 	public static final edu.cmu.cs.dennisc.croquet.Group POPUP_MENU_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "4fe7cbeb-627f-4965-a2d3-f4bf42796c59" ) );
 
 	public AbstractPopupMenuOperation( java.util.UUID individualUUID ) {
 		super( POPUP_MENU_GROUP, individualUUID );
 	}
 	public abstract Model[] getOperations();
+	@Override
+	protected PopupMenuOperationContext createContext( ModelContext parent ) {
+		return new PopupMenuOperationContext( parent );
+	}
  	@Override
-	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, Component<?> component ) {
+	protected final void perform(PopupMenuOperationContext context) {
 		PopupMenu popupMenu = this.createPopupMenu();
 //		javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
 //		popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
@@ -65,9 +69,10 @@ public abstract class AbstractPopupMenuOperation extends AbstractActionOperation
 //			}
 //		} );
 
-		if (e instanceof java.awt.event.MouseEvent) {
-			java.awt.event.MouseEvent mouseEvent = (java.awt.event.MouseEvent) e;
-			popupMenu.showAtLocation( component, mouseEvent.getX(), mouseEvent.getY() );
+		Component<?> component = context.getComponent();
+		java.awt.Point pt = context.getPoint();
+		if (pt != null) {
+			popupMenu.showAtLocation( component, pt.x, pt.y );
 		} else {
 			popupMenu.showBelow( component );
 		}

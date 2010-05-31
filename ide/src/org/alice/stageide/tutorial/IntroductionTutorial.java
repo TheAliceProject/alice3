@@ -64,7 +64,7 @@ public class IntroductionTutorial {
 		);
 		tutorial.createAndAddSpotlightStep( 
 				"Constructs",
-				"<html>This where loops a locals live.</html>", 
+				"<html>This where loops and locals live.</html>", 
 				ide.getUbiquitousPane() 
 		);
 		tutorial.createAndAddActionStep( 
@@ -120,8 +120,29 @@ public class IntroductionTutorial {
 				membersEditor.getTabbedPaneSelectionState(),
 				membersEditor.getProceduresTab()
 		);
-		membersEditor.getTabbedPaneSelectionState().setValue( membersEditor.getFunctionsTab() );
-		tutorial.setSelectedIndex( 6 );
+
+		tutorial.createAndAddBooleanStateStep( 
+				"Edit Scene", 
+				"<html>Press the <b>Edit Scene</b> button</html>", 
+				ide.getIsSceneEditorExpandedState()
+		);
+		tutorial.createAndAddMessageStep( 
+				"Note Edit Scene",
+				"<html>Note you are now editing the scene.</html>" 
+		);
+		tutorial.createAndAddBooleanStateStep( 
+				"Edit Code", 
+				"<html>Press the <b>Edit Code</b> button</html>", 
+				ide.getIsSceneEditorExpandedState()
+		);
+		tutorial.createAndAddMessageStep( 
+				"Note Edit Code",
+				"<html>Note you are now editing the code.</html>" 
+		);
+		
+
+		//membersEditor.getTabbedPaneSelectionState().setValue( membersEditor.getFunctionsTab() );
+		tutorial.setSelectedIndex( 8 );
 		
 		
 		ide.getFrame().addWindowListener( new java.awt.event.WindowAdapter() {

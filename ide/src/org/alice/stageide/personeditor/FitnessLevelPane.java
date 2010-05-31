@@ -58,7 +58,7 @@ class FitnessLevelActionOperation extends org.alice.ide.operations.Inconsequenti
 		this.setName( name );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component< ? > button) {
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		this.fitnessState.setValue( this.value );
 	}
 }

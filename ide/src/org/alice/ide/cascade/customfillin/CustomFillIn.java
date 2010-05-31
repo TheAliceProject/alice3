@@ -71,11 +71,11 @@ public abstract class CustomFillIn<E extends edu.cmu.cs.dennisc.alice.ast.Expres
 				}
 			}
 			@Override
-			protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+			protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
 				return customInputPane;
 			}
 			@Override
-			protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+			protected void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {
 				if( isOk ) {
 					context.finish();
 				} else {

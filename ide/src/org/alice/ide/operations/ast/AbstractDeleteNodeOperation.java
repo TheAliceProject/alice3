@@ -58,7 +58,7 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 	}
 	protected abstract boolean isClearToDelete( E node );
 	@Override
-	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, Component<?> component ) {
+	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		if( this.isClearToDelete( this.node ) ) {
 			final int index = this.owner.indexOf( this.node );
 			final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;

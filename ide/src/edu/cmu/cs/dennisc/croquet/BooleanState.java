@@ -74,8 +74,8 @@ public /*final*/ class BooleanState extends Model {
 	private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 		public void itemStateChanged(java.awt.event.ItemEvent e) {
 			Application application = Application.getSingleton();
-			Context parentContext = application.getCurrentContext();
-			Context childContext = parentContext.createChildContext();
+			ModelContext parentContext = application.getCurrentContext();
+			ModelContext childContext = parentContext.createChildContext();
 			childContext.addChild( new BooleanStateEvent( childContext, BooleanState.this, e ) );
 			childContext.commitAndInvokeDo( new BooleanStateEdit( childContext, e, BooleanState.this ) );
 		}

@@ -176,7 +176,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		//todo: better name
 		protected abstract org.alice.virtualmachine.Resource selectResource();
 		@Override
-		protected final void perform(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
+		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 			org.alice.virtualmachine.Resource resource = this.selectResource();
 			if( resource != null ) {
 				context.commitAndInvokeDo( this.createEdit( resource ) );
@@ -361,7 +361,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 			super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "da920b16-65fc-48a4-9203-b3c2979b0a59" ), "Rename..." );
 		}
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.Context context) {
+		protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
 			this.resource = ResourceManagerPane.this.getSelectedResource();
 			if( this.resource != null ) {
 				if( this.resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
@@ -381,7 +381,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 			}
 		}
 		@Override
-		protected void epilogue(edu.cmu.cs.dennisc.croquet.Context context, boolean isOk) {
+		protected void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {
 			final String nextName = this.renamePane.getNameText();
 			if( nextName != null && nextName.length() > 0 ) {
 				final String prevName = this.resource.getName();
@@ -471,7 +471,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 			this.setName( "Reload Content..." );
 		}
 		@Override
-		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 			final org.alice.virtualmachine.Resource resource = ResourceManagerPane.this.getSelectedResource();
 			if( resource != null ) {
 				final Capsule prevCapsule;

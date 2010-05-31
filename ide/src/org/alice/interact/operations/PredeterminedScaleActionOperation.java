@@ -96,7 +96,7 @@ public class PredeterminedScaleActionOperation extends edu.cmu.cs.dennisc.croque
 		
 	}
 	@Override
-	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
 			@Override
 			public void doOrRedo( boolean isDo ) {

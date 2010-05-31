@@ -53,8 +53,8 @@ public class FillInMoreOperation extends org.alice.ide.operations.ActionOperatio
 		this.expressionStatement = expressionStatement;
 	}
 	@Override
-	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
-		final java.awt.event.MouseEvent mouseEvent = (java.awt.event.MouseEvent)e;
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		final java.awt.event.MouseEvent mouseEvent = context.getMouseEvent();
 		class MoreEdit extends org.alice.ide.ToDoEdit {
 			private edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod;
 			private edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation;
@@ -83,7 +83,7 @@ public class FillInMoreOperation extends org.alice.ide.operations.ActionOperatio
 			public MoreEdit createEdit() {
 				return new MoreEdit();
 			}
-			public MoreEdit initialize(MoreEdit rv, edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver) {
+			public MoreEdit initialize(MoreEdit rv, edu.cmu.cs.dennisc.croquet.ModelContext context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver) {
 				rv.prevMethodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expressionStatement.expression.getValue();
 				edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = rv.prevMethodInvocation.method.getValue();
 				rv.nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();

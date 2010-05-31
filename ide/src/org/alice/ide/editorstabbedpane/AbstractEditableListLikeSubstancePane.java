@@ -51,8 +51,9 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 			super( group, java.util.UUID.fromString( "118ab33a-8c1a-4207-80d1-88edd555ca61" ) );
 			this.setName( name );
 		}
+
 		@Override
-		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+		protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 			try {
 				final E item = createItem();
 				final int index = getListSize();
@@ -84,7 +85,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 			this.setName( name );
 		}
 		@Override
-		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 			final int index = getSelectedIndex();
 			if( index >= 0 ) {
 				final E item = getItemAt( index );
@@ -119,7 +120,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		protected abstract int getRedoSelectionIndexDelta();
 		protected abstract int getUndoSelectionIndexDelta();
 		@Override
-		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component ) {
+		protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 			final int index = this.getIndex( getSelectedIndex() );
 			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				private void swapWithNext( int index ) {

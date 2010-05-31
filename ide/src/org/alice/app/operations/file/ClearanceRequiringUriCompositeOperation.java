@@ -46,16 +46,16 @@ package org.alice.app.operations.file;
  * @author Dennis Cosgrove
  */
 public abstract class ClearanceRequiringUriCompositeOperation extends UriCompositeOperation {
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation saveOperation;
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation otherOperation;
-	public ClearanceRequiringUriCompositeOperation( java.util.UUID individualUUID, edu.cmu.cs.dennisc.croquet.AbstractActionOperation saveOperation, edu.cmu.cs.dennisc.croquet.AbstractActionOperation otherOperation ) {
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> saveOperation;
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> otherOperation;
+	public ClearanceRequiringUriCompositeOperation( java.util.UUID individualUUID, edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> saveOperation, edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> otherOperation ) {
 		super( individualUUID );
 		this.saveOperation = saveOperation;
 		this.otherOperation = otherOperation;
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.AbstractActionOperation > getOperations() {
-		java.util.List< edu.cmu.cs.dennisc.croquet.AbstractActionOperation > operations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> > getOperations() {
+		java.util.List< edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> > operations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		org.alice.app.ProjectApplication application = this.getProjectApplication();
 		if( application.isProjectUpToDateWithFile() ) {
 			operations.add( this.otherOperation );

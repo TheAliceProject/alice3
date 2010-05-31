@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractActionOperation extends Model {
+public abstract class AbstractActionOperation<C extends OperationContext> extends Model {
 	private class ButtonActionListener implements java.awt.event.ActionListener {
 		private AbstractButton< ? > button;
 		public ButtonActionListener( AbstractButton< ? > button ) {
@@ -57,13 +57,13 @@ public abstract class AbstractActionOperation extends Model {
 	}
 	private java.util.Map< AbstractButton< ? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
+	protected abstract C createContext( ModelContext parent );
+
 	public void fire( java.util.EventObject e, Component<?> component ) {
 		if( this.isEnabled() ) {
 			Application application = Application.getSingleton();
-			Context parentContext = application.getCurrentContext();
-			Context childContext = parentContext.createChildContext();
-			childContext.addChild( new ActionEvent( childContext, AbstractActionOperation.this, e, component ) );
-			AbstractActionOperation.this.perform( childContext, e, component );
+			ModelContext parentContext = application.getCurrentContext();
+			this.handleFire(parentContext, e, component);
 		}
 	}
 	@Deprecated
@@ -75,19 +75,23 @@ public abstract class AbstractActionOperation extends Model {
 		fire( null );
 	}
 	
-//	private javax.swing.ButtonModel buttonModel = new javax.swing.DefaultButtonModel();
+	
+	
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 		}
 	};
 	public AbstractActionOperation( Group group, java.util.UUID individualUUID ) {
 		super( group, individualUUID );
-//		this.buttonModel.addActionListener( new java.awt.event.ActionListener() {
-//			public void actionPerformed( java.awt.event.ActionEvent e ) {
-//			}
-//		} );
 	}
-	protected abstract void perform( Context context, java.util.EventObject e, Component<?> component );
+	
+	/*package-private*/ final void handleFire( ModelContext parentContext, java.util.EventObject e, Component<?> component ) {
+		C childContext = this.createContext( parentContext );
+		childContext.addChild( new ActionEvent( childContext, AbstractActionOperation.this, e, component ) );
+		this.perform( childContext );
+	}
+	protected abstract void perform( C context );
+	//protected abstract void perform( ModelContext context, java.util.EventObject e, Component<?> component );
 
 	public String getName() {
 		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );
