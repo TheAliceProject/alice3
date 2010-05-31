@@ -200,6 +200,15 @@ public class StageIDE extends org.alice.ide.IDE {
 			}
 		}
 	}
+	
+	@Override
+	protected boolean isFieldDesired( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		if( field.getValueType().isAssignableTo( org.alice.apis.moveandturn.Marker.class) ) {
+			return false;
+		} else {
+			return super.isFieldDesired( field );
+		}
+	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Component< ? > getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
