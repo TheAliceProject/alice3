@@ -45,12 +45,11 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class DialogCloseNoteStep extends NoteStep {
-	
-	private edu.cmu.cs.dennisc.croquet.DialogOperation operation;
-	public DialogCloseNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.DialogOperation operation ) {
-		super( tutorial, title, text );
-		this.operation = operation;
+/*package-private*/class WaitingOnCompleteNoteStep extends FeatureNoteStep {
+	private edu.cmu.cs.dennisc.croquet.Model model;
+	public WaitingOnCompleteNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.JComponent< ? > component, Feature.ConnectionPreference connectionPreference, edu.cmu.cs.dennisc.croquet.Model model ) {
+		super( tutorial, title, text, new Hole( component, connectionPreference ) );
+		this.model = model;
 	}
 	@Override
 	public boolean isPotentiallyWaiting() {
@@ -58,9 +57,10 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode child ) {
-		if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent ) {
-			edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent windowClosedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent)child;
-			return windowClosedEvent.getModel() == this.operation;
+		if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
+			edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent completeEvent = (edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent)child;
+			edu.cmu.cs.dennisc.croquet.Model eventModel = completeEvent.getModel();
+			return this.model == eventModel;
 		} else {
 			return false;
 		}

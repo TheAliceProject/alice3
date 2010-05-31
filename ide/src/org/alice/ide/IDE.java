@@ -68,32 +68,30 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return IDE.singleton;
 	}
 
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation preferencesOperation = this.createPreferencesOperation();
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation aboutOperation = this.createAboutOperation();
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation runOperation = this.createRunOperation();
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation restartOperation = this.createRestartOperation();
+	protected abstract edu.cmu.cs.dennisc.croquet.DialogOperation createRunOperation();
+	protected abstract edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> createRestartOperation();
+	public abstract edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
+	
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> preferencesOperation = this.createPreferencesOperation();
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> aboutOperation = this.createAboutOperation();
+	private edu.cmu.cs.dennisc.croquet.DialogOperation runOperation = this.createRunOperation();
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> restartOperation = this.createRestartOperation();
 
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createRunOperation() {
-		return new org.alice.ide.operations.run.RunOperation();
-	}
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createRestartOperation() {
-		return new org.alice.ide.operations.run.RestartOperation();
-	}
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createPreferencesOperation() {
+	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> createPreferencesOperation() {
 		return new org.alice.ide.operations.preferences.PreferencesOperation();
 	}
-	protected abstract edu.cmu.cs.dennisc.croquet.AbstractActionOperation createAboutOperation();
+	protected abstract edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> createAboutOperation();
 
-	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation getRunOperation() {
+	public final edu.cmu.cs.dennisc.croquet.DialogOperation getRunOperation() {
 		return this.runOperation;
 	}
-	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation getRestartOperation() {
+	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> getRestartOperation() {
 		return this.restartOperation;
 	}
-	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation getPreferencesOperation() {
+	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> getPreferencesOperation() {
 		return this.preferencesOperation;
 	}
-	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation getAboutOperation() {
+	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> getAboutOperation() {
 		return this.aboutOperation;
 	}
 
@@ -1079,17 +1077,9 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 
 
-	public abstract void handleRun( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType programType );
-	public abstract void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation );
-	public abstract void handleRestart( edu.cmu.cs.dennisc.croquet.ModelContext context );
-	public final void handleRun( edu.cmu.cs.dennisc.croquet.ModelContext context ) {
-		if( this.getProject() != null ) {
-			this.ensureProjectCodeUpToDate();
-			this.handleRun( context, this.getSceneType() );
-		} else {
-			this.showMessageDialog( "Please open a project first." );
-		}
-	}
+//	public abstract void handleRun( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType programType );
+//	public abstract void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation );
+//	public abstract void handleRestart( edu.cmu.cs.dennisc.croquet.ModelContext context );
 
 
 	private boolean isDragInProgress = false;
@@ -1574,7 +1564,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 
 	@Deprecated
-	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getProgramType() {
+	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getProgramType() {
 		edu.cmu.cs.dennisc.alice.Project project = this.getProject();
 		if( project != null ) {
 			return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)project.getProgramType();

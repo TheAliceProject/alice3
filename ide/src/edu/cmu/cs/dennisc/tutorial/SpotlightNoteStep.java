@@ -45,24 +45,16 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class DialogCloseNoteStep extends NoteStep {
-	
-	private edu.cmu.cs.dennisc.croquet.DialogOperation operation;
-	public DialogCloseNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.DialogOperation operation ) {
-		super( tutorial, title, text );
-		this.operation = operation;
+/*package-private*/ class SpotlightNoteStep extends FeatureNoteStep {
+	public SpotlightNoteStep( Tutorial tutorial, String title, String text, Frame frame ) {
+		super( tutorial, title, text, frame );
 	}
 	@Override
 	public boolean isPotentiallyWaiting() {
-		return true;
+		return false;
 	}
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode child ) {
-		if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent ) {
-			edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent windowClosedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent)child;
-			return windowClosedEvent.getModel() == this.operation;
-		} else {
-			return false;
-		}
+		return false;
 	}
-}
+}	

@@ -53,97 +53,100 @@ public class IntroductionTutorial {
 		ide.getFrame().maximize();
 		
 		final edu.cmu.cs.dennisc.tutorial.Tutorial tutorial = new edu.cmu.cs.dennisc.tutorial.Tutorial();
-		tutorial.createAndAddMessageStep( 
+		tutorial.addMessageStep( 
 				"Welcome", 
 				"<html><b><center>Welcome To The Tutorial</center></b><p>First we'll show you around a bit.</html>" 
 		);
-		tutorial.createAndAddSpotlightStep( 
+		tutorial.addSpotlightStep( 
 				"Scene Editor", 
 				"<html>This is the scene editor.</html>", 
 				ide.getSceneEditor() 
 		);
-		tutorial.createAndAddSpotlightStep( 
+		tutorial.addSpotlightStep( 
 				"Constructs",
 				"<html>This where loops and locals live.</html>", 
 				ide.getUbiquitousPane() 
 		);
-		tutorial.createAndAddActionStep( 
+		tutorial.addDialogOpenStep( 
 				"Run", 
 				"<html>Press the <b>Run</b> button</html>", 
 				ide.getRunOperation() 
 		);
+		tutorial.addDialogCloseStep( 
+				"Run", 
+				"<html>Press the <b>Close</b> button</html>", 
+				ide.getRunOperation() 
+		);
 		
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
-		tutorial.createAndAddSpotlightStep( 
+		tutorial.addSpotlightStep( 
 				"Instance Details", 
 				"<html>This is the currently selected instance methods and fields pane.</html>", 
 				membersEditor 
 		);
-		tutorial.createAndAddSpotlightStep( 
+		tutorial.addSpotlightStep( 
 				"Curent Instance", 
 				"<html>The current instance is show here.</html>", 
-				ide.getFieldSelectionState().getFirstComponent( edu.cmu.cs.dennisc.croquet.ComboBox.class ) 
+				ide.getFieldSelectionState()
 		);
-		tutorial.createAndAddSelectTabTitleStep( 
+		tutorial.addSelectTabStep( 
 				"Select Functions Tab", 
 				"<html>Select the <b>Functions</b> tab.</html>", 
 				membersEditor.getTabbedPaneSelectionState(),
 				membersEditor.getFunctionsTab()
 		);
-		tutorial.createAndAddSpotlightTabScrollPaneStep( 
+		tutorial.addSpotlightTabScrollPaneStep( 
 				"Note Functions Tab", 
 				"<html>Now the functions are now available.</html>", 
 				membersEditor.getTabbedPaneSelectionState(),
 				membersEditor.getFunctionsTab()
 		);
-		tutorial.createAndAddSelectTabTitleStep( 
+		tutorial.addSelectTabStep( 
 				"Properies Tab", 
 				"<html>Select the <b>Properies</b> tab.</html>", 
 				membersEditor.getTabbedPaneSelectionState(),
 				membersEditor.getFieldsTab()
 		);
-		tutorial.createAndAddSpotlightTabScrollPaneStep( 
+		tutorial.addSpotlightTabScrollPaneStep( 
 				"Note Properies Tab", 
 				"<html>Now the properties are now available.</html>", 
 				membersEditor.getTabbedPaneSelectionState(),
 				membersEditor.getFieldsTab()
 		);
-		tutorial.createAndAddSelectTabTitleStep( 
+		tutorial.addSelectTabStep( 
 				"Procedures Tab", 
 				"<html>Select the <b>Procedures</b> tab.</html>", 
 				membersEditor.getTabbedPaneSelectionState(),
 				membersEditor.getProceduresTab()
 		);
-		tutorial.createAndAddSpotlightTabScrollPaneStep( 
+		tutorial.addSpotlightTabScrollPaneStep( 
 				"Note Procedures Tab", 
 				"<html>Now the procedures are now available.</html>", 
 				membersEditor.getTabbedPaneSelectionState(),
 				membersEditor.getProceduresTab()
 		);
 
-		tutorial.createAndAddBooleanStateStep( 
+		tutorial.addBooleanStateStep( 
 				"Edit Scene", 
 				"<html>Press the <b>Edit Scene</b> button</html>", 
 				ide.getIsSceneEditorExpandedState()
 		);
-		tutorial.createAndAddMessageStep( 
+		tutorial.addMessageStep( 
 				"Note Edit Scene",
 				"<html>Note you are now editing the scene.</html>" 
 		);
-		tutorial.createAndAddBooleanStateStep( 
+		tutorial.addBooleanStateStep( 
 				"Edit Code", 
 				"<html>Press the <b>Edit Code</b> button</html>", 
 				ide.getIsSceneEditorExpandedState()
 		);
-		tutorial.createAndAddMessageStep( 
+		tutorial.addMessageStep( 
 				"Note Edit Code",
 				"<html>Note you are now editing the code.</html>" 
 		);
-		
 
 		//membersEditor.getTabbedPaneSelectionState().setValue( membersEditor.getFunctionsTab() );
-		tutorial.setSelectedIndex( 0 );
-		
+		tutorial.setSelectedIndex( 3 );
 		
 		ide.getFrame().addWindowListener( new java.awt.event.WindowAdapter() {
 			@Override

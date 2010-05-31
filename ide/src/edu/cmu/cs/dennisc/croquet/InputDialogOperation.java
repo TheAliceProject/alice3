@@ -46,17 +46,6 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class InputDialogOperation extends AbstractActionOperation<InputDialogOperationContext> {
-//	public static interface Validator {
-//		public String getExplanationForInvalidOkButton();
-//	}
-//	private java.util.List<Validator> validators = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-//	public void addValidator(Validator validator) {
-//		this.validators.add(validator);
-//	}
-//	public void removeValidator(Validator validator) {
-//		this.validators.remove(validator);
-//	}
-
 	private class ButtonOperation extends ActionOperation {
 		private boolean isOk;
 		private Dialog dialog;

@@ -40,29 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.tutorial;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class DialogCloseNoteStep extends NoteStep {
-	
-	private edu.cmu.cs.dennisc.croquet.DialogOperation operation;
-	public DialogCloseNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.DialogOperation operation ) {
-		super( tutorial, title, text );
-		this.operation = operation;
-	}
-	@Override
-	public boolean isPotentiallyWaiting() {
-		return true;
-	}
-	@Override
-	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode child ) {
-		if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent ) {
-			edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent windowClosedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent)child;
-			return windowClosedEvent.getModel() == this.operation;
-		} else {
-			return false;
+public class DialogOperationContext extends OperationContext {
+	public static abstract class WindowEvent extends ModelEvent< DialogOperation, java.awt.event.WindowEvent, Component< ? > > {
+		public WindowEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
 		}
+		public WindowEvent( ModelContext parent, DialogOperation dialogOperation, java.awt.event.WindowEvent e ) {
+			super( parent, dialogOperation, e, null );
+		}
+	}
+
+	public static class WindowOpenedEvent extends WindowEvent {
+		public WindowOpenedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		public WindowOpenedEvent( ModelContext parent, DialogOperation dialogOperation, java.awt.event.WindowEvent e ) {
+			super( parent, dialogOperation, e );
+		}
+	}
+
+	public static class WindowClosedEvent extends WindowEvent {
+		public WindowClosedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		public WindowClosedEvent( ModelContext parent, DialogOperation dialogOperation, java.awt.event.WindowEvent e ) {
+			super( parent, dialogOperation, e );
+		}
+	}
+
+	private DialogOperation dialogOperation;
+	public DialogOperationContext( ModelContext parent, DialogOperation dialogOperation ) {
+		super( parent );
+		this.dialogOperation = dialogOperation;
+	}
+	/*package-private*/ void handleWindowOpened( java.awt.event.WindowEvent e ) {
+		this.addChild( new WindowOpenedEvent( this, this.dialogOperation, e ) );
+	}
+	/*package-private*/ void handleWindowClosed( java.awt.event.WindowEvent e ) {
+		this.addChild( new WindowClosedEvent( this, this.dialogOperation, e ) );
 	}
 }

@@ -58,8 +58,8 @@ public abstract class Step {
 		return this.tutorial;
 	}
 	
-	public abstract edu.cmu.cs.dennisc.croquet.Model getModelWaitingOn();
-	
+	public abstract boolean isPotentiallyWaiting();
+	public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode child );
 	public boolean isAutoAdvanceDesired() {
 		return true;
 	}
