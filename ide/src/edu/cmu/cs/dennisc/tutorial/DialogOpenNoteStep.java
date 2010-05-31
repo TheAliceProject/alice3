@@ -40,71 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide;
+package edu.cmu.cs.dennisc.tutorial;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FauxIDE extends IDE {
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createAboutOperation() {
-		return null;
+/*package-private*/ class DialogOpenNoteStep extends FeatureNoteStep {
+	private edu.cmu.cs.dennisc.croquet.DialogOperation operation;
+	public DialogOpenNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.DialogOperation operation ) {
+		super( tutorial, title, text, new Hole( operation.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractButton.class ), Feature.ConnectionPreference.EAST_WEST ) );
+		this.operation = operation;
 	}
 	@Override
-	protected void promptForLicenseAgreements() {
-	}
-	@Override
-	protected org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor() {
-		return new org.alice.ide.sceneeditor.FauxSceneEditor();
-	}
-	@Override
-	public java.io.File getGalleryRootDirectory() {
-		return null;
-	}
-	@Override
-	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser( java.io.File galleryRootDirectory ) {
-		return new org.alice.ide.gallerybrowser.FauxGalleryBrowser( galleryRootDirectory );
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.DialogOperation createRunOperation() {
-		return null;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createRestartOperation() {
-		return null;
-	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.AbstractActionOperation createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
-		return null;
-	}
-//	@Override
-//	public void handleRun( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
-//		this.showMessageDialog( "imagine the program running here..." );
-//	}
-//	@Override
-//	public void handleRestart( edu.cmu.cs.dennisc.croquet.ModelContext context ) {
-//	}
-//	@Override
-//	public void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
-//		this.showMessageDialog( "imagine testing method here..." );
-//	}
-	@Override
-	public boolean isInstanceCreationAllowableFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice ) {
+	public boolean isPotentiallyWaiting() {
 		return true;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.animation.Program createRuntimeProgram( edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType, int frameRate ) {
-		return null;
-	}
-	@Override
-	protected java.awt.image.BufferedImage createThumbnail() throws java.lang.Throwable {
-		return null;
-	}
-	@Override
-	protected org.alice.app.openprojectpane.TabContentPanel createTemplatesTabContentPane() {
-		return null;
-	}
-	public static void main( String[] args ) {
-		org.alice.ide.LaunchUtilities.launch( FauxIDE.class, null, args );
+	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode child ) {
+		if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

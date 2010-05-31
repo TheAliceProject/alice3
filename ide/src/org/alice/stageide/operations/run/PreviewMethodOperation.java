@@ -40,66 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.run;
-
-class RunIcon implements javax.swing.Icon {
-	private static final java.awt.Color ENABLED_CIRCLE_COLOR = java.awt.Color.GREEN.darker();
-	private static final java.awt.Color DISABLED_CIRCLE_COLOR = java.awt.Color.GRAY;
-	public int getIconHeight() {
-		return 18;
-	}
-	public int getIconWidth() {
-		return 18;
-	}
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		java.awt.Color prevColor = g.getColor();
-		try {
-			boolean isEnabled;
-			if( c instanceof javax.swing.AbstractButton ) {
-				isEnabled = ((javax.swing.AbstractButton)c).getModel().isEnabled();
-			} else {
-				isEnabled = c!=null && c.isEnabled();
-			}
-			if( isEnabled ) {
-				g.setColor( ENABLED_CIRCLE_COLOR );
-			} else {
-				g.setColor( DISABLED_CIRCLE_COLOR );
-			}
-			int w = this.getIconWidth();
-			int h = this.getIconHeight();
-			g.fillOval( x, y, w, h );
-
-			int offset = w / 5;
-			int x0 = x + offset * 2;
-			int x1 = x + w - offset;
-
-			int y0 = y + offset;
-			int y1 = y + h - offset;
-			int yC = (y0 + y1) / 2;
-
-			int[] xs = { x0, x1, x0 };
-			int[] ys = { y0, yC, y1 };
-
-			g.setColor( java.awt.Color.WHITE );
-			g.fillPolygon( xs, ys, 3 );
-		} finally {
-			g.setColor( prevColor );
-		}
-	}
-}
+package org.alice.stageide.operations.run;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RunOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	public RunOperation() {
-		super( java.util.UUID.fromString( "985b3795-e1c7-4114-9819-fae4dcfe5676" ) );
-		this.setName( "Run..." );
-		this.setSmallIcon( new RunIcon() );
-		this.setMnemonicKey( java.awt.event.KeyEvent.VK_R );
+public class PreviewMethodOperation extends org.alice.ide.operations.ActionOperation {
+	private org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate;
+	public PreviewMethodOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
+		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "9414c780-1ba2-4b00-8cb2-3c066f0063d5" ) );
+		this.setName( "Preview..." );
+		this.procedureInvocationTemplate = procedureInvocationTemplate;
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		this.getIDE().handleRun( context );
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+//		java.awt.event.MouseEvent mouseEvent = new java.awt.event.MouseEvent( this.procedureInvocationTemplate.getAwtComponent(), 0, 0, 0, this.procedureInvocationTemplate.getWidth(), this.procedureInvocationTemplate.getHeight(), 0, false );
+//		edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( this.procedureInvocationTemplate.getAwtComponent(), null, mouseEvent );
+//		this.procedureInvocationTemplate.createStatement( dragAndDropEvent, null, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement >() {
+//			public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+//				edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( statement, edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
+//				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( expressionStatement.expression.getValue(), edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class );
+//				methodInvocation.expression.setValue( null );
+//				PreviewMethodOperation.this.getIDE().handlePreviewMethod( context, methodInvocation );
+//				context.finish();
+//			}
+//			public void handleCancelation() {
+//				context.cancel();
+//			}
+//		} );
 	}
 }

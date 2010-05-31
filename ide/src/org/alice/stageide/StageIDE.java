@@ -256,10 +256,7 @@ public class StageIDE extends org.alice.ide.IDE {
 					edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)expression;
 					edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 					if( constructor == REVOLUTIONS_CONSTRUCTOR ) {
-						return new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
-								factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() ), 
-								new edu.cmu.cs.dennisc.croquet.Label( " revolutions" ) 
-						);
+						return new edu.cmu.cs.dennisc.croquet.LineAxisPanel( factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() ), new edu.cmu.cs.dennisc.croquet.Label( " revolutions" ) );
 					} else if( constructor == PORTION_CONSTRUCTOR ) {
 						return factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() );
 					}
@@ -311,75 +308,105 @@ public class StageIDE extends org.alice.ide.IDE {
 			return false;
 		}
 	}
-	protected MoveAndTurnRuntimeProgram createRuntimeProgram( edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType, edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm ) {
-		return new MoveAndTurnRuntimeProgram( sceneType, vm );
-	}
+//	public MoveAndTurnRuntimeProgram createRuntimeProgram( edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType, edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm ) {
+//		return new MoveAndTurnRuntimeProgram( sceneType, vm );
+//	}
+//	private int xLocation = 100;
+//	private int yLocation = 100;
+//
+//	protected void showInJDialog( MoveAndTurnRuntimeProgram rtProgram ) {
+//		this.disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
+//		try {
+//			rtProgram.showInJDialog( this.getFrame().getAwtWindow(), true, new String[] { "X_LOCATION=" + xLocation, "Y_LOCATION=" + yLocation } );
+//		} finally {
+//			this.enableRendering();
+//			try {
+//				this.xLocation = Integer.parseInt( rtProgram.getParameter( "X_LOCATION" ) );
+//			} catch( Throwable t ) {
+//				this.xLocation = 0;
+//			}
+//			try {
+//				this.yLocation = Integer.parseInt( rtProgram.getParameter( "Y_LOCATION" ) );
+//			} catch( Throwable t ) {
+//				this.yLocation = 0;
+//			}
+//		}
+//	}
 
-	private int xLocation = 100;
-	private int yLocation = 100;
-
-	protected void showInJDialog( MoveAndTurnRuntimeProgram rtProgram ) {
+	public void showInContainer( MoveAndTurnRuntimeProgram rtProgram, edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
 		this.disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
 		try {
-			rtProgram.showInJDialog( this.getFrame().getAwtWindow(), true, new String[] { "X_LOCATION=" + xLocation, "Y_LOCATION=" + yLocation } );
+			String[] args = {};
+			rtProgram.showInAWTContainer( container.getAwtComponent(), args );
 		} finally {
 			this.enableRendering();
-			try {
-				this.xLocation = Integer.parseInt( rtProgram.getParameter( "X_LOCATION" ) );
-			} catch( Throwable t ) {
-				this.xLocation = 0;
-			}
-			try {
-				this.yLocation = Integer.parseInt( rtProgram.getParameter( "Y_LOCATION" ) );
-			} catch( Throwable t ) {
-				this.yLocation = 0;
-			}
 		}
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.DialogOperation createRunOperation() {
+		return new org.alice.stageide.operations.run.RunOperation();
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> createRestartOperation() {
+		return new org.alice.stageide.operations.run.RestartOperation();
+	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
+		return new org.alice.stageide.operations.run.PreviewMethodOperation( procedureInvocationTemplate );
 	}
 
-	@Override
-	public void handleRun( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
-		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = this.createVirtualMachineForRuntimeProgram();
-		vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.MouseButtonListener.class, org.alice.stageide.apis.moveandturn.event.MouseButtonAdapter.class );
-		vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.KeyListener.class, org.alice.stageide.apis.moveandturn.event.KeyAdapter.class );
-		vm.setEntryPointType( this.getProgramType() );
-		MoveAndTurnRuntimeProgram rtProgram = this.createRuntimeProgram( sceneType, vm );
-		showInJDialog( rtProgram );
-	}
-	@Override
-	public void handleRestart( final edu.cmu.cs.dennisc.croquet.ModelContext context ) {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				handleRun( context );
-			}
-		} );
-	}
+//	public final void handleRun( edu.cmu.cs.dennisc.croquet.ModelContext context ) {
+//		if( this.getProject() != null ) {
+//			this.ensureProjectCodeUpToDate();
+//			this.handleRun( context, this.getSceneType() );
+//		} else {
+//			this.showMessageDialog( "Please open a project first." );
+//		}
+//	}
+//	@Override
+//	public void handleRun( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
+//		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = this.createVirtualMachineForRuntimeProgram();
+//		vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.MouseButtonListener.class, org.alice.stageide.apis.moveandturn.event.MouseButtonAdapter.class );
+//		vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.KeyListener.class, org.alice.stageide.apis.moveandturn.event.KeyAdapter.class );
+//		vm.setEntryPointType( this.getProgramType() );
+//		MoveAndTurnRuntimeProgram rtProgram = this.createRuntimeProgram( sceneType, vm );
+//		showInJDialog( rtProgram );
+//	}
+//	@Override
+//	public void handleRestart( final edu.cmu.cs.dennisc.croquet.ModelContext context ) {
+//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//			public void run() {
+//				handleRun( context );
+//			}
+//		} );
+//	}
+//
+//	@Override
+//	public void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
+//		this.ensureProjectCodeUpToDate();
+//		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldSelectionState().getValue();
+//		if( field == this.getSceneField() ) {
+//			field = null;
+//		}
+//		TestMethodProgram testProgram = new TestMethodProgram( this.getSceneType(), field, emptyExpressionMethodInvocation );
+//		this.disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
+//		try {
+//			testProgram.showInJDialog( this.getFrame().getAwtWindow(), true, new String[] { "X_LOCATION=" + xLocation, "Y_LOCATION=" + yLocation } );
+//		} finally {
+//			this.enableRendering();
+//			try {
+//				this.xLocation = Integer.parseInt( testProgram.getParameter( "X_LOCATION" ) );
+//			} catch( Throwable t ) {
+//				this.xLocation = 0;
+//			}
+//			try {
+//				this.yLocation = Integer.parseInt( testProgram.getParameter( "Y_LOCATION" ) );
+//			} catch( Throwable t ) {
+//				this.yLocation = 0;
+//			}
+//		}
+//	}
 
-	@Override
-	public void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
-		this.ensureProjectCodeUpToDate();
-		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldSelectionState().getValue();
-		if( field == this.getSceneField() ) {
-			field = null;
-		}
-		TestMethodProgram testProgram = new TestMethodProgram( this.getSceneType(), field, emptyExpressionMethodInvocation );
-		this.disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
-		try {
-			testProgram.showInJDialog( this.getFrame().getAwtWindow(), true, new String[] { "X_LOCATION=" + xLocation, "Y_LOCATION=" + yLocation } );
-		} finally {
-			this.enableRendering();
-			try {
-				this.xLocation = Integer.parseInt( testProgram.getParameter( "X_LOCATION" ) );
-			} catch( Throwable t ) {
-				this.xLocation = 0;
-			}
-			try {
-				this.yLocation = Integer.parseInt( testProgram.getParameter( "Y_LOCATION" ) );
-			} catch( Throwable t ) {
-				this.yLocation = 0;
-			}
-		}
-	}
 	@Override
 	protected org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor() {
 		return new org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor();
@@ -417,7 +444,7 @@ public class StageIDE extends org.alice.ide.IDE {
 				//edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice cameraType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)sceneType.fields.get( 2 ).valueType.getValue();
 				//cameraType.superType.setValue( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.FrustumPerspectiveCamera.class ) );
 				//cameraType.superType.setValue( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.SymmetricPerspectiveCamera.class ) );
-				
+
 				final String CUSTOM_SET_UP_METHOD_NAME = "performMySetUp";
 				boolean isSetUpMethodReplacementDesired = false;
 				java.util.Map< String, String > map = new java.util.HashMap< String, String >();
@@ -660,7 +687,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		java.awt.image.BufferedImage rv = offscreenLookingGlass.getColorBuffer();
 		return rv;
 	}
-	
+
 	@Override
 	protected org.alice.app.openprojectpane.TabContentPanel createTemplatesTabContentPane() {
 		return new org.alice.stageide.openprojectpane.templates.TemplatesTabContentPane();

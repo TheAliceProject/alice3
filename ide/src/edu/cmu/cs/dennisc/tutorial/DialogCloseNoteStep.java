@@ -40,18 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.run;
+package edu.cmu.cs.dennisc.tutorial;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RestartOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	public RestartOperation() {
-		super( java.util.UUID.fromString( "f8acb9c4-f4d8-4c6e-84ae-6555cc0da4e0" ) );
-		this.setName( "Restart..." );
+/*package-private*/ class DialogCloseNoteStep extends NoteStep {
+	
+	private edu.cmu.cs.dennisc.croquet.DialogOperation operation;
+	public DialogCloseNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.DialogOperation operation ) {
+		super( tutorial, title, text );
+		this.operation = operation;
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		this.getIDE().handleRestart( context );
+	public boolean isPotentiallyWaiting() {
+		return true;
+	}
+	@Override
+	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode child ) {
+		if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
