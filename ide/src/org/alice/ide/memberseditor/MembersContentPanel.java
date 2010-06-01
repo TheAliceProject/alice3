@@ -45,13 +45,42 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class Factory extends org.alice.ide.common.Factory {
+public abstract class MembersContentPanel extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
+	private edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractField> fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractField>() {
+		public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractField nextValue) {
+			MembersContentPanel.this.handleFieldSelection( nextValue );
+		}
+	};
+	public MembersContentPanel() {
+		this.setOpaque( true );
+	}
+
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
-		return new ArgumentListPropertyPane( this, argumentListProperty );
+	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		super.handleAddedTo( parent );
+		org.alice.ide.IDE.getSingleton().getFieldSelectionState().addAndInvokeValueObserver( this.fieldSelectionObserver );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType ) {
-		return this.createExpressionPane( expressionProperty.getValue() );
+	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		org.alice.ide.IDE.getSingleton().getFieldSelectionState().removeValueObserver( this.fieldSelectionObserver );
+		super.handleRemovedFrom( parent );
+	}
+	
+	protected abstract void handleFieldSelection( edu.cmu.cs.dennisc.alice.ast.AbstractField field, java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > types );
+	private void handleFieldSelection( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > types = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		if( field != null ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType type = field.getValueType();
+			while( type != null ) {
+				types.add( type );
+				if( type.isFollowToSuperClassDesired() ) {
+					type = type.getSuperType();
+				} else {
+					break;
+				}
+			}
+		}
+		this.handleFieldSelection( field, types );
 	}
 }
+

@@ -45,49 +45,13 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class MembersContentPanel extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
-	public MembersContentPanel() {
-		this.setOpaque( true );
-	}
-
-	private java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > types = new java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.AbstractType >();
-
-	public void handleFieldSelection( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		this.types.clear();
-		if( field != null ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType type = field.getValueType();
-			while( type != null ) {
-				this.types.add( type );
-				if( type.isFollowToSuperClassDesired() ) {
-					type = type.getSuperType();
-				} else {
-					break;
-				}
-			}
-		}
-		this.refresh();
-	}
-
-	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType, AbstractTypeMembersPane > mapTypeToPane = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractType, AbstractTypeMembersPane >();
-
-	protected abstract AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type );
-	protected AbstractTypeMembersPane getTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		AbstractTypeMembersPane rv = this.mapTypeToPane.get( type );
-		if( rv != null ) {
-			//todo?
-			rv.refresh();
-		} else {
-			rv = this.createTypeMembersPane( type );
-			this.mapTypeToPane.put( type, rv );
-		}
-		return rv;
-	}
-
-	protected void refresh() {
+abstract class OrganizedByTypeMembersContentPanel extends MembersContentPanel {
+	@Override
+	protected void handleFieldSelection( edu.cmu.cs.dennisc.alice.ast.AbstractField field, java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > types ) {
 		this.removeAllComponents();
 		boolean isNonConsumedTypeDeclaredInJavaAlreadyEncountered = false;
 
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : this.types ) {
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : types ) {
 			boolean isFirstNonConsumedTypeEncounteredInJava = false;
 			if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava ) {
 				if( isNonConsumedTypeDeclaredInJavaAlreadyEncountered ) {
@@ -122,9 +86,22 @@ abstract class MembersContentPanel extends edu.cmu.cs.dennisc.croquet.PageAxisPa
 		//		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() );
 		this.revalidateAndRepaint();
 	}
+	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType, AbstractTypeMembersPane > mapTypeToPane = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractType, AbstractTypeMembersPane >();
+	protected abstract AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type );
+	protected AbstractTypeMembersPane getTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		AbstractTypeMembersPane rv = this.mapTypeToPane.get( type );
+		if( rv != null ) {
+			//todo?
+			rv.refresh();
+		} else {
+			rv = this.createTypeMembersPane( type );
+			this.mapTypeToPane.put( type, rv );
+		}
+		return rv;
+	}
 }
 
-abstract class MethodsContentPanel extends MembersContentPanel {
+abstract class MethodsContentPanel extends OrganizedByTypeMembersContentPanel {
 }
 
 class ProceduresContentPanel extends MethodsContentPanel {
@@ -147,7 +124,7 @@ class FunctionsContentPanel extends MethodsContentPanel {
 	}
 }
 
-class FieldsContentPanel extends MembersContentPanel {
+class FieldsContentPanel extends OrganizedByTypeMembersContentPanel {
 	public FieldsContentPanel() {
 		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getFieldColor() );
 	}
@@ -209,25 +186,25 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	public edu.cmu.cs.dennisc.croquet.TabSelectionOperation getTabbedPaneSelectionState() {
 		return this.tabbedPaneSelectionState;
 	}
-	private edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractField > fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractField >() {
-		public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractField nextValue ) {
-			MembersEditor.this.handleFieldSelection( nextValue );
-		}
-	};
-	private void handleFieldSelection( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		final int N = this.tabbedPaneSelectionState.getItemCount();
-		for( int i=0; i<N; i++ ) {
-			MembersContentPanel membersTab = (MembersContentPanel)this.tabbedPaneSelectionState.getItemAt( i ).getMainComponent();
-			membersTab.handleFieldSelection( field );
-		}
-	}
-	private void refresh() {
-		final int N = this.tabbedPaneSelectionState.getItemCount();
-		for( int i=0; i<N; i++ ) {
-			MembersContentPanel membersTab = (MembersContentPanel)this.tabbedPaneSelectionState.getItemAt( i ).getMainComponent();
-			membersTab.refresh();
-		}
-	}
+//	private edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractField > fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractField >() {
+//		public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractField nextValue ) {
+//			MembersEditor.this.handleFieldSelection( nextValue );
+//		}
+//	};
+//	private void handleFieldSelection( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+//		final int N = this.tabbedPaneSelectionState.getItemCount();
+//		for( int i=0; i<N; i++ ) {
+//			MembersContentPanel membersTab = (MembersContentPanel)this.tabbedPaneSelectionState.getItemAt( i ).getMainComponent();
+//			membersTab.handleFieldSelection( field );
+//		}
+//	}
+//	private void refresh() {
+//		final int N = this.tabbedPaneSelectionState.getItemCount();
+//		for( int i=0; i<N; i++ ) {
+//			MembersContentPanel membersTab = (MembersContentPanel)this.tabbedPaneSelectionState.getItemAt( i ).getMainComponent();
+//			membersTab.refresh();
+//		}
+//	}
 
 	//private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType, java.awt.Component > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private static edu.cmu.cs.dennisc.map.MapToMap< Class< ? >, edu.cmu.cs.dennisc.alice.ast.AbstractType, edu.cmu.cs.dennisc.croquet.Component< ? > > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
@@ -281,21 +258,21 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		} );
 		
 	}
-	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
-		this.refresh();
-	}
-	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
-		this.refresh();
-	}
-	@Override
-	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		super.handleAddedTo( parent );
-
-		org.alice.ide.IDE.getSingleton().getFieldSelectionState().addAndInvokeValueObserver( this.fieldSelectionObserver );
-	}
-	@Override
-	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		org.alice.ide.IDE.getSingleton().getFieldSelectionState().removeValueObserver( this.fieldSelectionObserver );
-		super.handleRemovedFrom( parent );
-	}
+//	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
+//		this.refresh();
+//	}
+//	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
+//		this.refresh();
+//	}
+//	@Override
+//	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+//		super.handleAddedTo( parent );
+//
+//		org.alice.ide.IDE.getSingleton().getFieldSelectionState().addAndInvokeValueObserver( this.fieldSelectionObserver );
+//	}
+//	@Override
+//	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+//		org.alice.ide.IDE.getSingleton().getFieldSelectionState().removeValueObserver( this.fieldSelectionObserver );
+//		super.handleRemovedFrom( parent );
+//	}
 }
