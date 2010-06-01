@@ -149,32 +149,36 @@ public abstract class ItemSelectionState<E> extends Model {
 			}
 		}
 
-		private void setSelectedIndex(int nextIndex) {
+		private void setSelectedIndex(int nextIndex, boolean isValueChangedInvocationDesired) {
 			int prevIndex = this.index;
 			this.index = nextIndex;
 			int firstIndex = Math.min(prevIndex, nextIndex);
 			int lastIndex = Math.max(prevIndex, nextIndex);
 			this.fireChanged(firstIndex, lastIndex, this.isAdjusting);
 
-			if (nextIndex != this.indexOfLastPerform) {
-				E prevSelection = this.getSelection(this.indexOfLastPerform);
-				E nextSelection = this.getSelection(nextIndex);
+			if( isValueChangedInvocationDesired ) {
+				if (nextIndex != this.indexOfLastPerform) {
+					E prevSelection = this.getSelection(this.indexOfLastPerform);
+					E nextSelection = this.getSelection(nextIndex);
+					this.indexOfLastPerform = nextIndex;
+
+					Application application = Application.getSingleton();
+					ModelContext parentContext = application.getCurrentContext();
+					ModelContext childContext = parentContext.createChildContext();
+					childContext.addChild(new ItemSelectionEvent<E>(childContext, ItemSelectionState.this, this.mostRecentEvent, this.mostRecentComponent, prevIndex, prevSelection, nextIndex, nextSelection));
+					childContext.commitAndInvokeDo(new ItemSelectionEdit<E>( childContext, this.mostRecentEvent, prevSelection, nextSelection, ItemSelectionState.this ));
+					ItemSelectionState.this.fireValueChanged(nextSelection);
+
+					this.mostRecentEvent = null;
+					this.mostRecentComponent = null;
+				}
+			} else {
 				this.indexOfLastPerform = nextIndex;
-
-				Application application = Application.getSingleton();
-				ModelContext parentContext = application.getCurrentContext();
-				ModelContext childContext = parentContext.createChildContext();
-				childContext.addChild(new ItemSelectionEvent<E>(childContext, ItemSelectionState.this, this.mostRecentEvent, this.mostRecentComponent, prevIndex, prevSelection, nextIndex, nextSelection));
-				childContext.commitAndInvokeDo(new ItemSelectionEdit<E>( childContext, this.mostRecentEvent, prevSelection, nextSelection, ItemSelectionState.this ));
-				ItemSelectionState.this.fireValueChanged(nextSelection);
-
-				this.mostRecentEvent = null;
-				this.mostRecentComponent = null;
 			}
 		}
 
 		public void clearSelection() {
-			this.setSelectedIndex(-1);
+			this.setSelectedIndex(-1, true);
 		}
 
 		public void addSelectionInterval(int index0, int index1) {
@@ -203,7 +207,7 @@ public abstract class ItemSelectionState<E> extends Model {
 
 		public void setSelectionInterval(int index0, int index1) {
 			assert index0 == index1;
-			this.setSelectedIndex(index0);
+			this.setSelectedIndex(index0, true);
 		}
 
 	};
@@ -232,13 +236,17 @@ public abstract class ItemSelectionState<E> extends Model {
 						break;
 					}
 				}
-				ItemSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex);
+				ItemSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, true);
 				this.fireContentsChanged(this, -1, -1);
 			}
 		}
 
 		public Object getElementAt(int index) {
-			return this.items.get( index );
+//			if( index >= 0 ) {
+				return this.items.get( index );
+//			} else {
+//				return null;
+//			}
 		}
 
 		public int getSize() {
@@ -253,7 +261,7 @@ public abstract class ItemSelectionState<E> extends Model {
 				this.items.add( item );
 			}
 			this.fireContentsChanged(this, 0, this.getSize() - 1);
-			ItemSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex);
+			ItemSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, false);
 		}
 
 		private void setListData(int selectedIndex, java.util.Collection<E> items) {
@@ -263,7 +271,7 @@ public abstract class ItemSelectionState<E> extends Model {
 				this.items.add( item );
 			}
 			this.fireContentsChanged(this, 0, this.getSize() - 1);
-			ItemSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex);
+			ItemSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, false);
 		}
 		
 		private void addItem( E item ) {
@@ -314,7 +322,7 @@ public abstract class ItemSelectionState<E> extends Model {
 		} else {
 			i = -1;
 		}
-		this.listSelectionModel.setSelectedIndex(i);
+		this.listSelectionModel.setSelectedIndex(i,true);
 	}
 
 	public void setListData(int selectedIndex, E... items) {

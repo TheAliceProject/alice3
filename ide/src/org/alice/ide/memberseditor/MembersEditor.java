@@ -146,6 +146,12 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		public MemberTab( java.util.UUID individualId, String key ) {
 			super( individualId, getTitle( key ) );
 		}
+		@Override
+		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane() {
+			edu.cmu.cs.dennisc.croquet.ScrollPane rv = super.createScrollPane();
+			rv.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
+			return rv;
+		}
 	}
 
 	private MemberTab proceduresTab = new MemberTab( java.util.UUID.fromString( "2731d704-1f80-444e-a610-e6e5866c0b9a" ), "procedure" ) {
@@ -180,7 +186,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabbedPaneSelectionState = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( 
 			org.alice.ide.IDE.IDE_GROUP, 
 			java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ),
-			this.fieldsTab, this.functionsTab, this.proceduresTab );
+			this.proceduresTab, this.functionsTab, this.fieldsTab );
 
 
 	public edu.cmu.cs.dennisc.croquet.TabSelectionOperation getTabbedPaneSelectionState() {

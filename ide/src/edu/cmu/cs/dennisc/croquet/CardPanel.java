@@ -72,7 +72,9 @@ public class CardPanel extends Panel {
 	private Key nullKey;
 	public Key createKey( Component<?> child, java.util.UUID id ) {
 		String cardLayoutKey = id.toString();
-		assert map.containsKey( cardLayoutKey ) == false;
+		if( map.containsKey( cardLayoutKey ) ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: CardPanel replacing key" );
+		}
 		Key rv = new Key( child, cardLayoutKey );
 		this.map.put( cardLayoutKey, rv );
 		return rv;
