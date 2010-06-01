@@ -46,19 +46,10 @@ package org.alice.ide.preview;
  * @author Dennis Cosgrove
  */
 public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-//	protected static javax.swing.JLabel createLabel( String s ) {
-//		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( s );
-//		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
-//		return rv;
-//	}
 	class PreviewPane extends edu.cmu.cs.dennisc.croquet.JComponent<javax.swing.JPanel> {
 		public void refresh() {
 			this.forgetAndRemoveAllComponents();
-//			java.awt.Component component = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane(
-//					PreviewInputPane.this.createPreviewSubComponent(),
-//					javax.swing.Box.createHorizontalGlue()
-//			);
-			this.getAwtComponent().add( PanelWithPreview.this.createPreviewSubComponent().getAwtComponent(), java.awt.BorderLayout.WEST );
+			this.internalAddComponent( PanelWithPreview.this.createPreviewSubComponent(), java.awt.BorderLayout.WEST );
 			this.revalidateAndRepaint();
 		}
 		@Override
@@ -73,6 +64,7 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 					return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
 				}
 			};
+			rv.setOpaque( false );
 			rv.setLayout(new java.awt.BorderLayout());
 			return rv;
 		}
@@ -89,20 +81,40 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 	}
 
 	private PreviewPane previewPane;
-	private edu.cmu.cs.dennisc.croquet.Component< ? > spacer;
-	private edu.cmu.cs.dennisc.croquet.Component<?> centerPanel;
+	
 	public PanelWithPreview() {
-		final int INSET = 16;
-		edu.cmu.cs.dennisc.croquet.RowsSpringPanel rowsSpringPanel = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel() {
-			@Override
-			protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv) {
-				return PanelWithPreview.this.updateComponentRows( rv );
-			}
-		};
-		rowsSpringPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
-		this.centerPanel = edu.cmu.cs.dennisc.croquet.BoxUtilities.createClampedToMinimumPreferredWidthComponent(rowsSpringPanel, 320);
+		final int PAD = 16;
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, 0, PAD ) );
+		this.setOpaque( true );
 	}
 	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent();
+	private void initializeIfNecessary() {
+		if( this.previewPane != null ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.croquet.RowsSpringPanel rowsSpringPanel = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel() {
+				@Override
+				protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv) {
+					return PanelWithPreview.this.updateComponentRows( rv );
+				}
+			};
+			this.addComponent( rowsSpringPanel, Constraint.CENTER );
+
+			this.previewPane = new PreviewPane();
+			edu.cmu.cs.dennisc.croquet.PageAxisPanel northPanel = new edu.cmu.cs.dennisc.croquet.PageAxisPanel(
+					new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
+							edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ),
+							new edu.cmu.cs.dennisc.croquet.Label( "preview:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ),
+							edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ),
+							this.previewPane
+					),
+					edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 ),
+					new edu.cmu.cs.dennisc.croquet.HorizontalSeparator(),
+					edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 )
+			);
+			this.addComponent( northPanel, Constraint.NORTH );
+		}
+	}
 	
 //	todo: croquet switch
 //	@Override
@@ -120,48 +132,28 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 	protected abstract java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateInternalComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv );
 
 	protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv) {
-		this.previewPane = new PreviewPane();
-		this.spacer = edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 32 );
-		rv.add( 
-				edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow(
-						edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "preview:" ),
-						this.previewPane
-				) 
-		);
 		this.updateInternalComponentRows( rv );
-		rv.add( 
-				edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow(
-						this.spacer,
-						null
-				) 
-		);
-		
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate setAlignmentX" );
-		this.setAlignmentX( 0.0f );
+//		this.setAlignmentX( 0.0f );
 		return rv;
 	}
 
 	
-	@Override
-	protected boolean paintComponent( java.awt.Graphics2D g2 ) {
-		if( this.spacer != null ) {
-			int y = this.spacer.getY() + this.spacer.getHeight();
-			java.awt.Insets insets = this.getInsets();
-			g2.setColor( java.awt.Color.GRAY );
-			g2.drawLine( insets.left, y, this.getWidth()-insets.right, y );
-		}
-		return super.paintComponent( g2 );
-	}
+//	@Override
+//	protected boolean paintComponent( java.awt.Graphics2D g2 ) {
+//		if( this.spacer != null ) {
+//			int y = this.spacer.getY() + this.spacer.getHeight();
+//			java.awt.Insets insets = this.getInsets();
+//			g2.setColor( java.awt.Color.GRAY );
+//			g2.drawLine( insets.left, y, this.getWidth()-insets.right, y );
+//		}
+//		return super.paintComponent( g2 );
+//	}
 	
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
 	
-	//todo
-	public String getExplanationIfOkButtonShouldBeDisabled() {
-		return null;
-	}
-
+	public abstract String getExplanationIfOkButtonShouldBeDisabled();
 	@Deprecated
 	protected String getTitleDefault() {
 		return null;
@@ -170,12 +162,11 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo(parent);
-		this.addComponent( this.centerPanel, Constraint.CENTER);
+		this.initializeIfNecessary();
 	}
-	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		this.removeComponent( this.centerPanel );
-		super.handleRemovedFrom(parent);
-	}
-
+//	@Override
+//	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+//		this.removeComponent( this.centerPanel );
+//		super.handleRemovedFrom(parent);
+//	}
 }

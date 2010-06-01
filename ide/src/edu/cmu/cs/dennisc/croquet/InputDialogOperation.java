@@ -127,29 +127,29 @@ public abstract class InputDialogOperation extends AbstractActionOperation<Input
 		ModelContext childContext = context.createChildContext();
 		Component<?> contentPane = this.prologue(childContext);
 		if( contentPane != null ) {
-			class BottomPanel extends Panel {
+			class OkCancelPanel extends Panel {
 				private Button okButton = okOperation.createButton();
-				public BottomPanel() {
+				public OkCancelPanel() {
 					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 						this.internalAddComponent( okButton );
 						if( cancelOperation != null ) {
-							this.internalAddComponent( BoxUtilities.createHorizontalSliver( 4 ) );
+							//this.internalAddComponent( BoxUtilities.createHorizontalSliver( 2 ) );
 							this.internalAddComponent( cancelOperation.createButton() );
 						}
 					} else {
 						this.internalAddComponent( BoxUtilities.createHorizontalGlue() );
 						if( cancelOperation != null ) {
 							this.internalAddComponent( cancelOperation.createButton() );
-							this.internalAddComponent( BoxUtilities.createHorizontalSliver( 4 ) );
+							//this.internalAddComponent( BoxUtilities.createHorizontalSliver( 2 ) );
 						}
 						this.internalAddComponent( okButton );
 					}
-					this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
+					this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,0,4,0 ) );
 				}
 				@Override
 				protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
 					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-						return new java.awt.FlowLayout();
+						return new java.awt.FlowLayout( java.awt.FlowLayout.CENTER, 2, 0 );
 					} else {
 						return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
 					}
@@ -159,8 +159,8 @@ public abstract class InputDialogOperation extends AbstractActionOperation<Input
 				}
 			};
 			
-			BottomPanel bottomPanel = new BottomPanel();
-			bottomPanel.setOpaque( false );
+			OkCancelPanel okCancelPanel = new OkCancelPanel();
+			okCancelPanel.setOpaque( false );
 
 			Component<?> component = context.getComponent();
 			Component<?> owner;
@@ -171,7 +171,7 @@ public abstract class InputDialogOperation extends AbstractActionOperation<Input
 			}
 			final Dialog dialog = new Dialog( owner );
 			dialog.setTitle( this.getName() );
-			dialog.setDefaultButton( bottomPanel.getOkButton() );
+			dialog.setDefaultButton( okCancelPanel.getOkButton() );
 			dialog.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Dialog.DefaultCloseOperation.DISPOSE );
 //			dialog.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 //			dialog.addWindowListener(new java.awt.event.WindowListener() {
@@ -199,13 +199,19 @@ public abstract class InputDialogOperation extends AbstractActionOperation<Input
 			this.cancelOperation.setDialog(dialog);
 			this.isOk = false;
 			
+			//todo:
+			this.explanationLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
 			
 			PageAxisPanel southPanel = new PageAxisPanel();
 			southPanel.addComponent( this.explanationLabel );
-			southPanel.addComponent( bottomPanel );
+			southPanel.addComponent( okCancelPanel );
 
+			java.awt.Color backgroundColor = contentPane.getBackgroundColor();
+			this.explanationLabel.setBackgroundColor( backgroundColor );
+			
 			BorderPanel borderPanel = dialog.getContentPanel();
-			borderPanel.setBackgroundColor( contentPane.getBackgroundColor() );
+			borderPanel.setOpaque( true );
+			borderPanel.setBackgroundColor( backgroundColor );
 			borderPanel.addComponent( contentPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 			borderPanel.addComponent( southPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.SOUTH );
 

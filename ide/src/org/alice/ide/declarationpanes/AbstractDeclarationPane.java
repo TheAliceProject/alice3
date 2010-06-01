@@ -106,36 +106,36 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 				this.bogusNode.componentExpression.setValue( initialExpression );
 			}
 		}
-		bogusNode.componentType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-			}
-			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-				AbstractDeclarationPane.this.handleChange();
-			}
-		} );
-		bogusNode.isArray.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-			}
-			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-				AbstractDeclarationPane.this.handleChange();
-			}
-		} );
-		bogusNode.componentExpression.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-			}
-			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-				AbstractDeclarationPane.this.handleChange();
-			}
-		} );
-		bogusNode.arrayExpressions.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.Expression >() {
-			@Override
-			protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
-			}
-			@Override
-			protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
-				AbstractDeclarationPane.this.handleChange();
-			}
-		} );
+//		bogusNode.componentType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+//			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+//			}
+//			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+//				AbstractDeclarationPane.this.handleChange();
+//			}
+//		} );
+//		bogusNode.isArray.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+//			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+//			}
+//			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+//				AbstractDeclarationPane.this.handleChange();
+//			}
+//		} );
+//		bogusNode.componentExpression.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+//			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+//			}
+//			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+//				AbstractDeclarationPane.this.handleChange();
+//			}
+//		} );
+//		bogusNode.arrayExpressions.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.Expression >() {
+//			@Override
+//			protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
+//			}
+//			@Override
+//			protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
+//				AbstractDeclarationPane.this.handleChange();
+//			}
+//		} );
 	}
 	public AbstractDeclarationPane( org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
 		this( nodeNameValidator, null, null );
@@ -143,19 +143,39 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	public void setNodeNameValidator(org.alice.ide.name.validators.NodeNameValidator nodeNameValidator) {
 		this.nodeNameValidator = nodeNameValidator;
 	}
-	private void handleChange() {
-//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//			public void run() {
-//				AbstractDeclarationPane.this.updateOKButton();
-//			}
-//		} );
-	}
-	
-//	@Override
-//	public java.awt.Dimension getPreferredSize() {
-//		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
-//	}
 
+	@Override
+	public String getExplanationIfOkButtonShouldBeDisabled() {
+		String[] explanations = new String[ 2 ];
+		if( this.getValueType() != null ) {
+			//pass
+		} else {
+			explanations[ 0 ] = "Must select a type";
+		}
+		explanations[ 1 ] = this.nodeNameValidator.getExplanationIfOkButtonShouldBeDisabled( this.getDeclarationName() );
+		
+		
+		//
+		//todo: add initializer
+		//
+		
+		
+		StringBuilder sb = new StringBuilder();
+
+		for( String explanation : explanations ) {
+			if( explanation != null ) {
+				if( sb.length() > 0 ) {
+					sb.append( " AND " );
+				}
+				sb.append( explanation );
+			}
+		}
+		if( sb.length() > 0 ) {
+			return sb.toString();
+		} else {
+			return null;
+		}
+	}
 	protected boolean isReassignable() {
 		if( this.isReassignableStateOperation != null ) {
 			return this.isReassignableStateOperation.getState();
