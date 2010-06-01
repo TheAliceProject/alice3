@@ -174,7 +174,9 @@ public abstract class Component<J extends java.awt.Component> {
 		return this.popupMenuOperation;
 	}
 	public final void setPopupMenuOperation( AbstractPopupMenuOperation popupMenuOperation ) {
-		assert this.getAwtComponent().getParent() == null;
+		if( this.getAwtComponent().getParent() == null ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: setPopupMenuOperation" );
+		}
 		this.popupMenuOperation = popupMenuOperation;
 	}
 	

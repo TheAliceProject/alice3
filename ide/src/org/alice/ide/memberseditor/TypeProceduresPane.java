@@ -45,7 +45,7 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-class TypeProceduresPane extends AbstractTypeMethodsPane {
+public class TypeProceduresPane extends AbstractTypeMethodsPane {
 	public TypeProceduresPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		super( type );
 	}
@@ -67,6 +67,6 @@ class TypeProceduresPane extends AbstractTypeMethodsPane {
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createProcedureTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		return new org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate( method );
+		return TemplateFactory.getProcedureInvocationTemplate( method );
 	}
 }

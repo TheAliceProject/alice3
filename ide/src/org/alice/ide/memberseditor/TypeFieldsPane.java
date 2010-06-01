@@ -45,7 +45,7 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-class TypeFieldsPane extends AbstractTypeMembersPane {
+public class TypeFieldsPane extends AbstractTypeMembersPane {
 	public TypeFieldsPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		super( type );
 	}
@@ -74,19 +74,19 @@ class TypeFieldsPane extends AbstractTypeMembersPane {
 					rv.add( new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field) );
 				}
 			}
-			rv.add( new org.alice.ide.memberseditor.templates.GetterTemplate( field ) );
+			rv.add( TemplateFactory.getMutatorTemplate( field ) );
 			if( field.getValueType().isArray() ) {
-				rv.add( new org.alice.ide.memberseditor.templates.AccessArrayAtIndexTemplate( field ) );
-				rv.add( new org.alice.ide.memberseditor.templates.ArrayLengthTemplate( field ) );
+				rv.add( TemplateFactory.getAccessArrayAtIndexTemplate( field ) );
+				rv.add( TemplateFactory.getArrayLengthTemplate( field ) );
 			}
 			if( field.isFinal() ) {
 				//pass
 			} else {
-				rv.add( new org.alice.ide.memberseditor.templates.SetterTemplate( field ) );
+				rv.add( TemplateFactory.getMutatorTemplate( field ) );
 			}
 			
 			if( field.getValueType().isArray() ) {
-				rv.add( new org.alice.ide.memberseditor.templates.SetArrayAtIndexTemplate( field ) );
+				rv.add( TemplateFactory.getMutateArrayAtIndexTemplate( field ) );
 			}
 			
 			if( getIDE().isEmphasizingClasses() ) {

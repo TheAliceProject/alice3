@@ -45,7 +45,7 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
+public abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 	private static final int INDENT = 16;
 
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;

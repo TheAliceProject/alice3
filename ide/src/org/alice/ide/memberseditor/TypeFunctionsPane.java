@@ -45,7 +45,7 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-class TypeFunctionsPane extends AbstractTypeMethodsPane {
+public class TypeFunctionsPane extends AbstractTypeMethodsPane {
 	public TypeFunctionsPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		super( type );
 	}

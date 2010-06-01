@@ -51,39 +51,37 @@ abstract class OrganizedByTypeMembersContentPanel extends MembersContentPanel {
 		this.removeAllComponents();
 		boolean isNonConsumedTypeDeclaredInJavaAlreadyEncountered = false;
 
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : types ) {
-			boolean isFirstNonConsumedTypeEncounteredInJava = false;
-			if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava ) {
-				if( isNonConsumedTypeDeclaredInJavaAlreadyEncountered ) {
-					//pass
-				} else {
-					if( type.isConsumptionBySubClassDesired() ) {
+		if( types.size() > 0 ) {
+			boolean isSeparatorDesired = types.get( 0 ) instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+			for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : types ) {
+				boolean isFirstNonConsumedTypeEncounteredInJava = false;
+				if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava ) {
+					if( isSeparatorDesired ) {
+						this.addComponent( new edu.cmu.cs.dennisc.croquet.HorizontalSeparator() );
+						this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 16 ) );
+						isSeparatorDesired = false;
+					}
+					if( isNonConsumedTypeDeclaredInJavaAlreadyEncountered ) {
 						//pass
 					} else {
-						isFirstNonConsumedTypeEncounteredInJava = true;
-						isNonConsumedTypeDeclaredInJavaAlreadyEncountered = true;
+						if( type.isConsumptionBySubClassDesired() ) {
+							//pass
+						} else {
+							isFirstNonConsumedTypeEncounteredInJava = true;
+							isNonConsumedTypeDeclaredInJavaAlreadyEncountered = true;
+						}
 					}
 				}
-			}
-			if( type.isConsumptionBySubClassDesired() ) {
-				//pass
-			} else {
-				if( org.alice.ide.IDE.getSingleton().isEmphasizingClasses() || type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice || isFirstNonConsumedTypeEncounteredInJava ) {
-					this.addComponent( MembersEditor.getComponentFor( this.getClass(), type ) );
+				if( type.isConsumptionBySubClassDesired() ) {
+					//pass
+				} else {
+					if( org.alice.ide.IDE.getSingleton().isEmphasizingClasses() || type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice || isFirstNonConsumedTypeEncounteredInJava ) {
+						this.addComponent( MembersEditor.getComponentFor( this.getClass(), type ) );
+					}
 				}
+				this.addComponent( this.getTypeMembersPane( type ) );
 			}
-			this.addComponent( this.getTypeMembersPane( type ) );
 		}
-		//		java.util.List< AbstractTypeMembersPane > panes = new java.util.LinkedList< AbstractTypeMembersPane >();
-		//		for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : this.getTypes() ) {
-		//			panes.add( this.getTypeMembersPane( type ) );
-		//		}
-		//		for( AbstractTypeMembersPane pane : panes ) {
-		//			for( java.awt.Component component : pane.getComponents() ) {
-		//				this.add( component );
-		//			}
-		//		}
-		//		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() );
 		this.revalidateAndRepaint();
 	}
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType, AbstractTypeMembersPane > mapTypeToPane = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractType, AbstractTypeMembersPane >();
