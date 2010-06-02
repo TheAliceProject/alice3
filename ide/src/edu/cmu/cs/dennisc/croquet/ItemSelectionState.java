@@ -279,6 +279,12 @@ public abstract class ItemSelectionState<E> extends Model {
 			this.items.add( item );
 			this.fireIntervalAdded( this, index, index );
 		}
+		private void removeItem( E item ) {
+			int index = this.items.indexOf( item );
+			assert index >= 0;
+			this.items.remove( item );
+			this.fireIntervalRemoved( this, index, index );
+		}
 	}
 
 	private final ComboBoxModel comboBoxModel = new ComboBoxModel();
@@ -352,6 +358,16 @@ public abstract class ItemSelectionState<E> extends Model {
 	public void addItem(E item) {
 		synchronized (this.comboBoxModel) {
 			this.comboBoxModel.addItem( item );
+		}
+	}
+	
+	public void removeItem( E item ) {
+		synchronized (this.comboBoxModel) {
+			this.listSelectionModel.clearSelection();
+			this.comboBoxModel.removeItem( item );
+			if( this.comboBoxModel.getSize() > 0 ) {
+				this.comboBoxModel.setSelectedItem( this.comboBoxModel.getElementAt( 0 ) );
+			}
 		}
 	}
 

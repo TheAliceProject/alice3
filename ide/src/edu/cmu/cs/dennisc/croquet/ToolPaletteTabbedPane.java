@@ -112,8 +112,8 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, Abstra
 	}
 
 	private static class ToolPaletteTabTitle extends TabTitle {
-		public ToolPaletteTabTitle( JComponent<?> innerTitleComponent, boolean isCloseAffordanceDesired ) {
-			super( new JToolPaletteTabTitle( innerTitleComponent.getAwtComponent(), getCloseButtonActionListener( isCloseAffordanceDesired ) ) );
+		public ToolPaletteTabTitle( JComponent<?> innerTitleComponent, java.awt.event.ActionListener closeButtonActionListener ) {
+			super( new JToolPaletteTabTitle( innerTitleComponent.getAwtComponent(), closeButtonActionListener ) );
 		}
 	}
 
@@ -148,10 +148,10 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, Abstra
 //	}
 
 	@Override
-	protected TabItemDetails createTabItemDetails( E item, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, boolean isCloseAffordanceDesired ) {
-		AbstractButton<?,?> button = new ToolPaletteTabTitle(innerTitleComponent, isCloseAffordanceDesired);
+	protected TabItemDetails createTabItemDetails( E item, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, java.awt.event.ActionListener closeButtonActionListener ) {
+		AbstractButton<?,?> button = new ToolPaletteTabTitle(innerTitleComponent, closeButtonActionListener);
 		scrollPane.setVisible( false );
-		return new TabItemDetails( item, button, id, innerTitleComponent, scrollPane, mainComponent, isCloseAffordanceDesired ) {
+		return new TabItemDetails( item, button, id, innerTitleComponent, scrollPane, mainComponent ) {
 			@Override
 			public void setSelected(boolean isSelected) {
 				super.setSelected(isSelected);

@@ -203,33 +203,18 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 		}
 	}
 	
-	protected static java.awt.event.ActionListener getCloseButtonActionListener( boolean isCloseAffordanceDesired ) {
-		if( isCloseAffordanceDesired ) {
-			return new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "close" );
-				}
-			};
-		} else {
-			return null;
-		}
-	}
-
-	
 	protected class TabItemDetails extends ItemDetails {
 		private java.util.UUID id;
 		private JComponent<?> innerTitleComponent;
 		private JComponent<?> mainComponent;
 		private ScrollPane scrollPane;
-		private boolean isCloseAffordanceDesired;
-		public TabItemDetails( E item, AbstractButton< ?,? > button, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, boolean isCloseAffordanceDesired ) {
+		public TabItemDetails( E item, AbstractButton< ?,? > button, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent ) {
 			super( item, button );
 			assert id != null;
 			this.id = id;
 			this.innerTitleComponent = innerTitleComponent;
 			this.mainComponent = mainComponent;
 			this.scrollPane = scrollPane;
-			this.isCloseAffordanceDesired = isCloseAffordanceDesired;
 
 			button.setBackgroundColor( this.mainComponent.getBackgroundColor() );
 			this.scrollPane.setViewportView( this.mainComponent );
@@ -246,9 +231,6 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 		public ScrollPane getScrollPane() {
 			return this.scrollPane;
 		}
-		public boolean isCloseAffordanceDesired() {
-			return this.isCloseAffordanceDesired;
-		}
 	}
 	private ItemSelectionState.TabCreator< E > tabCreator;
 	@Override
@@ -259,12 +241,22 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 		}
 	}
 
-	protected abstract D createTabItemDetails( E item, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, boolean isCloseAffordanceDesired );
+	protected abstract D createTabItemDetails( E item, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, java.awt.event.ActionListener closeButtonActionListener );
 	@Override
-	protected final D createItemDetails(E item) {
+	protected final D createItemDetails( final E item) {
 		java.util.UUID id = this.tabCreator.getId( item );
 		assert id != null : item;
-		return createTabItemDetails( item, id, this.tabCreator.createInnerTitleComponent( item ), this.tabCreator.createScrollPane( item ), this.tabCreator.createMainComponent( item ), this.tabCreator.isCloseAffordanceDesired() );
+		java.awt.event.ActionListener closeButtonActionListener;
+		if( this.tabCreator.isCloseAffordanceDesired() ) {
+			closeButtonActionListener = new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					AbstractTabbedPane.this.getModel().removeItem( item );
+				}
+			};
+		} else {
+			closeButtonActionListener = null;
+		}
+		return createTabItemDetails( item, id, this.tabCreator.createInnerTitleComponent( item ), this.tabCreator.createScrollPane( item ), this.tabCreator.createMainComponent( item ), closeButtonActionListener );
 	}
 	
 	public AbstractTabbedPane( ItemSelectionState<E> model, ItemSelectionState.TabCreator< E > tabCreator ) {

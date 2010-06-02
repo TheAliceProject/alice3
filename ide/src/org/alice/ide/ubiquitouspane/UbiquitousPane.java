@@ -42,18 +42,18 @@
  */
 package org.alice.ide.ubiquitouspane;
 
-import org.alice.ide.common.SelectedFieldExpressionPane;
 import org.alice.ide.ubiquitouspane.templates.*;
 
-class ReturnStatementWrapper extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+class ReturnStatementWrapper extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	private ReturnStatementTemplate re = new ReturnStatementTemplate();
 	public void refresh() {
 		this.removeAllComponents();
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = org.alice.ide.IDE.getSingleton().getFocusedCode();
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( code, edu.cmu.cs.dennisc.alice.ast.AbstractMethod.class );
 		if( method != null && method.isFunction() ) {
-			this.addComponent( re, Constraint.CENTER );
+			this.addComponent( re );
 		}
+		this.revalidateAndRepaint();
 	}
 }
 
@@ -105,7 +105,6 @@ class TransientStatementsWrapper extends edu.cmu.cs.dennisc.croquet.LineAxisPane
 					}
 				}
 			}
-			
 			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement >( edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement.class );
 			code.crawl( crawler, false );
 			for( edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement variableDeclarationStatement : crawler.getList() ) {

@@ -56,8 +56,8 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	}
 
 	private static class FolderTabTitle extends TabTitle {
-		public FolderTabTitle( JComponent<?> innerTitleComponent, boolean isCloseAffordanceDesired ) {
-			super( new JFolderTabTitle( innerTitleComponent.getAwtComponent(), getCloseButtonActionListener( isCloseAffordanceDesired ) ) );
+		public FolderTabTitle( JComponent<?> innerTitleComponent, java.awt.event.ActionListener closeButtonActionListener ) {
+			super( new JFolderTabTitle( innerTitleComponent.getAwtComponent(), closeButtonActionListener ) );
 		}
 	}
 
@@ -201,8 +201,8 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 
 	/*package-private*/ class FolderTabItemDetails extends TabItemDetails {
 		private edu.cmu.cs.dennisc.croquet.CardPanel.Key cardPanelKey;
-		public FolderTabItemDetails( E item, AbstractButton< ?,? > button, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, boolean isCloseAffordanceDesired ) {
-			super( item, button, id, innerTitleComponent, scrollPane, mainComponent, isCloseAffordanceDesired );
+		public FolderTabItemDetails( E item, AbstractButton< ?,? > button, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent ) {
+			super( item, button, id, innerTitleComponent, scrollPane, mainComponent );
 			this.cardPanelKey = cardPanel.createKey( this.getScrollPane(), this.getId() );
 		}
 		public edu.cmu.cs.dennisc.croquet.CardPanel.Key getCardPanelKey() {
@@ -238,10 +238,10 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	}
 
 	@Override
-	protected FolderTabItemDetails createTabItemDetails( E item, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, boolean isCloseAffordanceDesired ) {
-		AbstractButton<?,?> button = new FolderTabTitle(innerTitleComponent, isCloseAffordanceDesired);
+	protected FolderTabItemDetails createTabItemDetails( E item, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, java.awt.event.ActionListener closeButtonActionListener ) {
+		AbstractButton<?,?> button = new FolderTabTitle(innerTitleComponent, closeButtonActionListener);
 		scrollPane.setVisible( false );
-		return new FolderTabItemDetails( item, button, id, innerTitleComponent, scrollPane, mainComponent, isCloseAffordanceDesired );
+		return new FolderTabItemDetails( item, button, id, innerTitleComponent, scrollPane, mainComponent );
 	};
 	
 
