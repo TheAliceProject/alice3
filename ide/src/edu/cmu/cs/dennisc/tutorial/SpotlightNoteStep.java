@@ -49,12 +49,4 @@ package edu.cmu.cs.dennisc.tutorial;
 	public SpotlightNoteStep( Tutorial tutorial, String title, String text, Frame frame ) {
 		super( tutorial, title, text, frame );
 	}
-	@Override
-	public boolean isPotentiallyWaiting() {
-		return false;
-	}
-	@Override
-	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode child ) {
-		return false;
-	}
 }	

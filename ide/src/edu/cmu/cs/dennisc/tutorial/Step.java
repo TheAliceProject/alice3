@@ -57,9 +57,6 @@ public abstract class Step {
 	public Tutorial getTutorial() {
 		return this.tutorial;
 	}
-	
-	public abstract boolean isPotentiallyWaiting();
-	public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode child );
 	public boolean isAutoAdvanceDesired() {
 		return true;
 	}

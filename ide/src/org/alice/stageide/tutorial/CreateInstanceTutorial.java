@@ -56,7 +56,8 @@ public class CreateInstanceTutorial {
 		tutorial.addBooleanStateStep( 
 				"Edit Scene", 
 				"<html>Press the <b>Edit Scene</b> button</html>", 
-				ide.getIsSceneEditorExpandedState()
+				ide.getIsSceneEditorExpandedState(),
+				true
 		);
 		tutorial.addMessageStep( 
 				"Note Edit Scene",
@@ -77,7 +78,8 @@ public class CreateInstanceTutorial {
 		tutorial.addBooleanStateStep( 
 				"Edit Code", 
 				"<html>Press the <b>Edit Code</b> button</html>", 
-				ide.getIsSceneEditorExpandedState()
+				ide.getIsSceneEditorExpandedState(),
+				false
 		);
 		
 		

@@ -45,22 +45,19 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class DialogCloseNoteStep extends NoteStep {
-	
-	private edu.cmu.cs.dennisc.croquet.DialogOperation operation;
+/*package-private*/ class DialogCloseNoteStep extends WaitingNoteStep<edu.cmu.cs.dennisc.croquet.DialogOperation> {
 	public DialogCloseNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.DialogOperation operation ) {
-		super( tutorial, title, text );
-		this.operation = operation;
+		super( tutorial, title, text, null, operation );
 	}
 	@Override
-	public boolean isPotentiallyWaiting() {
-		return true;
+	protected boolean isAlreadyInTheDesiredState() {
+		return false;
 	}
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode child ) {
 		if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent ) {
 			edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent windowClosedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent)child;
-			return windowClosedEvent.getModel() == this.operation;
+			return windowClosedEvent.getModel() == this.getModel();
 		} else {
 			return false;
 		}

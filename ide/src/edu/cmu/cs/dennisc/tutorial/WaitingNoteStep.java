@@ -45,8 +45,15 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class ActionNoteStep extends WaitingOnCompleteNoteStep {
-	public ActionNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.AbstractActionOperation< ? > operation ) {
-		super( tutorial, title, text, operation.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractButton.class ), Feature.ConnectionPreference.EAST_WEST, operation );
+/*package-private*/ abstract class WaitingNoteStep<M extends edu.cmu.cs.dennisc.croquet.Model> extends FeatureNoteStep {
+	private M model;
+	public WaitingNoteStep( Tutorial tutorial, String title, String text, Feature feature, M model ) {
+		super( tutorial, title, text, feature );
+		this.model = model;
 	}
+	protected M getModel() {
+		return this.model;
+	}
+	protected abstract boolean isAlreadyInTheDesiredState();
+	public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode child );
 }

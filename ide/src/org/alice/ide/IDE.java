@@ -1564,7 +1564,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 	}
 	@Deprecated
-	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneField() {
+	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneField() {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = getProgramType();
 		return getSceneFieldFromProgramType( programType );
 	}

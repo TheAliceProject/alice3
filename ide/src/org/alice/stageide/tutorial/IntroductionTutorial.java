@@ -79,16 +79,51 @@ public class IntroductionTutorial {
 		);
 		
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
+		
+		
+		edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = ide.getSceneField();
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = ide.getSceneType();
+		edu.cmu.cs.dennisc.alice.ast.AbstractField sunLightField = sceneType.fields.get( 0 );
+		
+		
 		tutorial.addSpotlightStep( 
 				"Instance Details", 
 				"<html>This is the currently selected instance methods and fields pane.</html>", 
 				membersEditor 
 		);
+
 		tutorial.addSpotlightStep( 
 				"Curent Instance", 
 				"<html>The current instance is show here.</html>", 
 				ide.getFieldSelectionState()
 		);
+		
+		tutorial.addItemSelectionStep(
+				"Select Scene",
+				"<html>Select the <b>scene</b> instance.</html>",
+				ide.getFieldSelectionState(),
+				sceneField
+		);
+		
+		tutorial.addSpotlightStep( 
+				"Note Scene Instance Details", 
+				"<html>Now the scene instance details are now displayed.</html>", 
+				membersEditor 
+		);
+
+		tutorial.addItemSelectionStep(
+				"Select Scene",
+				"<html>Select the <b>sunLight</b> instance.</html>",
+				ide.getFieldSelectionState(),
+				sunLightField
+		);
+		
+		tutorial.addSpotlightStep( 
+				"Note sunLight Instance Details", 
+				"<html>Now the sunLight instance details are now displayed.</html>", 
+				membersEditor 
+		);
+
 		tutorial.addSelectTabStep( 
 				"Select Functions Tab", 
 				"<html>Select the <b>Functions</b> tab.</html>", 
@@ -97,7 +132,7 @@ public class IntroductionTutorial {
 		);
 		tutorial.addSpotlightTabScrollPaneStep( 
 				"Note Functions Tab", 
-				"<html>Now the functions are now available.</html>", 
+				"<html>Now the functions are now displayed.</html>", 
 				membersEditor.getTabbedPaneSelectionState(),
 				membersEditor.getFunctionsTab()
 		);
@@ -109,7 +144,7 @@ public class IntroductionTutorial {
 		);
 		tutorial.addSpotlightTabScrollPaneStep( 
 				"Note Properies Tab", 
-				"<html>Now the properties are now available.</html>", 
+				"<html>Now the properties are now displayed.</html>", 
 				membersEditor.getTabbedPaneSelectionState(),
 				membersEditor.getFieldsTab()
 		);
@@ -121,7 +156,7 @@ public class IntroductionTutorial {
 		);
 		tutorial.addSpotlightTabScrollPaneStep( 
 				"Note Procedures Tab", 
-				"<html>Now the procedures are now available.</html>", 
+				"<html>Now the procedures are now displayed.</html>", 
 				membersEditor.getTabbedPaneSelectionState(),
 				membersEditor.getProceduresTab()
 		);
@@ -129,7 +164,8 @@ public class IntroductionTutorial {
 		tutorial.addBooleanStateStep( 
 				"Edit Scene", 
 				"<html>Press the <b>Edit Scene</b> button</html>", 
-				ide.getIsSceneEditorExpandedState()
+				ide.getIsSceneEditorExpandedState(),
+				true
 		);
 		tutorial.addMessageStep( 
 				"Note Edit Scene",
@@ -138,7 +174,8 @@ public class IntroductionTutorial {
 		tutorial.addBooleanStateStep( 
 				"Edit Code", 
 				"<html>Press the <b>Edit Code</b> button</html>", 
-				ide.getIsSceneEditorExpandedState()
+				ide.getIsSceneEditorExpandedState(),
+				false
 		);
 		tutorial.addMessageStep( 
 				"Note Edit Code",
@@ -146,7 +183,7 @@ public class IntroductionTutorial {
 		);
 
 		//membersEditor.getTabbedPaneSelectionState().setValue( membersEditor.getFunctionsTab() );
-		tutorial.setSelectedIndex( 3 );
+		tutorial.setSelectedIndex( 1 );
 		
 		ide.getFrame().addWindowListener( new java.awt.event.WindowAdapter() {
 			@Override

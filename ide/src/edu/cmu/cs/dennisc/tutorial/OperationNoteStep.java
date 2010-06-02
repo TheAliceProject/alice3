@@ -45,14 +45,16 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class BooleanStateNoteStep extends WaitingOnCompleteNoteStep<edu.cmu.cs.dennisc.croquet.BooleanState> {
-	private boolean desiredValue;
-	public BooleanStateNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.BooleanState booleanState, boolean desiredValue ) {
-		super( tutorial, title, text, booleanState.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractButton.class ), Feature.ConnectionPreference.EAST_WEST, booleanState );
-		this.desiredValue = desiredValue;
+/*package-private*/ class OperationNoteStep extends WaitingOnCompleteNoteStep<edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?>> {
+	public OperationNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.AbstractActionOperation< ? > operation ) {
+		super( tutorial, title, text, operation.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractButton.class ), Feature.ConnectionPreference.EAST_WEST, operation );
 	}
 	@Override
-	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.BooleanState model) {
-		return model.getState() == this.desiredValue;
+	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> model) {
+		return true;
+	}
+	@Override
+	protected boolean isAlreadyInTheDesiredState() {
+		return false;
 	}
 }

@@ -45,22 +45,26 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class WaitingOnCompleteNoteStep extends FeatureNoteStep {
-	private edu.cmu.cs.dennisc.croquet.Model model;
-	public WaitingOnCompleteNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.JComponent< ? > component, Feature.ConnectionPreference connectionPreference, edu.cmu.cs.dennisc.croquet.Model model ) {
-		super( tutorial, title, text, new Hole( component, connectionPreference ) );
-		this.model = model;
+/*package-private*/ abstract class WaitingOnCompleteNoteStep<M extends edu.cmu.cs.dennisc.croquet.Model> extends WaitingNoteStep<M> {
+	public WaitingOnCompleteNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.JComponent< ? > component, Feature.ConnectionPreference connectionPreference, M model ) {
+		super( tutorial, title, text, new Hole( component, connectionPreference ), model );
 	}
 	@Override
-	public boolean isPotentiallyWaiting() {
-		return true;
+	protected boolean isAlreadyInTheDesiredState() {
+		return this.isInTheDesiredState( this.getModel() );
 	}
+	protected abstract boolean isInTheDesiredState(M model);
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode child ) {
 		if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
 			edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent completeEvent = (edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent)child;
 			edu.cmu.cs.dennisc.croquet.Model eventModel = completeEvent.getModel();
-			return this.model == eventModel;
+			M model = this.getModel();
+			if( model == eventModel ) {
+				return this.isInTheDesiredState(model);
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}

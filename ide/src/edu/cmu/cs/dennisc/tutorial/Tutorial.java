@@ -127,8 +127,9 @@ public class Tutorial {
 		}
 		public void addedChild(edu.cmu.cs.dennisc.croquet.HistoryTreeNode child) {
 			Step step = (Step)stepsComboBoxModel.getSelectedItem();
-			if( step != null ) {
-				if( step.isWhatWeveBeenWaitingFor( child ) ) {
+			if (step instanceof WaitingNoteStep<?>) {
+				WaitingNoteStep<?> waitingStep = (WaitingNoteStep<?>) step;
+				if( waitingStep.isWhatWeveBeenWaitingFor( child ) ) {
 					nextStepOperation.setEnabled( true );
 					if( step.isAutoAdvanceDesired() ) {
 						javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -199,14 +200,15 @@ public class Tutorial {
 
 				int selectedIndex = stepsComboBoxModel.getSelectedIndex();
 
-				boolean isPotentiallyWaiting;
-				if( step != null ) {
-					isPotentiallyWaiting = step.isPotentiallyWaiting();
+				boolean isWaiting;
+				if (step instanceof WaitingNoteStep<?>) {
+					WaitingNoteStep<?> waitingStep = (WaitingNoteStep<?>) step;
+					isWaiting = waitingStep.isAlreadyInTheDesiredState() == false;
 				} else {
-					isPotentiallyWaiting = false;
+					isWaiting = false;
 				}
 				
-				Tutorial.this.nextStepOperation.setEnabled(0 <= selectedIndex && selectedIndex < stepsComboBoxModel.getSize() - 1 && isPotentiallyWaiting==false );
+				Tutorial.this.nextStepOperation.setEnabled(0 <= selectedIndex && selectedIndex < stepsComboBoxModel.getSize() - 1 && isWaiting==false );
 				Tutorial.this.previousStepOperation.setEnabled(1 <= selectedIndex);
 				this.revalidateAndRepaint();
 				this.requestFocus();
@@ -274,7 +276,7 @@ public class Tutorial {
 		this.addSpotlightStep( title, text, model.getFirstComponent( edu.cmu.cs.dennisc.croquet.JComponent.class ) );
 	}
 	public void addActionStep( String title, String text, edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> operation ) {
-		Step step = new ActionNoteStep( this, title, text, operation );
+		Step step = new OperationNoteStep( this, title, text, operation );
 		this.addStep( step );
 	}
 	public void addActionStep( String title, String text, java.util.UUID id ) {
@@ -282,8 +284,8 @@ public class Tutorial {
 		assert model != null;
 		addActionStep( title, text, (edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?>)model );
 	}
-	public void addBooleanStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.BooleanState booleanState ) {
-		Step step = new BooleanStateNoteStep( this, title, text, booleanState );
+	public void addBooleanStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.BooleanState booleanState, boolean desiredValue ) {
+		Step step = new BooleanStateNoteStep( this, title, text, booleanState, desiredValue );
 		this.addStep( step );
 	}
 	public void addDialogOpenStep( String title, String text, edu.cmu.cs.dennisc.croquet.DialogOperation operation ) {
@@ -294,6 +296,12 @@ public class Tutorial {
 		Step step = new DialogCloseNoteStep( this, title, text, operation );
 		this.addStep( step );
 	}
+	public <E> void addItemSelectionStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> operation, E item ) {
+		edu.cmu.cs.dennisc.croquet.ComboBox<E> jComponent = operation.getFirstComponent( edu.cmu.cs.dennisc.croquet.ComboBox.class );
+		Step step = new ItemSelectionNoteStep( this, title, text, operation, jComponent, Feature.ConnectionPreference.EAST_WEST, item );
+		this.addStep( step );
+	}
+
 	public <E> void addSpotlightTabTitleStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> operation, E item ) {
 		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane<E,?> tabbedPane = operation.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.class );
 		edu.cmu.cs.dennisc.croquet.AbstractButton<?,?> tabTitle = tabbedPane.getTabTitle( item );
@@ -312,8 +320,9 @@ public class Tutorial {
 		Step step = new SpotlightNoteStep( this, title, text, new Frame( scrollPane, Feature.ConnectionPreference.EAST_WEST ) );
 		this.addStep( step );
 	}
-	public <E> void addSelectTabStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionState, E item ) {
-		Step step = new TabTitleSelectionNoteStep( this, title, text, itemSelectionState, item );
+	public <E> void addSelectTabStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionState, E desiredValue ) {
+		edu.cmu.cs.dennisc.croquet.JComponent<?> jComponent = itemSelectionState.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.class ).getTabTitle( desiredValue );
+		Step step = new ItemSelectionNoteStep( this, title, text, itemSelectionState, jComponent, Feature.ConnectionPreference.NORTH_SOUTH, desiredValue );
 		this.addStep( step );
 	}
 		

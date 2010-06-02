@@ -48,6 +48,8 @@ package edu.cmu.cs.dennisc.tutorial;
 /*package-private*/ abstract class FeatureNoteStep extends NoteStep {
 	public FeatureNoteStep( Tutorial tutorial, String title, String text, Feature feature ) {
 		super( tutorial, title, text );
-		this.addFeature( feature );
+		if( feature != null ) {
+			this.addFeature( feature );
+		}
 	}
 }	

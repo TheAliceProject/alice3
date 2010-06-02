@@ -45,8 +45,14 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class TabTitleSelectionNoteStep<E> extends WaitingOnCompleteNoteStep {
-	public TabTitleSelectionNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> selectionState, E item ) {
-		super( tutorial, title, text, selectionState.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.class ).getTabTitle( item ), Feature.ConnectionPreference.NORTH_SOUTH, selectionState );
+/*package-private*/ class TabTitleSelectionNoteStep<E> extends WaitingOnCompleteNoteStep<edu.cmu.cs.dennisc.croquet.ItemSelectionState<E>> {
+	private E desiredValue;
+	public TabTitleSelectionNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> selectionState, E desiredValue ) {
+		super( tutorial, title, text, selectionState.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.class ).getTabTitle( desiredValue ), Feature.ConnectionPreference.NORTH_SOUTH, selectionState );
+		this.desiredValue = desiredValue;
+	}
+	@Override
+	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> model) {
+		return model.getValue() == this.desiredValue;
 	}
 }
