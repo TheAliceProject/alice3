@@ -69,29 +69,29 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 
 	protected abstract edu.cmu.cs.dennisc.croquet.DialogOperation createRunOperation();
-	protected abstract edu.cmu.cs.dennisc.croquet.AbstractActionOperation< ? > createRestartOperation();
-	public abstract edu.cmu.cs.dennisc.croquet.AbstractActionOperation< ? > createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
+	protected abstract edu.cmu.cs.dennisc.croquet.Operation< ? > createRestartOperation();
+	public abstract edu.cmu.cs.dennisc.croquet.Operation< ? > createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
 
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation< ? > preferencesOperation = this.createPreferencesOperation();
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation< ? > aboutOperation = this.createAboutOperation();
+	private edu.cmu.cs.dennisc.croquet.Operation< ? > preferencesOperation = this.createPreferencesOperation();
+	private edu.cmu.cs.dennisc.croquet.Operation< ? > aboutOperation = this.createAboutOperation();
 	private edu.cmu.cs.dennisc.croquet.DialogOperation runOperation = this.createRunOperation();
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation< ? > restartOperation = this.createRestartOperation();
+	private edu.cmu.cs.dennisc.croquet.Operation< ? > restartOperation = this.createRestartOperation();
 
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation< ? > createPreferencesOperation() {
+	protected edu.cmu.cs.dennisc.croquet.Operation< ? > createPreferencesOperation() {
 		return new org.alice.ide.operations.preferences.PreferencesOperation();
 	}
-	protected abstract edu.cmu.cs.dennisc.croquet.AbstractActionOperation< ? > createAboutOperation();
+	protected abstract edu.cmu.cs.dennisc.croquet.Operation< ? > createAboutOperation();
 
 	public final edu.cmu.cs.dennisc.croquet.DialogOperation getRunOperation() {
 		return this.runOperation;
 	}
-	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation< ? > getRestartOperation() {
+	public final edu.cmu.cs.dennisc.croquet.Operation< ? > getRestartOperation() {
 		return this.restartOperation;
 	}
-	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation< ? > getPreferencesOperation() {
+	public final edu.cmu.cs.dennisc.croquet.Operation< ? > getPreferencesOperation() {
 		return this.preferencesOperation;
 	}
-	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation< ? > getAboutOperation() {
+	public final edu.cmu.cs.dennisc.croquet.Operation< ? > getAboutOperation() {
 		return this.aboutOperation;
 	}
 

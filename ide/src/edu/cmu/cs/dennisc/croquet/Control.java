@@ -43,9 +43,9 @@
 package edu.cmu.cs.dennisc.croquet;
 
 public abstract class Control extends Widget {
-	private AbstractActionOperation leftButtonPressOperation;
-	private AbstractActionOperation leftButtonDoubleClickOperation;
-	private AbstractActionOperation popupOperation;
+	private Operation leftButtonPressOperation;
+	private Operation leftButtonDoubleClickOperation;
+	private Operation popupOperation;
 
 	private boolean isActive = false;
 	private boolean isPressed = false;
@@ -195,22 +195,22 @@ public abstract class Control extends Widget {
 		}
 	}
 
-	public AbstractActionOperation getLeftButtonPressOperation() {
+	public Operation getLeftButtonPressOperation() {
 		return this.leftButtonPressOperation;
 	}
-	public void setLeftButtonPressOperation( AbstractActionOperation leftButtonPressOperation ) {
+	public void setLeftButtonPressOperation( Operation leftButtonPressOperation ) {
 		this.leftButtonPressOperation = leftButtonPressOperation;
 	}
-	public AbstractActionOperation getLeftButtonDoubleClickOperation() {
+	public Operation getLeftButtonDoubleClickOperation() {
 		return this.leftButtonDoubleClickOperation;
 	}
-	public void setLeftButtonDoubleClickOperation( AbstractActionOperation leftButtonDoubleClickOperation ) {
+	public void setLeftButtonDoubleClickOperation( Operation leftButtonDoubleClickOperation ) {
 		this.leftButtonDoubleClickOperation = leftButtonDoubleClickOperation;
 	}
-	public AbstractActionOperation getPopupOperation() {
+	public Operation getPopupOperation() {
 		return this.popupOperation;
 	}
-	public void setPopupOperation( AbstractActionOperation popupOperation ) {
+	public void setPopupOperation( Operation popupOperation ) {
 		this.popupOperation = popupOperation;
 	}
 	public boolean isActive() {

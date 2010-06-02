@@ -186,7 +186,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		}
 	}
 
-	protected abstract edu.cmu.cs.dennisc.croquet.AbstractActionOperation createEditOperation( edu.cmu.cs.dennisc.croquet.Group group );
+	protected abstract edu.cmu.cs.dennisc.croquet.Operation createEditOperation( edu.cmu.cs.dennisc.croquet.Group group );
 	protected abstract E createItem() throws Exception;
 	protected abstract void add( int index, E e );
 	protected abstract void remove( int index, E e );
@@ -200,7 +200,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 	private javax.swing.JComponent listLikeSubstance;
 	private AddItemOperation addItemOperation;
 	private RemoveItemOperation removeItemOperation;
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation editItemOperation;
+	private edu.cmu.cs.dennisc.croquet.Operation editItemOperation;
 	private MoveItemUpOperation moveItemUpOperation;
 	private MoveItemDownOperation moveItemDownOperation;
 

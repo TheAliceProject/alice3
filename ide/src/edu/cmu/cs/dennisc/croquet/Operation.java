@@ -45,14 +45,14 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractActionOperation<C extends OperationContext> extends Model {
+public abstract class Operation<C extends OperationContext> extends Model {
 	private class ButtonActionListener implements java.awt.event.ActionListener {
 		private AbstractButton< ?,? > button;
 		public ButtonActionListener( AbstractButton< ?,? > button ) {
 			this.button = button;
 		}
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			AbstractActionOperation.this.fire( e, this.button );
+			Operation.this.fire( e, this.button );
 		}
 	}
 	private java.util.Map< AbstractButton< ?,? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -81,13 +81,13 @@ public abstract class AbstractActionOperation<C extends OperationContext> extend
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 		}
 	};
-	public AbstractActionOperation( Group group, java.util.UUID individualUUID ) {
+	public Operation( Group group, java.util.UUID individualUUID ) {
 		super( group, individualUUID );
 	}
 	
 	/*package-private*/ final void handleFire( ModelContext parentContext, java.util.EventObject e, Component<?> component ) {
 		C childContext = this.createContext( parentContext );
-		childContext.addChild( new ActionEvent( childContext, AbstractActionOperation.this, e, component ) );
+		childContext.addChild( new ActionEvent( childContext, Operation.this, e, component ) );
 		this.perform( childContext );
 	}
 	protected abstract void perform( C context );
@@ -136,17 +136,17 @@ public abstract class AbstractActionOperation<C extends OperationContext> extend
 		Application.getSingleton().register( this );
 		rv.addContainmentObserver( new Component.ContainmentObserver() {
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				rv.setAction( AbstractActionOperation.this.action );
+				rv.setAction( Operation.this.action );
 //				rv.setModel( this.buttonModel );
-				assert AbstractActionOperation.this.mapButtonToListener.containsKey( rv ) == false;
+				assert Operation.this.mapButtonToListener.containsKey( rv ) == false;
 				ButtonActionListener buttonActionListener = new ButtonActionListener( rv );
-				AbstractActionOperation.this.mapButtonToListener.put( rv, buttonActionListener );
+				Operation.this.mapButtonToListener.put( rv, buttonActionListener );
 				rv.getAwtComponent().addActionListener( buttonActionListener );
-				AbstractActionOperation.this.addComponent(rv);
+				Operation.this.addComponent(rv);
 			}
 			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				AbstractActionOperation.this.removeComponent(rv);
-				ButtonActionListener buttonActionListener = AbstractActionOperation.this.mapButtonToListener.get( rv );
+				Operation.this.removeComponent(rv);
+				ButtonActionListener buttonActionListener = Operation.this.mapButtonToListener.get( rv );
 				assert buttonActionListener != null;
 				rv.getAwtComponent().removeActionListener( buttonActionListener );
 				mapButtonToListener.remove( rv );

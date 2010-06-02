@@ -76,7 +76,7 @@ public abstract class EditMembersPane< T extends edu.cmu.cs.dennisc.alice.ast.Me
 				super( edu.cmu.cs.dennisc.alice.Project.GROUP, list );
 			}
 			@Override
-			protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createEditOperation( edu.cmu.cs.dennisc.croquet.Group group ) {
+			protected edu.cmu.cs.dennisc.croquet.Operation createEditOperation( edu.cmu.cs.dennisc.croquet.Group group ) {
 				return EditMembersPane.this.createEditOperation( group, "Edit..." );
 			}
 			@Override
@@ -130,7 +130,7 @@ public abstract class EditMembersPane< T extends edu.cmu.cs.dennisc.alice.ast.Me
 		return (T)this.list.getSelectedValue();
 	}
 	protected abstract java.awt.Component createCellRendererComponent( T item );
-	protected abstract edu.cmu.cs.dennisc.croquet.AbstractActionOperation createEditOperation( edu.cmu.cs.dennisc.croquet.Group group, String name );
+	protected abstract edu.cmu.cs.dennisc.croquet.Operation createEditOperation( edu.cmu.cs.dennisc.croquet.Group group, String name );
 	protected abstract T createMember( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType );
 	protected abstract boolean isRemoveItemEnabledFor( T item );
 	protected abstract boolean isEditItemEnabledFor( T item );

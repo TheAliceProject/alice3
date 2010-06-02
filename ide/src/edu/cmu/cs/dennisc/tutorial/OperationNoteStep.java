@@ -45,12 +45,12 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class OperationNoteStep extends WaitingOnCompleteNoteStep<edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?>> {
-	public OperationNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.AbstractActionOperation< ? > operation ) {
+/*package-private*/ class OperationNoteStep extends WaitingOnCompleteNoteStep<edu.cmu.cs.dennisc.croquet.Operation<?>> {
+	public OperationNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.Operation< ? > operation ) {
 		super( tutorial, title, text, operation.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractButton.class ), Feature.ConnectionPreference.EAST_WEST, operation );
 	}
 	@Override
-	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> model) {
+	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Operation<?> model) {
 		return true;
 	}
 	@Override

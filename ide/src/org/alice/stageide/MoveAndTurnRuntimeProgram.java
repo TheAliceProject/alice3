@@ -82,7 +82,7 @@ public class MoveAndTurnRuntimeProgram extends org.alice.apis.moveandturn.Progra
 		this.vm.invokeEntryPoint( this.sceneType.getDeclaredMethod( "run" ), this.sceneInstance );
 	}
 	
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation getRestartOperation() {
+	private edu.cmu.cs.dennisc.croquet.Operation getRestartOperation() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		if( ide != null ) {
 			return ide.getRestartOperation();

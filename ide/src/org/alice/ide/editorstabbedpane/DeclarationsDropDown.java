@@ -323,7 +323,7 @@ class RootOperation extends org.alice.ide.operations.InconsequentialActionOperat
 class OperationDropDown extends org.alice.ide.common.AbstractDropDownPane {
 	private edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label();
 
-	public OperationDropDown( edu.cmu.cs.dennisc.croquet.AbstractActionOperation leftButtonPressOperation ) {
+	public OperationDropDown( edu.cmu.cs.dennisc.croquet.Operation leftButtonPressOperation ) {
 		this.setLeftButtonPressOperation( leftButtonPressOperation );
 		this.addComponent( this.label );
 		this.updateLabel();

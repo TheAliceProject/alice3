@@ -75,7 +75,7 @@ public abstract class EditMethodsPane extends EditMembersPane< edu.cmu.cs.dennis
 		return new org.alice.ide.codeeditor.MethodHeaderPane( e, null ).getAwtComponent();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createEditOperation( edu.cmu.cs.dennisc.croquet.Group group, String name ) {
+	protected edu.cmu.cs.dennisc.croquet.Operation createEditOperation( edu.cmu.cs.dennisc.croquet.Group group, String name ) {
 		return new org.alice.ide.operations.ast.AbstractRenameNodeOperation( group, java.util.UUID.fromString( "16fe1479-558c-4386-925c-0d9eb5aaf280" ), name ) {
 			@Override
 			protected edu.cmu.cs.dennisc.property.StringProperty getNameProperty() {

@@ -476,7 +476,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 						}
 					}
 					
-					edu.cmu.cs.dennisc.croquet.AbstractActionOperation operation;
+					edu.cmu.cs.dennisc.croquet.Operation operation;
 					if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
 						class CopyOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 							public CopyOperation() {

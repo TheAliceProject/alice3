@@ -46,7 +46,7 @@ package org.alice.app.operations.file;
  * @author Dennis Cosgrove
  */
 public class ClearanceCheckingExitOperation extends ClearanceRequiringUriCompositeOperation {
-	public ClearanceCheckingExitOperation( edu.cmu.cs.dennisc.croquet.AbstractActionOperation saveOperation ) {
+	public ClearanceCheckingExitOperation( edu.cmu.cs.dennisc.croquet.Operation saveOperation ) {
 		super( java.util.UUID.fromString( "ba357b75-2167-4b4d-9f11-bf34b48d6b2e" ), saveOperation, new SystemExitOperation() );
 		this.setName( "Exit" );
 	}

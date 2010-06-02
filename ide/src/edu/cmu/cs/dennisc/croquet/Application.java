@@ -182,8 +182,8 @@ public abstract class Application {
 					rv.addMenu( itemSelectionOperation.createMenu() );
 				} else {
 					AbstractMenuItem< ?,? > menuItem = null;
-					if( operation instanceof AbstractActionOperation ) {
-						AbstractActionOperation abstractActionOperation = (AbstractActionOperation)operation;
+					if( operation instanceof Operation ) {
+						Operation abstractActionOperation = (Operation)operation;
 						menuItem = abstractActionOperation.createMenuItem();
 					} else if( operation instanceof BooleanState ) {
 						BooleanState booleanStateOperation = (BooleanState)operation;

@@ -42,11 +42,11 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-/*package-private*/ class ActionEvent extends ModelEvent<AbstractActionOperation,java.util.EventObject,Component< ? >> {
+/*package-private*/ class ActionEvent extends ModelEvent<Operation,java.util.EventObject,Component< ? >> {
 	public ActionEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public ActionEvent( ModelContext parent, AbstractActionOperation actionOperation, java.util.EventObject e, Component< ? > component ) {
+	public ActionEvent( ModelContext parent, Operation actionOperation, java.util.EventObject e, Component< ? > component ) {
 		super( parent, actionOperation, e, component );
 	}
 }
