@@ -103,7 +103,7 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 	protected Object createScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
 		getVM().setConstructorBodyExecutionDesired( false );
 		try {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType = sceneField.getValueType();
 			assert sceneType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 			Object rv = getVM().createInstanceEntryPoint( sceneType );
 			putInstanceForField( sceneField, rv );

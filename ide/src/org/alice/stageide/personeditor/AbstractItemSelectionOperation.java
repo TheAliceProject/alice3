@@ -65,7 +65,7 @@ abstract class AbstractItemSelectionOperation<E> extends edu.cmu.cs.dennisc.croq
 //				if( e.getValueIsAdjusting() ) {
 //					//pass
 //				} else {
-					E item = (E)AbstractItemSelectionOperation.this.getValue();
+					E item = AbstractItemSelectionOperation.this.getValue();
 					if( item != null ) {
 						AbstractItemSelectionOperation.this.handlePerformSelectionChange( item );
 					}

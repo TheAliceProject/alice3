@@ -52,7 +52,7 @@ import edu.cmu.cs.dennisc.alice.ast.*;
 public class InstanceInAlice {
 	private java.util.Map< FieldDeclaredInAlice, Object > m_map = new java.util.HashMap< FieldDeclaredInAlice, Object >();
 	private Object m_instanceInJava;
-	private AbstractType m_type;
+	private AbstractTypeDeclaredInAlice m_type;
 //	public InstanceInAlice( VirtualMachine vm, ConstructorDeclaredInAlice constructor, Object[] arguments ) {
 //		
 //		
@@ -88,7 +88,7 @@ public class InstanceInAlice {
 		assert m_type != null;
 		assert m_type instanceof TypeDeclaredInAlice;
 		assert arguments.length == 0;
-		AbstractType t = m_type;
+		AbstractType<?,?,?> t = m_type;
 		while( t instanceof TypeDeclaredInAlice ) {
 			for( AbstractField field : t.getDeclaredFields() ) {
 				assert field instanceof FieldDeclaredInAlice;

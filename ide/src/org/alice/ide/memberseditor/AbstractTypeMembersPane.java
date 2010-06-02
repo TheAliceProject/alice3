@@ -48,7 +48,7 @@ package org.alice.ide.memberseditor;
 public abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 	private static final int INDENT = 16;
 
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener () {
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
 		}

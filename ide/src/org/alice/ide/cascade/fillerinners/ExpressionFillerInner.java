@@ -62,9 +62,9 @@ public abstract class ExpressionFillerInner {
 		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.FieldAccess >( new edu.cmu.cs.dennisc.alice.ast.FieldAccess( typeExpression, field ) ) );
 	}
 
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
 	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Expression > expressionCls;
-	public ExpressionFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType type, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Expression > expressionCls ) {
+	public ExpressionFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Expression > expressionCls ) {
 		this.type = type;
 		this.expressionCls = expressionCls;
 	}
@@ -72,10 +72,10 @@ public abstract class ExpressionFillerInner {
 		this(  edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ), expressionCls );
 	}
 
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getType() {
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getType() {
 		return this.type;
 	}
-	public boolean isAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public boolean isAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		return this.type.isAssignableTo( type );
 	}
 

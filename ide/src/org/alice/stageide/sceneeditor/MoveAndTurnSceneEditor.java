@@ -631,7 +631,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 					} else {
 						edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
 						if( sceneField != null ) {
-							edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
+							edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType = sceneField.getValueType();
 							if( type.isAssignableFrom( sceneType ) ) {
 								//pass
 							} else {
@@ -1068,12 +1068,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	public void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
 		this.fillInAutomaticSetUpMethod( bodyStatementsProperty, true, sceneField );
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneField.getValueType().getDeclaredFields() ) {
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : this.sceneType.getDeclaredFields() ) {
 			this.fillInAutomaticSetUpMethod( bodyStatementsProperty, false, field );
 		}
 		
 		//Add in statements setting up PointOfView after general field initialization
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : this.sceneType.getDeclaredFields() ) {
 			this.fillInAutomaticPointOfViewAssignment( bodyStatementsProperty, field );
 		}
 		

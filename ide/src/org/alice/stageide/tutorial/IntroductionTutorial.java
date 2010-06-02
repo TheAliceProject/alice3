@@ -80,10 +80,10 @@ public class IntroductionTutorial {
 		
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 		
-		
-		edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = ide.getSceneField();
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = ide.getProgramType();
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = programType.getDeclaredField( "scene" );
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = ide.getSceneType();
-		edu.cmu.cs.dennisc.alice.ast.AbstractField sunLightField = sceneType.getDeclaredField( "sunLight" );
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sunLightField = sceneType.getDeclaredField( "sunLight" );
 		
 		
 		tutorial.addSpotlightStep( 

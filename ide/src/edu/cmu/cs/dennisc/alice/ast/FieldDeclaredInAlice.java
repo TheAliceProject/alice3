@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.alice.ast;
  */
 public class FieldDeclaredInAlice extends AbstractField implements MemberDeclaredInAlice {
 	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
-	public DeclarationProperty< AbstractType > valueType = new DeclarationProperty< AbstractType >( this );
+	public DeclarationProperty< AbstractType<?,?,?> > valueType = new DeclarationProperty< AbstractType<?,?,?> >( this );
 	public edu.cmu.cs.dennisc.property.EnumProperty< Access > access = new edu.cmu.cs.dennisc.property.EnumProperty< Access >( this, Access.PUBLIC );
 	public edu.cmu.cs.dennisc.property.EnumProperty< FieldModifierFinalVolatileOrNeither > finalVolatileOrNeither = new edu.cmu.cs.dennisc.property.EnumProperty< FieldModifierFinalVolatileOrNeither >( this, FieldModifierFinalVolatileOrNeither.NEITHER );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isStatic = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
@@ -61,12 +61,13 @@ public class FieldDeclaredInAlice extends AbstractField implements MemberDeclare
 			return FieldDeclaredInAlice.this.valueType.getValue();
 		}
 	};
-	private AbstractType m_declaringType;
+	
+	private AbstractTypeDeclaredInAlice<?> m_declaringType;
 	private edu.cmu.cs.dennisc.alice.annotations.Visibility m_visibility = edu.cmu.cs.dennisc.alice.annotations.Visibility.PRIME_TIME; 
 
 	public FieldDeclaredInAlice() {
 	}
-	public FieldDeclaredInAlice( String name, AbstractType valueType, Expression initializer ) {
+	public FieldDeclaredInAlice( String name, AbstractType<?,?,?> valueType, Expression initializer ) {
 		this.name.setValue( name );
 		this.valueType.setValue( valueType );
 		this.initializer.setValue( initializer );
@@ -94,10 +95,10 @@ public class FieldDeclaredInAlice extends AbstractField implements MemberDeclare
 	}
 
 	@Override
-	public AbstractType getDeclaringType() {
+	public AbstractTypeDeclaredInAlice<?> getDeclaringType() {
 		return m_declaringType;
 	}
-	public void setDeclaringType( AbstractType declaringType ) {
+	public void setDeclaringType( AbstractTypeDeclaredInAlice<?> declaringType ) {
 		m_declaringType = declaringType;
 	}
 	@Override

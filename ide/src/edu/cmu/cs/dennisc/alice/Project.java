@@ -210,7 +210,7 @@ public class Project {
 	public Project( edu.cmu.cs.dennisc.alice.ast.AbstractType programType ) {
 		setProgramType( programType );
 	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getProgramType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getProgramType() {
 		return this.programType;
 	}
 	/*public*/private void setProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType programType ) {

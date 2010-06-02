@@ -100,7 +100,7 @@ public class StraightenAnimation extends edu.cmu.cs.dennisc.animation.DurationBa
 	@Override
 	protected void setPortion( double portion ) {
 		for (int i = 0; i < bodyPartInitialOrientations.size(); i++) {
-			setOrientation((edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel)bodyParts.elementAt(i), (edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3)bodyPartInitialOrientations.elementAt(i), normalOrientation, portion);
+			setOrientation(bodyParts.elementAt(i), bodyPartInitialOrientations.elementAt(i), normalOrientation, portion);
 		}	
 		
 //		UnitQuaternion interpQuat = UnitQuaternion.createInterpolation(subjectInitialOrientation.createUnitQuaternion(), subjectFinalOrientation.createUnitQuaternion(), portion);

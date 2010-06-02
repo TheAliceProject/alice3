@@ -92,15 +92,15 @@ public class SceneAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegrap
 	public void removeDescendant( ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component > componentAdapter ) {
 		if( componentAdapter instanceof GhostAdapter ) {
 			synchronized( m_ghostAdapters ) {
-				m_ghostAdapters.remove( (GhostAdapter)componentAdapter );
+				m_ghostAdapters.remove( componentAdapter );
 			}
 		} else if( componentAdapter instanceof VisualAdapter ) {
 			synchronized( m_visualAdapters ) {
-				m_visualAdapters.remove( (VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>)componentAdapter );
+				m_visualAdapters.remove( componentAdapter );
 			}
 			if( componentAdapter instanceof PlanarReflectorAdapter ) {
 				synchronized( m_planarReflectorAdapters ) {
-					m_planarReflectorAdapters.remove( (PlanarReflectorAdapter)componentAdapter );
+					m_planarReflectorAdapters.remove( componentAdapter );
 				}
 			}
 		}

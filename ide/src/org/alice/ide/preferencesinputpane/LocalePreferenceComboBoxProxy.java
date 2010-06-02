@@ -68,6 +68,6 @@ public class LocalePreferenceComboBoxProxy extends PreferenceLabeledPaneProxy< j
 
 	@Override
 	public void setAndCommitValue() {
-		this.getPreference().setAndCommitValue( (java.util.Locale)this.localeSelectionOperation.getValue() );
+		this.getPreference().setAndCommitValue( this.localeSelectionOperation.getValue() );
 	}
 }

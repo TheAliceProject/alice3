@@ -159,10 +159,10 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 			E rv;
 			try {
 				cnstrctr = clsActual.getConstructor( new Class[] { BinaryDecoder.class } );
-				rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this );
+				rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this );
 			} catch( NoSuchMethodException nsme ) {
 				cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( clsActual );
-				rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
+				rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
 				rv.decode( this );
 			}
 			return rv;

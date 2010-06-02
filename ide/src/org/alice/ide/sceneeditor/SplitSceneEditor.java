@@ -126,7 +126,7 @@ public class SplitSceneEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
 		}
 		public void projectOpened( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType programType = nextProject.getProgramType();
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = nextProject.getProgramType();
 			edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = programType.getDeclaredFields().get( 0 );
 			tree.setModel( new TreeModel( sceneField ) );
 		}

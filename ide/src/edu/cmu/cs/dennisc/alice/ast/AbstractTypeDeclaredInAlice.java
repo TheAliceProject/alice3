@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTypeDeclaredInAlice extends AbstractType {
+public abstract class AbstractTypeDeclaredInAlice<C extends AbstractConstructor> extends AbstractType<C, MethodDeclaredInAlice, FieldDeclaredInAlice> {
 	protected class Adapter<E extends AbstractMember> implements edu.cmu.cs.dennisc.property.event.ListPropertyListener< E > {
 		private void handleAdd( E member ) {
 			assert member instanceof MemberDeclaredInAlice;
@@ -103,9 +103,9 @@ public abstract class AbstractTypeDeclaredInAlice extends AbstractType {
 		}
 	}
 
-	public DeclarationProperty< AbstractType > superType = new DeclarationProperty< AbstractType >( this ) {
+	public DeclarationProperty< AbstractType<?,?,?> > superType = new DeclarationProperty< AbstractType<?,?,?> >( this ) {
 		@Override
-		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, AbstractType value) {
+		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, AbstractType<?,?,?> value) {
 			assert value.isArray() == false;
 			super.setValue( owner, value );
 		}
@@ -115,7 +115,7 @@ public abstract class AbstractTypeDeclaredInAlice extends AbstractType {
 	public AbstractTypeDeclaredInAlice() {
 		this.addListenersForMethodsAndFields();
 	}
-	public AbstractTypeDeclaredInAlice( AbstractType superType, MethodDeclaredInAlice[] methods, FieldDeclaredInAlice[] fields ) {
+	public AbstractTypeDeclaredInAlice( AbstractType<?,?,?> superType, MethodDeclaredInAlice[] methods, FieldDeclaredInAlice[] fields ) {
 		this.addListenersForMethodsAndFields();
 		this.superType.setValue( superType );
 		this.methods.add( methods );
@@ -135,15 +135,15 @@ public abstract class AbstractTypeDeclaredInAlice extends AbstractType {
 		return false;
 	}
 	@Override
-	public final AbstractType getSuperType() {
+	public final AbstractType<?,?,?> getSuperType() {
 		return superType.getValue();
 	}
 	@Override
-	public final java.util.ArrayList< ? extends AbstractMethod > getDeclaredMethods() {
+	public final java.util.ArrayList< MethodDeclaredInAlice > getDeclaredMethods() {
 		return methods.getValue();
 	}
 	@Override
-	public final java.util.ArrayList< ? extends AbstractField > getDeclaredFields() {
+	public final java.util.ArrayList< FieldDeclaredInAlice > getDeclaredFields() {
 		return fields.getValue();
 	}
 	

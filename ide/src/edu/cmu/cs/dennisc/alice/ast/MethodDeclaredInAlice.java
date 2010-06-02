@@ -54,19 +54,19 @@ public class MethodDeclaredInAlice extends AbstractMethod implements CodeDeclare
 	//public edu.cmu.cs.dennisc.property.BooleanProperty isNative = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isSynchronized = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isStrictFloatingPoint = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public DeclarationProperty< AbstractType > returnType = new DeclarationProperty< AbstractType >( this );
+	public DeclarationProperty< AbstractType<?,?,?> > returnType = new DeclarationProperty< AbstractType<?,?,?> >( this );
 	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
 	public NodeListProperty< ParameterDeclaredInAlice > parameters = new NodeListProperty< ParameterDeclaredInAlice >( this );
 	public NodeProperty< BlockStatement > body = new NodeProperty< BlockStatement >( this );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isSignatureLocked = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
 
-	private AbstractType m_declaringType;
+	private AbstractTypeDeclaredInAlice<?> m_declaringType;
 	private edu.cmu.cs.dennisc.alice.annotations.Visibility m_visibility = edu.cmu.cs.dennisc.alice.annotations.Visibility.PRIME_TIME; 
 
 	public MethodDeclaredInAlice() {
 	}
-	public MethodDeclaredInAlice( String name, AbstractType returnType, ParameterDeclaredInAlice[] parameters, BlockStatement body ) {
+	public MethodDeclaredInAlice( String name, AbstractType<?,?,?> returnType, ParameterDeclaredInAlice[] parameters, BlockStatement body ) {
 		this.name.setValue( name );
 		this.returnType.setValue( returnType );
 		this.parameters.add( parameters );
@@ -93,7 +93,7 @@ public class MethodDeclaredInAlice extends AbstractMethod implements CodeDeclare
 		return this.name;
 	}
 	@Override
-	public AbstractType getReturnType() {
+	public AbstractType<?,?,?> getReturnType() {
 		return returnType.getValue();
 	}
 	@Override
@@ -101,10 +101,10 @@ public class MethodDeclaredInAlice extends AbstractMethod implements CodeDeclare
 		return parameters.getValue();
 	}
 	@Override
-	public AbstractType getDeclaringType() {
+	public AbstractTypeDeclaredInAlice<?> getDeclaringType() {
 		return m_declaringType;
 	}
-	public void setDeclaringType( AbstractType declaringType ) {
+	public void setDeclaringType( AbstractTypeDeclaredInAlice<?> declaringType ) {
 		m_declaringType = declaringType;
 	}
 	@Override

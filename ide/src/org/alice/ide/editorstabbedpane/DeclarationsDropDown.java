@@ -237,7 +237,7 @@ class TypeFillIn extends edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.denni
 		if( this.type != null ) {
 			blank.addFillIn( new ProceduresFillIn( this.type ) );
 			blank.addFillIn( new FunctionsFillIn( this.type ) );
-			blank.addFillIn( new OperatorFillIn( new EditConstructorOperation( (edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice)this.type.getDeclaredConstructor() ) ) );
+			blank.addFillIn( new OperatorFillIn( new EditConstructorOperation( this.type.getDeclaredConstructor() ) ) );
 			blank.addSeparator();
 			blank.addFillIn( new FieldsFillIn( this.type ) );
 			blank.addSeparator();

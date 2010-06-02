@@ -80,7 +80,7 @@ public abstract class CustomFillIn<E extends edu.cmu.cs.dennisc.alice.ast.Expres
 		
 		inputDialogOperation.fire();
 		
-		E value = (E)customInputPane.getActualInputValue();
+		E value = customInputPane.getActualInputValue();
 		if( value != null ) {
 			return value;
 		} else {

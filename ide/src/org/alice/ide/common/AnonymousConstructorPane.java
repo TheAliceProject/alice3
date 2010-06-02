@@ -42,6 +42,8 @@
  */
 package org.alice.ide.common;
 
+import edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice;
+
 class MethodPane extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JPanel > {
 	public MethodPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 //		javax.swing.Box header = javax.swing.Box.createHorizontalBox();
@@ -91,8 +93,8 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 			this.addComponent( header );
 		}
 		
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.anonymousConstructor.getDeclaringType();
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method : type.getDeclaredMethods() ) {
+		edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice type = this.anonymousConstructor.getDeclaringType();
+		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : type.getDeclaredMethods() ) {
 			edu.cmu.cs.dennisc.croquet.GridPanel pane = edu.cmu.cs.dennisc.croquet.GridPanel.createGridPane( 1, 1 );
 			int inset = 4;
 			int left = 4;
@@ -100,7 +102,7 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 				left += 12;
 			}
 			pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( inset, left, inset, inset ) );
-			pane.addComponent( new MethodPane( factory, (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method ) );
+			pane.addComponent( new MethodPane( factory, method ) );
 			this.addComponent( pane );
 		}
 		if( getIDE().isJava() ) {

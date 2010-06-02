@@ -83,7 +83,7 @@ public abstract class AbstractSceneEditor extends edu.cmu.cs.dennisc.croquet.Bor
 			this.sceneField.addListPropertyListener( this );
 		}
 	}
-	protected void setProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType programType ) {
+	protected void setProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType ) {
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice;
 		if( programType != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = programType.getDeclaredFields().get( 0 );

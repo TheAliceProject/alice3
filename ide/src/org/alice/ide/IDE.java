@@ -496,11 +496,11 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 
 	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > addAliceTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = this.getSceneType();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType = this.getSceneType();
 		if( sceneType != null ) {
 			rv.add( sceneType );
 			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType valueType = field.getValueType();
+				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = field.getValueType();
 				if( valueType.isDeclaredInAlice() ) {
 					if( rv.contains( valueType ) ) {
 						//pass
@@ -1227,7 +1227,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			//todo: fix
 			type = this.getActualTypeForDesiredParameterType( type );
 
-			edu.cmu.cs.dennisc.alice.ast.AbstractType selectedType = this.getTypeInScope();
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> selectedType = this.getTypeInScope();
 			//boolean isNecessary = true;
 			if( type.isAssignableFrom( selectedType ) ) {
 				//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
