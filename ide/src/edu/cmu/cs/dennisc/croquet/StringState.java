@@ -121,9 +121,9 @@ public final class StringState extends Model {
 		return rv;
 	}
 	public TextField createTextField() {
-		return register( new TextField() );
+		return register( new TextField( this ) );
 	}
 	public TextArea createTextArea() {
-		return register( new TextArea() );
+		return register( new TextArea( this ) );
 	}
 }

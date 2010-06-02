@@ -46,8 +46,9 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class Slider extends JComponent< javax.swing.JSlider > {
-	/*package-private*/ Slider() {
+public class Slider extends ViewController< javax.swing.JSlider, BoundedRangeIntegerState > {
+	/*package-private*/ Slider( BoundedRangeIntegerState model ) {
+		super( model );
 	}
 	@Override
 	protected javax.swing.JSlider createAwtComponent() {

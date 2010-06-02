@@ -132,7 +132,7 @@ public abstract class AbstractActionOperation<C extends OperationContext> extend
 
 
 	
-	public < B extends AbstractButton<?,?> > B register( final B rv ) {
+	/*package-private*/ < B extends AbstractButton<?,?> > B register( final B rv ) {
 		Application.getSingleton().register( this );
 		rv.addContainmentObserver( new Component.ContainmentObserver() {
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
@@ -158,12 +158,12 @@ public abstract class AbstractActionOperation<C extends OperationContext> extend
 	}
 
 	public Button createButton() {
-		return register( new Button() );
+		return register( new Button( this ) );
 	}
 	public Hyperlink createHyperlink() {
-		return register( new Hyperlink() );
+		return register( new Hyperlink( this ) );
 	}
 	public MenuItem createMenuItem() {
-		return register( new MenuItem() );
+		return register( new MenuItem( this ) );
 	}
 }

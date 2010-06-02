@@ -48,8 +48,8 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, AbstractTabbedPane.TabItemDetails> {
 	private static class JToolPaletteTabTitle extends JTabTitle {
-		public JToolPaletteTabTitle( javax.swing.JComponent jComponent, boolean isCloseAffordanceDesired ) {
-			super( jComponent, isCloseAffordanceDesired );
+		public JToolPaletteTabTitle( javax.swing.JComponent jComponent, java.awt.event.ActionListener closeButtonActionListener ) {
+			super( jComponent, closeButtonActionListener );
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 32, 4, 4 ) );
 			this.setOpaque( true );
 		}
@@ -113,11 +113,7 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, Abstra
 
 	private static class ToolPaletteTabTitle extends TabTitle {
 		public ToolPaletteTabTitle( JComponent<?> innerTitleComponent, boolean isCloseAffordanceDesired ) {
-			super( innerTitleComponent, isCloseAffordanceDesired );
-		}
-		@Override
-		protected javax.swing.AbstractButton createAwtComponent() {
-			return new JToolPaletteTabTitle( this.getInnerTitleComponent().getAwtComponent(), this.isCloseAffordanceDesired() );
+			super( new JToolPaletteTabTitle( innerTitleComponent.getAwtComponent(), getCloseButtonActionListener( isCloseAffordanceDesired ) ) );
 		}
 	}
 
@@ -143,8 +139,8 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, Abstra
 //		}
 //	}
 //
-	public ToolPaletteTabbedPane( ItemSelectionState.TabCreator< E > tabCreator ) {
-		super( tabCreator );
+	public ToolPaletteTabbedPane( ItemSelectionState<E> model, ItemSelectionState.TabCreator< E > tabCreator ) {
+		super( model, tabCreator );
 	}
 //	@Override
 //	protected AbstractTabbedPane.Tab< E > createTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator ) {

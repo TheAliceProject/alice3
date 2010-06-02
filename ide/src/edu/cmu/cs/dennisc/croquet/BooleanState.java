@@ -158,7 +158,7 @@ public /*final*/ class BooleanState extends Model {
 		this.action.putValue(javax.swing.Action.NAME, name);
 	}
 	
-	public < B extends AbstractButton<?,?> > B register( final B rv ) {
+	/*package-private*/ < B extends AbstractButton<?,?> > B register( final B rv ) {
 		Application.getSingleton().register( this );
 		rv.setModel( this.buttonModel );
 		rv.setAction( this.action );
@@ -173,12 +173,12 @@ public /*final*/ class BooleanState extends Model {
 		return rv;
 	}
 	public RadioButton createRadioButton() {
-		return register(new RadioButton() );
+		return register( new RadioButton( this ) );
 	}
 	public CheckBox createCheckBox() {
-		return register(new CheckBox() );
+		return register( new CheckBox( this ) );
 	}
 	public CheckBoxMenuItem createCheckBoxMenuItem() {
-		return register(new CheckBoxMenuItem() );
+		return register( new CheckBoxMenuItem( this ) );
 	}
 }

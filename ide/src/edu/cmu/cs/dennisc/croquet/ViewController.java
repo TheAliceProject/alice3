@@ -46,44 +46,16 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultRadioButtons< E > extends AbstractRadioButtons< E > {
-	private static final java.awt.GridBagConstraints GBC;
-	static {
-		GBC = new java.awt.GridBagConstraints();
-		GBC.fill = java.awt.GridBagConstraints.BOTH;
-		GBC.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		GBC.weightx = 1.0f;
-		GBC.weighty = 0.0f;
-	}
-	/*package-private*/ DefaultRadioButtons( ItemSelectionState<E> model ) {
-		super( model );
-	}
-	@Override
-	protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
-		return new java.awt.GridBagLayout();
-	}
-	@Deprecated
-	private final static BooleanState RADIO_BUTTON_BOOLEAN_STATE = null;
+public abstract class ViewController< J extends javax.swing.JComponent, M extends Model > extends JComponent< J > {
+	private M model;
 	
-	@Override
-	protected AbstractButton<?,?> createButton( E item ) {
-		AbstractButton<?,?> rv = new RadioButton( RADIO_BUTTON_BOOLEAN_STATE );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: RADIO_BUTTON_BOOLEAN_STATE" );
-		rv.getAwtComponent().setText( item.toString() );
-		return rv;
+	/*package-private*/ ViewController( M model ) {
+		this.model = model;
 	}
-	@Override
-	protected void removeAllDetails() {
-		this.removeAllComponents();
+	public M getModel() {
+		return model;
 	}
-	@Override
-	protected void addPrologue(int count) {
-	}
-	@Override
-	protected void addItem(ItemSelectable.ItemDetails itemDetails) {
-		this.internalAddComponent( itemDetails.getButton(), GBC );
-	}
-	@Override
-	protected void addEpilogue() {
-	}
+//	/*package-protected*/ void setModel(M model) {
+//		this.model = model;
+//	}
 }

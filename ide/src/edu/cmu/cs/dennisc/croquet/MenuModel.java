@@ -93,9 +93,9 @@ public class MenuModel extends Model {
 		return this.models;
 	}
 	
-	public Menu createMenu() {
+	public Menu<MenuModel> createMenu() {
 		Application.getSingleton().register( this );
-		Menu rv = new Menu() {
+		Menu<MenuModel> rv = new Menu<MenuModel>( this ) {
 			@Override
 			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				super.handleAddedTo( parent );

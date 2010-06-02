@@ -48,8 +48,8 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabbedPane.FolderTabItemDetails > {
 	private static class JFolderTabTitle extends JTabTitle {
-		public JFolderTabTitle( javax.swing.JComponent jComponent, boolean isCloseAffordanceDesired ) {
-			super( jComponent, isCloseAffordanceDesired );
+		public JFolderTabTitle( javax.swing.JComponent jComponent, java.awt.event.ActionListener closeButtonActionListener ) {
+			super( jComponent, closeButtonActionListener );
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 4, 4, 8 ) );
 			this.setOpaque( false );
 		}
@@ -57,11 +57,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 
 	private static class FolderTabTitle extends TabTitle {
 		public FolderTabTitle( JComponent<?> innerTitleComponent, boolean isCloseAffordanceDesired ) {
-			super( innerTitleComponent, isCloseAffordanceDesired );
-		}
-		@Override
-		protected javax.swing.AbstractButton createAwtComponent() {
-			return new JFolderTabTitle( this.getInnerTitleComponent().getAwtComponent(), this.isCloseAffordanceDesired() );
+			super( new JFolderTabTitle( innerTitleComponent.getAwtComponent(), getCloseButtonActionListener( isCloseAffordanceDesired ) ) );
 		}
 	}
 
@@ -223,8 +219,8 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		}
 	}
 
-	public FolderTabbedPane( ItemSelectionState.TabCreator< E > tabCreator ) {
-		super( tabCreator );
+	public FolderTabbedPane( ItemSelectionState<E> model, ItemSelectionState.TabCreator< E > tabCreator ) {
+		super( model, tabCreator );
 		this.cardPanel.setBorder( javax.swing.BorderFactory.createMatteBorder( 0, 1, 0, 0, java.awt.Color.WHITE ) );
 	}
 

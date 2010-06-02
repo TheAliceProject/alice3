@@ -87,6 +87,8 @@ import edu.cmu.cs.dennisc.alice.ast.Statement;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava;
 import edu.cmu.cs.dennisc.croquet.AbstractButton;
+import edu.cmu.cs.dennisc.croquet.BooleanState;
+import edu.cmu.cs.dennisc.croquet.ItemSelectionState;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical;
 import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
@@ -285,10 +287,13 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 //		}
 //	}
 
-	private static class FieldRadioButtons extends edu.cmu.cs.dennisc.croquet.AbstractRadioButtons< AbstractField > {
+	private static class FieldRadioButtons extends edu.cmu.cs.dennisc.croquet.CustomRadioButtons< AbstractField > {
 		private static final int SUB_FIELD_LEFT_INSET = 10;
 		private static final int INTRA_FIELD_PAD = 1;
 		private javax.swing.SpringLayout springLayout;
+		public FieldRadioButtons( ItemSelectionState<AbstractField> model ) {
+			super( model );
+		}
 		@Override
 		protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
 			this.springLayout = new javax.swing.SpringLayout() {
@@ -409,8 +414,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouth( lgPanel, mainCameraNavigatorWidget, INSET );
 
-			this.fieldRadioButtons = new FieldRadioButtons();
-			this.getIDE().getFieldSelectionState().register( this.fieldRadioButtons );
+			this.fieldRadioButtons = new FieldRadioButtons( this.getIDE().getFieldSelectionState() );
 			
 			
 //			edu.cmu.cs.dennisc.croquet.GridPanel testPanel = edu.cmu.cs.dennisc.croquet.GridPanel.createSingleColumnGridPane();

@@ -46,10 +46,11 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractMenu< C extends javax.swing.JComponent > extends JComponent< C > {
-	/*package-private*/ AbstractMenu() {
+public abstract class AbstractMenu< C extends javax.swing.JComponent, M extends Model > extends ViewController< C, M > {
+	/*package-private*/ AbstractMenu( M model ) {
+		super( model );
 	}
 	public abstract void addMenu( Menu menu );
-	public abstract void addMenuItem( AbstractMenuItem<?> menuItem );
+	public abstract void addMenuItem( AbstractMenuItem<?,?> menuItem );
 	public abstract void addSeparator();
 }

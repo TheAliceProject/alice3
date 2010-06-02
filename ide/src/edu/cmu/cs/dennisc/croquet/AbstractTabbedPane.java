@@ -146,14 +146,15 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 		}
 
 		private javax.swing.JComponent jComponent;
-		private javax.swing.JButton closeButton = new javax.swing.JButton();
-
-		public JTabTitle( javax.swing.JComponent jComponent, boolean isCloseAffordanceDesired ) {
+		private javax.swing.JButton closeButton;
+		private java.awt.event.ActionListener closeActionListener;
+		public JTabTitle( javax.swing.JComponent jComponent, java.awt.event.ActionListener closeActionListener ) {
 			this.jComponent = jComponent;
 			this.setModel( new javax.swing.JToggleButton.ToggleButtonModel() );
 			this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
 			this.add( this.jComponent );
-			if( isCloseAffordanceDesired ) {
+			this.closeActionListener = closeActionListener;
+			if( this.closeActionListener != null ) {
 				this.closeButton = new javax.swing.JButton();
 				this.closeButton.setUI( new CloseButtonUI() );
 				this.closeButton.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
@@ -170,26 +171,47 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 		public void addNotify() {
 			super.addNotify();
 			this.addMouseListener( this.mouseListener );
+			if( this.closeButton != null ) {
+				assert this.closeActionListener != null;
+				this.closeButton.addActionListener( this.closeActionListener );
+			}
 		}
 		@Override
 		public void removeNotify() {
+			if( this.closeButton != null ) {
+				assert this.closeActionListener != null;
+				this.closeButton.removeActionListener( this.closeActionListener );
+			}
 			this.removeMouseListener( this.mouseListener );
 			super.removeNotify();
 		}
 	}
 
+	@Deprecated
+	private final static BooleanState TAB_TITLE_BOOLEAN_STATE = null;
+	
 	protected static abstract class TabTitle extends AbstractButton< javax.swing.AbstractButton, BooleanState > {
-		private JComponent<?> innerTitleComponent;
-		private boolean isCloseAffordanceDesired;
-		public TabTitle( JComponent<?> innerTitleComponent, boolean isCloseAffordanceDesired ) {
-			this.innerTitleComponent = innerTitleComponent;
-			this.isCloseAffordanceDesired = isCloseAffordanceDesired;
+		private JTabTitle jTabTitle;
+		public TabTitle( JTabTitle jTabTitle ) {
+			super( TAB_TITLE_BOOLEAN_STATE );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: TAB_TITLE_BOOLEAN_STATE" );
+			this.jTabTitle = jTabTitle;
 		}
-		protected JComponent<?> getInnerTitleComponent() {
-			return innerTitleComponent;
+		@Override
+		protected final javax.swing.AbstractButton createAwtComponent() {
+			return this.jTabTitle;
 		}
-		protected boolean isCloseAffordanceDesired() {
-			return this.isCloseAffordanceDesired;
+	}
+	
+	protected static java.awt.event.ActionListener getCloseButtonActionListener( boolean isCloseAffordanceDesired ) {
+		if( isCloseAffordanceDesired ) {
+			return new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "close" );
+				}
+			};
+		} else {
+			return null;
 		}
 	}
 
@@ -229,9 +251,6 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 		}
 	}
 	private ItemSelectionState.TabCreator< E > tabCreator;
-	public AbstractTabbedPane( ItemSelectionState.TabCreator< E > tabCreator ) {
-		this.tabCreator = tabCreator;
-	}
 	@Override
 	public void setFont(java.awt.Font font) {
 		super.setFont( font );
@@ -247,6 +266,12 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 		assert id != null : item;
 		return createTabItemDetails( item, id, this.tabCreator.createInnerTitleComponent( item ), this.tabCreator.createScrollPane( item ), this.tabCreator.createMainComponent( item ), this.tabCreator.isCloseAffordanceDesired() );
 	}
+	
+	public AbstractTabbedPane( ItemSelectionState<E> model, ItemSelectionState.TabCreator< E > tabCreator ) {
+		super( model );
+		this.tabCreator = tabCreator;
+	}
+
 	
 	@Deprecated
 	public AbstractButton<?,?> getTabTitle( E item ) {

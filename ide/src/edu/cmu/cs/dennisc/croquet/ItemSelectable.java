@@ -80,7 +80,9 @@ public abstract class ItemSelectable< E, D extends ItemSelectable.ItemDetails > 
 			}
 		}
 	}
-	
+	/*package-private*/ ItemSelectable( ItemSelectionState<E> model ) {
+		super( model );
+	}
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {

@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class List<E> extends JComponent<javax.swing.JList > {
+public class List<E> extends ViewController<javax.swing.JList, ItemSelectionState<E> > {
 	private long tModelChange;
 	private class ListUI extends javax.swing.plaf.basic.BasicListUI {
 		@Override
@@ -91,7 +91,8 @@ public class List<E> extends JComponent<javax.swing.JList > {
 //		}
 	}
 	
-	/*package-private*/ List() {
+	/*package-private*/ List( ItemSelectionState<E> model ) {
+		super( model );
 	}
 
 	@Override

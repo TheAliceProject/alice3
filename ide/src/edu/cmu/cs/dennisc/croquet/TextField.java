@@ -47,7 +47,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class TextField extends TextComponent< javax.swing.JTextField > {
-	/*package-private*/ TextField() {
+	/*package-private*/ TextField( StringState model ) {
+		super( model );
 	}
 	@Override
 	protected javax.swing.JTextField createAwtComponent() {

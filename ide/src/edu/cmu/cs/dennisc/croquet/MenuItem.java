@@ -47,7 +47,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class MenuItem extends AbstractMenuItem< javax.swing.JMenuItem, AbstractActionOperation<?> > {
-	/*package-private*/ MenuItem() {
+	/*package-private*/ MenuItem( AbstractActionOperation<?> model ) {
+		super( model );
 	}
 	@Override
 	protected javax.swing.JMenuItem createAwtComponent() {

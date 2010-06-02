@@ -47,7 +47,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class TextArea extends TextComponent< javax.swing.JTextArea > {
-	/*package-private*/ TextArea() {
+	/*package-private*/ TextArea( StringState model ) {
+		super( model );
 	}
 	@Override
 	protected javax.swing.JTextArea createAwtComponent() {

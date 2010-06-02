@@ -47,7 +47,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class RadioButton extends AbstractButton< javax.swing.JRadioButton, BooleanState > {
-	/*package-private*/ RadioButton() {
+	/*package-private*/ RadioButton( BooleanState model ) {
+		super( model );
 	}
 	@Override
 	protected javax.swing.JRadioButton createAwtComponent() {

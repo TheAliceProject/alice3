@@ -46,8 +46,9 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class ComboBox< E > extends JComponent<javax.swing.JComboBox> {
-	/*package-private*/ ComboBox() {
+public class ComboBox< E > extends ViewController<javax.swing.JComboBox, ItemSelectionState<E>> {
+	/*package-private*/ ComboBox( ItemSelectionState<E> model ) {
+		super( model );
 	}
 	@Override
 	protected javax.swing.JComboBox createAwtComponent() {

@@ -132,7 +132,7 @@ public final class BoundedRangeIntegerState extends Model {
 		return rv;
 	}
 	public Slider createSlider() {
-		return register( new Slider() );
+		return register( new Slider( this ) );
 	}
 	//public abstract void perform( BoundedRangeContext boundedRangeContext );
 }

@@ -383,7 +383,7 @@ public abstract class ItemSelectionState<E> extends Model {
 	// };
 
 	public ComboBox<E> createComboBox() {
-		ComboBox<E> rv = new ComboBox<E>() {
+		ComboBox<E> rv = new ComboBox<E>( this ) {
 			// private ItemListener itemListener = new ItemListener( this );
 			@Override
 			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
@@ -405,7 +405,7 @@ public abstract class ItemSelectionState<E> extends Model {
 	}
 
 	public List<E> createList() {
-		List<E> rv = new List<E>() {
+		List<E> rv = new List<E>( this ) {
 			// private ListSelectionListener listSelectionListener = new
 			// ListSelectionListener( this );
 			@Override
@@ -429,7 +429,7 @@ public abstract class ItemSelectionState<E> extends Model {
 		return rv;
 	}
 
-	public <R extends ItemSelectable<E, ?>> R register(final R rv) {
+	/*package-private*/ <R extends ItemSelectable<E, ?>> R register(final R rv) {
 		Application.getSingleton().register(this);
 		rv.setModel(this.comboBoxModel);
 		rv.setSelectionModel(this.listSelectionModel);
@@ -449,7 +449,7 @@ public abstract class ItemSelectionState<E> extends Model {
 	}
 
 	public DefaultRadioButtons<E> createDefaultRadioButtons() {
-		return register(new DefaultRadioButtons<E>());
+		return register(new DefaultRadioButtons<E>( this ));
 	}
 
 	public interface TabCreator<E> {
@@ -465,11 +465,11 @@ public abstract class ItemSelectionState<E> extends Model {
 	}
 
 	public FolderTabbedPane<E> createFolderTabbedPane(TabCreator<E> tabCreator) {
-		return register(new FolderTabbedPane<E>(tabCreator));
+		return register(new FolderTabbedPane<E>(this, tabCreator));
 	};
 
 	public ToolPaletteTabbedPane<E> createToolPaletteTabbedPane(TabCreator<E> tabCreator) {
-		return register(new ToolPaletteTabbedPane<E>(tabCreator));
+		return register(new ToolPaletteTabbedPane<E>(this, tabCreator));
 	};
 
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
@@ -501,9 +501,9 @@ public abstract class ItemSelectionState<E> extends Model {
 		this.action.putValue(javax.swing.Action.MNEMONIC_KEY, mnemonicKey);
 	}
 
-	public Menu createMenu() {
+	public Menu<ItemSelectionState<E>> createMenu() {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: ItemSelectionOperation createMenu()");
-		Menu rv = new Menu() {
+		Menu<ItemSelectionState<E>> rv = new Menu<ItemSelectionState<E>>( this ) {
 			@Override
 			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				super.handleAddedTo(parent);

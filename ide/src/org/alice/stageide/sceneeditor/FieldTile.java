@@ -42,46 +42,12 @@
  */
 package org.alice.stageide.sceneeditor;
 
-//class FieldSelectedState extends edu.cmu.cs.dennisc.croquet.BooleanStateOperation {
-//	private static java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractField, FieldSelectedState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-//	public static FieldSelectedState getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-//		FieldSelectedState rv = map.get( field );
-//		if( rv != null ) {
-//			//pass
-//		} else {
-//			rv = new FieldSelectedState( field );
-//			map.put( field, rv );
-//		}
-//		return rv;
-//	}
-//	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-//	private FieldSelectedState( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-//		super( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "c9df003e-6e4e-497c-822c-24c61ad07d6c" ), false, field.getName() );
-//		this.field = field;
-//		
-//		this.addValueObserver( new ValueObserver() {
-//			public void changing(boolean nextValue) {
-//			}
-//			public void changed(boolean nextValue) {
-//				if( nextValue ) {
-//					org.alice.ide.IDE.getSingleton().getFieldSelectionState().setValue( FieldSelectedState.this.field );
-//				}
-//			}
-//		} );
-//	}
-////	@Override
-////	public String getTrueText() {
-////		return this.field.getName();
-////	}
-////	@Override
-////	public String getFalseText() {
-////		return this.getTrueText();
-////	}
-//}
+import edu.cmu.cs.dennisc.croquet.BooleanState;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class FieldTile extends edu.cmu.cs.dennisc.croquet.AbstractButton<javax.swing.AbstractButton,edu.cmu.cs.dennisc.croquet.BooleanState> {
+/*package-private*/ class FieldTile extends edu.cmu.cs.dennisc.croquet.CustomBooleanStateButton<javax.swing.AbstractButton> {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 //	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
 //		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
@@ -93,8 +59,12 @@ package org.alice.stageide.sceneeditor;
 //		FieldSelectedState state = FieldSelectedState.getInstance(field);
 //		return state.register( new FieldTile( field ) );
 //	}
+	@Deprecated
+	private final static BooleanState FIELD_TILE_BOOLEAN_STATE = null;
 	
 	public FieldTile( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( FIELD_TILE_BOOLEAN_STATE );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: FIELD_TILE_BOOLEAN_STATE" );
 		assert field != null;
 		this.field = field;
 		//this.setOpaque( false );
