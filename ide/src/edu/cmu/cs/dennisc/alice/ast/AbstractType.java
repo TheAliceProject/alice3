@@ -181,7 +181,7 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 	public AbstractField getDeclaredField( AbstractType valueType, String name ) {
 		AbstractField rv = null;
 		for( AbstractField field : getDeclaredFields() ) {
-			if( field.getName().equals( name ) && field.getValueType().equals( valueType ) ) {
+			if( field.getName().equals( name ) && ( valueType == null || field.getValueType().equals( valueType ) ) ) {
 				rv = field;
 				break;
 			} else {
@@ -192,6 +192,9 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 	}
 	public AbstractField getDeclaredField( Class<?> valueCls, String name ) {
 		return getDeclaredField( TypeDeclaredInJava.get( valueCls ), name );
+	}
+	public AbstractField getDeclaredField( String name ) {
+		return getDeclaredField( (AbstractType)null, name );
 	}
 	
 	public abstract AbstractType getArrayType();

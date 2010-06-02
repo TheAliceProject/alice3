@@ -83,7 +83,7 @@ public class IntroductionTutorial {
 		
 		edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = ide.getSceneField();
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = ide.getSceneType();
-		edu.cmu.cs.dennisc.alice.ast.AbstractField sunLightField = sceneType.fields.get( 0 );
+		edu.cmu.cs.dennisc.alice.ast.AbstractField sunLightField = sceneType.getDeclaredField( "sunLight" );
 		
 		
 		tutorial.addSpotlightStep( 
@@ -183,7 +183,7 @@ public class IntroductionTutorial {
 		);
 
 		//membersEditor.getTabbedPaneSelectionState().setValue( membersEditor.getFunctionsTab() );
-		tutorial.setSelectedIndex( 1 );
+		tutorial.setSelectedIndex( 6 );
 		
 		ide.getFrame().addWindowListener( new java.awt.event.WindowAdapter() {
 			@Override
