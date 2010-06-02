@@ -45,8 +45,8 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class InputDialogOperationContext extends OperationContext {
-	public InputDialogOperationContext( ModelContext parent ) {
-		super( parent );
+public class InputDialogOperationContext extends OperationContext<InputDialogOperation> {
+	/*package-private*/ InputDialogOperationContext( ModelContext<?> parent, InputDialogOperation inputDialogOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( parent, inputDialogOperation, e, viewController );
 	}
 }

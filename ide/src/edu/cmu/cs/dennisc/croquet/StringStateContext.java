@@ -42,21 +42,34 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-/*package-private*/ class StringStateEvent extends ModelEvent {
-	public StringStateEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	public StringStateEvent( ModelContext parent, StringState stringStateOperation, javax.swing.event.DocumentEvent e ) {
-		super( parent, stringStateOperation, null, null );
-		//note: document event not java.util.EventObject 
-	}
-}
 
 /**
  * @author Dennis Cosgrove
  */
-public class StringStateContext extends ModelContext {
-	/*package-private*/ StringStateContext( ModelContext parent ) {
-		super( parent );
+public class StringStateContext extends ModelContext<StringState> {
+	public static  class StringStateEvent extends ModelEvent<StringStateContext> {
+		private javax.swing.event.DocumentEvent documentEvent;
+		public StringStateEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private StringStateEvent( StringStateContext parent, javax.swing.event.DocumentEvent documentEvent ) {
+			super( parent );
+			this.documentEvent = documentEvent;
+		}
+		public javax.swing.event.DocumentEvent getDocumentEvent() {
+			return this.documentEvent;
+		}
+		@Override
+		public State getState() {
+			return null;
+		}
+	}
+	
+	/*package-private*/ StringStateContext( ModelContext<?> parent, StringState stringState, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( parent, stringState, e, viewController );
+	}
+
+	/*package-private*/ void handleDocumentEvent( javax.swing.event.DocumentEvent e ) {
+		this.addChild( new StringStateEvent( this, e ) );
 	}
 }

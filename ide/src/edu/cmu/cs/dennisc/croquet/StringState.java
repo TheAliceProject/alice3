@@ -66,8 +66,14 @@ public final class StringState extends Model {
 	private javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
 		private void handleUpdate(javax.swing.event.DocumentEvent e) {
 			Application application = Application.getSingleton();
-			ModelContext context = application.getCurrentContext();
-			context.addChild( new StringStateEvent( context, StringState.this, e ) );
+			ModelContext<?> context = application.getCurrentContext();
+			StringStateContext stringStateContext;
+			if( context instanceof StringStateContext ) {
+				stringStateContext = (StringStateContext)context;
+			} else {
+				stringStateContext = context.createStringStateContext( StringState.this );
+			}
+			stringStateContext.handleDocumentEvent( e );
 		}
 		public void changedUpdate(javax.swing.event.DocumentEvent e) {
 			this.handleUpdate(e);

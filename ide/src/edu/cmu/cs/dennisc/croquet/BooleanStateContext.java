@@ -42,20 +42,11 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-/*package-private*/ class BooleanStateEvent extends ModelEvent {
-	public BooleanStateEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	public BooleanStateEvent( ModelContext parent, BooleanState booleanStateOperation, java.awt.event.ItemEvent e ) {
-		super( parent, booleanStateOperation, e, null );
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanStateContext extends ModelContext {
-	/*package-private*/ BooleanStateContext( ModelContext parent ) {
-		super( parent );
+public class BooleanStateContext extends ModelContext<BooleanState> {
+	/*package-private*/ BooleanStateContext( ModelContext<?> parent, BooleanState booleanState, java.awt.event.ItemEvent e, ViewController< ?,? > viewController ) {
+		super( parent, booleanState, e, viewController );
 	}
 }

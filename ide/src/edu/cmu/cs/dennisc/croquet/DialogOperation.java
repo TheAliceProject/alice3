@@ -50,8 +50,8 @@ public abstract class DialogOperation extends Operation<DialogOperationContext> 
 		super(group, individualUUID);
 	}
 	@Override
-	protected DialogOperationContext createContext( ModelContext parent ) {
-		return new DialogOperationContext( parent, this );
+	protected DialogOperationContext createContext( ModelContext< ? > parent, java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		return parent.createDialogOperationContext( this, e, viewController );
 	}
 	protected java.awt.Point getDesiredDialogLocation( Dialog dialog ) {
 		return new java.awt.Point( 0, 0 );
@@ -64,10 +64,10 @@ public abstract class DialogOperation extends Operation<DialogOperationContext> 
 	protected abstract void releaseContentPane(DialogOperationContext context, Dialog dialog, Container<?> contentPane );
 	@Override
 	protected final void perform( final DialogOperationContext context ) {
-		Component<?> component = context.getComponent();
+		ViewController<?,?> viewController = context.getViewController();
 		Component<?> owner;
-		if( component != null ) {
-			owner = component;
+		if( viewController != null ) {
+			owner = viewController;
 		} else {
 			owner = Application.getSingleton().getFrame().getContentPanel();
 		}

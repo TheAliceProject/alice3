@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeComponent extends edu.cmu.cs.dennisc.croquet.JComponent<javax.swing.AbstractButton> {
+public class TypeComponent extends edu.cmu.cs.dennisc.croquet.ViewController<javax.swing.AbstractButton, edu.cmu.cs.dennisc.croquet.Model > {
 //public class TypeComponent extends edu.cmu.cs.dennisc.croquet.AbstractButton<javax.swing.AbstractButton> {
 	private static final java.awt.Color ROLLOVER_COLOR = java.awt.Color.BLUE.darker();
 	public static TypeComponent createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
@@ -94,6 +94,7 @@ public class TypeComponent extends edu.cmu.cs.dennisc.croquet.JComponent<javax.s
 //	private boolean isRollover = false;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 	private TypeComponent( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		super( null );
 		this.type = type;
 //		this.setCursor( java.awt.Cursor.getDefaultCursor() );
 		this.setBorder( TypeBorder.getSingletonFor( type ) );

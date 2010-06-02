@@ -168,7 +168,24 @@ package edu.cmu.cs.dennisc.croquet;
 //	
 //}
 
-public abstract class HistoryTreeNode implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable, javax.swing.tree.TreeNode {
+public abstract class HistoryTreeNode< M extends ModelContext<?> > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable, javax.swing.tree.TreeNode {
+	private M parent;
+	private java.util.UUID id;
+
+	public HistoryTreeNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.decode( binaryDecoder );
+	}
+	public HistoryTreeNode( M parent ) {
+		this.parent = parent;
+		this.id = java.util.UUID.randomUUID();
+	}
+	public M getParent() {
+		return this.parent;
+	}
+	public java.util.UUID getId() {
+		return this.id;
+	}
+
 	public enum State {
 		COMMITTED, 
 		FINISHED, 
@@ -176,25 +193,8 @@ public abstract class HistoryTreeNode implements edu.cmu.cs.dennisc.codec.Binary
 		CANCELED, 
 		PENDING
 	}
-
-	private ModelContext parent;
-	private java.util.UUID id;
-
-	public HistoryTreeNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.decode( binaryDecoder );
-	}
-	public HistoryTreeNode( ModelContext parent ) {
-		this.parent = parent;
-		this.id = java.util.UUID.randomUUID();
-	}
-	public ModelContext getParent() {
-		return this.parent;
-	}
-	public java.util.UUID getId() {
-		return this.id;
-	}
-
 	public abstract State getState();
+	
 	protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
 	protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
 	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

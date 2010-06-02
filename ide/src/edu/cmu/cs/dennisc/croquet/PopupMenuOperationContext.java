@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class PopupMenuOperationContext extends OperationContext {
-	public PopupMenuOperationContext( ModelContext parent ) {
-		super( parent );
+	public PopupMenuOperationContext( ModelContext<?> parent, AbstractPopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( parent, popupMenuOperation, e, viewController );
 	}
 }

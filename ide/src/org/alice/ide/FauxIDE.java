@@ -47,7 +47,7 @@ package org.alice.ide;
  */
 public class FauxIDE extends IDE {
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createAboutOperation() {
+	protected edu.cmu.cs.dennisc.croquet.Operation createAboutOperation() {
 		return null;
 	}
 	@Override
@@ -70,11 +70,11 @@ public class FauxIDE extends IDE {
 		return null;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createRestartOperation() {
+	protected edu.cmu.cs.dennisc.croquet.Operation createRestartOperation() {
 		return null;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.AbstractActionOperation createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
+	public edu.cmu.cs.dennisc.croquet.Operation createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
 		return null;
 	}
 //	@Override

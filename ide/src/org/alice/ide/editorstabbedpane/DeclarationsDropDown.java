@@ -42,8 +42,6 @@
  */
 package org.alice.ide.editorstabbedpane;
 
-import org.alice.ide.ubiquitouspane.UbiquitousPane;
-
 //class EditFieldOperation extends org.alice.ide.operations.AbstractActionOperation {
 //	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
 //
@@ -278,12 +276,12 @@ class RootOperation extends org.alice.ide.operations.InconsequentialActionOperat
 	}
 	@Override
 	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		edu.cmu.cs.dennisc.croquet.Component<?> component = context.getComponent();
+		edu.cmu.cs.dennisc.croquet.ViewController<?,?> viewController = context.getViewController();
 		int x = 0;
-		int y = component.getHeight();
+		int y = viewController.getHeight();
 		edu.cmu.cs.dennisc.alice.Project project = getIDE().getProject();
 		if( project != null ) {
-			new ProjectBlank( project ).showPopupMenu( component.getAwtComponent(), x, y, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.zoot.ActionOperation >() {
+			new ProjectBlank( project ).showPopupMenu( viewController.getAwtComponent(), x, y, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.zoot.ActionOperation >() {
 				public void handleCompletion( edu.cmu.cs.dennisc.zoot.ActionOperation actionOperation ) {
 					edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( actionOperation, null, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
 				}

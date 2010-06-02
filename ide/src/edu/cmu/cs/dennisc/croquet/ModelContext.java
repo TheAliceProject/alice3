@@ -42,17 +42,17 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-/*package-private*/ abstract class Event extends HistoryTreeNode {
+/*package-private*/ abstract class Event< M extends ModelContext< ? > > extends HistoryTreeNode< M > {
 	public Event( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public Event( ModelContext parent ) {
+	public Event( M parent ) {
 		super( parent );
 	}
 	public boolean isLeaf() {
 		return true;
 	}
-	public java.util.Enumeration<HistoryTreeNode> children() {
+	public java.util.Enumeration<HistoryTreeNode<?>> children() {
 		return null;
 	}
 	public boolean getAllowsChildren() {
@@ -67,37 +67,14 @@ package edu.cmu.cs.dennisc.croquet;
 	public int getIndex( javax.swing.tree.TreeNode node ) {
 		return -1;
 	}
-	
-	@Deprecated
-	public Model getModel() {
-		ModelContext modelContext = this.getParent();
-		ModelEvent modelEvent = (ModelEvent)modelContext.getChildAt( 0 );
-		return modelEvent.getModel();
-	}
 }
 
-/*package-private*/ abstract class ModelEvent< M extends Model, E extends java.util.EventObject, C extends Component< ? > > extends Event {
-	private M model;
-	private E event;
-	private C component;
+/*package-private*/ abstract class ModelEvent< M extends ModelContext< ? > > extends Event< M > {
 	public ModelEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public ModelEvent( ModelContext parent, M model, E event, C component ) {
+	public ModelEvent( M parent ) {
 		super( parent );
-		this.model = model;
-		this.event = event;
-		this.component = component;
-	}
-	@Override
-	public M getModel() {
-		return this.model;
-	}
-	public E getEvent() {
-		return this.event;
-	}
-	public C getComponent() {
-		return this.component;
 	}
 	@Override
 	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -105,37 +82,48 @@ package edu.cmu.cs.dennisc.croquet;
 	@Override
 	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
-	@Override
-	public State getState() {
-		return null;
-	}
-	
-	@Override
-	protected StringBuilder appendRepr( StringBuilder rv ) {
-		super.appendRepr( rv );
-		rv.append( " model:" );
-		rv.append( this.model );
-		return rv;
-	}
+//	
+//	@Override
+//	protected StringBuilder appendRepr( StringBuilder rv ) {
+//		super.appendRepr( rv );
+//		rv.append( " model:" );
+//		rv.append( this.model );
+//		return rv;
+//	}
 }
 
 /**
  * @author Dennis Cosgrove
  */
-public class ModelContext extends HistoryTreeNode {
+public abstract class ModelContext<M extends Model> extends HistoryTreeNode<ModelContext<?>> {
 	public interface CommitObserver {
 		public void committing( Edit edit );
 		public void committed( Edit edit );
 	}
 	public interface ChildrenObserver {
-		public void addingChild( HistoryTreeNode child );
-		public void addedChild( HistoryTreeNode child );
+		public void addingChild( HistoryTreeNode<?> child );
+		public void addedChild( HistoryTreeNode<?> child );
 	}
 	private java.util.List< CommitObserver > commitObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private java.util.List< ChildrenObserver > childrenObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private java.util.List< HistoryTreeNode > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	/*package-private*/ ModelContext( ModelContext parent ) {
+	private java.util.List< HistoryTreeNode<?> > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private M model;
+	private java.util.EventObject awtEvent;
+	private ViewController< ?, ? > viewController;
+	/*package-private*/ ModelContext( ModelContext<?> parent, M model, java.util.EventObject awtEvent, ViewController< ?,? > viewController ) {
 		super( parent );
+		this.model = model;
+		this.awtEvent = awtEvent;
+		this.viewController = viewController;
+	}
+	public M getModel() {
+		return this.model;
+	}
+	public java.util.EventObject getAwtEvent() {
+		return this.awtEvent;
+	}
+	public ViewController< ?, ? > getViewController() {
+		return this.viewController;
 	}
 	public void addCommitObserver( CommitObserver commitObserver ) {
 		this.commitObservers.add( commitObserver );
@@ -153,7 +141,7 @@ public class ModelContext extends HistoryTreeNode {
 	public boolean isLeaf() {
 		return false;
 	}
-	public java.util.Enumeration<HistoryTreeNode> children() {
+	public java.util.Enumeration<HistoryTreeNode<?>> children() {
 		return java.util.Collections.enumeration( this.children );
 	}
 	public boolean getAllowsChildren() {
@@ -175,7 +163,7 @@ public class ModelContext extends HistoryTreeNode {
 				commitObserver.committing( edit );
 			}
 		}
-		ModelContext parent = this.getParent();
+		ModelContext<?> parent = this.getParent();
 		if( parent != null ) {
 			parent.fireCommitting( edit );
 		}
@@ -186,30 +174,30 @@ public class ModelContext extends HistoryTreeNode {
 				commitObserver.committed( edit );
 			}
 		}
-		ModelContext parent = this.getParent();
+		ModelContext<?> parent = this.getParent();
 		if( parent != null ) {
 			parent.fireCommitted( edit );
 		}
 	}
 	
-	protected void fireAddingChild( HistoryTreeNode child ) {
+	protected void fireAddingChild( HistoryTreeNode<?> child ) {
 		if( this.commitObservers.size() > 0 ) {
 			for( ChildrenObserver childObserver : this.childrenObservers ) {
 				childObserver.addingChild( child );
 			}
 		}
-		ModelContext parent = this.getParent();
+		ModelContext<?> parent = this.getParent();
 		if( parent != null ) {
 			parent.fireAddingChild( child );
 		}
 	}
-	protected void fireAddedChild( HistoryTreeNode child ) {
+	protected void fireAddedChild( HistoryTreeNode<?> child ) {
 		if( this.commitObservers.size() > 0 ) {
 			for( ChildrenObserver childObserver : this.childrenObservers ) {
 				childObserver.addedChild( child );
 			}
 		}
-		ModelContext parent = this.getParent();
+		ModelContext<?> parent = this.getParent();
 		if( parent != null ) {
 			parent.fireAddedChild( child );
 		}
@@ -225,12 +213,12 @@ public class ModelContext extends HistoryTreeNode {
 		}
 	}
 	//todo
-	public ModelContext getCurrentContext() {
+	public ModelContext<?> getCurrentContext() {
 		final int N = this.children.size();
 		if( N > 0 ) {
-			HistoryTreeNode lastChild = this.children.get( N - 1 );
-			if( lastChild instanceof ModelContext ) {
-				ModelContext lastContext = (ModelContext)lastChild;
+			HistoryTreeNode<?> lastChild = this.children.get( N - 1 );
+			if( lastChild instanceof ModelContext<?> ) {
+				ModelContext<?> lastContext = (ModelContext<?>)lastChild;
 				if( lastContext.getState() != null ) {
 					return this;
 				} else {
@@ -253,19 +241,75 @@ public class ModelContext extends HistoryTreeNode {
 		return this.getState() == State.CANCELED;
 	}
 
-	/*package-private*/ void addChild( HistoryTreeNode child ) {
+	protected void addChild( HistoryTreeNode<?> child ) {
 		this.fireAddingChild( child );
 		synchronized( this.children ) {
 			this.children.add( child );
 		}
 		this.fireAddedChild( child );
 	}
-	
-	/*package-private*/ModelContext createChildContext() {
-		ModelContext rv = new ModelContext( this );
+
+	/*package-private*/ActionOperationContext createActionOperationContext( ActionOperation actionOperation, java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		ActionOperationContext rv = new ActionOperationContext( this, actionOperation, e, viewController );
 		this.addChild( rv );
 		return rv;
 	}
+	/*package-private*/CompositeOperationContext createCompositeOperationContext( CompositeOperation compositeOperation, java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		CompositeOperationContext rv = new CompositeOperationContext( this, compositeOperation, e, viewController );
+		this.addChild( rv );
+		return rv;
+	}
+	/*package-private*/DialogOperationContext createDialogOperationContext( DialogOperation dialogOperation, java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		DialogOperationContext rv = new DialogOperationContext( this, dialogOperation, e, viewController );
+		this.addChild( rv );
+		return rv;
+	}
+	/*package-private*/InputDialogOperationContext createInputDialogOperationContext( InputDialogOperation inputDialogOperation, java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		InputDialogOperationContext rv = new InputDialogOperationContext( this, inputDialogOperation, e, viewController );
+		this.addChild( rv );
+		return rv;
+	}
+	/*package-private*/PopupMenuOperationContext createPopupMenuOperationContext( AbstractPopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		PopupMenuOperationContext rv = new PopupMenuOperationContext( this, popupMenuOperation, e, viewController );
+		this.addChild( rv );
+		return rv;
+	}
+	public <T> ItemSelectionStateContext< T > createItemSelectionStateContext( ItemSelectionState< T > itemSelectionState, java.util.EventObject e, ViewController< ?, ? > viewController, int prevIndex, T prevItem, int nextIndex, T nextItem ) {
+		ItemSelectionStateContext<T> rv = new ItemSelectionStateContext<T>( this, itemSelectionState, e, viewController, prevIndex, prevItem, nextIndex, nextItem );
+		this.addChild( rv );
+		return rv;
+	}
+	public BoundedRangeIntegerStateContext createBoundedRangeIntegerStateContext( BoundedRangeIntegerState boundedRangeIntegerState ) {
+		BoundedRangeIntegerStateContext rv = new BoundedRangeIntegerStateContext( this, boundedRangeIntegerState, null, null );
+		this.addChild( rv );
+		return rv;
+	}
+	public BooleanStateContext createBooleanStateContext( BooleanState booleanState, java.awt.event.ItemEvent e, ViewController< ?, ? > viewController ) {
+		BooleanStateContext rv = new BooleanStateContext( this, booleanState, e, viewController );
+		this.addChild( rv );
+		return rv;
+	}
+	public StringStateContext createStringStateContext( StringState stringState ) {
+		StringStateContext rv = new StringStateContext( this, stringState, null, null );
+		this.addChild( rv );
+		return rv;
+	}
+	public MenuBarModelContext createMenuBarModelContext( MenuBarModel menuBarModel, MenuBar menuBar ) {
+		MenuBarModelContext rv = new MenuBarModelContext( this, menuBarModel, null, menuBar );
+		this.addChild( rv );
+		return rv;
+	}
+	public MenuModelContext createMenuModelContext( MenuModel menuModel, Menu<?> menu ) {
+		MenuModelContext rv = new MenuModelContext( this, menuModel, null, menu );
+		this.addChild( rv );
+		return rv;
+	}
+	
+//	/*package-private*/ModelContext createChildContext() {
+//		ModelContext rv = new ModelContext( this );
+//		this.addChild( rv );
+//		return rv;
+//	}
 	public void finish() {
 		this.addChild( new FinishEvent( this ) );
 	}

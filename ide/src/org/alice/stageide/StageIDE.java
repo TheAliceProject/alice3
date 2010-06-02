@@ -356,11 +356,11 @@ public class StageIDE extends org.alice.ide.IDE {
 		return new org.alice.stageide.operations.run.RunOperation();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> createRestartOperation() {
+	protected edu.cmu.cs.dennisc.croquet.Operation<?> createRestartOperation() {
 		return new org.alice.stageide.operations.run.RestartOperation();
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.AbstractActionOperation<?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
+	public edu.cmu.cs.dennisc.croquet.Operation<?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
 		return new org.alice.stageide.operations.run.PreviewMethodOperation( procedureInvocationTemplate );
 	}
 
@@ -421,7 +421,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		return new org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createAboutOperation() {
+	protected edu.cmu.cs.dennisc.croquet.Operation createAboutOperation() {
 		return new org.alice.stageide.operations.help.AboutOperation();
 	}
 

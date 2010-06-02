@@ -40,26 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package edu.cmu.cs.dennisc.croquet;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class MenuBar extends ViewController< javax.swing.JMenuBar, MenuBarModel > {
-	/*package-private*/ MenuBar( MenuBarModel model ) {
-		super( model );
-	}
-	@Override
-	protected javax.swing.JMenuBar createAwtComponent() {
-		return new javax.swing.JMenuBar();
-	}
-	/*package-private*/ void addMenu( Menu menu ) {
-		this.getAwtComponent().add( menu.getAwtComponent() );
-	}
-	public ModelContext< ? > createMenuBarContext() {
-		Application application = Application.getSingleton();
-		ModelContext<?> rootContext = application.getRootContext();
-		return rootContext.createMenuBarModelContext( this.getModel(), this );
+public class MenuBarModelContext extends ModelContext<MenuBarModel> {
+	/*package-private*/ MenuBarModelContext( ModelContext<?> parent, MenuBarModel menuBarModel, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( parent, menuBarModel, e, viewController );
 	}
 }

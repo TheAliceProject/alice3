@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Operation<C extends OperationContext> extends Model {
+public abstract class Operation<C extends OperationContext<?>> extends Model {
 	private class ButtonActionListener implements java.awt.event.ActionListener {
 		private AbstractButton< ?,? > button;
 		public ButtonActionListener( AbstractButton< ?,? > button ) {
@@ -57,13 +57,13 @@ public abstract class Operation<C extends OperationContext> extends Model {
 	}
 	private java.util.Map< AbstractButton< ?,? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
-	protected abstract C createContext( ModelContext parent );
+	protected abstract C createContext( ModelContext<?> parent, java.util.EventObject e, ViewController< ?, ? > viewController );
 
-	public void fire( java.util.EventObject e, Component<?> component ) {
+	public void fire( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		if( this.isEnabled() ) {
 			Application application = Application.getSingleton();
-			ModelContext parentContext = application.getCurrentContext();
-			this.handleFire(parentContext, e, component);
+			ModelContext<?> parentContext = application.getCurrentContext();
+			this.handleFire(parentContext, e, viewController);
 		}
 	}
 	@Deprecated
@@ -85,9 +85,8 @@ public abstract class Operation<C extends OperationContext> extends Model {
 		super( group, individualUUID );
 	}
 	
-	/*package-private*/ final void handleFire( ModelContext parentContext, java.util.EventObject e, Component<?> component ) {
-		C childContext = this.createContext( parentContext );
-		childContext.addChild( new ActionEvent( childContext, Operation.this, e, component ) );
+	/*package-private*/ final void handleFire( ModelContext<?> parentContext, java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		C childContext = this.createContext( parentContext, e, viewController );
 		this.perform( childContext );
 	}
 	protected abstract void perform( C context );

@@ -60,7 +60,7 @@ public abstract class Application {
 		return singleton;
 	}
 
-	private ModelContext rootContext = new ModelContext( null );
+	private ModelContext<Model> rootContext = new ModelContext<Model>( null, null, null, null ) {};
 	private java.util.Map< java.util.UUID, Model > mapUUIDToOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public Application() {

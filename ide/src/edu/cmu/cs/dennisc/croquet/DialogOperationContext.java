@@ -45,13 +45,22 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class DialogOperationContext extends OperationContext {
-	public static abstract class WindowEvent extends ModelEvent< DialogOperation, java.awt.event.WindowEvent, Component< ? > > {
+public class DialogOperationContext extends OperationContext<DialogOperation> {
+	public static abstract class WindowEvent extends ModelEvent< DialogOperationContext > {
+		private java.awt.event.WindowEvent windowEvent;
 		public WindowEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
-		public WindowEvent( ModelContext parent, DialogOperation dialogOperation, java.awt.event.WindowEvent e ) {
-			super( parent, dialogOperation, e, null );
+		/*package-private*/ WindowEvent( DialogOperationContext parent, java.awt.event.WindowEvent windowEvent ) {
+			super( parent );
+			this.windowEvent = windowEvent;
+		}
+		public java.awt.event.WindowEvent getWindowEvent() {
+			return this.windowEvent;
+		}
+		@Override
+		public State getState() {
+			return null;
 		}
 	}
 
@@ -59,8 +68,8 @@ public class DialogOperationContext extends OperationContext {
 		public WindowOpenedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
-		public WindowOpenedEvent( ModelContext parent, DialogOperation dialogOperation, java.awt.event.WindowEvent e ) {
-			super( parent, dialogOperation, e );
+		/*package-private*/ WindowOpenedEvent( DialogOperationContext parent, java.awt.event.WindowEvent e ) {
+			super( parent, e );
 		}
 	}
 
@@ -68,20 +77,18 @@ public class DialogOperationContext extends OperationContext {
 		public WindowClosedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
-		public WindowClosedEvent( ModelContext parent, DialogOperation dialogOperation, java.awt.event.WindowEvent e ) {
-			super( parent, dialogOperation, e );
+		/*package-private*/ WindowClosedEvent( DialogOperationContext parent, java.awt.event.WindowEvent e ) {
+			super( parent, e );
 		}
 	}
 
-	private DialogOperation dialogOperation;
-	public DialogOperationContext( ModelContext parent, DialogOperation dialogOperation ) {
-		super( parent );
-		this.dialogOperation = dialogOperation;
+	public DialogOperationContext( ModelContext<?> parent, DialogOperation operation, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( parent, operation, e, viewController );
 	}
 	/*package-private*/ void handleWindowOpened( java.awt.event.WindowEvent e ) {
-		this.addChild( new WindowOpenedEvent( this, this.dialogOperation, e ) );
+		this.addChild( new WindowOpenedEvent( this, e ) );
 	}
 	/*package-private*/ void handleWindowClosed( java.awt.event.WindowEvent e ) {
-		this.addChild( new WindowClosedEvent( this, this.dialogOperation, e ) );
+		this.addChild( new WindowClosedEvent( this, e ) );
 	}
 }

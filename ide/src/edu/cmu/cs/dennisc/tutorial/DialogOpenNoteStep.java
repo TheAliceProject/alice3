@@ -54,10 +54,10 @@ package edu.cmu.cs.dennisc.tutorial;
 		return false;
 	}
 	@Override
-	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode child ) {
+	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
 		if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent ) {
 			edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent)child;
-			return windowOpenedEvent.getModel() == this.getModel();
+			return windowOpenedEvent.getParent().getModel() == this.getModel();
 		} else {
 			return false;
 		}

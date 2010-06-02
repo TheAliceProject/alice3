@@ -45,9 +45,9 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DragAndDropContext extends ModelContext {
-	public DragAndDropContext( ModelContext parent ) {
-		super( parent );
+public abstract class DragAndDropContext extends ModelContext<DragAndDropOperation> {
+	public DragAndDropContext( ModelContext<?> parent, DragAndDropOperation dragAndDropOperation, java.awt.event.MouseEvent e, ViewController< ?,? > viewController ) {
+		super( parent, dragAndDropOperation, e, viewController );
 	}
 	public abstract java.awt.event.MouseEvent getOriginalMouseEvent();
 	public abstract java.awt.event.MouseEvent getLatestMouseEvent();

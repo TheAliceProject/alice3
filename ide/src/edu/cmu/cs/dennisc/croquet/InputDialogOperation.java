@@ -61,7 +61,7 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 			this.dialog = dialog;
 		}
 		@Override
-		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		protected final void perform(ActionOperationContext context) {
 			assert this.dialog != null;
 			InputDialogOperation.this.isOk = this.isOk;
 			this.dialog.setVisible( false );
@@ -96,16 +96,16 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 	}
 
 	@Override
-	protected InputDialogOperationContext createContext( ModelContext parent ) {
-		return new InputDialogOperationContext( parent );
+	protected InputDialogOperationContext createContext( ModelContext< ? > parent, java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		return parent.createInputDialogOperationContext( this, e, viewController );
 	}
 
 
 	protected String getExplanationIfOkButtonShouldBeDisabled() {
 		return null;
 	}
-	protected abstract edu.cmu.cs.dennisc.croquet.Component<?> prologue( edu.cmu.cs.dennisc.croquet.ModelContext context );
-	protected abstract void epilogue( edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk );
+	protected abstract Component<?> prologue( ModelContext context );
+	protected abstract void epilogue( ModelContext context, boolean isOk );
 
 	protected void updateOkOperationAndExplanation() {
 		String explanation = this.getExplanationIfOkButtonShouldBeDisabled();
@@ -123,8 +123,7 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 		return null;
 	}
 	@Override
-	protected final void perform(InputDialogOperationContext context) {
-		ModelContext childContext = context.createChildContext();
+	protected final void perform(InputDialogOperationContext childContext) {
 		Component<?> contentPane = this.prologue(childContext);
 		if( contentPane != null ) {
 			class OkCancelPanel extends Panel {
@@ -162,17 +161,17 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 			OkCancelPanel okCancelPanel = new OkCancelPanel();
 			okCancelPanel.setOpaque( false );
 
-			Component<?> component = context.getComponent();
+			ViewController<?,?> viewController = childContext.getViewController();
 			Component<?> owner;
-			if( component != null ) {
-				owner = component;
+			if( viewController != null ) {
+				owner = viewController;
 			} else {
 				owner = Application.getSingleton().getFrame().getContentPanel();
 			}
 			final Dialog dialog = new Dialog( owner );
 			dialog.setTitle( this.getName() );
 			dialog.setDefaultButton( okCancelPanel.getOkButton() );
-			dialog.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Dialog.DefaultCloseOperation.DISPOSE );
+			dialog.setDefaultCloseOperation( Dialog.DefaultCloseOperation.DISPOSE );
 //			dialog.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 //			dialog.addWindowListener(new java.awt.event.WindowListener() {
 //				public void windowActivated(java.awt.event.WindowEvent e) {
@@ -212,8 +211,8 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 			BorderPanel borderPanel = dialog.getContentPanel();
 			borderPanel.setOpaque( true );
 			borderPanel.setBackgroundColor( backgroundColor );
-			borderPanel.addComponent( contentPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
-			borderPanel.addComponent( southPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.SOUTH );
+			borderPanel.addComponent( contentPane, BorderPanel.Constraint.CENTER );
+			borderPanel.addComponent( southPanel, BorderPanel.Constraint.SOUTH );
 
 			java.awt.Dimension size = this.getDesiredDialogSize( dialog );
 			if( size != null ) {
@@ -224,10 +223,10 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 			//dialog.pack();
 			//edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin(dialog.getAwtWindow(), button.getRoot().getAwtWindow());
 
-			edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver childrenObserver = new edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver() {
-				public void addingChild(edu.cmu.cs.dennisc.croquet.HistoryTreeNode child) {
+			ModelContext.ChildrenObserver childrenObserver = new ModelContext.ChildrenObserver() {
+				public void addingChild(HistoryTreeNode child) {
 				}
-				public void addedChild(edu.cmu.cs.dennisc.croquet.HistoryTreeNode child) {
+				public void addedChild(HistoryTreeNode child) {
 					InputDialogOperation.this.updateOkOperationAndExplanation();
 				}
 			};
@@ -243,6 +242,6 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 		} else {
 			this.epilogue(childContext, false);
 		}
-		context.finish();
+		childContext.finish();
 	}
 }

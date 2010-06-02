@@ -42,29 +42,12 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-/*package-private*/ class ActionEvent extends ModelEvent<Operation,java.util.EventObject,Component< ? >> {
-	public ActionEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	public ActionEvent( ModelContext parent, Operation actionOperation, java.util.EventObject e, Component< ? > component ) {
-		super( parent, actionOperation, e, component );
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationContext extends ModelContext {
-	public OperationContext( ModelContext parent ) {
-		super( parent );
-	}
-	public Component<?> getComponent() {
-		ActionEvent actionEvent = (ActionEvent)this.getChildAt( 0 );
-		return actionEvent.getComponent();
-	}
-	public java.util.EventObject getEvent() {
-		ActionEvent actionEvent = (ActionEvent)this.getChildAt( 0 );
-		return actionEvent.getEvent();
+public abstract class OperationContext<O extends Operation<?>> extends ModelContext<O> {
+	public OperationContext( ModelContext<?> parent, O operation, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( parent, operation, e, viewController );
 	}
 	public java.awt.Point getPoint() {
 		java.awt.event.MouseEvent mouseEvent = this.getMouseEvent();
@@ -76,7 +59,7 @@ public abstract class OperationContext extends ModelContext {
 	}
 	@Deprecated
 	public java.awt.event.MouseEvent getMouseEvent() {
-		java.util.EventObject e = this.getEvent();
+		java.util.EventObject e = this.getAwtEvent();
 		if (e instanceof java.awt.event.MouseEvent) {
 			java.awt.event.MouseEvent mouseEvent = (java.awt.event.MouseEvent) e;
 			return mouseEvent;

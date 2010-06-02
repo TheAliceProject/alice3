@@ -46,15 +46,15 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractPopupMenuOperation extends Operation<PopupMenuOperationContext> {
-	public static final edu.cmu.cs.dennisc.croquet.Group POPUP_MENU_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "4fe7cbeb-627f-4965-a2d3-f4bf42796c59" ) );
+	public static final Group POPUP_MENU_GROUP = new Group( java.util.UUID.fromString( "4fe7cbeb-627f-4965-a2d3-f4bf42796c59" ) );
 
 	public AbstractPopupMenuOperation( java.util.UUID individualUUID ) {
 		super( POPUP_MENU_GROUP, individualUUID );
 	}
 	public abstract Model[] getOperations();
 	@Override
-	protected PopupMenuOperationContext createContext( ModelContext parent ) {
-		return new PopupMenuOperationContext( parent );
+	protected PopupMenuOperationContext createContext( ModelContext< ? > parent, java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		return parent.createPopupMenuOperationContext( this, e, viewController );
 	}
  	@Override
 	protected final void perform(PopupMenuOperationContext context) {
@@ -69,12 +69,12 @@ public abstract class AbstractPopupMenuOperation extends Operation<PopupMenuOper
 //			}
 //		} );
 
-		Component<?> component = context.getComponent();
+		ViewController<?,?> viewController = context.getViewController();
 		java.awt.Point pt = context.getPoint();
 		if (pt != null) {
-			popupMenu.showAtLocation( component, pt.x, pt.y );
+			popupMenu.showAtLocation( viewController, pt.x, pt.y );
 		} else {
-			popupMenu.showBelow( component );
+			popupMenu.showBelow( viewController );
 		}
 	}
 
@@ -89,13 +89,13 @@ public abstract class AbstractPopupMenuOperation extends Operation<PopupMenuOper
 		Application.getSingleton().register( this );
 		PopupMenu rv = new PopupMenu( this ) {
 			@Override
-			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+			protected void handleAddedTo(Component<?> parent) {
 				super.handleAddedTo( parent );
 				AbstractPopupMenuOperation.this.addPopupMenu(this);
 			}
 
 			@Override
-			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+			protected void handleRemovedFrom(Component<?> parent) {
 				AbstractPopupMenuOperation.this.removePopupMenu(this);
 				super.handleRemovedFrom( parent );
 			}

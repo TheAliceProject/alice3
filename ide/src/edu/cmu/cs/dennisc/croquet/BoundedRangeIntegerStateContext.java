@@ -42,20 +42,29 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-/*package-private*/ class BoundedRangeIntegerStateEvent extends ModelEvent {
-	public BoundedRangeIntegerStateEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	public BoundedRangeIntegerStateEvent( ModelContext parent, BoundedRangeIntegerState boundedRangeIntegerStateOperation, javax.swing.event.ChangeEvent e ) {
-		super( parent, boundedRangeIntegerStateOperation, e, null );
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public class BoundedRangeIntegerStateContext extends ModelContext {
-	/*package-private*/ BoundedRangeIntegerStateContext( ModelContext parent ) {
-		super( parent );
+public class BoundedRangeIntegerStateContext extends ModelContext<BoundedRangeIntegerState> {
+	public static class BoundedRangeIntegerStateEvent extends ModelEvent<BoundedRangeIntegerStateContext> {
+		private javax.swing.event.ChangeEvent changeEvent;
+		public BoundedRangeIntegerStateEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private BoundedRangeIntegerStateEvent( BoundedRangeIntegerStateContext parent, javax.swing.event.ChangeEvent changeEvent ) {
+			super( parent );
+			this.changeEvent = changeEvent;
+		}
+		@Override
+		public State getState() {
+			return null;
+		}
+	}
+
+	/*package-private*/ BoundedRangeIntegerStateContext( ModelContext<?> parent, BoundedRangeIntegerState boundedRangeIntegerState, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( parent, boundedRangeIntegerState, e, viewController );
+	}
+	/*package-private*/ void handleStateChanged( javax.swing.event.ChangeEvent e ) {
+		this.addChild( new BoundedRangeIntegerStateEvent( this, e ) );
 	}
 }

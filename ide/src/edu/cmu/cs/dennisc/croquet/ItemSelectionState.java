@@ -77,12 +77,12 @@ public abstract class ItemSelectionState<E> extends Model {
 		private int indexOfLastPerform = -1;
 		private boolean isAdjusting;
 
-		private Component<?> mostRecentComponent;
+		private ViewController<?,?> mostRecentViewController;
 		private java.util.EventObject mostRecentEvent;
 
-		public void setMostRecentEventAndComponent(java.util.EventObject mostRecentEvent, Component<?> mostRecentComponent) {
+		public void setMostRecentEventAndViewController(java.util.EventObject mostRecentEvent, ViewController<?,?> mostRecentViewController) {
 			this.mostRecentEvent = mostRecentEvent;
-			this.mostRecentComponent = mostRecentComponent;
+			this.mostRecentViewController = mostRecentViewController;
 		}
 
 		public int getSelectionMode() {
@@ -163,14 +163,13 @@ public abstract class ItemSelectionState<E> extends Model {
 					this.indexOfLastPerform = nextIndex;
 
 					Application application = Application.getSingleton();
-					ModelContext parentContext = application.getCurrentContext();
-					ModelContext childContext = parentContext.createChildContext();
-					childContext.addChild(new ItemSelectionEvent<E>(childContext, ItemSelectionState.this, this.mostRecentEvent, this.mostRecentComponent, prevIndex, prevSelection, nextIndex, nextSelection));
+					ModelContext<?> parentContext = application.getCurrentContext();
+					ItemSelectionStateContext< E > childContext = parentContext.createItemSelectionStateContext( ItemSelectionState.this, this.mostRecentEvent, this.mostRecentViewController, prevIndex, prevSelection, nextIndex, nextSelection );
 					childContext.commitAndInvokeDo(new ItemSelectionEdit<E>( childContext, this.mostRecentEvent, prevSelection, nextSelection, ItemSelectionState.this ));
 					ItemSelectionState.this.fireValueChanged(nextSelection);
 
 					this.mostRecentEvent = null;
-					this.mostRecentComponent = null;
+					this.mostRecentViewController = null;
 				}
 			} else {
 				this.indexOfLastPerform = nextIndex;

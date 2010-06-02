@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.croquet;
 public abstract class ViewController< J extends javax.swing.JComponent, M extends Model > extends JComponent< J > {
 	private M model;
 	
-	/*package-private*/ ViewController( M model ) {
+	public ViewController( M model ) {
 		this.model = model;
 	}
 	public M getModel() {
@@ -58,4 +58,49 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 //	/*package-protected*/ void setModel(M model) {
 //		this.model = model;
 //	}
+	private boolean isPopupMenuOperationLimitedToRightMouseButton = true;
+	public boolean isPopupMenuOperationLimitedToRightMouseButton() {
+		return this.isPopupMenuOperationLimitedToRightMouseButton;
+	}
+	public void setPopupMenuOperationLimitedToRightMouseButton(boolean isPopupMenuOperationLimitedToRightMouseButton) {
+		this.isPopupMenuOperationLimitedToRightMouseButton = isPopupMenuOperationLimitedToRightMouseButton;
+	}
+	
+	private AbstractPopupMenuOperation popupMenuOperation;
+	public final AbstractPopupMenuOperation getPopupMenuOperation() {
+		return this.popupMenuOperation;
+	}
+	public final void setPopupMenuOperation( AbstractPopupMenuOperation popupMenuOperation ) {
+		if( this.getAwtComponent().getParent() == null ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: setPopupMenuOperation" );
+		}
+		this.popupMenuOperation = popupMenuOperation;
+	}
+	
+	private edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter lenientMouseClickAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
+		@Override
+		protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote) {
+			assert ViewController.this.popupMenuOperation != null;
+			if( ViewController.this.isPopupMenuOperationLimitedToRightMouseButton==false || edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
+				ViewController.this.popupMenuOperation.fire( e, ViewController.this );
+			}
+		}
+	};
+	
+	@Override
+	protected void handleAddedTo( Component<?> parent ) {
+		super.handleAddedTo( parent );
+		if( this.popupMenuOperation != null ) {
+			this.getAwtComponent().addMouseListener( this.lenientMouseClickAdapter );
+			this.getAwtComponent().addMouseMotionListener( this.lenientMouseClickAdapter );
+		}
+	}
+	@Override
+	protected void handleRemovedFrom( Component<?> parent ) {
+		if( this.popupMenuOperation != null ) {
+			this.getAwtComponent().removeMouseListener( this.lenientMouseClickAdapter );
+			this.getAwtComponent().removeMouseMotionListener( this.lenientMouseClickAdapter );
+		}
+		super.handleRemovedFrom( parent );
+	}
 }

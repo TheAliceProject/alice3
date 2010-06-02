@@ -42,45 +42,67 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-/*package-private*/ abstract class MenuEvent extends ModelEvent< MenuModel, javax.swing.event.MenuEvent, Menu > {
-	public MenuEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	public MenuEvent( ModelContext parent, MenuModel menuOperation, javax.swing.event.MenuEvent e, Menu menu ) {
-		super( parent, menuOperation, e, menu );
-	}
-}
-
-/*package-private*/ class MenuSelectedEvent extends MenuEvent {
-	public MenuSelectedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	public MenuSelectedEvent( ModelContext parent, MenuModel menuOperation, javax.swing.event.MenuEvent e, Menu menu ) {
-		super( parent, menuOperation, e, menu );
-	}
-}
-/*package-private*/ class MenuDeselectedEvent extends MenuEvent {
-	public MenuDeselectedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	public MenuDeselectedEvent( ModelContext parent, MenuModel menuOperation, javax.swing.event.MenuEvent e, Menu menu ) {
-		super( parent, menuOperation, e, menu );
-	}
-}
-/*package-private*/ class MenuCanceledEvent extends MenuEvent {
-	public MenuCanceledEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	public MenuCanceledEvent( ModelContext parent, MenuModel menuOperation, javax.swing.event.MenuEvent e, Menu menu ) {
-		super( parent, menuOperation, e, menu );
-	}
-}
 
 /**
  * @author Dennis Cosgrove
  */
-public class MenuContext extends ModelContext {
-	/*package-private*/ MenuContext( ModelContext parent ) {
-		super( parent );
+public class MenuModelContext extends ModelContext<MenuModel> {
+	public static abstract class MenuEvent extends ModelEvent< MenuModelContext > {
+		private javax.swing.event.MenuEvent menuEvent;
+		public MenuEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private MenuEvent( MenuModelContext parent, javax.swing.event.MenuEvent menuEvent ) {
+			super( parent );
+			this.menuEvent = menuEvent;
+		}
+		public javax.swing.event.MenuEvent getMenuEvent() {
+			return this.menuEvent;
+		}
+		@Override
+		public State getState() {
+			return null;
+		}
 	}
+
+	public static class MenuSelectedEvent extends MenuEvent {
+		public MenuSelectedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private MenuSelectedEvent( MenuModelContext parent, javax.swing.event.MenuEvent e ) {
+			super( parent, e );
+		}
+	}
+	public static class MenuDeselectedEvent extends MenuEvent {
+		public MenuDeselectedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private MenuDeselectedEvent( MenuModelContext parent, javax.swing.event.MenuEvent e ) {
+			super( parent, e );
+		}
+	}
+	public static class MenuCanceledEvent extends MenuEvent {
+		public MenuCanceledEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private MenuCanceledEvent( MenuModelContext parent, javax.swing.event.MenuEvent e ) {
+			super( parent, e );
+		}
+	}
+
+	/*package-private*/ MenuModelContext( ModelContext<?> parent, MenuModel menuModel, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( parent, menuModel, e, viewController );
+	}
+
+	/*package-private*/ void handleMenuSelected( javax.swing.event.MenuEvent e ) {
+		this.addChild( new MenuSelectedEvent( this, e ) );
+	}
+	/*package-private*/ void handleMenuDeselected( javax.swing.event.MenuEvent e ) {
+		this.addChild( new MenuDeselectedEvent( this, e ) );
+	}
+	/*package-private*/ void handleMenuCanceled( javax.swing.event.MenuEvent e ) {
+		this.addChild( new MenuCanceledEvent( this, e ) );
+	}
+	
+
 }

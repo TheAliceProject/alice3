@@ -49,8 +49,9 @@ public abstract class CompositeOperation extends Operation<CompositeOperationCon
 	
 	@Override
 	protected final void perform(CompositeOperationContext context) {
-		for( Operation operation : this.getOperations() ) {
-			operation.handleFire(context, context.getEvent(), context.getComponent());
+		for( Operation<?> operation : this.getOperations() ) {
+			//todo?
+			operation.handleFire(context, context.getAwtEvent(), context.getViewController());
 			if( context.isCanceled() ) {
 				break;
 			}
@@ -60,8 +61,8 @@ public abstract class CompositeOperation extends Operation<CompositeOperationCon
 		super( group, individualUUID );
 	}
 	@Override
-	protected CompositeOperationContext createContext( ModelContext parent ) {
-		return new CompositeOperationContext( parent );
+	protected CompositeOperationContext createContext( ModelContext< ? > parent, java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		return parent.createCompositeOperationContext( this, e, viewController );
 	}
 	protected abstract java.util.List< Operation<?> > getOperations();
 }

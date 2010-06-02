@@ -60,38 +60,38 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 	public static final edu.cmu.cs.dennisc.croquet.Group URI_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ) );
 	public static final edu.cmu.cs.dennisc.croquet.Group IDE_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "d92c1a48-a6ae-473b-9b9f-94734e1606c1" ) );
 
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation saveProjectOperation = new org.alice.app.operations.file.SaveProjectOperation();
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation saveAsProjectOperation = new org.alice.app.operations.file.SaveAsProjectOperation();
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation newProjectOperation = new org.alice.app.operations.file.NewProjectOperation( this.saveProjectOperation );
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation openProjectOperation = new org.alice.app.operations.file.OpenProjectOperation( this.saveProjectOperation );
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation exitOperation = new org.alice.app.operations.file.ClearanceCheckingExitOperation( this.saveProjectOperation );
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation revertProjectOperation = new org.alice.app.operations.file.RevertProjectOperation();
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation undoOperation = new org.alice.app.operations.edit.UndoOperation();
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation redoOperation = new org.alice.app.operations.edit.RedoOperation();
+	private edu.cmu.cs.dennisc.croquet.Operation saveProjectOperation = new org.alice.app.operations.file.SaveProjectOperation();
+	private edu.cmu.cs.dennisc.croquet.Operation saveAsProjectOperation = new org.alice.app.operations.file.SaveAsProjectOperation();
+	private edu.cmu.cs.dennisc.croquet.Operation newProjectOperation = new org.alice.app.operations.file.NewProjectOperation( this.saveProjectOperation );
+	private edu.cmu.cs.dennisc.croquet.Operation openProjectOperation = new org.alice.app.operations.file.OpenProjectOperation( this.saveProjectOperation );
+	private edu.cmu.cs.dennisc.croquet.Operation exitOperation = new org.alice.app.operations.file.ClearanceCheckingExitOperation( this.saveProjectOperation );
+	private edu.cmu.cs.dennisc.croquet.Operation revertProjectOperation = new org.alice.app.operations.file.RevertProjectOperation();
+	private edu.cmu.cs.dennisc.croquet.Operation undoOperation = new org.alice.app.operations.edit.UndoOperation();
+	private edu.cmu.cs.dennisc.croquet.Operation redoOperation = new org.alice.app.operations.edit.RedoOperation();
 	
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getNewProjectOperation() {
+	protected edu.cmu.cs.dennisc.croquet.Operation getNewProjectOperation() {
 		return this.newProjectOperation;
 	}
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getOpenProjectOperation() {
+	protected edu.cmu.cs.dennisc.croquet.Operation getOpenProjectOperation() {
 		return this.openProjectOperation;
 	}
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getSaveProjectOperation() {
+	protected edu.cmu.cs.dennisc.croquet.Operation getSaveProjectOperation() {
 		return this.saveProjectOperation;
 	}
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getSaveAsProjectOperation() {
+	protected edu.cmu.cs.dennisc.croquet.Operation getSaveAsProjectOperation() {
 		return this.saveAsProjectOperation;
 	}
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getRevertProjectOperation() {
+	protected edu.cmu.cs.dennisc.croquet.Operation getRevertProjectOperation() {
 		return this.revertProjectOperation;
 	}
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getExitOperation() {
+	protected edu.cmu.cs.dennisc.croquet.Operation getExitOperation() {
 		return this.exitOperation;
 	}
 	
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getUndoOperation() {
+	protected edu.cmu.cs.dennisc.croquet.Operation getUndoOperation() {
 		return this.undoOperation;
 	}
-	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getRedoOperation() {
+	protected edu.cmu.cs.dennisc.croquet.Operation getRedoOperation() {
 		return this.redoOperation;
 	}
 

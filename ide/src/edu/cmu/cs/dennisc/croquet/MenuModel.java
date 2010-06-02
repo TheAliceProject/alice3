@@ -53,26 +53,29 @@ public class MenuModel extends Model {
 			this.menu = menu;
 		}
 		public void menuSelected( javax.swing.event.MenuEvent e ) {
-			Application application = Application.getSingleton();
-			ModelContext context;
 			Component< ? > parent = this.menu.getParent();
+			ModelContext< ? > parentContext;
 			if( parent instanceof MenuBar ) {
-				ModelContext rootContext = application.getRootContext();
-				context = rootContext.createChildContext();
+				MenuBar menuBar = (MenuBar)parent;
+				parentContext = menuBar.createMenuBarContext();
 			} else {
-				context = application.getCurrentContext();
+				Application application = Application.getSingleton();
+				parentContext = application.getCurrentContext();
 			}
-			context.addChild( new MenuSelectedEvent( context, MenuModel.this, e, this.menu ) );
+			MenuModelContext context = parentContext.createMenuModelContext( MenuModel.this, this.menu );
+			context.handleMenuSelected( e );
 		}
 		public void menuDeselected( javax.swing.event.MenuEvent e ) {
 			Application application = Application.getSingleton();
-			ModelContext context = application.getCurrentContext();
-			context.addChild( new MenuDeselectedEvent( context, MenuModel.this, e, this.menu ) );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: menuDeselected" );
+			MenuModelContext context = (MenuModelContext)application.getCurrentContext();
+			context.handleMenuDeselected( e );
 		}
 		public void menuCanceled( javax.swing.event.MenuEvent e ) {
 			Application application = Application.getSingleton();
-			ModelContext context = application.getCurrentContext();
-			context.addChild( new MenuCanceledEvent( context, MenuModel.this, e, this.menu ) );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: menuCanceled" );
+			MenuModelContext context = (MenuModelContext)application.getCurrentContext();
+			context.handleMenuCanceled( e );
 		}
 	};
 	private java.util.Map< Menu, MenuListener > mapMenuToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();

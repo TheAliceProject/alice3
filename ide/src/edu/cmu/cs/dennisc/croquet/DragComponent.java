@@ -161,7 +161,7 @@ public abstract class DragComponent extends Control {
 		private java.awt.event.MouseEvent latestMouseEvent;
 
 		public DefaultDragAndDropContext( DragAndDropOperation operation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, java.util.List< ? extends DropReceptor > potentialDropReceptors ) {
-			super( null );
+			super( null, null, null, null );
 			this.operation = operation;
 			this.originalMouseEvent = originalMouseEvent;
 			this.setLatestMouseEvent( latestMouseEvent );

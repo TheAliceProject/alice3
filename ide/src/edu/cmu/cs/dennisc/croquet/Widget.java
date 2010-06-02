@@ -42,7 +42,7 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-public abstract class Widget extends JComponent<javax.swing.JPanel> {
+public abstract class Widget extends ViewController<javax.swing.JPanel,Model> {
 	protected abstract int getInsetTop();
 	protected abstract int getInsetLeft();
 	protected abstract int getInsetBottom();
@@ -53,7 +53,8 @@ public abstract class Widget extends JComponent<javax.swing.JPanel> {
 	protected abstract void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height );
 
 	public Widget() {
-		//this.setDoubleBuffered( false );
+		super( null );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: Widget" );
 	}
 	
 	private void updateBorderIfNecessary() {

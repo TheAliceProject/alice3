@@ -441,7 +441,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 							} );
 						}
 					}
-					new DropOperation().fire(context.getLatestMouseEvent(), this);
+					new DropOperation().fire( context.getLatestMouseEvent() );
 				} else {
 					source.hideDropProxyIfNecessary();
 				}
@@ -587,7 +587,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 						}
 					}
 					if( operation != null ) {
-						operation.fire( context.getLatestMouseEvent(), this );
+						operation.fire( context.getLatestMouseEvent() );
 					}
 				}
 			}

@@ -42,37 +42,19 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-/*package-private*/ class ItemSelectionEvent< T > extends ModelEvent {
+/**
+ * @author Dennis Cosgrove
+ */
+public class ItemSelectionStateContext< T > extends ModelContext<ItemSelectionState<T>> {
 	private int prevIndex;
 	private T prevItem;
 	private int nextIndex;
 	private T nextItem;
-	public ItemSelectionEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	public ItemSelectionEvent( ModelContext parent, ItemSelectionState< T > itemSelectionOperation, java.util.EventObject e, Component< ? > component, int prevIndex, T prevItem, int nextIndex, T nextItem ) {
-		super( parent, itemSelectionOperation, e, component );
+	/*package-private*/ ItemSelectionStateContext( ModelContext<?> parent, ItemSelectionState< T > itemSelectionState, java.util.EventObject e, ViewController< ?,? > viewController, int prevIndex, T prevItem, int nextIndex, T nextItem ) {
+		super( parent, itemSelectionState, e, viewController );
 		this.prevIndex = prevIndex;
 		this.prevItem = prevItem;
 		this.nextIndex = nextIndex;
 		this.nextItem = nextItem;
-	}
-	@Override
-	protected StringBuilder appendRepr( StringBuilder rv ) {
-		rv = super.appendRepr( rv );
-		rv.append( " " );
-		rv.append( this.nextItem );
-		rv.append( " " );
-		rv.append( this.getComponent() );
-		return rv;
-	}
-}
-
-/**
- * @author Dennis Cosgrove
- */
-public class ItemSelectionStateContext extends ModelContext {
-	/*package-private*/ ItemSelectionStateContext( ModelContext parent ) {
-		super( parent );
 	}
 }

@@ -57,23 +57,23 @@ public final class BoundedRangeIntegerState extends Model {
 		private boolean previousValueIsAdjusting = false;
 		public void stateChanged(javax.swing.event.ChangeEvent e) {
 			Application application = Application.getSingleton();
-			ModelContext parentContext = application.getCurrentContext();
-			ModelContext context;
+			ModelContext<?> parentContext = application.getCurrentContext();
+			BoundedRangeIntegerStateContext boundedRangeIntegerStateContext;
 			if( this.previousValueIsAdjusting ) {
-				context = parentContext;
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: stateChanged" );
+				boundedRangeIntegerStateContext = (BoundedRangeIntegerStateContext)parentContext;
 			} else {
-				ModelContext childContext = parentContext.createChildContext();
-				context = childContext;
+				boundedRangeIntegerStateContext = parentContext.createBoundedRangeIntegerStateContext( BoundedRangeIntegerState.this );
 			}
 			this.previousValueIsAdjusting = boundedRangeModel.getValueIsAdjusting();
-			context.addChild( new BoundedRangeIntegerStateEvent( context, BoundedRangeIntegerState.this, e ) );
+			boundedRangeIntegerStateContext.handleStateChanged( e );
 			BoundedRangeIntegerState.this.fireValueChanged( e );
 			
 			if( this.previousValueIsAdjusting ) {
 				//pass
 			} else {
 				int nextValue = boundedRangeModel.getValue();
-				context.commitAndInvokeDo( new BoundedRangeIntegerStateEdit( context, e, BoundedRangeIntegerState.this, BoundedRangeIntegerState.this.previousValue, nextValue, false ) );
+				boundedRangeIntegerStateContext.commitAndInvokeDo( new BoundedRangeIntegerStateEdit( boundedRangeIntegerStateContext, e, BoundedRangeIntegerState.this, BoundedRangeIntegerState.this.previousValue, nextValue, false ) );
 				BoundedRangeIntegerState.this.previousValue = nextValue;
 			}
 		}
