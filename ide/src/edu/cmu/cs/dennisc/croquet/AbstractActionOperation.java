@@ -47,15 +47,15 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public abstract class AbstractActionOperation<C extends OperationContext> extends Model {
 	private class ButtonActionListener implements java.awt.event.ActionListener {
-		private AbstractButton< ? > button;
-		public ButtonActionListener( AbstractButton< ? > button ) {
+		private AbstractButton< ?,? > button;
+		public ButtonActionListener( AbstractButton< ?,? > button ) {
 			this.button = button;
 		}
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			AbstractActionOperation.this.fire( e, this.button );
 		}
 	}
-	private java.util.Map< AbstractButton< ? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map< AbstractButton< ?,? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
 	protected abstract C createContext( ModelContext parent );
 
@@ -132,7 +132,7 @@ public abstract class AbstractActionOperation<C extends OperationContext> extend
 
 
 	
-	public < B extends AbstractButton<?> > B register( final B rv ) {
+	public < B extends AbstractButton<?,?> > B register( final B rv ) {
 		Application.getSingleton().register( this );
 		rv.addContainmentObserver( new Component.ContainmentObserver() {
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {

@@ -178,7 +178,7 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 		}
 	}
 
-	protected static abstract class TabTitle extends AbstractButton< javax.swing.AbstractButton > {
+	protected static abstract class TabTitle extends AbstractButton< javax.swing.AbstractButton, BooleanState > {
 		private JComponent<?> innerTitleComponent;
 		private boolean isCloseAffordanceDesired;
 		public TabTitle( JComponent<?> innerTitleComponent, boolean isCloseAffordanceDesired ) {
@@ -200,7 +200,7 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 		private JComponent<?> mainComponent;
 		private ScrollPane scrollPane;
 		private boolean isCloseAffordanceDesired;
-		public TabItemDetails( E item, AbstractButton< ? > button, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, boolean isCloseAffordanceDesired ) {
+		public TabItemDetails( E item, AbstractButton< ?,? > button, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, boolean isCloseAffordanceDesired ) {
 			super( item, button );
 			assert id != null;
 			this.id = id;
@@ -249,7 +249,7 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 	}
 	
 	@Deprecated
-	public AbstractButton<?> getTabTitle( E item ) {
+	public AbstractButton<?,?> getTabTitle( E item ) {
 		TabItemDetails tabItemDetails = this.getItemDetails( item );
 		if( tabItemDetails != null ) {
 			return tabItemDetails.getButton();

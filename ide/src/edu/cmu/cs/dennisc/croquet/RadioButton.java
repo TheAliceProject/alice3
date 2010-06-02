@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class RadioButton extends AbstractButton< javax.swing.JRadioButton > {
+public class RadioButton extends AbstractButton< javax.swing.JRadioButton, BooleanState > {
 	/*package-private*/ RadioButton() {
 	}
 	@Override

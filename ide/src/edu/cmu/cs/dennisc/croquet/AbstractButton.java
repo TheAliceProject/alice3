@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractButton< J extends javax.swing.AbstractButton > extends JComponent< J > {
+public abstract class AbstractButton< J extends javax.swing.AbstractButton, M extends Model > extends ViewController< J, M > {
 	private static final javax.swing.ButtonModel MODEL_FOR_NULL = new javax.swing.DefaultButtonModel();
 	public AbstractButton() {
 	}

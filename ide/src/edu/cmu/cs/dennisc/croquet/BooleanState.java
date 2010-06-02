@@ -158,7 +158,7 @@ public /*final*/ class BooleanState extends Model {
 		this.action.putValue(javax.swing.Action.NAME, name);
 	}
 	
-	public < B extends AbstractButton<?> > B register( final B rv ) {
+	public < B extends AbstractButton<?,?> > B register( final B rv ) {
 		Application.getSingleton().register( this );
 		rv.setModel( this.buttonModel );
 		rv.setAction( this.action );

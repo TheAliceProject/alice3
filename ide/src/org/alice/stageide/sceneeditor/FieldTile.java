@@ -81,7 +81,7 @@ package org.alice.stageide.sceneeditor;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class FieldTile extends edu.cmu.cs.dennisc.croquet.AbstractButton<javax.swing.AbstractButton> {
+/*package-private*/ class FieldTile extends edu.cmu.cs.dennisc.croquet.AbstractButton<javax.swing.AbstractButton,edu.cmu.cs.dennisc.croquet.BooleanState> {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 //	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
 //		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {

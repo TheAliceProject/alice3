@@ -46,22 +46,22 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemSelectable< E, D extends ItemSelectable.ItemDetails > extends Panel {
+public abstract class ItemSelectable< E, D extends ItemSelectable.ItemDetails > extends ViewController<javax.swing.JComponent, ItemSelectionState<E>> {
 	//todo: better name
 	protected class ItemDetails {
 		private E item;
-		private AbstractButton<?> button;
+		private AbstractButton<?,?> button;
 		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 			public void itemStateChanged(java.awt.event.ItemEvent e) {
 				ItemSelectable.this.model.setSelectedItem( ItemDetails.this.item );
 				ItemSelectable.this.fireItemStateChanged( e );
 			}
 		};
-		public ItemDetails( E item, AbstractButton<?> button ) {
+		public ItemDetails( E item, AbstractButton<?,?> button ) {
 			this.item = item;
 			this.button = button;
 		}
-		public AbstractButton<?> getButton() {
+		public AbstractButton<?,?> getButton() {
 			return this.button;
 		}
 		public void add() {
@@ -81,6 +81,18 @@ public abstract class ItemSelectable< E, D extends ItemSelectable.ItemDetails > 
 		}
 	}
 	
+	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
+	@Override
+	protected javax.swing.JPanel createAwtComponent() {
+		javax.swing.JPanel rv = new javax.swing.JPanel();
+		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
+		rv.setLayout( layoutManager );
+		rv.setOpaque( false );
+		rv.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
+		rv.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
+		return rv;
+	}
+
 	protected abstract D createItemDetails( E item );
 	
 	private java.util.Map<E, D > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();

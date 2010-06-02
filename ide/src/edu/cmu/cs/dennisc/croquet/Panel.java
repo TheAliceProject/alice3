@@ -73,12 +73,8 @@ public abstract class Panel extends JComponent< javax.swing.JPanel > {
 		rv.setLayout( layoutManager );
 		
 		rv.setOpaque( false );
-		//rv.setDoubleBuffered( false );
 		rv.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		rv.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
-		
-//		rv.setBackground( edu.cmu.cs.dennisc.java.awt.ColorUtilities.GARISH_COLOR );
-//		rv.setOpaque( true );
 		return rv;
 	}
 	protected boolean paintComponent( java.awt.Graphics2D g2 ) {

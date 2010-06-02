@@ -69,7 +69,7 @@ public class Menu extends AbstractMenu< javax.swing.JMenu > {
 		this.getAwtComponent().add( menu.getAwtComponent() );
 	}
 	@Override
-	public void addMenuItem( AbstractMenuItem<?> menuItem ) {
+	public void addMenuItem( AbstractMenuItem<?,?> menuItem ) {
 		this.getAwtComponent().add( menuItem.getAwtComponent() );
 	}
 	@Override

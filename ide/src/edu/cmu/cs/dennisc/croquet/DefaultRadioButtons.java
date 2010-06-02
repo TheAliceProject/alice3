@@ -60,8 +60,8 @@ public class DefaultRadioButtons< E > extends AbstractRadioButtons< E > {
 		return new java.awt.GridBagLayout();
 	}
 	@Override
-	protected AbstractButton<?> createButton( E item ) {
-		AbstractButton<?> rv = new RadioButton();
+	protected AbstractButton<?,?> createButton( E item ) {
+		AbstractButton<?,?> rv = new RadioButton();
 		rv.getAwtComponent().setText( item.toString() );
 		return rv;
 	}

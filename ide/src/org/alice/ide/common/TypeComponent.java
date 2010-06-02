@@ -45,7 +45,8 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeComponent extends edu.cmu.cs.dennisc.croquet.AbstractButton<javax.swing.AbstractButton> {
+public class TypeComponent extends edu.cmu.cs.dennisc.croquet.JComponent<javax.swing.AbstractButton> {
+//public class TypeComponent extends edu.cmu.cs.dennisc.croquet.AbstractButton<javax.swing.AbstractButton> {
 	private static final java.awt.Color ROLLOVER_COLOR = java.awt.Color.BLUE.darker();
 	public static TypeComponent createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		TypeComponent rv = new TypeComponent(type);

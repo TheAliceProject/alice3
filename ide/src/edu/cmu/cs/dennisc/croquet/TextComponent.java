@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TextComponent< J extends javax.swing.text.JTextComponent> extends JComponent< J > {
-	public TextComponent() {
+public abstract class TextComponent< J extends javax.swing.text.JTextComponent> extends ViewController< J, StringState > {
+	/*package-private*/ TextComponent() {
 	}
 	/*package-private*/ void setDocument( javax.swing.text.Document document ) {
 		this.getAwtComponent().setDocument( document );

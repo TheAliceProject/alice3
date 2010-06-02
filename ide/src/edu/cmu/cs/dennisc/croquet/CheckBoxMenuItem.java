@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CheckBoxMenuItem extends AbstractMenuItem< javax.swing.JCheckBoxMenuItem > {
+public class CheckBoxMenuItem extends AbstractMenuItem< javax.swing.JCheckBoxMenuItem, BooleanState > {
 	/*package-private*/ CheckBoxMenuItem() {
 	}
 	@Override

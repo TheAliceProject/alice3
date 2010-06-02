@@ -74,7 +74,7 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 					rv.add( new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field) );
 				}
 			}
-			rv.add( TemplateFactory.getMutatorTemplate( field ) );
+			rv.add( TemplateFactory.getAccessorTemplate( field ) );
 			if( field.getValueType().isArray() ) {
 				rv.add( TemplateFactory.getAccessArrayAtIndexTemplate( field ) );
 				rv.add( TemplateFactory.getArrayLengthTemplate( field ) );

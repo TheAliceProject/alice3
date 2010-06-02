@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class Button extends AbstractButton< javax.swing.JButton > {
+public class Button extends AbstractButton< javax.swing.JButton, AbstractActionOperation<?> > {
 	/*package-private*/ Button() {
 	}
 	@Override

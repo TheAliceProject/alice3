@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class Hyperlink extends AbstractButton< javax.swing.JButton > {
+public class Hyperlink extends AbstractButton< javax.swing.JButton, AbstractActionOperation<?> > {
 	/*package-private*/ Hyperlink() {
 	}
 	@Override

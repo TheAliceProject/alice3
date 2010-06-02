@@ -153,7 +153,7 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, Abstra
 
 	@Override
 	protected TabItemDetails createTabItemDetails( E item, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, boolean isCloseAffordanceDesired ) {
-		AbstractButton<?> button = new ToolPaletteTabTitle(innerTitleComponent, isCloseAffordanceDesired);
+		AbstractButton<?,?> button = new ToolPaletteTabTitle(innerTitleComponent, isCloseAffordanceDesired);
 		scrollPane.setVisible( false );
 		return new TabItemDetails( item, button, id, innerTitleComponent, scrollPane, mainComponent, isCloseAffordanceDesired ) {
 			@Override

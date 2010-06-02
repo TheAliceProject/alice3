@@ -296,7 +296,7 @@ public class Tutorial {
 	}
 	public <E> void addSpotlightTabTitleStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> operation, E item ) {
 		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane<E,?> tabbedPane = operation.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.class );
-		edu.cmu.cs.dennisc.croquet.AbstractButton<?> tabTitle = tabbedPane.getTabTitle( item );
+		edu.cmu.cs.dennisc.croquet.AbstractButton<?,?> tabTitle = tabbedPane.getTabTitle( item );
 		Step step = new SpotlightNoteStep( this, title, text, new Frame( tabTitle, Feature.ConnectionPreference.NORTH_SOUTH ) );
 		this.addStep( step );
 	}

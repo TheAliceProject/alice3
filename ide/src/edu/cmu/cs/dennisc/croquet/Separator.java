@@ -52,6 +52,18 @@ public abstract class Separator extends JComponent< javax.swing.JSeparator > {
 	}
 	@Override
 	protected javax.swing.JSeparator createAwtComponent() {
-		return new javax.swing.JSeparator();
+		return new javax.swing.JSeparator() {
+			@Override
+			public java.awt.Dimension getMaximumSize() {
+				java.awt.Dimension rv = super.getMaximumSize();
+				java.awt.Dimension preferredSize = this.getPreferredSize();
+				if( Separator.this.getAwtComponent().getOrientation() == javax.swing.JSeparator.HORIZONTAL ) {
+					rv.height = preferredSize.height;
+				} else {
+					rv.width = preferredSize.width;
+				}
+				return rv;
+			}
+		};
 	}
 }
