@@ -152,25 +152,63 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private org.alice.ide.operations.window.IsMemoryUsageShowingOperation isMemoryUsageShowingOperation = new org.alice.ide.operations.window.IsMemoryUsageShowingOperation();
 	private org.alice.ide.operations.window.IsHistoryShowingOperation isHistoryShowingOperation = new org.alice.ide.operations.window.IsHistoryShowingOperation();
 
-	private org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation isExpressionTypeFeedbackDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation.class, true );
-	private org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation isOmissionOfThisForFieldAccessesDesiredState = createBooleanOperation( org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation.class, false );
-	private org.alice.ide.operations.window.IsEmphasizingClassesOperation isEmphasizingClassesOperation = createBooleanOperation( org.alice.ide.operations.window.IsEmphasizingClassesOperation.class, true );
-	private org.alice.ide.operations.window.IsDefaultFieldNameGenerationDesiredOperation isDefaultFieldNameGenerationDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsDefaultFieldNameGenerationDesiredOperation.class, this
-			.isDefaultFieldNameGenerationDesiredByDefault() );
-
+//	private static <E> E createBooleanOperation( Class< E > cls, Boolean defaultInitialValue ) {
+//		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
+//		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
+//			try {
+//				userPreferences.clear();
+//			} catch( java.util.prefs.BackingStoreException bse ) {
+//				throw new RuntimeException( bse );
+//			}
+//		}
+//		Boolean initialValue = userPreferences.getBoolean( cls.getSimpleName(), defaultInitialValue );
+//		Class< ? >[] parameterClses = { Boolean.class };
+//		Object[] arguments = { initialValue };
+//		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls, parameterClses, arguments );
+//	}
+//	private static void preservePreference( edu.cmu.cs.dennisc.croquet.BooleanState operation ) {
+//		if( operation != null ) {
+//			Class< ? > cls = operation.getClass();
+//			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
+//			userPreferences.putBoolean( cls.getSimpleName(), operation.getState() );
+//		}
+//	}
+	private java.util.List< edu.cmu.cs.dennisc.croquet.BooleanState > booleanStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private edu.cmu.cs.dennisc.croquet.BooleanState createBooleanStatePreference( java.util.UUID id, boolean defaultInitialValue, String name ) {
+		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( this.getClass() );
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
+			try {
+				userPreferences.clear();
+			} catch( java.util.prefs.BackingStoreException bse ) {
+				throw new RuntimeException( bse );
+			}
+		}
+		Boolean initialValue = userPreferences.getBoolean( id.toString(), defaultInitialValue );
+		edu.cmu.cs.dennisc.croquet.BooleanState rv = new edu.cmu.cs.dennisc.croquet.BooleanState( PREFERENCES_GROUP, id, initialValue, name );
+		booleanStatePreferences.add( rv );
+		return rv;
+	}
+	private void preservePreferences() {
+		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( this.getClass() );
+		for( edu.cmu.cs.dennisc.croquet.BooleanState booleanState : booleanStatePreferences ) {
+			userPreferences.putBoolean( booleanState.getIndividualUUID().toString(), booleanState.getState() );
+		}
+	}
+	private edu.cmu.cs.dennisc.croquet.BooleanState isExpressionTypeFeedbackDesiredState =
+		createBooleanStatePreference( java.util.UUID.fromString( "e80adbfe-9e1a-408f-8067-ddbd30d0ffb9" ), true, "Is Type Feedback Desired" );
+	private edu.cmu.cs.dennisc.croquet.BooleanState isOmissionOfThisForFieldAccessesDesiredState =
+		createBooleanStatePreference( java.util.UUID.fromString( "bcf1ce48-f54a-4e80-8b9e-42c2cc302b01" ), false, "Is Omission Of This For Field Accesses Desired" );
+	private edu.cmu.cs.dennisc.croquet.BooleanState isEmphasizingClassesOperation =
+		createBooleanStatePreference( java.util.UUID.fromString( "c6d27bf1-f8c0-470d-b9ef-3c9fa7e6f4b0" ), true, "Is Emphasizing Classes" );
+	private edu.cmu.cs.dennisc.croquet.BooleanState isDefaultFieldNameGenerationDesiredState =
+		createBooleanStatePreference( java.util.UUID.fromString( "3e551420-bb50-4e33-9175-9f29738998f0" ), false, "Is Default Field Name Generation Desired" );
 	public edu.cmu.cs.dennisc.croquet.BooleanState getIsSceneEditorExpandedState() {
 		return this.isSceneEditorExpandedState;
 	}
-	public boolean isExpressionTypeFeedbackDesired() {
-		return this.isExpressionTypeFeedbackDesiredOperation.getState();
+	
+	public edu.cmu.cs.dennisc.croquet.BooleanState getExpressionTypeFeedbackDesiredState() {
+		return this.isExpressionTypeFeedbackDesiredState;
 	}
-	public void setExpressionTypeFeedbackDesired( boolean isExpressionTypeFeedbackDesired ) {
-		org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorInFocus();
-		if( codeEditor != null ) {
-			codeEditor.refresh();
-		}
-	}
-
 	public edu.cmu.cs.dennisc.croquet.BooleanState getEmphasizingClassesState() {
 		return this.isEmphasizingClassesOperation;
 	}
@@ -178,16 +216,22 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	public boolean isEmphasizingClasses() {
 		return this.isEmphasizingClassesOperation.getState();
 	}
-	public edu.cmu.cs.dennisc.croquet.BooleanState getIsOmissionOfThisForFieldAccessesDesiredState() {
+	public edu.cmu.cs.dennisc.croquet.BooleanState getOmissionOfThisForFieldAccessesDesiredState() {
 		return this.isOmissionOfThisForFieldAccessesDesiredState;
 	}
 	public boolean isDefaultFieldNameGenerationDesired() {
-		return this.isDefaultFieldNameGenerationDesiredOperation.getState();
+		return this.isDefaultFieldNameGenerationDesiredState.getState();
 	}
 
 	private WindowMenuModel windowMenuModel = new WindowMenuModel( 
 			this.isEmphasizingClassesOperation,
-			this.isOmissionOfThisForFieldAccessesDesiredState
+			this.isOmissionOfThisForFieldAccessesDesiredState,
+			this.isExpressionTypeFeedbackDesiredState,
+			this.isDefaultFieldNameGenerationDesiredState
+			//			windowOperations.add( this.isEmphasizingClassesOperation );
+			//			windowOperations.add( this.isOmissionOfThisForFieldAccessesDesiredOperation );
+			//			windowOperations.add( this.isExpressionTypeFeedbackDesiredOperation );
+			//			windowOperations.add( this.isDefaultFieldNameGenerationDesiredOperation );
 
 	//			class LocaleComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
 	//				private java.util.Locale[] candidates = { new java.util.Locale( "en", "US" ), new java.util.Locale( "en", "US", "java" ) };
@@ -287,32 +331,6 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	//				helpOperations.add( this.getAboutOperation() );
 	//			}
 	);
-
-	private static <E> E createBooleanOperation( Class< E > cls, Boolean defaultInitialValue ) {
-		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
-			try {
-				userPreferences.clear();
-			} catch( java.util.prefs.BackingStoreException bse ) {
-				throw new RuntimeException( bse );
-			}
-		}
-		Boolean initialValue = userPreferences.getBoolean( cls.getSimpleName(), defaultInitialValue );
-		Class< ? >[] parameterClses = { Boolean.class };
-		Object[] arguments = { initialValue };
-		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls, parameterClses, arguments );
-	}
-	private static void preservePreference( edu.cmu.cs.dennisc.croquet.BooleanState operation ) {
-		if( operation != null ) {
-			Class< ? > cls = operation.getClass();
-			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
-			userPreferences.putBoolean( cls.getSimpleName(), operation.getState() );
-		}
-	}
-
-	protected boolean isDefaultFieldNameGenerationDesiredByDefault() {
-		return false;
-	}
 
 	private int rootDividerLocation = 320;
 	private int leftDividerLocation = 240;
@@ -1099,10 +1117,11 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 	@Override
 	protected void handleQuit( java.util.EventObject e ) {
-		preservePreference( this.isEmphasizingClassesOperation );
-		preservePreference( this.isExpressionTypeFeedbackDesiredOperation );
-		preservePreference( this.isOmissionOfThisForFieldAccessesDesiredState );
-		preservePreference( this.isDefaultFieldNameGenerationDesiredOperation );
+		this.preservePreferences();
+//		preservePreference( this.isEmphasizingClassesOperation );
+//		preservePreference( this.isExpressionTypeFeedbackDesiredOperation );
+//		preservePreference( this.isOmissionOfThisForFieldAccessesDesiredState );
+//		preservePreference( this.isDefaultFieldNameGenerationDesiredOperation );
 
 		this.getExitOperation().fire( e );
 		//this.performIfAppropriate( this.getExitOperation(), e, true );

@@ -418,7 +418,7 @@ public abstract class Factory {
 //				rv = this.createComponent( expression );
 			} else {
 				edu.cmu.cs.dennisc.croquet.JComponent< ? > component = this.createComponent( expression );
-				if( org.alice.ide.IDE.getSingleton().isExpressionTypeFeedbackDesired() ) {
+				if( org.alice.ide.IDE.getSingleton().getExpressionTypeFeedbackDesiredState().getState() ) {
 					rv = new ExpressionPane( expression, component );
 				} else {
 					rv = component;

@@ -99,15 +99,22 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 		this.refresh();
 	}
 
+	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver typeFeedbackObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
+		public void changing(boolean nextValue) {
+		}
+		public void changed(boolean nextValue) {
+			CodeEditor.this.refresh();
+		}
+	};
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo(parent);
 		edu.cmu.cs.dennisc.croquet.Application.getSingleton().addLocaleObserver( this.localeObserver );
-		this.refresh();
-		this.repaint();
+		org.alice.ide.IDE.getSingleton().getExpressionTypeFeedbackDesiredState().addAndInvokeValueObserver( this.typeFeedbackObserver );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		org.alice.ide.IDE.getSingleton().getExpressionTypeFeedbackDesiredState().removeValueObserver( this.typeFeedbackObserver );
 		edu.cmu.cs.dennisc.croquet.Application.getSingleton().removeLocaleObserver( this.localeObserver );
 		super.handleRemovedFrom( parent );
 	}

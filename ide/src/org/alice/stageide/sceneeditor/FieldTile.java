@@ -90,11 +90,11 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo(parent);
-		org.alice.ide.IDE.getSingleton().getIsOmissionOfThisForFieldAccessesDesiredState().addAndInvokeValueObserver( this.valueObserver );
+		org.alice.ide.IDE.getSingleton().getOmissionOfThisForFieldAccessesDesiredState().addAndInvokeValueObserver( this.valueObserver );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		org.alice.ide.IDE.getSingleton().getIsOmissionOfThisForFieldAccessesDesiredState().removeValueObserver( this.valueObserver );
+		org.alice.ide.IDE.getSingleton().getOmissionOfThisForFieldAccessesDesiredState().removeValueObserver( this.valueObserver );
 		super.handleRemovedFrom(parent);
 	}
 	@Override

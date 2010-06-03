@@ -116,7 +116,7 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
-		org.alice.ide.IDE.getSingleton().getIsOmissionOfThisForFieldAccessesDesiredState().addAndInvokeValueObserver( this.valueObserver );
+		org.alice.ide.IDE.getSingleton().getOmissionOfThisForFieldAccessesDesiredState().addAndInvokeValueObserver( this.valueObserver );
 		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeValueObserver( this.codeSelectionObserver );
 		org.alice.ide.IDE.getSingleton().getFieldSelectionState().addAndInvokeValueObserver( this.fieldSelectionObserver );
 	}
@@ -124,7 +124,7 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		org.alice.ide.IDE.getSingleton().getFieldSelectionState().removeValueObserver( this.fieldSelectionObserver );
 		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeValueObserver( this.codeSelectionObserver );
-		org.alice.ide.IDE.getSingleton().getIsOmissionOfThisForFieldAccessesDesiredState().removeValueObserver( this.valueObserver );
+		org.alice.ide.IDE.getSingleton().getOmissionOfThisForFieldAccessesDesiredState().removeValueObserver( this.valueObserver );
 		super.handleRemovedFrom( parent );
 	}
 }
