@@ -76,7 +76,7 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 		}
 		this.popupMenuOperation = popupMenuOperation;
 	}
-	
+
 	private edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter lenientMouseClickAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
 		@Override
 		protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote) {

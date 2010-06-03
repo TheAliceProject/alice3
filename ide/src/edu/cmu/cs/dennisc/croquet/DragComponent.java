@@ -48,6 +48,12 @@ public abstract class DragComponent extends Control {
 	private DragProxy dragProxy = null;
 	private DropProxy dropProxy = null;
 
+	/*package-private*/ DragProxy getDragProxy() {
+		return this.dragProxy;
+	}
+	/*package-private*/ DropProxy getDropProxy() {
+		return this.dropProxy;
+	}
 	private java.awt.event.ComponentListener componentAdapter = new java.awt.event.ComponentListener() {
 		public void componentHidden( java.awt.event.ComponentEvent arg0 ) {
 		}
@@ -153,162 +159,14 @@ public abstract class DragComponent extends Control {
 		}
 	}
 
-	class DefaultDragAndDropContext extends DragAndDropContext {
-		private DragAndDropOperation operation;
-		private DropReceptorInfo[] potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
-		private DropReceptor currentDropReceptor;
-		private java.awt.event.MouseEvent originalMouseEvent;
-		private java.awt.event.MouseEvent latestMouseEvent;
 
-		public DefaultDragAndDropContext( DragAndDropOperation operation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, java.util.List< ? extends DropReceptor > potentialDropReceptors ) {
-			super( null, null, null, null );
-			this.operation = operation;
-			this.originalMouseEvent = originalMouseEvent;
-			this.setLatestMouseEvent( latestMouseEvent );
-			this.potentialDropReceptorInfos = new DropReceptorInfo[ potentialDropReceptors.size() ];
-			int i = 0;
-			for( DropReceptor dropReceptor : potentialDropReceptors ) {
-				Component<?> dropComponent = dropReceptor.getComponent();
-				java.awt.Rectangle bounds = dropComponent.getBounds();
-				bounds = javax.swing.SwingUtilities.convertRectangle( dropComponent.getAwtComponent().getParent(), bounds, this.getDragSource().getAwtComponent() );
-				this.potentialDropReceptorInfos[ i ] = new DropReceptorInfo( dropReceptor, bounds );
-				i++;
-			}
-			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
-				//todo: pass original mouse pressed event?
-				dropReceptorInfo.getDropReceptor().dragStarted( this );
-			}
-		}
-
-		@Override
-		public java.awt.event.MouseEvent getOriginalMouseEvent() {
-			return this.originalMouseEvent;
-		}
-		@Override
-		public java.awt.event.MouseEvent getLatestMouseEvent() {
-			return this.latestMouseEvent;
-		}
-		public void setLatestMouseEvent( java.awt.event.MouseEvent latestMouseEvent ) {
-			this.latestMouseEvent = latestMouseEvent;
-		}
-
-		@Override
-		public DragComponent getDragSource() {
-			java.util.EventObject e = this.originalMouseEvent;
-			if( e != null ) {
-				return (DragComponent)Component.lookup( (java.awt.Component)e.getSource() );
-			} else {
-				return null;
-			}
-		}
-		@Override
-		public DropReceptor getCurrentDropReceptor() {
-			return this.currentDropReceptor;
-		}
-		public void setCurrentDropReceptor( DropReceptor currentDropReceptor ) {
-			this.currentDropReceptor = currentDropReceptor;
-		}
-		private DropReceptor getDropReceptorUnder( int x, int y ) {
-			DropReceptor rv = null;
-			int prevHeight = Integer.MAX_VALUE;
-			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
-				assert dropReceptorInfo != null;
-				if( dropReceptorInfo.contains( x, y ) ) {
-					java.awt.Rectangle bounds = dropReceptorInfo.getBounds();
-					assert bounds != null;
-					int nextHeight = bounds.height;
-					if( nextHeight < prevHeight ) {
-						rv = dropReceptorInfo.getDropReceptor();
-						prevHeight = nextHeight;
-					}
-				}
-			}
-			return rv;
-		}
-		private DropReceptor getDropReceptorUnder( java.awt.Rectangle bounds ) {
-			DropReceptor rv = null;
-			int prevHeight = Integer.MAX_VALUE;
-			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
-				if( dropReceptorInfo.intersects( bounds ) ) {
-					int nextHeight = dropReceptorInfo.getBounds().height;
-					if( nextHeight < prevHeight ) {
-						rv = dropReceptorInfo.getDropReceptor();
-						prevHeight = nextHeight;
-					}
-				}
-			}
-			return rv;
-		}
-		protected DropReceptor getDropReceptorUnder( java.awt.event.MouseEvent e ) {
-			DropReceptor rv = getDropReceptorUnder( e.getX(), e.getY() );
-			if( rv != null ) {
-				//pass
-			} else {
-				if( DragComponent.this.dragProxy != null ) {
-					java.awt.Rectangle dragBounds = DragComponent.this.dragProxy.getBounds();
-					dragBounds = javax.swing.SwingUtilities.convertRectangle( DragComponent.this.dragProxy.getParent(), dragBounds, this.getDragSource().getAwtComponent() );
-					int x = dragBounds.x;
-					int y = dragBounds.y + dragBounds.height / 2;
-					rv = getDropReceptorUnder( x, y );
-					if( rv != null ) {
-						//pass
-					} else {
-						rv = getDropReceptorUnder( dragBounds );
-					}
-				}
-			}
-			return rv;
-		}
-		public void handleMouseDragged( java.awt.event.MouseEvent e ) {
-			this.setLatestMouseEvent( e );
-			DropReceptor nextDropReceptor = getDropReceptorUnder( e );
-			if( this.currentDropReceptor != nextDropReceptor ) {
-				if( this.currentDropReceptor != null ) {
-					DragComponent.this.dragAndDropOperation.handleDragExitedDropReceptor( this );
-					this.currentDropReceptor.dragExited( this, false );
-				}
-				this.currentDropReceptor = nextDropReceptor;
-				if( this.currentDropReceptor != null ) {
-					this.currentDropReceptor.dragEntered( this );
-					DragComponent.this.dragAndDropOperation.handleDragEnteredDropReceptor( this );
-				}
-			}
-			if( DragComponent.this.dragProxy != null ) {
-				DragComponent.this.dragProxy.setOverDropAcceptor( this.currentDropReceptor != null );
-			}
-			if( this.currentDropReceptor != null ) {
-				this.currentDropReceptor.dragUpdated( this );
-			}
-		}
-		public void handleMouseReleased( java.awt.event.MouseEvent e ) {
-			this.setLatestMouseEvent( e );
-			if( this.currentDropReceptor != null ) {
-				this.currentDropReceptor.dragDropped( this );
-				this.currentDropReceptor.dragExited( this, true );
-			}
-			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
-				dropReceptorInfo.getDropReceptor().dragStopped( this );
-			}
-			DragComponent.this.dragAndDropOperation.handleDragStopped( this );
-			this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
-		}
-		public void handleCancel( java.util.EventObject e ) {
-			if( this.currentDropReceptor != null ) {
-				this.currentDropReceptor.dragExited( this, false );
-			}
-			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
-				dropReceptorInfo.getDropReceptor().dragStopped( this );
-			}
-			DragComponent.this.dragAndDropOperation.handleDragStopped( this );
-			this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
-			DragComponent.this.hideDropProxyIfNecessary();
-		}
-	}
-
-	private DefaultDragAndDropContext dragAndDropContext;
+	private DragAndDropContext dragAndDropContext;
 
 	private void handleLeftMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
-		Application.getSingleton().setDragInProgress( true );
+		Application application = Application.getSingleton();
+		application.setDragInProgress( true );
+		ModelContext<?> parentContext = application.getCurrentContext();
+	
 		this.updateProxySizes();
 		this.updateProxyPosition( e );
 
@@ -316,18 +174,13 @@ public abstract class DragComponent extends Control {
 		layeredPane.add( this.dragProxy, new Integer( 1 ) );
 		layeredPane.setLayer( this.dragProxy, javax.swing.JLayeredPane.DRAG_LAYER );
 
-		//todo?
-		this.dragAndDropContext = new DefaultDragAndDropContext( this.dragAndDropOperation, this.getLeftButtonPressedEvent(), e, this.dragAndDropOperation.createListOfPotentialDropReceptors( this ) );
-		if( this.dragAndDropOperation != null ) {
-			this.dragAndDropOperation.handleDragStarted( dragAndDropContext );
-		}
+		this.dragAndDropContext = parentContext.createDragAndDropContext( this.dragAndDropOperation, this.getLeftButtonPressedEvent(), e, this );
+		this.dragAndDropOperation.handleDragStarted( this.dragAndDropContext );
 	}
 	private void handleLeftMouseDragged( java.awt.event.MouseEvent e ) {
 		if( Application.getSingleton().isDragInProgress() ) {
 			this.updateProxyPosition( e );
-			if( this.dragAndDropContext != null) {
-				this.dragAndDropContext.handleMouseDragged( e );
-			}
+			this.dragAndDropContext.handleMouseDragged( e );
 		}
 	}
 	@Override
@@ -353,38 +206,7 @@ public abstract class DragComponent extends Control {
 			}
 		}
 	}
-	@Override
-	public void handleMouseMoved( java.awt.event.MouseEvent e ) {
-		super.handleMouseMoved( e );
-		if( isActuallyPotentiallyDraggable() ) {
-			if( this.isFauxDrag ) {
-				if( Application.getSingleton().isDragInProgress() ) {
-					//pass
-				} else {
-					this.handleLeftMouseDraggedOutsideOfClickThreshold( e );
-				}
-				this.handleLeftMouseDragged( e );
-			}
-		}
-	}
-	
-	protected boolean isClickReservedForSelection() {
-		return false;
-	}
 
-	private static boolean isFauxDragDesired = false;
-	public static boolean isFauxDragDesired() {
-		return DragComponent.isFauxDragDesired;
-	}
-	public static void setFauxDragDesired( boolean isFauxDragDesired ) {
-		DragComponent.isFauxDragDesired = isFauxDragDesired;
-	}
-	
-//	protected boolean isFauxDragDesired() {
-//		return false;
-//	}
-	private boolean isFauxDrag = false;
-	
 	@Override
 	public void handleMousePressed( java.awt.event.MouseEvent e ) {
 		super.handleMousePressed( e );
@@ -398,38 +220,16 @@ public abstract class DragComponent extends Control {
 	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		if( isActuallyPotentiallyDraggable() ) {
 			if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
-				boolean isDrop;
 				if( this.isWithinClickThreshold() ) {
-					if( DragComponent.isFauxDragDesired && this.isClickReservedForSelection()==false ) {
-						Component<?> focusedComponent;
-						if( this.isFauxDrag ) {
-							focusedComponent = null;
-						} else {
-							focusedComponent = this;
-						}
-						isDrop = this.isFauxDrag;
-						this.isFauxDrag = !this.isFauxDrag;
-						if( focusedComponent != null ) {
-							edu.cmu.cs.dennisc.java.awt.MouseFocusEventQueue.getSingleton().pushComponentWithMouseFocus( focusedComponent.getAwtComponent() );
-						} else {
-							edu.cmu.cs.dennisc.java.awt.MouseFocusEventQueue.getSingleton().popComponentWithMouseFocus();
-						}
-					} else {
-						isDrop = false;
-					}
+					//pass
 				} else {
-					isDrop = true;
-				}
-				if( isDrop ) {
 					Application.getSingleton().setDragInProgress( false );
 					this.setActive( this.getAwtComponent().contains( e.getPoint() ) );
 					javax.swing.JLayeredPane layeredPane = getLayeredPane();
 					java.awt.Rectangle bounds = this.dragProxy.getBounds();
 					layeredPane.remove( this.dragProxy );
 					layeredPane.repaint( bounds );
-					if( this.dragAndDropContext != null ) {
-						this.dragAndDropContext.handleMouseReleased( e );
-					}
+					this.dragAndDropContext.handleMouseReleased( e );
 				}
 			}
 		}
@@ -477,10 +277,6 @@ public abstract class DragComponent extends Control {
 			layeredPane.remove( this.dragProxy );
 			layeredPane.repaint( bounds );
 		}
-		if( this.dragAndDropContext != null ) {
-			this.dragAndDropContext.handleCancel( e );
-		}
-		this.isFauxDrag = false;
-		edu.cmu.cs.dennisc.java.awt.MouseFocusEventQueue.getSingleton().popComponentWithMouseFocus();
+		this.dragAndDropContext.handleCancel( e );
 	}
 }

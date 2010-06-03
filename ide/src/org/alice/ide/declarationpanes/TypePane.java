@@ -45,16 +45,18 @@ package org.alice.ide.declarationpanes;
 /**
  * @author Dennis Cosgrove
  */
-//todo: BooleanPropertyOperation
-class IsArrayStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
+class IsArrayStateOperation extends edu.cmu.cs.dennisc.croquet.BooleanState {
 	private edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty;
 	public IsArrayStateOperation( edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty ) {
 		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "ffa22de2-eb3e-46d2-8ccc-ada365f29205" ), isArrayProperty.getValue(), "is array" );
 		this.isArrayProperty = isArrayProperty;
-	}
-	@Override
-	protected void handleStateChange(boolean value) {
-		this.isArrayProperty.setValue( value );
+		this.addValueObserver( new ValueObserver() {
+			public void changing( boolean nextValue ) {
+			}
+			public void changed( boolean nextValue ) {
+				IsArrayStateOperation.this.isArrayProperty.setValue( nextValue );
+			}
+		} );
 	}
 }
 

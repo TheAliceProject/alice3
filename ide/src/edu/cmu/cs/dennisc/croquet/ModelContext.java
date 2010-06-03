@@ -274,42 +274,42 @@ public abstract class ModelContext<M extends Model> extends HistoryTreeNode<Mode
 		this.addChild( rv );
 		return rv;
 	}
-	public <T> ItemSelectionStateContext< T > createItemSelectionStateContext( ItemSelectionState< T > itemSelectionState, java.util.EventObject e, ViewController< ?, ? > viewController, int prevIndex, T prevItem, int nextIndex, T nextItem ) {
+	/*package-private*/ <T> ItemSelectionStateContext< T > createItemSelectionStateContext( ItemSelectionState< T > itemSelectionState, java.util.EventObject e, ViewController< ?, ? > viewController, int prevIndex, T prevItem, int nextIndex, T nextItem ) {
 		ItemSelectionStateContext<T> rv = new ItemSelectionStateContext<T>( this, itemSelectionState, e, viewController, prevIndex, prevItem, nextIndex, nextItem );
 		this.addChild( rv );
 		return rv;
 	}
-	public BoundedRangeIntegerStateContext createBoundedRangeIntegerStateContext( BoundedRangeIntegerState boundedRangeIntegerState ) {
+	/*package-private*/ BoundedRangeIntegerStateContext createBoundedRangeIntegerStateContext( BoundedRangeIntegerState boundedRangeIntegerState ) {
 		BoundedRangeIntegerStateContext rv = new BoundedRangeIntegerStateContext( this, boundedRangeIntegerState, null, null );
 		this.addChild( rv );
 		return rv;
 	}
-	public BooleanStateContext createBooleanStateContext( BooleanState booleanState, java.awt.event.ItemEvent e, ViewController< ?, ? > viewController ) {
+	/*package-private*/ BooleanStateContext createBooleanStateContext( BooleanState booleanState, java.awt.event.ItemEvent e, ViewController< ?, ? > viewController ) {
 		BooleanStateContext rv = new BooleanStateContext( this, booleanState, e, viewController );
 		this.addChild( rv );
 		return rv;
 	}
-	public StringStateContext createStringStateContext( StringState stringState ) {
+	/*package-private*/ StringStateContext createStringStateContext( StringState stringState ) {
 		StringStateContext rv = new StringStateContext( this, stringState, null, null );
 		this.addChild( rv );
 		return rv;
 	}
-	public MenuBarModelContext createMenuBarModelContext( MenuBarModel menuBarModel, MenuBar menuBar ) {
+	/*package-private*/ MenuBarModelContext createMenuBarModelContext( MenuBarModel menuBarModel, MenuBar menuBar ) {
 		MenuBarModelContext rv = new MenuBarModelContext( this, menuBarModel, null, menuBar );
 		this.addChild( rv );
 		return rv;
 	}
-	public MenuModelContext createMenuModelContext( MenuModel menuModel, Menu<?> menu ) {
+	/*package-private*/ MenuModelContext createMenuModelContext( MenuModel menuModel, Menu<?> menu ) {
 		MenuModelContext rv = new MenuModelContext( this, menuModel, null, menu );
 		this.addChild( rv );
 		return rv;
 	}
-	
-//	/*package-private*/ModelContext createChildContext() {
-//		ModelContext rv = new ModelContext( this );
-//		this.addChild( rv );
-//		return rv;
-//	}
+	/*package-private*/ DragAndDropContext createDragAndDropContext( DragAndDropOperation dragAndDropOperation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource ) {
+		DragAndDropContext rv = new DragAndDropContext( this, dragAndDropOperation, originalMouseEvent, latestMouseEvent, dragSource );
+		this.addChild( rv );
+		return rv;
+	}
+
 	public void finish() {
 		this.addChild( new FinishEvent( this ) );
 	}
