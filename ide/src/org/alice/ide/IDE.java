@@ -153,8 +153,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private org.alice.ide.operations.window.IsHistoryShowingOperation isHistoryShowingOperation = new org.alice.ide.operations.window.IsHistoryShowingOperation();
 
 	private org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation isExpressionTypeFeedbackDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation.class, true );
-	private org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation isOmissionOfThisForFieldAccessesDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation.class,
-			false );
+	private org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation isOmissionOfThisForFieldAccessesDesiredState = createBooleanOperation( org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation.class, false );
 	private org.alice.ide.operations.window.IsEmphasizingClassesOperation isEmphasizingClassesOperation = createBooleanOperation( org.alice.ide.operations.window.IsEmphasizingClassesOperation.class, true );
 	private org.alice.ide.operations.window.IsDefaultFieldNameGenerationDesiredOperation isDefaultFieldNameGenerationDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsDefaultFieldNameGenerationDesiredOperation.class, this
 			.isDefaultFieldNameGenerationDesiredByDefault() );
@@ -179,25 +178,16 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	public boolean isEmphasizingClasses() {
 		return this.isEmphasizingClassesOperation.getState();
 	}
-
-	//	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
-	//		this.editorsTabbedPaneOperation.setEmphasizingClasses( isEmphasizingClasses );
-	//		this.membersEditor.setEmphasizingClasses( isEmphasizingClasses );
-	//	}
-	@Deprecated
-	public boolean isOmittingThisFieldAccesses() {
-		return this.isOmissionOfThisForFieldAccessesDesiredOperation.getState();
+	public edu.cmu.cs.dennisc.croquet.BooleanState getIsOmissionOfThisForFieldAccessesDesiredState() {
+		return this.isOmissionOfThisForFieldAccessesDesiredState;
 	}
-	//	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
-	//		this.editorsTabbedPaneOperation.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
-	//		this.membersEditor.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
-	//		this.sceneEditor.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
-	//	}
 	public boolean isDefaultFieldNameGenerationDesired() {
 		return this.isDefaultFieldNameGenerationDesiredOperation.getState();
 	}
 
-	private WindowMenuModel windowMenuModel = new WindowMenuModel( this.isEmphasizingClassesOperation
+	private WindowMenuModel windowMenuModel = new WindowMenuModel( 
+			this.isEmphasizingClassesOperation,
+			this.isOmissionOfThisForFieldAccessesDesiredState
 
 	//			class LocaleComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
 	//				private java.util.Locale[] candidates = { new java.util.Locale( "en", "US" ), new java.util.Locale( "en", "US", "java" ) };
@@ -1111,7 +1101,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	protected void handleQuit( java.util.EventObject e ) {
 		preservePreference( this.isEmphasizingClassesOperation );
 		preservePreference( this.isExpressionTypeFeedbackDesiredOperation );
-		preservePreference( this.isOmissionOfThisForFieldAccessesDesiredOperation );
+		preservePreference( this.isOmissionOfThisForFieldAccessesDesiredState );
 		preservePreference( this.isDefaultFieldNameGenerationDesiredOperation );
 
 		this.getExitOperation().fire( e );
@@ -1612,7 +1602,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 				if( field.getValueType() == scopeType ) {
 					text = "this (a.k.a. " + text + ")";
 				} else if( field.getDeclaringType() == scopeType ) {
-					if( this.isOmissionOfThisForFieldAccessesDesiredOperation.getState() ) {
+					if( this.isOmissionOfThisForFieldAccessesDesiredState.getState() ) {
 						//pass
 					} else {
 						text = "this." + text;

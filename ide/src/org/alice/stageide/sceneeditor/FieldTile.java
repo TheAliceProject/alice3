@@ -80,6 +80,23 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 		this.updateLabel();
 	}
 
+	private BooleanState.ValueObserver valueObserver = new BooleanState.ValueObserver() {
+		public void changing(boolean nextValue) {
+		}
+		public void changed(boolean nextValue) {
+			FieldTile.this.updateLabel();
+		}
+	};
+	@Override
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo(parent);
+		org.alice.ide.IDE.getSingleton().getIsOmissionOfThisForFieldAccessesDesiredState().addAndInvokeValueObserver( this.valueObserver );
+	}
+	@Override
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		org.alice.ide.IDE.getSingleton().getIsOmissionOfThisForFieldAccessesDesiredState().removeValueObserver( this.valueObserver );
+		super.handleRemovedFrom(parent);
+	}
 	@Override
 	protected javax.swing.AbstractButton createAwtComponent() {
 		final java.awt.Color SELECTED_COLOR = java.awt.Color.YELLOW;

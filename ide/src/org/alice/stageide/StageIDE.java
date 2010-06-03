@@ -230,7 +230,7 @@ public class StageIDE extends org.alice.ide.IDE {
 			}
 			@Override
 			protected String getNameText() {
-				if( StageIDE.this.isOmittingThisFieldAccesses() ) {
+				if( StageIDE.this.getIsOmissionOfThisForFieldAccessesDesiredState().getState() ) {
 					return super.getNameText();
 				} else {
 					return "this." + super.getNameText();

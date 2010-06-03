@@ -73,6 +73,7 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 		super.handleAddedTo( parent );
 		if( this.method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			((edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.method).parameters.addListPropertyListener( this.parameterAdapter );
+			this.refresh();
 		}
 	}
 	@Override

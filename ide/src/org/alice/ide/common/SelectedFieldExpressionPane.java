@@ -51,10 +51,22 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 			SelectedFieldExpressionPane.this.handleCodeChanged( nextValue );
 		}
 	};
+	private edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractField > fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractField >() {
+		public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractField nextValue) {
+			SelectedFieldExpressionPane.this.handleFieldChanged( nextValue );
+		}
+	};
 	private edu.cmu.cs.dennisc.property.event.PropertyListener namePropertyAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}
 		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+			SelectedFieldExpressionPane.this.updateLabel();
+		}
+	};
+	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver valueObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
+		public void changing(boolean nextValue) {
+		}
+		public void changed(boolean nextValue) {
 			SelectedFieldExpressionPane.this.updateLabel();
 		}
 	};
@@ -104,13 +116,15 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
+		org.alice.ide.IDE.getSingleton().getIsOmissionOfThisForFieldAccessesDesiredState().addAndInvokeValueObserver( this.valueObserver );
 		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeValueObserver( this.codeSelectionObserver );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate field listening" );
-		this.handleFieldChanged( getIDE().getFieldSelectionState().getValue() );
+		org.alice.ide.IDE.getSingleton().getFieldSelectionState().addAndInvokeValueObserver( this.fieldSelectionObserver );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		org.alice.ide.IDE.getSingleton().getFieldSelectionState().removeValueObserver( this.fieldSelectionObserver );
 		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeValueObserver( this.codeSelectionObserver );
+		org.alice.ide.IDE.getSingleton().getIsOmissionOfThisForFieldAccessesDesiredState().removeValueObserver( this.valueObserver );
 		super.handleRemovedFrom( parent );
 	}
 }

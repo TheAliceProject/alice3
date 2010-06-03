@@ -105,8 +105,7 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 		this.setPopupMenuOperation(null);
 		super.handleRemovedFrom(parent);
 	}
-	protected boolean isFieldInScope()
-	{
+	protected boolean isFieldInScope() {
 		return getIDE().isSelectedFieldInScope();
 	}
 

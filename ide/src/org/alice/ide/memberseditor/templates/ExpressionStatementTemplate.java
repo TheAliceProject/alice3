@@ -52,14 +52,20 @@ public abstract class ExpressionStatementTemplate extends org.alice.ide.template
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression();
 	
+	private boolean isInitialized = false;
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
-		this.refresh();
+		if( this.isInitialized ) {
+			//pass
+		} else {
+			this.refresh();
+			this.isInitialized = true;
+		}
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		this.removeAllComponents();
+		//this.removeAllComponents();
 		super.handleRemovedFrom( parent );
 	}
 	protected void refresh() {
