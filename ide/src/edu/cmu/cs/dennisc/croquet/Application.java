@@ -76,10 +76,10 @@ public abstract class Application {
 		} );
 	}
 
-	public ModelContext getRootContext() {
+	public ModelContext<?> getRootContext() {
 		return this.rootContext;
 	}
-	public ModelContext getCurrentContext() {
+	public ModelContext<?> getCurrentContext() {
 		return this.rootContext.getCurrentContext();
 	}
 
@@ -171,23 +171,23 @@ public abstract class Application {
 		}
 	}
 
-	/*package-private*/static AbstractMenu< ?,? > addMenuElements( AbstractMenu< ?,? > rv, Model[] operations ) {
-		for( Model operation : operations ) {
-			if( operation != null ) {
-				if( operation instanceof MenuModel ) {
-					MenuModel menuOperation = (MenuModel)operation;
+	/*package-private*/static AbstractMenu< ?,? > addMenuElements( AbstractMenu< ?,? > rv, Model[] models ) {
+		for( Model model : models ) {
+			if( model != null ) {
+				if( model instanceof MenuModel ) {
+					MenuModel menuOperation = (MenuModel)model;
 					rv.addMenu( menuOperation.createMenu() );
-				} else if( operation instanceof ItemSelectionState< ? > ) {
-					ItemSelectionState< ? > itemSelectionOperation = (ItemSelectionState< ? >)operation;
+				} else if( model instanceof ItemSelectionState< ? > ) {
+					ItemSelectionState< ? > itemSelectionOperation = (ItemSelectionState< ? >)model;
 					rv.addMenu( itemSelectionOperation.createMenu() );
 				} else {
 					AbstractMenuItem< ?,? > menuItem = null;
-					if( operation instanceof Operation ) {
-						Operation abstractActionOperation = (Operation)operation;
-						menuItem = abstractActionOperation.createMenuItem();
-					} else if( operation instanceof BooleanState ) {
-						BooleanState booleanStateOperation = (BooleanState)operation;
-						menuItem = booleanStateOperation.createCheckBoxMenuItem();
+					if( model instanceof Operation<?> ) {
+						Operation<?> operation = (Operation<?>)model;
+						menuItem = operation.createMenuItem();
+					} else if( model instanceof BooleanState ) {
+						BooleanState booleanState = (BooleanState)model;
+						menuItem = booleanState.createCheckBoxMenuItem();
 					} else {
 						throw new RuntimeException();
 					}

@@ -47,22 +47,10 @@ package org.alice.ide.declarationpanes;
  * @author Dennis Cosgrove
  */
 public class CreateMethodParameterPane extends CreateParameterPane {
-	class UnderstandingConfirmationOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
-		public UnderstandingConfirmationOperation( String codeText ) {
-			super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "21efac8d-c2dd-451f-8065-d2e284a3e244" ), false, "I understand that I need to update the invocations to this " + codeText + "." );
-		}
-		@Override
-		protected void handleStateChange(boolean value) {
-//			CreateMethodParameterPane.this.updateOKButton();
-		}
-	}
-
-	private edu.cmu.cs.dennisc.croquet.CheckBox checkBox;
 	private java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations;
 	public CreateMethodParameterPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations ) {
 		super( method );
 		this.methodInvocations = methodInvocations;
-		
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component< ? >[] createWarningRow() {
@@ -80,8 +68,11 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 //			} else {
 //				codeText = "constructor";
 //			}
-			this.checkBox = new UnderstandingConfirmationOperation( codeText ).createCheckBox();
-			this.checkBox.setOpaque( false );
+			
+			String text = "I understand that I need to update the invocations to this " + codeText + ".";
+			edu.cmu.cs.dennisc.croquet.BooleanState isUnderstandingConfirmed = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "21efac8d-c2dd-451f-8065-d2e284a3e244" ), false, text );
+			edu.cmu.cs.dennisc.croquet.CheckBox checkBox = isUnderstandingConfirmed.createCheckBox();
+			checkBox.setOpaque( false );
 			
 			StringBuffer sb = new StringBuffer();
 			sb.append( "<html><body>There " );
@@ -113,15 +104,10 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 			pane.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 ) );
 			pane.addComponent( new edu.cmu.cs.dennisc.croquet.LineAxisPanel( new edu.cmu.cs.dennisc.croquet.Label( "Tip: look for " ), org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) ) );
 			pane.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 ) );
-			pane.addComponent( this.checkBox );
+			pane.addComponent( checkBox );
 			return new edu.cmu.cs.dennisc.croquet.Component< ? >[] { new edu.cmu.cs.dennisc.croquet.Label( "WARNING:" ), pane };
 		} else {
-			this.checkBox = null;
 			return null;
 		}
 	}
-//	@Override
-//	public boolean isOKButtonValid() {
-//		return super.isOKButtonValid() && ( this.checkBox == null || this.checkBox.getJComponent().isSelected() );
-//	}
 }

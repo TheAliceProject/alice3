@@ -46,50 +46,11 @@ package org.alice.ide.declarationpanes;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.PanelWithPreview {
-	class IsReassignableStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
-		public IsReassignableStateOperation( boolean initialValue ) {
-			super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "c95e177e-8fea-4916-a401-1b865594b135" ), initialValue, "(is constant)", "(is variable)" );
-		}
-		@Override
-		protected void handleStateChange(boolean value) {
-//			AbstractDeclarationPane.this.handleIsReassignableChange( value );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: undo/redo support for", this );
-		}
-	}
 	private edu.cmu.cs.dennisc.croquet.StringState declarationNameState = new edu.cmu.cs.dennisc.croquet.StringState(
 			edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "c63e8377-84e0-48b0-a77e-137879e398c1" ), ""
 	);
-//	class DeclarationNameTextField extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField {
-//		public DeclarationNameTextField() {
-//			super( "", "" );
-//			this.setFont( this.getFont().deriveFont( 18.0f ) );
-//			this.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
-//				public void changedUpdate( javax.swing.event.DocumentEvent e ) {
-//					DeclarationNameTextField.this.handleUpdate( e );
-//				}
-//				public void insertUpdate( javax.swing.event.DocumentEvent e ) {
-//					DeclarationNameTextField.this.handleUpdate( e );
-//				}
-//				public void removeUpdate( javax.swing.event.DocumentEvent e ) {
-//					DeclarationNameTextField.this.handleUpdate( e );
-//				}
-//			} );
-//		}
-//		@Override
-//		public java.awt.Dimension getPreferredSize() {
-//			return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 240 );
-//		}
-//		@Override
-//		public java.awt.Dimension getMaximumSize() {
-//			return this.getPreferredSize();
-//		}
-////		private void handleUpdate( javax.swing.event.DocumentEvent e ) {
-////			AbstractDeclarationPane.this.handleDeclarationNameUpdate( e );
-////		}
-//	}
-
 	private org.alice.ide.initializer.BogusNode bogusNode;
-	private IsReassignableStateOperation isReassignableStateOperation;
+	private edu.cmu.cs.dennisc.croquet.BooleanState isReassignableStateOperation;
 	private TypePane typePane;
 	private edu.cmu.cs.dennisc.croquet.TextField declarationNameTextField;
 	private org.alice.ide.initializer.InitializerPane initializerPane;
@@ -211,7 +172,8 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	protected final edu.cmu.cs.dennisc.croquet.Component< ? > createIsReassignableComponent() {
 		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv;
 		if( isIsReassignableComponentDesired() ) {
-			this.isReassignableStateOperation = new IsReassignableStateOperation( this.getIsReassignableInitialState() );
+			this.isReassignableStateOperation = new edu.cmu.cs.dennisc.croquet.BooleanState( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "c95e177e-8fea-4916-a401-1b865594b135" ), this.getIsReassignableInitialState() );
+			 //"(is constant)", "(is variable)"
 			this.isReassignableStateOperation.setTrueText( "yes" );
 			this.isReassignableStateOperation.setFalseText( "no" );
 			this.isReassignableStateOperation.setEnabled( this.isIsReassignableComponentEnabled() );

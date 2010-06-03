@@ -200,12 +200,19 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOper
 	}
 }
 
-class StatementEnabledStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
+class StatementEnabledStateOperation extends edu.cmu.cs.dennisc.croquet.BooleanState {
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 
 	public StatementEnabledStateOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue(), "Is Enabled" );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue(), "IsEnabled" );
 		this.statement = statement;
+		this.addValueObserver( new ValueObserver() {
+			public void changing( boolean nextValue ) {
+			}
+			public void changed( boolean nextValue ) {
+				StatementEnabledStateOperation.this.statement.isEnabled.setValue( nextValue );
+			}
+		} );
 		//update();
 	}
 	//	private void update() {
@@ -217,11 +224,6 @@ class StatementEnabledStateOperation extends org.alice.ide.operations.AbstractBo
 	//		}
 	//		this.putValue( javax.swing.Action.NAME, text );
 	//	}
-	@Override
-	protected void handleStateChange( boolean value ) {
-		this.statement.isEnabled.setValue( value );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: undo/redo support for", this );
-	}
 }
 
 /**
