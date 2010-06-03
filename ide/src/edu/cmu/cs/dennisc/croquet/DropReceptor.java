@@ -48,13 +48,13 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public interface DropReceptor {
 	public boolean isPotentiallyAcceptingOf( DragComponent source );
-	public Component<?> getComponent();
+	public ViewController<?,?> getViewController();
 	public void dragStarted( DragAndDropContext dragAndDropContext );
 	public void dragEntered( DragAndDropContext dragAndDropContext );
 	public void dragUpdated( DragAndDropContext dragAndDropContext );
 	
 	//todo: Dropped or Exited but not both?
-	public void dragDropped( DragAndDropContext dragAndDropContext );
+	public Operation<?> dragDropped( DragAndDropContext dragAndDropContext );
 	public void dragExited( DragAndDropContext dragAndDropContext, boolean isDropRecipient );
 	
 	

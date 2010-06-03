@@ -61,6 +61,9 @@ package edu.cmu.cs.dennisc.tutorial;
 	public Hole(edu.cmu.cs.dennisc.croquet.JComponent<?> component, ConnectionPreference connectionPreference) {
 		super(component, connectionPreference);
 	}
+	public Hole( ComponentResolver componentResolver, ConnectionPreference connectionPreference ) {
+		super( componentResolver, connectionPreference );
+	}
 
 	@Override
 	protected java.awt.Rectangle updateBoundsForContains(java.awt.Rectangle rv) {

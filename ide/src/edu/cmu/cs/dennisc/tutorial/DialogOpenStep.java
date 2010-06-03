@@ -45,9 +45,9 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class DialogCloseNoteStep extends WaitingNoteStep<edu.cmu.cs.dennisc.croquet.DialogOperation> {
-	public DialogCloseNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.DialogOperation operation ) {
-		super( tutorial, title, text, null, operation );
+/*package-private*/ class DialogOpenStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DialogOperation> {
+	public DialogOpenStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.DialogOperation operation ) {
+		super( tutorial, title, text, new Hole( operation.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractButton.class ), Feature.ConnectionPreference.EAST_WEST ), operation );
 	}
 	@Override
 	protected boolean isAlreadyInTheDesiredState() {
@@ -55,9 +55,9 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
-		if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent ) {
-			edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent windowClosedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent)child;
-			return windowClosedEvent.getParent().getModel() == this.getModel();
+		if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent ) {
+			edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent)child;
+			return windowOpenedEvent.getParent().getModel() == this.getModel();
 		} else {
 			return false;
 		}

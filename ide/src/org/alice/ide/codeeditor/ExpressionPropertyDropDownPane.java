@@ -44,6 +44,8 @@ package org.alice.ide.codeeditor;
 
 import org.alice.ide.operations.ast.AbstractExpressionPropertyActionOperation;
 
+import edu.cmu.cs.dennisc.croquet.ViewController;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -95,7 +97,7 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 	}
 	public void dragUpdated( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 	}
-	public void dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 //		edu.cmu.cs.dennisc.croquet.KDragControl source = context.getDragSource();
 //		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
 //		if( source.getSubject() instanceof org.alice.ide.common.ExpressionCreatorPane ) {
@@ -114,6 +116,7 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 //		} else {
 //			source.hideDropProxyIfNecessary();
 //		}
+		return null;
 	}
 	public void dragExited( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, boolean isDropRecipient ) {
 		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
@@ -122,7 +125,7 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 	public void dragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.Component< ? > getComponent() {
+	public edu.cmu.cs.dennisc.croquet.ViewController<?,?> getViewController() {
 		return this;
 	}
 

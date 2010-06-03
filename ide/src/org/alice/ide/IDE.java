@@ -751,7 +751,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 	//	private java.util.List< zoot.DropReceptor > dropReceptors = new java.util.LinkedList< zoot.DropReceptor >();
 
-	protected org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
+	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
 		return this.editorsTabbedPaneOperation.getCodeEditorInFocus();
 	}
 

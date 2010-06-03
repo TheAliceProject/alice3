@@ -47,7 +47,7 @@ package org.alice.stageide.tutorial;
  */
 public class IntroductionTutorial {
 	public static void main( final String[] args ) {
-		org.alice.stageide.StageIDE ide = new org.alice.stageide.StageIDE();
+		final org.alice.stageide.StageIDE ide = new org.alice.stageide.StageIDE();
 		ide.initialize(args);
 		ide.loadProjectFrom( args[ 0 ] );
 		ide.getFrame().maximize();
@@ -181,9 +181,49 @@ public class IntroductionTutorial {
 				"Note Edit Code",
 				"<html>Note you are now editing the code.</html>" 
 		);
+		
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava moveMethod = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( 
+				org.alice.apis.moveandturn.AbstractTransformable.class, 
+				"move", 
+				org.alice.apis.moveandturn.MoveDirection.class,
+				Number.class
+		);
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava turnMethod = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( 
+				org.alice.apis.moveandturn.AbstractTransformable.class, 
+				"turn", 
+				org.alice.apis.moveandturn.TurnDirection.class,
+				Number.class
+		);
+		
+		edu.cmu.cs.dennisc.tutorial.ComponentResolver componentResolver = new edu.cmu.cs.dennisc.tutorial.ComponentResolver() {
+			public edu.cmu.cs.dennisc.croquet.Component< ? > getComponent() {
+				return ide.getCodeEditorInFocus().getComponent( 1 );
+			}
+		};
+		
+		tutorial.addDragAndDropStep( 
+				"Drag Move Procedure",
+				"<html>Drag <b>move</b> procedure.</html>",
+				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( moveMethod ),
+				"drop",
+				componentResolver
+		);
+		
+		tutorial.addDragAndDropStep( 
+				"Drag Turn Procedure",
+				"<html>Drag <b>turn</b> procedure.</html>",
+				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( turnMethod ),
+				"drop",
+				componentResolver
+		);
+		
+		tutorial.addMessageStep( 
+				"The End",
+				"<html>End of tutorial.</html>" 
+		);
 
 		//membersEditor.getTabbedPaneSelectionState().setValue( membersEditor.getFunctionsTab() );
-		tutorial.setSelectedIndex( 6 );
+		tutorial.setSelectedIndex( 19 );
 		
 		ide.getFrame().addWindowListener( new java.awt.event.WindowAdapter() {
 			@Override

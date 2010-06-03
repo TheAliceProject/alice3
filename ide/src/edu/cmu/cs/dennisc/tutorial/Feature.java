@@ -48,7 +48,6 @@ package edu.cmu.cs.dennisc.tutorial;
 /*package-private*/ abstract class Feature {
 	private static final int ARROW_HEAD_WIDTH = 19;
 	private static final int ARROW_HEAD_HALF_HEIGHT = 6;
-
 	public enum ConnectionPreference {
 		NORTH_SOUTH,
 		EAST_WEST
@@ -96,16 +95,23 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	private static final java.awt.Stroke ARROW_STROKE = new java.awt.BasicStroke( 3.0f ); 
 
-	private edu.cmu.cs.dennisc.croquet.JComponent<?> component;
+	private ComponentResolver componentResolver;
 	private ConnectionPreference connectionPreference;
 	private Connection actualConnection;
-	public Feature( edu.cmu.cs.dennisc.croquet.JComponent<?> component, ConnectionPreference connectionPreference ) {
-		this.component = component;
+	public Feature( final edu.cmu.cs.dennisc.croquet.JComponent<?> component, ConnectionPreference connectionPreference ) {
+		this( new ComponentResolver() {
+			public edu.cmu.cs.dennisc.croquet.JComponent< ? > getComponent() {
+				return component;
+			}
+		}, connectionPreference );
+	}
+	public Feature( ComponentResolver componentResolver, ConnectionPreference connectionPreference ) {
+		this.componentResolver = componentResolver;
 		this.connectionPreference = connectionPreference;
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.JComponent<?> getComponent() {
-		return this.component;
+	public edu.cmu.cs.dennisc.croquet.Component<?> getComponent() {
+		return this.componentResolver.getComponent();
 	}
 	public ConnectionPreference getConnectionPreference() {
 		return this.connectionPreference;
@@ -121,8 +127,9 @@ package edu.cmu.cs.dennisc.tutorial;
 	protected abstract java.awt.Rectangle updateBoundsForContains( java.awt.Rectangle rv );
 	protected abstract java.awt.Rectangle updateBoundsForPaint( java.awt.Rectangle rv );
 	public final java.awt.geom.Area getAreaToSubstractForContains( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy ) {
-		if( this.component != null ) {
-			java.awt.Rectangle bounds = this.component.getVisibleRectangle( asSeenBy );
+		edu.cmu.cs.dennisc.croquet.Component<?> component = this.componentResolver.getComponent();
+		if( component != null ) {
+			java.awt.Rectangle bounds = component.getVisibleRectangle( asSeenBy );
 			bounds = this.updateBoundsForContains( bounds );
 			if( bounds != null ) {
 				return new java.awt.geom.Area( bounds );
@@ -134,8 +141,9 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	}
 	private java.awt.Rectangle getBoundsForPaint( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy ) {
-		if( this.component != null ) {
-			java.awt.Rectangle bounds = this.component.getVisibleRectangle( asSeenBy );
+		edu.cmu.cs.dennisc.croquet.Component<?> component = this.componentResolver.getComponent();
+		if( component != null ) {
+			java.awt.Rectangle bounds = component.getVisibleRectangle( asSeenBy );
 			return this.updateBoundsForPaint( bounds );
 		} else {
 			return null;
@@ -179,7 +187,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		this.paint( g2, componentBounds );
 
 		g2.setPaint( java.awt.Color.BLACK );
-		java.awt.Rectangle noteBounds = note.getVisibleRectangle( asSeenBy );
+		java.awt.Rectangle noteBounds = note.getComponent( 0 ).getBounds( asSeenBy );
 		
 		java.awt.Point ptComponent = edu.cmu.cs.dennisc.java.awt.RectangleUtilties.getPoint( componentBounds, this.actualConnection.getXConstraint(), this.actualConnection.getYConstraint() );
 		

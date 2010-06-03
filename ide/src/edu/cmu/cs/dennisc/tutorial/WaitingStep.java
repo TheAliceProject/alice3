@@ -45,8 +45,15 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class SimpleNoteStep extends Step {
-	public SimpleNoteStep( Tutorial tutorial, String title, String text ) {
-		super( tutorial, title, text );
+/*package-private*/ abstract class WaitingStep<M extends edu.cmu.cs.dennisc.croquet.Model> extends FeatureStep {
+	private M model;
+	public WaitingStep( Tutorial tutorial, String title, String text, Feature feature, M model ) {
+		super( tutorial, title, text, feature );
+		this.model = model;
 	}
-}	
+	protected M getModel() {
+		return this.model;
+	}
+	protected abstract boolean isAlreadyInTheDesiredState();
+	public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child );
+}

@@ -45,8 +45,8 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class SpotlightNoteStep extends FeatureNoteStep {
-	public SpotlightNoteStep( Tutorial tutorial, String title, String text, Frame frame ) {
+/*package-private*/ class SpotlightStep extends FeatureStep {
+	public SpotlightStep( Tutorial tutorial, String title, String text, Frame frame ) {
 		super( tutorial, title, text, frame );
 	}
 }	

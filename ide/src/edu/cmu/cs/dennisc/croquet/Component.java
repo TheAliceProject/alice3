@@ -340,8 +340,8 @@ public abstract class Component<J extends java.awt.Component> {
 
 
 	@Deprecated
-	public Component<?> getParent() {
-		return Component.lookup(this.getAwtComponent().getParent());
+	public Container<?> getParent() {
+		return (Container<?>)Component.lookup(this.getAwtComponent().getParent());
 	}
 
 	@Deprecated
@@ -357,7 +357,7 @@ public abstract class Component<J extends java.awt.Component> {
 		return this.getAwtComponent().getHeight();
 	}
 
-	protected void repaint() {
+	public void repaint() {
 		this.getAwtComponent().repaint();
 	}
 
@@ -407,6 +407,13 @@ public abstract class Component<J extends java.awt.Component> {
 	@Deprecated
 	public void setPreferredSize(java.awt.Dimension preferredSize) {
 		this.getAwtComponent().setPreferredSize(preferredSize);
+	}
+	
+	public java.awt.Rectangle getVisibleRectangle() {
+		return this.getBounds();
+	}
+	public final java.awt.Rectangle getVisibleRectangle( Component< ? > destination ) {
+		return this.convertRectangle( this.getVisibleRectangle(), destination );
 	}
 	
 	@Override

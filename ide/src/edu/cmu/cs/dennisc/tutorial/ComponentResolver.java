@@ -45,21 +45,6 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class DialogOpenNoteStep extends WaitingNoteStep<edu.cmu.cs.dennisc.croquet.DialogOperation> {
-	public DialogOpenNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.DialogOperation operation ) {
-		super( tutorial, title, text, new Hole( operation.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractButton.class ), Feature.ConnectionPreference.EAST_WEST ), operation );
-	}
-	@Override
-	protected boolean isAlreadyInTheDesiredState() {
-		return false;
-	}
-	@Override
-	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
-		if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent ) {
-			edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent)child;
-			return windowOpenedEvent.getParent().getModel() == this.getModel();
-		} else {
-			return false;
-		}
-	}
+public interface ComponentResolver {
+	edu.cmu.cs.dennisc.croquet.Component< ? > getComponent();
 }

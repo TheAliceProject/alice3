@@ -46,9 +46,65 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
-	/**
-	 * @author Dennis Cosgrove
-	 */
+	public static abstract class DragAndDropEvent extends ModelEvent< DragAndDropContext > {
+		private java.awt.event.MouseEvent mouseEvent;
+		public DragAndDropEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private DragAndDropEvent( DragAndDropContext parent, java.awt.event.MouseEvent mouseEvent ) {
+			super( parent );
+			this.mouseEvent = mouseEvent;
+		}
+		public java.awt.event.MouseEvent getMouseEvent() {
+			return this.mouseEvent;
+		}
+		@Override
+		public State getState() {
+			return null;
+		}
+	}
+	public static abstract class DropReceptorEvent extends DragAndDropEvent {
+		private DropReceptor dropReceptor;
+		public DropReceptorEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private DropReceptorEvent( DragAndDropContext parent, java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor ) {
+			super( parent, mouseEvent );
+			this.dropReceptor = dropReceptor;
+		}
+		public DropReceptor getDropReceptor() {
+			return this.dropReceptor;
+		}
+		@Override
+		public State getState() {
+			return null;
+		}
+	}
+	public static class EnteredDropReceptorEvent extends DropReceptorEvent {
+		public EnteredDropReceptorEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private EnteredDropReceptorEvent( DragAndDropContext parent, java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor ) {
+			super( parent, mouseEvent, dropReceptor );
+		}
+	}
+	public static class ExitedDropReceptorEvent extends DropReceptorEvent {
+		public ExitedDropReceptorEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private ExitedDropReceptorEvent( DragAndDropContext parent, java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor ) {
+			super( parent, mouseEvent, dropReceptor );
+		}
+	}
+	public static class DroppedEvent extends DropReceptorEvent {
+		public DroppedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private DroppedEvent( DragAndDropContext parent, java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor ) {
+			super( parent, mouseEvent, dropReceptor );
+		}
+	}
+
 	private static class DropReceptorInfo {
 		private DropReceptor dropReceptor;
 		private java.awt.Rectangle bounds;
@@ -86,7 +142,7 @@ public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
 		this.potentialDropReceptorInfos = new DropReceptorInfo[ potentialDropReceptors.size() ];
 		int i = 0;
 		for( DropReceptor dropReceptor : potentialDropReceptors ) {
-			Component<?> dropComponent = dropReceptor.getComponent();
+			Component<?> dropComponent = dropReceptor.getViewController();
 			java.awt.Rectangle bounds = dropComponent.getBounds();
 			bounds = javax.swing.SwingUtilities.convertRectangle( dropComponent.getAwtComponent().getParent(), bounds, this.getDragSource().getAwtComponent() );
 			this.potentialDropReceptorInfos[ i ] = new DropReceptorInfo( dropReceptor, bounds );
@@ -175,11 +231,13 @@ public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
 			if( this.currentDropReceptor != null ) {
 				this.getModel().handleDragExitedDropReceptor( this );
 				this.currentDropReceptor.dragExited( this, false );
+				this.addChild( new ExitedDropReceptorEvent( this, e, this.currentDropReceptor ) );
 			}
 			this.currentDropReceptor = nextDropReceptor;
 			if( this.currentDropReceptor != null ) {
 				this.currentDropReceptor.dragEntered( this );
 				this.getModel().handleDragEnteredDropReceptor( this );
+				this.addChild( new EnteredDropReceptorEvent( this, e, this.currentDropReceptor ) );
 			}
 		}
 		if( this.getDragSource().getDragProxy() != null ) {
@@ -192,8 +250,16 @@ public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
 	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		this.setLatestMouseEvent( e );
 		if( this.currentDropReceptor != null ) {
-			this.currentDropReceptor.dragDropped( this );
+			this.addChild( new DroppedEvent( this, e, this.currentDropReceptor ) );
+			Operation< ? > operation = this.currentDropReceptor.dragDropped( this );
+			if( operation != null ) {
+				operation.fire( this.getLatestMouseEvent(), this.currentDropReceptor.getViewController() );
+			} else {
+				this.cancel();
+			}
 			this.currentDropReceptor.dragExited( this, true );
+		} else {
+			this.cancel();
 		}
 		for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
 			dropReceptorInfo.getDropReceptor().dragStopped( this );
@@ -211,5 +277,6 @@ public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
 		this.getModel().handleDragStopped( this );
 		this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
 		this.getDragSource().hideDropProxyIfNecessary();
+		this.cancel();
 	}
 }

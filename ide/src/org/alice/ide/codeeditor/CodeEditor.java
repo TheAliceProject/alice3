@@ -75,7 +75,7 @@ class StatementListPropertyPaneInfo {
 /**
  * @author Dennis Cosgrove
  */
-public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel implements edu.cmu.cs.dennisc.croquet.DropReceptor {
+public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax.swing.JPanel, edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.croquet.DropReceptor {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
 	private StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
 	private StatementListPropertyPane currentUnder;
@@ -91,6 +91,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 	};
 	
 	public CodeEditor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+		super( null );
 		this.code = code;
 		this.setOpaque( true );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
@@ -99,6 +100,12 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 		this.refresh();
 	}
 
+	@Override
+	protected javax.swing.JPanel createAwtComponent() {
+		javax.swing.JPanel rv = new javax.swing.JPanel();
+		rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.PAGE_AXIS ) );
+		return rv;
+	}
 	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver typeFeedbackObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
 		public void changing(boolean nextValue) {
 		}
@@ -140,7 +147,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
 		return this.code;
 	}
-	public edu.cmu.cs.dennisc.croquet.Component< ? > getComponent() {
+	public edu.cmu.cs.dennisc.croquet.ViewController<?,?> getViewController() {
 		return this;
 	}
 	public void refresh() {
@@ -212,14 +219,14 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 			this.scrollPane.getAwtComponent().getViewport().setOpaque( false );
 			//this.scrollPane.setBackground( java.awt.Color.RED );
 			this.scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
-			this.addComponent( header );
+			this.internalAddComponent( header );
 			if( this.getIDE().isEmphasizingClasses() || this.getIDE().isInstanceLineDesired() == false ) {
 				//pass
 			} else {
 				header.addComponent( new InstanceLine( this.code ) );
 			}
 			//			this.add( javax.swing.Box.createVerticalStrut( 8 ) );
-			this.addComponent( scrollPane );
+			this.internalAddComponent( scrollPane );
 		}
 		this.revalidateAndRepaint();
 	}
@@ -378,7 +385,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 		this.repaint();
 
 	}
-	public final void dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public final edu.cmu.cs.dennisc.croquet.Operation<?> dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+		edu.cmu.cs.dennisc.croquet.Operation<?> rv = null;
 		final java.awt.Point viewPosition = this.scrollPane.getAwtComponent().getViewport().getViewPosition();
 		final edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
 		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
@@ -388,7 +396,6 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 			if( source instanceof org.alice.ide.templates.StatementTemplate ) {
 				final org.alice.ide.templates.StatementTemplate statementTemplate = (org.alice.ide.templates.StatementTemplate)source;
 				if( this.currentUnder != null ) {
-					//final edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( source, CodeEditor.this, eSource );
 					class DropOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 						public DropOperation() {
 							super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "ad0e5d93-8bc2-4ad8-8dd5-37768eaa5319" ) );
@@ -448,7 +455,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 							} );
 						}
 					}
-					new DropOperation().fire( context.getLatestMouseEvent() );
+					rv = new DropOperation();
 				} else {
 					source.hideDropProxyIfNecessary();
 				}
@@ -483,7 +490,6 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 						}
 					}
 					
-					edu.cmu.cs.dennisc.croquet.Operation operation;
 					if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
 						class CopyOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 							public CopyOperation() {
@@ -515,11 +521,11 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 								context.commitAndInvokeDo( new CopyEdit() );
 							}
 						}
-						operation = new CopyOperation();
+						rv = new CopyOperation();
 					} else {
 						if( prevOwner == nextOwner ) {
 							if( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) {
-								operation = null;
+								rv = null;
 							} else {
 								class ReorderOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 									public ReorderOperation() {
@@ -561,7 +567,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 										context.commitAndInvokeDo( new ReorderEdit() );
 									}
 								}
-								operation = new ReorderOperation();
+								rv = new ReorderOperation();
 							}
 						} else {
 							class ReparentOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
@@ -590,15 +596,13 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 									context.commitAndInvokeDo( new ReparentEdit() );
 								}
 							}
-							operation = new ReparentOperation();
+							rv = new ReparentOperation();
 						}
-					}
-					if( operation != null ) {
-						operation.fire( context.getLatestMouseEvent() );
 					}
 				}
 			}
 		}
+		return rv;
 	}
 	private void resetScrollPane( final java.awt.Point viewPosition ) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {

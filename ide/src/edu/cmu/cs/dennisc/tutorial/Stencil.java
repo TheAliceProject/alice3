@@ -81,10 +81,14 @@ package edu.cmu.cs.dennisc.tutorial;
 				Step step = Stencil.this.getCurrentStep();
 				if( step != null ) {
 					java.awt.geom.Area area = new java.awt.geom.Area(g2.getClip());
-					for( Feature feature : step.getFeatures() ) {
-						java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( Stencil.this );
-						if( featureArea != null ) {
-							area.subtract( featureArea );
+					for( Step.Note note : step.getNotes() ) {
+						if( note.isActive() ) {
+							for( Feature feature : note.getFeatures() ) {
+								java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( Stencil.this );
+								if( featureArea != null ) {
+									area.subtract( featureArea );
+								}
+							}
 						}
 					}
 					g2.setPaint(getStencilPaint());
@@ -92,8 +96,12 @@ package edu.cmu.cs.dennisc.tutorial;
 				}
 				super.paintComponent(g);
 				if( step != null ) {
-					for( Feature feature : step.getFeatures() ) {
-						feature.paint( g2, Stencil.this, step.getNote() );
+					for( Step.Note note : step.getNotes() ) {
+						if( note.isActive() ) {
+							for( Feature feature : note.getFeatures() ) {
+								feature.paint( g2, Stencil.this, note );
+							}
+						}
 					}
 				}
 			}
@@ -103,10 +111,14 @@ package edu.cmu.cs.dennisc.tutorial;
 				Step step = Stencil.this.getCurrentStep();
 				if( step != null ) {
 					java.awt.geom.Area area = new java.awt.geom.Area(new java.awt.Rectangle(0, 0, this.getWidth(), this.getHeight()));
-					for( Feature feature : step.getFeatures() ) {
-						java.awt.geom.Area featureArea = feature.getAreaToSubstractForContains( Stencil.this );
-						if( featureArea != null ) {
-							area.subtract( featureArea );
+					for( Step.Note note : step.getNotes() ) {
+						if( note.isActive() ) {
+							for( Feature feature : note.getFeatures() ) {
+								java.awt.geom.Area featureArea = feature.getAreaToSubstractForContains( Stencil.this );
+								if( featureArea != null ) {
+									area.subtract( featureArea );
+								}
+							}
 						}
 					}
 					return area.contains(x, y);
