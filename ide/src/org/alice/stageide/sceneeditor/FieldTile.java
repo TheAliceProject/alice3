@@ -111,12 +111,12 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 				}
 			}
 			@Override
-			public boolean isOpaque() {
+			public boolean isFocusable() {
 				return false;
 			}
 			@Override
-			public void updateUI() {
-				this.setUI( javax.swing.plaf.basic.BasicRadioButtonUI.createUI( this ) );
+			public boolean isOpaque() {
+				return false;
 			}
 			@Override
 			protected void paintComponent(java.awt.Graphics g) {

@@ -395,6 +395,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			isSceneEditorExpandedCheckBox.setFontSize( 18.0f );
 			isSceneEditorExpandedCheckBox.setBorder( javax.swing.BorderFactory.createEmptyBorder( Y_PAD, X_PAD, Y_PAD, X_PAD ) );
 			
+			
+			PrintUtilities.println( "todo: addAndInvokeValueObserver" );
+			this.splitPane.setDividerSize( 0 );
 			isSceneEditorExpandedOperation.addValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
 				public void changing(boolean nextValue) {
 				}

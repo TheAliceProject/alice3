@@ -65,9 +65,14 @@ public class CaughtExceptionPane extends edu.cmu.cs.dennisc.toolkit.issue.Abstra
 			public java.awt.Dimension getMaximumSize() {
 				return this.getPreferredSize();
 			}
+			@Override
+			public boolean contains(int x, int y) {
+				return false;
+			}
 		};
 		message.setEditable( false );
-		message.setOpaque( false );
+		//message.setOpaque( false );
+		message.setBackground( java.awt.Color.DARK_GRAY );
 		message.setForeground( java.awt.Color.WHITE );
 //		header.setLineWrap( false );
 //		header.setWrapStyleWord( true );
@@ -86,7 +91,7 @@ public class CaughtExceptionPane extends edu.cmu.cs.dennisc.toolkit.issue.Abstra
 //		label.setAlignmentY( 0.5f );
 		
 		edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( meanQueen, javax.swing.Box.createHorizontalStrut( 16 ), message );
-		pane.setBackground( java.awt.Color.DARK_GRAY );
+		pane.setBackground( message.getBackground() );
 		pane.setOpaque( true );
 		this.add( pane, java.awt.BorderLayout.NORTH );
 	}
