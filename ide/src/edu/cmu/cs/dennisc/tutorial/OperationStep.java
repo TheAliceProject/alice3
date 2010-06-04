@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class OperationStep extends WaitingOnCompleteStep<edu.cmu.cs.dennisc.croquet.Operation<?>> {
-	public OperationStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.Operation< ? > operation ) {
-		super( tutorial, title, text, operation.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractButton.class ), Feature.ConnectionPreference.EAST_WEST, operation );
+	public OperationStep( String title, String text, edu.cmu.cs.dennisc.croquet.Operation< ? > operation ) {
+		super( title, text, operation, Feature.ConnectionPreference.EAST_WEST, operation );
 	}
 	@Override
 	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Operation<?> model) {

@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRadioButtons< E > extends ItemSelectable< E, ItemSelectable.ItemDetails > {
+public abstract class AbstractRadioButtons< E > extends ItemSelectablePanel< E, ItemSelectablePanel.ItemDetails > {
 	/*package-private*/ AbstractRadioButtons( ItemSelectionState<E> model ) {
 		super( model );
 	}

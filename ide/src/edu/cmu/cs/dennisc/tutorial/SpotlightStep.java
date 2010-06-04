@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class SpotlightStep extends FeatureStep {
-	public SpotlightStep( Tutorial tutorial, String title, String text, Frame frame ) {
-		super( tutorial, title, text, frame );
+	public SpotlightStep( String title, String text, edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape, edu.cmu.cs.dennisc.tutorial.Feature.ConnectionPreference connectionPreference ) {
+		super( title, text, new Frame( trackableShape, connectionPreference ) );
 	}
 }	

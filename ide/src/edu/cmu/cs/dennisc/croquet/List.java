@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class List<E> extends ViewController<javax.swing.JList, ItemSelectionState<E> > {
+public class List<E> extends ItemSelectable<javax.swing.JList, E > {
 	private long tModelChange;
 	private class ListUI extends javax.swing.plaf.basic.BasicListUI {
 		@Override
@@ -104,6 +104,13 @@ public class List<E> extends ViewController<javax.swing.JList, ItemSelectionStat
 			}
 		};
 	}
+	
+	@Override
+	/*package-private*/ TrackableShape getTrackableShapeFor( E item ) {
+		//todo
+		return this;
+	}
+	
 	
 //	public enum DoubleClickBehavior {
 //		DO_NOTHING,

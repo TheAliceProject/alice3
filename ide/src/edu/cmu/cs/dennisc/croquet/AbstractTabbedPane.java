@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemDetails> extends ItemSelectable<E, D> {
+public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemDetails> extends ItemSelectablePanel<E, D> {
 	private static class CloseButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
 		private static final java.awt.Color BASE_COLOR = new java.awt.Color( 127, 63, 63 );
 		private static final java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, +0.25f );
@@ -263,19 +263,8 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 		super( model );
 		this.tabCreator = tabCreator;
 	}
-
 	
-	@Deprecated
-	public AbstractButton<?,?> getTabTitle( E item ) {
-		TabItemDetails tabItemDetails = this.getItemDetails( item );
-		if( tabItemDetails != null ) {
-			return tabItemDetails.getButton();
-		} else {
-			return null;
-		}
-	}
-	@Deprecated
-	public JComponent<?> getMainComponent( E item ) {
+	/*package-private*/ TrackableShape getMainComponentTrackableShapeFor( E item ) {
 		TabItemDetails tabItemDetails = this.getItemDetails( item );
 		if( tabItemDetails != null ) {
 			return tabItemDetails.getMainComponent();
@@ -283,8 +272,7 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 			return null;
 		}
 	}
-	@Deprecated
-	public ScrollPane getScrollPane( E item ) {
+	/*package-private*/ TrackableShape getScrollPaneTrackableShapeFor( E item ) {
 		TabItemDetails tabItemDetails = this.getItemDetails( item );
 		if( tabItemDetails != null ) {
 			return tabItemDetails.getScrollPane();

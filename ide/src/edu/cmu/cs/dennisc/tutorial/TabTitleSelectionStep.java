@@ -47,8 +47,8 @@ package edu.cmu.cs.dennisc.tutorial;
  */
 /*package-private*/ class TabTitleSelectionStep<E> extends WaitingOnCompleteStep<edu.cmu.cs.dennisc.croquet.ItemSelectionState<E>> {
 	private E desiredValue;
-	public TabTitleSelectionStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> selectionState, E desiredValue ) {
-		super( tutorial, title, text, selectionState.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.class ).getTabTitle( desiredValue ), Feature.ConnectionPreference.NORTH_SOUTH, selectionState );
+	public TabTitleSelectionStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> selectionState, E desiredValue ) {
+		super( title, text, selectionState.getTrackableShapeFor( desiredValue ), Feature.ConnectionPreference.NORTH_SOUTH, selectionState );
 		this.desiredValue = desiredValue;
 	}
 	@Override

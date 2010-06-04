@@ -443,7 +443,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 	public CodeEditor getCodeEditorInFocus() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getValue();
 		if( code != null ) {
-			return (CodeEditor)this.singleton.getMainComponent( code );
+			return (CodeEditor)this.getMainComponentTrackableShapeFor( code );
 		} else {
 			return null;
 		}

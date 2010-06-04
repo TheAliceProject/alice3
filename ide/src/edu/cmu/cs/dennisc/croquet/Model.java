@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Model {
+public abstract class Model implements TrackableShape {
 	private Group group;
 	private java.util.UUID inividualUUID;
 	public Model( Group group, java.util.UUID inividualUUID ) {
@@ -149,15 +149,32 @@ public abstract class Model {
 		}
 	}
 	
-	@Deprecated
-	public <J extends Component<?>> J getFirstComponent( Class<J> cls ) {
-		for( Component<?> component : this.components ) {
+	protected <J extends JComponent< ? > > J getFirstComponent( Class<J> cls ) {
+		for( JComponent< ? > component : this.components ) {
 			if( cls.isAssignableFrom( component.getClass() ) ) {
-				return (J)component;
+				return cls.cast( component );
 			}
 		}
 		return null;
 	}
+	protected JComponent< ? > getFirstComponent() {
+		return getFirstComponent( JComponent.class );
+	}
+	public java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
+		return getFirstComponent().getShape( asSeenBy, insets );
+	}
+	public java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
+		return getFirstComponent().getVisibleShape( asSeenBy, insets );
+	}
+//	@Deprecated
+//	public <J extends Component<?>> J getFirstComponent( Class<J> cls ) {
+//		for( Component<?> component : this.components ) {
+//			if( cls.isAssignableFrom( component.getClass() ) ) {
+//				return (J)component;
+//			}
+//		}
+//		return null;
+//	}
 	
 //	protected abstract void perform( C context );
 //	protected abstract C createContext( CompositeContext parentContext, java.util.EventObject e, CancelEffectiveness cancelEffectiveness );

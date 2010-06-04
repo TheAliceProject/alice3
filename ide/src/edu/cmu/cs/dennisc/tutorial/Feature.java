@@ -95,23 +95,17 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	private static final java.awt.Stroke ARROW_STROKE = new java.awt.BasicStroke( 3.0f ); 
 
-	private ComponentResolver componentResolver;
+	private edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape;
 	private ConnectionPreference connectionPreference;
 	private Connection actualConnection;
-	public Feature( final edu.cmu.cs.dennisc.croquet.JComponent<?> component, ConnectionPreference connectionPreference ) {
-		this( new ComponentResolver() {
-			public edu.cmu.cs.dennisc.croquet.JComponent< ? > getComponent() {
-				return component;
-			}
-		}, connectionPreference );
-	}
-	public Feature( ComponentResolver componentResolver, ConnectionPreference connectionPreference ) {
-		this.componentResolver = componentResolver;
+	public Feature( edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape, ConnectionPreference connectionPreference ) {
+		assert trackableShape != null;
+		this.trackableShape = trackableShape;
 		this.connectionPreference = connectionPreference;
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.Component<?> getComponent() {
-		return this.componentResolver.getComponent();
+	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape() {
+		return this.trackableShape;
 	}
 	public ConnectionPreference getConnectionPreference() {
 		return this.connectionPreference;
@@ -124,15 +118,15 @@ package edu.cmu.cs.dennisc.tutorial;
 		this.actualConnection = actualConnection;
 	}
 	
-	protected abstract java.awt.Rectangle updateBoundsForContains( java.awt.Rectangle rv );
-	protected abstract java.awt.Rectangle updateBoundsForPaint( java.awt.Rectangle rv );
-	public final java.awt.geom.Area getAreaToSubstractForContains( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy ) {
-		edu.cmu.cs.dennisc.croquet.Component<?> component = this.componentResolver.getComponent();
-		if( component != null ) {
-			java.awt.Rectangle bounds = component.getVisibleRectangle( asSeenBy );
-			bounds = this.updateBoundsForContains( bounds );
-			if( bounds != null ) {
-				return new java.awt.geom.Area( bounds );
+	protected abstract java.awt.Insets getContainsInsets();
+	protected abstract java.awt.Insets getPaintInsets();
+//	protected abstract java.awt.Rectangle updateBoundsForContains( java.awt.Rectangle rv );
+//	protected abstract java.awt.Rectangle updateBoundsForPaint( java.awt.Rectangle rv );
+	public java.awt.geom.Area getAreaToSubstractForContains( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy ) {
+		if( this.trackableShape != null ) {
+			java.awt.Shape shape = this.trackableShape.getVisibleShape( asSeenBy, this.getContainsInsets() );
+			if( shape != null ) {
+				return new java.awt.geom.Area( shape );
 			} else {
 				return null;
 			}
@@ -140,24 +134,22 @@ package edu.cmu.cs.dennisc.tutorial;
 			return null;
 		}
 	}
-	private java.awt.Rectangle getBoundsForPaint( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy ) {
-		edu.cmu.cs.dennisc.croquet.Component<?> component = this.componentResolver.getComponent();
-		if( component != null ) {
-			java.awt.Rectangle bounds = component.getVisibleRectangle( asSeenBy );
-			return this.updateBoundsForPaint( bounds );
+	private java.awt.Shape getShapeForPaint( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy ) {
+		if( this.trackableShape != null ) {
+			return this.trackableShape.getVisibleShape( asSeenBy, this.getPaintInsets() );
 		} else {
 			return null;
 		}
 	}
 	public final java.awt.geom.Area getAreaToSubstractForPaint( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy ) {
-		java.awt.Rectangle bounds = this.getBoundsForPaint( asSeenBy );
-		if( bounds != null ) {
-			return new java.awt.geom.Area( bounds );
+		java.awt.Shape shape = this.getShapeForPaint( asSeenBy );
+		if( shape != null ) {
+			return new java.awt.geom.Area( shape );
 		} else {
 			return null;
 		}
 	}
-	protected abstract void paint( java.awt.Graphics2D g2, java.awt.Rectangle componentBounds );
+	protected abstract void paint( java.awt.Graphics2D g2, java.awt.Shape shape );
 	private static void drawPath( java.awt.Graphics2D g2, float xFrom, float yFrom, float xTo, float yTo, boolean isCurveDesired ) {
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
 		path.moveTo( xFrom, yFrom );
@@ -183,14 +175,14 @@ package edu.cmu.cs.dennisc.tutorial;
 		
 	}
 	public final void paint( java.awt.Graphics2D g2, edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy, edu.cmu.cs.dennisc.croquet.JComponent<?> note ) {
-		java.awt.Rectangle componentBounds = getBoundsForPaint( asSeenBy );
-		this.paint( g2, componentBounds );
+		java.awt.Shape shape = getShapeForPaint( asSeenBy );
+		this.paint( g2, shape );
 
 		g2.setPaint( java.awt.Color.BLACK );
 		java.awt.Rectangle noteBounds = note.getComponent( 0 ).getBounds( asSeenBy );
 		
 		
-		java.awt.Point ptComponent = edu.cmu.cs.dennisc.java.awt.RectangleUtilties.getPoint( componentBounds, this.actualConnection.getXConstraint(), this.actualConnection.getYConstraint() );
+		java.awt.Point ptComponent = edu.cmu.cs.dennisc.java.awt.RectangleUtilties.getPoint( shape.getBounds(), this.actualConnection.getXConstraint(), this.actualConnection.getYConstraint() );
 		
 		int xContraint;
 		if( noteBounds.x > ptComponent.x ) {

@@ -47,8 +47,8 @@ package edu.cmu.cs.dennisc.tutorial;
  */
 /*package-private*/ class BooleanStateStep extends WaitingOnCompleteStep<edu.cmu.cs.dennisc.croquet.BooleanState> {
 	private boolean desiredValue;
-	public BooleanStateStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.BooleanState booleanState, boolean desiredValue ) {
-		super( tutorial, title, text, booleanState.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractButton.class ), Feature.ConnectionPreference.EAST_WEST, booleanState );
+	public BooleanStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.BooleanState booleanState, boolean desiredValue ) {
+		super( title, text, booleanState, Feature.ConnectionPreference.EAST_WEST, booleanState );
 		this.desiredValue = desiredValue;
 	}
 	@Override

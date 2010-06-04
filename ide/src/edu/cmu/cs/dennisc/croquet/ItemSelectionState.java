@@ -444,7 +444,7 @@ public abstract class ItemSelectionState<E> extends Model {
 		return rv;
 	}
 
-	/*package-private*/ <R extends ItemSelectable<E, ?>> R register(final R rv) {
+	/*package-private*/ <R extends ItemSelectablePanel<E, ?>> R register(final R rv) {
 		Application.getSingleton().register(this);
 		rv.setModel(this.comboBoxModel);
 		rv.setSelectionModel(this.listSelectionModel);
@@ -487,11 +487,23 @@ public abstract class ItemSelectionState<E> extends Model {
 		return register(new ToolPaletteTabbedPane<E>(this, tabCreator));
 	};
 
+	public TrackableShape getTrackableShapeFor( E item ) {
+		ItemSelectable< ?, E > itemSelectable = this.getFirstComponent( ItemSelectable.class );
+		return itemSelectable.getTrackableShapeFor( item );
+	}
+	public TrackableShape getMainComponentTrackableShapeFor( E item ) {
+		AbstractTabbedPane< E, ? > abstractTabbedPane = this.getFirstComponent( AbstractTabbedPane.class );
+		return abstractTabbedPane.getMainComponentTrackableShapeFor( item );
+	}
+	public TrackableShape getScrollPaneTrackableShapeFor( E item ) {
+		AbstractTabbedPane< E, ? > abstractTabbedPane = this.getFirstComponent( AbstractTabbedPane.class );
+		return abstractTabbedPane.getScrollPaneTrackableShapeFor( item );
+	}
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed(java.awt.event.ActionEvent e) {
 		}
 	};
-
+	
 	public String getName() {
 		return String.class.cast(this.action.getValue(javax.swing.Action.NAME));
 	}

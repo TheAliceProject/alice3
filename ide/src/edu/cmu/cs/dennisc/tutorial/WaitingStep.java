@@ -47,8 +47,8 @@ package edu.cmu.cs.dennisc.tutorial;
  */
 /*package-private*/ abstract class WaitingStep<M extends edu.cmu.cs.dennisc.croquet.Model> extends FeatureStep {
 	private M model;
-	public WaitingStep( Tutorial tutorial, String title, String text, Feature feature, M model ) {
-		super( tutorial, title, text, feature );
+	public WaitingStep( String title, String text, Feature feature, M model ) {
+		super( title, text, feature );
 		this.model = model;
 	}
 	protected M getModel() {

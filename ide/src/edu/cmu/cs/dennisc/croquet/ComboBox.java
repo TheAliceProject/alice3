@@ -43,10 +43,12 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
+import edu.cmu.cs.dennisc.croquet.ItemSelectablePanel.ItemDetails;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ComboBox< E > extends ViewController<javax.swing.JComboBox, ItemSelectionState<E>> {
+public class ComboBox< E > extends ItemSelectable<javax.swing.JComboBox, E> {
 	/*package-private*/ ComboBox( ItemSelectionState<E> model ) {
 		super( model );
 	}
@@ -75,6 +77,10 @@ public class ComboBox< E > extends ViewController<javax.swing.JComboBox, ItemSel
 		this.getAwtComponent().setMaximumRowCount( maximumRowCount );
 	}
 
+	@Override
+	/*package-private*/ TrackableShape getTrackableShapeFor( E item ) {
+		return this;
+	}
 	/*package-private*/ void setModel( javax.swing.ComboBoxModel model ) {
 		this.getAwtComponent().setModel( model );
 	}

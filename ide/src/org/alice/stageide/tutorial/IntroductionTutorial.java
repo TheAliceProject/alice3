@@ -182,6 +182,11 @@ public class IntroductionTutorial {
 				"<html>Note you are now editing the code.</html>" 
 		);
 		
+		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice runMethod = ide.getSceneType().getDeclaredMethod( "run" );
+
+		final edu.cmu.cs.dennisc.alice.ast.CountLoop countLoop = org.alice.ide.ast.NodeUtilities.createCountLoop( new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( 3 ) );
+		runMethod.body.getValue().statements.add( countLoop );
+
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava resizeMethod = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( 
 				org.alice.apis.moveandturn.AbstractModel.class, 
 				"resize", 
@@ -200,24 +205,53 @@ public class IntroductionTutorial {
 				Number.class
 		);
 		
-		edu.cmu.cs.dennisc.tutorial.ComponentResolver componentResolver = new edu.cmu.cs.dennisc.tutorial.ComponentResolver() {
-			public edu.cmu.cs.dennisc.croquet.Component< ? > getComponent() {
-				return ide.getCodeEditorInFocus().getComponent( 1 );
+		abstract class Resolver implements edu.cmu.cs.dennisc.croquet.TrackableShape {
+			private edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape;
+			protected abstract edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape();
+			private edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape() {
+				if( this.trackableShape != null ) {
+					//pass
+				} else {
+					this.trackableShape = this.resolveTrackableShape();
+				}
+				return this.trackableShape;
 			}
-		};
+			public final java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
+				return this.getTrackableShape().getShape( asSeenBy, insets );
+			}
+			public final java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
+				return this.getTrackableShape().getVisibleShape( asSeenBy, insets );
+			}
+		}
+		
+		abstract class CodeResolver extends Resolver {
+			protected abstract edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape( org.alice.ide.codeeditor.CodeEditor codeEditor );
+			@Override
+			protected final edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape() {
+				return this.resolveTrackableShape( ide.getEditorsTabSelectionState().getCodeEditorInFocus() );
+			}
+		}
+		
+		class CountLoopResolver extends CodeResolver {
+			@Override
+			protected edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape( org.alice.ide.codeeditor.CodeEditor codeEditor ) {
+				return codeEditor.getTrackableShape( countLoop.body.getValue(), org.alice.ide.codeeditor.CodeEditor.Location.AT_END );
+			}
+		}
 		
 		tutorial.addDragAndDropStep( 
 				"Drag Resize Procedure",
 				"<html>Drag <b>resize</b> procedure.</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( resizeMethod ),
 				"<html>Drop <b>here</b>.</html>",
-				componentResolver,
+				new CountLoopResolver(),
 				"<html>Select <b>2.0</b> from the menu.</html>"
 		);
 		
-		tutorial.addMessageStep( 
+		tutorial.addSpotlightStep( 
 				"Note Resize",
-				"<html>Note that resize has been added to your run method.</html>"
+				"<html>Note that resize has been added to your run method.</html>",
+				new CountLoopResolver()
 		);
 
 		tutorial.addDragAndDropStep( 
@@ -225,7 +259,7 @@ public class IntroductionTutorial {
 				"<html>Drag <b>move</b> procedure.</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( moveMethod ),
 				"<html>Drop <b>here</b>.</html>",
-				componentResolver,
+				new CountLoopResolver(),
 				"<html>Select <b>FORWARD</b> and <b>1.0</b> from the menus.</html>"
 		);
 		
@@ -239,7 +273,7 @@ public class IntroductionTutorial {
 				"<html>Drag <b>turn</b> procedure.</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( turnMethod ),
 				"<html>Drop <b>here</b>.</html>",
-				componentResolver,
+				new CountLoopResolver(),
 				"<html>Select <b>LEFT</b> and <b>0.25</b> from the menus.</html>"
 		);
 		
@@ -254,7 +288,7 @@ public class IntroductionTutorial {
 		);
 
 		//membersEditor.getTabbedPaneSelectionState().setValue( membersEditor.getFunctionsTab() );
-		tutorial.setSelectedIndex( 21 );
+		tutorial.setSelectedIndex( 22 );
 		
 		ide.getFrame().addWindowListener( new java.awt.event.WindowAdapter() {
 			@Override

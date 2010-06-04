@@ -44,6 +44,7 @@ package org.alice.ide.codeeditor;
 
 import org.alice.ide.common.StatementListPropertyPane;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -653,4 +654,42 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 	//			}
 	//		}
 	//	}
+
+	public enum Location {
+		AT_FRONT( false ),
+		AT_END( false ),
+		BEFORE( true ),
+		AFTER( true );
+		private boolean isLookingForParent;
+		private Location( boolean isLookingForParent ) {
+			this.isLookingForParent = isLookingForParent;
+		}
+		public boolean isTheOne( StatementListPropertyPane statementListPropertyPane, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+			edu.cmu.cs.dennisc.alice.ast.StatementListProperty property = statementListPropertyPane.getProperty();
+			if( this.isLookingForParent ) {
+				if( property.contains( statement ) ) {
+					return true;
+				}
+			} else {
+				if( property.getOwner() == statement ) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape( edu.cmu.cs.dennisc.alice.ast.Statement statement, Location location ) {
+		if( statement != null ) {
+			java.util.List< StatementListPropertyPane > statementListPropertyPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, StatementListPropertyPane.class );
+			for( StatementListPropertyPane statementListPropertyPane : statementListPropertyPanes ) {
+				//Object owner = statementListPropertyPane.getProperty().getOwner();
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( owner );
+				if( location.isTheOne( statementListPropertyPane, statement ) ) {
+					return statementListPropertyPane;
+				}
+			}
+		}
+		org.alice.ide.common.BodyPane bodyPane = (org.alice.ide.common.BodyPane)this.scrollPane.getViewportView();
+		return bodyPane.getComponent( 1 );
+	}
 }

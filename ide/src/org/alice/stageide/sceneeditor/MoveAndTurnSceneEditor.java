@@ -335,7 +335,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.rootComponent = null;
 		}
 		@Override
-		protected void addItem( edu.cmu.cs.dennisc.croquet.ItemSelectable.ItemDetails itemDetails) {
+		protected void addItem( edu.cmu.cs.dennisc.croquet.ItemSelectablePanel.ItemDetails itemDetails) {
 			AbstractButton<?,?> button = itemDetails.getButton();
 			if( this.previousComponent != null ) {
 				this.springLayout.putConstraint( javax.swing.SpringLayout.NORTH, button.getAwtComponent(), INTRA_FIELD_PAD, javax.swing.SpringLayout.SOUTH, this.previousComponent.getAwtComponent() );

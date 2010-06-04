@@ -45,6 +45,8 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-public interface ComponentResolver {
-	edu.cmu.cs.dennisc.croquet.Component< ? > getComponent();
-}
+/*package-private*/ class MessageStep extends Step {
+	public MessageStep( String title, String text ) {
+		super( title, text );
+	}
+}	

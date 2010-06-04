@@ -47,8 +47,8 @@ package edu.cmu.cs.dennisc.tutorial;
  */
 /*package-private*/ class ItemSelectionStep<E> extends WaitingOnCompleteStep<edu.cmu.cs.dennisc.croquet.ItemSelectionState<E>> {
 	private E desiredValue;
-	public ItemSelectionStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> selectionState, edu.cmu.cs.dennisc.croquet.JComponent<?> jComponent, Feature.ConnectionPreference connectionPreference, E desiredValue ) {
-		super( tutorial, title, text, jComponent, connectionPreference, selectionState );
+	public ItemSelectionStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> selectionState, E desiredValue, Feature.ConnectionPreference connectionPreference ) {
+		super( title, text, selectionState.getTrackableShapeFor( desiredValue ), connectionPreference, selectionState );
 		this.desiredValue = desiredValue;
 	}
 	@Override

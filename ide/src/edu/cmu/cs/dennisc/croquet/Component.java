@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Component<J extends java.awt.Component> {
+public abstract class Component<J extends java.awt.Component> implements TrackableShape {
 	public interface ContainmentObserver {
 		public void addedTo( Component<?> parent );
 		public void removedFrom( Component<?> parent );
@@ -307,35 +307,68 @@ public abstract class Component<J extends java.awt.Component> {
 	public java.awt.Rectangle getBounds() {
 		return this.getAwtComponent().getBounds();
 	}
-	public java.awt.Rectangle getBounds( Component< ? > destination ) {
-		return this.getParent().convertRectangle( this.getBounds(), destination );
+	public java.awt.Rectangle getBounds( Component< ? > asSeenBy ) {
+		Container< ? > parent = this.getParent();
+		if( parent != null ) {
+			return parent.convertRectangle( this.getBounds(), asSeenBy );
+		} else {
+			return null;
+		}
+	}
+
+	public java.awt.Rectangle getVisibleRectangle() {
+		return this.getBounds();
+	}
+	public final java.awt.Rectangle getVisibleRectangle( Component< ? > destination ) {
+		return this.convertRectangle( this.getVisibleRectangle(), destination );
+	}
+
+	public java.awt.Shape getShape( Component< ? > asSeenBy, java.awt.Insets insets ) {
+		java.awt.Rectangle rv = this.getBounds( asSeenBy );
+		if( insets != null ) {
+			rv.x -= insets.left;
+			rv.y -= insets.top;
+			rv.width += insets.left + insets.right;
+			rv.height += insets.top + insets.bottom;
+		}
+		return rv;
+	}
+	public java.awt.Shape getVisibleShape( Component< ? > asSeenBy, java.awt.Insets insets ) {
+		java.awt.Rectangle rv = this.getVisibleRectangle( asSeenBy );
+		if( insets != null ) {
+			rv.x -= insets.left;
+			rv.y -= insets.top;
+			rv.width += insets.left + insets.right;
+			rv.height += insets.top + insets.bottom;
+		}
+		return rv;
 	}
 
 	@Deprecated
-	public java.awt.Point convertPoint(java.awt.Point pt, java.awt.Component destination) {
-		return javax.swing.SwingUtilities.convertPoint(this.getAwtComponent(), pt, destination);
+	public java.awt.Point convertPoint(java.awt.Point pt, java.awt.Component asSeenBy) {
+		return javax.swing.SwingUtilities.convertPoint(this.getAwtComponent(), pt, asSeenBy);
 	}
 
-	public java.awt.Point convertPoint(java.awt.Point pt, Component<?> destination) {
-		return javax.swing.SwingUtilities.convertPoint(this.getAwtComponent(), pt, destination.getAwtComponent());
-	}
-
-	@Deprecated
-	public java.awt.Rectangle convertRectangle(java.awt.Rectangle rectangle, java.awt.Component destination) {
-		return javax.swing.SwingUtilities.convertRectangle(this.getAwtComponent(), rectangle, destination);
-	}
-
-	public java.awt.Rectangle convertRectangle(java.awt.Rectangle rectangle, Component<?> destination) {
-		return javax.swing.SwingUtilities.convertRectangle(this.getAwtComponent(), rectangle, destination.getAwtComponent());
+	public java.awt.Point convertPoint(java.awt.Point pt, Component<?> asSeenBy) {
+		return javax.swing.SwingUtilities.convertPoint(this.getAwtComponent(), pt, asSeenBy.getAwtComponent());
 	}
 
 	@Deprecated
-	public java.awt.event.MouseEvent convertMouseEvent(java.awt.event.MouseEvent e, java.awt.Component destination) {
-		return edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent(this.getAwtComponent(), e, destination);
+	public java.awt.Rectangle convertRectangle(java.awt.Rectangle rectangle, java.awt.Component asSeenBy) {
+		return javax.swing.SwingUtilities.convertRectangle(this.getAwtComponent(), rectangle, asSeenBy);
 	}
 
-	public java.awt.event.MouseEvent convertMouseEvent(java.awt.event.MouseEvent e, Component<?> destination) {
-		return edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent(this.getAwtComponent(), e, destination.getAwtComponent());
+	public java.awt.Rectangle convertRectangle(java.awt.Rectangle rectangle, Component<?> asSeenBy) {
+		return javax.swing.SwingUtilities.convertRectangle(this.getAwtComponent(), rectangle, asSeenBy.getAwtComponent());
+	}
+
+	@Deprecated
+	public java.awt.event.MouseEvent convertMouseEvent(java.awt.event.MouseEvent e, java.awt.Component asSeenBy) {
+		return edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent(this.getAwtComponent(), e, asSeenBy);
+	}
+
+	public java.awt.event.MouseEvent convertMouseEvent(java.awt.event.MouseEvent e, Component<?> asSeenBy) {
+		return edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent(this.getAwtComponent(), e, asSeenBy.getAwtComponent());
 	}
 
 
@@ -408,14 +441,7 @@ public abstract class Component<J extends java.awt.Component> {
 	public void setPreferredSize(java.awt.Dimension preferredSize) {
 		this.getAwtComponent().setPreferredSize(preferredSize);
 	}
-	
-	public java.awt.Rectangle getVisibleRectangle() {
-		return this.getBounds();
-	}
-	public final java.awt.Rectangle getVisibleRectangle( Component< ? > destination ) {
-		return this.convertRectangle( this.getVisibleRectangle(), destination );
-	}
-	
+		
 	@Override
 	public String toString() {
 		return this.getAwtComponent().getClass().toString();

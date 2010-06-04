@@ -261,79 +261,64 @@ public class Tutorial {
 	
 	private void addStep( Step step ) {
 		this.stepsComboBoxModel.addStep( step );
+		step.setTutorial( this );
 	}
 	public void setSelectedIndex( int index ) {
 		this.stepsComboBoxModel.setSelectedIndex( index );
 	}
 	public void addMessageStep( String title, String text ) {
-		Step step = new SimpleNoteStep( this, title, text );
+		Step step = new MessageStep( title, text );
 		this.addStep( step );
 	}
-	public void addSpotlightStep( String title, String text, edu.cmu.cs.dennisc.croquet.JComponent< ? > componentToSpotlight ) {
-		Step step = new SpotlightStep( this, title, text, new Frame( componentToSpotlight, Feature.ConnectionPreference.EAST_WEST ) );
+	public void addSpotlightStep( String title, String text, edu.cmu.cs.dennisc.croquet.TrackableShape shape ) {
+		Step step = new SpotlightStep( title, text, shape, Feature.ConnectionPreference.EAST_WEST );
 		this.addStep( step );
-	}
-	public void addSpotlightStep( String title, String text, edu.cmu.cs.dennisc.croquet.Model model ) {
-		this.addSpotlightStep( title, text, model.getFirstComponent( edu.cmu.cs.dennisc.croquet.JComponent.class ) );
 	}
 
 	public void addActionStep( String title, String text, edu.cmu.cs.dennisc.croquet.Operation<?> operation ) {
-		Step step = new OperationStep( this, title, text, operation );
+		Step step = new OperationStep( title, text, operation );
 		this.addStep( step );
 	}
-	public void addActionStep( String title, String text, java.util.UUID id ) {
-		edu.cmu.cs.dennisc.croquet.Model model = edu.cmu.cs.dennisc.croquet.Application.getSingleton().lookupOperation( id );
-		assert model != null;
-		addActionStep( title, text, (edu.cmu.cs.dennisc.croquet.Operation<?>)model );
-	}
 	public void addBooleanStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.BooleanState booleanState, boolean desiredValue ) {
-		Step step = new BooleanStateStep( this, title, text, booleanState, desiredValue );
+		Step step = new BooleanStateStep( title, text, booleanState, desiredValue );
 		this.addStep( step );
 	}
 	public void addDialogOpenStep( String title, String text, edu.cmu.cs.dennisc.croquet.DialogOperation operation ) {
-		Step step = new DialogOpenStep( this, title, text, operation );
+		Step step = new DialogOpenStep( title, text, operation );
 		this.addStep( step );
 	}
 	public void addDialogCloseStep( String title, String text, edu.cmu.cs.dennisc.croquet.DialogOperation operation ) {
-		Step step = new DialogCloseStep( this, title, text, operation );
+		Step step = new DialogCloseStep( title, text, operation );
 		this.addStep( step );
 	}
-	public <E> void addItemSelectionStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> operation, E item ) {
-		edu.cmu.cs.dennisc.croquet.ComboBox<E> jComponent = operation.getFirstComponent( edu.cmu.cs.dennisc.croquet.ComboBox.class );
-		Step step = new ItemSelectionStep( this, title, text, operation, jComponent, Feature.ConnectionPreference.EAST_WEST, item );
+	public <E> void addItemSelectionStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionState, E desiredValue ) {
+		Step step = new ItemSelectionStep<E>( title, text, itemSelectionState, desiredValue, Feature.ConnectionPreference.EAST_WEST );
 		this.addStep( step );
 	}
 
-	public <E> void addSpotlightTabTitleStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> operation, E item ) {
-		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane<E,?> tabbedPane = operation.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.class );
-		edu.cmu.cs.dennisc.croquet.AbstractButton<?,?> tabTitle = tabbedPane.getTabTitle( item );
-		Step step = new SpotlightStep( this, title, text, new Frame( tabTitle, Feature.ConnectionPreference.NORTH_SOUTH ) );
-		this.addStep( step );
-	}
-	public <E> void addSpotlightTabMainComponentStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> operation, E item ) {
-		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane<E,?> tabbedPane = operation.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.class );
-		edu.cmu.cs.dennisc.croquet.JComponent<?> mainComponent = tabbedPane.getTabTitle( item );
-		Step step = new SpotlightStep( this, title, text, new Frame( mainComponent, Feature.ConnectionPreference.EAST_WEST ) );
-		this.addStep( step );
-	}
-	public <E> void addSpotlightTabScrollPaneStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> operation, E item ) {
-		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane<E,?> tabbedPane = operation.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.class );
-		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = tabbedPane.getScrollPane( item );
-		Step step = new SpotlightStep( this, title, text, new Frame( scrollPane, Feature.ConnectionPreference.EAST_WEST ) );
-		this.addStep( step );
-	}
 	public <E> void addSelectTabStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionState, E desiredValue ) {
-		edu.cmu.cs.dennisc.croquet.JComponent<?> jComponent = itemSelectionState.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.class ).getTabTitle( desiredValue );
-		Step step = new ItemSelectionStep( this, title, text, itemSelectionState, jComponent, Feature.ConnectionPreference.NORTH_SOUTH, desiredValue );
+		Step step = new ItemSelectionStep<E>( title, text, itemSelectionState, desiredValue, Feature.ConnectionPreference.NORTH_SOUTH );
+		this.addStep( step );
+	}
+	public <E> void addSpotlightTabTitleStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionState, E item ) {
+		Step step = new SpotlightStep( title, text, itemSelectionState.getTrackableShapeFor( item ), Feature.ConnectionPreference.NORTH_SOUTH );
+		this.addStep( step );
+	}
+	public <E> void addSpotlightTabMainComponentStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionState, E item ) {
+		Step step = new SpotlightStep( title, text, itemSelectionState.getMainComponentTrackableShapeFor( item ), Feature.ConnectionPreference.EAST_WEST );
+		this.addStep( step );
+	}
+	public <E> void addSpotlightTabScrollPaneStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionState, E item ) {
+		Step step = new SpotlightStep( title, text, itemSelectionState.getScrollPaneTrackableShapeFor( item ), Feature.ConnectionPreference.EAST_WEST );
 		this.addStep( step );
 	}
 
-	public void addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, ComponentResolver dropComponentResolver, String cascadeText ) {
-		Step step = new DragAndDropStep( this, title, text, dragSource, dropText, dropComponentResolver, cascadeText );
+	public void addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape, String cascadeText ) {
+		Step step = new DragAndDropStep( title, text, dragSource, dropText, dropShape, cascadeText );
 		this.addStep( step );
 	}
-	public void addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, ComponentResolver dropComponentResolver ) {
-		this.addDragAndDropStep(title, text, dragSource, dropText, dropComponentResolver, null );
+	public void addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
+		this.addDragAndDropStep(title, text, dragSource, dropText, dropShape, null );
 	}
 		
 	/*package-private*/ edu.cmu.cs.dennisc.croquet.ActionOperation getNextOperation() {

@@ -67,19 +67,20 @@ package edu.cmu.cs.dennisc.tutorial;
 	};
 	private static final java.awt.Stroke STROKE = new java.awt.BasicStroke( 3.0f ); 
 
-	public Frame( edu.cmu.cs.dennisc.croquet.JComponent<?> component, ConnectionPreference connectionPreference ) {
-		super( component, connectionPreference );
-	}
-	public Frame( ComponentResolver componentResolver, ConnectionPreference connectionPreference ) {
-		super( componentResolver, connectionPreference );
+	public Frame( edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape, ConnectionPreference connectionPreference ) {
+		super( trackableShape, connectionPreference );
 	}
 	@Override
-	protected java.awt.Rectangle updateBoundsForContains(java.awt.Rectangle rv) {
+	protected java.awt.Insets getContainsInsets() {
 		return null;
 	}
 	@Override
-	protected java.awt.Rectangle updateBoundsForPaint(java.awt.Rectangle rv) {
-		return rv;
+	protected java.awt.Insets getPaintInsets() {
+		return null;
+	}
+	@Override
+	public java.awt.geom.Area getAreaToSubstractForContains( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy ) {
+		return null;
 	}
 
 	private static void fill( java.awt.Graphics2D g2, java.awt.Shape shape, float x, float y, double theta ) {
@@ -93,7 +94,8 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	}
 	@Override
-	protected void paint(java.awt.Graphics2D g2, java.awt.Rectangle componentBounds) {
+	protected void paint(java.awt.Graphics2D g2, java.awt.Shape shape) {
+		java.awt.Rectangle componentBounds = shape.getBounds();
 		g2.setPaint( Paint.SINGLETON.internal );
 		g2.fillRect( componentBounds.x, componentBounds.y, componentBounds.width, componentBounds.height );
 

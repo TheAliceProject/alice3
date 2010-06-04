@@ -101,9 +101,11 @@ package edu.cmu.cs.dennisc.tutorial;
 		if( this.features.size() > 0 ) {
 			Feature feature = this.features.get( 0 );
 			Feature.Connection actualConnection = null;
-			edu.cmu.cs.dennisc.croquet.Component<?> featureComponent = feature.getComponent();
-			if( featureComponent != null ) {
-				java.awt.Rectangle featureComponentBounds = featureComponent.getBounds( parent );
+			edu.cmu.cs.dennisc.croquet.TrackableShape featureTrackableShape = feature.getTrackableShape();
+			if( featureTrackableShape != null ) {
+				java.awt.Shape shape = featureTrackableShape.getShape( parent, null );
+				assert shape != null : featureTrackableShape;
+				java.awt.Rectangle featureComponentBounds = shape.getBounds();
 				Feature.ConnectionPreference connectionPreference = feature.getConnectionPreference();
 				if( connectionPreference == Feature.ConnectionPreference.EAST_WEST ) {
 					x = getXForWestLayout( noteBounds, featureComponentBounds );

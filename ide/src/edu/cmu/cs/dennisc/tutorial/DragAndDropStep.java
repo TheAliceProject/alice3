@@ -47,10 +47,10 @@ package edu.cmu.cs.dennisc.tutorial;
  */
 
 /*package-private*/ class DragAndDropStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
-	public DragAndDropStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, ComponentResolver dropComponentResolver, String cascadeText ) {
-		super( tutorial, title, text, new Hole( dragSource, Feature.ConnectionPreference.NORTH_SOUTH ), dragSource.getDragAndDropOperation() );
+	public DragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape, String cascadeText ) {
+		super( title, text, new Hole( dragSource, Feature.ConnectionPreference.NORTH_SOUTH ), dragSource.getDragAndDropOperation() );
 		Note dropNote = new Note( dropText );
-		dropNote.addFeature( new Hole( dropComponentResolver, Feature.ConnectionPreference.NORTH_SOUTH ) );
+		dropNote.addFeature( new Hole( dropShape, Feature.ConnectionPreference.NORTH_SOUTH ) );
 		this.addNote( dropNote );
 		
 		if( cascadeText != null ) {

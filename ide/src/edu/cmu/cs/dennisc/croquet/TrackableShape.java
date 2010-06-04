@@ -40,13 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.tutorial;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class SimpleNoteStep extends Step {
-	public SimpleNoteStep( Tutorial tutorial, String title, String text ) {
-		super( tutorial, title, text );
-	}
-}	
+public interface TrackableShape {
+	public java.awt.Shape getShape( Component< ? > asSeenBy, java.awt.Insets insets );
+	public java.awt.Shape getVisibleShape( Component< ? > asSeenBy, java.awt.Insets insets );
+	//public JComponent< ? > getComponent();
+}

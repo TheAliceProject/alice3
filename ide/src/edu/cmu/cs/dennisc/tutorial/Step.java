@@ -182,14 +182,25 @@ public abstract class Step {
 	private StepPanel stepPanel = new StepPanel();
 	private java.util.List< Note > notes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private String title;
-	public Step( Tutorial tutorial, String title, String text ) {
-		this.tutorial = tutorial;
+	public Step( String title, String text ) {
 		this.title = title;
 		this.addNote( new Note( text ) );
 	}
+	public Tutorial getTutorial() {
+		return this.tutorial;
+	}
+	/*package-private*/ void setTutorial( Tutorial tutorial ) {
+		this.tutorial = tutorial;
+		for( Note note : this.notes ) {
+			note.setTutorial( this.tutorial );
+		}
+	}
+	public java.util.UUID getId() {
+		return this.id;
+	}
 	public void addNote( Note note ) {
-		note.setTutorial( this.tutorial );
 		this.notes.add( note );
+		note.setTutorial( this.tutorial );
 	}
 	public Note getNoteAt( int index ) {
 		return this.notes.get( index );
@@ -202,13 +213,6 @@ public abstract class Step {
 	}
 	public edu.cmu.cs.dennisc.croquet.Component< ? > getCard() {
 		return this.stepPanel;
-	}
-
-	public java.util.UUID getId() {
-		return this.id;
-	}
-	public Tutorial getTutorial() {
-		return this.tutorial;
 	}
 	public boolean isAutoAdvanceDesired() {
 		return true;

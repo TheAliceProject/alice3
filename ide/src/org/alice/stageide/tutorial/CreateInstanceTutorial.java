@@ -68,12 +68,12 @@ public class CreateInstanceTutorial {
 				"<html>Note the gallery browser.</html>", 
 				ide.getGalleryBrowser() 
 		);
-		final java.util.UUID CREATE_PERSON_ID = java.util.UUID.fromString( "3dba52e9-fe65-4fe2-9f51-fd428549ca3a" );
-		tutorial.addActionStep( 
-				"Create Person", 
-				"<html>Press the <b>Create Person</b> button</html>", 
-				CREATE_PERSON_ID 
-		);
+//		final java.util.UUID CREATE_PERSON_ID = java.util.UUID.fromString( "3dba52e9-fe65-4fe2-9f51-fd428549ca3a" );
+//		tutorial.addActionStep( 
+//				"Create Person", 
+//				"<html>Press the <b>Create Person</b> button</html>", 
+//				CREATE_PERSON_ID 
+//		);
 
 		tutorial.addBooleanStateStep( 
 				"Edit Code", 

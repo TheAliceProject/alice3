@@ -80,7 +80,7 @@ public class DefaultRadioButtons< E > extends AbstractRadioButtons< E > {
 	protected void addPrologue(int count) {
 	}
 	@Override
-	protected void addItem(ItemSelectable.ItemDetails itemDetails) {
+	protected void addItem(ItemSelectablePanel.ItemDetails itemDetails) {
 		this.internalAddComponent( itemDetails.getButton(), GBC );
 	}
 	@Override

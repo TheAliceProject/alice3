@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class DialogCloseStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DialogOperation> {
-	public DialogCloseStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.DialogOperation operation ) {
-		super( tutorial, title, text, null, operation );
+	public DialogCloseStep( String title, String text, edu.cmu.cs.dennisc.croquet.DialogOperation operation ) {
+		super( title, text, null, operation );
 	}
 	@Override
 	protected boolean isAlreadyInTheDesiredState() {

@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/ abstract class WaitingOnCompleteStep<M extends edu.cmu.cs.dennisc.croquet.Model> extends WaitingStep<M> {
-	public WaitingOnCompleteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.JComponent< ? > component, Feature.ConnectionPreference connectionPreference, M model ) {
-		super( tutorial, title, text, new Hole( component, connectionPreference ), model );
+	public WaitingOnCompleteStep( String title, String text, edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape, Feature.ConnectionPreference connectionPreference, M model ) {
+		super( title, text, new Hole( trackableShape, connectionPreference ), model );
 	}
 	@Override
 	protected boolean isAlreadyInTheDesiredState() {
