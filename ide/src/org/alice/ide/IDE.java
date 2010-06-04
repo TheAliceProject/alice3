@@ -58,7 +58,11 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	public static final String GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
 	static {
 		IDE.exceptionHandler = new org.alice.ide.issue.ExceptionHandler();
-		Thread.setDefaultUncaughtExceptionHandler( IDE.exceptionHandler );
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isSupressionOfExceptionHandlerDesired" ) ) {
+			//pass
+		} else {
+			Thread.setDefaultUncaughtExceptionHandler( IDE.exceptionHandler );
+		}
 		performSceneEditorGeneratedSetUpMethodNameSet.add( "performSceneEditorGeneratedSetUp" );
 		performSceneEditorGeneratedSetUpMethodNameSet.add( "performEditorGeneratedSetUp" );
 		performSceneEditorGeneratedSetUpMethodNameSet.add( GENERATED_SET_UP_METHOD_NAME );
@@ -322,6 +326,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			//				helpOperations.add( new org.alice.ide.operations.help.ThrowBogusExceptionOperation() );
 			//				helpOperations.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 			//			}
+			//new org.alice.ide.operations.help.ThrowBogusExceptionOperation(),
 			new org.alice.ide.operations.help.ReportBugOperation(), new org.alice.ide.operations.help.SuggestImprovementOperation(), new org.alice.ide.operations.help.RequestNewFeatureOperation(), edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
 			new org.alice.ide.operations.help.WarningOperation( true ), new org.alice.ide.operations.help.DisplaySystemPropertiesOperation(), new org.alice.ide.operations.help.ReleaseNotesOperation()
 	//			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {

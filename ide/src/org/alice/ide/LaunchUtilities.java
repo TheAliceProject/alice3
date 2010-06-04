@@ -86,18 +86,22 @@ public class LaunchUtilities {
 	}
 	public static void launch( final Class<? extends IDE> cls, final java.awt.Window splashScreen, final String[] args ) {
 		if( splashScreen != null ) {
-			try {
-				javax.swing.SwingUtilities.invokeAndWait( new Runnable() {
-					public void run() {
-						splashScreen.setVisible( true );
-						splashScreen.toBack();
-						splashScreen.repaint();
-					}
-				} );
-			} catch( InterruptedException ie ) {
-				ie.printStackTrace();
-			} catch( java.lang.reflect.InvocationTargetException ite ) {
-				ite.printStackTrace();
+			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.LaunchUtilities.isSupressionOfSplashScreenDesired" ) ) {
+				//pass
+			} else {
+				try {
+					javax.swing.SwingUtilities.invokeAndWait( new Runnable() {
+						public void run() {
+							splashScreen.setVisible( true );
+							splashScreen.toBack();
+							splashScreen.repaint();
+						}
+					} );
+				} catch( InterruptedException ie ) {
+					ie.printStackTrace();
+				} catch( java.lang.reflect.InvocationTargetException ite ) {
+					ite.printStackTrace();
+				}
 			}
 		}
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
