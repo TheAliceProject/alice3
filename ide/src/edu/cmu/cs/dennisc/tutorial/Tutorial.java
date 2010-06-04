@@ -187,6 +187,7 @@ public class Tutorial {
 		}
 		private void handleStepChanged(Step step) {
 			if( step != null ) {
+				step.reset();
 				java.util.UUID stepId = step.getId();
 				edu.cmu.cs.dennisc.croquet.CardPanel.Key key = this.cardPanel.getKey(stepId);
 				if (key != null) {

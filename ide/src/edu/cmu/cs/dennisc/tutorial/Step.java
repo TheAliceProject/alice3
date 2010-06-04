@@ -354,6 +354,9 @@ public abstract class Step {
 		return true;
 	}
 
+	public void reset() {
+	}
+	
 	private static int getXForWestLayout( java.awt.Rectangle noteBounds, java.awt.Rectangle featureComponentBounds ) {
 		int x = featureComponentBounds.x;
 		x -= 200;

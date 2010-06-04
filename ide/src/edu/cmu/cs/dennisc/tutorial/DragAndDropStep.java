@@ -51,8 +51,14 @@ package edu.cmu.cs.dennisc.tutorial;
 		super( tutorial, title, text, new Hole( dragSource, Feature.ConnectionPreference.NORTH_SOUTH ), dragSource.getDragAndDropOperation() );
 		Note dropNote = new Note( dropText );
 		dropNote.addFeature( new Hole( dropComponentResolver, Feature.ConnectionPreference.NORTH_SOUTH ) );
-		dropNote.setActive( false );
 		this.addNote( dropNote );
+	}
+	
+	@Override
+	public void reset() {
+		super.reset();
+		this.getNoteAt( 0 ).setActive( true );
+		this.getNoteAt( 1 ).setActive( false );
 	}
 	@Override
 	protected boolean isAlreadyInTheDesiredState() {
@@ -65,8 +71,6 @@ package edu.cmu.cs.dennisc.tutorial;
 			this.getNoteAt( 1 ).setActive( true );
 			return false;
 		} else if( child instanceof edu.cmu.cs.dennisc.croquet.CancelEvent ) {
-			this.getNoteAt( 0 ).setActive( true );
-			this.getNoteAt( 1 ).setActive( false );
 			return false;
 		} else if( child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent ) {
 			//edu.cmu.cs.dennisc.croquet.ModelContext< ? > parent = child.getParent(); 
