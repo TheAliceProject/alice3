@@ -277,7 +277,7 @@ public class Tutorial {
 	}
 
 	public void addActionStep( String title, String text, edu.cmu.cs.dennisc.croquet.Operation<?> operation ) {
-		Step step = new OperationNoteStep( this, title, text, operation );
+		Step step = new OperationStep( this, title, text, operation );
 		this.addStep( step );
 	}
 	public void addActionStep( String title, String text, java.util.UUID id ) {
@@ -286,7 +286,7 @@ public class Tutorial {
 		addActionStep( title, text, (edu.cmu.cs.dennisc.croquet.Operation<?>)model );
 	}
 	public void addBooleanStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.BooleanState booleanState, boolean desiredValue ) {
-		Step step = new BooleanStateNoteStep( this, title, text, booleanState, desiredValue );
+		Step step = new BooleanStateStep( this, title, text, booleanState, desiredValue );
 		this.addStep( step );
 	}
 	public void addDialogOpenStep( String title, String text, edu.cmu.cs.dennisc.croquet.DialogOperation operation ) {
@@ -299,7 +299,7 @@ public class Tutorial {
 	}
 	public <E> void addItemSelectionStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> operation, E item ) {
 		edu.cmu.cs.dennisc.croquet.ComboBox<E> jComponent = operation.getFirstComponent( edu.cmu.cs.dennisc.croquet.ComboBox.class );
-		Step step = new ItemSelectionNoteStep( this, title, text, operation, jComponent, Feature.ConnectionPreference.EAST_WEST, item );
+		Step step = new ItemSelectionStep( this, title, text, operation, jComponent, Feature.ConnectionPreference.EAST_WEST, item );
 		this.addStep( step );
 	}
 
@@ -323,7 +323,7 @@ public class Tutorial {
 	}
 	public <E> void addSelectTabStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionState, E desiredValue ) {
 		edu.cmu.cs.dennisc.croquet.JComponent<?> jComponent = itemSelectionState.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.class ).getTabTitle( desiredValue );
-		Step step = new ItemSelectionNoteStep( this, title, text, itemSelectionState, jComponent, Feature.ConnectionPreference.NORTH_SOUTH, desiredValue );
+		Step step = new ItemSelectionStep( this, title, text, itemSelectionState, jComponent, Feature.ConnectionPreference.NORTH_SOUTH, desiredValue );
 		this.addStep( step );
 	}
 

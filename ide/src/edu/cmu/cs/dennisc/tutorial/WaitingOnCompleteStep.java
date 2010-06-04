@@ -45,14 +45,28 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class TabTitleSelectionNoteStep<E> extends WaitingOnCompleteNoteStep<edu.cmu.cs.dennisc.croquet.ItemSelectionState<E>> {
-	private E desiredValue;
-	public TabTitleSelectionNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> selectionState, E desiredValue ) {
-		super( tutorial, title, text, selectionState.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.class ).getTabTitle( desiredValue ), Feature.ConnectionPreference.NORTH_SOUTH, selectionState );
-		this.desiredValue = desiredValue;
+/*package-private*/ abstract class WaitingOnCompleteStep<M extends edu.cmu.cs.dennisc.croquet.Model> extends WaitingStep<M> {
+	public WaitingOnCompleteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.JComponent< ? > component, Feature.ConnectionPreference connectionPreference, M model ) {
+		super( tutorial, title, text, new Hole( component, connectionPreference ), model );
 	}
 	@Override
-	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> model) {
-		return model.getValue() == this.desiredValue;
+	protected boolean isAlreadyInTheDesiredState() {
+		return this.isInTheDesiredState( this.getModel() );
+	}
+	protected abstract boolean isInTheDesiredState(M model);
+	@Override
+	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
+		if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
+			edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent completeEvent = (edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent)child;
+			edu.cmu.cs.dennisc.croquet.Model eventModel = completeEvent.getParent().getModel();
+			M model = this.getModel();
+			if( model == eventModel ) {
+				return this.isInTheDesiredState(model);
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
 	}
 }

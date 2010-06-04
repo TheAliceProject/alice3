@@ -45,14 +45,14 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class BooleanStateNoteStep extends WaitingOnCompleteNoteStep<edu.cmu.cs.dennisc.croquet.BooleanState> {
-	private boolean desiredValue;
-	public BooleanStateNoteStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.BooleanState booleanState, boolean desiredValue ) {
-		super( tutorial, title, text, booleanState.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractButton.class ), Feature.ConnectionPreference.EAST_WEST, booleanState );
+/*package-private*/ class TabTitleSelectionStep<E> extends WaitingOnCompleteStep<edu.cmu.cs.dennisc.croquet.ItemSelectionState<E>> {
+	private E desiredValue;
+	public TabTitleSelectionStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> selectionState, E desiredValue ) {
+		super( tutorial, title, text, selectionState.getFirstComponent( edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.class ).getTabTitle( desiredValue ), Feature.ConnectionPreference.NORTH_SOUTH, selectionState );
 		this.desiredValue = desiredValue;
 	}
 	@Override
-	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.BooleanState model) {
-		return model.getState() == this.desiredValue;
+	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> model) {
+		return model.getValue() == this.desiredValue;
 	}
 }
