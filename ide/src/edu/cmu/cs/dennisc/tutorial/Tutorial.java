@@ -328,9 +328,12 @@ public class Tutorial {
 		this.addStep( step );
 	}
 
-	public void addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, ComponentResolver dropComponentResolver ) {
-		Step step = new DragAndDropStep( this, title, text, dragSource, dropText, dropComponentResolver );
+	public void addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, ComponentResolver dropComponentResolver, String cascadeText ) {
+		Step step = new DragAndDropStep( this, title, text, dragSource, dropText, dropComponentResolver, cascadeText );
 		this.addStep( step );
+	}
+	public void addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, ComponentResolver dropComponentResolver ) {
+		this.addDragAndDropStep(title, text, dragSource, dropText, dropComponentResolver, null );
 	}
 		
 	/*package-private*/ edu.cmu.cs.dennisc.croquet.ActionOperation getNextOperation() {

@@ -106,21 +106,21 @@ public class IntroductionTutorial {
 		);
 		
 		tutorial.addSpotlightStep( 
-				"Note Scene Instance Details", 
-				"<html>Now the scene instance details are now displayed.</html>", 
+				"Note Scene Details", 
+				"<html>Now the scene instance details are displayed.</html>", 
 				membersEditor 
 		);
 
 		tutorial.addItemSelectionStep(
-				"Select Scene",
+				"Select Sun Light",
 				"<html>Select the <b>sunLight</b> instance.</html>",
 				ide.getFieldSelectionState(),
 				sunLightField
 		);
 		
 		tutorial.addSpotlightStep( 
-				"Note sunLight Instance Details", 
-				"<html>Now the sunLight instance details are now displayed.</html>", 
+				"Note Sun Light Details", 
+				"<html>Now the sunLight instance details are displayed.</html>", 
 				membersEditor 
 		);
 
@@ -182,6 +182,11 @@ public class IntroductionTutorial {
 				"<html>Note you are now editing the code.</html>" 
 		);
 		
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava resizeMethod = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( 
+				org.alice.apis.moveandturn.AbstractModel.class, 
+				"resize", 
+				Number.class
+		);
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava moveMethod = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( 
 				org.alice.apis.moveandturn.AbstractTransformable.class, 
 				"move", 
@@ -202,21 +207,47 @@ public class IntroductionTutorial {
 		};
 		
 		tutorial.addDragAndDropStep( 
+				"Drag Resize Procedure",
+				"<html>Drag <b>resize</b> procedure.</html>",
+				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( resizeMethod ),
+				"<html>Drop <b>here</b>.</html>",
+				componentResolver,
+				"<html>Select <b>2.0</b> from the menu.</html>"
+		);
+		
+		tutorial.addMessageStep( 
+				"Note Resize",
+				"<html>Note that resize has been added to your run method.</html>"
+		);
+
+		tutorial.addDragAndDropStep( 
 				"Drag Move Procedure",
 				"<html>Drag <b>move</b> procedure.</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( moveMethod ),
-				"drop",
-				componentResolver
+				"<html>Drop <b>here</b>.</html>",
+				componentResolver,
+				"<html>Select <b>FORWARD</b> and <b>1.0</b> from the menus.</html>"
 		);
 		
+		tutorial.addMessageStep( 
+				"Note Move",
+				"<html>Note that move has been added to your run method.</html>"
+		);
+
 		tutorial.addDragAndDropStep( 
 				"Drag Turn Procedure",
 				"<html>Drag <b>turn</b> procedure.</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( turnMethod ),
-				"drop",
-				componentResolver
+				"<html>Drop <b>here</b>.</html>",
+				componentResolver,
+				"<html>Select <b>LEFT</b> and <b>0.25</b> from the menus.</html>"
 		);
 		
+		tutorial.addMessageStep( 
+				"Note Turn",
+				"<html>Note that turn has been added to your run method.</html>"
+		);
+
 		tutorial.addMessageStep( 
 				"The End",
 				"<html>End of tutorial.</html>" 

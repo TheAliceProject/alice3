@@ -81,7 +81,7 @@ package edu.cmu.cs.dennisc.tutorial;
 				Step step = Stencil.this.getCurrentStep();
 				if( step != null ) {
 					java.awt.geom.Area area = new java.awt.geom.Area(g2.getClip());
-					for( Step.Note note : step.getNotes() ) {
+					for( Note note : step.getNotes() ) {
 						if( note.isActive() ) {
 							for( Feature feature : note.getFeatures() ) {
 								java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( Stencil.this );
@@ -96,7 +96,7 @@ package edu.cmu.cs.dennisc.tutorial;
 				}
 				super.paintComponent(g);
 				if( step != null ) {
-					for( Step.Note note : step.getNotes() ) {
+					for( Note note : step.getNotes() ) {
 						if( note.isActive() ) {
 							for( Feature feature : note.getFeatures() ) {
 								feature.paint( g2, Stencil.this, note );
@@ -111,7 +111,7 @@ package edu.cmu.cs.dennisc.tutorial;
 				Step step = Stencil.this.getCurrentStep();
 				if( step != null ) {
 					java.awt.geom.Area area = new java.awt.geom.Area(new java.awt.Rectangle(0, 0, this.getWidth(), this.getHeight()));
-					for( Step.Note note : step.getNotes() ) {
+					for( Note note : step.getNotes() ) {
 						if( note.isActive() ) {
 							for( Feature feature : note.getFeatures() ) {
 								java.awt.geom.Area featureArea = feature.getAreaToSubstractForContains( Stencil.this );

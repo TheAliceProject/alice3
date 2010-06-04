@@ -46,6 +46,11 @@ package edu.cmu.cs.dennisc.javax.swing.plaf;
  * @author Dennis Cosgrove
  */
 public class HyperlinkUI extends javax.swing.plaf.basic.BasicButtonUI {
+	//private static java.awt.Color ARMED_COLOR = java.awt.Color.RED;
+	private static java.awt.Color ROLLOVER_COLOR = java.awt.Color.BLUE.brighter();
+	private static java.awt.Color PRESSED_COLOR = ROLLOVER_COLOR.darker();
+	private static java.awt.Color DEFAULT_COLOR = java.awt.Color.BLACK;
+	private static java.awt.Color DISABLED_COLOR = java.awt.Color.LIGHT_GRAY;
 	private static HyperlinkUI hyperlinkUI = new HyperlinkUI();
 	public static javax.swing.plaf.ComponentUI createUI( javax.swing.JComponent component ) { 
 		return hyperlinkUI;
@@ -55,13 +60,21 @@ public class HyperlinkUI extends javax.swing.plaf.basic.BasicButtonUI {
 		javax.swing.ButtonModel model = b.getModel();
 		java.awt.Color color;
 		if( b.isEnabled() ) {
-			if( model.isArmed() ) {
-				color = java.awt.Color.BLUE;
-			} else {
-				color = java.awt.Color.BLACK;
-			}
+//			if( model.isArmed() ) {
+//				color = ARMED_COLOR;
+//			} else {
+				if( model.isRollover() ) {
+					if( model.isPressed() ) {
+						color = PRESSED_COLOR;
+					} else {
+						color = ROLLOVER_COLOR;
+					}
+				} else {
+					color = DEFAULT_COLOR;
+				}
+//			}
 		} else {
-			color = java.awt.Color.LIGHT_GRAY;
+			color = DISABLED_COLOR;
 		}
 		g.setColor( color );
 		java.awt.FontMetrics fm = g.getFontMetrics();

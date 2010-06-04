@@ -47,18 +47,33 @@ package edu.cmu.cs.dennisc.tutorial;
  */
 
 /*package-private*/ class DragAndDropStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
-	public DragAndDropStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, ComponentResolver dropComponentResolver ) {
+	public DragAndDropStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, ComponentResolver dropComponentResolver, String cascadeText ) {
 		super( tutorial, title, text, new Hole( dragSource, Feature.ConnectionPreference.NORTH_SOUTH ), dragSource.getDragAndDropOperation() );
 		Note dropNote = new Note( dropText );
 		dropNote.addFeature( new Hole( dropComponentResolver, Feature.ConnectionPreference.NORTH_SOUTH ) );
 		this.addNote( dropNote );
+		
+		if( cascadeText != null ) {
+			Note cascadeNote = new Note( cascadeText );
+			this.addNote( cascadeNote );
+		}
+		
+		final int N = this.getNoteCount();
+		for( int i=0; i<N; i++ ) {
+			this.getNoteAt( i ).setLabel( Integer.toString(i+1) );
+		}
 	}
 	
+	private void setActiveNote( int activeIndex ) {
+		final int N = this.getNoteCount();
+		for( int i=0; i<N; i++ ) {
+			this.getNoteAt( i ).setActive( i==activeIndex );
+		}
+	}
 	@Override
 	public void reset() {
 		super.reset();
-		this.getNoteAt( 0 ).setActive( true );
-		this.getNoteAt( 1 ).setActive( false );
+		this.setActiveNote( 0 );
 	}
 	@Override
 	protected boolean isAlreadyInTheDesiredState() {
@@ -67,15 +82,28 @@ package edu.cmu.cs.dennisc.tutorial;
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
 		if( child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
-			this.getNoteAt( 0 ).setActive( false );
-			this.getNoteAt( 1 ).setActive( true );
+			this.setActiveNote( 1 );
 			return false;
 		} else if( child instanceof edu.cmu.cs.dennisc.croquet.CancelEvent ) {
+			this.reset();
 			return false;
 		} else if( child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent ) {
 			//edu.cmu.cs.dennisc.croquet.ModelContext< ? > parent = child.getParent(); 
 			//return parent.getModel() == this.getModel();
-			return true;
+			final int N = this.getNoteCount();
+			if( N == 3 ) {
+				this.setActiveNote( 2 );
+				return false;
+			} else {
+				return true;
+			}
+		} else if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
+			final int N = this.getNoteCount();
+			if( N == 3 ) {
+				return this.getNoteAt( 2 ).isActive();
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}

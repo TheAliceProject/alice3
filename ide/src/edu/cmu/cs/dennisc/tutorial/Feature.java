@@ -189,6 +189,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		g2.setPaint( java.awt.Color.BLACK );
 		java.awt.Rectangle noteBounds = note.getComponent( 0 ).getBounds( asSeenBy );
 		
+		
 		java.awt.Point ptComponent = edu.cmu.cs.dennisc.java.awt.RectangleUtilties.getPoint( componentBounds, this.actualConnection.getXConstraint(), this.actualConnection.getYConstraint() );
 		
 		int xContraint;
