@@ -52,13 +52,16 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,Model> {
 	protected abstract void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height );
 	protected abstract void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height );
 
+	private boolean isBorderInitialized = false;
 	public Widget() {
 		super( null );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: Widget" );
 	}
 	
 	private void updateBorderIfNecessary() {
-		if( this.getBorder() == null ) {
+		if( this.isBorderInitialized ) {
+			//pass
+		} else {
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( this.getInsetTop(), this.getInsetLeft(), this.getInsetBottom(), this.getInsetRight() ) );
 		}
 	}
