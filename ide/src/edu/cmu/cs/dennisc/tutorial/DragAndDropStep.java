@@ -40,58 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.tutorial;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JComponent<J extends javax.swing.JComponent> extends Container<J> {
-	public void setOpaque(boolean isOpaque) {
-		this.getAwtComponent().setOpaque(isOpaque);
-	}
-	public void setAlignmentX(float alignmentX) {
-		this.getAwtComponent().setAlignmentX(alignmentX);
-	}
-	public void setAlignmentY(float alignmentY) {
-		this.getAwtComponent().setAlignmentY(alignmentY);
-	}
 
+/*package-private*/ class DragAndDropStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
+	public DragAndDropStep( Tutorial tutorial, String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, ComponentResolver dropComponentResolver ) {
+		super( tutorial, title, text, new Hole( dragSource, Feature.ConnectionPreference.NORTH_SOUTH ), dragSource.getDragAndDropOperation() );
+		Note dropNote = new Note( dropText );
+		dropNote.addFeature( new Hole( dropComponentResolver, Feature.ConnectionPreference.NORTH_SOUTH ) );
+		dropNote.setActive( false );
+		this.addNote( dropNote );
+	}
 	@Override
-	public java.awt.Rectangle getVisibleRectangle() {
-		return this.getAwtComponent().getVisibleRect();
+	protected boolean isAlreadyInTheDesiredState() {
+		return false;
 	}
-
-	public java.awt.Insets getInsets() {
-		return this.getAwtComponent().getInsets();
-	}
-	private void scrollRectToVisible(java.awt.Rectangle rect) {
-		this.getAwtComponent().scrollRectToVisible(rect);
-	}
-	public void scrollToVisible() {
-		this.scrollRectToVisible(javax.swing.SwingUtilities.getLocalBounds(this.getAwtComponent()));
-	}
-
-	public String getToolTipText() {
-		return this.getAwtComponent().getToolTipText();
-	}
-	public void setToolTipText(String toolTipText) {
-		this.getAwtComponent().setToolTipText(toolTipText);
-	}
-
-	public javax.swing.border.Border getBorder() {
-		return this.getAwtComponent().getBorder();
-	}
-	public void setBorder(javax.swing.border.Border border) {
-		this.getAwtComponent().setBorder(border);
-	}
-
-	private void revalidate() {
-		this.getAwtComponent().revalidate();
-	}
-
-	public void revalidateAndRepaint() {
-		this.revalidate();
-		this.repaint();
+	@Override
+	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
+		if( child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
+			this.getNoteAt( 0 ).setActive( false );
+			this.getNoteAt( 1 ).setActive( true );
+			return false;
+		} else if( child instanceof edu.cmu.cs.dennisc.croquet.CancelEvent ) {
+			this.getNoteAt( 0 ).setActive( true );
+			this.getNoteAt( 1 ).setActive( false );
+			return false;
+		} else if( child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent ) {
+			//edu.cmu.cs.dennisc.croquet.ModelContext< ? > parent = child.getParent(); 
+			//return parent.getModel() == this.getModel();
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

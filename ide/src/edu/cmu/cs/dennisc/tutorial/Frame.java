@@ -70,6 +70,9 @@ package edu.cmu.cs.dennisc.tutorial;
 	public Frame( edu.cmu.cs.dennisc.croquet.JComponent<?> component, ConnectionPreference connectionPreference ) {
 		super( component, connectionPreference );
 	}
+	public Frame( ComponentResolver componentResolver, ConnectionPreference connectionPreference ) {
+		super( componentResolver, connectionPreference );
+	}
 	@Override
 	protected java.awt.Rectangle updateBoundsForContains(java.awt.Rectangle rv) {
 		return null;

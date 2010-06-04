@@ -45,11 +45,11 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class FeatureNoteStep extends NoteStep {
-	public FeatureNoteStep( Tutorial tutorial, String title, String text, Feature feature ) {
+/*package-private*/ abstract class FeatureStep extends Step {
+	public FeatureStep( Tutorial tutorial, String title, String text, Feature feature ) {
 		super( tutorial, title, text );
 		if( feature != null ) {
-			this.addFeature( feature );
+			this.getNoteAt( 0 ).addFeature( feature );
 		}
 	}
 }	

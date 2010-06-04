@@ -262,6 +262,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		} );
 		
 	}
+
 //	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
 //		this.refresh();
 //	}
