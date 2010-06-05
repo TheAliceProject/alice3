@@ -82,7 +82,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 		if( this.isVoid() ) {
 			return 0;
 		} else {
-			return 2;
+			return 1;
 		}
 	}
 	
@@ -111,12 +111,12 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 			type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE;
 		}
 //		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( INSET + ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, INSET, (float)width - 2 * INSET - ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, (float)height - 2 * INSET, 8, 8 );
-		int left = this.getInsetLeft();
+		int left = this.getDockInsetLeft();
 		int top = this.getInsetTop();
 		int right = this.getInsetRight();
 		int bottom = this.getInsetBottom();
-		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( left-INSET, top, width-left-right+INSET+INSET-1, height-top-bottom, 8, 8 );
-		return BeveledShapeForType.createBeveledShapeFor( type, shape, ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, Math.min( height * 0.5f, 12.0f ) );
+		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( left, top, width-left-right, height-top-bottom, 8, 8 );
+		return BeveledShapeForType.createBeveledShapeFor( type, shape, left, Math.min( height * 0.5f, 12.0f ) );
 	}
 	@Override
 	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {

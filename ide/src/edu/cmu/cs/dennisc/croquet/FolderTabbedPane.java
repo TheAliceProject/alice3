@@ -47,11 +47,31 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabbedPane.FolderTabItemDetails > {
+	private static final int EAST_TAB_PAD = 48;
+	public static final java.awt.Color DEFAULT_HEADER_COLOR = new java.awt.Color( 173, 167, 208 );
 	private static class JFolderTabTitle extends JTabTitle {
 		public JFolderTabTitle( javax.swing.JComponent jComponent, java.awt.event.ActionListener closeButtonActionListener ) {
 			super( jComponent, closeButtonActionListener );
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 4, 4, 8 ) );
 			this.setOpaque( false );
+		}
+		protected void repaintPlus() {
+			this.getParent().repaint( this.getX(), this.getY(), this.getWidth() + EAST_TAB_PAD, this.getHeight() );
+		}
+		@Override
+		protected void setArmed( boolean isArmed ) {
+			super.setArmed(isArmed);
+			this.repaintPlus();
+		}
+		@Override
+		protected void setPressed( boolean isPressed ) {
+			super.setPressed(isPressed);
+			this.repaintPlus();
+		}
+		@Override
+		protected void select() {
+			super.select();
+			this.repaintPlus();
 		}
 	}
 
@@ -59,11 +79,11 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		public FolderTabTitle( JComponent<?> innerTitleComponent, java.awt.event.ActionListener closeButtonActionListener ) {
 			super( new JFolderTabTitle( innerTitleComponent.getAwtComponent(), closeButtonActionListener ) );
 		}
+		
 	}
 
 	private static class HeaderPane extends JComponent< javax.swing.JPanel > {
 		private static final int NORTH_AREA_PAD = 8;
-		private static final int EAST_TAB_PAD = 48;
 		// private static java.awt.Stroke SELECTED_STROKE = new
 		// java.awt.BasicStroke( 3.0f );
 		private static java.awt.Stroke NORMAL_STROKE = new java.awt.BasicStroke( 1.0f );
@@ -155,35 +175,34 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 
 				@Override
 				protected void paintChildren( java.awt.Graphics g ) {
-					for( java.awt.Component component : this.getComponents() ) {
+					final int N = this.getComponentCount();
+					javax.swing.AbstractButton selectedButton = null;
+					for( int i=0; i<N; i++ ) {
+						java.awt.Component component = this.getComponent( N-1-i );
 						if( component instanceof javax.swing.AbstractButton ) {
 							javax.swing.AbstractButton button = (javax.swing.AbstractButton)component;
 							if( button.isSelected() ) {
-								// pass
+								selectedButton = button;
 							} else {
 								this.paintTabBackground( g, button );
 							}
 						}
 					}
-					for( java.awt.Component component : this.getComponents() ) {
-						if( component instanceof javax.swing.AbstractButton ) {
-							javax.swing.AbstractButton button = (javax.swing.AbstractButton)component;
-							if( button.isSelected() ) {
-								this.paintTabBackground( g, button );
-								this.paintTabBorder( g, button );
-								int y = this.getHeight() - 1;
-								g.setColor( BORDER_COLOR );
-								g.drawLine( 0, y, button.getX(), y );
+					if( selectedButton != null ) {
+						this.paintTabBackground( g, selectedButton );
+						this.paintTabBorder( g, selectedButton );
+						int y = this.getHeight() - 1;
+						g.setColor( BORDER_COLOR );
+						g.drawLine( 0, y, selectedButton.getX(), y );
 
-								int pad = EAST_TAB_PAD / 2;
-								g.drawLine( button.getX() + button.getWidth() + pad, y, this.getWidth(), y );
-							}
-						}
+						int pad = EAST_TAB_PAD / 2;
+						g.drawLine( selectedButton.getX() + selectedButton.getWidth() + pad, y, this.getWidth(), y );
 					}
 					super.paintChildren( g );
 				}
 			};
 			rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.LINE_AXIS ) );
+			rv.setBackground( DEFAULT_HEADER_COLOR );
 			return rv;
 		}
 		public void addComponent( Component< ? > component ) {
@@ -226,7 +245,6 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
 		javax.swing.JPanel rv = super.createAwtComponent();
-		this.headerPane.setBackgroundColor( new java.awt.Color( 185, 185, 208 ) );
 		rv.add( this.headerPane.getAwtComponent(), java.awt.BorderLayout.NORTH );
 		rv.add( this.cardPanel.getAwtComponent(), java.awt.BorderLayout.CENTER );
 		return rv;

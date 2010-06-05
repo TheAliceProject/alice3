@@ -69,6 +69,7 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 		this.field = field;
 		//this.setOpaque( false );
 		
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,4 ) );
 		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation(
 				java.util.UUID.fromString( "8e3989b2-34d6-44cf-998c-dda26662b3a0" ) ) {
 			@Override
@@ -76,7 +77,6 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 				return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( FieldTile.this.createPopupOperations(), edu.cmu.cs.dennisc.croquet.Model.class );
 			}
 		});
-		
 		this.updateLabel();
 	}
 

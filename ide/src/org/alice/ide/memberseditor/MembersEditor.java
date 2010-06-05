@@ -244,22 +244,27 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		edu.cmu.cs.dennisc.croquet.LineAxisPanel instancePanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( label, comboBox );
 
 		this.tabbedPaneSelectionState.setValue( this.proceduresTab );
-		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.tabbedPaneSelectionState.createDefaultToolPaletteTabbedPane();
+		//edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.tabbedPaneSelectionState.createDefaultToolPaletteTabbedPane();
+		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.tabbedPaneSelectionState.createDefaultFolderTabbedPane();
 		this.addComponent( instancePanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
 		this.addComponent( tabbedPane, Constraint.CENTER );
 		tabbedPane.scaleFont( 1.5f );
 		
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
 		this.setOpaque( true );
-		
-		this.tabbedPaneSelectionState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< edu.cmu.cs.dennisc.croquet.PredeterminedTab >() {
-			public void changed(edu.cmu.cs.dennisc.croquet.PredeterminedTab nextValue) {
-				if( nextValue != null ) {
-					MembersEditor.this.setBackgroundColor( nextValue.getMainComponent().getBackgroundColor() );
+
+		if( tabbedPane instanceof edu.cmu.cs.dennisc.croquet.ToolPaletteTabbedPane ) {
+			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
+			this.tabbedPaneSelectionState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< edu.cmu.cs.dennisc.croquet.PredeterminedTab >() {
+				public void changed(edu.cmu.cs.dennisc.croquet.PredeterminedTab nextValue) {
+					if( nextValue != null ) {
+						MembersEditor.this.setBackgroundColor( nextValue.getMainComponent().getBackgroundColor() );
+					}
+					MembersEditor.this.repaint();
 				}
-				MembersEditor.this.repaint();
-			}
-		} );
+			} );
+		} else {
+			this.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_HEADER_COLOR );
+		}
 		
 	}
 

@@ -70,15 +70,20 @@ public abstract class NodeLikeSubstance extends org.alice.ide.Component {
 	}
 
 	protected abstract int getDockInsetLeft();
+	protected final int getKnurlInsetLeft() {
+		if( this.isKnurlDesired() ) {
+			return KNURL_WIDTH;
+		} else {
+			return 0;
+		}
+	}
 	protected abstract int getInternalInsetLeft();
 	@Override
 	protected final int getInsetLeft() {
 		int rv = 0;
-		rv += getDockInsetLeft();
-		if( this.isKnurlDesired() ) {
-			rv += KNURL_WIDTH;
-		}
-		rv += getInternalInsetLeft();
+		rv += this.getDockInsetLeft();
+		rv += this.getKnurlInsetLeft();
+		rv += this.getInternalInsetLeft();
 		return rv;
 	}
 	
@@ -109,7 +114,7 @@ public abstract class NodeLikeSubstance extends org.alice.ide.Component {
 				grayscale = 60;
 			}
 			g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( grayscale ) );
-			edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g2, x + getDockInsetLeft(), y + 2, KNURL_WIDTH, height - 5 );
+			edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g2, x+this.getDockInsetLeft(), y + 2, KNURL_WIDTH, height - 5 );
 		}
 	}
 }

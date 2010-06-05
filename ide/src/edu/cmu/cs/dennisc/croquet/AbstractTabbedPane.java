@@ -124,25 +124,30 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 	protected static abstract class JTabTitle extends javax.swing.AbstractButton {
 		private java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
 			public void mouseEntered( java.awt.event.MouseEvent e ) {
-				JTabTitle.this.getModel().setArmed( true );
+				JTabTitle.this.setArmed( true );
 			}
 			public void mouseExited( java.awt.event.MouseEvent e ) {
-				JTabTitle.this.getModel().setArmed( false );
+				JTabTitle.this.setArmed( false );
 			}
 			public void mousePressed( java.awt.event.MouseEvent e ) {
-				JTabTitle.this.getModel().setPressed( true );
+				JTabTitle.this.setPressed( true );
 			}
 			public void mouseReleased( java.awt.event.MouseEvent e ) {
-				JTabTitle.this.getModel().setPressed( false );
+				JTabTitle.this.setPressed( false );
 			}
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				JTabTitle.this.select();
 			}
 		};
-		private void select() {
+
+		protected void setArmed( boolean isArmed ) {
+			this.getModel().setArmed( isArmed );
+		}
+		protected void setPressed( boolean isPressed ) {
+			this.getModel().setPressed( isPressed );
+		}
+		protected void select() {
 			this.setSelected( true );
-			this.getParent().repaint();
-			//this.getParent().repaint( this.getX(), this.getY(), this.getWidth() + EAST_TAB_PAD, this.getHeight() );
 		}
 
 		private javax.swing.JComponent jComponent;

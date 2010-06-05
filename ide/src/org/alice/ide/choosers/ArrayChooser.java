@@ -62,18 +62,16 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 			}
 			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 				ArrayChooser.this.arrayInitializerPane.handleTypeChange( bogusNode.getType() );
-				ArrayChooser.this.handleChanged();
 			}
 		} );
-		bogusNode.arrayExpressions.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.Expression >() {
-			@Override
-			protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
-			}
-			@Override
-			protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
-				ArrayChooser.this.handleChanged();
-			}
-		} );
+//		bogusNode.arrayExpressions.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.Expression >() {
+//			@Override
+//			protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
+//			}
+//			@Override
+//			protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
+//			}
+//		} );
 		edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getPreviousExpression(), edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation.class );
 		if( arrayInstanceCreation != null ) {
 			//typePane.setAndLockType( arrayInstanceCreation.arrayType.getValue() );
@@ -86,15 +84,6 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 		}
 	}
 	
-	private void handleChanged() {
-		throw new RuntimeException( "todo" );
-//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//			public void run() {
-//				ArrayChooser.this.getInputPanel().updateOKButton();
-//			}
-//		} );
-//		
-	}
 	public String getTitleDefault() {
 		return "Enter Custom Array";
 	}

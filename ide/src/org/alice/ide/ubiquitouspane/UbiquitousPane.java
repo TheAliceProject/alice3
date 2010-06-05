@@ -176,6 +176,9 @@ public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 		this.addComponent( this.returnStatementWrapper );
 		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( PAD ) );
 		this.addComponent( this.commentTemplate );
+		
+		this.setOpaque( true );
+		this.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_HEADER_COLOR );
 	}
 	
 	@Override

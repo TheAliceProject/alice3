@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.java.awt;
  */
 public final class KnurlUtilities {
 	private static void paintPoint( java.awt.Graphics2D g2, int x, int y ) {
-		g2.drawLine( x, y, x, y );
+		g2.fillRect( x, y, 1, 1 );
 	}
 	private KnurlUtilities() {
 	}
