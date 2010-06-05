@@ -55,4 +55,8 @@ package edu.cmu.cs.dennisc.tutorial;
 	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> model) {
 		return model.getValue() == this.desiredValue;
 	}
+	@Override
+	protected void complete() {
+		this.getModel().setValue( this.desiredValue );
+	}
 }

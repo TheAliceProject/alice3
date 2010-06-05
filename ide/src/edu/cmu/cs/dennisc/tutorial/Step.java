@@ -189,6 +189,7 @@ public abstract class Step {
 	public Tutorial getTutorial() {
 		return this.tutorial;
 	}
+	protected abstract void complete();
 	/*package-private*/ void setTutorial( Tutorial tutorial ) {
 		this.tutorial = tutorial;
 		for( Note note : this.notes ) {

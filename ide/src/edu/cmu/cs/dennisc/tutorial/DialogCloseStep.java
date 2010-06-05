@@ -62,4 +62,8 @@ package edu.cmu.cs.dennisc.tutorial;
 			return false;
 		}
 	}
+	@Override
+	protected void complete() {
+		//throw new RuntimeException( "todo" );
+	}
 }

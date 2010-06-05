@@ -165,6 +165,7 @@ public class Tutorial {
 		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 			public void itemStateChanged(java.awt.event.ItemEvent e) {
 				if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+					TutorialStencil.this.completeOrUndoIfNecessary();
 					TutorialStencil.this.handleStepChanged((Step) e.getItem());
 				} else {
 					// pass
@@ -184,6 +185,21 @@ public class Tutorial {
 
 			this.internalAddComponent(panel, java.awt.BorderLayout.NORTH);
 			this.internalAddComponent(this.cardPanel, java.awt.BorderLayout.CENTER);
+		}
+		private int prevSelectedIndex = -1;
+		private void completeOrUndoIfNecessary() {
+			int nextSelectedIndex = this.comboBox.getAwtComponent().getSelectedIndex();
+			int firstToComplete = this.prevSelectedIndex + 1;
+			int firstToUndo = this.prevSelectedIndex - 1;
+			if( firstToComplete < nextSelectedIndex ) {
+				for( int i=firstToComplete; i<nextSelectedIndex; i++ ) {
+					Step step = (Step)Tutorial.this.stepsComboBoxModel.getElementAt( i );
+					step.complete();
+				}
+			} else if( firstToUndo > nextSelectedIndex ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: undo" );
+			}
+			this.prevSelectedIndex = nextSelectedIndex;
 		}
 		private void handleStepChanged(Step step) {
 			if( step != null ) {
@@ -273,8 +289,8 @@ public class Tutorial {
 		this.addStep( step );
 	}
 
-	public void addActionStep( String title, String text, edu.cmu.cs.dennisc.croquet.Operation<?> operation ) {
-		Step step = new OperationStep( title, text, operation );
+	public void addActionStep( String title, String text, edu.cmu.cs.dennisc.croquet.Operation<?> operation, edu.cmu.cs.dennisc.croquet.Edit automaticEdit ) {
+		Step step = new OperationStep( title, text, operation, automaticEdit );
 		this.addStep( step );
 	}
 	public void addBooleanStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.BooleanState booleanState, boolean desiredValue ) {
@@ -311,12 +327,12 @@ public class Tutorial {
 		this.addStep( step );
 	}
 
-	public void addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape, String cascadeText ) {
-		Step step = new DragAndDropStep( title, text, dragSource, dropText, dropShape, cascadeText );
+	public void addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape, String cascadeText, edu.cmu.cs.dennisc.croquet.Edit automaticEdit ) {
+		Step step = new DragAndDropStep( title, text, dragSource, dropText, dropShape, cascadeText, automaticEdit );
 		this.addStep( step );
 	}
-	public void addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
-		this.addDragAndDropStep(title, text, dragSource, dropText, dropShape, null );
+	public void addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape, edu.cmu.cs.dennisc.croquet.Edit automaticEdit ) {
+		this.addDragAndDropStep(title, text, dragSource, dropText, dropShape, null, automaticEdit );
 	}
 		
 	/*package-private*/ edu.cmu.cs.dennisc.croquet.ActionOperation getNextOperation() {

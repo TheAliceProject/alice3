@@ -47,12 +47,11 @@ package org.alice.stageide.tutorial;
  */
 public class IDETutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	private org.alice.stageide.StageIDE ide;
-	public void createIDE( Class<? extends org.alice.stageide.StageIDE> cls, String[] args ) throws InstantiationException, IllegalAccessException {
-		this.ide = cls.newInstance();
-		this.ide.initialize( args );
+	public IDETutorial( org.alice.stageide.StageIDE ide ) {
+		assert ide != null;
+		this.ide = ide;
 	}
 	public org.alice.stageide.StageIDE getIDE() {
-		assert this.ide != null;
 		return this.ide;
 	}
 
@@ -158,5 +157,21 @@ public class IDETutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	}
 	public edu.cmu.cs.dennisc.croquet.DragComponent getDoInOrderTemplate() {
 		return (edu.cmu.cs.dennisc.croquet.DragComponent)this.getIDE().getUbiquitousPane().getComponent( 0 );
+	}
+	
+	@Deprecated
+	public edu.cmu.cs.dennisc.croquet.Edit createToDoEdit() {
+		return new org.alice.ide.ToDoEdit() {
+			@Override
+			public void doOrRedo( boolean isDo ) {
+			}
+			@Override
+			public void undo() {
+			}
+			@Override
+			protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+				return rv;
+			}
+		};
 	}
 }

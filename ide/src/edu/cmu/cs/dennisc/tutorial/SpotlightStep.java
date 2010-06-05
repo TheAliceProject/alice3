@@ -49,4 +49,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	public SpotlightStep( String title, String text, edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape, edu.cmu.cs.dennisc.tutorial.Feature.ConnectionPreference connectionPreference ) {
 		super( title, text, new Frame( trackableShape, connectionPreference ) );
 	}
+	@Override
+	protected void complete() {
+	}
 }	

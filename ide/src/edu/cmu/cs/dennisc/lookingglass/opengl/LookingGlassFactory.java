@@ -84,7 +84,8 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 			javax.media.opengl.GLDrawableFactory unused = javax.media.opengl.GLDrawableFactory.getFactory();
 		} catch( UnsatisfiedLinkError ule ) {
 			String platformText = System.getProperty( "os.name" ) + "-" + System.getProperty( "os.arch" );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( platformText );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "platform:", platformText );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "library path:", System.getProperty( "java.library.path" ) );
 			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( platformText );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println();
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "UNABLE TO LOAD OPENGL" );

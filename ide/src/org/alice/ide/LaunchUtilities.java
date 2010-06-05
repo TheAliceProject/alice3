@@ -84,7 +84,7 @@ public class LaunchUtilities {
 		}
 		return null;
 	}
-	public static void launch( final Class<? extends IDE> cls, final java.awt.Window splashScreen, final String[] args ) {
+	private static Runnable preLaunchAndCreateRunnable( final Class<? extends IDE> cls, final java.awt.Window splashScreen, final String[] args, final boolean isVisible ) {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
 		if( lookAndFeelInfo != null ) {
 			javax.swing.LookAndFeel laf = javax.swing.UIManager.getLookAndFeel();
@@ -113,7 +113,7 @@ public class LaunchUtilities {
 				}
 			}
 		}
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		return new Runnable() {
 			public void run() {
 				java.io.File installDir = getInstallDirectory();
 				if( installDir != null ) {
@@ -188,10 +188,18 @@ public class LaunchUtilities {
 				}
 				ide.setSplashScreen( splashScreen );
 				ide.initialize( args );
-				ide.getFrame().setVisible( true );
+				ide.getFrame().setVisible( isVisible );
 			}
-		} );
-		
+		};
+	}
+	
+	public static void launch( final Class<? extends IDE> cls, final java.awt.Window splashScreen, final String[] args ) {
+		javax.swing.SwingUtilities.invokeLater( preLaunchAndCreateRunnable( cls, splashScreen, args, true ) );	
+	}
+	public static <I extends IDE> I launchAndWait( final Class<I> cls, final java.awt.Window splashScreen, final String[] args, boolean isVisible ) throws InterruptedException, java.lang.reflect.InvocationTargetException {
+		Runnable runnable = preLaunchAndCreateRunnable( cls, splashScreen, args, isVisible );
+		javax.swing.SwingUtilities.invokeAndWait( runnable );
+		return cls.cast( IDE.getSingleton() );
 	}
 	
 }

@@ -47,8 +47,10 @@ package edu.cmu.cs.dennisc.tutorial;
  */
 
 /*package-private*/ class DragAndDropStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
-	public DragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape, String cascadeText ) {
+	private edu.cmu.cs.dennisc.croquet.Edit automaticEdit;
+	public DragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape, String cascadeText, edu.cmu.cs.dennisc.croquet.Edit automaticEdit ) {
 		super( title, text, new Hole( dragSource, Feature.ConnectionPreference.NORTH_SOUTH ), dragSource.getDragAndDropOperation() );
+		this.automaticEdit = automaticEdit;
 		Note dropNote = new Note( dropText );
 		dropNote.addFeature( new Hole( dropShape, Feature.ConnectionPreference.NORTH_SOUTH ) );
 		this.addNote( dropNote );
@@ -64,6 +66,10 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	}
 	
+	@Override
+	protected void complete() {
+		this.automaticEdit.doOrRedo( true );
+	}
 	private void setActiveNote( int activeIndex ) {
 		final int N = this.getNoteCount();
 		for( int i=0; i<N; i++ ) {

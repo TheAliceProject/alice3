@@ -57,7 +57,7 @@ public class ListProperty<E> extends InstanceProperty< java.util.ArrayList< E > 
 		if( m_listPropertyListeners != null ) {
 			//pass
 		} else {
-			m_listPropertyListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.property.event.ListPropertyListener< E > >();
+			m_listPropertyListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 		}
 		synchronized( m_listPropertyListeners ) {
 			m_listPropertyListeners.add( l );

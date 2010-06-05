@@ -46,8 +46,10 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class OperationStep extends WaitingOnCompleteStep<edu.cmu.cs.dennisc.croquet.Operation<?>> {
-	public OperationStep( String title, String text, edu.cmu.cs.dennisc.croquet.Operation< ? > operation ) {
+	private edu.cmu.cs.dennisc.croquet.Edit automaticEdit;
+	public OperationStep( String title, String text, edu.cmu.cs.dennisc.croquet.Operation< ? > operation, edu.cmu.cs.dennisc.croquet.Edit automaticEdit ) {
 		super( title, text, operation, Feature.ConnectionPreference.EAST_WEST, operation );
+		this.automaticEdit = automaticEdit;
 	}
 	@Override
 	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Operation<?> model) {
@@ -56,5 +58,9 @@ package edu.cmu.cs.dennisc.tutorial;
 	@Override
 	protected boolean isAlreadyInTheDesiredState() {
 		return false;
+	}
+	@Override
+	protected void complete() {
+		this.automaticEdit.doOrRedo( true );
 	}
 }

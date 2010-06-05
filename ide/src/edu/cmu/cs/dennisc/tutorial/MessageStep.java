@@ -49,4 +49,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	public MessageStep( String title, String text ) {
 		super( title, text );
 	}
+	@Override
+	protected void complete() {
+	}
 }	

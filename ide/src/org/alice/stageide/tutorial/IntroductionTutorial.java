@@ -47,13 +47,9 @@ package org.alice.stageide.tutorial;
  */
 public class IntroductionTutorial {
 	public static void main( final String[] args ) throws Exception {
-		final IDETutorial tutorial = new IDETutorial();
-		tutorial.createIDE( org.alice.stageide.StageIDE.class, args );
-		
-		final org.alice.stageide.StageIDE ide = tutorial.getIDE();
-		ide.loadProjectFrom( args[ 0 ] );
-		ide.getFrame().maximize();
-		
+		final org.alice.stageide.StageIDE ide = org.alice.ide.LaunchUtilities.launchAndWait( org.alice.stageide.StageIDE.class, null, args, true );
+		final IDETutorial tutorial = new IDETutorial( ide );
+
 		tutorial.addMessageStep( 
 				"Welcome", 
 				"<html><b><center>Welcome To The Tutorial</center></b><p>First we'll show you around a bit.</html>" 
@@ -199,7 +195,8 @@ public class IntroductionTutorial {
 				"<html>Drag <b>Do In Order</b>.</html>",
 				tutorial.getDoInOrderTemplate(),
 				"<html>Drop <b>here</b>.</html>",
-				tutorial.createBlockStatementResolver( countLoop )
+				tutorial.createBlockStatementResolver( countLoop ),
+				tutorial.createToDoEdit()
 		);
 
 		tutorial.addDragAndDropStep( 
@@ -208,7 +205,8 @@ public class IntroductionTutorial {
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( resizeMethod ),
 				"<html>Drop <b>here</b>.</html>",
 				tutorial.createBlockStatementResolver( countLoop ),
-				"<html>Select <b>2.0</b> from the menu.</html>"
+				"<html>Select <b>2.0</b> from the menu.</html>",
+				tutorial.createToDoEdit()
 		);
 		
 		tutorial.addSpotlightStep( 
@@ -223,7 +221,8 @@ public class IntroductionTutorial {
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( moveMethod ),
 				"<html>Drop <b>here</b>.</html>",
 				tutorial.createBlockStatementResolver( countLoop ),
-				"<html>Select <b>FORWARD</b> and <b>1.0</b> from the menus.</html>"
+				"<html>Select <b>FORWARD</b> and <b>1.0</b> from the menus.</html>",
+				tutorial.createToDoEdit()
 		);
 		
 		tutorial.addMessageStep( 
@@ -237,7 +236,8 @@ public class IntroductionTutorial {
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( turnMethod ),
 				"<html>Drop <b>here</b>.</html>",
 				tutorial.createBlockStatementResolver( countLoop ),
-				"<html>Select <b>LEFT</b> and <b>0.25</b> from the menus.</html>"
+				"<html>Select <b>LEFT</b> and <b>0.25</b> from the menus.</html>",
+				tutorial.createToDoEdit()
 		);
 		
 		tutorial.addMessageStep( 
@@ -251,7 +251,7 @@ public class IntroductionTutorial {
 		);
 
 		//membersEditor.getTabbedPaneSelectionState().setValue( membersEditor.getFunctionsTab() );
-		tutorial.setSelectedIndex( 20 );
+		tutorial.setSelectedIndex( 10 );
 		
 		ide.getFrame().addWindowListener( new java.awt.event.WindowAdapter() {
 			@Override
