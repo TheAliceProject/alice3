@@ -42,7 +42,7 @@
  */
 package org.alice.ide.common;
 
-import org.alice.ide.codeeditor.EmptyStatementListAfforance;
+import org.alice.ide.codeeditor.EmptyStatementListAffordance;
 
 /**
  * @author Dennis Cosgrove
@@ -85,8 +85,8 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 	public void setIsCurrentUnder( boolean isCurrentUnder ) {
 		if( this.getComponentCount() > 0 ) {
 			edu.cmu.cs.dennisc.croquet.Component<?> component0 = this.getComponent( 0 );
-			if( component0 instanceof EmptyStatementListAfforance ) {
-				EmptyStatementListAfforance emptyStatementListAfforance = (EmptyStatementListAfforance)component0;
+			if( component0 instanceof EmptyStatementListAffordance ) {
+				EmptyStatementListAffordance emptyStatementListAfforance = (EmptyStatementListAffordance)component0;
 				emptyStatementListAfforance.setDrawingDesired( isCurrentUnder == false );
 			}
 		}
@@ -122,7 +122,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		super.refresh();
 		int bottom;
 		if( this.getComponentCount() == 0 ) {
-			this.addComponent( new EmptyStatementListAfforance() );
+			this.addComponent( new EmptyStatementListAffordance() );
 			bottom = 0;
 		} else {
 			bottom = 4;
@@ -131,7 +131,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		repaint();
 	}
 	public boolean isFigurativelyEmpty() {
-		return this.getComponentCount() == 0 || this.getComponent( 0 ) instanceof EmptyStatementListAfforance;
+		return this.getComponentCount() == 0 || this.getComponent( 0 ) instanceof EmptyStatementListAffordance;
 	}
 
 	private int getCenterYOfComponentAt( int i ) {

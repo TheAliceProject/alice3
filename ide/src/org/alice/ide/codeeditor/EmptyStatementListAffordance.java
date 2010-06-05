@@ -45,7 +45,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class EmptyStatementListAfforance extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JLabel > {
+public class EmptyStatementListAffordance extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JLabel > {
 	// private static java.awt.Color TOP_COLOR = new java.awt.Color( 0, 0, 0, 63
 	// );
 	// private static java.awt.Color BOTTOM_COLOR = new java.awt.Color( 127,
