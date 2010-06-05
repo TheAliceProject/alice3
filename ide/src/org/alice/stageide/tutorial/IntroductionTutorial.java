@@ -46,13 +46,14 @@ package org.alice.stageide.tutorial;
  * @author Dennis Cosgrove
  */
 public class IntroductionTutorial {
-	public static void main( final String[] args ) {
-		final org.alice.stageide.StageIDE ide = new org.alice.stageide.StageIDE();
-		ide.initialize(args);
+	public static void main( final String[] args ) throws Exception {
+		final IDETutorial tutorial = new IDETutorial();
+		tutorial.createIDE( org.alice.stageide.StageIDE.class, args );
+		
+		final org.alice.stageide.StageIDE ide = tutorial.getIDE();
 		ide.loadProjectFrom( args[ 0 ] );
 		ide.getFrame().maximize();
 		
-		final edu.cmu.cs.dennisc.tutorial.Tutorial tutorial = new edu.cmu.cs.dennisc.tutorial.Tutorial();
 		tutorial.addMessageStep( 
 				"Welcome", 
 				"<html><b><center>Welcome To The Tutorial</center></b><p>First we'll show you around a bit.</html>" 
@@ -79,11 +80,10 @@ public class IntroductionTutorial {
 		);
 		
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
+
 		
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = ide.getProgramType();
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = programType.getDeclaredField( "scene" );
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = ide.getSceneType();
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sunLightField = sceneType.getDeclaredField( "sunLight" );
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = tutorial.getSceneField();
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sunLightField = tutorial.getFieldDeclaredOnSceneType( "sunLight" );
 		
 		
 		tutorial.addSpotlightStep( 
@@ -182,76 +182,39 @@ public class IntroductionTutorial {
 				"<html>Note you are now editing the code.</html>" 
 		);
 		
+		
 		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice runMethod = ide.getSceneType().getDeclaredMethod( "run" );
 
 		final edu.cmu.cs.dennisc.alice.ast.CountLoop countLoop = org.alice.ide.ast.NodeUtilities.createCountLoop( new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( 3 ) );
 		runMethod.body.getValue().statements.add( countLoop );
 
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava resizeMethod = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( 
-				org.alice.apis.moveandturn.AbstractModel.class, 
-				"resize", 
-				Number.class
+		
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava resizeMethod = tutorial.findShortestMethod( sunLightField, "resize" );
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava moveMethod = tutorial.findShortestMethod( sunLightField, "move" );
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava turnMethod = tutorial.findShortestMethod( sunLightField, "turn" );
+		
+
+		tutorial.addDragAndDropStep( 
+				"Drag Do In Order",
+				"<html>Drag <b>Do In Order</b>.</html>",
+				tutorial.getDoInOrderTemplate(),
+				"<html>Drop <b>here</b>.</html>",
+				tutorial.createBlockStatementResolver( countLoop )
 		);
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava moveMethod = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( 
-				org.alice.apis.moveandturn.AbstractTransformable.class, 
-				"move", 
-				org.alice.apis.moveandturn.MoveDirection.class,
-				Number.class
-		);
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava turnMethod = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( 
-				org.alice.apis.moveandturn.AbstractTransformable.class, 
-				"turn", 
-				org.alice.apis.moveandturn.TurnDirection.class,
-				Number.class
-		);
-		
-		abstract class Resolver implements edu.cmu.cs.dennisc.croquet.TrackableShape {
-			private edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape;
-			protected abstract edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape();
-			private edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape() {
-				if( this.trackableShape != null ) {
-					//pass
-				} else {
-					this.trackableShape = this.resolveTrackableShape();
-				}
-				return this.trackableShape;
-			}
-			public final java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
-				return this.getTrackableShape().getShape( asSeenBy, insets );
-			}
-			public final java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
-				return this.getTrackableShape().getVisibleShape( asSeenBy, insets );
-			}
-		}
-		
-		abstract class CodeResolver extends Resolver {
-			protected abstract edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape( org.alice.ide.codeeditor.CodeEditor codeEditor );
-			@Override
-			protected final edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape() {
-				return this.resolveTrackableShape( ide.getEditorsTabSelectionState().getCodeEditorInFocus() );
-			}
-		}
-		
-		class CountLoopResolver extends CodeResolver {
-			@Override
-			protected edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape( org.alice.ide.codeeditor.CodeEditor codeEditor ) {
-				return codeEditor.getTrackableShape( countLoop.body.getValue(), org.alice.ide.codeeditor.CodeEditor.Location.AT_END );
-			}
-		}
-		
+
 		tutorial.addDragAndDropStep( 
 				"Drag Resize Procedure",
 				"<html>Drag <b>resize</b> procedure.</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( resizeMethod ),
 				"<html>Drop <b>here</b>.</html>",
-				new CountLoopResolver(),
+				tutorial.createBlockStatementResolver( countLoop ),
 				"<html>Select <b>2.0</b> from the menu.</html>"
 		);
 		
 		tutorial.addSpotlightStep( 
 				"Note Resize",
 				"<html>Note that resize has been added to your run method.</html>",
-				new CountLoopResolver()
+				tutorial.findProcedureInvocationStatement(resizeMethod, 0)
 		);
 
 		tutorial.addDragAndDropStep( 
@@ -259,7 +222,7 @@ public class IntroductionTutorial {
 				"<html>Drag <b>move</b> procedure.</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( moveMethod ),
 				"<html>Drop <b>here</b>.</html>",
-				new CountLoopResolver(),
+				tutorial.createBlockStatementResolver( countLoop ),
 				"<html>Select <b>FORWARD</b> and <b>1.0</b> from the menus.</html>"
 		);
 		
@@ -273,7 +236,7 @@ public class IntroductionTutorial {
 				"<html>Drag <b>turn</b> procedure.</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( turnMethod ),
 				"<html>Drop <b>here</b>.</html>",
-				new CountLoopResolver(),
+				tutorial.createBlockStatementResolver( countLoop ),
 				"<html>Select <b>LEFT</b> and <b>0.25</b> from the menus.</html>"
 		);
 		
@@ -288,7 +251,7 @@ public class IntroductionTutorial {
 		);
 
 		//membersEditor.getTabbedPaneSelectionState().setValue( membersEditor.getFunctionsTab() );
-		tutorial.setSelectedIndex( 22 );
+		tutorial.setSelectedIndex( 20 );
 		
 		ide.getFrame().addWindowListener( new java.awt.event.WindowAdapter() {
 			@Override

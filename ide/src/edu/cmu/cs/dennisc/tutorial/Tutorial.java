@@ -257,8 +257,6 @@ public class Tutorial {
 			return (Step)stepsComboBoxModel.getSelectedItem();
 		}
 	}
-	private final TutorialStencil stencil = new TutorialStencil();
-	
 	private void addStep( Step step ) {
 		this.stepsComboBoxModel.addStep( step );
 		step.setTutorial( this );
@@ -326,6 +324,7 @@ public class Tutorial {
 	}
 	public void setVisible( boolean isVisible ) {
 		if( isVisible ) {
+			final TutorialStencil stencil = new TutorialStencil();
 			class StencilRepaintManager extends javax.swing.RepaintManager {
 				@Override
 				public void addDirtyRegion(javax.swing.JComponent c, int x, int y, int w, int h) {

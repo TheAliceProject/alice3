@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /* package-private */abstract class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent<javax.swing.JPanel> {
-	/*package-private*/ static final java.awt.Color STENCIL_BASE_COLOR =  new java.awt.Color( 127, 127, 127, 150 );
-	/*package-private*/ static final java.awt.Color STENCIL_LINE_COLOR =  new java.awt.Color( 63, 63, 63, 63 );
+	/*package-private*/ static final java.awt.Color STENCIL_BASE_COLOR =  new java.awt.Color( 181, 140, 140, 150 );
+	/*package-private*/ static final java.awt.Color STENCIL_LINE_COLOR =  new java.awt.Color( 92, 48, 24, 63 );
 	private static java.awt.Paint stencilPaint = null;
 	private static java.awt.Paint getStencilPaint() {
 		if( Stencil.stencilPaint != null ) {
@@ -57,12 +57,12 @@ package edu.cmu.cs.dennisc.tutorial;
 			int height = 8;
 			java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)image.getGraphics();
-			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_OFF );
 			g2.setColor( STENCIL_BASE_COLOR );
 			g2.fillRect( 0, 0, width, height );
 			g2.setColor( STENCIL_LINE_COLOR );
 			g2.drawLine( 0, height, width, 0 );
-			g2.drawLine( 0, 0, 0, 0 );
+			g2.fillRect( 0, 0, 1, 1 );
 			g2.dispose();
 			Stencil.stencilPaint = new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
 		}

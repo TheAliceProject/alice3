@@ -678,7 +678,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 		private Location( boolean isLookingForParent ) {
 			this.isLookingForParent = isLookingForParent;
 		}
-		public boolean isTheOne( StatementListPropertyPane statementListPropertyPane, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		public boolean isTheOne( StatementListPropertyPane statementListPropertyPane, edu.cmu.cs.dennisc.alice.ast.BlockStatement statement ) {
 			edu.cmu.cs.dennisc.alice.ast.StatementListProperty property = statementListPropertyPane.getProperty();
 			if( this.isLookingForParent ) {
 				if( property.contains( statement ) ) {
@@ -692,7 +692,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 			return false;
 		}
 	}
-	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape( edu.cmu.cs.dennisc.alice.ast.Statement statement, Location location ) {
+	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape( edu.cmu.cs.dennisc.alice.ast.BlockStatement statement, Location location ) {
 		if( statement != null ) {
 			java.util.List< StatementListPropertyPane > statementListPropertyPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, StatementListPropertyPane.class );
 			for( StatementListPropertyPane statementListPropertyPane : statementListPropertyPanes ) {
@@ -705,5 +705,16 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 		}
 		org.alice.ide.common.BodyPane bodyPane = (org.alice.ide.common.BodyPane)this.scrollPane.getViewportView();
 		return bodyPane.getComponent( 1 );
+	}
+	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		if( statement != null ) {
+			java.util.List< org.alice.ide.common.AbstractStatementPane > statementPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.AbstractStatementPane.class );
+			for( org.alice.ide.common.AbstractStatementPane statementPane : statementPanes ) {
+				if( statementPane.getStatement() == statement ) {
+					return statementPane;
+				}
+			}
+		}
+		return null;
 	}
 }
