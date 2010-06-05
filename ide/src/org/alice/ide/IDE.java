@@ -1732,7 +1732,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			}
 		} else if( edu.cmu.cs.dennisc.alice.ast.Expression.class.isAssignableFrom( cls ) ) {
 			if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) ) {
-				return new java.awt.Color( 0xBAD1A7 );
+				return new java.awt.Color( 0xd3e7c7 );
 			} else if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplement.class,
 					edu.cmu.cs.dennisc.alice.ast.StringConcatenation.class ) ) {
 				return new java.awt.Color( 0xDEEBD3 );

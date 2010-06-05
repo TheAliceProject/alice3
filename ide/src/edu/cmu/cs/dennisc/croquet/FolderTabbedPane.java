@@ -184,7 +184,6 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 				}
 			};
 			rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.LINE_AXIS ) );
-			rv.setBackground( new java.awt.Color( 63, 63, 81 ) );
 			return rv;
 		}
 		public void addComponent( Component< ? > component ) {
@@ -227,7 +226,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
 		javax.swing.JPanel rv = super.createAwtComponent();
-		this.headerPane.setBackgroundColor( new java.awt.Color( 63, 63, 81 ) );
+		this.headerPane.setBackgroundColor( new java.awt.Color( 185, 185, 208 ) );
 		rv.add( this.headerPane.getAwtComponent(), java.awt.BorderLayout.NORTH );
 		rv.add( this.cardPanel.getAwtComponent(), java.awt.BorderLayout.CENTER );
 		return rv;

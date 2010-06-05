@@ -45,41 +45,64 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class EmptyStatementListAfforance extends org.alice.ide.common.StatementLikeSubstance {
-//	private static java.awt.Color TOP_COLOR = new java.awt.Color( 0, 0, 0, 63 );
-//	private static java.awt.Color BOTTOM_COLOR = new java.awt.Color( 127, 127, 127, 63 );
+public class EmptyStatementListAfforance extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JLabel > {
+	// private static java.awt.Color TOP_COLOR = new java.awt.Color( 0, 0, 0, 63
+	// );
+	// private static java.awt.Color BOTTOM_COLOR = new java.awt.Color( 127,
+	// 127, 127, 63 );
 
-	public EmptyStatementListAfforance() {
-		super( edu.cmu.cs.dennisc.alice.ast.Statement.class, javax.swing.BoxLayout.LINE_AXIS );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 16, 8, 48 ) );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "drop statement here", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.EXTRA_LIGHT ) );
-	}
+	private boolean isDrawingDesired = true;
 	@Override
-	protected boolean isKnurlDesired() {
-		return false;
+	protected javax.swing.JLabel createAwtComponent() {
+		javax.swing.JLabel rv = new javax.swing.JLabel() {
+			@Override
+			public void paint(java.awt.Graphics g) {
+				if( isDrawingDesired ) {
+					super.paint(g);
+				}
+			}
+			@Override
+			protected void paintBorder(java.awt.Graphics g) {
+				super.paintBorder(g);
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				g2.setColor(java.awt.Color.GRAY);
+				g2.setStroke(DASHED_STROKE);
+				java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( 1, 1, this.getWidth()-3, this.getHeight()-3, 8, 8 );
+				g2.draw(rr);
+			}
+		};
+		rv.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 16, 8, 48));
+		rv.setText( "drop statement here" );
+		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont(rv, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.EXTRA_LIGHT);
+		return rv;
 	}
-//	@Override
-//	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
-//		return java.awt.Color.RED;
-//	}
-	//	@Override
-	//	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
-	//		return new java.awt.GradientPaint( 0, y, TOP_COLOR, 0, y+height, BOTTOM_COLOR );
-	//	}
-	//	@Override
-	//	protected edu.cmu.cs.dennisc.awt.BevelState getBevelState() {
-	//		return edu.cmu.cs.dennisc.awt.BevelState.SUNKEN;
-	//	}
-	//	@Override
-	//	protected void paintOutline( java.awt.Graphics2D g2, java.awt.geom.RoundRectangle2D.Float rr ) {
-	//		edu.cmu.cs.dennisc.awt.BeveledRoundRectangle brr = new edu.cmu.cs.dennisc.awt.BeveledRoundRectangle( rr );
-	//		brr.draw( g2, edu.cmu.cs.dennisc.awt.BevelState.SUNKEN, Float.NaN, Float.NaN, 1.0f );
-	//	}
-	private static final java.awt.Stroke DASHED_STROKE = new java.awt.BasicStroke( 1.0f, java.awt.BasicStroke.CAP_BUTT, java.awt.BasicStroke.JOIN_BEVEL, 0, new float[] {9.0f, 3.0f}, 0 );
-	@Override
-	protected void paintOutline( java.awt.Graphics2D g2, java.awt.geom.RoundRectangle2D.Float rr ) {
-		g2.setColor( java.awt.Color.GRAY );
-		g2.setStroke( DASHED_STROKE );
-		g2.draw( rr );
+	public void setDrawingDesired(boolean isDrawingDesired) {
+		this.isDrawingDesired = isDrawingDesired;
+		this.repaint();
 	}
+
+	// @Override
+	// protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int
+	// height ) {
+	// return java.awt.Color.RED;
+	// }
+	// @Override
+	// protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int
+	// height ) {
+	// return new java.awt.GradientPaint( 0, y, TOP_COLOR, 0, y+height,
+	// BOTTOM_COLOR );
+	// }
+	// @Override
+	// protected edu.cmu.cs.dennisc.awt.BevelState getBevelState() {
+	// return edu.cmu.cs.dennisc.awt.BevelState.SUNKEN;
+	// }
+	// @Override
+	// protected void paintOutline( java.awt.Graphics2D g2,
+	// java.awt.geom.RoundRectangle2D.Float rr ) {
+	// edu.cmu.cs.dennisc.awt.BeveledRoundRectangle brr = new
+	// edu.cmu.cs.dennisc.awt.BeveledRoundRectangle( rr );
+	// brr.draw( g2, edu.cmu.cs.dennisc.awt.BevelState.SUNKEN, Float.NaN,
+	// Float.NaN, 1.0f );
+	// }
+	private static final java.awt.Stroke DASHED_STROKE = new java.awt.BasicStroke(1.0f, java.awt.BasicStroke.CAP_BUTT, java.awt.BasicStroke.JOIN_BEVEL, 0, new float[] { 9.0f, 3.0f }, 0);
 }

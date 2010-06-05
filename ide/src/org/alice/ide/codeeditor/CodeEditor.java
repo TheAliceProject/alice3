@@ -79,7 +79,6 @@ class StatementListPropertyPaneInfo {
 public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax.swing.JPanel, edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.croquet.DropReceptor {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
 	private StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
-	private StatementListPropertyPane currentUnder;
 	private edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane;
 
 	private edu.cmu.cs.dennisc.croquet.Application.LocaleObserver localeObserver = new edu.cmu.cs.dennisc.croquet.Application.LocaleObserver() {
@@ -96,7 +95,9 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 		this.code = code;
 		this.setOpaque( true );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		this.setBackgroundColor( getIDE().getCodeDeclaredInAliceColor( this.code ) );
+		java.awt.Color color = getIDE().getCodeDeclaredInAliceColor( this.code );
+		color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0f, 1.1f, 1.1f );
+		this.setBackgroundColor( color );
 		//this.setDoubleBuffered( true );
 		this.refresh();
 	}
@@ -264,6 +265,19 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 			return false;
 		}
 	}
+	
+	private StatementListPropertyPane currentUnder;
+	private void setCurrentUnder( StatementListPropertyPane nextUnder ) {
+		if( this.currentUnder != nextUnder ) {
+			if( this.currentUnder != null ) {
+				this.currentUnder.setIsCurrentUnder( false );
+			}
+			this.currentUnder = nextUnder;
+			if( this.currentUnder != null ) {
+				this.currentUnder.setIsCurrentUnder( true );
+			}
+		}
+	}
 	public final void dragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 	}
 
@@ -319,7 +333,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 			java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
 			java.awt.event.MouseEvent eAsSeenBy = source.convertMouseEvent( eSource, this.getAsSeenBy() );
 			StatementListPropertyPane nextUnder = getStatementListPropertyPaneUnder( eAsSeenBy, this.statementListPropertyPaneInfos );
-			this.currentUnder = nextUnder;
+			this.setCurrentUnder( nextUnder );
 			if( this.currentUnder != null ) {
 				boolean isDropProxyAlreadyUpdated = false;
 				if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
@@ -615,7 +629,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 	}
 	public final void dragExited( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, boolean isDropRecipient ) {
 		this.statementListPropertyPaneInfos = null;
-		this.currentUnder = null;
+		this.setCurrentUnder( null );
 		this.repaint();
 		if( isDropRecipient ) {
 			//pass

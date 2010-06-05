@@ -82,6 +82,16 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 //		} );
 	}
 	
+	public void setIsCurrentUnder( boolean isCurrentUnder ) {
+		if( this.getComponentCount() > 0 ) {
+			edu.cmu.cs.dennisc.croquet.Component<?> component0 = this.getComponent( 0 );
+			if( component0 instanceof EmptyStatementListAfforance ) {
+				EmptyStatementListAfforance emptyStatementListAfforance = (EmptyStatementListAfforance)component0;
+				emptyStatementListAfforance.setDrawingDesired( isCurrentUnder == false );
+			}
+		}
+	}
+	
 	@Override
 	protected int getBoxLayoutPad() {
 		int rv;
