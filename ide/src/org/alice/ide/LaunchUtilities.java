@@ -85,6 +85,15 @@ public class LaunchUtilities {
 		return null;
 	}
 	public static void launch( final Class<? extends IDE> cls, final java.awt.Window splashScreen, final String[] args ) {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.LookAndFeel laf = javax.swing.UIManager.getLookAndFeel();
+			try {
+				edu.cmu.cs.dennisc.javax.swing.plaf.nimbus.NimbusUtilities.installModifiedNimbus( lookAndFeelInfo );
+			} catch( Throwable t ) {
+				t.printStackTrace();
+			}
+		}
 		if( splashScreen != null ) {
 			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.LaunchUtilities.isSupressionOfSplashScreenDesired" ) ) {
 				//pass

@@ -15,5 +15,6 @@
 	<classpathentry kind="lib" path="lib/swingworker/swing-worker-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/youtube/google-collect-1.0-rc1.jar"/>
 	<classpathentry kind="lib" path="lib/youtube/youtube.jar"/>
+	<classpathentry kind="lib" path="lib/modified_nimbus/modified_nimbus.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
