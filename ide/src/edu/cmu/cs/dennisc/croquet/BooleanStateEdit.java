@@ -55,8 +55,7 @@ public final class BooleanStateEdit extends Edit {
 	public BooleanStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public BooleanStateEdit( ModelContext context, java.awt.event.ItemEvent e, BooleanState operation ) {
-		super( context );
+	public BooleanStateEdit( java.awt.event.ItemEvent e, BooleanState operation ) {
 		this.operation = operation;
 		this.operationId = operation.getIndividualUUID();
 		if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
@@ -98,12 +97,12 @@ public final class BooleanStateEdit extends Edit {
 
 	@Override
 	public void doOrRedo(boolean isDo) {
-		this.getOperation().internalSetValue(this.nextValue);
+		this.getOperation().setValue(this.nextValue);
 	}
 
 	@Override
 	public void undo() {
-		this.getOperation().internalSetValue(this.previousValue);
+		this.getOperation().setValue(this.previousValue);
 	}
 
 	@Override

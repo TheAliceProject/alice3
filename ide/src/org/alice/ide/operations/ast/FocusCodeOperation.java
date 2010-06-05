@@ -61,7 +61,7 @@ public class FocusCodeOperation extends org.alice.ide.operations.ActionOperation
 	@Override
 	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = getIDE().getFocusedCode();
-		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			public void doOrRedo( boolean isDo ) {
 				getIDE().setFocusedCode( nextCode );

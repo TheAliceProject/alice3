@@ -315,6 +315,7 @@ public abstract class ModelContext<M extends Model> extends HistoryTreeNode<Mode
 	}
 	public void commitAndInvokeDo( Edit edit ) {
 		assert edit != null;
+		edit.setContext( this );
 		this.fireCommitting( edit );
 		edit.doOrRedo( true );
 		this.fireCommitted( edit );

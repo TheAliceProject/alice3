@@ -53,6 +53,6 @@ public class UndoOperation extends HistoryOperation {
 	}
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.history.HistoryManager historyManager) {
-		historyManager.performRedo();
+		historyManager.performUndo();
 	}
 }

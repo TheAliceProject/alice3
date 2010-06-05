@@ -48,10 +48,6 @@ package org.alice.ide;
 @Deprecated
 public abstract class ToDoEdit extends edu.cmu.cs.dennisc.croquet.Edit {
 	public ToDoEdit() {
-		this( null );
-	}
-	public ToDoEdit( edu.cmu.cs.dennisc.croquet.ModelContext context ) {
-		super( context );
 	}
 	@Override
 	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {

@@ -114,7 +114,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 			assert ArrayInitializerPane.this.type != null;
 			final edu.cmu.cs.dennisc.alice.ast.Expression expression = ExpressionUtilities.createDefaultExpression( ArrayInitializerPane.this.type.getComponentType() );
 			final int index = ArrayInitializerPane.this.arrayExpressions.size();
-			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					ArrayInitializerPane.this.arrayExpressions.add( index, expression );
@@ -147,7 +147,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 			final int index = ArrayInitializerPane.this.list.getSelectedIndex();
 			final edu.cmu.cs.dennisc.alice.ast.Expression expression = ArrayInitializerPane.this.list.getItemAt( index );
-			context.commitAndInvokeDo(new org.alice.ide.ToDoEdit( context ) {
+			context.commitAndInvokeDo(new org.alice.ide.ToDoEdit() {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					if( ArrayInitializerPane.this.arrayExpressions.get( index ) == expression ) {
@@ -179,7 +179,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		@Override
 		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 			final int index = this.getIndex( ArrayInitializerPane.this.list.getSelectedIndex() );
-			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					ArrayInitializerPane.this.swapWithNext( index );

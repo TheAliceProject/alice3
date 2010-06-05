@@ -46,8 +46,8 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public abstract class IDE extends org.alice.app.ProjectApplication {
-	public static final edu.cmu.cs.dennisc.croquet.Group PREFERENCES_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "c090cda0-4a77-4e2c-a839-faf28c98c10c" ) );
-	public static final edu.cmu.cs.dennisc.croquet.Group RUN_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "f7a87645-567c-42c6-bf5f-ab218d93a226" ) );
+	public static final edu.cmu.cs.dennisc.croquet.Group PREFERENCES_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "c090cda0-4a77-4e2c-a839-faf28c98c10c" ), "PREFERENCES_GROUP" );
+	public static final edu.cmu.cs.dennisc.croquet.Group RUN_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "f7a87645-567c-42c6-bf5f-ab218d93a226" ), "RUN_GROUP" );
 
 	public static final String DEBUG_PROPERTY_KEY = "org.alice.ide.DebugMode";
 
@@ -195,7 +195,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private void preservePreferences() {
 		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( this.getClass() );
 		for( edu.cmu.cs.dennisc.croquet.BooleanState booleanState : booleanStatePreferences ) {
-			userPreferences.putBoolean( booleanState.getIndividualUUID().toString(), booleanState.getState() );
+			userPreferences.putBoolean( booleanState.getIndividualUUID().toString(), booleanState.getValue() );
 		}
 	}
 	private edu.cmu.cs.dennisc.croquet.BooleanState isExpressionTypeFeedbackDesiredState =
@@ -218,13 +218,13 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 	@Deprecated
 	public boolean isEmphasizingClasses() {
-		return this.isEmphasizingClassesOperation.getState();
+		return this.isEmphasizingClassesOperation.getValue();
 	}
 	public edu.cmu.cs.dennisc.croquet.BooleanState getOmissionOfThisForFieldAccessesDesiredState() {
 		return this.isOmissionOfThisForFieldAccessesDesiredState;
 	}
 	public boolean isDefaultFieldNameGenerationDesired() {
-		return this.isDefaultFieldNameGenerationDesiredState.getState();
+		return this.isDefaultFieldNameGenerationDesiredState.getValue();
 	}
 
 	private WindowMenuModel windowMenuModel = new WindowMenuModel( 
@@ -351,25 +351,31 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private edu.cmu.cs.dennisc.croquet.BorderPanel right = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane root = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane( left, right );
 
-	public void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
+	private void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
 		if( isSceneEditorExpanded ) {
+			if( this.root.getAwtComponent().isValid() ) {
+				this.rootDividerLocation = this.root.getDividerLocation();
+			}
+			if( this.left.getAwtComponent().isValid() ) {
+				this.leftDividerLocation = this.left.getDividerLocation();
+			}
 			this.left.setResizeWeight( 1.0 );
-			this.rootDividerLocation = this.root.getDividerLocation();
-			this.leftDividerLocation = this.left.getDividerLocation();
 			this.root.setLeftComponent( this.left );
 			this.left.setTopComponent( this.sceneEditor );
 			this.left.setBottomComponent( this.galleryBrowser );
-			this.root.setRightComponent( null );
+			//this.root.setRightComponent( null );
+			this.right.setVisible( false );
 			this.root.setDividerSize( 0 );
 			this.left.setDividerLocation( this.getFrame().getHeight() - 300 );
 		} else {
 			this.left.setResizeWeight( 0.0 );
 			this.root.setLeftComponent( this.left );
-			this.root.setRightComponent( this.right );
+			this.right.setVisible( true );
+			//this.root.setRightComponent( this.right );
 			this.root.setDividerLocation( this.rootDividerLocation );
-			this.left.setDividerLocation( this.leftDividerLocation );
 			this.left.setTopComponent( this.sceneEditor );
 			this.left.setBottomComponent( this.membersEditor );
+			this.left.setDividerLocation( this.leftDividerLocation );
 			//			if( this.right.getComponentCount() == 0 ) {
 			//				this.right.add( this.ubiquitousPane, java.awt.BorderLayout.SOUTH );
 			//				this.right.add( this.editorsTabbedPane, java.awt.BorderLayout.CENTER );
@@ -624,7 +630,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 		this.expressionFillerInners = this.addExpressionFillerInners( new java.util.LinkedList< org.alice.ide.cascade.fillerinners.ExpressionFillerInner >() );
 
-		this.isSceneEditorExpandedState.addValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
+		this.isSceneEditorExpandedState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
 			public void changing( boolean nextValue ) {
 			}
 			public void changed( boolean nextValue ) {
@@ -1626,7 +1632,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 				if( field.getValueType() == scopeType ) {
 					text = "this (a.k.a. " + text + ")";
 				} else if( field.getDeclaringType() == scopeType ) {
-					if( this.isOmissionOfThisForFieldAccessesDesiredState.getState() ) {
+					if( this.isOmissionOfThisForFieldAccessesDesiredState.getValue() ) {
 						//pass
 					} else {
 						text = "this." + text;

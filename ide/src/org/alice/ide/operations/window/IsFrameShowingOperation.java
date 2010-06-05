@@ -75,7 +75,7 @@ public abstract class IsFrameShowingOperation extends org.alice.ide.operations.A
 				public void windowDeactivated(java.awt.event.WindowEvent e) {
 				}
 				public void windowClosing(java.awt.event.WindowEvent e) {
-					IsFrameShowingOperation.this.setState( false );
+					IsFrameShowingOperation.this.setValue( false );
 				}
 				public void windowClosed(java.awt.event.WindowEvent e) {
 				}

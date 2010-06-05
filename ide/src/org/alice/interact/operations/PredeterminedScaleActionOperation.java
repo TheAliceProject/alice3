@@ -97,7 +97,7 @@ public class PredeterminedScaleActionOperation extends edu.cmu.cs.dennisc.croque
 	}
 	@Override
 	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			public void doOrRedo( boolean isDo ) {
 				if( isDo && ( isDoRequired == false ) ) {

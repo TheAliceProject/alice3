@@ -104,51 +104,52 @@ package edu.cmu.cs.dennisc.tutorial;
 			edu.cmu.cs.dennisc.croquet.TrackableShape featureTrackableShape = feature.getTrackableShape();
 			if( featureTrackableShape != null ) {
 				java.awt.Shape shape = featureTrackableShape.getShape( parent, null );
-				assert shape != null : featureTrackableShape;
-				java.awt.Rectangle featureComponentBounds = shape.getBounds();
-				Feature.ConnectionPreference connectionPreference = feature.getConnectionPreference();
-				if( connectionPreference == Feature.ConnectionPreference.EAST_WEST ) {
-					x = getXForWestLayout( noteBounds, featureComponentBounds );
-					if( x >= 32 ) {
-						actualConnection = Feature.Connection.WEST;
-					} else {
-						x = getXForEastLayout(noteBounds, featureComponentBounds);
-						if( x <= ( cardBounds.width - noteBounds.width - 32 ) ) {
-							actualConnection = Feature.Connection.EAST;
-						}
-					}
-				}
-				if( actualConnection != null ) {
-					int yFeatureComponentCenter = featureComponentBounds.y + featureComponentBounds.height/2;
-					int yCardCenter = ( cardBounds.y + cardBounds.height ) / 2;
-					y = yFeatureComponentCenter;
-					if( yFeatureComponentCenter < yCardCenter ) {
-						y += 100;
-					} else {
-						y -= noteBounds.height;
-						y -= 100;
-					}
-				} else {
-					y = getYForNorthLayout( noteBounds, featureComponentBounds );
-					if( y >= 32 ) {
-						actualConnection = Feature.Connection.NORTH;
-					} else {
-						y = getYForSouthLayout( noteBounds, featureComponentBounds);
-						if( y <= ( cardBounds.height - noteBounds.height - 32 ) ) {
-							actualConnection = Feature.Connection.SOUTH;
+				if( shape != null ) {
+					java.awt.Rectangle featureComponentBounds = shape.getBounds();
+					Feature.ConnectionPreference connectionPreference = feature.getConnectionPreference();
+					if( connectionPreference == Feature.ConnectionPreference.EAST_WEST ) {
+						x = getXForWestLayout( noteBounds, featureComponentBounds );
+						if( x >= 32 ) {
+							actualConnection = Feature.Connection.WEST;
 						} else {
-							actualConnection = Feature.Connection.SOUTH;
-							y = 200;
+							x = getXForEastLayout(noteBounds, featureComponentBounds);
+							if( x <= ( cardBounds.width - noteBounds.width - 32 ) ) {
+								actualConnection = Feature.Connection.EAST;
+							}
 						}
 					}
-					int xFeatureComponentCenter = featureComponentBounds.x + featureComponentBounds.width/2;
-					int xCardCenter = ( cardBounds.x + cardBounds.width ) / 2;
-					x = xFeatureComponentCenter;
-					if( xFeatureComponentCenter < xCardCenter ) {
-						x += 200;
+					if( actualConnection != null ) {
+						int yFeatureComponentCenter = featureComponentBounds.y + featureComponentBounds.height/2;
+						int yCardCenter = ( cardBounds.y + cardBounds.height ) / 2;
+						y = yFeatureComponentCenter;
+						if( yFeatureComponentCenter < yCardCenter ) {
+							y += 100;
+						} else {
+							y -= noteBounds.height;
+							y -= 100;
+						}
 					} else {
-						x -= noteBounds.width;
-						x -= 200;
+						y = getYForNorthLayout( noteBounds, featureComponentBounds );
+						if( y >= 32 ) {
+							actualConnection = Feature.Connection.NORTH;
+						} else {
+							y = getYForSouthLayout( noteBounds, featureComponentBounds);
+							if( y <= ( cardBounds.height - noteBounds.height - 32 ) ) {
+								actualConnection = Feature.Connection.SOUTH;
+							} else {
+								actualConnection = Feature.Connection.SOUTH;
+								y = 200;
+							}
+						}
+						int xFeatureComponentCenter = featureComponentBounds.x + featureComponentBounds.width/2;
+						int xCardCenter = ( cardBounds.x + cardBounds.width ) / 2;
+						x = xFeatureComponentCenter;
+						if( xFeatureComponentCenter < xCardCenter ) {
+							x += 200;
+						} else {
+							x -= noteBounds.width;
+							x -= 200;
+						}
 					}
 				}
 			}

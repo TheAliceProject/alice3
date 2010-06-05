@@ -63,7 +63,7 @@ public abstract class ShiftParameterOperation extends AbstractCodeParameterOpera
 		final int aIndex = this.getIndexA();
 		final int bIndex = aIndex + 1;
 		if( method != null ) {
-			context.commitAndInvokeDo(new org.alice.ide.ToDoEdit( context ) {
+			context.commitAndInvokeDo(new org.alice.ide.ToDoEdit() {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					swap( method, aIndex, bIndex );

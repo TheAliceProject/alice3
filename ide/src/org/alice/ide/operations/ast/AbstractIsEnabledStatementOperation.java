@@ -59,7 +59,7 @@ public abstract class AbstractIsEnabledStatementOperation extends org.alice.ide.
 	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		final boolean nextValue = this.getDesiredValue();
 		final boolean prevValue = this.statement.isEnabled.getValue();
-		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			public void doOrRedo( boolean isDo ) {
 				statement.isEnabled.setValue( nextValue );

@@ -88,7 +88,7 @@ public abstract class SelectAndLoadProjectOperation extends org.alice.app.operat
 		if( isOk ) {
 			java.net.URI uri = this.selectProjectToOpenPanel.getSelectedURI();
 			if (uri != null) {
-				context.commitAndInvokeDo( new LoadUriEdit( context, uri ) );
+				context.commitAndInvokeDo( new LoadUriEdit( uri ) );
 			} else {
 				context.cancel();
 			}

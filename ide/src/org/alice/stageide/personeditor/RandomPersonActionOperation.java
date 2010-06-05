@@ -64,7 +64,7 @@ class RandomPersonActionOperation extends org.alice.ide.operations.ActionOperati
 		boolean isAdult = edu.cmu.cs.dennisc.random.RandomUtilities.nextBoolean();
 		LifeStage randomLifeStage = isAdult ? LifeStage.ADULT : LifeStage.CHILD;
 		final edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> nextState = PersonViewer.generateRandomState( randomLifeStage, Gender.getRandom() );
-		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			public void doOrRedo( boolean isDo ) {
 				PersonViewer.getSingleton().setState( nextState );

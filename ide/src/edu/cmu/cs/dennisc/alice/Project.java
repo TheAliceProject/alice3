@@ -48,7 +48,7 @@ import org.alice.virtualmachine.Resource;
  * @author Dennis Cosgrove
  */
 public class Project {
-	public static final edu.cmu.cs.dennisc.croquet.Group GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "a89d2513-6d9a-4378-a08b-4d773618244d" ) );
+	public static final edu.cmu.cs.dennisc.croquet.Group GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "a89d2513-6d9a-4378-a08b-4d773618244d" ), "Project.GROUP" );
 
 	private static int readInt( java.io.BufferedInputStream bis ) throws java.io.IOException {
 		byte[] lengthArray = new byte[ 4 ];

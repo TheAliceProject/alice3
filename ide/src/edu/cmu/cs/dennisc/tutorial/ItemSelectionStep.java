@@ -56,7 +56,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		return model.getValue() == this.desiredValue;
 	}
 	@Override
-	protected void complete() {
+	protected void complete( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
 		this.getModel().setValue( this.desiredValue );
 	}
 }

@@ -47,10 +47,16 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public final class Group {
 	private java.util.UUID id;
-	public Group( java.util.UUID id ) {
+	private String description;
+	public Group( java.util.UUID id, String description ) {
 		this.id = id;
+		this.description = description;
 	}
 	public java.util.UUID getId() {
 		return this.id;
+	}
+	@Override
+	public String toString() {
+		return this.description;
 	}
 }

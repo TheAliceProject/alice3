@@ -50,6 +50,6 @@ package edu.cmu.cs.dennisc.tutorial;
 		super( title, text );
 	}
 	@Override
-	protected void complete() {
+	protected void complete( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
 	}
 }	

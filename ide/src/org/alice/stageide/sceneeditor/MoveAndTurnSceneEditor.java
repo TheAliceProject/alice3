@@ -410,7 +410,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouthEast( lgPanel, isSceneEditorExpandedCheckBox.getAwtComponent(), INSET );
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthEast( lgPanel, this.getIDE().getRunOperation().createButton().getAwtComponent(), INSET );
 			
-			if (isSceneEditorExpandedOperation.getState())
+			if (isSceneEditorExpandedOperation.getValue())
 			{
 				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( lgPanel, this.mainViewSelector, Horizontal.EAST, -INSET, Vertical.NORTH, INSET + 30 );
 			}

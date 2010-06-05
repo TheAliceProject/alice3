@@ -46,27 +46,53 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Edit implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private ModelContext context;
+	private ModelContext<?> context;
 	private java.util.UUID contextId;
 	
+	public Edit() {
+	}
 	public Edit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.decode( binaryDecoder );
 	}
-	public Edit( ModelContext context ) {
+	
+	public ModelContext< ? > getContext() {
+		if( this.context != null ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: resolve", this.contextId );
+		}
+		return this.context;
+	}
+	public Model getModel() {
+		ModelContext< ? > context = this.getContext();
+		if( context != null ) {
+			return context.getModel();
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getModel() context==null" );
+			return null;
+		}
+	}
+	public Group getGroup() {
+		Model model = this.getModel();
+		if( model != null ) {
+			return model.getGroup();
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getGroup() model==null" );
+			return null;
+		}
+	}
+	/*package-private*/ void setContext( ModelContext<?> context ) {
 		this.context = context;
 		if( this.context != null ) {
 			this.contextId = context.getId();
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: context" );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: context == null" );
 			this.contextId = null;
 		}
 	}
+	
 	protected java.util.UUID getContextId() {
 		return this.contextId;
-	}
-	public Group getGroup() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getGroup()" );
-		return null;
 	}
 	public abstract boolean canRedo();
 	public abstract boolean canUndo();

@@ -58,7 +58,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 		return type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
 	}
 	protected boolean isExpressionTypeFeedbackDesired() {
-		return this.getIDE().getExpressionTypeFeedbackDesiredState().getState() || isKnurlDesired();
+		return this.getIDE().getExpressionTypeFeedbackDesiredState().getValue() || isKnurlDesired();
 	}
 	@Override
 	protected int getInsetTop() {

@@ -47,6 +47,7 @@ public class HistoryManager {
 		public void committing(edu.cmu.cs.dennisc.croquet.Edit edit) {
 		}
 		public void committed(edu.cmu.cs.dennisc.croquet.Edit edit) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "HistoryManager:", edit, edit.getGroup() );
 			HistoryManager.handleOperationPerformed( edit );
 		}
 	};
@@ -57,22 +58,26 @@ public class HistoryManager {
 	private static java.util.Map< edu.cmu.cs.dennisc.croquet.Group, HistoryManager > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public static HistoryManager getInstance( edu.cmu.cs.dennisc.croquet.Group group ) {
-		HistoryManager rv = HistoryManager.map.get( group );
-		if( rv != null ) {
-			//pass
+		HistoryManager rv;
+		if( group != null ) {
+			rv = HistoryManager.map.get( group );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new HistoryManager( group );
+				HistoryManager.map.put( group, rv );
+			}
 		} else {
-			rv = new HistoryManager( group );
-			HistoryManager.map.put( group, rv );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "HistoryManager.getInstance group==null" );
+			rv = null;
 		}
 		return rv;
 	}
 	private static void handleOperationPerformed( edu.cmu.cs.dennisc.croquet.Edit edit ) {
-		if( edit != null ) {
-			HistoryManager historyManager = HistoryManager.getInstance( edit.getGroup() );
+		assert edit != null;
+		HistoryManager historyManager = HistoryManager.getInstance( edit.getGroup() );
+		if( historyManager != null ) {
 			historyManager.push( edit );
-		} else {
-			//todo?
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "no edit to undo for", commitEvent );
 		}
 	}
 

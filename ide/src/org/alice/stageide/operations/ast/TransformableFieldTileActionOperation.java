@@ -63,7 +63,7 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: TransformableFieldTileActionOperation isNaN" );
 				context.cancel();
 			} else {
-				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
 					public void doOrRedo( boolean isDo ) {
 						setAbsolutePOV( transformable, nextPOV );

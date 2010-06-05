@@ -70,7 +70,7 @@ public class DeclareMethodParameterOperation extends org.alice.ide.operations.In
 			if( parameter != null ) {
 				final int index = method.parameters.size();
 				final java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument >();
-				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
 					public void doOrRedo( boolean isDo ) {
 						org.alice.ide.ast.NodeUtilities.addParameter( map, method, parameter, index, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );

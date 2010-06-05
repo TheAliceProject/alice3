@@ -90,7 +90,7 @@ public class EditPersonActionOperation extends edu.cmu.cs.dennisc.croquet.InputD
 			final org.alice.apis.stage.Outfit nextOutfit = person.getOutfit();
 			final org.alice.apis.stage.Hair nextHair = person.getHair();
 			final Double nextFitnessLevel = person.getFitnessLevel();
-			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					EditPersonActionOperation.set( person, nextGender, nextSkinTone, nextEyeColor, nextOutfit, nextHair, nextFitnessLevel );

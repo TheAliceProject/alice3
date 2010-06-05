@@ -54,8 +54,7 @@ public final class BoundedRangeIntegerStateEdit extends Edit {
 	public BoundedRangeIntegerStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public BoundedRangeIntegerStateEdit( ModelContext context, javax.swing.event.ChangeEvent e, BoundedRangeIntegerState operation, int previousValue, int nextValue, boolean isDoDesired ) {
-		super( context );
+	public BoundedRangeIntegerStateEdit( javax.swing.event.ChangeEvent e, BoundedRangeIntegerState operation, int previousValue, int nextValue, boolean isDoDesired ) {
 		this.operation = operation;
 		this.operationId = operation.getIndividualUUID();
 		this.previousValue = previousValue;

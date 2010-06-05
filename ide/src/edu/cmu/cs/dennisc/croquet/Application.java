@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Application {
-	public static final Group INHERIT_GROUP = new Group( java.util.UUID.fromString( "488f8cf9-30cd-49fc-ab72-7fd6a3e13c3f" ) );
+	public static final Group INHERIT_GROUP = new Group( java.util.UUID.fromString( "488f8cf9-30cd-49fc-ab72-7fd6a3e13c3f" ), "INHERIT_GROUP" );
 
 	public static interface LocaleObserver {
 		public void localeChanging( java.util.Locale previousLocale, java.util.Locale nextLocale );

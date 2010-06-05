@@ -45,9 +45,10 @@ package org.alice.stageide.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-public class IDETutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
+public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	private org.alice.stageide.StageIDE ide;
-	public IDETutorial( org.alice.stageide.StageIDE ide ) {
+	public IdeTutorial( org.alice.stageide.StageIDE ide ) {
+		super( new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.IDE_GROUP } );
 		assert ide != null;
 		this.ide = ide;
 	}
@@ -96,10 +97,22 @@ public class IDETutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			return this.trackableShape;
 		}
 		public final java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
-			return this.getTrackableShape().getShape( asSeenBy, insets );
+			edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getTrackableShape();
+			if( this.trackableShape != null ) {
+				return trackableShape.getShape( asSeenBy, insets );
+			} else {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getShape" );
+				return null;
+			}
 		}
 		public final java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
-			return this.getTrackableShape().getVisibleShape( asSeenBy, insets );
+			edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getTrackableShape();
+			if( this.trackableShape != null ) {
+				return trackableShape.getVisibleShape( asSeenBy, insets );
+			} else {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getVisibleShape" );
+				return null;
+			}
 		}
 	}
 	
@@ -142,10 +155,13 @@ public class IDETutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			edu.cmu.cs.dennisc.alice.ast.BlockStatement body = code.getBodyProperty().getValue();
 			body.crawl( crawler, false );
 			java.util.List<edu.cmu.cs.dennisc.alice.ast.MethodInvocation> list = crawler.getList();
-			edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = list.get( this.index );
-
-			edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)methodInvocation.getParent();
-			return codeEditor.getTrackableShape(statement);
+			if( list.size() > this.index ) {
+				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = list.get( this.index );
+				edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)methodInvocation.getParent();
+				return codeEditor.getTrackableShape(statement);
+			} else {
+				return null;
+			}
 		}
 	}
 	

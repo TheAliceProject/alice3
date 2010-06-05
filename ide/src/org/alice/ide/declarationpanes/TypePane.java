@@ -163,7 +163,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType rv = this.typeSelectionOperation.getValue();
 		if( rv != null ) {
-			if( this.isArrayStateOperation.getState() ) {
+			if( this.isArrayStateOperation.getValue() ) {
 				rv = rv.getArrayType();
 			}
 		}

@@ -62,7 +62,7 @@ public abstract class AbstractRenameNodeOperation extends edu.cmu.cs.dennisc.cro
 			final String nextValue = this.renameNodePane.getNameText();
 			final edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNameProperty();
 			final String prevValue = nameProperty.getValue();
-			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					nameProperty.setValue( nextValue );
@@ -108,7 +108,7 @@ public abstract class AbstractRenameNodeOperation extends edu.cmu.cs.dennisc.cro
 //		final String nextValue = renameNodePane.showInJDialog( button );
 //		if( nextValue != null && nextValue.length() > 0 ) {
 //			final String prevValue = nameProperty.getValue();
-//			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+//			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 //				@Override
 //				public void doOrRedo( boolean isDo ) {
 //					nameProperty.setValue( nextValue );

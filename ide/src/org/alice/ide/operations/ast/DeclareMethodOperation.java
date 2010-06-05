@@ -69,7 +69,7 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.In
 			if( method != null ) {
 				final org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 				final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = ide.getFocusedCode();
-				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
 					public void doOrRedo( boolean isDo ) {
 						type.methods.add( method );

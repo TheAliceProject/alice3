@@ -53,7 +53,7 @@ public class SelectFieldActionOperation extends AbstractFieldActionOperation {
 	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		final edu.cmu.cs.dennisc.alice.ast.AbstractField prevField = getIDE().getFieldSelectionState().getValue();
 		final edu.cmu.cs.dennisc.alice.ast.AbstractField nextField = getField();
-		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			public void doOrRedo( boolean isDo ) {
 				getIDE().getFieldSelectionState().setValue( nextField );

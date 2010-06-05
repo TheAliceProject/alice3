@@ -182,6 +182,9 @@ public abstract class Step {
 	private StepPanel stepPanel = new StepPanel();
 	private java.util.List< Note > notes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private String title;
+	
+	private int[] historyIndices = null;
+	
 	public Step( String title, String text ) {
 		this.title = title;
 		this.addNote( new Note( text ) );
@@ -189,13 +192,21 @@ public abstract class Step {
 	public Tutorial getTutorial() {
 		return this.tutorial;
 	}
-	protected abstract void complete();
+	protected abstract void complete( edu.cmu.cs.dennisc.croquet.ModelContext<?> context );
 	/*package-private*/ void setTutorial( Tutorial tutorial ) {
 		this.tutorial = tutorial;
 		for( Note note : this.notes ) {
 			note.setTutorial( this.tutorial );
 		}
 	}
+	
+	/*package-private*/ int[] getHistoryIndices() {
+		return this.historyIndices;
+	}
+	/*package-private*/ void setHistoryIndices( int[] historyIndices ) {
+		this.historyIndices = historyIndices;
+	}
+	
 	public java.util.UUID getId() {
 		return this.id;
 	}

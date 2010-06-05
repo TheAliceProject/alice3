@@ -67,7 +67,7 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 	@Override
 	protected int getInsetLeft() {
 		int rv = super.getInsetLeft();
-		if( this.getIDE().getExpressionTypeFeedbackDesiredState().getState() ) {
+		if( this.getIDE().getExpressionTypeFeedbackDesiredState().getValue() ) {
 			//pass
 		} else {
 			edu.cmu.cs.dennisc.croquet.Component< ? > mainComponent = this.getMainComponent();

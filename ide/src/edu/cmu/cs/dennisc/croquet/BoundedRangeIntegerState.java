@@ -73,7 +73,7 @@ public final class BoundedRangeIntegerState extends Model {
 				//pass
 			} else {
 				int nextValue = boundedRangeModel.getValue();
-				boundedRangeIntegerStateContext.commitAndInvokeDo( new BoundedRangeIntegerStateEdit( boundedRangeIntegerStateContext, e, BoundedRangeIntegerState.this, BoundedRangeIntegerState.this.previousValue, nextValue, false ) );
+				boundedRangeIntegerStateContext.commitAndInvokeDo( new BoundedRangeIntegerStateEdit( e, BoundedRangeIntegerState.this, BoundedRangeIntegerState.this.previousValue, nextValue, false ) );
 				BoundedRangeIntegerState.this.previousValue = nextValue;
 			}
 		}

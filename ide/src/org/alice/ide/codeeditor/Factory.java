@@ -57,7 +57,7 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 		final int index = this.property.indexOf( this.original );
 		final edu.cmu.cs.dennisc.alice.ast.BlockStatement body = this.original.body.getValue();
 		if( index >= 0 ) {
-			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					property.remove( index );
@@ -121,7 +121,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOp
 			final edu.cmu.cs.dennisc.alice.ast.Statement[] statements = new edu.cmu.cs.dennisc.alice.ast.Statement[ N ];
 			this.abstractStatementWithBody.body.getValue().statements.toArray( statements );
 			
-			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					property.remove( index );
@@ -174,7 +174,7 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOper
 	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		final int index = this.property.indexOf( this.statement );
 		if( index >= 0 ) {
-			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					property.remove( index );

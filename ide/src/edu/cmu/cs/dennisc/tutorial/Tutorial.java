@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 public class Tutorial {
-	/*package-private*/ static edu.cmu.cs.dennisc.croquet.Group TUTORIAL_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "7bfa86e3-234e-4bd1-9177-d4acac0b12d9" ) );
+	/*package-private*/ static edu.cmu.cs.dennisc.croquet.Group TUTORIAL_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "7bfa86e3-234e-4bd1-9177-d4acac0b12d9" ), "TUTORIAL_GROUP" );
 	
 	private static java.awt.Color CONTROL_COLOR = new java.awt.Color(255, 255, 191);
 
@@ -80,7 +80,7 @@ public class Tutorial {
 		}
 	}
 
-	private static class NextStepOperation extends TutorialOperation {
+	private class NextStepOperation extends TutorialOperation {
 		private StepsComboBoxModel stepsComboBoxModel;
 
 		public NextStepOperation(StepsComboBoxModel stepsComboBoxModel) {
@@ -92,7 +92,12 @@ public class Tutorial {
 		@Override
 		protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 			if( this.stepsComboBoxModel.getSelectedIndex() < this.stepsComboBoxModel.getSize()-1 ) {
-				this.stepsComboBoxModel.incrementSelectedIndex();
+				try {
+					isResultOfNextOperation = true;
+					this.stepsComboBoxModel.incrementSelectedIndex();
+				} finally {
+					isResultOfNextOperation = false;
+				}
 			} else {
 				edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "end of tutorial" );
 			}
@@ -143,6 +148,7 @@ public class Tutorial {
 		}
 	};
 	
+	private boolean isResultOfNextOperation = false;
 	private StepsComboBoxModel stepsComboBoxModel = new StepsComboBoxModel();
 	private PreviousStepOperation previousStepOperation = new PreviousStepOperation( this.stepsComboBoxModel );
 	private NextStepOperation nextStepOperation = new NextStepOperation( this.stepsComboBoxModel );
@@ -165,7 +171,6 @@ public class Tutorial {
 		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 			public void itemStateChanged(java.awt.event.ItemEvent e) {
 				if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-					TutorialStencil.this.completeOrUndoIfNecessary();
 					TutorialStencil.this.handleStepChanged((Step) e.getItem());
 				} else {
 					// pass
@@ -186,22 +191,49 @@ public class Tutorial {
 			this.internalAddComponent(panel, java.awt.BorderLayout.NORTH);
 			this.internalAddComponent(this.cardPanel, java.awt.BorderLayout.CENTER);
 		}
+		
+		private Step getStep( int index ) {
+			return (Step)Tutorial.this.stepsComboBoxModel.getElementAt( index );
+		}
+		private void preserveHistoryIndices( Step step ) {
+			final int N = historyManagers.length;
+			int[] indices = new int[ N ];
+			for( int i=0; i<N; i++ ) {
+				indices[ i ] = historyManagers[ i ].getInsertionIndex();
+			}
+			step.setHistoryIndices( indices );
+		}
+		private void restoreHistoryIndices( Step step ) {
+			final int N = historyManagers.length;
+			int[] indices = step.getHistoryIndices();
+			for( int i=0; i<N; i++ ) {
+				historyManagers[ i ].setInsertionIndex( indices[ i ] );
+			}
+		}
 		private int prevSelectedIndex = -1;
 		private void completeOrUndoIfNecessary() {
 			int nextSelectedIndex = this.comboBox.getAwtComponent().getSelectedIndex();
-			int firstToComplete = this.prevSelectedIndex + 1;
-			int firstToUndo = this.prevSelectedIndex - 1;
-			if( firstToComplete < nextSelectedIndex ) {
-				for( int i=firstToComplete; i<nextSelectedIndex; i++ ) {
-					Step step = (Step)Tutorial.this.stepsComboBoxModel.getElementAt( i );
-					step.complete();
+			int undoIndex = Math.max( nextSelectedIndex, 0 );
+			if( undoIndex < this.prevSelectedIndex ) {
+				Step step = this.getStep( undoIndex );
+				this.restoreHistoryIndices( step );
+			} else {
+				edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getCurrentContext();
+				int index0 = Math.max( this.prevSelectedIndex, 0 );
+				for( int i=index0; i<nextSelectedIndex; i++ ) {
+					Step iStep = this.getStep( i );
+					preserveHistoryIndices( iStep );
+					if( i==this.prevSelectedIndex && isResultOfNextOperation ) {
+						//pass
+					} else {
+						iStep.complete( context );
+					}
 				}
-			} else if( firstToUndo > nextSelectedIndex ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: undo" );
 			}
 			this.prevSelectedIndex = nextSelectedIndex;
 		}
 		private void handleStepChanged(Step step) {
+			this.completeOrUndoIfNecessary();
 			if( step != null ) {
 				step.reset();
 				java.util.UUID stepId = step.getId();
@@ -271,6 +303,15 @@ public class Tutorial {
 		@Override
 		protected Step getCurrentStep() {
 			return (Step)stepsComboBoxModel.getSelectedItem();
+		}
+	}
+	
+	private edu.cmu.cs.dennisc.history.HistoryManager[] historyManagers;
+	public Tutorial( edu.cmu.cs.dennisc.croquet.Group[] groups ) {
+		final int N = groups.length;
+		this.historyManagers = new edu.cmu.cs.dennisc.history.HistoryManager[ N ];
+		for( int i=0; i<N; i++ ) {
+			this.historyManagers[ i ] = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( groups[ i ] );
 		}
 	}
 	private void addStep( Step step ) {

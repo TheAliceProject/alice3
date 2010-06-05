@@ -64,6 +64,6 @@ public class BooleanPreferenceCheckBoxProxy extends PreferenceProxy<Boolean> {
 	}
 	@Override
 	public void setAndCommitValue() {
-		this.getPreference().setAndCommitValue( this.operation.getState() );
+		this.getPreference().setAndCommitValue( this.operation.getValue() );
 	}
 }

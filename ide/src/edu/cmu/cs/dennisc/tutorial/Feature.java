@@ -176,27 +176,28 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	public final void paint( java.awt.Graphics2D g2, edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy, edu.cmu.cs.dennisc.croquet.JComponent<?> note ) {
 		java.awt.Shape shape = getShapeForPaint( asSeenBy );
-		this.paint( g2, shape );
+		if( shape != null ) {
+			this.paint( g2, shape );
+			g2.setPaint( java.awt.Color.BLACK );
+			java.awt.Rectangle noteBounds = note.getComponent( 0 ).getBounds( asSeenBy );
+			
+			
+			java.awt.Point ptComponent = edu.cmu.cs.dennisc.java.awt.RectangleUtilties.getPoint( shape.getBounds(), this.actualConnection.getXConstraint(), this.actualConnection.getYConstraint() );
+			
+			int xContraint;
+			if( noteBounds.x > ptComponent.x ) {
+				xContraint = javax.swing.SwingConstants.LEADING;
+			} else {
+				xContraint = javax.swing.SwingConstants.TRAILING;
+			}
 
-		g2.setPaint( java.awt.Color.BLACK );
-		java.awt.Rectangle noteBounds = note.getComponent( 0 ).getBounds( asSeenBy );
-		
-		
-		java.awt.Point ptComponent = edu.cmu.cs.dennisc.java.awt.RectangleUtilties.getPoint( shape.getBounds(), this.actualConnection.getXConstraint(), this.actualConnection.getYConstraint() );
-		
-		int xContraint;
-		if( noteBounds.x > ptComponent.x ) {
-			xContraint = javax.swing.SwingConstants.LEADING;
-		} else {
-			xContraint = javax.swing.SwingConstants.TRAILING;
+			java.awt.Point ptNote = edu.cmu.cs.dennisc.java.awt.RectangleUtilties.getPoint( noteBounds, xContraint, javax.swing.SwingConstants.CENTER );
+					
+			java.awt.Stroke prevStroke = g2.getStroke();
+			g2.setStroke( ARROW_STROKE );
+			drawPath( g2, ptNote.x, ptNote.y, ptComponent.x, ptComponent.y, this.actualConnection.isCurveDesired() );
+			g2.setStroke( prevStroke );
+			this.actualConnection.fillArrowHead(g2, ptComponent.x, ptComponent.y);
 		}
-
-		java.awt.Point ptNote = edu.cmu.cs.dennisc.java.awt.RectangleUtilties.getPoint( noteBounds, xContraint, javax.swing.SwingConstants.CENTER );
-				
-		java.awt.Stroke prevStroke = g2.getStroke();
-		g2.setStroke( ARROW_STROKE );
-		drawPath( g2, ptNote.x, ptNote.y, ptComponent.x, ptComponent.y, this.actualConnection.isCurveDesired() );
-		g2.setStroke( prevStroke );
-		this.actualConnection.fillArrowHead(g2, ptComponent.x, ptComponent.y);
 	}
 }

@@ -67,8 +67,8 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	
 	@Override
-	protected void complete() {
-		this.automaticEdit.doOrRedo( true );
+	protected void complete( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
+		context.commitAndInvokeDo( this.automaticEdit );
 	}
 	private void setActiveNote( int activeIndex ) {
 		final int N = this.getNoteCount();

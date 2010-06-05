@@ -53,8 +53,7 @@ public final class ItemSelectionEdit<E> extends Edit {
 	public ItemSelectionEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public ItemSelectionEdit( ModelContext context, java.util.EventObject e, E prevValue, E nextValue, ItemSelectionState< E > operation ) {
-		super( context );
+	public ItemSelectionEdit( java.util.EventObject e, E prevValue, E nextValue, ItemSelectionState< E > operation ) {
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
 		this.operation = operation;

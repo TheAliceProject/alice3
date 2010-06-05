@@ -52,7 +52,7 @@ public class CreateInstanceTutorial {
 		ide.loadProjectFrom( args[ 0 ] );
 		ide.getFrame().maximize();
 		
-		final edu.cmu.cs.dennisc.tutorial.Tutorial tutorial = new edu.cmu.cs.dennisc.tutorial.Tutorial();
+		final IdeTutorial tutorial = new IdeTutorial( ide );
 		tutorial.addBooleanStateStep( 
 				"Edit Scene", 
 				"<html>Press the <b>Edit Scene</b> button</html>", 

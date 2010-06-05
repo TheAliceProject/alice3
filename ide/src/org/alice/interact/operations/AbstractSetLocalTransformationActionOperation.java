@@ -80,7 +80,7 @@ public abstract class AbstractSetLocalTransformationActionOperation extends edu.
 		assert nextLT != null;
 		assert prevLT.isNaN() == false;
 		assert nextLT.isNaN() == false;
-		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			public void doOrRedo( boolean isDo ) {
 				if( isDo && ( isDoRequired == false ) ) {

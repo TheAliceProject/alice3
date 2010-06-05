@@ -63,7 +63,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	}
 	@Override
-	protected void complete() {
+	protected void complete( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
 		//this.getModel().fire();
 	}
 }

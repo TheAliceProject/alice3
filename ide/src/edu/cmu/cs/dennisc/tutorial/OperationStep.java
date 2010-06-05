@@ -60,7 +60,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		return false;
 	}
 	@Override
-	protected void complete() {
-		this.automaticEdit.doOrRedo( true );
+	protected void complete( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
+		context.commitAndInvokeDo( this.automaticEdit );
 	}
 }

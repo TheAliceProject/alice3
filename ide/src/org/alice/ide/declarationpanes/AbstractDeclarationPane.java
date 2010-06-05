@@ -139,7 +139,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	}
 	protected boolean isReassignable() {
 		if( this.isReassignableStateOperation != null ) {
-			return this.isReassignableStateOperation.getState();
+			return this.isReassignableStateOperation.getValue();
 		} else {
 			throw new RuntimeException( "override" );
 		}

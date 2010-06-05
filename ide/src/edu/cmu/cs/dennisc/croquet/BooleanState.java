@@ -57,7 +57,7 @@ public /*final*/ class BooleanState extends Model {
 	}
 	public void addAndInvokeValueObserver(ValueObserver valueObserver) {
 		this.addValueObserver(valueObserver);
-		valueObserver.changed(this.getState());
+		valueObserver.changed(this.getValue());
 	}
 	public void removeValueObserver( ValueObserver valueObserver ) {
 		this.valueObservers.remove( valueObserver );
@@ -76,17 +76,17 @@ public /*final*/ class BooleanState extends Model {
 			Application application = Application.getSingleton();
 			ModelContext<?> parentContext = application.getCurrentContext();
 			BooleanStateContext childContext = parentContext.createBooleanStateContext( BooleanState.this, e, null );
-			childContext.commitAndInvokeDo( new BooleanStateEdit( childContext, e, BooleanState.this ) );
+			childContext.commitAndInvokeDo( new BooleanStateEdit( e, BooleanState.this ) );
 		}
 	};
 
-	private boolean state;
+	private boolean value;
 	private String trueText = null;
 	private String falseText = null;
 
 	public BooleanState(Group group, java.util.UUID individualUUID, boolean initialState, String trueText, String falseText) {
 		super(group, individualUUID);
-		this.state = initialState;
+		this.value = initialState;
 		this.buttonModel.setSelected(initialState);
 		this.buttonModel.addItemListener(this.itemListener);
 		this.setTrueText(trueText);
@@ -103,30 +103,25 @@ public /*final*/ class BooleanState extends Model {
 	/*package-private*/ javax.swing.ButtonModel getButtonModel() {
 		return this.buttonModel;
 	}
-	public Boolean getState() {
+	public Boolean getValue() {
 		return this.buttonModel.isSelected();
 	}
-	/*package-private*/ void internalSetValue(boolean nextValue) {
-		if( nextValue != this.state ) {
-			this.buttonModel.removeItemListener(itemListener);
+	public void setValue( boolean value ) {
+		if( value != this.value ) {
+			//this.buttonModel.removeItemListener(itemListener);
 
 			for( ValueObserver valueObserver : this.valueObservers ) {
-				valueObserver.changing( nextValue );
+				valueObserver.changing( value );
 			}
-			this.buttonModel.setSelected(nextValue);
-			this.state = nextValue;
+			this.buttonModel.setSelected(value);
+			this.value = value;
 			for( ValueObserver valueObserver : this.valueObservers ) {
-				valueObserver.changed( nextValue );
+				valueObserver.changed( value );
 			}
 
-			this.buttonModel.addItemListener(itemListener);
+			//this.buttonModel.addItemListener(itemListener);
 			this.updateName();
 		}
-	}
-	@Deprecated
-	public void setState( boolean state ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: BooleanStateOperation setValue" );
-		this.internalSetValue( state );
 	}
 
 	public String getTrueText() {
@@ -149,7 +144,7 @@ public /*final*/ class BooleanState extends Model {
 
 	private void updateName() {
 		String name;
-		if (this.getState()) {
+		if (this.getValue()) {
 			name = this.trueText;
 		} else {
 			name = this.falseText;

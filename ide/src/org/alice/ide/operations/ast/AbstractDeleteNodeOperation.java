@@ -70,7 +70,7 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 				field = null;
 				instance = null;
 			}
-			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					owner.remove( index );

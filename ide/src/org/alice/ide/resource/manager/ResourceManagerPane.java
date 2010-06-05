@@ -385,7 +385,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 			final String nextName = this.renamePane.getNameText();
 			if( nextName != null && nextName.length() > 0 ) {
 				final String prevName = this.resource.getName();
-				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
 					public void doOrRedo( boolean isDo ) {
 						resource.setName( nextName );
@@ -509,7 +509,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 					nextCapsule = null;
 				}
 				if( prevCapsule != null && nextCapsule != null ) {
-					context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
+					context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 						@Override
 						public void doOrRedo( boolean isDo ) {
 							nextCapsule.update( resource );

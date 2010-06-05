@@ -46,9 +46,8 @@ package org.alice.stageide.tutorial;
  * @author Dennis Cosgrove
  */
 public class IntroductionTutorial {
-	public static void main( final String[] args ) throws Exception {
-		final org.alice.stageide.StageIDE ide = org.alice.ide.LaunchUtilities.launchAndWait( org.alice.stageide.StageIDE.class, null, args, true );
-		final IDETutorial tutorial = new IDETutorial( ide );
+	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
+		final IdeTutorial tutorial = new IdeTutorial( ide );
 
 		tutorial.addMessageStep( 
 				"Welcome", 
@@ -249,21 +248,27 @@ public class IntroductionTutorial {
 				"The End",
 				"<html>End of tutorial.</html>" 
 		);
-
-		//membersEditor.getTabbedPaneSelectionState().setValue( membersEditor.getFunctionsTab() );
-		tutorial.setSelectedIndex( 10 );
 		
 		ide.getFrame().addWindowListener( new java.awt.event.WindowAdapter() {
 			@Override
 			public void windowOpened(java.awt.event.WindowEvent e) {
 //				javax.swing.SwingUtilities.invokeLater( new Runnable() {
 //					public void run() {
-						tutorial.setVisible( true );
 //					}
 //				} );
 			}
 		} );
 
+		tutorial.setVisible( true );
 		ide.getFrame().setVisible( true );
+		tutorial.setSelectedIndex( 24 );
+	}
+	public static void main( final String[] args ) throws Exception {
+		final org.alice.stageide.StageIDE ide = org.alice.ide.LaunchUtilities.launchAndWait( org.alice.stageide.StageIDE.class, null, args, false );
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				createAndShowTutorial( ide );
+			} 
+		} );
 	}
 }

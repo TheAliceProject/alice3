@@ -67,7 +67,7 @@ abstract class EditMembersOperation< E extends edu.cmu.cs.dennisc.alice.ast.Memb
 	private edu.cmu.cs.dennisc.history.HistoryManager historyManager;
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
-		edu.cmu.cs.dennisc.croquet.Group group = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.randomUUID() );
+		edu.cmu.cs.dennisc.croquet.Group group = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.randomUUID(), "EDIT_MEMBERS_GROUP: " + context );
 		this.historyManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( group );
 		return this.createEditMembersPane( group, this.declaringType );
 	}
