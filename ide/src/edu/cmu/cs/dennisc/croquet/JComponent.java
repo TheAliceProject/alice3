@@ -48,9 +48,16 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public abstract class JComponent<J extends javax.swing.JComponent> extends Container<J> {
 	
-	public void setOpaque(boolean isOpaque) {
-		this.getAwtComponent().setOpaque(isOpaque);
-	}
+//	public void setOpaque(boolean isOpaque) {
+//		this.getAwtComponent().setOpaque(isOpaque);
+//	}
+//	@Override
+//	public void setBackgroundColor( java.awt.Color color ) {
+//		super.setBackgroundColor( color );
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: opaque" );
+//		this.getAwtComponent().setOpaque(color!=null);
+//	}
+	
 	public void setAlignmentX(float alignmentX) {
 		this.getAwtComponent().setAlignmentX(alignmentX);
 	}

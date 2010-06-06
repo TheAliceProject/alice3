@@ -137,7 +137,10 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,Model> {
 		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
 		rv.setLayout( layoutManager );
 		
+		//rv.setOpaque( false );
+		rv.setBackground( null );
 		rv.setOpaque( false );
+		
 		//rv.setDoubleBuffered( false );
 		rv.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		rv.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );

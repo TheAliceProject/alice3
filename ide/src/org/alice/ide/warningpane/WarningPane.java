@@ -58,7 +58,7 @@ public class WarningPane extends edu.cmu.cs.dennisc.javax.swing.components.JPage
 		
 		javax.swing.JEditorPane editorPane = new javax.swing.JEditorPane( "text/html", sb.toString() );
 		editorPane.setEditable( false );
-		editorPane.setOpaque( false );
+		editorPane.setBackground( null );
 		
 		label.setAlignmentX( 0.0f );
 		editorPane.setAlignmentX( 0.0f );

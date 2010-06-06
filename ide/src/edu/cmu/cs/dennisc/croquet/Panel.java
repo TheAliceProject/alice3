@@ -73,9 +73,16 @@ public abstract class Panel extends JComponent< javax.swing.JPanel > {
 		rv.setLayout( layoutManager );
 		
 		rv.setOpaque( false );
+		rv.setBackground( null );
+		
 		rv.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		rv.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 		return rv;
+	}
+	@Override
+	public void setBackgroundColor( java.awt.Color color ) {
+		super.setBackgroundColor( color );
+		this.getAwtComponent().setOpaque( color != null );
 	}
 	protected boolean paintComponent( java.awt.Graphics2D g2 ) {
 		return true;

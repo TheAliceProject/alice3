@@ -102,7 +102,7 @@ abstract class AbstractItemSelectionOperation<E> extends edu.cmu.cs.dennisc.croq
 		edu.cmu.cs.dennisc.croquet.List<E> rv = super.createList();
 		rv.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
 		rv.setVisibleRowCount( this.getVisibleRowCount() );
-		rv.setOpaque( false );
+		rv.setBackgroundColor( null );
 		return rv;
 	}	
 }

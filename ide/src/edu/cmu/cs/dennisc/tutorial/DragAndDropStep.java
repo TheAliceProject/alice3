@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /*package-private*/ class DragAndDropStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
 	private edu.cmu.cs.dennisc.croquet.Edit automaticEdit;
 	public DragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape, String cascadeText, edu.cmu.cs.dennisc.croquet.Edit automaticEdit ) {
-		super( title, text, new Hole( dragSource, Feature.ConnectionPreference.NORTH_SOUTH ), dragSource.getDragAndDropOperation() );
+		super( title, text, new Hole( dragSource, Feature.ConnectionPreference.EAST_WEST ), dragSource.getDragAndDropOperation() );
 		this.automaticEdit = automaticEdit;
 		Note dropNote = new Note( dropText );
 		dropNote.addFeature( new Hole( dropShape, Feature.ConnectionPreference.NORTH_SOUTH ) );

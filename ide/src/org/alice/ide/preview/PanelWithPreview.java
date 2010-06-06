@@ -85,7 +85,6 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 	public PanelWithPreview() {
 		final int PAD = 16;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, 0, PAD ) );
-		this.setOpaque( true );
 	}
 	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent();
 	private void initializeIfNecessary() {

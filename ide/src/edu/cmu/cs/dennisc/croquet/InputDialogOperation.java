@@ -159,7 +159,7 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 			};
 			
 			OkCancelPanel okCancelPanel = new OkCancelPanel();
-			okCancelPanel.setOpaque( false );
+			okCancelPanel.setBackgroundColor( null );
 
 			ViewController<?,?> viewController = childContext.getViewController();
 			Component<?> owner;
@@ -209,7 +209,6 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 			this.explanationLabel.setBackgroundColor( backgroundColor );
 			
 			BorderPanel borderPanel = dialog.getContentPanel();
-			borderPanel.setOpaque( true );
 			borderPanel.setBackgroundColor( backgroundColor );
 			borderPanel.addComponent( contentPane, BorderPanel.Constraint.CENTER );
 			borderPanel.addComponent( southPanel, BorderPanel.Constraint.SOUTH );

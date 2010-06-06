@@ -76,6 +76,7 @@ package edu.cmu.cs.dennisc.tutorial;
 			@Override
 			protected void paintComponent(java.awt.Graphics g) {
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+				java.awt.Paint prevPaint = g2.getPaint();
 				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 
 				Step step = Stencil.this.getCurrentStep();
@@ -104,6 +105,7 @@ package edu.cmu.cs.dennisc.tutorial;
 						}
 					}
 				}
+				g2.setPaint( prevPaint );
 			}
 
 			@Override

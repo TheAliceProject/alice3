@@ -174,29 +174,30 @@ public abstract class Component<J extends java.awt.Component> implements Trackab
 		}
 	}
 	
-	private J jComponent;
+	private J awtComponent;
 	protected abstract J createAwtComponent();
 
 	///*package-private*/ final J getAwtComponent() {
 	// todo: reduce visibility to /*package-private*/
 	public final J getAwtComponent() {
-		if (this.jComponent != null) {
+		if (this.awtComponent != null) {
 			// pass
 		} else {
-			this.jComponent = this.createAwtComponent();
-			this.jComponent.addHierarchyListener( this.hierarchyListener );
+			this.awtComponent = this.createAwtComponent();
+			this.awtComponent.addHierarchyListener( this.hierarchyListener );
 			//this.jComponent.addContainerListener( this.containerListener );
-			Component.map.put(this.jComponent, this);
+			this.awtComponent.setName( this.getClass().getName() );
+			Component.map.put(this.awtComponent, this);
 		}
-		return this.jComponent;
+		return this.awtComponent;
 	}
 	
 	public void release() {
-		if( this.jComponent != null ) {
+		if( this.awtComponent != null ) {
 			//this.jComponent.removeContainerListener( this.containerListener );
-			this.jComponent.removeHierarchyListener( this.hierarchyListener );
-			Component.map.remove(this.jComponent);
-			this.jComponent = null;
+			this.awtComponent.removeHierarchyListener( this.hierarchyListener );
+			Component.map.remove(this.awtComponent);
+			this.awtComponent = null;
 		}
 	}
 

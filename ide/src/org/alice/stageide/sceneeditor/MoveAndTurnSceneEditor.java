@@ -391,7 +391,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			isSceneEditorExpandedCheckBox.getAwtComponent().setUI( new IsExpandedCheckBoxUI() );
 			final int X_PAD = 16;
 			final int Y_PAD = 10;
-			isSceneEditorExpandedCheckBox.setOpaque( false );
+//			isSceneEditorExpandedCheckBox.setBackgroundColor( null );
+//			isSceneEditorExpandedCheckBox.setBackgroundColor( new Color( 0,0,0,0 ) );
+			isSceneEditorExpandedCheckBox.getAwtComponent().setOpaque( false );
 			isSceneEditorExpandedCheckBox.setFontSize( 18.0f );
 			isSceneEditorExpandedCheckBox.setBorder( javax.swing.BorderFactory.createEmptyBorder( Y_PAD, X_PAD, Y_PAD, X_PAD ) );
 			

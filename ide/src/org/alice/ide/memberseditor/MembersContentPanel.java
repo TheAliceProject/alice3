@@ -51,10 +51,6 @@ public abstract class MembersContentPanel extends edu.cmu.cs.dennisc.croquet.Pag
 			MembersContentPanel.this.handleFieldSelection( nextValue );
 		}
 	};
-	public MembersContentPanel() {
-		this.setOpaque( true );
-	}
-
 	@Override
 	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
 		super.handleAddedTo( parent );

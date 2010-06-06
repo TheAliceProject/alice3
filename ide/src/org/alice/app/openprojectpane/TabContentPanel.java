@@ -50,7 +50,6 @@ public abstract class TabContentPanel extends edu.cmu.cs.dennisc.croquet.BorderP
 //	private edu.cmu.cs.dennisc.croquet.InputPanel< java.net.URI > inputPanel;
 	public TabContentPanel() {
 		this.setBackgroundColor( new java.awt.Color( 191, 191, 255 ) );
-		this.setOpaque( true );
 		final int INSET = 8;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 	}

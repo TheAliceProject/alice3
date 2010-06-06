@@ -93,7 +93,6 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 	public CodeEditor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		super( null );
 		this.code = code;
-		this.setOpaque( true );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		java.awt.Color color = getIDE().getCodeDeclaredInAliceColor( this.code );
 		color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0f, 1.1f, 1.1f );
@@ -217,7 +216,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 			this.scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( bodyPane );
 			this.scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
 			this.scrollPane.setBorder( null );
-			this.scrollPane.setOpaque( false );
+			this.scrollPane.setBackgroundColor( null );
 			this.scrollPane.getAwtComponent().getViewport().setOpaque( false );
 			//this.scrollPane.setBackground( java.awt.Color.RED );
 			this.scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );

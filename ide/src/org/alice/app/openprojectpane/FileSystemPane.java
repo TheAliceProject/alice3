@@ -85,7 +85,6 @@ class FileSystemPane extends TabContentPanel {
 
 		BrowseOperation browseOperation = new BrowseOperation();
 		edu.cmu.cs.dennisc.croquet.BorderPanel pane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		pane.setOpaque(false);
 		pane.addComponent(new edu.cmu.cs.dennisc.croquet.Label("file:"), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.WEST);
 		pane.addComponent(this.textState.createTextField(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
 		pane.addComponent(browseOperation.createButton(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.EAST);

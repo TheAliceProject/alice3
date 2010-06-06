@@ -72,7 +72,7 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 			String text = "I understand that I need to update the invocations to this " + codeText + ".";
 			edu.cmu.cs.dennisc.croquet.BooleanState isUnderstandingConfirmed = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "21efac8d-c2dd-451f-8065-d2e284a3e244" ), false, text );
 			edu.cmu.cs.dennisc.croquet.CheckBox checkBox = isUnderstandingConfirmed.createCheckBox();
-			checkBox.setOpaque( false );
+			checkBox.setBackgroundColor( null );
 			
 			StringBuffer sb = new StringBuffer();
 			sb.append( "<html><body>There " );

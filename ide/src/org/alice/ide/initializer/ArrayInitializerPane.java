@@ -291,7 +291,6 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 			this.gbc.fill = java.awt.GridBagConstraints.BOTH;
 			this.gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
 			this.gbc.weightx = 1.0;
-			this.setOpaque( true );
 			this.setBackgroundColor( java.awt.Color.WHITE );
 			this.refresh();
 		}

@@ -145,7 +145,6 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 		final int INSET = 16;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getFieldColor() );
-		this.setOpaque( true );
 		class TextField extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField {
 			public TextField( String text, String textForBlankCondition ) {
 				this.setText( text );
@@ -181,7 +180,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 
 		this.constrainInstanceNameToTextVC = new ConstrainInstanceNameToTextBooleanStateOperation().createCheckBox();
 		this.constrainInstanceNameToTextVC.getAwtComponent().setSelected( true );
-		this.constrainInstanceNameToTextVC.setOpaque( false );
+		this.constrainInstanceNameToTextVC.setBackgroundColor( null );
 		this.heightTextField = new TextField( "1.0", " enter height in meters here" );
 //		this.heightTextField.getDocument().addDocumentListener( new edu.cmu.cs.dennisc.javax.swing.event.SimplifiedDocumentAdapter() {
 //			@Override

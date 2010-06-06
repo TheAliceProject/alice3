@@ -69,7 +69,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			edu.cmu.cs.dennisc.croquet.ScrollPane rv = super.createScrollPane();
 			rv.setVerticalScrollbarPolicy( edu.cmu.cs.dennisc.croquet.ScrollPane.VerticalScrollbarPolicy.NEVER );
 			rv.setHorizontalScrollbarPolicy( edu.cmu.cs.dennisc.croquet.ScrollPane.HorizontalScrollbarPolicy.NEVER );
-			rv.setOpaque( false );
+			rv.setBackgroundColor( null );
 			return rv;
 		}
 	}
@@ -82,7 +82,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			//scrollPane.getVerticalScrollBar().setBlockIncrement( 10 );
 			
 			scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-			scrollPane.setOpaque( false );
+			scrollPane.setBackgroundColor( null );
 			scrollPane.getAwtComponent().getViewport().setOpaque( false );
 
 			edu.cmu.cs.dennisc.croquet.BorderPanel bodyPane = new edu.cmu.cs.dennisc.croquet.BorderPanel( 8, 8 );
@@ -133,8 +133,6 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	public IngredientsPane() {
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.setBackgroundColor( BACKGROUND_COLOR );
-		this.setOpaque( true );
-
 		this.lifeStageSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< org.alice.apis.stage.LifeStage >() { 
 			public void changed( org.alice.apis.stage.LifeStage nextValue ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handleLifeStageSelection" );
@@ -163,7 +161,6 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		northPane.addComponent( ubiquitousPane, Constraint.CENTER );
 				
 		edu.cmu.cs.dennisc.croquet.FolderTabbedPane tabbedPane = this.tabbedPaneSelection.createDefaultFolderTabbedPane();
-		tabbedPane.setOpaque( true );
 		tabbedPane.scaleFont( 1.5f );
 
 		this.addComponent( northPane, Constraint.NORTH );

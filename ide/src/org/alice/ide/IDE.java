@@ -328,13 +328,14 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			//			}
 			//new org.alice.ide.operations.help.ThrowBogusExceptionOperation(),
 			new org.alice.ide.operations.help.ReportBugOperation(), new org.alice.ide.operations.help.SuggestImprovementOperation(), new org.alice.ide.operations.help.RequestNewFeatureOperation(), edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-			new org.alice.ide.operations.help.WarningOperation( true ), new org.alice.ide.operations.help.DisplaySystemPropertiesOperation(), new org.alice.ide.operations.help.ReleaseNotesOperation()
+			new org.alice.ide.operations.help.WarningOperation( true ), new org.alice.ide.operations.help.DisplaySystemPropertiesOperation(), new org.alice.ide.operations.help.ReleaseNotesOperation(),
 	//			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 	//				//pass
 	//			} else {
-	//				helpOperations.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
-	//				helpOperations.add( this.getAboutOperation() );
+//					helpOperations.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
+//					helpOperations.add( this.getAboutOperation() );
 	//			}
+			this.getAboutOperation()
 	);
 
 	private int rootDividerLocation = 320;

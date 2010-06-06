@@ -56,7 +56,6 @@ class MethodPane extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JPan
 		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 12 ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.WEST );
 		this.addComponent( new BodyPane( factory.createComponent( method.body.getValue() ) ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 		this.setAlignmentX( 0.0f );
-		this.setOpaque( true );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getProcedureColor() );
 	}
@@ -108,7 +107,7 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 		if( getIDE().isJava() ) {
 			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "}" ) );
 		}
-		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getColorFor( edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class ) );
+		this.setBackgroundPaint( org.alice.ide.IDE.getSingleton().getColorFor( edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class ) );
 	}
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {

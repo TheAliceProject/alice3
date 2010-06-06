@@ -75,7 +75,9 @@ package edu.cmu.cs.dennisc.tutorial;
 	@Override
 	protected void paint(java.awt.Graphics2D g2, java.awt.Shape shape) {
 		java.awt.Shape prevClip = g2.getClip();
-
+		java.awt.Paint prevPaint = g2.getPaint();
+		java.awt.Stroke prevStroke = g2.getStroke();
+		
 		java.awt.geom.Area area = new java.awt.geom.Area(prevClip);
 		area.subtract(new java.awt.geom.Area(shape));
 
@@ -87,6 +89,8 @@ package edu.cmu.cs.dennisc.tutorial;
 			g2.draw(shape);
 		}
 
+		g2.setStroke( prevStroke );
+		g2.setPaint( prevPaint );
 		g2.setClip(prevClip);
 
 //		java.awt.Stroke prevStroke = g2.getStroke();

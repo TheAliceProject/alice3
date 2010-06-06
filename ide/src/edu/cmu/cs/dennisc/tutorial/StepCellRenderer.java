@@ -47,8 +47,10 @@ package edu.cmu.cs.dennisc.tutorial;
  */
 /*package-private*/ class StepCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<Step> {
 	private StepsComboBoxModel stepsComboBoxModel;
-	public StepCellRenderer( StepsComboBoxModel stepsComboBoxModel ) {
+	private java.awt.Color background;
+	public StepCellRenderer( StepsComboBoxModel stepsComboBoxModel, java.awt.Color background ) {
 		this.stepsComboBoxModel = stepsComboBoxModel;
+		this.background = background;
 	}
 	@Override
 	protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.tutorial.Step value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -70,6 +72,11 @@ package edu.cmu.cs.dennisc.tutorial;
 			sb.append(": ");
 			sb.append(value);
 			rv.setText(sb.toString());
+		}
+		if( isSelected || cellHasFocus ) {
+			//pass
+		} else {
+			rv.setBackground( this.background );
 		}
 		return rv;
 	}

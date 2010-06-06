@@ -56,7 +56,7 @@ public class ThisPane extends AccessiblePane {
 
 	public ThisPane() {
 		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( getIDE().getTextForThis() ) );
-		this.setBackgroundColor( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class ) );
+		this.setBackgroundPaint( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class ) );
 	}
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {

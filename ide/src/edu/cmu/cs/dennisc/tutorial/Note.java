@@ -163,14 +163,19 @@ package edu.cmu.cs.dennisc.tutorial;
 
 	@Override
 	protected javax.swing.JComponent createAwtComponent() {
-		javax.swing.JTextPane textComponent = new javax.swing.JTextPane() {
+		javax.swing.JEditorPane textComponent = new javax.swing.JEditorPane() {
 			@Override
 			public boolean contains(int x, int y) {
 				return false;
 			}
 		};
 		textComponent.setContentType( "text/html" );
-		textComponent.setOpaque( false );
+		
+		if( "Nimbus".equals( javax.swing.UIManager.getLookAndFeel().getName() ) ) {
+			textComponent.setBackground( new java.awt.Color( 0,0,0,0 ) );
+		} else {
+			textComponent.setOpaque( false );
+		}
 		textComponent.setEditable( false );
 		textComponent.setText( this.text );
 		//this.textPane.setEnabled( false );
@@ -256,7 +261,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		};
 		rv.setLayout( new java.awt.BorderLayout() );
 		rv.add( textComponent, java.awt.BorderLayout.NORTH );
-		
+		//rv.setBackground( BASE_COLOR );
 		edu.cmu.cs.dennisc.croquet.BorderPanel southPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		edu.cmu.cs.dennisc.croquet.Hyperlink hyperlink = getTutorial().getNextOperation().createHyperlink();
 		hyperlink.scaleFont( 1.4f );

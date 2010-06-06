@@ -158,7 +158,8 @@ public class Tutorial {
 		@Override
 		protected javax.swing.JComboBox createAwtComponent() {
 			javax.swing.JComboBox rv = new javax.swing.JComboBox(stepsComboBoxModel);
-			rv.setRenderer(new StepCellRenderer( Tutorial.this.stepsComboBoxModel ));
+			StepCellRenderer stepCellRenderer = new StepCellRenderer( Tutorial.this.stepsComboBoxModel, CONTROL_COLOR );
+			rv.setRenderer(stepCellRenderer);
 			rv.setBackground(CONTROL_COLOR);
 			return rv;
 		}
@@ -166,6 +167,7 @@ public class Tutorial {
 
 
 	private class TutorialStencil extends Stencil {
+		private edu.cmu.cs.dennisc.croquet.BorderPanel controlsPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		private edu.cmu.cs.dennisc.croquet.CardPanel cardPanel = new edu.cmu.cs.dennisc.croquet.CardPanel();
 		private StepsComboBox comboBox = new StepsComboBox();
 		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
@@ -183,12 +185,11 @@ public class Tutorial {
 			controlPanel.addComponent(comboBox);
 			controlPanel.addComponent(Tutorial.this.nextStepOperation.createButton());
 
-			edu.cmu.cs.dennisc.croquet.BorderPanel panel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-			panel.addComponent(controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
-			panel.addComponent(Tutorial.this.exitOperation.createButton(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.EAST);
-			panel.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 0, 4));
+			this.controlsPanel.addComponent(controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
+			this.controlsPanel.addComponent(Tutorial.this.exitOperation.createButton(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.EAST);
+			this.controlsPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 0, 4));
 
-			this.internalAddComponent(panel, java.awt.BorderLayout.NORTH);
+			this.internalAddComponent(this.controlsPanel, java.awt.BorderLayout.NORTH);
 			this.internalAddComponent(this.cardPanel, java.awt.BorderLayout.CENTER);
 		}
 		
@@ -259,8 +260,13 @@ public class Tutorial {
 				
 				Tutorial.this.nextStepOperation.setEnabled(0 <= selectedIndex && selectedIndex < stepsComboBoxModel.getSize() - 1 && isWaiting==false );
 				Tutorial.this.previousStepOperation.setEnabled(1 <= selectedIndex);
-				this.revalidateAndRepaint();
+//				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//					public void run() {
+//						TutorialStencil.this.controlsPanel.repaint();
+//					}
+//				} );
 				this.requestFocus();
+				this.revalidateAndRepaint();
 			}
 		}
 		private java.awt.event.KeyListener keyListener = new java.awt.event.KeyListener() {

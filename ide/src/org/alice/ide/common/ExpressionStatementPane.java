@@ -91,7 +91,8 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {
 			this.addComponent( new AssignmentExpressionPane( this.getFactory(), (edu.cmu.cs.dennisc.alice.ast.AssignmentExpression)expression ) );
 		} else {
-			this.addComponent( this.getFactory().createComponent( expressionStatement.expression.getValue() ) );
+			edu.cmu.cs.dennisc.croquet.JComponent< ? > expressionPane = this.getFactory().createComponent( expressionStatement.expression.getValue() );
+			this.addComponent( expressionPane );
 			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) { 
 				final edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
 				

@@ -49,6 +49,20 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	private static final int INSET = 2;
 	private static final int DOCKING_BAY_INSET_LEFT = 5;
 
+	public ExpressionLikeSubstance() {
+		this.setBackgroundColor( null );
+	}
+	private java.awt.Paint paint;
+	protected void setBackgroundPaint( java.awt.Paint paint ) {
+		//super.setBackgroundColor( color );
+		this.paint = paint;
+		//assert false;
+	}
+	
+//	@Override
+//	private void setBackgroundColor( java.awt.Color color ) {
+//		assert false;
+//	}
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
@@ -125,6 +139,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 			beveledShape.fill( g2 );
 		}
 	}
+
 	@Override
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		if( this.isVoid() || this.isExpressionTypeFeedbackDesired() == false ) {
@@ -133,6 +148,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 			//edu.cmu.cs.dennisc.awt.BevelState bevelState = this.getBevelState();
 			edu.cmu.cs.dennisc.java.awt.BevelState bevelState = edu.cmu.cs.dennisc.java.awt.BevelState.FLUSH;
 			edu.cmu.cs.dennisc.java.awt.BeveledShape beveledShape = createBoundsShape( x, y, width, height );
+			g2.setPaint( this.paint );
 			beveledShape.paint( g2, bevelState, 3.0f, 1.0f, 1.0f );
 		}
 	}
