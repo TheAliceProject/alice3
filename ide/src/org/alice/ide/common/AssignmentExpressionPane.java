@@ -64,7 +64,12 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.LineAxi
 			parent = this;
 			expression = left;
 		}
+
+		boolean isSetter = false;
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
+			org.alice.ide.IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = org.alice.ide.IDE.getSingleton().getAccessorAndMutatorDisplayStyle();
+			isSetter = accessorAndMutatorDisplayStyle == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
+
 			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression;
 			org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( fieldAccess.field.getValue() );
 //			nameLabel.setFontToScaledFont( 1.5f );
@@ -74,7 +79,15 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.LineAxi
 			if( org.alice.ide.IDE.getSingleton().isJava() ) {
 				parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " . " ) );
 			}
+			if( isSetter ) {
+				parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "set" ) );
+			}
 			parent.addComponent( nameLabel );
+			if( isSetter ) {
+				if( org.alice.ide.IDE.getSingleton().isJava() ) {
+					parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "( " ) );
+				}
+			}
 		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.VariableAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.VariableAccess variableAccess = (edu.cmu.cs.dennisc.alice.ast.VariableAccess)expression;
 			edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = variableAccess.variable.getValue();
@@ -97,11 +110,21 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.LineAxi
 			parent.addComponent( factory.createExpressionPropertyPane( arrayAccess.index, null ) );
 			parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " ]" ) );
 		}
-		if( org.alice.ide.IDE.getSingleton().isJava() ) {
-			parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " = " ) );
+		
+		if( isSetter ) {
+			//pass
 		} else {
-			parent.addComponent( new org.alice.ide.common.GetsPane( true ) );
+			if( org.alice.ide.IDE.getSingleton().isJava() ) {
+				parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " = " ) );
+			} else {
+				parent.addComponent( new org.alice.ide.common.GetsPane( true ) );
+			}
 		}
 		parent.addComponent( factory.createExpressionPropertyPane( this.assignmentExpression.rightHandSide, null, desiredValueType ) );
+		if( isSetter ) {
+			if( org.alice.ide.IDE.getSingleton().isJava() ) {
+				parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " )" ) );
+			}
+		}
 	}
 }

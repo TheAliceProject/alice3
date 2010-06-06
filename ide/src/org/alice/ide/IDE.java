@@ -352,6 +352,15 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private edu.cmu.cs.dennisc.croquet.BorderPanel right = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane root = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane( left, right );
 
+	public enum AccessorAndMutatorDisplayStyle {
+		GETTER_AND_SETTER,
+		ACCESS_AND_ASSIGNMENT
+	}
+	public AccessorAndMutatorDisplayStyle getAccessorAndMutatorDisplayStyle() {
+		return AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
+		//return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
+	}
+	
 	private void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
 		if( isSceneEditorExpanded ) {
 			if( this.root.getAwtComponent().isValid() ) {
