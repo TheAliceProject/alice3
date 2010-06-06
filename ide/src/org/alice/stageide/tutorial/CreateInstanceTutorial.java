@@ -42,6 +42,8 @@
  */
 package org.alice.stageide.tutorial;
 
+import org.alice.ide.tutorial.IdeTutorial;
+
 /**
  * @author Dennis Cosgrove
  */

@@ -40,19 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.tutorial;
+package org.alice.ide.tutorial;
 
 /**
  * @author Dennis Cosgrove
  */
 public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
-	private org.alice.stageide.StageIDE ide;
+	private org.alice.ide.IDE ide;
 	public IdeTutorial( org.alice.stageide.StageIDE ide ) {
 		super( new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.IDE_GROUP } );
 		assert ide != null;
 		this.ide = ide;
 	}
-	public org.alice.stageide.StageIDE getIDE() {
+	public org.alice.ide.IDE getIDE() {
 		return this.ide;
 	}
 

@@ -70,4 +70,12 @@ public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperati
 	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.croquet.ModelContext context ) {
 		return this.createFieldPane.getActualInputValue();
 	}
+	@Override
+	protected boolean isInstanceValid() {
+		return false;
+	}
+	@Override
+	protected java.lang.Object createInstance() {
+		return null;
+	}
 }

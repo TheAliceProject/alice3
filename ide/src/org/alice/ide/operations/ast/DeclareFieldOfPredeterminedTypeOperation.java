@@ -77,4 +77,18 @@ public class DeclareFieldOfPredeterminedTypeOperation extends AbstractNonGallery
 		//dialog title: "Create New Instance"
 		return this.createFieldPane.getActualInputValue();
 	}
+	@Override
+	protected boolean isInstanceValid() {
+		return true;
+	}
+	@Override
+	protected Object createInstance() {
+		try {
+			return this.valueType.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification().newInstance();
+		} catch( InstantiationException ie ) {
+			throw new RuntimeException( ie );
+		} catch( IllegalAccessException iae ) {
+			throw new RuntimeException( iae );
+		}
+	}
 }
