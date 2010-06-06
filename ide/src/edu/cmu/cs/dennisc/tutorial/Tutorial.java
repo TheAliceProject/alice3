@@ -221,14 +221,20 @@ public class Tutorial {
 			} else {
 				edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getCurrentContext();
 				int index0 = Math.max( this.prevSelectedIndex, 0 );
-				for( int i=index0; i<nextSelectedIndex; i++ ) {
+				int i=index0;
+				while( i<=nextSelectedIndex ) {
 					Step iStep = this.getStep( i );
 					preserveHistoryIndices( iStep );
-					if( i==this.prevSelectedIndex && isResultOfNextOperation ) {
+					if( i == nextSelectedIndex ) {
 						//pass
 					} else {
-						iStep.complete( context );
+						if( i==this.prevSelectedIndex && isResultOfNextOperation ) {
+							//pass
+						} else {
+							iStep.complete( context );
+						}
 					}
+					i++;
 				}
 			}
 			this.prevSelectedIndex = nextSelectedIndex;
