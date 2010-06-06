@@ -73,7 +73,21 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 	//private StringStateOperation explanationState = new StringStateOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "e9bb246f-f65d-487b-b226-230bbd4d4fdb" ), NULL_EXPLANATION );
 	private ButtonOperation okOperation;
 	private ButtonOperation cancelOperation;
-	private Label explanationLabel = new Label( NULL_EXPLANATION );
+	private Label explanationLabel = new Label( NULL_EXPLANATION ) {
+		@Override
+		protected javax.swing.JLabel createAwtComponent() {
+			return new javax.swing.JLabel() {
+				@Override
+				protected void paintComponent(java.awt.Graphics g) {
+					if( this.getText() == NULL_EXPLANATION ) {
+						//pass
+					} else {
+						super.paintComponent( g );
+					}
+				}
+			};
+		};
+	};
 	private boolean isOk = false;
 	
 	public InputDialogOperation(Group group, java.util.UUID individualUUID, String name, boolean isCancelDesired) {
@@ -87,6 +101,7 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 		}
 		this.explanationLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
 		this.explanationLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 0 ) );
+		this.explanationLabel.setForegroundColor( java.awt.Color.RED.darker().darker() );
 	}
 	public InputDialogOperation(Group group, java.util.UUID individualUUID, String title) {
 		this(group, individualUUID, title, true);
@@ -112,10 +127,8 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 		this.okOperation.setEnabled( explanation == null );
 		if( explanation != null ) {
 			this.explanationLabel.setText( explanation );
-			this.explanationLabel.setForegroundColor( java.awt.Color.RED.darker().darker() );
 		} else {
 			this.explanationLabel.setText( NULL_EXPLANATION );
-			this.explanationLabel.setForegroundColor( this.explanationLabel.getBackgroundColor() );
 		}
 	}
 
