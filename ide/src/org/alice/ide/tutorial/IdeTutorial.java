@@ -189,10 +189,10 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	}
 
 	
-	public static class IndexInStatementListResolver extends CodeTrackableShapeResolver {
+	public static class IndexOfStatementListResolver extends CodeTrackableShapeResolver {
 		private edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty;
 		private int index;
-		public IndexInStatementListResolver( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, int index ) {
+		public IndexOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, int index ) {
 			this.statementListProperty = statementListProperty;
 			this.index = index;
 		}
@@ -244,18 +244,18 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	public edu.cmu.cs.dennisc.croquet.DragSource createStatementResolver( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		return new StatementResolver(statement);
 	}
-	private edu.cmu.cs.dennisc.croquet.TrackableShape createIndexInStatementListResolver( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, int index ) {
-		return new IndexInStatementListResolver(statementListProperty, index);
+	private edu.cmu.cs.dennisc.croquet.TrackableShape createIndexOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, int index ) {
+		return new IndexOfStatementListResolver(statementListProperty, index);
 	}
 	private edu.cmu.cs.dennisc.croquet.TrackableShape createBeginingOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
-		return this.createIndexInStatementListResolver(statementListProperty, 0);
+		return this.createIndexOfStatementListResolver(statementListProperty, 0);
 	}
 	private edu.cmu.cs.dennisc.croquet.TrackableShape createEndOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
-		return this.createIndexInStatementListResolver(statementListProperty, Short.MAX_VALUE);
+		return this.createIndexOfStatementListResolver(statementListProperty, Short.MAX_VALUE);
 	}
 
-	public edu.cmu.cs.dennisc.croquet.TrackableShape createIndexInStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody, int index ) {
-		return this.createIndexInStatementListResolver(statementWithBody.body.getValue().statements, index);
+	public edu.cmu.cs.dennisc.croquet.TrackableShape createIndexOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody, int index ) {
+		return this.createIndexOfStatementListResolver(statementWithBody.body.getValue().statements, index);
 	}
 	public edu.cmu.cs.dennisc.croquet.TrackableShape createBeginingOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
 		return this.createBeginingOfStatementListResolver(statementWithBody.body.getValue().statements);
@@ -264,8 +264,8 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return this.createEndOfStatementListResolver(statementWithBody.body.getValue().statements);
 	}
 
-	public edu.cmu.cs.dennisc.croquet.TrackableShape createIndexInStatementListResolver( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, int index ) {
-		return this.createIndexInStatementListResolver(method.body.getValue().statements, index);
+	public edu.cmu.cs.dennisc.croquet.TrackableShape createIndexOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, int index ) {
+		return this.createIndexOfStatementListResolver(method.body.getValue().statements, index);
 	}
 	public edu.cmu.cs.dennisc.croquet.TrackableShape createBeginingOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		return this.createBeginingOfStatementListResolver(method.body.getValue().statements);

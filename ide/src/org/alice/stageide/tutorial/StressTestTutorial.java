@@ -59,10 +59,7 @@ public class StressTestTutorial {
 		assert resizeMethod != null;
 		assert moveMethod != null;
 		assert turnMethod != null;
-
-		final edu.cmu.cs.dennisc.alice.ast.CountLoop countLoop = org.alice.ide.ast.NodeUtilities.createCountLoop( new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( 3 ) );
-		runMethod.body.getValue().statements.add( countLoop );
-
+		
 		tutorial.addMessageStep( 
 				"Title", 
 				"<html><b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p></html>" 
@@ -72,15 +69,40 @@ public class StressTestTutorial {
 				"<html>This is the Do In Order tile.</html>", 
 				tutorial.getDoInOrderTemplate() 
 		);
+		tutorial.addDragAndDropStep( 
+				"Drag Do In Order",
+				"<html>Drag <b>Do In Order</b>.</html>",
+				tutorial.getDoInOrderTemplate(),
+				"<html>Drop <b>here</b>.</html>",
+				tutorial.createEndOfStatementListResolver( runMethod ),
+				tutorial.createToDoCompletorValidator()
+		);
 		tutorial.addSpotlightStep( 
 				"Count Loop", 
 				"<html>This is the Count Loop tile.</html>", 
 				tutorial.getCountLoopTemplate() 
 		);
+		tutorial.addDragAndDropStep( 
+				"Drag Count Loop",
+				"<html>Drag <b>Count Loop</b>.</html>",
+				tutorial.getCountLoopTemplate(),
+				"<html>Drop <b>here</b>.</html>",
+				tutorial.createBeginingOfStatementListResolver( runMethod ),
+				"<html>Select <b>2</b>.</html>",
+				tutorial.createToDoCompletorValidator()
+		);
 		tutorial.addSpotlightStep( 
 				"Do Together", 
 				"<html>This is the Do Together tile.</html>", 
 				tutorial.getDoTogetherTemplate() 
+		);
+		tutorial.addDragAndDropStep( 
+				"Drag Do Together",
+				"<html>Drag <b>Do Together</b>.</html>",
+				tutorial.getDoTogetherTemplate(),
+				"<html>Drop <b>here</b>.</html>",
+				tutorial.createIndexOfStatementListResolver( runMethod, 1 ),
+				tutorial.createToDoCompletorValidator()
 		);
 
 		tutorial.addSpotlightStep( 
@@ -183,18 +205,7 @@ public class StressTestTutorial {
 				"Note Edit Code",
 				"<html>Note you are now editing the code.</html>" 
 		);
-		
-		
-		
 
-		tutorial.addDragAndDropStep( 
-				"Drag Do In Order",
-				"<html>Drag <b>Do In Order</b>.</html>",
-				tutorial.getDoInOrderTemplate(),
-				"<html>Drop <b>here</b>.</html>",
-				tutorial.createEndOfStatementListResolver( countLoop ),
-				tutorial.createToDoCompletorValidator()
-		);
 		tutorial.addSpotlightStep( 
 				"Note Resize",
 				"<html>Note that <b>Do in order</b> has been added to your count loop.</html>",
@@ -206,7 +217,7 @@ public class StressTestTutorial {
 				"<html>Drag <b>resize</b> procedure.</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( resizeMethod ),
 				"<html>Drop <b>here</b>.</html>",
-				tutorial.createEndOfStatementListResolver( countLoop ),
+				tutorial.createEndOfStatementListResolver( runMethod ),
 				"<html>Select <b>2.0</b> from the menu.</html>",
 				tutorial.createToDoCompletorValidator()
 		);
@@ -221,7 +232,7 @@ public class StressTestTutorial {
 				"<html>Drag <b>move</b> procedure.</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( moveMethod ),
 				"<html>Drop <b>here</b>.</html>",
-				tutorial.createEndOfStatementListResolver( countLoop ),
+				tutorial.createEndOfStatementListResolver( runMethod ),
 				"<html>Select <b>FORWARD</b> and <b>1.0</b> from the menus.</html>",
 				tutorial.createToDoCompletorValidator()
 		);
@@ -236,7 +247,7 @@ public class StressTestTutorial {
 				"<html>Drag <b>turn</b> procedure.</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( turnMethod ),
 				"<html>Drop <b>here</b>.</html>",
-				tutorial.createEndOfStatementListResolver( countLoop ),
+				tutorial.createEndOfStatementListResolver( runMethod ),
 				"<html>Select <b>LEFT</b> and <b>0.25</b> from the menus.</html>",
 				tutorial.createToDoCompletorValidator()
 		);

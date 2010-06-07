@@ -712,9 +712,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 									rv.y += prevComponent.getY();
 									rv.y += prevComponent.getHeight();
 								}
-								if( actualIndex == 0 ) {
-									rv.y -= 40;
-								} else if( actualIndex == N ) {
+								if( actualIndex == N ) {
 									//pass
 								} else {
 									rv.y -= 20;
