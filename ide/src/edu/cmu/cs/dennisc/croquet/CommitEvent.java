@@ -66,4 +66,7 @@ public class CommitEvent extends AbstractCompleteEvent {
 	public State getState() {
 		return State.COMMITTED;
 	}
+	public Edit getEdit() {
+		return this.edit;
+	}
 }

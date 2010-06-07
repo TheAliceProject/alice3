@@ -45,22 +45,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class ItemSelectionStep<E> extends WaitingOnCompleteStep<edu.cmu.cs.dennisc.croquet.ItemSelectionState<E>> {
-	private E desiredValue;
-	public ItemSelectionStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> selectionState, E desiredValue, Feature.ConnectionPreference connectionPreference ) {
-		super( title, text, selectionState.getTrackableShapeFor( desiredValue ), connectionPreference, selectionState );
-		this.desiredValue = desiredValue;
-	}
-	@Override
-	protected boolean isAlreadyInTheDesiredState() {
-		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.getModel().getValue(), this.desiredValue );
-	}
-	@Override
-	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Edit edit) {
-		return this.isAlreadyInTheDesiredState();
-	}
-	@Override
-	protected void complete( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
-		this.getModel().setValue( this.desiredValue );
-	}
+
+public interface CompletorValidator extends Completor, Validator {
+	public edu.cmu.cs.dennisc.croquet.Edit getEdit();
 }

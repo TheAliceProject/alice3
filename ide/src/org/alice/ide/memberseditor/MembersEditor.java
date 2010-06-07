@@ -171,15 +171,15 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	};
 
-	public edu.cmu.cs.dennisc.croquet.PredeterminedTab getProceduresTab() {
-		return this.proceduresTab;
-	}
-	public edu.cmu.cs.dennisc.croquet.PredeterminedTab getFunctionsTab() {
-		return this.functionsTab;
-	}
-	public edu.cmu.cs.dennisc.croquet.PredeterminedTab getFieldsTab() {
-		return this.fieldsTab;
-	}
+//	public edu.cmu.cs.dennisc.croquet.PredeterminedTab getProceduresTab() {
+//		return this.proceduresTab;
+//	}
+//	public edu.cmu.cs.dennisc.croquet.PredeterminedTab getFunctionsTab() {
+//		return this.functionsTab;
+//	}
+//	public edu.cmu.cs.dennisc.croquet.PredeterminedTab getFieldsTab() {
+//		return this.fieldsTab;
+//	}
 
 	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabbedPaneSelectionState = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( 
 			org.alice.ide.IDE.IDE_GROUP, 

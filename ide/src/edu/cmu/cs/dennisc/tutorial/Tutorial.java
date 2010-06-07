@@ -342,8 +342,8 @@ public class Tutorial {
 		this.addStep( step );
 	}
 
-	public void addActionStep( String title, String text, edu.cmu.cs.dennisc.croquet.Operation<?> operation, edu.cmu.cs.dennisc.croquet.Edit automaticEdit ) {
-		Step step = new OperationStep( title, text, operation, automaticEdit );
+	public void addActionStep( String title, String text, edu.cmu.cs.dennisc.croquet.Operation<?> operation, CompletorValidator completorValidator ) {
+		Step step = new OperationStep( title, text, operation, completorValidator, completorValidator );
 		this.addStep( step );
 	}
 	public void addBooleanStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.BooleanState booleanState, boolean desiredValue ) {
@@ -380,12 +380,12 @@ public class Tutorial {
 		this.addStep( step );
 	}
 
-	public void addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape, String cascadeText, edu.cmu.cs.dennisc.croquet.Edit automaticEdit ) {
-		Step step = new DragAndDropStep( title, text, dragSource, dropText, dropShape, cascadeText, automaticEdit );
+	public void addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape, String cascadeText, CompletorValidator completorValidator ) {
+		Step step = new DragAndDropStep( title, text, dragSource, dropText, dropShape, cascadeText, completorValidator, completorValidator );
 		this.addStep( step );
 	}
-	public void addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape, edu.cmu.cs.dennisc.croquet.Edit automaticEdit ) {
-		this.addDragAndDropStep(title, text, dragSource, dropText, dropShape, null, automaticEdit );
+	public void addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape, CompletorValidator completorValidator ) {
+		this.addDragAndDropStep(title, text, dragSource, dropText, dropShape, null, completorValidator );
 	}
 		
 	/*package-private*/ edu.cmu.cs.dennisc.croquet.ActionOperation getNextOperation() {

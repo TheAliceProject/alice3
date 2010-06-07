@@ -123,8 +123,18 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			return this.resolveTrackableShape( ide.getEditorsTabSelectionState().getCodeEditorInFocus() );
 		}
 	}
-	
 
+	public class StatementResolver extends CodeResolver {
+		private edu.cmu.cs.dennisc.alice.ast.Statement statement;
+		public StatementResolver( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+			this.statement = statement;
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape( org.alice.ide.codeeditor.CodeEditor codeEditor ) {
+			return codeEditor.getTrackableShape( this.statement );
+		}
+	}
+	
 	public class BlockStatementResolver extends CodeResolver {
 		private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
 		public BlockStatementResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
@@ -164,29 +174,57 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			}
 		}
 	}
-	
+	public edu.cmu.cs.dennisc.croquet.TrackableShape createStatementResolver( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		return new StatementResolver(statement);
+	}
 	public edu.cmu.cs.dennisc.croquet.TrackableShape createBlockStatementResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
 		return new BlockStatementResolver(statementWithBody);
 	}
 	public edu.cmu.cs.dennisc.croquet.TrackableShape findProcedureInvocationStatement( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, int index ) {
 		return new ProcedureInvocationLoopResolver(method, index);
 	}
+	
 	public edu.cmu.cs.dennisc.croquet.DragComponent getDoInOrderTemplate() {
 		return (edu.cmu.cs.dennisc.croquet.DragComponent)this.getIDE().getUbiquitousPane().getComponent( 0 );
 	}
+
+//	private final static java.util.UUID PROCEDURES_TAB_ID = java.util.UUID.fromString( "2731d704-1f80-444e-a610-e6e5866c0b9a" );
+//	private final static java.util.UUID FUNCTIONS_TAB_ID = java.util.UUID.fromString( "0f5d1f93-fc67-4109-9aff-0e7b232f201c" );
+//	private final static java.util.UUID FIELDS_TAB_ID = java.util.UUID.fromString( "6cb9c5a1-dc60-48e7-9a52-534009a093b8" );
+	
+	public edu.cmu.cs.dennisc.croquet.PredeterminedTab getProceduresTab() {
+		return this.getIDE().getMembersEditor().getTabbedPaneSelectionState().getItemAt( 0 );
+	}
+
+	public edu.cmu.cs.dennisc.croquet.PredeterminedTab getFunctionsTab() {
+		return this.getIDE().getMembersEditor().getTabbedPaneSelectionState().getItemAt( 1 );
+	}
+
+	public edu.cmu.cs.dennisc.croquet.PredeterminedTab getFieldsTab() {
+		return this.getIDE().getMembersEditor().getTabbedPaneSelectionState().getItemAt( 2 );
+	}
+	
+	
 	
 	@Deprecated
-	public edu.cmu.cs.dennisc.croquet.Edit createToDoEdit() {
-		return new org.alice.ide.ToDoEdit() {
-			@Override
-			public void doOrRedo( boolean isDo ) {
+	public edu.cmu.cs.dennisc.tutorial.CompletorValidator createToDoCompletorValidator() {
+		return new edu.cmu.cs.dennisc.tutorial.CompletorValidator() {
+			public Result checkValidity(edu.cmu.cs.dennisc.croquet.Edit edit) {
+				return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 			}
-			@Override
-			public void undo() {
-			}
-			@Override
-			protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
-				return rv;
+			public edu.cmu.cs.dennisc.croquet.Edit getEdit() {
+				return new org.alice.ide.ToDoEdit() {
+					@Override
+					public void doOrRedo( boolean isDo ) {
+					}
+					@Override
+					public void undo() {
+					}
+					@Override
+					protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+						return rv;
+					}
+				};
 			}
 		};
 	}

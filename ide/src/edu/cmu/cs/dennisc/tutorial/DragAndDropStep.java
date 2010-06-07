@@ -45,12 +45,13 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-
 /*package-private*/ class DragAndDropStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
-	private edu.cmu.cs.dennisc.croquet.Edit automaticEdit;
-	public DragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape, String cascadeText, edu.cmu.cs.dennisc.croquet.Edit automaticEdit ) {
+	private Completor completor;
+	private Validator validator;
+	public DragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape, String cascadeText, Completor completor, Validator validator ) {
 		super( title, text, new Hole( dragSource, Feature.ConnectionPreference.EAST_WEST ), dragSource.getDragAndDropOperation() );
-		this.automaticEdit = automaticEdit;
+		this.completor = completor;
+		this.validator = validator;
 		Note dropNote = new Note( dropText );
 		dropNote.addFeature( new Hole( dropShape, Feature.ConnectionPreference.NORTH_SOUTH ) );
 		this.addNote( dropNote );
@@ -68,7 +69,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	
 	@Override
 	protected void complete( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
-		context.commitAndInvokeDo( this.automaticEdit );
+		context.commitAndInvokeDo( this.completor.getEdit() );
 	}
 	private void setActiveNote( int activeIndex ) {
 		final int N = this.getNoteCount();
@@ -106,7 +107,22 @@ package edu.cmu.cs.dennisc.tutorial;
 		} else if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
 			final int N = this.getNoteCount();
 			if( N == 3 ) {
-				return this.getNoteAt( 2 ).isActive();
+				if( this.getNoteAt( 2 ).isActive() ) {
+					edu.cmu.cs.dennisc.croquet.Edit edit;
+					if (child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent) {
+						edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent) child;
+						edit = commitEvent.getEdit();
+					} else {
+						edit = null;
+					}
+					if( this.validator != null ) {
+						return this.validator.checkValidity( edit ).isProcedeApprorpiate();
+					} else {
+						return true;
+					}
+				} else {
+					return false;
+				}
 			} else {
 				return false;
 			}

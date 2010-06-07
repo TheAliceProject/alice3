@@ -56,7 +56,11 @@ package edu.cmu.cs.dennisc.tutorial;
 		this.getModel().setValue( this.desiredValue );
 	}
 	@Override
-	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.BooleanState model) {
-		return model.getValue() == this.desiredValue;
+	protected boolean isAlreadyInTheDesiredState() {
+		return this.getModel().getValue() == this.desiredValue;
+	}
+	@Override
+	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Edit edit) {
+		return this.isAlreadyInTheDesiredState();
 	}
 }

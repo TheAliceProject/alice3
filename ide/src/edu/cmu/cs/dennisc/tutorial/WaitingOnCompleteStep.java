@@ -49,11 +49,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	public WaitingOnCompleteStep( String title, String text, edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape, Feature.ConnectionPreference connectionPreference, M model ) {
 		super( title, text, new Hole( trackableShape, connectionPreference ), model );
 	}
-	@Override
-	protected boolean isAlreadyInTheDesiredState() {
-		return this.isInTheDesiredState( this.getModel() );
-	}
-	protected abstract boolean isInTheDesiredState(M model);
+	protected abstract boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Edit edit);
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
 		if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
@@ -61,7 +57,14 @@ package edu.cmu.cs.dennisc.tutorial;
 			edu.cmu.cs.dennisc.croquet.Model eventModel = completeEvent.getParent().getModel();
 			M model = this.getModel();
 			if( model == eventModel ) {
-				return this.isInTheDesiredState(model);
+				edu.cmu.cs.dennisc.croquet.Edit edit;
+				if (child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent) {
+					edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent) child;
+					edit = commitEvent.getEdit();
+				} else {
+					edit = null;
+				}
+				return this.isInTheDesiredState(edit);
 			} else {
 				return false;
 			}

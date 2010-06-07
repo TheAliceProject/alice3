@@ -45,22 +45,24 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class ItemSelectionStep<E> extends WaitingOnCompleteStep<edu.cmu.cs.dennisc.croquet.ItemSelectionState<E>> {
-	private E desiredValue;
-	public ItemSelectionStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> selectionState, E desiredValue, Feature.ConnectionPreference connectionPreference ) {
-		super( title, text, selectionState.getTrackableShapeFor( desiredValue ), connectionPreference, selectionState );
-		this.desiredValue = desiredValue;
+
+public interface Validator {
+	public enum Result {
+		RIGHT_ON( true ),
+		CLOSE_ENOUGH( true ),
+		TO_BE_HONEST_I_DIDNT_EVEN_CHECK( true ),
+		TRY_AGAIN( false ),
+		UNDO_AND_TRY_AGAIN( false );
+		private boolean isProcedeApprorpiate;
+		private Result( boolean isProcedeApprorpiate ) {
+			this.isProcedeApprorpiate = isProcedeApprorpiate;
+		}
+		public boolean isProcedeApprorpiate() {
+			return this.isProcedeApprorpiate;
+		}
+		public boolean isUndoRequired() {
+			return this == UNDO_AND_TRY_AGAIN;
+		}
 	}
-	@Override
-	protected boolean isAlreadyInTheDesiredState() {
-		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.getModel().getValue(), this.desiredValue );
-	}
-	@Override
-	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Edit edit) {
-		return this.isAlreadyInTheDesiredState();
-	}
-	@Override
-	protected void complete( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
-		this.getModel().setValue( this.desiredValue );
-	}
+	public Result checkValidity( edu.cmu.cs.dennisc.croquet.Edit edit );
 }
