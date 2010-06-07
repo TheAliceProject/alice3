@@ -692,21 +692,44 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 //		}
 //	}
 	
-	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShapeAtIndexOf( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, int index ) {
+	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShapeAtIndexOf( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, final int index ) {
 		if( statementListProperty != null ) {
 			java.util.List< StatementListPropertyPane > statementListPropertyPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, StatementListPropertyPane.class );
 			for( final StatementListPropertyPane statementListPropertyPane : statementListPropertyPanes ) {
 				if( statementListPropertyPane.getProperty() == statementListProperty ) {
 					return new edu.cmu.cs.dennisc.croquet.TrackableShape() {;
+						private java.awt.Rectangle update( java.awt.Rectangle rv ) {
+							if( statementListPropertyPane.isFigurativelyEmpty() ) {
+								//pass
+								rv.height = Math.min( rv.height, 40 );
+							} else {
+								final int N = statementListPropertyPane.getComponentCount();
+								int actualIndex = Math.min( index, N );
+								if( actualIndex == 0 ) {
+									//pass
+								} else {
+									edu.cmu.cs.dennisc.croquet.Component< ? > prevComponent = statementListPropertyPane.getComponent( actualIndex-1 );
+									rv.y += prevComponent.getY();
+									rv.y += prevComponent.getHeight();
+								}
+								if( actualIndex == 0 ) {
+									rv.y -= 40;
+								} else if( actualIndex == N ) {
+									//pass
+								} else {
+									rv.y -= 20;
+								}
+								rv.height = 40;
+							}
+							return rv;
+						}
 						public java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
 							java.awt.Rectangle bounds = statementListPropertyPane.getBounds( asSeenBy );
-							bounds.height = Math.min( bounds.height, 100 );
-							return bounds;
+							return this.update( bounds );
 						}
 						public java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
 							java.awt.Rectangle bounds = statementListPropertyPane.getVisibleRectangle( asSeenBy );
-							bounds.height = Math.min( bounds.height, 100 );
-							return bounds;
+							return this.update( bounds );
 						}
 					};
 				}
