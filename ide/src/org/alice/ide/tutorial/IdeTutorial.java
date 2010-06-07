@@ -47,10 +47,21 @@ package org.alice.ide.tutorial;
  */
 public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	private org.alice.ide.IDE ide;
-	public IdeTutorial( org.alice.stageide.StageIDE ide ) {
+	public IdeTutorial( org.alice.stageide.StageIDE ide, final int selectedIndex ) {
 		super( new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.IDE_GROUP } );
 		assert ide != null;
 		this.ide = ide;
+		this.ide.getFrame().addWindowListener( new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowOpened(java.awt.event.WindowEvent e) {
+				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+					public void run() {
+						IdeTutorial.this.setSelectedIndex( selectedIndex );
+					}
+				} );
+			}
+		} );
+		
 	}
 	public org.alice.ide.IDE getIDE() {
 		return this.ide;
@@ -185,7 +196,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 		@Override
 		protected edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape( org.alice.ide.codeeditor.CodeEditor codeEditor ) {
-			return codeEditor.getTrackableShape( this.blockStatement, org.alice.ide.codeeditor.CodeEditor.Location.AT_END );
+			return codeEditor.getTrackableShapeAtTheEndOf( this.blockStatement );
 		}
 	}
 

@@ -54,7 +54,7 @@ public class CreateInstanceTutorial {
 		ide.loadProjectFrom( args[ 0 ] );
 		ide.getFrame().maximize();
 		
-		final IdeTutorial tutorial = new IdeTutorial( ide );
+		final IdeTutorial tutorial = new IdeTutorial( ide, 0 );
 		tutorial.addBooleanStateStep( 
 				"Edit Scene", 
 				"<html>Press the <b>Edit Scene</b> button</html>", 
@@ -90,20 +90,7 @@ public class CreateInstanceTutorial {
 				"<html>Note you are now editing the code.</html>" 
 		);
 
-		//membersEditor.getTabbedPaneSelectionState().setValue( membersEditor.getFunctionsTab() );
-		tutorial.setSelectedIndex( 0 );
-		
-		ide.getFrame().addWindowListener( new java.awt.event.WindowAdapter() {
-			@Override
-			public void windowOpened(java.awt.event.WindowEvent e) {
-//				javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//					public void run() {
-						tutorial.setVisible( true );
-//					}
-//				} );
-			}
-		} );
-
+		tutorial.setVisible( true );
 		ide.getFrame().setVisible( true );
 	}
 }

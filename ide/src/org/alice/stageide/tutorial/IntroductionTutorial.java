@@ -48,7 +48,7 @@ package org.alice.stageide.tutorial;
 public class IntroductionTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
 		ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getMyProjectsDirectory(), "IntroductionTutorial.a3p" ) ); 
-		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide );
+		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 16 );
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = tutorial.getSceneField();
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = tutorial.getFieldDeclaredOnSceneType( "camera" );
@@ -265,7 +265,6 @@ public class IntroductionTutorial {
 				"<html><h1><center>TODO: restart</center></h1><p>We have done a quick tour of the IDE, learned how to run programs, and change the <b>iceSkater</b>'s routine.  If you are not comfortable with these topics, please <b>restart</b>.  Otherwise, move on to the next chapter.</html>"
 		);
 
-		tutorial.setSelectedIndex( 0 );
 		tutorial.setVisible( true );
 		ide.getFrame().setVisible( true );
 	}

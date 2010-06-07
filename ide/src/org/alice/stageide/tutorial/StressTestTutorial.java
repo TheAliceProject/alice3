@@ -47,7 +47,7 @@ package org.alice.stageide.tutorial;
  */
 public class StressTestTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
-		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide );
+		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 0 );
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = tutorial.getSceneField();
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = tutorial.getFieldDeclaredOnSceneType( "camera" );
@@ -245,20 +245,8 @@ public class StressTestTutorial {
 				"<html>Note that <b>turn</b> has been added to your run method.</html>",
 				tutorial.createInvocationResolver(turnMethod, 0)
 		);
-
-//		ide.getFrame().addWindowListener( new java.awt.event.WindowAdapter() {
-//		@Override
-//		public void windowOpened(java.awt.event.WindowEvent e) {
-////			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-////				public void run() {
-////				}
-////			} );
-//		}
-//	} );
-
 		tutorial.setVisible( true );
 		ide.getFrame().setVisible( true );
-		tutorial.setSelectedIndex( 0 );
 	}
 	public static void main( final String[] args ) throws Exception {
 		final org.alice.stageide.StageIDE ide = org.alice.ide.LaunchUtilities.launchAndWait( org.alice.stageide.StageIDE.class, null, args, false );
