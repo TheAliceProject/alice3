@@ -66,7 +66,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		super( title, text, new DialogCloseButtonFeature( new TrackableShapeResolver() {
 			@Override
 			protected edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape() {
-				return operation.getActiveDialog();
+				return operation.getActiveDialog().getCloseButtonTrackableShape();
 			}
 		} ), operation );
 	}

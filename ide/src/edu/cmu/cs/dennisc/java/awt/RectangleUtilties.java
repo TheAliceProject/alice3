@@ -102,4 +102,15 @@ public class RectangleUtilties {
 		}
 		return rv;
 	}
+
+	public static java.awt.Rectangle inset( java.awt.Rectangle rv, java.awt.Insets insets ) {
+		if( insets != null ) {
+			rv.x -= insets.left;
+			rv.y -= insets.top;
+			rv.width += insets.left + insets.right;
+			rv.height += insets.top + insets.bottom;
+		}
+		return rv;
+	}
+	
 }
