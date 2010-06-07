@@ -85,7 +85,42 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return findShortestMethod(cls, methodName);
 	}
 
-	public static abstract class Resolver implements edu.cmu.cs.dennisc.croquet.TrackableShape {
+	public static abstract class DragSourceResolver implements edu.cmu.cs.dennisc.croquet.DragSource {
+		private edu.cmu.cs.dennisc.croquet.DragSource dragSource;
+		protected abstract edu.cmu.cs.dennisc.croquet.DragSource resolveDragSource();
+		public final edu.cmu.cs.dennisc.croquet.DragComponent getDragComponent() {
+			if( this.dragSource != null ) {
+				//pass
+			} else {
+				this.dragSource = this.resolveDragSource();
+			}
+			if( this.dragSource != null ) {
+				return this.dragSource.getDragComponent();
+			} else {
+				return null;
+			}
+		}
+		public final java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
+			edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getDragComponent();
+			if( trackableShape != null ) {
+				return trackableShape.getShape( asSeenBy, insets );
+			} else {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getShape" );
+				return null;
+			}
+		}
+		public final java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
+			edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getDragComponent();
+			if( trackableShape != null ) {
+				return trackableShape.getVisibleShape( asSeenBy, insets );
+			} else {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getVisibleShape" );
+				return null;
+			}
+		}
+	}
+
+	public static abstract class TrackableShapeResolver implements edu.cmu.cs.dennisc.croquet.TrackableShape {
 		private edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape;
 		protected abstract edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape();
 		private edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape() {
@@ -98,7 +133,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 		public final java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
 			edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getTrackableShape();
-			if( this.trackableShape != null ) {
+			if( trackableShape != null ) {
 				return trackableShape.getShape( asSeenBy, insets );
 			} else {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getShape" );
@@ -107,7 +142,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 		public final java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
 			edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getTrackableShape();
-			if( this.trackableShape != null ) {
+			if( trackableShape != null ) {
 				return trackableShape.getVisibleShape( asSeenBy, insets );
 			} else {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getVisibleShape" );
@@ -116,26 +151,34 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 	}
 	
-	public abstract class CodeResolver extends Resolver {
+	public static abstract class CodeTrackableShapeResolver extends TrackableShapeResolver {
 		protected abstract edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape( org.alice.ide.codeeditor.CodeEditor codeEditor );
 		@Override
 		protected final edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape() {
-			return this.resolveTrackableShape( ide.getEditorsTabSelectionState().getCodeEditorInFocus() );
+			org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getCodeEditorInFocus();
+			if( codeEditor != null ) {
+				return this.resolveTrackableShape( codeEditor );
+			} else {
+				return null;
+			}
 		}
 	}
 
-	public class StatementResolver extends CodeResolver {
-		private edu.cmu.cs.dennisc.alice.ast.Statement statement;
-		public StatementResolver( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-			this.statement = statement;
-		}
+	public static abstract class CodeDragSourceResolver extends DragSourceResolver {
+		protected abstract edu.cmu.cs.dennisc.croquet.DragSource resolveDragSource( org.alice.ide.codeeditor.CodeEditor codeEditor );
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape( org.alice.ide.codeeditor.CodeEditor codeEditor ) {
-			return codeEditor.getTrackableShape( this.statement );
+		protected final edu.cmu.cs.dennisc.croquet.DragSource resolveDragSource() {
+			org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getCodeEditorInFocus();
+			if( codeEditor != null ) {
+				return this.resolveDragSource( codeEditor );
+			} else {
+				return null;
+			}
 		}
 	}
+
 	
-	public class BlockStatementResolver extends CodeResolver {
+	public static class BlockStatementResolver extends CodeTrackableShapeResolver {
 		private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
 		public BlockStatementResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
 			this.blockStatement = statementWithBody.body.getValue();
@@ -146,15 +189,26 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 	}
 
-	public class ProcedureInvocationLoopResolver extends CodeResolver {
+	public static class StatementResolver extends CodeDragSourceResolver {
+		private edu.cmu.cs.dennisc.alice.ast.Statement statement;
+		public StatementResolver( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+			this.statement = statement;
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.croquet.DragSource resolveDragSource(org.alice.ide.codeeditor.CodeEditor codeEditor) {
+			return codeEditor.getDragComponent( this.statement );
+		}
+	}
+
+	public static class ProcedureInvocationResolver extends CodeDragSourceResolver {
 		private edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
 		private int index;
-		public ProcedureInvocationLoopResolver( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, int index ) {
+		public ProcedureInvocationResolver( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, int index ) {
 			this.method = method;
 			this.index = index;
 		}
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape( org.alice.ide.codeeditor.CodeEditor codeEditor ) {
+		protected edu.cmu.cs.dennisc.croquet.DragSource resolveDragSource(org.alice.ide.codeeditor.CodeEditor codeEditor) {
 			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)codeEditor.getCode();
 			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation >( edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) {
 				@Override
@@ -168,20 +222,20 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			if( list.size() > this.index ) {
 				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = list.get( this.index );
 				edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)methodInvocation.getParent();
-				return codeEditor.getTrackableShape(statement);
+				return codeEditor.getDragComponent(statement);
 			} else {
 				return null;
 			}
 		}
 	}
-	public edu.cmu.cs.dennisc.croquet.TrackableShape createStatementResolver( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+	public edu.cmu.cs.dennisc.croquet.DragSource createStatementResolver( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		return new StatementResolver(statement);
 	}
 	public edu.cmu.cs.dennisc.croquet.TrackableShape createBlockStatementResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
 		return new BlockStatementResolver(statementWithBody);
 	}
-	public edu.cmu.cs.dennisc.croquet.TrackableShape findProcedureInvocationStatement( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, int index ) {
-		return new ProcedureInvocationLoopResolver(method, index);
+	public edu.cmu.cs.dennisc.croquet.DragSource createInvocationResolver( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, int index ) {
+		return new ProcedureInvocationResolver(method, index);
 	}
 	
 	public edu.cmu.cs.dennisc.croquet.DragComponent getDoInOrderTemplate() {

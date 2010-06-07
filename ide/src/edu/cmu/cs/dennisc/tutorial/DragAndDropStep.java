@@ -46,10 +46,12 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class DragAndDropStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
+	private edu.cmu.cs.dennisc.croquet.DragSource dragSource;
 	private Completor completor;
 	private Validator validator;
-	public DragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape, String cascadeText, Completor completor, Validator validator ) {
-		super( title, text, new Hole( dragSource, Feature.ConnectionPreference.EAST_WEST ), dragSource.getDragAndDropOperation() );
+	public DragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragSource dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape, String cascadeText, Completor completor, Validator validator ) {
+		super( title, text, new Hole( dragSource, Feature.ConnectionPreference.EAST_WEST ), null );
+		this.dragSource = dragSource;
 		this.completor = completor;
 		this.validator = validator;
 		Note dropNote = new Note( dropText );
@@ -64,6 +66,16 @@ package edu.cmu.cs.dennisc.tutorial;
 		final int N = this.getNoteCount();
 		for( int i=0; i<N; i++ ) {
 			this.getNoteAt( i ).setLabel( Integer.toString(i+1) );
+		}
+	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.DragAndDropOperation getModel() {
+		edu.cmu.cs.dennisc.croquet.DragComponent dragComponent = this.dragSource.getDragComponent();
+		if( dragComponent != null ) {
+			return dragComponent.getDragAndDropOperation();
+		} else {
+			return null;
 		}
 	}
 	

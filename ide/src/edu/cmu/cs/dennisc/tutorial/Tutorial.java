@@ -380,7 +380,7 @@ public class Tutorial {
 		this.addStep( step );
 	}
 
-	public void addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragComponent dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape, String cascadeText, CompletorValidator completorValidator ) {
+	public void addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragSource dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape, String cascadeText, CompletorValidator completorValidator ) {
 		Step step = new DragAndDropStep( title, text, dragSource, dropText, dropShape, cascadeText, completorValidator, completorValidator );
 		this.addStep( step );
 	}

@@ -42,18 +42,12 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-public abstract class DragComponent extends Control {
+public abstract class DragComponent extends Control implements DragSource {
 	private DragAndDropOperation dragAndDropOperation;
 
 	private DragProxy dragProxy = null;
 	private DropProxy dropProxy = null;
 
-	/*package-private*/ DragProxy getDragProxy() {
-		return this.dragProxy;
-	}
-	/*package-private*/ DropProxy getDropProxy() {
-		return this.dropProxy;
-	}
 	private java.awt.event.ComponentListener componentAdapter = new java.awt.event.ComponentListener() {
 		public void componentHidden( java.awt.event.ComponentEvent arg0 ) {
 		}
@@ -69,6 +63,19 @@ public abstract class DragComponent extends Control {
 	public DragComponent() {
 		this.updateProxySizes();
 	}
+
+	public DragComponent getDragComponent() {
+		return this;
+	}
+
+	/*package-private*/ DragProxy getDragProxy() {
+		return this.dragProxy;
+	}
+	/*package-private*/ DropProxy getDropProxy() {
+		return this.dropProxy;
+	}
+	
+
 	@Override
 	public void addNotify() {
 		super.addNotify();

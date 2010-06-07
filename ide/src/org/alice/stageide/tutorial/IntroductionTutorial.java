@@ -53,24 +53,37 @@ public class IntroductionTutorial {
 		final IdeTutorial tutorial = new IdeTutorial( ide );
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = tutorial.getSceneField();
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = tutorial.getFieldDeclaredOnSceneType( "camera" );
+		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = tutorial.getFieldDeclaredOnSceneType( "camera" );
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice iceSkaterField = tutorial.getFieldDeclaredOnSceneType( "iceSkater" );
 		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice runMethod = ide.getSceneType().getDeclaredMethod( "run" );
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava resizeMethod = tutorial.findShortestMethod( iceSkaterField, "resize" );
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava moveMethod = tutorial.findShortestMethod( iceSkaterField, "move" );
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava turnMethod = tutorial.findShortestMethod( iceSkaterField, "turn" );
+//		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava resizeMethod = tutorial.findShortestMethod( iceSkaterField, "resize" );
+//		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava moveMethod = tutorial.findShortestMethod( iceSkaterField, "move" );
+//		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava turnMethod = tutorial.findShortestMethod( iceSkaterField, "turn" );
+//		assert resizeMethod != null;
+//		assert moveMethod != null;
+//		assert turnMethod != null;
 
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice iceSkaterType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)iceSkaterField.valueType.getValue();
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice prepareToSkateMethod = iceSkaterType.getDeclaredMethod( "prepareToSkate" );
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice doSimpleSpinMethod = iceSkaterType.getDeclaredMethod( "doSimpleSpin" );
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice skateMethod = iceSkaterType.getDeclaredMethod( "skate", Integer.class );
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice skateBackwardsMethod = iceSkaterType.getDeclaredMethod( "skateBackwards", Integer.class );
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice jumpMethod = iceSkaterType.getDeclaredMethod( "jump" );
-		
+		assert prepareToSkateMethod != null;
+		assert doSimpleSpinMethod != null;
+		assert skateMethod != null;
+		assert skateBackwardsMethod != null;
+		assert jumpMethod != null;
 
-		
-		ide.getFieldSelectionState().setValue( cameraField );
 		final edu.cmu.cs.dennisc.alice.ast.CountLoop countLoop = org.alice.ide.ast.NodeUtilities.createCountLoop( new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( 3 ) );
 		runMethod.body.getValue().statements.add( countLoop );
 
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				ide.getFieldSelectionState().setValue( cameraField );
+			}
+		} );
+		
 		tutorial.addMessageStep( 
 				"About the Tutorial", 
 				"<html><b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p></html>" 
@@ -115,12 +128,15 @@ public class IntroductionTutorial {
 		tutorial.addSpotlightStep( 
 				"Prepare To Skate", 
 				"<html>Right now, her routing is pretty simple.<p>First she <b>prepares to skate</b>...</html>",
-				tutorial.createStatementResolver( runMethod.body.getValue().statements.get( 0 ) ) 
+//				tutorial.createStatementResolver( runMethod.body.getValue().statements.get( 0 ) )
+				tutorial.createInvocationResolver(prepareToSkateMethod, 0) 
+				
 		);
 		tutorial.addSpotlightStep( 
 				"Do Simple Spin", 
 				"<html>Second, she <b>does a simple spin</b>.</html>",
-				tutorial.createStatementResolver( runMethod.body.getValue().statements.get( 1 ) ) 
+				//tutorial.createStatementResolver( runMethod.body.getValue().statements.get( 1 ) ) 
+				tutorial.createInvocationResolver(doSimpleSpinMethod, 0) 
 		);
 		
 		tutorial.addDialogOpenStep( 
@@ -175,7 +191,7 @@ public class IntroductionTutorial {
 		tutorial.addSpotlightStep( 
 				"Note iceSkater.skate( 2 )",
 				"<html>This line tells the <b>iceSkater</b> to skate <b>2</b> strides.</html>",
-				tutorial.findProcedureInvocationStatement(skateMethod, 0)
+				tutorial.createInvocationResolver(skateMethod, 0)
 		);
 		
 		tutorial.addDialogOpenStep( 
@@ -194,9 +210,14 @@ public class IntroductionTutorial {
 				"<html>We can change the order of the tricks in the <b>iceSkater</b>'s routine.</html>"
 		);
 
-		tutorial.addMessageStep( 
+		tutorial.addDragAndDropStep(
 				"Change order", 
-				"<html><h1><center>TODO</center></h1><p>Drag and drop iceSkater.doSimpleSpin below the line iceSkater.skate.</html>"
+				"<html>Let's drag and drop iceSkater.doSimpleSpin below the line iceSkater.skate.<p><p>Drag iceSkater.doSimpleSpin...</html>",
+				tutorial.createInvocationResolver(doSimpleSpinMethod, 0),
+				"<html>...and drop it <b>here</b>.</html>",
+				tutorial.createBlockStatementResolver( countLoop ),
+				"<html>Select <b>2</b> from the menu.</html>",
+				tutorial.createToDoCompletorValidator()
 		);
 
 		//run
@@ -219,12 +240,12 @@ public class IntroductionTutorial {
 		tutorial.addSpotlightStep( 
 				"Note iceSkater.skateBackwards( 1 )",
 				"<html>This line tells the <b>iceSkater</b> to skate backwards <b>1</b> stride.</html>",
-				tutorial.findProcedureInvocationStatement(skateBackwardsMethod, 0)
+				tutorial.createInvocationResolver(skateBackwardsMethod, 0)
 		);
 
 		tutorial.addMessageStep( 
 				"Jump",
-				"<html>Finally, we'll have he do a jump at the end of her routine.</html>"
+				"<html>Finally, we'll have her do a jump at the end of her routine.</html>"
 		);
 
 		tutorial.addDragAndDropStep( 
@@ -238,7 +259,7 @@ public class IntroductionTutorial {
 		tutorial.addSpotlightStep( 
 				"Note Jump",
 				"<html>This line tells the <b>iceSkater</b> to jump.</html>",
-				tutorial.findProcedureInvocationStatement(jumpMethod, 0)
+				tutorial.createInvocationResolver(jumpMethod, 0)
 		);
 
 		//run
@@ -422,7 +443,7 @@ public class IntroductionTutorial {
 
 		tutorial.setVisible( true );
 		ide.getFrame().setVisible( true );
-		tutorial.setSelectedIndex( 16 );
+		tutorial.setSelectedIndex( 7 );
 	}
 	public static void main( final String[] args ) throws Exception {
 		final org.alice.stageide.StageIDE ide = org.alice.ide.LaunchUtilities.launchAndWait( org.alice.stageide.StageIDE.class, null, args, false );
