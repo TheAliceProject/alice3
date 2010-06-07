@@ -64,6 +64,26 @@ public class StressTestTutorial {
 				"Title", 
 				"<html><b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p></html>" 
 		);
+		tutorial.addDialogOpenStep( 
+				"Run", 
+				"<html>Now, try running your program again.<p>The <b>iceSkater</b> should spin and then skate.</html>", 
+				ide.getRunOperation() 
+		);
+//		tutorial.addSpotlightStep( 
+//				"Dialog Box", 
+//				"<html>Note the Dialog Box.</html>", 
+//				new edu.cmu.cs.dennisc.tutorial.TrackableShapeResolver() {
+//					@Override
+//					protected edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape() {
+//						return ide.getRunOperation().getActiveDialog();
+//					}
+//				} 
+//		);
+		tutorial.addDialogCloseStep( 
+				"Run", 
+				"<html>Press the <b>Close</b> button</html>", 
+				ide.getRunOperation() 
+		);
 		tutorial.addSpotlightStep( 
 				"Do In Order", 
 				"<html>This is the Do In Order tile.</html>", 

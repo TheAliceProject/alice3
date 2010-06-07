@@ -98,7 +98,7 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.DialogOperation {
 		this.setSmallIcon( new RunIcon() );
 		this.setMnemonicKey( java.awt.event.KeyEvent.VK_R );
 	}
-	private java.awt.Point location = new java.awt.Point( 0, 0 );
+	private java.awt.Point location = new java.awt.Point( 100, 100 );
 	private java.awt.Dimension size = null;
 	@Override
 	protected java.awt.Point getDesiredDialogLocation( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {

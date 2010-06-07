@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 //todo: better name
-public abstract class AbstractWindow<W extends java.awt.Window> {
+public abstract class AbstractWindow<W extends java.awt.Window> implements TrackableShape {
 	private static java.util.Map< java.awt.Component, AbstractWindow<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
 	/*package-private*/ static AbstractWindow<?> lookup( java.awt.Component component ) {
 		if( component != null ) {
@@ -135,5 +135,19 @@ public abstract class AbstractWindow<W extends java.awt.Window> {
 	
 	public void pack() {
 		this.getAwtWindow().pack();
+	}
+	
+	public java.awt.Shape getShape( Component< ? > asSeenBy, java.awt.Insets insets ) {
+		if( asSeenBy.isVisible() && this.isVisible() ) {
+			java.awt.Point ptAsSeenBy = asSeenBy.getLocationOnScreen();
+			java.awt.Point ptThis = this.getAwtWindow().getLocationOnScreen();
+			java.awt.Rectangle rv = new java.awt.Rectangle( ptThis.x-ptAsSeenBy.x, ptThis.y-ptAsSeenBy.y, this.getWidth(), this.getHeight() );
+			return Component.inset( rv, insets );
+		} else {
+			return null;
+		}
+	}
+	public java.awt.Shape getVisibleShape( Component< ? > asSeenBy, java.awt.Insets insets ) {
+		return this.getShape( asSeenBy, insets );
 	}
 }

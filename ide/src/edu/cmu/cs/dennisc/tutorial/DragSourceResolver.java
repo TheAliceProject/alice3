@@ -45,49 +45,38 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class DialogCloseStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DialogOperation> {
-	private static class DialogCloseButtonFeature extends Feature {
-		public DialogCloseButtonFeature( edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape ) {
-			super( trackableShape, Feature.ConnectionPreference.EAST_WEST );
-		}
-		@Override
-		protected java.awt.Insets getContainsInsets() {
-			return null;
-		}
-		@Override
-		protected java.awt.Insets getPaintInsets() {
-			return null;
-		}
-		@Override
-		protected void paint( java.awt.Graphics2D g2, java.awt.Shape shape ) {
-		}
-	}
-	public DialogCloseStep( String title, String text, final edu.cmu.cs.dennisc.croquet.DialogOperation operation ) {
-		super( title, text, new DialogCloseButtonFeature( new TrackableShapeResolver() {
-			@Override
-			protected edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape() {
-				return operation.getActiveDialog();
-			}
-		} ), operation );
-	}
-	@Override
-	protected boolean isAlreadyInTheDesiredState() {
-		return this.getModel().getActiveDialog() == null;
-	}
-	@Override
-	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
-		if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent ) {
-			edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent windowClosedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent)child;
-			return windowClosedEvent.getParent().getModel() == this.getModel();
+public abstract class DragSourceResolver implements edu.cmu.cs.dennisc.croquet.DragSource {
+	private edu.cmu.cs.dennisc.croquet.DragSource dragSource;
+
+	protected abstract edu.cmu.cs.dennisc.croquet.DragSource resolveDragSource();
+	public final edu.cmu.cs.dennisc.croquet.DragComponent getDragComponent() {
+		if( this.dragSource != null ) {
+			//pass
 		} else {
-			return false;
+			this.dragSource = this.resolveDragSource();
+		}
+		if( this.dragSource != null ) {
+			return this.dragSource.getDragComponent();
+		} else {
+			return null;
 		}
 	}
-	@Override
-	protected void complete( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
-		edu.cmu.cs.dennisc.croquet.Dialog dialog = this.getModel().getActiveDialog();
-		if( dialog != null ) {
-			dialog.setVisible( false );
+	public final java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
+		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getDragComponent();
+		if( trackableShape != null ) {
+			return trackableShape.getShape( asSeenBy, insets );
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getShape" );
+			return null;
+		}
+	}
+	public final java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
+		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getDragComponent();
+		if( trackableShape != null ) {
+			return trackableShape.getVisibleShape( asSeenBy, insets );
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getVisibleShape" );
+			return null;
 		}
 	}
 }

@@ -324,8 +324,7 @@ public abstract class Component<J extends java.awt.Component> implements Trackab
 		return this.convertRectangle( this.getVisibleRectangle(), destination );
 	}
 
-	public java.awt.Shape getShape( Component< ? > asSeenBy, java.awt.Insets insets ) {
-		java.awt.Rectangle rv = this.getBounds( asSeenBy );
+	/*package-private*/ static java.awt.Rectangle inset( java.awt.Rectangle rv, java.awt.Insets insets ) {
 		if( insets != null ) {
 			rv.x -= insets.left;
 			rv.y -= insets.top;
@@ -334,15 +333,13 @@ public abstract class Component<J extends java.awt.Component> implements Trackab
 		}
 		return rv;
 	}
+	public java.awt.Shape getShape( Component< ? > asSeenBy, java.awt.Insets insets ) {
+		java.awt.Rectangle rv = this.getBounds( asSeenBy );
+		return inset( rv, insets );
+	}
 	public java.awt.Shape getVisibleShape( Component< ? > asSeenBy, java.awt.Insets insets ) {
 		java.awt.Rectangle rv = this.getVisibleRectangle( asSeenBy );
-		if( insets != null ) {
-			rv.x -= insets.left;
-			rv.y -= insets.top;
-			rv.width += insets.left + insets.right;
-			rv.height += insets.top + insets.bottom;
-		}
-		return rv;
+		return inset( rv, insets );
 	}
 
 	@Deprecated

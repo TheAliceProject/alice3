@@ -60,6 +60,11 @@ public abstract class DialogOperation extends Operation<DialogOperationContext> 
 		return null;
 	}
 	
+	private Dialog activeDialog;
+	public Dialog getActiveDialog() {
+		return this.activeDialog;
+	}
+	
 	protected abstract Container<?> createContentPane(DialogOperationContext context, Dialog dialog);
 	protected abstract void releaseContentPane(DialogOperationContext context, Dialog dialog, Container<?> contentPane );
 	@Override
@@ -106,9 +111,15 @@ public abstract class DialogOperation extends Operation<DialogOperationContext> 
 			dialog.pack();
 		}
 		dialog.setLocation( this.getDesiredDialogLocation( dialog ) );
-		dialog.setVisible( true );
-		this.releaseContentPane( context, dialog, contentPane );
-		dialog.removeWindowListener( windowListener );
-		context.finish();
+		
+		this.activeDialog = dialog;
+		try {
+			dialog.setVisible( true );
+			this.releaseContentPane( context, dialog, contentPane );
+			dialog.removeWindowListener( windowListener );
+			context.finish();
+		} finally {
+			this.activeDialog = null;
+		}
 	}
 }

@@ -96,73 +96,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return findShortestMethod(cls, methodName);
 	}
 
-	public static abstract class DragSourceResolver implements edu.cmu.cs.dennisc.croquet.DragSource {
-		private edu.cmu.cs.dennisc.croquet.DragSource dragSource;
-		protected abstract edu.cmu.cs.dennisc.croquet.DragSource resolveDragSource();
-		public final edu.cmu.cs.dennisc.croquet.DragComponent getDragComponent() {
-			if( this.dragSource != null ) {
-				//pass
-			} else {
-				this.dragSource = this.resolveDragSource();
-			}
-			if( this.dragSource != null ) {
-				return this.dragSource.getDragComponent();
-			} else {
-				return null;
-			}
-		}
-		public final java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
-			edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getDragComponent();
-			if( trackableShape != null ) {
-				return trackableShape.getShape( asSeenBy, insets );
-			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getShape" );
-				return null;
-			}
-		}
-		public final java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
-			edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getDragComponent();
-			if( trackableShape != null ) {
-				return trackableShape.getVisibleShape( asSeenBy, insets );
-			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getVisibleShape" );
-				return null;
-			}
-		}
-	}
-
-	public static abstract class TrackableShapeResolver implements edu.cmu.cs.dennisc.croquet.TrackableShape {
-		private edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape;
-		protected abstract edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape();
-		private edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape() {
-			if( this.trackableShape != null ) {
-				//pass
-			} else {
-				this.trackableShape = this.resolveTrackableShape();
-			}
-			return this.trackableShape;
-		}
-		public final java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
-			edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getTrackableShape();
-			if( trackableShape != null ) {
-				return trackableShape.getShape( asSeenBy, insets );
-			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getShape" );
-				return null;
-			}
-		}
-		public final java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
-			edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getTrackableShape();
-			if( trackableShape != null ) {
-				return trackableShape.getVisibleShape( asSeenBy, insets );
-			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getVisibleShape" );
-				return null;
-			}
-		}
-	}
-	
-	public static abstract class CodeTrackableShapeResolver extends TrackableShapeResolver {
+	public static abstract class CodeTrackableShapeResolver extends edu.cmu.cs.dennisc.tutorial.TrackableShapeResolver {
 		protected abstract edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape( org.alice.ide.codeeditor.CodeEditor codeEditor );
 		@Override
 		protected final edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape() {
@@ -175,7 +109,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 	}
 
-	public static abstract class CodeDragSourceResolver extends DragSourceResolver {
+	public static abstract class CodeDragSourceResolver extends edu.cmu.cs.dennisc.tutorial.DragSourceResolver {
 		protected abstract edu.cmu.cs.dennisc.croquet.DragSource resolveDragSource( org.alice.ide.codeeditor.CodeEditor codeEditor );
 		@Override
 		protected final edu.cmu.cs.dennisc.croquet.DragSource resolveDragSource() {
