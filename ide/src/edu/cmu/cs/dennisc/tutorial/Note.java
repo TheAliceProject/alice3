@@ -86,79 +86,16 @@ package edu.cmu.cs.dennisc.tutorial;
 	public Iterable< Feature > getFeatures() {
 		return this.features;
 	}
-	/*package-private*/ void setLocation( java.awt.Container awtParent ) {
-		edu.cmu.cs.dennisc.croquet.Container<?> parent = this.getParent();
-		assert parent.getAwtComponent() == awtParent;
-		
-		javax.swing.JFrame jFrame = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getAwtWindow();
-		javax.swing.JLayeredPane layeredPane = jFrame.getLayeredPane();
-		java.awt.Rectangle cardBounds = javax.swing.SwingUtilities.getLocalBounds( layeredPane );
-		assert cardBounds.width > 0 && cardBounds.height > 0;
-		
-		java.awt.Rectangle noteBounds = this.getLocalBounds();
-		int x = 20;
-		int y = 20;
+	/*package-private*/ java.awt.Point calculateLocation( edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
+		java.awt.Point rv = new java.awt.Point( 20, 20 );
 		if( this.features.size() > 0 ) {
 			Feature feature = this.features.get( 0 );
-			Feature.Connection actualConnection = null;
-			edu.cmu.cs.dennisc.croquet.TrackableShape featureTrackableShape = feature.getTrackableShape();
-			if( featureTrackableShape != null ) {
-				java.awt.Shape shape = featureTrackableShape.getShape( parent, null );
-				if( shape != null ) {
-					java.awt.Rectangle featureComponentBounds = shape.getBounds();
-					Feature.ConnectionPreference connectionPreference = feature.getConnectionPreference();
-					if( connectionPreference == Feature.ConnectionPreference.EAST_WEST ) {
-						x = getXForWestLayout( noteBounds, featureComponentBounds );
-						if( x >= 32 ) {
-							actualConnection = Feature.Connection.WEST;
-						} else {
-							x = getXForEastLayout(noteBounds, featureComponentBounds);
-							if( x <= ( cardBounds.width - noteBounds.width - 32 ) ) {
-								actualConnection = Feature.Connection.EAST;
-							}
-						}
-					}
-					if( actualConnection != null ) {
-						int yFeatureComponentCenter = featureComponentBounds.y + featureComponentBounds.height/2;
-						int yCardCenter = ( cardBounds.y + cardBounds.height ) / 2;
-						y = yFeatureComponentCenter;
-						if( yFeatureComponentCenter < yCardCenter ) {
-							y += 100;
-						} else {
-							y -= noteBounds.height;
-							y -= 100;
-						}
-					} else {
-						y = getYForNorthLayout( noteBounds, featureComponentBounds );
-						if( y >= 32 ) {
-							actualConnection = Feature.Connection.NORTH;
-						} else {
-							y = getYForSouthLayout( noteBounds, featureComponentBounds);
-							if( y <= ( cardBounds.height - noteBounds.height - 32 ) ) {
-								actualConnection = Feature.Connection.SOUTH;
-							} else {
-								actualConnection = Feature.Connection.SOUTH;
-								y = 200;
-							}
-						}
-						int xFeatureComponentCenter = featureComponentBounds.x + featureComponentBounds.width/2;
-						int xCardCenter = ( cardBounds.x + cardBounds.width ) / 2;
-						x = xFeatureComponentCenter;
-						if( xFeatureComponentCenter < xCardCenter ) {
-							x += 200;
-						} else {
-							x -= noteBounds.width;
-							x -= 200;
-						}
-					}
-				}
-			}
-			feature.setActualConnection( actualConnection );
+			rv = feature.calculateNoteLocation( container, this );
 		} else {
-			x = (cardBounds.width-noteBounds.width)/2;
-			y = 64;
+			rv.x = (container.getWidth()-this.getWidth())/2;
+			rv.y = 64;
 		}
-		this.getAwtComponent().setLocation( x, y );
+		return rv;
 	}
 
 	@Override
@@ -235,7 +172,7 @@ package edu.cmu.cs.dennisc.tutorial;
 			}
 			@Override
 			protected void paintChildren(java.awt.Graphics g) {
-				if( Note.this.isActive() ) {
+				if( Step.IS_NOTE_OVERLAPPING_DESIRED==false || Note.this.isActive() ) {
 					super.paintChildren(g);
 				}
 			}
@@ -347,30 +284,5 @@ package edu.cmu.cs.dennisc.tutorial;
 		this.removeMouseMotionListener( this.mouseInputListener );
 		this.removeMouseListener( this.mouseInputListener );
 		super.handleRemovedFrom( parent );
-	}
-	private static int getXForWestLayout( java.awt.Rectangle noteBounds, java.awt.Rectangle featureComponentBounds ) {
-		int x = featureComponentBounds.x;
-		x -= 200;
-		x -= noteBounds.width;
-		return x;
-	}
-	private static int getXForEastLayout( java.awt.Rectangle noteBounds, java.awt.Rectangle featureComponentBounds ) {
-		int x = featureComponentBounds.x;
-		x += featureComponentBounds.width;
-		x += 200;
-		return x;
-	}
-
-	private static int getYForNorthLayout( java.awt.Rectangle noteBounds, java.awt.Rectangle featureComponentBounds ) {
-		int y = featureComponentBounds.y;
-		y -= 200;
-		y -= noteBounds.height;
-		return y;
-	}
-	private static int getYForSouthLayout( java.awt.Rectangle noteBounds, java.awt.Rectangle featureComponentBounds ) {
-		int y = featureComponentBounds.y;
-		y += featureComponentBounds.height;
-		y += 200;
-		return y;
 	}
 }

@@ -42,55 +42,12 @@
  */
 package org.alice.stageide.tutorial;
 
-import org.alice.ide.tutorial.IdeTutorial;
-
 /**
  * @author Dennis Cosgrove
  */
-public class CreateInstanceTutorial {
-	public static void main( final String[] args ) {
-		org.alice.stageide.tutorial.TutorialIDE ide = new org.alice.stageide.tutorial.TutorialIDE();
-		ide.initialize(args);
-		ide.loadProjectFrom( args[ 0 ] );
-		ide.getFrame().maximize();
-		
-		final IdeTutorial tutorial = new IdeTutorial( ide, 0 );
-		tutorial.addBooleanStateStep( 
-				"Edit Scene", 
-				"<html>Press the <b>Edit Scene</b> button</html>", 
-				ide.getIsSceneEditorExpandedState(),
-				true
-		);
-		tutorial.addMessageStep( 
-				"Note Edit Scene",
-				"<html>Note you are now editing the scene.</html>" 
-		);
-		tutorial.addSpotlightStep( 
-				"Gallery Browser", 
-				"<html>Note the gallery browser.</html>", 
-				ide.getGalleryBrowser() 
-		);
-//		final java.util.UUID CREATE_PERSON_ID = java.util.UUID.fromString( "3dba52e9-fe65-4fe2-9f51-fd428549ca3a" );
-//		tutorial.addActionStep( 
-//				"Create Person", 
-//				"<html>Press the <b>Create Person</b> button</html>", 
-//				CREATE_PERSON_ID 
-//		);
-
-		tutorial.addBooleanStateStep( 
-				"Edit Code", 
-				"<html>Press the <b>Edit Code</b> button</html>", 
-				ide.getIsSceneEditorExpandedState(),
-				false
-		);
-		
-		
-		tutorial.addMessageStep( 
-				"Note Edit Code",
-				"<html>Note you are now editing the code.</html>" 
-		);
-
-		tutorial.setVisible( true );
-		ide.getFrame().setVisible( true );
+public class TutorialIDE extends org.alice.stageide.StageIDE {
+	@Override
+	protected void handleQuit( java.util.EventObject e ) {
+		System.exit( 0 );
 	}
 }

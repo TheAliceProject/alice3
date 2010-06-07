@@ -699,25 +699,27 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 				if( statementListPropertyPane.getProperty() == statementListProperty ) {
 					return new edu.cmu.cs.dennisc.croquet.TrackableShape() {;
 						private java.awt.Rectangle update( java.awt.Rectangle rv ) {
-							if( statementListPropertyPane.isFigurativelyEmpty() ) {
-								//pass
-								rv.height = Math.min( rv.height, 40 );
-							} else {
-								final int N = statementListPropertyPane.getComponentCount();
-								int actualIndex = Math.min( index, N );
-								if( actualIndex == 0 ) {
+							if( rv != null ) {
+								if( statementListPropertyPane.isFigurativelyEmpty() ) {
 									//pass
+									rv.height = Math.min( rv.height, 40 );
 								} else {
-									edu.cmu.cs.dennisc.croquet.Component< ? > prevComponent = statementListPropertyPane.getComponent( actualIndex-1 );
-									rv.y += prevComponent.getY();
-									rv.y += prevComponent.getHeight();
+									final int N = statementListPropertyPane.getComponentCount();
+									int actualIndex = Math.min( index, N );
+									if( actualIndex == 0 ) {
+										//pass
+									} else {
+										edu.cmu.cs.dennisc.croquet.Component< ? > prevComponent = statementListPropertyPane.getComponent( actualIndex-1 );
+										rv.y += prevComponent.getY();
+										rv.y += prevComponent.getHeight();
+									}
+									if( actualIndex == N ) {
+										//pass
+									} else {
+										rv.y -= 20;
+									}
+									rv.height = 40;
 								}
-								if( actualIndex == N ) {
-									//pass
-								} else {
-									rv.y -= 20;
-								}
-								rv.height = 40;
 							}
 							return rv;
 						}

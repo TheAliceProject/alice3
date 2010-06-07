@@ -97,7 +97,6 @@ package edu.cmu.cs.dennisc.tutorial;
 
 	private edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape;
 	private ConnectionPreference connectionPreference;
-	private Connection actualConnection;
 	public Feature( edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape, ConnectionPreference connectionPreference ) {
 		assert trackableShape != null;
 		this.trackableShape = trackableShape;
@@ -111,12 +110,139 @@ package edu.cmu.cs.dennisc.tutorial;
 		return this.connectionPreference;
 	}
 	
-	public Connection getActualConnection() {
-		return this.actualConnection;
+	private static int getXForWestLayout( java.awt.Rectangle noteBounds, java.awt.Rectangle featureComponentBounds ) {
+		int x = featureComponentBounds.x;
+		x -= 200;
+		x -= noteBounds.width;
+		return x;
 	}
-	public void setActualConnection(Connection actualConnection) {
-		this.actualConnection = actualConnection;
+	private static int getXForEastLayout( java.awt.Rectangle noteBounds, java.awt.Rectangle featureComponentBounds ) {
+		int x = featureComponentBounds.x;
+		x += featureComponentBounds.width;
+		x += 200;
+		return x;
 	}
+
+	private static int getYForNorthLayout( java.awt.Rectangle noteBounds, java.awt.Rectangle featureComponentBounds ) {
+		int y = featureComponentBounds.y;
+		y -= 200;
+		y -= noteBounds.height;
+		return y;
+	}
+	private static int getYForSouthLayout( java.awt.Rectangle noteBounds, java.awt.Rectangle featureComponentBounds ) {
+		int y = featureComponentBounds.y;
+		y += featureComponentBounds.height;
+		y += 200;
+		return y;
+	}
+	
+	/*package-private*/ Connection calculateActualConnection( edu.cmu.cs.dennisc.croquet.Component<?> container, edu.cmu.cs.dennisc.croquet.JComponent<?> note ) {
+		Connection actualConnection = null;
+		edu.cmu.cs.dennisc.croquet.TrackableShape featureTrackableShape = this.getTrackableShape();
+		if( featureTrackableShape != null ) {
+			java.awt.Shape shape = featureTrackableShape.getShape( container, null );
+			if( shape != null ) {
+				java.awt.Rectangle containerBounds = container.getLocalBounds();
+				java.awt.Rectangle noteBounds = note.getBounds( container );
+				java.awt.Rectangle featureComponentBounds = shape.getBounds();
+				final int x = featureComponentBounds.x - noteBounds.x;
+				final int y = featureComponentBounds.y - noteBounds.y;
+
+				Feature.ConnectionPreference connectionPreference = this.getConnectionPreference();
+				if( connectionPreference == Feature.ConnectionPreference.EAST_WEST ) {
+					if( x >= 32 ) {
+						actualConnection = Feature.Connection.WEST;
+					} else {
+						if( x <= ( containerBounds.width - noteBounds.width - 32 ) ) {
+							actualConnection = Feature.Connection.EAST;
+						}
+					}
+				}
+				if( actualConnection != null ) {
+					//pass
+				} else {
+					if( y >= 32 ) {
+						actualConnection = Feature.Connection.NORTH;
+					} else {
+						if( y <= ( containerBounds.height - noteBounds.height - 32 ) ) {
+							actualConnection = Feature.Connection.SOUTH;
+						} else {
+							actualConnection = null;
+						}
+					}
+				}
+			}
+		}
+		if( actualConnection != null ) {
+			//pass
+		} else {
+			actualConnection = Feature.Connection.SOUTH;
+		}
+		return actualConnection;
+	}
+	/*package-private*/ java.awt.Point calculateNoteLocation( edu.cmu.cs.dennisc.croquet.Container< ? > container, edu.cmu.cs.dennisc.croquet.Component< ? > note ) {
+		java.awt.Rectangle containerBounds = container.getLocalBounds();
+		java.awt.Rectangle noteBounds = note.getBounds( container );
+		
+		java.awt.Point rv = new java.awt.Point();
+		Connection actualConnection = null;
+		edu.cmu.cs.dennisc.croquet.TrackableShape featureTrackableShape = this.getTrackableShape();
+		if( featureTrackableShape != null ) {
+			java.awt.Shape shape = featureTrackableShape.getShape( container, null );
+			if( shape != null ) {
+				java.awt.Rectangle featureComponentBounds = shape.getBounds();
+				Feature.ConnectionPreference connectionPreference = this.getConnectionPreference();
+				if( connectionPreference == Feature.ConnectionPreference.EAST_WEST ) {
+					rv.x = getXForWestLayout( noteBounds, featureComponentBounds );
+					if( rv.x >= 32 ) {
+						actualConnection = Feature.Connection.WEST;
+					} else {
+						rv.x = getXForEastLayout(noteBounds, featureComponentBounds);
+						if( rv.x <= ( containerBounds.width - noteBounds.width - 32 ) ) {
+							actualConnection = Feature.Connection.EAST;
+						}
+					}
+				}
+				if( actualConnection != null ) {
+					int yFeatureComponentCenter = featureComponentBounds.y + featureComponentBounds.height/2;
+					int yCardCenter = ( containerBounds.y + containerBounds.height ) / 2;
+					rv.y = yFeatureComponentCenter;
+					if( yFeatureComponentCenter < yCardCenter ) {
+						rv.y += 100;
+					} else {
+						rv.y -= noteBounds.height;
+						rv.y -= 100;
+					}
+				} else {
+					rv.y = getYForNorthLayout( noteBounds, featureComponentBounds );
+					if( rv.y >= 32 ) {
+						actualConnection = Feature.Connection.NORTH;
+					} else {
+						rv.y = getYForSouthLayout( noteBounds, featureComponentBounds);
+						if( rv.y <= ( containerBounds.height - noteBounds.height - 32 ) ) {
+							actualConnection = Feature.Connection.SOUTH;
+						} else {
+							actualConnection = Feature.Connection.SOUTH;
+							rv.y = 200;
+						}
+					}
+					int xFeatureComponentCenter = featureComponentBounds.x + featureComponentBounds.width/2;
+					int xCardCenter = ( containerBounds.x + containerBounds.width ) / 2;
+					rv.x = xFeatureComponentCenter;
+					if( xFeatureComponentCenter < xCardCenter ) {
+						rv.x += 200;
+					} else {
+						rv.x -= noteBounds.width;
+						rv.x -= 200;
+					}
+				}
+			}
+		}
+		return rv;
+	}
+//	public void setActualConnection(Connection actualConnection) {
+//		this.actualConnection = actualConnection;
+//	}
 	
 	protected abstract java.awt.Insets getContainsInsets();
 	protected abstract java.awt.Insets getPaintInsets();
@@ -172,11 +298,11 @@ package edu.cmu.cs.dennisc.tutorial;
 			path.quadTo(xTo, yFrom, xTo, yTo);
 		}
 		g2.draw( path );
-		
 	}
 	public final void paint( java.awt.Graphics2D g2, edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy, edu.cmu.cs.dennisc.croquet.JComponent<?> note ) {
 		java.awt.Shape shape = getShapeForPaint( asSeenBy );
-		if( shape != null && this.actualConnection != null ) {
+		if( shape != null ) {
+			Connection actualConnection = this.calculateActualConnection( asSeenBy, note );
 			java.awt.Paint prevPaint = g2.getPaint();
 			java.awt.Stroke prevStroke = g2.getStroke();
 
@@ -186,7 +312,7 @@ package edu.cmu.cs.dennisc.tutorial;
 			java.awt.Rectangle noteBounds = note.getComponent( 0 ).getBounds( asSeenBy );
 			java.awt.Rectangle shapeBounds = shape.getBounds();
 			if( shapeBounds != null ) {
-				java.awt.Point ptComponent = edu.cmu.cs.dennisc.java.awt.RectangleUtilties.getPoint( shapeBounds, this.actualConnection.getXConstraint(), this.actualConnection.getYConstraint() );
+				java.awt.Point ptComponent = edu.cmu.cs.dennisc.java.awt.RectangleUtilties.getPoint( shapeBounds, actualConnection.getXConstraint(), actualConnection.getYConstraint() );
 				int xContraint;
 				if( noteBounds.x > ptComponent.x ) {
 					xContraint = javax.swing.SwingConstants.LEADING;
@@ -195,8 +321,8 @@ package edu.cmu.cs.dennisc.tutorial;
 				}
 				java.awt.Point ptNote = edu.cmu.cs.dennisc.java.awt.RectangleUtilties.getPoint( noteBounds, xContraint, javax.swing.SwingConstants.CENTER );
 				g2.setStroke( ARROW_STROKE );
-				drawPath( g2, ptNote.x, ptNote.y, ptComponent.x, ptComponent.y, this.actualConnection.isCurveDesired() );
-				this.actualConnection.fillArrowHead(g2, ptComponent.x, ptComponent.y);
+				drawPath( g2, ptNote.x, ptNote.y, ptComponent.x, ptComponent.y, actualConnection.isCurveDesired() );
+				actualConnection.fillArrowHead(g2, ptComponent.x, ptComponent.y);
 			}
 			
 			g2.setStroke( prevStroke );

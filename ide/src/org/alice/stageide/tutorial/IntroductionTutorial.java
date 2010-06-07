@@ -48,7 +48,7 @@ package org.alice.stageide.tutorial;
 public class IntroductionTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
 		ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getMyProjectsDirectory(), "IntroductionTutorial.a3p" ) ); 
-		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 16 );
+		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 15 );
 		final org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = tutorial.getSceneField();
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = tutorial.getFieldDeclaredOnSceneType( "camera" );
@@ -218,7 +218,6 @@ public class IntroductionTutorial {
 				tutorial.createInvocationResolver(doSimpleSpinMethod, 0),
 				"<html>...and drop it <b>here</b>.</html>",
 				tutorial.createEndOfStatementListResolver( runMethod ),
-				"<html>Select <b>2</b> from the menu.</html>",
 				tutorial.createToDoCompletorValidator()
 		);
 
@@ -313,7 +312,7 @@ public class IntroductionTutorial {
 		ide.getFrame().setVisible( true );
 	}
 	public static void main( final String[] args ) throws Exception {
-		final org.alice.stageide.StageIDE ide = org.alice.ide.LaunchUtilities.launchAndWait( org.alice.stageide.StageIDE.class, null, args, false );
+		final org.alice.stageide.tutorial.TutorialIDE ide = org.alice.ide.LaunchUtilities.launchAndWait( org.alice.stageide.tutorial.TutorialIDE.class, null, args, false );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				createAndShowTutorial( ide );

@@ -260,7 +260,7 @@ public class StressTestTutorial {
 		ide.getFrame().setVisible( true );
 	}
 	public static void main( final String[] args ) throws Exception {
-		final org.alice.stageide.StageIDE ide = org.alice.ide.LaunchUtilities.launchAndWait( org.alice.stageide.StageIDE.class, null, args, false );
+		final org.alice.stageide.tutorial.TutorialIDE ide = org.alice.ide.LaunchUtilities.launchAndWait( org.alice.stageide.tutorial.TutorialIDE.class, null, args, false );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				createAndShowTutorial( ide );
