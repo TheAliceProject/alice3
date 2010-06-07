@@ -42,26 +42,18 @@
  */
 package org.alice.stageide.tutorial;
 
-import org.alice.ide.tutorial.IdeTutorial;
-
 /**
  * @author Dennis Cosgrove
  */
 public class IntroductionTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
 		ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getMyProjectsDirectory(), "IntroductionTutorial.a3p" ) ); 
-		final IdeTutorial tutorial = new IdeTutorial( ide );
+		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide );
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = tutorial.getSceneField();
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = tutorial.getFieldDeclaredOnSceneType( "camera" );
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice iceSkaterField = tutorial.getFieldDeclaredOnSceneType( "iceSkater" );
 		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice runMethod = ide.getSceneType().getDeclaredMethod( "run" );
-//		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava resizeMethod = tutorial.findShortestMethod( iceSkaterField, "resize" );
-//		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava moveMethod = tutorial.findShortestMethod( iceSkaterField, "move" );
-//		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava turnMethod = tutorial.findShortestMethod( iceSkaterField, "turn" );
-//		assert resizeMethod != null;
-//		assert moveMethod != null;
-//		assert turnMethod != null;
 
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice iceSkaterType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)iceSkaterField.valueType.getValue();
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice prepareToSkateMethod = iceSkaterType.getDeclaredMethod( "prepareToSkate" );
@@ -85,13 +77,8 @@ public class IntroductionTutorial {
 		} );
 		
 		tutorial.addMessageStep( 
-				"About the Tutorial", 
+				"Welcome", 
 				"<html><b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p></html>" 
-		);
-		tutorial.addSpotlightStep( 
-				"Scene Editor", 
-				"<html>This is the scene editor.</html>", 
-				ide.getSceneEditor() 
 		);
 		tutorial.addSpotlightStep( 
 				"Scene Editor", 
@@ -127,7 +114,7 @@ public class IntroductionTutorial {
 
 		tutorial.addSpotlightStep( 
 				"Prepare To Skate", 
-				"<html>Right now, her routing is pretty simple.<p>First she <b>prepares to skate</b>...</html>",
+				"<html>Right now, her routine is pretty simple.<p>First she <b>prepares to skate</b>...</html>",
 //				tutorial.createStatementResolver( runMethod.body.getValue().statements.get( 0 ) )
 				tutorial.createInvocationResolver(prepareToSkateMethod, 0) 
 				
@@ -145,7 +132,7 @@ public class IntroductionTutorial {
 				ide.getRunOperation() 
 		);
 		tutorial.addDialogCloseStep( 
-				"Run", 
+				"Close", 
 				"<html>Press the <b>Close</b> button</html>", 
 				ide.getRunOperation() 
 		);
@@ -181,7 +168,7 @@ public class IntroductionTutorial {
 
 		tutorial.addDragAndDropStep( 
 				"Invoke Skate Procedure",
-				"<html>Drag <b>skate</b> <i>howManySteps</i>...</html>",
+				"<html>Drag <b>skate</b> <i>numberOfStrides</i>...</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( skateMethod ),
 				"<html>Drop it <b>here</b>.</html>",
 				tutorial.createBlockStatementResolver( countLoop ),
@@ -230,7 +217,7 @@ public class IntroductionTutorial {
 		
 		tutorial.addDragAndDropStep( 
 				"Invoke Skate Backwards Procedure",
-				"<html>Drag <b>skateBackwards</b> <i>howManySteps</i>...</html>",
+				"<html>Drag <b>skateBackwards</b> <i>numberOfStrides</i>...</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( skateBackwardsMethod ),
 				"<html>Drop it <b>here</b>.</html>",
 				tutorial.createBlockStatementResolver( countLoop ),
@@ -257,7 +244,7 @@ public class IntroductionTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 		tutorial.addSpotlightStep( 
-				"Note Jump",
+				"Note iceSkater.jump()",
 				"<html>This line tells the <b>iceSkater</b> to jump.</html>",
 				tutorial.createInvocationResolver(jumpMethod, 0)
 		);
@@ -278,172 +265,9 @@ public class IntroductionTutorial {
 				"<html><h1><center>TODO: restart</center></h1><p>We have done a quick tour of the IDE, learned how to run programs, and change the <b>iceSkater</b>'s routine.  If you are not comfortable with these topics, please <b>restart</b>.  Otherwise, move on to the next chapter.</html>"
 		);
 
-		
-//		tutorial.addDragAndDropStep( 
-//				"Drag Skate Procedure",
-//				"<html>Drag <b>skate</b> <i>howManySteps</i>...</html>",
-//				tutorial.createProcedureInvocationStatementDragSourceResolver(skateMethod, 0),
-//				"<html>Drop it <b>here</b>.</html>",
-//				tutorial.createBlockStatementResolver( countLoop ),
-//				tutorial.createToDoCompletorValidator()
-//		);
-
-		
-//		tutorial.addItemSelectionStep(
-//				"Select Scene",
-//				"<html>Select the <b>scene</b> instance.</html>",
-//				ide.getFieldSelectionState(),
-//				sceneField
-//		);
-//		
-//		tutorial.addSpotlightStep( 
-//				"Note Scene Details", 
-//				"<html>Now the scene instance details are displayed.</html>", 
-//				membersEditor 
-//		);
-//
-//
-//		tutorial.addSpotlightStep( 
-//				"Constructs",
-//				"<html>This where loops and locals live.</html>", 
-//				ide.getUbiquitousPane() 
-//		);
-//
-//
-//		tutorial.addSelectTabStep( 
-//				"Select Functions Tab", 
-//				"<html>Select the <b>Functions</b> tab.</html>", 
-//				membersEditor.getTabbedPaneSelectionState(),
-//				tutorial.getFunctionsTab()
-//		);
-//		tutorial.addSpotlightTabScrollPaneStep( 
-//				"Note Functions Tab", 
-//				"<html>Now the functions are now displayed.</html>", 
-//				membersEditor.getTabbedPaneSelectionState(),
-//				tutorial.getFunctionsTab()
-//		);
-//		tutorial.addSelectTabStep( 
-//				"Properies Tab", 
-//				"<html>Select the <b>Properies</b> tab.</html>", 
-//				membersEditor.getTabbedPaneSelectionState(),
-//				tutorial.getFieldsTab()
-//		);
-//		tutorial.addSpotlightTabScrollPaneStep( 
-//				"Note Properies Tab", 
-//				"<html>Now the properties are now displayed.</html>", 
-//				membersEditor.getTabbedPaneSelectionState(),
-//				tutorial.getFieldsTab()
-//		);
-//		tutorial.addSelectTabStep( 
-//				"Procedures Tab", 
-//				"<html>Select the <b>Procedures</b> tab.</html>", 
-//				membersEditor.getTabbedPaneSelectionState(),
-//				tutorial.getProceduresTab()
-//		);
-//		tutorial.addSpotlightTabScrollPaneStep( 
-//				"Note Procedures Tab", 
-//				"<html>Now the procedures are now displayed.</html>", 
-//				membersEditor.getTabbedPaneSelectionState(),
-//				tutorial.getProceduresTab()
-//		);
-//
-//		tutorial.addBooleanStateStep( 
-//				"Edit Scene", 
-//				"<html>Press the <b>Edit Scene</b> button</html>", 
-//				ide.getIsSceneEditorExpandedState(),
-//				true
-//		);
-//		tutorial.addMessageStep( 
-//				"Note Edit Scene",
-//				"<html>Note you are now editing the scene.</html>" 
-//		);
-//		tutorial.addBooleanStateStep( 
-//				"Edit Code", 
-//				"<html>Press the <b>Edit Code</b> button</html>", 
-//				ide.getIsSceneEditorExpandedState(),
-//				false
-//		);
-//		tutorial.addMessageStep( 
-//				"Note Edit Code",
-//				"<html>Note you are now editing the code.</html>" 
-//		);
-//		
-//		
-//		
-//
-//		tutorial.addDragAndDropStep( 
-//				"Drag Do In Order",
-//				"<html>Drag <b>Do In Order</b>.</html>",
-//				tutorial.getDoInOrderTemplate(),
-//				"<html>Drop <b>here</b>.</html>",
-//				tutorial.createBlockStatementResolver( countLoop ),
-//				tutorial.createToDoCompletorValidator()
-//		);
-//		tutorial.addSpotlightStep( 
-//				"Note Resize",
-//				"<html>Note that <b>Do in order</b> has been added to your count loop.</html>",
-//				tutorial.findProcedureInvocationStatement(resizeMethod, 0)
-//		);
-//
-//		tutorial.addDragAndDropStep( 
-//				"Drag Resize Procedure",
-//				"<html>Drag <b>resize</b> procedure.</html>",
-//				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( resizeMethod ),
-//				"<html>Drop <b>here</b>.</html>",
-//				tutorial.createBlockStatementResolver( countLoop ),
-//				"<html>Select <b>2.0</b> from the menu.</html>",
-//				tutorial.createToDoCompletorValidator()
-//		);
-//		tutorial.addSpotlightStep( 
-//				"Note Resize",
-//				"<html>Note that <b>resize</b> has been added to your run method.</html>",
-//				tutorial.findProcedureInvocationStatement(resizeMethod, 0)
-//		);
-//
-//		tutorial.addDragAndDropStep( 
-//				"Drag Move Procedure",
-//				"<html>Drag <b>move</b> procedure.</html>",
-//				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( moveMethod ),
-//				"<html>Drop <b>here</b>.</html>",
-//				tutorial.createBlockStatementResolver( countLoop ),
-//				"<html>Select <b>FORWARD</b> and <b>1.0</b> from the menus.</html>",
-//				tutorial.createToDoCompletorValidator()
-//		);
-//		tutorial.addSpotlightStep( 
-//				"Note Move",
-//				"<html>Note that <b>move</b> has been added to your run method.</html>",
-//				tutorial.findProcedureInvocationStatement(moveMethod, 0)
-//		);
-//
-//		tutorial.addDragAndDropStep( 
-//				"Drag Turn Procedure",
-//				"<html>Drag <b>turn</b> procedure.</html>",
-//				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( turnMethod ),
-//				"<html>Drop <b>here</b>.</html>",
-//				tutorial.createBlockStatementResolver( countLoop ),
-//				"<html>Select <b>LEFT</b> and <b>0.25</b> from the menus.</html>",
-//				tutorial.createToDoCompletorValidator()
-//		);
-//		tutorial.addSpotlightStep( 
-//				"Note Turn",
-//				"<html>Note that <b>turn</b> has been added to your run method.</html>",
-//				tutorial.findProcedureInvocationStatement(turnMethod, 0)
-//		);
-
-		
-//		ide.getFrame().addWindowListener( new java.awt.event.WindowAdapter() {
-//			@Override
-//			public void windowOpened(java.awt.event.WindowEvent e) {
-////				javax.swing.SwingUtilities.invokeLater( new Runnable() {
-////					public void run() {
-////					}
-////				} );
-//			}
-//		} );
-
+		tutorial.setSelectedIndex( 0 );
 		tutorial.setVisible( true );
 		ide.getFrame().setVisible( true );
-		tutorial.setSelectedIndex( 7 );
 	}
 	public static void main( final String[] args ) throws Exception {
 		final org.alice.stageide.StageIDE ide = org.alice.ide.LaunchUtilities.launchAndWait( org.alice.stageide.StageIDE.class, null, args, false );

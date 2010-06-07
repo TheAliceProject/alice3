@@ -168,14 +168,14 @@ package edu.cmu.cs.dennisc.tutorial;
 			public boolean contains(int x, int y) {
 				return false;
 			}
+			@Override
+			public void updateUI() {
+				this.setUI( new javax.swing.plaf.basic.BasicEditorPaneUI() );
+			}
 		};
 		textComponent.setContentType( "text/html" );
 		
-		if( "Nimbus".equals( javax.swing.UIManager.getLookAndFeel().getName() ) ) {
-			textComponent.setBackground( new java.awt.Color( 0,0,0,0 ) );
-		} else {
-			textComponent.setOpaque( false );
-		}
+		textComponent.setOpaque( false );
 		textComponent.setEditable( false );
 		textComponent.setText( this.text );
 		//this.textPane.setEnabled( false );
@@ -267,7 +267,6 @@ package edu.cmu.cs.dennisc.tutorial;
 		hyperlink.scaleFont( 1.4f );
 		southPanel.addComponent( hyperlink, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.EAST );
 		rv.add( southPanel.getAwtComponent(), java.awt.BorderLayout.SOUTH );
-		rv.setOpaque( false );
 		final int X_BORDER_PAD = 16;
 		final int Y_BORDER_PAD = 12;
 		int top = Y_PAD+Y_BORDER_PAD;
@@ -280,6 +279,8 @@ package edu.cmu.cs.dennisc.tutorial;
 			left += 8;
 		}
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( top, left, bottom, right ) );
+		rv.setBackground( BASE_COLOR );
+		rv.setOpaque( false );
 		return rv;
 	}
 	private javax.swing.event.MouseInputListener mouseInputListener = new javax.swing.event.MouseInputListener() {
