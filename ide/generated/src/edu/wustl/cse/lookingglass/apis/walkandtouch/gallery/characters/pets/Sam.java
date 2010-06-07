@@ -71,80 +71,80 @@ public class Sam extends edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.Ga
 		return getDescendant( edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel.class, part.getPath() );
 	}
 
-	public void Sit( ) {
-		if (Sitting.value ) {		} else { 
-			Sitting.value = true;
-			org.alice.virtualmachine.DoTogether.invokeAndWait(
-				new Runnable() {
-					public void run() {
-						Sam.this.getPart(Sam.Part.LeftRearLeg).turn( org.alice.apis.moveandturn.TurnDirection.BACKWARD, new org.alice.apis.moveandturn.AngleInRevolutions(0.15), 0.25 );
-					}
-				},
-				new Runnable() {
-					public void run() {
-						Sam.this.getPart(Sam.Part.RightRearLeg).turn( org.alice.apis.moveandturn.TurnDirection.BACKWARD, new org.alice.apis.moveandturn.AngleInRevolutions(0.15), 0.25 );
-					}
-				},
-				new Runnable() {
-					public void run() {
-						Sam.this.turn( org.alice.apis.moveandturn.TurnDirection.BACKWARD, new org.alice.apis.moveandturn.AngleInRevolutions(0.05), 0.25 );
-					}
-				},
-				new Runnable() {
-					public void run() {
-						Sam.this.getPart(Sam.Part.Head).turn( org.alice.apis.moveandturn.TurnDirection.FORWARD, new org.alice.apis.moveandturn.AngleInRevolutions(0.15), 0.25 );
-					}
-				},
-				new Runnable() {
-					public void run() {
-						Sam.this.move( org.alice.apis.moveandturn.MoveDirection.DOWN, 0.03, 0.25 );
-					}
-				}
-			);
-
-		}
-
-	}
-
-	public void Beg( ) {
-		org.alice.virtualmachine.DoTogether.invokeAndWait(
-			new Runnable() {
-				public void run() {
-					Sam.this.Sit(  );
-				}
-			}
-		);
-
-		for (int index1 = 0; index1 < 2; index1 = index1 + 1) {
-			org.alice.virtualmachine.DoTogether.invokeAndWait(
-				new Runnable() {
-					public void run() {
-						Sam.this.getPart(Sam.Part.LeftFrontLeg).turn( org.alice.apis.moveandturn.TurnDirection.BACKWARD, new org.alice.apis.moveandturn.AngleInRevolutions(0.15), 0.15 );
-					}
-				},
-				new Runnable() {
-					public void run() {
-						Sam.this.getPart(Sam.Part.RighFrontLeg).turn( org.alice.apis.moveandturn.TurnDirection.BACKWARD, new org.alice.apis.moveandturn.AngleInRevolutions(0.15), 0.15 );
-					}
-				}
-			);
-
-			org.alice.virtualmachine.DoTogether.invokeAndWait(
-				new Runnable() {
-					public void run() {
-						Sam.this.getPart(Sam.Part.RighFrontLeg).turn( org.alice.apis.moveandturn.TurnDirection.FORWARD, new org.alice.apis.moveandturn.AngleInRevolutions(0.15), 0.15 );
-					}
-				},
-				new Runnable() {
-					public void run() {
-						Sam.this.getPart(Sam.Part.LeftFrontLeg).turn( org.alice.apis.moveandturn.TurnDirection.FORWARD, new org.alice.apis.moveandturn.AngleInRevolutions(0.15), 0.15 );
-					}
-				}
-			);
-
-		}
-
-	}
+//	public void Sit( ) {
+//		if (Sitting.value ) {		} else { 
+//			Sitting.value = true;
+//			org.alice.virtualmachine.DoTogether.invokeAndWait(
+//				new Runnable() {
+//					public void run() {
+//						Sam.this.getPart(Sam.Part.LeftRearLeg).turn( org.alice.apis.moveandturn.TurnDirection.BACKWARD, new org.alice.apis.moveandturn.AngleInRevolutions(0.15), 0.25 );
+//					}
+//				},
+//				new Runnable() {
+//					public void run() {
+//						Sam.this.getPart(Sam.Part.RightRearLeg).turn( org.alice.apis.moveandturn.TurnDirection.BACKWARD, new org.alice.apis.moveandturn.AngleInRevolutions(0.15), 0.25 );
+//					}
+//				},
+//				new Runnable() {
+//					public void run() {
+//						Sam.this.turn( org.alice.apis.moveandturn.TurnDirection.BACKWARD, new org.alice.apis.moveandturn.AngleInRevolutions(0.05), 0.25 );
+//					}
+//				},
+//				new Runnable() {
+//					public void run() {
+//						Sam.this.getPart(Sam.Part.Head).turn( org.alice.apis.moveandturn.TurnDirection.FORWARD, new org.alice.apis.moveandturn.AngleInRevolutions(0.15), 0.25 );
+//					}
+//				},
+//				new Runnable() {
+//					public void run() {
+//						Sam.this.move( org.alice.apis.moveandturn.MoveDirection.DOWN, 0.03, 0.25 );
+//					}
+//				}
+//			);
+//
+//		}
+//
+//	}
+//
+//	public void Beg( ) {
+//		org.alice.virtualmachine.DoTogether.invokeAndWait(
+//			new Runnable() {
+//				public void run() {
+//					Sam.this.Sit(  );
+//				}
+//			}
+//		);
+//
+//		for (int index1 = 0; index1 < 2; index1 = index1 + 1) {
+//			org.alice.virtualmachine.DoTogether.invokeAndWait(
+//				new Runnable() {
+//					public void run() {
+//						Sam.this.getPart(Sam.Part.LeftFrontLeg).turn( org.alice.apis.moveandturn.TurnDirection.BACKWARD, new org.alice.apis.moveandturn.AngleInRevolutions(0.15), 0.15 );
+//					}
+//				},
+//				new Runnable() {
+//					public void run() {
+//						Sam.this.getPart(Sam.Part.RighFrontLeg).turn( org.alice.apis.moveandturn.TurnDirection.BACKWARD, new org.alice.apis.moveandturn.AngleInRevolutions(0.15), 0.15 );
+//					}
+//				}
+//			);
+//
+//			org.alice.virtualmachine.DoTogether.invokeAndWait(
+//				new Runnable() {
+//					public void run() {
+//						Sam.this.getPart(Sam.Part.RighFrontLeg).turn( org.alice.apis.moveandturn.TurnDirection.FORWARD, new org.alice.apis.moveandturn.AngleInRevolutions(0.15), 0.15 );
+//					}
+//				},
+//				new Runnable() {
+//					public void run() {
+//						Sam.this.getPart(Sam.Part.LeftFrontLeg).turn( org.alice.apis.moveandturn.TurnDirection.FORWARD, new org.alice.apis.moveandturn.AngleInRevolutions(0.15), 0.15 );
+//					}
+//				}
+//			);
+//
+//		}
+//
+//	}
 
 	public void Jump( ) {
 		org.alice.virtualmachine.DoTogether.invokeAndWait(
