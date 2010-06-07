@@ -47,6 +47,7 @@ package edu.cmu.cs.dennisc.tutorial;
  */
 public class Tutorial {
 	/*package-private*/ static edu.cmu.cs.dennisc.croquet.Group TUTORIAL_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "7bfa86e3-234e-4bd1-9177-d4acac0b12d9" ), "TUTORIAL_GROUP" );
+	private static edu.cmu.cs.dennisc.croquet.Group TUTORIAL_COMPLETION_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "ea5df77d-d74d-4364-9bf5-2df1b2ede0a4" ), "TUTORIAL_COMPLETION_GROUP" );
 	
 	private static java.awt.Color CONTROL_COLOR = new java.awt.Color(255, 255, 191);
 
@@ -321,10 +322,11 @@ public class Tutorial {
 	private edu.cmu.cs.dennisc.history.HistoryManager[] historyManagers;
 	public Tutorial( edu.cmu.cs.dennisc.croquet.Group[] groups ) {
 		final int N = groups.length;
-		this.historyManagers = new edu.cmu.cs.dennisc.history.HistoryManager[ N ];
+		this.historyManagers = new edu.cmu.cs.dennisc.history.HistoryManager[ N+1 ];
 		for( int i=0; i<N; i++ ) {
 			this.historyManagers[ i ] = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( groups[ i ] );
 		}
+		this.historyManagers[ N ] = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( TUTORIAL_GROUP );
 	}
 	private void addStep( Step step ) {
 		this.stepsComboBoxModel.addStep( step );

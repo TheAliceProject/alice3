@@ -49,26 +49,26 @@ public class IntroductionTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
 		ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getMyProjectsDirectory(), "IntroductionTutorial.a3p" ) ); 
 		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 16 );
-		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = tutorial.getSceneField();
+		final org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
+		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = tutorial.getSceneField();
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = tutorial.getFieldDeclaredOnSceneType( "camera" );
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice iceSkaterField = tutorial.getFieldDeclaredOnSceneType( "iceSkater" );
+		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice iceSkaterField = tutorial.getFieldDeclaredOnSceneType( "iceSkater" );
 		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice runMethod = ide.getSceneType().getDeclaredMethod( "run" );
 
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice iceSkaterType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)iceSkaterField.valueType.getValue();
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice prepareToSkateMethod = iceSkaterType.getDeclaredMethod( "prepareToSkate" );
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice doSimpleSpinMethod = iceSkaterType.getDeclaredMethod( "doSimpleSpin" );
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice skateMethod = iceSkaterType.getDeclaredMethod( "skate", Integer.class );
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice skateBackwardsMethod = iceSkaterType.getDeclaredMethod( "skateBackwards", Integer.class );
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice jumpMethod = iceSkaterType.getDeclaredMethod( "jump" );
+		final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice iceSkaterType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)iceSkaterField.valueType.getValue();
+		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice prepareToSkateMethod = iceSkaterType.getDeclaredMethod( "prepareToSkate" );
+		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice doSimpleSpinMethod = iceSkaterType.getDeclaredMethod( "doSimpleSpin" );
+		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice skateMethod = iceSkaterType.getDeclaredMethod( "skate", Integer.class );
+		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice skateBackwardsMethod = iceSkaterType.getDeclaredMethod( "skateBackwards", Integer.class );
+		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice jumpMethod = iceSkaterType.getDeclaredMethod( "jump" );
 		assert prepareToSkateMethod != null;
 		assert doSimpleSpinMethod != null;
 		assert skateMethod != null;
 		assert skateBackwardsMethod != null;
 		assert jumpMethod != null;
 
-		final edu.cmu.cs.dennisc.alice.ast.CountLoop countLoop = org.alice.ide.ast.NodeUtilities.createCountLoop( new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( 3 ) );
-		runMethod.body.getValue().statements.add( countLoop );
+//		final edu.cmu.cs.dennisc.alice.ast.CountLoop countLoop = org.alice.ide.ast.NodeUtilities.createCountLoop( new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( 3 ) );
+//		runMethod.body.getValue().statements.add( countLoop );
 
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
@@ -171,9 +171,24 @@ public class IntroductionTutorial {
 				"<html>Drag <b>skate</b> <i>numberOfStrides</i>...</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( skateMethod ),
 				"<html>Drop it <b>here</b>.</html>",
-				tutorial.createBlockStatementResolver( countLoop ),
+				tutorial.createEndOfStatementListResolver( runMethod ),
 				"<html>Select <b>2</b> from the menu.</html>",
-				tutorial.createToDoCompletorValidator()
+				new edu.cmu.cs.dennisc.tutorial.CompletorValidator() {
+					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.Edit edit ) {
+						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+					}
+					public edu.cmu.cs.dennisc.croquet.Edit getEdit() {
+						return new org.alice.ide.codeeditor.InsertStatementEdit(
+								runMethod.body.getValue().statements,
+								org.alice.ide.codeeditor.InsertStatementEdit.AT_END, 
+								org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( 
+										org.alice.ide.ast.NodeUtilities.createFieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), iceSkaterField ), 
+										skateMethod, 
+										new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( 2 ) 
+								)
+						);
+					}
+				}
 		);
 		tutorial.addSpotlightStep( 
 				"Note iceSkater.skate( 2 )",
@@ -198,11 +213,11 @@ public class IntroductionTutorial {
 		);
 
 		tutorial.addDragAndDropStep(
-				"Change order", 
+				"Move Do Simple Spin", 
 				"<html>Let's drag and drop iceSkater.doSimpleSpin below the line iceSkater.skate.<p><p>Drag iceSkater.doSimpleSpin...</html>",
 				tutorial.createInvocationResolver(doSimpleSpinMethod, 0),
 				"<html>...and drop it <b>here</b>.</html>",
-				tutorial.createBlockStatementResolver( countLoop ),
+				tutorial.createEndOfStatementListResolver( runMethod ),
 				"<html>Select <b>2</b> from the menu.</html>",
 				tutorial.createToDoCompletorValidator()
 		);
@@ -220,9 +235,24 @@ public class IntroductionTutorial {
 				"<html>Drag <b>skateBackwards</b> <i>numberOfStrides</i>...</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( skateBackwardsMethod ),
 				"<html>Drop it <b>here</b>.</html>",
-				tutorial.createBlockStatementResolver( countLoop ),
+				tutorial.createEndOfStatementListResolver( runMethod ),
 				"<html>Select <b>1</b> from the menu.</html>",
-				tutorial.createToDoCompletorValidator()
+				new edu.cmu.cs.dennisc.tutorial.CompletorValidator() {
+					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.Edit edit ) {
+						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+					}
+					public edu.cmu.cs.dennisc.croquet.Edit getEdit() {
+						return new org.alice.ide.codeeditor.InsertStatementEdit(
+								runMethod.body.getValue().statements,
+								org.alice.ide.codeeditor.InsertStatementEdit.AT_END, 
+								org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( 
+										org.alice.ide.ast.NodeUtilities.createFieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), iceSkaterField ), 
+										skateBackwardsMethod, 
+										new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( 1 ) 
+								)
+						);
+					}
+				}
 		);
 		tutorial.addSpotlightStep( 
 				"Note iceSkater.skateBackwards( 1 )",
@@ -240,8 +270,22 @@ public class IntroductionTutorial {
 				"<html>Drag <b>jump</b>...</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( jumpMethod ),
 				"<html>Drop it <b>here</b>.</html>",
-				tutorial.createBlockStatementResolver( countLoop ),
-				tutorial.createToDoCompletorValidator()
+				tutorial.createEndOfStatementListResolver( runMethod ),
+				new edu.cmu.cs.dennisc.tutorial.CompletorValidator() {
+					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.Edit edit ) {
+						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+					}
+					public edu.cmu.cs.dennisc.croquet.Edit getEdit() {
+						return new org.alice.ide.codeeditor.InsertStatementEdit(
+								runMethod.body.getValue().statements,
+								org.alice.ide.codeeditor.InsertStatementEdit.AT_END, 
+								org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( 
+										org.alice.ide.ast.NodeUtilities.createFieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), iceSkaterField ), 
+										jumpMethod 
+								)
+						);
+					}
+				}
 		);
 		tutorial.addSpotlightStep( 
 				"Note iceSkater.jump()",

@@ -192,7 +192,7 @@ public class StressTestTutorial {
 				"<html>Drag <b>Do In Order</b>.</html>",
 				tutorial.getDoInOrderTemplate(),
 				"<html>Drop <b>here</b>.</html>",
-				tutorial.createBlockStatementResolver( countLoop ),
+				tutorial.createEndOfStatementListResolver( countLoop ),
 				tutorial.createToDoCompletorValidator()
 		);
 		tutorial.addSpotlightStep( 
@@ -206,7 +206,7 @@ public class StressTestTutorial {
 				"<html>Drag <b>resize</b> procedure.</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( resizeMethod ),
 				"<html>Drop <b>here</b>.</html>",
-				tutorial.createBlockStatementResolver( countLoop ),
+				tutorial.createEndOfStatementListResolver( countLoop ),
 				"<html>Select <b>2.0</b> from the menu.</html>",
 				tutorial.createToDoCompletorValidator()
 		);
@@ -221,7 +221,7 @@ public class StressTestTutorial {
 				"<html>Drag <b>move</b> procedure.</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( moveMethod ),
 				"<html>Drop <b>here</b>.</html>",
-				tutorial.createBlockStatementResolver( countLoop ),
+				tutorial.createEndOfStatementListResolver( countLoop ),
 				"<html>Select <b>FORWARD</b> and <b>1.0</b> from the menus.</html>",
 				tutorial.createToDoCompletorValidator()
 		);
@@ -236,7 +236,7 @@ public class StressTestTutorial {
 				"<html>Drag <b>turn</b> procedure.</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( turnMethod ),
 				"<html>Drop <b>here</b>.</html>",
-				tutorial.createBlockStatementResolver( countLoop ),
+				tutorial.createEndOfStatementListResolver( countLoop ),
 				"<html>Select <b>LEFT</b> and <b>0.25</b> from the menus.</html>",
 				tutorial.createToDoCompletorValidator()
 		);

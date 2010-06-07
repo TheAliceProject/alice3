@@ -691,17 +691,28 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 //			return false;
 //		}
 //	}
-	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShapeAtTheEndOf( edu.cmu.cs.dennisc.alice.ast.BlockStatement statement ) {
-		if( statement != null ) {
+	
+	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShapeAtIndexOf( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, int index ) {
+		if( statementListProperty != null ) {
 			java.util.List< StatementListPropertyPane > statementListPropertyPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, StatementListPropertyPane.class );
-			for( StatementListPropertyPane statementListPropertyPane : statementListPropertyPanes ) {
-				if( statementListPropertyPane.getProperty().getOwner() == statement ) {
-					return statementListPropertyPane;
+			for( final StatementListPropertyPane statementListPropertyPane : statementListPropertyPanes ) {
+				if( statementListPropertyPane.getProperty() == statementListProperty ) {
+					return new edu.cmu.cs.dennisc.croquet.TrackableShape() {;
+						public java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
+							java.awt.Rectangle bounds = statementListPropertyPane.getBounds( asSeenBy );
+							bounds.height = Math.min( bounds.height, 100 );
+							return bounds;
+						}
+						public java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
+							java.awt.Rectangle bounds = statementListPropertyPane.getVisibleRectangle( asSeenBy );
+							bounds.height = Math.min( bounds.height, 100 );
+							return bounds;
+						}
+					};
 				}
 			}
 		}
-		org.alice.ide.common.BodyPane bodyPane = (org.alice.ide.common.BodyPane)this.scrollPane.getViewportView();
-		return bodyPane.getComponent( 1 );
+		return null;
 	}
 	public edu.cmu.cs.dennisc.croquet.DragComponent getDragComponent( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		if( statement != null ) {

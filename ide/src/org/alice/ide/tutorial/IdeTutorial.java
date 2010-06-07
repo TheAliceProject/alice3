@@ -189,14 +189,16 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	}
 
 	
-	public static class BlockStatementResolver extends CodeTrackableShapeResolver {
-		private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
-		public BlockStatementResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
-			this.blockStatement = statementWithBody.body.getValue();
+	public static class IndexInStatementListResolver extends CodeTrackableShapeResolver {
+		private edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty;
+		private int index;
+		public IndexInStatementListResolver( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, int index ) {
+			this.statementListProperty = statementListProperty;
+			this.index = index;
 		}
 		@Override
 		protected edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape( org.alice.ide.codeeditor.CodeEditor codeEditor ) {
-			return codeEditor.getTrackableShapeAtTheEndOf( this.blockStatement );
+			return codeEditor.getTrackableShapeAtIndexOf( this.statementListProperty, this.index );
 		}
 	}
 
@@ -242,9 +244,36 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	public edu.cmu.cs.dennisc.croquet.DragSource createStatementResolver( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		return new StatementResolver(statement);
 	}
-	public edu.cmu.cs.dennisc.croquet.TrackableShape createBlockStatementResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
-		return new BlockStatementResolver(statementWithBody);
+	private edu.cmu.cs.dennisc.croquet.TrackableShape createIndexInStatementListResolver( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, int index ) {
+		return new IndexInStatementListResolver(statementListProperty, index);
 	}
+	private edu.cmu.cs.dennisc.croquet.TrackableShape createBeginingOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
+		return this.createIndexInStatementListResolver(statementListProperty, 0);
+	}
+	private edu.cmu.cs.dennisc.croquet.TrackableShape createEndOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
+		return this.createIndexInStatementListResolver(statementListProperty, Short.MAX_VALUE);
+	}
+
+	public edu.cmu.cs.dennisc.croquet.TrackableShape createIndexInStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody, int index ) {
+		return this.createIndexInStatementListResolver(statementWithBody.body.getValue().statements, index);
+	}
+	public edu.cmu.cs.dennisc.croquet.TrackableShape createBeginingOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
+		return this.createBeginingOfStatementListResolver(statementWithBody.body.getValue().statements);
+	}
+	public edu.cmu.cs.dennisc.croquet.TrackableShape createEndOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
+		return this.createEndOfStatementListResolver(statementWithBody.body.getValue().statements);
+	}
+
+	public edu.cmu.cs.dennisc.croquet.TrackableShape createIndexInStatementListResolver( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, int index ) {
+		return this.createIndexInStatementListResolver(method.body.getValue().statements, index);
+	}
+	public edu.cmu.cs.dennisc.croquet.TrackableShape createBeginingOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		return this.createBeginingOfStatementListResolver(method.body.getValue().statements);
+	}
+	public edu.cmu.cs.dennisc.croquet.TrackableShape createEndOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		return this.createEndOfStatementListResolver(method.body.getValue().statements);
+	}
+
 	public edu.cmu.cs.dennisc.croquet.DragSource createInvocationResolver( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, int index ) {
 		return new ProcedureInvocationResolver(method, index);
 	}
