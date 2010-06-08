@@ -55,6 +55,11 @@ public class ForEachInArrayLoopTemplate extends CascadingUbiquitousStatementTemp
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createForEachInArrayLoop( expressions[ 0 ] );
+		assert expressions.length > 0;
+		if( expressions[ 0 ] != null ) {
+			return org.alice.ide.ast.NodeUtilities.createForEachInArrayLoop( expressions[ 0 ] );
+		} else {
+			return null;
+		}
 	}
 }

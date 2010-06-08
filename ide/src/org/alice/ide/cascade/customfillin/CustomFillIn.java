@@ -78,14 +78,18 @@ public abstract class CustomFillIn<E extends edu.cmu.cs.dennisc.alice.ast.Expres
 			}
 		};
 		
-		inputDialogOperation.fire();
-		
-		E value = customInputPane.getActualInputValue();
-		if( value != null ) {
-			return value;
-		} else {
-			throw new edu.cmu.cs.dennisc.cascade.CancelException( "" );
+		edu.cmu.cs.dennisc.croquet.InputDialogOperationContext context = inputDialogOperation.fire();
+		if( context != null ) {
+			if( context.isCanceled() ) {
+				//pass
+			} else {
+				E value = customInputPane.getActualInputValue();
+				if( value != null ) {
+					return value;
+				}
+			}
 		}
+		throw new edu.cmu.cs.dennisc.cascade.CancelException( "" );
 	}
 
 	@Override

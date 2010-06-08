@@ -247,6 +247,7 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 			this.updateOkOperationAndExplanation();
 			dialog.setVisible( true );
 			this.epilogue(childContext, this.isOk);
+			
 			Application.getSingleton().getRootContext().removeChildrenObserver( childrenObserver );
 
 			this.okOperation.setDialog(null);
@@ -254,6 +255,10 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 		} else {
 			this.epilogue(childContext, false);
 		}
-		childContext.finish();
+		if( this.isOk ) {
+			//pass
+		} else {
+			assert childContext.isCanceled();
+		}
 	}
 }

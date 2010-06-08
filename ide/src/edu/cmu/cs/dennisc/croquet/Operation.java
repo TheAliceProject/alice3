@@ -59,20 +59,22 @@ public abstract class Operation<C extends OperationContext<?>> extends Model {
 	
 	protected abstract C createContext( ModelContext<?> parent, java.util.EventObject e, ViewController< ?, ? > viewController );
 
-	public void fire( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+	public C fire( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		if( this.isEnabled() ) {
 			Application application = Application.getSingleton();
 			ModelContext<?> parentContext = application.getCurrentContext();
-			this.handleFire(parentContext, e, viewController);
+			return this.handleFire(parentContext, e, viewController);
+		} else {
+			return null;
 		}
 	}
 	@Deprecated
-	public void fire( java.util.EventObject e ) {
-		fire( e, null );
+	public C fire( java.util.EventObject e ) {
+		return fire( e, null );
 	}
 	@Deprecated
-	public void fire() {
-		fire( null );
+	public C fire() {
+		return fire( null );
 	}
 	
 	
@@ -85,9 +87,10 @@ public abstract class Operation<C extends OperationContext<?>> extends Model {
 		super( group, individualUUID );
 	}
 	
-	/*package-private*/ final void handleFire( ModelContext<?> parentContext, java.util.EventObject e, ViewController< ?, ? > viewController ) {
+	/*package-private*/ final C handleFire( ModelContext<?> parentContext, java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		C childContext = this.createContext( parentContext, e, viewController );
 		this.perform( childContext );
+		return childContext;
 	}
 	protected abstract void perform( C context );
 	//protected abstract void perform( ModelContext context, java.util.EventObject e, Component<?> component );
