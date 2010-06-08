@@ -63,7 +63,7 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 	protected abstract java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv );
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
 //	@Override
-	public final void createExpression( final edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent e, final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, final edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
+	public final void createExpression( final edu.cmu.cs.dennisc.croquet.ModelContext context, final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, final edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
 		final java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > types = getBlankExpressionTypes( new java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.AbstractType >() );
 		final edu.cmu.cs.dennisc.alice.ast.AbstractType thisType = this.getExpressionType();
 		edu.cmu.cs.dennisc.alice.ast.AbstractType propertyType = expressionProperty.getExpressionType();
@@ -91,7 +91,7 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 					edu.cmu.cs.dennisc.task.BlockingTaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > expressionsTaskObserver = new edu.cmu.cs.dennisc.task.BlockingTaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] >() {
 						@Override
 						public void run() {
-							getIDE().promptUserForExpressions( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( types, edu.cmu.cs.dennisc.alice.ast.AbstractType.class ), accessible[ 1 ], e.getEndingMouseEvent(), this );
+							getIDE().promptUserForExpressions( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( types, edu.cmu.cs.dennisc.alice.ast.AbstractType.class ), accessible[ 1 ], (java.awt.event.MouseEvent)context.getAwtEvent(), this );
 						}
 					};
 					return expressionsTaskObserver.getResult();

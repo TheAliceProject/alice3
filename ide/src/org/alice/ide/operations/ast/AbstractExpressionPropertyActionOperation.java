@@ -105,6 +105,6 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 			}
 		} );
 	}
-	protected abstract void initializeInternal( edu.cmu.cs.dennisc.croquet.ModelContext context, java.util.UUID id, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
+	protected abstract void initializeInternal( edu.cmu.cs.dennisc.croquet.ModelContext<?> context, java.util.UUID id, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
 
 }

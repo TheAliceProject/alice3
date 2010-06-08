@@ -93,30 +93,32 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 	}
 	public void dragEntered( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 //		zoot.ZDragComponent source = dragAndDropContext.getDragSource();
-//		source.setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), this.getMainComponent(), this.getBounds().height );
+		context.getDragSource().setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), this.getMainComponent(), this.getBounds().height );
 	}
 	public void dragUpdated( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 	}
 	public edu.cmu.cs.dennisc.croquet.Operation< ? > dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
-//		edu.cmu.cs.dennisc.croquet.KDragControl source = context.getDragSource();
-//		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
-//		if( source.getSubject() instanceof org.alice.ide.common.ExpressionCreatorPane ) {
-//			final org.alice.ide.common.ExpressionCreatorPane expressionCreatorPane = (org.alice.ide.common.ExpressionCreatorPane)source.getSubject();
-//			final edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( source, ExpressionPropertyDropDownPane.this, eSource );
-//			class DropOperation extends AbstractExpressionPropertyActionOperation {
-//				public DropOperation() {
-//					super( java.util.UUID.fromString( "43bbcede-3da7-4597-a093-9727e5b63f29" ), ExpressionPropertyDropDownPane.this.expressionProperty );
-//				}
-//				@Override
-//				protected void initializeInternal(edu.cmu.cs.dennisc.zoot.Context<? extends edu.cmu.cs.dennisc.zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression) {
-//					expressionCreatorPane.createExpression( dragAndDropEvent, this.getExpressionProperty(), taskObserver );
-//				}
-//			}
-//			dragAndDropContext.perform( new DropOperation(), dragAndDropEvent, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
-//		} else {
-//			source.hideDropProxyIfNecessary();
-//		}
-		return null;
+		edu.cmu.cs.dennisc.croquet.Operation< ? > rv;
+		edu.cmu.cs.dennisc.croquet.DragSource source = context.getDragSource();
+		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
+		if( source.getDragComponent() instanceof org.alice.ide.common.ExpressionCreatorPane ) {
+			final org.alice.ide.common.ExpressionCreatorPane expressionCreatorPane = (org.alice.ide.common.ExpressionCreatorPane)source.getDragComponent();
+			class DropOperation extends AbstractExpressionPropertyActionOperation {
+				public DropOperation() {
+					super( java.util.UUID.fromString( "43bbcede-3da7-4597-a093-9727e5b63f29" ), ExpressionPropertyDropDownPane.this.expressionProperty );
+				}
+				@Override
+				protected void initializeInternal(edu.cmu.cs.dennisc.croquet.ModelContext<?> context, java.util.UUID id, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver,
+						edu.cmu.cs.dennisc.alice.ast.Expression prevExpression) {
+					expressionCreatorPane.createExpression( context, this.getExpressionProperty(), taskObserver );
+				}
+			}
+			rv = new DropOperation();
+		} else {
+			source.getDragComponent().hideDropProxyIfNecessary();
+			rv = null;
+		}
+		return rv;
 	}
 	public void dragExited( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, boolean isDropRecipient ) {
 		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
