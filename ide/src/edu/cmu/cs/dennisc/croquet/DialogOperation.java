@@ -54,7 +54,7 @@ public abstract class DialogOperation extends Operation<DialogOperationContext> 
 		return parent.createDialogOperationContext( this, e, viewController );
 	}
 	protected java.awt.Point getDesiredDialogLocation( Dialog dialog ) {
-		return new java.awt.Point( 0, 0 );
+		return null;
 	}
 	protected java.awt.Dimension getDesiredDialogSize( Dialog dialog ) {
 		return null;
@@ -110,7 +110,12 @@ public abstract class DialogOperation extends Operation<DialogOperationContext> 
 		} else {
 			dialog.pack();
 		}
-		dialog.setLocation( this.getDesiredDialogLocation( dialog ) );
+		java.awt.Point location = this.getDesiredDialogLocation( dialog );
+		if( location != null ) {
+			dialog.setLocation( location );
+		} else {
+			edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog.getAwtWindow(), Application.getSingleton().getFrame().getAwtWindow() ); 
+		}
 		
 		this.activeDialog = dialog;
 		try {

@@ -159,7 +159,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> implements Track
 				java.awt.Rectangle bounds = AbstractWindow.this.getBounds( asSeenBy );
 				if( bounds != null ) {
 					bounds.height = bounds.height - AbstractWindow.this.getRootPane().getHeight();
-					bounds.height -= 4;
+					bounds.height -= 8;
 					return edu.cmu.cs.dennisc.java.awt.RectangleUtilties.inset( bounds, insets );
 				} else {
 					return null;

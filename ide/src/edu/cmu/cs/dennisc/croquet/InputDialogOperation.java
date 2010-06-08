@@ -132,6 +132,9 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 		}
 	}
 
+	protected java.awt.Point getDesiredDialogLocation( Dialog dialog ) {
+		return null;
+	}
 	protected java.awt.Dimension getDesiredDialogSize( Dialog dialog ) {
 		return null;
 	}
@@ -232,8 +235,12 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 			} else {
 				dialog.pack();
 			}
-			//dialog.pack();
-			//edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin(dialog.getAwtWindow(), button.getRoot().getAwtWindow());
+			java.awt.Point location = this.getDesiredDialogLocation( dialog );
+			if( location != null ) {
+				dialog.setLocation( location );
+			} else {
+				edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog.getAwtWindow(), Application.getSingleton().getFrame().getAwtWindow() ); 
+			}
 
 			ModelContext.ChildrenObserver childrenObserver = new ModelContext.ChildrenObserver() {
 				public void addingChild(HistoryTreeNode child) {
