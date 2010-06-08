@@ -1049,7 +1049,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)this.rootField.valueType.getValue();
 	}
 	protected boolean isFieldDesired( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		return true;
+		return field.getValueType().isArray() == false;
 	}
 	private void refreshFields() {
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
