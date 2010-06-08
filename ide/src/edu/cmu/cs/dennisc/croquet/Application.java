@@ -91,7 +91,21 @@ public abstract class Application {
 	protected abstract Component< ? > createContentPane();
 
 	private Frame frame = new Frame();
-
+	private java.util.Stack< AbstractWindow< ? > > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack( new AbstractWindow< ? >[] { frame } );
+	
+	/*package-private*/void pushWindow( AbstractWindow< ? > window ) {
+		this.stack.push( window );
+	}
+	/*package-private*/AbstractWindow< ? > popWindow() {
+		AbstractWindow< ? > rv = this.stack.peek();
+		this.stack.pop();
+		return rv;
+	}
+	
+	public AbstractWindow< ? > getOwnerWindow() {
+		return this.stack.peek();
+	}
+	
 	public Frame getFrame() {
 		return this.frame;
 	}

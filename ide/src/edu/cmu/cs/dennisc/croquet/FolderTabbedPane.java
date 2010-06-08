@@ -82,12 +82,13 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		
 	}
 
+	private static java.awt.Color BORDER_COLOR = java.awt.Color.WHITE;
+
 	private static class TitlesPanel extends JComponent< javax.swing.JPanel > {
 		private static final int NORTH_AREA_PAD = 8;
 		// private static java.awt.Stroke SELECTED_STROKE = new
 		// java.awt.BasicStroke( 3.0f );
 		private static java.awt.Stroke NORMAL_STROKE = new java.awt.BasicStroke( 1.0f );
-		private static java.awt.Color BORDER_COLOR = java.awt.Color.WHITE;
 
 		@Override
 		protected javax.swing.JPanel createAwtComponent() {
@@ -191,12 +192,12 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 					if( selectedButton != null ) {
 						this.paintTabBackground( g, selectedButton );
 						this.paintTabBorder( g, selectedButton );
-						int y = this.getHeight() - 1;
-						g.setColor( BORDER_COLOR );
-						g.drawLine( 0, y, selectedButton.getX(), y );
-
-						int pad = EAST_TAB_PAD / 2;
-						g.drawLine( selectedButton.getX() + selectedButton.getWidth() + pad, y, this.getWidth(), y );
+//						int y = this.getHeight() - 1;
+//						g.setColor( BORDER_COLOR );
+//						g.drawLine( 0, y, selectedButton.getX(), y );
+//
+//						int pad = EAST_TAB_PAD / 2;
+//						g.drawLine( selectedButton.getX() + selectedButton.getWidth() + pad, y, this.getWidth(), y );
 					}
 					super.paintChildren( g );
 				}
@@ -244,6 +245,18 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		this.cardPanel.setBackgroundColor( null );
 		this.headerPanel.setBackgroundColor( null );
 		this.titlesPanel.setBackgroundColor( null );
+		this.headerPanel.setBorder( new javax.swing.border.Border() {
+			public java.awt.Insets getBorderInsets( java.awt.Component c ) {
+				return new java.awt.Insets( 0,0,1,0 );
+			}
+			public boolean isBorderOpaque() {
+				return true;
+			}
+			public void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height ) {
+				g.setColor( BORDER_COLOR );
+				g.fillRect( 0, height-1, width, 1 );
+			}
+		} );
 		this.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
 	}
 

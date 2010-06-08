@@ -300,6 +300,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 		private RootOperation rootOperation = new RootOperation();
 		public DropDownPanel() {
 			edu.cmu.cs.dennisc.croquet.Button button = this.rootOperation.createButton();
+			button.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.LEADING );
 			this.addComponent( button, Constraint.CENTER );
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,4 ) );
 		}

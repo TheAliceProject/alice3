@@ -122,4 +122,16 @@ public final class Dialog extends AbstractWindow< javax.swing.JDialog > {
 	public void setTitle( String title ) {
 		this.getAwtWindow().setTitle( title );
 	}
+	
+	@Override
+	public void setVisible( boolean isVisible ) {
+		if( isVisible != this.isVisible() ) {
+			if( isVisible ) {
+				Application.getSingleton().pushWindow( this );
+			} else {
+				assert this == Application.getSingleton().popWindow();
+			}
+			super.setVisible( isVisible );
+		}
+	}
 }
