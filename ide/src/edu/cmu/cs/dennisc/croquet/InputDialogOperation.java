@@ -119,8 +119,8 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 	protected String getExplanationIfOkButtonShouldBeDisabled() {
 		return null;
 	}
-	protected abstract Component<?> prologue( ModelContext context );
-	protected abstract void epilogue( ModelContext context, boolean isOk );
+	protected abstract Component<?> prologue( ModelContext<?> context );
+	protected abstract void epilogue( ModelContext<?> context, boolean isOk );
 
 	protected void updateOkOperationAndExplanation() {
 		String explanation = this.getExplanationIfOkButtonShouldBeDisabled();

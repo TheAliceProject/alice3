@@ -47,52 +47,29 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Panel extends JComponent< javax.swing.JPanel > {
-	private boolean isMaximumSizeClampedToPreferredSize;
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
+	protected class DefaultJPanel extends javax.swing.JPanel {
+		public DefaultJPanel() {
+			this.setOpaque( false );
+			this.setBackground( null );
+			this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
+			this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
+		}
+	}
+	protected javax.swing.JPanel createJPanel() {
+		return new DefaultJPanel();
+	}
 	@Override
-	protected javax.swing.JPanel createAwtComponent() {
-		javax.swing.JPanel rv = new javax.swing.JPanel() {
-			@Override
-			protected void paintComponent( java.awt.Graphics g ) {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				boolean isSuperPaintComponentDesired = Panel.this.paintComponent( g2 );
-				if( isSuperPaintComponentDesired ) {
-					super.paintComponent( g );
-				}
-			}
-			@Override
-			public java.awt.Dimension getMaximumSize() {
-				if( Panel.this.isMaximumSizeClampedToPreferredSize() ) {
-					return super.getPreferredSize();
-				} else {
-					return super.getMaximumSize();
-				}
-			}
-		};
+	protected final javax.swing.JPanel createAwtComponent() {
+		javax.swing.JPanel rv = this.createJPanel();
 		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
 		rv.setLayout( layoutManager );
-		
-		rv.setOpaque( false );
-		rv.setBackground( null );
-		
-		rv.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
-		rv.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 		return rv;
 	}
 	@Override
 	public void setBackgroundColor( java.awt.Color color ) {
 		super.setBackgroundColor( color );
 		this.getAwtComponent().setOpaque( color != null );
-	}
-	protected boolean paintComponent( java.awt.Graphics2D g2 ) {
-		return true;
-	}
-	public boolean isMaximumSizeClampedToPreferredSize() {
-		return this.isMaximumSizeClampedToPreferredSize;
-	}
-	public void setMaximumSizeClampedToPreferredSize(boolean isMaximumSizeClampedToPreferredSize) {
-		this.isMaximumSizeClampedToPreferredSize = isMaximumSizeClampedToPreferredSize;
-		this.revalidateAndRepaint();
 	}
 	public void removeComponent( Component< ? > component ) {
 		this.internalRemoveComponent( component );

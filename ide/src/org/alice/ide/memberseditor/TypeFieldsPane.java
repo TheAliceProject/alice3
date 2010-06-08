@@ -67,13 +67,31 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 		if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
 			rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)member;
-			if( getIDE().isEmphasizingClasses() ) {
-				//pass
-			} else {
+//			if( getIDE().isEmphasizingClasses() ) {
+//				//pass
+//			} else {
 				if( field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-					rv.add( new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field) );
+					edu.cmu.cs.dennisc.croquet.Component<?> declarationPane = new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field);
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: add popup menu to field declaration pane" );
+					class EditFieldDeclarationOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation { 
+						public EditFieldDeclarationOperation() {
+							super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "cb8936e6-a011-427a-bc64-0a4e646dc869" ) );
+							this.setName( "Edit..." );
+						}
+						@Override
+						protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+							edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "todo" );
+						}
+					}
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: EditFieldDeclarationOperation" );
+					rv.add( new edu.cmu.cs.dennisc.croquet.LineAxisPanel(
+								new EditFieldDeclarationOperation().createButton(),
+								edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ),
+								declarationPane
+							) 
+					);
 				}
-			}
+//			}
 			rv.add( TemplateFactory.getAccessorTemplate( field ) );
 			if( field.getValueType().isArray() ) {
 				rv.add( TemplateFactory.getAccessArrayAtIndexTemplate( field ) );
@@ -82,11 +100,21 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 			if( field.isFinal() ) {
 				//pass
 			} else {
-				rv.add( TemplateFactory.getMutatorTemplate( field ) );
+				rv.add( 
+						new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
+								edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( org.alice.ide.common.ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT ),
+								TemplateFactory.getMutatorTemplate( field )
+						)
+				);
 			}
 			
 			if( field.getValueType().isArray() ) {
-				rv.add( TemplateFactory.getMutateArrayAtIndexTemplate( field ) );
+				rv.add( 
+						new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
+								edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( org.alice.ide.common.ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT ),
+								TemplateFactory.getMutateArrayAtIndexTemplate( field )
+						)
+				);
 			}
 			
 			if( getIDE().isEmphasizingClasses() ) {

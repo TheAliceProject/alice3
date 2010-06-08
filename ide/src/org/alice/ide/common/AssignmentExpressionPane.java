@@ -67,17 +67,18 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.LineAxi
 
 		boolean isSetter = false;
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-			org.alice.ide.IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = org.alice.ide.IDE.getSingleton().getAccessorAndMutatorDisplayStyle();
-			isSetter = accessorAndMutatorDisplayStyle == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
-
 			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression;
 			org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( fieldAccess.field.getValue() );
 //			nameLabel.setFontToScaledFont( 1.5f );
 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
+			org.alice.ide.IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = org.alice.ide.IDE.getSingleton().getAccessorAndMutatorDisplayStyle( field );
+			isSetter = accessorAndMutatorDisplayStyle == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
 			desiredValueType = field.getDesiredValueType();
 			parent.addComponent( factory.createExpressionPropertyPane( fieldAccess.expression, null, desiredValueType ) );
 			if( org.alice.ide.IDE.getSingleton().isJava() ) {
 				parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " . " ) );
+			} else {
+				parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " " ) );
 			}
 			if( isSetter ) {
 				parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "set" ) );

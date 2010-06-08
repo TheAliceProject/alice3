@@ -65,10 +65,11 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 				this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "." ) );
 			}
 		}
-		org.alice.ide.common.DeclarationNameLabel nodeNameLabel = new org.alice.ide.common.DeclarationNameLabel( this.fieldAccess.field.getValue() );
-		//nodeNameLabel.setFontToScaledFont( 1.2f );
+		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.fieldAccess.field.getValue();
+		org.alice.ide.common.DeclarationNameLabel nodeNameLabel = new org.alice.ide.common.DeclarationNameLabel( field );
+		//nodeNameLabel.scaleFont( 1.2f );
 		//nodeNameLabel.setFontToDerivedFont( zoot.font.ZTextWeight.BOLD );
-		org.alice.ide.IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = org.alice.ide.IDE.getSingleton().getAccessorAndMutatorDisplayStyle();
+		org.alice.ide.IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = org.alice.ide.IDE.getSingleton().getAccessorAndMutatorDisplayStyle( field );
 		boolean isGetter = accessorAndMutatorDisplayStyle == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
 		if( isExpressionDesired ) {
 			if( isGetter ) {

@@ -291,7 +291,11 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		super.handleAddedTo( parent );
 		this.declarationNameState.setState( this.getDefaultNameText() );
 		this.declarationNameTextField.selectAll();
-		this.declarationNameTextField.requestFocus();
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				AbstractDeclarationPane.this.declarationNameTextField.requestFocus();
+			}
+		} );
 	}
 
 //	protected void handleIsReassignableChange( boolean value ) {

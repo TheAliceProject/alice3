@@ -156,6 +156,12 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 		edu.cmu.cs.dennisc.croquet.CheckBox isArrayCheckBox = this.isArrayStateOperation.createCheckBox();
 		isArrayCheckBox.setBackgroundColor( null );
 		
+		this.typeSelectionOperation.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractType>() {
+			public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractType nextValue) {
+				TypePane.this.typeProperty.setValue( nextValue );
+			}
+		} );
+		
 		this.addComponent( this.typeSelectionOperation.createComboBox() );
 		this.addComponent( isArrayCheckBox );
 	}

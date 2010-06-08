@@ -103,7 +103,6 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 		private edu.cmu.cs.dennisc.croquet.Button selectChildButton;
 
 		public DirectoryControl( java.io.File file ) {
-			this.setMaximumSizeClampedToPreferredSize( true );
 			this.file = file;
 			this.selectChildButton = new SelectChildDirectoryActionOperation().createButton();
 			selectChildButton.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.GRAY ) );
@@ -111,6 +110,15 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 			this.addComponent( selectChildButton, Constraint.EAST );
 		}
 
+		@Override
+		protected javax.swing.JPanel createJPanel() {
+			return new DefaultJPanel() {
+				@Override
+				public java.awt.Dimension getMaximumSize() {
+					return super.getPreferredSize();
+				}
+			};
+		}
 		private edu.cmu.cs.dennisc.croquet.Model[] getOperations() {
 			return PathControl.this.getOperations( this.file );
 		}

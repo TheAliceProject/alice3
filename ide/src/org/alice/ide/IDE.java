@@ -356,9 +356,14 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		GETTER_AND_SETTER,
 		ACCESS_AND_ASSIGNMENT
 	}
-	public AccessorAndMutatorDisplayStyle getAccessorAndMutatorDisplayStyle() {
-		return AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
-		//return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
+	
+	public AccessorAndMutatorDisplayStyle getAccessorAndMutatorDisplayStyle( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		if( field.getDeclaringType().isDeclaredInAlice() ) {
+			return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
+		} else {
+			//return AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
+			return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
+		}
 	}
 	
 	private void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {

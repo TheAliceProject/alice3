@@ -55,7 +55,7 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,Model> {
 	private boolean isBorderInitialized = false;
 	public Widget() {
 		super( null );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: Widget" );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: Widget", this.getClass() );
 	}
 	
 	private void updateBorderIfNecessary() {
