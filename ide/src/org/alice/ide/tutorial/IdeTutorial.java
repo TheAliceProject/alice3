@@ -272,17 +272,13 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	public static class TemplateDragSourceResolver extends edu.cmu.cs.dennisc.tutorial.DragSourceResolver {
 		private Class< ? extends edu.cmu.cs.dennisc.croquet.DragSource > cls;
 		public TemplateDragSourceResolver( Class< ? extends edu.cmu.cs.dennisc.croquet.DragSource > cls ) {
+			assert edu.cmu.cs.dennisc.croquet.Component.class.isAssignableFrom( cls );
 			this.cls = cls;
 		}
 		@Override
 		protected final edu.cmu.cs.dennisc.croquet.DragSource resolveDragSource() {
 			org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane = org.alice.ide.IDE.getSingleton().getUbiquitousPane();
-			for( edu.cmu.cs.dennisc.croquet.Component< ? > component : ubiquitousPane.getComponents() ) {
-				if( cls.isAssignableFrom( component.getClass() ) ) {
-					return this.cls.cast( component );
-				}
-			}
-			return null;
+			return this.cls.cast( edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findFirstMatch( ubiquitousPane, (Class<edu.cmu.cs.dennisc.croquet.Component>)this.cls ) );
 		}
 	}
 	
@@ -317,9 +313,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	public edu.cmu.cs.dennisc.tutorial.DragSourceResolver createCommentTemplateResolver() {
 		return new TemplateDragSourceResolver( org.alice.ide.ubiquitouspane.templates.CommentTemplate.class );
 	}
-	
-	
-	
+
 	@Deprecated
 	public edu.cmu.cs.dennisc.tutorial.CompletorValidator createToDoCompletorValidator() {
 		return new edu.cmu.cs.dennisc.tutorial.CompletorValidator() {
