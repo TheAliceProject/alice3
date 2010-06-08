@@ -64,11 +64,26 @@ public class StressTestTutorial {
 				"Title", 
 				"<html><b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p></html>" 
 		);
+		tutorial.addSpotlightStep( 
+				"For Each In Array", 
+				"<html>This is the For Each In Array tile.</html>", 
+				tutorial.createForEachInArrayLoopTemplateResolver() 
+		);
+		tutorial.addDragAndDropStep( 
+				"Drag For Each In Array",
+				"<html>Drag <b>For Each In Array</b>.</html>",
+				tutorial.createForEachInArrayLoopTemplateResolver(),
+				"<html>Drop <b>here</b>.</html>",
+				tutorial.createEndOfStatementListResolver( runMethod ),
+				tutorial.createToDoCompletorValidator()
+		);
+
 		tutorial.addDialogOpenStep( 
 				"Run", 
 				"<html>Now, try running your program again.<p>The <b>iceSkater</b> should spin and then skate.</html>", 
 				ide.getRunOperation() 
 		);
+		
 //		tutorial.addSpotlightStep( 
 //				"Dialog Box", 
 //				"<html>Note the Dialog Box.</html>", 

@@ -287,7 +287,9 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 			return new CodeEditor( code );
 		}
 		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createInnerTitleComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-			return new edu.cmu.cs.dennisc.croquet.Label( code.getName() );
+			edu.cmu.cs.dennisc.croquet.Label rv = new edu.cmu.cs.dennisc.croquet.Label( code.getName() );
+			rv.scaleFont( 1.5f );
+			return rv;
 		}
 		public boolean isCloseAffordanceDesired() {
 			return true;
@@ -349,7 +351,6 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 	public edu.cmu.cs.dennisc.croquet.FolderTabbedPane<edu.cmu.cs.dennisc.alice.ast.AbstractCode> createEditorsFolderTabbedPane() {
 		assert this.singleton == null;
 		this.singleton = this.createFolderTabbedPane( this.editorTabCreator );
-		//this.singleton.scaleFont( 1.5f );
 		this.singleton.setHeaderLeadingComponent( this.dropDownPanel );
 		return this.singleton;
 	}
