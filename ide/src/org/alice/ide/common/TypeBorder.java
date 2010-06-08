@@ -110,13 +110,13 @@ class TypeBorder implements javax.swing.border.Border {
 	}
 	private static java.awt.Shape createShape( int x, int y, int width, int height ) {
 		java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
-		int x0 = x+1;
-		int x1 = x0 + width - 3;
+		int x0 = x+0;
+		int x1 = x0 + width - 1;
 		int xA = x0 + X_INSET/2;
 		int xB = x1 - X_INSET/2;
 
-		int y0 = y+1;
-		int y1 = y0 + height - 3;
+		int y0 = y+0;
+		int y1 = y0 + height - 1;
 		int yC = (y0 + y1) / 2;
 
 		rv.moveTo( xA, y0 );

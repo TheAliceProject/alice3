@@ -298,8 +298,11 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 
 	private static class DropDownPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		private RootOperation rootOperation = new RootOperation();
+		private javax.swing.ButtonModel buttonModel;
 		public DropDownPanel() {
 			edu.cmu.cs.dennisc.croquet.Button button = this.rootOperation.createButton();
+			this.buttonModel = button.getAwtComponent().getModel();
+			//button.setBorder( new javax.swing.border.EmptyBorder( 4,4,4,4 ) );
 			button.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.LEADING );
 			this.addComponent( button, Constraint.CENTER );
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,4 ) );
@@ -335,7 +338,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 			} else {
 				type = null;
 			}
-			this.rootOperation.setSmallIcon( new org.alice.ide.common.TypeIcon( type ) );
+			this.rootOperation.setSmallIcon( new org.alice.ide.common.TypeDropDownIcon( type, this.buttonModel ) );
 			this.rootOperation.setName( "class:" );
 			this.revalidateAndRepaint();
 		}
@@ -346,6 +349,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 	public edu.cmu.cs.dennisc.croquet.FolderTabbedPane<edu.cmu.cs.dennisc.alice.ast.AbstractCode> createEditorsFolderTabbedPane() {
 		assert this.singleton == null;
 		this.singleton = this.createFolderTabbedPane( this.editorTabCreator );
+		//this.singleton.scaleFont( 1.5f );
 		this.singleton.setHeaderLeadingComponent( this.dropDownPanel );
 		return this.singleton;
 	}

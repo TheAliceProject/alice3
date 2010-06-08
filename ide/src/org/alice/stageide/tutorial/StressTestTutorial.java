@@ -87,12 +87,12 @@ public class StressTestTutorial {
 		tutorial.addSpotlightStep( 
 				"Do In Order", 
 				"<html>This is the Do In Order tile.</html>", 
-				tutorial.getDoInOrderTemplate() 
+				tutorial.createDoInOrderTemplateResolver() 
 		);
 		tutorial.addDragAndDropStep( 
 				"Drag Do In Order",
 				"<html>Drag <b>Do In Order</b>.</html>",
-				tutorial.getDoInOrderTemplate(),
+				tutorial.createDoInOrderTemplateResolver(),
 				"<html>Drop <b>here</b>.</html>",
 				tutorial.createEndOfStatementListResolver( runMethod ),
 				tutorial.createToDoCompletorValidator()
@@ -100,12 +100,12 @@ public class StressTestTutorial {
 		tutorial.addSpotlightStep( 
 				"Count Loop", 
 				"<html>This is the Count Loop tile.</html>", 
-				tutorial.getCountLoopTemplate() 
+				tutorial.createCountLoopTemplateResolver() 
 		);
 		tutorial.addDragAndDropStep( 
 				"Drag Count Loop",
 				"<html>Drag <b>Count Loop</b>.</html>",
-				tutorial.getCountLoopTemplate(),
+				tutorial.createCountLoopTemplateResolver(),
 				"<html>Drop <b>here</b>.</html>",
 				tutorial.createBeginingOfStatementListResolver( runMethod ),
 				"<html>Select <b>2</b>.</html>",
@@ -114,12 +114,12 @@ public class StressTestTutorial {
 		tutorial.addSpotlightStep( 
 				"Do Together", 
 				"<html>This is the Do Together tile.</html>", 
-				tutorial.getDoTogetherTemplate() 
+				tutorial.createDoTogetherTemplateResolver() 
 		);
 		tutorial.addDragAndDropStep( 
 				"Drag Do Together",
 				"<html>Drag <b>Do Together</b>.</html>",
-				tutorial.getDoTogetherTemplate(),
+				tutorial.createDoTogetherTemplateResolver(),
 				"<html>Drop <b>here</b>.</html>",
 				tutorial.createIndexOfStatementListResolver( runMethod, 1 ),
 				tutorial.createToDoCompletorValidator()

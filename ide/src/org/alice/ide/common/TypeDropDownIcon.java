@@ -45,54 +45,37 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeIcon implements javax.swing.Icon {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
-	private TypeBorder border;
-	public TypeIcon( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		this.type = type;
-		this.border = TypeBorder.getSingletonFor( type );
+public class TypeDropDownIcon extends TypeIcon {
+	private static final int ARROW_SIZE = 12;
+	private javax.swing.ButtonModel model;
+	public TypeDropDownIcon( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, javax.swing.ButtonModel model ) {
+		super( type );
+		this.model = model;
 	}
-	private String getText() {
-		String rv;
-		if( this.type != null ) {
-			rv = this.type.getName();
-		} else {
-			rv = org.alice.ide.IDE.getSingleton().getTextForNull();
-		}
-		return rv;
-	}
+	
+	@Override
 	public int getIconWidth() {
-		return this.getBorderWidth();
+		return super.getIconWidth() + ARROW_SIZE + 4;
 	}
-	public int getIconHeight() {
-		return this.getBorderHeight();
-	}
-	private int getBorderWidth() {
-		java.awt.Insets insets = this.border.getBorderInsets( null );
-		java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
-		java.awt.FontMetrics fm = g.getFontMetrics();
-		java.awt.geom.Rectangle2D bounds = fm.getStringBounds( this.getText(), g );
-		return insets.left + insets.right + (int)bounds.getWidth();
-	}
-	private int getBorderHeight() {
-		java.awt.Insets insets = this.border.getBorderInsets( null );
-		java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
-		java.awt.FontMetrics fm = g.getFontMetrics();
-		java.awt.geom.Rectangle2D bounds = fm.getStringBounds( this.getText(), g );
-		return insets.top + insets.bottom + (int)bounds.getHeight();
-	}
+	@Override
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		int w = this.getBorderWidth();
-		int h = this.getBorderHeight();
-		this.border.paintBorder( c, g, x, y, w, h );
-		if( c.isEnabled() ) {
-			g.setColor( java.awt.Color.BLACK );
-//			g.setColor( c.getForeground() );
+		super.paintIcon( c, g, x, y );
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		java.awt.Paint paint;
+		if( this.model.isPressed() ) {
+			paint = java.awt.Color.WHITE;
 		} else {
-			g.setColor( java.awt.Color.GRAY );
-//			g.setColor( java.awt.Color.RED );
+			if( this.model.isRollover() ) {
+				paint = java.awt.Color.DARK_GRAY;
+			} else {
+				paint = java.awt.Color.BLACK;
+			}
 		}
-		edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g, this.getText(), x, y, w, h );
+		g2.setPaint( paint );
+		
+		int w = this.getIconWidth();
+		int h = this.getIconHeight();
+		edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.fillTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.Heading.SOUTH, x+w-ARROW_SIZE, y+(h-ARROW_SIZE)/2, ARROW_SIZE, ARROW_SIZE );
 	}
 }
 

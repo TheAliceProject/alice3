@@ -229,45 +229,95 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return this.getIDE().getMembersEditor().getTabbedPaneSelectionState().getItemAt( 2 );
 	}
 	
-	private <D extends edu.cmu.cs.dennisc.croquet.DragComponent> D getFirstDragComponentAssignableTo( Class<D> cls ) {
-		org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane = this.getIDE().getUbiquitousPane();
-		for( edu.cmu.cs.dennisc.croquet.Component< ? > component : ubiquitousPane.getComponents() ) {
-			if( cls.isAssignableFrom( component.getClass() ) ) {
-				return cls.cast( component );
-			}
+//	private <D extends edu.cmu.cs.dennisc.croquet.DragComponent> D getFirstDragComponentAssignableTo( Class<D> cls ) {
+//		org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane = this.getIDE().getUbiquitousPane();
+//		for( edu.cmu.cs.dennisc.croquet.Component< ? > component : ubiquitousPane.getComponents() ) {
+//			if( cls.isAssignableFrom( component.getClass() ) ) {
+//				return cls.cast( component );
+//			}
+//		}
+//		return null;
+//	}
+//	public edu.cmu.cs.dennisc.croquet.DragComponent getDoInOrderTemplate() {
+//		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.DoInOrderTemplate.class );
+//	}
+//	public edu.cmu.cs.dennisc.croquet.DragComponent getCountLoopTemplate() {
+//		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.CountLoopTemplate.class );
+//	}
+//	public edu.cmu.cs.dennisc.croquet.DragComponent getWhileLoopTemplate() {
+//		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.WhileLoopTemplate.class );
+//	}
+//	public edu.cmu.cs.dennisc.croquet.DragComponent getForEachInArrayLoopTemplate() {
+//		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.ForEachInArrayLoopTemplate.class );
+//	}
+//	public edu.cmu.cs.dennisc.croquet.DragComponent getIfElseTemplate() {
+//		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.ConditionalStatementTemplate.class );
+//	}
+//	public edu.cmu.cs.dennisc.croquet.DragComponent getDoTogetherTemplate() {
+//		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.DoTogetherTemplate.class );
+//	}
+//	public edu.cmu.cs.dennisc.croquet.DragComponent getEachInArrayTogetherTemplate() {
+//		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.EachInArrayTogetherTemplate.class );
+//	}
+//	public edu.cmu.cs.dennisc.croquet.DragComponent getDoInThreadTemplate() {
+//		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.DoInThreadTemplate.class );
+//	}
+//	public edu.cmu.cs.dennisc.croquet.DragComponent getDeclareLocalTemplate() {
+//		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.CommentTemplate.class );
+//	}
+//	public edu.cmu.cs.dennisc.croquet.DragComponent getCommentTemplate() {
+//		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.CommentTemplate.class );
+//	}
+
+	public static class TemplateDragSourceResolver extends edu.cmu.cs.dennisc.tutorial.DragSourceResolver {
+		private Class< ? extends edu.cmu.cs.dennisc.croquet.DragSource > cls;
+		public TemplateDragSourceResolver( Class< ? extends edu.cmu.cs.dennisc.croquet.DragSource > cls ) {
+			this.cls = cls;
 		}
-		return null;
+		@Override
+		protected final edu.cmu.cs.dennisc.croquet.DragSource resolveDragSource() {
+			org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane = org.alice.ide.IDE.getSingleton().getUbiquitousPane();
+			for( edu.cmu.cs.dennisc.croquet.Component< ? > component : ubiquitousPane.getComponents() ) {
+				if( cls.isAssignableFrom( component.getClass() ) ) {
+					return this.cls.cast( component );
+				}
+			}
+			return null;
+		}
 	}
-	public edu.cmu.cs.dennisc.croquet.DragComponent getDoInOrderTemplate() {
-		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.DoInOrderTemplate.class );
+	
+	
+	public edu.cmu.cs.dennisc.tutorial.DragSourceResolver createDoInOrderTemplateResolver() {
+		return new TemplateDragSourceResolver( org.alice.ide.ubiquitouspane.templates.DoInOrderTemplate.class );
 	}
-	public edu.cmu.cs.dennisc.croquet.DragComponent getCountLoopTemplate() {
-		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.CountLoopTemplate.class );
+	public edu.cmu.cs.dennisc.tutorial.DragSourceResolver createCountLoopTemplateResolver() {
+		return new TemplateDragSourceResolver( org.alice.ide.ubiquitouspane.templates.CountLoopTemplate.class );
 	}
-	public edu.cmu.cs.dennisc.croquet.DragComponent getWhileLoopTemplate() {
-		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.WhileLoopTemplate.class );
+	public edu.cmu.cs.dennisc.tutorial.DragSourceResolver createWhileLoopTemplateResolver() {
+		return new TemplateDragSourceResolver( org.alice.ide.ubiquitouspane.templates.WhileLoopTemplate.class );
 	}
-	public edu.cmu.cs.dennisc.croquet.DragComponent getForEachInArrayLoopTemplate() {
-		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.ForEachInArrayLoopTemplate.class );
+	public edu.cmu.cs.dennisc.tutorial.DragSourceResolver createForEachInArrayLoopTemplateResolver() {
+		return new TemplateDragSourceResolver( org.alice.ide.ubiquitouspane.templates.ForEachInArrayLoopTemplate.class );
 	}
-	public edu.cmu.cs.dennisc.croquet.DragComponent getIfElseTemplate() {
-		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.ConditionalStatementTemplate.class );
+	public edu.cmu.cs.dennisc.tutorial.DragSourceResolver createIfElseTemplateResolver() {
+		return new TemplateDragSourceResolver( org.alice.ide.ubiquitouspane.templates.ConditionalStatementTemplate.class );
 	}
-	public edu.cmu.cs.dennisc.croquet.DragComponent getDoTogetherTemplate() {
-		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.DoTogetherTemplate.class );
+	public edu.cmu.cs.dennisc.tutorial.DragSourceResolver createDoTogetherTemplateResolver() {
+		return new TemplateDragSourceResolver( org.alice.ide.ubiquitouspane.templates.DoTogetherTemplate.class );
 	}
-	public edu.cmu.cs.dennisc.croquet.DragComponent getEachInArrayTogetherTemplate() {
-		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.EachInArrayTogetherTemplate.class );
+	public edu.cmu.cs.dennisc.tutorial.DragSourceResolver createEachInArrayTogetherTemplateResolver() {
+		return new TemplateDragSourceResolver( org.alice.ide.ubiquitouspane.templates.EachInArrayTogetherTemplate.class );
 	}
-	public edu.cmu.cs.dennisc.croquet.DragComponent getDoInThreadTemplate() {
-		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.DoInThreadTemplate.class );
+	public edu.cmu.cs.dennisc.tutorial.DragSourceResolver createDoInThreadTemplateResolver() {
+		return new TemplateDragSourceResolver( org.alice.ide.ubiquitouspane.templates.DoInThreadTemplate.class );
 	}
-	public edu.cmu.cs.dennisc.croquet.DragComponent getDeclareLocalTemplate() {
-		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.CommentTemplate.class );
+	public edu.cmu.cs.dennisc.tutorial.DragSourceResolver createDeclareLocalTemplateResolver() {
+		return new TemplateDragSourceResolver( org.alice.ide.ubiquitouspane.templates.CommentTemplate.class );
 	}
-	public edu.cmu.cs.dennisc.croquet.DragComponent getCommentTemplate() {
-		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.CommentTemplate.class );
+	public edu.cmu.cs.dennisc.tutorial.DragSourceResolver createCommentTemplateResolver() {
+		return new TemplateDragSourceResolver( org.alice.ide.ubiquitouspane.templates.CommentTemplate.class );
 	}
+	
 	
 	
 	@Deprecated
