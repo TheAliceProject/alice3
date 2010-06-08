@@ -42,9 +42,7 @@
  */
 package org.alice.ide.common;
 
-import edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice;
-
-class MethodPane extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JPanel > {
+class MethodPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	public MethodPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 //		javax.swing.Box header = javax.swing.Box.createHorizontalBox();
 //		header.add( zoot.ZLabel.acquire( "declare procedure " ) );
@@ -60,18 +58,14 @@ class MethodPane extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JPan
 		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getProcedureColor() );
 	}
 	@Override
-	protected javax.swing.JPanel createAwtComponent() {
-		class MouseEventEnabledPanel extends javax.swing.JPanel {
+	protected javax.swing.JPanel createJPanel() {
+		class MouseEventEnabledPanel extends DefaultJPanel {
 			public MouseEventEnabledPanel() {
 				this.enableEvents( java.awt.AWTEvent.MOUSE_EVENT_MASK | java.awt.AWTEvent.MOUSE_MOTION_EVENT_MASK );
 			}
 		}
 		MouseEventEnabledPanel rv = new MouseEventEnabledPanel();
-		rv.setLayout( new java.awt.BorderLayout() );
 		return rv;
-	}
-	private void addComponent( edu.cmu.cs.dennisc.croquet.Component<?> component, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint constraint ) {
-		this.internalAddComponent( component, constraint.getInternal() );
 	}
 }
 

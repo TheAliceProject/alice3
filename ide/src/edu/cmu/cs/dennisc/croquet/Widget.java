@@ -108,6 +108,10 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,Model> {
 				return Widget.this.createToolTip( super.createToolTip() );
 			}
 			@Override
+			public java.awt.Dimension getMaximumSize() {
+				return this.getPreferredSize();
+			}
+			@Override
 			public void paint(java.awt.Graphics g) {
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 				int x = 0;

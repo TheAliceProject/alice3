@@ -430,7 +430,12 @@ public abstract class Component<J extends java.awt.Component> implements Trackab
 	public void setPreferredSize(java.awt.Dimension preferredSize) {
 		this.getAwtComponent().setPreferredSize(preferredSize);
 	}
-		
+
+	@Deprecated
+	public void makeStandOut() { 
+		edu.cmu.cs.dennisc.java.awt.ComponentUtilities.makeStandOut( this.getAwtComponent() );
+	}
+	
 	@Override
 	public String toString() {
 		return this.getAwtComponent().getClass().toString();
