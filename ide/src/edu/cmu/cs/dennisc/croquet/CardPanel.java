@@ -96,7 +96,10 @@ public class CardPanel extends Panel {
 			if( this.nullKey != null ) {
 				//pass
 			} else {
-				this.nullKey = this.createKey( new Label( "unset" ), java.util.UUID.randomUUID() );
+				Label label = new Label( "unset" );
+				label.setBackgroundColor( null );
+				label.setHorizontalAlignment( HorizontalAlignment.CENTER );
+				this.nullKey = this.createKey( label, java.util.UUID.randomUUID() );
 				this.addComponent( this.nullKey );
 			}
 			key = this.nullKey;

@@ -42,10 +42,6 @@
  */
 package org.alice.ide.codeeditor;
 
-import org.alice.ide.operations.ast.AbstractExpressionPropertyActionOperation;
-
-import edu.cmu.cs.dennisc.croquet.ViewController;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -67,7 +63,7 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 	@Override
 	protected int getInsetLeft() {
 		int rv = super.getInsetLeft();
-		if( this.getIDE().getExpressionTypeFeedbackDesiredState().getValue() ) {
+		if( org.alice.ide.IDE.getSingleton().getExpressionTypeFeedbackDesiredState().getValue() ) {
 			//pass
 		} else {
 			edu.cmu.cs.dennisc.croquet.Component< ? > mainComponent = this.getMainComponent();
@@ -103,7 +99,7 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
 		if( source.getDragComponent() instanceof org.alice.ide.common.ExpressionCreatorPane ) {
 			final org.alice.ide.common.ExpressionCreatorPane expressionCreatorPane = (org.alice.ide.common.ExpressionCreatorPane)source.getDragComponent();
-			class DropOperation extends AbstractExpressionPropertyActionOperation {
+			class DropOperation extends org.alice.ide.operations.ast.AbstractExpressionPropertyActionOperation {
 				public DropOperation() {
 					super( java.util.UUID.fromString( "43bbcede-3da7-4597-a093-9727e5b63f29" ), ExpressionPropertyDropDownPane.this.expressionProperty );
 				}

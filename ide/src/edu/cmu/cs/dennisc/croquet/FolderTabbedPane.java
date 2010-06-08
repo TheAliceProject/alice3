@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabbedPane.FolderTabItemDetails > {
 	private static final int EAST_TAB_PAD = 48;
-	public static final java.awt.Color DEFAULT_HEADER_COLOR = new java.awt.Color( 173, 167, 208 );
+	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 );
 	private static class JFolderTabTitle extends JTabTitle {
 		public JFolderTabTitle( javax.swing.JComponent jComponent, java.awt.event.ActionListener closeButtonActionListener ) {
 			super( jComponent, closeButtonActionListener );
@@ -82,7 +82,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		
 	}
 
-	private static class HeaderPane extends JComponent< javax.swing.JPanel > {
+	private static class TitlesPanel extends JComponent< javax.swing.JPanel > {
 		private static final int NORTH_AREA_PAD = 8;
 		// private static java.awt.Stroke SELECTED_STROKE = new
 		// java.awt.BasicStroke( 3.0f );
@@ -202,7 +202,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 				}
 			};
 			rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.LINE_AXIS ) );
-			rv.setBackground( DEFAULT_HEADER_COLOR );
+			rv.setBackground( DEFAULT_BACKGROUND_COLOR );
 			return rv;
 		}
 		public void addComponent( Component< ? > component ) {
@@ -215,7 +215,8 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 
 
 	private CardPanel cardPanel = new CardPanel();
-	private HeaderPane headerPane = new HeaderPane();
+	private TitlesPanel titlesPanel = new TitlesPanel();
+	private BorderPanel headerPanel = new BorderPanel();
 
 	/*package-private*/ class FolderTabItemDetails extends TabItemDetails {
 		private edu.cmu.cs.dennisc.croquet.CardPanel.Key cardPanelKey;
@@ -240,12 +241,29 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	public FolderTabbedPane( ItemSelectionState<E> model, ItemSelectionState.TabCreator< E > tabCreator ) {
 		super( model, tabCreator );
 		this.cardPanel.setBorder( javax.swing.BorderFactory.createMatteBorder( 0, 1, 0, 0, java.awt.Color.WHITE ) );
+		this.cardPanel.setBackgroundColor( null );
+		this.headerPanel.setBackgroundColor( null );
+		this.titlesPanel.setBackgroundColor( null );
+		this.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
 	}
 
+	public void setHeaderLeadingComponent( Component< ? > component ) {
+		//todo
+		component.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
+		this.headerPanel.addComponent( component, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_START );
+		this.headerPanel.revalidateAndRepaint();
+	}
+	public void setHeaderTrailingComponent( Component< ? > component ) {
+		//todo
+		component.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
+		this.headerPanel.addComponent( component, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END );
+		this.headerPanel.revalidateAndRepaint();
+	}
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
 		javax.swing.JPanel rv = super.createAwtComponent();
-		rv.add( this.headerPane.getAwtComponent(), java.awt.BorderLayout.NORTH );
+		this.headerPanel.addComponent( this.titlesPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		rv.add( this.headerPanel.getAwtComponent(), java.awt.BorderLayout.NORTH );
 		rv.add( this.cardPanel.getAwtComponent(), java.awt.BorderLayout.CENTER );
 		return rv;
 	}
@@ -258,13 +276,14 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	protected FolderTabItemDetails createTabItemDetails( E item, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, java.awt.event.ActionListener closeButtonActionListener ) {
 		AbstractButton<?,?> button = new FolderTabTitle(innerTitleComponent, closeButtonActionListener);
 		scrollPane.setVisible( false );
+		scrollPane.setBackgroundColor( null );
 		return new FolderTabItemDetails( item, button, id, innerTitleComponent, scrollPane, mainComponent );
 	};
 	
 
 	@Override
 	protected void removeAllDetails() {
-		this.headerPane.removeAllComponents();
+		this.titlesPanel.removeAllComponents();
 		this.cardPanel.removeAllComponents();
 	}
 	@Override
@@ -272,7 +291,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	}
 	@Override
 	protected void addItem(edu.cmu.cs.dennisc.croquet.FolderTabbedPane.FolderTabItemDetails folderTabItemDetails) {
-		this.headerPane.addComponent( folderTabItemDetails.getButton() );
+		this.titlesPanel.addComponent( folderTabItemDetails.getButton() );
 		this.cardPanel.addComponent( folderTabItemDetails.getCardPanelKey() );
 	}
 	@Override

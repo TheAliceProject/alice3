@@ -260,7 +260,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				}
 			} );
 		} else {
-			this.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_HEADER_COLOR );
+			this.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		}
 		
 	}

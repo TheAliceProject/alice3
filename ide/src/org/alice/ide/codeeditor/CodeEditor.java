@@ -97,7 +97,6 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 		java.awt.Color color = getIDE().getCodeDeclaredInAliceColor( this.code );
 		color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0f, 1.1f, 1.1f );
 		this.setBackgroundColor( color );
-		//this.setDoubleBuffered( true );
 		this.refresh();
 	}
 

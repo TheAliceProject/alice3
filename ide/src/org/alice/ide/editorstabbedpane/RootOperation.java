@@ -269,10 +269,12 @@ class ProjectBlank extends edu.cmu.cs.dennisc.cascade.Blank {
 	}
 }
 
-class RootOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+/**
+ * @author Dennis Cosgrove
+ */
+public class RootOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public RootOperation() {
 		super( java.util.UUID.fromString( "259dfcc5-dd20-4890-8104-a34a075734d0" ) );
-		this.setName( "All" );
 	}
 	@Override
 	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
@@ -281,9 +283,9 @@ class RootOperation extends org.alice.ide.operations.InconsequentialActionOperat
 		int y = viewController.getHeight();
 		edu.cmu.cs.dennisc.alice.Project project = getIDE().getProject();
 		if( project != null ) {
-			new ProjectBlank( project ).showPopupMenu( viewController.getAwtComponent(), x, y, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.zoot.ActionOperation >() {
-				public void handleCompletion( edu.cmu.cs.dennisc.zoot.ActionOperation actionOperation ) {
-					edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( actionOperation, null, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
+			new ProjectBlank( project ).showPopupMenu( viewController.getAwtComponent(), x, y, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.croquet.Operation< ? > >() {
+				public void handleCompletion( edu.cmu.cs.dennisc.croquet.Operation< ? > operation ) {
+					operation.fire();
 				}
 				public void handleCancelation() {
 				}
@@ -291,121 +293,5 @@ class RootOperation extends org.alice.ide.operations.InconsequentialActionOperat
 		} else {
 			this.getIDE().showMessageDialog( "Open a project first (via the File Menu)", "No Project", edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION );
 		}
-	}
-}
-
-//class TypeOperation extends org.alice.ide.operations.AbstractActionOperation {
-//	public void perform( zoot.ActionContext actionContext ) {
-//		java.awt.Component component = (java.awt.Component)actionContext.getEvent().getSource();
-//		int x = component.getWidth();
-//		int y = component.getHeight();
-//		
-//		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
-//		edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = getIDE().getFocusedCode();
-//		if( focusedCode != null ) {
-//			type = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)focusedCode.getDeclaringType();
-//		} else {
-//			type = null;
-//		}
-//		
-//		new TypeFillIn( type ).showPopupMenu( component, x, y, new edu.cmu.cs.dennisc.task.TaskObserver< zoot.ActionOperation >() {
-//			public void handleCompletion( zoot.ActionOperation actionOperation ) {
-//				zoot.ZManager.performIfAppropriate( actionOperation, null, zoot.ZManager.CANCEL_IS_WORTHWHILE );
-//			}
-//			public void handleCancelation() {
-//			}
-//		} );
-//	}
-//}
-
-class OperationDropDown extends org.alice.ide.common.AbstractDropDownPane {
-	private edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label();
-
-	public OperationDropDown( edu.cmu.cs.dennisc.croquet.Operation leftButtonPressOperation ) {
-		this.setLeftButtonPressOperation( leftButtonPressOperation );
-		this.addComponent( this.label );
-		this.updateLabel();
-//
-//		
-//		
-//		leftButtonPressOperation.getActionForConfiguringSwing().addPropertyChangeListener( new java.beans.PropertyChangeListener() {
-//			public void propertyChange( java.beans.PropertyChangeEvent e ) {
-//				if( javax.swing.Action.NAME.equals( e.getPropertyName() ) || javax.swing.Action.SMALL_ICON.equals( e.getPropertyName() ) ) {
-//					OperationDropDown.this.updateLabel();
-//				}
-//			}
-//		} );
-//		
-//		
-		this.label.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.LEADING );
-	}
-	
-	private static final java.awt.Color TOP_COLOR = new java.awt.Color( 255, 255, 191 );
-	private static final java.awt.Color BOTTOM_COLOR = new java.awt.Color( 191, 191, 160 );
-	@Override
-	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
-		return new java.awt.GradientPaint( 0, 0, TOP_COLOR, 0, height, BOTTOM_COLOR );
-	}
-	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.FlowLayout();
-	}
-	protected void updateLabel() {
-		this.label.setText( "class:" );
-		this.label.setIcon( this.getLeftButtonPressOperation().getSmallIcon() );
-	}
-	@Override
-	protected boolean isInactiveFeedbackDesired() {
-		return true;
-	}
-}
-
-public class DeclarationsDropDown extends OperationDropDown {
-	private edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode> selectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode>() {
-		public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractCode nextValue) {
-			DeclarationsDropDown.this.updateOperation( nextValue );
-		}
-	};
-
-	public DeclarationsDropDown() {
-		super( new RootOperation() );
-	}
-	
-	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo( parent );
-		this.updateOperation( org.alice.ide.IDE.getSingleton().getFocusedCode() );
-		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeValueObserver( this.selectionObserver );
-	}
-	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeValueObserver( this.selectionObserver );
-		super.handleRemovedFrom( parent );
-	}
-	@Override
-	protected int getInsetTop() {
-		return 0;
-	}
-	@Override
-	protected int getInsetBottom() {
-		return 0;
-	}
-	private void updateOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type;
-//		StringBuffer sb = new StringBuffer();
-//		sb.append( "class: " );
-		if( code != null ) {
-//			sb.append( code.getDeclaringType().getName() );
-			type = code.getDeclaringType();
-		} else {
-//			sb.append( "<unset>" );
-			type = null;
-		}
-//		this.rootOperationDropDown.getLeftButtonPressOperation().getActionForConfiguringSwing().putValue( javax.swing.Action.NAME, sb.toString() );
-		this.getLeftButtonPressOperation().setSmallIcon( new org.alice.ide.common.TypeIcon( type ) );
-		
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: update label" );
-		
-		this.revalidateAndRepaint();
 	}
 }

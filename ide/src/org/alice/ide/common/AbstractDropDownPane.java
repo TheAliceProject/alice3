@@ -45,7 +45,9 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDropDownPane extends org.alice.ide.Component {
+public abstract class AbstractDropDownPane extends edu.cmu.cs.dennisc.croquet.Control {
+//public abstract class AbstractDropDownPane extends edu.cmu.cs.dennisc.croquet.AbstractButton< javax.swing.AbstractButton, edu.cmu.cs.dennisc.croquet.Operation< ? > > {
+
 //	private zoot.event.ControlAdapter controlAdapter = new zoot.event.ControlAdapter( this );
 	public AbstractDropDownPane() {
 		this.setBackgroundColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 230 ) );

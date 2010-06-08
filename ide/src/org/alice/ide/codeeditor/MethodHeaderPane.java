@@ -89,6 +89,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 						}
 					};
 					rv.setBackground( null );
+					rv.setOpaque( false );
 					rv.setLayout( new java.awt.BorderLayout() );
 					rv.add( centerComponent.getAwtComponent(), java.awt.BorderLayout.CENTER );
 					return rv;

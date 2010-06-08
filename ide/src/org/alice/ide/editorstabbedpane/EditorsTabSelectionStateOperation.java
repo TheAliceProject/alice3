@@ -294,10 +294,58 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 		}
 	};
 	private edu.cmu.cs.dennisc.croquet.FolderTabbedPane<edu.cmu.cs.dennisc.alice.ast.AbstractCode> singleton;
+//	private DeclarationsDropDown declarationsDropDown = new DeclarationsDropDown();
+
+	private static class DropDownPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+		private RootOperation rootOperation = new RootOperation();
+		public DropDownPanel() {
+			edu.cmu.cs.dennisc.croquet.Button button = this.rootOperation.createButton();
+			this.addComponent( button, Constraint.CENTER );
+			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,4 ) );
+		}
+		private edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode> selectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode>() {
+			public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractCode nextValue) {
+				DropDownPanel.this.updateOperation( nextValue );
+			}
+		};
+		private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver isEmphasizingClassesObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
+			public void changing( boolean nextValue ) {
+			}
+			public void changed( boolean nextValue ) {
+				DropDownPanel.this.setVisible( nextValue );
+			}
+		};
+		@Override
+		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+			super.handleAddedTo( parent );
+			org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeValueObserver( this.selectionObserver );
+			org.alice.ide.IDE.getSingleton().getEmphasizingClassesState().addAndInvokeValueObserver( this.isEmphasizingClassesObserver );
+		}
+		@Override
+		protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+			org.alice.ide.IDE.getSingleton().getEmphasizingClassesState().removeValueObserver( this.isEmphasizingClassesObserver );
+			org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeValueObserver( this.selectionObserver );
+			super.handleRemovedFrom( parent );
+		}
+		private void updateOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType type;
+			if( code != null ) {
+				type = code.getDeclaringType();
+			} else {
+				type = null;
+			}
+			this.rootOperation.setSmallIcon( new org.alice.ide.common.TypeIcon( type ) );
+			this.rootOperation.setName( "class:" );
+			this.revalidateAndRepaint();
+		}
+		
+	}
 	private EditorTabCreator editorTabCreator = new EditorTabCreator();
+	private DropDownPanel dropDownPanel = new DropDownPanel();
 	public edu.cmu.cs.dennisc.croquet.FolderTabbedPane<edu.cmu.cs.dennisc.alice.ast.AbstractCode> createEditorsFolderTabbedPane() {
 		assert this.singleton == null;
 		this.singleton = this.createFolderTabbedPane( this.editorTabCreator );
+		this.singleton.setHeaderLeadingComponent( this.dropDownPanel );
 		return this.singleton;
 	}
 	public EditPreviousCodeOperation getEditPreviousCodeOperation() {
