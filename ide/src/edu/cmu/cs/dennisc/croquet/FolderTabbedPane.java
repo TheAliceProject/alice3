@@ -83,18 +83,21 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		
 	}
 
-	private static java.awt.Color BORDER_COLOR = java.awt.Color.WHITE;
+	private static java.awt.Color SELECTED_BORDER_COLOR = java.awt.Color.WHITE;
+	private static java.awt.Color UNSELECTED_BORDER_COLOR = java.awt.Color.DARK_GRAY;
 
 	private static class TitlesPanel extends JComponent< javax.swing.JPanel > {
 		private static final int NORTH_AREA_PAD = 1;
 		// private static java.awt.Stroke SELECTED_STROKE = new
 		// java.awt.BasicStroke( 3.0f );
-		private static java.awt.Stroke NORMAL_STROKE = new java.awt.BasicStroke( 1.0f );
+		private static java.awt.Stroke SELECTED_STROKE = new java.awt.BasicStroke( 1.0f );
+		private static java.awt.Stroke UNSELECTED_STROKE = new java.awt.BasicStroke( 2.0f );
 
 		@Override
 		protected javax.swing.JPanel createAwtComponent() {
 			javax.swing.JPanel rv = new javax.swing.JPanel() {
-				private java.awt.geom.GeneralPath addToPath( java.awt.geom.GeneralPath rv, float x, float y, float width, float height, float a, boolean isContinuation ) {
+				private java.awt.geom.GeneralPath addToPath( java.awt.geom.GeneralPath rv, float x, float y, float width, float height, boolean isContinuation ) {
+					float a = height * 0.25f;
 					float x0 = x + width - EAST_TAB_PAD / 2;
 					float x1 = x + width + EAST_TAB_PAD;
 					// x0 += EAST_TAB_PAD;
@@ -123,32 +126,17 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 					return rv;
 				}
 
-				private void paintTabBorder( java.awt.Graphics g, javax.swing.AbstractButton button ) {
-					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-					java.awt.Color prev = g.getColor();
+				private void paintTabBorder( java.awt.Graphics2D g2, javax.swing.AbstractButton button ) {
 					int x = button.getX();
 					int y = button.getY();
 					int width = button.getWidth();
 					int height = button.getHeight();
-					try {
-						// if( isSelected ) {
-						// g.setColor( this.lightHighlight );
-						// g2.setStroke( this.selectedStroke );
-						// g2.setClip( x, y, width + EAST_TAB_PAD, height +
-						// this.contentBorderInsets.top );
-						// } else {
-						g.setColor( BORDER_COLOR );
-						g2.setStroke( NORMAL_STROKE );
-						// }
-						java.awt.geom.GeneralPath path = this.addToPath( new java.awt.geom.GeneralPath(), x, y, width, height, height * 0.25f, false );
-						g2.draw( path );
-					} finally {
-						g.setColor( prev );
-					}
+					java.awt.geom.GeneralPath path = this.addToPath( new java.awt.geom.GeneralPath(), x, y, width, height, false );
+					g2.draw( path );
 				}
 
-				private void paintTabBackground( java.awt.Graphics g, javax.swing.AbstractButton button ) {
-					java.awt.Color prev = g.getColor();
+				private void paintTabBackground( java.awt.Graphics2D g2, javax.swing.AbstractButton button ) {
+					java.awt.Color prev = g2.getColor();
 					try {
 						int x = button.getX();
 						int y = button.getY();
@@ -167,35 +155,43 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 								color = color.darker();
 							}
 						}
-						g.setColor( color );
-						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-						java.awt.geom.GeneralPath path = addToPath( new java.awt.geom.GeneralPath(), x, y, width, height, height * 0.4f, false );
+						g2.setColor( color );
+						java.awt.geom.GeneralPath path = addToPath( new java.awt.geom.GeneralPath(), x, y, width, height, false );
 						g2.fill( path );
 					} finally {
-						g.setColor( prev );
+						g2.setColor( prev );
 					}
 				}
 
 				@Override
 				protected void paintChildren( java.awt.Graphics g ) {
-					final int N = this.getComponentCount();
+					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 					javax.swing.AbstractButton selectedButton = null;
+					java.awt.Component[] components = this.getComponents();
+					final int N = components.length;
 					for( int i=0; i<N; i++ ) {
-						java.awt.Component component = this.getComponent( N-1-i );
+						java.awt.Component component = components[ N-1-i ];
 						if( component instanceof javax.swing.AbstractButton ) {
 							javax.swing.AbstractButton button = (javax.swing.AbstractButton)component;
 							if( button.isSelected() ) {
 								selectedButton = button;
 							} else {
-								this.paintTabBackground( g, button );
+								g2.setColor( UNSELECTED_BORDER_COLOR );
+								g2.setStroke( UNSELECTED_STROKE );
+								this.paintTabBorder( g2, button );
+								this.paintTabBackground( g2, button );
 							}
 						}
 					}
 					if( selectedButton != null ) {
-						this.paintTabBackground( g, selectedButton );
-						this.paintTabBorder( g, selectedButton );
+						this.paintTabBackground( g2, selectedButton );
+						g2.setColor( SELECTED_BORDER_COLOR );
+						g2.setStroke( SELECTED_STROKE );
+						this.paintTabBorder( g2, selectedButton );
 					}
-					super.paintChildren( g );
+					super.paintChildren( g2 );
+					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_DEFAULT );
 				}
 			};
 			rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.LINE_AXIS ) );
@@ -237,23 +233,23 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 
 	public FolderTabbedPane( ItemSelectionState<E> model, ItemSelectionState.TabCreator< E > tabCreator ) {
 		super( model, tabCreator );
-		this.cardPanel.setBorder( javax.swing.BorderFactory.createMatteBorder( 0, 1, 0, 0, java.awt.Color.WHITE ) );
 		this.cardPanel.setBackgroundColor( null );
 		this.headerPanel.setBackgroundColor( null );
 		this.headerPanel.getAwtComponent().setOpaque( false );
 		this.titlesPanel.setBackgroundColor( null );
-		this.headerPanel.setBorder( new javax.swing.border.Border() {
+		this.headerPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 0, 0, 0 ) );
+		this.cardPanel.setBorder( new javax.swing.border.Border() {
 			public java.awt.Insets getBorderInsets( java.awt.Component c ) {
-				return new java.awt.Insets( 12,0,1,0 );
+				return new java.awt.Insets( 1,1,0,0 );
 			}
 			public boolean isBorderOpaque() {
 				return true;
 			}
 			public void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height ) {
 				if( titlesPanel.getComponentCount() > 0 ) {
-					g.setColor( BORDER_COLOR );
-					int yBottom = y + height-1;
-					g.fillRect( 0, yBottom, width, 1 );
+					g.setColor( SELECTED_BORDER_COLOR );
+					g.fillRect( x, y, width, 1 );
+					g.fillRect( x, y, 1, height );
 					
 					for( Component< ? > component : titlesPanel.getComponents() ) {
 						if( component instanceof AbstractButton< ?, ? > ) {
@@ -261,7 +257,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 							if( button.getAwtComponent().getModel().isSelected() ) {
 								java.awt.Rectangle bounds = button.getBounds( headerPanel );
 								g.setColor( button.getBackgroundColor() );
-								g.fillRect( bounds.x, yBottom, bounds.width + EAST_TAB_PAD, 1 );
+								g.fillRect( bounds.x, y, bounds.width + EAST_TAB_PAD, 1 );
 							}
 						}
 					}
