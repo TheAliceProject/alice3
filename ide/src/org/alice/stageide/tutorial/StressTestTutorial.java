@@ -47,7 +47,7 @@ package org.alice.stageide.tutorial;
  */
 public class StressTestTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
-		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 0 );
+		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 26 );
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = tutorial.getSceneField();
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = tutorial.getFieldDeclaredOnSceneType( "camera" );
@@ -56,9 +56,11 @@ public class StressTestTutorial {
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava resizeMethod = tutorial.findShortestMethod( grassyGroundField, "resize" );
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava moveMethod = tutorial.findShortestMethod( grassyGroundField, "move" );
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava turnMethod = tutorial.findShortestMethod( grassyGroundField, "turn" );
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava delayMethod = tutorial.findShortestMethod( grassyGroundField, "delay" );
 		assert resizeMethod != null;
 		assert moveMethod != null;
 		assert turnMethod != null;
+		assert delayMethod != null;
 		
 		tutorial.addMessageStep( 
 				"Title", 
@@ -75,6 +77,7 @@ public class StressTestTutorial {
 				tutorial.createForEachInArrayLoopTemplateResolver(),
 				"<html>Drop <b>here</b>.</html>",
 				tutorial.createEndOfStatementListResolver( runMethod ),
+				"<html>Select <b>Other Array...</b>.</html>",
 				tutorial.createToDoCompletorValidator()
 		);
 
@@ -162,18 +165,18 @@ public class StressTestTutorial {
 				ide.getEditorsTabSelectionState() 
 		);
 
-		tutorial.addItemSelectionStep(
-				"Select Scene",
-				"<html>Select the <b>scene</b> instance.</html>",
-				ide.getFieldSelectionState(),
-				sceneField
-		);
-		
-		tutorial.addSpotlightStep( 
-				"Note Scene Details", 
-				"<html>Now the scene instance details are displayed.</html>", 
-				membersEditor 
-		);
+//		tutorial.addItemSelectionStep(
+//				"Select Scene",
+//				"<html>Select the <b>scene</b> instance.</html>",
+//				ide.getFieldSelectionState(),
+//				sceneField
+//		);
+//		
+//		tutorial.addSpotlightStep( 
+//				"Note Scene Details", 
+//				"<html>Now the scene instance details are displayed.</html>", 
+//				membersEditor 
+//		);
 
 
 		tutorial.addSpotlightStep( 
@@ -241,12 +244,25 @@ public class StressTestTutorial {
 				"<html>Note you are now editing the code.</html>" 
 		);
 
-		tutorial.addSpotlightStep( 
-				"Note Resize",
-				"<html>Note that <b>Do in order</b> has been added to your count loop.</html>",
-				tutorial.createInvocationResolver(resizeMethod, 0)
+//		tutorial.addSpotlightStep( 
+//				"Note Resize",
+//				"<html>Note that <b>Do in order</b> has been added to your count loop.</html>",
+//				tutorial.createInvocationResolver(resizeMethod, 0)
+//		);
+		tutorial.addDragAndDropStep( 
+				"Drag Delay",
+				"<html>Drag <b>delay</b> procedure.</html>",
+				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( delayMethod ),
+				"<html>Drop <b>here</b>.</html>",
+				tutorial.createEndOfStatementListResolver( runMethod ),
+				"<html>Select <b>1.0</b> from the menu.</html>",
+				tutorial.createToDoCompletorValidator()
 		);
-
+		tutorial.addSpotlightStep( 
+				"Note Delay",
+				"<html>Note that <b>delay</b> has been added to your run method.</html>",
+				tutorial.createInvocationResolver(delayMethod, 0)
+		);
 		tutorial.addDragAndDropStep( 
 				"Drag Resize Procedure",
 				"<html>Drag <b>resize</b> procedure.</html>",

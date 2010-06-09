@@ -332,6 +332,28 @@ public abstract class Component<J extends java.awt.Component> implements Trackab
 		java.awt.Rectangle rv = this.getVisibleRectangle( asSeenBy );
 		return edu.cmu.cs.dennisc.java.awt.RectangleUtilties.inset( rv, insets );
 	}
+	
+	public boolean isInView() {
+		//todo
+		return this.getVisibleRectangle().width > 0 && this.getVisibleRectangle().height > 0;
+	}
+	
+	public <E extends Container<?> > E getFirstAncestorAssignableTo( Class<E> cls ) {
+		Container<?> parent = this.getParent();
+		if( parent != null ) {
+			if( cls.isAssignableFrom( parent.getClass() ) ) {
+				return cls.cast( parent );
+			} else {
+				return parent.getFirstAncestorAssignableTo( cls );
+			}
+		} else {
+			return null;
+		}
+	}
+	
+	public ScrollPane getScrollPaneAncestor() {
+		return this.getFirstAncestorAssignableTo( ScrollPane.class );
+	}
 
 	@Deprecated
 	public java.awt.Point convertPoint(java.awt.Point pt, java.awt.Component asSeenBy) {

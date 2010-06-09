@@ -73,20 +73,20 @@ public abstract class Model implements TrackableShape {
 //	}
 
 
-	private boolean isVisible = true;
-	public boolean isVisible() {
-		return this.isVisible;
-	}
-	public void setVisible( boolean isVisible ) {
-		if( this.isVisible != isVisible ) {
-			this.isVisible = isVisible;
-			synchronized( this.components ) {
-				for( Component<?> component : this.components ) {
-					component.setVisible( this.isVisible );
-				}
-			}
-		}
-	}
+//	private boolean isVisible = true;
+//	public boolean isVisible() {
+//		return this.isVisible;
+//	}
+//	public void setVisible( boolean isVisible ) {
+//		if( this.isVisible != isVisible ) {
+//			this.isVisible = isVisible;
+//			synchronized( this.components ) {
+//				for( Component<?> component : this.components ) {
+//					component.setVisible( this.isVisible );
+//				}
+//			}
+//		}
+//	}
 	private boolean isEnabled = true;
 	public boolean isEnabled() {
 		return this.isEnabled;
@@ -165,6 +165,12 @@ public abstract class Model implements TrackableShape {
 	}
 	public java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
 		return getFirstComponent().getVisibleShape( asSeenBy, insets );
+	}
+	public ScrollPane getScrollPaneAncestor() {
+		return getFirstComponent().getScrollPaneAncestor();
+	}
+	public boolean isInView() {
+		return getFirstComponent().isInView();
 	}
 //	@Deprecated
 //	public <J extends Component<?>> J getFirstComponent( Class<J> cls ) {

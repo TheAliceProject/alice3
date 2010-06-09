@@ -385,7 +385,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 	private void updateBackOperationsEnabled() {
 		boolean isVisibleAndEnabled = this.editedCodes.size() > 1;
 		this.getEditPreviousCodeOperation().setEnabled( isVisibleAndEnabled );
-		this.getEditPreviousCodeOperation().setVisible( isVisibleAndEnabled );
+		//this.getEditPreviousCodeOperation().setVisible( isVisibleAndEnabled );
 	}
 	
 //	private static org.alice.ide.codeeditor.CodeEditor getCodeEditorFor( edu.cmu.cs.dennisc.croquet.Component< ? > component ) {

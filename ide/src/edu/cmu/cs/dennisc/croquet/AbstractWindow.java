@@ -152,6 +152,12 @@ public abstract class AbstractWindow<W extends java.awt.Window> implements Track
 	public java.awt.Shape getVisibleShape( Component< ? > asSeenBy, java.awt.Insets insets ) {
 		return this.getShape( asSeenBy, insets );
 	}
+	public ScrollPane getScrollPaneAncestor() {
+		return null;
+	}
+	public boolean isInView() {
+		return this.isVisible();
+	}
 	
 	public TrackableShape getCloseButtonTrackableShape() {
 		return new TrackableShape() {
@@ -167,6 +173,12 @@ public abstract class AbstractWindow<W extends java.awt.Window> implements Track
 			}
 			public java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
 				return this.getShape( asSeenBy, insets );
+			}
+			public ScrollPane getScrollPaneAncestor() {
+				return null;
+			}
+			public boolean isInView() {
+				return AbstractWindow.this.isInView();
 			}
 		};
 	}

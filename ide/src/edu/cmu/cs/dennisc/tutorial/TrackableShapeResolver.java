@@ -73,4 +73,20 @@ public abstract class TrackableShapeResolver implements edu.cmu.cs.dennisc.croqu
 			return null;
 		}
 	}
+	public final boolean isInView() {
+		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getTrackableShape();
+		if( trackableShape != null ) {
+			return trackableShape.isInView();
+		} else {
+			return false;
+		}
+	}
+	public final edu.cmu.cs.dennisc.croquet.ScrollPane getScrollPaneAncestor() {
+		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getTrackableShape();
+		if( trackableShape != null ) {
+			return trackableShape.getScrollPaneAncestor();
+		} else {
+			return null;
+		}
+	}
 }

@@ -79,4 +79,20 @@ public abstract class DragSourceResolver implements edu.cmu.cs.dennisc.croquet.D
 			return null;
 		}
 	}
+	public final boolean isInView() {
+		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getDragComponent();
+		if( trackableShape != null ) {
+			return trackableShape.isInView();
+		} else {
+			return false;
+		}
+	}
+	public final edu.cmu.cs.dennisc.croquet.ScrollPane getScrollPaneAncestor() {
+		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getDragComponent();
+		if( trackableShape != null ) {
+			return trackableShape.getScrollPaneAncestor();
+		} else {
+			return null;
+		}
+	}
 }

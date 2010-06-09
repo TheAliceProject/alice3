@@ -49,7 +49,8 @@ package edu.cmu.cs.dennisc.tutorial;
 	private static final int PAD = 4;
 	private static final java.awt.Insets PAINT_INSETS = new java.awt.Insets( PAD, PAD, PAD, PAD );
 	private static final java.awt.Paint HIGHLIGHT_PAINT = new java.awt.Color(255, 255, 0, 23);
-//	private static final java.awt.Stroke HOLE_BEVEL_STROKE = new java.awt.BasicStroke(2.0f);
+	private static final int HOLE_BEVEL_THICKNESS = 2;
+	//private static final java.awt.Stroke HOLE_BEVEL_STROKE = new java.awt.BasicStroke(2.0f);
 	private static final java.awt.Stroke[] HIGHLIGHT_STROKES;
 	static {
 		final int N = 8;
@@ -81,36 +82,35 @@ package edu.cmu.cs.dennisc.tutorial;
 		java.awt.geom.Area area = new java.awt.geom.Area(prevClip);
 		area.subtract(new java.awt.geom.Area(shape));
 
-		g2.setClip(area);
 
+		g2.setClip(area);
 		g2.setPaint(HIGHLIGHT_PAINT);
 		for (java.awt.Stroke stroke : HIGHLIGHT_STROKES) {
 			g2.setStroke(stroke);
 			g2.draw(shape);
 		}
+		g2.setClip(prevClip);
+
+		if (shape instanceof java.awt.Rectangle) {
+			java.awt.Rectangle rect = (java.awt.Rectangle) shape;
+	
+			// g2.setPaint( java.awt.Color.GRAY );
+			// g2.draw3DRect(componentBounds.x, componentBounds.y,
+			// componentBounds.width, componentBounds.height, false);
+	
+			int x0 = rect.x;
+			int y0 = rect.y;
+			int x1 = rect.x + rect.width - HOLE_BEVEL_THICKNESS;
+			int y1 = rect.y + rect.height - HOLE_BEVEL_THICKNESS;
+			g2.setPaint(java.awt.Color.DARK_GRAY);
+			g2.fillRect(x0, y0, HOLE_BEVEL_THICKNESS, rect.height);
+			g2.fillRect(x0, y0, rect.width, HOLE_BEVEL_THICKNESS);
+			g2.setPaint(java.awt.Color.WHITE);
+			g2.fillRect(x1, y0, HOLE_BEVEL_THICKNESS, rect.height);
+			g2.fillRect(x0, y1, rect.width, HOLE_BEVEL_THICKNESS);
+		}
 
 		g2.setStroke( prevStroke );
 		g2.setPaint( prevPaint );
-		g2.setClip(prevClip);
-
-//		java.awt.Stroke prevStroke = g2.getStroke();
-//		g2.setStroke(HOLE_BEVEL_STROKE);
-//
-//		// g2.setPaint( java.awt.Color.GRAY );
-//		// g2.draw3DRect(componentBounds.x, componentBounds.y,
-//		// componentBounds.width, componentBounds.height, false);
-//
-//		int x0 = componentBounds.x;
-//		int y0 = componentBounds.y;
-//		int x1 = componentBounds.x + componentBounds.width;
-//		int y1 = componentBounds.y + componentBounds.height;
-//		g2.setPaint(java.awt.Color.LIGHT_GRAY);
-//		g2.drawLine(x1, y0, x1, y1);
-//		g2.drawLine(x1, y1, x0, y1);
-//		g2.setPaint(java.awt.Color.DARK_GRAY);
-//		g2.drawLine(x0, y1, x0, y0);
-//		g2.drawLine(x0, y0, x1, y0);
-//
-//		g2.setStroke(prevStroke);
 	}
 }

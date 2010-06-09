@@ -730,6 +730,13 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 							java.awt.Rectangle bounds = statementListPropertyPane.getVisibleRectangle( asSeenBy );
 							return this.update( bounds );
 						}
+						public boolean isInView() {
+							edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getTrackableShapeAtIndexOf isInView" );
+							return true;
+						}
+						public edu.cmu.cs.dennisc.croquet.ScrollPane getScrollPaneAncestor() {
+							return statementListPropertyPane.getScrollPaneAncestor();
+						}
 					};
 				}
 			}

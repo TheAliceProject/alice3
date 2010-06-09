@@ -240,35 +240,37 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 		return rv;
 	}
-//	public void setActualConnection(Connection actualConnection) {
-//		this.actualConnection = actualConnection;
-//	}
-	
 	protected abstract java.awt.Insets getContainsInsets();
 	protected abstract java.awt.Insets getPaintInsets();
-//	protected abstract java.awt.Rectangle updateBoundsForContains( java.awt.Rectangle rv );
-//	protected abstract java.awt.Rectangle updateBoundsForPaint( java.awt.Rectangle rv );
-	public java.awt.geom.Area getAreaToSubstractForContains( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy ) {
+	
+	protected java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy, java.awt.Insets insets ) {
 		if( this.trackableShape != null ) {
-			java.awt.Shape shape = this.trackableShape.getVisibleShape( asSeenBy, this.getContainsInsets() );
-			if( shape != null ) {
-				return new java.awt.geom.Area( shape );
+			if( this.trackableShape.isInView() ) {
+				return this.trackableShape.getVisibleShape( asSeenBy, insets );
 			} else {
-				return null;
+				edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = this.trackableShape.getScrollPaneAncestor();
+				if( scrollPane != null ) {
+					javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
+					java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), asSeenBy.getAwtComponent() );
+					return edu.cmu.cs.dennisc.java.awt.RectangleUtilties.inset( rect, this.getPaintInsets() );
+				} else {
+					return null;
+				}
 			}
 		} else {
 			return null;
 		}
 	}
-	private java.awt.Shape getShapeForPaint( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy ) {
-		if( this.trackableShape != null ) {
-			return this.trackableShape.getVisibleShape( asSeenBy, this.getPaintInsets() );
+	public java.awt.geom.Area getAreaToSubstractForContains( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy ) {
+		java.awt.Shape shape = this.getShape( asSeenBy, this.getContainsInsets() );
+		if( shape != null ) {
+			return new java.awt.geom.Area( shape );
 		} else {
 			return null;
 		}
 	}
-	public final java.awt.geom.Area getAreaToSubstractForPaint( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy ) {
-		java.awt.Shape shape = this.getShapeForPaint( asSeenBy );
+	public java.awt.geom.Area getAreaToSubstractForPaint( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy ) {
+		java.awt.Shape shape = this.getShape( asSeenBy, this.getPaintInsets() );
 		if( shape != null ) {
 			return new java.awt.geom.Area( shape );
 		} else {
@@ -300,7 +302,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		g2.draw( path );
 	}
 	public final void paint( java.awt.Graphics2D g2, edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy, edu.cmu.cs.dennisc.croquet.JComponent<?> note ) {
-		java.awt.Shape shape = getShapeForPaint( asSeenBy );
+		java.awt.Shape shape = this.getShape( asSeenBy, this.getPaintInsets() );
 		if( shape != null ) {
 			Connection actualConnection = this.calculateActualConnection( asSeenBy, note );
 			java.awt.Paint prevPaint = g2.getPaint();
