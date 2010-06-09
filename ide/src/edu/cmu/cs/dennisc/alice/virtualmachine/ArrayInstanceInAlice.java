@@ -43,64 +43,34 @@
 
 package edu.cmu.cs.dennisc.alice.virtualmachine;
 
-import edu.cmu.cs.dennisc.alice.ast.*;
-
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceInAlice {
-	private java.util.Map< FieldDeclaredInAlice, Object > m_map = new java.util.HashMap< FieldDeclaredInAlice, Object >();
-	private Object m_instanceInJava;
-	private AbstractTypeDeclaredInAlice<?> m_type;
-	public void initialize( VirtualMachine vm, ConstructorDeclaredInAlice constructor, Object[] arguments ) {
-		m_type = constructor.getDeclaringType();
-		assert m_type != null;
-		assert m_type instanceof TypeDeclaredInAlice;
-		assert arguments.length == 0;
-		AbstractType<?,?,?> t = m_type;
-		while( t instanceof TypeDeclaredInAlice ) {
-			for( AbstractField field : t.getDeclaredFields() ) {
-				assert field instanceof FieldDeclaredInAlice;
-				FieldDeclaredInAlice fieldDeclaredInAlice = (FieldDeclaredInAlice)field;
-				set( fieldDeclaredInAlice, vm.evaluate( fieldDeclaredInAlice.initializer.getValue() ) );
+public class ArrayInstanceInAlice {
+	private edu.cmu.cs.dennisc.alice.ast.ArrayTypeDeclaredInAlice type;
+	private int[] lengths;
+	private Object[] values;
+	public ArrayInstanceInAlice( edu.cmu.cs.dennisc.alice.ast.ArrayTypeDeclaredInAlice type, int[] lengths, Object[] values ) {
+		assert lengths.length == 1;
+		this.type = type;
+		this.lengths = lengths;
+		
+		int length = this.lengths[ 0 ];
+		this.values = new Object[ length ];
+		if( values != null ) {
+			for( int i=0; i<values.length; i++ ) {
+				this.values[ i ] = values[ i ];
 			}
-			t = t.getSuperType();
 		}
-		assert t instanceof TypeDeclaredInJava;
-		TypeDeclaredInJava typeDeclaredInJava = (TypeDeclaredInJava)t;
-
-		
-		//todo
-		
-		//return edu.cmu.cs.dennisc.reflect.ReflectionUtilities.newInstance( m_cls, parameterClses, arguments );
-		ClassReflectionProxy classReflectionProxy = typeDeclaredInJava.getClassReflectionProxy();
-		assert classReflectionProxy != null;
-		Class<?> cls = classReflectionProxy.getReification();
-		assert cls != null : classReflectionProxy.getName();
-		m_instanceInJava = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
 	}
-	public AbstractTypeDeclaredInAlice<?> getType() {
-		return m_type;
+	public Object get( int index ) {
+		return this.values[ index ];
 	}
-	public Object getInstanceInJava() {
-		return m_instanceInJava;
+	public void set( int index, Object item ) {
+		this.values[ index ] = item;
 	}
-	public <E> E getInstanceInJava( Class<E> cls ) {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( m_instanceInJava, cls );
-	}
-	public Object get( FieldDeclaredInAlice field ) {
-		return m_map.get( field );
-	}
-	public void set( FieldDeclaredInAlice field, Object value ) {
-		m_map.put( field, value );
-	}
-
-	@Override
-	public String toString() {
-		if( m_instanceInJava != null ) {
-			return m_instanceInJava.toString();
-		} else {
-			return null;
-		}
+	
+	public int getLength() {
+		return this.lengths[ 0 ];
 	}
 }
