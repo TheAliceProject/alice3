@@ -133,17 +133,33 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 	}
 
+	public interface StatementListPropertyResolver {
+		public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getStatementListProperty();
+	}
+	
+	private class DefaultStatementListPropertyResolver implements StatementListPropertyResolver {
+		private edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty;
+		public DefaultStatementListPropertyResolver( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+			this.statementListProperty = method.body.getValue().statements;
+		}
+		public DefaultStatementListPropertyResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
+			this.statementListProperty = statementWithBody.body.getValue().statements;
+		}
+		public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getStatementListProperty() {
+			return this.statementListProperty;
+		}
+	}
 	
 	public static class StatementListResolver extends CodeTrackableShapeResolver {
-		private edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty;
+		private StatementListPropertyResolver statementListPropertyResolver;
 		private int index;
-		public StatementListResolver( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, int index ) {
-			this.statementListProperty = statementListProperty;
+		public StatementListResolver( StatementListPropertyResolver statementListPropertyResolver, int index ) {
+			this.statementListPropertyResolver = statementListPropertyResolver;
 			this.index = index;
 		}
 		@Override
 		protected edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape( org.alice.ide.codeeditor.CodeEditor codeEditor ) {
-			return codeEditor.getTrackableShapeAtIndexOf( this.statementListProperty, this.index );
+			return codeEditor.getTrackableShapeAtIndexOf( this.statementListPropertyResolver.getStatementListProperty(), this.index );
 		}
 	}
 
@@ -177,6 +193,9 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			edu.cmu.cs.dennisc.alice.ast.BlockStatement body = code.getBodyProperty().getValue();
 			body.crawl( crawler, false );
 			java.util.List<edu.cmu.cs.dennisc.alice.ast.MethodInvocation> list = crawler.getList();
+			if( this.index == Short.MAX_VALUE ) {
+				this.index = list.size()-1;
+			}
 			if( list.size() > this.index ) {
 				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = list.get( this.index );
 				edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)methodInvocation.getParent();
@@ -205,6 +224,9 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			edu.cmu.cs.dennisc.alice.ast.BlockStatement body = code.getBodyProperty().getValue();
 			body.crawl( crawler, false );
 			java.util.List<edu.cmu.cs.dennisc.alice.ast.Statement> list = crawler.getList();
+			if( this.index == Short.MAX_VALUE ) {
+				this.index = list.size()-1;
+			}
 			if( list.size() > this.index ) {
 				edu.cmu.cs.dennisc.alice.ast.Statement statement = list.get( this.index );
 				return codeEditor.getDragComponent(statement);
@@ -217,35 +239,81 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 //		return new StatementResolver(statement);
 //	}
 
-	private edu.cmu.cs.dennisc.croquet.TrackableShape createStatementListResolver( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, int index ) {
-		return new StatementListResolver(statementListProperty, index);
+	public static class StatementWithBodyAssignableToStatementListPropertyResolver implements StatementListPropertyResolver {
+		private Class<? extends edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> cls;
+		private int index;
+		public StatementWithBodyAssignableToStatementListPropertyResolver( Class<? extends edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> cls, int index ) {
+			this.cls = cls;
+			this.index = index;
+		}
+		public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getStatementListProperty() {
+			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getValue();
+			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler( this.cls ) {
+				@Override
+				protected boolean isAcceptable( Object statment ) {
+					return true;
+				}
+			};
+			edu.cmu.cs.dennisc.alice.ast.BlockStatement body = code.getBodyProperty().getValue();
+			body.crawl( crawler, false );
+			java.util.List<edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> list = crawler.getList();
+			if( this.index == Short.MAX_VALUE ) {
+				this.index = list.size()-1;
+			}
+			if( list.size() > this.index ) {
+				return list.get( this.index ).body.getValue().statements;
+			} else {
+				return null;
+			}
+		}
 	}
-	private edu.cmu.cs.dennisc.croquet.TrackableShape createBeginingOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
-		return this.createStatementListResolver(statementListProperty, 0);
+	public StatementListPropertyResolver createStatementListPropertyResolver( Class<? extends edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> cls, int index ) {
+		return new StatementWithBodyAssignableToStatementListPropertyResolver( cls, index );
 	}
-	private edu.cmu.cs.dennisc.croquet.TrackableShape createEndOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
-		return this.createStatementListResolver(statementListProperty, Short.MAX_VALUE);
+	public StatementListPropertyResolver createFirstStatementListPropertyResolver( Class<? extends edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> cls ) {
+		return this.createStatementListPropertyResolver(cls, 0);
+	}
+	public StatementListPropertyResolver createLastStatementListPropertyResolver( Class<? extends edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> cls ) {
+		return this.createStatementListPropertyResolver(cls, Short.MAX_VALUE);
 	}
 
-	public edu.cmu.cs.dennisc.croquet.TrackableShape createStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody, int index ) {
-		return this.createStatementListResolver(statementWithBody.body.getValue().statements, index);
+	public StatementListResolver createStatementListResolver( StatementListPropertyResolver statementListPropertyResolver, int index ) {
+		return new StatementListResolver(statementListPropertyResolver, index);
 	}
-	public edu.cmu.cs.dennisc.croquet.TrackableShape createBeginingOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
-		return this.createBeginingOfStatementListResolver(statementWithBody.body.getValue().statements);
+	public StatementListResolver createBeginingOfStatementListResolver( StatementListPropertyResolver statementListPropertyResolver ) {
+		return this.createStatementListResolver(statementListPropertyResolver, 0);
 	}
-	public edu.cmu.cs.dennisc.croquet.TrackableShape createEndOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
-		return this.createEndOfStatementListResolver(statementWithBody.body.getValue().statements);
+	public StatementListResolver createEndOfStatementListResolver( StatementListPropertyResolver statementListPropertyResolver ) {
+		return this.createStatementListResolver(statementListPropertyResolver, Short.MAX_VALUE);
 	}
 
-	public edu.cmu.cs.dennisc.croquet.TrackableShape createStatementListResolver( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, int index ) {
-		return this.createStatementListResolver(method.body.getValue().statements, index);
+
+//	public StatementListResolver createStatementListResolver( Class<? extends edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> statementWithBodyCls, int indexA, int indexB ) {
+//		return new StatementListResolver(
+//				statementListProperty, indexA, 
+//		indexB);
+//	}
+
+	public StatementListResolver createStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody, int index ) {
+		return this.createStatementListResolver( new DefaultStatementListPropertyResolver( statementWithBody ), index);
 	}
-	public edu.cmu.cs.dennisc.croquet.TrackableShape createBeginingOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		return this.createBeginingOfStatementListResolver(method.body.getValue().statements);
+	public StatementListResolver createBeginingOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
+		return this.createBeginingOfStatementListResolver(new DefaultStatementListPropertyResolver( statementWithBody ));
 	}
-	public edu.cmu.cs.dennisc.croquet.TrackableShape createEndOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		return this.createEndOfStatementListResolver(method.body.getValue().statements);
+	public StatementListResolver createEndOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
+		return this.createEndOfStatementListResolver(new DefaultStatementListPropertyResolver( statementWithBody ));
 	}
+
+	public StatementListResolver createStatementListResolver( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, int index ) {
+		return this.createStatementListResolver(new DefaultStatementListPropertyResolver( method ), index);
+	}
+	public StatementListResolver createBeginingOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		return this.createBeginingOfStatementListResolver(new DefaultStatementListPropertyResolver( method ));
+	}
+	public StatementListResolver createEndOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		return this.createEndOfStatementListResolver(new DefaultStatementListPropertyResolver( method ));
+	}
+
 
 	public edu.cmu.cs.dennisc.croquet.DragSource createStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int index ) {
 		return new StatementAssignableToResolver( cls, index );

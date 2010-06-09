@@ -47,7 +47,7 @@ package org.alice.stageide.tutorial;
  */
 public class StressTestTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
-		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 9 );
+		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 1 );
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = tutorial.getSceneField();
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = tutorial.getFieldDeclaredOnSceneType( "camera" );
@@ -80,6 +80,21 @@ public class StressTestTutorial {
 				"<html>Select <b>Other Array...</b>.</html>",
 				tutorial.createToDoCompletorValidator()
 		);
+		tutorial.addSpotlightStep( 
+				"Do In Order", 
+				"<html>This is the Do In Order tile.</html>", 
+				tutorial.createDoInOrderTemplateResolver() 
+		);
+		tutorial.addDragAndDropStep( 
+				"Drag Do In Order",
+				"<html>Drag <b>Do In Order</b>.</html>",
+				tutorial.createDoInOrderTemplateResolver(),
+				"<html>Drop <b>here</b>.</html>",
+				tutorial.createEndOfStatementListResolver( 
+						tutorial.createFirstStatementListPropertyResolver( edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop.class ) 
+				),
+				tutorial.createToDoCompletorValidator()
+		);
 
 		tutorial.addDialogOpenStep( 
 				"Run", 
@@ -101,19 +116,6 @@ public class StressTestTutorial {
 				"Run", 
 				"<html>Press the <b>Close</b> button</html>", 
 				ide.getRunOperation() 
-		);
-		tutorial.addSpotlightStep( 
-				"Do In Order", 
-				"<html>This is the Do In Order tile.</html>", 
-				tutorial.createDoInOrderTemplateResolver() 
-		);
-		tutorial.addDragAndDropStep( 
-				"Drag Do In Order",
-				"<html>Drag <b>Do In Order</b>.</html>",
-				tutorial.createDoInOrderTemplateResolver(),
-				"<html>Drop <b>here</b>.</html>",
-				tutorial.createEndOfStatementListResolver( runMethod ),
-				tutorial.createToDoCompletorValidator()
 		);
 		tutorial.addSpotlightStep( 
 				"Count Loop", 
