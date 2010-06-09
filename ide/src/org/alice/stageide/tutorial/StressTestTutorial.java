@@ -53,10 +53,10 @@ public class StressTestTutorial {
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = tutorial.getFieldDeclaredOnSceneType( "camera" );
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice grassyGroundField = tutorial.getFieldDeclaredOnSceneType( "grassyGround" );
 		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice runMethod = ide.getSceneType().getDeclaredMethod( "run" );
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava resizeMethod = tutorial.findShortestMethod( grassyGroundField, "resize" );
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava moveMethod = tutorial.findShortestMethod( grassyGroundField, "move" );
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava turnMethod = tutorial.findShortestMethod( grassyGroundField, "turn" );
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava delayMethod = tutorial.findShortestMethod( grassyGroundField, "delay" );
+		edu.cmu.cs.dennisc.alice.ast.AbstractMethod resizeMethod = tutorial.findShortestMethod( grassyGroundField, "resize" );
+		edu.cmu.cs.dennisc.alice.ast.AbstractMethod moveMethod = tutorial.findShortestMethod( grassyGroundField, "move" );
+		edu.cmu.cs.dennisc.alice.ast.AbstractMethod turnMethod = tutorial.findShortestMethod( grassyGroundField, "turn" );
+		edu.cmu.cs.dennisc.alice.ast.AbstractMethod delayMethod = tutorial.findShortestMethod( grassyGroundField, "delay" );
 		assert resizeMethod != null;
 		assert moveMethod != null;
 		assert turnMethod != null;

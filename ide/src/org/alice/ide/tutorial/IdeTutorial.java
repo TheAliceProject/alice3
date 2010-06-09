@@ -87,12 +87,23 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 					}
 				}
 			}
-			c = cls.getSuperclass();
+			c = c.getSuperclass();
 		}
 		return null;
 	}
-	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava findShortestMethod( edu.cmu.cs.dennisc.alice.ast.AbstractField field, String methodName ) {
-		Class<?> cls = field.getValueType().getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification();
+	public edu.cmu.cs.dennisc.alice.ast.AbstractMethod findShortestMethod( edu.cmu.cs.dennisc.alice.ast.AbstractField field, String methodName ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type = field.getValueType();
+		while( type.isDeclaredInAlice() ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > typeInAlice = (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >)type;
+			for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : typeInAlice.methods ) {
+				if( method.getName().equals( methodName ) ) {
+					return method;
+				}
+			}
+			type = type.getSuperType();
+		}
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava)type;
+		Class<?> cls = typeInJava.getClassReflectionProxy().getReification();
 		return findShortestMethod(cls, methodName);
 	}
 

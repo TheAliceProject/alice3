@@ -66,9 +66,6 @@ public class IntroductionTutorial {
 		assert skateBackwardsMethod != null;
 		assert jumpMethod != null;
 
-//		final edu.cmu.cs.dennisc.alice.ast.CountLoop countLoop = org.alice.ide.ast.NodeUtilities.createCountLoop( new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( 3 ) );
-//		runMethod.body.getValue().statements.add( countLoop );
-
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				ide.getFieldSelectionState().setValue( cameraField );
