@@ -74,6 +74,23 @@ public abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet
 			AbstractTypeMembersPane.this.refresh();
 		}
 	};
+	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver isEmphasizingClassesObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
+		public void changing( boolean nextValue ) {
+		}
+		public void changed( boolean nextValue ) {
+			AbstractTypeMembersPane.this.refresh();
+		}
+	};
+	@Override
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
+		org.alice.ide.IDE.getSingleton().getEmphasizingClassesState().addAndInvokeValueObserver( this.isEmphasizingClassesObserver );
+	}
+	@Override
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		org.alice.ide.IDE.getSingleton().getEmphasizingClassesState().removeValueObserver( this.isEmphasizingClassesObserver );
+		super.handleRemovedFrom( parent );
+	}
 	public AbstractTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		this.type = type;
 		if( this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
