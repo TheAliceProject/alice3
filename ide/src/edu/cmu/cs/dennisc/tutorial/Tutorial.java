@@ -405,10 +405,12 @@ public class Tutorial {
 					if( jStencil == c || jStencil.isAncestorOf( c ) ) {
 						//pass
 					} else {
-						final java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle( c, new java.awt.Rectangle(x,y,w,h), jStencil );
+						java.awt.Rectangle rect = new java.awt.Rectangle(x,y,w,h);
+						java.awt.Rectangle visibleRect = rect.intersection( c.getVisibleRect() );
+						final java.awt.Rectangle rectAsSeenByStencil = javax.swing.SwingUtilities.convertRectangle( c, visibleRect, jStencil );
 						javax.swing.SwingUtilities.invokeLater(new Runnable() {
 							public void run() {
-								jStencil.repaint( rect.x, rect.y, rect.width, rect.height );
+								jStencil.repaint( rectAsSeenByStencil.x, rectAsSeenByStencil.y, rectAsSeenByStencil.width, rectAsSeenByStencil.height );
 								//StencilRepaintManager.super.addDirtyRegion( jStencil, rect.x, rect.y, rect.width, rect.height);
 							}
 						} );
