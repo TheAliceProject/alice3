@@ -98,7 +98,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	private edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape;
 	private ConnectionPreference connectionPreference;
 	public Feature( edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape, ConnectionPreference connectionPreference ) {
-		assert trackableShape != null;
+		//assert trackableShape != null;
 		this.trackableShape = trackableShape;
 		this.connectionPreference = connectionPreference;
 	}

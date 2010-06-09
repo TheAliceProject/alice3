@@ -123,10 +123,10 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	}
 
 	
-	public static class IndexOfStatementListResolver extends CodeTrackableShapeResolver {
+	public static class StatementListResolver extends CodeTrackableShapeResolver {
 		private edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty;
 		private int index;
-		public IndexOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, int index ) {
+		public StatementListResolver( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, int index ) {
 			this.statementListProperty = statementListProperty;
 			this.index = index;
 		}
@@ -175,21 +175,49 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			}
 		}
 	}
-	public edu.cmu.cs.dennisc.croquet.DragSource createStatementResolver( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		return new StatementResolver(statement);
+	public static class StatementAssignableToResolver extends CodeDragSourceResolver {
+		private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls;
+		private int index;
+		public StatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int index ) {
+			this.cls = cls;
+			this.index = index;
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.croquet.DragSource resolveDragSource(org.alice.ide.codeeditor.CodeEditor codeEditor) {
+			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)codeEditor.getCode();
+			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler( this.cls ) {
+				@Override
+				protected boolean isAcceptable( Object statment ) {
+					return true;
+				}
+			};
+			edu.cmu.cs.dennisc.alice.ast.BlockStatement body = code.getBodyProperty().getValue();
+			body.crawl( crawler, false );
+			java.util.List<edu.cmu.cs.dennisc.alice.ast.Statement> list = crawler.getList();
+			if( list.size() > this.index ) {
+				edu.cmu.cs.dennisc.alice.ast.Statement statement = list.get( this.index );
+				return codeEditor.getDragComponent(statement);
+			} else {
+				return null;
+			}
+		}
 	}
-	private edu.cmu.cs.dennisc.croquet.TrackableShape createIndexOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, int index ) {
-		return new IndexOfStatementListResolver(statementListProperty, index);
+//	public edu.cmu.cs.dennisc.croquet.DragSource createStatementResolver( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+//		return new StatementResolver(statement);
+//	}
+
+	private edu.cmu.cs.dennisc.croquet.TrackableShape createStatementListResolver( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, int index ) {
+		return new StatementListResolver(statementListProperty, index);
 	}
 	private edu.cmu.cs.dennisc.croquet.TrackableShape createBeginingOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
-		return this.createIndexOfStatementListResolver(statementListProperty, 0);
+		return this.createStatementListResolver(statementListProperty, 0);
 	}
 	private edu.cmu.cs.dennisc.croquet.TrackableShape createEndOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
-		return this.createIndexOfStatementListResolver(statementListProperty, Short.MAX_VALUE);
+		return this.createStatementListResolver(statementListProperty, Short.MAX_VALUE);
 	}
 
-	public edu.cmu.cs.dennisc.croquet.TrackableShape createIndexOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody, int index ) {
-		return this.createIndexOfStatementListResolver(statementWithBody.body.getValue().statements, index);
+	public edu.cmu.cs.dennisc.croquet.TrackableShape createStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody, int index ) {
+		return this.createStatementListResolver(statementWithBody.body.getValue().statements, index);
 	}
 	public edu.cmu.cs.dennisc.croquet.TrackableShape createBeginingOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
 		return this.createBeginingOfStatementListResolver(statementWithBody.body.getValue().statements);
@@ -198,8 +226,8 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return this.createEndOfStatementListResolver(statementWithBody.body.getValue().statements);
 	}
 
-	public edu.cmu.cs.dennisc.croquet.TrackableShape createIndexOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, int index ) {
-		return this.createIndexOfStatementListResolver(method.body.getValue().statements, index);
+	public edu.cmu.cs.dennisc.croquet.TrackableShape createStatementListResolver( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, int index ) {
+		return this.createStatementListResolver(method.body.getValue().statements, index);
 	}
 	public edu.cmu.cs.dennisc.croquet.TrackableShape createBeginingOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		return this.createBeginingOfStatementListResolver(method.body.getValue().statements);
@@ -208,8 +236,26 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return this.createEndOfStatementListResolver(method.body.getValue().statements);
 	}
 
+	public edu.cmu.cs.dennisc.croquet.DragSource createStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int index ) {
+		return new StatementAssignableToResolver( cls, index );
+	}
+	public edu.cmu.cs.dennisc.croquet.DragSource createFirstStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+		return this.createStatementAssignableToResolver( cls, 0 );
+	}
+	public edu.cmu.cs.dennisc.croquet.DragSource createLastStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+		return this.createStatementAssignableToResolver( cls, Short.MAX_VALUE );
+	}
+	
+	
+	
 	public edu.cmu.cs.dennisc.croquet.DragSource createInvocationResolver( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, int index ) {
 		return new ProcedureInvocationResolver(method, index);
+	}
+	public edu.cmu.cs.dennisc.croquet.DragSource createFirstInvocationResolver( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		return this.createInvocationResolver(method, 0);
+	}
+	public edu.cmu.cs.dennisc.croquet.DragSource createLastInvocationResolver( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		return this.createInvocationResolver(method, Short.MAX_VALUE);
 	}
 	
 
@@ -229,46 +275,6 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return this.getIDE().getMembersEditor().getTabbedPaneSelectionState().getItemAt( 2 );
 	}
 	
-//	private <D extends edu.cmu.cs.dennisc.croquet.DragComponent> D getFirstDragComponentAssignableTo( Class<D> cls ) {
-//		org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane = this.getIDE().getUbiquitousPane();
-//		for( edu.cmu.cs.dennisc.croquet.Component< ? > component : ubiquitousPane.getComponents() ) {
-//			if( cls.isAssignableFrom( component.getClass() ) ) {
-//				return cls.cast( component );
-//			}
-//		}
-//		return null;
-//	}
-//	public edu.cmu.cs.dennisc.croquet.DragComponent getDoInOrderTemplate() {
-//		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.DoInOrderTemplate.class );
-//	}
-//	public edu.cmu.cs.dennisc.croquet.DragComponent getCountLoopTemplate() {
-//		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.CountLoopTemplate.class );
-//	}
-//	public edu.cmu.cs.dennisc.croquet.DragComponent getWhileLoopTemplate() {
-//		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.WhileLoopTemplate.class );
-//	}
-//	public edu.cmu.cs.dennisc.croquet.DragComponent getForEachInArrayLoopTemplate() {
-//		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.ForEachInArrayLoopTemplate.class );
-//	}
-//	public edu.cmu.cs.dennisc.croquet.DragComponent getIfElseTemplate() {
-//		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.ConditionalStatementTemplate.class );
-//	}
-//	public edu.cmu.cs.dennisc.croquet.DragComponent getDoTogetherTemplate() {
-//		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.DoTogetherTemplate.class );
-//	}
-//	public edu.cmu.cs.dennisc.croquet.DragComponent getEachInArrayTogetherTemplate() {
-//		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.EachInArrayTogetherTemplate.class );
-//	}
-//	public edu.cmu.cs.dennisc.croquet.DragComponent getDoInThreadTemplate() {
-//		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.DoInThreadTemplate.class );
-//	}
-//	public edu.cmu.cs.dennisc.croquet.DragComponent getDeclareLocalTemplate() {
-//		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.CommentTemplate.class );
-//	}
-//	public edu.cmu.cs.dennisc.croquet.DragComponent getCommentTemplate() {
-//		return this.getFirstDragComponentAssignableTo( org.alice.ide.ubiquitouspane.templates.CommentTemplate.class );
-//	}
-
 	public static class TemplateDragSourceResolver extends edu.cmu.cs.dennisc.tutorial.DragSourceResolver {
 		private Class< ? extends edu.cmu.cs.dennisc.croquet.DragSource > cls;
 		public TemplateDragSourceResolver( Class< ? extends edu.cmu.cs.dennisc.croquet.DragSource > cls ) {

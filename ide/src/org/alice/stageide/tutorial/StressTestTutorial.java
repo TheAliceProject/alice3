@@ -47,7 +47,7 @@ package org.alice.stageide.tutorial;
  */
 public class StressTestTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
-		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 26 );
+		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 9 );
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = tutorial.getSceneField();
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = tutorial.getFieldDeclaredOnSceneType( "camera" );
@@ -139,8 +139,13 @@ public class StressTestTutorial {
 				"<html>Drag <b>Do Together</b>.</html>",
 				tutorial.createDoTogetherTemplateResolver(),
 				"<html>Drop <b>here</b>.</html>",
-				tutorial.createIndexOfStatementListResolver( runMethod, 1 ),
+				tutorial.createStatementListResolver( runMethod, 1 ),
 				tutorial.createToDoCompletorValidator()
+		);
+		tutorial.addSpotlightStep( 
+				"Note Do Together", 
+				"<html>Note <b>Do Together</b>.</html>",
+				tutorial.createFirstStatementAssignableToResolver( edu.cmu.cs.dennisc.alice.ast.DoTogether.class )
 		);
 
 		tutorial.addSpotlightStep( 
