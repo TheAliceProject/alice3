@@ -91,6 +91,7 @@ public abstract class DialogOperation extends Operation<DialogOperation, DialogO
 			public void windowClosing( java.awt.event.WindowEvent e ) {
 				dialog.setVisible( false );
 				context.handleWindowClosed( e );
+				dialog.getAwtWindow().dispose();
 			}
 			public void windowClosed( java.awt.event.WindowEvent e ) {
 			}
