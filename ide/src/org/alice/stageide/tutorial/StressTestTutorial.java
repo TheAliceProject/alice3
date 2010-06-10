@@ -68,6 +68,36 @@ public class StressTestTutorial {
 				"Title", 
 				"<html><b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p></html>" 
 		);
+		tutorial.addDragAndDropStep( 
+				"Drag If/Else",
+				"<html>Drag <b>If/Else</b>.</html>",
+				tutorial.createIfElseTemplateResolver(),
+				"<html>Drop <b>here</b>.</html>",
+				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
+				"<html>Select <b>true</b>.</html>",
+				tutorial.createToDoCompletorValidator()
+		);
+		tutorial.addDragAndDropStep( 
+				"Drag Do In Order",
+				"<html>Drag <b>Do In Order</b>.</html>",
+				tutorial.createDoInOrderTemplateResolver(),
+				"<html>Drop <b>here</b>.</html>",
+				tutorial.createEndOfStatementListResolver( 
+						tutorial.createFirstIfStatementListPropertyResolver() 
+				),
+				tutorial.createToDoCompletorValidator()
+		);
+		tutorial.addDragAndDropStep( 
+				"Drag Do Together",
+				"<html>Drag <b>Do Together</b>.</html>",
+				tutorial.createDoTogetherTemplateResolver(),
+				"<html>Drop <b>here</b>.</html>",
+				tutorial.createEndOfStatementListResolver( 
+						tutorial.createFirstElseStatementListPropertyResolver() 
+				),
+				tutorial.createToDoCompletorValidator()
+		);
+
 		tutorial.addSpotlightStep( 
 				"Declare Procedure", 
 				"<html>Declare Procedure.</html>", 

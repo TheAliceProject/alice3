@@ -291,6 +291,52 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			}
 		}
 	}
+	public static abstract class ConditionalStatementListPropertyResolver implements StatementListPropertyResolver {
+		private int index;
+		public ConditionalStatementListPropertyResolver( int index ) {
+			this.index = index;
+		}
+		protected abstract edu.cmu.cs.dennisc.alice.ast.BlockStatement getBlockStatement( edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement );
+		public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getStatementListProperty() {
+			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getValue();
+			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler( edu.cmu.cs.dennisc.alice.ast.ConditionalStatement.class ) {
+				@Override
+				protected boolean isAcceptable( Object statment ) {
+					return true;
+				}
+			};
+			edu.cmu.cs.dennisc.alice.ast.BlockStatement body = code.getBodyProperty().getValue();
+			body.crawl( crawler, false );
+			java.util.List<edu.cmu.cs.dennisc.alice.ast.ConditionalStatement> list = crawler.getList();
+			if( this.index == Short.MAX_VALUE ) {
+				this.index = list.size()-1;
+			}
+			if( list.size() > this.index ) {
+				return this.getBlockStatement( list.get( this.index ) ).statements;
+			} else {
+				return null;
+			}
+		}
+	}
+	public static class IfStatementListPropertyResolver extends ConditionalStatementListPropertyResolver {
+		public IfStatementListPropertyResolver( int index ) {
+			super( index );
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.alice.ast.BlockStatement getBlockStatement( edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement ) {
+			return conditionalStatement.booleanExpressionBodyPairs.get( 0 ).body.getValue();
+		}
+	}
+	public static class ElseStatementListPropertyResolver extends ConditionalStatementListPropertyResolver {
+		public ElseStatementListPropertyResolver( int index ) {
+			super( index );
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.alice.ast.BlockStatement getBlockStatement( edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement ) {
+			return conditionalStatement.elseBody.getValue();
+		}
+	}
+	
 	public StatementListPropertyResolver createStatementListPropertyResolver( Class<? extends edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> cls, int index ) {
 		return new StatementWithBodyAssignableToStatementListPropertyResolver( cls, index );
 	}
@@ -301,6 +347,26 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return this.createStatementListPropertyResolver(cls, Short.MAX_VALUE);
 	}
 
+	public StatementListPropertyResolver createIfStatementListPropertyResolver( int index ) {
+		return new IfStatementListPropertyResolver( index );
+	}
+	public StatementListPropertyResolver createFirstIfStatementListPropertyResolver() {
+		return this.createIfStatementListPropertyResolver(0);
+	}
+	public StatementListPropertyResolver createLastIfStatementListPropertyResolver() {
+		return this.createIfStatementListPropertyResolver(Short.MAX_VALUE);
+	}
+
+	public StatementListPropertyResolver createElseStatementListPropertyResolver( int index ) {
+		return new ElseStatementListPropertyResolver( index );
+	}
+	public StatementListPropertyResolver createFirstElseStatementListPropertyResolver() {
+		return this.createElseStatementListPropertyResolver(0);
+	}
+	public StatementListPropertyResolver createLastElseStatementListPropertyResolver() {
+		return this.createElseStatementListPropertyResolver(Short.MAX_VALUE);
+	}
+	
 	public StatementListResolver createStatementListResolver( StatementListPropertyResolver statementListPropertyResolver, int index ) {
 		return new StatementListResolver(statementListPropertyResolver, index);
 	}
@@ -318,15 +384,16 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 //		indexB);
 //	}
 
-	public StatementListResolver createStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody, int index ) {
-		return this.createStatementListResolver( new DefaultStatementListPropertyResolver( statementWithBody ), index);
-	}
-	public StatementListResolver createBeginingOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
-		return this.createBeginingOfStatementListResolver(new DefaultStatementListPropertyResolver( statementWithBody ));
-	}
-	public StatementListResolver createEndOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
-		return this.createEndOfStatementListResolver(new DefaultStatementListPropertyResolver( statementWithBody ));
-	}
+
+//	public StatementListResolver createStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody, int index ) {
+//		return this.createStatementListResolver( new DefaultStatementListPropertyResolver( statementWithBody ), index);
+//	}
+//	public StatementListResolver createBeginingOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
+//		return this.createBeginingOfStatementListResolver(new DefaultStatementListPropertyResolver( statementWithBody ));
+//	}
+//	public StatementListResolver createEndOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
+//		return this.createEndOfStatementListResolver(new DefaultStatementListPropertyResolver( statementWithBody ));
+//	}
 
 	public StatementListResolver createStatementListResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeResolver, int index ) {
 		return this.createStatementListResolver(new CodeBodyStatementListPropertyResolver( codeResolver ), index);
