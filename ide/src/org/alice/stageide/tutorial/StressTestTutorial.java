@@ -42,6 +42,7 @@
  */
 package org.alice.stageide.tutorial;
 
+import edu.cmu.cs.dennisc.croquet.Resolver;
 /**
  * @author Dennis Cosgrove
  */
@@ -52,15 +53,15 @@ public class StressTestTutorial {
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = tutorial.getSceneField();
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = tutorial.getFieldDeclaredOnSceneType( "camera" );
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice grassyGroundField = tutorial.getFieldDeclaredOnSceneType( "grassyGround" );
-		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice runMethod = ide.getSceneType().getDeclaredMethod( "run" );
-		edu.cmu.cs.dennisc.alice.ast.AbstractMethod resizeMethod = tutorial.findShortestMethod( grassyGroundField, "resize" );
-		edu.cmu.cs.dennisc.alice.ast.AbstractMethod moveMethod = tutorial.findShortestMethod( grassyGroundField, "move" );
-		edu.cmu.cs.dennisc.alice.ast.AbstractMethod turnMethod = tutorial.findShortestMethod( grassyGroundField, "turn" );
-		edu.cmu.cs.dennisc.alice.ast.AbstractMethod delayMethod = tutorial.findShortestMethod( grassyGroundField, "delay" );
-		assert resizeMethod != null;
-		assert moveMethod != null;
-		assert turnMethod != null;
-		assert delayMethod != null;
+		//final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice runMethod = ide.getSceneType().getDeclaredMethod( "run" );
+		Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > resizeMethod = tutorial.createMethodResolver( grassyGroundField, "resize" );
+		Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > moveMethod = tutorial.createMethodResolver( grassyGroundField, "move" );
+		Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > turnMethod = tutorial.createMethodResolver( grassyGroundField, "turn" );
+		Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > delayMethod = tutorial.createMethodResolver( grassyGroundField, "delay" );
+		assert resizeMethod.getResolved() != null;
+		assert moveMethod.getResolved() != null;
+		assert turnMethod.getResolved() != null;
+		assert delayMethod.getResolved() != null;
 		
 		ide.getEmphasizingClassesState().setValue( false );
 		tutorial.addMessageStep( 
@@ -73,11 +74,47 @@ public class StressTestTutorial {
 				tutorial.createDeclareProcedureOperationResolver() 
 		);
 		tutorial.addActionStep( 
-				"Declare Procedure", 
-				"<html>Declare Procedure.</html>", 
+				"Declare Procedure Hop", 
+				"<html>Declare a procedure named <b>hop</b>.</html>", 
 				tutorial.createDeclareProcedureOperationResolver(),
 				tutorial.createToDoCompletorValidator()
 		);
+
+		tutorial.addSpotlightTabTitleStep(  
+				"Note Hop Tab", 
+				"<html>Note the folder tab.</html>", 
+				ide.getEditorsTabSelectionState(),
+				tutorial.createCurrentCodeResolver()
+		);
+
+		tutorial.addSpotlightTabScrollPaneStep( 
+				"Note Properies Tab", 
+				"<html>Note the area to implement hop.</html>", 
+				ide.getEditorsTabSelectionState(),
+				tutorial.createCurrentCodeResolver()
+		);
+
+		tutorial.addSelectTabStep(   
+				"Select Run", 
+				"<html>Select run tab.</html>", 
+				ide.getEditorsTabSelectionState(),
+				tutorial.createMethodResolver( sceneField, "run" )
+		);
+		
+		
+		tutorial.addSelectTabStep( 
+				"Procedures Tab", 
+				"<html>Select the <b>Procedures</b> tab.</html>", 
+				membersEditor.getTabbedPaneSelectionState(),
+				tutorial.getProceduresTab()
+		);
+		tutorial.addSpotlightTabScrollPaneStep( 
+				"Note Procedures Tab", 
+				"<html>Now the procedures are now displayed.</html>", 
+				membersEditor.getTabbedPaneSelectionState(),
+				tutorial.getProceduresTab()
+		);
+
 		tutorial.addSpotlightStep( 
 				"For Each In Array", 
 				"<html>This is the For Each In Array tile.</html>", 
@@ -88,7 +125,7 @@ public class StressTestTutorial {
 				"<html>Drag <b>For Each In Array</b>.</html>",
 				tutorial.createForEachInArrayLoopTemplateResolver(),
 				"<html>Drop <b>here</b>.</html>",
-				tutorial.createEndOfStatementListResolver( runMethod ),
+				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
 				"<html>Select <b>Other Array...</b>.</html>",
 				tutorial.createToDoCompletorValidator()
 		);
@@ -139,7 +176,7 @@ public class StressTestTutorial {
 				"<html>Drag <b>Count Loop</b>.</html>",
 				tutorial.createCountLoopTemplateResolver(),
 				"<html>Drop <b>here</b>.</html>",
-				tutorial.createBeginingOfStatementListResolver( runMethod ),
+				tutorial.createBeginingOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
 				"<html>Select <b>2</b>.</html>",
 				tutorial.createToDoCompletorValidator()
 		);
@@ -153,7 +190,7 @@ public class StressTestTutorial {
 				"<html>Drag <b>Do Together</b>.</html>",
 				tutorial.createDoTogetherTemplateResolver(),
 				"<html>Drop <b>here</b>.</html>",
-				tutorial.createStatementListResolver( runMethod, 1 ),
+				tutorial.createStatementListResolver( tutorial.createCurrentCodeResolver(), 1 ),
 				tutorial.createToDoCompletorValidator()
 		);
 		tutorial.addSpotlightStep( 
@@ -271,9 +308,9 @@ public class StressTestTutorial {
 		tutorial.addDragAndDropStep( 
 				"Drag Delay",
 				"<html>Drag <b>delay</b> procedure.</html>",
-				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( delayMethod ).getDragAndDropOperation(),
+				tutorial.createProcedureInvocationTemplateResolver( grassyGroundField, "delay" ),
 				"<html>Drop <b>here</b>.</html>",
-				tutorial.createEndOfStatementListResolver( runMethod ),
+				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
 				"<html>Select <b>1.0</b> from the menu.</html>",
 				tutorial.createToDoCompletorValidator()
 		);
@@ -285,9 +322,9 @@ public class StressTestTutorial {
 		tutorial.addDragAndDropStep( 
 				"Drag Resize Procedure",
 				"<html>Drag <b>resize</b> procedure.</html>",
-				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( resizeMethod ).getDragAndDropOperation(),
+				tutorial.createProcedureInvocationTemplateResolver( grassyGroundField, "resize" ),
 				"<html>Drop <b>here</b>.</html>",
-				tutorial.createEndOfStatementListResolver( runMethod ),
+				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
 				"<html>Select <b>2.0</b> from the menu.</html>",
 				tutorial.createToDoCompletorValidator()
 		);
@@ -300,9 +337,9 @@ public class StressTestTutorial {
 		tutorial.addDragAndDropStep( 
 				"Drag Move Procedure",
 				"<html>Drag <b>move</b> procedure.</html>",
-				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( moveMethod ).getDragAndDropOperation(),
+				tutorial.createProcedureInvocationTemplateResolver( grassyGroundField, "move" ),
 				"<html>Drop <b>here</b>.</html>",
-				tutorial.createEndOfStatementListResolver( runMethod ),
+				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
 				"<html>Select <b>FORWARD</b> and <b>1.0</b> from the menus.</html>",
 				tutorial.createToDoCompletorValidator()
 		);
@@ -315,9 +352,9 @@ public class StressTestTutorial {
 		tutorial.addDragAndDropStep( 
 				"Drag Turn Procedure",
 				"<html>Drag <b>turn</b> procedure.</html>",
-				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( turnMethod ).getDragAndDropOperation(),
+				tutorial.createProcedureInvocationTemplateResolver( grassyGroundField, "turn" ),
 				"<html>Drop <b>here</b>.</html>",
-				tutorial.createEndOfStatementListResolver( runMethod ),
+				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
 				"<html>Select <b>LEFT</b> and <b>0.25</b> from the menus.</html>",
 				tutorial.createToDoCompletorValidator()
 		);

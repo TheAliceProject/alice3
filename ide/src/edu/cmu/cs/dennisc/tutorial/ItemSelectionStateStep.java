@@ -46,14 +46,14 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class ItemSelectionStateStep<E> extends WaitingOnCompleteStep<edu.cmu.cs.dennisc.croquet.ItemSelectionState<E>> {
-	private E desiredValue;
-	public ItemSelectionStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.ItemSelectionState< E >> itemSelectionStateResolver, E desiredValue, Feature.ConnectionPreference connectionPreference ) {
-		super( title, text, new Tutorial.ItemSelectionStateItemResolver( itemSelectionStateResolver, desiredValue ), connectionPreference, itemSelectionStateResolver );
-		this.desiredValue = desiredValue;
+	private edu.cmu.cs.dennisc.croquet.Resolver< ? extends E > desiredValueResolver;
+	public ItemSelectionStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.ItemSelectionState< E >> itemSelectionStateResolver, edu.cmu.cs.dennisc.croquet.Resolver< ? extends E > desiredValueResolver, Feature.ConnectionPreference connectionPreference ) {
+		super( title, text, new Tutorial.ItemSelectionStateItemResolver( itemSelectionStateResolver, desiredValueResolver ), connectionPreference, itemSelectionStateResolver );
+		this.desiredValueResolver = desiredValueResolver;
 	}
 	@Override
 	protected boolean isAlreadyInTheDesiredState() {
-		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.getModel().getValue(), this.desiredValue );
+		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.getModel().getValue(), this.desiredValueResolver.getResolved() );
 	}
 	@Override
 	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Edit edit) {
@@ -61,6 +61,6 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	@Override
 	protected void complete( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
-		this.getModel().setValue( this.desiredValue );
+		this.getModel().setValue( this.desiredValueResolver.getResolved() );
 	}
 }

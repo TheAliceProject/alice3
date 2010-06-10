@@ -53,7 +53,7 @@ public class IntroductionTutorial {
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = tutorial.getFieldDeclaredOnSceneType( "camera" );
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice iceSkaterField = tutorial.getFieldDeclaredOnSceneType( "iceSkater" );
 		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice runMethod = ide.getSceneType().getDeclaredMethod( "run" );
-
+//
 		final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice iceSkaterType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)iceSkaterField.valueType.getValue();
 		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice prepareToSkateMethod = iceSkaterType.getDeclaredMethod( "prepareToSkate" );
 		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice doSimpleSpinMethod = iceSkaterType.getDeclaredMethod( "doSimpleSpin" );
@@ -111,15 +111,13 @@ public class IntroductionTutorial {
 		tutorial.addSpotlightStep( 
 				"Prepare To Skate", 
 				"<html>Right now, her routine is pretty simple.<p>First she <b>prepares to skate</b>...</html>",
-//				tutorial.createStatementResolver( runMethod.body.getValue().statements.get( 0 ) )
-				tutorial.createInvocationResolver(prepareToSkateMethod, 0) 
+				tutorial.createFirstInvocationResolver( tutorial.createMethodResolver( iceSkaterField, "prepareToSkate" ) )
 				
 		);
 		tutorial.addSpotlightStep( 
 				"Do Simple Spin", 
 				"<html>Second, she <b>does a simple spin</b>.</html>",
-				//tutorial.createStatementResolver( runMethod.body.getValue().statements.get( 1 ) ) 
-				tutorial.createInvocationResolver(doSimpleSpinMethod, 0) 
+				tutorial.createFirstInvocationResolver( tutorial.createMethodResolver( iceSkaterField, "doSimpleSpin" ) )
 		);
 		
 		tutorial.addDialogOpenStep( 
@@ -147,7 +145,7 @@ public class IntroductionTutorial {
 				"Select Ice Skater", 
 				"<html>By selecting an instance we can see what procedures it knows how to do.<p><p><i>Select the <b>iceSkater</b>.<i></html>",
 				ide.getFieldSelectionState(),
-				iceSkaterField
+				tutorial.createFieldResolver( "iceSkater" )
 		);
 		
 		tutorial.addSpotlightTabScrollPaneStep( 
@@ -167,7 +165,7 @@ public class IntroductionTutorial {
 				"<html>Drag <b>skate</b> <i>numberOfStrides</i>...</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( skateMethod ).getDragAndDropOperation(),
 				"<html>Drop it <b>here</b>.</html>",
-				tutorial.createEndOfStatementListResolver( runMethod ),
+				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
 				"<html>Select <b>2</b> from the menu.</html>",
 				new edu.cmu.cs.dennisc.tutorial.CompletorValidator() {
 					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.Edit edit ) {
@@ -189,7 +187,7 @@ public class IntroductionTutorial {
 		tutorial.addSpotlightStep( 
 				"Note iceSkater.skate( 2 )",
 				"<html>This line tells the <b>iceSkater</b> to skate <b>2</b> strides.</html>",
-				tutorial.createInvocationResolver(skateMethod, 0)
+				tutorial.createInvocationResolver( tutorial.createMethodResolver( iceSkaterField, "skate" ), 0)
 		);
 		
 		tutorial.addDialogOpenStep( 
@@ -211,9 +209,9 @@ public class IntroductionTutorial {
 		tutorial.addDragAndDropStep(
 				"Move Do Simple Spin", 
 				"<html>Let's drag and drop iceSkater.doSimpleSpin below the line iceSkater.skate.<p><p>Drag iceSkater.doSimpleSpin...</html>",
-				tutorial.createInvocationResolver(doSimpleSpinMethod, 0),
+				tutorial.createInvocationResolver(tutorial.createMethodResolver( iceSkaterField, "doSimpleSpin" ), 0),
 				"<html>...and drop it <b>here</b>.</html>",
-				tutorial.createEndOfStatementListResolver( runMethod ),
+				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
 				tutorial.createToDoCompletorValidator()
 		);
 
@@ -230,7 +228,7 @@ public class IntroductionTutorial {
 				"<html>Drag <b>skateBackwards</b> <i>numberOfStrides</i>...</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( skateBackwardsMethod ).getDragAndDropOperation(),
 				"<html>Drop it <b>here</b>.</html>",
-				tutorial.createEndOfStatementListResolver( runMethod ),
+				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
 				"<html>Select <b>1</b> from the menu.</html>",
 				new edu.cmu.cs.dennisc.tutorial.CompletorValidator() {
 					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.Edit edit ) {
@@ -252,7 +250,7 @@ public class IntroductionTutorial {
 		tutorial.addSpotlightStep( 
 				"Note iceSkater.skateBackwards( 1 )",
 				"<html>This line tells the <b>iceSkater</b> to skate backwards <b>1</b> stride.</html>",
-				tutorial.createInvocationResolver(skateBackwardsMethod, 0)
+				tutorial.createInvocationResolver(tutorial.createMethodResolver( iceSkaterField, "skateBackwards" ), 0)
 		);
 
 		tutorial.addMessageStep( 
@@ -265,7 +263,7 @@ public class IntroductionTutorial {
 				"<html>Drag <b>jump</b>...</html>",
 				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( jumpMethod ).getDragAndDropOperation(),
 				"<html>Drop it <b>here</b>.</html>",
-				tutorial.createEndOfStatementListResolver( runMethod ),
+				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
 				new edu.cmu.cs.dennisc.tutorial.CompletorValidator() {
 					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.Edit edit ) {
 						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
@@ -285,7 +283,7 @@ public class IntroductionTutorial {
 		tutorial.addSpotlightStep( 
 				"Note iceSkater.jump()",
 				"<html>This line tells the <b>iceSkater</b> to jump.</html>",
-				tutorial.createInvocationResolver(jumpMethod, 0)
+				tutorial.createInvocationResolver(tutorial.createMethodResolver( iceSkaterField, "jump" ), 0)
 		);
 
 		//run

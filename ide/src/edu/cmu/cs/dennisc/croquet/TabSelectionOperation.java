@@ -88,6 +88,17 @@ public final class TabSelectionOperation extends ItemSelectionState<Predetermine
 		return this.createToolPaletteTabbedPane( new PredeterminedTabCreator() );
 	}
 
+	public PredeterminedTab getItemForId( java.util.UUID id ) {
+		final int N = this.getItemCount();
+		for( int i=0; i<N; i++ ) {
+			PredeterminedTab predeterminedTab = this.getItemAt( i );
+			if( predeterminedTab.getId().equals( id ) ) {
+				return predeterminedTab;
+			}
+		}
+		return null;
+	}
+
 //	public interface SelectionObserver<T> {
 //		public void selected( TabStateOperation<T> next );
 //	}
