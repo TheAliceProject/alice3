@@ -45,9 +45,9 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class BooleanStateEdit extends Edit {
-	private BooleanState operation;
-	private java.util.UUID operationId;
+public final class BooleanStateEdit extends Edit<BooleanState> {
+	private BooleanState model;
+	private java.util.UUID modelId;
 	//can't really imagine this values being the same, but it doesn't seem likely to hurt to track both values
 	private boolean previousValue;
 	private boolean nextValue;
@@ -55,9 +55,9 @@ public final class BooleanStateEdit extends Edit {
 	public BooleanStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public BooleanStateEdit( java.awt.event.ItemEvent e, BooleanState operation ) {
-		this.operation = operation;
-		this.operationId = operation.getIndividualUUID();
+	public BooleanStateEdit( java.awt.event.ItemEvent e, BooleanState model ) {
+		this.model = model;
+		this.modelId = model.getIndividualUUID();
 		if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
 			this.previousValue = false;
 			this.nextValue = true;
@@ -65,15 +65,6 @@ public final class BooleanStateEdit extends Edit {
 			this.previousValue = true;
 			this.nextValue = false;
 		}
-	}
-
-	private BooleanState getOperation() {
-		if( this.operation != null ) {
-			//pass
-		} else {
-			this.operation = Application.getSingleton().lookupOperation( this.operationId );
-		}
-		return this.operation;
 	}
 	@Override
 	protected void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
@@ -88,21 +79,21 @@ public final class BooleanStateEdit extends Edit {
 	
 	@Override
 	public boolean canRedo() {
-		return this.getOperation() != null;
+		return this.getModel() != null;
 	}
 	@Override
 	public boolean canUndo() {
-		return this.getOperation() != null;
+		return this.getModel() != null;
 	}
 
 	@Override
 	public void doOrRedo(boolean isDo) {
-		this.getOperation().setValue(this.nextValue);
+		this.getModel().setValue(this.nextValue);
 	}
 
 	@Override
 	public void undo() {
-		this.getOperation().setValue(this.previousValue);
+		this.getModel().setValue(this.previousValue);
 	}
 
 	@Override

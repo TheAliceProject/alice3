@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogOperation extends Operation<InputDialogOperationContext> {
+public abstract class InputDialogOperation extends Operation<InputDialogOperation, InputDialogOperationContext> {
 	private class ButtonOperation extends ActionOperation {
 		private boolean isOk;
 		private Dialog dialog;

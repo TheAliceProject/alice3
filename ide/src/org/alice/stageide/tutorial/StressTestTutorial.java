@@ -47,7 +47,7 @@ package org.alice.stageide.tutorial;
  */
 public class StressTestTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
-		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 1 );
+		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 0 );
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = tutorial.getSceneField();
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = tutorial.getFieldDeclaredOnSceneType( "camera" );
@@ -62,9 +62,21 @@ public class StressTestTutorial {
 		assert turnMethod != null;
 		assert delayMethod != null;
 		
+		ide.getEmphasizingClassesState().setValue( false );
 		tutorial.addMessageStep( 
 				"Title", 
 				"<html><b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p></html>" 
+		);
+		tutorial.addSpotlightStep( 
+				"Declare Procedure", 
+				"<html>Declare Procedure.</html>", 
+				tutorial.createDeclareProcedureOperationResolver() 
+		);
+		tutorial.addActionStep( 
+				"Declare Procedure", 
+				"<html>Declare Procedure.</html>", 
+				tutorial.createDeclareProcedureOperationResolver(),
+				tutorial.createToDoCompletorValidator()
 		);
 		tutorial.addSpotlightStep( 
 				"For Each In Array", 
@@ -259,7 +271,7 @@ public class StressTestTutorial {
 		tutorial.addDragAndDropStep( 
 				"Drag Delay",
 				"<html>Drag <b>delay</b> procedure.</html>",
-				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( delayMethod ),
+				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( delayMethod ).getDragAndDropOperation(),
 				"<html>Drop <b>here</b>.</html>",
 				tutorial.createEndOfStatementListResolver( runMethod ),
 				"<html>Select <b>1.0</b> from the menu.</html>",
@@ -273,7 +285,7 @@ public class StressTestTutorial {
 		tutorial.addDragAndDropStep( 
 				"Drag Resize Procedure",
 				"<html>Drag <b>resize</b> procedure.</html>",
-				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( resizeMethod ),
+				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( resizeMethod ).getDragAndDropOperation(),
 				"<html>Drop <b>here</b>.</html>",
 				tutorial.createEndOfStatementListResolver( runMethod ),
 				"<html>Select <b>2.0</b> from the menu.</html>",
@@ -288,7 +300,7 @@ public class StressTestTutorial {
 		tutorial.addDragAndDropStep( 
 				"Drag Move Procedure",
 				"<html>Drag <b>move</b> procedure.</html>",
-				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( moveMethod ),
+				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( moveMethod ).getDragAndDropOperation(),
 				"<html>Drop <b>here</b>.</html>",
 				tutorial.createEndOfStatementListResolver( runMethod ),
 				"<html>Select <b>FORWARD</b> and <b>1.0</b> from the menus.</html>",
@@ -303,7 +315,7 @@ public class StressTestTutorial {
 		tutorial.addDragAndDropStep( 
 				"Drag Turn Procedure",
 				"<html>Drag <b>turn</b> procedure.</html>",
-				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( turnMethod ),
+				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( turnMethod ).getDragAndDropOperation(),
 				"<html>Drop <b>here</b>.</html>",
 				tutorial.createEndOfStatementListResolver( runMethod ),
 				"<html>Select <b>LEFT</b> and <b>0.25</b> from the menus.</html>",

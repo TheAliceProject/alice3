@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Model implements TrackableShape {
+public abstract class Model<M> implements TrackableShape, Resolver< M > {
 	private Group group;
 	private java.util.UUID inividualUUID;
 	public Model( Group group, java.util.UUID inividualUUID ) {
@@ -57,6 +57,10 @@ public abstract class Model implements TrackableShape {
 	}
 	public java.util.UUID getIndividualUUID() {
 		return this.inividualUUID;
+	}
+	
+	public M getResolved() {
+		return (M)this;
 	}
 
 //	public CompositeContext getCurrentCompositeContext() {	
@@ -149,10 +153,19 @@ public abstract class Model implements TrackableShape {
 		}
 	}
 	
+	private JComponent< ? > firstComponentHint;
 	protected <J extends JComponent< ? > > J getFirstComponent( Class<J> cls ) {
-		for( JComponent< ? > component : this.components ) {
-			if( cls.isAssignableFrom( component.getClass() ) ) {
-				return cls.cast( component );
+		if( this.firstComponentHint != null ) {
+			return cls.cast( this.firstComponentHint );
+		} else {
+			for( JComponent< ? > component : this.components ) {
+				if( cls.isAssignableFrom( component.getClass() ) ) {
+					if( component.isVisible() ) {
+						return cls.cast( component );
+					} else {
+						//pass
+					}
+				}
 			}
 		}
 		return null;
@@ -160,17 +173,41 @@ public abstract class Model implements TrackableShape {
 	protected JComponent< ? > getFirstComponent() {
 		return getFirstComponent( JComponent.class );
 	}
+	@Deprecated
+	public void setFirstComponentHint( JComponent< ? > firstComponentHint ) {
+		this.firstComponentHint = firstComponentHint;
+	}
 	public java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
-		return getFirstComponent().getShape( asSeenBy, insets );
+		Component< ? > component = this.getFirstComponent();
+		if( component != null ) {
+			return component.getShape( asSeenBy, insets );
+		} else {
+			return null;
+		}
 	}
 	public java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
-		return getFirstComponent().getVisibleShape( asSeenBy, insets );
+		Component< ? > component = this.getFirstComponent();
+		if( component != null ) {
+			return component.getVisibleShape( asSeenBy, insets );
+		} else {
+			return null;
+		}
 	}
 	public ScrollPane getScrollPaneAncestor() {
-		return getFirstComponent().getScrollPaneAncestor();
+		Component< ? > component = this.getFirstComponent();
+		if( component != null ) {
+			return component.getScrollPaneAncestor();
+		} else {
+			return null;
+		}
 	}
 	public boolean isInView() {
-		return getFirstComponent().isInView();
+		Component< ? > component = this.getFirstComponent();
+		if( component != null ) {
+			return component.isInView();
+		} else {
+			return false;
+		}
 	}
 //	@Deprecated
 //	public <J extends Component<?>> J getFirstComponent( Class<J> cls ) {

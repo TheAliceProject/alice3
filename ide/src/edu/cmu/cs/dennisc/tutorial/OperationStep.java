@@ -45,11 +45,11 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class OperationStep extends WaitingOnCompleteStep<edu.cmu.cs.dennisc.croquet.Operation<?>> {
+/*package-private*/ class OperationStep<M extends edu.cmu.cs.dennisc.croquet.Operation< ?,? > > extends WaitingOnCompleteStep<M> {
 	private Completor completor;
 	private Validator validator;
-	public OperationStep( String title, String text, edu.cmu.cs.dennisc.croquet.Operation< ? > operation, Completor completor, Validator validator ) {
-		super( title, text, operation, Feature.ConnectionPreference.EAST_WEST, operation );
+	public OperationStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver< M > operationResolver, Completor completor, Validator validator ) {
+		super( title, text, operationResolver, Feature.ConnectionPreference.EAST_WEST, operationResolver );
 		this.completor = completor;
 		this.validator = validator;
 	}

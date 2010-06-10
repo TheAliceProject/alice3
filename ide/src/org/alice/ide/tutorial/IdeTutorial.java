@@ -107,10 +107,10 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return findShortestMethod(cls, methodName);
 	}
 
-	public static abstract class CodeTrackableShapeResolver extends edu.cmu.cs.dennisc.tutorial.TrackableShapeResolver {
+	public static abstract class CodeTrackableShapeResolver implements edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape > {
 		protected abstract edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape( org.alice.ide.codeeditor.CodeEditor codeEditor );
-		@Override
-		protected final edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape() {
+		
+		public final edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
 			org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getCodeEditorInFocus();
 			if( codeEditor != null ) {
 				return this.resolveTrackableShape( codeEditor );
@@ -120,13 +120,17 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 	}
 
-	public static abstract class CodeDragSourceResolver extends edu.cmu.cs.dennisc.tutorial.DragSourceResolver {
-		protected abstract edu.cmu.cs.dennisc.croquet.DragSource resolveDragSource( org.alice.ide.codeeditor.CodeEditor codeEditor );
-		@Override
-		protected final edu.cmu.cs.dennisc.croquet.DragSource resolveDragSource() {
+	public static abstract class CodeDragComponentResolver implements edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > {
+		protected abstract edu.cmu.cs.dennisc.croquet.DragComponent resolveDragComponent( org.alice.ide.codeeditor.CodeEditor codeEditor );
+		public final edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved() {
 			org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getCodeEditorInFocus();
 			if( codeEditor != null ) {
-				return this.resolveDragSource( codeEditor );
+				edu.cmu.cs.dennisc.croquet.DragComponent dragComponent = this.resolveDragComponent( codeEditor );
+				if( dragComponent != null ) {
+					return dragComponent.getDragAndDropOperation();
+				} else {
+					return null;
+				}
 			} else {
 				return null;
 			}
@@ -163,18 +167,18 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 	}
 
-	public static class StatementResolver extends CodeDragSourceResolver {
+	public static class StatementResolver extends CodeDragComponentResolver {
 		private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 		public StatementResolver( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 			this.statement = statement;
 		}
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.DragSource resolveDragSource(org.alice.ide.codeeditor.CodeEditor codeEditor) {
+		protected edu.cmu.cs.dennisc.croquet.DragComponent resolveDragComponent(org.alice.ide.codeeditor.CodeEditor codeEditor) {
 			return codeEditor.getDragComponent( this.statement );
 		}
 	}
 
-	public static class ProcedureInvocationResolver extends CodeDragSourceResolver {
+	public static class ProcedureInvocationResolver extends CodeDragComponentResolver {
 		private edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
 		private int index;
 		public ProcedureInvocationResolver( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, int index ) {
@@ -182,7 +186,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			this.index = index;
 		}
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.DragSource resolveDragSource(org.alice.ide.codeeditor.CodeEditor codeEditor) {
+		protected edu.cmu.cs.dennisc.croquet.DragComponent resolveDragComponent(org.alice.ide.codeeditor.CodeEditor codeEditor) {
 			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)codeEditor.getCode();
 			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation >( edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) {
 				@Override
@@ -205,7 +209,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			}
 		}
 	}
-	public static class StatementAssignableToResolver extends CodeDragSourceResolver {
+	public static class StatementAssignableToResolver extends CodeDragComponentResolver {
 		private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls;
 		private int index;
 		public StatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int index ) {
@@ -213,7 +217,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			this.index = index;
 		}
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.DragSource resolveDragSource(org.alice.ide.codeeditor.CodeEditor codeEditor) {
+		protected edu.cmu.cs.dennisc.croquet.DragComponent resolveDragComponent(org.alice.ide.codeeditor.CodeEditor codeEditor) {
 			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)codeEditor.getCode();
 			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler( this.cls ) {
 				@Override
@@ -235,7 +239,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			}
 		}
 	}
-//	public edu.cmu.cs.dennisc.croquet.DragSource createStatementResolver( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+//	public edu.cmu.cs.dennisc.croquet.DragComponent createStatementResolver( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 //		return new StatementResolver(statement);
 //	}
 
@@ -315,25 +319,25 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	}
 
 
-	public edu.cmu.cs.dennisc.croquet.DragSource createStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int index ) {
+	public edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int index ) {
 		return new StatementAssignableToResolver( cls, index );
 	}
-	public edu.cmu.cs.dennisc.croquet.DragSource createFirstStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+	public edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createFirstStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
 		return this.createStatementAssignableToResolver( cls, 0 );
 	}
-	public edu.cmu.cs.dennisc.croquet.DragSource createLastStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+	public edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createLastStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
 		return this.createStatementAssignableToResolver( cls, Short.MAX_VALUE );
 	}
 	
 	
 	
-	public edu.cmu.cs.dennisc.croquet.DragSource createInvocationResolver( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, int index ) {
+	public edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createInvocationResolver( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, int index ) {
 		return new ProcedureInvocationResolver(method, index);
 	}
-	public edu.cmu.cs.dennisc.croquet.DragSource createFirstInvocationResolver( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	public edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createFirstInvocationResolver( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		return this.createInvocationResolver(method, 0);
 	}
-	public edu.cmu.cs.dennisc.croquet.DragSource createLastInvocationResolver( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	public edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createLastInvocationResolver( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		return this.createInvocationResolver(method, Short.MAX_VALUE);
 	}
 	
@@ -354,49 +358,88 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return this.getIDE().getMembersEditor().getTabbedPaneSelectionState().getItemAt( 2 );
 	}
 	
-	public static class TemplateDragSourceResolver extends edu.cmu.cs.dennisc.tutorial.DragSourceResolver {
-		private Class< ? extends edu.cmu.cs.dennisc.croquet.DragSource > cls;
-		public TemplateDragSourceResolver( Class< ? extends edu.cmu.cs.dennisc.croquet.DragSource > cls ) {
+	private static class InputDialogOperationFromIdResolver implements edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > {
+		private java.util.UUID id;
+		public InputDialogOperationFromIdResolver( java.util.UUID id ) {
+			this.id = id;
+		}
+		public edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved() {
+			java.util.Set< edu.cmu.cs.dennisc.croquet.Model< ? > > models = org.alice.ide.IDE.getSingleton().lookupModels( this.id );
+			for( edu.cmu.cs.dennisc.croquet.Model< ? > model : models ) {
+				if( model instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperation ) {
+					if( model.isInView() ) {
+						return (edu.cmu.cs.dennisc.croquet.InputDialogOperation)model;
+					}
+				}
+			}
+			return null;
+		}
+	}
+	
+	public edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > createDeclareProcedureOperationResolver() {
+		return new InputDialogOperationFromIdResolver( java.util.UUID.fromString( "dcaee920-08ea-4b03-85d1-f2df5f73bfb4" ) );
+	}
+	public edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > createDeclareFunctionOperationResolver() {
+		return new InputDialogOperationFromIdResolver( java.util.UUID.fromString( "171164e5-8159-4641-9528-a230ef4d2600" ) );
+	}
+	public edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > createDeclareFieldOperationResolver() {
+		return new InputDialogOperationFromIdResolver( java.util.UUID.fromString( "5a07b4dc-0bd9-4393-93d2-1cc1a9b48262" ) );
+	}
+	public edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > createDeclareParameterOperationResolver() {
+		return new InputDialogOperationFromIdResolver( java.util.UUID.fromString( "853fb6a3-ea7b-4575-93d6-547f687a7033" ) );
+	}
+	
+	public static class TemplateDragComponentResolver implements edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > {
+		private Class< ? extends edu.cmu.cs.dennisc.croquet.DragComponent > cls;
+		public TemplateDragComponentResolver( Class< ? extends edu.cmu.cs.dennisc.croquet.DragComponent > cls ) {
 			assert edu.cmu.cs.dennisc.croquet.Component.class.isAssignableFrom( cls );
 			this.cls = cls;
 		}
-		@Override
-		protected final edu.cmu.cs.dennisc.croquet.DragSource resolveDragSource() {
+		public edu.cmu.cs.dennisc.croquet.DragComponent getDragComponent() {
 			org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane = org.alice.ide.IDE.getSingleton().getUbiquitousPane();
-			return this.cls.cast( edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findFirstMatch( ubiquitousPane, (Class<edu.cmu.cs.dennisc.croquet.Component>)this.cls ) );
+			return this.cls.cast( edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findFirstMatch( ubiquitousPane, this.cls ) );
+		}
+		public edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved() {
+			edu.cmu.cs.dennisc.croquet.DragComponent dragComponent = this.getDragComponent();
+			if( dragComponent != null ) {
+				edu.cmu.cs.dennisc.croquet.DragAndDropOperation rv = dragComponent.getDragAndDropOperation();
+				return rv;
+			} else {
+				return null;
+			}
 		}
 	}
 	
 	
-	public edu.cmu.cs.dennisc.tutorial.DragSourceResolver createDoInOrderTemplateResolver() {
-		return new TemplateDragSourceResolver( org.alice.ide.ubiquitouspane.templates.DoInOrderTemplate.class );
+	public edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createDoInOrderTemplateResolver() {
+		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.DoInOrderTemplate.class );
 	}
-	public edu.cmu.cs.dennisc.tutorial.DragSourceResolver createCountLoopTemplateResolver() {
-		return new TemplateDragSourceResolver( org.alice.ide.ubiquitouspane.templates.CountLoopTemplate.class );
+	public edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createCountLoopTemplateResolver() {
+		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.CountLoopTemplate.class );
 	}
-	public edu.cmu.cs.dennisc.tutorial.DragSourceResolver createWhileLoopTemplateResolver() {
-		return new TemplateDragSourceResolver( org.alice.ide.ubiquitouspane.templates.WhileLoopTemplate.class );
+	public edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createWhileLoopTemplateResolver() {
+		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.WhileLoopTemplate.class );
 	}
-	public edu.cmu.cs.dennisc.tutorial.DragSourceResolver createForEachInArrayLoopTemplateResolver() {
-		return new TemplateDragSourceResolver( org.alice.ide.ubiquitouspane.templates.ForEachInArrayLoopTemplate.class );
+	public edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createForEachInArrayLoopTemplateResolver() {
+		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.ForEachInArrayLoopTemplate.class );
 	}
-	public edu.cmu.cs.dennisc.tutorial.DragSourceResolver createIfElseTemplateResolver() {
-		return new TemplateDragSourceResolver( org.alice.ide.ubiquitouspane.templates.ConditionalStatementTemplate.class );
+	public edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createIfElseTemplateResolver() {
+		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.ConditionalStatementTemplate.class );
 	}
-	public edu.cmu.cs.dennisc.tutorial.DragSourceResolver createDoTogetherTemplateResolver() {
-		return new TemplateDragSourceResolver( org.alice.ide.ubiquitouspane.templates.DoTogetherTemplate.class );
+	public edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createDoTogetherTemplateResolver() {
+		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.DoTogetherTemplate.class );
 	}
-	public edu.cmu.cs.dennisc.tutorial.DragSourceResolver createEachInArrayTogetherTemplateResolver() {
-		return new TemplateDragSourceResolver( org.alice.ide.ubiquitouspane.templates.EachInArrayTogetherTemplate.class );
+	public edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createEachInArrayTogetherTemplateResolver() {
+		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.EachInArrayTogetherTemplate.class );
 	}
-	public edu.cmu.cs.dennisc.tutorial.DragSourceResolver createDoInThreadTemplateResolver() {
-		return new TemplateDragSourceResolver( org.alice.ide.ubiquitouspane.templates.DoInThreadTemplate.class );
+	public edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createDoInThreadTemplateResolver() {
+		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.DoInThreadTemplate.class );
 	}
-	public edu.cmu.cs.dennisc.tutorial.DragSourceResolver createDeclareLocalTemplateResolver() {
-		return new TemplateDragSourceResolver( org.alice.ide.ubiquitouspane.templates.CommentTemplate.class );
+	public edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createDeclareLocalTemplateResolver() {
+		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.CommentTemplate.class );
 	}
-	public edu.cmu.cs.dennisc.tutorial.DragSourceResolver createCommentTemplateResolver() {
-		return new TemplateDragSourceResolver( org.alice.ide.ubiquitouspane.templates.CommentTemplate.class );
+	public edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createCommentTemplateResolver() {
+		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.CommentTemplate.class );
 	}
 
 	@Deprecated

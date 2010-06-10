@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuModel extends Model {
+public class MenuModel extends Model< MenuModel > {
 	public static final Model SEPARATOR = null;
 	private class MenuListener implements javax.swing.event.MenuListener {
 		private Menu menu;

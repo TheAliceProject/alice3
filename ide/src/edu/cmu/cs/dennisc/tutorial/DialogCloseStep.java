@@ -47,8 +47,8 @@ package edu.cmu.cs.dennisc.tutorial;
  */
 /*package-private*/ class DialogCloseStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DialogOperation> {
 	private static class DialogCloseButtonFeature extends Feature {
-		public DialogCloseButtonFeature( edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape ) {
-			super( trackableShape, Feature.ConnectionPreference.EAST_WEST );
+		public DialogCloseButtonFeature( edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver ) {
+			super( trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST );
 		}
 		@Override
 		protected java.awt.Insets getContainsInsets() {
@@ -62,13 +62,22 @@ package edu.cmu.cs.dennisc.tutorial;
 		protected void paint( java.awt.Graphics2D g2, java.awt.Shape shape ) {
 		}
 	}
-	public DialogCloseStep( String title, String text, final edu.cmu.cs.dennisc.croquet.DialogOperation operation ) {
-		super( title, text, new DialogCloseButtonFeature( new TrackableShapeResolver() {
-			@Override
-			protected edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape() {
-				return operation.getActiveDialog().getCloseButtonTrackableShape();
+	public DialogCloseStep( String title, String text, final edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.DialogOperation> dialogOperationResolver ) {
+		super( title, text, new DialogCloseButtonFeature( new edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
+			public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
+				edu.cmu.cs.dennisc.croquet.DialogOperation dialogOperation = dialogOperationResolver.getResolved();
+				if( dialogOperation != null ) {
+					edu.cmu.cs.dennisc.croquet.Dialog activeDialog = dialogOperation.getActiveDialog();
+					if( activeDialog != null ) {
+						return activeDialog.getCloseButtonTrackableShape();
+					} else {
+						return null;
+					}
+				} else {
+					return null;
+				}
 			}
-		} ), operation );
+		} ), dialogOperationResolver );
 	}
 	@Override
 	protected boolean isAlreadyInTheDesiredState() {

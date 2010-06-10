@@ -84,7 +84,7 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 				return rv;
 			}
 		}
-		context.pend( new edu.cmu.cs.dennisc.croquet.Resolver< ExpressionPropertyEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
+		context.pend( new edu.cmu.cs.dennisc.croquet.PendResolver< ExpressionPropertyEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
 			public ExpressionPropertyEdit createEdit() {
 				return new ExpressionPropertyEdit();
 			}

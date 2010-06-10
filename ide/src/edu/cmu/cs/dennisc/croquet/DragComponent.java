@@ -42,7 +42,7 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-public abstract class DragComponent extends Control implements DragSource {
+public abstract class DragComponent extends Control {
 	private DragAndDropOperation dragAndDropOperation;
 
 	private DragProxy dragProxy = null;
@@ -64,9 +64,14 @@ public abstract class DragComponent extends Control implements DragSource {
 		this.updateProxySizes();
 	}
 
-	public DragComponent getDragComponent() {
-		return this;
-	}
+//	public Resolver< DragAndDropOperation > getDragAndDropOperationResolver() {
+//		return new Resolver< DragAndDropOperation >() {
+//			public edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved() {
+//				DragComponent.this.dragAndDropOperation.setFirstComponentHint( DragComponent.this );
+//				return DragComponent.this.dragAndDropOperation;
+//			}
+//		};
+//	}
 
 	/*package-private*/ DragProxy getDragProxy() {
 		return this.dragProxy;
@@ -99,6 +104,9 @@ public abstract class DragComponent extends Control implements DragSource {
 	//		this.subject = subject;
 	//	}
 	public DragAndDropOperation getDragAndDropOperation() {
+		if( this.dragAndDropOperation != null ) {
+			this.dragAndDropOperation.setFirstComponentHint( DragComponent.this );
+		}
 		return this.dragAndDropOperation;
 	}
 	public void setDragAndDropOperation( DragAndDropOperation dragAndDropOperation ) {

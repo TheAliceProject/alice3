@@ -40,59 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.tutorial;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DragSourceResolver implements edu.cmu.cs.dennisc.croquet.DragSource {
-	private edu.cmu.cs.dennisc.croquet.DragSource dragSource;
-
-	protected abstract edu.cmu.cs.dennisc.croquet.DragSource resolveDragSource();
-	public final edu.cmu.cs.dennisc.croquet.DragComponent getDragComponent() {
-		if( this.dragSource != null ) {
-			//pass
-		} else {
-			this.dragSource = this.resolveDragSource();
-		}
-		if( this.dragSource != null ) {
-			return this.dragSource.getDragComponent();
-		} else {
-			return null;
-		}
-	}
-	public final java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
-		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getDragComponent();
-		if( trackableShape != null ) {
-			return trackableShape.getShape( asSeenBy, insets );
-		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getShape" );
-			return null;
-		}
-	}
-	public final java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
-		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getDragComponent();
-		if( trackableShape != null ) {
-			return trackableShape.getVisibleShape( asSeenBy, insets );
-		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getVisibleShape" );
-			return null;
-		}
-	}
-	public final boolean isInView() {
-		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getDragComponent();
-		if( trackableShape != null ) {
-			return trackableShape.isInView();
-		} else {
-			return false;
-		}
-	}
-	public final edu.cmu.cs.dennisc.croquet.ScrollPane getScrollPaneAncestor() {
-		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getDragComponent();
-		if( trackableShape != null ) {
-			return trackableShape.getScrollPaneAncestor();
-		} else {
-			return null;
-		}
-	}
+//todo: rename
+public interface PendResolver< E extends Edit, F > {
+	public E createEdit();
+	public E initialize( E rv, ModelContext context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<F> taskObserver );
+	public E handleCompletion( E rv, F e );
+	public void handleCancelation();
 }

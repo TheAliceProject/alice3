@@ -93,12 +93,12 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 	}
 	public void dragUpdated( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 	}
-	public edu.cmu.cs.dennisc.croquet.Operation< ? > dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
-		edu.cmu.cs.dennisc.croquet.Operation< ? > rv;
-		edu.cmu.cs.dennisc.croquet.DragSource source = context.getDragSource();
+	public edu.cmu.cs.dennisc.croquet.Operation< ?,? > dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+		edu.cmu.cs.dennisc.croquet.Operation< ?,? > rv;
+		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
 		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
-		if( source.getDragComponent() instanceof org.alice.ide.common.ExpressionCreatorPane ) {
-			final org.alice.ide.common.ExpressionCreatorPane expressionCreatorPane = (org.alice.ide.common.ExpressionCreatorPane)source.getDragComponent();
+		if( source instanceof org.alice.ide.common.ExpressionCreatorPane ) {
+			final org.alice.ide.common.ExpressionCreatorPane expressionCreatorPane = (org.alice.ide.common.ExpressionCreatorPane)source;
 			class DropOperation extends org.alice.ide.operations.ast.AbstractExpressionPropertyActionOperation {
 				public DropOperation() {
 					super( java.util.UUID.fromString( "43bbcede-3da7-4597-a093-9727e5b63f29" ), ExpressionPropertyDropDownPane.this.expressionProperty );
@@ -111,7 +111,7 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 			}
 			rv = new DropOperation();
 		} else {
-			source.getDragComponent().hideDropProxyIfNecessary();
+			source.hideDropProxyIfNecessary();
 			rv = null;
 		}
 		return rv;

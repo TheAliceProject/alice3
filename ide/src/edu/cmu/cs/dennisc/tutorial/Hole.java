@@ -60,8 +60,8 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	};
 
-	public Hole( edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape, ConnectionPreference connectionPreference ) {
-		super( trackableShape, connectionPreference );
+	public Hole( edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
+		super( trackableShapeResolver, connectionPreference );
 	}
 	
 	@Override

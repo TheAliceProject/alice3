@@ -45,8 +45,8 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Edit implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private ModelContext<?> context;
+public abstract class Edit<M extends Model<M>> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	private ModelContext<M> context;
 	private java.util.UUID contextId;
 	
 	public Edit() {
@@ -55,7 +55,7 @@ public abstract class Edit implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 		this.decode( binaryDecoder );
 	}
 	
-	public ModelContext< ? > getContext() {
+	public ModelContext<M> getContext() {
 		if( this.context != null ) {
 			//pass
 		} else {
@@ -63,8 +63,8 @@ public abstract class Edit implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 		}
 		return this.context;
 	}
-	public Model getModel() {
-		ModelContext< ? > context = this.getContext();
+	public M getModel() {
+		ModelContext<M> context = this.getContext();
 		if( context != null ) {
 			return context.getModel();
 		} else {
@@ -73,7 +73,7 @@ public abstract class Edit implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 		}
 	}
 	public Group getGroup() {
-		Model model = this.getModel();
+		M model = this.getModel();
 		if( model != null ) {
 			return model.getGroup();
 		} else {
@@ -81,7 +81,7 @@ public abstract class Edit implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 			return null;
 		}
 	}
-	/*package-private*/ void setContext( ModelContext<?> context ) {
+	/*package-private*/ void setContext( ModelContext<M> context ) {
 		this.context = context;
 		if( this.context != null ) {
 			this.contextId = context.getId();

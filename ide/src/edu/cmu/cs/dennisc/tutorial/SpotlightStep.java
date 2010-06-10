@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class SpotlightStep extends FeatureStep {
-	public SpotlightStep( String title, String text, edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape, edu.cmu.cs.dennisc.tutorial.Feature.ConnectionPreference connectionPreference ) {
-		super( title, text, new Frame( trackableShape, connectionPreference ) );
+	public SpotlightStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, edu.cmu.cs.dennisc.tutorial.Feature.ConnectionPreference connectionPreference ) {
+		super( title, text, new Frame( trackableShapeResolver, connectionPreference ) );
 	}
 	@Override
 	protected void complete( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {

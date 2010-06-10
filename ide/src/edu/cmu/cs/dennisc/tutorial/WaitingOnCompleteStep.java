@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/ abstract class WaitingOnCompleteStep<M extends edu.cmu.cs.dennisc.croquet.Model> extends WaitingStep<M> {
-	public WaitingOnCompleteStep( String title, String text, edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape, Feature.ConnectionPreference connectionPreference, M model ) {
-		super( title, text, new Hole( trackableShape, connectionPreference ), model );
+	public WaitingOnCompleteStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, Feature.ConnectionPreference connectionPreference, edu.cmu.cs.dennisc.croquet.Resolver< M > modelResolver ) {
+		super( title, text, new Hole( trackableShapeResolver, connectionPreference ), modelResolver );
 	}
 	protected abstract boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Edit edit);
 	@Override
@@ -55,8 +55,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
 			edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent completeEvent = (edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent)child;
 			edu.cmu.cs.dennisc.croquet.Model eventModel = completeEvent.getParent().getModel();
-			M model = this.getModel();
-			if( model == eventModel ) {
+			if( this.getModel() == eventModel ) {
 				edu.cmu.cs.dennisc.croquet.Edit edit;
 				if (child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent) {
 					edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent) child;

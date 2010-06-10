@@ -398,8 +398,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 		this.repaint();
 
 	}
-	public final edu.cmu.cs.dennisc.croquet.Operation<?> dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
-		edu.cmu.cs.dennisc.croquet.Operation<?> rv = null;
+	public final edu.cmu.cs.dennisc.croquet.Operation<?,?> dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+		edu.cmu.cs.dennisc.croquet.Operation<?,?> rv = null;
 		final java.awt.Point viewPosition = this.scrollPane.getAwtComponent().getViewport().getViewPosition();
 		final edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
 		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
@@ -444,7 +444,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 									return rv;
 								}
 							}
-							context.pend( new edu.cmu.cs.dennisc.croquet.Resolver< DropEdit, edu.cmu.cs.dennisc.alice.ast.Statement >() {
+							context.pend( new edu.cmu.cs.dennisc.croquet.PendResolver< DropEdit, edu.cmu.cs.dennisc.alice.ast.Statement >() {
 								public DropEdit createEdit() {
 									return new DropEdit();
 								}

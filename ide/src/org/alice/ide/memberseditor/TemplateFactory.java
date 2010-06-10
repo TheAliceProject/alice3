@@ -62,7 +62,7 @@ public class TemplateFactory {
 	public static edu.cmu.cs.dennisc.croquet.DragComponent getProcedureInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		edu.cmu.cs.dennisc.croquet.DragComponent rv = mapMethodToProcedureInvocationTemplate.get( method );
 		if( rv != null ) {
-			
+			//pass
 		} else {
 			rv = new org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate( method );
 			mapMethodToProcedureInvocationTemplate.put( method, rv );

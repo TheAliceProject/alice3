@@ -79,7 +79,7 @@ public class FillInMoreOperation extends org.alice.ide.operations.ActionOperatio
 				return rv;
 			}
 		}
-		context.pend( new edu.cmu.cs.dennisc.croquet.Resolver< MoreEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
+		context.pend( new edu.cmu.cs.dennisc.croquet.PendResolver< MoreEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
 			public MoreEdit createEdit() {
 				return new MoreEdit();
 			}

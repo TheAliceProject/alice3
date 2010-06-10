@@ -339,55 +339,71 @@ public class Tutorial {
 		Step step = new MessageStep( title, text );
 		this.addStep( step );
 	}
-	public void addSpotlightStep( String title, String text, edu.cmu.cs.dennisc.croquet.TrackableShape shape ) {
-		Step step = new SpotlightStep( title, text, shape, Feature.ConnectionPreference.EAST_WEST );
+	public void addSpotlightStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver ) {
+		Step step = new SpotlightStep( title, text, trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST );
 		this.addStep( step );
 	}
 
-	public void addActionStep( String title, String text, edu.cmu.cs.dennisc.croquet.Operation<?> operation, CompletorValidator completorValidator ) {
-		Step step = new OperationStep( title, text, operation, completorValidator, completorValidator );
+	/*package-private*/ static class ItemSelectionStateItemResolver<E> implements edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape > {
+		private edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> > itemSelectionStateResolver;
+		private E item;
+		public ItemSelectionStateItemResolver( edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> > itemSelectionStateResolver, E item ) {
+			this.itemSelectionStateResolver = itemSelectionStateResolver;
+			this.item = item;
+		}
+		public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
+			edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionState = this.itemSelectionStateResolver.getResolved();
+			if( itemSelectionState != null ) {
+				return itemSelectionState.getTrackableShapeFor( item );
+			} else {
+				return null;
+			}
+		}
+	}
+
+	public void addActionStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.Operation< ?,? > > operationResolver, CompletorValidator completorValidator ) {
+		Step step = new OperationStep( title, text, operationResolver, completorValidator, completorValidator );
 		this.addStep( step );
 	}
-	public void addBooleanStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.BooleanState booleanState, boolean desiredValue ) {
-		Step step = new BooleanStateStep( title, text, booleanState, desiredValue );
+	public void addBooleanStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.BooleanState> booleanStateResolver, boolean desiredValue ) {
+		Step step = new BooleanStateStep( title, text, booleanStateResolver, desiredValue );
 		this.addStep( step );
 	}
-	public void addDialogOpenStep( String title, String text, edu.cmu.cs.dennisc.croquet.DialogOperation operation ) {
+	public void addDialogOpenStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.DialogOperation> operation ) {
 		Step step = new DialogOpenStep( title, text, operation );
 		this.addStep( step );
 	}
-	public void addDialogCloseStep( String title, String text, edu.cmu.cs.dennisc.croquet.DialogOperation operation ) {
+	public void addDialogCloseStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.DialogOperation> operation ) {
 		Step step = new DialogCloseStep( title, text, operation );
 		this.addStep( step );
 	}
-	public <E> void addItemSelectionStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionState, E desiredValue ) {
-		Step step = new ItemSelectionStep<E>( title, text, itemSelectionState, desiredValue, Feature.ConnectionPreference.EAST_WEST );
+	public <E> void addItemSelectionStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.ItemSelectionState<E>> itemSelectionState, E desiredValue ) {
+		Step step = new ItemSelectionStateStep<E>( title, text, itemSelectionState, desiredValue, Feature.ConnectionPreference.EAST_WEST );
 		this.addStep( step );
 	}
-
-	public <E> void addSelectTabStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionState, E desiredValue ) {
-		Step step = new ItemSelectionStep<E>( title, text, itemSelectionState, desiredValue, Feature.ConnectionPreference.NORTH_SOUTH );
+	public <E> void addSelectTabStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.ItemSelectionState<E>> itemSelectionState, E desiredValue ) {
+		Step step = new ItemSelectionStateStep<E>( title, text, itemSelectionState, desiredValue, Feature.ConnectionPreference.NORTH_SOUTH );
 		this.addStep( step );
 	}
-	public <E> void addSpotlightTabTitleStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionState, E item ) {
-		Step step = new SpotlightStep( title, text, itemSelectionState.getTrackableShapeFor( item ), Feature.ConnectionPreference.NORTH_SOUTH );
+	public <E> void addSpotlightTabTitleStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.ItemSelectionState<E>> itemSelectionStateResolver, E item ) {
+		Step step = new SpotlightStep( title, text, new ItemSelectionStateItemResolver( itemSelectionStateResolver, item ), Feature.ConnectionPreference.NORTH_SOUTH );
 		this.addStep( step );
 	}
 	public <E> void addSpotlightTabMainComponentStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionState, E item ) {
-		Step step = new SpotlightStep( title, text, itemSelectionState.getMainComponentTrackableShapeFor( item ), Feature.ConnectionPreference.EAST_WEST );
+		Step step = new SpotlightStep( title, text, itemSelectionState.getMainComponentFor( item ), Feature.ConnectionPreference.EAST_WEST );
 		this.addStep( step );
 	}
 	public <E> void addSpotlightTabScrollPaneStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionState, E item ) {
-		Step step = new SpotlightStep( title, text, itemSelectionState.getScrollPaneTrackableShapeFor( item ), Feature.ConnectionPreference.EAST_WEST );
+		Step step = new SpotlightStep( title, text, itemSelectionState.getScrollPaneFor( item ), Feature.ConnectionPreference.EAST_WEST );
 		this.addStep( step );
 	}
 
-	public void addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragSource dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape, String cascadeText, CompletorValidator completorValidator ) {
-		Step step = new DragAndDropStep( title, text, dragSource, dropText, dropShape, cascadeText, completorValidator, completorValidator );
+	public void addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String cascadeText, CompletorValidator completorValidator ) {
+		Step step = new DragAndDropStep( title, text, dragResolver, dropText, dropShapeResolver, cascadeText, completorValidator, completorValidator );
 		this.addStep( step );
 	}
-	public void addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragSource dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape, CompletorValidator completorValidator ) {
-		this.addDragAndDropStep(title, text, dragSource, dropText, dropShape, null, completorValidator );
+	public void addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, CompletorValidator completorValidator ) {
+		this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, null, completorValidator );
 	}
 		
 	/*package-private*/ edu.cmu.cs.dennisc.croquet.ActionOperation getNextOperation() {

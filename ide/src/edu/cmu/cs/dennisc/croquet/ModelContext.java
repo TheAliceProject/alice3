@@ -326,12 +326,12 @@ public abstract class ModelContext<M extends Model> extends HistoryTreeNode<Mode
 	}
 	
 	@Deprecated
-	public void pend( Resolver< ?, ? > resolver ) {
+	public void pend( PendResolver< ?, ? > resolver ) {
 		class PendTaskObserver< E extends Edit,F > implements edu.cmu.cs.dennisc.task.TaskObserver< F > {
 			private ModelContext context;
-			private Resolver<E,F> resolver;
+			private PendResolver<E,F> resolver;
 			private E edit;
-			public PendTaskObserver( ModelContext context, Resolver<E,F> resolver ) {
+			public PendTaskObserver( ModelContext context, PendResolver<E,F> resolver ) {
 				this.context = context;
 				this.resolver = resolver;
 				this.edit = this.resolver.createEdit();

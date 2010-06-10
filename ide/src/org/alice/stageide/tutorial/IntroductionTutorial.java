@@ -47,7 +47,7 @@ package org.alice.stageide.tutorial;
  */
 public class IntroductionTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
-		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 15 );
+		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 4 );
 		final org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = tutorial.getSceneField();
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = tutorial.getFieldDeclaredOnSceneType( "camera" );
@@ -165,7 +165,7 @@ public class IntroductionTutorial {
 		tutorial.addDragAndDropStep( 
 				"Invoke Skate Procedure",
 				"<html>Drag <b>skate</b> <i>numberOfStrides</i>...</html>",
-				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( skateMethod ),
+				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( skateMethod ).getDragAndDropOperation(),
 				"<html>Drop it <b>here</b>.</html>",
 				tutorial.createEndOfStatementListResolver( runMethod ),
 				"<html>Select <b>2</b> from the menu.</html>",
@@ -228,7 +228,7 @@ public class IntroductionTutorial {
 		tutorial.addDragAndDropStep( 
 				"Invoke Skate Backwards Procedure",
 				"<html>Drag <b>skateBackwards</b> <i>numberOfStrides</i>...</html>",
-				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( skateBackwardsMethod ),
+				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( skateBackwardsMethod ).getDragAndDropOperation(),
 				"<html>Drop it <b>here</b>.</html>",
 				tutorial.createEndOfStatementListResolver( runMethod ),
 				"<html>Select <b>1</b> from the menu.</html>",
@@ -263,7 +263,7 @@ public class IntroductionTutorial {
 		tutorial.addDragAndDropStep( 
 				"Invoke Jump Procedure",
 				"<html>Drag <b>jump</b>...</html>",
-				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( jumpMethod ),
+				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( jumpMethod ).getDragAndDropOperation(),
 				"<html>Drop it <b>here</b>.</html>",
 				tutorial.createEndOfStatementListResolver( runMethod ),
 				new edu.cmu.cs.dennisc.tutorial.CompletorValidator() {

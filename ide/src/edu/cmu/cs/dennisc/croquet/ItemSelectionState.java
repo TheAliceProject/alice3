@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemSelectionState<E> extends Model {
+public abstract class ItemSelectionState<E> extends Model< ItemSelectionState<E> > {
 	public static interface ValueObserver<E> {
 		public void changed(E nextValue);
 	};
@@ -491,13 +491,13 @@ public abstract class ItemSelectionState<E> extends Model {
 		ItemSelectable< ?, E > itemSelectable = this.getFirstComponent( ItemSelectable.class );
 		return itemSelectable.getTrackableShapeFor( item );
 	}
-	public TrackableShape getMainComponentTrackableShapeFor( E item ) {
+	public JComponent< ? > getMainComponentFor( E item ) {
 		AbstractTabbedPane< E, ? > abstractTabbedPane = this.getFirstComponent( AbstractTabbedPane.class );
-		return abstractTabbedPane.getMainComponentTrackableShapeFor( item );
+		return abstractTabbedPane.getMainComponentFor( item );
 	}
-	public TrackableShape getScrollPaneTrackableShapeFor( E item ) {
+	public ScrollPane getScrollPaneFor( E item ) {
 		AbstractTabbedPane< E, ? > abstractTabbedPane = this.getFirstComponent( AbstractTabbedPane.class );
-		return abstractTabbedPane.getScrollPaneTrackableShapeFor( item );
+		return abstractTabbedPane.getScrollPaneFor( item );
 	}
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed(java.awt.event.ActionEvent e) {

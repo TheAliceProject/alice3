@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class ItemSelectionEdit<E> extends Edit {
+public final class ItemSelectionEdit<E> extends Edit<ItemSelectionState<E>> {
 	private ItemSelectionState<E> operation;
 	private java.util.UUID operationId;
 	private E prevValue;
@@ -59,42 +59,42 @@ public final class ItemSelectionEdit<E> extends Edit {
 		this.operation = operation;
 		this.operationId = operation.getIndividualUUID();
 	}
-	private ItemSelectionState<E> getOperation() {
-		if( this.operation != null ) {
-			//pass
-		} else {
-			this.operation = Application.getSingleton().lookupOperation( this.operationId );
-		}
-		return this.operation;
-	}
+//	private ItemSelectionState<E> getOperation() {
+//		if( this.operation != null ) {
+//			//pass
+//		} else {
+//			this.operation = Application.getSingleton().lookupOperation( this.operationId );
+//		}
+//		return this.operation;
+//	}
 
 	@Override
 	public boolean canRedo() {
-		return this.getOperation() != null;
+		return this.getModel() != null;
 	}
 	@Override
 	public boolean canUndo() {
-		return this.getOperation() != null;
+		return this.getModel() != null;
 	}
 
 	@Override
 	protected final void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		this.prevValue = this.getOperation().decodeValue( binaryDecoder );
-		this.nextValue = this.getOperation().decodeValue( binaryDecoder );
+		this.prevValue = this.getModel().decodeValue( binaryDecoder );
+		this.nextValue = this.getModel().decodeValue( binaryDecoder );
 	}
 	@Override
 	protected final void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		this.getOperation().encodeValue( binaryEncoder, this.prevValue );
-		this.getOperation().encodeValue( binaryEncoder, this.nextValue );
+		this.getModel().encodeValue( binaryEncoder, this.prevValue );
+		this.getModel().encodeValue( binaryEncoder, this.nextValue );
 	}
 
 	@Override
 	public void doOrRedo( boolean isDo ) {
-		this.getOperation().setValue( this.nextValue );
+		this.getModel().setValue( this.nextValue );
 	}
 	@Override
 	public void undo() {
-		this.getOperation().setValue( this.prevValue );
+		this.getModel().setValue( this.prevValue );
 	}
 	@Override
 	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {

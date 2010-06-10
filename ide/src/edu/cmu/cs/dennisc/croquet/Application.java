@@ -61,7 +61,7 @@ public abstract class Application {
 	}
 
 	private ModelContext<Model> rootContext = new ModelContext<Model>( null, null, null, null ) {};
-	private java.util.Map< java.util.UUID, Model > mapUUIDToOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map< java.util.UUID, java.util.Set< Model< ? > > > mapUUIDToModels = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public Application() {
 		assert Application.singleton == null;
@@ -83,9 +83,8 @@ public abstract class Application {
 		return this.rootContext.getCurrentContext();
 	}
 
-	public <O extends Model> O lookupOperation( java.util.UUID id ) {
-		//todo
-		return (O)this.mapUUIDToOperation.get( id );
+	public java.util.Set< Model< ? > > lookupModels( java.util.UUID id ) {
+		return this.mapUUIDToModels.get( id );
 	}
 
 	protected abstract Component< ? > createContentPane();
@@ -172,17 +171,16 @@ public abstract class Application {
 	protected abstract void handlePreferences( java.util.EventObject e );
 	protected abstract void handleQuit( java.util.EventObject e );
 
-	/*package-private*/void register( Model operation ) {
-		java.util.UUID id = operation.getIndividualUUID();
-		Model prev = this.mapUUIDToOperation.get( id );
-		if( prev != null ) {
-			//assert prev == operation;
-			if( prev == operation ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle multiple instances of operation ", operation );
-			}
+	/*package-private*/void register( Model model ) {
+		java.util.UUID id = model.getIndividualUUID();
+		java.util.Set< Model< ? > > set = this.mapUUIDToModels.get( id );
+		if( set != null ) {
+			//pass
 		} else {
-			this.mapUUIDToOperation.put( id, operation );
+			set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+			this.mapUUIDToModels.put( id, set );
 		}
+		set.add( model );
 	}
 
 	/*package-private*/static AbstractMenu< ?,? > addMenuElements( AbstractMenu< ?,? > rv, Model[] models ) {
@@ -196,8 +194,8 @@ public abstract class Application {
 					rv.addMenu( itemSelectionOperation.createMenu() );
 				} else {
 					AbstractMenuItem< ?,? > menuItem = null;
-					if( model instanceof Operation<?> ) {
-						Operation<?> operation = (Operation<?>)model;
+					if( model instanceof Operation<?,?> ) {
+						Operation<?,?> operation = (Operation<?,?>)model;
 						menuItem = operation.createMenuItem();
 					} else if( model instanceof BooleanState ) {
 						BooleanState booleanState = (BooleanState)model;

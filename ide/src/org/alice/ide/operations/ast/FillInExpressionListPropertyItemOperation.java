@@ -79,7 +79,7 @@ public abstract class FillInExpressionListPropertyItemOperation extends org.alic
 				return rv;
 			}
 		}
-		context.pend( new edu.cmu.cs.dennisc.croquet.Resolver< FillInExpressionEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
+		context.pend( new edu.cmu.cs.dennisc.croquet.PendResolver< FillInExpressionEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
 			public FillInExpressionEdit createEdit() {
 				return new FillInExpressionEdit();
 			}

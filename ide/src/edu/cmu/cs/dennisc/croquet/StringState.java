@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class StringState extends Model {
+public final class StringState extends Model< StringState > {
 	public static interface ValueObserver {
 		public void changed( String nextValue );
 	};

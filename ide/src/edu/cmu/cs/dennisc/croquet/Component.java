@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Component<J extends java.awt.Component> implements TrackableShape {
+public abstract class Component<J extends java.awt.Component> implements TrackableShape, Resolver< TrackableShape > {
 	public interface ContainmentObserver {
 		public void addedTo( Component<?> parent );
 		public void removedFrom( Component<?> parent );
@@ -317,6 +317,9 @@ public abstract class Component<J extends java.awt.Component> implements Trackab
 		}
 	}
 
+	public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
+		return this;
+	}
 	public java.awt.Rectangle getVisibleRectangle() {
 		return this.getBounds();
 	}

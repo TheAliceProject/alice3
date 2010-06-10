@@ -45,10 +45,10 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class ItemSelectionStep<E> extends WaitingOnCompleteStep<edu.cmu.cs.dennisc.croquet.ItemSelectionState<E>> {
+/*package-private*/ class ItemSelectionStateStep<E> extends WaitingOnCompleteStep<edu.cmu.cs.dennisc.croquet.ItemSelectionState<E>> {
 	private E desiredValue;
-	public ItemSelectionStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> selectionState, E desiredValue, Feature.ConnectionPreference connectionPreference ) {
-		super( title, text, selectionState.getTrackableShapeFor( desiredValue ), connectionPreference, selectionState );
+	public ItemSelectionStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.ItemSelectionState< E >> itemSelectionStateResolver, E desiredValue, Feature.ConnectionPreference connectionPreference ) {
+		super( title, text, new Tutorial.ItemSelectionStateItemResolver( itemSelectionStateResolver, desiredValue ), connectionPreference, itemSelectionStateResolver );
 		this.desiredValue = desiredValue;
 	}
 	@Override

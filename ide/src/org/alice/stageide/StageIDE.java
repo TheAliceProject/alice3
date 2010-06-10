@@ -356,11 +356,11 @@ public class StageIDE extends org.alice.ide.IDE {
 		return new org.alice.stageide.operations.run.RunOperation();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Operation<?> createRestartOperation() {
+	protected edu.cmu.cs.dennisc.croquet.Operation<?,?> createRestartOperation() {
 		return new org.alice.stageide.operations.run.RestartOperation();
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation<?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
+	public edu.cmu.cs.dennisc.croquet.Operation<?,?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
 		return new org.alice.stageide.operations.run.PreviewMethodOperation( procedureInvocationTemplate );
 	}
 

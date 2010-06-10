@@ -497,7 +497,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 	public CodeEditor getCodeEditorInFocus() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getValue();
 		if( code != null ) {
-			return (CodeEditor)this.getMainComponentTrackableShapeFor( code );
+			return (CodeEditor)this.getMainComponentFor( code );
 		} else {
 			return null;
 		}

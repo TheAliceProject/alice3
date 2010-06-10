@@ -269,7 +269,7 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 		this.tabCreator = tabCreator;
 	}
 	
-	/*package-private*/ TrackableShape getMainComponentTrackableShapeFor( E item ) {
+	/*package-private*/ JComponent< ? > getMainComponentFor( E item ) {
 		TabItemDetails tabItemDetails = this.getItemDetails( item );
 		if( tabItemDetails != null ) {
 			return tabItemDetails.getMainComponent();
@@ -277,7 +277,7 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 			return null;
 		}
 	}
-	/*package-private*/ TrackableShape getScrollPaneTrackableShapeFor( E item ) {
+	/*package-private*/ ScrollPane getScrollPaneFor( E item ) {
 		TabItemDetails tabItemDetails = this.getItemDetails( item );
 		if( tabItemDetails != null ) {
 			return tabItemDetails.getScrollPane();

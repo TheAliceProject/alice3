@@ -46,16 +46,14 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class DragAndDropStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
-	private edu.cmu.cs.dennisc.croquet.DragSource dragSource;
 	private Completor completor;
 	private Validator validator;
-	public DragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragSource dragSource, String dropText, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape, String cascadeText, Completor completor, Validator validator ) {
-		super( title, text, new Hole( dragSource, Feature.ConnectionPreference.EAST_WEST ), null );
-		this.dragSource = dragSource;
+	public DragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape > dropShapeResolver, String cascadeText, Completor completor, Validator validator ) {
+		super( title, text, new Hole( dragResolver, Feature.ConnectionPreference.EAST_WEST ), dragResolver );
 		this.completor = completor;
 		this.validator = validator;
 		Note dropNote = new Note( dropText );
-		dropNote.addFeature( new Hole( dropShape, Feature.ConnectionPreference.NORTH_SOUTH ) );
+		dropNote.addFeature( new Hole( dropShapeResolver, Feature.ConnectionPreference.NORTH_SOUTH ) );
 		this.addNote( dropNote );
 		
 		if( cascadeText != null ) {
@@ -69,16 +67,16 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	}
 	
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.DragAndDropOperation getModel() {
-		edu.cmu.cs.dennisc.croquet.DragComponent dragComponent = this.dragSource.getDragComponent();
-		if( dragComponent != null ) {
-			return dragComponent.getDragAndDropOperation();
-		} else {
-			return null;
-		}
-	}
-	
+//	@Override
+//	protected edu.cmu.cs.dennisc.croquet.DragAndDropOperation getModel() {
+//		edu.cmu.cs.dennisc.croquet.DragComponent dragComponent = this.dragSource.getDragComponent();
+//		if( dragComponent != null ) {
+//			return dragComponent.getDragAndDropOperation();
+//		} else {
+//			return null;
+//		}
+//	}
+//	
 	@Override
 	protected void complete( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
 		context.commitAndInvokeDo( this.completor.getEdit() );
