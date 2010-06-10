@@ -100,7 +100,7 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 			this.cancelOperation = null;
 		}
 		this.explanationLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
-		this.explanationLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 0 ) );
+		this.explanationLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
 		this.explanationLabel.setForegroundColor( java.awt.Color.RED.darker().darker() );
 	}
 	public InputDialogOperation(Group group, java.util.UUID individualUUID, String title) {
@@ -159,7 +159,7 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 						}
 						this.internalAddComponent( okButton );
 					}
-					this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,0,4,0 ) );
+					this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,4,0 ) );
 				}
 				@Override
 				protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
@@ -213,10 +213,7 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 			this.okOperation.setDialog(dialog);
 			this.cancelOperation.setDialog(dialog);
 			this.isOk = false;
-			
-			//todo:
-			this.explanationLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
-			
+						
 			PageAxisPanel southPanel = new PageAxisPanel();
 			southPanel.addComponent( this.explanationLabel );
 			southPanel.addComponent( okCancelPanel );

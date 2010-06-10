@@ -116,6 +116,7 @@ public class SelectProjectToOpenPanel extends edu.cmu.cs.dennisc.croquet.BorderP
 				Constraint.CENTER);
 		//this.tutorialOperation.setEnabled(false);
 		//this.textbookOperation.setEnabled(false);
+		this.setBackgroundColor(TabContentPanel.DEFAULT_BACKGROUND_COLOR);
 	}
 
 	public void refresh() {

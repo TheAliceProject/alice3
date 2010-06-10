@@ -47,9 +47,10 @@ package org.alice.app.openprojectpane;
  * @author Dennis Cosgrove
  */
 public abstract class TabContentPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 191, 191, 255 );
 //	private edu.cmu.cs.dennisc.croquet.InputPanel< java.net.URI > inputPanel;
 	public TabContentPanel() {
-		this.setBackgroundColor( new java.awt.Color( 191, 191, 255 ) );
+		this.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
 		final int INSET = 8;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 	}
