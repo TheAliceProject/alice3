@@ -85,7 +85,9 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 				if( java.lang.reflect.Modifier.isPublic(modifiers) && java.lang.reflect.Modifier.isStatic( modifiers )==false ) {
 					if( mthd.getName().equals( methodName ) ) {
 						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava m = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( mthd );
-						return (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava)m.getShortestInChain();
+						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava rv = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava)m.getShortestInChain();
+						assert rv != null : mthd;
+						return rv;
 					}
 				}
 			}
@@ -259,10 +261,6 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			}
 		}
 	}
-//	public edu.cmu.cs.dennisc.croquet.DragComponent createStatementResolver( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-//		return new StatementResolver(statement);
-//	}
-
 	public static class StatementWithBodyAssignableToStatementListPropertyResolver implements StatementListPropertyResolver {
 		private Class<? extends edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> cls;
 		private int index;
@@ -542,25 +540,47 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 	}
 	
-	public static class ProcedureInvocationTemplateResolver implements Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > {
+	public abstract static class MethodInvocationTemplateResolver implements Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > {
 		private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 		private String methodName;
-		public ProcedureInvocationTemplateResolver( edu.cmu.cs.dennisc.alice.ast.AbstractField field, String methodName ) {
+		public MethodInvocationTemplateResolver( edu.cmu.cs.dennisc.alice.ast.AbstractField field, String methodName ) {
 			this.field = field;
 			this.methodName = methodName;
 		}
+		protected abstract edu.cmu.cs.dennisc.croquet.DragComponent getDragComponent( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method );
 		public edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved() {
 			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = findShortestMethod( field, methodName );
 			if( method != null ) {
-				return org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( method ).getDragAndDropOperation();
+				return this.getDragComponent( method ).getDragAndDropOperation();
 			} else {
 				return null;
 			}
 		}
 	}
+	public static class ProcedureInvocationTemplateResolver extends MethodInvocationTemplateResolver {
+		public ProcedureInvocationTemplateResolver( edu.cmu.cs.dennisc.alice.ast.AbstractField field, String methodName ) {
+			super( field, methodName );
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.croquet.DragComponent getDragComponent( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+			return org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( method );
+		}
+	}
+	public static class FunctionInvocationTemplateResolver extends MethodInvocationTemplateResolver {
+		public FunctionInvocationTemplateResolver( edu.cmu.cs.dennisc.alice.ast.AbstractField field, String methodName ) {
+			super( field, methodName );
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.croquet.DragComponent getDragComponent( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+			return org.alice.ide.memberseditor.TemplateFactory.getFunctionInvocationTemplate( method );
+		}
+	}
 	
 	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createProcedureInvocationTemplateResolver( edu.cmu.cs.dennisc.alice.ast.AbstractField field, String methodName ) {
 		return new ProcedureInvocationTemplateResolver( field, methodName );
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createFunctionInvocationTemplateResolver( edu.cmu.cs.dennisc.alice.ast.AbstractField field, String methodName ) {
+		return new FunctionInvocationTemplateResolver( field, methodName );
 	}
 	
 	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createDoInOrderTemplateResolver() {

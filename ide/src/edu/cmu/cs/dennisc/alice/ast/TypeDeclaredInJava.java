@@ -230,13 +230,13 @@ public class TypeDeclaredInJava extends AbstractType<ConstructorDeclaredInJava, 
 		if( srcParameterClses.length > 0 ) {
 			Class< ? >[] dstParameterClses = trimLast( srcParameterClses );
 			try {
-				rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( src.getDeclaringClass(), name, dstParameterClses );
+				rv = src.getDeclaringClass().getMethod( name, dstParameterClses );
 				if( rv.getReturnType() == srcReturnCls ) {
 					//pass
 				} else {
 					rv = null;
 				}
-			} catch( RuntimeException re ) {
+			} catch( NoSuchMethodException nsme ) {
 				rv = null;
 			}
 		} else {

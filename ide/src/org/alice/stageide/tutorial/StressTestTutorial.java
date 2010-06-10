@@ -77,6 +77,33 @@ public class StressTestTutorial {
 				"<html>Select <b>true</b>.</html>",
 				tutorial.createToDoCompletorValidator()
 		);
+		tutorial.addSelectTabStep( 
+				"Select Functions Tab", 
+				"<html>Select the <b>Functions</b> tab.</html>", 
+				membersEditor.getTabbedPaneSelectionState(),
+				tutorial.getFunctionsTab()
+		);
+		tutorial.addSpotlightTabScrollPaneStep( 
+				"Note Functions Tab", 
+				"<html>Now the functions are now displayed.</html>", 
+				membersEditor.getTabbedPaneSelectionState(),
+				tutorial.getFunctionsTab()
+		);
+		tutorial.addSpotlightStep( 
+				"Note isWithinThresholdOf",
+				"<html>Note <b>isWithinThresholdOf</b>.</html>",
+				tutorial.createFunctionInvocationTemplateResolver( cameraField, "isSmallerThan" )
+		);
+		tutorial.addDragAndDropStep( 
+				"Drag isWithinThresholdOf",
+				"<html>Drag <b>isWithinThresholdOf</b>.</html>",
+				tutorial.createFunctionInvocationTemplateResolver( cameraField, "isSmallerThan" ),
+				"<html>Drop <b>here</b>.</html>",
+				tutorial.createEndOfStatementListResolver( 
+						tutorial.createFirstIfStatementListPropertyResolver() 
+				),
+				tutorial.createToDoCompletorValidator()
+		);
 		tutorial.addDragAndDropStep( 
 				"Drag Do In Order",
 				"<html>Drag <b>Do In Order</b>.</html>",

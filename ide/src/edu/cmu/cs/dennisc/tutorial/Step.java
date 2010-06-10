@@ -63,7 +63,6 @@ public abstract class Step {
 			java.awt.Point prevLocation = null;
 			java.awt.Dimension prevSize = null;
 			java.awt.Dimension parentSize = parent.getSize();
-			assert parentSize.width > 0 && parentSize.height > 0;
 			for( java.awt.Component awtComponent : parent.getComponents() ) {
 				java.awt.Dimension childSize = awtComponent.getPreferredSize();
 				awtComponent.setSize( childSize );
@@ -85,11 +84,13 @@ public abstract class Step {
 						}
 					}
 					
-					final int BORDER = 32;
-					p.x = Math.max( p.x, BORDER );
-					p.x = Math.min( p.x, parentSize.width-childSize.width-BORDER );
-					p.y = Math.max( p.y, BORDER );
-					p.y = Math.min( p.y, parentSize.height-childSize.height-BORDER );
+					if( parentSize.width > 0 && parentSize.height > 0 ) {
+						final int BORDER = 32;
+						p.x = Math.max( p.x, BORDER );
+						p.x = Math.min( p.x, parentSize.width-childSize.width-BORDER );
+						p.y = Math.max( p.y, BORDER );
+						p.y = Math.min( p.y, parentSize.height-childSize.height-BORDER );
+					}
 					
 					awtComponent.setLocation( p );
 
