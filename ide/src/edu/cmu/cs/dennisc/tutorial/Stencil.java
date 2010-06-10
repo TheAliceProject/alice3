@@ -46,6 +46,7 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /* package-private */abstract class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent<javax.swing.JPanel> {
+	private static boolean isEventInterceptEnabled = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyFalse( "edu.cmu.cs.dennisc.tutorial.Stencil.isEventInterceptEnabled" ) == false;
 	/*package-private*/ static final java.awt.Color STENCIL_BASE_COLOR =  new java.awt.Color( 181, 140, 140, 150 );
 	/*package-private*/ static final java.awt.Color STENCIL_LINE_COLOR =  new java.awt.Color( 92, 48, 24, 63 );
 	private static java.awt.Paint stencilPaint = null;
@@ -143,36 +144,38 @@ package edu.cmu.cs.dennisc.tutorial;
 			}
 		}
 		final JStencil rv = new JStencil();
-		rv.addMouseListener(new java.awt.event.MouseListener() {
-			public void mouseClicked(java.awt.event.MouseEvent e) {
-				rv.redispatch(e);
-			}
-
-			public void mouseEntered(java.awt.event.MouseEvent e) {
-				rv.redispatch(e);
-			}
-
-			public void mouseExited(java.awt.event.MouseEvent e) {
-				rv.redispatch(e);
-			}
-
-			public void mousePressed(java.awt.event.MouseEvent e) {
-				rv.redispatch(e);
-			}
-
-			public void mouseReleased(java.awt.event.MouseEvent e) {
-				rv.redispatch(e);
-			}
-		});
-		rv.addMouseMotionListener(new java.awt.event.MouseMotionListener() {
-			public void mouseMoved(java.awt.event.MouseEvent e) {
-				rv.redispatch(e);
-			}
-
-			public void mouseDragged(java.awt.event.MouseEvent e) {
-				rv.redispatch(e);
-			}
-		});
+		if( isEventInterceptEnabled ) {
+			rv.addMouseListener(new java.awt.event.MouseListener() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					rv.redispatch(e);
+				}
+	
+				public void mouseEntered(java.awt.event.MouseEvent e) {
+					rv.redispatch(e);
+				}
+	
+				public void mouseExited(java.awt.event.MouseEvent e) {
+					rv.redispatch(e);
+				}
+	
+				public void mousePressed(java.awt.event.MouseEvent e) {
+					rv.redispatch(e);
+				}
+	
+				public void mouseReleased(java.awt.event.MouseEvent e) {
+					rv.redispatch(e);
+				}
+			});
+			rv.addMouseMotionListener(new java.awt.event.MouseMotionListener() {
+				public void mouseMoved(java.awt.event.MouseEvent e) {
+					rv.redispatch(e);
+				}
+	
+				public void mouseDragged(java.awt.event.MouseEvent e) {
+					rv.redispatch(e);
+				}
+			} );
+		}
 		rv.setLayout(new java.awt.BorderLayout());
 		rv.setOpaque(false);
 		return rv;
