@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 public abstract class Step {
-	/*package-private*/ static final boolean IS_NOTE_OVERLAPPING_DESIRED = false;
+	/*package-private*/ static final boolean IS_NOTE_OVERLAPPING_DESIRED = true;
 	private class StepLayoutManager implements java.awt.LayoutManager {
 		private java.util.Set<java.awt.Component> set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet(); 
 		public void addLayoutComponent( java.lang.String name, java.awt.Component comp ) {
@@ -62,28 +62,37 @@ public abstract class Step {
 		public void layoutContainer( java.awt.Container parent ) {
 			java.awt.Point prevLocation = null;
 			java.awt.Dimension prevSize = null;
+			java.awt.Dimension parentSize = parent.getSize();
+			assert parentSize.width > 0 && parentSize.height > 0;
 			for( java.awt.Component awtComponent : parent.getComponents() ) {
-				awtComponent.setSize( awtComponent.getPreferredSize() );
-				
+				java.awt.Dimension childSize = awtComponent.getPreferredSize();
+				awtComponent.setSize( childSize );
 				if( set.contains( awtComponent ) ) {
 					//pass
 				} else {
+					java.awt.Point p;
 					if( prevLocation != null ) {
 						if( IS_NOTE_OVERLAPPING_DESIRED ) {
-							awtComponent.setLocation( prevLocation.x + 48, prevLocation.y - 33 );
+							p = new java.awt.Point( prevLocation.x + 48, prevLocation.y - 33 );
 						} else {
-							awtComponent.setLocation( prevLocation.x + prevSize.width - 64, prevLocation.y - 33 );
+							p = new java.awt.Point( prevLocation.x + prevSize.width - 64, prevLocation.y - 33 );
 						}
 					} else {
 						if (awtComponent instanceof Note.JNote) {
-//							edu.cmu.cs.dennisc.croquet.Component<?> component = edu.cmu.cs.dennisc.croquet.Component.lookup( awtComponent );
-//							Note note = (Note) component;
-//							note.setLocation( parent );
-							awtComponent.setLocation( Step.this.calculateLocationOfFirstNote() );
+							p = new java.awt.Point( Step.this.calculateLocationOfFirstNote() );
 						} else {
-							awtComponent.setLocation( 10, 10 );
+							p = new java.awt.Point( 10, 10 );
 						}
 					}
+					
+					final int BORDER = 32;
+					p.x = Math.max( p.x, BORDER );
+					p.x = Math.min( p.x, parentSize.width-childSize.width-BORDER );
+					p.y = Math.max( p.y, BORDER );
+					p.y = Math.min( p.y, parentSize.height-childSize.height-BORDER );
+					
+					awtComponent.setLocation( p );
+
 					set.add( awtComponent );
 				}
 				prevLocation = awtComponent.getLocation();
@@ -91,9 +100,17 @@ public abstract class Step {
 			}
 		}
 	}
+	
+	protected java.awt.Point calculateLocationForNoteAt( edu.cmu.cs.dennisc.croquet.Container< ? > container, int index ) {
+		return this.notes.get( 0 ).calculateLocation( container );
+	}
 
-	protected java.awt.Point calculateLocationOfFirstNote() {
-		return this.notes.get( 0 ).calculateLocation( this.stepPanel );
+	protected java.awt.Point calculateLocationOfFirstNote( edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
+		return this.calculateLocationForNoteAt( container, 0 );
+	}
+
+	private java.awt.Point calculateLocationOfFirstNote() {
+		return this.calculateLocationOfFirstNote( this.stepPanel );
 	}
 	
 	private class StepPanel extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JPanel > {

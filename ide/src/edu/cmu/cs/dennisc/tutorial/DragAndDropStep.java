@@ -78,6 +78,15 @@ package edu.cmu.cs.dennisc.tutorial;
 //	}
 //	
 	@Override
+	protected java.awt.Point calculateLocationOfFirstNote( edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
+		java.awt.Point p0 = this.calculateLocationForNoteAt( container, 0 );
+		java.awt.Point p1 = this.calculateLocationForNoteAt( container, 1 );
+		int xCenter = ( p0.x + p1.x )/2;
+		int yCenter = ( p0.y + p1.y )/2;
+		return new java.awt.Point( xCenter, yCenter );
+	}
+	
+	@Override
 	protected void complete( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
 		context.commitAndInvokeDo( this.completor.getEdit() );
 	}
