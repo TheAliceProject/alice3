@@ -70,12 +70,35 @@ public class StressTestTutorial {
 				"Title", 
 				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
 		);
+		tutorial.addItemSelectionStep(
+				"Select Scene", 
+				"Select the <b>scene</b>.<i>",
+				ide.getFieldSelectionState(),
+				tutorial.createRootFieldResolver()
+		);
+
+		tutorial.addActionStep( 
+				"Edit Perform My Setup", 
+				"edit performMySetup", 
+				tutorial.createEditCodeOperationResolver( 
+						tutorial.createMethodResolver( sceneField, "performMySetUp" )
+				),
+				tutorial.createToDoCompletorValidator()
+		);
+
 		tutorial.addDialogOpenStep( 
 				"Declare Procedure", 
 				"Declare Procedure.", 
 				tutorial.createDeclareProcedureOperationResolver() 
 		);
 
+		tutorial.addInputDialogCommitStep( 
+				"Name Hop", 
+				"Type <b>hop</b> and press <i>Ok</i>",
+				tutorial.createDeclareProcedureOperationResolver()				
+		);
+
+		
 		tutorial.addDragAndDropStep( 
 				"Drag If/Else",
 				"Drag <b>If/Else</b>.",

@@ -51,7 +51,7 @@ package org.alice.ide.memberseditor.templates;
 			java.util.UUID.fromString( "5b1b6ac7-b2f9-453e-9fd9-ab06b621c473" ),
 			new org.alice.ide.operations.ast.RenameMethodOperation( methodInAlice ),
 			new org.alice.ide.operations.ast.DeleteMethodOperation( methodInAlice ),
-			new org.alice.ide.operations.ast.FocusCodeOperation( methodInAlice )
+			org.alice.ide.operations.ast.FocusCodeOperation.getInstance( methodInAlice )
 		);
 	}
 }
