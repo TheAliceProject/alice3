@@ -134,7 +134,8 @@ public abstract class Operation< M extends Operation, C extends OperationContext
 
 
 	
-	/*package-private*/ < B extends AbstractButton<?,?> > B register( final B rv ) {
+	//todo: /*package-private*/
+	public < B extends AbstractButton<?,?> > B register( final B rv ) {
 		Application.getSingleton().register( this );
 		rv.addContainmentObserver( new Component.ContainmentObserver() {
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {

@@ -109,7 +109,9 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 					if( nextLonger != null ) {
 						final edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)nextLonger;
 						this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
-						this.addComponent( new org.alice.ide.codeeditor.MoreDropDownPane( expressionStatement ) );
+						org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation = org.alice.ide.operations.ast.FillInMoreOperation.getInstance( expressionStatement );
+						edu.cmu.cs.dennisc.croquet.AbstractButton< ?, ? > button = fillInMoreOperation.register( new org.alice.ide.croquet.PopupMenuButton( fillInMoreOperation ) );
+						this.addComponent( button );
 					}
 				}
 
