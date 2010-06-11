@@ -51,6 +51,10 @@ public class OutlinedBorder extends javax.swing.border.EmptyBorder {
 		super( insets );
 		this.color = color;
 	}
+	public OutlinedBorder( int top, int left, int bottom, int right, java.awt.Color color ) {
+		super( top, left, bottom, right );
+		this.color = color;
+	}
 	@Override
 	public void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height ) {
 		g.setColor( this.color );

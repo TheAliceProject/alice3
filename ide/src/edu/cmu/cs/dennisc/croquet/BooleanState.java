@@ -154,7 +154,7 @@ public /*final*/ class BooleanState extends Model< BooleanState > {
 	
 	/*package-private*/ < B extends AbstractButton<?,?> > B register( final B rv ) {
 		Application.getSingleton().register( this );
-		rv.setModel( this.buttonModel );
+		rv.setSwingButtonModel( this.buttonModel );
 		rv.setAction( this.action );
 		rv.addContainmentObserver( new Component.ContainmentObserver() {
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {

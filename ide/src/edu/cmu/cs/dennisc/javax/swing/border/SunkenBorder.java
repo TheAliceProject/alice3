@@ -40,55 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.croquet;
-
-import edu.cmu.cs.dennisc.croquet.ItemSelectablePanel.ItemDetails;
+package edu.cmu.cs.dennisc.javax.swing.border;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ComboBox< E > extends ItemSelectable<javax.swing.JComboBox, E> {
-	/*package-private*/ ComboBox( ItemSelectionState<E> model ) {
-		super( model );
+public class SunkenBorder extends BevelBorder {
+	public SunkenBorder( java.awt.Insets insets ) {
+		super( insets, false );
 	}
-	@Override
-	protected javax.swing.JComboBox createAwtComponent() {
-		javax.swing.JComboBox rv = new javax.swing.JComboBox() {
-			@Override
-			public java.awt.Dimension getMaximumSize() {
-				java.awt.Dimension rv = super.getMaximumSize();
-				rv.height = this.getPreferredSize().height;
-				return rv;
-			}
-		};
-		return rv;
-	}
-	public javax.swing.ListCellRenderer getRenderer() {
-		return this.getAwtComponent().getRenderer();
-	}
-	public void setRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
-		this.getAwtComponent().setRenderer( listCellRenderer );
-	}
-	public int getMaximumRowCount() {
-		return this.getAwtComponent().getMaximumRowCount();
-	}
-	public void setMaximumRowCount( int maximumRowCount ) {
-		this.getAwtComponent().setMaximumRowCount( maximumRowCount );
-	}
-
-	@Override
-	/*package-private*/ TrackableShape getTrackableShapeFor( E item ) {
-		return this;
-	}
-	/*package-private*/ void setSwingComboBoxModel( javax.swing.ComboBoxModel model ) {
-		this.getAwtComponent().setModel( model );
-	}
-	
-	/*package-private*/ void addItemListener(java.awt.event.ItemListener itemListener) {
-		this.getAwtComponent().addItemListener( itemListener );
-	}
-	/*package-private*/ void removeItemListener(java.awt.event.ItemListener itemListener) {
-		this.getAwtComponent().removeItemListener( itemListener );
+	public SunkenBorder( int top, int left, int bottom, int right ) {
+		super( top, left, bottom, right, false );
 	}
 }

@@ -99,7 +99,7 @@ class Tree extends edu.cmu.cs.dennisc.croquet.Tree {
 	private TreeModel model = new TreeModel( null ); 
 	public Tree() {
 		//this.setItemSelectionOperation( new org.alice.ide.operations.ast.FieldItemSelectionOperation( new javax.swing.DefaultComboBoxModel() ) );
-		this.setModel( this.model );
+		this.setSwingTreeModel( this.model );
 		this.setCellRenderer( new TreeCellRenderer() );
 	}
 }
@@ -128,7 +128,7 @@ public class SplitSceneEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		public void projectOpened( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = nextProject.getProgramType();
 			edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = programType.getDeclaredFields().get( 0 );
-			tree.setModel( new TreeModel( sceneField ) );
+			tree.setSwingTreeModel( new TreeModel( sceneField ) );
 		}
 	};
 

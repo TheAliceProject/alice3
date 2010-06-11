@@ -52,6 +52,8 @@ public class TextField extends TextComponent< javax.swing.JTextField > {
 	}
 	@Override
 	protected javax.swing.JTextField createAwtComponent() {
-		return new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField();
+		javax.swing.JTextField rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField();
+		rv.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.SunkenBorder( 4,4,2,2 ) );
+		return rv;
 	}
 }

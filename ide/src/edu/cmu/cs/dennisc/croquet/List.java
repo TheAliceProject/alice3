@@ -161,7 +161,7 @@ public class List<E> extends ItemSelectable<javax.swing.JList, E > {
 	}
 	private ListDataListener listDataListener = new ListDataListener();
 	private javax.swing.ListModel model;
-	/*package-private*/ void setModel( javax.swing.ListModel model ) {
+	/*package-private*/ void setSwingListModel( javax.swing.ListModel model ) {
 		if( this.model != null ) {
 			this.model.removeListDataListener( this.listDataListener );
 		}

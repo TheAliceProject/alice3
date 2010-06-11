@@ -131,7 +131,7 @@ public class PreferencesPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		root.add( new javax.swing.tree.DefaultMutableTreeNode( sceneEditorPreferencesPane ) );
 		javax.swing.tree.TreeModel treeModel = new javax.swing.tree.DefaultTreeModel( root );
 
-		this.tree.setModel( treeModel );
+		this.tree.setSwingTreeModel( treeModel );
 		this.tree.setRootVisible( false );
 		this.tree.setCellRenderer( new TreeCellRenderer() );
 		this.tree.addTreeSelectionListener( new TreeSelectionAdapter() );

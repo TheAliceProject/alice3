@@ -48,11 +48,11 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public abstract class AbstractButton< J extends javax.swing.AbstractButton, M extends Model > extends ViewController< J, M > {
 	private static final javax.swing.ButtonModel MODEL_FOR_NULL = new javax.swing.DefaultButtonModel();
-	/*package-private*/ AbstractButton( M model ) {
+	public AbstractButton( M model ) {
 		super( model );
 	}
 
-	/*package-private*/ void setModel( javax.swing.ButtonModel model ) {
+	/*package-private*/ void setSwingButtonModel( javax.swing.ButtonModel model ) {
 		if( model != null ) {
 			//pass
 		} else {

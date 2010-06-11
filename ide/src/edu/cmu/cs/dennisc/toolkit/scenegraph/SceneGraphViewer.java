@@ -30,8 +30,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import edu.cmu.cs.dennisc.javax.swing.BorderFactory;
-
 public class SceneGraphViewer extends JPanel implements TreeSelectionListener
 {
 	private JPanel mainPanel;

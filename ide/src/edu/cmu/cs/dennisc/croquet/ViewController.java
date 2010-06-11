@@ -55,9 +55,6 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 	public M getModel() {
 		return model;
 	}
-//	/*package-protected*/ void setModel(M model) {
-//		this.model = model;
-//	}
 	private boolean isPopupMenuOperationLimitedToRightMouseButton = true;
 	public boolean isPopupMenuOperationLimitedToRightMouseButton() {
 		return this.isPopupMenuOperationLimitedToRightMouseButton;

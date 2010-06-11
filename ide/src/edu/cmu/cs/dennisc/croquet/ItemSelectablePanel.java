@@ -227,7 +227,7 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 	}
 	
 	private java.util.List<java.awt.event.ItemListener> itemListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList(); 
-	/*package-private*/ void setModel( javax.swing.ComboBoxModel model ) {
+	/*package-private*/ void setSwingComboBoxModel( javax.swing.ComboBoxModel model ) {
 		if( this.model != null ) {
 			synchronized( this.model ) {
 				this.model.removeListDataListener( this.listDataListener );

@@ -52,6 +52,8 @@ public class TextArea extends TextComponent< javax.swing.JTextArea > {
 	}
 	@Override
 	protected javax.swing.JTextArea createAwtComponent() {
-		return new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea();
+		javax.swing.JTextArea rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea();
+		rv.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.SunkenBorder( 4,4,2,2 ) );
+		return rv;
 	}
 }

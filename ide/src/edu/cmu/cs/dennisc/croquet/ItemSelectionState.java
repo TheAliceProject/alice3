@@ -415,7 +415,7 @@ public abstract class ItemSelectionState<E> extends Model< ItemSelectionState<E>
 			}
 		};
 		Application.getSingleton().register(this);
-		rv.setModel(this.comboBoxModel);
+		rv.setSwingComboBoxModel(this.comboBoxModel);
 		return rv;
 	}
 
@@ -439,14 +439,14 @@ public abstract class ItemSelectionState<E> extends Model< ItemSelectionState<E>
 			}
 		};
 		Application.getSingleton().register(this);
-		rv.setModel(this.comboBoxModel);
+		rv.setSwingListModel(this.comboBoxModel);
 		rv.setSelectionModel(this.listSelectionModel);
 		return rv;
 	}
 
 	/*package-private*/ <R extends ItemSelectablePanel<E, ?>> R register(final R rv) {
 		Application.getSingleton().register(this);
-		rv.setModel(this.comboBoxModel);
+		rv.setSwingComboBoxModel(this.comboBoxModel);
 		rv.setSelectionModel(this.listSelectionModel);
 		rv.addContainmentObserver(new Component.ContainmentObserver() {
 			// private ItemListener itemListener = new ItemListener( rv );

@@ -92,7 +92,7 @@ public class Tree<E> extends JComponent< javax.swing.JTree > {
 	}
 
 	@Deprecated
-	public void setModel( javax.swing.tree.TreeModel model ) {
+	public void setSwingTreeModel( javax.swing.tree.TreeModel model ) {
 		this.getAwtComponent().setModel( model );
 	}
 	@Deprecated
