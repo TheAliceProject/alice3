@@ -503,7 +503,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return this.createIfConditionResolver(Short.MAX_VALUE);
 	}
 
-	public Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape > createInvocationArgumentConditionResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex, int argumentIndex ) {
+	public Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape > createInvocationArgumentResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex, int argumentIndex ) {
 		return new InvocationArgumentResolver( methodResolver, invocationIndex, argumentIndex );
 	}
 	

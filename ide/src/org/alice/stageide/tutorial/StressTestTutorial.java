@@ -109,7 +109,7 @@ public class StressTestTutorial {
 				"<html>Drag <b>getDistanceTo</b>.</html>",
 				tutorial.createFunctionInvocationTemplateResolver( grassyGroundField, "getDistanceTo" ),
 				"<html>Drop <b>here</b>.</html>",
-				tutorial.createInvocationArgumentConditionResolver( tutorial.createMethodResolver(grassyGroundField, "move"), 0, 1),
+				tutorial.createInvocationArgumentResolver( tutorial.createMethodResolver(grassyGroundField, "move"), 0, 1),
 				tutorial.createToDoCompletorValidator()
 		);
 		tutorial.addDragAndDropStep( 
