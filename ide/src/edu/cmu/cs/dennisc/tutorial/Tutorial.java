@@ -409,7 +409,7 @@ public class Tutorial {
 		Step step = new BooleanStateStep( title, text, booleanStateResolver, desiredValue );
 		this.addStep( step );
 	}
-	public void addDialogOpenStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.DialogOperation> operation ) {
+	public void addDialogOpenStep( String title, String text, Resolver<? extends edu.cmu.cs.dennisc.croquet.AbstractDialogOperation> operation ) {
 		Step step = new DialogOpenStep( title, text, operation );
 		this.addStep( step );
 	}

@@ -74,99 +74,99 @@ public class IntroductionTutorial {
 		
 		tutorial.addMessageStep( 
 				"Welcome", 
-				"<html><b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p></html>" 
+				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
 		);
 		tutorial.addSpotlightStep( 
 				"Scene Editor", 
-				"<html>This is the scene editor.</html>", 
+				"This is the scene editor.", 
 				ide.getSceneEditor() 
 		);
 		tutorial.addSpotlightStep( 
 				"Curent Instance", 
-				"<html>The current instance is displayed here.</html>", 
+				"The current instance is displayed here.", 
 				ide.getFieldSelectionState()
 		);
 		tutorial.addSpotlightStep( 
 				"Instance Details", 
-				"<html>The currently selected instance methods and fields are displayed here.<p>Right now, it is showing the details of the <b>camera</b>.</html>", 
+				"The currently selected instance methods and fields are displayed here.<p>Right now, it is showing the details of the <b>camera</b>.", 
 				membersEditor 
 		);
 
 		tutorial.addSpotlightStep( 
 				"Instance Details", 
-				"<html>This is the code editor.</html>", 
+				"This is the code editor.", 
 				ide.getEditorsTabSelectionState() 
 		);
 
 		tutorial.addMessageStep( 
 				"All is well", 
-				"<html>Don't worry if you don't fully understand all of the areas of the interface.  We'll be going into more detail over the course of the tutorial.</html>" 
+				"Don't worry if you don't fully understand all of the areas of the interface.  We'll be going into more detail over the course of the tutorial." 
 		);
 		
 		tutorial.addMessageStep( 
 				"Routine", 
-				"<html>In this tutorial, we're going to make the <b>iceSkater</b> perform a routine.</html>"
+				"In this tutorial, we're going to make the <b>iceSkater</b> perform a routine."
 		);
 
 		tutorial.addSpotlightStep( 
 				"Prepare To Skate", 
-				"<html>Right now, her routine is pretty simple.<p>First she <b>prepares to skate</b>...</html>",
+				"Right now, her routine is pretty simple.<p>First she <b>prepares to skate</b>...",
 				tutorial.createFirstInvocationResolver( tutorial.createMethodResolver( iceSkaterField, "prepareToSkate" ) )
 				
 		);
 		tutorial.addSpotlightStep( 
 				"Do Simple Spin", 
-				"<html>Second, she <b>does a simple spin</b>.</html>",
+				"Second, she <b>does a simple spin</b>.",
 				tutorial.createFirstInvocationResolver( tutorial.createMethodResolver( iceSkaterField, "doSimpleSpin" ) )
 		);
 		
 		tutorial.addDialogOpenStep( 
 				"Run", 
-				"<html>Press the <b>Run</b> button</html>", 
+				"Press the <b>Run</b> button", 
 				ide.getRunOperation() 
 		);
 		tutorial.addDialogCloseStep( 
 				"Close", 
-				"<html>Press the <b>Close</b> button</html>", 
+				"Press the <b>Close</b> button", 
 				ide.getRunOperation() 
 		);
 
 		tutorial.addMessageStep( 
 				"More Moves", 
-				"<html>Now, let's add some more moves to the <b>iceSkater</b>'s routine.</html>"
+				"Now, let's add some more moves to the <b>iceSkater</b>'s routine."
 		);
 
 		tutorial.addMessageStep( 
 				"Ice Skater Details", 
-				"<html>First, we'll need to find out what the <b>iceSkater</b> can do.</html>"
+				"First, we'll need to find out what the <b>iceSkater</b> can do."
 		);
 		
 		tutorial.addItemSelectionStep(
 				"Select Ice Skater", 
-				"<html>By selecting an instance we can see what procedures it knows how to do.<p><p><i>Select the <b>iceSkater</b>.<i></html>",
+				"By selecting an instance we can see what procedures it knows how to do.<p><p><i>Select the <b>iceSkater</b>.<i>",
 				ide.getFieldSelectionState(),
 				tutorial.createFieldResolver( "iceSkater" )
 		);
 		
 		tutorial.addSpotlightTabScrollPaneStep( 
 				"Note Ice Skater Details", 
-				"<html>These are all of the procedures that the <b>iceSkater</b> knows how to do.</html>", 
+				"These are all of the procedures that the <b>iceSkater</b> knows how to do.", 
 				membersEditor.getTabbedPaneSelectionState(),
 				tutorial.getFunctionsTab()
 		);
 
 		tutorial.addMessageStep( 
 				"Skate", 
-				"<html>Let's have the <b>iceSkater</b> skate <b>2</b> strides after she finishes her spin.</html>"
+				"Let's have the <b>iceSkater</b> skate <b>2</b> strides after she finishes her spin."
 		);
 
 		tutorial.addDragAndDropStep( 
 				"Invoke Skate Procedure",
-				"<html>Drag <b>skate</b> <i>numberOfStrides</i>...</html>",
+				"Drag <b>skate</b> <i>numberOfStrides</i>...",
 				org.alice.ide.memberseditor.templates.TemplateFactory.getProcedureInvocationTemplate( skateMethod ).getDragAndDropOperation(),
-				"<html>Drop it <b>here</b>.</html>",
+				"Drop it <b>here</b>.",
 				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
-				"<html>Select <b>2</b> from the menu.</html>",
+				"Select <b>2</b> from the menu.",
 				new edu.cmu.cs.dennisc.tutorial.CompletorValidator() {
 					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.Edit edit ) {
 						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
@@ -186,31 +186,31 @@ public class IntroductionTutorial {
 		);
 		tutorial.addSpotlightStep( 
 				"Note iceSkater.skate( 2 )",
-				"<html>This line tells the <b>iceSkater</b> to skate <b>2</b> strides.</html>",
+				"This line tells the <b>iceSkater</b> to skate <b>2</b> strides.",
 				tutorial.createInvocationResolver( tutorial.createMethodResolver( iceSkaterField, "skate" ), 0)
 		);
 		
 		tutorial.addDialogOpenStep( 
 				"Run", 
-				"<html>Now, try running your program again.<p>The <b>iceSkater</b> should spin and then skate.</html>", 
+				"Now, try running your program again.<p>The <b>iceSkater</b> should spin and then skate.", 
 				ide.getRunOperation() 
 		);
 		tutorial.addDialogCloseStep( 
 				"Run", 
-				"<html>Press the <b>Close</b> button</html>", 
+				"Press the <b>Close</b> button", 
 				ide.getRunOperation() 
 		);
 
 		tutorial.addMessageStep( 
 				"Change order", 
-				"<html>We can change the order of the tricks in the <b>iceSkater</b>'s routine.</html>"
+				"We can change the order of the tricks in the <b>iceSkater</b>'s routine."
 		);
 
 		tutorial.addDragAndDropStep(
 				"Move Do Simple Spin", 
-				"<html>Let's drag and drop iceSkater.doSimpleSpin below the line iceSkater.skate.<p><p>Drag iceSkater.doSimpleSpin...</html>",
+				"Let's drag and drop iceSkater.doSimpleSpin below the line iceSkater.skate.<p><p>Drag iceSkater.doSimpleSpin...",
 				tutorial.createInvocationResolver(tutorial.createMethodResolver( iceSkaterField, "doSimpleSpin" ), 0),
-				"<html>...and drop it <b>here</b>.</html>",
+				"...and drop it <b>here</b>.",
 				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
 				tutorial.createToDoCompletorValidator()
 		);
@@ -220,16 +220,16 @@ public class IntroductionTutorial {
 		
 		tutorial.addMessageStep( 
 				"Skate Backwards", 
-				"<html>After her spin, let's have the <b>iceSkater</b> skate backwards.</html>"
+				"After her spin, let's have the <b>iceSkater</b> skate backwards."
 		);
 		
 		tutorial.addDragAndDropStep( 
 				"Invoke Skate Backwards Procedure",
-				"<html>Drag <b>skateBackwards</b> <i>numberOfStrides</i>...</html>",
+				"Drag <b>skateBackwards</b> <i>numberOfStrides</i>...",
 				org.alice.ide.memberseditor.templates.TemplateFactory.getProcedureInvocationTemplate( skateBackwardsMethod ).getDragAndDropOperation(),
-				"<html>Drop it <b>here</b>.</html>",
+				"Drop it <b>here</b>.",
 				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
-				"<html>Select <b>1</b> from the menu.</html>",
+				"Select <b>1</b> from the menu.",
 				new edu.cmu.cs.dennisc.tutorial.CompletorValidator() {
 					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.Edit edit ) {
 						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
@@ -249,20 +249,20 @@ public class IntroductionTutorial {
 		);
 		tutorial.addSpotlightStep( 
 				"Note iceSkater.skateBackwards( 1 )",
-				"<html>This line tells the <b>iceSkater</b> to skate backwards <b>1</b> stride.</html>",
+				"This line tells the <b>iceSkater</b> to skate backwards <b>1</b> stride.",
 				tutorial.createInvocationResolver(tutorial.createMethodResolver( iceSkaterField, "skateBackwards" ), 0)
 		);
 
 		tutorial.addMessageStep( 
 				"Jump",
-				"<html>Finally, we'll have her do a jump at the end of her routine.</html>"
+				"Finally, we'll have her do a jump at the end of her routine."
 		);
 
 		tutorial.addDragAndDropStep( 
 				"Invoke Jump Procedure",
-				"<html>Drag <b>jump</b>...</html>",
+				"Drag <b>jump</b>...",
 				org.alice.ide.memberseditor.templates.TemplateFactory.getProcedureInvocationTemplate( jumpMethod ).getDragAndDropOperation(),
-				"<html>Drop it <b>here</b>.</html>",
+				"Drop it <b>here</b>.",
 				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
 				new edu.cmu.cs.dennisc.tutorial.CompletorValidator() {
 					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.Edit edit ) {
@@ -282,7 +282,7 @@ public class IntroductionTutorial {
 		);
 		tutorial.addSpotlightStep( 
 				"Note iceSkater.jump()",
-				"<html>This line tells the <b>iceSkater</b> to jump.</html>",
+				"This line tells the <b>iceSkater</b> to jump.",
 				tutorial.createInvocationResolver(tutorial.createMethodResolver( iceSkaterField, "jump" ), 0)
 		);
 
@@ -291,7 +291,7 @@ public class IntroductionTutorial {
 
 		tutorial.addMessageStep( 
 				"Free Skate", 
-				"<html><h1><center>TODO</center></h1><p>resarrange however you want.</html>"
+				"<h1><center>TODO</center></h1><p>resarrange however you want."
 		);
 
 		//run
@@ -299,7 +299,7 @@ public class IntroductionTutorial {
 		
 		tutorial.addMessageStep( 
 				"The End",
-				"<html><h1><center>TODO: restart</center></h1><p>We have done a quick tour of the IDE, learned how to run programs, and change the <b>iceSkater</b>'s routine.  If you are not comfortable with these topics, please <b>restart</b>.  Otherwise, move on to the next chapter.</html>"
+				"<h1><center>TODO: restart</center></h1><p>We have done a quick tour of the IDE, learned how to run programs, and change the <b>iceSkater</b>'s routine.  If you are not comfortable with these topics, please <b>restart</b>.  Otherwise, move on to the next chapter."
 		);
 
 		tutorial.setVisible( true );

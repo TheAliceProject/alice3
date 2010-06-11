@@ -114,7 +114,24 @@ package edu.cmu.cs.dennisc.tutorial;
 		
 		textComponent.setOpaque( false );
 		textComponent.setEditable( false );
-		textComponent.setText( this.text );
+		
+		//does not appear to be necessary
+		final String PREFIX = "<html>";
+		final String POSTFIX = "</html>";
+		StringBuilder sb = new StringBuilder();
+		if( this.text.startsWith( PREFIX ) ) {
+			//pass
+		} else {
+			sb.append( PREFIX );
+		}
+		sb.append( this.text );
+		if( this.text.endsWith( POSTFIX ) ) {
+			//pass
+		} else {
+			sb.append( POSTFIX );
+		}
+		textComponent.setText( sb.toString() );
+
 		//this.textPane.setEnabled( false );
 
 		JNote rv = new JNote() {

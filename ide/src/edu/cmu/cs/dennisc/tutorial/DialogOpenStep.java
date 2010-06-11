@@ -45,8 +45,8 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class DialogOpenStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DialogOperation> {
-	public DialogOpenStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.DialogOperation> dialogOperationResolver ) {
+/*package-private*/ class DialogOpenStep<M extends edu.cmu.cs.dennisc.croquet.AbstractDialogOperation> extends WaitingStep<M> {
+	public DialogOpenStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver<M> dialogOperationResolver ) {
 		super( title, text, new Hole( dialogOperationResolver, Feature.ConnectionPreference.EAST_WEST ), dialogOperationResolver );
 	}
 	@Override

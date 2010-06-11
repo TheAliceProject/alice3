@@ -45,8 +45,50 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class InputDialogOperationContext extends AbstractDialogOperationContext<InputDialogOperation> {
-	/*package-private*/ InputDialogOperationContext( ModelContext<?> parent, InputDialogOperation inputDialogOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
-		super( parent, inputDialogOperation, e, viewController );
+public class AbstractDialogOperationContext<M extends AbstractDialogOperation> extends OperationContext<M> {
+	public static abstract class WindowEvent extends ModelEvent< AbstractDialogOperationContext > {
+		private java.awt.event.WindowEvent windowEvent;
+		public WindowEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		/*package-private*/ WindowEvent( AbstractDialogOperationContext parent, java.awt.event.WindowEvent windowEvent ) {
+			super( parent );
+			this.windowEvent = windowEvent;
+		}
+		public java.awt.event.WindowEvent getWindowEvent() {
+			return this.windowEvent;
+		}
+		@Override
+		public State getState() {
+			return null;
+		}
+	}
+
+	public static class WindowOpenedEvent extends WindowEvent {
+		public WindowOpenedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		/*package-private*/ WindowOpenedEvent( AbstractDialogOperationContext parent, java.awt.event.WindowEvent e ) {
+			super( parent, e );
+		}
+	}
+
+	public static class WindowClosedEvent extends WindowEvent {
+		public WindowClosedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		/*package-private*/ WindowClosedEvent( AbstractDialogOperationContext parent, java.awt.event.WindowEvent e ) {
+			super( parent, e );
+		}
+	}
+
+	public AbstractDialogOperationContext( ModelContext<?> parent, M operation, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( parent, operation, e, viewController );
+	}
+	/*package-private*/ void handleWindowOpened( java.awt.event.WindowEvent e ) {
+		this.addChild( new WindowOpenedEvent( this, e ) );
+	}
+	/*package-private*/ void handleWindowClosed( java.awt.event.WindowEvent e ) {
+		this.addChild( new WindowClosedEvent( this, e ) );
 	}
 }

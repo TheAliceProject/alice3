@@ -57,29 +57,29 @@ public class CreateInstanceTutorial {
 		final IdeTutorial tutorial = new IdeTutorial( ide, 0 );
 		tutorial.addBooleanStateStep( 
 				"Edit Scene", 
-				"<html>Press the <b>Edit Scene</b> button</html>", 
+				"Press the <b>Edit Scene</b> button", 
 				ide.getIsSceneEditorExpandedState(),
 				true
 		);
 		tutorial.addMessageStep( 
 				"Note Edit Scene",
-				"<html>Note you are now editing the scene.</html>" 
+				"Note you are now editing the scene." 
 		);
 		tutorial.addSpotlightStep( 
 				"Gallery Browser", 
-				"<html>Note the gallery browser.</html>", 
+				"Note the gallery browser.", 
 				ide.getGalleryBrowser() 
 		);
 //		final java.util.UUID CREATE_PERSON_ID = java.util.UUID.fromString( "3dba52e9-fe65-4fe2-9f51-fd428549ca3a" );
 //		tutorial.addActionStep( 
 //				"Create Person", 
-//				"<html>Press the <b>Create Person</b> button</html>", 
+//				"Press the <b>Create Person</b> button", 
 //				CREATE_PERSON_ID 
 //		);
 
 		tutorial.addBooleanStateStep( 
 				"Edit Code", 
-				"<html>Press the <b>Edit Code</b> button</html>", 
+				"Press the <b>Edit Code</b> button", 
 				ide.getIsSceneEditorExpandedState(),
 				false
 		);
@@ -87,7 +87,7 @@ public class CreateInstanceTutorial {
 		
 		tutorial.addMessageStep( 
 				"Note Edit Code",
-				"<html>Note you are now editing the code.</html>" 
+				"Note you are now editing the code." 
 		);
 
 		tutorial.setVisible( true );

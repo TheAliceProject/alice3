@@ -45,87 +45,12 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogOperation extends Operation<DialogOperation, DialogOperationContext> {
+public abstract class DialogOperation extends AbstractDialogOperation<DialogOperation, DialogOperationContext> {
 	public DialogOperation(Group group, java.util.UUID individualUUID) {
 		super(group, individualUUID);
 	}
 	@Override
 	protected DialogOperationContext createContext( ModelContext< ? > parent, java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return parent.createDialogOperationContext( this, e, viewController );
-	}
-	protected java.awt.Point getDesiredDialogLocation( Dialog dialog ) {
-		return null;
-	}
-	protected java.awt.Dimension getDesiredDialogSize( Dialog dialog ) {
-		return null;
-	}
-	
-	private Dialog activeDialog;
-	public Dialog getActiveDialog() {
-		return this.activeDialog;
-	}
-	
-	protected abstract Container<?> createContentPane(DialogOperationContext context, Dialog dialog);
-	protected abstract void releaseContentPane(DialogOperationContext context, Dialog dialog, Container<?> contentPane );
-	@Override
-	protected final void perform( final DialogOperationContext context ) {
-		ViewController<?,?> viewController = context.getViewController();
-		Component<?> owner;
-		if( viewController != null ) {
-			owner = viewController;
-		} else {
-			owner = Application.getSingleton().getFrame().getContentPanel();
-		}
-		final Dialog dialog = new Dialog( owner );
-		dialog.setTitle( this.getName() );
-		dialog.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Dialog.DefaultCloseOperation.DO_NOTHING );
-
-		Container<?> contentPane = this.createContentPane(context, dialog);
-		assert contentPane != null;
-		dialog.getAwtWindow().setContentPane( contentPane.getAwtComponent() );
-
-		java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
-			public void windowOpened( java.awt.event.WindowEvent e ) {
-				context.handleWindowOpened( e );
-			}
-			public void windowClosing( java.awt.event.WindowEvent e ) {
-				dialog.setVisible( false );
-				context.handleWindowClosed( e );
-				dialog.getAwtWindow().dispose();
-			}
-			public void windowClosed( java.awt.event.WindowEvent e ) {
-			}
-			public void windowActivated( java.awt.event.WindowEvent e ) {
-			}
-			public void windowDeactivated( java.awt.event.WindowEvent e ) {
-			}
-			public void windowDeiconified( java.awt.event.WindowEvent e ) {
-			}
-			public void windowIconified( java.awt.event.WindowEvent e ) {
-			}
-		};
-		dialog.addWindowListener( windowListener );
-		java.awt.Dimension size = this.getDesiredDialogSize( dialog );
-		if( size != null ) {
-			dialog.getAwtWindow().setSize( size );
-		} else {
-			dialog.pack();
-		}
-		java.awt.Point location = this.getDesiredDialogLocation( dialog );
-		if( location != null ) {
-			dialog.setLocation( location );
-		} else {
-			edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog.getAwtWindow(), Application.getSingleton().getFrame().getAwtWindow() ); 
-		}
-		
-		this.activeDialog = dialog;
-		try {
-			dialog.setVisible( true );
-			this.releaseContentPane( context, dialog, contentPane );
-			dialog.removeWindowListener( windowListener );
-			context.finish();
-		} finally {
-			this.activeDialog = null;
-		}
 	}
 }

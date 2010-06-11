@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogOperation extends Operation<InputDialogOperation, InputDialogOperationContext> {
+public abstract class InputDialogOperation extends AbstractDialogOperation<InputDialogOperation, InputDialogOperationContext> {
 	private class ButtonOperation extends ActionOperation {
 		private boolean isOk;
 		private Dialog dialog;
@@ -70,7 +70,6 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 
 
 	private static final String NULL_EXPLANATION = "good to go";
-	//private StringStateOperation explanationState = new StringStateOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "e9bb246f-f65d-487b-b226-230bbd4d4fdb" ), NULL_EXPLANATION );
 	private ButtonOperation okOperation;
 	private ButtonOperation cancelOperation;
 	private Label explanationLabel = new Label( NULL_EXPLANATION ) {
@@ -89,7 +88,6 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 		};
 	};
 	private boolean isOk = false;
-	
 	public InputDialogOperation(Group group, java.util.UUID individualUUID, String name, boolean isCancelDesired) {
 		super(group, individualUUID);
 		this.setName( name );
@@ -132,137 +130,89 @@ public abstract class InputDialogOperation extends Operation<InputDialogOperatio
 		}
 	}
 
-	protected java.awt.Point getDesiredDialogLocation( Dialog dialog ) {
-		return null;
-	}
-	protected java.awt.Dimension getDesiredDialogSize( Dialog dialog ) {
-		return null;
+	private ModelContext.ChildrenObserver childrenObserver = new ModelContext.ChildrenObserver() {
+		public void addingChild(HistoryTreeNode child) {
+		}
+		public void addedChild(HistoryTreeNode child) {
+			InputDialogOperation.this.updateOkOperationAndExplanation();
+		}
+	};
+
+	@Override
+	protected final Container<?> createContentPane(InputDialogOperationContext context, Dialog dialog) {
+		Component<?> contentPane = this.prologue(context);
+		assert contentPane != null;
+		class OkCancelPanel extends Panel {
+			private Button okButton = okOperation.createButton();
+			public OkCancelPanel() {
+				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+					this.internalAddComponent( okButton );
+					if( cancelOperation != null ) {
+						//this.internalAddComponent( BoxUtilities.createHorizontalSliver( 2 ) );
+						this.internalAddComponent( cancelOperation.createButton() );
+					}
+				} else {
+					this.internalAddComponent( BoxUtilities.createHorizontalGlue() );
+					if( cancelOperation != null ) {
+						this.internalAddComponent( cancelOperation.createButton() );
+						//this.internalAddComponent( BoxUtilities.createHorizontalSliver( 2 ) );
+					}
+					this.internalAddComponent( okButton );
+				}
+				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,4,0 ) );
+			}
+			@Override
+			protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
+				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+					return new java.awt.FlowLayout( java.awt.FlowLayout.CENTER, 2, 0 );
+				} else {
+					return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
+				}
+			}
+			public Button getOkButton() {
+				return this.okButton;
+			}
+		};
+		
+		OkCancelPanel okCancelPanel = new OkCancelPanel();
+		okCancelPanel.setBackgroundColor( null );
+
+		PageAxisPanel southPanel = new PageAxisPanel();
+		southPanel.addComponent( this.explanationLabel );
+		southPanel.addComponent( okCancelPanel );
+
+		java.awt.Color backgroundColor = contentPane.getBackgroundColor();
+		this.explanationLabel.setBackgroundColor( backgroundColor );
+		
+		BorderPanel borderPanel = dialog.getContentPanel();
+		borderPanel.setBackgroundColor( backgroundColor );
+		borderPanel.addComponent( contentPane, BorderPanel.Constraint.CENTER );
+		borderPanel.addComponent( southPanel, BorderPanel.Constraint.SOUTH );
+		
+		dialog.setDefaultButton( okCancelPanel.getOkButton() );
+
+		this.okOperation.setDialog(dialog);
+		this.cancelOperation.setDialog(dialog);
+		this.isOk = false;
+
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate.  observer should not need to be added to the root" );
+		Application.getSingleton().getRootContext().addChildrenObserver( this.childrenObserver );
+		this.updateOkOperationAndExplanation();
+
+		return borderPanel;
 	}
 	@Override
-	protected final void perform(InputDialogOperationContext childContext) {
-		Component<?> contentPane = this.prologue(childContext);
-		if( contentPane != null ) {
-			class OkCancelPanel extends Panel {
-				private Button okButton = okOperation.createButton();
-				public OkCancelPanel() {
-					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-						this.internalAddComponent( okButton );
-						if( cancelOperation != null ) {
-							//this.internalAddComponent( BoxUtilities.createHorizontalSliver( 2 ) );
-							this.internalAddComponent( cancelOperation.createButton() );
-						}
-					} else {
-						this.internalAddComponent( BoxUtilities.createHorizontalGlue() );
-						if( cancelOperation != null ) {
-							this.internalAddComponent( cancelOperation.createButton() );
-							//this.internalAddComponent( BoxUtilities.createHorizontalSliver( 2 ) );
-						}
-						this.internalAddComponent( okButton );
-					}
-					this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,4,0 ) );
-				}
-				@Override
-				protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
-					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-						return new java.awt.FlowLayout( java.awt.FlowLayout.CENTER, 2, 0 );
-					} else {
-						return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
-					}
-				}
-				public Button getOkButton() {
-					return this.okButton;
-				}
-			};
-			
-			OkCancelPanel okCancelPanel = new OkCancelPanel();
-			okCancelPanel.setBackgroundColor( null );
+	protected final void releaseContentPane(InputDialogOperationContext context, Dialog dialog, Container<?> contentPane) {
+		this.epilogue(context, this.isOk);
+		
+		Application.getSingleton().getRootContext().removeChildrenObserver( this.childrenObserver );
 
-			ViewController<?,?> viewController = childContext.getViewController();
-			Component<?> owner;
-			if( viewController != null ) {
-				owner = viewController;
-			} else {
-				owner = Application.getSingleton().getFrame().getContentPanel();
-			}
-			final Dialog dialog = new Dialog( owner );
-			dialog.setTitle( this.getName() );
-			dialog.setDefaultButton( okCancelPanel.getOkButton() );
-			dialog.setDefaultCloseOperation( Dialog.DefaultCloseOperation.DISPOSE );
-//			dialog.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-//			dialog.addWindowListener(new java.awt.event.WindowListener() {
-//				public void windowActivated(java.awt.event.WindowEvent e) {
-//				}
-//				public void windowDeactivated(java.awt.event.WindowEvent e) {
-//				}
-//				public void windowIconified(java.awt.event.WindowEvent e) {
-//				}
-//				public void windowDeiconified(java.awt.event.WindowEvent e) {
-//				}
-//				public void windowOpened(java.awt.event.WindowEvent e) {
-//				}
-//				public void windowClosing(java.awt.event.WindowEvent e) {
-//					if (InputPanel.this.isDisposeDesired(e)) {
-//						e.getWindow().dispose();
-//					}
-//				}
-//				public void windowClosed(java.awt.event.WindowEvent e) {
-//				}
-//			});
-
-			
-			this.okOperation.setDialog(dialog);
-			this.cancelOperation.setDialog(dialog);
-			this.isOk = false;
-						
-			PageAxisPanel southPanel = new PageAxisPanel();
-			southPanel.addComponent( this.explanationLabel );
-			southPanel.addComponent( okCancelPanel );
-
-			java.awt.Color backgroundColor = contentPane.getBackgroundColor();
-			this.explanationLabel.setBackgroundColor( backgroundColor );
-			
-			BorderPanel borderPanel = dialog.getContentPanel();
-			borderPanel.setBackgroundColor( backgroundColor );
-			borderPanel.addComponent( contentPane, BorderPanel.Constraint.CENTER );
-			borderPanel.addComponent( southPanel, BorderPanel.Constraint.SOUTH );
-
-			java.awt.Dimension size = this.getDesiredDialogSize( dialog );
-			if( size != null ) {
-				dialog.getAwtWindow().setSize( size );
-			} else {
-				dialog.pack();
-			}
-			java.awt.Point location = this.getDesiredDialogLocation( dialog );
-			if( location != null ) {
-				dialog.setLocation( location );
-			} else {
-				edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog.getAwtWindow(), Application.getSingleton().getFrame().getAwtWindow() ); 
-			}
-
-			ModelContext.ChildrenObserver childrenObserver = new ModelContext.ChildrenObserver() {
-				public void addingChild(HistoryTreeNode child) {
-				}
-				public void addedChild(HistoryTreeNode child) {
-					InputDialogOperation.this.updateOkOperationAndExplanation();
-				}
-			};
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate.  observer should not need to be added to the root" );
-			Application.getSingleton().getRootContext().addChildrenObserver( childrenObserver );
-			this.updateOkOperationAndExplanation();
-			dialog.setVisible( true );
-			this.epilogue(childContext, this.isOk);
-			
-			Application.getSingleton().getRootContext().removeChildrenObserver( childrenObserver );
-
-			this.okOperation.setDialog(null);
-			this.cancelOperation.setDialog(null);
-		} else {
-			this.epilogue(childContext, false);
-		}
+		this.okOperation.setDialog(null);
+		this.cancelOperation.setDialog(null);
 		if( this.isOk ) {
 			//pass
 		} else {
-			assert childContext.isCanceled();
+			assert context.isCanceled();
 		}
 	}
 }
