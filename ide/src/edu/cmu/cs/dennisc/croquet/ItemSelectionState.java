@@ -489,15 +489,27 @@ public abstract class ItemSelectionState<E> extends Model< ItemSelectionState<E>
 
 	public TrackableShape getTrackableShapeFor( E item ) {
 		ItemSelectable< ?, E > itemSelectable = this.getFirstComponent( ItemSelectable.class );
-		return itemSelectable.getTrackableShapeFor( item );
+		if( itemSelectable != null ) {
+			return itemSelectable.getTrackableShapeFor( item );
+		} else {
+			return null;
+		}
 	}
 	public JComponent< ? > getMainComponentFor( E item ) {
 		AbstractTabbedPane< E, ? > abstractTabbedPane = this.getFirstComponent( AbstractTabbedPane.class );
-		return abstractTabbedPane.getMainComponentFor( item );
+		if( abstractTabbedPane != null ) {
+			return abstractTabbedPane.getMainComponentFor( item );
+		} else {
+			return null;
+		}
 	}
 	public ScrollPane getScrollPaneFor( E item ) {
 		AbstractTabbedPane< E, ? > abstractTabbedPane = this.getFirstComponent( AbstractTabbedPane.class );
-		return abstractTabbedPane.getScrollPaneFor( item );
+		if( abstractTabbedPane != null ) {
+			return abstractTabbedPane.getScrollPaneFor( item );
+		} else {
+			return null;
+		}
 	}
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed(java.awt.event.ActionEvent e) {
