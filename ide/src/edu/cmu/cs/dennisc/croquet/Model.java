@@ -154,7 +154,8 @@ public abstract class Model<M> implements TrackableShape, Resolver< M > {
 	}
 	
 	private JComponent< ? > firstComponentHint;
-	protected <J extends JComponent< ? > > J getFirstComponent( Class<J> cls ) {
+	@Deprecated
+	public <J extends JComponent< ? > > J getFirstComponent( Class<J> cls ) {
 		if( this.firstComponentHint != null ) {
 			return cls.cast( this.firstComponentHint );
 		} else {
@@ -170,12 +171,31 @@ public abstract class Model<M> implements TrackableShape, Resolver< M > {
 		}
 		return null;
 	}
-	protected JComponent< ? > getFirstComponent() {
-		return getFirstComponent( JComponent.class );
+	@Deprecated
+	public JComponent< ? > getFirstComponent() {
+		JComponent< ? > rv = getFirstComponent( JComponent.class );
+//		assert rv != null;
+//		if( rv.isInView() ) {
+//			//pass
+//		} else {
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "not in view:", rv );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "components:", this.components );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "hint:", this.firstComponentHint );
+//		}
+		return rv;
 	}
 	@Deprecated
 	public void setFirstComponentHint( JComponent< ? > firstComponentHint ) {
-		this.firstComponentHint = firstComponentHint;
+		assert this.components.contains( firstComponentHint );
+		if( this.firstComponentHint != firstComponentHint ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "prevFirstComponentHint", this.firstComponentHint );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "nextFirstComponentHint", firstComponentHint );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "bounds", firstComponentHint.isVisible() );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "bounds", firstComponentHint.getAwtComponent().getName() );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "bounds", firstComponentHint.getBounds() );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "bounds", firstComponentHint.getVisibleRectangle() );
+			this.firstComponentHint = firstComponentHint;
+		}
 	}
 	public java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
 		Component< ? > component = this.getFirstComponent();

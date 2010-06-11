@@ -61,12 +61,10 @@ package org.alice.ide.templates;
 public abstract class StatementTemplate extends org.alice.ide.common.StatementLikeSubstance {
 	public StatementTemplate(Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls) {
 		super(cls, javax.swing.BoxLayout.LINE_AXIS);
+		this.setDragAndDropOperation(new org.alice.ide.operations.DefaultDragOperation( edu.cmu.cs.dennisc.alice.Project.GROUP ));
 	}
-
 	public abstract void createStatement(java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.alice.ast.BlockStatement block, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement> taskObserver);
-
 	private edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation;
-
 	// @Override
 	// protected boolean isFauxDragDesired() {
 	// return true;
@@ -85,26 +83,22 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 	// }
 	// };
 	// }
-	protected edu.cmu.cs.dennisc.croquet.DragAndDropOperation createDragOperation() {
-		return new org.alice.ide.operations.DefaultDragOperation( edu.cmu.cs.dennisc.alice.Project.GROUP );
-	}
-
-	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo(parent);
-		if (this.dragOperation != null) {
-			// pass
-		} else {
-			this.dragOperation = this.createDragOperation();
-		}
-		this.setDragAndDropOperation(this.dragOperation);
-	}
-
-	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		this.setPopupMenuOperation(null);
-		super.handleRemovedFrom(parent);
-	}
+//	@Override
+//	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+//		super.handleAddedTo(parent);
+//		if (this.dragOperation != null) {
+//			// pass
+//		} else {
+//			this.dragOperation = this.createDragOperation();
+//		}
+//		this.setDragAndDropOperation(this.dragOperation);
+//	}
+//
+//	@Override
+//	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+//		this.setDragAndDropOperation(null);
+//		super.handleRemovedFrom(parent);
+//	}
 	protected boolean isFieldInScope() {
 		return getIDE().isSelectedFieldInScope();
 	}

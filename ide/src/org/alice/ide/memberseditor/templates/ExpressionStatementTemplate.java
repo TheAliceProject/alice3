@@ -45,7 +45,7 @@ package org.alice.ide.memberseditor.templates;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionStatementTemplate extends org.alice.ide.templates.CascadingExpressionsStatementTemplate {
+/*package-private*/ abstract class ExpressionStatementTemplate extends org.alice.ide.templates.CascadingExpressionsStatementTemplate {
 	public ExpressionStatementTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
 	}

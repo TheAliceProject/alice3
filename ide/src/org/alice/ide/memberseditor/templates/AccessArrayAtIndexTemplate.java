@@ -45,7 +45,7 @@ package org.alice.ide.memberseditor.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class AccessArrayAtIndexTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
+/*package-private*/ class AccessArrayAtIndexTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	public AccessArrayAtIndexTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		this.field = field;

@@ -163,7 +163,7 @@ public class IntroductionTutorial {
 		tutorial.addDragAndDropStep( 
 				"Invoke Skate Procedure",
 				"<html>Drag <b>skate</b> <i>numberOfStrides</i>...</html>",
-				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( skateMethod ).getDragAndDropOperation(),
+				org.alice.ide.memberseditor.templates.TemplateFactory.getProcedureInvocationTemplate( skateMethod ).getDragAndDropOperation(),
 				"<html>Drop it <b>here</b>.</html>",
 				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
 				"<html>Select <b>2</b> from the menu.</html>",
@@ -226,7 +226,7 @@ public class IntroductionTutorial {
 		tutorial.addDragAndDropStep( 
 				"Invoke Skate Backwards Procedure",
 				"<html>Drag <b>skateBackwards</b> <i>numberOfStrides</i>...</html>",
-				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( skateBackwardsMethod ).getDragAndDropOperation(),
+				org.alice.ide.memberseditor.templates.TemplateFactory.getProcedureInvocationTemplate( skateBackwardsMethod ).getDragAndDropOperation(),
 				"<html>Drop it <b>here</b>.</html>",
 				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
 				"<html>Select <b>1</b> from the menu.</html>",
@@ -261,7 +261,7 @@ public class IntroductionTutorial {
 		tutorial.addDragAndDropStep( 
 				"Invoke Jump Procedure",
 				"<html>Drag <b>jump</b>...</html>",
-				org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( jumpMethod ).getDragAndDropOperation(),
+				org.alice.ide.memberseditor.templates.TemplateFactory.getProcedureInvocationTemplate( jumpMethod ).getDragAndDropOperation(),
 				"<html>Drop it <b>here</b>.</html>",
 				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
 				new edu.cmu.cs.dennisc.tutorial.CompletorValidator() {

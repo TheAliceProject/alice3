@@ -550,8 +550,13 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		protected abstract edu.cmu.cs.dennisc.croquet.DragComponent getDragComponent( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method );
 		public edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved() {
 			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = findShortestMethod( field, methodName );
+			assert method != null;
 			if( method != null ) {
-				return this.getDragComponent( method ).getDragAndDropOperation();
+				edu.cmu.cs.dennisc.croquet.DragComponent dragComponent = this.getDragComponent( method );
+				assert dragComponent != null;
+				edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation = dragComponent.getDragAndDropOperation();
+				assert dragComponent == dragOperation.getFirstComponent();
+				return dragOperation;
 			} else {
 				return null;
 			}
@@ -563,7 +568,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 		@Override
 		protected edu.cmu.cs.dennisc.croquet.DragComponent getDragComponent( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-			return org.alice.ide.memberseditor.TemplateFactory.getProcedureInvocationTemplate( method );
+			return org.alice.ide.memberseditor.templates.TemplateFactory.getProcedureInvocationTemplate( method );
 		}
 	}
 	public static class FunctionInvocationTemplateResolver extends MethodInvocationTemplateResolver {
@@ -572,7 +577,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 		@Override
 		protected edu.cmu.cs.dennisc.croquet.DragComponent getDragComponent( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-			return org.alice.ide.memberseditor.TemplateFactory.getFunctionInvocationTemplate( method );
+			return org.alice.ide.memberseditor.templates.TemplateFactory.getFunctionInvocationTemplate( method );
 		}
 	}
 	

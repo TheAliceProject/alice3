@@ -45,7 +45,7 @@ package org.alice.ide.memberseditor.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class SetterTemplate extends ExpressionStatementTemplate {
+/*package-private*/ class SetterTemplate extends ExpressionStatementTemplate {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	public SetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		this.field = field;

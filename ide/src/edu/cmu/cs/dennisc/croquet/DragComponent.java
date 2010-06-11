@@ -110,7 +110,22 @@ public abstract class DragComponent extends Control {
 		return this.dragAndDropOperation;
 	}
 	public void setDragAndDropOperation( DragAndDropOperation dragAndDropOperation ) {
-		this.dragAndDropOperation = dragAndDropOperation;
+		if( this.dragAndDropOperation != dragAndDropOperation ) {
+//			if( this.dragAndDropOperation != null ) {
+//				assert dragAndDropOperation == null; 
+//			} else {
+//				assert dragAndDropOperation != null; 
+//			}
+			if( this.dragAndDropOperation != null ) {
+				this.dragAndDropOperation.removeComponent( this );
+			}
+			this.dragAndDropOperation = dragAndDropOperation;
+			if( this.dragAndDropOperation != null ) {
+				this.dragAndDropOperation.addComponent( this );
+			}
+		} else {
+			assert false;
+		}
 	}
 
 	protected boolean isAlphaDesiredWhenOverDropReceptor() {

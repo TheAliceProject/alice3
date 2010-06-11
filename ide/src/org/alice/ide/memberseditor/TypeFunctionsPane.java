@@ -63,7 +63,7 @@ public class TypeFunctionsPane extends AbstractTypeMethodsPane {
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createFunctionTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		return new org.alice.ide.memberseditor.templates.FunctionInvocationTemplate( method );
+		return org.alice.ide.memberseditor.templates.TemplateFactory.getFunctionInvocationTemplate( method );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createProcedureTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {

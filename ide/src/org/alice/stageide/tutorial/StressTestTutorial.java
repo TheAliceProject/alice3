@@ -64,6 +64,8 @@ public class StressTestTutorial {
 		assert delayMethod.getResolved() != null;
 		
 		ide.getEmphasizingClassesState().setValue( false );
+		membersEditor.getTabbedPaneSelectionState().setValue( tutorial.getFunctionsTab().getResolved() );
+		
 		tutorial.addMessageStep( 
 				"Title", 
 				"<html><b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p></html>" 
@@ -92,12 +94,12 @@ public class StressTestTutorial {
 		tutorial.addSpotlightStep( 
 				"Note isWithinThresholdOf",
 				"<html>Note <b>isWithinThresholdOf</b>.</html>",
-				tutorial.createFunctionInvocationTemplateResolver( cameraField, "isSmallerThan" )
+				tutorial.createFunctionInvocationTemplateResolver( grassyGroundField, "isSmallerThan" )
 		);
 		tutorial.addDragAndDropStep( 
 				"Drag isWithinThresholdOf",
 				"<html>Drag <b>isWithinThresholdOf</b>.</html>",
-				tutorial.createFunctionInvocationTemplateResolver( cameraField, "isSmallerThan" ),
+				tutorial.createFunctionInvocationTemplateResolver( grassyGroundField, "isSmallerThan" ),
 				"<html>Drop <b>here</b>.</html>",
 				tutorial.createEndOfStatementListResolver( 
 						tutorial.createFirstIfStatementListPropertyResolver() 

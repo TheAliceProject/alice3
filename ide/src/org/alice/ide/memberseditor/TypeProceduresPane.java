@@ -42,6 +42,8 @@
  */
 package org.alice.ide.memberseditor;
 
+import org.alice.ide.memberseditor.templates.TemplateFactory;
+
 /**
  * @author Dennis Cosgrove
  */
