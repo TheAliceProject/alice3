@@ -82,7 +82,7 @@ public abstract class AbstractTypeMethodsPane extends AbstractTypeMembersPane {
 					edu.cmu.cs.dennisc.alice.ast.AbstractCode code = (edu.cmu.cs.dennisc.alice.ast.AbstractCode)member;
 					if( code.isDeclaredInAlice() ) {
 						edu.cmu.cs.dennisc.croquet.LineAxisPanel line = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
-						line.addComponent( new org.alice.ide.operations.ast.FocusCodeOperation( code ).createButton() );
+						line.addComponent( org.alice.ide.operations.ast.FocusCodeOperation.getInstance( code ).createButton() );
 						line.addComponent( component );
 						component = line;
 					}
