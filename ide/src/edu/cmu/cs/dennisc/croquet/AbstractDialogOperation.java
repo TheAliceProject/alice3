@@ -85,9 +85,7 @@ public abstract class AbstractDialogOperation< M extends AbstractDialogOperation
 				context.handleWindowOpened( e );
 			}
 			public void windowClosing( java.awt.event.WindowEvent e ) {
-				dialog.setVisible( false );
-				context.handleWindowClosed( e );
-				dialog.getAwtWindow().dispose();
+				//context.handleWindowClosed( e );
 			}
 			public void windowClosed( java.awt.event.WindowEvent e ) {
 			}
@@ -118,6 +116,11 @@ public abstract class AbstractDialogOperation< M extends AbstractDialogOperation
 		try {
 			dialog.setVisible( true );
 			this.releaseContentPane( context, dialog, contentPane );
+			
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handleWindowClosed" );
+			context.handleWindowClosed( null );
+			dialog.getAwtWindow().dispose();
+			
 			dialog.removeWindowListener( windowListener );
 		} finally {
 			this.activeDialog = null;

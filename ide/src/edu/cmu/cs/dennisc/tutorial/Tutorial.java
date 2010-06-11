@@ -409,12 +409,16 @@ public class Tutorial {
 		Step step = new BooleanStateStep( title, text, booleanStateResolver, desiredValue );
 		this.addStep( step );
 	}
-	public void addDialogOpenStep( String title, String text, Resolver<? extends edu.cmu.cs.dennisc.croquet.AbstractDialogOperation> operation ) {
-		Step step = new DialogOpenStep( title, text, operation );
+	public void addDialogOpenStep( String title, String text, Resolver<? extends edu.cmu.cs.dennisc.croquet.AbstractDialogOperation> dialogOperationResolver ) {
+		Step step = new DialogOpenStep( title, text, dialogOperationResolver );
 		this.addStep( step );
 	}
-	public void addDialogCloseStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.DialogOperation> operation ) {
-		Step step = new DialogCloseStep( title, text, operation );
+	public void addDialogCloseStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.DialogOperation> dialogOperationResolver ) {
+		Step step = new DialogCloseStep( title, text, dialogOperationResolver );
+		this.addStep( step );
+	}
+	public void addInputDialogCommitStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> inputDialogOperationResolver ) {
+		Step step = new InputDialogCommitStep( title, text, inputDialogOperationResolver );
 		this.addStep( step );
 	}
 	public <E> void addItemSelectionStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ItemSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {

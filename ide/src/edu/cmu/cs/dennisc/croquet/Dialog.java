@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class Dialog extends AbstractWindow< javax.swing.JDialog > {
+public class Dialog extends AbstractWindow< javax.swing.JDialog > {
 	/**
 	 * @author Dennis Cosgrove
 	 */

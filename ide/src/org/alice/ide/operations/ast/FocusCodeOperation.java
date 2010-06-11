@@ -47,7 +47,20 @@ package org.alice.ide.operations.ast;
  */
 public class FocusCodeOperation extends org.alice.ide.operations.ActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode;
-	public FocusCodeOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
+	
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractCode, FocusCodeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static FocusCodeOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
+		FocusCodeOperation rv = map.get( nextCode );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new FocusCodeOperation( nextCode );
+			map.put( nextCode, rv );
+		}
+		return rv;
+	}
+	
+	private FocusCodeOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
 		super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "82bf4d2a-f1ff-4df5-a5dc-80f981181ba5" ) );
 		this.nextCode = nextCode;
 		String name;

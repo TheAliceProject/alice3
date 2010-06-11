@@ -161,7 +161,7 @@ public abstract class Model<M> implements TrackableShape, Resolver< M > {
 		} else {
 			for( JComponent< ? > component : this.components ) {
 				if( cls.isAssignableFrom( component.getClass() ) ) {
-					if( component.isVisible() ) {
+					if( component.getAwtComponent().isShowing() ) {
 						return cls.cast( component );
 					} else {
 						//pass
@@ -188,12 +188,12 @@ public abstract class Model<M> implements TrackableShape, Resolver< M > {
 	public void setFirstComponentHint( JComponent< ? > firstComponentHint ) {
 		assert this.components.contains( firstComponentHint );
 		if( this.firstComponentHint != firstComponentHint ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "prevFirstComponentHint", this.firstComponentHint );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "nextFirstComponentHint", firstComponentHint );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "bounds", firstComponentHint.isVisible() );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "bounds", firstComponentHint.getAwtComponent().getName() );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "bounds", firstComponentHint.getBounds() );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "bounds", firstComponentHint.getVisibleRectangle() );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "prevFirstComponentHint", this.firstComponentHint );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "nextFirstComponentHint", firstComponentHint );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "bounds", firstComponentHint.isVisible() );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "bounds", firstComponentHint.getAwtComponent().getName() );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "bounds", firstComponentHint.getBounds() );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "bounds", firstComponentHint.getVisibleRectangle() );
 			this.firstComponentHint = firstComponentHint;
 		}
 	}

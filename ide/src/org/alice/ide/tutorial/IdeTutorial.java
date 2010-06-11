@@ -493,6 +493,20 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 	}
 	
+	public Resolver< edu.cmu.cs.dennisc.croquet.ActionOperation > createEditCodeOperationResolver( final Resolver< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeResolver ) {
+		return new Resolver< edu.cmu.cs.dennisc.croquet.ActionOperation >() {
+			public edu.cmu.cs.dennisc.croquet.ActionOperation getResolved() {
+				edu.cmu.cs.dennisc.alice.ast.AbstractCode code = codeResolver.getResolved();
+				if( code != null ) {
+					edu.cmu.cs.dennisc.croquet.ActionOperation rv = org.alice.ide.operations.ast.FocusCodeOperation.getInstance( code );
+					return rv;
+				} else {
+					return null;
+				}
+			}
+		};
+	}
+	
 	public Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape > createIfConditionResolver( int index ) {
 		return new IfConditionResolver( index );
 	}

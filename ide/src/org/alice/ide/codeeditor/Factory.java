@@ -268,7 +268,7 @@ public class Factory extends org.alice.ide.common.Factory {
 				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
 				edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
 				if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-					rv.add( new org.alice.ide.operations.ast.FocusCodeOperation( method ) );
+					rv.add( org.alice.ide.operations.ast.FocusCodeOperation.getInstance( method ) );
 				}
 			}
 		}
