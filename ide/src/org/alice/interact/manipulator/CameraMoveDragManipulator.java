@@ -6,18 +6,21 @@ import org.alice.interact.InputState;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 
+import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 
 
-public class CameraMoveDragManipulator  extends CameraManipulator 
+public class CameraMoveDragManipulator  extends CameraManipulator implements OnScreenLookingGlassInformedManipulator
 {
 	
 	private double PIXEL_DISTANCE_FACTOR = 200.0d;
+	private double MAX_DISTANCE_PER_PIXEL = .05d;
 	
 	static final Plane GROUND_PLANE = new edu.cmu.cs.dennisc.math.Plane( 0.0d, 1.0d, 0.0d, 0.0d );
 	
@@ -31,11 +34,23 @@ public class CameraMoveDragManipulator  extends CameraManipulator
 	private double initialCameraDotVertical;
 	private double pickDistance;
 	
+	protected OnscreenLookingGlass onscreenLookingGlass = null;
+	
+	
 	public CameraMoveDragManipulator()
 	{
 		super();
 	}
 	
+	public OnscreenLookingGlass getOnscreenLookingGlass()
+	{
+		return this.onscreenLookingGlass;
+	}
+	
+	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass )
+	{
+		this.onscreenLookingGlass = lookingGlass;
+	}
 	
 	
 	@Override
@@ -55,8 +70,8 @@ public class CameraMoveDragManipulator  extends CameraManipulator
 		int yChange = currentInput.getMouseLocation().y - originalMousePoint.y;
 		xChange *= -1; //invert X
 		
-		Vector3 translationX = Vector3.createMultiplication(moveXVector, xChange*calculateWorldUnitsPerPixelX());
-		Vector3 translationY = Vector3.createMultiplication(moveYVector, yChange*calculateWorldUnitsPerPixelY());
+		Vector3 translationX = Vector3.createMultiplication(moveXVector, xChange*this.worldUnitsPerPixelX);
+		Vector3 translationY = Vector3.createMultiplication(moveYVector, yChange*this.worldUnitsPerPixelY);
 		
 		this.manipulatedTransformable.setLocalTransformation(this.originalLocalTransformation);
 		this.manipulatedTransformable.applyTranslation(translationX, AsSeenBy.SCENE);
@@ -117,27 +132,68 @@ public class CameraMoveDragManipulator  extends CameraManipulator
 			{
 				pickDistance = Point3.calculateDistanceBetween(pickPoint, absoluteTransform.translation);
 			}
-			worldUnitsPerPixelX = calculateWorldUnitsPerPixelX();
-			worldUnitsPerPixelY = calculateWorldUnitsPerPixelY();
+			calculateMovementFactors(startInput.getMouseLocation());
 			return true;
 		}
 		return false;
 		
 	}
 
-	private double calculateWorldUnitsPerPixelX()
+	private void calculateMovementFactors(Point mousePoint)
 	{
-		worldUnitsPerPixelX = initialDistanceToGround / 200.0d;
-		return worldUnitsPerPixelX;
-	}
-	
-	private double calculateWorldUnitsPerPixelY()
-	{
-		double parallelToGroundFactor = 150d;
-		double perpToGroundFactor = 200d;
-		double yFactor = parallelToGroundFactor + (perpToGroundFactor - parallelToGroundFactor) * initialCameraDotVertical;
-		worldUnitsPerPixelY = initialDistanceToGround / yFactor;
-		return worldUnitsPerPixelX;
+		Ray centerRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x, mousePoint.y );
+		Ray oneUp = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x, mousePoint.y-1 );
+		Ray oneDown = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x, mousePoint.y+1 );
+		Ray oneRight = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x+1, mousePoint.y );
+		Ray oneLeft = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x-1, mousePoint.y );
+		
+		double distancePerUpPixel = MAX_DISTANCE_PER_PIXEL;
+		double distancePerDownPixel = MAX_DISTANCE_PER_PIXEL;
+		double distancePerRightPixel = MAX_DISTANCE_PER_PIXEL;
+		double distancePerLeftPixel = MAX_DISTANCE_PER_PIXEL;
+		Point3 centerPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, centerRay);
+		if ( centerPoint != null)
+		{
+			Point3 offsetPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, oneUp);
+			if (offsetPoint != null)
+			{
+				double pixelDistance = Point3.calculateDistanceBetween(centerPoint, offsetPoint );
+				if (pixelDistance < MAX_DISTANCE_PER_PIXEL)
+				{
+					distancePerUpPixel = pixelDistance;
+				}
+			}
+			offsetPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, oneDown);
+			if (offsetPoint != null)
+			{
+				double pixelDistance = Point3.calculateDistanceBetween(centerPoint, offsetPoint );
+				if (pixelDistance < MAX_DISTANCE_PER_PIXEL)
+				{
+					distancePerDownPixel = pixelDistance;
+				}
+			}
+			offsetPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, oneRight);
+			if (offsetPoint != null)
+			{
+				double pixelDistance = Point3.calculateDistanceBetween(centerPoint, offsetPoint );
+				if (pixelDistance < MAX_DISTANCE_PER_PIXEL)
+				{
+					distancePerRightPixel = pixelDistance;
+				}
+			}
+			offsetPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, oneLeft);
+			if (offsetPoint != null)
+			{
+				double pixelDistance = Point3.calculateDistanceBetween(centerPoint, offsetPoint );
+				if (pixelDistance < MAX_DISTANCE_PER_PIXEL)
+				{
+					distancePerLeftPixel = pixelDistance;
+				}
+			}
+		}
+		
+		worldUnitsPerPixelX = (distancePerLeftPixel + distancePerRightPixel) / 2.0;
+		worldUnitsPerPixelY = (distancePerUpPixel + distancePerDownPixel) / 2.0;
 	}
 	
 	@Override

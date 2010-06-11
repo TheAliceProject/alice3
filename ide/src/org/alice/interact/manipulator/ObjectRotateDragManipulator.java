@@ -99,6 +99,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	protected RotationRingHandle rotationHandle;
 	protected AbstractCamera camera = null;
 	protected OnscreenLookingGlass onscreenLookingGlass = null;
+	protected boolean hidCursor = false;
 	
 	
 //	protected Sphere sgSphere = new Sphere();
@@ -180,7 +181,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	protected void initManipulator( RotationRingHandle handle, InputState startInput )
 	{
 //		DEBUG_addDebugSphereToScene();
-		
+		this.hidCursor = false;
 		this.rotationHandle = handle;
 		this.manipulatedTransformable = this.rotationHandle.getManipulatedObject();
 		this.absoluteRotationAxis = this.rotationHandle.getReferenceFrame().getAbsoluteTransformation().createTransformed( this.rotationHandle.getRotationAxis() );
@@ -193,16 +194,15 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 		this.rotationHandle.initializeSnapReferenceFrame();
 
 		Ray originRay = new Ray( this.manipulatedTransformable.getAbsoluteTransformation().translation, rotationAxis );
-		double intersection = this.rotationPlane.intersect( originRay );
-		if ( Double.isNaN( intersection ))
+		
+		this.objectOriginInPlane = PlaneUtilities.getPointInPlane(this.rotationPlane, originRay);
+		if ( this.objectOriginInPlane == null )
 		{
 			originRay = new Ray( this.manipulatedTransformable.getAbsoluteTransformation().translation,  Vector3.createMultiplication( rotationAxis, -1.0d ) );
-			intersection = this.rotationPlane.intersect( originRay );
+			this.objectOriginInPlane = PlaneUtilities.getPointInPlane(this.rotationPlane, originRay);
 		}
-		if ( !Double.isNaN( intersection ))
+		if ( this.objectOriginInPlane != null )
 		{
-			this.objectOriginInPlane = originRay.getPointAlong( intersection );
-			
 			Vector3 toMouse = Vector3.createSubtraction( this.initialClickPoint, this.objectOriginInPlane );
 			toMouse.normalize();
 			this.originalMouseDirection = new Vector3(toMouse);
@@ -212,7 +212,6 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 			Vector3 sphereDirection = TransformationUtilities.transformFromAbsolute_New( toMouse, this.rotationHandle );
 			this.rotationHandle.setSphereDirection( sphereDirection );
 			//Hide the cursor
-			this.hideCursor();
 			
 		}
 		
@@ -303,6 +302,10 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
 		if ( !currentInput.getMouseLocation().equals( previousInput.getMouseLocation() ) )
 		{
+			if (!this.hidCursor)
+			{
+				this.hideCursor();
+			}
 			Angle currentAngle = getRotationBasedOnMouse( currentInput.getMouseLocation() );
 			if (currentAngle != null && this.originalAngleBasedOnMouse != null)
 			{
@@ -348,21 +351,25 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	protected void hideCursor()
 	{
 		CursorUtilities.pushAndSet( this.getOnscreenLookingGlass().getAWTComponent(), CursorUtilities.NULL_CURSOR );
+		this.hidCursor = true;
 	}
 	
 	protected void showCursor()
 	{
-		try {
-			Point3 pointInCamera = this.rotationHandle.getSphereLocation( this.getCamera() );
-			Point awtPoint = edu.cmu.cs.dennisc.lookingglass.util.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.getOnscreenLookingGlass(), this.getCamera() );
-			SwingUtilities.convertPointToScreen( awtPoint, this.getOnscreenLookingGlass().getAWTComponent() );
-			Robot mouseMover = new Robot();
-			mouseMover.mouseMove(awtPoint.x, awtPoint.y);
-		} catch( AWTException e ) {
-		}
-		finally
+		if (this.hidCursor)
 		{
-			CursorUtilities.popAndSet( this.getOnscreenLookingGlass().getAWTComponent() );
+			try {
+				Point3 pointInCamera = this.rotationHandle.getSphereLocation( this.getCamera() );
+				Point awtPoint = edu.cmu.cs.dennisc.lookingglass.util.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.getOnscreenLookingGlass(), this.getCamera() );
+				SwingUtilities.convertPointToScreen( awtPoint, this.getOnscreenLookingGlass().getAWTComponent() );
+				Robot mouseMover = new Robot();
+				mouseMover.mouseMove(awtPoint.x, awtPoint.y);
+			} catch( AWTException e ) {
+			}
+			finally
+			{
+				CursorUtilities.popAndSet( this.getOnscreenLookingGlass().getAWTComponent() );
+			}
 		}
 	}
 	

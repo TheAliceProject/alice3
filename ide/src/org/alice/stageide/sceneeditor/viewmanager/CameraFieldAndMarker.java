@@ -5,7 +5,7 @@ import org.alice.apis.moveandturn.OrthographicCameraMarker;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 
-public class CameraFieldAndMarker 
+public class CameraFieldAndMarker
 {
 	public AbstractField field;
 	public CameraMarker marker;
@@ -42,4 +42,19 @@ public class CameraFieldAndMarker
 		}
 		return "NO_NAME";
 	}
+
+	@Override
+	public boolean equals(Object obj) 
+	{
+		if (obj instanceof CameraFieldAndMarker)
+		{
+			CameraFieldAndMarker other = (CameraFieldAndMarker)obj;
+			if (other.field == this.field)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }

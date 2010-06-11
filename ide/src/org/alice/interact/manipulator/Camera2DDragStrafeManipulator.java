@@ -57,14 +57,14 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 /**
  * @author David Culyba
  */
-public class CameraDragStrafeManipulator extends Camera2DDragManipulator {
+public class Camera2DDragStrafeManipulator extends Camera2DDragManipulator {
 	
 	protected static final Color UP = Color.RED;
 	protected static final Color LEFT = Color.GREEN;
 	protected static final Color RIGHT = Color.BLUE;
 	protected static final Color DOWN = Color.WHITE;
 	
-	public CameraDragStrafeManipulator( ImageBasedManipulationHandle2D handle)
+	public Camera2DDragStrafeManipulator( ImageBasedManipulationHandle2D handle)
 	{
 		super(handle);
 	}

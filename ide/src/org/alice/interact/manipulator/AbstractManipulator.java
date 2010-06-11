@@ -123,7 +123,7 @@ public abstract class AbstractManipulator {
 		}
 	}
 	
-	public void startManipulator( InputState startInput )
+	public boolean startManipulator( InputState startInput )
 	{
 		this.hasStarted = doStartManipulator( startInput );
 		setHasUpdated(false);
@@ -137,6 +137,7 @@ public abstract class AbstractManipulator {
 				this.dragAdapter.pushHandleSet( setToShow );
 			}
 		}
+		return this.hasStarted;
 	}
 	
 	public void dataUpdateManipulator(InputState currentInput, InputState previousInput  )
@@ -159,22 +160,25 @@ public abstract class AbstractManipulator {
 	
 	public void clickManipulator( InputState clickInput, InputState previousInput )
 	{
-		startManipulator( clickInput );
-		doClickManipulator(clickInput, previousInput);
-		if (isUndoable())
+		if ( startManipulator( clickInput ) )
 		{
-			undoRedoEndManipulation();
-		}
-		if (this.hasStarted)
-		{
-			this.hasStarted = false;
-			HandleSet setToShow = this.getHandleSetToEnable();
-			if (setToShow != null && this.dragAdapter != null)
+			doClickManipulator(clickInput, previousInput);
+			doEndManipulator( clickInput, previousInput );
+			if (isUndoable())
 			{
-				this.dragAdapter.popHandleSet();
+				undoRedoEndManipulation();
 			}
+			if (this.hasStarted)
+			{
+				this.hasStarted = false;
+				HandleSet setToShow = this.getHandleSetToEnable();
+				if (setToShow != null && this.dragAdapter != null)
+				{
+					this.dragAdapter.popHandleSet();
+				}
+			}
+			triggerAllDeactivateEvents();
 		}
-		triggerAllDeactivateEvents();
 	}
 	
 	public void endManipulator(InputState endInput, InputState previousInput  )

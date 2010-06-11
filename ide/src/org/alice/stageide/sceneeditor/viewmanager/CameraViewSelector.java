@@ -188,6 +188,12 @@ public class CameraViewSelector extends JPanel implements ItemListener, ActionLi
 	private CameraMarker getMarkerForField(AbstractField field)
 	{
 		CameraMarker marker = this.sceneEditor.getInstanceInJavaForField(field, org.alice.apis.moveandturn.CameraMarker.class);
+		if (marker == null)
+		{
+//			System.out.println("NULL!");
+			marker = this.sceneEditor.getInstanceInJavaForField(field, org.alice.apis.moveandturn.CameraMarker.class);
+		}
+//		assert marker != null;
 		return marker;
 	}
 	
@@ -296,12 +302,13 @@ public class CameraViewSelector extends JPanel implements ItemListener, ActionLi
 	public void doSetSelectedView(int index)
 	{
 		this.activeMarker = getMarkerForIndex(index);
-//		System.out.println("Set activeMarker to index "+index+", "+this.activeMarker.getName());
+//		
 //		if (this.activeMarker == null)
 //		{
 //			this.activeMarker = getMarkerForIndex(index);
 //		}
-		assert this.activeMarker != null;
+//		
+//		assert this.activeMarker != null;
 	}
 
 	public void itemStateChanged( ItemEvent e ) {

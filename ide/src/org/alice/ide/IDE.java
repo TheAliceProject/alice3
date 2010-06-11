@@ -139,11 +139,13 @@ public abstract class IDE extends edu.cmu.cs.dennisc.javax.swing.ApplicationFram
 
 	//public static String IS_PROJECT_CHANGED_KEY = "IS_PROJECT_AFFECTED_KEY";
 	public static final String GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
+	public static final String EDITOR_GENERATED_SET_UP_METHOD_NAME = "performEditorGeneratedSetUp";
+	public static final String SCENE_EDITOR_GENERATED_SET_UP_METHOD_NAME = "performSceneEditorGeneratedSetUp";
 	static {
 		IDE.exceptionHandler = new org.alice.ide.issue.ExceptionHandler();
 		Thread.setDefaultUncaughtExceptionHandler( IDE.exceptionHandler );
-		performSceneEditorGeneratedSetUpMethodNameSet.add( "performSceneEditorGeneratedSetUp" );
-		performSceneEditorGeneratedSetUpMethodNameSet.add( "performEditorGeneratedSetUp" );
+		performSceneEditorGeneratedSetUpMethodNameSet.add( SCENE_EDITOR_GENERATED_SET_UP_METHOD_NAME );
+		performSceneEditorGeneratedSetUpMethodNameSet.add( EDITOR_GENERATED_SET_UP_METHOD_NAME );
 		performSceneEditorGeneratedSetUpMethodNameSet.add( GENERATED_SET_UP_METHOD_NAME );
 	}
 

@@ -57,6 +57,9 @@ public class ModifierMask {
 	}
 	
 	public static ModifierKey[] NO_MODIFIERS_DOWN = { ModifierKey.NOT_CONTROL, ModifierKey.NOT_ALT, ModifierKey.NOT_SHIFT};
+	public static ModifierKey[] JUST_SHIFT = { ModifierKey.NOT_CONTROL, ModifierKey.NOT_ALT, ModifierKey.SHIFT};
+	public static ModifierKey[] JUST_CONTROL = { ModifierKey.CONTROL, ModifierKey.NOT_ALT, ModifierKey.NOT_SHIFT};
+	public static ModifierKey[] JUST_ALT = { ModifierKey.NOT_CONTROL, ModifierKey.ALT, ModifierKey.NOT_SHIFT};
 	
 	enum ModifierKey
 	{

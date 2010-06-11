@@ -42,6 +42,8 @@
  */
 package org.alice.interact;
 
+import java.awt.event.InputEvent;
+
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.handle.ManipulationHandle;
 
@@ -82,9 +84,18 @@ public class InputState {
 	private ManipulationHandle clickHandle = null;
 	private ManipulationHandle rolloverHandle = null;
 	private long timeCaptured = 0;
+	private InputEvent inputEvent = null;
 	
 	
-
+	public InputEvent getInputEvent()
+	{
+		return this.inputEvent;
+	}
+	
+	public void setInputEvent(InputEvent inputEvent)
+	{
+		this.inputEvent = inputEvent;
+	}
 
 	public ManipulationHandle getRolloverHandle() {
 		return this.rolloverHandle;

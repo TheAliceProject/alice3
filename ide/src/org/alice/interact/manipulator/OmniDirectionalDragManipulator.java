@@ -42,7 +42,11 @@
  */
 package org.alice.interact.manipulator;
 
+import java.awt.AWTException;
 import java.awt.Point;
+import java.awt.Robot;
+
+import javax.swing.SwingUtilities;
 
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
@@ -51,14 +55,18 @@ import org.alice.interact.PlaneUtilities;
 import org.alice.interact.VectorUtilities;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.condition.MovementDescription;
+import org.alice.interact.debug.DebugSphere;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 
+import edu.cmu.cs.dennisc.java.awt.CursorUtilities;
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.math.Tuple3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
@@ -71,14 +79,43 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 public class OmniDirectionalDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnScreenLookingGlassInformedManipulator {
 
 	protected Plane pickPlane = new edu.cmu.cs.dennisc.math.Plane( 0.0d, 1.0d, 0.0d, 0.0d );
+	protected Plane backPlane;
 	protected Plane orthographicPickPlane = new edu.cmu.cs.dennisc.math.Plane( 0.0d, 1.0d, 0.0d, 0.0d );
 	protected Point3 orthographicOffsetToOrigin = null;
-	protected Point3 offsetToOrigin = null;
 	protected Boolean hasMoved = false;
 	protected Point3 originalPosition = null;
+	protected Point3 offsetFromOrigin = null;
+	protected Point mousePlaneOffset;
+	protected boolean hidCursor = false;
 	
 	protected AbstractCamera camera = null;
 	protected OnscreenLookingGlass onscreenLookingGlass = null;
+	
+	private static final boolean SHOW_PLANE_TRANSITION_POINT = false;
+	private DebugSphere planeTransitionPointDebugSphere = new DebugSphere();
+	
+	private void addPlaneTransitionPointSphereToScene()
+	{
+		if (SHOW_PLANE_TRANSITION_POINT)
+		{
+			if (this.camera != null && this.planeTransitionPointDebugSphere.getParent() == null)
+			{
+				this.camera.getRoot().addComponent(this.planeTransitionPointDebugSphere);
+			}
+		}
+	}
+	
+	private void removePlaneTransitionPointSphereFromScene()
+	{
+		if (SHOW_PLANE_TRANSITION_POINT)
+		{
+			if (this.camera != null && this.planeTransitionPointDebugSphere.getParent() == this.camera.getRoot())
+			{
+				this.camera.getRoot().removeComponent(this.planeTransitionPointDebugSphere);
+			}
+		}
+	}
+	
 	
 	public AbstractCamera getCamera()
 	{
@@ -192,102 +229,95 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	
 	private Point3 getPerspectiveMovementVector(InputState currentInput, InputState previousInput)
 	{
-		boolean usePickForVertical = true;
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y );
-		if (pickRay == null)
+		Point mousePoint = new Point(currentInput.getMouseLocation().x + this.mousePlaneOffset.x, currentInput.getMouseLocation().y + this.mousePlaneOffset.y);
+//		Point mousePoint = new Point(currentInput.getMouseLocation().x, currentInput.getMouseLocation().y);
+		Vector3 cameraForward = this.getCamera().getParent().getAbsoluteTransformation().orientation.backward;
+		cameraForward.multiply(-1);
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x, mousePoint.y );
+		
+		Point3 levelPickPoint = null;
+		Point3 skewedPickPoint = null;
+		if (this.pickPlane != null)
 		{
-			return new Point3();
-		}
-		
-		Vector3 upDownVector = new Vector3(this.getCamera().getAxes( AsSeenBy.SCENE ).backward);
-		upDownVector.negate();
-		upDownVector.y = 0d;
-		upDownVector.normalize();
-		
-		Point mouseMovement = new Point(0, currentInput.getMouseLocation().y - previousInput.getMouseLocation().y);
-		Vector3 mouseVertical = getMouseMovementFromVector(mouseMovement);
-		
-		Point3 currentObjectOffsetPoint = Point3.createSubtraction( this.manipulatedTransformable.getAbsoluteTransformation().translation , this.offsetToOrigin);
-		
-		Plane cameraPickPlane = this.createCameraPickPlane( currentObjectOffsetPoint );
-		Point3 cameraMovementVector = PlaneUtilities.getPointInPlane( cameraPickPlane, pickRay );
-		cameraMovementVector.subtract( currentObjectOffsetPoint );
-		cameraMovementVector.y = 0f;
-		Vector3 cameraMovementProjection = VectorUtilities.projectOntoVector( new Vector3(cameraMovementVector), upDownVector );
-		double cameraMovementDotProd = Vector3.calculateDotProduct( cameraMovementProjection, mouseVertical );
-		boolean cameraMovementIsValid = true;
-		if (cameraMovementDotProd < 0)
-		{
-			cameraMovementIsValid = false;
-		}
-		
-		Plane levelPickPlane = this.createLevelPickPlane( currentObjectOffsetPoint );
-		Point3 levelMovementVector = PlaneUtilities.getPointInPlane( levelPickPlane, pickRay );
-		boolean levelMovementIsValid = true;
-		Vector3 levelMovementProjection = null;
-		if (levelMovementVector != null)
-		{
-			levelMovementVector.subtract( currentObjectOffsetPoint );
-			levelMovementVector.y = 0f;
-			
-			levelMovementProjection = VectorUtilities.projectOntoVector( new Vector3(levelMovementVector), upDownVector );
-			double levelMovementDotProd = Vector3.calculateDotProduct( levelMovementProjection, mouseVertical );
-			if (levelMovementDotProd < 0)
+			levelPickPoint = PlaneUtilities.getPointInPlane( this.pickPlane, pickRay );
+			//force the pick point to be at the original Y level
+			if (levelPickPoint != null)
 			{
-				levelMovementIsValid = false;
+				levelPickPoint.y = originalPosition.y;
 			}
+		}
+		if (this.backPlane != null)
+		{
+			skewedPickPoint = PlaneUtilities.getPointInPlane( this.backPlane, pickRay );
+			//force the pick point to be at the original Y level
+			if (skewedPickPoint != null)
+			{
+				skewedPickPoint.y = originalPosition.y;
+			}
+		}
+		Point3 pointToUse = null;
+		if (levelPickPoint == null && skewedPickPoint == null)
+		{
+			pointToUse = null;
+		}
+		else if (levelPickPoint == null && skewedPickPoint != null)
+		{
+//			System.out.println("skewed 1!");
+			pointToUse = skewedPickPoint;
+		}
+		else if (levelPickPoint != null && skewedPickPoint == null)
+		{
+//			System.out.println("level 1!");
+			pointToUse = levelPickPoint;
 		}
 		else
 		{
-			levelMovementIsValid = false;
-		}
-		
-		Point3 movementVector = new Point3(0,0,0);
-		Vector3 movementProjection = new Vector3(0,0,0);
-		if (cameraMovementIsValid && !levelMovementIsValid)
-		{
-			movementVector = cameraMovementVector;
-			movementProjection = cameraMovementProjection;
-		} 
-		else if (!cameraMovementIsValid && levelMovementIsValid)
-		{
-			movementVector = levelMovementVector;
-			movementProjection = levelMovementProjection;
-		}
-		else if (cameraMovementIsValid && levelMovementIsValid)
-		{
-			double cameraMag = cameraMovementProjection.calculateMagnitude();
-			double levelMag = levelMovementProjection.calculateMagnitude();
-			if (levelMag > cameraMag && Math.abs( levelMag - cameraMag ) < 1)
+			Point3 cameraPosition = this.getCamera().getParent().getAbsoluteTransformation().translation;
+			Point3 currentPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation;
+			double levelDistanceToCamera = Point3.calculateDistanceBetween(cameraPosition, levelPickPoint);
+			double skewedDistanceToCamera = Point3.calculateDistanceBetween(cameraPosition, skewedPickPoint);
+			
+			double levelDistanceToCurrent = Point3.calculateDistanceBetween(currentPosition, levelPickPoint);
+			double skewedDistanceToCurrent = Point3.calculateDistanceBetween(currentPosition, skewedPickPoint);
+			
+			double distanceBetweenOptions = Point3.calculateDistanceBetween(levelPickPoint, skewedPickPoint);
+			
+			
+//			System.out.println("\nlevel: "+levelPickPoint+":\n  to camera: "+levelDistanceToCamera+"\n  to previous: "+levelDistanceToCurrent);
+//			System.out.println("skewed: "+skewedPickPoint+":\n  to camera: "+skewedDistanceToCamera+"\n  to previous: "+skewedDistanceToCurrent);
+//			if (levelDistanceToCurrent < skewedDistanceToCurrent)
+//			{
+//				System.out.println("level 2!");
+//				pointToUse = levelPickPoint;
+//			}
+//			else
+//			{
+//				System.out.println("skewed 2!");
+//				pointToUse = skewedPickPoint;
+//			}
+			
+			if (levelDistanceToCamera <= skewedDistanceToCamera)
 			{
-				movementVector = levelMovementVector;
-				movementProjection = levelMovementProjection;
+//				System.out.println("level 2!");
+				pointToUse = levelPickPoint;
 			}
 			else
 			{
-//				movementVector = cameraMovementVector;
-//				movementProjection = cameraMovementProjection;
-				movementVector = levelMovementVector;
-				movementProjection = levelMovementProjection;
+//				System.out.println("skewed 2!");
+				pointToUse = skewedPickPoint;
 			}
+			
 		}
-		
-		
-		
-		
-		double cameraAngleApproximation = Math.abs( this.getCamera().getAxes( AsSeenBy.SCENE ).backward.y );
-		if (cameraAngleApproximation < .1d)
+		if (pointToUse != null)
 		{
-			usePickForVertical = false;
+			Point3 movementChange = Point3.createSubtraction(pointToUse, this.getManipulatedTransformable().getAbsoluteTransformation().translation);
+			movementChange.y = 0;
+			return movementChange;
 		}
-		
-		if (!usePickForVertical)
+		else
 		{
-			movementVector.subtract( movementProjection );
-			movementVector.add( mouseVertical );
-		}
-		return movementVector;
-		
+			return new Point3(0,0,0);
+		}	
 	}
 	
 	
@@ -298,6 +328,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 			if (!this.hasMoved)
 			{
 				this.hasMoved = true;
+				this.hideCursor();
 			}
 				
 			Point3 movementVector = getMovementVectorBasedOnCamera( currentInput, previousInput );
@@ -322,8 +353,9 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 				}
 			}
 			if (newPosition != null)
-			{
+			{	
 				this.manipulatedTransformable.setTranslationOnly( newPosition, AsSeenBy.SCENE );
+				planeTransitionPointDebugSphere.setLocalTranslation(newPosition);
 			}
 		}
 	}
@@ -336,17 +368,24 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput  ) 
 	{
+		removePlaneTransitionPointSphereFromScene();
+		this.showCursor();
 	}
 
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-		this.manipulatedTransformable = startInput.getClickPickTransformable();	
+		this.manipulatedTransformable = startInput.getClickPickTransformable();
+		this.hidCursor = false;
 		if (this.manipulatedTransformable != null)
 		{
 			this.initializeEventMessages();
 			this.hasMoved = false;
 			this.originalPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation;
-			this.orthographicPickPlane = new Plane( this.originalPosition, this.getCamera().getAxes( AsSeenBy.SCENE ).backward );
+			AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation();
+			Vector3 toOrigin = Vector3.createSubtraction(this.originalPosition, cameraTransform.translation);
+			toOrigin.normalize();
+			Vector3 cameraFacingNormal = Vector3.createMultiplication(cameraTransform.orientation.backward, -1);
+			this.orthographicPickPlane = new Plane( this.originalPosition, cameraFacingNormal );
 			
 			Ray orthoPickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
 			Point3 orthoPickPoint = PlaneUtilities.getPointInPlane( orthographicPickPlane, orthoPickRay );
@@ -355,27 +394,128 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 			Point3 initialClickPoint = new Point3();
 			startInput.getClickPickResult().getPositionInSource(initialClickPoint);
 			startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn( initialClickPoint, startInput.getClickPickResult().getSource().getRoot() );
-			this.pickPlane = createCameraPickPlane(initialClickPoint);
 			
+			this.offsetFromOrigin = Point3.createSubtraction( initialClickPoint, this.originalPosition );			
+			this.mousePlaneOffset = calculateMousePlaneOffset(startInput.getMouseLocation());
 			
+			//We don't need special planes for the orthographic camera
+			if (!(this.getCamera() instanceof OrthographicCamera))
+			{
+				Point mousePoint = new Point(startInput.getMouseLocation().x + this.mousePlaneOffset.x, startInput.getMouseLocation().y + this.mousePlaneOffset.y);
+				setUpPlanes(this.originalPosition, mousePoint);
+			}
 			
-			Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
-			if (pickRay != null)
-			{
-				this.offsetToOrigin = Point3.createSubtraction( this.originalPosition, initialClickPoint );
-			}
-			else 
-			{
-				this.manipulatedTransformable = null;
-			}
-			if (this.manipulatedTransformable != null)
-			{
-				return true;
-			}
+			addPlaneTransitionPointSphereToScene();
+			return true;
 		}
 		return false;
 	}
 
+	private static final double MAX_DISTANCE_PER_PIXEL = .17d;
+	
+	private void setUpPlanes(Point3 planePosition, Point mousePoint )
+	{
+		Plane horizontalPlane = new Plane(planePosition, Vector3.accessPositiveYAxis());
+		AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation();
+		boolean isAbove = cameraTransform.translation.y > planePosition.y;
+
+		Vector3 worstCasePlaneNormal = new Vector3(cameraTransform.orientation.backward);
+		worstCasePlaneNormal.y = 0;
+		worstCasePlaneNormal.normalize();
+		worstCasePlaneNormal.y =  Math.tan((Math.PI*75.0)/(180.0));
+		if (!isAbove)
+		{
+			worstCasePlaneNormal.y *= -1;
+		}
+		worstCasePlaneNormal.normalize();
+	
+		Ray centerRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x, mousePoint.y );
+		Ray oneUp = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x, mousePoint.y-1 );
+		Ray oneDown = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x, mousePoint.y+1 );
+		Point3 centerPoint = PlaneUtilities.getPointInPlane( horizontalPlane, centerRay);
+		Point3 upPoint = PlaneUtilities.getPointInPlane( horizontalPlane, oneUp);
+		Point3 downPoint = PlaneUtilities.getPointInPlane( horizontalPlane, oneDown);
+
+		boolean shouldUseHorizontalPlane = false;
+		if (centerPoint != null && upPoint != null && downPoint != null)
+		{
+			double cameraHeight = Math.abs(cameraTransform.translation.y - planePosition.y);
+			double cameraDotUp = Vector3.calculateDotProduct(cameraTransform.orientation.up, Vector3.accessPositiveYAxis());
+			
+//			System.out.println("height: "+cameraHeight+", dot: "+cameraDotUp+", ratio: "+cameraDotUp/cameraHeight);
+			
+			double distanceUp = Point3.calculateDistanceBetween(centerPoint, upPoint);
+			double distanceDown = Point3.calculateDistanceBetween(centerPoint, downPoint);
+			double higher, lower;
+			Vector3 awayFromCamera;
+			if (distanceUp >= distanceDown)
+			{
+				higher = distanceUp;
+				lower = distanceDown;
+				awayFromCamera = Vector3.createSubtraction(upPoint,	centerPoint);
+				awayFromCamera.normalize();
+			}
+			else
+			{
+				higher = distanceDown;
+				lower = distanceUp;
+				awayFromCamera = Vector3.createSubtraction(downPoint, centerPoint);
+				awayFromCamera.normalize();
+			}
+			double distanceIncreasePerPixel = (higher - lower);
+			double pixelsToMaxPixel = (MAX_DISTANCE_PER_PIXEL - higher) / distanceIncreasePerPixel;
+			double totalExtraDistance = MAX_DISTANCE_PER_PIXEL * pixelsToMaxPixel * .5; //basically the integration of this linear equations
+			Vector3 extraVector = Vector3.createMultiplication(awayFromCamera, totalExtraDistance);
+			planePosition.add(extraVector);
+			shouldUseHorizontalPlane = true;
+		}
+		
+//		planeTransitionPointDebugSphere.setLocalTranslation(planePosition);
+		Plane backPlane = new Plane(planePosition, worstCasePlaneNormal);
+		if (shouldUseHorizontalPlane)
+		{
+			this.pickPlane = horizontalPlane;
+		}
+		else
+		{
+			this.pickPlane = null;
+		}
+		this.backPlane = backPlane;
+	}
+	
+	private Point calculateMousePlaneOffset(Point mousePosition)
+	{
+		Point3 pointInCamera = this.manipulatedTransformable.getTranslation(this.getCamera());
+		Point awtPoint = edu.cmu.cs.dennisc.lookingglass.util.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.getOnscreenLookingGlass(), this.getCamera() );
+		return new Point(awtPoint.x - mousePosition.x, awtPoint.y - mousePosition.y);
+	}
+	
+	protected void hideCursor()
+	{
+		CursorUtilities.pushAndSet( this.getOnscreenLookingGlass().getAWTComponent(), CursorUtilities.NULL_CURSOR );
+		this.hidCursor = true;
+	}
+	
+	protected void showCursor()
+	{
+		if (this.hidCursor)
+		{
+			try {
+				Point3 new3DPoint = Point3.createAddition(this.manipulatedTransformable.getAbsoluteTransformation().translation, this.offsetFromOrigin);
+				Point3 pointInCamera = this.camera.transformFrom_New(new3DPoint, this.camera.getRoot());
+				Point awtPoint = edu.cmu.cs.dennisc.lookingglass.util.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.getOnscreenLookingGlass(), this.getCamera() );
+				SwingUtilities.convertPointToScreen( awtPoint, this.getOnscreenLookingGlass().getAWTComponent() );
+				Robot mouseMover = new Robot();
+				mouseMover.mouseMove(awtPoint.x, awtPoint.y);
+			} catch( AWTException e ) {
+			}
+			finally
+			{
+				CursorUtilities.popAndSet( this.getOnscreenLookingGlass().getAWTComponent() );
+			}
+		}
+	}
+	
 	@Override
 	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
 		// TODO Auto-generated method stub

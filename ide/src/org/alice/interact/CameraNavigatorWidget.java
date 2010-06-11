@@ -58,9 +58,9 @@ import org.alice.interact.handle.ManipulationHandle2CameraZoom;
 import org.alice.interact.handle.ManipulationHandle2DCameraDriver;
 import org.alice.interact.handle.ManipulationHandle2DCameraStrafe;
 import org.alice.interact.handle.ManipulationHandle2DCameraTurnUpDown;
-import org.alice.interact.manipulator.CameraDragDriveManipulator;
-import org.alice.interact.manipulator.CameraDragStrafeManipulator;
-import org.alice.interact.manipulator.CameraDragUpDownRotateManipulator;
+import org.alice.interact.manipulator.Camera2DDragDriveManipulator;
+import org.alice.interact.manipulator.Camera2DDragStrafeManipulator;
+import org.alice.interact.manipulator.Camera2DDragUpDownRotateManipulator;
 import org.alice.interact.manipulator.CameraInformedManipulator;
 import org.alice.interact.manipulator.ObjectGlobalHandleDragManipulator;
 import org.alice.interact.manipulator.OrthographicCameraDragStrafeManipulator;
@@ -103,7 +103,7 @@ public class CameraNavigatorWidget extends JPanel {
 		//Create the new handle
 		this.cameraDriver = new ManipulationHandle2DCameraDriver();
 		//Create the manipulator
-		CameraDragDriveManipulator driverManipulator = new CameraDragDriveManipulator(this.cameraDriver);
+		Camera2DDragDriveManipulator driverManipulator = new Camera2DDragDriveManipulator(this.cameraDriver);
 		//Set the desired view so the manipulator knows which camera to control 
 		driverManipulator.setDesiredCameraView( attachedView );
 		//Set up the handle to know about its own manipulator and conditions so the ObjectGlobalHandleDragManipulator can activate the control
@@ -124,7 +124,7 @@ public class CameraNavigatorWidget extends JPanel {
 		//Create the new handle
 		this.cameraControlUpDown = new ManipulationHandle2DCameraTurnUpDown();
 		//Create the manipulator
-		CameraDragUpDownRotateManipulator upDownManipulator = new CameraDragUpDownRotateManipulator(this.cameraControlUpDown);
+		Camera2DDragUpDownRotateManipulator upDownManipulator = new Camera2DDragUpDownRotateManipulator(this.cameraControlUpDown);
 		//Set the desired view so the manipulator knows which camera to control 
 		upDownManipulator.setDesiredCameraView( attachedView );
 		//Set up the handle to know about its own manipulator and conditions so the ObjectGlobalHandleDragManipulator can activate the control
@@ -145,7 +145,7 @@ public class CameraNavigatorWidget extends JPanel {
 		//Create the new handle
 		this.cameraControlStrafe = new ManipulationHandle2DCameraStrafe();
 		//Create the manipulator
-		CameraDragStrafeManipulator strafeManipulator = new CameraDragStrafeManipulator(this.cameraControlStrafe);
+		Camera2DDragStrafeManipulator strafeManipulator = new Camera2DDragStrafeManipulator(this.cameraControlStrafe);
 		//Set the desired view so the manipulator knows which camera to control 
 		strafeManipulator.setDesiredCameraView( attachedView );
 		//Set up the handle to know about its own manipulator and conditions so the ObjectGlobalHandleDragManipulator can activate the control

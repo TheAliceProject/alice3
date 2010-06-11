@@ -59,6 +59,7 @@ import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Tuple3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import edu.cmu.cs.dennisc.scenegraph.Disc;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Sphere;
@@ -78,9 +79,7 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
 	
 	private Point originalMousePoint;
 	private AffineMatrix4x4 originalLocalTransformation;
-	private Angle originalAngleAboutXAxis;
 	private Point3 pivotPoint = null;
-	
 	
 	private static final boolean SHOW_SPHERE = false;
 	private Sphere sgPivotSphere = new Sphere();
@@ -179,27 +178,13 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
 		standIn.setAxesOnlyToStandUp();
 		this.manipulatedTransformable.applyRotationAboutXAxis( new AngleInDegrees(upDownRotationAngle), standIn );
 		this.manipulatedTransformable.applyRotationAboutYAxis( new AngleInDegrees(leftRightRotationAngle), standIn );
-//		
-//		Angle newAngle = this.getRotationAboutXAxis();
-//		double originalAngleInDegrees = this.originalAngleAboutXAxis.getAsDegrees();
-//		double currentAngleInDegrees = newAngle.getAsDegrees();
-//		
-//		
+		
 		standIn.vehicle.setValue(null);
-	}
-
-	private Angle getRotationAboutXAxis()
-	{
-		Point3 cameraPoint = manipulatedTransformable.getAbsoluteTransformation().translation;
-		double distanceToCamera = Point3.calculateDistanceBetween(this.pivotPoint, cameraPoint);
-		double angleUp = Math.asin( cameraPoint.y / distanceToCamera );
-		return new AngleInRadians(angleUp);
 	}
 	
 	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput ) {
 		removePivotSphereToScene();
-		
 	}
 	
 	@Override
@@ -213,25 +198,36 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
 		if (super.doStartManipulator( startInput ) && this.camera instanceof SymmetricPerspectiveCamera)
 		{
 			boolean success = false;
+			
 			this.originalLocalTransformation = new AffineMatrix4x4(manipulatedTransformable.localTransformation.getValue());
 			this.originalMousePoint = new Point(startInput.getMouseLocation());
-			Vector3 cameraForward = this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward;
-			cameraForward.multiply( -1.0d );
 			
-			double dotWithVertical = Math.abs(Vector3.calculateDotProduct(cameraForward, Vector3.accessPositiveYAxis()));
-			if (dotWithVertical < .5)
-			{
-				double downwardShiftFactor = ((.5 - dotWithVertical)/.5) * -.2;
-				cameraForward.add(new Vector3(0, downwardShiftFactor, 0));
-				cameraForward.normalize();
-			}
 			addPivotSphereToScene();
-			Point3 pickPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, new edu.cmu.cs.dennisc.math.Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward));
-			if ( pickPoint != null)
+			
+			Transformable clickedObject = startInput.getClickPickTransformable();
+			if (clickedObject != null)
 			{
-				this.setPivotPoint( pickPoint );
-				this.originalAngleAboutXAxis = this.getRotationAboutXAxis();
+				this.setPivotPoint(clickedObject.getAbsoluteTransformation().translation);
 				success = true;
+			}
+			else
+			{
+				Vector3 cameraForward = this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward;
+				cameraForward.multiply( -1.0d );
+				
+				double dotWithVertical = Math.abs(Vector3.calculateDotProduct(cameraForward, Vector3.accessPositiveYAxis()));
+				if (dotWithVertical < .5)
+				{
+					double downwardShiftFactor = ((.5 - dotWithVertical)/.5) * -.2;
+					cameraForward.add(new Vector3(0, downwardShiftFactor, 0));
+					cameraForward.normalize();
+				}
+				Point3 pickPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, new edu.cmu.cs.dennisc.math.Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward));
+				if ( pickPoint != null)
+				{
+					this.setPivotPoint( pickPoint );
+					success = true;
+				}
 			}
 			return success;
 		}
