@@ -105,6 +105,14 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 		tutorial.addDragAndDropStep( 
+				"Drag isWithinThresholdOf",
+				"<html>Drag <b>getDistanceTo</b>.</html>",
+				tutorial.createFunctionInvocationTemplateResolver( grassyGroundField, "getDistanceTo" ),
+				"<html>Drop <b>here</b>.</html>",
+				tutorial.createInvocationArgumentConditionResolver( tutorial.createMethodResolver(grassyGroundField, "move"), 0, 1),
+				tutorial.createToDoCompletorValidator()
+		);
+		tutorial.addDragAndDropStep( 
 				"Drag Do In Order",
 				"<html>Drag <b>Do In Order</b>.</html>",
 				tutorial.createDoInOrderTemplateResolver(),

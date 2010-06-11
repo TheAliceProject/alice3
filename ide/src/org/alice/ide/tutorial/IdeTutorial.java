@@ -165,16 +165,6 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 	}
 
-//	private class DefaultStatementListPropertyResolver implements StatementListPropertyResolver {
-//		private edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty;
-//		public DefaultStatementListPropertyResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
-//			this.statementListProperty = statementWithBody.body.getValue().statements;
-//		}
-//		public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getStatementListProperty() {
-//			return this.statementListProperty;
-//		}
-//	}
-	
 	public static class StatementListResolver extends CodeTrackableShapeResolver {
 		private StatementListPropertyResolver statementListPropertyResolver;
 		private int index;
@@ -187,17 +177,6 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			return codeEditor.getTrackableShapeAtIndexOf( this.statementListPropertyResolver.getStatementListProperty(), this.index );
 		}
 	}
-
-//	public static class StatementResolver extends CodeDragComponentResolver {
-//		private edu.cmu.cs.dennisc.alice.ast.Statement statement;
-//		public StatementResolver( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-//			this.statement = statement;
-//		}
-//		@Override
-//		protected edu.cmu.cs.dennisc.croquet.DragComponent resolveDragComponent(org.alice.ide.codeeditor.CodeEditor codeEditor) {
-//			return codeEditor.getDragComponent( this.statement );
-//		}
-//	}
 
 	private static <T extends edu.cmu.cs.dennisc.alice.ast.Node> T getNodeAt( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, Class<T> cls, int index ) {
 		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<T> crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<T>( cls ) {
@@ -217,41 +196,53 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		} else {
 			return null;
 		}
-			
+	}
+
+	private static edu.cmu.cs.dennisc.alice.ast.MethodInvocation getMethodInvocationAt( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, int index ) {
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation >( edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) {
+			@Override
+			protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+				return methodInvocation.method.getValue() == method;
+			}
+		};
+		edu.cmu.cs.dennisc.alice.ast.BlockStatement body = code.getBodyProperty().getValue();
+		body.crawl( crawler, false );
+		java.util.List<edu.cmu.cs.dennisc.alice.ast.MethodInvocation> list = crawler.getList();
+		if( index == Short.MAX_VALUE ) {
+			index = list.size()-1;
+		}
+		if( list.size() > index ) {
+			return list.get( index );
+		} else {
+			return null;
+		}
 	}
 	
-	public static class ProcedureInvocationResolver extends CodeDragComponentResolver {
+	public static class MethodInvocationStatementResolver extends CodeDragComponentResolver {
 		private Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver;
 		private int index;
-		public ProcedureInvocationResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int index ) {
+		public MethodInvocationStatementResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int index ) {
 			this.methodResolver = methodResolver;
 			this.index = index;
 		}
 		@Override
 		protected edu.cmu.cs.dennisc.croquet.DragComponent resolveDragComponent(org.alice.ide.codeeditor.CodeEditor codeEditor) {
-			final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.methodResolver.getResolved();
-			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)codeEditor.getCode();
-			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation >( edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) {
-				@Override
-				protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
-					return methodInvocation.method.getValue() == method;
+			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.methodResolver.getResolved();
+			if( method != null ) {
+				edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getValue();
+				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = getMethodInvocationAt( code, method, this.index );
+				if( methodInvocation != null ) {
+					edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)methodInvocation.getParent();
+					return codeEditor.getDragComponent(statement);
+				} else {
+					return null;
 				}
-			};
-			edu.cmu.cs.dennisc.alice.ast.BlockStatement body = code.getBodyProperty().getValue();
-			body.crawl( crawler, false );
-			java.util.List<edu.cmu.cs.dennisc.alice.ast.MethodInvocation> list = crawler.getList();
-			if( this.index == Short.MAX_VALUE ) {
-				this.index = list.size()-1;
-			}
-			if( list.size() > this.index ) {
-				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = list.get( this.index );
-				edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)methodInvocation.getParent();
-				return codeEditor.getDragComponent(statement);
 			} else {
 				return null;
 			}
 		}
 	}
+
 	public static class StatementAssignableToResolver extends CodeDragComponentResolver {
 		private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls;
 		private int index;
@@ -362,24 +353,6 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return this.createStatementListResolver(statementListPropertyResolver, Short.MAX_VALUE);
 	}
 
-
-//	public StatementListResolver createStatementListResolver( Class<? extends edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> statementWithBodyCls, int indexA, int indexB ) {
-//		return new StatementListResolver(
-//				statementListProperty, indexA, 
-//		indexB);
-//	}
-
-
-//	public StatementListResolver createStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody, int index ) {
-//		return this.createStatementListResolver( new DefaultStatementListPropertyResolver( statementWithBody ), index);
-//	}
-//	public StatementListResolver createBeginingOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
-//		return this.createBeginingOfStatementListResolver(new DefaultStatementListPropertyResolver( statementWithBody ));
-//	}
-//	public StatementListResolver createEndOfStatementListResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
-//		return this.createEndOfStatementListResolver(new DefaultStatementListPropertyResolver( statementWithBody ));
-//	}
-
 	public StatementListResolver createStatementListResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeResolver, int index ) {
 		return this.createStatementListResolver(new CodeBodyStatementListPropertyResolver( codeResolver ), index);
 	}
@@ -404,7 +377,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	
 	
 	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createInvocationResolver( final Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int index ) {
-		return new ProcedureInvocationResolver(methodResolver, index);
+		return new MethodInvocationStatementResolver(methodResolver, index);
 	}
 	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createFirstInvocationResolver( final Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver ) {
 		return this.createInvocationResolver(methodResolver, 0);
@@ -493,6 +466,32 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			}
 		}
 	}
+
+	public static class InvocationArgumentResolver extends CodeTrackableShapeResolver {
+		private Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver;
+		private int invocationIndex;
+		private int argumentIndex;
+		public InvocationArgumentResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex, int argumentIndex ) {
+			this.methodResolver = methodResolver;
+			this.invocationIndex = invocationIndex;
+			this.argumentIndex = argumentIndex;
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape( org.alice.ide.codeeditor.CodeEditor codeEditor ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.methodResolver.getResolved();
+			if( method != null ) {
+				edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getValue();
+				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = getMethodInvocationAt( code, method, this.invocationIndex );
+				if( methodInvocation != null ) {
+					return codeEditor.getComponent( methodInvocation.arguments.get( this.argumentIndex ).expression );
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		}
+	}
 	
 	public Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape > createIfConditionResolver( int index ) {
 		return new IfConditionResolver( index );
@@ -502,6 +501,10 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	}
 	public Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape > createLastIfConditionResolver() {
 		return this.createIfConditionResolver(Short.MAX_VALUE);
+	}
+
+	public Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape > createInvocationArgumentConditionResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex, int argumentIndex ) {
+		return new InvocationArgumentResolver( methodResolver, invocationIndex, argumentIndex );
 	}
 	
 	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractField > createFieldResolver( final String name ) {
