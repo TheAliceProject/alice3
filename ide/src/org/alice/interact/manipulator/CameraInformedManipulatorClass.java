@@ -60,21 +60,4 @@ public abstract class CameraInformedManipulatorClass extends AbstractManipulator
 		this.onscreenLookingGlass = onscreenLookingGlass;
 	}
 	
-	protected edu.cmu.cs.dennisc.math.Point3 getPointInPlane( edu.cmu.cs.dennisc.math.Plane plane, edu.cmu.cs.dennisc.math.Ray ray ) {
-		double t = plane.intersect( ray );
-		if ( Double.isNaN( t ) )
-		{
-			return null;
-		}
-		return ray.getPointAlong( t );
-	}
-	
-	protected edu.cmu.cs.dennisc.math.Point3 getPointInPlane( edu.cmu.cs.dennisc.math.Plane plane, int xPixel, int yPixel ) {
-		edu.cmu.cs.dennisc.math.Ray ray = this.onscreenLookingGlass.getRayAtPixel( xPixel, yPixel, this.camera );
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.camera.getAbsoluteTransformation();
-		ray.transform( m );
-		return getPointInPlane( plane, ray );
-
-	}
-	
 }

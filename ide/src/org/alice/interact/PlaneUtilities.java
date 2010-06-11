@@ -43,6 +43,7 @@
 package org.alice.interact;
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
+import edu.cmu.cs.dennisc.math.AngleInDegrees;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
@@ -55,7 +56,7 @@ public class PlaneUtilities {
 	
 	public static edu.cmu.cs.dennisc.math.Point3 getPointInPlane( edu.cmu.cs.dennisc.math.Plane plane, edu.cmu.cs.dennisc.math.Ray ray ) {
 		double t = plane.intersect( ray );
-		if ( Double.isNaN( t ) )
+		if ( Double.isNaN( t ) || t < 0)
 		{
 			return null;
 		}
@@ -65,6 +66,13 @@ public class PlaneUtilities {
 	public static edu.cmu.cs.dennisc.math.Ray getRayFromPixel( OnscreenLookingGlass onscreenLookingGlass, AbstractCamera camera, int xPixel, int yPixel)
 	{
 		edu.cmu.cs.dennisc.math.Ray ray = onscreenLookingGlass.getRayAtPixel( xPixel, yPixel, camera );
+		
+		//So this is a little crazy
+		//The pick ray from the lookingglass is calculated to be pointing along the "backward" direction of the camera
+		// but still cast "forward". This means if we want a true "forward" ray we need to flip invert it
+		Vector3 rayDir = ray.getDirection();
+		rayDir.multiply(-1);
+		ray.setDirection(rayDir);
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = camera.getAbsoluteTransformation();
 		ray.transform( m );
 		return ray;

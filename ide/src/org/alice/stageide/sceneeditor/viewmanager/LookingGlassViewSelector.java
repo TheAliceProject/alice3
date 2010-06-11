@@ -202,24 +202,31 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Prop
 	{
 		CameraMarker previousMarker = this.activeMarker;
 		super.doSetSelectedView(index);
-		if (previousMarker != this.activeMarker && this.perspectiveCamera != null && this.activeMarker != null)
+		
+//		if (previousMarker != null && this.activeMarker != null)
+//		{
+//			System.out.println("setting selected view from "+previousMarker.getName()+" to "+this.activeMarker.getName());
+//		}
+		if (this.perspectiveCamera != null && this.activeMarker != null)
 		{
-			stopTrackingCamera();
-			if (this.activeMarker instanceof OrthographicCameraMarker)
+			if (previousMarker != this.activeMarker)
 			{
-				OrthographicCameraMarker orthoMarker = (OrthographicCameraMarker)this.activeMarker;
-				switchToOrthographicView();
-				Transformable cameraParent = (Transformable)LookingGlassViewSelector.this.orthographicCamera.getParent();
-				LookingGlassViewSelector.this.orthographicCamera.picturePlane.setValue(new ClippedZPlane(orthoMarker.getPicturePlane()) );
-				cameraParent.setTransformation( LookingGlassViewSelector.this.activeMarker.getTransformation( AsSeenBy.SCENE ), LookingGlassViewSelector.this.orthographicCamera.getRoot() );
-				startTrackingCamera(this.orthographicCamera, orthoMarker);
+				stopTrackingCamera();
+				if (this.activeMarker instanceof OrthographicCameraMarker)
+				{
+					OrthographicCameraMarker orthoMarker = (OrthographicCameraMarker)this.activeMarker;
+					switchToOrthographicView();
+					Transformable cameraParent = (Transformable)LookingGlassViewSelector.this.orthographicCamera.getParent();
+					LookingGlassViewSelector.this.orthographicCamera.picturePlane.setValue(new ClippedZPlane(orthoMarker.getPicturePlane()) );
+					cameraParent.setTransformation( LookingGlassViewSelector.this.activeMarker.getTransformation( AsSeenBy.SCENE ), LookingGlassViewSelector.this.orthographicCamera.getRoot() );
+					startTrackingCamera(this.orthographicCamera, orthoMarker);
+				}
+				else
+				{
+					switchToPerspectiveView();
+					animateToTargetView();
+				}
 			}
-			else
-			{
-				switchToPerspectiveView();
-				animateToTargetView();
-			}
-			
 		}
 	}
 

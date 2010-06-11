@@ -46,6 +46,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -62,9 +63,14 @@ import org.alice.apis.moveandturn.Scene;
 import org.alice.apis.moveandturn.Transformable;
 import org.alice.ide.IDE;
 import org.alice.ide.name.validators.FieldNameValidator;
+import org.alice.interact.InputState;
+import org.alice.interact.PickHint;
 import org.alice.interact.SnapGrid;
 import org.alice.interact.SnapState;
 import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.condition.MouseDragCondition;
+import org.alice.interact.condition.PickCondition;
+import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.sceneeditor.viewmanager.CameraFieldAndMarker;
 import org.alice.stageide.sceneeditor.viewmanager.LookingGlassViewSelector;
@@ -106,8 +112,11 @@ import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.pattern.Tuple2;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.Element;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import edu.cmu.cs.dennisc.zoot.ActionOperation;
+import edu.cmu.cs.dennisc.zoot.ZManager;
 
 /**
  * @author Dennis Cosgrove
@@ -378,7 +387,17 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.globalDragAdapter = new org.alice.interact.GlobalDragAdapter(this);
 			this.globalDragAdapter.setSnapState(this.snapState);
 			this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
-
+			
+			MouseDragCondition rightMouseAndInteractive = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON3 , new PickCondition( PickHint.MOVEABLE_OBJECTS ) );
+			ManipulatorClickAdapter rightClickAdapter = new ManipulatorClickAdapter() {
+				public void onClick(InputState clickInput) {
+					showRightClickMenuForModel(clickInput);
+					
+				}
+			};
+			this.globalDragAdapter.addClickAdapter(rightClickAdapter, rightMouseAndInteractive);
+			
+			
 			this.onscreenLookingGlass.addLookingGlassListener(this);
 			
 			this.mainCameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter, CameraView.MAIN);
@@ -527,6 +546,38 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 
+	private FieldTile getFieldTileForClick(InputState input)
+	{
+		PrintUtilities.println( "merge: todoL implement getFieldTileForClick" );
+//		for (FieldTile tile : this.fieldTiles)
+//		{
+//			AbstractField field = tile.getField();
+//			if (field.getValueType().isAssignableTo(org.alice.apis.moveandturn.Transformable.class))
+//			{
+//				Transformable moveAndTurnTransformable = this.getInstanceInJavaForField(field, org.alice.apis.moveandturn.Transformable.class);
+//				edu.cmu.cs.dennisc.scenegraph.Transformable t = input.getClickPickTransformable();
+//				org.alice.apis.moveandturn.Element element = org.alice.apis.moveandturn.Element.getElement(t);
+//				if (element == moveAndTurnTransformable)
+//				{
+//					return tile;
+//				}
+//			}
+//		}
+		return null;
+	}
+	
+	private void showRightClickMenuForModel( InputState clickState )
+	{
+		FieldTile tile = getFieldTileForClick(clickState);
+		if (tile != null)
+		{
+			edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation popupMenuOperation = tile.getPopupMenuOperation();
+			if( popupMenuOperation != null ) {
+				popupMenuOperation.fire();
+			}
+		}
+	}
+	
 	@Override
 	public void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance, boolean isAnimationDesired ) {
 		assert instance instanceof org.alice.apis.moveandturn.Transformable;
@@ -716,6 +767,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 //		this.revalidateAndRepaint();
 //	}
 
+	
 	@Override
 	protected void putFieldForInstanceInJava( Object instanceInJava, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super.putFieldForInstanceInJava( instanceInJava, field );
@@ -894,11 +946,14 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.snapGrid.addCamera(this.getSGOrthographicCamera());
 		this.snapGrid.setCurrentCamera(this.getSGPerspectiveCamera());
 		this.snapGrid.setShowing(this.snapState.shouldShowSnapGrid());
+
+		PrintUtilities.println( "merge: removed this.setRootField( sceneField );" );
+		//this.setRootField( sceneField );
 		
 		upgradeSceneToStateOfTheArt();
 		
 		setCameraMarkerVisibility(true);
-		
+
 		//TODO: Probably want to add the orthographic markers to the scene here
 		
 		this.globalDragAdapter.addCameraView( CameraView.MAIN, this.sgPerspectiveCamera, this.sgOrthographicCamera );
@@ -1032,6 +1087,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 	
+	private void ensureCodeIsUpToDate()
+	{
+		IDE.getSingleton().ensureProjectCodeUpToDate();
+	}
+	
 	private void upgradeSceneToStateOfTheArt()
 	{
 		if (needsDefaultCameraViewField())
@@ -1048,6 +1108,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			defaultViewField.access.setValue(edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE);
 			this.sceneType.fields.add( this.sceneType.fields.size(), defaultViewField );
 			this.handleFieldCreation(this.sceneType, defaultViewField, defaultViewMarker, false );
+			
+			ensureCodeIsUpToDate();
+			
+			IDE.getSingleton().refreshFields();
 		}
 	}
 
@@ -1059,12 +1123,17 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private void fillInAutomaticSetUpMethod( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field) {
 		SetUpMethodGenerator.fillInAutomaticSetUpMethod( bodyStatementsProperty, isThis, field, this.getInstanceInJavaForField( field ) );
 	}
-
+	
 	private AbstractField getPointOfViewFieldForField( AbstractField field )
 	{
 		if (field.getName().equals("camera"))
 		{
-			return this.sidePane.getStartingCameraViewManager().getSelectedView().field;
+			PrintUtilities.println( "merge: todo getPointOfViewFieldForField" );
+			try {
+				return this.sidePane.getStartingCameraViewManager().getSelectedView().field;
+			} catch( NullPointerException npe ) {
+				return null;
+			}
 		}
 		return null;
 	}

@@ -49,6 +49,7 @@ import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.ImageBasedManipulationHandle2D;
+import org.alice.interact.handle.ManipulationHandle2D;
 
 import edu.cmu.cs.dennisc.math.Vector2;
 import edu.cmu.cs.dennisc.math.Vector3;
@@ -57,12 +58,14 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 /**
  * @author David Culyba
  */
-public class CameraDragUpDownRotateManipulator extends Camera2DDragManipulator {
+public class Camera2DDragDriveManipulator extends Camera2DDragManipulator {
 
-	protected static final Color FORWARD = Color.RED;
-	protected static final Color BACKWARD = Color.GREEN;
+	protected static final Color UP = Color.RED;
+	protected static final Color LEFT = Color.GREEN;
+	protected static final Color RIGHT = Color.BLUE;
+	protected static final Color DOWN = Color.WHITE;
 	
-	public CameraDragUpDownRotateManipulator( ImageBasedManipulationHandle2D handle)
+	public Camera2DDragDriveManipulator( ImageBasedManipulationHandle2D handle)
 	{
 		super(handle);
 	}
@@ -71,90 +74,118 @@ public class CameraDragUpDownRotateManipulator extends Camera2DDragManipulator {
 	protected void initializeEventMessages()
 	{
 		this.manipulationEvents.clear();
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Rotate, new MovementDescription(MovementDirection.LEFT, MovementType.LOCAL), this.manipulatedTransformable ) );
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Rotate, new MovementDescription(MovementDirection.RIGHT, MovementType.LOCAL), this.manipulatedTransformable ) );
+		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.BACKWARD, MovementType.STOOD_UP), this.manipulatedTransformable ) );
+		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.FORWARD, MovementType.STOOD_UP), this.manipulatedTransformable ) );
+		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Rotate, new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP), this.manipulatedTransformable ) );
+		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Rotate, new MovementDescription(MovementDirection.DOWN, MovementType.STOOD_UP), this.manipulatedTransformable ) );
 	}
 	
 	@Override
-	protected Vector3 getRotationVectorForColor(Color color) {
+	protected Vector3 getMovementVectorForColor(Color color) {
+		Vector3 initialMove = new Vector3(0.0d, 0.0d, 0.0d);
+		if (color != null)
+		{
+			if (color.equals( UP ))
+			{
+				initialMove.z = -INITIAL_MOVE_FACTOR;
+			}
+			else if (color.equals( DOWN ))
+			{
+				initialMove.z = INITIAL_MOVE_FACTOR;
+			}
+		}
+		return initialMove;
+	}
+	
+	@Override
+	protected Vector3 getRotationVectorForColor( Color color ) {
 		Vector3 initialRotate = new Vector3(0.0d, 0.0d, 0.0d);
 		if (color != null)
 		{
-			if (color.equals( FORWARD ))
+			if (color.equals( LEFT ))
 			{
-				initialRotate.x = -INITIAL_ROTATE_FACTOR;
+				initialRotate.y = INITIAL_ROTATE_FACTOR;
 			}
-			else if (color.equals( BACKWARD ))
+			else if (color.equals( RIGHT ))
 			{
-				initialRotate.x = INITIAL_ROTATE_FACTOR;
+				initialRotate.y = -INITIAL_ROTATE_FACTOR;
 			}
 		}
 		return initialRotate;
 	}
 	
-	@Override
-	protected Vector3 getMovementVectorForColor( Color color ) {
-		return new Vector3(0.0d, 0.0d, 0.0d);
-	}
-	
+
 	@Override
 	protected Vector3 getRelativeMovementAmount(Vector2 mousePos, double time)
 	{
-		return new Vector3(0.0d, 0.0d, 0.0d);
+		Vector2 relativeMousePos = Vector2.createSubtraction( mousePos, this.initialMousePosition );
+		
+		if (this.initialHandleColor != null && (this.initialHandleColor.equals( LEFT ) || this.initialHandleColor.equals( RIGHT )))
+		{
+			if (Math.abs( relativeMousePos.y ) < MIN_PIXEL_MOVE_AMOUNT)
+			{
+				relativeMousePos.y = 0.0d;
+			}
+			else
+			{
+				if (relativeMousePos.y < 0.0d)
+				{
+					relativeMousePos.y += MIN_PIXEL_MOVE_AMOUNT;
+				}
+				else
+				{
+					relativeMousePos.y -= MIN_PIXEL_MOVE_AMOUNT;
+				}
+			}
+		}
+		
+		double amountToMoveZ = relativeMousePos.y * WORLD_DISTANCE_PER_PIXEL_SECONDS * time;
+		Vector3 amountToMoveMouse = new Vector3 (0.0d, 0.0d, amountToMoveZ);
+		return amountToMoveMouse;
 	}
 	
 	@Override
 	protected Vector3 getRelativeRotationAmount(Vector2 mousePos, double time)
 	{
 		Vector2 relativeMousePos = Vector2.createSubtraction( mousePos, this.initialMousePosition );
-		double amountToRotateX = relativeMousePos.y * RADIANS_PER_PIXEL_SECONDS * time;
-		Vector3 amountToRotateMouse = new Vector3 (amountToRotateX, 0.0d, 0.0d);
+		
+		if (this.initialHandleColor != null)
+		{
+			if (this.initialHandleColor.equals( UP ) || this.initialHandleColor.equals( DOWN ))
+			{
+				if (Math.abs( relativeMousePos.x ) < MIN_PIXEL_MOVE_AMOUNT)
+				{
+					relativeMousePos.x = 0.0d;
+				}
+				else
+				{
+					if (relativeMousePos.x < 0.0d)
+					{
+						relativeMousePos.x += MIN_PIXEL_MOVE_AMOUNT;
+					}
+					else
+					{
+						relativeMousePos.x -= MIN_PIXEL_MOVE_AMOUNT;
+					}
+				}
+			}
+		}
+		
+		double amountToRotateY = -relativeMousePos.x * RADIANS_PER_PIXEL_SECONDS * time;
+		Vector3 amountToRotateMouse = new Vector3 (0.0d, amountToRotateY, 0.0d);
 		return amountToRotateMouse;
 	}
 	
 	@Override
 	protected ReferenceFrame getRotationReferenceFrame()
 	{
-		return this.getManipulatedTransformable();
+		return this.standUpReference;
 	}
 	
 	@Override
 	protected ReferenceFrame getMovementReferenceFrame()
 	{
-		return this.getManipulatedTransformable();
+		return this.standUpReference;
 	}
-	
 
-//	@Override
-//	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
-//		Vector2 toMouse = new Vector2( currentInput.getMouseLocation().x, currentInput.getMouseLocation().y);
-//		double awayFromCenter = currentInput.getMouseLocation().y - this.handle.getCenter().y;
-//		double amountToMove = awayFromCenter * WORLD_DISTANCE_PER_PIXEL_SECONDS * time;
-//		if (Math.abs(amountToMove) > MIN_AMOUNT_TO_MOVE)
-//		{
-//			Angle rotationDelta = new AngleInRadians(amountToMove);
-//			this.manipulatedTransformable.applyRotationAboutXAxis( rotationDelta, this.manipulatedTransformable );
-//			
-//			// Index 0 : FORWARD
-//			// Index 1 : BACKWARD
-//			if (amountToMove > 0.0d)
-//			{
-//				this.dragAdapter.triggerManipulationEvent( this.manipulationEvents.get( 0 ), true );
-//				this.dragAdapter.triggerManipulationEvent( this.manipulationEvents.get( 1 ), false );
-//			}
-//			else
-//			{
-//				this.dragAdapter.triggerManipulationEvent( this.manipulationEvents.get( 0 ), false );
-//				this.dragAdapter.triggerManipulationEvent( this.manipulationEvents.get( 1 ), true );
-//			}
-//		}
-//		else
-//		{
-//			for (ManipulationEvent event : this.manipulationEvents)
-//			{
-//				this.dragAdapter.triggerManipulationEvent( event, false );
-//			}
-//		}
-//	}
-	
 }

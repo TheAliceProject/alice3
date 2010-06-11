@@ -56,15 +56,20 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private static java.util.HashSet< String > performSceneEditorGeneratedSetUpMethodNameSet = new java.util.HashSet< String >();
 
 	public static final String GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
+	public static final String EDITOR_GENERATED_SET_UP_METHOD_NAME = "performEditorGeneratedSetUp";
+	public static final String SCENE_EDITOR_GENERATED_SET_UP_METHOD_NAME = "performSceneEditorGeneratedSetUp";
 	static {
 		IDE.exceptionHandler = new org.alice.ide.issue.ExceptionHandler();
+
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isSupressionOfExceptionHandlerDesired" ) ) {
 			//pass
 		} else {
 			Thread.setDefaultUncaughtExceptionHandler( IDE.exceptionHandler );
 		}
-		performSceneEditorGeneratedSetUpMethodNameSet.add( "performSceneEditorGeneratedSetUp" );
-		performSceneEditorGeneratedSetUpMethodNameSet.add( "performEditorGeneratedSetUp" );
+		performSceneEditorGeneratedSetUpMethodNameSet.add( SCENE_EDITOR_GENERATED_SET_UP_METHOD_NAME );
+		performSceneEditorGeneratedSetUpMethodNameSet.add( EDITOR_GENERATED_SET_UP_METHOD_NAME );
+//		performSceneEditorGeneratedSetUpMethodNameSet.add( "performSceneEditorGeneratedSetUp" );
+//		performSceneEditorGeneratedSetUpMethodNameSet.add( "performEditorGeneratedSetUp" );
 		performSceneEditorGeneratedSetUpMethodNameSet.add( GENERATED_SET_UP_METHOD_NAME );
 	}
 
@@ -1051,7 +1056,9 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	protected boolean isFieldDesired( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		return field.getValueType().isArray() == false;
 	}
-	private void refreshFields() {
+	
+	public void refreshFields() {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of refreshFields" );
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( this.rootField != null ) {
 			fields.add( this.rootField );

@@ -57,6 +57,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.alice.apis.moveandturn.PerspectiveCameraMarker;
+import org.alice.interact.condition.InputCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventManager;
@@ -69,6 +70,9 @@ import org.alice.interact.handle.ManipulationHandle;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.Camera2DDragManipulator;
 import org.alice.interact.manipulator.CameraInformedManipulator;
+import org.alice.interact.manipulator.CameraOrbitDragManipulator;
+import org.alice.interact.manipulator.ClickAdapterManipulator;
+import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.interact.manipulator.OnScreenLookingGlassInformedManipulator;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
@@ -360,6 +364,16 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	public void setLookingGlassOnManipulator( OnScreenLookingGlassInformedManipulator manipulator )
 	{
 		manipulator.setOnscreenLookingGlass(this.onscreenLookingGlass);
+	}
+	
+	public void addClickAdapter( ManipulatorClickAdapter clickAdapter, InputCondition... conditions )
+	{
+		ManipulatorConditionSet conditionSet = new ManipulatorConditionSet( new ClickAdapterManipulator(clickAdapter) );
+		for (InputCondition condition : conditions)
+		{
+			conditionSet.addCondition(condition);
+		}
+		this.manipulators.add(conditionSet);
 	}
 	
 	protected void setManipulatorStartState(AbstractManipulator manipulator, InputState startState)
@@ -685,7 +699,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		this.currentInputState.setMouseState( e.getButton(), true );
 		this.currentInputState.setMouseLocation( e.getPoint() );
 		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_DOWN );
-		
+		this.currentInputState.setInputEvent(e);
 		e.getComponent().requestFocus();
 		
 		
@@ -705,7 +719,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		this.currentInputState.setMouseState( e.getButton(), false );
 		this.currentInputState.setMouseLocation( e.getPoint() );
 		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_UP );
-		
+		this.currentInputState.setInputEvent(e);
 		if (this.currentRolloverComponent == this.lookingGlassComponent)
 		{
 			this.currentInputState.setRolloverPickResult( pickIntoScene( e.getPoint() ) );
@@ -733,6 +747,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			this.currentInputState.setMouseLocation( e.getPoint() );
 			this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_DRAGGED );
 			this.currentInputState.setTimeCaptured();
+			this.currentInputState.setInputEvent(e);
 			this.handleStateChange();
 		} catch( RuntimeException re ) {
 			re.printStackTrace();
@@ -754,6 +769,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			this.currentInputState.setRolloverHandle( this.getHandleForComponent( e.getComponent() ));
 		}
 		this.currentInputState.setTimeCaptured();
+		this.currentInputState.setInputEvent(e);
 		this.handleStateChange();
 	}
 	
@@ -761,6 +777,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		this.currentInputState.setMouseWheelState( e.getWheelRotation() );
 		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_WHEEL );
 		this.currentInputState.setTimeCaptured();
+		this.currentInputState.setInputEvent(e);
 		this.handleStateChange();
 		this.currentInputState.setMouseWheelState( 0 );
 	}
@@ -769,6 +786,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		this.currentInputState.setKeyState( e.getKeyCode(), true );
 		this.currentInputState.setInputEventType( InputState.InputEventType.KEY_DOWN );
 		this.currentInputState.setTimeCaptured();
+		this.currentInputState.setInputEvent(e);
 		handleStateChange();
 		
 	}
@@ -777,6 +795,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		this.currentInputState.setKeyState( e.getKeyCode(), false );
 		this.currentInputState.setInputEventType( InputState.InputEventType.KEY_UP );
 		this.currentInputState.setTimeCaptured();
+		this.currentInputState.setInputEvent(e);
 		handleStateChange();
 
 	}
@@ -800,6 +819,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 				this.currentInputState.setRolloverHandle( this.getHandleForComponent( e.getComponent() ));
 			}
 			this.currentInputState.setTimeCaptured();
+			this.currentInputState.setInputEvent(e);
 			this.handleStateChange();
 		}
 	}
@@ -812,6 +832,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			this.currentInputState.setRolloverHandle( null );
 			this.currentInputState.setRolloverPickResult( null );
 			this.currentInputState.setTimeCaptured();
+			this.currentInputState.setInputEvent(e);
 			this.handleStateChange();
 		}
 		
