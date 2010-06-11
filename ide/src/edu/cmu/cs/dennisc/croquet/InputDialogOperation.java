@@ -65,6 +65,7 @@ public abstract class InputDialogOperation extends AbstractDialogOperation<Input
 			assert this.dialog != null;
 			InputDialogOperation.this.isOk = this.isOk;
 			this.dialog.setVisible( false );
+			//this.dialog.getAwtWindow().dispose();
 		}
 	}
 

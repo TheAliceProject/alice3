@@ -74,7 +74,7 @@ public abstract class AbstractDialogOperation< M extends AbstractDialogOperation
 		}
 		final Dialog dialog = new Dialog( owner );
 		dialog.setTitle( this.getName() );
-		dialog.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Dialog.DefaultCloseOperation.DO_NOTHING );
+		dialog.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Dialog.DefaultCloseOperation.DISPOSE );
 
 		Container<?> contentPane = this.createContentPane(context, dialog);
 		assert contentPane != null;
@@ -86,6 +86,7 @@ public abstract class AbstractDialogOperation< M extends AbstractDialogOperation
 			}
 			public void windowClosing( java.awt.event.WindowEvent e ) {
 				//context.handleWindowClosed( e );
+				//e.getWindow().dispose();
 			}
 			public void windowClosed( java.awt.event.WindowEvent e ) {
 			}

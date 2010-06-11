@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
  */
 public class StressTestTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
-		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 0 );
+		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 1 );
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = tutorial.getSceneField();
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = tutorial.getFieldDeclaredOnSceneType( "camera" );
@@ -70,6 +70,30 @@ public class StressTestTutorial {
 				"Title", 
 				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
 		);
+		tutorial.addDialogOpenStep( 
+				"Declare Procedure", 
+				"Declare Procedure.", 
+				tutorial.createDeclareProcedureOperationResolver() 
+		);
+
+		tutorial.addInputDialogCommitStep( 
+				"Name Hop", 
+				"Type <b>hop</b> and press <i>Ok</i>",
+				tutorial.createDeclareProcedureOperationResolver()				
+		);
+
+		tutorial.addDialogOpenStep( 
+				"Declare Parameter", 
+				"Declare Parameter.", 
+				tutorial.createDeclareMethodParameterOperationResolver() 
+		);
+
+		tutorial.addInputDialogCommitStep( 
+				"Name HowHigh", 
+				"Type <b>howHigh</b> and select <b>Integer</b> and press <i>Ok</i>",
+				tutorial.createDeclareMethodParameterOperationResolver()				
+		);
+		
 		tutorial.addItemSelectionStep(
 				"Select Scene", 
 				"Select the <b>scene</b>.<i>",
@@ -86,19 +110,7 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
-		tutorial.addDialogOpenStep( 
-				"Declare Procedure", 
-				"Declare Procedure.", 
-				tutorial.createDeclareProcedureOperationResolver() 
-		);
 
-		tutorial.addInputDialogCommitStep( 
-				"Name Hop", 
-				"Type <b>hop</b> and press <i>Ok</i>",
-				tutorial.createDeclareProcedureOperationResolver()				
-		);
-
-		
 		tutorial.addDragAndDropStep( 
 				"Drag If/Else",
 				"Drag <b>If/Else</b>.",

@@ -86,9 +86,16 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
-		if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent ) {
-			edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent windowClosedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent)child;
-			return windowClosedEvent.getParent().getModel() == this.getModel();
+		if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent ) {
+			edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent windowClosedEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent)child;
+			edu.cmu.cs.dennisc.croquet.ModelContext<?> c = windowClosedEvent.getParent();
+			while( c != null ) {
+				if( c.getModel()  == this.getModel() ) {
+					return true;
+				}
+				c = c.getParent();
+			}
+			return false;
 		} else {
 			return false;
 		}

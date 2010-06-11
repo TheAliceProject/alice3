@@ -545,8 +545,8 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > createDeclareFieldOperationResolver() {
 		return new InputDialogOperationFromIdResolver( java.util.UUID.fromString( "5a07b4dc-0bd9-4393-93d2-1cc1a9b48262" ) );
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > createDeclareParameterOperationResolver() {
-		return new InputDialogOperationFromIdResolver( java.util.UUID.fromString( "853fb6a3-ea7b-4575-93d6-547f687a7033" ) );
+	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > createDeclareMethodParameterOperationResolver() {
+		return new InputDialogOperationFromIdResolver( java.util.UUID.fromString( "aa3d337d-b409-46ae-816f-54f139b32d86" ) );
 	}
 	
 	
