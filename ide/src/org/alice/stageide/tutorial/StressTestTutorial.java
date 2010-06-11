@@ -64,7 +64,7 @@ public class StressTestTutorial {
 		assert delayMethod.getResolved() != null;
 		
 		ide.getEmphasizingClassesState().setValue( false );
-		membersEditor.getTabbedPaneSelectionState().setValue( tutorial.getFunctionsTab().getResolved() );
+//		membersEditor.getTabbedPaneSelectionState().setValue( tutorial.getFunctionsTab().getResolved() );
 		
 		tutorial.addMessageStep( 
 				"Title", 
@@ -94,16 +94,14 @@ public class StressTestTutorial {
 		tutorial.addSpotlightStep( 
 				"Note isWithinThresholdOf",
 				"<html>Note <b>isWithinThresholdOf</b>.</html>",
-				tutorial.createFunctionInvocationTemplateResolver( grassyGroundField, "isSmallerThan" )
+				tutorial.createFunctionInvocationTemplateResolver( grassyGroundField, "isWithinThresholdOf" )
 		);
 		tutorial.addDragAndDropStep( 
 				"Drag isWithinThresholdOf",
 				"<html>Drag <b>isWithinThresholdOf</b>.</html>",
-				tutorial.createFunctionInvocationTemplateResolver( grassyGroundField, "isSmallerThan" ),
+				tutorial.createFunctionInvocationTemplateResolver( grassyGroundField, "isWithinThresholdOf" ),
 				"<html>Drop <b>here</b>.</html>",
-				tutorial.createEndOfStatementListResolver( 
-						tutorial.createFirstIfStatementListPropertyResolver() 
-				),
+				tutorial.createFirstIfConditionResolver(),
 				tutorial.createToDoCompletorValidator()
 		);
 		tutorial.addDragAndDropStep( 
@@ -126,6 +124,19 @@ public class StressTestTutorial {
 				),
 				tutorial.createToDoCompletorValidator()
 		);
+		tutorial.addSelectTabStep( 
+				"Procedures Tab", 
+				"<html>Select the <b>Procedures</b> tab.</html>", 
+				membersEditor.getTabbedPaneSelectionState(),
+				tutorial.getProceduresTab()
+		);
+		tutorial.addSpotlightTabScrollPaneStep( 
+				"Note Procedures Tab", 
+				"<html>Now the procedures are now displayed.</html>", 
+				membersEditor.getTabbedPaneSelectionState(),
+				tutorial.getProceduresTab()
+		);
+
 
 		tutorial.addSpotlightStep( 
 				"Declare Procedure", 

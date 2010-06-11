@@ -165,15 +165,15 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 	}
 
-	private class DefaultStatementListPropertyResolver implements StatementListPropertyResolver {
-		private edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty;
-		public DefaultStatementListPropertyResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
-			this.statementListProperty = statementWithBody.body.getValue().statements;
-		}
-		public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getStatementListProperty() {
-			return this.statementListProperty;
-		}
-	}
+//	private class DefaultStatementListPropertyResolver implements StatementListPropertyResolver {
+//		private edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty;
+//		public DefaultStatementListPropertyResolver( edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody ) {
+//			this.statementListProperty = statementWithBody.body.getValue().statements;
+//		}
+//		public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getStatementListProperty() {
+//			return this.statementListProperty;
+//		}
+//	}
 	
 	public static class StatementListResolver extends CodeTrackableShapeResolver {
 		private StatementListPropertyResolver statementListPropertyResolver;
@@ -188,17 +188,38 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 	}
 
-	public static class StatementResolver extends CodeDragComponentResolver {
-		private edu.cmu.cs.dennisc.alice.ast.Statement statement;
-		public StatementResolver( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-			this.statement = statement;
-		}
-		@Override
-		protected edu.cmu.cs.dennisc.croquet.DragComponent resolveDragComponent(org.alice.ide.codeeditor.CodeEditor codeEditor) {
-			return codeEditor.getDragComponent( this.statement );
-		}
-	}
+//	public static class StatementResolver extends CodeDragComponentResolver {
+//		private edu.cmu.cs.dennisc.alice.ast.Statement statement;
+//		public StatementResolver( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+//			this.statement = statement;
+//		}
+//		@Override
+//		protected edu.cmu.cs.dennisc.croquet.DragComponent resolveDragComponent(org.alice.ide.codeeditor.CodeEditor codeEditor) {
+//			return codeEditor.getDragComponent( this.statement );
+//		}
+//	}
 
+	private static <T extends edu.cmu.cs.dennisc.alice.ast.Node> T getNodeAt( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, Class<T> cls, int index ) {
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<T> crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<T>( cls ) {
+			@Override
+			protected boolean isAcceptable( T node ) {
+				return true;
+			}
+		};
+		edu.cmu.cs.dennisc.alice.ast.BlockStatement body = code.getBodyProperty().getValue();
+		body.crawl( crawler, false );
+		java.util.List<T> list = crawler.getList();
+		if( index == Short.MAX_VALUE ) {
+			index = list.size()-1;
+		}
+		if( list.size() > index ) {
+			return list.get( index );
+		} else {
+			return null;
+		}
+			
+	}
+	
 	public static class ProcedureInvocationResolver extends CodeDragComponentResolver {
 		private Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver;
 		private int index;
@@ -241,20 +262,8 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		@Override
 		protected edu.cmu.cs.dennisc.croquet.DragComponent resolveDragComponent(org.alice.ide.codeeditor.CodeEditor codeEditor) {
 			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)codeEditor.getCode();
-			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler( this.cls ) {
-				@Override
-				protected boolean isAcceptable( Object statment ) {
-					return true;
-				}
-			};
-			edu.cmu.cs.dennisc.alice.ast.BlockStatement body = code.getBodyProperty().getValue();
-			body.crawl( crawler, false );
-			java.util.List<edu.cmu.cs.dennisc.alice.ast.Statement> list = crawler.getList();
-			if( this.index == Short.MAX_VALUE ) {
-				this.index = list.size()-1;
-			}
-			if( list.size() > this.index ) {
-				edu.cmu.cs.dennisc.alice.ast.Statement statement = list.get( this.index );
+			edu.cmu.cs.dennisc.alice.ast.Statement statement = getNodeAt( code, this.cls, this.index );
+			if( statement != null ) {
 				return codeEditor.getDragComponent(statement);
 			} else {
 				return null;
@@ -270,20 +279,9 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 		public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getStatementListProperty() {
 			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getValue();
-			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler( this.cls ) {
-				@Override
-				protected boolean isAcceptable( Object statment ) {
-					return true;
-				}
-			};
-			edu.cmu.cs.dennisc.alice.ast.BlockStatement body = code.getBodyProperty().getValue();
-			body.crawl( crawler, false );
-			java.util.List<edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> list = crawler.getList();
-			if( this.index == Short.MAX_VALUE ) {
-				this.index = list.size()-1;
-			}
-			if( list.size() > this.index ) {
-				return list.get( this.index ).body.getValue().statements;
+			edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody = getNodeAt( code, this.cls, this.index );
+			if( statementWithBody != null ) {
+				return statementWithBody.body.getValue().statements;
 			} else {
 				return null;
 			}
@@ -297,20 +295,9 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		protected abstract edu.cmu.cs.dennisc.alice.ast.BlockStatement getBlockStatement( edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement );
 		public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getStatementListProperty() {
 			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getValue();
-			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler( edu.cmu.cs.dennisc.alice.ast.ConditionalStatement.class ) {
-				@Override
-				protected boolean isAcceptable( Object statment ) {
-					return true;
-				}
-			};
-			edu.cmu.cs.dennisc.alice.ast.BlockStatement body = code.getBodyProperty().getValue();
-			body.crawl( crawler, false );
-			java.util.List<edu.cmu.cs.dennisc.alice.ast.ConditionalStatement> list = crawler.getList();
-			if( this.index == Short.MAX_VALUE ) {
-				this.index = list.size()-1;
-			}
-			if( list.size() > this.index ) {
-				return this.getBlockStatement( list.get( this.index ) ).statements;
+			edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement = getNodeAt( code, edu.cmu.cs.dennisc.alice.ast.ConditionalStatement.class, this.index );
+			if( conditionalStatement != null ) {
+				return this.getBlockStatement( conditionalStatement ).statements;
 			} else {
 				return null;
 			}
@@ -488,6 +475,33 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 				return findShortestMethod( cls, methodName );
 			}
 		};
+	}
+
+	public static class IfConditionResolver extends CodeTrackableShapeResolver {
+		private int index;
+		public IfConditionResolver( int index ) {
+			this.index = index;
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape( org.alice.ide.codeeditor.CodeEditor codeEditor ) {
+			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)codeEditor.getCode();
+			edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement = getNodeAt( code, edu.cmu.cs.dennisc.alice.ast.ConditionalStatement.class, this.index );
+			if( conditionalStatement != null ) {
+				return codeEditor.getComponent( conditionalStatement.booleanExpressionBodyPairs.get( 0 ).expression );
+			} else {
+				return null;
+			}
+		}
+	}
+	
+	public Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape > createIfConditionResolver( int index ) {
+		return new IfConditionResolver( index );
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape > createFirstIfConditionResolver() {
+		return this.createIfConditionResolver(0);
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape > createLastIfConditionResolver() {
+		return this.createIfConditionResolver(Short.MAX_VALUE);
 	}
 	
 	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractField > createFieldResolver( final String name ) {
