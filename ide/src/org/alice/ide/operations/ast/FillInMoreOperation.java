@@ -46,15 +46,43 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class FillInMoreOperation extends org.alice.ide.operations.ActionOperation {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ExpressionStatement, FillInMoreOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static FillInMoreOperation getInstance( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement ) {
+		FillInMoreOperation rv = map.get( expressionStatement );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new FillInMoreOperation( expressionStatement );
+			map.put( expressionStatement, rv );
+		}
+		return rv;
+	}
+
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement;
-	public FillInMoreOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement ) {
+	private FillInMoreOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "e4cdc25b-d7a0-42b5-adc9-74e34db6b5fc" ) );
 		assert expressionStatement != null;
 		this.expressionStatement = expressionStatement;
+		
+		this.setName( "more" );
+		this.updateToolTipText();
+	}
+	
+	private void updateToolTipText() {
+		edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expressionStatement.expression.getValue();
+		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
+		final edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();
+		if( nextLongerMethod != null ) {
+			java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = nextLongerMethod.getParameters();
+			edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
+			String name = lastParameter.getName();
+			if( name != null ) {
+				this.setToolTipText( name );
+			}
+		}
 	}
 	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-		final java.awt.event.MouseEvent mouseEvent = context.getMouseEvent();
+	protected final void perform(final edu.cmu.cs.dennisc.croquet.ActionOperationContext operationContext) {
 		class MoreEdit extends org.alice.ide.ToDoEdit {
 			private edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod;
 			private edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation;
@@ -62,10 +90,12 @@ public class FillInMoreOperation extends org.alice.ide.operations.ActionOperatio
 			@Override
 			public void doOrRedo( boolean isDo ) {
 				expressionStatement.expression.setValue( this.nextMethodInvocation );
+				FillInMoreOperation.this.updateToolTipText();
 			}
 			@Override
 			public void undo() {
 				expressionStatement.expression.setValue( this.prevMethodInvocation );
+				FillInMoreOperation.this.updateToolTipText();
 			}
 			@Override
 			protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
@@ -79,7 +109,7 @@ public class FillInMoreOperation extends org.alice.ide.operations.ActionOperatio
 				return rv;
 			}
 		}
-		context.pend( new edu.cmu.cs.dennisc.croquet.PendResolver< MoreEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
+		operationContext.pend( new edu.cmu.cs.dennisc.croquet.PendResolver< MoreEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
 			public MoreEdit createEdit() {
 				return new MoreEdit();
 			}
@@ -89,7 +119,7 @@ public class FillInMoreOperation extends org.alice.ide.operations.ActionOperatio
 				rv.nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();
 				java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = rv.nextLongerMethod.getParameters();
 				edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
-				getIDE().promptUserForMore( lastParameter, mouseEvent, taskObserver );
+				getIDE().promptUserForMore( lastParameter, operationContext.getViewController(), operationContext.getPoint(), taskObserver );
 
 				return rv;
 			}

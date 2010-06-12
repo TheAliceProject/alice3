@@ -925,7 +925,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 	private java.util.Stack< ReasonToDisableSomeAmountOfRendering > reasonToDisableSomeAmountOfRenderingStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 
-	protected void disableRendering( ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
+	public void disableRendering( ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
 		this.reasonToDisableSomeAmountOfRenderingStack.push( reasonToDisableSomeAmountOfRendering );
 		if( reasonToDisableSomeAmountOfRendering == ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM ) {
 			//pass
@@ -936,7 +936,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 		this.sceneEditor.disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
-	protected void enableRendering() {
+	public void enableRendering() {
 		ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering = reasonToDisableSomeAmountOfRenderingStack.pop();
 		if( reasonToDisableSomeAmountOfRendering == ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM ) {
 			//pass
@@ -1475,7 +1475,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		edu.cmu.cs.dennisc.cascade.Blank blank = createExpressionBlank( type, prevExpression );
 		blank.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
 	}
-	public void promptUserForMore( final edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
+	public void promptUserForMore( final edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter, edu.cmu.cs.dennisc.croquet.ViewController< ?,? > viewController, java.awt.Point p, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
 		final String parameterName = parameter.getName();
 		edu.cmu.cs.dennisc.cascade.Blank blank;
 		if( parameterName != null ) {
@@ -1494,7 +1494,12 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		} else {
 			blank = createExpressionBlank( parameter.getValueType(), null );
 		}
-		blank.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
+		if( p != null ) {
+			//pass
+		} else {
+			p = new java.awt.Point( 0, viewController.getHeight() );
+		}
+		blank.showPopupMenu( viewController.getAwtComponent(), p.x, p.y, taskObserver );
 	}
 	public void unsetPreviousExpression() {
 		this.previousExpression = null;

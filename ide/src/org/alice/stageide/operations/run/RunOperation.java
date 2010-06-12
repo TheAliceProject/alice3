@@ -120,6 +120,7 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.DialogOperation {
 			vm.setEntryPointType( ide.getProgramType() );
 			org.alice.stageide.MoveAndTurnRuntimeProgram rtProgram = new org.alice.stageide.MoveAndTurnRuntimeProgram( ide.getSceneType(), vm );
 			ide.showInContainer( rtProgram, rv );
+			ide.disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
 		} else {
 			ide.showMessageDialog( "Please open a project first." );
 		}
@@ -131,5 +132,11 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.DialogOperation {
 		this.location = dialog.getLocation();
 		this.size = dialog.getSize();
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: releaseContentPane" );
+	}
+	
+	@Override
+	protected void handleFinally( edu.cmu.cs.dennisc.croquet.DialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+		super.handleFinally( context, dialog );
+		org.alice.ide.IDE.getSingleton().enableRendering();
 	}
 }

@@ -343,13 +343,8 @@ public class StageIDE extends org.alice.ide.IDE {
 //	}
 
 	public void showInContainer( MoveAndTurnRuntimeProgram rtProgram, edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
-		this.disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
-		try {
-			String[] args = {};
-			rtProgram.showInAWTContainer( container.getAwtComponent(), args );
-		} finally {
-			this.enableRendering();
-		}
+		String[] args = {};
+		rtProgram.showInAWTContainer( container.getAwtComponent(), args );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.DialogOperation createRunOperation() {

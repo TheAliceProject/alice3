@@ -81,7 +81,6 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 				super.paint( g );
 			} else {
 				this.paintRenderingDisabledMessage( g );
-//				Thread.dumpStack();
 			}
 		}
 		@Override
@@ -108,7 +107,6 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 					g.setColor( java.awt.Color.DARK_GRAY );
 					g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 				}
-			} else {
 //				edu.cmu.cs.dennisc.print.PrintUtilities.println( "paintComponent" );
 ////					java.awt.image.BufferedImage offscreenImage = this.getOffscreenImage();
 ////					if( offscreenImage != null ) {

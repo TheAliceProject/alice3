@@ -63,6 +63,8 @@ public abstract class AbstractDialogOperation< M extends AbstractDialogOperation
 	
 	protected abstract Container<?> createContentPane(C context, Dialog dialog);
 	protected abstract void releaseContentPane(C context, Dialog dialog, Container<?> contentPane );
+	protected void handleFinally( C context, Dialog dialog ) {
+	}
 	@Override
 	protected final void perform( final C context ) {
 		ViewController<?,?> viewController = context.getViewController();
@@ -75,10 +77,6 @@ public abstract class AbstractDialogOperation< M extends AbstractDialogOperation
 		final Dialog dialog = new Dialog( owner );
 		dialog.setTitle( this.getName() );
 		dialog.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Dialog.DefaultCloseOperation.DISPOSE );
-
-		Container<?> contentPane = this.createContentPane(context, dialog);
-		assert contentPane != null;
-		dialog.getAwtWindow().setContentPane( contentPane.getAwtComponent() );
 
 		java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
@@ -100,31 +98,42 @@ public abstract class AbstractDialogOperation< M extends AbstractDialogOperation
 			}
 		};
 		dialog.addWindowListener( windowListener );
-		java.awt.Dimension size = this.getDesiredDialogSize( dialog );
-		if( size != null ) {
-			dialog.getAwtWindow().setSize( size );
-		} else {
-			dialog.pack();
-		}
-		java.awt.Point location = this.getDesiredDialogLocation( dialog );
-		if( location != null ) {
-			dialog.setLocation( location );
-		} else {
-			edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog.getAwtWindow(), Application.getSingleton().getFrame().getAwtWindow() ); 
-		}
+
 		
-		this.activeDialog = dialog;
+		Container<?> contentPane = this.createContentPane(context, dialog);
+		
 		try {
-			dialog.setVisible( true );
-			this.releaseContentPane( context, dialog, contentPane );
+			assert contentPane != null;
+			dialog.getAwtWindow().setContentPane( contentPane.getAwtComponent() );
+
+			java.awt.Dimension size = this.getDesiredDialogSize( dialog );
+			if( size != null ) {
+				dialog.getAwtWindow().setSize( size );
+			} else {
+				dialog.pack();
+			}
+			java.awt.Point location = this.getDesiredDialogLocation( dialog );
+			if( location != null ) {
+				dialog.setLocation( location );
+			} else {
+				edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog.getAwtWindow(), Application.getSingleton().getFrame().getAwtWindow() ); 
+			}
 			
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handleWindowClosed" );
-			context.handleWindowClosed( null );
-			dialog.getAwtWindow().dispose();
-			
-			dialog.removeWindowListener( windowListener );
+			this.activeDialog = dialog;
+			try {
+				dialog.setVisible( true );
+				this.releaseContentPane( context, dialog, contentPane );
+				
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handleWindowClosed" );
+				context.handleWindowClosed( null );
+				dialog.getAwtWindow().dispose();
+				
+				dialog.removeWindowListener( windowListener );
+			} finally {
+				this.activeDialog = null;
+			}
 		} finally {
-			this.activeDialog = null;
+			this.handleFinally( context, dialog );
 		}
 	}
 }

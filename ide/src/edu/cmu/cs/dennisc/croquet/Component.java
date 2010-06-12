@@ -56,7 +56,11 @@ public abstract class Component<J extends java.awt.Component> implements Trackab
 		private java.awt.Container awtContainer;
 		public InternalAwtContainerAdapter( java.awt.Container awtContainer ) {
 			this.awtContainer = awtContainer;
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "creating adapter for: ", awtContainer.getClass(), awtContainer.hashCode() );
+			if( this.awtContainer instanceof javax.swing.plaf.UIResource ) {
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "javax.swing.plaf.UIResource: ", awtContainer.getClass(), awtContainer.hashCode() );
+			} else {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "creating adapter for: ", awtContainer.getClass(), awtContainer.hashCode() );
+			}
 		}
 		@Override
 		protected java.awt.Container createAwtComponent() {
@@ -67,7 +71,11 @@ public abstract class Component<J extends java.awt.Component> implements Trackab
 		private java.awt.Component awtComponent;
 		public InternalAwtComponentAdapter( java.awt.Component awtComponent ) {
 			this.awtComponent = awtComponent;
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "creating adapter for: ", awtComponent.getClass(), awtComponent.hashCode() );
+			if( this.awtComponent instanceof javax.swing.plaf.UIResource ) {
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "javax.swing.plaf.UIResource: ", awtComponent.getClass(), awtComponent.hashCode() );
+			} else {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "creating adapter for: ", awtComponent.getClass(), awtComponent.hashCode() );
+			}
 		}
 		@Override
 		protected java.awt.Component createAwtComponent() {
@@ -115,10 +123,10 @@ public abstract class Component<J extends java.awt.Component> implements Trackab
 					} else {
 						//Thread.dumpStack();
 						edu.cmu.cs.dennisc.print.PrintUtilities.println( "investigate: hierarchyChanged seems to not be actually changing the parent" );
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "    flags:", flags );
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtChanged:", awtChanged.getClass().getName(), awtChanged );
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtParent:", awtParent.getClass().getName(), awtParent.getLayout() );
+//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "    flags:", flags );
+//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
+//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtChanged:", awtChanged.getClass().getName(), awtChanged );
+//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtParent:", awtParent.hashCode(), awtParent.getClass().getName(), awtParent.getLayout() );
 					}
 				}
 			}
