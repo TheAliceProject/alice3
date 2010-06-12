@@ -345,8 +345,10 @@ public abstract class Component<J extends java.awt.Component> implements Trackab
 	}
 	
 	public boolean isInView() {
-		//todo
-		return this.getVisibleRectangle().width > 0 && this.getVisibleRectangle().height > 0;
+		java.awt.Rectangle visibleRect = this.getVisibleRectangle();
+		java.awt.Rectangle bounds = this.getBounds();
+		java.awt.Dimension size = this.getAwtComponent().getSize();
+		return visibleRect.width == size.width || visibleRect.height == size.height;
 	}
 	
 	public <E extends Container<?> > E getFirstAncestorAssignableTo( Class<E> cls ) {

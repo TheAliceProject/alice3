@@ -71,6 +71,36 @@ public class StressTestTutorial {
 				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
 		);
 
+		tutorial.addDragAndDropStep( 
+				"Drag Turn Procedure",
+				"Drag <b>turn</b> procedure.",
+				tutorial.createProcedureInvocationTemplateResolver( "turn" ),
+				"Drop <b>here</b>.",
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+				"Select <b>LEFT</b> and <b>0.25</b> from the menus.",
+				tutorial.createToDoCompletorValidator()
+		);
+
+		tutorial.addDialogOpenStep( 
+				"Declare Procedure", 
+				"Declare a procedure.", 
+				tutorial.createDeclareProcedureOperationResolver()
+		);
+
+		tutorial.addInputDialogCommitStep( 
+				"Name Foo", 
+				"Type <b>foo</b> and press <i>Ok</i>",
+				tutorial.createDeclareProcedureOperationResolver(),
+				tutorial.createToDoCompletorValidator()
+		);
+
+		tutorial.addSpotlightTabTitleStep(  
+				"Note Foo Tab", 
+				"Note the foo folder tab.", 
+				ide.getEditorsTabSelectionState(),
+				tutorial.createCurrentCodeResolver()
+		);
+
 		
 		tutorial.addDragAndDropStep( 
 				"Drag For Each In Order",
@@ -79,11 +109,6 @@ public class StressTestTutorial {
 				"Drop <b>here</b>.",
 				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
 				tutorial.createToDoCompletorValidator()
-		);
-
-		tutorial.addMessageStep( 
-				"Bogus", 
-				"<h1>TODO</h1>" 
 		);
 
 		tutorial.addSpotlightStep( 
@@ -209,7 +234,8 @@ public class StressTestTutorial {
 		tutorial.addInputDialogCommitStep( 
 				"Name HowHigh", 
 				"Type <b>howHigh</b> and select <b>Integer</b> and press <i>Ok</i>",
-				tutorial.createDeclareMethodParameterOperationResolver()				
+				tutorial.createDeclareMethodParameterOperationResolver(),
+				tutorial.createToDoCompletorValidator()				
 		);
 		
 		tutorial.addItemSelectionStep(

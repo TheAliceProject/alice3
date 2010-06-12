@@ -62,7 +62,9 @@ package edu.cmu.cs.dennisc.tutorial;
 		protected void paint( java.awt.Graphics2D g2, java.awt.Shape shape ) {
 		}
 	}
-	public InputDialogCommitStep( String title, String text, final edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> inputDialogOperationResolver ) {
+	private Completor completor;
+	private Validator validator;
+	public InputDialogCommitStep( String title, String text, final edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> inputDialogOperationResolver, CompletorValidator completorValidator ) {
 		super( title, text, new InputDialogCommitFeature( new edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
 			public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
 				edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation = inputDialogOperationResolver.getResolved();
@@ -79,7 +81,11 @@ package edu.cmu.cs.dennisc.tutorial;
 				}
 			}
 		} ), inputDialogOperationResolver );
+		this.completor = completorValidator;
+		this.validator = completorValidator;
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "handle completorValidator" );
 	}
+
 	@Override
 	protected boolean isAlreadyInTheDesiredState() {
 		return this.getModel().getActiveDialog() == null;

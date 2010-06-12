@@ -153,6 +153,10 @@ public abstract class Model<M> implements TrackableShape, Resolver< M > {
 		}
 	}
 	
+	/*package-private*/ Iterable< JComponent<?> > getComponents() {
+		return this.components;
+	}
+	
 	private JComponent< ? > firstComponentHint;
 	@Deprecated
 	public <J extends JComponent< ? > > J getFirstComponent( Class<J> cls ) {
@@ -162,6 +166,20 @@ public abstract class Model<M> implements TrackableShape, Resolver< M > {
 			for( JComponent< ? > component : this.components ) {
 				if( cls.isAssignableFrom( component.getClass() ) ) {
 					if( component.getAwtComponent().isShowing() ) {
+						return cls.cast( component );
+					} else {
+						//pass
+					}
+				}
+			}
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "getFirstComponent", this.components.size() );
+			for( JComponent< ? > component : this.components ) {
+				if( cls.isAssignableFrom( component.getClass() ) ) {
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( component.getAwtComponent() );
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( component.getAwtComponent().isDisplayable() );
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( component.getAwtComponent().isShowing() );
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( component.getAwtComponent().isVisible() );
+					if( component.getAwtComponent().isVisible() ) {
 						return cls.cast( component );
 					} else {
 						//pass

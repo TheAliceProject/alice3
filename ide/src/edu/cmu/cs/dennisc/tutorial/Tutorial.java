@@ -417,8 +417,8 @@ public class Tutorial {
 		Step step = new DialogCloseStep( title, text, dialogOperationResolver );
 		this.addStep( step );
 	}
-	public void addInputDialogCommitStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> inputDialogOperationResolver ) {
-		Step step = new InputDialogCommitStep( title, text, inputDialogOperationResolver );
+	public void addInputDialogCommitStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> inputDialogOperationResolver, CompletorValidator completorValidator ) {
+		Step step = new InputDialogCommitStep( title, text, inputDialogOperationResolver, completorValidator );
 		this.addStep( step );
 	}
 	public <E> void addItemSelectionStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {

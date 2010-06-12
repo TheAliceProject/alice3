@@ -83,9 +83,27 @@ public abstract class Application {
 		return this.rootContext.getCurrentContext();
 	}
 
-	public java.util.Set< Model< ? > > lookupModels( java.util.UUID id ) {
+	private java.util.Set< Model< ? > > lookupModels( java.util.UUID id ) {
 		return this.mapUUIDToModels.get( id );
 	}
+	@Deprecated
+	public Model< ? > findFirstAppropriateModel( java.util.UUID id ) {
+		java.util.Set< Model< ? > > models = lookupModels( id );
+		for( Model<?> model : models ) {
+			for( JComponent<?> component : model.getComponents() ) {
+				if( component.getAwtComponent().isShowing() ) {
+					return model;
+				}
+			}
+			for( JComponent<?> component : model.getComponents() ) {
+				if( component.getAwtComponent().isVisible() ) {
+					return model;
+				}
+			}
+		}
+		return null;
+	}
+	
 
 	protected abstract Component< ? > createContentPane();
 
