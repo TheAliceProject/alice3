@@ -101,7 +101,39 @@ public class StressTestTutorial {
 				tutorial.createCurrentCodeResolver()
 		);
 
+		tutorial.addDialogOpenStep( 
+				"Declare Parameter", 
+				"Declare Parameter.", 
+				tutorial.createDeclareMethodParameterOperationResolver() 
+		);
+
+		tutorial.addInputDialogCommitStep( 
+				"Name HowHigh", 
+				"Type <b>howHigh</b> and select <b>Double</b> and press <i>Ok</i>",
+				tutorial.createDeclareMethodParameterOperationResolver(),
+				tutorial.createToDoCompletorValidator()				
+		);
 		
+		tutorial.addDragAndDropStep( 
+				"Drag Roll Procedure",
+				"Drag <b>roll</b> procedure.",
+				tutorial.createProcedureInvocationTemplateResolver( "roll" ),
+				"Drop <b>here</b>.",
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+				"Select <b>LEFT</b> and <b>0.25</b> from the menus.",
+				tutorial.createToDoCompletorValidator()
+		);
+
+		tutorial.addDragAndDropStep( 
+				"Drag Parameter",
+				"Drag <b>howHigh</b> parameter.",
+				tutorial.createParameterResolver( 0 ),
+				"Drop <b>here</b>.",
+				tutorial.createInvocationArgumentResolver( "roll", 0, 1 ),
+				"Select <b>LEFT</b> and <b>0.25</b> from the menus.",
+				tutorial.createToDoCompletorValidator()
+		);
+
 		tutorial.addDragAndDropStep( 
 				"Drag For Each In Order",
 				"Drag <b>For Each In Order</b>.",
@@ -224,19 +256,6 @@ public class StressTestTutorial {
 				tutorial.getProceduresTab()
 		);
 
-
-		tutorial.addDialogOpenStep( 
-				"Declare Parameter", 
-				"Declare Parameter.", 
-				tutorial.createDeclareMethodParameterOperationResolver() 
-		);
-
-		tutorial.addInputDialogCommitStep( 
-				"Name HowHigh", 
-				"Type <b>howHigh</b> and select <b>Integer</b> and press <i>Ok</i>",
-				tutorial.createDeclareMethodParameterOperationResolver(),
-				tutorial.createToDoCompletorValidator()				
-		);
 		
 		tutorial.addItemSelectionStep(
 				"Select Scene", 

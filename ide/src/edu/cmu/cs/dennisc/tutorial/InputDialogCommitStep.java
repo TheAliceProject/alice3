@@ -96,7 +96,7 @@ package edu.cmu.cs.dennisc.tutorial;
 			edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent windowClosedEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent)child;
 			edu.cmu.cs.dennisc.croquet.ModelContext<?> c = windowClosedEvent.getParent();
 			while( c != null ) {
-				if( c.getModel()  == this.getModel() ) {
+				if( c.getModel() == this.getModel() ) {
 					return true;
 				}
 				c = c.getParent();

@@ -347,6 +347,10 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return this.createForEachInArrayLoopVariableResolver(Short.MAX_VALUE);
 	}
 
+	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createParameterResolver( int index ) {
+		return new ParameterResolver( index );
+	}
+	
 //	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createInvocationResolver( final Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int index ) {
 //		return new MethodInvocationStatementResolver(methodResolver, index);
 //	}
