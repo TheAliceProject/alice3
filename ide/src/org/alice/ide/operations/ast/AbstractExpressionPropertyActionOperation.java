@@ -59,8 +59,7 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 	}
 
 	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-		final java.awt.event.MouseEvent mouseEvent = context.getMouseEvent();
+	protected final void perform(final edu.cmu.cs.dennisc.croquet.ActionOperationContext operationContext) {
 		class ExpressionPropertyEdit extends org.alice.ide.ToDoEdit {
 			private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 			private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
@@ -84,13 +83,15 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 				return rv;
 			}
 		}
-		context.pend( new edu.cmu.cs.dennisc.croquet.PendResolver< ExpressionPropertyEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
+		final edu.cmu.cs.dennisc.croquet.ViewController<?, ?> viewController = operationContext.getViewController();
+		final java.awt.Point p = operationContext.getPoint();
+		operationContext.pend( new edu.cmu.cs.dennisc.croquet.PendResolver< ExpressionPropertyEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
 			public ExpressionPropertyEdit createEdit() {
 				return new ExpressionPropertyEdit();
 			}
 			public ExpressionPropertyEdit initialize(ExpressionPropertyEdit rv, edu.cmu.cs.dennisc.croquet.ModelContext context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver) {
 				rv.prevExpression = AbstractExpressionPropertyActionOperation.this.expressionProperty.getValue();
-				AbstractExpressionPropertyActionOperation.this.initializeInternal( context, id, mouseEvent, taskObserver, rv.prevExpression );
+				AbstractExpressionPropertyActionOperation.this.initializeInternal( context, id, viewController, p, taskObserver, rv.prevExpression );
 				return rv;
 			}
 			public ExpressionPropertyEdit handleCompletion( ExpressionPropertyEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
@@ -105,6 +106,6 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 			}
 		} );
 	}
-	protected abstract void initializeInternal( edu.cmu.cs.dennisc.croquet.ModelContext<?> context, java.util.UUID id, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
+	protected abstract void initializeInternal( edu.cmu.cs.dennisc.croquet.ModelContext<?> context, java.util.UUID id, edu.cmu.cs.dennisc.croquet.ViewController<?, ?> viewController, java.awt.Point p, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
 
 }

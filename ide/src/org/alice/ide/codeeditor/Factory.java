@@ -239,7 +239,10 @@ public class Factory extends org.alice.ide.common.Factory {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionProperty.getValue();
 		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
 		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expression ) ) {
-			rv = new ExpressionPropertyDropDownPane( prefixPane, rv, expressionProperty, desiredValueType );
+			org.alice.ide.operations.ast.FillInExpressionPropertyActionOperation model = org.alice.ide.operations.ast.FillInExpressionPropertyActionOperation.getInstance( expressionProperty, desiredValueType );
+			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model, prefixPane, rv, expressionProperty, desiredValueType );
+			model.register( expressionPropertyDropDownPane );
+			rv = expressionPropertyDropDownPane;
 		}
 		return rv;
 	}

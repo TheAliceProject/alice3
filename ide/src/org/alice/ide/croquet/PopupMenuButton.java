@@ -1,6 +1,6 @@
 package org.alice.ide.croquet;
 
-public class PopupMenuButton extends edu.cmu.cs.dennisc.croquet.AbstractButton<javax.swing.AbstractButton, edu.cmu.cs.dennisc.croquet./*AbstractPopupMenu*/Operation> {
+public class PopupMenuButton extends edu.cmu.cs.dennisc.croquet.AbstractButton<javax.swing.AbstractButton, edu.cmu.cs.dennisc.croquet./*AbstractPopupMenu*/Operation<?,?>> {
 	private static final int AFFORDANCE_WIDTH = 6;
 	private static final int AFFORDANCE_HALF_HEIGHT = 5;
 	private static final java.awt.Color ARROW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 );
@@ -23,17 +23,14 @@ public class PopupMenuButton extends edu.cmu.cs.dennisc.croquet.AbstractButton<j
 
 			java.awt.Paint prevPaint = g2.getPaint();
 			boolean isActive = buttonModel.isRollover();
-//			if( isActive || this.isInactiveFeedbackDesired() ) {
-//				java.awt.Paint prevPaint = g2.getPaint();
-//				if( isActive ) {
-//					g2.setColor( java.awt.Color.WHITE );
-//				}
-//				try {
-//					this.fillBounds( g2, x, y, width, height );
-//				} finally {
-//					g2.setPaint( prevPaint );
-//				}
-//			}
+			if( isActive || PopupMenuButton.this.isInactiveFeedbackDesired() ) {
+				if( isActive ) {
+					g2.setColor( java.awt.Color.WHITE );
+				} else {
+					g2.setColor( c.getBackground() );
+				}
+				g2.fillRect( x, y, width, height );
+			}
 			
 			float x0 = x + width - 4 - AFFORDANCE_WIDTH;
 			float x1 = x0 + AFFORDANCE_WIDTH;
@@ -90,13 +87,20 @@ public class PopupMenuButton extends edu.cmu.cs.dennisc.croquet.AbstractButton<j
 			g2.setPaint( prevPaint );
 		}
 	}
-	private edu.cmu.cs.dennisc.croquet.Component< ? > component;
-	public PopupMenuButton( edu.cmu.cs.dennisc.croquet./*AbstractPopupMenu*/Operation model, edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
+	private edu.cmu.cs.dennisc.croquet.Component< ? > prefixComponent;
+	private edu.cmu.cs.dennisc.croquet.Component< ? > mainComponent;
+	private edu.cmu.cs.dennisc.croquet.Component< ? > postfixComponent;
+	public PopupMenuButton( edu.cmu.cs.dennisc.croquet./*AbstractPopupMenu*/Operation model, edu.cmu.cs.dennisc.croquet.Component< ? > prefixComponent, edu.cmu.cs.dennisc.croquet.Component< ? > mainComponent, edu.cmu.cs.dennisc.croquet.Component< ? > postfixComponent ) {
 		super( model );
-		this.component = component;
+		this.prefixComponent = prefixComponent;
+		this.mainComponent = mainComponent;
+		this.postfixComponent = postfixComponent;
 	}
 	public PopupMenuButton( edu.cmu.cs.dennisc.croquet./*AbstractPopupMenu*/Operation model ) {
-		this( model, null );
+		this( model, null, null, null );
+	}
+	public edu.cmu.cs.dennisc.croquet.Component<?> getMainComponent() {
+		return this.mainComponent;
 	}
 	protected boolean isInactiveFeedbackDesired() {
 		return true;
@@ -105,21 +109,36 @@ public class PopupMenuButton extends edu.cmu.cs.dennisc.croquet.AbstractButton<j
 	protected javax.swing.AbstractButton createAwtComponent() {
 		javax.swing.AbstractButton rv;
 		javax.swing.border.Border border;
-		if( this.component != null ) {
-			rv = new javax.swing.AbstractButton() {
+		if( this.prefixComponent != null || this.mainComponent != null || this.postfixComponent != null ) {
+			rv = new javax.swing.JButton() {
 				@Override
 				public java.awt.Dimension getMaximumSize() {
 					return this.getPreferredSize();
 				}
 			};
-			rv.setLayout(  new java.awt.BorderLayout() );
-			rv.add( this.component.getAwtComponent(), java.awt.BorderLayout.CENTER );
+			rv.setModel( new javax.swing.DefaultButtonModel() );
+			rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.LINE_AXIS ) );
+			if( this.prefixComponent != null ) {
+				rv.add( this.prefixComponent.getAwtComponent() );
+			}
+			if( this.mainComponent != null ) {
+				rv.add( this.mainComponent.getAwtComponent() );
+			}
+			if( this.postfixComponent != null ) {
+				rv.add( this.postfixComponent.getAwtComponent() );
+			}
 			border = new Border();
 		} else {
 			rv = new javax.swing.JButton() {
 				@Override
 				public void updateUI() {
 					this.setUI( new javax.swing.plaf.basic.BasicButtonUI() );
+					this.setRolloverEnabled( true );
+				}
+				@Override
+				public void paint(java.awt.Graphics g) {
+					this.paintBorder( g );
+					this.paintComponent( g );
 				}
 			};
 			border = new Border() {
@@ -131,6 +150,12 @@ public class PopupMenuButton extends edu.cmu.cs.dennisc.croquet.AbstractButton<j
 				}
 			};
 		}
+		rv.setRolloverEnabled( true );
+		rv.setOpaque( false );
+		rv.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.DEFAULT_CURSOR ) );
+		rv.setBackground( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 230 ) );
+		//rv.setForeground( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 ) );
+
 		rv.setBorder( border );
 		return rv;
 	}

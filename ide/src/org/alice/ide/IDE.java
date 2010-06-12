@@ -1470,10 +1470,15 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		edu.cmu.cs.dennisc.cascade.FillIn fillIn = createExpressionsFillIn( types, isArrayLengthDesired );
 		fillIn.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
 	}
-	public void promptUserForExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, java.awt.event.MouseEvent e,
+	public void promptUserForExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, edu.cmu.cs.dennisc.croquet.ViewController< ?,? > viewController, java.awt.Point p,
 			edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
 		edu.cmu.cs.dennisc.cascade.Blank blank = createExpressionBlank( type, prevExpression );
-		blank.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
+		if( p != null ) {
+			//pass
+		} else {
+			p = new java.awt.Point( 0, viewController.getHeight() );
+		}
+		blank.showPopupMenu( viewController.getAwtComponent(), p.x, p.y, taskObserver );
 	}
 	public void promptUserForMore( final edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter, edu.cmu.cs.dennisc.croquet.ViewController< ?,? > viewController, java.awt.Point p, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
 		final String parameterName = parameter.getName();
