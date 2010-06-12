@@ -130,7 +130,7 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.LineAxis
 		}
 	}
 	
-	private edu.cmu.cs.dennisc.croquet.ItemSelectionState<java.io.File> itemSelection = new edu.cmu.cs.dennisc.croquet.ItemSelectionState<java.io.File>( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "1814e4cc-1463-4191-bd85-72b61893d1e5" ) ) {
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState<java.io.File> itemSelection = new edu.cmu.cs.dennisc.croquet.ListSelectionState<java.io.File>( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "1814e4cc-1463-4191-bd85-72b61893d1e5" ) ) {
 		@Override
 		protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.io.File value) {
 			throw new RuntimeException("todo");
@@ -147,7 +147,7 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.LineAxis
 		list.setCellRenderer( this.thumbnailSnapshotListCellRenderer );
 		list.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
 		list.setVisibleRowCount( 1 );
-		itemSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver<java.io.File>() {
+		itemSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<java.io.File>() {
 			public void changed(final java.io.File nextValue) {
 				if( nextValue != null ) {
 //					itemSelection.setValue( null );

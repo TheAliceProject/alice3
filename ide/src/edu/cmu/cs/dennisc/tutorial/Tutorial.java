@@ -347,14 +347,14 @@ public class Tutorial {
 	}
 
 	/*package-private*/ static class ItemSelectionStateItemResolver<E> implements Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape > {
-		private Resolver< edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> > itemSelectionStateResolver;
+		private Resolver< edu.cmu.cs.dennisc.croquet.ListSelectionState<E> > itemSelectionStateResolver;
 		private Resolver< E > itemResolver;
-		public ItemSelectionStateItemResolver( Resolver< edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> > itemSelectionStateResolver, Resolver< E > itemResolver ) {
+		public ItemSelectionStateItemResolver( Resolver< edu.cmu.cs.dennisc.croquet.ListSelectionState<E> > itemSelectionStateResolver, Resolver< E > itemResolver ) {
 			this.itemSelectionStateResolver = itemSelectionStateResolver;
 			this.itemResolver = itemResolver;
 		}
 		public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
-			edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionState = this.itemSelectionStateResolver.getResolved();
+			edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState = this.itemSelectionStateResolver.getResolved();
 			if( itemSelectionState != null ) {
 				E item = itemResolver.getResolved();
 				return itemSelectionState.getTrackableShapeFor( item );
@@ -365,15 +365,15 @@ public class Tutorial {
 	}
 
 	private static abstract class ItemSelectionStateTrackableShapeResolver<E,T> implements Resolver< T > {
-		private Resolver< edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> > itemSelectionStateResolver;
+		private Resolver< edu.cmu.cs.dennisc.croquet.ListSelectionState<E> > itemSelectionStateResolver;
 		private Resolver< E > itemResolver;
-		public ItemSelectionStateTrackableShapeResolver(Resolver< edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> > itemSelectionStateResolver, Resolver< E > itemResolver ) {
+		public ItemSelectionStateTrackableShapeResolver(Resolver< edu.cmu.cs.dennisc.croquet.ListSelectionState<E> > itemSelectionStateResolver, Resolver< E > itemResolver ) {
 			this.itemSelectionStateResolver = itemSelectionStateResolver;
 			this.itemResolver = itemResolver;
 		}
-		protected abstract T getResolved( edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionState, E item );
+		protected abstract T getResolved( edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState, E item );
 		public final T getResolved() {
-			edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionState = itemSelectionStateResolver.getResolved();
+			edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState = itemSelectionStateResolver.getResolved();
 			if( itemSelectionState != null ) {
 				E item = this.itemResolver.getResolved();
 				return getResolved( itemSelectionState, item );
@@ -384,20 +384,20 @@ public class Tutorial {
 	}
 	
 	private static class MainComponentResolver<E> extends ItemSelectionStateTrackableShapeResolver< E, edu.cmu.cs.dennisc.croquet.JComponent< ? > > {
-		public MainComponentResolver(Resolver< edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> > itemSelectionStateResolver, Resolver< E > itemResolver ) {
+		public MainComponentResolver(Resolver< edu.cmu.cs.dennisc.croquet.ListSelectionState<E> > itemSelectionStateResolver, Resolver< E > itemResolver ) {
 			super( itemSelectionStateResolver, itemResolver );
 		}
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.JComponent<?> getResolved(edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionState, E item) {
+		protected edu.cmu.cs.dennisc.croquet.JComponent<?> getResolved(edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState, E item) {
 			return itemSelectionState.getMainComponentFor( item );
 		}
 	}
 	private static class ScrollPaneResolver<E> extends ItemSelectionStateTrackableShapeResolver< E, edu.cmu.cs.dennisc.croquet.JComponent< ? > > {
-		public ScrollPaneResolver(Resolver< edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> > itemSelectionStateResolver, Resolver< E > itemResolver ) {
+		public ScrollPaneResolver(Resolver< edu.cmu.cs.dennisc.croquet.ListSelectionState<E> > itemSelectionStateResolver, Resolver< E > itemResolver ) {
 			super( itemSelectionStateResolver, itemResolver );
 		}
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.JComponent<?> getResolved(edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionState, E item) {
+		protected edu.cmu.cs.dennisc.croquet.JComponent<?> getResolved(edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState, E item) {
 			return itemSelectionState.getScrollPaneFor( item );
 		}
 	}
@@ -421,23 +421,23 @@ public class Tutorial {
 		Step step = new InputDialogCommitStep( title, text, inputDialogOperationResolver );
 		this.addStep( step );
 	}
-	public <E> void addItemSelectionStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ItemSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
+	public <E> void addItemSelectionStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
 		Step step = new ItemSelectionStateStep<E>( title, text, itemSelectionStateResolver, itemResolver, Feature.ConnectionPreference.EAST_WEST );
 		this.addStep( step );
 	}
-	public <E> void addSelectTabStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ItemSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
+	public <E> void addSelectTabStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
 		Step step = new ItemSelectionStateStep<E>( title, text, itemSelectionStateResolver, itemResolver, Feature.ConnectionPreference.NORTH_SOUTH );
 		this.addStep( step );
 	}
-	public <E> void addSpotlightTabTitleStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ItemSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
+	public <E> void addSpotlightTabTitleStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
 		Step step = new SpotlightStep( title, text, new ItemSelectionStateItemResolver( itemSelectionStateResolver, itemResolver ), Feature.ConnectionPreference.NORTH_SOUTH );
 		this.addStep( step );
 	}
-	public <E> void addSpotlightTabMainComponentStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
+	public <E> void addSpotlightTabMainComponentStep( String title, String text, edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
 		Step step = new SpotlightStep( title, text, new MainComponentResolver( itemSelectionStateResolver, itemResolver ), Feature.ConnectionPreference.EAST_WEST );
 		this.addStep( step );
 	}
-	public <E> void addSpotlightTabScrollPaneStep( String title, String text, edu.cmu.cs.dennisc.croquet.ItemSelectionState<E> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
+	public <E> void addSpotlightTabScrollPaneStep( String title, String text, edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
 		Step step = new SpotlightStep( title, text, new ScrollPaneResolver( itemSelectionStateResolver, itemResolver ), Feature.ConnectionPreference.EAST_WEST );
 		this.addStep( step );
 	}

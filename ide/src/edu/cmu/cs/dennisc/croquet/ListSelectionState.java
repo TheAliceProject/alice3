@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemSelectionState<E> extends Model< ItemSelectionState<E> > {
+public abstract class ListSelectionState<E> extends Model< ListSelectionState<E> > {
 	public static interface ValueObserver<E> {
 		public void changed(E nextValue);
 	};
@@ -164,9 +164,9 @@ public abstract class ItemSelectionState<E> extends Model< ItemSelectionState<E>
 
 					Application application = Application.getSingleton();
 					ModelContext<?> parentContext = application.getCurrentContext();
-					ItemSelectionStateContext< E > childContext = parentContext.createItemSelectionStateContext( ItemSelectionState.this, this.mostRecentEvent, this.mostRecentViewController, prevIndex, prevSelection, nextIndex, nextSelection );
-					childContext.commitAndInvokeDo( new ItemSelectionEdit<E>( this.mostRecentEvent, prevSelection, nextSelection, ItemSelectionState.this ));
-					ItemSelectionState.this.fireValueChanged(nextSelection);
+					ListSelectionStateContext< E > childContext = parentContext.createItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController, prevIndex, prevSelection, nextIndex, nextSelection );
+					childContext.commitAndInvokeDo( new ListSelectionEdit<E>( this.mostRecentEvent, prevSelection, nextSelection, ListSelectionState.this ));
+					ListSelectionState.this.fireValueChanged(nextSelection);
 
 					this.mostRecentEvent = null;
 					this.mostRecentViewController = null;
@@ -217,7 +217,7 @@ public abstract class ItemSelectionState<E> extends Model< ItemSelectionState<E>
 		private java.util.ArrayList<E> items = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 
 		public Object getSelectedItem() {
-			int index = ItemSelectionState.this.listSelectionModel.getMaxSelectionIndex();
+			int index = ListSelectionState.this.listSelectionModel.getMaxSelectionIndex();
 			if (index >= 0) {
 				return this.items.get( index );
 			} else {
@@ -235,7 +235,7 @@ public abstract class ItemSelectionState<E> extends Model< ItemSelectionState<E>
 						break;
 					}
 				}
-				ItemSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, true);
+				ListSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, true);
 				this.fireContentsChanged(this, -1, -1);
 			}
 		}
@@ -260,7 +260,7 @@ public abstract class ItemSelectionState<E> extends Model< ItemSelectionState<E>
 				this.items.add( item );
 			}
 			this.fireContentsChanged(this, 0, this.getSize() - 1);
-			ItemSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, false);
+			ListSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, false);
 		}
 
 		private void setListData(int selectedIndex, java.util.Collection<E> items) {
@@ -270,7 +270,7 @@ public abstract class ItemSelectionState<E> extends Model< ItemSelectionState<E>
 				this.items.add( item );
 			}
 			this.fireContentsChanged(this, 0, this.getSize() - 1);
-			ItemSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, false);
+			ListSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, false);
 		}
 		
 		private void addItem( E item ) {
@@ -288,13 +288,13 @@ public abstract class ItemSelectionState<E> extends Model< ItemSelectionState<E>
 
 	private final ComboBoxModel comboBoxModel = new ComboBoxModel();
 
-	private ItemSelectionState(Group group, java.util.UUID individualUUID, int selectedIndex, E... items) {
+	private ListSelectionState(Group group, java.util.UUID individualUUID, int selectedIndex, E... items) {
 		super(group, individualUUID);
 		this.listSelectionModel.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		this.comboBoxModel.setListData(selectedIndex, items);
 	}
 
-	public ItemSelectionState(Group group, java.util.UUID individualUUID) {
+	public ListSelectionState(Group group, java.util.UUID individualUUID) {
 		this(group, individualUUID, -1);
 	}
 
@@ -403,14 +403,14 @@ public abstract class ItemSelectionState<E> extends Model< ItemSelectionState<E>
 			@Override
 			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				super.handleAddedTo(parent);
-				ItemSelectionState.this.addComponent(this);
+				ListSelectionState.this.addComponent(this);
 				// this.addItemListener( this.itemListener );
 			};
 
 			@Override
 			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				// this.removeItemListener( this.itemListener );
-				ItemSelectionState.this.removeComponent(this);
+				ListSelectionState.this.removeComponent(this);
 				super.handleRemovedFrom(parent);
 			}
 		};
@@ -426,7 +426,7 @@ public abstract class ItemSelectionState<E> extends Model< ItemSelectionState<E>
 			@Override
 			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				super.handleAddedTo(parent);
-				ItemSelectionState.this.addComponent(this);
+				ListSelectionState.this.addComponent(this);
 				// this.addListSelectionListener( this.listSelectionListener );
 			};
 
@@ -434,7 +434,7 @@ public abstract class ItemSelectionState<E> extends Model< ItemSelectionState<E>
 			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				// this.removeListSelectionListener( this.listSelectionListener
 				// );
-				ItemSelectionState.this.removeComponent(this);
+				ListSelectionState.this.removeComponent(this);
 				super.handleRemovedFrom(parent);
 			}
 		};
@@ -451,13 +451,13 @@ public abstract class ItemSelectionState<E> extends Model< ItemSelectionState<E>
 		rv.addContainmentObserver(new Component.ContainmentObserver() {
 			// private ItemListener itemListener = new ItemListener( rv );
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				ItemSelectionState.this.addComponent(rv);
+				ListSelectionState.this.addComponent(rv);
 				// rv.addItemListener( this.itemListener );
 			}
 
 			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				// rv.removeItemListener( this.itemListener );
-				ItemSelectionState.this.removeComponent(rv);
+				ListSelectionState.this.removeComponent(rv);
 			}
 		});
 		return rv;
@@ -540,14 +540,14 @@ public abstract class ItemSelectionState<E> extends Model< ItemSelectionState<E>
 		this.action.putValue(javax.swing.Action.MNEMONIC_KEY, mnemonicKey);
 	}
 
-	public Menu<ItemSelectionState<E>> createMenu() {
+	public Menu<ListSelectionState<E>> createMenu() {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: ItemSelectionOperation createMenu()");
-		Menu<ItemSelectionState<E>> rv = new Menu<ItemSelectionState<E>>( this ) {
+		Menu<ListSelectionState<E>> rv = new Menu<ListSelectionState<E>>( this ) {
 			@Override
 			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				super.handleAddedTo(parent);
 				javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-				for (final Object item : ItemSelectionState.this.comboBoxModel.items) {
+				for (final Object item : ListSelectionState.this.comboBoxModel.items) {
 					javax.swing.Action action = new javax.swing.AbstractAction() {
 						public void actionPerformed(java.awt.event.ActionEvent e) {
 							comboBoxModel.setSelectedItem(item);

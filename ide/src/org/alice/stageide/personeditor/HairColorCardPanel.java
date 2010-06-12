@@ -49,7 +49,7 @@ class HairColorCardPanel extends IngredientCardPanel<String> {
 	private IncludingGreyHairColorSelectionOperation includingGrey = new IncludingGreyHairColorSelectionOperation();
 	private ExcludingGreyHairColorSelectionOperation excludingGrey = new ExcludingGreyHairColorSelectionOperation();
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.ItemSelectionState<String> getItemSelectionOperation( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor ) {
+	protected edu.cmu.cs.dennisc.croquet.ListSelectionState<String> getItemSelectionOperation( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor ) {
 		if( lifeStage == org.alice.apis.stage.LifeStage.ADULT ) {
 			return includingGrey;
 		} else {

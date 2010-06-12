@@ -43,8 +43,6 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
-import edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.TabItemDetails;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -82,7 +80,7 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 			}
 		}
 	}
-	/*package-private*/ ItemSelectablePanel( ItemSelectionState<E> model ) {
+	/*package-private*/ ItemSelectablePanel( ListSelectionState<E> model ) {
 		super( model );
 	}
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );

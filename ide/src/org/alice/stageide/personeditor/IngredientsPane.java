@@ -118,7 +118,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			bodyTabState, headTabState );
 	
 
-	private edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver<edu.cmu.cs.dennisc.croquet.PredeterminedTab> tabChangeAdapter = new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver<edu.cmu.cs.dennisc.croquet.PredeterminedTab>() {
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.croquet.PredeterminedTab> tabChangeAdapter = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.croquet.PredeterminedTab>() {
 		public void changed(edu.cmu.cs.dennisc.croquet.PredeterminedTab nextValue) {
 			int index;
 			if( nextValue == IngredientsPane.this.bodyTabState ) {
@@ -133,13 +133,13 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	public IngredientsPane() {
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.setBackgroundColor( BACKGROUND_COLOR );
-		this.lifeStageSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< org.alice.apis.stage.LifeStage >() { 
+		this.lifeStageSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.apis.stage.LifeStage >() { 
 			public void changed( org.alice.apis.stage.LifeStage nextValue ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handleLifeStageSelection" );
 				IngredientsPane.this.handleLifeStageSelection( 0 );
 			}
 		} );
-		this.genderSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< org.alice.apis.stage.Gender >() { 
+		this.genderSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.apis.stage.Gender >() { 
 			public void changed( org.alice.apis.stage.Gender nextValue ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handleGenderSelection" );
 				IngredientsPane.this.handleGenderSelection( 0 );

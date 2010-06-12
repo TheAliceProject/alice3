@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.croquet.ItemSelectablePanel.ItemDetails;
  * @author Dennis Cosgrove
  */
 public class ComboBox< E > extends ItemSelectable<javax.swing.JComboBox, E> {
-	/*package-private*/ ComboBox( ItemSelectionState<E> model ) {
+	/*package-private*/ ComboBox( ListSelectionState<E> model ) {
 		super( model );
 	}
 	@Override

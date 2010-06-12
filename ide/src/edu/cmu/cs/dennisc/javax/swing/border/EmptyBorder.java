@@ -40,21 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.javax.swing.border;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ItemSelectionStateContext< T > extends ModelContext<ItemSelectionState<T>> {
-	private int prevIndex;
-	private T prevItem;
-	private int nextIndex;
-	private T nextItem;
-	/*package-private*/ ItemSelectionStateContext( ModelContext<?> parent, ItemSelectionState< T > itemSelectionState, java.util.EventObject e, ViewController< ?,? > viewController, int prevIndex, T prevItem, int nextIndex, T nextItem ) {
-		super( parent, itemSelectionState, e, viewController );
-		this.prevIndex = prevIndex;
-		this.prevItem = prevItem;
-		this.nextIndex = nextIndex;
-		this.nextItem = nextItem;
+public class EmptyBorder extends javax.swing.border.EmptyBorder {
+	public EmptyBorder() {
+		super( 0,0,0,0 );
+	}
+	public EmptyBorder( java.awt.Insets insets ) {
+		super( insets );
+	}
+	public EmptyBorder( int top, int left, int bottom, int right ) {
+		super( top, left, bottom, right );
+	}
+	public void setBorderInsets( int top, int left, int bottom, int right ) {
+		this.top = top;
+		this.left = left;
+		this.bottom = bottom;
+		this.right = right;
+	}
+	public void setBorderInsets( java.awt.Insets insets ) {
+		this.top = insets.top;
+		this.left = insets.left;
+		this.bottom = insets.bottom;
+		this.right = insets.right;
 	}
 }

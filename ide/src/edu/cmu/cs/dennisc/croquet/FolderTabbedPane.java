@@ -231,7 +231,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		}
 	}
 
-	public FolderTabbedPane( ItemSelectionState<E> model, ItemSelectionState.TabCreator< E > tabCreator ) {
+	public FolderTabbedPane( ListSelectionState<E> model, ListSelectionState.TabCreator< E > tabCreator ) {
 		super( model, tabCreator );
 		this.cardPanel.setBackgroundColor( null );
 		this.headerPanel.setBackgroundColor( null );

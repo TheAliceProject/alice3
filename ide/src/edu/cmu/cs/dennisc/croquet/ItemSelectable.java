@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemSelectable< J extends javax.swing.JComponent, E > extends ViewController<J, ItemSelectionState<E>> {
-	/*package-private*/ ItemSelectable( ItemSelectionState<E> model ) {
+public abstract class ItemSelectable< J extends javax.swing.JComponent, E > extends ViewController<J, ListSelectionState<E>> {
+	/*package-private*/ ItemSelectable( ListSelectionState<E> model ) {
 		super( model );
 	}
 	/*package-private*/ abstract TrackableShape getTrackableShapeFor( E item );

@@ -189,8 +189,8 @@ public abstract class Application {
 				if( model instanceof MenuModel ) {
 					MenuModel menuOperation = (MenuModel)model;
 					rv.addMenu( menuOperation.createMenu() );
-				} else if( model instanceof ItemSelectionState< ? > ) {
-					ItemSelectionState< ? > itemSelectionOperation = (ItemSelectionState< ? >)model;
+				} else if( model instanceof ListSelectionState< ? > ) {
+					ListSelectionState< ? > itemSelectionOperation = (ListSelectionState< ? >)model;
 					rv.addMenu( itemSelectionOperation.createMenu() );
 				} else {
 					AbstractMenuItem< ?,? > menuItem = null;

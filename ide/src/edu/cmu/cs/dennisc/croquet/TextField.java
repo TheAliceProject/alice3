@@ -52,8 +52,16 @@ public class TextField extends TextComponent< javax.swing.JTextField > {
 	}
 	@Override
 	protected javax.swing.JTextField createAwtComponent() {
-		javax.swing.JTextField rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField();
-		rv.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.SunkenBorder( 4,4,2,2 ) );
+		javax.swing.JTextField rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField() {
+			@Override
+			public void setMargin(java.awt.Insets m) {
+				super.setMargin(m);
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "setMargin", m );
+				//Thread.dumpStack();
+			}
+		};
+//		rv.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.SunkenBorder( 4,4,2,2 ) );
+//		rv.setMargin( new java.awt.Insets(4,4,2,2));
 		return rv;
 	}
 }

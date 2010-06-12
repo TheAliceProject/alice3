@@ -45,15 +45,15 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class ItemSelectionEdit<E> extends Edit<ItemSelectionState<E>> {
-	private ItemSelectionState<E> operation;
+public final class ListSelectionEdit<E> extends Edit<ListSelectionState<E>> {
+	private ListSelectionState<E> operation;
 	private java.util.UUID operationId;
 	private E prevValue;
 	private E nextValue;
-	public ItemSelectionEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public ListSelectionEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public ItemSelectionEdit( java.util.EventObject e, E prevValue, E nextValue, ItemSelectionState< E > operation ) {
+	public ListSelectionEdit( java.util.EventObject e, E prevValue, E nextValue, ListSelectionState< E > operation ) {
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
 		this.operation = operation;

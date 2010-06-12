@@ -49,7 +49,7 @@ public class JSuggestiveTextArea extends javax.swing.JTextArea {
 	private String textForBlankCondition;
 
 	public JSuggestiveTextArea() {
-		this.setBorder( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ) );
+		//this.setBorder( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ) );
 		//this.setToolTipText( this.textForBlankCondition );
 		this.addFocusListener( new SuggestiveTextFocusAdapter( this ) );
 		this.addKeyListener( new java.awt.event.KeyListener() {

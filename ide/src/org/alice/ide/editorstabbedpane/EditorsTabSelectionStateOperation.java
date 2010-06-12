@@ -241,7 +241,7 @@ class Cycle< E > {
 /**
  * @author Dennis Cosgrove
  */
-public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croquet.ItemSelectionState<edu.cmu.cs.dennisc.alice.ast.AbstractCode> {
+public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croquet.ListSelectionState<edu.cmu.cs.dennisc.alice.ast.AbstractCode> {
 	class EditPreviousCodeOperation extends org.alice.ide.operations.ActionOperation {
 		public EditPreviousCodeOperation() {
 			super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "71ff1171-9e5e-443f-a7aa-cb4012f05fec" ) );
@@ -309,7 +309,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 			this.addComponent( button, Constraint.CENTER );
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,4 ) );
 		}
-		private edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode> selectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode>() {
+		private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode> selectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode>() {
 			public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractCode nextValue) {
 				DropDownPanel.this.updateOperation( nextValue );
 			}

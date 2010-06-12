@@ -124,6 +124,8 @@ public final class StringState extends Model< StringState > {
 				StringState.this.removeComponent( rv );
 			}
 		} );
+		rv.setMargin( new java.awt.Insets( 4, 4, 2, 2 ) );
+		rv.setBackgroundColor( new java.awt.Color( 255, 255, 221 ) );
 		return rv;
 	}
 	public TextField createTextField() {

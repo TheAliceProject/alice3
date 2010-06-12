@@ -94,7 +94,7 @@ import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava;
 import edu.cmu.cs.dennisc.croquet.AbstractButton;
 import edu.cmu.cs.dennisc.croquet.BooleanState;
-import edu.cmu.cs.dennisc.croquet.ItemSelectionState;
+import edu.cmu.cs.dennisc.croquet.ListSelectionState;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical;
 import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
@@ -156,12 +156,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	protected SnapGrid snapGrid;
 
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
-	private edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
 		public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractCode next ) {
 			MoveAndTurnSceneEditor.this.handleFocusedCodeChanged( next );
 		}
 	};
-	private edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractField> fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractField>() {
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractField> fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractField>() {
 		public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractField nextValue) {
 			MoveAndTurnSceneEditor.this.handleFieldSelection( nextValue );
 		}
@@ -300,7 +300,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		private static final int SUB_FIELD_LEFT_INSET = 10;
 		private static final int INTRA_FIELD_PAD = 1;
 		private javax.swing.SpringLayout springLayout;
-		public FieldRadioButtons( ItemSelectionState<AbstractField> model ) {
+		public FieldRadioButtons( ListSelectionState<AbstractField> model ) {
 			super( model );
 		}
 		@Override

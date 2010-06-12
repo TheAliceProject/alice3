@@ -274,8 +274,8 @@ public abstract class ModelContext<M extends Model> extends HistoryTreeNode<Mode
 		this.addChild( rv );
 		return rv;
 	}
-	/*package-private*/ <T> ItemSelectionStateContext< T > createItemSelectionStateContext( ItemSelectionState< T > itemSelectionState, java.util.EventObject e, ViewController< ?, ? > viewController, int prevIndex, T prevItem, int nextIndex, T nextItem ) {
-		ItemSelectionStateContext<T> rv = new ItemSelectionStateContext<T>( this, itemSelectionState, e, viewController, prevIndex, prevItem, nextIndex, nextItem );
+	/*package-private*/ <T> ListSelectionStateContext< T > createItemSelectionStateContext( ListSelectionState< T > itemSelectionState, java.util.EventObject e, ViewController< ?, ? > viewController, int prevIndex, T prevItem, int nextIndex, T nextItem ) {
+		ListSelectionStateContext<T> rv = new ListSelectionStateContext<T>( this, itemSelectionState, e, viewController, prevIndex, prevItem, nextIndex, nextItem );
 		this.addChild( rv );
 		return rv;
 	}

@@ -40,68 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Tree<E> extends JComponent< javax.swing.JTree > {
-//	public KTree( javax.swing.tree.TreeModel treeModel ) {
-//		this.getJComponent().setModel( treeModel );
-//	}
-	@Override
-	protected javax.swing.JTree createAwtComponent() {
-		return new javax.swing.JTree();
-	}
-	
-	public javax.swing.tree.TreeCellRenderer getCellRenderer() {
-		return this.getAwtComponent().getCellRenderer();
-	}
-	public void setCellRenderer( javax.swing.tree.TreeCellRenderer listCellRenderer ) {
-		this.getAwtComponent().setCellRenderer( listCellRenderer );
-	}
-
-	public void expandAllRows() {
-		for( int i=0; i<this.getAwtComponent().getRowCount(); i++ ) {
-			this.getAwtComponent().expandRow( i );
-		}
-	}
-	public void collapseAllRows() {
-		for( int i=0; i<this.getAwtComponent().getRowCount(); i++ ) {
-			this.getAwtComponent().collapseRow( i );
-		}
-	}
-
-	public void setRootVisible( boolean isRootVisible ) {
-		this.getAwtComponent().setRootVisible( isRootVisible );
-	}
-	
-	@Deprecated
-	public void addTreeSelectionListener( javax.swing.event.TreeSelectionListener treeSelectionListener ) {
-		this.getAwtComponent().addTreeSelectionListener( treeSelectionListener );
-	}
-	@Deprecated
-	public void removeTreeSelectionListener( javax.swing.event.TreeSelectionListener treeSelectionListener ) {
-		this.getAwtComponent().removeTreeSelectionListener( treeSelectionListener );
-	}
-
-	@Deprecated
-	public javax.swing.tree.TreeModel getModel() {
-		return this.getAwtComponent().getModel();
-	}
-
-	@Deprecated
-	public void setSwingTreeModel( javax.swing.tree.TreeModel model ) {
-		this.getAwtComponent().setModel( model );
-	}
-	@Deprecated
-	public void setSelectionRow( int selectionRow ) {
-		this.getAwtComponent().setSelectionRow( selectionRow );
-	}
-
-	@Deprecated
-	public void setItemSelectionOperation( ListSelectionState< E > operation ) {
-		throw new RuntimeException( "todo" );
+public class ListSelectionStateContext< T > extends ModelContext<ListSelectionState<T>> {
+	private int prevIndex;
+	private T prevItem;
+	private int nextIndex;
+	private T nextItem;
+	/*package-private*/ ListSelectionStateContext( ModelContext<?> parent, ListSelectionState< T > itemSelectionState, java.util.EventObject e, ViewController< ?,? > viewController, int prevIndex, T prevItem, int nextIndex, T nextItem ) {
+		super( parent, itemSelectionState, e, viewController );
+		this.prevIndex = prevIndex;
+		this.prevItem = prevItem;
+		this.nextIndex = nextIndex;
+		this.nextItem = nextItem;
 	}
 }

@@ -252,7 +252,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		tabbedPane.scaleFont( 1.5f );
 		if( tabbedPane instanceof edu.cmu.cs.dennisc.croquet.ToolPaletteTabbedPane ) {
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
-			this.tabbedPaneSelectionState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< edu.cmu.cs.dennisc.croquet.PredeterminedTab >() {
+			this.tabbedPaneSelectionState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.croquet.PredeterminedTab >() {
 				public void changed(edu.cmu.cs.dennisc.croquet.PredeterminedTab nextValue) {
 					if( nextValue != null ) {
 						MembersEditor.this.setBackgroundColor( nextValue.getMainComponent().getBackgroundColor() );

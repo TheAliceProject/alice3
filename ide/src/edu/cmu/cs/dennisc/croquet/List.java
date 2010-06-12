@@ -91,7 +91,7 @@ public class List<E> extends ItemSelectable<javax.swing.JList, E > {
 //		}
 	}
 	
-	/*package-private*/ List( ItemSelectionState<E> model ) {
+	/*package-private*/ List( ListSelectionState<E> model ) {
 		super( model );
 	}
 

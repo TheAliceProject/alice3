@@ -45,7 +45,7 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractItemSelectionOperation<E> extends edu.cmu.cs.dennisc.croquet.ItemSelectionState< E > {
+abstract class AbstractItemSelectionOperation<E> extends edu.cmu.cs.dennisc.croquet.ListSelectionState< E > {
 //	private class ItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<E> {
 //		public ItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
 //			super( java.util.UUID.fromString( "a10c07e8-bd0a-45e2-87aa-a3715fefb847" ), comboBoxModel );
@@ -60,7 +60,7 @@ abstract class AbstractItemSelectionOperation<E> extends edu.cmu.cs.dennisc.croq
 		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId );
 		this.setListData( -1, items );
 //		this.setItemSelectionOperation( new ItemSelectionOperation( comboBoxModel ) );
-		this.addValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< E >() {
+		this.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< E >() {
 			public void changed(E nextValue) {
 //				if( e.getValueIsAdjusting() ) {
 //					//pass

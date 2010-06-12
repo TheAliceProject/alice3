@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class CustomRadioButtons< E > extends AbstractRadioButtons< E > {
-	public CustomRadioButtons( ItemSelectionState<E> model ) {
+	public CustomRadioButtons( ListSelectionState<E> model ) {
 		super( model );
 		model.register( this );
 	}

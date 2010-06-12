@@ -237,7 +237,7 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 			return this.scrollPane;
 		}
 	}
-	private ItemSelectionState.TabCreator< E > tabCreator;
+	private ListSelectionState.TabCreator< E > tabCreator;
 	@Override
 	public void setFont(java.awt.Font font) {
 		super.setFont( font );
@@ -264,7 +264,7 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 		return createTabItemDetails( item, id, this.tabCreator.createInnerTitleComponent( item ), this.tabCreator.createScrollPane( item ), this.tabCreator.createMainComponent( item ), closeButtonActionListener );
 	}
 	
-	public AbstractTabbedPane( ItemSelectionState<E> model, ItemSelectionState.TabCreator< E > tabCreator ) {
+	public AbstractTabbedPane( ListSelectionState<E> model, ListSelectionState.TabCreator< E > tabCreator ) {
 		super( model );
 		this.tabCreator = tabCreator;
 	}

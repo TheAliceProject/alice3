@@ -55,7 +55,7 @@ public class DefaultRadioButtons< E > extends AbstractRadioButtons< E > {
 		GBC.weightx = 1.0f;
 		GBC.weighty = 0.0f;
 	}
-	/*package-private*/ DefaultRadioButtons( ItemSelectionState<E> model ) {
+	/*package-private*/ DefaultRadioButtons( ListSelectionState<E> model ) {
 		super( model );
 	}
 	@Override

@@ -62,7 +62,7 @@ class IsArrayStateOperation extends edu.cmu.cs.dennisc.croquet.BooleanState {
 
 
 public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
-	private static class TypeSelectionOperation extends edu.cmu.cs.dennisc.croquet.ItemSelectionState< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
+	private static class TypeSelectionOperation extends edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
 		private static class TypeListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
 			@Override
 			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractType value, int index, boolean isSelected, boolean cellHasFocus ) {
@@ -156,7 +156,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 		edu.cmu.cs.dennisc.croquet.CheckBox isArrayCheckBox = this.isArrayStateOperation.createCheckBox();
 		isArrayCheckBox.setBackgroundColor( null );
 		
-		this.typeSelectionOperation.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractType>() {
+		this.typeSelectionOperation.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractType>() {
 			public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractType nextValue) {
 				TypePane.this.typeProperty.setValue( nextValue );
 			}
