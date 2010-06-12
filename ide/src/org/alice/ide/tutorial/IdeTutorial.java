@@ -123,6 +123,18 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			}
 		}
 	}
+	public static abstract class CodeOperationResolver implements Resolver< edu.cmu.cs.dennisc.croquet.Operation<?,?> > {
+		protected abstract edu.cmu.cs.dennisc.croquet.Operation<?,?> resolveOperation( org.alice.ide.codeeditor.CodeEditor codeEditor );
+		
+		public final edu.cmu.cs.dennisc.croquet.Operation<?,?> getResolved() {
+			org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getCodeEditorInFocus();
+			if( codeEditor != null ) {
+				return this.resolveOperation( codeEditor );
+			} else {
+				return null;
+			}
+		}
+	}
 
 	public static abstract class CodeDragComponentResolver implements Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > {
 		protected abstract edu.cmu.cs.dennisc.croquet.DragComponent resolveDragComponent( org.alice.ide.codeeditor.CodeEditor codeEditor );
@@ -450,46 +462,66 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		};
 	}
 
-	public static class IfConditionResolver extends CodeTrackableShapeResolver {
+	public static class IfConditionResolver extends CodeOperationResolver {
 		private int index;
 		public IfConditionResolver( int index ) {
 			this.index = index;
 		}
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape( org.alice.ide.codeeditor.CodeEditor codeEditor ) {
+		protected edu.cmu.cs.dennisc.croquet.Operation<?, ?> resolveOperation( org.alice.ide.codeeditor.CodeEditor codeEditor ) {
 			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)codeEditor.getCode();
 			edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement = getNodeAt( code, edu.cmu.cs.dennisc.alice.ast.ConditionalStatement.class, this.index );
 			if( conditionalStatement != null ) {
-				return codeEditor.getComponent( conditionalStatement.booleanExpressionBodyPairs.get( 0 ).expression );
+				return codeEditor.getOperation( conditionalStatement.booleanExpressionBodyPairs.get( 0 ).expression );
 			} else {
 				return null;
 			}
 		}
 	}
 
-	public static class InvocationArgumentResolver extends CodeTrackableShapeResolver {
+	public static abstract class InvocationExpressionPropertyResolver extends CodeOperationResolver {
 		private Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver;
 		private int invocationIndex;
-		private int argumentIndex;
-		public InvocationArgumentResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex, int argumentIndex ) {
+		public InvocationExpressionPropertyResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex ) {
 			this.methodResolver = methodResolver;
 			this.invocationIndex = invocationIndex;
-			this.argumentIndex = argumentIndex;
 		}
+		protected abstract edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation );
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape( org.alice.ide.codeeditor.CodeEditor codeEditor ) {
+		protected final edu.cmu.cs.dennisc.croquet.Operation<?,?> resolveOperation( org.alice.ide.codeeditor.CodeEditor codeEditor ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.methodResolver.getResolved();
 			if( method != null ) {
 				edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getValue();
 				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = getMethodInvocationAt( code, method, this.invocationIndex );
 				if( methodInvocation != null ) {
-					return codeEditor.getComponent( methodInvocation.arguments.get( this.argumentIndex ).expression );
+					return codeEditor.getOperation( this.getExpressionProperty( methodInvocation ) );
 				} else {
 					return null;
 				}
 			} else {
 				return null;
 			}
+		}
+	}
+	
+	public static class InvocationArgumentResolver extends InvocationExpressionPropertyResolver {
+		private int argumentIndex;
+		public InvocationArgumentResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex, int argumentIndex ) {
+			super( methodResolver, invocationIndex );
+			this.argumentIndex = argumentIndex;
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty(edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation) {
+			return methodInvocation.arguments.get( this.argumentIndex ).expression;
+		}
+	}
+	public static class InvocationInstanceResolver extends InvocationExpressionPropertyResolver {
+		public InvocationInstanceResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex ) {
+			super( methodResolver, invocationIndex );
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty(edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation) {
+			return methodInvocation.expression;
 		}
 	}
 	
@@ -507,18 +539,28 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		};
 	}
 	
-	public Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape > createIfConditionResolver( int index ) {
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createIfConditionResolver( int index ) {
 		return new IfConditionResolver( index );
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape > createFirstIfConditionResolver() {
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createFirstIfConditionResolver() {
 		return this.createIfConditionResolver(0);
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape > createLastIfConditionResolver() {
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createLastIfConditionResolver() {
 		return this.createIfConditionResolver(Short.MAX_VALUE);
 	}
 
-	public Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape > createInvocationArgumentResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex, int argumentIndex ) {
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createInvocationArgumentResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex, int argumentIndex ) {
 		return new InvocationArgumentResolver( methodResolver, invocationIndex, argumentIndex );
+	}
+
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createInvocationInstanceResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex ) {
+		return new InvocationInstanceResolver( methodResolver, invocationIndex );
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createFirstInvocationInstanceResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver ) {
+		return this.createInvocationInstanceResolver( methodResolver, 0 );
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createLastInvocationInstanceResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver ) {
+		return this.createInvocationInstanceResolver( methodResolver, Short.MAX_VALUE );
 	}
 	
 	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractField > createFieldResolver( final String name ) {

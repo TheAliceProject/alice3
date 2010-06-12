@@ -70,17 +70,103 @@ public class StressTestTutorial {
 				"Title", 
 				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
 		);
-		tutorial.addDialogOpenStep( 
-				"Declare Procedure", 
-				"Declare Procedure.", 
-				tutorial.createDeclareProcedureOperationResolver() 
+
+		
+		tutorial.addDragAndDropStep( 
+				"Drag Move Procedure",
+				"Drag <b>move</b> procedure.",
+				tutorial.createProcedureInvocationTemplateResolver( grassyGroundField, "move" ),
+				"Drop <b>here</b>.",
+				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
+				"Select <b>FORWARD</b> and <b>1.0</b> from the menus.",
+				tutorial.createToDoCompletorValidator()
 		);
 
-		tutorial.addInputDialogCommitStep( 
-				"Name Hop", 
-				"Type <b>hop</b> and press <i>Ok</i>",
-				tutorial.createDeclareProcedureOperationResolver()				
+		tutorial.addSpotlightStep( 
+				"Note Move",
+				"Note that <b>move</b> has been added to your run method.",
+				tutorial.createInvocationResolver( moveMethod, 0)
 		);
+
+		tutorial.addActionStep(
+				"Change Instance", 
+				"change instance to <b>sunLight</b>",
+				tutorial.createFirstInvocationInstanceResolver( tutorial.createMethodResolver( grassyGroundField, "move") ),
+				tutorial.createToDoCompletorValidator()
+		);
+		
+		tutorial.addDragAndDropStep( 
+				"Drag If/Else",
+				"Drag <b>If/Else</b>.",
+				tutorial.createIfElseTemplateResolver(),
+				"Drop <b>here</b>.",
+				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
+				"Select <b>true</b>.",
+				tutorial.createToDoCompletorValidator()
+		);
+		tutorial.addActionStep(
+				"Change If Condition", 
+				"change if condition to <b>false</b>",
+				tutorial.createFirstIfConditionResolver(),
+				tutorial.createToDoCompletorValidator()
+		);
+
+		tutorial.addSelectTabStep( 
+				"Select Functions Tab", 
+				"Select the <b>Functions</b> tab.", 
+				membersEditor.getTabbedPaneSelectionState(),
+				tutorial.getFunctionsTab()
+		);
+		tutorial.addSpotlightTabScrollPaneStep( 
+				"Note Functions Tab", 
+				"Now the functions are now displayed.", 
+				membersEditor.getTabbedPaneSelectionState(),
+				tutorial.getFunctionsTab()
+		);
+		tutorial.addSpotlightStep( 
+				"Note isWithinThresholdOf",
+				"Note <b>isWithinThresholdOf</b>.",
+				tutorial.createFunctionInvocationTemplateResolver( grassyGroundField, "isWithinThresholdOf" )
+		);
+		tutorial.addDragAndDropStep( 
+				"Drag isWithinThresholdOf",
+				"Drag <b>isWithinThresholdOf</b>.",
+				tutorial.createFunctionInvocationTemplateResolver( grassyGroundField, "isWithinThresholdOf" ),
+				"Drop <b>here</b>.",
+				tutorial.createFirstIfConditionResolver(),
+				tutorial.createToDoCompletorValidator()
+		);
+
+		tutorial.addActionStep(
+				"Change Argument", 
+				"change threshold argument to <b>1.0</b>",
+				tutorial.createInvocationArgumentResolver( tutorial.createMethodResolver(grassyGroundField, "isWithinThresholdOf"), 0, 0 ),
+				tutorial.createToDoCompletorValidator()
+		);
+
+		tutorial.addDragAndDropStep( 
+				"Drag getDistanceTo",
+				"Drag <b>getDistanceTo</b>.",
+				tutorial.createFunctionInvocationTemplateResolver( grassyGroundField, "getDistanceTo" ),
+				"Drop <b>here</b>.",
+				tutorial.createInvocationArgumentResolver( tutorial.createMethodResolver(grassyGroundField, "move"), 0, 1),
+				tutorial.createToDoCompletorValidator()
+		);
+		
+
+		tutorial.addSelectTabStep( 
+				"Procedures Tab", 
+				"Select the <b>Procedures</b> tab.", 
+				membersEditor.getTabbedPaneSelectionState(),
+				tutorial.getProceduresTab()
+		);
+		tutorial.addSpotlightTabScrollPaneStep( 
+				"Note Procedures Tab", 
+				"Now the procedures are now displayed.", 
+				membersEditor.getTabbedPaneSelectionState(),
+				tutorial.getProceduresTab()
+		);
+
 
 		tutorial.addDialogOpenStep( 
 				"Declare Parameter", 
@@ -111,48 +197,6 @@ public class StressTestTutorial {
 		);
 
 
-		tutorial.addDragAndDropStep( 
-				"Drag If/Else",
-				"Drag <b>If/Else</b>.",
-				tutorial.createIfElseTemplateResolver(),
-				"Drop <b>here</b>.",
-				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
-				"Select <b>true</b>.",
-				tutorial.createToDoCompletorValidator()
-		);
-		tutorial.addSelectTabStep( 
-				"Select Functions Tab", 
-				"Select the <b>Functions</b> tab.", 
-				membersEditor.getTabbedPaneSelectionState(),
-				tutorial.getFunctionsTab()
-		);
-		tutorial.addSpotlightTabScrollPaneStep( 
-				"Note Functions Tab", 
-				"Now the functions are now displayed.", 
-				membersEditor.getTabbedPaneSelectionState(),
-				tutorial.getFunctionsTab()
-		);
-		tutorial.addSpotlightStep( 
-				"Note isWithinThresholdOf",
-				"Note <b>isWithinThresholdOf</b>.",
-				tutorial.createFunctionInvocationTemplateResolver( grassyGroundField, "isWithinThresholdOf" )
-		);
-		tutorial.addDragAndDropStep( 
-				"Drag isWithinThresholdOf",
-				"Drag <b>isWithinThresholdOf</b>.",
-				tutorial.createFunctionInvocationTemplateResolver( grassyGroundField, "isWithinThresholdOf" ),
-				"Drop <b>here</b>.",
-				tutorial.createFirstIfConditionResolver(),
-				tutorial.createToDoCompletorValidator()
-		);
-		tutorial.addDragAndDropStep( 
-				"Drag isWithinThresholdOf",
-				"Drag <b>getDistanceTo</b>.",
-				tutorial.createFunctionInvocationTemplateResolver( grassyGroundField, "getDistanceTo" ),
-				"Drop <b>here</b>.",
-				tutorial.createInvocationArgumentResolver( tutorial.createMethodResolver(grassyGroundField, "move"), 0, 1),
-				tutorial.createToDoCompletorValidator()
-		);
 		tutorial.addDragAndDropStep( 
 				"Drag Do In Order",
 				"Drag <b>Do In Order</b>.",
@@ -185,7 +229,6 @@ public class StressTestTutorial {
 				membersEditor.getTabbedPaneSelectionState(),
 				tutorial.getProceduresTab()
 		);
-
 
 		tutorial.addActionStep( 
 				"Declare Procedure Hop", 

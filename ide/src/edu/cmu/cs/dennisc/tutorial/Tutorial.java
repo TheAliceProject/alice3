@@ -442,11 +442,11 @@ public class Tutorial {
 		this.addStep( step );
 	}
 
-	public void addDragAndDropStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String cascadeText, CompletorValidator completorValidator ) {
+	public void addDragAndDropStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String cascadeText, CompletorValidator completorValidator ) {
 		Step step = new DragAndDropStep( title, text, dragResolver, dropText, dropShapeResolver, cascadeText, completorValidator, completorValidator );
 		this.addStep( step );
 	}
-	public void addDragAndDropStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, CompletorValidator completorValidator ) {
+	public void addDragAndDropStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, CompletorValidator completorValidator ) {
 		this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, null, completorValidator );
 	}
 		

@@ -744,11 +744,11 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 		return null;
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.JComponent<?> getComponent( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public edu.cmu.cs.dennisc.croquet.Operation<?,?> getOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		java.util.List< ExpressionPropertyDropDownPane > expressionPropertyDropDownPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class );
 		for( final ExpressionPropertyDropDownPane expressionPropertyDropDownPane : expressionPropertyDropDownPanes ) {
 			if( expressionPropertyDropDownPane.getExpressionProperty() == expressionProperty ) {
-				return expressionPropertyDropDownPane;
+				return expressionPropertyDropDownPane.getModel();
 			}
 		}
 		return null;
