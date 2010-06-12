@@ -40,35 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.tutorial;
 
-package edu.cmu.cs.dennisc.alice.ast;
+import edu.cmu.cs.dennisc.croquet.Resolver;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclaration extends Node {
-	public abstract boolean isDeclaredInAlice();
-	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
-	@Override
-	protected java.util.Set< AbstractDeclaration > fillInDeclarationSet( java.util.Set< AbstractDeclaration > rv, java.util.Set< Node > nodes ) {
-		rv.add( this );
-		return super.fillInDeclarationSet( rv, nodes );
+/*package-private*/ abstract class MethodInvocationTemplateResolver implements Resolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
+	private String methodName;
+	public MethodInvocationTemplateResolver(String methodName) {
+		this.methodName = methodName;
 	}
-	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
-		//return super.appendRepr( rv, locale );
-		rv.append( this.getName() );
-		return rv;
-	}
-	
-	@Override
-	public String getName() {
-		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExists();
-		if( nameProperty != null ) {
-			return nameProperty.getValue();
+	protected abstract edu.cmu.cs.dennisc.croquet.DragComponent getDragComponent(edu.cmu.cs.dennisc.alice.ast.AbstractMethod method);
+	public edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved() {
+		edu.cmu.cs.dennisc.alice.ast.AbstractField field = org.alice.ide.IDE.getSingleton().getFieldSelectionState().getValue();
+		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = IdeTutorial.findShortestMethod(field, methodName);
+		assert method != null;
+		if (method != null) {
+			edu.cmu.cs.dennisc.croquet.DragComponent dragComponent = this.getDragComponent(method);
+			assert dragComponent != null;
+			edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation = dragComponent.getDragAndDropOperation();
+			assert dragComponent == dragOperation.getFirstComponent();
+			return dragOperation;
 		} else {
-			return super.getName();
+			return null;
 		}
 	}
-	
 }

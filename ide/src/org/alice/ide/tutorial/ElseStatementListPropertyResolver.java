@@ -40,35 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.tutorial;
 
-package edu.cmu.cs.dennisc.alice.ast;
+import edu.cmu.cs.dennisc.croquet.Resolver;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclaration extends Node {
-	public abstract boolean isDeclaredInAlice();
-	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
-	@Override
-	protected java.util.Set< AbstractDeclaration > fillInDeclarationSet( java.util.Set< AbstractDeclaration > rv, java.util.Set< Node > nodes ) {
-		rv.add( this );
-		return super.fillInDeclarationSet( rv, nodes );
+/*package-private*/class ElseStatementListPropertyResolver extends ConditionalStatementListPropertyResolver {
+	public ElseStatementListPropertyResolver(int index) {
+		super(index);
 	}
 	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
-		//return super.appendRepr( rv, locale );
-		rv.append( this.getName() );
-		return rv;
+	protected edu.cmu.cs.dennisc.alice.ast.BlockStatement getBlockStatement(edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement) {
+		return conditionalStatement.elseBody.getValue();
 	}
-	
-	@Override
-	public String getName() {
-		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExists();
-		if( nameProperty != null ) {
-			return nameProperty.getValue();
-		} else {
-			return super.getName();
-		}
-	}
-	
 }

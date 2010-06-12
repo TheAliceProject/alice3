@@ -40,35 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.tutorial;
 
-package edu.cmu.cs.dennisc.alice.ast;
+import edu.cmu.cs.dennisc.croquet.Resolver;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclaration extends Node {
-	public abstract boolean isDeclaredInAlice();
-	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
-	@Override
-	protected java.util.Set< AbstractDeclaration > fillInDeclarationSet( java.util.Set< AbstractDeclaration > rv, java.util.Set< Node > nodes ) {
-		rv.add( this );
-		return super.fillInDeclarationSet( rv, nodes );
+/*package-private*/abstract class ConditionalStatementListPropertyResolver implements Resolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > {
+	private int index;
+	public ConditionalStatementListPropertyResolver(int index) {
+		this.index = index;
 	}
-	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
-		//return super.appendRepr( rv, locale );
-		rv.append( this.getName() );
-		return rv;
-	}
-	
-	@Override
-	public String getName() {
-		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExists();
-		if( nameProperty != null ) {
-			return nameProperty.getValue();
+	protected abstract edu.cmu.cs.dennisc.alice.ast.BlockStatement getBlockStatement(edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement);
+	public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getResolved() {
+		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getValue();
+		edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement = IdeTutorial.getNodeAt(code, edu.cmu.cs.dennisc.alice.ast.ConditionalStatement.class, this.index);
+		if (conditionalStatement != null) {
+			return this.getBlockStatement(conditionalStatement).statements;
 		} else {
-			return super.getName();
+			return null;
 		}
 	}
-	
 }

@@ -40,35 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.tutorial;
 
-package edu.cmu.cs.dennisc.alice.ast;
+import edu.cmu.cs.dennisc.croquet.Resolver;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclaration extends Node {
-	public abstract boolean isDeclaredInAlice();
-	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
-	@Override
-	protected java.util.Set< AbstractDeclaration > fillInDeclarationSet( java.util.Set< AbstractDeclaration > rv, java.util.Set< Node > nodes ) {
-		rv.add( this );
-		return super.fillInDeclarationSet( rv, nodes );
+/*package-private*/ class StatementAssignableToResolver extends CodeDragComponentResolver {
+	private Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls;
+	private int index;
+	public StatementAssignableToResolver(Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls, int index) {
+		this.cls = cls;
+		this.index = index;
 	}
 	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
-		//return super.appendRepr( rv, locale );
-		rv.append( this.getName() );
-		return rv;
-	}
-	
-	@Override
-	public String getName() {
-		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExists();
-		if( nameProperty != null ) {
-			return nameProperty.getValue();
+	protected edu.cmu.cs.dennisc.croquet.DragComponent resolveDragComponent(org.alice.ide.codeeditor.CodeEditor codeEditor) {
+		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) codeEditor.getCode();
+		edu.cmu.cs.dennisc.alice.ast.Statement statement = IdeTutorial.getNodeAt(code, this.cls, this.index);
+		if (statement != null) {
+			return codeEditor.getDragComponent(statement);
 		} else {
-			return super.getName();
+			return null;
 		}
 	}
-	
 }

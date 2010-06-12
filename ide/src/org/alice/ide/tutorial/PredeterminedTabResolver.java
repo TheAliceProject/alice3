@@ -40,35 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.tutorial;
 
-package edu.cmu.cs.dennisc.alice.ast;
+import edu.cmu.cs.dennisc.croquet.Resolver;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclaration extends Node {
-	public abstract boolean isDeclaredInAlice();
-	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
-	@Override
-	protected java.util.Set< AbstractDeclaration > fillInDeclarationSet( java.util.Set< AbstractDeclaration > rv, java.util.Set< Node > nodes ) {
-		rv.add( this );
-		return super.fillInDeclarationSet( rv, nodes );
-	}
-	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
-		//return super.appendRepr( rv, locale );
-		rv.append( this.getName() );
-		return rv;
-	}
-	
-	@Override
-	public String getName() {
-		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExists();
-		if( nameProperty != null ) {
-			return nameProperty.getValue();
-		} else {
-			return super.getName();
+/*package-private*/ class PredeterminedTabResolver implements Resolver< edu.cmu.cs.dennisc.croquet.PredeterminedTab > {
+		private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabSelectionOperation;
+		private java.util.UUID id;
+		public PredeterminedTabResolver( edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabSelectionOperation, java.util.UUID id ) {
+			this.tabSelectionOperation = tabSelectionOperation;
+			this.id = id;
+		}
+		public edu.cmu.cs.dennisc.croquet.PredeterminedTab getResolved() {
+			return this.tabSelectionOperation.getItemForId( this.id );
 		}
 	}
-	
-}

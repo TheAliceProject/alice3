@@ -50,18 +50,18 @@ public class StressTestTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
 		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 1 );
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = tutorial.getSceneField();
-		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = tutorial.getFieldDeclaredOnSceneType( "camera" );
-		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice grassyGroundField = tutorial.getFieldDeclaredOnSceneType( "grassyGround" );
-		//final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice runMethod = ide.getSceneType().getDeclaredMethod( "run" );
-		Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > resizeMethod = tutorial.createMethodResolver( grassyGroundField, "resize" );
-		Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > moveMethod = tutorial.createMethodResolver( grassyGroundField, "move" );
-		Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > turnMethod = tutorial.createMethodResolver( grassyGroundField, "turn" );
-		Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > delayMethod = tutorial.createMethodResolver( grassyGroundField, "delay" );
-		assert resizeMethod.getResolved() != null;
-		assert moveMethod.getResolved() != null;
-		assert turnMethod.getResolved() != null;
-		assert delayMethod.getResolved() != null;
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = ide.getSceneField();
+//		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = tutorial.getFieldDeclaredOnSceneType( "camera" );
+//		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice grassyGroundField = tutorial.getFieldDeclaredOnSceneType( "grassyGround" );
+//		//final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice runMethod = ide.getSceneType().getDeclaredMethod( "run" );
+//		Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > resizeMethod = tutorial.createMethodResolver( grassyGroundField, "resize" );
+//		Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > moveMethod = tutorial.createMethodResolver( grassyGroundField, "move" );
+//		Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > turnMethod = tutorial.createMethodResolver( grassyGroundField, "turn" );
+//		Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > delayMethod = tutorial.createMethodResolver( grassyGroundField, "delay" );
+//		assert resizeMethod.getResolved() != null;
+//		assert moveMethod.getResolved() != null;
+//		assert turnMethod.getResolved() != null;
+//		assert delayMethod.getResolved() != null;
 		
 		ide.getEmphasizingClassesState().setValue( false );
 //		membersEditor.getTabbedPaneSelectionState().setValue( tutorial.getFunctionsTab().getResolved() );
@@ -75,9 +75,9 @@ public class StressTestTutorial {
 		tutorial.addDragAndDropStep( 
 				"Drag Move Procedure",
 				"Drag <b>move</b> procedure.",
-				tutorial.createProcedureInvocationTemplateResolver( grassyGroundField, "move" ),
+				tutorial.createProcedureInvocationTemplateResolver( "move" ),
 				"Drop <b>here</b>.",
-				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
 				"Select <b>FORWARD</b> and <b>1.0</b> from the menus.",
 				tutorial.createToDoCompletorValidator()
 		);
@@ -85,13 +85,13 @@ public class StressTestTutorial {
 		tutorial.addSpotlightStep( 
 				"Note Move",
 				"Note that <b>move</b> has been added to your run method.",
-				tutorial.createInvocationResolver( moveMethod, 0)
+				tutorial.createFirstInvocationResolver( "move" )
 		);
 
 		tutorial.addActionStep(
 				"Change Instance", 
 				"change instance to <b>sunLight</b>",
-				tutorial.createFirstInvocationInstanceResolver( tutorial.createMethodResolver( grassyGroundField, "move") ),
+				tutorial.createFirstInvocationInstanceResolver( "move" ),
 				tutorial.createToDoCompletorValidator()
 		);
 		
@@ -100,14 +100,14 @@ public class StressTestTutorial {
 				"Drag <b>If/Else</b>.",
 				tutorial.createIfElseTemplateResolver(),
 				"Drop <b>here</b>.",
-				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
 				"Select <b>true</b>.",
 				tutorial.createToDoCompletorValidator()
 		);
 		tutorial.addActionStep(
 				"Change If Condition", 
 				"change if condition to <b>false</b>",
-				tutorial.createFirstIfConditionResolver(),
+				tutorial.createFirstIfElseStatementConditionResolver(),
 				tutorial.createToDoCompletorValidator()
 		);
 
@@ -126,30 +126,30 @@ public class StressTestTutorial {
 		tutorial.addSpotlightStep( 
 				"Note isWithinThresholdOf",
 				"Note <b>isWithinThresholdOf</b>.",
-				tutorial.createFunctionInvocationTemplateResolver( grassyGroundField, "isWithinThresholdOf" )
+				tutorial.createFunctionInvocationTemplateResolver( "isWithinThresholdOf" )
 		);
 		tutorial.addDragAndDropStep( 
 				"Drag isWithinThresholdOf",
 				"Drag <b>isWithinThresholdOf</b>.",
-				tutorial.createFunctionInvocationTemplateResolver( grassyGroundField, "isWithinThresholdOf" ),
+				tutorial.createFunctionInvocationTemplateResolver( "isWithinThresholdOf" ),
 				"Drop <b>here</b>.",
-				tutorial.createFirstIfConditionResolver(),
+				tutorial.createFirstIfElseStatementConditionResolver(),
 				tutorial.createToDoCompletorValidator()
 		);
 
 		tutorial.addActionStep(
 				"Change Argument", 
 				"change threshold argument to <b>1.0</b>",
-				tutorial.createInvocationArgumentResolver( tutorial.createMethodResolver(grassyGroundField, "isWithinThresholdOf"), 0, 0 ),
+				tutorial.createInvocationArgumentResolver( "isWithinThresholdOf", 0, 0 ),
 				tutorial.createToDoCompletorValidator()
 		);
 
 		tutorial.addDragAndDropStep( 
 				"Drag getDistanceTo",
 				"Drag <b>getDistanceTo</b>.",
-				tutorial.createFunctionInvocationTemplateResolver( grassyGroundField, "getDistanceTo" ),
+				tutorial.createFunctionInvocationTemplateResolver( "getDistanceTo" ),
 				"Drop <b>here</b>.",
-				tutorial.createInvocationArgumentResolver( tutorial.createMethodResolver(grassyGroundField, "move"), 0, 1),
+				tutorial.createInvocationArgumentResolver( "move", 0, 1),
 				tutorial.createToDoCompletorValidator()
 		);
 		
@@ -282,7 +282,7 @@ public class StressTestTutorial {
 				"Drag <b>For Each In Array</b>.",
 				tutorial.createForEachInArrayLoopTemplateResolver(),
 				"Drop <b>here</b>.",
-				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
 				"Select <b>Other Array...</b>.",
 				tutorial.createToDoCompletorValidator()
 		);
@@ -333,7 +333,7 @@ public class StressTestTutorial {
 				"Drag <b>Count Loop</b>.",
 				tutorial.createCountLoopTemplateResolver(),
 				"Drop <b>here</b>.",
-				tutorial.createBeginingOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
+				tutorial.createBeginingOfCurrentMethodBodyStatementListResolver(),
 				"Select <b>2</b>.",
 				tutorial.createToDoCompletorValidator()
 		);
@@ -347,7 +347,7 @@ public class StressTestTutorial {
 				"Drag <b>Do Together</b>.",
 				tutorial.createDoTogetherTemplateResolver(),
 				"Drop <b>here</b>.",
-				tutorial.createStatementListResolver( tutorial.createCurrentCodeResolver(), 1 ),
+				tutorial.createCurrentMethodBodyStatementListResolver( 1 ),
 				tutorial.createToDoCompletorValidator()
 		);
 		tutorial.addSpotlightStep( 
@@ -465,60 +465,60 @@ public class StressTestTutorial {
 		tutorial.addDragAndDropStep( 
 				"Drag Delay",
 				"Drag <b>delay</b> procedure.",
-				tutorial.createProcedureInvocationTemplateResolver( grassyGroundField, "delay" ),
+				tutorial.createProcedureInvocationTemplateResolver( "delay" ),
 				"Drop <b>here</b>.",
-				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
 				"Select <b>1.0</b> from the menu.",
 				tutorial.createToDoCompletorValidator()
 		);
 		tutorial.addSpotlightStep( 
 				"Note Delay",
 				"Note that <b>delay</b> has been added to your run method.",
-				tutorial.createInvocationResolver(delayMethod, 0)
+				tutorial.createFirstInvocationResolver("delay")
 		);
 		tutorial.addDragAndDropStep( 
 				"Drag Resize Procedure",
 				"Drag <b>resize</b> procedure.",
-				tutorial.createProcedureInvocationTemplateResolver( grassyGroundField, "resize" ),
+				tutorial.createProcedureInvocationTemplateResolver( "resize" ),
 				"Drop <b>here</b>.",
-				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
 				"Select <b>2.0</b> from the menu.",
 				tutorial.createToDoCompletorValidator()
 		);
 		tutorial.addSpotlightStep( 
 				"Note Resize",
 				"Note that <b>resize</b> has been added to your run method.",
-				tutorial.createInvocationResolver(resizeMethod, 0)
+				tutorial.createFirstInvocationResolver("resize")
 		);
 
 		tutorial.addDragAndDropStep( 
 				"Drag Move Procedure",
 				"Drag <b>move</b> procedure.",
-				tutorial.createProcedureInvocationTemplateResolver( grassyGroundField, "move" ),
+				tutorial.createProcedureInvocationTemplateResolver( "move" ),
 				"Drop <b>here</b>.",
-				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
 				"Select <b>FORWARD</b> and <b>1.0</b> from the menus.",
 				tutorial.createToDoCompletorValidator()
 		);
 		tutorial.addSpotlightStep( 
 				"Note Move",
 				"Note that <b>move</b> has been added to your run method.",
-				tutorial.createInvocationResolver( moveMethod, 0)
+				tutorial.createFirstInvocationResolver("move")
 		);
 
 		tutorial.addDragAndDropStep( 
 				"Drag Turn Procedure",
 				"Drag <b>turn</b> procedure.",
-				tutorial.createProcedureInvocationTemplateResolver( grassyGroundField, "turn" ),
+				tutorial.createProcedureInvocationTemplateResolver( "turn" ),
 				"Drop <b>here</b>.",
-				tutorial.createEndOfStatementListResolver( tutorial.createCurrentCodeResolver() ),
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
 				"Select <b>LEFT</b> and <b>0.25</b> from the menus.",
 				tutorial.createToDoCompletorValidator()
 		);
 		tutorial.addSpotlightStep( 
 				"Note Turn",
 				"Note that <b>turn</b> has been added to your run method.",
-				tutorial.createInvocationResolver(turnMethod, 0)
+				tutorial.createFirstInvocationResolver("turn")
 		);
 		tutorial.setVisible( true );
 		ide.getFrame().setVisible( true );

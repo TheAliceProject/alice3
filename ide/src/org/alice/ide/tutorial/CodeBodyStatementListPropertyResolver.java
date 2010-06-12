@@ -40,35 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.tutorial;
 
-package edu.cmu.cs.dennisc.alice.ast;
+import edu.cmu.cs.dennisc.croquet.Resolver;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclaration extends Node {
-	public abstract boolean isDeclaredInAlice();
-	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
-	@Override
-	protected java.util.Set< AbstractDeclaration > fillInDeclarationSet( java.util.Set< AbstractDeclaration > rv, java.util.Set< Node > nodes ) {
-		rv.add( this );
-		return super.fillInDeclarationSet( rv, nodes );
+/*package-private*/ class CodeBodyStatementListPropertyResolver implements Resolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > {
+	private Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractCode> codeResolver;
+	public CodeBodyStatementListPropertyResolver(Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractCode> codeResolver) {
+		this.codeResolver = codeResolver;
 	}
-	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
-		//return super.appendRepr( rv, locale );
-		rv.append( this.getName() );
-		return rv;
-	}
-	
-	@Override
-	public String getName() {
-		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExists();
-		if( nameProperty != null ) {
-			return nameProperty.getValue();
+	public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getResolved() {
+		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.codeResolver.getResolved();
+		if (code != null) {
+			if (code instanceof edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) {
+				edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeInAlice = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) code;
+				return codeInAlice.getBodyProperty().getValue().statements;
+			} else {
+				return null;
+			}
 		} else {
-			return super.getName();
+			return null;
 		}
 	}
-	
 }

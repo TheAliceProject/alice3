@@ -40,35 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.tutorial;
 
-package edu.cmu.cs.dennisc.alice.ast;
+import edu.cmu.cs.dennisc.croquet.Resolver;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclaration extends Node {
-	public abstract boolean isDeclaredInAlice();
-	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
-	@Override
-	protected java.util.Set< AbstractDeclaration > fillInDeclarationSet( java.util.Set< AbstractDeclaration > rv, java.util.Set< Node > nodes ) {
-		rv.add( this );
-		return super.fillInDeclarationSet( rv, nodes );
+/*package-private*/class TemplateDragComponentResolver implements Resolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
+	private Class<? extends edu.cmu.cs.dennisc.croquet.DragComponent> cls;
+	public TemplateDragComponentResolver(Class<? extends edu.cmu.cs.dennisc.croquet.DragComponent> cls) {
+		assert edu.cmu.cs.dennisc.croquet.Component.class.isAssignableFrom(cls);
+		this.cls = cls;
 	}
-	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
-		//return super.appendRepr( rv, locale );
-		rv.append( this.getName() );
-		return rv;
+	public edu.cmu.cs.dennisc.croquet.DragComponent getDragComponent() {
+		org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane = org.alice.ide.IDE.getSingleton().getUbiquitousPane();
+		return this.cls.cast(edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findFirstMatch(ubiquitousPane, this.cls));
 	}
-	
-	@Override
-	public String getName() {
-		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExists();
-		if( nameProperty != null ) {
-			return nameProperty.getValue();
+	public edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved() {
+		edu.cmu.cs.dennisc.croquet.DragComponent dragComponent = this.getDragComponent();
+		if (dragComponent != null) {
+			edu.cmu.cs.dennisc.croquet.DragAndDropOperation rv = dragComponent.getDragAndDropOperation();
+			return rv;
 		} else {
-			return super.getName();
+			return null;
 		}
 	}
-	
 }

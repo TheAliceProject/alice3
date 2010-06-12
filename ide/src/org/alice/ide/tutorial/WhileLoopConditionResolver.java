@@ -40,35 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.alice.ast;
+package org.alice.ide.tutorial;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclaration extends Node {
-	public abstract boolean isDeclaredInAlice();
-	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
-	@Override
-	protected java.util.Set< AbstractDeclaration > fillInDeclarationSet( java.util.Set< AbstractDeclaration > rv, java.util.Set< Node > nodes ) {
-		rv.add( this );
-		return super.fillInDeclarationSet( rv, nodes );
+/*package-private*/class WhileLoopConditionResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.Operation<?, ?>> {
+	private int index;
+	public WhileLoopConditionResolver(int index) {
+		this.index = index;
 	}
 	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
-		//return super.appendRepr( rv, locale );
-		rv.append( this.getName() );
-		return rv;
-	}
-	
-	@Override
-	public String getName() {
-		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExists();
-		if( nameProperty != null ) {
-			return nameProperty.getValue();
+	protected edu.cmu.cs.dennisc.croquet.Operation<?, ?> getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
+		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) codeEditor.getCode();
+		edu.cmu.cs.dennisc.alice.ast.WhileLoop whileLoop = IdeTutorial.getNodeAt(code, edu.cmu.cs.dennisc.alice.ast.WhileLoop.class, this.index);
+		if (whileLoop != null) {
+			return codeEditor.getOperation(whileLoop.conditional);
 		} else {
-			return super.getName();
+			return null;
 		}
 	}
-	
 }

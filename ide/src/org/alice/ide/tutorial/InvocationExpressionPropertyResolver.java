@@ -40,35 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.tutorial;
 
-package edu.cmu.cs.dennisc.alice.ast;
+import edu.cmu.cs.dennisc.croquet.Resolver;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclaration extends Node {
-	public abstract boolean isDeclaredInAlice();
-	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
-	@Override
-	protected java.util.Set< AbstractDeclaration > fillInDeclarationSet( java.util.Set< AbstractDeclaration > rv, java.util.Set< Node > nodes ) {
-		rv.add( this );
-		return super.fillInDeclarationSet( rv, nodes );
+/*package-private*/abstract class InvocationExpressionPropertyResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.Operation<?, ?>> {
+	private Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver;
+	private int invocationIndex;
+	public InvocationExpressionPropertyResolver(Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int invocationIndex) {
+		this.methodResolver = methodResolver;
+		this.invocationIndex = invocationIndex;
 	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty(edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation);
 	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
-		//return super.appendRepr( rv, locale );
-		rv.append( this.getName() );
-		return rv;
-	}
-	
-	@Override
-	public String getName() {
-		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExists();
-		if( nameProperty != null ) {
-			return nameProperty.getValue();
+	protected final edu.cmu.cs.dennisc.croquet.Operation<?, ?> getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.methodResolver.getResolved();
+		if (method != null) {
+			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getValue();
+			edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = IdeTutorial.getMethodInvocationAt(code, method, this.invocationIndex);
+			if (methodInvocation != null) {
+				return codeEditor.getOperation(this.getExpressionProperty(methodInvocation));
+			} else {
+				return null;
+			}
 		} else {
-			return super.getName();
+			return null;
 		}
 	}
-	
 }

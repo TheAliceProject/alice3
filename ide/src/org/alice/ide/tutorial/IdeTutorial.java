@@ -69,15 +69,15 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return this.ide;
 	}
 
-	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneField() {
-		return this.getIDE().getSceneField();
-	}
-	public <F extends edu.cmu.cs.dennisc.alice.ast.AbstractField> F getFieldDeclaredOnSceneType( String name ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = ide.getSceneType();
-		return (F)sceneType.getDeclaredField( name );
-	}
+//	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneField() {
+//		return this.getIDE().getSceneField();
+//	}
+//	public <F extends edu.cmu.cs.dennisc.alice.ast.AbstractField> F getFieldDeclaredOnSceneType( String name ) {
+//		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = ide.getSceneType();
+//		return (F)sceneType.getDeclaredField( name );
+//	}
 
-	private static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava findShortestMethod( Class<?> cls, String methodName ) {
+	/*package-private*/ static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava findShortestMethod( Class<?> cls, String methodName ) {
 		Class<?> c = cls;
 		while( c != null ) {
 			for( java.lang.reflect.Method mthd : c.getMethods() ) {
@@ -95,7 +95,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 		return null;
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.AbstractMethod findShortestMethod( edu.cmu.cs.dennisc.alice.ast.AbstractField field, String methodName ) {
+	/*package-private*/ static edu.cmu.cs.dennisc.alice.ast.AbstractMethod findShortestMethod( edu.cmu.cs.dennisc.alice.ast.AbstractField field, String methodName ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type = field.getValueType();
 		while( type.isDeclaredInAlice() ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > typeInAlice = (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >)type;
@@ -110,87 +110,40 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		Class<?> cls = typeInJava.getClassReflectionProxy().getReification();
 		return findShortestMethod(cls, methodName);
 	}
-
-	public static abstract class CodeTrackableShapeResolver implements Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape > {
-		protected abstract edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape( org.alice.ide.codeeditor.CodeEditor codeEditor );
-		
-		public final edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
-			org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getCodeEditorInFocus();
-			if( codeEditor != null ) {
-				return this.resolveTrackableShape( codeEditor );
-			} else {
-				return null;
-			}
-		}
-	}
-	public static abstract class CodeOperationResolver implements Resolver< edu.cmu.cs.dennisc.croquet.Operation<?,?> > {
-		protected abstract edu.cmu.cs.dennisc.croquet.Operation<?,?> resolveOperation( org.alice.ide.codeeditor.CodeEditor codeEditor );
-		
-		public final edu.cmu.cs.dennisc.croquet.Operation<?,?> getResolved() {
-			org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getCodeEditorInFocus();
-			if( codeEditor != null ) {
-				return this.resolveOperation( codeEditor );
-			} else {
-				return null;
-			}
-		}
-	}
-
-	public static abstract class CodeDragComponentResolver implements Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > {
-		protected abstract edu.cmu.cs.dennisc.croquet.DragComponent resolveDragComponent( org.alice.ide.codeeditor.CodeEditor codeEditor );
-		public final edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved() {
-			org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getCodeEditorInFocus();
-			if( codeEditor != null ) {
-				edu.cmu.cs.dennisc.croquet.DragComponent dragComponent = this.resolveDragComponent( codeEditor );
-				if( dragComponent != null ) {
-					return dragComponent.getDragAndDropOperation();
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		}
-	}
-
-	public interface StatementListPropertyResolver {
-		public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getStatementListProperty();
-	}
 	
-	private class CodeBodyStatementListPropertyResolver implements StatementListPropertyResolver {
-		private Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeResolver;
-		public CodeBodyStatementListPropertyResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeResolver ) {
-			this.codeResolver = codeResolver;
-		}
-		public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getStatementListProperty() {
-			edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.codeResolver.getResolved();
-			if( code != null ) {
-				if( code instanceof edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ) {
-					edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeInAlice = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)code;
-					return codeInAlice.getBodyProperty().getValue().statements;
-				} else {
-					return null;
-					}
+	
+	//todo:
+	/*package-private*/ static edu.cmu.cs.dennisc.alice.ast.AbstractMethod findFirstMethodInCurrentCode( final String methodName ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = org.alice.ide.IDE.getSingleton().getFocusedCode();
+		if( code instanceof edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ) {
+			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeInAlice = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)code;
+			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation >( edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) {
+				@Override
+				protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+					edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( method.getName(), methodName );
+					return methodName.equals( method.getName() );
+				}
+			};
+			edu.cmu.cs.dennisc.alice.ast.BlockStatement body = codeInAlice.getBodyProperty().getValue();
+			body.crawl( crawler, false );
+			java.util.List<edu.cmu.cs.dennisc.alice.ast.MethodInvocation> list = crawler.getList();
+			int index = 0;
+			if( index == Short.MAX_VALUE ) {
+				index = list.size()-1;
+			}
+			if( list.size() > index ) {
+				return list.get( index ).method.getValue();
 			} else {
 				return null;
 			}
+		} else {
+			return null;
 		}
 	}
 
-	public static class StatementListResolver extends CodeTrackableShapeResolver {
-		private StatementListPropertyResolver statementListPropertyResolver;
-		private int index;
-		public StatementListResolver( StatementListPropertyResolver statementListPropertyResolver, int index ) {
-			this.statementListPropertyResolver = statementListPropertyResolver;
-			this.index = index;
-		}
-		@Override
-		protected edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape( org.alice.ide.codeeditor.CodeEditor codeEditor ) {
-			return codeEditor.getTrackableShapeAtIndexOf( this.statementListPropertyResolver.getStatementListProperty(), this.index );
-		}
-	}
-
-	private static <T extends edu.cmu.cs.dennisc.alice.ast.Node> T getNodeAt( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, Class<T> cls, int index ) {
+	
+	/*package-private*/ static <T extends edu.cmu.cs.dennisc.alice.ast.Node> T getNodeAt( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, Class<T> cls, int index ) {
 		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<T> crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<T>( cls ) {
 			@Override
 			protected boolean isAcceptable( T node ) {
@@ -210,7 +163,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 	}
 
-	private static edu.cmu.cs.dennisc.alice.ast.MethodInvocation getMethodInvocationAt( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, int index ) {
+	/*package-private*/ static edu.cmu.cs.dennisc.alice.ast.MethodInvocation getMethodInvocationAt( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, int index ) {
 		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation >( edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) {
 			@Override
 			protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
@@ -230,149 +183,63 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 	}
 	
-	public static class MethodInvocationStatementResolver extends CodeDragComponentResolver {
-		private Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver;
-		private int index;
-		public MethodInvocationStatementResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int index ) {
-			this.methodResolver = methodResolver;
-			this.index = index;
-		}
-		@Override
-		protected edu.cmu.cs.dennisc.croquet.DragComponent resolveDragComponent(org.alice.ide.codeeditor.CodeEditor codeEditor) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.methodResolver.getResolved();
-			if( method != null ) {
-				edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getValue();
-				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = getMethodInvocationAt( code, method, this.index );
-				if( methodInvocation != null ) {
-					edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)methodInvocation.getParent();
-					return codeEditor.getDragComponent(statement);
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		}
-	}
-
-	public static class StatementAssignableToResolver extends CodeDragComponentResolver {
-		private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls;
-		private int index;
-		public StatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int index ) {
-			this.cls = cls;
-			this.index = index;
-		}
-		@Override
-		protected edu.cmu.cs.dennisc.croquet.DragComponent resolveDragComponent(org.alice.ide.codeeditor.CodeEditor codeEditor) {
-			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)codeEditor.getCode();
-			edu.cmu.cs.dennisc.alice.ast.Statement statement = getNodeAt( code, this.cls, this.index );
-			if( statement != null ) {
-				return codeEditor.getDragComponent(statement);
-			} else {
-				return null;
-			}
-		}
-	}
-	public static class StatementWithBodyAssignableToStatementListPropertyResolver implements StatementListPropertyResolver {
-		private Class<? extends edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> cls;
-		private int index;
-		public StatementWithBodyAssignableToStatementListPropertyResolver( Class<? extends edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> cls, int index ) {
-			this.cls = cls;
-			this.index = index;
-		}
-		public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getStatementListProperty() {
-			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getValue();
-			edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody = getNodeAt( code, this.cls, this.index );
-			if( statementWithBody != null ) {
-				return statementWithBody.body.getValue().statements;
-			} else {
-				return null;
-			}
-		}
-	}
-	public static abstract class ConditionalStatementListPropertyResolver implements StatementListPropertyResolver {
-		private int index;
-		public ConditionalStatementListPropertyResolver( int index ) {
-			this.index = index;
-		}
-		protected abstract edu.cmu.cs.dennisc.alice.ast.BlockStatement getBlockStatement( edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement );
-		public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getStatementListProperty() {
-			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getValue();
-			edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement = getNodeAt( code, edu.cmu.cs.dennisc.alice.ast.ConditionalStatement.class, this.index );
-			if( conditionalStatement != null ) {
-				return this.getBlockStatement( conditionalStatement ).statements;
-			} else {
-				return null;
-			}
-		}
-	}
-	public static class IfStatementListPropertyResolver extends ConditionalStatementListPropertyResolver {
-		public IfStatementListPropertyResolver( int index ) {
-			super( index );
-		}
-		@Override
-		protected edu.cmu.cs.dennisc.alice.ast.BlockStatement getBlockStatement( edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement ) {
-			return conditionalStatement.booleanExpressionBodyPairs.get( 0 ).body.getValue();
-		}
-	}
-	public static class ElseStatementListPropertyResolver extends ConditionalStatementListPropertyResolver {
-		public ElseStatementListPropertyResolver( int index ) {
-			super( index );
-		}
-		@Override
-		protected edu.cmu.cs.dennisc.alice.ast.BlockStatement getBlockStatement( edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement ) {
-			return conditionalStatement.elseBody.getValue();
-		}
-	}
-	
-	public StatementListPropertyResolver createStatementListPropertyResolver( Class<? extends edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> cls, int index ) {
+	public Resolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > createStatementListPropertyResolver( Class<? extends edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> cls, int index ) {
 		return new StatementWithBodyAssignableToStatementListPropertyResolver( cls, index );
 	}
-	public StatementListPropertyResolver createFirstStatementListPropertyResolver( Class<? extends edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> cls ) {
+	public Resolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > createFirstStatementListPropertyResolver( Class<? extends edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> cls ) {
 		return this.createStatementListPropertyResolver(cls, 0);
 	}
-	public StatementListPropertyResolver createLastStatementListPropertyResolver( Class<? extends edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> cls ) {
+	public Resolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > createLastStatementListPropertyResolver( Class<? extends edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> cls ) {
 		return this.createStatementListPropertyResolver(cls, Short.MAX_VALUE);
 	}
 
-	public StatementListPropertyResolver createIfStatementListPropertyResolver( int index ) {
+	public Resolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > createIfStatementListPropertyResolver( int index ) {
 		return new IfStatementListPropertyResolver( index );
 	}
-	public StatementListPropertyResolver createFirstIfStatementListPropertyResolver() {
+	public Resolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > createFirstIfStatementListPropertyResolver() {
 		return this.createIfStatementListPropertyResolver(0);
 	}
-	public StatementListPropertyResolver createLastIfStatementListPropertyResolver() {
+	public Resolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > createLastIfStatementListPropertyResolver() {
 		return this.createIfStatementListPropertyResolver(Short.MAX_VALUE);
 	}
 
-	public StatementListPropertyResolver createElseStatementListPropertyResolver( int index ) {
+	public Resolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > createElseStatementListPropertyResolver( int index ) {
 		return new ElseStatementListPropertyResolver( index );
 	}
-	public StatementListPropertyResolver createFirstElseStatementListPropertyResolver() {
+	public Resolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > createFirstElseStatementListPropertyResolver() {
 		return this.createElseStatementListPropertyResolver(0);
 	}
-	public StatementListPropertyResolver createLastElseStatementListPropertyResolver() {
+	public Resolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > createLastElseStatementListPropertyResolver() {
 		return this.createElseStatementListPropertyResolver(Short.MAX_VALUE);
 	}
 	
-	public StatementListResolver createStatementListResolver( StatementListPropertyResolver statementListPropertyResolver, int index ) {
+	public StatementListResolver createStatementListResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > statementListPropertyResolver, int index ) {
 		return new StatementListResolver(statementListPropertyResolver, index);
 	}
-	public StatementListResolver createBeginingOfStatementListResolver( StatementListPropertyResolver statementListPropertyResolver ) {
+	public StatementListResolver createBeginingOfStatementListResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > statementListPropertyResolver ) {
 		return this.createStatementListResolver(statementListPropertyResolver, 0);
 	}
-	public StatementListResolver createEndOfStatementListResolver( StatementListPropertyResolver statementListPropertyResolver ) {
+	public StatementListResolver createEndOfStatementListResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > statementListPropertyResolver ) {
 		return this.createStatementListResolver(statementListPropertyResolver, Short.MAX_VALUE);
 	}
 
-	public StatementListResolver createStatementListResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeResolver, int index ) {
-		return this.createStatementListResolver(new CodeBodyStatementListPropertyResolver( codeResolver ), index);
+//	private StatementListResolver createMethodBodyStatementListResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeResolver, int index ) {
+//		return this.createStatementListResolver(new CodeBodyStatementListPropertyResolver( codeResolver ), index);
+//	}
+//	private StatementListResolver createBeginingOfMethodBodyStatementListResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeResolver ) {
+//		return this.createBeginingOfStatementListResolver(new CodeBodyStatementListPropertyResolver( codeResolver ));
+//	}
+//	private StatementListResolver createEndOfMethodBodyStatementListResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeResolver ) {
+//		return this.createEndOfStatementListResolver(new CodeBodyStatementListPropertyResolver( codeResolver ));
+//	}
+	public StatementListResolver createCurrentMethodBodyStatementListResolver( int index ) {
+		return this.createStatementListResolver(new CodeBodyStatementListPropertyResolver( this.createCurrentCodeResolver() ), index);
 	}
-	public StatementListResolver createBeginingOfStatementListResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeResolver ) {
-		return this.createBeginingOfStatementListResolver(new CodeBodyStatementListPropertyResolver( codeResolver ));
+	public StatementListResolver createBeginingOfCurrentMethodBodyStatementListResolver() {
+		return this.createBeginingOfStatementListResolver(new CodeBodyStatementListPropertyResolver( this.createCurrentCodeResolver() ));
 	}
-	public StatementListResolver createEndOfStatementListResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeResolver ) {
-		return this.createEndOfStatementListResolver(new CodeBodyStatementListPropertyResolver( codeResolver ));
+	public StatementListResolver createEndOfCurrentMethodBodyStatementListResolver() {
+		return this.createEndOfStatementListResolver(new CodeBodyStatementListPropertyResolver( this.createCurrentCodeResolver() ));
 	}
 
 
@@ -385,31 +252,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createLastStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
 		return this.createStatementAssignableToResolver( cls, Short.MAX_VALUE );
 	}
-	
-	
-	
-	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createInvocationResolver( final Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int index ) {
-		return new MethodInvocationStatementResolver(methodResolver, index);
-	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createFirstInvocationResolver( final Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver ) {
-		return this.createInvocationResolver(methodResolver, 0);
-	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createLastInvocationResolver( final Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver ) {
-		return this.createInvocationResolver(methodResolver, Short.MAX_VALUE);
-	}
 
-	private static class PredeterminedTabResolver implements Resolver< edu.cmu.cs.dennisc.croquet.PredeterminedTab > {
-		private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabSelectionOperation;
-		private java.util.UUID id;
-		public PredeterminedTabResolver( edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabSelectionOperation, java.util.UUID id ) {
-			this.tabSelectionOperation = tabSelectionOperation;
-			this.id = id;
-		}
-		public edu.cmu.cs.dennisc.croquet.PredeterminedTab getResolved() {
-			return this.tabSelectionOperation.getItemForId( this.id );
-		}
-	}
-	
 	public Resolver< edu.cmu.cs.dennisc.croquet.PredeterminedTab > getProceduresTab() {
 		return new PredeterminedTabResolver( ide.getMembersEditor().getTabbedPaneSelectionState(), java.util.UUID.fromString( "2731d704-1f80-444e-a610-e6e5866c0b9a" ) );
 	}
@@ -422,24 +265,6 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return new PredeterminedTabResolver( ide.getMembersEditor().getTabbedPaneSelectionState(), java.util.UUID.fromString( "6cb9c5a1-dc60-48e7-9a52-534009a093b8" ) );
 	}
 	
-	private static class InputDialogOperationFromIdResolver implements Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > {
-		private java.util.UUID id;
-		public InputDialogOperationFromIdResolver( java.util.UUID id ) {
-			this.id = id;
-		}
-		public edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved() {
-			java.util.Set< edu.cmu.cs.dennisc.croquet.Model< ? > > models = org.alice.ide.IDE.getSingleton().lookupModels( this.id );
-			for( edu.cmu.cs.dennisc.croquet.Model< ? > model : models ) {
-				if( model instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperation ) {
-					if( model.isInView() ) {
-						return (edu.cmu.cs.dennisc.croquet.InputDialogOperation)model;
-					}
-				}
-			}
-			return null;
-		}
-	}
-	
 	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > createCurrentCodeResolver() {
 		return new Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
 			public edu.cmu.cs.dennisc.alice.ast.AbstractCode getResolved() {
@@ -447,6 +272,22 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			}
 		};
 	}
+	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > createCurrentFieldMethodResolver( final String methodName ) {
+		return new Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod >() {
+			public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getResolved() {
+				edu.cmu.cs.dennisc.alice.ast.AbstractField field = ide.getFieldSelectionState().getValue();
+				return findShortestMethod( field, methodName );
+			}
+		};
+	}
+	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > createCurrentCodeMethodResolver( final String methodName ) {
+		return new Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod >() {
+			public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getResolved() {
+				return findFirstMethodInCurrentCode( methodName );
+			}
+		};
+	}
+
 	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > createMethodResolver( final edu.cmu.cs.dennisc.alice.ast.AbstractField field, final String methodName ) {
 		return new Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod >() {
 			public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getResolved() {
@@ -454,77 +295,14 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			}
 		};
 	}
-	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > createMethodResolver( final Class<?> cls, final String methodName ) {
-		return new Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod >() {
-			public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getResolved() {
-				return findShortestMethod( cls, methodName );
-			}
-		};
-	}
+//	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > createMethodResolver( final Class<?> cls, final String methodName ) {
+//		return new Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod >() {
+//			public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getResolved() {
+//				return findShortestMethod( cls, methodName );
+//			}
+//		};
+//	}
 
-	public static class IfConditionResolver extends CodeOperationResolver {
-		private int index;
-		public IfConditionResolver( int index ) {
-			this.index = index;
-		}
-		@Override
-		protected edu.cmu.cs.dennisc.croquet.Operation<?, ?> resolveOperation( org.alice.ide.codeeditor.CodeEditor codeEditor ) {
-			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)codeEditor.getCode();
-			edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement = getNodeAt( code, edu.cmu.cs.dennisc.alice.ast.ConditionalStatement.class, this.index );
-			if( conditionalStatement != null ) {
-				return codeEditor.getOperation( conditionalStatement.booleanExpressionBodyPairs.get( 0 ).expression );
-			} else {
-				return null;
-			}
-		}
-	}
-
-	public static abstract class InvocationExpressionPropertyResolver extends CodeOperationResolver {
-		private Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver;
-		private int invocationIndex;
-		public InvocationExpressionPropertyResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex ) {
-			this.methodResolver = methodResolver;
-			this.invocationIndex = invocationIndex;
-		}
-		protected abstract edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation );
-		@Override
-		protected final edu.cmu.cs.dennisc.croquet.Operation<?,?> resolveOperation( org.alice.ide.codeeditor.CodeEditor codeEditor ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.methodResolver.getResolved();
-			if( method != null ) {
-				edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getValue();
-				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = getMethodInvocationAt( code, method, this.invocationIndex );
-				if( methodInvocation != null ) {
-					return codeEditor.getOperation( this.getExpressionProperty( methodInvocation ) );
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		}
-	}
-	
-	public static class InvocationArgumentResolver extends InvocationExpressionPropertyResolver {
-		private int argumentIndex;
-		public InvocationArgumentResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex, int argumentIndex ) {
-			super( methodResolver, invocationIndex );
-			this.argumentIndex = argumentIndex;
-		}
-		@Override
-		protected edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty(edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation) {
-			return methodInvocation.arguments.get( this.argumentIndex ).expression;
-		}
-	}
-	public static class InvocationInstanceResolver extends InvocationExpressionPropertyResolver {
-		public InvocationInstanceResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex ) {
-			super( methodResolver, invocationIndex );
-		}
-		@Override
-		protected edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty(edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation) {
-			return methodInvocation.expression;
-		}
-	}
-	
 	public Resolver< edu.cmu.cs.dennisc.croquet.ActionOperation > createEditCodeOperationResolver( final Resolver< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeResolver ) {
 		return new Resolver< edu.cmu.cs.dennisc.croquet.ActionOperation >() {
 			public edu.cmu.cs.dennisc.croquet.ActionOperation getResolved() {
@@ -539,28 +317,68 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		};
 	}
 	
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createIfConditionResolver( int index ) {
-		return new IfConditionResolver( index );
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createIfElseStatementConditionResolver( int index ) {
+		return new IfElseStatementConditionResolver( index );
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createFirstIfConditionResolver() {
-		return this.createIfConditionResolver(0);
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createFirstIfElseStatementConditionResolver() {
+		return this.createIfElseStatementConditionResolver(0);
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createLastIfConditionResolver() {
-		return this.createIfConditionResolver(Short.MAX_VALUE);
-	}
-
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createInvocationArgumentResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex, int argumentIndex ) {
-		return new InvocationArgumentResolver( methodResolver, invocationIndex, argumentIndex );
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createLastIfElseStatementConditionResolver() {
+		return this.createIfElseStatementConditionResolver(Short.MAX_VALUE);
 	}
 
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createInvocationInstanceResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex ) {
-		return new InvocationInstanceResolver( methodResolver, invocationIndex );
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createWhileLoopConditionResolver( int index ) {
+		return new WhileLoopConditionResolver( index );
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createFirstInvocationInstanceResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver ) {
-		return this.createInvocationInstanceResolver( methodResolver, 0 );
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createFirstWhileLoopConditionResolver() {
+		return this.createWhileLoopConditionResolver(0);
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createLastInvocationInstanceResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver ) {
-		return this.createInvocationInstanceResolver( methodResolver, Short.MAX_VALUE );
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createLastWhileLoopConditionResolver() {
+		return this.createWhileLoopConditionResolver(Short.MAX_VALUE);
+	}
+
+//	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createInvocationResolver( final Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int index ) {
+//		return new MethodInvocationStatementResolver(methodResolver, index);
+//	}
+//	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createFirstInvocationResolver( final Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver ) {
+//		return this.createInvocationResolver(methodResolver, 0);
+//	}
+//	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createLastInvocationResolver( final Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver ) {
+//		return this.createInvocationResolver(methodResolver, Short.MAX_VALUE);
+//	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createInvocationResolver( String methodName, int index ) {
+		return new MethodInvocationStatementResolver(this.createCurrentCodeMethodResolver(methodName), index);
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createFirstInvocationResolver( String methodName ) {
+		return this.createInvocationResolver(methodName, 0);
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createLastInvocationResolver( String methodName ) {
+		return this.createInvocationResolver(methodName, Short.MAX_VALUE);
+	}
+
+//	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createInvocationArgumentResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex, int argumentIndex ) {
+//		return new InvocationArgumentResolver( methodResolver, invocationIndex, argumentIndex );
+//	}
+//	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createInvocationInstanceResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex ) {
+//		return new InvocationInstanceResolver( methodResolver, invocationIndex );
+//	}
+//	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createFirstInvocationInstanceResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver ) {
+//		return this.createInvocationInstanceResolver( methodResolver, 0 );
+//	}
+//	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createLastInvocationInstanceResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver ) {
+//		return this.createInvocationInstanceResolver( methodResolver, Short.MAX_VALUE );
+//	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createInvocationArgumentResolver( String methodName, int invocationIndex, int argumentIndex ) {
+		return new InvocationArgumentResolver( this.createCurrentCodeMethodResolver(methodName), invocationIndex, argumentIndex );
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createInvocationInstanceResolver( String methodName, int invocationIndex ) {
+		return new InvocationInstanceResolver( this.createCurrentCodeMethodResolver(methodName), invocationIndex );
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createFirstInvocationInstanceResolver( String methodName ) {
+		return this.createInvocationInstanceResolver( methodName, 0 );
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createLastInvocationInstanceResolver(String methodName ) {
+		return this.createInvocationInstanceResolver( methodName, Short.MAX_VALUE );
 	}
 	
 	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractField > createFieldResolver( final String name ) {
@@ -592,73 +410,11 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	}
 	
 	
-	public static class TemplateDragComponentResolver implements Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > {
-		private Class< ? extends edu.cmu.cs.dennisc.croquet.DragComponent > cls;
-		public TemplateDragComponentResolver( Class< ? extends edu.cmu.cs.dennisc.croquet.DragComponent > cls ) {
-			assert edu.cmu.cs.dennisc.croquet.Component.class.isAssignableFrom( cls );
-			this.cls = cls;
-		}
-		public edu.cmu.cs.dennisc.croquet.DragComponent getDragComponent() {
-			org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane = org.alice.ide.IDE.getSingleton().getUbiquitousPane();
-			return this.cls.cast( edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findFirstMatch( ubiquitousPane, this.cls ) );
-		}
-		public edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved() {
-			edu.cmu.cs.dennisc.croquet.DragComponent dragComponent = this.getDragComponent();
-			if( dragComponent != null ) {
-				edu.cmu.cs.dennisc.croquet.DragAndDropOperation rv = dragComponent.getDragAndDropOperation();
-				return rv;
-			} else {
-				return null;
-			}
-		}
+	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createProcedureInvocationTemplateResolver( String methodName ) {
+		return new ProcedureInvocationTemplateResolver( methodName );
 	}
-	
-	public abstract static class MethodInvocationTemplateResolver implements Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > {
-		private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-		private String methodName;
-		public MethodInvocationTemplateResolver( edu.cmu.cs.dennisc.alice.ast.AbstractField field, String methodName ) {
-			this.field = field;
-			this.methodName = methodName;
-		}
-		protected abstract edu.cmu.cs.dennisc.croquet.DragComponent getDragComponent( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method );
-		public edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved() {
-			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = findShortestMethod( field, methodName );
-			assert method != null;
-			if( method != null ) {
-				edu.cmu.cs.dennisc.croquet.DragComponent dragComponent = this.getDragComponent( method );
-				assert dragComponent != null;
-				edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation = dragComponent.getDragAndDropOperation();
-				assert dragComponent == dragOperation.getFirstComponent();
-				return dragOperation;
-			} else {
-				return null;
-			}
-		}
-	}
-	public static class ProcedureInvocationTemplateResolver extends MethodInvocationTemplateResolver {
-		public ProcedureInvocationTemplateResolver( edu.cmu.cs.dennisc.alice.ast.AbstractField field, String methodName ) {
-			super( field, methodName );
-		}
-		@Override
-		protected edu.cmu.cs.dennisc.croquet.DragComponent getDragComponent( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-			return org.alice.ide.memberseditor.templates.TemplateFactory.getProcedureInvocationTemplate( method );
-		}
-	}
-	public static class FunctionInvocationTemplateResolver extends MethodInvocationTemplateResolver {
-		public FunctionInvocationTemplateResolver( edu.cmu.cs.dennisc.alice.ast.AbstractField field, String methodName ) {
-			super( field, methodName );
-		}
-		@Override
-		protected edu.cmu.cs.dennisc.croquet.DragComponent getDragComponent( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-			return org.alice.ide.memberseditor.templates.TemplateFactory.getFunctionInvocationTemplate( method );
-		}
-	}
-	
-	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createProcedureInvocationTemplateResolver( edu.cmu.cs.dennisc.alice.ast.AbstractField field, String methodName ) {
-		return new ProcedureInvocationTemplateResolver( field, methodName );
-	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createFunctionInvocationTemplateResolver( edu.cmu.cs.dennisc.alice.ast.AbstractField field, String methodName ) {
-		return new FunctionInvocationTemplateResolver( field, methodName );
+	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createFunctionInvocationTemplateResolver( String methodName ) {
+		return new FunctionInvocationTemplateResolver( methodName );
 	}
 	
 	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createDoInOrderTemplateResolver() {

@@ -40,35 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.tutorial;
 
-package edu.cmu.cs.dennisc.alice.ast;
+import edu.cmu.cs.dennisc.croquet.Resolver;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclaration extends Node {
-	public abstract boolean isDeclaredInAlice();
-	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
-	@Override
-	protected java.util.Set< AbstractDeclaration > fillInDeclarationSet( java.util.Set< AbstractDeclaration > rv, java.util.Set< Node > nodes ) {
-		rv.add( this );
-		return super.fillInDeclarationSet( rv, nodes );
+/*package-private*/ class StatementListResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.TrackableShape> {
+	private Resolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > statementListPropertyResolver;
+	private int index;
+	public StatementListResolver(Resolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > statementListPropertyResolver, int index) {
+		this.statementListPropertyResolver = statementListPropertyResolver;
+		this.index = index;
 	}
 	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
-		//return super.appendRepr( rv, locale );
-		rv.append( this.getName() );
-		return rv;
+	protected edu.cmu.cs.dennisc.croquet.TrackableShape getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
+		return codeEditor.getTrackableShapeAtIndexOf(this.statementListPropertyResolver.getResolved(), this.index);
 	}
-	
-	@Override
-	public String getName() {
-		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExists();
-		if( nameProperty != null ) {
-			return nameProperty.getValue();
-		} else {
-			return super.getName();
-		}
-	}
-	
 }

@@ -40,35 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.tutorial;
 
-package edu.cmu.cs.dennisc.alice.ast;
+import edu.cmu.cs.dennisc.croquet.Resolver;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclaration extends Node {
-	public abstract boolean isDeclaredInAlice();
-	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
-	@Override
-	protected java.util.Set< AbstractDeclaration > fillInDeclarationSet( java.util.Set< AbstractDeclaration > rv, java.util.Set< Node > nodes ) {
-		rv.add( this );
-		return super.fillInDeclarationSet( rv, nodes );
+/*package-private*/class InputDialogOperationFromIdResolver implements Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> {
+	private java.util.UUID id;
+	public InputDialogOperationFromIdResolver(java.util.UUID id) {
+		this.id = id;
 	}
-	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
-		//return super.appendRepr( rv, locale );
-		rv.append( this.getName() );
-		return rv;
-	}
-	
-	@Override
-	public String getName() {
-		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExists();
-		if( nameProperty != null ) {
-			return nameProperty.getValue();
-		} else {
-			return super.getName();
+	public edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved() {
+		java.util.Set<edu.cmu.cs.dennisc.croquet.Model<?>> models = org.alice.ide.IDE.getSingleton().lookupModels(this.id);
+		for (edu.cmu.cs.dennisc.croquet.Model<?> model : models) {
+			if (model instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperation) {
+				if (model.isInView()) {
+					return (edu.cmu.cs.dennisc.croquet.InputDialogOperation) model;
+				}
+			}
 		}
+		return null;
 	}
-	
 }

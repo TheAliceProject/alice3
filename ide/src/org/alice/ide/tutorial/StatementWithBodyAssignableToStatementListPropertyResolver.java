@@ -40,35 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.tutorial;
 
-package edu.cmu.cs.dennisc.alice.ast;
+import edu.cmu.cs.dennisc.croquet.Resolver;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclaration extends Node {
-	public abstract boolean isDeclaredInAlice();
-	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
-	@Override
-	protected java.util.Set< AbstractDeclaration > fillInDeclarationSet( java.util.Set< AbstractDeclaration > rv, java.util.Set< Node > nodes ) {
-		rv.add( this );
-		return super.fillInDeclarationSet( rv, nodes );
+/*package-private*/class StatementWithBodyAssignableToStatementListPropertyResolver implements Resolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > {
+	private Class<? extends edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> cls;
+	private int index;
+	public StatementWithBodyAssignableToStatementListPropertyResolver(Class<? extends edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> cls, int index) {
+		this.cls = cls;
+		this.index = index;
 	}
-	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
-		//return super.appendRepr( rv, locale );
-		rv.append( this.getName() );
-		return rv;
-	}
-	
-	@Override
-	public String getName() {
-		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExists();
-		if( nameProperty != null ) {
-			return nameProperty.getValue();
+	public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getResolved() {
+		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getValue();
+		edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody = IdeTutorial.getNodeAt(code, this.cls, this.index);
+		if (statementWithBody != null) {
+			return statementWithBody.body.getValue().statements;
 		} else {
-			return super.getName();
+			return null;
 		}
 	}
-	
 }
