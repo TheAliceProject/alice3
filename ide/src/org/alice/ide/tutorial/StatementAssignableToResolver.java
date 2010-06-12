@@ -47,19 +47,23 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class StatementAssignableToResolver extends CodeDragComponentResolver {
+/*package-private*/ class StatementAssignableToResolver implements Resolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
 	private Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls;
 	private int index;
 	public StatementAssignableToResolver(Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls, int index) {
 		this.cls = cls;
 		this.index = index;
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.DragComponent resolveDragComponent(org.alice.ide.codeeditor.CodeEditor codeEditor) {
-		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) codeEditor.getCode();
-		edu.cmu.cs.dennisc.alice.ast.Statement statement = IdeTutorial.getNodeAt(code, this.cls, this.index);
-		if (statement != null) {
-			return codeEditor.getDragComponent(statement);
+	public edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved() {
+		org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getCodeEditorInFocus();
+		if (codeEditor != null) {
+			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) codeEditor.getCode();
+			edu.cmu.cs.dennisc.alice.ast.Statement statement = IdeTutorial.getNodeAt(code, this.cls, this.index);
+			if (statement != null) {
+				return codeEditor.getDragAndDropOperationForStatement(statement);
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}

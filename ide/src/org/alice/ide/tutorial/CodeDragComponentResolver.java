@@ -40,18 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package org.alice.ide.tutorial;
+
+import edu.cmu.cs.dennisc.croquet.Resolver;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LocalPane< N extends edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > extends TransientPane< N > {
-	public LocalPane( N local ) {
-		super( local );
-		this.addComponent( new org.alice.ide.common.LocalNameLabel( this.getTransient() ) );
-		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation(
-				java.util.UUID.fromString( "b225cc92-f2c6-4a47-9818-1bbd0319091b" ),
-				new org.alice.ide.operations.ast.RenameLocalDeclarationOperation( local ) 
-		) );
+/*package-private*/ abstract class CodeDragComponentResolver implements Resolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
+	protected abstract edu.cmu.cs.dennisc.croquet.DragComponent resolveDragComponent(org.alice.ide.codeeditor.CodeEditor codeEditor);
+	public final edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved() {
+		org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getCodeEditorInFocus();
+		if (codeEditor != null) {
+			edu.cmu.cs.dennisc.croquet.DragComponent dragComponent = this.resolveDragComponent(codeEditor);
+			if (dragComponent != null) {
+				return dragComponent.getDragAndDropOperation();
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 }

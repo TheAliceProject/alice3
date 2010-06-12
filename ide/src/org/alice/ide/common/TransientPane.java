@@ -45,13 +45,12 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LocalPane< N extends edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > extends TransientPane< N > {
-	public LocalPane( N local ) {
-		super( local );
-		this.addComponent( new org.alice.ide.common.LocalNameLabel( this.getTransient() ) );
-		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation(
-				java.util.UUID.fromString( "b225cc92-f2c6-4a47-9818-1bbd0319091b" ),
-				new org.alice.ide.operations.ast.RenameLocalDeclarationOperation( local ) 
-		) );
+public abstract class TransientPane<N extends edu.cmu.cs.dennisc.alice.ast.AbstractTransient> extends AccessiblePane {
+	private N trans;
+	public TransientPane( N trans ) {
+		this.trans = trans;
+	}
+	public N getTransient() {
+		return this.trans;
 	}
 }

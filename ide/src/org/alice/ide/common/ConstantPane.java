@@ -45,19 +45,17 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class ConstantPane extends LocalPane {
-	private edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant;
+public class ConstantPane extends LocalPane< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice > {
 	public ConstantPane( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant ) {
 		super( constant );
-		this.constant = constant;
 		this.setBackgroundPaint( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ConstantAccess.class ) );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		return this.constant.valueType.getValue();
+		return this.getTransient().valueType.getValue();
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( this.constant );
+		return new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( this.getTransient() );
 	}
 }

@@ -40,18 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package org.alice.ide.tutorial;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LocalPane< N extends edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > extends TransientPane< N > {
-	public LocalPane( N local ) {
-		super( local );
-		this.addComponent( new org.alice.ide.common.LocalNameLabel( this.getTransient() ) );
-		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation(
-				java.util.UUID.fromString( "b225cc92-f2c6-4a47-9818-1bbd0319091b" ),
-				new org.alice.ide.operations.ast.RenameLocalDeclarationOperation( local ) 
-		) );
+/*package-private*/class ForEachInArrayLoopVariableResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
+	private int index;
+	public ForEachInArrayLoopVariableResolver(int index) {
+		this.index = index;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
+		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) codeEditor.getCode();
+		edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop forEachInArrayLoop = IdeTutorial.getNodeAt(code, edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop.class, this.index);
+		if (forEachInArrayLoop != null) {
+			return codeEditor.getDragAndDropOperationForTransient( forEachInArrayLoop.variable.getValue() );
+		} else {
+			return null;
+		}
 	}
 }

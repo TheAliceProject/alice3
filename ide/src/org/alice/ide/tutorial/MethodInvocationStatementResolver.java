@@ -47,22 +47,26 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class MethodInvocationStatementResolver extends CodeDragComponentResolver {
+/*package-private*/class MethodInvocationStatementResolver implements Resolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
 	private Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver;
 	private int index;
 	public MethodInvocationStatementResolver(Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int index) {
 		this.methodResolver = methodResolver;
 		this.index = index;
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.DragComponent resolveDragComponent(org.alice.ide.codeeditor.CodeEditor codeEditor) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.methodResolver.getResolved();
-		if (method != null) {
-			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getValue();
-			edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = IdeTutorial.getMethodInvocationAt(code, method, this.index);
-			if (methodInvocation != null) {
-				edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement) methodInvocation.getParent();
-				return codeEditor.getDragComponent(statement);
+	public edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved() {
+		org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getCodeEditorInFocus();
+		if (codeEditor != null) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.methodResolver.getResolved();
+			if (method != null) {
+				edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getValue();
+				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = IdeTutorial.getMethodInvocationAt(code, method, this.index);
+				if (methodInvocation != null) {
+					edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement) methodInvocation.getParent();
+					return codeEditor.getDragAndDropOperationForStatement(statement);
+				} else {
+					return null;
+				}
 			} else {
 				return null;
 			}

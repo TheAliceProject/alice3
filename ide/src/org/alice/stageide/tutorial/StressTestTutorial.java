@@ -73,11 +73,33 @@ public class StressTestTutorial {
 
 		
 		tutorial.addDragAndDropStep( 
+				"Drag For Each In Order",
+				"Drag <b>For Each In Order</b>.",
+				tutorial.createForEachInArrayLoopTemplateResolver(),
+				"Drop <b>here</b>.",
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+				tutorial.createToDoCompletorValidator()
+		);
+
+		tutorial.addMessageStep( 
+				"Bogus", 
+				"<h1>TODO</h1>" 
+		);
+
+		tutorial.addSpotlightStep( 
+				"Note For Each Variable",
+				"Note For Each Variable.",
+				tutorial.createFirstForEachInArrayLoopVariableResolver()
+		);
+
+		tutorial.addDragAndDropStep( 
 				"Drag Move Procedure",
 				"Drag <b>move</b> procedure.",
 				tutorial.createProcedureInvocationTemplateResolver( "move" ),
 				"Drop <b>here</b>.",
-				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+				tutorial.createEndOfStatementListResolver(
+						tutorial.createFirstStatementListPropertyResolver( edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop.class )
+				),
 				"Select <b>FORWARD</b> and <b>1.0</b> from the menus.",
 				tutorial.createToDoCompletorValidator()
 		);
@@ -86,6 +108,16 @@ public class StressTestTutorial {
 				"Note Move",
 				"Note that <b>move</b> has been added to your run method.",
 				tutorial.createFirstInvocationResolver( "move" )
+		);
+
+		tutorial.addDragAndDropStep( 
+				"Drag For Each In Array Variable",
+				"Drag For Each In Array Variable.",
+				tutorial.createFirstForEachInArrayLoopVariableResolver(),
+				"Drop <b>here</b>.",
+				tutorial.createInvocationArgumentResolver( "move", 0, 1 ),
+				"Select <b>true</b>.",
+				tutorial.createToDoCompletorValidator()
 		);
 
 		tutorial.addActionStep(
