@@ -113,6 +113,32 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	
 	
 	//todo:
+	/*package-private*/ static edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice findFirstLocalNamed( edu.cmu.cs.dennisc.alice.ast.AbstractCode code, final String localName ) {
+		if( code instanceof edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ) {
+			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeInAlice = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)code;
+			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice.class ) {
+				@Override
+				protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local ) {
+					return localName.equals( local.getName() );
+				}
+			};
+			edu.cmu.cs.dennisc.alice.ast.BlockStatement body = codeInAlice.getBodyProperty().getValue();
+			body.crawl( crawler, false );
+			java.util.List<edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice> list = crawler.getList();
+			int index = 0;
+			if( index == Short.MAX_VALUE ) {
+				index = list.size()-1;
+			}
+			if( list.size() > index ) {
+				return list.get( 0 );
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+
 	/*package-private*/ static edu.cmu.cs.dennisc.alice.ast.AbstractMethod findFirstMethodInCurrentCode( final String methodName ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = org.alice.ide.IDE.getSingleton().getFocusedCode();
 		if( code instanceof edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ) {
@@ -360,6 +386,10 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return new ParameterNamedResolver( paramaterName );
 	}
 	
+	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createLocalNamedResolver( String paramaterName ) {
+		return new LocalNamedResolver( paramaterName );
+	}
+
 //	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createInvocationResolver( final Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int index ) {
 //		return new MethodInvocationStatementResolver(methodResolver, index);
 //	}
@@ -465,7 +495,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.DoInThreadTemplate.class );
 	}
 	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createDeclareLocalTemplateResolver() {
-		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.CommentTemplate.class );
+		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.DeclareLocalTemplate.class );
 	}
 	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createCommentTemplateResolver() {
 		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.CommentTemplate.class );

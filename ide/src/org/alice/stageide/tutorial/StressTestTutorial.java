@@ -81,6 +81,34 @@ public class StressTestTutorial {
 //				tutorial.createToDoCompletorValidator()
 //		);
 //
+		tutorial.addDragAndDropStep( 
+				"Declared Variable I",
+				"Drag <b>Local</b>.",
+				tutorial.createDeclareLocalTemplateResolver(),
+				"Drop <b>here</b>.",
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+				"Enter <b>i</b> and <b>Integer</b>.",
+				tutorial.createToDoCompletorValidator()
+		);
+
+		tutorial.addDragAndDropStep( 
+				"Drag Resize Procedure",
+				"Drag <b>resize</b> procedure.",
+				tutorial.createProcedureInvocationTemplateResolver( "resize" ),
+				"Drop <b>here</b>.",
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+				"Select <b>2.0</b> from the menus.",
+				tutorial.createToDoCompletorValidator()
+		);
+		tutorial.addDragAndDropStep( 
+				"Drag Local I",
+				"Drag <b>i</b> local.",
+				tutorial.createLocalNamedResolver( "i" ),
+				"Drop <b>here</b>.",
+				tutorial.createInvocationArgumentResolver( "resize", 0, 0 ),
+				tutorial.createToDoCompletorValidator()
+		);
+
 		tutorial.addDialogOpenStep( 
 				"Declare Procedure", 
 				"Declare a procedure.", 
@@ -132,7 +160,6 @@ public class StressTestTutorial {
 //				tutorial.createParameterNamedResolver( "howHigh" ),
 				"Drop <b>here</b>.",
 				tutorial.createInvocationArgumentResolver( "roll", 0, 1 ),
-				"Select <b>LEFT</b> and <b>0.25</b> from the menus.",
 				tutorial.createToDoCompletorValidator()
 		);
 
