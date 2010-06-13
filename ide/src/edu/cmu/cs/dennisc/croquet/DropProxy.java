@@ -57,6 +57,32 @@ package edu.cmu.cs.dennisc.croquet;
 	protected void paintProxy( java.awt.Graphics2D g2 ) {
 		this.getSubject().getAwtComponent().print( g2 );
 		g2.setColor( new java.awt.Color( 0, 0, 0, 127 ) );
-		fillBounds( g2 );
+//		java.awt.geom.AffineTransform m = g2.getTransform();
+//		try {
+//			int height = this.getHeight();
+//			if( this.availableHeight != -1 && this.availableHeight < height ) {
+//				double yScale = this.availableHeight / (double)height;
+//				g2.scale( 1.0, yScale );
+//			}
+			fillBounds( g2 );
+//		} finally {
+//			g2.setTransform( m );
+//		}
+	}
+	
+	private int availableHeight = -1;
+	@Override
+	public int getAvailableHeight() {
+		if( this.availableHeight != -1 ) {
+			return this.availableHeight;
+		} else {
+			return super.getAvailableHeight();
+		}
+	}
+	public void setAvailableHeight( int availableHeight ) {
+		if( this.availableHeight != availableHeight ) {
+			this.availableHeight = availableHeight;
+			this.repaint();
+		}
 	}
 }

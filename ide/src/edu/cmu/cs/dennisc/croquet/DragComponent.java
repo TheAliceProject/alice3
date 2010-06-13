@@ -80,6 +80,9 @@ public abstract class DragComponent extends Control {
 		return this.dropProxy;
 	}
 	
+	public java.awt.Dimension getDropProxySize() {
+		return this.dropProxy.getSize();
+	}
 
 	@Override
 	public void addNotify() {
@@ -267,13 +270,15 @@ public abstract class DragComponent extends Control {
 		}
 	}
 
-	public void setDropProxyLocationAndShowIfNecessary( java.awt.Point p, Component<?> asSeenBy, Integer heightToAlignLeftCenterOn ) {
+	public void setDropProxyLocationAndShowIfNecessary( java.awt.Point p, Component<?> asSeenBy, Integer heightToAlignLeftCenterOn, int availableHeight ) {
 		javax.swing.JLayeredPane layeredPane = getLayeredPane();
 		p = javax.swing.SwingUtilities.convertPoint( asSeenBy.getAwtComponent(), p, layeredPane );
 
+		this.dropProxy.setAvailableHeight( availableHeight );
 		if( heightToAlignLeftCenterOn != null ) {
-			java.awt.Rectangle dropBounds = this.dropProxy.getBounds();
-			p.y += (heightToAlignLeftCenterOn - dropBounds.height) / 2;
+//			java.awt.Rectangle dropBounds = this.dropProxy.getBounds();
+//			p.y += (heightToAlignLeftCenterOn - dropBounds.height) / 2;
+			p.y += (heightToAlignLeftCenterOn - this.dropProxy.getAvailableHeight()) / 2;
 		}
 
 		//java.awt.event.MouseEvent mousePressedEvent = this.getMousePressedEvent();

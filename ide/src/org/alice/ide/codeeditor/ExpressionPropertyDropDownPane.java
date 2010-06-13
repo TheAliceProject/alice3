@@ -88,7 +88,7 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupM
 	}
 	public void dragEntered( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 //		zoot.ZDragComponent source = dragAndDropContext.getDragSource();
-		context.getDragSource().setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), this.getMainComponent(), this.getBounds().height );
+		context.getDragSource().setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), this.getMainComponent(), this.getBounds().height, -1 );
 	}
 	public void dragUpdated( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 	}

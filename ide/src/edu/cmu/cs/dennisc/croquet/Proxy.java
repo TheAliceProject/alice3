@@ -104,6 +104,7 @@ package edu.cmu.cs.dennisc.croquet;
 			//todo: synchronize
 			//if( LayeredPaneProxy.image == null || LayeredPaneProxy.image.getWidth() < width || LayeredPaneProxy.image.getHeight() < height ) {
 			java.awt.Graphics2D g2Image = (java.awt.Graphics2D)image.getGraphics();
+			g2Image.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 			this.paintProxy( g2Image );
 			g2Image.dispose();
 
@@ -119,10 +120,19 @@ package edu.cmu.cs.dennisc.croquet;
 			}
 			//java.awt.Color bgColor = new java.awt.Color( 0, 0, 0, 0 );
 			//g2.drawImage( LayeredPaneimage, 0, 0, width, height, 0, 0, width, height, bgColor, this );
-			g2.drawImage( image, 0, 0, width, height, this );
+			int availableHeight = this.getAvailableHeight();
+			if( availableHeight != -1 && availableHeight < height ) {
+				g2.drawImage( image, 0, 0, width, availableHeight, 0, 0, width, height, this );
+			} else {
+				g2.drawImage( image, 0, 0, width, height, this );
+			}
 			g2.dispose();
 			g2.setComposite( prevComposite );
 		}
+	}
+	
+	public int getAvailableHeight() {
+		return this.getProxyHeight();
 	}
 
 	public boolean isOverDropAcceptor() {
@@ -143,7 +153,6 @@ package edu.cmu.cs.dennisc.croquet;
 			this.repaint();
 		}
 	}
-
 	public int getDropWidth() {
 		return this.getWidth();
 	}

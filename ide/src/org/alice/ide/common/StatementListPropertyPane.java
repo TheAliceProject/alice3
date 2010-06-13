@@ -49,6 +49,7 @@ import org.alice.ide.codeeditor.EmptyStatementListAffordance;
  */
 public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > {
 	public static final int INTRASTICIAL_PAD = 4;
+//	private static final int INTRASTICIAL_PAD = 0;
 	public StatementListPropertyPane( Factory factory, final edu.cmu.cs.dennisc.alice.ast.StatementListProperty property ) {
 		super( factory, javax.swing.BoxLayout.PAGE_AXIS, property );		
 //		this.addMouseListener( new java.awt.event.MouseListener() {
@@ -82,13 +83,73 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 //		} );
 	}
 	
+	public int getAvailableDropProxyHeight() {
+		int heightAvailable = this.getHeight();
+		if( this.isFigurativelyEmpty() ) {
+			return heightAvailable;
+		} else {
+			return Math.min( dropSize.height, heightAvailable/2 );
+		}
+	}
+	@Override
+	protected javax.swing.JPanel createJPanel() {
+		class StatementListJPanel extends edu.cmu.cs.dennisc.croquet.Panel.DefaultJPanel {
+			@Override
+			protected void paintChildren( java.awt.Graphics g ) {
+				if( StatementListPropertyPane.this.currentPotentialDropIndex != -1 ) {
+					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+					final int N = this.getComponentCount();
+					int heightAvailable = this.getHeight();
+					int heightAllocatedToDrop = StatementListPropertyPane.this.getAvailableDropProxyHeight();
+					int heightAllocatedToThis = heightAvailable - heightAllocatedToDrop;
+					double yScale = heightAllocatedToThis/(double)heightAvailable;
+					java.awt.geom.AffineTransform m = g2.getTransform();
+					try {
+						int i = StatementListPropertyPane.this.currentPotentialDropIndex;
+						if( i == 0 || i == N ) {
+							if( i == 0 ) {
+								g2.translate( 0, heightAllocatedToDrop );
+							}
+							g2.scale( 1.0, yScale );
+							super.paintChildren( g );
+						} else {
+							super.paintChildren( g );
+						}
+					} finally {
+						g2.setTransform( m );
+					}
+				} else {
+					super.paintChildren( g );
+				}
+			}
+		}
+		return new StatementListJPanel();
+	}
+	private java.awt.Dimension dropSize = new java.awt.Dimension( 0,0 );
+	private int currentPotentialDropIndex = -1;
 	public void setIsCurrentUnder( boolean isCurrentUnder ) {
+		if( isCurrentUnder ) {
+			//pass
+		} else {
+			this.setCurrentPotentialDropIndex( -1 );
+		}
 		if( this.getComponentCount() > 0 ) {
 			edu.cmu.cs.dennisc.croquet.Component<?> component0 = this.getComponent( 0 );
 			if( component0 instanceof EmptyStatementListAffordance ) {
 				EmptyStatementListAffordance emptyStatementListAfforance = (EmptyStatementListAffordance)component0;
 				emptyStatementListAfforance.setDrawingDesired( isCurrentUnder == false );
 			}
+		}
+	}
+	public void setCurrentPotentialDropIndex( int currentPotentialDropIndex ) {
+		if( this.currentPotentialDropIndex != currentPotentialDropIndex ) {
+			this.currentPotentialDropIndex = currentPotentialDropIndex;
+			this.repaint();
+		}
+	}
+	public void setDropSize( java.awt.Dimension dropSize ) {
+		if( dropSize != null ) {
+			this.dropSize.setSize( dropSize );
 		}
 	}
 	
@@ -103,10 +164,28 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		return rv;
 	}	
 	public java.awt.Rectangle getDropBounds() {
-		java.awt.Rectangle rv = javax.swing.SwingUtilities.getLocalBounds( this.getAwtComponent() );
-		final int DELTA = this.getFont().getSize() + 4;
-		rv.y -= DELTA;
-		rv.height += DELTA;
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getDropBounds" );
+		java.awt.Rectangle rv = this.getBounds();
+		java.awt.Container parent = this.getAwtComponent().getParent();
+		if( parent != null ) {
+			java.awt.Container grandparent = parent.getParent();
+			if( grandparent != null ) {
+				int spaceOnTop = rv.y + parent.getY();
+				int spaceOnBottom = grandparent.getHeight()-(rv.y+rv.height);
+				int spaceOnTopToTake = spaceOnTop/2;
+				int spaceOnBottomToTake = spaceOnBottom/2;
+				rv.y = -spaceOnTopToTake;
+				rv.height += spaceOnTopToTake;
+				rv.height += spaceOnBottomToTake;
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "spaceOnTopToTake", spaceOnTopToTake );
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "spaceOnBottomToTake", spaceOnBottomToTake );
+			} else {
+				rv.y = 0;
+			}
+		} else {
+			rv.y = 0;
+		}
+		rv.x = 0;
 		return rv;
 	}
 
