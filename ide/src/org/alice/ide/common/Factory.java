@@ -212,7 +212,7 @@ public abstract class Factory {
 		}
 	}
 	protected int getPixelsPerIndent() {
-		return 10;
+		return 4;
 	}
 	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createComponent( org.alice.ide.i18n.Line line, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		int indentCount = line.getIndentCount();

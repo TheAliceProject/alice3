@@ -46,10 +46,14 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > {
-	public static final int INTRASTICIAL_PAD = 3;
+	private static final int INDENT = 8;
+	private static final int INTRASTICIAL_MIDDLE = 1;
+	public static final int INTRASTICIAL_PAD = INTRASTICIAL_MIDDLE*2+1;
+	
 //	private static final int INTRASTICIAL_PAD = 0;
 	public StatementListPropertyPane( Factory factory, final edu.cmu.cs.dennisc.alice.ast.StatementListProperty property ) {
-		super( factory, javax.swing.BoxLayout.PAGE_AXIS, property );		
+		super( factory, javax.swing.BoxLayout.PAGE_AXIS, property );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INTRASTICIAL_PAD, INDENT, 0, 0 ) );
 //		this.addMouseListener( new java.awt.event.MouseListener() {
 //			public void mouseClicked( final java.awt.event.MouseEvent e ) {
 //				final alice.ide.IDE ide = alice.ide.IDE.getSingleton();
@@ -101,8 +105,20 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 						y = iComponent.getY();
 						y -= INTRASTICIAL_PAD;
 					}
+					int x0 = 0;
+					int x1 = INDENT;
+					int yC = Math.max( y + INTRASTICIAL_MIDDLE, 1 );
+					int y0 = yC-INDENT;
+					int y1 = yC+INDENT;
+					
+					int w = this.getWidth();
+					int[] xPoints = new int[] { x1, x0, x0 };
+					int[] yPoints = new int[] { yC, y1, y0 };
 					g.setColor( FEEDBACK_COLOR );
-					g.fillRect( 0, y, this.getWidth(), INTRASTICIAL_PAD ); 
+					g.fillRect( 0, y, w, INTRASTICIAL_PAD );
+					g.fillPolygon( xPoints, yPoints, 3 );
+					//g.setColor( java.awt.Color.YELLOW );
+					//g.fillRect( 1, yC, w-2, 1 );
 				}
 			}
 		}

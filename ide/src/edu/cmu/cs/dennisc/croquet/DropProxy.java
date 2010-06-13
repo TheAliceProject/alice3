@@ -51,7 +51,7 @@ package edu.cmu.cs.dennisc.croquet;
 	}
 	@Override
 	protected float getAlpha() {
-		return 0.75f;
+		return 0.6f;
 	}
 	@Override
 	protected void paintProxy( java.awt.Graphics2D g2 ) {
