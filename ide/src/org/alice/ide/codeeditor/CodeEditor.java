@@ -410,21 +410,27 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 						if( n > 0 ) {
 							int index = this.currentUnder.calculateIndex( eUnder.getPoint() );
 							this.currentUnder.setCurrentPotentialDropIndex( index );
+							final boolean IS_SQUISHING_DESIRED = false;
 							if( index == 0 ) {
 								//java.awt.Component firstComponent = this.currentUnder.getComponent( 0 );
 								p.y = 0;
-								height = null;
+								if( IS_SQUISHING_DESIRED ) {
+									height = null;
+								}
 							} else if( index < n ) {
 								p.y = this.currentUnder.getAwtComponent().getComponent( index ).getY();
 							} else {
 								java.awt.Component lastComponent = this.currentUnder.getAwtComponent().getComponent( n - 1 );
 								p.y = lastComponent.getY() + lastComponent.getHeight();
-//								p.y += StatementListPropertyPane.INTRASTICIAL_PAD;
-//								if( this.currentUnder.getProperty() == ((edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code).getBodyProperty().getValue().statements ) {
-//									height = null;
-//								}
-								p.y -= availableHeight;
-								height = null;
+								if( IS_SQUISHING_DESIRED ) {
+									p.y -= availableHeight;
+									height = null;
+								} else {
+									p.y += StatementListPropertyPane.INTRASTICIAL_PAD;
+									if( this.currentUnder.getProperty() == ((edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code).getBodyProperty().getValue().statements ) {
+										height = null;
+									}
+								}
 							}
 						}
 					}

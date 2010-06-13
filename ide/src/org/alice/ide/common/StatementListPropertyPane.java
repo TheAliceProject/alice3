@@ -84,47 +84,48 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 	}
 	
 	public int getAvailableDropProxyHeight() {
-		int heightAvailable = this.getHeight();
-		if( this.isFigurativelyEmpty() ) {
-			return heightAvailable;
-		} else {
-			return Math.min( dropSize.height, heightAvailable/2 );
-		}
+//		int heightAvailable = this.getHeight();
+//		if( this.isFigurativelyEmpty() ) {
+//			return heightAvailable;
+//		} else {
+//			return Math.min( dropSize.height, heightAvailable/2 );
+//		}
+		return -1;
 	}
-	@Override
-	protected javax.swing.JPanel createJPanel() {
-		class StatementListJPanel extends edu.cmu.cs.dennisc.croquet.Panel.DefaultJPanel {
-			@Override
-			protected void paintChildren( java.awt.Graphics g ) {
-				if( StatementListPropertyPane.this.currentPotentialDropIndex != -1 ) {
-					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-					final int N = this.getComponentCount();
-					int heightAvailable = this.getHeight();
-					int heightAllocatedToDrop = StatementListPropertyPane.this.getAvailableDropProxyHeight();
-					int heightAllocatedToThis = heightAvailable - heightAllocatedToDrop;
-					double yScale = heightAllocatedToThis/(double)heightAvailable;
-					java.awt.geom.AffineTransform m = g2.getTransform();
-					try {
-						int i = StatementListPropertyPane.this.currentPotentialDropIndex;
-						if( i == 0 || i == N ) {
-							if( i == 0 ) {
-								g2.translate( 0, heightAllocatedToDrop );
-							}
-							g2.scale( 1.0, yScale );
-							super.paintChildren( g );
-						} else {
-							super.paintChildren( g );
-						}
-					} finally {
-						g2.setTransform( m );
-					}
-				} else {
-					super.paintChildren( g );
-				}
-			}
-		}
-		return new StatementListJPanel();
-	}
+//	@Override
+//	protected javax.swing.JPanel createJPanel() {
+//		class StatementListJPanel extends edu.cmu.cs.dennisc.croquet.Panel.DefaultJPanel {
+//			@Override
+//			protected void paintChildren( java.awt.Graphics g ) {
+//				if( StatementListPropertyPane.this.currentPotentialDropIndex != -1 ) {
+//					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+//					final int N = this.getComponentCount();
+//					int heightAvailable = this.getHeight();
+//					int heightAllocatedToDrop = StatementListPropertyPane.this.getAvailableDropProxyHeight();
+//					int heightAllocatedToThis = heightAvailable - heightAllocatedToDrop;
+//					double yScale = heightAllocatedToThis/(double)heightAvailable;
+//					java.awt.geom.AffineTransform m = g2.getTransform();
+//					try {
+//						int i = StatementListPropertyPane.this.currentPotentialDropIndex;
+//						if( i == 0 || i == N ) {
+//							if( i == 0 ) {
+//								g2.translate( 0, heightAllocatedToDrop );
+//							}
+//							g2.scale( 1.0, yScale );
+//							super.paintChildren( g );
+//						} else {
+//							super.paintChildren( g );
+//						}
+//					} finally {
+//						g2.setTransform( m );
+//					}
+//				} else {
+//					super.paintChildren( g );
+//				}
+//			}
+//		}
+//		return new StatementListJPanel();
+//	}
 	private java.awt.Dimension dropSize = new java.awt.Dimension( 0,0 );
 	private int currentPotentialDropIndex = -1;
 	public void setIsCurrentUnder( boolean isCurrentUnder ) {
@@ -164,29 +165,42 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		return rv;
 	}	
 	public java.awt.Rectangle getDropBounds() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getDropBounds" );
-		java.awt.Rectangle rv = this.getBounds();
-		java.awt.Container parent = this.getAwtComponent().getParent();
-		if( parent != null ) {
-			java.awt.Container grandparent = parent.getParent();
-			if( grandparent != null ) {
-				int spaceOnTop = rv.y + parent.getY();
-				int spaceOnBottom = grandparent.getHeight()-(rv.y+rv.height);
-				int spaceOnTopToTake = spaceOnTop/2;
-				int spaceOnBottomToTake = spaceOnBottom/2;
+		edu.cmu.cs.dennisc.alice.ast.BlockStatement owner = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)this.getProperty().getOwner();
+		DefaultStatementPane statementAncestor = this.getFirstAncestorAssignableTo( DefaultStatementPane.class );
+		if( statementAncestor != null ) {
+			java.awt.Rectangle rv = this.getBounds( statementAncestor );
+			final int IF_ELSE_PAD = 6;
+			if( owner.getParent() instanceof edu.cmu.cs.dennisc.alice.ast.BooleanExpressionBodyPair ) {
+				//if case
+				rv.height += rv.y;
+				rv.y = -rv.y;
+
+				rv.y += IF_ELSE_PAD;
+				rv.height -= IF_ELSE_PAD;
+
+			} else if( owner.getParent() instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalStatement ) {
+				//note: since the if case is checked first, it is currently okay that the else rectangle overlaps (consumes) it
+				
+				//else case
+				rv.height += rv.y;
+				rv.y = -rv.y;
+				
+				rv.y += IF_ELSE_PAD;
+				rv.height -= IF_ELSE_PAD;
+			} else {
+				int spaceOnTop = rv.y;
+				int spaceOnBottom = statementAncestor.getHeight()-(rv.y+rv.height);
+				int spaceOnTopToTake = 2*spaceOnTop/3;
+				int spaceOnBottomToTake = 2*spaceOnBottom/3;
+				rv.x = 0;
 				rv.y = -spaceOnTopToTake;
 				rv.height += spaceOnTopToTake;
 				rv.height += spaceOnBottomToTake;
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "spaceOnTopToTake", spaceOnTopToTake );
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "spaceOnBottomToTake", spaceOnBottomToTake );
-			} else {
-				rv.y = 0;
 			}
+			return rv;
 		} else {
-			rv.y = 0;
+			return this.getLocalBounds();
 		}
-		rv.x = 0;
-		return rv;
 	}
 
 	
