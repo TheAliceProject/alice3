@@ -279,8 +279,10 @@ public abstract class DragComponent extends Control {
 //			java.awt.Rectangle dropBounds = this.dropProxy.getBounds();
 //			p.y += (heightToAlignLeftCenterOn - dropBounds.height) / 2;
 			p.y += (heightToAlignLeftCenterOn - this.dropProxy.getAvailableHeight()) / 2;
+			//p.x += 8;
 		}
 
+		
 		//java.awt.event.MouseEvent mousePressedEvent = this.getMousePressedEvent();
 		//p.x -= mousePressedEvent.getX();
 		//p.y -= mousePressedEvent.getY();

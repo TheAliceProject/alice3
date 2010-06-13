@@ -42,6 +42,7 @@
  */
 package org.alice.ide.codeeditor;
 
+import org.alice.ide.common.DefaultStatementPane;
 import org.alice.ide.common.StatementListPropertyPane;
 
 
@@ -102,35 +103,40 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
-//		javax.swing.JPanel rv = new javax.swing.JPanel() {
-//			@Override
-//			public void paint( java.awt.Graphics g ) {
-//				super.paint( g );
-//				if( CodeEditor.this.statementListPropertyPaneInfos != null ) {
-//					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-//					for( StatementListPropertyPaneInfo statementListPropertyPaneInfo : CodeEditor.this.statementListPropertyPaneInfos ) {
-//						if( statementListPropertyPaneInfo != null ) {
-//							java.awt.Color color;
-//							if( CodeEditor.this.currentUnder == statementListPropertyPaneInfo.getStatementListPropertyPane() ) {
-//								color = new java.awt.Color( 0, 0, 0, 127 );
-//							} else {
-//								color = null;
-//								//color = new java.awt.Color( 255, 0, 0, 31 );
-//							}
-//							if( color != null ) {
-//								java.awt.Rectangle bounds = statementListPropertyPaneInfo.getBounds();
-//								bounds = javax.swing.SwingUtilities.convertRectangle( CodeEditor.this.getAsSeenBy().getAwtComponent(), bounds, this );
-//								g2.setColor( color );
-//								g2.fill( bounds );
-//								g2.setColor( new java.awt.Color( 255, 255, 0, 255 ) );
-//								g2.draw( bounds );
-//							}
-//						}
-//					}
-//				}
-//			}
-//		};
-		javax.swing.JPanel rv = new javax.swing.JPanel();
+		final boolean IS_FEEDBACK_DESIRED = false;
+		javax.swing.JPanel rv;
+		if( IS_FEEDBACK_DESIRED ) {
+			rv = new javax.swing.JPanel() {
+				@Override
+				public void paint( java.awt.Graphics g ) {
+					super.paint( g );
+					if( CodeEditor.this.statementListPropertyPaneInfos != null ) {
+						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+						for( StatementListPropertyPaneInfo statementListPropertyPaneInfo : CodeEditor.this.statementListPropertyPaneInfos ) {
+							if( statementListPropertyPaneInfo != null ) {
+								java.awt.Color color;
+								if( CodeEditor.this.currentUnder == statementListPropertyPaneInfo.getStatementListPropertyPane() ) {
+									color = new java.awt.Color( 0, 0, 0, 127 );
+								} else {
+									color = null;
+									//color = new java.awt.Color( 255, 0, 0, 31 );
+								}
+								if( color != null ) {
+									java.awt.Rectangle bounds = statementListPropertyPaneInfo.getBounds();
+									bounds = javax.swing.SwingUtilities.convertRectangle( CodeEditor.this.getAsSeenBy().getAwtComponent(), bounds, this );
+									g2.setColor( color );
+									g2.fill( bounds );
+									g2.setColor( new java.awt.Color( 255, 255, 0, 255 ) );
+									g2.draw( bounds );
+								}
+							}
+						}
+					}
+				}
+			};
+		} else {
+			rv = new javax.swing.JPanel();
+		}
 		rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.PAGE_AXIS ) );
 		
 		return rv;
@@ -326,7 +332,13 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 				continue;
 			}
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( statementListPropertyPane );
-			java.awt.Rectangle bounds = statementListPropertyPane.convertRectangle( statementListPropertyPane.getDropBounds(), this.getAsSeenBy() );
+			DefaultStatementPane statementAncestor = statementListPropertyPane.getFirstAncestorAssignableTo( DefaultStatementPane.class );
+			java.awt.Rectangle bounds;
+			if( statementAncestor != null ) {
+				bounds = statementAncestor.convertRectangle( statementListPropertyPane.getDropBounds( statementAncestor ), this.getAsSeenBy() );
+			} else {
+				bounds = statementListPropertyPane.getParent().getBounds( this.getAsSeenBy() );
+			}
 			bounds.x = 0;
 			bounds.width = this.getAsSeenBy().getWidth() - bounds.x;
 			rv[ i ] = new StatementListPropertyPaneInfo( statementListPropertyPane, bounds );

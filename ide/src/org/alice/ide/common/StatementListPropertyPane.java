@@ -42,13 +42,11 @@
  */
 package org.alice.ide.common;
 
-import org.alice.ide.codeeditor.EmptyStatementListAffordance;
-
 /**
  * @author Dennis Cosgrove
  */
 public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > {
-	public static final int INTRASTICIAL_PAD = 4;
+	public static final int INTRASTICIAL_PAD = 3;
 //	private static final int INTRASTICIAL_PAD = 0;
 	public StatementListPropertyPane( Factory factory, final edu.cmu.cs.dennisc.alice.ast.StatementListProperty property ) {
 		super( factory, javax.swing.BoxLayout.PAGE_AXIS, property );		
@@ -83,6 +81,33 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 //		} );
 	}
 	
+	@Override
+	protected javax.swing.JPanel createJPanel() {
+		final java.awt.Color FEEDBACK_COLOR = java.awt.Color.GREEN.darker().darker();
+		class FeedbackJPanel extends DefaultJPanel {
+			@Override
+			public void paint(java.awt.Graphics g) {
+				super.paint(g);
+				int i = StatementListPropertyPane.this.currentPotentialDropIndex;
+				final int N = StatementListPropertyPane.this.getProperty().size();
+				if( i != -1 && N > 0 ) {
+					int y;
+					if( i == N ) {
+						java.awt.Component lastComponent = this.getComponent( N-1 );
+						y = lastComponent.getY();
+						y += lastComponent.getHeight();
+					} else {
+						java.awt.Component iComponent = this.getComponent( i );
+						y = iComponent.getY();
+						y -= INTRASTICIAL_PAD;
+					}
+					g.setColor( FEEDBACK_COLOR );
+					g.fillRect( 0, y, this.getWidth(), INTRASTICIAL_PAD ); 
+				}
+			}
+		}
+		return new FeedbackJPanel();
+	}
 	public int getAvailableDropProxyHeight() {
 //		int heightAvailable = this.getHeight();
 //		if( this.isFigurativelyEmpty() ) {
@@ -136,8 +161,8 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		}
 		if( this.getComponentCount() > 0 ) {
 			edu.cmu.cs.dennisc.croquet.Component<?> component0 = this.getComponent( 0 );
-			if( component0 instanceof EmptyStatementListAffordance ) {
-				EmptyStatementListAffordance emptyStatementListAfforance = (EmptyStatementListAffordance)component0;
+			if( component0 instanceof org.alice.ide.codeeditor.EmptyStatementListAffordance ) {
+				org.alice.ide.codeeditor.EmptyStatementListAffordance emptyStatementListAfforance = (org.alice.ide.codeeditor.EmptyStatementListAffordance)component0;
 				emptyStatementListAfforance.setDrawingDesired( isCurrentUnder == false );
 			}
 		}
@@ -163,44 +188,36 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 			rv = INTRASTICIAL_PAD;
 		}
 		return rv;
-	}	
-	public java.awt.Rectangle getDropBounds() {
+	}
+	
+	public java.awt.Rectangle getDropBounds( DefaultStatementPane statementAncestor ) {
 		edu.cmu.cs.dennisc.alice.ast.BlockStatement owner = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)this.getProperty().getOwner();
-		DefaultStatementPane statementAncestor = this.getFirstAncestorAssignableTo( DefaultStatementPane.class );
-		if( statementAncestor != null ) {
-			java.awt.Rectangle rv = this.getBounds( statementAncestor );
-			final int IF_ELSE_PAD = 6;
-			if( owner.getParent() instanceof edu.cmu.cs.dennisc.alice.ast.BooleanExpressionBodyPair ) {
-				//if case
+		java.awt.Rectangle rv = this.getBounds( statementAncestor );
+		boolean isIf = owner.getParent() instanceof edu.cmu.cs.dennisc.alice.ast.BooleanExpressionBodyPair;
+		boolean isElse = owner.getParent() instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalStatement;
+		
+		if( isIf || isElse ) {
+			final int IF_ELSE_PAD = this.getFont().getSize()/2;
+			if( isIf ) {
 				rv.height += rv.y;
-				rv.y = -rv.y;
-
+				rv.y = 0;
+				statementAncestor.setMaxYForIfBlock( rv.y + rv.height );
 				rv.y += IF_ELSE_PAD;
-				rv.height -= IF_ELSE_PAD;
-
-			} else if( owner.getParent() instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalStatement ) {
-				//note: since the if case is checked first, it is currently okay that the else rectangle overlaps (consumes) it
-				
-				//else case
-				rv.height += rv.y;
-				rv.y = -rv.y;
-				
-				rv.y += IF_ELSE_PAD;
-				rv.height -= IF_ELSE_PAD;
 			} else {
-				int spaceOnTop = rv.y;
-				int spaceOnBottom = statementAncestor.getHeight()-(rv.y+rv.height);
-				int spaceOnTopToTake = 2*spaceOnTop/3;
-				int spaceOnBottomToTake = 2*spaceOnBottom/3;
-				rv.x = 0;
-				rv.y = -spaceOnTopToTake;
-				rv.height += spaceOnTopToTake;
-				rv.height += spaceOnBottomToTake;
+				rv.y = statementAncestor.getMaxYForIfBlock();
+				rv.height = statementAncestor.getHeight() - rv.y;
 			}
-			return rv;
+			rv.height -= IF_ELSE_PAD;
+
 		} else {
-			return this.getLocalBounds();
+			int spaceOnTop = rv.y;
+			int spaceOnBottom = statementAncestor.getHeight()-(rv.y+rv.height);
+			int spaceOnTopToLeave = spaceOnTop/2;
+			int spaceOnBottomToLeave = spaceOnBottom/2;
+			rv.y = spaceOnTopToLeave;
+			rv.height = statementAncestor.getHeight() - spaceOnTopToLeave - spaceOnBottomToLeave;
 		}
+		return rv;
 	}
 
 	
@@ -215,7 +232,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		super.refresh();
 		int bottom;
 		if( this.getComponentCount() == 0 ) {
-			this.addComponent( new EmptyStatementListAffordance() );
+			this.addComponent( new org.alice.ide.codeeditor.EmptyStatementListAffordance() );
 			bottom = 0;
 		} else {
 			bottom = 4;
@@ -224,7 +241,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		repaint();
 	}
 	public boolean isFigurativelyEmpty() {
-		return this.getComponentCount() == 0 || this.getComponent( 0 ) instanceof EmptyStatementListAffordance;
+		return this.getComponentCount() == 0 || this.getComponent( 0 ) instanceof org.alice.ide.codeeditor.EmptyStatementListAffordance;
 	}
 
 	private int getCenterYOfComponentAt( int i ) {
