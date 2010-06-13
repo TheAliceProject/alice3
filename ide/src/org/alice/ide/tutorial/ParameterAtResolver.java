@@ -45,15 +45,19 @@ package org.alice.ide.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/abstract class ParameterResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
-	protected abstract edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice getResolvedParameter( edu.cmu.cs.dennisc.alice.ast.NodeListProperty<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice> parametersProperty );
+/*package-private*/class ParameterAtResolver extends ParameterResolver {
+	private int index;
+	public ParameterAtResolver(int index) {
+		this.index = index;
+	}
 	@Override
-	protected final edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
-		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) codeEditor.getCode();
-		edu.cmu.cs.dennisc.alice.ast.NodeListProperty<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice> parametersProperty = code.getParamtersProperty();
-		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = this.getResolvedParameter( parametersProperty);
-		if( parameter != null ) {
-			return codeEditor.getDragAndDropOperationForTransient( parameter );
+	protected edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice getResolvedParameter(edu.cmu.cs.dennisc.alice.ast.NodeListProperty<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice> parametersProperty) {
+		int index = this.index;
+		if( index == Short.MAX_VALUE ) {
+			index = parametersProperty.size()-1;
+		}
+		if( parametersProperty.size() > 0 ) {
+			return parametersProperty.get( this.index );
 		} else {
 			return null;
 		}

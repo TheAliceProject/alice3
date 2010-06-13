@@ -348,7 +348,16 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	}
 
 	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createParameterResolver( int index ) {
-		return new ParameterResolver( index );
+		return new ParameterAtResolver( index );
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createFirstParameterResolver() {
+		return this.createParameterResolver( 0 );
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createLastParameterResolver() {
+		return this.createParameterResolver( Short.MAX_VALUE );
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createParameterNamedResolver( String paramaterName ) {
+		return new ParameterNamedResolver( paramaterName );
 	}
 	
 //	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createInvocationResolver( final Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int index ) {

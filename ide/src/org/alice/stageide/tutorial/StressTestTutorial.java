@@ -71,16 +71,16 @@ public class StressTestTutorial {
 				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
 		);
 
-		tutorial.addDragAndDropStep( 
-				"Drag Turn Procedure",
-				"Drag <b>turn</b> procedure.",
-				tutorial.createProcedureInvocationTemplateResolver( "turn" ),
-				"Drop <b>here</b>.",
-				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
-				"Select <b>LEFT</b> and <b>0.25</b> from the menus.",
-				tutorial.createToDoCompletorValidator()
-		);
-
+//		tutorial.addDragAndDropStep( 
+//				"Drag Turn Procedure",
+//				"Drag <b>turn</b> procedure.",
+//				tutorial.createProcedureInvocationTemplateResolver( "turn" ),
+//				"Drop <b>here</b>.",
+//				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+//				"Select <b>LEFT</b> and <b>0.25</b> from the menus.",
+//				tutorial.createToDoCompletorValidator()
+//		);
+//
 		tutorial.addDialogOpenStep( 
 				"Declare Procedure", 
 				"Declare a procedure.", 
@@ -93,14 +93,14 @@ public class StressTestTutorial {
 				tutorial.createDeclareProcedureOperationResolver(),
 				tutorial.createToDoCompletorValidator()
 		);
-
-		tutorial.addSpotlightTabTitleStep(  
-				"Note Foo Tab", 
-				"Note the foo folder tab.", 
-				ide.getEditorsTabSelectionState(),
-				tutorial.createCurrentCodeResolver()
-		);
-
+//
+//		tutorial.addSpotlightTabTitleStep(  
+//				"Note Foo Tab", 
+//				"Note the foo folder tab.", 
+//				ide.getEditorsTabSelectionState(),
+//				tutorial.createCurrentCodeResolver()
+//		);
+//
 		tutorial.addDialogOpenStep( 
 				"Declare Parameter", 
 				"Declare Parameter.", 
@@ -127,7 +127,9 @@ public class StressTestTutorial {
 		tutorial.addDragAndDropStep( 
 				"Drag Parameter",
 				"Drag <b>howHigh</b> parameter.",
-				tutorial.createParameterResolver( 0 ),
+				tutorial.createFirstParameterResolver(),
+// also an option:
+//				tutorial.createParameterNamedResolver( "howHigh" ),
 				"Drop <b>here</b>.",
 				tutorial.createInvocationArgumentResolver( "roll", 0, 1 ),
 				"Select <b>LEFT</b> and <b>0.25</b> from the menus.",

@@ -45,17 +45,18 @@ package org.alice.ide.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/abstract class ParameterResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
-	protected abstract edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice getResolvedParameter( edu.cmu.cs.dennisc.alice.ast.NodeListProperty<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice> parametersProperty );
+/*package-private*/class ParameterNamedResolver extends ParameterResolver {
+	private String parameterName;
+	public ParameterNamedResolver(String parameterName) {
+		this.parameterName = parameterName;
+	}
 	@Override
-	protected final edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
-		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) codeEditor.getCode();
-		edu.cmu.cs.dennisc.alice.ast.NodeListProperty<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice> parametersProperty = code.getParamtersProperty();
-		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = this.getResolvedParameter( parametersProperty);
-		if( parameter != null ) {
-			return codeEditor.getDragAndDropOperationForTransient( parameter );
-		} else {
-			return null;
+	protected edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice getResolvedParameter(edu.cmu.cs.dennisc.alice.ast.NodeListProperty<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice> parametersProperty) {
+		for( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter : parametersProperty ) {
+			if( this.parameterName.equals( parameter.getName() ) ) {
+				return parameter;
+			}
 		}
+		return null;
 	}
 }
