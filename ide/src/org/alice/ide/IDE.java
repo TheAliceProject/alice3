@@ -937,15 +937,19 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		this.sceneEditor.disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
 	public void enableRendering() {
-		ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering = reasonToDisableSomeAmountOfRenderingStack.pop();
-		if( reasonToDisableSomeAmountOfRendering == ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM ) {
-			//pass
+		if( reasonToDisableSomeAmountOfRenderingStack.size() > 0 ) {
+			ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering = reasonToDisableSomeAmountOfRenderingStack.pop();
+			if( reasonToDisableSomeAmountOfRendering == ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM ) {
+				//pass
+			} else {
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignore repaint: false" );
+				this.root.setIgnoreRepaint( false );
+				this.left.setIgnoreRepaint( false );
+			}
+			this.sceneEditor.enableRendering( reasonToDisableSomeAmountOfRendering );
 		} else {
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignore repaint: false" );
-			this.root.setIgnoreRepaint( false );
-			this.left.setIgnoreRepaint( false );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate extra enableRendering" );
 		}
-		this.sceneEditor.enableRendering( reasonToDisableSomeAmountOfRendering );
 	}
 
 	//	protected void setRenderingEnabled( boolean isRenderingEnabled, boolean isDrag ) {
