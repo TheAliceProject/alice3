@@ -96,13 +96,13 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 			}
 			public ExpressionPropertyEdit handleCompletion( ExpressionPropertyEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 				//todo: remove?
-				getIDE().unsetPreviousExpression();
+				getIDE().unsetPreviousExpressionAndDropStatement();
 				rv.nextExpression = expression;
 				return rv;
 			}
 			public void handleCancelation() {
 				//todo: remove?
-				getIDE().unsetPreviousExpression();
+				getIDE().unsetPreviousExpressionAndDropStatement();
 			}
 		} );
 	}

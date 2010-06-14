@@ -92,13 +92,13 @@ public abstract class FillInExpressionListPropertyItemOperation extends org.alic
 			}
 			public FillInExpressionEdit handleCompletion( FillInExpressionEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 				//todo: remove?
-				getIDE().unsetPreviousExpression();
+				getIDE().unsetPreviousExpressionAndDropStatement();
 				rv.nextExpression = expression;
 				return rv;
 			}
 			public void handleCancelation() {
 				//todo: remove?
-				getIDE().unsetPreviousExpression();
+				getIDE().unsetPreviousExpressionAndDropStatement();
 			}
 		} );
 	}

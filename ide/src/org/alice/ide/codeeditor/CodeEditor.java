@@ -509,7 +509,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 									edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
 									if( propertyOwner instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
 										edu.cmu.cs.dennisc.alice.ast.BlockStatement block = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)propertyOwner;
-										statementTemplate.createStatement( mouseEvent, block, taskObserver );
+										statementTemplate.createStatement( mouseEvent, block, index, taskObserver );
 									}
 									return rv;
 								}

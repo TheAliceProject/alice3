@@ -119,19 +119,19 @@ public class FillInMoreOperation extends org.alice.ide.operations.ActionOperatio
 				rv.nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();
 				java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = rv.nextLongerMethod.getParameters();
 				edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
-				getIDE().promptUserForMore( lastParameter, operationContext.getViewController(), operationContext.getPoint(), taskObserver );
+				getIDE().promptUserForMore( expressionStatement, lastParameter, operationContext.getViewController(), operationContext.getPoint(), taskObserver );
 
 				return rv;
 			}
 			public MoreEdit handleCompletion( MoreEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 				//todo: remove?
-				getIDE().unsetPreviousExpression();
+				getIDE().unsetPreviousExpressionAndDropStatement();
 				rv.nextMethodInvocation = org.alice.ide.ast.NodeUtilities.createNextMethodInvocation( rv.prevMethodInvocation, expression, rv.nextLongerMethod );
 				return rv;
 			}
 			public void handleCancelation() {
 				//todo: remove?
-				getIDE().unsetPreviousExpression();
+				getIDE().unsetPreviousExpressionAndDropStatement();
 			}
 		} );
 	}

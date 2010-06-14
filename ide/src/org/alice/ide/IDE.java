@@ -1222,23 +1222,25 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return type;
 	}
 
+	private java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > updateAccessibleLocalsForBlockStatementAndIndex( java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > rv, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
+		while( index >= 1 ) {
+			index--;
+			edu.cmu.cs.dennisc.alice.ast.Statement statementI = blockStatement.statements.get( index );
+			if( statementI instanceof edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement ) {
+				edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement localDeclarationStatement = (edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement)statementI;
+				rv.add( localDeclarationStatement.getLocal() );
+			}
+		}
+		return rv;
+	}
 	private java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > updateAccessibleLocals( java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > rv, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		edu.cmu.cs.dennisc.alice.ast.Node parent = statement.getParent();
-
 		if( parent instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
 			edu.cmu.cs.dennisc.alice.ast.Statement statementParent = (edu.cmu.cs.dennisc.alice.ast.Statement)parent;
 			if( statementParent instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
 				edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatementParent = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)statementParent;
 				int index = blockStatementParent.statements.indexOf( statement );
-				index--;
-				while( index >= 0 ) {
-					edu.cmu.cs.dennisc.alice.ast.Statement statementI = blockStatementParent.statements.get( index );
-					if( statementI instanceof edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement ) {
-						edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement localDeclarationStatement = (edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement)statementI;
-						rv.add( localDeclarationStatement.getLocal() );
-					}
-					index--;
-				}
+				this.updateAccessibleLocalsForBlockStatementAndIndex(rv, blockStatementParent, index);
 			} else if( statementParent instanceof edu.cmu.cs.dennisc.alice.ast.CountLoop ) {
 				edu.cmu.cs.dennisc.alice.ast.CountLoop countLoopParent = (edu.cmu.cs.dennisc.alice.ast.CountLoop)statementParent;
 				boolean areCountLoopLocalsViewable = this.isJava();
@@ -1257,9 +1259,11 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 		return rv;
 	}
-	private Iterable< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > getAccessibleLocals( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+
+	private Iterable< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > getAccessibleLocals( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
 		java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		updateAccessibleLocals( rv, statement );
+		updateAccessibleLocalsForBlockStatementAndIndex( rv, blockStatement, index );
+		updateAccessibleLocals( rv, blockStatement );
 		return rv;
 	}
 	protected void addExpressionBonusFillInsForType( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
@@ -1297,17 +1301,17 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 					}
 				}
 			}
-			edu.cmu.cs.dennisc.alice.ast.Expression prevExpression = this.getPreviousExpression();
-			if( prevExpression != null ) {
-				edu.cmu.cs.dennisc.alice.ast.Statement statement = prevExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.Statement.class );
-				if( statement != null ) {
+//			edu.cmu.cs.dennisc.alice.ast.Expression prevExpression = this.getPreviousExpression();
+//			if( prevExpression != null ) {
+//				edu.cmu.cs.dennisc.alice.ast.Statement statement = prevExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.Statement.class );
+				if( this.dropParent != null && this.dropIndex != -1 ) {
 					for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : codeInFocus.getParameters() ) {
 						if( type.isAssignableFrom( parameter.getValueType() ) ) {
 							//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
 							this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter ), parameter.getValueType(), type );
 						}
 					}
-					for( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local : this.getAccessibleLocals( statement ) ) {
+					for( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local : this.getAccessibleLocals( this.dropParent, this.dropIndex ) ) {
 						if( type.isAssignableFrom( local.valueType.getValue() ) ) {
 							edu.cmu.cs.dennisc.alice.ast.Expression expression;
 							if( local instanceof edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice ) {
@@ -1324,7 +1328,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 							}
 						}
 					}
-				}
+//				}
 			}
 		}
 	}
@@ -1427,9 +1431,27 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	//	}
 
 	private edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = null;
+	private edu.cmu.cs.dennisc.alice.ast.BlockStatement dropParent = null;
+	private int dropIndex = -1;
 
+	private void setDropParentAndIndex( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		if( statement != null ) {
+			edu.cmu.cs.dennisc.alice.ast.Node node = statement.getParent();
+			if (node instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement) {
+				edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement) node;
+				int index = blockStatement.statements.indexOf( statement );
+				if( index != -1 ) {
+					this.dropParent = blockStatement;
+					this.dropIndex = index;
+				}
+			}
+		}
+	}
 	private edu.cmu.cs.dennisc.cascade.Blank createExpressionBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
 		this.previousExpression = prevExpression;
+		if( this.previousExpression != null ) {
+			this.setDropParentAndIndex( this.previousExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.Statement.class ) );
+		}
 		return new org.alice.ide.cascade.ExpressionBlank( type );
 	}
 	private edu.cmu.cs.dennisc.cascade.FillIn createExpressionsFillIn( final edu.cmu.cs.dennisc.alice.ast.AbstractType[] types, final boolean isArrayLengthDesired ) {
@@ -1466,7 +1488,9 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		};
 		return rv;
 	}
-	public void promptUserForExpressions( edu.cmu.cs.dennisc.alice.ast.AbstractType[] types, boolean isArrayLengthDesired, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > taskObserver ) {
+	public void promptUserForExpressions( edu.cmu.cs.dennisc.alice.ast.BlockStatement dropParent, int dropIndex, edu.cmu.cs.dennisc.alice.ast.AbstractType[] types, boolean isArrayLengthDesired, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > taskObserver ) {
+		this.dropParent = dropParent;
+		this.dropIndex = dropIndex;
 		edu.cmu.cs.dennisc.cascade.FillIn fillIn = createExpressionsFillIn( types, isArrayLengthDesired );
 		fillIn.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
 	}
@@ -1480,7 +1504,8 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 		blank.showPopupMenu( viewController.getAwtComponent(), p.x, p.y, taskObserver );
 	}
-	public void promptUserForMore( final edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter, edu.cmu.cs.dennisc.croquet.ViewController< ?,? > viewController, java.awt.Point p, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
+	public void promptUserForMore( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement statement, final edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter, edu.cmu.cs.dennisc.croquet.ViewController< ?,? > viewController, java.awt.Point p, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
+		this.setDropParentAndIndex( statement );
 		final String parameterName = parameter.getName();
 		edu.cmu.cs.dennisc.cascade.Blank blank;
 		if( parameterName != null ) {
@@ -1506,8 +1531,10 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 		blank.showPopupMenu( viewController.getAwtComponent(), p.x, p.y, taskObserver );
 	}
-	public void unsetPreviousExpression() {
+	public void unsetPreviousExpressionAndDropStatement() {
 		this.previousExpression = null;
+		this.dropParent = null;
+		this.dropIndex = -1;
 	}
 
 	public edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine createVirtualMachineForRuntimeProgram() {

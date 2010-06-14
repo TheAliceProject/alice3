@@ -63,7 +63,7 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 		super(cls, javax.swing.BoxLayout.LINE_AXIS);
 		this.setDragAndDropOperation(new org.alice.ide.operations.DefaultDragOperation( edu.cmu.cs.dennisc.alice.Project.GROUP ));
 	}
-	public abstract void createStatement(java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.alice.ast.BlockStatement block, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement> taskObserver);
+	public abstract void createStatement(java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.alice.ast.BlockStatement block, final int index, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement> taskObserver);
 	private edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation;
 	// @Override
 	// protected boolean isFauxDragDesired() {
