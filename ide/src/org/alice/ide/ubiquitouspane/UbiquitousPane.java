@@ -192,6 +192,7 @@ public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	}
 
 	public void refresh() {
+		org.alice.ide.IDE.getSingleton().refreshAccessibles();
 		this.returnStatementWrapper.refresh();
 		this.transientStatementsWrapper.refresh();
 		this.revalidateAndRepaint();

@@ -219,7 +219,12 @@ public abstract class ListSelectionState<E> extends Model< ListSelectionState<E>
 		public Object getSelectedItem() {
 			int index = ListSelectionState.this.listSelectionModel.getMaxSelectionIndex();
 			if (index >= 0) {
-				return this.items.get( index );
+				if( index < this.getSize() ) {
+					return this.items.get( index );
+				} else {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: item selection out of bounds" );
+					return null;
+				}
 			} else {
 				return null;
 			}

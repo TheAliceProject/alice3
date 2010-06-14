@@ -46,49 +46,10 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LocalDeclaredInAlice extends AbstractTransient {
-	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null ) {
-		@Override
-		protected boolean isNullAcceptable() {
-			return true;
-		}
-	};
-	public DeclarationProperty< AbstractType > valueType = new DeclarationProperty< AbstractType >( this );
-	public LocalDeclaredInAlice() {
-	}
-	public LocalDeclaredInAlice( String name, AbstractType valueType ) {
-		this.name.setValue( name );
-		this.valueType.setValue( valueType );
-	}
-	public LocalDeclaredInAlice( String name, Class<?> valueCls ) {
-		this( name, TypeDeclaredInJava.get( valueCls ) );
-	}
-	
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
-		return this.valueType.getValue();
-	}
-	
-	@Override
-	public String getName() {
-		return name.getValue();
-	}
-	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
-		return this.name;
-	}
-	@Override
-	public boolean isDeclaredInAlice() {
-		return true;
-	}
-	public abstract boolean isFinal();
-	protected abstract String generateName( Node context );
-	public final String getValidName( Node context ) {
-		String name = this.name.getValue();
-		if( name != null ) {
-			return name;
-		} else {
-			return generateName( context );
-		}
-	}
+public interface Accessible extends edu.cmu.cs.dennisc.pattern.Nameable {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getValueType();
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
+	public String getValidName( Node context );
+	@Deprecated
+	public String getValidName();
 }

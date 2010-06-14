@@ -46,9 +46,9 @@ package org.alice.ide.memberseditor;
  * @author Dennis Cosgrove
  */
 public abstract class MembersContentPanel extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractField> fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractField>() {
-		public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractField nextValue) {
-			MembersContentPanel.this.handleFieldSelection( nextValue );
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible> fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>() {
+		public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) {
+			MembersContentPanel.this.handleAccessibleSelection( nextValue );
 		}
 	};
 	@Override
@@ -62,11 +62,11 @@ public abstract class MembersContentPanel extends edu.cmu.cs.dennisc.croquet.Pag
 		super.handleRemovedFrom( parent );
 	}
 	
-	protected abstract void handleFieldSelection( edu.cmu.cs.dennisc.alice.ast.AbstractField field, java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > types );
-	private void handleFieldSelection( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	protected abstract void handleAccessibleSelection( edu.cmu.cs.dennisc.alice.ast.Accessible accessible, java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > types );
+	private void handleAccessibleSelection( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > types = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		if( field != null ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType type = field.getValueType();
+		if( accessible != null ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType type = accessible.getValueType();
 			while( type != null ) {
 				types.add( type );
 				if( type.isFollowToSuperClassDesired() ) {
@@ -76,7 +76,7 @@ public abstract class MembersContentPanel extends edu.cmu.cs.dennisc.croquet.Pag
 				}
 			}
 		}
-		this.handleFieldSelection( field, types );
+		this.handleAccessibleSelection( accessible, types );
 	}
 }
 

@@ -51,9 +51,9 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 			SelectedFieldExpressionPane.this.handleCodeChanged( nextValue );
 		}
 	};
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractField > fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractField >() {
-		public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractField nextValue) {
-			SelectedFieldExpressionPane.this.handleFieldChanged( nextValue );
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible > fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible >() {
+		public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) {
+			SelectedFieldExpressionPane.this.handleAccessibleChanged( nextValue );
 		}
 	};
 	private edu.cmu.cs.dennisc.property.event.PropertyListener namePropertyAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
@@ -71,7 +71,7 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 		}
 	};
 	
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField field = null;
+	private edu.cmu.cs.dennisc.alice.ast.Accessible accessible = null;
 	private edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label();
 	public SelectedFieldExpressionPane( org.alice.ide.ast.SelectedFieldExpression selectedFieldExpression ) {
 		this.addComponent( this.label );
@@ -79,23 +79,23 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractField field = getIDE().getFieldSelectionState().getValue();
-		if( field != null ) {
-			return field.getValueType();
+		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = getIDE().getFieldSelectionState().getValue();
+		if( accessible != null ) {
+			return accessible.getValueType();
 		} else {
 			return null;
 		}
 	}
-	private void handleFieldChanged( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		if( this.field != null ) {
-			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.field.getNamePropertyIfItExists();
+	private void handleAccessibleChanged( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
+		if( this.accessible != null ) {
+			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.accessible.getNamePropertyIfItExists();
 			if( nameProperty != null ) {
 				nameProperty.removePropertyListener( this.namePropertyAdapter );
 			}
 		}
-		this.field = field;
-		if( this.field != null ) {
-			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.field.getNamePropertyIfItExists();
+		this.accessible = accessible;
+		if( this.accessible != null ) {
+			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.accessible.getNamePropertyIfItExists();
 			if( nameProperty != null ) {
 				nameProperty.addPropertyListener( this.namePropertyAdapter );
 			}
@@ -107,7 +107,7 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	}
 	
 	private void updateLabel() {
-		this.label.setText( getIDE().getInstanceTextForField( this.field, true ) );
+		this.label.setText( getIDE().getInstanceTextForAccessible( this.accessible, true ) );
 	}
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {

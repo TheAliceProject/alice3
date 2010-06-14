@@ -95,8 +95,8 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 		return null;
 	}
-	/*package-private*/ static edu.cmu.cs.dennisc.alice.ast.AbstractMethod findShortestMethod( edu.cmu.cs.dennisc.alice.ast.AbstractField field, String methodName ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type = field.getValueType();
+	/*package-private*/ static edu.cmu.cs.dennisc.alice.ast.AbstractMethod findShortestMethod( edu.cmu.cs.dennisc.alice.ast.Accessible accessible, String methodName ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type = accessible.getValueType();
 		while( type.isDeclaredInAlice() ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > typeInAlice = (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >)type;
 			for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : typeInAlice.methods ) {
@@ -300,8 +300,8 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > createCurrentFieldMethodResolver( final String methodName ) {
 		return new Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod >() {
 			public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getResolved() {
-				edu.cmu.cs.dennisc.alice.ast.AbstractField field = ide.getFieldSelectionState().getValue();
-				return findShortestMethod( field, methodName );
+				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = ide.getFieldSelectionState().getValue();
+				return findShortestMethod( accessible, methodName );
 			}
 		};
 	}

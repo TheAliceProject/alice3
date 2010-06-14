@@ -48,25 +48,25 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class FieldTile extends edu.cmu.cs.dennisc.croquet.CustomBooleanStateButton<javax.swing.AbstractButton> {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+	private edu.cmu.cs.dennisc.alice.ast.Accessible accessible;
 //	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
 //		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 //		}
 //		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 //		}
 //	}
-//	public static FieldTile createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-//		FieldSelectedState state = FieldSelectedState.getInstance(field);
-//		return state.register( new FieldTile( field ) );
+//	public static FieldTile createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField accessible ) {
+//		FieldSelectedState state = FieldSelectedState.getInstance(accessible);
+//		return state.register( new FieldTile( accessible ) );
 //	}
 	@Deprecated
 	private final static BooleanState FIELD_TILE_BOOLEAN_STATE = null;
 	
-	public FieldTile( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	public FieldTile( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
 		super( FIELD_TILE_BOOLEAN_STATE );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: FIELD_TILE_BOOLEAN_STATE" );
-		assert field != null;
-		this.field = field;
+		assert accessible != null;
+		this.accessible = accessible;
 		//this.setOpaque( false );
 		
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,4 ) );
@@ -128,22 +128,24 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 	}
 
 	protected java.util.List< edu.cmu.cs.dennisc.croquet.Model > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.croquet.Model > rv ) {
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
-		edu.cmu.cs.dennisc.alice.ast.AbstractType fieldType = fieldInAlice.getValueType();
-		rv.add( new org.alice.ide.operations.ast.RenameFieldOperation( fieldInAlice ) );
-		if( fieldType.isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
-			if( fieldType.isAssignableTo( org.alice.apis.moveandturn.AbstractCamera.class ) ) {
-				//pass
-			} else {
-				rv.add( new org.alice.ide.operations.ast.DeleteFieldOperation( fieldInAlice ) );
-				rv.add( new org.alice.stageide.operations.ast.OrientToUprightActionOperation( fieldInAlice ) );
+		if( this.accessible instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
+			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.accessible;
+			edu.cmu.cs.dennisc.alice.ast.AbstractType fieldType = fieldInAlice.getValueType();
+			rv.add( new org.alice.ide.operations.ast.RenameFieldOperation( fieldInAlice ) );
+			if( fieldType.isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
+				if( fieldType.isAssignableTo( org.alice.apis.moveandturn.AbstractCamera.class ) ) {
+					//pass
+				} else {
+					rv.add( new org.alice.ide.operations.ast.DeleteFieldOperation( fieldInAlice ) );
+					rv.add( new org.alice.stageide.operations.ast.OrientToUprightActionOperation( fieldInAlice ) );
+				}
 			}
-		}
-		if( fieldType.isAssignableTo( org.alice.apis.moveandturn.Model.class ) ) {
-			rv.add( new org.alice.stageide.operations.ast.PlaceOnTopOfGroundActionOperation( fieldInAlice ) );
-		}
-		if( fieldType.isAssignableTo( org.alice.apis.stage.Person.class ) ) {
-			rv.add( new org.alice.stageide.operations.ast.EditPersonActionOperation( fieldInAlice ) );
+			if( fieldType.isAssignableTo( org.alice.apis.moveandturn.Model.class ) ) {
+				rv.add( new org.alice.stageide.operations.ast.PlaceOnTopOfGroundActionOperation( fieldInAlice ) );
+			}
+			if( fieldType.isAssignableTo( org.alice.apis.stage.Person.class ) ) {
+				rv.add( new org.alice.stageide.operations.ast.EditPersonActionOperation( fieldInAlice ) );
+			}
 		}
 		return rv;
 	}
@@ -154,10 +156,10 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 	protected java.awt.Color calculateColor() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		java.awt.Color color = ide.getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
-		if( this.field == ide.getFieldSelectionState().getValue() ) {
+		if( this.accessible == ide.getFieldSelectionState().getValue() ) {
 			color = java.awt.Color.YELLOW;
 		} else {
-			if( ide.isFieldInScope( this.field ) ) {
+			if( ide.isAccessibleInScope( this.accessible ) ) {
 				color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 0.75, 0.75 );
 			} else {
 				color = java.awt.Color.GRAY;
@@ -168,14 +170,14 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 	}
 
 	protected boolean isInScope() {
-		return org.alice.ide.IDE.getSingleton().isFieldInScope( field );
+		return org.alice.ide.IDE.getSingleton().isAccessibleInScope( accessible );
 	}
 	
 	/*package-private*/ void updateLabel() {
 		String prevText = this.getAwtComponent().getText();
 		String nextText;
-		if( this.field != null ) {
-			nextText = org.alice.ide.IDE.getSingleton().getInstanceTextForField( this.field, false );
+		if( this.accessible != null ) {
+			nextText = org.alice.ide.IDE.getSingleton().getInstanceTextForAccessible( this.accessible, false );
 			this.setBackgroundColor( this.calculateColor() );
 		} else {
 			this.setBackgroundColor( java.awt.Color.RED );

@@ -161,9 +161,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			MoveAndTurnSceneEditor.this.handleFocusedCodeChanged( next );
 		}
 	};
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractField> fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractField>() {
-		public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractField nextValue) {
-			MoveAndTurnSceneEditor.this.handleFieldSelection( nextValue );
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible> fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>() {
+		public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) {
+			MoveAndTurnSceneEditor.this.handleAccessibleSelection( nextValue );
 		}
 	};
 	
@@ -296,11 +296,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 //		}
 //	}
 
-	private static class FieldRadioButtons extends edu.cmu.cs.dennisc.croquet.CustomRadioButtons< AbstractField > {
+	private static class FieldRadioButtons extends edu.cmu.cs.dennisc.croquet.CustomRadioButtons< edu.cmu.cs.dennisc.alice.ast.Accessible > {
 		private static final int SUB_FIELD_LEFT_INSET = 10;
 		private static final int INTRA_FIELD_PAD = 1;
 		private javax.swing.SpringLayout springLayout;
-		public FieldRadioButtons( ListSelectionState<AbstractField> model ) {
+		public FieldRadioButtons( ListSelectionState<edu.cmu.cs.dennisc.alice.ast.Accessible> model ) {
 			super( model );
 		}
 		@Override
@@ -328,7 +328,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			return this.springLayout;
 		}
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.AbstractButton<?,?> createButton(edu.cmu.cs.dennisc.alice.ast.AbstractField item) {
+		protected edu.cmu.cs.dennisc.croquet.AbstractButton<?,?> createButton(edu.cmu.cs.dennisc.alice.ast.Accessible item) {
 			return new FieldTile( item );
 		}
 		
@@ -679,22 +679,25 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		if( code != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType type = code.getDeclaringType();
 			if( type != null ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractField selectedField = this.getIDE().getFieldSelectionState().getValue();
-				if( selectedField != null ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractType selectedType = selectedField.getValueType();
-					if( type.isAssignableFrom( selectedType ) ) {
-						//pass
-					} else {
-						edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
-						if( sceneField != null ) {
-							edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType = sceneField.getValueType();
-							if( type.isAssignableFrom( sceneType ) ) {
-								//pass
-							} else {
-								for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
-									if( type.isAssignableFrom( field.getValueType() ) ) {
-										this.getIDE().getFieldSelectionState().setValue( field );
-										break;
+				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = this.getIDE().getFieldSelectionState().getValue();
+				if( accessible instanceof AbstractField ) {
+					AbstractField selectedField = (AbstractField)accessible;
+					if( selectedField != null ) {
+						edu.cmu.cs.dennisc.alice.ast.AbstractType selectedType = selectedField.getValueType();
+						if( type.isAssignableFrom( selectedType ) ) {
+							//pass
+						} else {
+							edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
+							if( sceneField != null ) {
+								edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType = sceneField.getValueType();
+								if( type.isAssignableFrom( sceneType ) ) {
+									//pass
+								} else {
+									for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
+										if( type.isAssignableFrom( field.getValueType() ) ) {
+											this.getIDE().getFieldSelectionState().setValue( field );
+											break;
+										}
 									}
 								}
 							}
@@ -778,35 +781,38 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 
-	private void handleFieldSelection( AbstractField field ) {
-		Object instance = this.getInstanceForField( field );
-		if( instance instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
-			edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
-			instance = instanceInAlice.getInstanceInJava();
+	private void handleAccessibleSelection( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
+		if( accessible instanceof AbstractField ) {
+			AbstractField field = (AbstractField)accessible;
+			Object instance = this.getInstanceForField( field );
+			if( instance instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
+				edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
+				instance = instanceInAlice.getInstanceInJava();
+			}
+			if( instance instanceof org.alice.apis.moveandturn.Model ) {
+				org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instance;
+				if (this.needToDoSomeSceneSetupStuff)
+				{
+					this.objectToBeSelectedWhenWeAreReady = model.getSGTransformable();
+				}
+				else
+				{
+					this.globalDragAdapter.setSelectedObject( model.getSGTransformable() );
+				}
+			}
+			else if( instance instanceof org.alice.apis.moveandturn.Marker ) {
+				org.alice.apis.moveandturn.Marker marker = (org.alice.apis.moveandturn.Marker)instance;
+				if (this.needToDoSomeSceneSetupStuff)
+				{
+					this.objectToBeSelectedWhenWeAreReady = marker.getSGTransformable();
+				}
+				else
+				{
+					this.globalDragAdapter.setSelectedObject( marker.getSGTransformable() );
+				}
+			}
+			this.updateFieldLabels();
 		}
-		if( instance instanceof org.alice.apis.moveandturn.Model ) {
-			org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instance;
-			if (this.needToDoSomeSceneSetupStuff)
-			{
-				this.objectToBeSelectedWhenWeAreReady = model.getSGTransformable();
-			}
-			else
-			{
-				this.globalDragAdapter.setSelectedObject( model.getSGTransformable() );
-			}
-		}
-		else if( instance instanceof org.alice.apis.moveandturn.Marker ) {
-			org.alice.apis.moveandturn.Marker marker = (org.alice.apis.moveandturn.Marker)instance;
-			if (this.needToDoSomeSceneSetupStuff)
-			{
-				this.objectToBeSelectedWhenWeAreReady = marker.getSGTransformable();
-			}
-			else
-			{
-				this.globalDragAdapter.setSelectedObject( marker.getSGTransformable() );
-			}
-		}
-		this.updateFieldLabels();
 	}
 
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = null;
@@ -1111,7 +1117,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			
 			ensureCodeIsUpToDate();
 			
-			IDE.getSingleton().refreshFields();
+			IDE.getSingleton().refreshAccessibles();
 		}
 	}
 

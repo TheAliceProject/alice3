@@ -202,11 +202,15 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 	
 	@Override
-	protected boolean isFieldDesired( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		if( field.getValueType().isAssignableTo( org.alice.apis.moveandturn.Marker.class) ) {
-			return false;
+	protected boolean isAccessibleDesired( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
+		if( super.isAccessibleDesired( accessible ) ) {
+			if( accessible.getValueType().isAssignableTo( org.alice.apis.moveandturn.Marker.class) ) {
+				return false;
+			} else {
+				return accessible.getValueType().isAssignableTo( org.alice.apis.moveandturn.AbstractTransformable.class );
+			}
 		} else {
-			return super.isFieldDesired( field );
+			return false;
 		}
 	}
 	@Override

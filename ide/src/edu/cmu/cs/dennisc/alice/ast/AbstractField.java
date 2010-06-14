@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractField extends AbstractMember {
+public abstract class AbstractField extends AbstractMember implements Accessible {
 	public abstract AbstractType getValueType();
 	public abstract AbstractType getDesiredValueType();
 	public abstract boolean isStatic();
@@ -54,4 +54,12 @@ public abstract class AbstractField extends AbstractMember {
 	public abstract boolean isFinal();
 	public abstract boolean isVolatile();
 	public abstract boolean isTransient();
+	
+	public String getValidName( Node context ) {
+		return this.getName();
+	}
+	@Deprecated
+	public String getValidName() {
+		return this.getValidName( null );
+	}
 }
