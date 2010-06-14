@@ -47,13 +47,27 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/abstract class InvocationExpressionPropertyResolver extends InvocationOperationResolver {
-	public InvocationExpressionPropertyResolver(Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int invocationIndex) {
-		super( methodResolver, invocationIndex );
+/*package-private*/abstract class InvocationOperationResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.Operation<?, ?>> {
+	private Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver;
+	private int invocationIndex;
+	public InvocationOperationResolver(Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int invocationIndex) {
+		this.methodResolver = methodResolver;
+		this.invocationIndex = invocationIndex;
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty(edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation);
+	protected abstract edu.cmu.cs.dennisc.croquet.Operation<?, ?> getOperation(org.alice.ide.codeeditor.CodeEditor codeEditor, edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation);
 	@Override
-	protected final edu.cmu.cs.dennisc.croquet.Operation< ?, ? > getOperation( org.alice.ide.codeeditor.CodeEditor codeEditor, edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
-		return codeEditor.getOperation(this.getExpressionProperty(methodInvocation));
+	protected final edu.cmu.cs.dennisc.croquet.Operation<?, ?> getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.methodResolver.getResolved();
+		if (method != null) {
+			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getValue();
+			edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = IdeTutorial.getMethodInvocationAt(code, method, this.invocationIndex);
+			if (methodInvocation != null) {
+				return getOperation( codeEditor, methodInvocation);
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 }

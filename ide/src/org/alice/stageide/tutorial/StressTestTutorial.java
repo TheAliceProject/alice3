@@ -116,6 +116,13 @@ public class StressTestTutorial {
 					"Select <b>FORWARD</b> and <b>1.0</b> from the menus.",
 					tutorial.createToDoCompletorValidator()
 			);
+			tutorial.addActionStep( 
+					"More",
+					"Click <b>more...</b>",
+					tutorial.createLastInvocationMoreResolver( "move" ),
+					tutorial.createToDoCompletorValidator()
+			);
+					
 		}
 
 		tutorial.addDragAndDropStep( 

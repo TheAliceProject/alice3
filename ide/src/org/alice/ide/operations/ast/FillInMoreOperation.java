@@ -64,7 +64,7 @@ public class FillInMoreOperation extends org.alice.ide.operations.ActionOperatio
 		assert expressionStatement != null;
 		this.expressionStatement = expressionStatement;
 		
-		this.setName( "more" );
+		this.setName( "more..." );
 		this.updateToolTipText();
 	}
 	

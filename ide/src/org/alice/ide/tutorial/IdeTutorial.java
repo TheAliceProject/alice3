@@ -147,7 +147,6 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 				@Override
 				protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( method.getName(), methodName );
 					return methodName.equals( method.getName() );
 				}
 			};
@@ -432,6 +431,16 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	}
 	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createLastInvocationInstanceResolver(String methodName ) {
 		return this.createInvocationInstanceResolver( methodName, Short.MAX_VALUE );
+	}
+
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createInvocationMoreResolver( String methodName, int invocationIndex ) {
+		return new InvocationMoreResolver( this.createCurrentCodeMethodResolver(methodName), invocationIndex );
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createFirstInvocationMoreResolver( String methodName ) {
+		return this.createInvocationMoreResolver( methodName, 0 );
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createLastInvocationMoreResolver(String methodName ) {
+		return this.createInvocationMoreResolver( methodName, Short.MAX_VALUE );
 	}
 	
 	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractField > createFieldResolver( final String name ) {

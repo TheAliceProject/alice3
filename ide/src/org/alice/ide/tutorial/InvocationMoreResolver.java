@@ -47,13 +47,12 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/abstract class InvocationExpressionPropertyResolver extends InvocationOperationResolver {
-	public InvocationExpressionPropertyResolver(Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int invocationIndex) {
+/*package-private*/ class InvocationMoreResolver extends InvocationOperationResolver {
+	public InvocationMoreResolver(Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int invocationIndex) {
 		super( methodResolver, invocationIndex );
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty(edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation);
 	@Override
 	protected final edu.cmu.cs.dennisc.croquet.Operation< ?, ? > getOperation( org.alice.ide.codeeditor.CodeEditor codeEditor, edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
-		return codeEditor.getOperation(this.getExpressionProperty(methodInvocation));
+		return codeEditor.getMoreOperation( methodInvocation );
 	}
 }

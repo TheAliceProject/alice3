@@ -84,8 +84,13 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 		super.handleRemovedFrom( parent );
 	}
 
+	private edu.cmu.cs.dennisc.croquet.Operation< ?, ? > moreOperation = null;
+	public edu.cmu.cs.dennisc.croquet.Operation< ?, ? > getMoreOperation() {
+		return this.moreOperation;
+	}
 	private void refresh() {
 		this.forgetAndRemoveAllComponents();
+		this.moreOperation = null;
 		final edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)getStatement();
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {
@@ -109,8 +114,8 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 					if( nextLonger != null ) {
 						final edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)nextLonger;
 						this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
-						org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation = org.alice.ide.operations.ast.FillInMoreOperation.getInstance( expressionStatement );
-						edu.cmu.cs.dennisc.croquet.AbstractButton< ?, ? > button = fillInMoreOperation.register( new org.alice.ide.croquet.PopupMenuButton( fillInMoreOperation ) );
+						this.moreOperation = org.alice.ide.operations.ast.FillInMoreOperation.getInstance( expressionStatement );
+						edu.cmu.cs.dennisc.croquet.AbstractButton< ?, ? > button = this.moreOperation.register( new org.alice.ide.croquet.PopupMenuButton( this.moreOperation ) );
 						this.addComponent( button );
 					}
 				}

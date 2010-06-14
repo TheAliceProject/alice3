@@ -715,30 +715,6 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 	public final void dragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 	}
 
-//	public enum Location {
-//		AT_FRONT( false ),
-//		AT_END( false ),
-//		BEFORE( true ),
-//		AFTER( true );
-//		private boolean isLookingForParent;
-//		private Location( boolean isLookingForParent ) {
-//			this.isLookingForParent = isLookingForParent;
-//		}
-//		public boolean isTheOne( StatementListPropertyPane statementListPropertyPane, edu.cmu.cs.dennisc.alice.ast.BlockStatement statement ) {
-//			edu.cmu.cs.dennisc.alice.ast.StatementListProperty property = statementListPropertyPane.getProperty();
-//			if( this.isLookingForParent ) {
-//				if( property.contains( statement ) ) {
-//					return true;
-//				}
-//			} else {
-//				if( property.getOwner() == statement ) {
-//					return true;
-//				}
-//			}
-//			return false;
-//		}
-//	}
-	
 	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShapeAtIndexOf( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, final int index ) {
 		if( statementListProperty != null ) {
 			//choose any non-ancestor
@@ -800,40 +776,6 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 					};
 				}
 			}
-//			for( final StatementListPropertyPane statementListPropertyPane : statementListPropertyPanes ) {
-//				if( statementListPropertyPane.getProperty() == statementListProperty ) {
-//					return new edu.cmu.cs.dennisc.croquet.TrackableShape() {;
-//						private java.awt.Rectangle getSubBounds() {
-//							
-//							rv = statementListPropertyPane.updateYBounds( rv, index );
-//							if( statementListPropertyPaneInfos != null ) {
-//								for( StatementListPropertyPaneInfo statementListPropertyPaneInfo : statementListPropertyPaneInfos ) {
-//									if( statementListPropertyPaneInfo.getStatementListPropertyPane() == statementListPropertyPane ) {
-//										rv = rv.intersection( statementListPropertyPaneInfo.getBounds() );
-//										break;
-//									}
-//								}
-//							}
-//							return rv;
-//						}
-//						public java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
-//							java.awt.Rectangle bounds = statementListPropertyPane.getBounds( asSeenBy );
-//							return this.update( bounds );
-//						}
-//						public java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
-//							java.awt.Rectangle bounds = statementListPropertyPane.getVisibleRectangle( asSeenBy );
-//							return this.update( bounds );
-//						}
-//						public boolean isInView() {
-//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getTrackableShapeAtIndexOf isInView" );
-//							return true;
-//						}
-//						public edu.cmu.cs.dennisc.croquet.ScrollPane getScrollPaneAncestor() {
-//							return statementListPropertyPane.getScrollPaneAncestor();
-//						}
-//					};
-//				}
-//			}
 		}
 		return null;
 	}
@@ -843,6 +785,17 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 		for( final ExpressionPropertyDropDownPane expressionPropertyDropDownPane : expressionPropertyDropDownPanes ) {
 			if( expressionPropertyDropDownPane.getExpressionProperty() == expressionProperty ) {
 				return expressionPropertyDropDownPane.getModel();
+			}
+		}
+		return null;
+	}
+	public edu.cmu.cs.dennisc.croquet.Operation<?,?> getMoreOperation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+		if( methodInvocation != null ) {
+			java.util.List< org.alice.ide.common.ExpressionStatementPane > statementPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.ExpressionStatementPane.class );
+			for( org.alice.ide.common.ExpressionStatementPane statementPane : statementPanes ) {
+				if( statementPane.getStatement() == methodInvocation.getParent() ) {
+					return statementPane.getMoreOperation();
+				}
 			}
 		}
 		return null;
