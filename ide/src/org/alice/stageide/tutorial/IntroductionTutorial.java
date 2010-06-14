@@ -47,7 +47,7 @@ package org.alice.stageide.tutorial;
  */
 public class IntroductionTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
-		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 7 );
+		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 16 );
 		final org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = ide.getSceneField();

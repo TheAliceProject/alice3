@@ -277,5 +277,54 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 			return this.getComponentCount();
 		}
 	}
+//	public java.awt.Rectangle updateYBounds( java.awt.Rectangle rv, int index ) {
+//		if( isFigurativelyEmpty() ) {
+//			//pass
+//		} else {
+//			int yMinimum;
+//			int yMaximum;
+//			final int N = this.getComponentCount();
+//			if( index == Short.MAX_VALUE ) {
+//				index = N;
+//			}
+//			if( index == 0 ) {
+//				yMinimum = rv.y;
+//			} else {
+//				yMinimum = rv.y + this.getCenterYOfComponentAt( index-1 );
+//			}
+//			if( index == N ) {
+//				yMaximum = rv.y + rv.height;
+//			} else {
+//				yMaximum = rv.y + this.getCenterYOfComponentAt( index );
+//			}
+//			rv.y = yMinimum;
+//			rv.height = yMaximum-yMinimum-1;
+//		}
+//		return rv;
+//	}
+	public Integer[] calculateYBounds( int index ) {
+		final int N;
+		if( isFigurativelyEmpty() ) {
+			N = 0;
+		} else {
+			N = this.getComponentCount();
+		}
+		if( index == Short.MAX_VALUE ) {
+			index = N;
+		}
+		Integer yMinimum;
+		Integer yMaximum;
+		if( index == 0 ) {
+			yMinimum = null;
+		} else {
+			yMinimum = this.getCenterYOfComponentAt( index-1 );
+		}
+		if( index == N ) {
+			yMaximum = null;
+		} else {
+			yMaximum = this.getCenterYOfComponentAt( index );
+		}
+		return new Integer[] { yMinimum, yMaximum };
+	}
 
 }

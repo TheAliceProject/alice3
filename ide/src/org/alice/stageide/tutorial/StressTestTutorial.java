@@ -72,6 +72,103 @@ public class StressTestTutorial {
 		);
 
 //		tutorial.addDragAndDropStep( 
+//				"Drag Count Loop",
+//				"Drag <b>Count Loop</b>.",
+//				tutorial.createCountLoopTemplateResolver(),
+//				"Drop <b>here</b>.",
+//				tutorial.createBeginingOfCurrentMethodBodyStatementListResolver(),
+//				"Select <b>2</b>.",
+//				tutorial.createToDoCompletorValidator()
+//		);
+		tutorial.addDragAndDropStep( 
+				"Drag Do Together",
+				"Drag <b>Do Together</b>.",
+				tutorial.createDoTogetherTemplateResolver(),
+				"Drop <b>here</b>.",
+				tutorial.createEndOfStatementListResolver( 
+						tutorial.createFirstElseStatementListPropertyResolver() 
+				),
+				tutorial.createToDoCompletorValidator()
+		);
+//		tutorial.addDragAndDropStep( 
+//				"Drag Do In Order",
+//				"Drag <b>Do In Order</b>.",
+//				tutorial.createDoInOrderTemplateResolver(),
+//				"Drop <b>here</b>.",
+//				tutorial.createEndOfStatementListResolver( 
+//						tutorial.createFirstIfStatementListPropertyResolver() 
+//				),
+//				tutorial.createToDoCompletorValidator()
+//		);
+		for( int i=0; i<10; i++ ) {
+			tutorial.addDragAndDropStep( 
+					"Drag Move Procedure",
+					"Drag <b>move</b> procedure.",
+					tutorial.createProcedureInvocationTemplateResolver( "move" ),
+					"Drop <b>here</b>.",
+//					tutorial.createStatementListResolver(
+//							tutorial.createFirstStatementListPropertyResolver( edu.cmu.cs.dennisc.alice.ast.CountLoop.class ),
+//							i/2
+//					),
+					tutorial.createEndOfStatementListResolver(
+							tutorial.createFirstStatementListPropertyResolver( edu.cmu.cs.dennisc.alice.ast.DoTogether.class )
+					),
+					"Select <b>FORWARD</b> and <b>1.0</b> from the menus.",
+					tutorial.createToDoCompletorValidator()
+			);
+		}
+
+		tutorial.addDragAndDropStep( 
+				"Drag If/Else",
+				"Drag <b>If/Else</b>.",
+				tutorial.createIfElseTemplateResolver(),
+				"Drop <b>here</b>.",
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+				"Select <b>true</b>.",
+				tutorial.createToDoCompletorValidator()
+		);
+		tutorial.addDragAndDropStep( 
+				"Drag Do In Order",
+				"Drag <b>Do In Order</b>.",
+				tutorial.createDoInOrderTemplateResolver(),
+				"Drop <b>here</b>.",
+				tutorial.createEndOfStatementListResolver( 
+						tutorial.createFirstIfStatementListPropertyResolver() 
+				),
+				tutorial.createToDoCompletorValidator()
+		);
+		tutorial.addDragAndDropStep( 
+				"Drag Do Together",
+				"Drag <b>Do Together</b>.",
+				tutorial.createDoTogetherTemplateResolver(),
+				"Drop <b>here</b>.",
+				tutorial.createEndOfStatementListResolver( 
+						tutorial.createFirstElseStatementListPropertyResolver() 
+				),
+				tutorial.createToDoCompletorValidator()
+		);
+
+
+		tutorial.addDragAndDropStep( 
+				"Drag Move Procedure",
+				"Drag <b>move</b> procedure.",
+				tutorial.createProcedureInvocationTemplateResolver( "move" ),
+				"Drop <b>here</b>.",
+				tutorial.createEndOfStatementListResolver(
+						tutorial.createFirstIfStatementListPropertyResolver() 
+				),
+				"Select <b>FORWARD</b> and <b>1.0</b> from the menus.",
+				tutorial.createToDoCompletorValidator()
+		);
+
+		tutorial.addSpotlightStep( 
+				"Note Move",
+				"Note that <b>move</b> has been added to your run method.",
+				tutorial.createFirstInvocationResolver( "move" )
+		);
+
+
+		//		tutorial.addDragAndDropStep( 
 //				"Drag Turn Procedure",
 //				"Drag <b>turn</b> procedure.",
 //				tutorial.createProcedureInvocationTemplateResolver( "turn" ),
@@ -213,15 +310,7 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 		
-		tutorial.addDragAndDropStep( 
-				"Drag If/Else",
-				"Drag <b>If/Else</b>.",
-				tutorial.createIfElseTemplateResolver(),
-				"Drop <b>here</b>.",
-				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
-				"Select <b>true</b>.",
-				tutorial.createToDoCompletorValidator()
-		);
+
 		tutorial.addActionStep(
 				"Change If Condition", 
 				"change if condition to <b>false</b>",
@@ -303,26 +392,6 @@ public class StressTestTutorial {
 		);
 
 
-		tutorial.addDragAndDropStep( 
-				"Drag Do In Order",
-				"Drag <b>Do In Order</b>.",
-				tutorial.createDoInOrderTemplateResolver(),
-				"Drop <b>here</b>.",
-				tutorial.createEndOfStatementListResolver( 
-						tutorial.createFirstIfStatementListPropertyResolver() 
-				),
-				tutorial.createToDoCompletorValidator()
-		);
-		tutorial.addDragAndDropStep( 
-				"Drag Do Together",
-				"Drag <b>Do Together</b>.",
-				tutorial.createDoTogetherTemplateResolver(),
-				"Drop <b>here</b>.",
-				tutorial.createEndOfStatementListResolver( 
-						tutorial.createFirstElseStatementListPropertyResolver() 
-				),
-				tutorial.createToDoCompletorValidator()
-		);
 		tutorial.addSelectTabStep( 
 				"Procedures Tab", 
 				"Select the <b>Procedures</b> tab.", 
