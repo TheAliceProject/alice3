@@ -248,7 +248,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		super.refresh();
 		int bottom;
 		if( this.getComponentCount() == 0 ) {
-			this.addComponent( new org.alice.ide.codeeditor.EmptyStatementListAffordance() );
+			this.addComponent( new org.alice.ide.codeeditor.EmptyStatementListAffordance( this.getProperty() ) );
 			bottom = 0;
 		} else {
 			bottom = 4;
