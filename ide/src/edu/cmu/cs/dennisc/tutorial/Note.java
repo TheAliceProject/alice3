@@ -83,7 +83,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	protected void addFeature( Feature feature ) {
 		this.features.add( feature );
 	}
-	public Iterable< Feature > getFeatures() {
+	public java.util.List< Feature > getFeatures() {
 		return this.features;
 	}
 	/*package-private*/ java.awt.Point calculateLocation( edu.cmu.cs.dennisc.croquet.Container< ? > container ) {

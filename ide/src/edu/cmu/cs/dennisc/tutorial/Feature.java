@@ -46,26 +46,25 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/ abstract class Feature {
-	private static final int ARROW_HEAD_WIDTH = 19;
+	private static final int ARROW_HEAD_LENGTH = 19;
+	private static final double ARROW_HEAD_LENGTH_SQUARED = ARROW_HEAD_LENGTH*ARROW_HEAD_LENGTH;
 	private static final int ARROW_HEAD_HALF_HEIGHT = 6;
 	public enum ConnectionPreference {
 		NORTH_SOUTH,
 		EAST_WEST
 	}
 	public enum Connection {
-		NORTH( javax.swing.SwingConstants.CENTER, javax.swing.SwingConstants.LEADING, false, Math.PI/2 ),
-		SOUTH( javax.swing.SwingConstants.CENTER, javax.swing.SwingConstants.TRAILING, false, -Math.PI/2 ),
-		EAST( javax.swing.SwingConstants.TRAILING, javax.swing.SwingConstants.CENTER, true, Math.PI ),
-		WEST( javax.swing.SwingConstants.LEADING, javax.swing.SwingConstants.CENTER, true, 0 );
+		NORTH( javax.swing.SwingConstants.CENTER, javax.swing.SwingConstants.LEADING, false ),
+		SOUTH( javax.swing.SwingConstants.CENTER, javax.swing.SwingConstants.TRAILING, false ),
+		EAST( javax.swing.SwingConstants.TRAILING, javax.swing.SwingConstants.CENTER, true ),
+		WEST( javax.swing.SwingConstants.LEADING, javax.swing.SwingConstants.CENTER, true );
 		int xConstraint;
 		int yConstraint;
 		boolean isCurveDesired;
-		double theta;
-		private Connection(int xConstraint, int yConstraint, boolean isCurveDesired, double theta ) {
+		private Connection(int xConstraint, int yConstraint, boolean isCurveDesired ) {
 			this.xConstraint = xConstraint;
 			this.yConstraint = yConstraint;
 			this.isCurveDesired = isCurveDesired;
-			this.theta = theta;
 		}
 		public int getXConstraint() {
 			return this.xConstraint;
@@ -75,22 +74,6 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 		public boolean isCurveDesired() {
 			return this.isCurveDesired;
-		}
-		
-		public void fillArrowHead( java.awt.Graphics2D g2, float x, float y ) {
-			java.awt.geom.AffineTransform m = g2.getTransform();
-			try {
-				g2.translate( x, y );
-				g2.rotate( theta );
-				java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-				path.moveTo( 0, 0 );
-				path.lineTo( -ARROW_HEAD_WIDTH, ARROW_HEAD_HALF_HEIGHT );
-				path.lineTo( -ARROW_HEAD_WIDTH, -ARROW_HEAD_HALF_HEIGHT );
-				path.closePath();
-				g2.fill( path );
-			} finally {
-				g2.setTransform( m );
-			}
 		}
 	}
 	private static final java.awt.Stroke ARROW_STROKE = new java.awt.BasicStroke( 3.0f ); 
@@ -322,6 +305,8 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	protected abstract void paint( java.awt.Graphics2D g2, java.awt.Shape shape );
 	private static void drawPath( java.awt.Graphics2D g2, float xFrom, float yFrom, float xTo, float yTo, boolean isCurveDesired ) {
+		edu.cmu.cs.dennisc.math.polynomial.Polynomial xPolynomial;
+		edu.cmu.cs.dennisc.math.polynomial.Polynomial yPolynomial;
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
 		path.moveTo( xFrom, yFrom );
 		if( isCurveDesired ) {
@@ -336,13 +321,75 @@ package edu.cmu.cs.dennisc.tutorial;
 			float xB = xFrom + xVector*B;
 			float yB = yFrom + yVector*B;
 			
-			path.curveTo( xB, yA, xA, yB, xTo, yTo );
+			
+			float xC0 = xB;
+			float yC0 = yA;
+			float xC1 = xA;
+			float yC1 = yB;
+			
+			
+			path.curveTo( xC0, yC0, xC1, yC1, xTo, yTo );
 
+			xPolynomial = new edu.cmu.cs.dennisc.math.polynomial.BezierCubic( xFrom, xC0, xC1, xTo );
+			yPolynomial = new edu.cmu.cs.dennisc.math.polynomial.BezierCubic( yFrom, yC0, yC1, yTo );
+			
+			
 			//g2.drawLine( (int)xB, (int)yA, (int)xA, (int)yB );
 		} else {
-			path.quadTo(xTo, yFrom, xTo, yTo);
+			float xC = xTo;
+			float yC = yFrom;
+			path.quadTo(xC, yC, xTo, yTo);
+			xPolynomial = new edu.cmu.cs.dennisc.math.polynomial.BezierQuadratic( xFrom, xC, xTo );
+			yPolynomial = new edu.cmu.cs.dennisc.math.polynomial.BezierQuadratic( yFrom, yC, yTo );
+			
 		}
 		g2.draw( path );
+
+//		java.awt.Paint prevPaint = g2.getPaint();
+//		g2.setPaint( java.awt.Color.RED );
+//		for( double t=0.0; t<=1.0; t+=0.05 ) {
+//			double x = xPolynomial.evaluate( t );
+//			double y = yPolynomial.evaluate( t );
+//			g2.fillRect( ((int)x)-4, ((int)y)-4, 8, 8 );
+//		}
+//		g2.setPaint( prevPaint );
+
+		final double tDelta = 0.01;
+		double theta = Double.NaN;
+		double t = 0.8;
+		while( t < 1.0 ) {
+			
+			double xApproaching = xPolynomial.evaluate( t );
+			double yApproaching = yPolynomial.evaluate( t );
+
+			double xDelta = xTo-xApproaching;
+			double yDelta = yTo-yApproaching;
+
+			if( xDelta*xDelta + yDelta*yDelta < ARROW_HEAD_LENGTH_SQUARED ) {
+				theta = Math.atan2( yDelta, xDelta );
+				break;
+			}
+			
+			t += tDelta;
+		}
+			
+		if( Double.isNaN( theta ) ) {
+			//pass
+		} else {
+			java.awt.geom.AffineTransform m = g2.getTransform();
+			try {
+				g2.translate( xTo, yTo );
+				g2.rotate( theta );
+				java.awt.geom.GeneralPath arrowHeadPath = new java.awt.geom.GeneralPath();
+				arrowHeadPath.moveTo( 0, 0 );
+				arrowHeadPath.lineTo( -ARROW_HEAD_LENGTH, ARROW_HEAD_HALF_HEIGHT );
+				arrowHeadPath.lineTo( -ARROW_HEAD_LENGTH, -ARROW_HEAD_HALF_HEIGHT );
+				arrowHeadPath.closePath();
+				g2.fill( arrowHeadPath );
+			} finally {
+				g2.setTransform( m );
+			}
+		}
 	}
 	public final void paint( java.awt.Graphics2D g2, edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy, edu.cmu.cs.dennisc.croquet.JComponent<?> note ) {
 		java.awt.Shape shape = this.getShape( asSeenBy, this.getPaintInsets() );
@@ -367,7 +414,6 @@ package edu.cmu.cs.dennisc.tutorial;
 				java.awt.Point ptNote = edu.cmu.cs.dennisc.java.awt.RectangleUtilties.getPoint( noteBounds, xContraint, javax.swing.SwingConstants.CENTER );
 				g2.setStroke( ARROW_STROKE );
 				drawPath( g2, ptNote.x, ptNote.y, ptComponent.x, ptComponent.y, actualConnection.isCurveDesired() );
-				actualConnection.fillArrowHead(g2, ptComponent.x, ptComponent.y);
 			}
 			
 			g2.setStroke( prevStroke );

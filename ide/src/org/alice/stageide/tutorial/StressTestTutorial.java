@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
  */
 public class StressTestTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
-		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 1 );
+		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 4 );
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = ide.getSceneField();
 //		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = tutorial.getFieldDeclaredOnSceneType( "camera" );
@@ -90,6 +90,23 @@ public class StressTestTutorial {
 				),
 				tutorial.createToDoCompletorValidator()
 		);
+		tutorial.addDragAndDropStep( 
+				"Drag Move Procedure",
+				"Drag <b>move</b> procedure.",
+				tutorial.createProcedureInvocationTemplateResolver( "move" ),
+				"Drop <b>here</b>.",
+				tutorial.createEndOfStatementListResolver(
+						tutorial.createFirstStatementListPropertyResolver( edu.cmu.cs.dennisc.alice.ast.DoTogether.class )
+				),
+				"Select <b>FORWARD</b> and <b>1.0</b> from the menus.",
+				tutorial.createToDoCompletorValidator()
+		);
+		tutorial.addActionStep( 
+				"More",
+				"Click <b>more...</b>",
+				tutorial.createLastInvocationMoreResolver( "move" ),
+				tutorial.createToDoCompletorValidator()
+		);
 //		tutorial.addDragAndDropStep( 
 //				"Drag Do In Order",
 //				"Drag <b>Do In Order</b>.",
@@ -100,29 +117,50 @@ public class StressTestTutorial {
 //				),
 //				tutorial.createToDoCompletorValidator()
 //		);
+		tutorial.addMessageStep( 
+				"Title", 
+				"Note" 
+		);
+
+//		tutorial.addDragAndDropStep( 
+//				"Drag If/Else",
+//				"Drag <b>If/Else</b>.",
+//				tutorial.createIfElseTemplateResolver(),
+//				"Drop <b>here</b>.",
+//				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+//				"Select <b>true</b>.",
+//				tutorial.createToDoCompletorValidator()
+//		);
 		for( int i=0; i<10; i++ ) {
 			tutorial.addDragAndDropStep( 
-					"Drag Move Procedure",
-					"Drag <b>move</b> procedure.",
-					tutorial.createProcedureInvocationTemplateResolver( "move" ),
+					"Drag Count Loop",
+					"Drag <b>Count Loop</b>.",
+					tutorial.createCountLoopTemplateResolver(),
 					"Drop <b>here</b>.",
-//					tutorial.createStatementListResolver(
-//							tutorial.createFirstStatementListPropertyResolver( edu.cmu.cs.dennisc.alice.ast.CountLoop.class ),
-//							i/2
+					tutorial.createBeginingOfCurrentMethodBodyStatementListResolver(),
+					"Select <b>2</b>.",
+					tutorial.createToDoCompletorValidator()
+			);
+//			tutorial.addDragAndDropStep( 
+//					"Drag If/Else",
+//					"Drag <b>If/Else</b>.",
+//					tutorial.createIfElseTemplateResolver(),
+//					"Drop <b>here</b>.",
+//					tutorial.createEndOfStatementListResolver( 
+//							tutorial.createFirstIfStatementListPropertyResolver() 
 //					),
-					tutorial.createEndOfStatementListResolver(
-							tutorial.createFirstStatementListPropertyResolver( edu.cmu.cs.dennisc.alice.ast.DoTogether.class )
-					),
-					"Select <b>FORWARD</b> and <b>1.0</b> from the menus.",
-					tutorial.createToDoCompletorValidator()
-			);
-			tutorial.addActionStep( 
-					"More",
-					"Click <b>more...</b>",
-					tutorial.createLastInvocationMoreResolver( "move" ),
-					tutorial.createToDoCompletorValidator()
-			);
-					
+//					"Select <b>true</b>.",
+//					tutorial.createToDoCompletorValidator()
+//			);
+//			tutorial.addDragAndDropStep( 
+//					"Drag Move Procedure",
+//					"Drag <b>move</b> procedure.",
+//					tutorial.createProcedureInvocationTemplateResolver( "move" ),
+//					"Drop <b>here</b>.",
+//					tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+//					"Select <b>FORWARD</b> and <b>1.0</b> from the menus.",
+//					tutorial.createToDoCompletorValidator()
+//			);
 		}
 
 		tutorial.addDragAndDropStep( 

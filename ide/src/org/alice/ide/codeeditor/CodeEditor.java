@@ -119,7 +119,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
-		final boolean IS_FEEDBACK_DESIRED = false;
+		final boolean IS_FEEDBACK_DESIRED = true;
 		javax.swing.JPanel rv;
 		if( IS_FEEDBACK_DESIRED ) {
 			rv = new javax.swing.JPanel() {
@@ -719,16 +719,24 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 		if( statementListProperty != null ) {
 			//choose any non-ancestor
 			
-			edu.cmu.cs.dennisc.croquet.Container< ? > arbitrarilyChosenAsSeenBy = org.alice.ide.IDE.getSingleton().getSceneEditor();
-			StatementListPropertyPaneInfo[] statementListPropertyPaneInfos = this.createStatementListPropertyPaneInfos( arbitrarilyChosenAsSeenBy );
+			edu.cmu.cs.dennisc.croquet.Container< ? > arbitrarilyChosenSource = org.alice.ide.IDE.getSingleton().getSceneEditor();
+			StatementListPropertyPaneInfo[] statementListPropertyPaneInfos = this.createStatementListPropertyPaneInfos( arbitrarilyChosenSource );
+			java.awt.geom.Area area = new java.awt.geom.Area();
+			for( final StatementListPropertyPaneInfo statementListPropertyPaneInfo : statementListPropertyPaneInfos ) {
+				final StatementListPropertyPane statementListPropertyPane = statementListPropertyPaneInfo.getStatementListPropertyPane();
+				if( statementListPropertyPane.getProperty() == statementListProperty ) {
+					//pass
+				} else {
+					java.awt.Rectangle rect = statementListPropertyPaneInfo.getBounds();
+					area.add( new java.awt.geom.Area( rect ) );
+				}
+			}
 			for( final StatementListPropertyPaneInfo statementListPropertyPaneInfo : statementListPropertyPaneInfos ) {
 				final StatementListPropertyPane statementListPropertyPane = statementListPropertyPaneInfo.getStatementListPropertyPane();
 				if( statementListPropertyPane.getProperty() == statementListProperty ) {
 					final Integer[] yBounds = statementListPropertyPane.calculateYBounds( index );
 					return new edu.cmu.cs.dennisc.croquet.TrackableShape() {
 						private java.awt.Rectangle getRectangle( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
-							java.awt.Point ptA = statementListPropertyPane.getLocationOnScreen();
-							java.awt.Point ptB = asSeenBy.getLocationOnScreen();
 
 							java.awt.Rectangle bounds = statementListPropertyPaneInfo.getBounds();
 							
@@ -746,16 +754,9 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 								yMaximum = bounds.y + bounds.height - 1;
 							}
 							
-							java.awt.Rectangle boundsAtIndex = new java.awt.Rectangle( bounds );
-							boundsAtIndex.y = yMinimum;
-							boundsAtIndex.height = yMaximum - yMinimum + 1;
-							
-							int xDelta = ptA.x-ptB.x;
-							int yDelta = ptA.y-ptB.y;
-							boundsAtIndex.x += xDelta;
-							boundsAtIndex.y += yDelta;
-							//boundsAtIndex = edu.cmu.cs.dennisc.java.awt.RectangleUtilties.inset( boundsAtIndex, insets );
-							return boundsAtIndex;
+							java.awt.Rectangle boundsAtIndex = new java.awt.Rectangle( bounds.x, yMinimum, bounds.width, yMaximum - yMinimum + 1 );
+							java.awt.Rectangle rv = statementListPropertyPane.convertRectangle( boundsAtIndex, asSeenBy );
+							return rv;
 						}
 						public java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
 							return getRectangle( asSeenBy, insets );
