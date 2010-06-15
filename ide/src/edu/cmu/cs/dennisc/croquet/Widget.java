@@ -53,9 +53,15 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,Model> {
 	protected abstract void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height );
 
 	private boolean isBorderInitialized = false;
+	private static boolean isWarningAlreadyPrinted = false;
 	public Widget() {
 		super( null );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: Widget", this.getClass() );
+		if( isWarningAlreadyPrinted ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: Widget", this.getClass() );
+			isWarningAlreadyPrinted = true;
+		}
 	}
 	
 	private void updateBorderIfNecessary() {

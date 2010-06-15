@@ -100,7 +100,7 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 //		super.handleRemovedFrom(parent);
 //	}
 	protected boolean isFieldInScope() {
-		return getIDE().isSelectedFieldInScope();
+		return getIDE().isSelectedAccessibleInScope();
 	}
 
 	@Override

@@ -107,6 +107,8 @@ public abstract class Component<J extends java.awt.Component> implements Trackab
 			return null;
 		}
 	}
+	
+	private static boolean isWarningAlreadyPrinted = false;
 	private java.awt.event.HierarchyListener hierarchyListener = new java.awt.event.HierarchyListener() {
 		public void hierarchyChanged(java.awt.event.HierarchyEvent e) {
 			long flags = e.getChangeFlags();
@@ -121,12 +123,17 @@ public abstract class Component<J extends java.awt.Component> implements Trackab
 					if( awtParent != Component.this.awtParent ) {
 						Component.this.handleParentChange( awtParent );
 					} else {
-						//Thread.dumpStack();
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "investigate: hierarchyChanged seems to not be actually changing the parent" );
-//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "    flags:", flags );
-//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
-//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtChanged:", awtChanged.getClass().getName(), awtChanged );
-//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtParent:", awtParent.hashCode(), awtParent.getClass().getName(), awtParent.getLayout() );
+						if( isWarningAlreadyPrinted ) {
+							//pass
+						} else {
+							//Thread.dumpStack();
+							edu.cmu.cs.dennisc.print.PrintUtilities.println( "investigate: hierarchyChanged seems to not be actually changing the parent" );
+//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "    flags:", flags );
+//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
+//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtChanged:", awtChanged.getClass().getName(), awtChanged );
+//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtParent:", awtParent.hashCode(), awtParent.getClass().getName(), awtParent.getLayout() );
+							isWarningAlreadyPrinted = true;
+						}
 					}
 				}
 			}

@@ -246,11 +246,16 @@ public abstract class ListSelectionState<E> extends Model< ListSelectionState<E>
 		}
 
 		public Object getElementAt(int index) {
-//			if( index >= 0 ) {
-				return this.items.get( index );
-//			} else {
-//				return null;
-//			}
+			if( index >= 0 ) {
+				if( index < this.items.size() ) {
+					return this.items.get( index );
+				} else {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getElementAt out of range" );
+					return null;
+				}
+			} else {
+				return null;
+			}
 		}
 
 		public int getSize() {
@@ -265,7 +270,7 @@ public abstract class ListSelectionState<E> extends Model< ListSelectionState<E>
 				this.items.add( item );
 			}
 			this.fireContentsChanged(this, 0, this.getSize() - 1);
-			ListSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, false);
+			ListSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, true);
 		}
 
 		private void setListData(int selectedIndex, java.util.Collection<E> items) {
@@ -275,7 +280,7 @@ public abstract class ListSelectionState<E> extends Model< ListSelectionState<E>
 				this.items.add( item );
 			}
 			this.fireContentsChanged(this, 0, this.getSize() - 1);
-			ListSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, false);
+			ListSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, true);
 		}
 		
 		private void addItem( E item ) {

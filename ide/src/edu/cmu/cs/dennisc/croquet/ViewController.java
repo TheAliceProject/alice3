@@ -69,6 +69,8 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 	}
 	public final void setPopupMenuOperation( AbstractPopupMenuOperation popupMenuOperation ) {
 		if( this.getAwtComponent().getParent() == null ) {
+			//pass
+		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: setPopupMenuOperation" );
 		}
 		this.popupMenuOperation = popupMenuOperation;

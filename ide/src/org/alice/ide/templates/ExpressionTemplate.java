@@ -91,7 +91,7 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 	}
 	
 	protected boolean isFieldInScope() {
-		return getIDE().isSelectedFieldInScope();
+		return getIDE().isSelectedAccessibleInScope();
 	}
 	
 	@Override
