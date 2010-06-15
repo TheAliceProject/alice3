@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
  */
 public class StressTestTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
-		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 4 );
+		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 0 );
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = ide.getSceneField();
 //		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = tutorial.getFieldDeclaredOnSceneType( "camera" );
@@ -69,6 +69,19 @@ public class StressTestTutorial {
 		tutorial.addMessageStep( 
 				"Title", 
 				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
+		);
+
+		tutorial.addDialogOpenStep( 
+				"Declare Procedure", 
+				"Declare a procedure.", 
+				tutorial.createDeclareProcedureOperationResolver()
+		);
+
+		tutorial.addInputDialogCommitStep( 
+				"Name Foo", 
+				"Type <b>foo</b> and press <i>Ok</i>",
+				tutorial.createDeclareProcedureOperationResolver(),
+				tutorial.createToDoCompletorValidator()
 		);
 
 //		tutorial.addDragAndDropStep( 

@@ -81,42 +81,42 @@ package edu.cmu.cs.dennisc.tutorial;
 	protected java.awt.Point calculateLocationOfFirstNote( edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
 		
 		Note noteA = this.getNoteAt( 0 );
-		Note noteB = this.getNoteAt( 1 );
 		Feature featureA = noteA.getFeatures().get( 0 );
-		Feature featureB = noteB.getFeatures().get( 0 );
-		
 		java.awt.Shape shapeA = featureA.getShape(container, null);
-		java.awt.Shape shapeB = featureB.getShape(container, null);
-		
-		java.awt.geom.Rectangle2D boundsA = shapeA.getBounds2D();
-		java.awt.geom.Rectangle2D boundsB = shapeB.getBounds2D();
-		
-		//java.awt.geom.Line2D vector = new java.awt.geom.Line2D.Double( boundsA.getCenterX(), boundsA.getCenterY(), boundsB.getCenterX(), boundsB.getCenterY() );
-		
-		double xVectorCenter = ( boundsA.getCenterX() + boundsB.getCenterX() ) * 0.5;
-		double yVectorCenter = ( boundsA.getCenterY() + boundsB.getCenterY() ) * 0.5;
-		
-		double xCenter;
-		double yCenter;
 
-		int halfWidth = container.getWidth()/2;
-		int halfHeight = container.getHeight()/2;
-		if( xVectorCenter < halfWidth ) {
-			xCenter = xVectorCenter + 200;
+		Note noteB = this.getNoteAt( 1 );
+		Feature featureB = noteB.getFeatures().get( 0 );
+		java.awt.Shape shapeB = featureB.getShape(container, null);
+
+		if( shapeA != null && shapeB != null ) {
+			java.awt.geom.Rectangle2D boundsA = shapeA.getBounds2D();
+			java.awt.geom.Rectangle2D boundsB = shapeB.getBounds2D();
+			
+			//java.awt.geom.Line2D vector = new java.awt.geom.Line2D.Double( boundsA.getCenterX(), boundsA.getCenterY(), boundsB.getCenterX(), boundsB.getCenterY() );
+			
+			double xVectorCenter = ( boundsA.getCenterX() + boundsB.getCenterX() ) * 0.5;
+			double yVectorCenter = ( boundsA.getCenterY() + boundsB.getCenterY() ) * 0.5;
+			
+			double xCenter;
+			double yCenter;
+
+			int halfWidth = container.getWidth()/2;
+			int halfHeight = container.getHeight()/2;
+			if( xVectorCenter < halfWidth ) {
+				xCenter = xVectorCenter + 200;
+			} else {
+				xCenter = xVectorCenter - 200;
+			}
+			if( yVectorCenter < halfHeight ) {
+				yCenter = yVectorCenter + 200;
+			} else {
+				yCenter = yVectorCenter - 200;
+			}
+			
+			return new java.awt.Point( (int)xCenter, (int)yCenter );
 		} else {
-			xCenter = xVectorCenter - 200;
+			return super.calculateLocationOfFirstNote( container );
 		}
-		if( yVectorCenter < halfHeight ) {
-			yCenter = yVectorCenter + 200;
-		} else {
-			yCenter = yVectorCenter - 200;
-		}
-		
-//		java.awt.Point p0 = this.calculateLocationForNoteAt( container, 0 );
-//		java.awt.Point p1 = this.calculateLocationForNoteAt( container, 1 );
-//		int xCenter = ( p0.x + p1.x )/2;
-//		int yCenter = ( p0.y + p1.y )/2;
-		return new java.awt.Point( (int)xCenter, (int)yCenter );
 	}
 	
 	@Override
