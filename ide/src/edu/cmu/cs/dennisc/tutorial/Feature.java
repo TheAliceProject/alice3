@@ -357,21 +357,25 @@ package edu.cmu.cs.dennisc.tutorial;
 		final double tDelta = 0.01;
 		double theta = Double.NaN;
 		double t = 0.9;
-		while( t < 1.0 ) {
+		while( true ) {
 			
 			double xApproaching = xPolynomial.evaluate( t );
 			double yApproaching = yPolynomial.evaluate( t );
 
-			double xDelta = xTo-xApproaching;
-			double yDelta = yTo-yApproaching;
+			double xDelta = xApproaching-xTo;
+			double yDelta = yApproaching-yTo;
 
-			if( xDelta*xDelta + yDelta*yDelta < ARROW_HEAD_LENGTH_SQUARED ) {
+			t += tDelta;
+
+			boolean isCloseEnough = xDelta*xDelta + yDelta*yDelta < ARROW_HEAD_LENGTH_SQUARED;
+			boolean isBreaking = isCloseEnough || t >= 1.0;
+			
+			if( isBreaking  ) {
 				theta = Math.atan2( yDelta, xDelta );
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "t", t );
 				break;
 			}
 			
-			t += tDelta;
 		}
 			
 		if( Double.isNaN( theta ) ) {
@@ -383,8 +387,8 @@ package edu.cmu.cs.dennisc.tutorial;
 				g2.rotate( theta );
 				java.awt.geom.GeneralPath arrowHeadPath = new java.awt.geom.GeneralPath();
 				arrowHeadPath.moveTo( 0, 0 );
-				arrowHeadPath.lineTo( -ARROW_HEAD_LENGTH, ARROW_HEAD_HALF_HEIGHT );
-				arrowHeadPath.lineTo( -ARROW_HEAD_LENGTH, -ARROW_HEAD_HALF_HEIGHT );
+				arrowHeadPath.lineTo( ARROW_HEAD_LENGTH, ARROW_HEAD_HALF_HEIGHT );
+				arrowHeadPath.lineTo( ARROW_HEAD_LENGTH, -ARROW_HEAD_HALF_HEIGHT );
 				arrowHeadPath.closePath();
 				g2.fill( arrowHeadPath );
 			} finally {

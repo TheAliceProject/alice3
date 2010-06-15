@@ -49,16 +49,18 @@ public class EmptyStatementListAffordance extends edu.cmu.cs.dennisc.croquet.JCo
 	private static final java.awt.Stroke SOLID_STROKE = new java.awt.BasicStroke( 4.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
 	private static java.awt.Color HIGHLIGHT_COLOR = new java.awt.Color( 255, 255, 220 );
 	private static java.awt.Color SHADOW_COLOR = new java.awt.Color( 63, 63, 63 );
-	private static java.awt.Color TOP_COLOR = new java.awt.Color( 0, 0, 0, 91 );
-	private static java.awt.Color BOTTOM_COLOR = new java.awt.Color( 127, 127, 127, 91 );
+	private static java.awt.Color TOP_COLOR = new java.awt.Color( 0, 0, 0, 63 );
+	private static java.awt.Color BOTTOM_COLOR = new java.awt.Color( 191, 191, 191, 63 );
 
 	private static final java.awt.Stroke DASHED_STROKE = new java.awt.BasicStroke(1.0f, java.awt.BasicStroke.CAP_BUTT, java.awt.BasicStroke.JOIN_BEVEL, 0, new float[] { 9.0f, 3.0f }, 0);
 
 	private boolean isDrawingDesired = true;
 	
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty;
-	public EmptyStatementListAffordance( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
+	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty alternateListProperty;
+	public EmptyStatementListAffordance( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, edu.cmu.cs.dennisc.alice.ast.StatementListProperty alternateListProperty ) {
 		this.statementListProperty = statementListProperty;
+		this.alternateListProperty = alternateListProperty;
 	}
 	
 	@Override
@@ -91,9 +93,7 @@ public class EmptyStatementListAffordance extends edu.cmu.cs.dennisc.croquet.JCo
 				return rv;
 			}
 			private boolean isMuted() {
-				boolean isIf = ((edu.cmu.cs.dennisc.alice.ast.Node)statementListProperty.getOwner()).getParent() instanceof edu.cmu.cs.dennisc.alice.ast.BooleanExpressionBodyPair;
-				boolean isElse = ((edu.cmu.cs.dennisc.alice.ast.Node)statementListProperty.getOwner()).getParent() instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalStatement;
-				return isIf || isElse;
+				return alternateListProperty != null && alternateListProperty.size() > 0;
 			}
 			@Override
 			protected void paintComponent( java.awt.Graphics g ) {

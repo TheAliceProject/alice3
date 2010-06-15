@@ -53,7 +53,6 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 //	private static final int INTRASTICIAL_PAD = 0;
 	public StatementListPropertyPane( Factory factory, final edu.cmu.cs.dennisc.alice.ast.StatementListProperty property ) {
 		super( factory, javax.swing.BoxLayout.PAGE_AXIS, property );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INTRASTICIAL_PAD, INDENT, 0, 0 ) );
 //		this.addMouseListener( new java.awt.event.MouseListener() {
 //			public void mouseClicked( final java.awt.event.MouseEvent e ) {
 //				final alice.ide.IDE ide = alice.ide.IDE.getSingleton();
@@ -205,12 +204,27 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		}
 		return rv;
 	}
-	
+
+	private edu.cmu.cs.dennisc.alice.ast.Node getOwningBlockStatementOwningNode() {
+		edu.cmu.cs.dennisc.property.PropertyOwner owner = this.getProperty().getOwner();
+		if( owner instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
+			edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)owner;
+			return blockStatement.getParent();
+		} else {
+			return null;
+		}
+	}
+	private static boolean isOwnedByIf( edu.cmu.cs.dennisc.alice.ast.Node owningNode ) {
+		return owningNode instanceof edu.cmu.cs.dennisc.alice.ast.BooleanExpressionBodyPair;
+	}
+	private static boolean isOwnedByElse( edu.cmu.cs.dennisc.alice.ast.Node owningNode ) {
+		return owningNode instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalStatement;
+	}
 	public java.awt.Rectangle getDropBounds( DefaultStatementPane statementAncestor ) {
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement owner = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)this.getProperty().getOwner();
+		edu.cmu.cs.dennisc.alice.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
+		boolean isIf = isOwnedByIf( owningNode );
+		boolean isElse = isOwnedByElse( owningNode );
 		java.awt.Rectangle rv = this.getBounds( statementAncestor );
-		boolean isIf = owner.getParent() instanceof edu.cmu.cs.dennisc.alice.ast.BooleanExpressionBodyPair;
-		boolean isElse = owner.getParent() instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalStatement;
 		
 		if( isIf || isElse ) {
 			final int IF_ELSE_PAD = this.getFont().getSize()/2;
@@ -248,12 +262,33 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		super.refresh();
 		int bottom;
 		if( this.getComponentCount() == 0 ) {
-			this.addComponent( new org.alice.ide.codeeditor.EmptyStatementListAffordance( this.getProperty() ) );
+			edu.cmu.cs.dennisc.alice.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
+			edu.cmu.cs.dennisc.alice.ast.StatementListProperty alternateListProperty;
+			if( owningNode instanceof edu.cmu.cs.dennisc.alice.ast.BooleanExpressionBodyPair ) {
+				edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement = (edu.cmu.cs.dennisc.alice.ast.ConditionalStatement)owningNode.getParent();
+				alternateListProperty = conditionalStatement.elseBody.getValue().statements;
+			} else if ( owningNode instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalStatement ) {
+				edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement = (edu.cmu.cs.dennisc.alice.ast.ConditionalStatement)owningNode;
+				alternateListProperty = conditionalStatement.booleanExpressionBodyPairs.get( 0 ).body.getValue().statements;
+			} else {
+				alternateListProperty = null;
+			}
+
+			this.addComponent( new org.alice.ide.codeeditor.EmptyStatementListAffordance( this.getProperty(), alternateListProperty ) );
 			bottom = 0;
 		} else {
-			bottom = 4;
+			edu.cmu.cs.dennisc.alice.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
+			//boolean isIf = this.isOwnedByIf( owningNode );
+			boolean isElse = this.isOwnedByElse( owningNode );
+			boolean isDoInOrder = owningNode instanceof edu.cmu.cs.dennisc.alice.ast.DoInOrder;
+			boolean isDoTogether = owningNode instanceof edu.cmu.cs.dennisc.alice.ast.DoTogether;
+			if( isElse || isDoInOrder || isDoTogether ) {
+				bottom = 8;
+			} else {
+				bottom = 0;
+			}
 		}
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, bottom, 16 ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INTRASTICIAL_PAD, INDENT, bottom, 16 ) );
 		repaint();
 	}
 	public boolean isFigurativelyEmpty() {

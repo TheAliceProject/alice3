@@ -119,7 +119,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
-		final boolean IS_FEEDBACK_DESIRED = false;
+		final boolean IS_FEEDBACK_DESIRED = true;
 		javax.swing.JPanel rv;
 		if( IS_FEEDBACK_DESIRED ) {
 			rv = new javax.swing.JPanel() {
@@ -134,8 +134,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 								if( CodeEditor.this.currentUnder == statementListPropertyPaneInfo.getStatementListPropertyPane() ) {
 									color = new java.awt.Color( 0, 0, 0, 127 );
 								} else {
-									color = null;
-									//color = new java.awt.Color( 255, 0, 0, 31 );
+									//color = null;
+									color = new java.awt.Color( 255, 0, 0, 31 );
 								}
 								if( color != null ) {
 									java.awt.Rectangle bounds = statementListPropertyPaneInfo.getBounds();
