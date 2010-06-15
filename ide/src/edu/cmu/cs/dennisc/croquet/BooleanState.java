@@ -175,4 +175,8 @@ public /*final*/ class BooleanState extends Model< BooleanState > {
 	public CheckBoxMenuItem createCheckBoxMenuItem() {
 		return register( new CheckBoxMenuItem( this ) );
 	}
+	public ToolPalette createToolPalette( Component<?> component ) {
+		CheckBox checkBox = this.createCheckBox();
+		return new ToolPalette(checkBox, component);
+	}
 }

@@ -112,4 +112,10 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " )" ) );
 		}
 	}
+	
+	@Override
+	protected void refresh() {
+		super.refresh();
+		org.alice.ide.IDE.getSingleton().refreshAccessibles();
+	}
 }
