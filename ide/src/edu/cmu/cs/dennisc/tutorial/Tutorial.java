@@ -53,6 +53,18 @@ public class Tutorial {
 	
 	private static java.awt.Color CONTROL_COLOR = new java.awt.Color(255, 255, 191);
 
+	private static class TutorialBooleanState extends edu.cmu.cs.dennisc.croquet.BooleanState {
+		public TutorialBooleanState(java.util.UUID individualId, boolean initialState, String name ) {
+			super(Tutorial.TUTORIAL_GROUP, individualId, initialState, name );
+		}
+		@Override
+		public edu.cmu.cs.dennisc.croquet.CheckBox createCheckBox() {
+			edu.cmu.cs.dennisc.croquet.CheckBox rv = super.createCheckBox();
+			//rv.setBackgroundColor(CONTROL_COLOR);
+			rv.getAwtComponent().setOpaque( false );
+			return rv;
+		}
+	}
 	private abstract static class TutorialOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 		public TutorialOperation(java.util.UUID individualId, String name) {
 			super(Tutorial.TUTORIAL_GROUP, individualId);
@@ -157,6 +169,9 @@ public class Tutorial {
 	private NextStepOperation nextStepOperation = new NextStepOperation( this.stepsComboBoxModel );
 	private ExitOperation exitOperation = new ExitOperation();
 
+	private static boolean isEventInterceptEnabledByDefault = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyFalse( "edu.cmu.cs.dennisc.tutorial.Stencil.isEventInterceptEnabled" ) == false;
+	private TutorialBooleanState isInterceptingEvents = new TutorialBooleanState( java.util.UUID.fromString( "c3a009d6-976e-439e-8f99-3c8ff8a0324a" ), isEventInterceptEnabledByDefault, "intercept events" );
+
 	class StepsComboBox extends edu.cmu.cs.dennisc.croquet.JComponent<javax.swing.JComboBox> {
 		@Override
 		protected javax.swing.JComboBox createAwtComponent() {
@@ -183,13 +198,26 @@ public class Tutorial {
 			}
 		};
 		public TutorialStencil() {
+			
+			isInterceptingEvents.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
+				public void changing( boolean nextValue ) {
+				}
+				public void changed( boolean nextValue ) {
+					TutorialStencil.this.setEventInterceptEnabled( nextValue );
+				}
+			} );
+			
 			edu.cmu.cs.dennisc.croquet.FlowPanel controlPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.CENTER, 2, 0);
 			controlPanel.addComponent(Tutorial.this.previousStepOperation.createButton());
 			controlPanel.addComponent(comboBox);
 			controlPanel.addComponent(Tutorial.this.nextStepOperation.createButton());
 
 			this.controlsPanel.addComponent(controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
-			this.controlsPanel.addComponent(Tutorial.this.exitOperation.createButton(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.EAST);
+			
+			edu.cmu.cs.dennisc.croquet.FlowPanel eastPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.TRAILING, 2, 0);
+			eastPanel.addComponent( Tutorial.this.isInterceptingEvents.createCheckBox() );
+			eastPanel.addComponent( Tutorial.this.exitOperation.createButton() );
+			this.controlsPanel.addComponent(eastPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.EAST);
 			this.controlsPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 0, 4));
 
 			this.internalAddComponent(this.controlsPanel, java.awt.BorderLayout.NORTH);

@@ -46,7 +46,6 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /* package-private */abstract class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent<javax.swing.JPanel> {
-	private static boolean isEventInterceptEnabled = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyFalse( "edu.cmu.cs.dennisc.tutorial.Stencil.isEventInterceptEnabled" ) == false;
 	/*package-private*/ static final java.awt.Color STENCIL_BASE_COLOR =  new java.awt.Color( 181, 140, 140, 150 );
 	/*package-private*/ static final java.awt.Color STENCIL_LINE_COLOR =  new java.awt.Color( 92, 48, 24, 63 );
 	private static java.awt.Paint stencilPaint = null;
@@ -70,6 +69,61 @@ package edu.cmu.cs.dennisc.tutorial;
 		return Stencil.stencilPaint;
 	}
 
+	private static void redispatch(java.awt.event.MouseEvent e) {
+		java.awt.Point p = e.getPoint();
+		if (e.getComponent().contains(p.x, p.y)) {
+			// pass
+		} else {
+			java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getAwtWindow().getLayeredPane(), p.x, p.y);
+			if (component != null) {
+				java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint(e.getComponent(), p, component);
+				component.dispatchEvent(new java.awt.event.MouseEvent(component, e.getID(), e.getWhen(), e.getModifiers() + e.getModifiersEx(), pComponent.x, pComponent.y, e.getClickCount(), e.isPopupTrigger()));
+			}
+		}
+	}
+
+	private java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+		public void mouseClicked(java.awt.event.MouseEvent e) {
+			redispatch(e);
+		}
+		public void mouseEntered(java.awt.event.MouseEvent e) {
+			redispatch(e);
+		}
+		public void mouseExited(java.awt.event.MouseEvent e) {
+			redispatch(e);
+		}
+		public void mousePressed(java.awt.event.MouseEvent e) {
+			redispatch(e);
+		}
+		public void mouseReleased(java.awt.event.MouseEvent e) {
+			redispatch(e);
+		}
+	};
+	private java.awt.event.MouseMotionListener mouseMotionListener = new java.awt.event.MouseMotionListener() {
+		public void mouseMoved(java.awt.event.MouseEvent e) {
+			redispatch(e);
+		}
+		public void mouseDragged(java.awt.event.MouseEvent e) {
+			redispatch(e);
+		}
+	};
+	private boolean isEventInterceptEnabled;
+	public boolean isEventInterceptEnabled() {
+		return this.isEventInterceptEnabled;
+	}
+	public void setEventInterceptEnabled( boolean isEventInterceptEnabled ) {
+		if( this.isEventInterceptEnabled != isEventInterceptEnabled ) {
+			if( this.isEventInterceptEnabled ) {
+				this.getAwtComponent().removeMouseListener( this.mouseListener );
+				this.getAwtComponent().removeMouseMotionListener( this.mouseMotionListener );
+			}
+			this.isEventInterceptEnabled = isEventInterceptEnabled;
+			if( this.isEventInterceptEnabled ) {
+				this.getAwtComponent().addMouseListener( this.mouseListener );
+				this.getAwtComponent().addMouseMotionListener( this.mouseMotionListener );
+			}
+		}
+	}
 	protected abstract Step getCurrentStep();
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
@@ -130,52 +184,8 @@ package edu.cmu.cs.dennisc.tutorial;
 				}
 			}
 
-			private void redispatch(java.awt.event.MouseEvent e) {
-				java.awt.Point p = e.getPoint();
-				if (this.contains(p.x, p.y)) {
-					// pass
-				} else {
-					java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getAwtWindow().getLayeredPane(), p.x, p.y);
-					if (component != null) {
-						java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint(this, p, component);
-						component.dispatchEvent(new java.awt.event.MouseEvent(component, e.getID(), e.getWhen(), e.getModifiers() + e.getModifiersEx(), pComponent.x, pComponent.y, e.getClickCount(), e.isPopupTrigger()));
-					}
-				}
-			}
 		}
 		final JStencil rv = new JStencil();
-		if( isEventInterceptEnabled ) {
-			rv.addMouseListener(new java.awt.event.MouseListener() {
-				public void mouseClicked(java.awt.event.MouseEvent e) {
-					rv.redispatch(e);
-				}
-	
-				public void mouseEntered(java.awt.event.MouseEvent e) {
-					rv.redispatch(e);
-				}
-	
-				public void mouseExited(java.awt.event.MouseEvent e) {
-					rv.redispatch(e);
-				}
-	
-				public void mousePressed(java.awt.event.MouseEvent e) {
-					rv.redispatch(e);
-				}
-	
-				public void mouseReleased(java.awt.event.MouseEvent e) {
-					rv.redispatch(e);
-				}
-			});
-			rv.addMouseMotionListener(new java.awt.event.MouseMotionListener() {
-				public void mouseMoved(java.awt.event.MouseEvent e) {
-					rv.redispatch(e);
-				}
-	
-				public void mouseDragged(java.awt.event.MouseEvent e) {
-					rv.redispatch(e);
-				}
-			} );
-		}
 		rv.setLayout(new java.awt.BorderLayout());
 		rv.setOpaque(false);
 		return rv;
