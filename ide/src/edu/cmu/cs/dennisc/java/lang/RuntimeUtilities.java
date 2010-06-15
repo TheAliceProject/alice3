@@ -79,7 +79,7 @@ class StreamHandler extends Thread {
  * @author Dennis Cosgrove
  */
 public class RuntimeUtilities {
-	public static int exec( java.io.File workingDirectory, java.util.Map< String, String > environment, String... cmds ) {
+	public static int exec( java.io.File workingDirectory, java.util.Map< String, String > environment, String[] cmds, java.io.PrintStream out, java.io.PrintStream err ) {
 		ProcessBuilder processBuilder = new ProcessBuilder( cmds );
 		if( workingDirectory != null ) {
 			processBuilder.directory( workingDirectory );
@@ -92,8 +92,8 @@ public class RuntimeUtilities {
 		}
 		try {
 			Process process = processBuilder.start();
-			StreamHandler outputHandler = new StreamHandler( process.getInputStream(), System.out );
-			StreamHandler errorHandler = new StreamHandler( process.getErrorStream(), System.err );
+			StreamHandler outputHandler = new StreamHandler( process.getInputStream(), out );
+			StreamHandler errorHandler = new StreamHandler( process.getErrorStream(), err );
 			outputHandler.start();
 			errorHandler.start();
 			return process.waitFor();
@@ -102,6 +102,12 @@ public class RuntimeUtilities {
 		} catch( InterruptedException ie ) {
 			throw new RuntimeException( ie );
 		}
+	}
+	public static int exec( java.io.File workingDirectory, java.util.Map< String, String > environment, String[] cmds, java.io.PrintStream out ) {
+		return exec( workingDirectory, environment, cmds, out, System.err );
+	}
+	public static int exec( java.io.File workingDirectory, java.util.Map< String, String > environment, String... cmds ) {
+		return exec( workingDirectory, environment, cmds, System.out );
 	}
 	public static int exec( java.io.File workingDirectory, String... cmds ) {
 		return exec( workingDirectory, null, cmds );
