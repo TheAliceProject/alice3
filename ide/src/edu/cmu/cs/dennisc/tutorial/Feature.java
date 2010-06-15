@@ -356,7 +356,7 @@ package edu.cmu.cs.dennisc.tutorial;
 
 		final double tDelta = 0.01;
 		double theta = Double.NaN;
-		double t = 0.8;
+		double t = 0.9;
 		while( t < 1.0 ) {
 			
 			double xApproaching = xPolynomial.evaluate( t );
@@ -367,6 +367,7 @@ package edu.cmu.cs.dennisc.tutorial;
 
 			if( xDelta*xDelta + yDelta*yDelta < ARROW_HEAD_LENGTH_SQUARED ) {
 				theta = Math.atan2( yDelta, xDelta );
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "t", t );
 				break;
 			}
 			

@@ -119,7 +119,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
-		final boolean IS_FEEDBACK_DESIRED = true;
+		final boolean IS_FEEDBACK_DESIRED = false;
 		javax.swing.JPanel rv;
 		if( IS_FEEDBACK_DESIRED ) {
 			rv = new javax.swing.JPanel() {
@@ -715,22 +715,26 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 	public final void dragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 	}
 
+	private static int convertY( edu.cmu.cs.dennisc.croquet.Component<?> from, int y, edu.cmu.cs.dennisc.croquet.Component<?> to ) {
+		java.awt.Point pt = from.convertPoint( new java.awt.Point( 0, y ), to);
+		return pt.y;
+	}
 	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShapeAtIndexOf( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, final int index ) {
 		if( statementListProperty != null ) {
 			//choose any non-ancestor
 			
 			edu.cmu.cs.dennisc.croquet.Container< ? > arbitrarilyChosenSource = org.alice.ide.IDE.getSingleton().getSceneEditor();
 			StatementListPropertyPaneInfo[] statementListPropertyPaneInfos = this.createStatementListPropertyPaneInfos( arbitrarilyChosenSource );
-			java.awt.geom.Area area = new java.awt.geom.Area();
-			for( final StatementListPropertyPaneInfo statementListPropertyPaneInfo : statementListPropertyPaneInfos ) {
-				final StatementListPropertyPane statementListPropertyPane = statementListPropertyPaneInfo.getStatementListPropertyPane();
-				if( statementListPropertyPane.getProperty() == statementListProperty ) {
-					//pass
-				} else {
-					java.awt.Rectangle rect = statementListPropertyPaneInfo.getBounds();
-					area.add( new java.awt.geom.Area( rect ) );
-				}
-			}
+//			java.awt.geom.Area area = new java.awt.geom.Area();
+//			for( final StatementListPropertyPaneInfo statementListPropertyPaneInfo : statementListPropertyPaneInfos ) {
+//				final StatementListPropertyPane statementListPropertyPane = statementListPropertyPaneInfo.getStatementListPropertyPane();
+//				if( statementListPropertyPane.getProperty() == statementListProperty ) {
+//					//pass
+//				} else {
+//					java.awt.Rectangle rect = statementListPropertyPaneInfo.getBounds();
+//					area.add( new java.awt.geom.Area( rect ) );
+//				}
+//			}
 			for( final StatementListPropertyPaneInfo statementListPropertyPaneInfo : statementListPropertyPaneInfos ) {
 				final StatementListPropertyPane statementListPropertyPane = statementListPropertyPaneInfo.getStatementListPropertyPane();
 				if( statementListPropertyPane.getProperty() == statementListProperty ) {
@@ -740,23 +744,40 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 
 							java.awt.Rectangle bounds = statementListPropertyPaneInfo.getBounds();
 							
-							bounds = CodeEditor.this.getAsSeenBy().convertRectangle( bounds, statementListPropertyPane );
 							int yMinimum;
-							int yMaximum;
 							if( yBounds[ 0 ] != null ) {
-								yMinimum = bounds.y + yBounds[ 0 ];
+								yMinimum = convertY( statementListPropertyPane, yBounds[ 0 ], CodeEditor.this.getAsSeenBy() );
 							} else {
 								yMinimum = bounds.y;
 							}
+							int yMaximum;
 							if( yBounds[ 1 ] != null ) {
-								yMaximum = bounds.y + yBounds[ 1 ];
+								yMaximum = convertY( statementListPropertyPane, yBounds[ 1 ], CodeEditor.this.getAsSeenBy() );
 							} else {
 								yMaximum = bounds.y + bounds.height - 1;
 							}
 							
 							java.awt.Rectangle boundsAtIndex = new java.awt.Rectangle( bounds.x, yMinimum, bounds.width, yMaximum - yMinimum + 1 );
-							java.awt.Rectangle rv = statementListPropertyPane.convertRectangle( boundsAtIndex, asSeenBy );
+							java.awt.Rectangle rv = CodeEditor.this.getAsSeenBy().convertRectangle( boundsAtIndex, asSeenBy );
 							return rv;
+
+//							bounds = CodeEditor.this.getAsSeenBy().convertRectangle( bounds, statementListPropertyPane );
+//							int yMinimum;
+//							int yMaximum;
+//							if( yBounds[ 0 ] != null ) {
+//								yMinimum = bounds.y + yBounds[ 0 ];
+//							} else {
+//								yMinimum = bounds.y;
+//							}
+//							if( yBounds[ 1 ] != null ) {
+//								yMaximum = bounds.y + yBounds[ 1 ];
+//							} else {
+//								yMaximum = bounds.y + bounds.height - 1;
+//							}
+//							
+//							java.awt.Rectangle boundsAtIndex = new java.awt.Rectangle( bounds.x, yMinimum, bounds.width, yMaximum - yMinimum + 1 );
+//							java.awt.Rectangle rv = statementListPropertyPane.convertRectangle( boundsAtIndex, asSeenBy );
+//							return rv;
 						}
 						public java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
 							return getRectangle( asSeenBy, insets );
