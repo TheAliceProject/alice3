@@ -176,7 +176,7 @@ class ProceduresFillIn extends MethodsFillIn {
 	@Override
 	protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		super.addChildrenToBlank( blank );
-		blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.DeclareProcedureOperation( this.getType() ) ) );
+		blank.addFillIn( new OperatorFillIn( org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance( this.getType() ) ) );
 		blank.addSeparator();
 		blank.addFillIn( new OperatorFillIn( new EditProceduresOperation( this.getType() ) ) );
 	}
@@ -193,7 +193,7 @@ class FunctionsFillIn extends MethodsFillIn {
 	@Override
 	protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		super.addChildrenToBlank( blank );
-		blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.DeclareFunctionOperation( this.getType() ) ) );
+		blank.addFillIn( new OperatorFillIn( org.alice.ide.operations.ast.DeclareFunctionOperation.getInstance( this.getType() ) ) );
 		blank.addSeparator();
 		blank.addFillIn( new OperatorFillIn( new EditFunctionsOperation( this.getType() ) ) );
 	}

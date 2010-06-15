@@ -163,23 +163,22 @@ public abstract class Model<M> implements TrackableShape, Resolver< M > {
 		if( this.firstComponentHint != null ) {
 			return cls.cast( this.firstComponentHint );
 		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "getFirstComponent:", this );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "count:", this.components.size() );
 			for( JComponent< ? > component : this.components ) {
 				if( cls.isAssignableFrom( component.getClass() ) ) {
 					if( component.getAwtComponent().isShowing() ) {
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
 						return cls.cast( component );
 					} else {
 						//pass
 					}
 				}
 			}
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "getFirstComponent", this.components.size() );
 			for( JComponent< ? > component : this.components ) {
 				if( cls.isAssignableFrom( component.getClass() ) ) {
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println( component.getAwtComponent() );
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println( component.getAwtComponent().isDisplayable() );
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println( component.getAwtComponent().isShowing() );
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println( component.getAwtComponent().isVisible() );
 					if( component.getAwtComponent().isVisible() ) {
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( "isVisible:", component.getAwtComponent().getClass() );
 						return cls.cast( component );
 					} else {
 						//pass
@@ -187,6 +186,7 @@ public abstract class Model<M> implements TrackableShape, Resolver< M > {
 				}
 			}
 		}
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "return null" );
 		return null;
 	}
 	@Deprecated
@@ -204,14 +204,11 @@ public abstract class Model<M> implements TrackableShape, Resolver< M > {
 	}
 	@Deprecated
 	public void setFirstComponentHint( JComponent< ? > firstComponentHint ) {
+//		Thread.dumpStack();
 		assert this.components.contains( firstComponentHint );
 		if( this.firstComponentHint != firstComponentHint ) {
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "prevFirstComponentHint", this.firstComponentHint );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "nextFirstComponentHint", firstComponentHint );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "bounds", firstComponentHint.isVisible() );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "bounds", firstComponentHint.getAwtComponent().getName() );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "bounds", firstComponentHint.getBounds() );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "bounds", firstComponentHint.getVisibleRectangle() );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "prevFirstComponentHint", this.firstComponentHint );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "nextFirstComponentHint", firstComponentHint );
 			this.firstComponentHint = firstComponentHint;
 		}
 	}

@@ -430,7 +430,7 @@ public class StressTestTutorial {
 				"Edit Perform My Setup", 
 				"edit performMySetup", 
 				tutorial.createEditCodeOperationResolver( 
-						tutorial.createMethodResolver( sceneField, "performMySetUp" )
+						tutorial.createCurrentAccessibleMethodResolver( "performMySetUp" )
 				),
 				tutorial.createToDoCompletorValidator()
 		);
@@ -474,7 +474,7 @@ public class StressTestTutorial {
 				"Select Run", 
 				"Select run tab.", 
 				ide.getEditorsTabSelectionState(),
-				tutorial.createMethodResolver( sceneField, "run" )
+				tutorial.createCurrentAccessibleMethodResolver( "run" )
 		);
 		
 		

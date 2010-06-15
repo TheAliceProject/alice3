@@ -69,14 +69,6 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return this.ide;
 	}
 
-//	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneField() {
-//		return this.getIDE().getSceneField();
-//	}
-//	public <F extends edu.cmu.cs.dennisc.alice.ast.AbstractField> F getFieldDeclaredOnSceneType( String name ) {
-//		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = ide.getSceneType();
-//		return (F)sceneType.getDeclaredField( name );
-//	}
-
 	/*package-private*/ static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava findShortestMethod( Class<?> cls, String methodName ) {
 		Class<?> c = cls;
 		while( c != null ) {
@@ -297,7 +289,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			}
 		};
 	}
-	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > createCurrentFieldMethodResolver( final String methodName ) {
+	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > createCurrentAccessibleMethodResolver( final String methodName ) {
 		return new Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod >() {
 			public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getResolved() {
 				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = ide.getFieldSelectionState().getValue();
@@ -313,13 +305,13 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		};
 	}
 
-	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > createMethodResolver( final edu.cmu.cs.dennisc.alice.ast.AbstractField field, final String methodName ) {
-		return new Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod >() {
-			public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getResolved() {
-				return findShortestMethod( field, methodName );
-			}
-		};
-	}
+//	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > createMethodResolver( final edu.cmu.cs.dennisc.alice.ast.AbstractField field, final String methodName ) {
+//		return new Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod >() {
+//			public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getResolved() {
+//				return findShortestMethod( field, methodName );
+//			}
+//		};
+//	}
 //	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > createMethodResolver( final Class<?> cls, final String methodName ) {
 //		return new Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod >() {
 //			public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getResolved() {
@@ -459,10 +451,40 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	}
 	
 	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > createDeclareProcedureOperationResolver() {
-		return new InputDialogOperationFromIdResolver( java.util.UUID.fromString( "dcaee920-08ea-4b03-85d1-f2df5f73bfb4" ) );
+		return new Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation >() {
+			public edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved() {
+				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = ide.getFieldSelectionState().getValue();
+				if( accessible != null ) {
+					edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type = accessible.getValueType();
+					if( type instanceof edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > ) {
+						edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > typeInAlice = (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >)type;
+						return org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance( typeInAlice );
+					} else {
+						return null;
+					}
+				} else {
+					return null;
+				}
+			}
+		};
 	}
 	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > createDeclareFunctionOperationResolver() {
-		return new InputDialogOperationFromIdResolver( java.util.UUID.fromString( "171164e5-8159-4641-9528-a230ef4d2600" ) );
+		return new Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation >() {
+			public edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved() {
+				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = ide.getFieldSelectionState().getValue();
+				if( accessible != null ) {
+					edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type = accessible.getValueType();
+					if( type instanceof edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > ) {
+						edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > typeInAlice = (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >)type;
+						return org.alice.ide.operations.ast.DeclareFunctionOperation.getInstance( typeInAlice );
+					} else {
+						return null;
+					}
+				} else {
+					return null;
+				}
+			}
+		};
 	}
 	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > createDeclareFieldOperationResolver() {
 		return new InputDialogOperationFromIdResolver( java.util.UUID.fromString( "5a07b4dc-0bd9-4393-93d2-1cc1a9b48262" ) );
