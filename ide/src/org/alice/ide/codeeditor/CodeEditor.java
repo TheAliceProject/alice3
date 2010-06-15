@@ -119,7 +119,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
-		final boolean IS_FEEDBACK_DESIRED = true;
+		final boolean IS_FEEDBACK_DESIRED = false;
 		javax.swing.JPanel rv;
 		if( IS_FEEDBACK_DESIRED ) {
 			rv = new javax.swing.JPanel() {

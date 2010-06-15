@@ -141,6 +141,11 @@ package edu.cmu.cs.dennisc.tutorial;
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
 		if( child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
+			edu.cmu.cs.dennisc.croquet.DragAndDropContext context = (edu.cmu.cs.dennisc.croquet.DragAndDropContext)child;
+			Note noteB = this.getNoteAt( 1 );
+			Feature featureB = noteB.getFeatures().get( 0 );
+			java.awt.Dimension size = context.getDragSource().getDropProxySize();
+			featureB.setHeightConstraint( size.height * 2 );
 			this.setActiveNote( 1 );
 			return false;
 		} else if( child instanceof edu.cmu.cs.dennisc.croquet.CancelEvent ) {

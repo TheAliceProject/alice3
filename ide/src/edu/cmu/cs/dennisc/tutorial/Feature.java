@@ -58,19 +58,20 @@ package edu.cmu.cs.dennisc.tutorial;
 		SOUTH( javax.swing.SwingConstants.CENTER, javax.swing.SwingConstants.TRAILING, false ),
 		EAST( javax.swing.SwingConstants.TRAILING, javax.swing.SwingConstants.CENTER, true ),
 		WEST( javax.swing.SwingConstants.LEADING, javax.swing.SwingConstants.CENTER, true );
-		int xConstraint;
-		int yConstraint;
+		private int xConstraint;
+		private int yConstraint;
 		boolean isCurveDesired;
 		private Connection(int xConstraint, int yConstraint, boolean isCurveDesired ) {
 			this.xConstraint = xConstraint;
 			this.yConstraint = yConstraint;
 			this.isCurveDesired = isCurveDesired;
 		}
-		public int getXConstraint() {
-			return this.xConstraint;
-		}
-		public int getYConstraint() {
-			return this.yConstraint;
+		public java.awt.Point getPoint( java.awt.Rectangle bounds ) {
+			java.awt.Point rv = edu.cmu.cs.dennisc.java.awt.RectangleUtilties.getPoint( bounds, this.xConstraint, this.yConstraint );
+			if( this.xConstraint == javax.swing.SwingConstants.CENTER ) {
+				rv.x = Math.min( rv.x, bounds.x + 128 );
+			}
+			return rv;
 		}
 		public boolean isCurveDesired() {
 			return this.isCurveDesired;
@@ -80,14 +81,34 @@ package edu.cmu.cs.dennisc.tutorial;
 
 	private edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver;
 	private ConnectionPreference connectionPreference;
+	private Integer heightConstraint = null;
 	public Feature( edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
 		//assert trackableShape != null;
 		this.trackableShapeResolver = trackableShapeResolver;
 		this.connectionPreference = connectionPreference;
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape() {
+	/*package-private*/ void setHeightConstraint( Integer heightConstraint ) {
+		this.heightConstraint = heightConstraint;
+	}
+	
+	private edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape() {
 		return this.trackableShapeResolver.getResolved();
+	}
+	
+	private static java.awt.Shape constrainHeightIfNecessary( java.awt.Shape shape, Integer heightConstraint ) {
+		if( heightConstraint != null ) {
+			if( shape instanceof java.awt.geom.Rectangle2D ) {
+				java.awt.geom.Rectangle2D rect = (java.awt.geom.Rectangle2D)shape;
+				rect.setFrame( rect.getX(), rect.getY(), rect.getWidth(), Math.min( rect.getHeight(), heightConstraint ) );
+				return rect;
+			} else {
+				//todo
+				return shape;
+			}
+		} else {
+			return shape;
+		}
 	}
 	public ConnectionPreference getConnectionPreference() {
 		return this.connectionPreference;
@@ -125,6 +146,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		if( featureTrackableShape != null ) {
 			java.awt.Shape shape = featureTrackableShape.getShape( container, null );
 			if( shape != null ) {
+				shape = constrainHeightIfNecessary( shape, this.heightConstraint );
 				java.awt.Rectangle containerBounds = container.getLocalBounds();
 				java.awt.Rectangle noteBounds = note.getBounds( container );
 				java.awt.Rectangle featureComponentBounds = shape.getBounds();
@@ -173,6 +195,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		if( featureTrackableShape != null ) {
 			java.awt.Shape shape = featureTrackableShape.getShape( container, null );
 			if( shape != null ) {
+				shape = constrainHeightIfNecessary( shape, this.heightConstraint );
 				java.awt.Rectangle featureComponentBounds = shape.getBounds();
 				int xFeatureComponentCenter = featureComponentBounds.x + featureComponentBounds.width/2;
 				int xCardCenter = ( containerBounds.x + containerBounds.width ) / 2;
@@ -269,10 +292,12 @@ package edu.cmu.cs.dennisc.tutorial;
 	protected abstract java.awt.Insets getPaintInsets();
 	
 	protected java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy, java.awt.Insets insets ) {
-		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.trackableShapeResolver.getResolved();
+		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getTrackableShape();
 		if( trackableShape != null ) {
 			if( trackableShape.isInView() ) {
-				return trackableShape.getVisibleShape( asSeenBy, insets );
+				java.awt.Shape shape = trackableShape.getVisibleShape( asSeenBy, insets );
+				shape = constrainHeightIfNecessary( shape, this.heightConstraint );
+				return shape;
 			} else {
 				edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
 				if( scrollPane != null ) {
@@ -409,7 +434,7 @@ package edu.cmu.cs.dennisc.tutorial;
 			java.awt.Rectangle noteBounds = note.getComponent( 0 ).getBounds( asSeenBy );
 			java.awt.Rectangle shapeBounds = shape.getBounds();
 			if( shapeBounds != null ) {
-				java.awt.Point ptComponent = edu.cmu.cs.dennisc.java.awt.RectangleUtilties.getPoint( shapeBounds, actualConnection.getXConstraint(), actualConnection.getYConstraint() );
+				java.awt.Point ptComponent = actualConnection.getPoint( shapeBounds );
 				int xContraint;
 				if( noteBounds.x > ptComponent.x ) {
 					xContraint = javax.swing.SwingConstants.LEADING;
