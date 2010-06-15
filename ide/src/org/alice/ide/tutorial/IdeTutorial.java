@@ -451,43 +451,28 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	}
 	
 	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > createDeclareProcedureOperationResolver() {
-		return new Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation >() {
-			public edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved() {
-				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = ide.getFieldSelectionState().getValue();
-				if( accessible != null ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type = accessible.getValueType();
-					if( type instanceof edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > ) {
-						edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > typeInAlice = (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >)type;
-						return org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance( typeInAlice );
-					} else {
-						return null;
-					}
-				} else {
-					return null;
-				}
+		return new DeclareMemberResolver() {
+			@Override
+			protected edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+				return org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance( type );
 			}
 		};
 	}
 	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > createDeclareFunctionOperationResolver() {
-		return new Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation >() {
-			public edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved() {
-				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = ide.getFieldSelectionState().getValue();
-				if( accessible != null ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type = accessible.getValueType();
-					if( type instanceof edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > ) {
-						edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > typeInAlice = (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >)type;
-						return org.alice.ide.operations.ast.DeclareFunctionOperation.getInstance( typeInAlice );
-					} else {
-						return null;
-					}
-				} else {
-					return null;
-				}
+		return new DeclareMemberResolver() {
+			@Override
+			protected edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+				return org.alice.ide.operations.ast.DeclareFunctionOperation.getInstance( type );
 			}
 		};
 	}
 	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > createDeclareFieldOperationResolver() {
-		return new InputDialogOperationFromIdResolver( java.util.UUID.fromString( "5a07b4dc-0bd9-4393-93d2-1cc1a9b48262" ) );
+		return new DeclareMemberResolver() {
+			@Override
+			protected edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+				return org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( type );
+			}
+		};
 	}
 	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > createDeclareMethodParameterOperationResolver() {
 		return new InputDialogOperationFromIdResolver( java.util.UUID.fromString( "aa3d337d-b409-46ae-816f-54f139b32d86" ) );

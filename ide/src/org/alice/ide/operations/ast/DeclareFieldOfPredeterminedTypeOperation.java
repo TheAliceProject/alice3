@@ -59,7 +59,7 @@ public class DeclareFieldOfPredeterminedTypeOperation extends AbstractNonGallery
 		
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> getOwnerType() {
 		return this.createFieldPane.getDeclaringType();
 	}
 	@Override

@@ -46,14 +46,14 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class DeclareFieldEdit extends org.alice.ide.ToDoEdit {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType;
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
 	private int index;
 
 	private Object instance;
 	private boolean isInstanceValid;
 	
-	public DeclareFieldEdit(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, int index, Object instance, boolean isInstanceValid) {
+	public DeclareFieldEdit(edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, int index, Object instance, boolean isInstanceValid) {
 		this.ownerType = ownerType;
 		this.field = field;
 		this.index = index;

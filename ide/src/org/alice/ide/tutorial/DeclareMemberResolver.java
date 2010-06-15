@@ -40,25 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationpanes;
+package org.alice.ide.tutorial;
+
+import edu.cmu.cs.dennisc.croquet.Resolver;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CreateFieldPane extends AbstractCreateFieldPane {
-	public CreateFieldPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
-		super( declaringType );
-	}
-	@Override
-	protected boolean isEditableValueTypeComponentDesired() {
-		return true;
-	}
-	@Override
-	protected boolean isEditableInitializerComponentDesired() {
-		return true;
-	}
-	@Override
-	protected boolean isIsReassignableComponentDesired() {
-		return true;
+/*package-private*/ abstract class DeclareMemberResolver implements Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> {
+	protected abstract edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved(edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type);
+	public edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved() {
+		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.IDE.getSingleton().getFieldSelectionState().getValue();
+		if( accessible != null ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type = accessible.getValueType();
+			if( type instanceof edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > ) {
+				edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > typeInAlice = (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >)type;
+				return this.getResolved( typeInAlice );
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 }

@@ -2052,7 +2052,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	//			i += 1
 	//		return rv
 
-	private static String getAvailableFieldName( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, String baseName ) {
+	private static String getAvailableFieldName( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, String baseName ) {
 		org.alice.ide.name.validators.FieldNameValidator validator = new org.alice.ide.name.validators.FieldNameValidator( declaringType );
 
 		if( validator.isNameValid( baseName ) ) {
@@ -2070,7 +2070,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 		return rv;
 	}
-	public String getPotentialInstanceNameFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType valueType ) {
+	public String getPotentialInstanceNameFor( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType valueType ) {
 		if( valueType != null ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
 			if( typeInJava != null ) {

@@ -46,13 +46,13 @@ package org.alice.ide.declarationpanes;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCreateFieldPane extends CreateDeclarationWithDeclaringTypePane< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType;
-	public AbstractCreateFieldPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType;
+	public AbstractCreateFieldPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
 		super( new org.alice.ide.name.validators.FieldNameValidator( declaringType ) );
 		this.declaringType = declaringType;
 		this.setBackgroundColor( getIDE().getFieldColor() );
 	}
-	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getDeclaringType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
 		return this.declaringType;
 	}
 	@Override

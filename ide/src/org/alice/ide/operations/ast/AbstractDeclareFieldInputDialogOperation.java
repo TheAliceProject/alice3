@@ -46,7 +46,7 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice.ide.operations.InputDialogWithPreviewOperation {
-	protected abstract edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType();
+	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> getOwnerType();
 	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> createFieldAndInstance( edu.cmu.cs.dennisc.croquet.ModelContext context );
 	protected abstract boolean isInstanceValid();
 	
@@ -64,7 +64,7 @@ public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice
 			if( tuple != null ) {
 				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
 				if( field != null ) {
-					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = this.getOwnerType();
+					edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType = this.getOwnerType();
 					int index = ownerType.fields.size();
 					context.commitAndInvokeDo( new DeclareFieldEdit( ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
 				} else {

@@ -57,7 +57,7 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Button createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		return new org.alice.ide.operations.ast.DeclareFieldOperation( type ).createButton();
+		return org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( type ).createButton();
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Button createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {

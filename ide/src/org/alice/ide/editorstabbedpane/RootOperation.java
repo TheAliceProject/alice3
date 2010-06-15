@@ -213,7 +213,7 @@ class FieldsFillIn extends MembersFillIn {
 			blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.EditFieldOperation( field ) ) );
 		}
 		blank.addSeparator();
-		blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.DeclareFieldOperation( this.getType() ) ) );
+		blank.addFillIn( new OperatorFillIn( org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( this.getType() ) ) );
 		blank.addSeparator();
 		blank.addFillIn( new OperatorFillIn( new EditFieldsOperation( this.getType() ) ) );
 	}

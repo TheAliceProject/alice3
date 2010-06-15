@@ -46,15 +46,26 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperation {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >, DeclareFieldOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static DeclareFieldOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+		DeclareFieldOperation rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new DeclareFieldOperation( type );
+			map.put( type, rv );
+		}
+		return rv;
+	}
+	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > ownerType;
 	private org.alice.ide.declarationpanes.CreateFieldPane createFieldPane;
-	public DeclareFieldOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
+	private DeclareFieldOperation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > ownerType ) {
 		super( java.util.UUID.fromString( "e935b0ea-e927-49ff-b33b-2c8eaf5c8b57" ) );
 		this.setName( "Declare Property..." );
 		this.ownerType = ownerType;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getOwnerType() {
 		return this.createFieldPane.getDeclaringType();
 	}
 	@Override
