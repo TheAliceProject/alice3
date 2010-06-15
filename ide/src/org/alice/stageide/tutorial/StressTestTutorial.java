@@ -122,15 +122,15 @@ public class StressTestTutorial {
 				"Note" 
 		);
 
-//		tutorial.addDragAndDropStep( 
-//				"Drag If/Else",
-//				"Drag <b>If/Else</b>.",
-//				tutorial.createIfElseTemplateResolver(),
-//				"Drop <b>here</b>.",
-//				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
-//				"Select <b>true</b>.",
-//				tutorial.createToDoCompletorValidator()
-//		);
+		tutorial.addDragAndDropStep( 
+				"Drag If/Else",
+				"Drag <b>If/Else</b>.",
+				tutorial.createIfElseTemplateResolver(),
+				"Drop <b>here</b>.",
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+				"Select <b>true</b>.",
+				tutorial.createToDoCompletorValidator()
+		);
 		for( int i=0; i<10; i++ ) {
 			tutorial.addDragAndDropStep( 
 					"Drag Count Loop",
@@ -141,26 +141,26 @@ public class StressTestTutorial {
 					"Select <b>2</b>.",
 					tutorial.createToDoCompletorValidator()
 			);
-//			tutorial.addDragAndDropStep( 
-//					"Drag If/Else",
-//					"Drag <b>If/Else</b>.",
-//					tutorial.createIfElseTemplateResolver(),
-//					"Drop <b>here</b>.",
-//					tutorial.createEndOfStatementListResolver( 
-//							tutorial.createFirstIfStatementListPropertyResolver() 
-//					),
-//					"Select <b>true</b>.",
-//					tutorial.createToDoCompletorValidator()
-//			);
-//			tutorial.addDragAndDropStep( 
-//					"Drag Move Procedure",
-//					"Drag <b>move</b> procedure.",
-//					tutorial.createProcedureInvocationTemplateResolver( "move" ),
-//					"Drop <b>here</b>.",
-//					tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
-//					"Select <b>FORWARD</b> and <b>1.0</b> from the menus.",
-//					tutorial.createToDoCompletorValidator()
-//			);
+			tutorial.addDragAndDropStep( 
+					"Drag If/Else",
+					"Drag <b>If/Else</b>.",
+					tutorial.createIfElseTemplateResolver(),
+					"Drop <b>here</b>.",
+					tutorial.createEndOfStatementListResolver( 
+							tutorial.createFirstIfStatementListPropertyResolver() 
+					),
+					"Select <b>true</b>.",
+					tutorial.createToDoCompletorValidator()
+			);
+			tutorial.addDragAndDropStep( 
+					"Drag Move Procedure",
+					"Drag <b>move</b> procedure.",
+					tutorial.createProcedureInvocationTemplateResolver( "move" ),
+					"Drop <b>here</b>.",
+					tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+					"Select <b>FORWARD</b> and <b>1.0</b> from the menus.",
+					tutorial.createToDoCompletorValidator()
+			);
 		}
 
 		tutorial.addDragAndDropStep( 

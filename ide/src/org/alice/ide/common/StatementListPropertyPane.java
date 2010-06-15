@@ -231,6 +231,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 			if( isIf ) {
 				rv.height += rv.y;
 				rv.y = 0;
+				rv.height += IF_ELSE_PAD;
 				statementAncestor.setMaxYForIfBlock( rv.y + rv.height );
 				rv.y += IF_ELSE_PAD;
 			} else {
@@ -278,11 +279,11 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 			bottom = 0;
 		} else {
 			edu.cmu.cs.dennisc.alice.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
-			//boolean isIf = this.isOwnedByIf( owningNode );
-			boolean isElse = this.isOwnedByElse( owningNode );
+			//boolean isIf = isOwnedByIf( owningNode );
+			boolean isElse = isOwnedByElse( owningNode );
 			boolean isDoInOrder = owningNode instanceof edu.cmu.cs.dennisc.alice.ast.DoInOrder;
 			boolean isDoTogether = owningNode instanceof edu.cmu.cs.dennisc.alice.ast.DoTogether;
-			if( isElse || isDoInOrder || isDoTogether ) {
+			if( /*isIf ||*/ isElse || isDoInOrder || isDoTogether ) {
 				bottom = 8;
 			} else {
 				bottom = 0;
@@ -337,7 +338,13 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 //		}
 //		return rv;
 //	}
-	public Integer[] calculateYBounds( int index ) {
+	public static class BoundInformation {
+		public Integer yMinimum;
+		public Integer yMaximum;
+		public Integer y;
+		public Integer yPlusHeight;
+	}
+	public BoundInformation calculateYBounds( int index ) {
 		final int N;
 		if( isFigurativelyEmpty() ) {
 			N = 0;
@@ -347,19 +354,37 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		if( index == Short.MAX_VALUE ) {
 			index = N;
 		}
-		Integer yMinimum;
-		Integer yMaximum;
+		BoundInformation rv = new BoundInformation();
 		if( index == 0 ) {
-			yMinimum = null;
+			rv.yMinimum = null;
 		} else {
-			yMinimum = this.getCenterYOfComponentAt( index-1 );
+			rv.yMinimum = this.getCenterYOfComponentAt( index-1 );
 		}
 		if( index == N ) {
-			yMaximum = null;
+			rv.yMaximum = null;
 		} else {
-			yMaximum = this.getCenterYOfComponentAt( index );
+			rv.yMaximum = this.getCenterYOfComponentAt( index );
 		}
-		return new Integer[] { yMinimum, yMaximum };
+		
+
+		if( N == 0 ) {
+			rv.y = null;
+			rv.yPlusHeight = null;
+		} else {
+			if( index == 0 ) {
+				rv.y = null;
+				rv.yPlusHeight = 0;
+			} else if( index == N ) {
+				edu.cmu.cs.dennisc.croquet.Component< ? > lastComponent = this.getComponent( N-1 );
+				rv.y = lastComponent.getY() + lastComponent.getHeight();
+				rv.yPlusHeight = null;
+			} else {
+				edu.cmu.cs.dennisc.croquet.Component< ? > component = this.getComponent( index );
+				rv.y = component.getY();
+				rv.yPlusHeight = rv.y + component.getHeight();
+			}
+		}
+		return rv;
 	}
 
 }
