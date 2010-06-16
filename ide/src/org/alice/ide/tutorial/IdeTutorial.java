@@ -289,6 +289,30 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			}
 		};
 	}
+	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > createCodeResolver( final String fieldName, final String methodName) {
+		return new Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
+			public edu.cmu.cs.dennisc.alice.ast.AbstractCode getResolved() {
+				edu.cmu.cs.dennisc.alice.ast.AbstractField foundField = null;
+				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = ide.getSceneField();
+				if( sceneField.getName().equals( fieldName ) ) {
+					foundField = sceneField;
+				} else {
+					java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = sceneField.getValueType().getDeclaredFields();
+					for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : fields ) {
+						if( field.getName().equals( fieldName ) ) {
+							foundField = field;
+							break;
+						}
+					}
+				}
+				if( foundField != null ) {
+					return findShortestMethod( foundField, methodName );
+				} else {
+					return null;
+				}
+			}
+		};
+	}
 	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > createCurrentAccessibleMethodResolver( final String methodName ) {
 		return new Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod >() {
 			public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getResolved() {

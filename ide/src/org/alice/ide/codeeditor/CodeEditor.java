@@ -755,6 +755,9 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 		}
 		return rv;
 	}
+	
+	private static boolean isWarningAlreadyPrinted = false;
+	
 	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShapeAtIndexOf( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, final int index ) {
 		if( statementListProperty != null ) {
 			//choose any non-ancestor
@@ -802,7 +805,12 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 							return bounds;
 						}
 						public boolean isInView() {
-							edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getTrackableShapeAtIndexOf isInView" );
+							if( isWarningAlreadyPrinted ) {
+								//pass
+							} else {
+								edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getTrackableShapeAtIndexOf isInView" );
+								isWarningAlreadyPrinted = true;
+							}
 							return true;
 						}
 						public edu.cmu.cs.dennisc.croquet.ScrollPane getScrollPaneAncestor() {

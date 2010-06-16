@@ -83,6 +83,13 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
+		tutorial.addSelectTabStep(   
+				"Select Run", 
+				"Select run tab.", 
+				ide.getEditorsTabSelectionState(),
+				tutorial.createCodeResolver( "scene", "run" )
+		);
+
 //		tutorial.addDragAndDropStep( 
 //				"Drag Count Loop",
 //				"Drag <b>Count Loop</b>.",
@@ -159,7 +166,7 @@ public class StressTestTutorial {
 					tutorial.createIfElseTemplateResolver(),
 					"Drop <b>here</b>.",
 					tutorial.createEndOfStatementListResolver( 
-							tutorial.createFirstIfStatementListPropertyResolver() 
+							tutorial.createFirstElseStatementListPropertyResolver() 
 					),
 					"Select <b>true</b>.",
 					tutorial.createToDoCompletorValidator()
@@ -483,12 +490,6 @@ public class StressTestTutorial {
 				tutorial.createCurrentCodeResolver()
 		);
 
-		tutorial.addSelectTabStep(   
-				"Select Run", 
-				"Select run tab.", 
-				ide.getEditorsTabSelectionState(),
-				tutorial.createCurrentAccessibleMethodResolver( "run" )
-		);
 		
 		
 		tutorial.addSelectTabStep( 
