@@ -57,7 +57,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	
 	private static int X_PAD = 16;
 	private static int Y_PAD = 16;
-	private Tutorial tutorial;
+	private TutorialStencil tutorialStencil;
 	private java.util.List< Feature > features = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private String text;
 	private String label = null;
@@ -73,11 +73,11 @@ package edu.cmu.cs.dennisc.tutorial;
 	public void setLabel(String label) {
 		this.label = label;
 	}
-	public Tutorial getTutorial() {
-		return this.tutorial;
+	public TutorialStencil getTutorialStencil() {
+		return this.tutorialStencil;
 	}
-	public void setTutorial(Tutorial tutorial) {
-		this.tutorial = tutorial;
+	public void setTutorialStencil(TutorialStencil tutorialStencil) {
+		this.tutorialStencil = tutorialStencil;
 	}
 	
 	protected void addFeature( Feature feature ) {
@@ -217,7 +217,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		rv.add( textComponent, java.awt.BorderLayout.NORTH );
 		//rv.setBackground( BASE_COLOR );
 		edu.cmu.cs.dennisc.croquet.BorderPanel southPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		edu.cmu.cs.dennisc.croquet.Hyperlink hyperlink = getTutorial().getNextOperation().createHyperlink();
+		edu.cmu.cs.dennisc.croquet.Hyperlink hyperlink = getTutorialStencil().getNextOperation().createHyperlink();
 		hyperlink.scaleFont( 1.4f );
 		southPanel.addComponent( hyperlink, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.EAST );
 		rv.add( southPanel.getAwtComponent(), java.awt.BorderLayout.SOUTH );
@@ -243,7 +243,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		private java.awt.Point ptPressed;
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
 			if( e.getClickCount() == 2 ) {
-				getTutorial().getNextOperation().fire(e);
+				getTutorialStencil().getNextOperation().fire(e);
 			}
 		}
 

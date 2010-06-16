@@ -69,6 +69,46 @@ package edu.cmu.cs.dennisc.tutorial;
 		return Stencil.stencilPaint;
 	}
 
+	private java.awt.event.ComponentListener componentListener = new java.awt.event.ComponentListener() {
+		public void componentResized( java.awt.event.ComponentEvent e ) {
+			Stencil.this.getAwtComponent().setBounds( e.getComponent().getBounds() );
+			Stencil.this.revalidateAndRepaint();
+		}
+		public void componentMoved( java.awt.event.ComponentEvent e ) {
+		}
+		public void componentShown( java.awt.event.ComponentEvent e ) {
+		}
+		public void componentHidden( java.awt.event.ComponentEvent e ) {
+		}
+	};
+
+	private javax.swing.JLayeredPane layeredPane;
+	public Stencil( javax.swing.JLayeredPane layeredPane ) {
+		this.layeredPane = layeredPane;
+	}
+	
+	public void addToLayeredPane() {
+		this.layeredPane.add( this.getAwtComponent(), null );
+		this.layeredPane.setLayer( this.getAwtComponent(), javax.swing.JLayeredPane.POPUP_LAYER - 1 );
+	}
+	public void removeFromLayeredPane() {
+		this.layeredPane.remove( this.getAwtComponent() );
+	}
+	@Override
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo(parent);
+		java.awt.Toolkit.getDefaultToolkit().addAWTEventListener( this.awtEventListener, java.awt.AWTEvent.MOUSE_MOTION_EVENT_MASK );
+		this.getAwtComponent().setBounds( this.layeredPane.getBounds() );
+		this.layeredPane.addComponentListener( this.componentListener );
+		RepaintManagerUtilities.pushStencil( this.getAwtComponent() );
+	}
+	@Override
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		assert RepaintManagerUtilities.popStencil() == this.getAwtComponent();
+		this.layeredPane.removeComponentListener( this.componentListener );
+		java.awt.Toolkit.getDefaultToolkit().removeAWTEventListener( this.awtEventListener );
+		super.handleRemovedFrom(parent);
+	}
 	private void redispatch(java.awt.event.MouseEvent e) {
 		java.awt.Point p = e.getPoint();
 		if( /*this.isEventInterceptEnabled() &&*/ e.getComponent().contains( p.x, p.y ) ) {
@@ -131,16 +171,6 @@ package edu.cmu.cs.dennisc.tutorial;
 			Stencil.this.handleMouseMoved( e );
 		}
 	};
-	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo(parent);
-		java.awt.Toolkit.getDefaultToolkit().addAWTEventListener( this.awtEventListener, java.awt.AWTEvent.MOUSE_MOTION_EVENT_MASK );
-	}
-	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		java.awt.Toolkit.getDefaultToolkit().removeAWTEventListener( this.awtEventListener );
-		super.handleRemovedFrom(parent);
-	}
 	protected abstract Step getCurrentStep();
 	private Feature enteredFeature;
 	public void setEnteredFeature(Feature enteredFeature) {

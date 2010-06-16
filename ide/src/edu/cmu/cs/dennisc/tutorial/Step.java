@@ -209,7 +209,7 @@ public abstract class Step {
 	}
 
 	private java.util.UUID id = java.util.UUID.randomUUID();
-	private Tutorial tutorial;
+	private TutorialStencil tutorialStencil;
 	private StepPanel stepPanel = new StepPanel();
 	private java.util.List< Note > notes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private String title;
@@ -220,14 +220,14 @@ public abstract class Step {
 		this.title = title;
 		this.addNote( new Note( text ) );
 	}
-	public Tutorial getTutorial() {
-		return this.tutorial;
+	public TutorialStencil getTutorialStencil() {
+		return this.tutorialStencil;
 	}
 	protected abstract void complete( edu.cmu.cs.dennisc.croquet.ModelContext<?> context );
-	/*package-private*/ void setTutorial( Tutorial tutorial ) {
-		this.tutorial = tutorial;
+	/*package-private*/ void setTutorialStencil( TutorialStencil tutorialStencil ) {
+		this.tutorialStencil = tutorialStencil;
 		for( Note note : this.notes ) {
-			note.setTutorial( this.tutorial );
+			note.setTutorialStencil( this.tutorialStencil );
 		}
 	}
 	
@@ -243,7 +243,7 @@ public abstract class Step {
 	}
 	public void addNote( Note note ) {
 		this.notes.add( note );
-		note.setTutorial( this.tutorial );
+		note.setTutorialStencil( this.tutorialStencil );
 	}
 	public Note getNoteAt( int index ) {
 		return this.notes.get( index );
