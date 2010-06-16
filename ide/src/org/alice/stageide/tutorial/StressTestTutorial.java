@@ -83,6 +83,20 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
+		tutorial.addDialogOpenStep( 
+				"Declare Parameter", 
+				"Declare Parameter.", 
+				tutorial.createDeclareMethodParameterOperationResolver() 
+		);
+
+		tutorial.addInputDialogCommitStep( 
+				"Name HowHigh", 
+				"Type <b>howHigh</b> and select <b>Double</b> and press <i>Ok</i>",
+				tutorial.createDeclareMethodParameterOperationResolver(),
+				tutorial.createToDoCompletorValidator()				
+		);
+		
+
 		tutorial.addSelectTabStep(   
 				"Select Run", 
 				"Select run tab.", 

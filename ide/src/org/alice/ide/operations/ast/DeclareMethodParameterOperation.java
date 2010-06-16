@@ -46,9 +46,20 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class DeclareMethodParameterOperation extends org.alice.ide.operations.InputDialogWithPreviewOperation {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice, DeclareMethodParameterOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static DeclareMethodParameterOperation getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		DeclareMethodParameterOperation rv = map.get( method );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new DeclareMethodParameterOperation( method );
+			map.put( method, rv );
+		}
+		return rv;
+	}
 	private org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane;
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
-	public DeclareMethodParameterOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+	private DeclareMethodParameterOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "aa3d337d-b409-46ae-816f-54f139b32d86" ) );
 		this.method = method;
 		this.setName( "Add Parameter..." );

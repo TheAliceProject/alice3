@@ -499,7 +499,22 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		};
 	}
 	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > createDeclareMethodParameterOperationResolver() {
-		return new InputDialogOperationFromIdResolver( java.util.UUID.fromString( "aa3d337d-b409-46ae-816f-54f139b32d86" ) );
+		return new Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation >() {
+			public edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved() {
+				edu.cmu.cs.dennisc.alice.ast.AbstractCode code = ide.getFocusedCode();
+				if( code != null ) {
+					if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
+						return org.alice.ide.operations.ast.DeclareMethodParameterOperation.getInstance( method );
+					} else {
+						return null;
+					}
+				} else {
+					return null;
+				}
+			}
+		};
+//		return new InputDialogOperationFromIdResolver( java.util.UUID.fromString( "aa3d337d-b409-46ae-816f-54f139b32d86" ) );
 	}
 	
 	
