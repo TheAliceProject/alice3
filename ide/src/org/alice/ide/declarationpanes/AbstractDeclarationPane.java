@@ -144,7 +144,8 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 			throw new RuntimeException( "override" );
 		}
 	}
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
+	//todo: reduce to protected
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
 		if( this.typePane != null ) {
 			return this.typePane.getValueType();
 		} else {

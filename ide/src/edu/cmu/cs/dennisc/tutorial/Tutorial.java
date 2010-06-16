@@ -189,6 +189,22 @@ public class Tutorial {
 		};
 		this.addStep( step );
 	}
+	@Deprecated
+	public void EPIC_HACK_addDeclareMethodParameterOperationStep( String title, String text, final org.alice.ide.operations.ast.DeclareMethodParameterOperation.EPIC_HACK_Validator validator ) {
+		Step step = new DialogOpenStep<edu.cmu.cs.dennisc.croquet.InputDialogOperation>( title, text, ((org.alice.ide.tutorial.IdeTutorial)this).createDeclareMethodParameterOperationResolver() ) {
+			@Override
+			public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
+				if( super.isWhatWeveBeenWaitingFor( child ) ) {
+					org.alice.ide.operations.ast.DeclareMethodParameterOperation declareParameterOperation = (org.alice.ide.operations.ast.DeclareMethodParameterOperation)this.getModel();
+					declareParameterOperation.setValidator( validator );
+					return true;
+				} else {
+					return false;
+				}
+			}
+		};
+		this.addStep( step );
+	}
 
 	public void setVisible( boolean isVisible ) {
 		if( isVisible ) {

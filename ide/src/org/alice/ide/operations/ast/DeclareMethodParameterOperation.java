@@ -42,10 +42,18 @@
  */
 package org.alice.ide.operations.ast;
 
+import org.alice.ide.operations.ast.DeclareProcedureOperation.EPIC_HACK_Validator;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DeclareMethodParameterOperation extends org.alice.ide.operations.InputDialogWithPreviewOperation {
+	@Deprecated
+	public interface EPIC_HACK_Validator {
+		public String getExplanationIfOkButtonShouldBeDisabled( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > valueType );
+	}
+
+	private EPIC_HACK_Validator validator = null;
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice, DeclareMethodParameterOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static DeclareMethodParameterOperation getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		DeclareMethodParameterOperation rv = map.get( method );
@@ -64,6 +72,37 @@ public class DeclareMethodParameterOperation extends org.alice.ide.operations.In
 		this.method = method;
 		this.setName( "Add Parameter..." );
 	}
+	
+	public EPIC_HACK_Validator getValidator() {
+		return validator;
+	}
+	public void setValidator( EPIC_HACK_Validator validator ) {
+		this.validator = validator;
+	}
+	private String getDeclarationName() {
+		if( this.createMethodParameterPane != null ) {
+			return this.createMethodParameterPane.getDeclarationName();
+		} else {
+			return null;
+		}
+	}
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > getValueType() {
+		if( this.createMethodParameterPane != null ) {
+			return this.createMethodParameterPane.getValueType();
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	protected String getExplanationIfOkButtonShouldBeDisabled() {
+		if( this.validator != null ) {
+			return this.validator.getExplanationIfOkButtonShouldBeDisabled( this.getDeclarationName(), this.getValueType() );
+		} else {
+			return super.getExplanationIfOkButtonShouldBeDisabled();
+		}
+	}
+	
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
 		//todo: create before hand and refresh at this point

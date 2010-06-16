@@ -67,10 +67,10 @@ public class StressTestTutorial {
 				"Declare a procedure.", 
 				new org.alice.ide.operations.ast.DeclareProcedureOperation.EPIC_HACK_Validator() {
 					public String getExplanationIfOkButtonShouldBeDisabled( String name ) {
-						if( name.equals( "foo" ) ) {
+						if( "foo".equals( name ) ) {
 							return null;
 						} else {
-							return "<html>Please type in the name <b>foo</b> and press <b>Ok</b> button.</html>";
+							return "<html>Please enter in the name <b>foo</b> and press <b>Ok</b> button.</html>";
 						}
 					}
 				}
@@ -83,10 +83,31 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
-		tutorial.addDialogOpenStep( 
+//		tutorial.addDialogOpenStep( 
+//				"Declare Parameter", 
+//				"Declare Parameter.", 
+//				tutorial.createDeclareMethodParameterOperationResolver() 
+//		);
+		tutorial.EPIC_HACK_addDeclareMethodParameterOperationStep( 
 				"Declare Parameter", 
 				"Declare Parameter.", 
-				tutorial.createDeclareMethodParameterOperationResolver() 
+				new org.alice.ide.operations.ast.DeclareMethodParameterOperation.EPIC_HACK_Validator() {
+					public String getExplanationIfOkButtonShouldBeDisabled( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > valueType ) {
+						if( "howHigh".equals( name ) ) {
+							if( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE == valueType ) {
+								return null;
+							} else {
+								return "<html>Please select <b>Double</b> value type, and press <b>Ok</b>.</html>";
+							}
+						} else {
+							if( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE == valueType ) {
+								return "<html>Please enter in name <b>howHigh</b>, and press <b>Ok</b>.</html>";
+							} else {
+								return "<html>Please select <b>Double</b> value type, enter in name <b>howHigh</b>, and press <b>Ok</b>.</html>";
+							}
+						}
+					}
+				}
 		);
 
 		tutorial.addInputDialogCommitStep( 

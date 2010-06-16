@@ -59,7 +59,7 @@ public class CreateProcedurePane extends CreateMethodPane {
 		return false;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
 		return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
 	}
 }

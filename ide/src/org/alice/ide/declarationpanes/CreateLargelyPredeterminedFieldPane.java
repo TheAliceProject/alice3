@@ -72,7 +72,7 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
 		return this.valueType;
 	}
 	@Override
