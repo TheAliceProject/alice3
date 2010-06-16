@@ -57,10 +57,23 @@ public class StressTestTutorial {
 				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
 		);
 
-		tutorial.addDialogOpenStep( 
+//		tutorial.addDialogOpenStep( 
+//				"Declare Procedure", 
+//				"Declare a procedure.", 
+//				tutorial.createDeclareProcedureOperationResolver()
+//		);
+		tutorial.EPIC_HACK_addDeclareProcedureOperationStep( 
 				"Declare Procedure", 
 				"Declare a procedure.", 
-				tutorial.createDeclareProcedureOperationResolver()
+				new org.alice.ide.operations.ast.DeclareProcedureOperation.EPIC_HACK_Validator() {
+					public String getExplanationIfOkButtonShouldBeDisabled( String name ) {
+						if( name.equals( "foo" ) ) {
+							return null;
+						} else {
+							return "<html>Please type in the name <b>foo</b> and press <b>Ok</b> button.</html>";
+						}
+					}
+				}
 		);
 
 		tutorial.addInputDialogCommitStep( 

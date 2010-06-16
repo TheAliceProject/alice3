@@ -151,7 +151,8 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 			throw new RuntimeException( "override" );
 		}
 	}
-	protected final String getDeclarationName() {
+	//todo: reduce to protected
+	public final String getDeclarationName() {
 		return this.declarationNameState.getState();
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {

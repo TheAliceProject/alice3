@@ -449,7 +449,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			}
 		};
 	}
-	
+
 	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > createDeclareProcedureOperationResolver() {
 		return new DeclareMemberResolver() {
 			@Override

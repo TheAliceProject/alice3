@@ -52,6 +52,13 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.In
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 		this.type = type;
 	}
+	protected String getDeclarationName() {
+		if( this.createMethodPane != null ) {
+			return this.createMethodPane.getDeclarationName();
+		} else {
+			return null;
+		}
+	}
 	@Override
 	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
 		return this.createMethodPane;

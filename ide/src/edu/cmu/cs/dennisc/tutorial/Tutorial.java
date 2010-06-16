@@ -170,7 +170,26 @@ public class Tutorial {
 	public void addDragAndDropStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, CompletorValidator completorValidator ) {
 		this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, null, completorValidator );
 	}
-		
+
+	
+
+	@Deprecated
+	public void EPIC_HACK_addDeclareProcedureOperationStep( String title, String text, final org.alice.ide.operations.ast.DeclareProcedureOperation.EPIC_HACK_Validator validator ) {
+		Step step = new DialogOpenStep<edu.cmu.cs.dennisc.croquet.InputDialogOperation>( title, text, ((org.alice.ide.tutorial.IdeTutorial)this).createDeclareProcedureOperationResolver() ) {
+			@Override
+			public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
+				if( super.isWhatWeveBeenWaitingFor( child ) ) {
+					org.alice.ide.operations.ast.DeclareProcedureOperation declareProcedureOperation = (org.alice.ide.operations.ast.DeclareProcedureOperation)this.getModel();
+					declareProcedureOperation.setValidator( validator );
+					return true;
+				} else {
+					return false;
+				}
+			}
+		};
+		this.addStep( step );
+	}
+
 	public void setVisible( boolean isVisible ) {
 		if( isVisible ) {
 			this.stencil.addToLayeredPane();
