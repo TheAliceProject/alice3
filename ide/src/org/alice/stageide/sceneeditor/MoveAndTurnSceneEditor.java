@@ -208,6 +208,105 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.snapGrid = new SnapGrid();
 	}
 
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > fieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
+		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		}
+		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+			MoveAndTurnSceneEditor.this.refreshFields();
+			MoveAndTurnSceneEditor.this.handleFieldAdded(e);
+		}
+
+		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		}
+		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+			MoveAndTurnSceneEditor.this.refreshFields();
+		}
+
+		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		}
+		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+			MoveAndTurnSceneEditor.this.refreshFields();
+		}
+
+		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		}
+		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+			MoveAndTurnSceneEditor.this.refreshFields();
+		}
+	};
+
+	private void handleFieldAdded(edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e)
+	{
+		for( final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice element : e.getElements() ) 
+		{
+			if (element.getDesiredValueType().isAssignableFrom(CameraMarker.class))
+			{
+				this.mainViewSelector.setSelectedView( element );
+				SwingUtilities.invokeLater(new Runnable()
+				{
+					public void run()
+					{
+						MoveAndTurnSceneEditor.this.sidePane.getViewManager().scrollToField(element);
+					}
+				});
+				
+				break;
+			}
+		}
+	}
+	
+
+	private void refreshFields() {
+//		javax.swing.SpringLayout springLayout = this.getLGSpringLayout();
+//		java.awt.Container lgPanel = getLGPanel();
+//		for( FieldTile fieldTile : this.fieldTiles ) {
+//			springLayout.removeLayoutComponent( fieldTile );
+//			this.getLGPanel().remove( fieldTile );
+//		}
+//		this.fieldTiles.clear();
+//		if( this.rootField != null ) {
+//			FieldTile rootFieldTile = this.createFieldTile( this.rootField );
+//			//rootFieldTile.setOpaque( true );
+//			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthWest( lgPanel, rootFieldTile, INSET );
+//			this.fieldTiles.add( rootFieldTile );
+//			java.awt.Component prev = rootFieldTile;
+//			if( rootField != null ) {
+//				for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : rootField.valueType.getValue().getDeclaredFields() ) {
+//					FieldTile fieldTile = createFieldTile( field );
+//					//fieldTile.setOpaque( true );
+//					this.getLGPanel().add( fieldTile );
+//					this.fieldTiles.add( fieldTile );
+//					springLayout.putConstraint( javax.swing.SpringLayout.NORTH, fieldTile, 1, javax.swing.SpringLayout.SOUTH, prev );
+//					springLayout.putConstraint( javax.swing.SpringLayout.WEST, fieldTile, 10, javax.swing.SpringLayout.WEST, rootFieldTile );
+//					prev = fieldTile;
+//				}
+//			}
+//		}
+		this.mainViewSelector.refreshFields();
+		this.sidePane.refreshFields();
+//		
+//		this.revalidate();
+//		this.repaint();
+	}
+
+	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField;
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getRootTypeDeclaredInAlice() {
+		return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)this.rootField.valueType.getValue();
+	}
+	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getRootField() {
+		return this.rootField;
+	}
+	public void setRootField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField ) {
+		if( this.rootField != null ) {
+			getRootTypeDeclaredInAlice().fields.removeListPropertyListener( this.fieldsAdapter );
+		}
+		this.rootField = rootField;
+		if( this.rootField != null ) {
+			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
+		}
+		this.refreshFields();
+	}
+	
 	//	private boolean isRenderingEnabled = true;
 	//	@Override
 	//	public void paintChildren( java.awt.Graphics g ) {
@@ -953,8 +1052,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.snapGrid.setCurrentCamera(this.getSGPerspectiveCamera());
 		this.snapGrid.setShowing(this.snapState.shouldShowSnapGrid());
 
-		PrintUtilities.println( "merge: removed this.setRootField( sceneField );" );
-		//this.setRootField( sceneField );
+		this.setRootField( sceneField );
 		
 		upgradeSceneToStateOfTheArt();
 		
