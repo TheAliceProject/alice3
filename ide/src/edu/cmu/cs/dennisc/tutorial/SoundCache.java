@@ -45,36 +45,41 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class WaitingOnCompleteStep<M extends edu.cmu.cs.dennisc.croquet.Model> extends WaitingStep<M> {
-	public WaitingOnCompleteStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, Feature.ConnectionPreference connectionPreference, edu.cmu.cs.dennisc.croquet.Resolver< M > modelResolver ) {
-		super( title, text, new Hole( trackableShapeResolver, connectionPreference ), modelResolver );
+public enum SoundCache {
+	SUCCESS( javax.swing.plaf.metal.MetalLookAndFeel.class, "sounds/OptionPaneInformation.wav", false ),
+	FAILURE( javax.swing.plaf.metal.MetalLookAndFeel.class, "sounds/OptionPaneError.wav", true );
+	private Class<?> cls;
+	private String resourceName;
+	private boolean isAttempted = false;
+	private javax.sound.sampled.Clip clip;
+	private boolean isBeepDesiredAsFallback;
+	SoundCache( Class<?> cls, String resourceName, boolean isBeepDesiredAsFallback ) {
+		this.cls = cls;
+		this.resourceName = resourceName;
+		this.isBeepDesiredAsFallback = isBeepDesiredAsFallback;
 	}
-	protected abstract boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Edit edit);
-	@Override
-	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
-		if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
-			edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent completeEvent = (edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent)child;
-			edu.cmu.cs.dennisc.croquet.Model eventModel = completeEvent.getParent().getModel();
-			if( this.getModel() == eventModel ) {
-				edu.cmu.cs.dennisc.croquet.Edit edit;
-				if (child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent) {
-					edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent) child;
-					edit = commitEvent.getEdit();
-				} else {
-					edit = null;
-				}
-				boolean rv = this.isInTheDesiredState(edit);
-				if( rv ) {
-					SoundCache.SUCCESS.startIfNotAlreadyActive();
-				} else {
-					SoundCache.FAILURE.startIfNotAlreadyActive();
-				}
-				return rv;
+	public synchronized void startIfNotAlreadyActive() {
+		if( this.isAttempted ) {
+			//pass
+		} else {
+			this.isAttempted = true;
+			try {
+				this.clip = edu.cmu.cs.dennisc.javax.sound.SoundUtilities.createOpenedClip( this.cls, this.resourceName );
+			} catch( Exception e ) {
+				e.printStackTrace();
+			}
+		}
+		if( this.clip != null ) {
+			if( this.clip.isActive() ) {
+				//pass
 			} else {
-				return false;
+				this.clip.setFramePosition( 0 );
+				this.clip.start();
 			}
 		} else {
-			return false;
+			if( this.isBeepDesiredAsFallback ) {
+				java.awt.Toolkit.getDefaultToolkit().beep();
+			}
 		}
 	}
 }

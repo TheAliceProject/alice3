@@ -149,6 +149,7 @@ package edu.cmu.cs.dennisc.tutorial;
 			this.setActiveNote( 1 );
 			return false;
 		} else if( child instanceof edu.cmu.cs.dennisc.croquet.CancelEvent ) {
+			SoundCache.FAILURE.startIfNotAlreadyActive();
 			this.reset();
 			return false;
 		} else if( child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent ) {
