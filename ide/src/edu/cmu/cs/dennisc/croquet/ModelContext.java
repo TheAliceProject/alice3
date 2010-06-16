@@ -234,11 +234,17 @@ public abstract class ModelContext<M extends Model> extends HistoryTreeNode<Mode
 	}
 	
 	
-	public final boolean isCommitted() {
-		return this.getState() == State.COMMITTED;
-	}
+//	public final boolean isCommitted() {
+//		return this.getState() == State.COMMITTED;
+//	}
 	public final boolean isCanceled() {
-		return this.getState() == State.CANCELED;
+		//todo
+		for( HistoryTreeNode<?> node : this.children ) {
+			if( node.getState() == State.CANCELED ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	protected void addChild( HistoryTreeNode<?> child ) {

@@ -76,15 +76,14 @@ public abstract class AbstractDialogOperation< M extends AbstractDialogOperation
 		}
 		final Dialog dialog = new Dialog( owner );
 		dialog.setTitle( this.getName() );
-		dialog.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Dialog.DefaultCloseOperation.DISPOSE );
+		dialog.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Dialog.DefaultCloseOperation.DO_NOTHING );
 
 		java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
 				context.handleWindowOpened( e );
 			}
 			public void windowClosing( java.awt.event.WindowEvent e ) {
-				//context.handleWindowClosed( e );
-				//e.getWindow().dispose();
+				dialog.setVisible( false );
 			}
 			public void windowClosed( java.awt.event.WindowEvent e ) {
 			}
@@ -123,12 +122,9 @@ public abstract class AbstractDialogOperation< M extends AbstractDialogOperation
 			try {
 				dialog.setVisible( true );
 				this.releaseContentPane( context, dialog, contentPane );
-				
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handleWindowClosed" );
 				context.handleWindowClosed( null );
-				dialog.getAwtWindow().dispose();
-				
 				dialog.removeWindowListener( windowListener );
+				dialog.getAwtWindow().dispose();
 			} finally {
 				this.activeDialog = null;
 			}
