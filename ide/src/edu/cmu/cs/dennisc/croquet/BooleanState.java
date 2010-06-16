@@ -152,7 +152,7 @@ public /*final*/ class BooleanState extends Model< BooleanState > {
 		this.action.putValue(javax.swing.Action.NAME, name);
 	}
 	
-	/*package-private*/ < B extends AbstractButton<?,?> > B register( final B rv ) {
+	/*package-private*/ < B extends AbstractButton<?,BooleanState> > B register( final B rv ) {
 		Application.getSingleton().register( this );
 		rv.setSwingButtonModel( this.buttonModel );
 		rv.setAction( this.action );
@@ -176,7 +176,155 @@ public /*final*/ class BooleanState extends Model< BooleanState > {
 		return register( new CheckBoxMenuItem( this ) );
 	}
 	public ToolPalette createToolPalette( Component<?> component ) {
-		CheckBox checkBox = this.createCheckBox();
-		return new ToolPalette(checkBox, component);
+		class ToolPaletteTitle extends AbstractButton<javax.swing.AbstractButton,BooleanState> {
+			public ToolPaletteTitle( BooleanState booleanState) {
+				super( booleanState );
+			}
+			@Override
+			protected javax.swing.AbstractButton createAwtComponent() {
+//					@Override
+//					protected void paintComponent(java.awt.Graphics g) {
+//						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+//						java.awt.Paint paint;
+//						final double FACTOR;
+//						if( this.getModel().isArmed() ) {
+//							FACTOR = 1.3;
+//						} else {
+//							FACTOR = 1.15;
+//						}
+//						final double INVERSE_FACTOR = 1.0 / FACTOR;
+//						java.awt.Color colorA = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB(this.getBackground(), 1.0, FACTOR, FACTOR );
+//						java.awt.Color colorB = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB(this.getBackground(), 1.0, INVERSE_FACTOR, INVERSE_FACTOR );
+//						paint = new java.awt.GradientPaint(0,0, colorA, 0, this.getHeight(), colorB );
+//						g2.setPaint( paint );
+//						g2.fill( g2.getClip() );
+//
+//						super.paintComponent(g);
+//						
+//						int height = this.getHeight();
+//						final int SIZE = 6;
+//						java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+//						path.moveTo( SIZE, 0 );
+//						path.lineTo( -SIZE, SIZE );
+//						path.lineTo( -SIZE, -SIZE );
+//						path.closePath();
+//						
+//						int x = 18;
+//						int y = height/2;
+//						
+//						java.awt.geom.AffineTransform m = g2.getTransform();
+//						
+//						
+//						g.translate(x, y);
+//						if( this.getModel().isSelected() || this.getModel().isPressed() ) {
+//							g2.rotate( Math.PI/2 );
+//						}
+//						java.awt.Paint fillPaint = java.awt.Color.WHITE;
+//						if( this.getModel().isSelected() ) {
+//							//pass
+//						} else {
+//							if( this.getModel().isPressed() ) {
+//								fillPaint = java.awt.Color.YELLOW.darker();
+//							} else {
+//								if( this.getModel().isArmed() ) {
+//									fillPaint = java.awt.Color.YELLOW;
+//								}
+//							}
+//						}
+//						g2.setPaint( fillPaint );
+//						g2.fill( path );
+//						g2.setPaint( java.awt.Color.BLACK );
+//						g2.draw( path );
+//						
+//						g2.setTransform( m );
+//					}
+//				};
+				class ArrowIcon implements javax.swing.Icon {
+					private int size;
+					public ArrowIcon( int size ) {
+						this.size = size;
+					}
+					public int getIconWidth() {
+						return this.size;
+					}
+					public int getIconHeight() {
+						return this.size;
+					}
+					public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+						javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+						float x0 = x;
+						float x1 = x + this.size - 1;
+						float xC = ( x0 + x1 ) * 0.5f;
+						float y0 = y;
+						float y1 = y + this.size - 1;
+						float yC = ( y0 + y1 ) * 0.5f;
+						java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+						path.moveTo( x0, y0);
+						if( button.getModel().isSelected() || button.getModel().isPressed() ) {
+							path.lineTo( x1, y0 );
+							path.lineTo( xC, y1 );
+						} else {
+							path.lineTo( x1, yC );
+							path.lineTo( x0, y1 );
+						}
+						path.closePath();
+
+						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+						
+//						g2.setColor( java.awt.Color.RED );
+//						g2.fillRect( x, y, this.getIconWidth(), this.getIconHeight() );
+
+						java.awt.Paint fillPaint = java.awt.Color.WHITE;
+//						if( button.getModel().isSelected() ) {
+//							//pass
+//						} else {
+							if( button.getModel().isPressed() ) {
+								fillPaint = java.awt.Color.YELLOW.darker();
+							} else {
+								if( button.getModel().isRollover() ) {
+									fillPaint = java.awt.Color.YELLOW;
+								}
+							}
+//						}
+						
+						g2.setPaint( fillPaint );
+						g2.fill( path );
+						g2.setPaint( java.awt.Color.BLACK );
+						g2.draw( path );
+					}
+				}
+				javax.swing.JCheckBox rv = new javax.swing.JCheckBox() {
+					@Override
+					protected void paintComponent(java.awt.Graphics g) {
+						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+						java.awt.Paint paint;
+						final double FACTOR;
+						if( this.getModel().isArmed() ) {
+							FACTOR = 1.3;
+						} else {
+							FACTOR = 1.15;
+						}
+						final double INVERSE_FACTOR = 1.0 / FACTOR;
+						java.awt.Color colorA = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB(this.getBackground(), 1.0, FACTOR, FACTOR );
+						java.awt.Color colorB = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB(this.getBackground(), 1.0, INVERSE_FACTOR, INVERSE_FACTOR );
+						paint = new java.awt.GradientPaint(0,0, colorA, 0, this.getHeight(), colorB );
+						g2.setPaint( paint );
+						g2.fill( g2.getClip() );
+						super.paintComponent(g);
+					}
+					@Override
+					public void updateUI() {
+						this.setUI( new javax.swing.plaf.basic.BasicButtonUI() );
+					}
+				};
+				rv.setIcon( new ArrowIcon( 14 ) );
+				//rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+				rv.setOpaque( false );
+				rv.setVerticalTextPosition( javax.swing.SwingConstants.CENTER );
+				return rv;
+			}
+		}
+		ToolPaletteTitle title = this.register( new ToolPaletteTitle( this ) );
+		return new ToolPalette(title, component);
 	}
 }

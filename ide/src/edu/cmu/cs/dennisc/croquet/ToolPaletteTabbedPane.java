@@ -84,8 +84,7 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, Abstra
 			int y = height/2;
 			
 			java.awt.geom.AffineTransform m = g2.getTransform();
-			
-			
+
 			g.translate(x, y);
 			if( this.getModel().isSelected() || this.getModel().isPressed() ) {
 				g2.rotate( Math.PI/2 );

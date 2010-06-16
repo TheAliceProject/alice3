@@ -47,14 +47,13 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class ToolPalette extends BorderPanel {
-	private CheckBox checkBox;
+	private AbstractButton<?,BooleanState> title;
 	private Component< ? > component;
-	/*package-private*/ ToolPalette( CheckBox checkBox, Component<?> component ) {
-		this.checkBox = checkBox;
+	/*package-private*/ ToolPalette( AbstractButton<?,BooleanState> title, Component<?> component ) {
+		this.title = title;
 		this.component = component;
-		this.addComponent( this.checkBox, Constraint.NORTH );
+		this.addComponent( this.title, Constraint.NORTH );
 		this.addComponent( this.component, Constraint.CENTER );
-		
 	}
 	private BooleanState.ValueObserver valueObserver = new BooleanState.ValueObserver() {
 		public void changing(boolean nextValue) {
@@ -66,36 +65,11 @@ public class ToolPalette extends BorderPanel {
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo(parent);
-		this.checkBox.getModel().addAndInvokeValueObserver( this.valueObserver );
+		this.title.getModel().addAndInvokeValueObserver( this.valueObserver );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		this.checkBox.getModel().removeValueObserver( this.valueObserver );
+		this.title.getModel().removeValueObserver( this.valueObserver );
 		super.handleRemovedFrom(parent);
 	}
-//	@Override
-//	protected javax.swing.AbstractButton createAwtComponent() {
-//		javax.swing.AbstractButton rv = new javax.swing.AbstractButton() {
-//		};
-//		rv.setLayout( new java.awt.BorderLayout() );
-//		rv.add( this.checkBox, java.awt.BorderLayout.NORTH );
-//		rv.add( this.component.getAwtComponent(), java.awt.BorderLayout.CENTER );
-//		return rv;
-//	}
-//	
-//	@Override
-//	/*package-private*/void setAction(javax.swing.Action action) {
-//		super.setAction(action);
-//		this.checkBox.setAction( action );
-//	}
-//	@Override
-//	/*package-private*/void setSwingButtonModel(final javax.swing.ButtonModel model) {
-//		super.setSwingButtonModel(model);
-//		this.checkBox.setModel( model );
-//		model.addActionListener( new java.awt.event.ActionListener() {
-//			public void actionPerformed(java.awt.event.ActionEvent e) {
-//				component.setVisible( model.isSelected() );
-//			}
-//		} );
-//	}
 }
