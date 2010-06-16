@@ -69,9 +69,9 @@ package edu.cmu.cs.dennisc.tutorial;
 		return Stencil.stencilPaint;
 	}
 
-	private static void redispatch(java.awt.event.MouseEvent e) {
+	private void redispatch(java.awt.event.MouseEvent e) {
 		java.awt.Point p = e.getPoint();
-		if (e.getComponent().contains(p.x, p.y)) {
+		if( /*this.isEventInterceptEnabled() &&*/ e.getComponent().contains( p.x, p.y ) ) {
 			// pass
 		} else {
 			java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getAwtWindow().getLayeredPane(), p.x, p.y);
@@ -107,7 +107,7 @@ package edu.cmu.cs.dennisc.tutorial;
 			redispatch(e);
 		}
 	};
-	private boolean isEventInterceptEnabled;
+	private boolean isEventInterceptEnabled = false;
 	public boolean isEventInterceptEnabled() {
 		return this.isEventInterceptEnabled;
 	}
@@ -124,7 +124,64 @@ package edu.cmu.cs.dennisc.tutorial;
 			}
 		}
 	}
+	private java.awt.event.AWTEventListener awtEventListener = new java.awt.event.AWTEventListener() {
+		public void eventDispatched(java.awt.AWTEvent event) {
+			java.awt.event.MouseEvent e = (java.awt.event.MouseEvent)event;
+			e = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent(e.getComponent(), e, Stencil.this.getAwtComponent());
+			Stencil.this.handleMouseMoved( e );
+		}
+	};
+	@Override
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo(parent);
+		java.awt.Toolkit.getDefaultToolkit().addAWTEventListener( this.awtEventListener, java.awt.AWTEvent.MOUSE_MOTION_EVENT_MASK );
+	}
+	@Override
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		java.awt.Toolkit.getDefaultToolkit().removeAWTEventListener( this.awtEventListener );
+		super.handleRemovedFrom(parent);
+	}
 	protected abstract Step getCurrentStep();
+	private Feature enteredFeature;
+	public void setEnteredFeature(Feature enteredFeature) {
+		if( this.enteredFeature != enteredFeature ) {
+			if( this.enteredFeature != null ) {
+				this.enteredFeature.setEntered( false );
+				java.awt.Rectangle bounds = this.enteredFeature.getBounds( this );
+				if( bounds != null ) {
+					this.getAwtComponent().repaint( bounds );
+				}
+			}
+			this.enteredFeature = enteredFeature;
+			if( this.enteredFeature != null ) {
+				this.enteredFeature.setEntered( true );
+				java.awt.Rectangle bounds = this.enteredFeature.getBounds( this );
+				if( bounds != null ) {
+					this.getAwtComponent().repaint( bounds );
+				}
+			}
+			//this.getAwtComponent().repaint();
+		}
+	}
+	private void handleMouseMoved(java.awt.event.MouseEvent e) {
+		Step step = Stencil.this.getCurrentStep();
+		if( step != null ) {
+			for( Note note : step.getNotes() ) {
+				if( note.isActive() ) {
+					for( Feature feature : note.getFeatures() ) {
+						java.awt.Shape shape = feature.getShape( Stencil.this, null );
+						if( shape != null ) {
+							if( shape.contains( e.getX(), e.getY() ) ) {
+								this.setEnteredFeature(feature);
+								return;
+							}
+						}
+					}
+				}
+			}
+		}
+		this.setEnteredFeature( null );
+	}
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
 		class JStencil extends javax.swing.JPanel {

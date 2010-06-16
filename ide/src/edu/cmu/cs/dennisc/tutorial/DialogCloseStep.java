@@ -51,6 +51,10 @@ package edu.cmu.cs.dennisc.tutorial;
 			super( trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST );
 		}
 		@Override
+		protected java.awt.Insets getBoundsInsets() {
+			return null;
+		}
+		@Override
 		protected java.awt.Insets getContainsInsets() {
 			return null;
 		}

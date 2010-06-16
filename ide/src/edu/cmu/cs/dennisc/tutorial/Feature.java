@@ -82,10 +82,26 @@ package edu.cmu.cs.dennisc.tutorial;
 	private edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver;
 	private ConnectionPreference connectionPreference;
 	private Integer heightConstraint = null;
+	private boolean isEntered = false;
 	public Feature( edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
 		//assert trackableShape != null;
 		this.trackableShapeResolver = trackableShapeResolver;
 		this.connectionPreference = connectionPreference;
+	}
+	
+	public java.awt.Rectangle getBounds( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy ) {
+		edu.cmu.cs.dennisc.croquet.TrackableShape featureTrackableShape = this.getTrackableShape();
+		if( featureTrackableShape != null ) {
+			java.awt.Insets boundsInsets = this.getBoundsInsets();
+			if( boundsInsets != null ) {
+				java.awt.Shape shape = featureTrackableShape.getShape( asSeenBy, boundsInsets );
+				return shape.getBounds();
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 	
 	/*package-private*/ void setHeightConstraint( Integer heightConstraint ) {
@@ -94,6 +110,13 @@ package edu.cmu.cs.dennisc.tutorial;
 	
 	private edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape() {
 		return this.trackableShapeResolver.getResolved();
+	}
+	
+	public boolean isEntered() {
+		return this.isEntered;
+	}
+	public void setEntered(boolean isEntered) {
+		this.isEntered = isEntered;
 	}
 	
 	private static java.awt.Shape constrainHeightIfNecessary( java.awt.Shape shape, Integer heightConstraint ) {
@@ -288,6 +311,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 		return rv;
 	}
+	protected abstract java.awt.Insets getBoundsInsets();
 	protected abstract java.awt.Insets getContainsInsets();
 	protected abstract java.awt.Insets getPaintInsets();
 	

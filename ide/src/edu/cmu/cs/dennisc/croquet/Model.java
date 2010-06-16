@@ -163,12 +163,12 @@ public abstract class Model<M> implements TrackableShape, Resolver< M > {
 		if( this.firstComponentHint != null ) {
 			return cls.cast( this.firstComponentHint );
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "getFirstComponent:", this );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "count:", this.components.size() );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "getFirstComponent:", this );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "count:", this.components.size() );
 			for( JComponent< ? > component : this.components ) {
 				if( cls.isAssignableFrom( component.getClass() ) ) {
 					if( component.getAwtComponent().isShowing() ) {
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
+//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
 						return cls.cast( component );
 					} else {
 						//pass
@@ -178,7 +178,7 @@ public abstract class Model<M> implements TrackableShape, Resolver< M > {
 			for( JComponent< ? > component : this.components ) {
 				if( cls.isAssignableFrom( component.getClass() ) ) {
 					if( component.getAwtComponent().isVisible() ) {
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "isVisible:", component.getAwtComponent().getClass() );
+//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "isVisible:", component.getAwtComponent().getClass() );
 						return cls.cast( component );
 					} else {
 						//pass

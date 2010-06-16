@@ -71,6 +71,10 @@ package edu.cmu.cs.dennisc.tutorial;
 		super( trackableShapeResolver, connectionPreference );
 	}
 	@Override
+	protected java.awt.Insets getBoundsInsets() {
+		return null;
+	}
+	@Override
 	protected java.awt.Insets getContainsInsets() {
 		return null;
 	}

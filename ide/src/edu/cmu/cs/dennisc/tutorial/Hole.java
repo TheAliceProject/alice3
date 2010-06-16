@@ -47,8 +47,11 @@ package edu.cmu.cs.dennisc.tutorial;
  */
 /* package-private */class Hole extends Feature {
 	private static final int PAD = 4;
+	private static final int BOUNDS_PAD = PAD + 64;
 	private static final java.awt.Insets PAINT_INSETS = new java.awt.Insets( PAD, PAD, PAD, PAD );
+	private static final java.awt.Insets BOUNDS_INSETS = new java.awt.Insets( BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD );
 	private static final java.awt.Paint HIGHLIGHT_PAINT = new java.awt.Color(255, 255, 0, 23);
+	private static final java.awt.Paint ENTERED_HIGHLIGHT_PAINT = new java.awt.Color(127, 255, 0, 31);
 	private static final int HOLE_BEVEL_THICKNESS = 2;
 	//private static final java.awt.Stroke HOLE_BEVEL_STROKE = new java.awt.BasicStroke(2.0f);
 	private static final java.awt.Stroke[] HIGHLIGHT_STROKES;
@@ -64,6 +67,10 @@ package edu.cmu.cs.dennisc.tutorial;
 		super( trackableShapeResolver, connectionPreference );
 	}
 	
+	@Override
+	protected java.awt.Insets getBoundsInsets() {
+		return BOUNDS_INSETS;
+	}
 	@Override
 	protected java.awt.Insets getContainsInsets() {
 		return null;
@@ -84,7 +91,13 @@ package edu.cmu.cs.dennisc.tutorial;
 
 
 		g2.setClip(area);
-		g2.setPaint(HIGHLIGHT_PAINT);
+		java.awt.Paint paint;
+		if( this.isEntered() ) {
+			paint = ENTERED_HIGHLIGHT_PAINT;
+		} else {
+			paint = HIGHLIGHT_PAINT;
+		}
+		g2.setPaint(paint);
 		for (java.awt.Stroke stroke : HIGHLIGHT_STROKES) {
 			g2.setStroke(stroke);
 			g2.draw(shape);
