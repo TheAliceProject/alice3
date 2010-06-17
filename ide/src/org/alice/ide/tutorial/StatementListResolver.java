@@ -56,6 +56,7 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.TrackableShape getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
-		return codeEditor.getTrackableShapeAtIndexOf(this.statementListPropertyResolver.getResolved(), this.index);
+		boolean EPIC_HACK_isDropConstraintDesired = true;
+		return codeEditor.getTrackableShapeAtIndexOf(this.statementListPropertyResolver.getResolved(), this.index, EPIC_HACK_isDropConstraintDesired );
 	}
 }

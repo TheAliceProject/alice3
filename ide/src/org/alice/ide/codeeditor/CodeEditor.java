@@ -94,6 +94,9 @@ class StatementListPropertyPaneInfo /* implements edu.cmu.cs.dennisc.croquet.Tra
  * @author Dennis Cosgrove
  */
 public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax.swing.JPanel, edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.croquet.DropReceptor {
+	private StatementListPropertyPane EPIC_HACK_desiredStatementListPropertyPane = null;
+	private int EPIC_HACK_desiredIndex = -1;
+
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
 	private StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
 	private edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane;
@@ -320,6 +323,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 	}
 	
 	private StatementListPropertyPane currentUnder;
+	
 	private void setCurrentUnder( StatementListPropertyPane nextUnder, java.awt.Dimension dropSize ) {
 		if( this.currentUnder != nextUnder ) {
 			if( this.currentUnder != null ) {
@@ -484,6 +488,23 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 		final StatementListPropertyPane statementListPropertyPane = CodeEditor.this.currentUnder;
 		if( statementListPropertyPane != null ) {
 			final int index = statementListPropertyPane.calculateIndex( source.convertPoint( eSource.getPoint(), statementListPropertyPane ) );
+
+			if( EPIC_HACK_desiredStatementListPropertyPane != null && EPIC_HACK_desiredIndex != -1 ) {
+				int desiredIndex;
+				if( EPIC_HACK_desiredIndex == Short.MAX_VALUE ) {
+					desiredIndex = statementListPropertyPane.getProperty().size();
+				} else {
+					desiredIndex = EPIC_HACK_desiredIndex;
+				}
+				if( EPIC_HACK_desiredStatementListPropertyPane != statementListPropertyPane || desiredIndex != index ) {
+//					EPIC_HACK_desiredStatementListPropertyPane = null;
+//					EPIC_HACK_desiredIndex = -1;
+					source.hideDropProxyIfNecessary();
+					context.cancel();
+					return null;
+				}
+			}
+			
 			if( source instanceof org.alice.ide.templates.StatementTemplate ) {
 				final org.alice.ide.templates.StatementTemplate statementTemplate = (org.alice.ide.templates.StatementTemplate)source;
 				if( this.currentUnder != null ) {
@@ -717,6 +738,9 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 		}
 	}
 	public final void dragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "dragStopped" );
+		EPIC_HACK_desiredStatementListPropertyPane = null;
+		EPIC_HACK_desiredIndex = -1;
 	}
 
 	private static int convertY( edu.cmu.cs.dennisc.croquet.Component<?> from, int y, edu.cmu.cs.dennisc.croquet.Component<?> to ) {
@@ -758,7 +782,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 	
 	private static boolean isWarningAlreadyPrinted = false;
 	
-	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShapeAtIndexOf( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, final int index ) {
+	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShapeAtIndexOf( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, final int index, boolean EPIC_HACK_isDropConstraintDesired ) {
 		if( statementListProperty != null ) {
 			//choose any non-ancestor
 			
@@ -791,6 +815,11 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 					
 					final java.awt.Rectangle boundsAtIndex = new java.awt.Rectangle( bounds.x, yMinimum, bounds.width, yMaximum - yMinimum + 1 );
 
+					if( EPIC_HACK_isDropConstraintDesired ) {
+						CodeEditor.this.EPIC_HACK_desiredStatementListPropertyPane = statementListPropertyPane;
+						CodeEditor.this.EPIC_HACK_desiredIndex = index;
+					}
+					
 					return new edu.cmu.cs.dennisc.croquet.TrackableShape() {
 						public java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
 							java.awt.Rectangle rv = CodeEditor.this.getAsSeenBy().convertRectangle( boundsAtIndex, asSeenBy );
