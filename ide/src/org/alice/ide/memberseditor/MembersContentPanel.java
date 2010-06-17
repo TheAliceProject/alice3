@@ -54,11 +54,11 @@ public abstract class MembersContentPanel extends edu.cmu.cs.dennisc.croquet.Pag
 	@Override
 	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
 		super.handleAddedTo( parent );
-		org.alice.ide.IDE.getSingleton().getFieldSelectionState().addAndInvokeValueObserver( this.fieldSelectionObserver );
+		org.alice.ide.IDE.getSingleton().getAccessibleListState().addAndInvokeValueObserver( this.fieldSelectionObserver );
 	}
 	@Override
 	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		org.alice.ide.IDE.getSingleton().getFieldSelectionState().removeValueObserver( this.fieldSelectionObserver );
+		org.alice.ide.IDE.getSingleton().getAccessibleListState().removeValueObserver( this.fieldSelectionObserver );
 		super.handleRemovedFrom( parent );
 	}
 	

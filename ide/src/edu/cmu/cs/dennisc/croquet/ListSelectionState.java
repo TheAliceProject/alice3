@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListSelectionState<E> extends Model< ListSelectionState<E> > {
+public abstract class ListSelectionState<E> extends Model< ListSelectionState<E> > implements Iterable<E> {
 	public static interface ValueObserver<E> {
 		public void changed(E nextValue);
 	};
@@ -321,10 +321,12 @@ public abstract class ListSelectionState<E> extends Model< ListSelectionState<E>
 		this.comboBoxModel.setSelectedItem(value);
 	}
 
+	public java.util.Iterator< E > iterator() {
+		return this.comboBoxModel.items.iterator();
+	}
 	public E getItemAt(int index) {
 		return (E) this.comboBoxModel.getElementAt(index);
 	}
-
 	public int getItemCount() {
 		return this.comboBoxModel.getSize();
 	}

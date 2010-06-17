@@ -474,11 +474,11 @@ public class StressTestTutorial {
 		);
 
 		
-		tutorial.addItemSelectionStep(
+		tutorial.addListSelectionStep(
 				"Select Scene", 
 				"Select the <b>scene</b>.<i>",
-				ide.getFieldSelectionState(),
-				tutorial.createRootFieldResolver()
+				ide.getAccessibleListState(),
+				tutorial.createAccessibleResolver( "scene" )
 		);
 
 		tutorial.addActionStep( 
@@ -632,7 +632,7 @@ public class StressTestTutorial {
 		tutorial.addSpotlightStep( 
 				"Curent Instance", 
 				"The current instance is displayed here.", 
-				ide.getFieldSelectionState()
+				ide.getAccessibleListState()
 		);
 		tutorial.addSpotlightStep( 
 				"Instance Details", 

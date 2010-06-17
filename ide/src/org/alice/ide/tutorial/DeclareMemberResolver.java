@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 /*package-private*/ abstract class DeclareMemberResolver implements Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> {
 	protected abstract edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved(edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type);
 	public edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved() {
-		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.IDE.getSingleton().getFieldSelectionState().getValue();
+		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.IDE.getSingleton().getAccessibleListState().getValue();
 		if( accessible != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type = accessible.getValueType();
 			if( type instanceof edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > ) {

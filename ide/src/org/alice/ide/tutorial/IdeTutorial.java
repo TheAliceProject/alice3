@@ -316,7 +316,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > createCurrentAccessibleMethodResolver( final String methodName ) {
 		return new Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod >() {
 			public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getResolved() {
-				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = ide.getFieldSelectionState().getValue();
+				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = ide.getAccessibleListState().getValue();
 				return findShortestMethod( accessible, methodName );
 			}
 		};
@@ -459,20 +459,32 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return this.createInvocationMoreResolver( methodName, Short.MAX_VALUE );
 	}
 	
-	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractField > createFieldResolver( final String name ) {
-		return new Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractField >() {
-			public edu.cmu.cs.dennisc.alice.ast.AbstractField getResolved() {
-				return ide.getSceneType().getDeclaredField( name );
+	public Resolver< edu.cmu.cs.dennisc.alice.ast.Accessible > createAccessibleResolver( final String name ) {
+		return new Resolver< edu.cmu.cs.dennisc.alice.ast.Accessible >() {
+			public edu.cmu.cs.dennisc.alice.ast.Accessible getResolved() {
+				for( edu.cmu.cs.dennisc.alice.ast.Accessible accessible : ide.getAccessibleListState() ) {
+					if( name.equals( accessible.getName() ) ) {
+						return accessible;
+					}
+				}
+				return null;
 			}
 		};
 	}
-	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractField > createRootFieldResolver() {
-		return new Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractField >() {
-			public edu.cmu.cs.dennisc.alice.ast.AbstractField getResolved() {
-				return ide.getSceneField();
-			}
-		};
-	}
+//	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractField > createFieldResolver( final String name ) {
+//		return new Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractField >() {
+//			public edu.cmu.cs.dennisc.alice.ast.AbstractField getResolved() {
+//				return ide.getSceneType().getDeclaredField( name );
+//			}
+//		};
+//	}
+//	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractField > createRootFieldResolver() {
+//		return new Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractField >() {
+//			public edu.cmu.cs.dennisc.alice.ast.AbstractField getResolved() {
+//				return ide.getSceneField();
+//			}
+//		};
+//	}
 
 	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > createDeclareProcedureOperationResolver() {
 		return new DeclareMemberResolver() {

@@ -79,7 +79,7 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = getIDE().getFieldSelectionState().getValue();
+		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = getIDE().getAccessibleListState().getValue();
 		if( accessible != null ) {
 			return accessible.getValueType();
 		} else {
@@ -118,11 +118,11 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 		super.handleAddedTo( parent );
 		org.alice.ide.IDE.getSingleton().getOmissionOfThisForFieldAccessesDesiredState().addAndInvokeValueObserver( this.valueObserver );
 		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeValueObserver( this.codeSelectionObserver );
-		org.alice.ide.IDE.getSingleton().getFieldSelectionState().addAndInvokeValueObserver( this.fieldSelectionObserver );
+		org.alice.ide.IDE.getSingleton().getAccessibleListState().addAndInvokeValueObserver( this.fieldSelectionObserver );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		org.alice.ide.IDE.getSingleton().getFieldSelectionState().removeValueObserver( this.fieldSelectionObserver );
+		org.alice.ide.IDE.getSingleton().getAccessibleListState().removeValueObserver( this.fieldSelectionObserver );
 		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeValueObserver( this.codeSelectionObserver );
 		org.alice.ide.IDE.getSingleton().getOmissionOfThisForFieldAccessesDesiredState().removeValueObserver( this.valueObserver );
 		super.handleRemovedFrom( parent );

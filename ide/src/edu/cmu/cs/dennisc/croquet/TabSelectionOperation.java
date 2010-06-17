@@ -89,9 +89,7 @@ public final class TabSelectionOperation extends ListSelectionState<Predetermine
 	}
 
 	public PredeterminedTab getItemForId( java.util.UUID id ) {
-		final int N = this.getItemCount();
-		for( int i=0; i<N; i++ ) {
-			PredeterminedTab predeterminedTab = this.getItemAt( i );
+		for( PredeterminedTab predeterminedTab : this ) {
 			if( predeterminedTab.getId().equals( id ) ) {
 				return predeterminedTab;
 			}

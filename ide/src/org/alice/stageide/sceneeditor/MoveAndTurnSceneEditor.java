@@ -344,7 +344,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.splitPane.setLeftComponent( this.lookingGlassPanel );
 		
 		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeValueObserver( this.codeSelectionObserver );
-		org.alice.ide.IDE.getSingleton().getFieldSelectionState().addAndInvokeValueObserver( this.fieldSelectionObserver );
+		org.alice.ide.IDE.getSingleton().getAccessibleListState().addAndInvokeValueObserver( this.fieldSelectionObserver );
 	}
 
 	@Override
@@ -353,7 +353,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().removeAutomaticDisplayListener( this.automaticDisplayListener );
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
 		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeValueObserver( this.codeSelectionObserver );
-		org.alice.ide.IDE.getSingleton().getFieldSelectionState().removeValueObserver( this.fieldSelectionObserver );
+		org.alice.ide.IDE.getSingleton().getAccessibleListState().removeValueObserver( this.fieldSelectionObserver );
 		super.handleRemovedFrom( parent );
 	}
 
@@ -537,7 +537,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouth( lgPanel, mainCameraNavigatorWidget, INSET );
 
-			this.fieldRadioButtons = new FieldRadioButtons( this.getIDE().getFieldSelectionState() );
+			this.fieldRadioButtons = new FieldRadioButtons( this.getIDE().getAccessibleListState() );
 			
 			
 //			edu.cmu.cs.dennisc.croquet.GridPanel testPanel = edu.cmu.cs.dennisc.croquet.GridPanel.createSingleColumnGridPane();
@@ -683,7 +683,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		final org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instance;
 		//declaringType.fields.add( field );
 		this.putInstanceForField( field, transformable );
-		this.getIDE().getFieldSelectionState().setValue( field );
+		this.getIDE().getAccessibleListState().setValue( field );
 		final org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera = this.scene.findFirstMatch( org.alice.apis.moveandturn.SymmetricPerspectiveCamera.class );
 		if( isAnimationDesired && camera != null && transformable instanceof org.alice.apis.moveandturn.Model ) {
 			new Thread() {
@@ -711,7 +711,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		org.alice.apis.moveandturn.Element element = org.alice.apis.moveandturn.Element.getElement( sgTransformable );
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldForInstanceInJava( element );
 		if( field != null ) {
-			this.getIDE().getFieldSelectionState().setValue( field );
+			this.getIDE().getAccessibleListState().setValue( field );
 		}
 	}
 
@@ -778,7 +778,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		if( code != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType type = code.getDeclaringType();
 			if( type != null ) {
-				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = this.getIDE().getFieldSelectionState().getValue();
+				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = this.getIDE().getAccessibleListState().getValue();
 				if( accessible instanceof AbstractField ) {
 					AbstractField selectedField = (AbstractField)accessible;
 					if( selectedField != null ) {
@@ -794,7 +794,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 								} else {
 									for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
 										if( type.isAssignableFrom( field.getValueType() ) ) {
-											this.getIDE().getFieldSelectionState().setValue( field );
+											this.getIDE().getAccessibleListState().setValue( field );
 											break;
 										}
 									}

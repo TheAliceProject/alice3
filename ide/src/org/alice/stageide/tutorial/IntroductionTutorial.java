@@ -69,7 +69,7 @@ public class IntroductionTutorial {
 
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				ide.getFieldSelectionState().setValue( cameraField );
+				ide.getAccessibleListState().setValue( cameraField );
 			}
 		} );
 		
@@ -85,7 +85,7 @@ public class IntroductionTutorial {
 		tutorial.addSpotlightStep( 
 				"Curent Instance", 
 				"The current instance is displayed here.", 
-				ide.getFieldSelectionState()
+				ide.getAccessibleListState()
 		);
 		tutorial.addSpotlightStep( 
 				"Instance Details", 
@@ -142,11 +142,11 @@ public class IntroductionTutorial {
 				"First, we'll need to find out what the <b>iceSkater</b> can do."
 		);
 		
-		tutorial.addItemSelectionStep(
+		tutorial.addListSelectionStep(
 				"Select Ice Skater", 
 				"By selecting an instance we can see what procedures it knows how to do.<p><p><i>Select the <b>iceSkater</b>.<i>",
-				ide.getFieldSelectionState(),
-				tutorial.createFieldResolver( "iceSkater" )
+				ide.getAccessibleListState(),
+				tutorial.createAccessibleResolver( "iceSkater" )
 		);
 		
 		tutorial.addSpotlightTabScrollPaneStep( 

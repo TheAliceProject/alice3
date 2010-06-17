@@ -661,7 +661,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		//this.setLocale( new java.util.Locale( "en", "US", "java" ) );
 		//javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "en", "US", "java" ) );
 
-		this.fieldSelectionState.addAndInvokeValueObserver( this.accessibleSelectionObserver );
+		this.accessibleListState.addAndInvokeValueObserver( this.accessibleSelectionObserver );
 		
 		this.expressionFillerInners = this.addExpressionFillerInners( new java.util.LinkedList< org.alice.ide.cascade.fillerinners.ExpressionFillerInner >() );
 
@@ -1031,7 +1031,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForRuntimeProgram;
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForSceneEditor;
 
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > fieldSelectionState = new edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible >( IDE_GROUP, java.util.UUID.fromString( "a6d09409-82b8-4dfe-b156-588f1983893c" ) ) {
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibleListState = new edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible >( IDE_GROUP, java.util.UUID.fromString( "a6d09409-82b8-4dfe-b156-588f1983893c" ) ) {
 		
 		@Override
 		protected edu.cmu.cs.dennisc.alice.ast.Accessible decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -1043,8 +1043,8 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 	};
 
-	public edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > getFieldSelectionState() {
-		return this.fieldSelectionState;
+	public edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > getAccessibleListState() {
+		return this.accessibleListState;
 	}
 
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > fieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
@@ -1086,7 +1086,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of refreshFields" );
 	
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getFocusedCode();
-		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = this.fieldSelectionState.getValue();
+		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = this.accessibleListState.getValue();
 		
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibles = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( this.rootField != null ) {
@@ -1133,7 +1133,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		if( selectedIndex == -1 ) {
 			selectedIndex = indexOfLastField;
 		}
-		this.fieldSelectionState.setListData( selectedIndex, accessibles );
+		this.accessibleListState.setListData( selectedIndex, accessibles );
 	}
 	private void setRootField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField ) {
 		if( this.rootField != null ) {
@@ -1827,14 +1827,14 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 	}
 	public final edu.cmu.cs.dennisc.alice.ast.Expression createInstanceExpression() /*throws OutOfScopeException*/{
-		return createInstanceExpression( this.getFieldSelectionState().getValue() );
+		return createInstanceExpression( this.getAccessibleListState().getValue() );
 	}
 
 	public boolean isAccessibleInScope( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
 		return createInstanceExpression( accessible ) != null;
 	}
 	public final boolean isSelectedAccessibleInScope() {
-		return isAccessibleInScope( this.getFieldSelectionState().getValue() );
+		return isAccessibleInScope( this.getAccessibleListState().getValue() );
 	}
 
 	@Override

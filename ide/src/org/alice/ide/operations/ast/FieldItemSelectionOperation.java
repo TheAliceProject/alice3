@@ -51,6 +51,6 @@ public class FieldItemSelectionOperation extends org.alice.ide.operations.Abstra
 	}
 	@Override
 	protected void handleSelectionChange(edu.cmu.cs.dennisc.alice.ast.AbstractField value) {
-		getIDE().getFieldSelectionState().setValue( value);
+		getIDE().getAccessibleListState().setValue( value);
 	}
 }

@@ -142,12 +142,12 @@ public class Tutorial {
 		Step step = new InputDialogCommitStep( title, text, inputDialogOperationResolver, completorValidator );
 		this.addStep( step );
 	}
-	public <E> void addItemSelectionStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
-		Step step = new ItemSelectionStateStep<E>( title, text, itemSelectionStateResolver, itemResolver, Feature.ConnectionPreference.EAST_WEST );
+	public <E> void addListSelectionStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
+		Step step = new ListSelectionStateStep<E>( title, text, itemSelectionStateResolver, itemResolver, Feature.ConnectionPreference.EAST_WEST );
 		this.addStep( step );
 	}
 	public <E> void addSelectTabStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
-		Step step = new ItemSelectionStateStep<E>( title, text, itemSelectionStateResolver, itemResolver, Feature.ConnectionPreference.NORTH_SOUTH );
+		Step step = new ListSelectionStateStep<E>( title, text, itemSelectionStateResolver, itemResolver, Feature.ConnectionPreference.NORTH_SOUTH );
 		this.addStep( step );
 	}
 	public <E> void addSpotlightTabTitleStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
