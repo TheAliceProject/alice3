@@ -52,7 +52,7 @@ public final class Window extends AbstractWindow<javax.swing.JWindow> {
 		if( owner != null ) {
 			AbstractWindow<?> root = owner.getRoot();
 			if( root != null ) {
-				java.awt.Window ownerWindow = root.getAwtWindow();
+				java.awt.Window ownerWindow = root.getAwtComponent();
 				if( ownerWindow instanceof java.awt.Frame ) {
 					rv = new javax.swing.JWindow( (java.awt.Frame)ownerWindow );
 				} else {
@@ -74,6 +74,6 @@ public final class Window extends AbstractWindow<javax.swing.JWindow> {
 	}
 	@Override
 	protected javax.swing.JRootPane getRootPane() {
-		return this.getAwtWindow().getRootPane();
+		return this.getAwtComponent().getRootPane();
 	}
 }

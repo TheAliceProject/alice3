@@ -49,7 +49,6 @@ package edu.cmu.cs.dennisc.croquet;
 public interface TrackableShape {
 	public boolean isInView();
 	public ScrollPane getScrollPaneAncestor();
-	public java.awt.Shape getShape( Component< ? > asSeenBy, java.awt.Insets insets );
-	public java.awt.Shape getVisibleShape( Component< ? > asSeenBy, java.awt.Insets insets );
-	//public JComponent< ? > getComponent();
+	public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets );
+	public java.awt.Shape getVisibleShape( ScreenElement asSeenBy, java.awt.Insets insets );
 }

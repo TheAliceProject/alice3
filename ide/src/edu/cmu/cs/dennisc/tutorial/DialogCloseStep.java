@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class DialogCloseStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DialogOperation> {
+/*package-private*/ class DialogCloseStep extends AbstractDialogCloseStep<edu.cmu.cs.dennisc.croquet.DialogOperation> {
 	private static class DialogCloseButtonFeature extends Feature {
 		public DialogCloseButtonFeature( edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver ) {
 			super( trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST );
@@ -84,23 +84,12 @@ package edu.cmu.cs.dennisc.tutorial;
 		} ), dialogOperationResolver );
 	}
 	@Override
-	protected boolean isAlreadyInTheDesiredState() {
-		return this.getModel().getActiveDialog() == null;
-	}
-	@Override
 	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
 		if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent ) {
 			edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent windowClosedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent)child;
 			return windowClosedEvent.getParent().getModel() == this.getModel();
 		} else {
 			return false;
-		}
-	}
-	@Override
-	protected void complete( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
-		edu.cmu.cs.dennisc.croquet.Dialog dialog = this.getModel().getActiveDialog();
-		if( dialog != null ) {
-			dialog.setVisible( false );
 		}
 	}
 }

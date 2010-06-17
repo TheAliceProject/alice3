@@ -114,7 +114,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		if( /*this.isEventInterceptEnabled() &&*/ e.getComponent().contains( p.x, p.y ) ) {
 			// pass
 		} else {
-			java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getAwtWindow().getLayeredPane(), p.x, p.y);
+			java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getAwtComponent().getLayeredPane(), p.x, p.y);
 			if (component != null) {
 				java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint(e.getComponent(), p, component);
 				component.dispatchEvent(new java.awt.event.MouseEvent(component, e.getID(), e.getWhen(), e.getModifiers() + e.getModifiersEx(), pComponent.x, pComponent.y, e.getClickCount(), e.isPopupTrigger()));

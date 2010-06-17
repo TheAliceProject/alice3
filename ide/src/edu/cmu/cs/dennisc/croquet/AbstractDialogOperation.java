@@ -103,11 +103,11 @@ public abstract class AbstractDialogOperation< M extends AbstractDialogOperation
 		
 		try {
 			assert contentPane != null;
-			dialog.getAwtWindow().setContentPane( contentPane.getAwtComponent() );
+			dialog.getAwtComponent().setContentPane( contentPane.getAwtComponent() );
 
 			java.awt.Dimension size = this.getDesiredDialogSize( dialog );
 			if( size != null ) {
-				dialog.getAwtWindow().setSize( size );
+				dialog.getAwtComponent().setSize( size );
 			} else {
 				dialog.pack();
 			}
@@ -115,7 +115,7 @@ public abstract class AbstractDialogOperation< M extends AbstractDialogOperation
 			if( location != null ) {
 				dialog.setLocation( location );
 			} else {
-				edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog.getAwtWindow(), Application.getSingleton().getFrame().getAwtWindow() ); 
+				edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog.getAwtComponent(), Application.getSingleton().getFrame().getAwtComponent() ); 
 			}
 			
 			this.activeDialog = dialog;
@@ -124,7 +124,7 @@ public abstract class AbstractDialogOperation< M extends AbstractDialogOperation
 				this.releaseContentPane( context, dialog, contentPane );
 				context.handleWindowClosed( null );
 				dialog.removeWindowListener( windowListener );
-				dialog.getAwtWindow().dispose();
+				dialog.getAwtComponent().dispose();
 			} finally {
 				this.activeDialog = null;
 			}

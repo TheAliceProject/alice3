@@ -73,7 +73,7 @@ public class Dialog extends AbstractWindow< javax.swing.JDialog > {
 		if( owner != null ) {
 			AbstractWindow<?> root = owner.getRoot();
 			if( root != null ) {
-				java.awt.Window ownerWindow = root.getAwtWindow();
+				java.awt.Window ownerWindow = root.getAwtComponent();
 				if( ownerWindow instanceof java.awt.Frame ) {
 					rv = new javax.swing.JDialog( (java.awt.Frame)ownerWindow );
 				} else 	if( ownerWindow instanceof java.awt.Dialog ) {
@@ -102,25 +102,25 @@ public class Dialog extends AbstractWindow< javax.swing.JDialog > {
 	}
 	public Dialog( Component<?> owner, boolean isModal ) {
 		super( Dialog.createJDialog( owner ) );
-		this.getAwtWindow().setModal( isModal );
+		this.getAwtComponent().setModal( isModal );
 	}
 	@Override
 	protected javax.swing.JRootPane getRootPane() {
-		return this.getAwtWindow().getRootPane();
+		return this.getAwtComponent().getRootPane();
 	}
 	
 	public DefaultCloseOperation getDefaultCloseOperation() {
-		return DefaultCloseOperation.valueOf( this.getAwtWindow().getDefaultCloseOperation() );
+		return DefaultCloseOperation.valueOf( this.getAwtComponent().getDefaultCloseOperation() );
 	}
 	public void setDefaultCloseOperation( DefaultCloseOperation defaultCloseOperation ) {
-		this.getAwtWindow().setDefaultCloseOperation( defaultCloseOperation.internal );
+		this.getAwtComponent().setDefaultCloseOperation( defaultCloseOperation.internal );
 	}
 	
 	public String getTitle() {
-		return this.getAwtWindow().getTitle();
+		return this.getAwtComponent().getTitle();
 	}
 	public void setTitle( String title ) {
-		this.getAwtWindow().setTitle( title );
+		this.getAwtComponent().setTitle( title );
 	}
 	
 	@Override

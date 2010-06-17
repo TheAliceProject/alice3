@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 //todo: better name
-public abstract class AbstractWindow<W extends java.awt.Window> implements TrackableShape {
+public abstract class AbstractWindow<W extends java.awt.Window> implements ScreenElement, TrackableShape {
 	private static java.util.Map< java.awt.Component, AbstractWindow<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
 	/*package-private*/ static AbstractWindow<?> lookup( java.awt.Component component ) {
 		if( component != null ) {
@@ -64,9 +64,13 @@ public abstract class AbstractWindow<W extends java.awt.Window> implements Track
 		AbstractWindow.map.put( window, this );
 	}
 
-	/*protected*/ public final W getAwtWindow() {
+	/*protected*/ public final W getAwtComponent() {
 		return this.window;
 	}
+	public java.awt.Point convertPoint( java.awt.Point pt, ScreenElement asSeenBy ) {
+		return javax.swing.SwingUtilities.convertPoint( this.getAwtComponent(), pt, asSeenBy.getAwtComponent() );
+	}
+	
 	protected abstract javax.swing.JRootPane getRootPane();
 
 	private BorderPanel contentPanel = new BorderPanel(); 
@@ -103,6 +107,16 @@ public abstract class AbstractWindow<W extends java.awt.Window> implements Track
 	public java.awt.Point getLocation() {
 		return this.window.getLocation();
 	}
+	public java.awt.Point getLocation( ScreenElement asSeenBy ) {
+		if( asSeenBy.getAwtComponent().isVisible() && this.isVisible() ) {
+			java.awt.Point ptAsSeenBy = asSeenBy.getAwtComponent().getLocationOnScreen();
+			java.awt.Point ptThis = this.getAwtComponent().getLocationOnScreen();
+			return new java.awt.Point( ptThis.x-ptAsSeenBy.x, ptThis.y-ptAsSeenBy.y );
+		} else {
+			return null;
+		}
+	}
+
 	public void setLocation( java.awt.Point location ) {
 		this.window.setLocation( location );
 	}
@@ -126,30 +140,25 @@ public abstract class AbstractWindow<W extends java.awt.Window> implements Track
 		this.window.setSize( width, height );
 	}
 	
-	public Button getDefaultButton() {
-		return (Button)Component.lookup( this.getRootPane().getDefaultButton() );
+	public java.awt.Rectangle getBounds() {
+		return this.window.getBounds();
 	}
-	public void setDefaultButton( Button button ) {
-		this.getRootPane().setDefaultButton( button.getAwtComponent() );
+	public java.awt.Rectangle getLocalBounds() {
+		return new java.awt.Rectangle( 0, 0, this.getWidth(), this.getHeight() );
 	}
-	
-	public void pack() {
-		this.getAwtWindow().pack();
-	}
-	
-	private java.awt.Rectangle getBounds( Component< ? > asSeenBy ) {
-		if( asSeenBy.isVisible() && this.isVisible() ) {
-			java.awt.Point ptAsSeenBy = asSeenBy.getLocationOnScreen();
-			java.awt.Point ptThis = this.getAwtWindow().getLocationOnScreen();
-			return new java.awt.Rectangle( ptThis.x-ptAsSeenBy.x, ptThis.y-ptAsSeenBy.y, this.getWidth(), this.getHeight() );
+	public java.awt.Rectangle getBounds( ScreenElement asSeenBy ) {
+		java.awt.Point pt = this.getLocation( asSeenBy );
+		if( pt != null ) {
+			return new java.awt.Rectangle( pt.x, pt.y, this.getWidth(), this.getHeight() );
 		} else {
 			return null;
 		}
 	}
-	public java.awt.Shape getShape( Component< ? > asSeenBy, java.awt.Insets insets ) {
+
+	public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
 		return edu.cmu.cs.dennisc.java.awt.RectangleUtilties.inset( this.getBounds( asSeenBy ), insets );
 	}
-	public java.awt.Shape getVisibleShape( Component< ? > asSeenBy, java.awt.Insets insets ) {
+	public java.awt.Shape getVisibleShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
 		return this.getShape( asSeenBy, insets );
 	}
 	public ScrollPane getScrollPaneAncestor() {
@@ -161,7 +170,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> implements Track
 	
 	public TrackableShape getCloseButtonTrackableShape() {
 		return new TrackableShape() {
-			public java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
+			public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
 				java.awt.Rectangle bounds = AbstractWindow.this.getBounds( asSeenBy );
 				if( bounds != null ) {
 					bounds.height = bounds.height - AbstractWindow.this.getRootPane().getHeight();
@@ -171,7 +180,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> implements Track
 					return null;
 				}
 			}
-			public java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
+			public java.awt.Shape getVisibleShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
 				return this.getShape( asSeenBy, insets );
 			}
 			public ScrollPane getScrollPaneAncestor() {
@@ -181,5 +190,16 @@ public abstract class AbstractWindow<W extends java.awt.Window> implements Track
 				return AbstractWindow.this.isInView();
 			}
 		};
+	}
+
+	public void pack() {
+		this.getAwtComponent().pack();
+	}
+
+	public Button getDefaultButton() {
+		return (Button)Component.lookup( this.getRootPane().getDefaultButton() );
+	}
+	public void setDefaultButton( Button button ) {
+		this.getRootPane().setDefaultButton( button.getAwtComponent() );
 	}
 }

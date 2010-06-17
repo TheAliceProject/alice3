@@ -171,12 +171,12 @@ public abstract class Application {
 		this.localeObservers.remove( localeObserver );
 	}
 	public void setLocale( java.util.Locale locale ) {
-		java.util.Locale previousLocale = this.frame.getAwtWindow().getLocale();
+		java.util.Locale previousLocale = this.frame.getAwtComponent().getLocale();
 
 		for( LocaleObserver localeObserver : this.localeObservers ) {
 			localeObserver.localeChanging( previousLocale, locale );
 		}
-		this.frame.getAwtWindow().setLocale( locale );
+		this.frame.getAwtComponent().setLocale( locale );
 		//todo: remove
 		javax.swing.JComponent.setDefaultLocale( locale );
 		for( LocaleObserver localeObserver : this.localeObservers ) {
@@ -231,7 +231,7 @@ public abstract class Application {
 	}
 
 	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
-		javax.swing.JOptionPane.showMessageDialog( this.frame.getAwtWindow(), message, title, messageType.internal, icon );
+		javax.swing.JOptionPane.showMessageDialog( this.frame.getAwtComponent(), message, title, messageType.internal, icon );
 	}
 	public void showMessageDialog( Object message, String title, MessageType messageType ) {
 		showMessageDialog( message, title, messageType, null );
@@ -244,7 +244,7 @@ public abstract class Application {
 	}
 
 	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
-		return YesNoCancelOption.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.frame.getAwtWindow(), message, title, javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, messageType.internal, icon ) );
+		return YesNoCancelOption.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.frame.getAwtComponent(), message, title, javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, messageType.internal, icon ) );
 	}
 	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message, String title, MessageType messageType ) {
 		return showYesNoCancelConfirmDialog( message, title, messageType, null );
@@ -256,7 +256,7 @@ public abstract class Application {
 		return showYesNoCancelConfirmDialog( message, null );
 	}
 	public YesNoOption showYesNoConfirmDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
-		return YesNoOption.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.frame.getAwtWindow(), message, title, javax.swing.JOptionPane.YES_NO_OPTION, messageType.internal, icon ) );
+		return YesNoOption.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.frame.getAwtComponent(), message, title, javax.swing.JOptionPane.YES_NO_OPTION, messageType.internal, icon ) );
 	}
 	public YesNoOption showYesNoConfirmDialog( Object message, String title, MessageType messageType ) {
 		return showYesNoConfirmDialog( message, title, messageType, null );
@@ -271,7 +271,7 @@ public abstract class Application {
 	public Object showOptionDialog( String text, String title, MessageType messageType, javax.swing.Icon icon, Object optionA, Object optionB, int initialValueIndex ) {
 		Object[] options = { optionA, optionB };
 		Object initialValue = initialValueIndex >= 0 ? options[ initialValueIndex ] : null;
-		int result = javax.swing.JOptionPane.showOptionDialog( this.frame.getAwtWindow(), text, title, javax.swing.JOptionPane.YES_NO_OPTION, messageType.internal, icon, options, initialValue );
+		int result = javax.swing.JOptionPane.showOptionDialog( this.frame.getAwtComponent(), text, title, javax.swing.JOptionPane.YES_NO_OPTION, messageType.internal, icon, options, initialValue );
 		switch( result ) {
 		case javax.swing.JOptionPane.YES_OPTION:
 			return options[ 0 ];
@@ -284,7 +284,7 @@ public abstract class Application {
 	public Object showOptionDialog( String text, String title, MessageType messageType, javax.swing.Icon icon, Object optionA, Object optionB, Object optionC, int initialValueIndex ) {
 		Object[] options = { optionA, optionB, optionC };
 		Object initialValue = initialValueIndex >= 0 ? options[ initialValueIndex ] : null;
-		int result = javax.swing.JOptionPane.showOptionDialog( this.frame.getAwtWindow(), text, title, javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, messageType.internal, icon, options, initialValue );
+		int result = javax.swing.JOptionPane.showOptionDialog( this.frame.getAwtComponent(), text, title, javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, messageType.internal, icon, options, initialValue );
 		switch( result ) {
 		case javax.swing.JOptionPane.YES_OPTION:
 			return options[ 0 ];
@@ -299,21 +299,21 @@ public abstract class Application {
 	}
 
 	public java.io.File showOpenFileDialog( String directoryPath, String filename, String extension, boolean isSharingDesired ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.frame.getAwtWindow(), directoryPath, filename, extension, isSharingDesired );
+		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.frame.getAwtComponent(), directoryPath, filename, extension, isSharingDesired );
 	}
 	public java.io.File showSaveFileDialog( String directoryPath, String filename, String extension, boolean isSharingDesired ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( this.frame.getAwtWindow(), directoryPath, filename, extension, isSharingDesired );
+		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( this.frame.getAwtComponent(), directoryPath, filename, extension, isSharingDesired );
 	}
 	public java.io.File showOpenFileDialog( java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.frame.getAwtWindow(), directory, filename, extension, isSharingDesired );
+		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.frame.getAwtComponent(), directory, filename, extension, isSharingDesired );
 	}
 	public java.io.File showSaveFileDialog( java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( this.frame.getAwtWindow(), directory, filename, extension, isSharingDesired );
+		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( this.frame.getAwtComponent(), directory, filename, extension, isSharingDesired );
 	}
 
 	@Deprecated
 	public <T> T showInJDialog( edu.cmu.cs.dennisc.inputpane.KInputPane< T > inputPane, String title, boolean isModal ) {
-		return inputPane.showInJDialog( this.frame.getAwtWindow(), title, isModal );
+		return inputPane.showInJDialog( this.frame.getAwtComponent(), title, isModal );
 	}
 	//	@Deprecated
 	//	public javax.swing.JFrame getJFrame() {

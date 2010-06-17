@@ -734,7 +734,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 
 	public boolean isJava() {
-		return this.getFrame().getAwtWindow().getLocale().getVariant().equals( "java" );
+		return this.getFrame().getAwtComponent().getLocale().getVariant().equals( "java" );
 	}
 	public String getTextForNull() {
 		if( isJava() ) {
@@ -841,16 +841,14 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 					java.awt.Rectangle potentialDragSourceBounds;
 					if( IDE.this.potentialDragSource != null ) {
-						potentialDragSourceBounds = IDE.this.potentialDragSource.getBounds();
-						potentialDragSourceBounds = IDE.this.potentialDragSource.getParent().convertRectangle( potentialDragSourceBounds, this );
+						potentialDragSourceBounds = javax.swing.SwingUtilities.convertRectangle( IDE.this.potentialDragSource.getParent().getAwtComponent(), IDE.this.potentialDragSource.getBounds(), this );
 					} else {
 						potentialDragSourceBounds = null;
 					}
 
 					if( isFauxStencilDesired() ) {
 						for( edu.cmu.cs.dennisc.croquet.Component< ? > component : IDE.this.holes ) {
-							java.awt.Rectangle holeBounds = component.getBounds();
-							holeBounds = component.getParent().convertRectangle( holeBounds, this );
+							java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle(component.getParent().getAwtComponent(), component.getBounds(), this);
 							area.subtract( new java.awt.geom.Area( holeBounds ) );
 						}
 
@@ -863,8 +861,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 					g2.setStroke( THICK_STROKE );
 					final int BUFFER = 6;
 					for( edu.cmu.cs.dennisc.croquet.Component< ? > component : IDE.this.holes ) {
-						java.awt.Rectangle holeBounds = component.getBounds();
-						holeBounds = component.getParent().convertRectangle( holeBounds, this );
+						java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent().getAwtComponent(), component.getBounds(), this );
 						holeBounds.x -= BUFFER;
 						holeBounds.y -= BUFFER;
 						holeBounds.width += 2 * BUFFER;
@@ -921,7 +918,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			//java.awt.Rectangle bounds = codeEditor.getBounds();
 			//bounds = javax.swing.SwingUtilities.convertRectangle( codeEditor, bounds, layeredPane );
 			//this.stencil.setBounds( bounds );
-			javax.swing.JLayeredPane layeredPane = this.getFrame().getAwtWindow().getLayeredPane();
+			javax.swing.JLayeredPane layeredPane = this.getFrame().getAwtComponent().getLayeredPane();
 			if( this.stencil != null ) {
 				//pass
 			} else {
@@ -935,7 +932,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 	}
 	public void hideStencil() {
-		javax.swing.JLayeredPane layeredPane = this.getFrame().getAwtWindow().getLayeredPane();
+		javax.swing.JLayeredPane layeredPane = this.getFrame().getAwtComponent().getLayeredPane();
 		if( this.stencil != null && this.stencil.getParent() == layeredPane ) {
 			layeredPane.remove( this.stencil );
 			layeredPane.repaint();

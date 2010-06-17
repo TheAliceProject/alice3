@@ -212,7 +212,7 @@ public abstract class Model<M> implements TrackableShape, Resolver< M > {
 			this.firstComponentHint = firstComponentHint;
 		}
 	}
-	public java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
+	public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
 		Component< ? > component = this.getFirstComponent();
 		if( component != null ) {
 			return component.getShape( asSeenBy, insets );
@@ -220,7 +220,7 @@ public abstract class Model<M> implements TrackableShape, Resolver< M > {
 			return null;
 		}
 	}
-	public java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
+	public java.awt.Shape getVisibleShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
 		Component< ? > component = this.getFirstComponent();
 		if( component != null ) {
 			return component.getVisibleShape( asSeenBy, insets );

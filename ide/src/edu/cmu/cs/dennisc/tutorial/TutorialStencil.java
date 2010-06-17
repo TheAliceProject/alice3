@@ -112,7 +112,7 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 	
 	public static TutorialStencil createInstance( edu.cmu.cs.dennisc.croquet.Group[] groups ) {
 		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
-		javax.swing.JFrame frame = application.getFrame().getAwtWindow();
+		javax.swing.JFrame frame = application.getFrame().getAwtComponent();
 		javax.swing.JLayeredPane layeredPane = frame.getLayeredPane();
 		final int PAD = 4;
 		frame.getJMenuBar().setBorder( javax.swing.BorderFactory.createEmptyBorder(PAD+32,PAD,0,PAD));

@@ -74,26 +74,26 @@ public final class Frame extends AbstractWindow<javax.swing.JFrame> {
 	}
 	@Override
 	protected javax.swing.JRootPane getRootPane() {
-		return this.getAwtWindow().getRootPane();
+		return this.getAwtComponent().getRootPane();
 	}
 	public DefaultCloseOperation getDefaultCloseOperation() {
-		return DefaultCloseOperation.valueOf( this.getAwtWindow().getDefaultCloseOperation() );
+		return DefaultCloseOperation.valueOf( this.getAwtComponent().getDefaultCloseOperation() );
 	}
 	public void setDefaultCloseOperation( DefaultCloseOperation defaultCloseOperation ) {
-		this.getAwtWindow().setDefaultCloseOperation( defaultCloseOperation.internal );
+		this.getAwtComponent().setDefaultCloseOperation( defaultCloseOperation.internal );
 	}
 	public String getTitle() {
-		return this.getAwtWindow().getTitle();
+		return this.getAwtComponent().getTitle();
 	}
 	public void setTitle( String title ) {
-		this.getAwtWindow().setTitle( title );
+		this.getAwtComponent().setTitle( title );
 	}
 
 	public void setMenuBar(MenuBar menuBar) {
-		this.getAwtWindow().setJMenuBar(menuBar.getAwtComponent());
+		this.getAwtComponent().setJMenuBar(menuBar.getAwtComponent());
 	}
 
 	public void maximize() {
-		this.getAwtWindow().setExtendedState( this.getAwtWindow().getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH );
+		this.getAwtComponent().setExtendedState( this.getAwtComponent().getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH );
 	}
 }

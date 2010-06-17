@@ -821,12 +821,12 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 					}
 					
 					return new edu.cmu.cs.dennisc.croquet.TrackableShape() {
-						public java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
+						public java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.ScreenElement asSeenBy, java.awt.Insets insets ) {
 							java.awt.Rectangle rv = CodeEditor.this.getAsSeenBy().convertRectangle( boundsAtIndex, asSeenBy );
 							//note: ignore insets
 							return rv;
 						}
-						public java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
+						public java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.ScreenElement asSeenBy, java.awt.Insets insets ) {
 							java.awt.Rectangle bounds = CodeEditor.this.getAsSeenBy().convertRectangle( boundsAtIndex, asSeenBy );
 							//note: ignore insets
 //							java.awt.Rectangle visibleBounds = statementListPropertyPane.getVisibleRectangle( asSeenBy );
