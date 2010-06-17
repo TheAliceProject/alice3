@@ -46,10 +46,10 @@ package org.alice.app.operations.file;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectAndLoadProjectOperation extends org.alice.app.operations.file.UriInputDialogOperation {
+public abstract class SelectAndLoadProjectOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
 	private org.alice.app.openprojectpane.SelectProjectToOpenPanel selectProjectToOpenPanel;
 	public SelectAndLoadProjectOperation( java.util.UUID individualUUID ) {
-		super( individualUUID, "Load Project" );
+		super( org.alice.app.ProjectApplication.URI_GROUP, individualUUID, "Load Project" );
 	}
 	protected abstract boolean isNew();
 //	@Override

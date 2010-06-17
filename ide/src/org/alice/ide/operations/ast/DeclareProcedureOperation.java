@@ -79,10 +79,13 @@ public class DeclareProcedureOperation extends DeclareMethodOperation {
 	}
 	@Override
 	protected String getExplanationIfOkButtonShouldBeDisabled() {
+		String rv = super.getExplanationIfOkButtonShouldBeDisabled();
 		if( this.validator != null ) {
-			return this.validator.getExplanationIfOkButtonShouldBeDisabled( this.getDeclarationName() );
-		} else {
-			return super.getExplanationIfOkButtonShouldBeDisabled();
+			String explanation = this.validator.getExplanationIfOkButtonShouldBeDisabled( this.getDeclarationName() );
+			if( explanation != null ) {
+				rv = explanation;
+			}
 		}
+		return rv;
 	}
 }

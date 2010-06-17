@@ -42,8 +42,6 @@
  */
 package org.alice.ide.operations.ast;
 
-import org.alice.ide.operations.ast.DeclareProcedureOperation.EPIC_HACK_Validator;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -72,7 +70,6 @@ public class DeclareMethodParameterOperation extends org.alice.ide.operations.In
 		this.method = method;
 		this.setName( "Add Parameter..." );
 	}
-	
 	public EPIC_HACK_Validator getValidator() {
 		return validator;
 	}
@@ -96,21 +93,24 @@ public class DeclareMethodParameterOperation extends org.alice.ide.operations.In
 
 	@Override
 	protected String getExplanationIfOkButtonShouldBeDisabled() {
+		String rv = super.getExplanationIfOkButtonShouldBeDisabled();
 		if( this.validator != null ) {
-			return this.validator.getExplanationIfOkButtonShouldBeDisabled( this.getDeclarationName(), this.getValueType() );
-		} else {
-			return super.getExplanationIfOkButtonShouldBeDisabled();
+			String explanation = this.validator.getExplanationIfOkButtonShouldBeDisabled( this.getDeclarationName(), this.getValueType() );
+			if( explanation != null ) {
+				rv = explanation;
+			}
 		}
+		return rv;
 	}
 	
+	@Override
+	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
+		return this.createMethodParameterPane;
+	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
 		//todo: create before hand and refresh at this point
 		this.createMethodParameterPane = new org.alice.ide.declarationpanes.CreateMethodParameterPane( method, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
-		return this.createMethodParameterPane;
-	}
-	@Override
-	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
 		return this.createMethodParameterPane;
 	}
 	@Override

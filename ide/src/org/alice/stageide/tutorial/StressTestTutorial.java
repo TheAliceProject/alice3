@@ -103,7 +103,7 @@ public class StressTestTutorial {
 							if( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE == valueType ) {
 								return "<html>Please enter in name <b>howHigh</b>, and press <b>Ok</b>.</html>";
 							} else {
-								return "<html>Please select <b>Double</b> value type, enter in name <b>howHigh</b>, and press <b>Ok</b>.</html>";
+								return "<html>Please select <b>Double</b> value type, enter in name <b>howHigh</b>, and press <b>OK</b>.</html>";
 							}
 						}
 					}
@@ -112,7 +112,7 @@ public class StressTestTutorial {
 
 		tutorial.addInputDialogCommitStep( 
 				"Name HowHigh", 
-				"Type <b>howHigh</b> and select <b>Double</b> and press <i>Ok</i>",
+				"1) Select <i>value type:</i> <b>Double</b><p>2) Enter <i>name:</i> <b>howHigh</b><p>and press the <b>OK</b> button.",
 				tutorial.createDeclareMethodParameterOperationResolver(),
 				tutorial.createToDoCompletorValidator()				
 		);
