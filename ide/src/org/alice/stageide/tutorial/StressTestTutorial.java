@@ -57,6 +57,28 @@ public class StressTestTutorial {
 				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
 		);
 
+		tutorial.addDragAndDropStep( 
+				"Drag Do In Order",
+				"Drag <b>Do In Order</b>.",
+				tutorial.createDoInOrderTemplateResolver(),
+				"Drop <b>here</b>.",
+				tutorial.createEndOfStatementListResolver( 
+						tutorial.createFirstIfStatementListPropertyResolver() 
+				),
+				tutorial.createToDoCompletorValidator()
+		);
+		tutorial.addDragAndDropToPopupMenuToInputDialogStep(  
+				"Drag For Each In Order",
+				"Drag <b>For Each In Order</b>.",
+				tutorial.createForEachInArrayLoopTemplateResolver(),
+				"Drop <b>here</b>.",
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+				"Select <strong>Other Array...</strong>",
+				"Select <strong>Double</strong>, add <strong>1.0</strong>, and press <strong>ok</strong>",
+				tutorial.createToDoCompletorValidator()
+		);
+
+
 //		tutorial.addDialogOpenStep( 
 //				"Declare Procedure", 
 //				"Declare a procedure.", 
@@ -144,7 +166,7 @@ public class StressTestTutorial {
 				),
 				tutorial.createToDoCompletorValidator()
 		);
-		tutorial.addDragAndDropStep( 
+		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag Move Procedure",
 				"Drag <b>move</b> procedure.",
 				tutorial.createProcedureInvocationTemplateResolver( "move" ),
@@ -176,7 +198,7 @@ public class StressTestTutorial {
 				"Note" 
 		);
 
-		tutorial.addDragAndDropStep( 
+		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag If/Else",
 				"Drag <b>If/Else</b>.",
 				tutorial.createIfElseTemplateResolver(),
@@ -186,7 +208,7 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 		for( int i=0; i<10; i++ ) {
-			tutorial.addDragAndDropStep( 
+			tutorial.addDragAndDropToPopupMenuStep( 
 					"Drag Count Loop",
 					"Drag <b>Count Loop</b>.",
 					tutorial.createCountLoopTemplateResolver(),
@@ -195,7 +217,7 @@ public class StressTestTutorial {
 					"Select <b>2</b>.",
 					tutorial.createToDoCompletorValidator()
 			);
-			tutorial.addDragAndDropStep( 
+			tutorial.addDragAndDropToPopupMenuStep( 
 					"Drag If/Else",
 					"Drag <b>If/Else</b>.",
 					tutorial.createIfElseTemplateResolver(),
@@ -206,7 +228,7 @@ public class StressTestTutorial {
 					"Select <b>true</b>.",
 					tutorial.createToDoCompletorValidator()
 			);
-			tutorial.addDragAndDropStep( 
+			tutorial.addDragAndDropToPopupMenuStep( 
 					"Drag Move Procedure",
 					"Drag <b>move</b> procedure.",
 					tutorial.createProcedureInvocationTemplateResolver( "move" ),
@@ -217,7 +239,7 @@ public class StressTestTutorial {
 			);
 		}
 
-		tutorial.addDragAndDropStep( 
+		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag If/Else",
 				"Drag <b>If/Else</b>.",
 				tutorial.createIfElseTemplateResolver(),
@@ -248,7 +270,7 @@ public class StressTestTutorial {
 		);
 
 
-		tutorial.addDragAndDropStep( 
+		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag Move Procedure",
 				"Drag <b>move</b> procedure.",
 				tutorial.createProcedureInvocationTemplateResolver( "move" ),
@@ -277,7 +299,7 @@ public class StressTestTutorial {
 //				tutorial.createToDoCompletorValidator()
 //		);
 //
-		tutorial.addDragAndDropStep( 
+		tutorial.addDragAndDropToInputDialogStep(  
 				"Declared Variable I",
 				"Drag <b>Local</b>.",
 				tutorial.createDeclareLocalTemplateResolver(),
@@ -287,7 +309,7 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
-		tutorial.addDragAndDropStep( 
+		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag Resize Procedure",
 				"Drag <b>resize</b> procedure.",
 				tutorial.createProcedureInvocationTemplateResolver( "resize" ),
@@ -338,7 +360,7 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()				
 		);
 		
-		tutorial.addDragAndDropStep( 
+		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag Roll Procedure",
 				"Drag <b>roll</b> procedure.",
 				tutorial.createProcedureInvocationTemplateResolver( "roll" ),
@@ -359,22 +381,13 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
-		tutorial.addDragAndDropStep( 
-				"Drag For Each In Order",
-				"Drag <b>For Each In Order</b>.",
-				tutorial.createForEachInArrayLoopTemplateResolver(),
-				"Drop <b>here</b>.",
-				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
-				tutorial.createToDoCompletorValidator()
-		);
-
 		tutorial.addSpotlightStep( 
 				"Note For Each Variable",
 				"Note For Each Variable.",
 				tutorial.createFirstForEachInArrayLoopVariableResolver()
 		);
 
-		tutorial.addDragAndDropStep( 
+		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag Move Procedure",
 				"Drag <b>move</b> procedure.",
 				tutorial.createProcedureInvocationTemplateResolver( "move" ),
@@ -392,7 +405,7 @@ public class StressTestTutorial {
 				tutorial.createFirstInvocationResolver( "move" )
 		);
 
-		tutorial.addDragAndDropStep( 
+		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag For Each In Array Variable",
 				"Drag For Each In Array Variable.",
 				tutorial.createFirstForEachInArrayLoopVariableResolver(),
@@ -545,7 +558,7 @@ public class StressTestTutorial {
 				"This is the For Each In Array tile.", 
 				tutorial.createForEachInArrayLoopTemplateResolver() 
 		);
-		tutorial.addDragAndDropStep( 
+		tutorial.addDragAndDropToPopupMenuStep(  
 				"Drag For Each In Array",
 				"Drag <b>For Each In Array</b>.",
 				tutorial.createForEachInArrayLoopTemplateResolver(),
@@ -596,7 +609,7 @@ public class StressTestTutorial {
 				"This is the Count Loop tile.", 
 				tutorial.createCountLoopTemplateResolver() 
 		);
-		tutorial.addDragAndDropStep( 
+		tutorial.addDragAndDropToPopupMenuStep(  
 				"Drag Count Loop",
 				"Drag <b>Count Loop</b>.",
 				tutorial.createCountLoopTemplateResolver(),
@@ -730,7 +743,7 @@ public class StressTestTutorial {
 //				"Note that <b>Do in order</b> has been added to your count loop.",
 //				tutorial.createInvocationResolver(resizeMethod, 0)
 //		);
-		tutorial.addDragAndDropStep( 
+		tutorial.addDragAndDropToPopupMenuStep(  
 				"Drag Delay",
 				"Drag <b>delay</b> procedure.",
 				tutorial.createProcedureInvocationTemplateResolver( "delay" ),
@@ -744,7 +757,7 @@ public class StressTestTutorial {
 				"Note that <b>delay</b> has been added to your run method.",
 				tutorial.createFirstInvocationResolver("delay")
 		);
-		tutorial.addDragAndDropStep( 
+		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag Resize Procedure",
 				"Drag <b>resize</b> procedure.",
 				tutorial.createProcedureInvocationTemplateResolver( "resize" ),
@@ -759,7 +772,7 @@ public class StressTestTutorial {
 				tutorial.createFirstInvocationResolver("resize")
 		);
 
-		tutorial.addDragAndDropStep( 
+		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag Move Procedure",
 				"Drag <b>move</b> procedure.",
 				tutorial.createProcedureInvocationTemplateResolver( "move" ),
@@ -774,7 +787,7 @@ public class StressTestTutorial {
 				tutorial.createFirstInvocationResolver("move")
 		);
 
-		tutorial.addDragAndDropStep( 
+		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag Turn Procedure",
 				"Drag <b>turn</b> procedure.",
 				tutorial.createProcedureInvocationTemplateResolver( "turn" ),

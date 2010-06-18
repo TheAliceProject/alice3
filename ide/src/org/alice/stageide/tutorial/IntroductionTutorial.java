@@ -161,7 +161,7 @@ public class IntroductionTutorial {
 				"Let's have the <b>iceSkater</b> skate <b>2</b> strides after she finishes her spin."
 		);
 
-		tutorial.addDragAndDropStep( 
+		tutorial.addDragAndDropToPopupMenuStep(  
 				"Invoke Skate Procedure",
 				"Drag <b>skate</b> <i>numberOfStrides</i>...",
 				org.alice.ide.memberseditor.templates.TemplateFactory.getProcedureInvocationTemplate( skateMethod ).getDragAndDropOperation(),
@@ -224,7 +224,7 @@ public class IntroductionTutorial {
 				"After her spin, let's have the <b>iceSkater</b> skate backwards."
 		);
 		
-		tutorial.addDragAndDropStep( 
+		tutorial.addDragAndDropToPopupMenuStep( 
 				"Invoke Skate Backwards Procedure",
 				"Drag <b>skateBackwards</b> <i>numberOfStrides</i>...",
 				org.alice.ide.memberseditor.templates.TemplateFactory.getProcedureInvocationTemplate( skateBackwardsMethod ).getDragAndDropOperation(),

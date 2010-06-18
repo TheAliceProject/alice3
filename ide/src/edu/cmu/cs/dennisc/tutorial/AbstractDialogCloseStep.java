@@ -49,6 +49,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	public AbstractDialogCloseStep( String title, String text, Feature feature, final edu.cmu.cs.dennisc.croquet.Resolver<M> dialogOperationResolver ) {
 		super( title, text, feature, dialogOperationResolver );
 	}
+	
 	@Override
 	protected final boolean isAlreadyInTheDesiredState() {
 		edu.cmu.cs.dennisc.croquet.Dialog dialog = this.getModel().getActiveDialog();

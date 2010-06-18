@@ -46,9 +46,19 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class DragAndDropStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
+	private enum State {
+		WAITING_ON_DRAG,
+		WAITING_ON_DROP,
+		WAITING_ON_POPUP_MENU_COMMIT,
+		WAITING_ON_INPUT_DIALOG_COMMIT,
+		COMPLETE
+	}
+	
+	private boolean isPopupMenuNotePresent;
+	private boolean isInputDialogNotePresent;
 	private Completor completor;
 	private Validator validator;
-	public DragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > dropShapeResolver, String cascadeText, Completor completor, Validator validator ) {
+	public DragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > dropShapeResolver, String popupMenuText, String inputDialogText, Completor completor, Validator validator ) {
 		super( title, text, new Hole( dragResolver, Feature.ConnectionPreference.EAST_WEST ), dragResolver );
 		this.completor = completor;
 		this.validator = validator;
@@ -56,9 +66,13 @@ package edu.cmu.cs.dennisc.tutorial;
 		dropNote.addFeature( new Hole( dropShapeResolver, Feature.ConnectionPreference.NORTH_SOUTH ) );
 		this.addNote( dropNote );
 		
-		if( cascadeText != null ) {
-			Note cascadeNote = new Note( cascadeText );
-			this.addNote( cascadeNote );
+		this.isPopupMenuNotePresent = popupMenuText != null;
+		this.isInputDialogNotePresent = inputDialogText != null;
+		if( this.isPopupMenuNotePresent ) {
+			this.addNote( new Note( popupMenuText ) );
+		}
+		if( this.isInputDialogNotePresent ) {
+			this.addNote( new Note( inputDialogText ) );
 		}
 		
 		final int N = this.getNoteCount();
@@ -67,16 +81,6 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	}
 	
-//	@Override
-//	protected edu.cmu.cs.dennisc.croquet.DragAndDropOperation getModel() {
-//		edu.cmu.cs.dennisc.croquet.DragComponent dragComponent = this.dragSource.getDragComponent();
-//		if( dragComponent != null ) {
-//			return dragComponent.getDragAndDropOperation();
-//		} else {
-//			return null;
-//		}
-//	}
-//	
 	@Override
 	protected java.awt.Point calculateLocationOfFirstNote( edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
 		
@@ -138,54 +142,152 @@ package edu.cmu.cs.dennisc.tutorial;
 	protected boolean isAlreadyInTheDesiredState() {
 		return false;
 	}
+
+	private int getIndexOfFirstActiveNote() { 
+		final int N = this.getNoteCount();
+		for( int i=0; i<N; i++ ) {
+			Note note = this.getNoteAt( i );
+			if( note.isActive() ) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	private State getState() {
+		int index = this.getIndexOfFirstActiveNote();
+		switch( index ) {
+		case 0:
+			return State.WAITING_ON_DRAG;
+		case 1:
+			return State.WAITING_ON_DROP;
+		case 2:
+			if( this.isPopupMenuNotePresent ) {
+				return State.WAITING_ON_POPUP_MENU_COMMIT;
+			} else {
+				return State.WAITING_ON_INPUT_DIALOG_COMMIT;
+			}
+		case 3:
+			return State.WAITING_ON_INPUT_DIALOG_COMMIT;
+		default:
+			return null;
+		}
+	}
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
-		if( child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
-			edu.cmu.cs.dennisc.croquet.DragAndDropContext context = (edu.cmu.cs.dennisc.croquet.DragAndDropContext)child;
-			Note noteB = this.getNoteAt( 1 );
-			Feature featureB = noteB.getFeatures().get( 0 );
-			java.awt.Dimension size = context.getDragSource().getDropProxySize();
-			featureB.setHeightConstraint( size.height * 2 );
-			this.setActiveNote( 1 );
-			return false;
-		} else if( child instanceof edu.cmu.cs.dennisc.croquet.CancelEvent ) {
+		if( child instanceof edu.cmu.cs.dennisc.croquet.CancelEvent ) {
 			SoundCache.FAILURE.startIfNotAlreadyActive();
 			this.reset();
 			return false;
-		} else if( child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent ) {
-			//edu.cmu.cs.dennisc.croquet.ModelContext< ? > parent = child.getParent(); 
-			//return parent.getModel() == this.getModel();
-			final int N = this.getNoteCount();
-			if( N == 3 ) {
-				this.setActiveNote( 2 );
-				return false;
-			} else {
-				return true;
-			}
-		} else if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
-			final int N = this.getNoteCount();
-			if( N == 3 ) {
-				if( this.getNoteAt( 2 ).isActive() ) {
-					edu.cmu.cs.dennisc.croquet.Edit edit;
-					if (child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent) {
-						edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent) child;
-						edit = commitEvent.getEdit();
+		} else {
+			State state = this.getState();
+			boolean rv = false;
+			switch( state ) {
+			case WAITING_ON_DRAG:
+				if( child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
+					edu.cmu.cs.dennisc.croquet.DragAndDropContext context = (edu.cmu.cs.dennisc.croquet.DragAndDropContext)child;
+					Note noteB = this.getNoteAt( 1 );
+					Feature featureB = noteB.getFeatures().get( 0 );
+					java.awt.Dimension size = context.getDragSource().getDropProxySize();
+					featureB.setHeightConstraint( size.height * 2 );
+					this.setActiveNote( 1 );
+				}
+				break;
+			case WAITING_ON_DROP:
+				if( child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent ) {
+					//edu.cmu.cs.dennisc.croquet.ModelContext< ? > parent = child.getParent(); 
+					//return parent.getModel() == this.getModel();
+					rv = this.getNoteCount() == 2;
+					if( rv ) {
+						//pass
 					} else {
-						edit = null;
+						this.setActiveNote( 2 );
 					}
-					if( this.validator != null ) {
-						return this.validator.checkValidity( edit ).isProcedeApprorpiate();
-					} else {
-						return true;
+				}
+				break;
+			case WAITING_ON_POPUP_MENU_COMMIT:
+				if( this.isInputDialogNotePresent ) {
+					if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent ) {
+						this.setActiveNote( 3 );
 					}
 				} else {
-					return false;
+					if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
+						edu.cmu.cs.dennisc.croquet.Edit edit;
+						if (child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent) {
+							edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent) child;
+							edit = commitEvent.getEdit();
+						} else {
+							edit = null;
+						}
+						if( this.validator != null ) {
+							rv = this.validator.checkValidity( edit ).isProcedeApprorpiate();
+						} else {
+							rv = true;
+						}
+					}
 				}
-			} else {
-				return false;
+				break;
+			case WAITING_ON_INPUT_DIALOG_COMMIT:
+				if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent ) {
+					edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent windowClosedEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent)child;
+					edu.cmu.cs.dennisc.croquet.ModelContext<?> c = windowClosedEvent.getParent();
+					while( c != null ) {
+						if( c.getModel() == this.getModel() ) {
+							rv = true;
+							break;
+						}
+						c = c.getParent();
+					}
+				}
+				break;
 			}
-		} else {
-			return false;
+			return rv;
 		}
+//		if( child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
+//			edu.cmu.cs.dennisc.croquet.DragAndDropContext context = (edu.cmu.cs.dennisc.croquet.DragAndDropContext)child;
+//			Note noteB = this.getNoteAt( 1 );
+//			Feature featureB = noteB.getFeatures().get( 0 );
+//			java.awt.Dimension size = context.getDragSource().getDropProxySize();
+//			featureB.setHeightConstraint( size.height * 2 );
+//			this.setActiveNote( 1 );
+//			return false;
+//		} else if( child instanceof edu.cmu.cs.dennisc.croquet.CancelEvent ) {
+//			SoundCache.FAILURE.startIfNotAlreadyActive();
+//			this.reset();
+//			return false;
+//		} else if( child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent ) {
+//			//edu.cmu.cs.dennisc.croquet.ModelContext< ? > parent = child.getParent(); 
+//			//return parent.getModel() == this.getModel();
+//			final int N = this.getNoteCount();
+//			if( N == 3 ) {
+//				this.setActiveNote( 2 );
+//				return false;
+//			} else {
+//				return true;
+//			}
+//		} else if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
+//			final int N = this.getNoteCount();
+//			if( N == 3 ) {
+//				if( this.getNoteAt( 2 ).isActive() ) {
+//					edu.cmu.cs.dennisc.croquet.Edit edit;
+//					if (child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent) {
+//						edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent) child;
+//						edit = commitEvent.getEdit();
+//					} else {
+//						edit = null;
+//					}
+//					if( this.validator != null ) {
+//						return this.validator.checkValidity( edit ).isProcedeApprorpiate();
+//					} else {
+//						return true;
+//					}
+//				} else {
+//					return false;
+//				}
+//			} else {
+//				return false;
+//			}
+//		} else {
+//			return false;
+//		}
 	}
 }

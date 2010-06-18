@@ -163,12 +163,21 @@ public class Tutorial {
 		this.addStep( step );
 	}
 
-	public void addDragAndDropStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String cascadeText, CompletorValidator completorValidator ) {
-		Step step = new DragAndDropStep( title, text, dragResolver, dropText, dropShapeResolver, cascadeText, completorValidator, completorValidator );
+	private void addDragAndDropStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, String inputDialogText, CompletorValidator completorValidator ) {
+		Step step = new DragAndDropStep( title, text, dragResolver, dropText, dropShapeResolver, popupMenuText, inputDialogText, completorValidator, completorValidator );
 		this.addStep( step );
 	}
 	public void addDragAndDropStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, CompletorValidator completorValidator ) {
-		this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, null, completorValidator );
+		this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, null, null, completorValidator );
+	}
+	public void addDragAndDropToPopupMenuStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, CompletorValidator completorValidator ) {
+		this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, popupMenuText, null, completorValidator );
+	}
+	public void addDragAndDropToInputDialogStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String inputDialogText, CompletorValidator completorValidator ) {
+		this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, null, inputDialogText, completorValidator );
+	}
+	public void addDragAndDropToPopupMenuToInputDialogStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, String inputDialogText, CompletorValidator completorValidator ) {
+		this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, popupMenuText, inputDialogText, completorValidator );
 	}
 
 	
