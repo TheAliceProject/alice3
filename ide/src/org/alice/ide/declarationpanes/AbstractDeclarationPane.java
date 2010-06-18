@@ -258,6 +258,15 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		return null;
 	}
 
+	private static java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > addIfNecessary( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv, edu.cmu.cs.dennisc.croquet.Component< ? >... row ) {
+		if( row != null ) {
+			for( edu.cmu.cs.dennisc.croquet.Component<?> component : row ) {
+				assert component != null;
+			}
+			rv.add( row );
+		}
+		return rv;
+	}
 	@Override
 	protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateInternalComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
 		edu.cmu.cs.dennisc.croquet.Component< ? >[] isReassignableRow = createIsReassignableRow();
@@ -265,21 +274,14 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		edu.cmu.cs.dennisc.croquet.Component< ? >[] nameRow = createNameRow();
 		edu.cmu.cs.dennisc.croquet.Component< ? >[] initializerRow = createInitializerRow();
 		edu.cmu.cs.dennisc.croquet.Component< ? >[] warningRow = createWarningRow();
-		if( isReassignableRow != null ) {
-			rv.add( isReassignableRow );
-		}
-		if( valueTypeRow != null ) {
-			rv.add( valueTypeRow );
-		}
-		if( nameRow != null ) {
-			rv.add( nameRow );
-		}
-		if( initializerRow != null ) {
-			rv.add( initializerRow );
-		}
+		addIfNecessary( rv, isReassignableRow );
+		addIfNecessary( rv, valueTypeRow );
+		addIfNecessary( rv, nameRow );
+		addIfNecessary( rv, initializerRow );
 		if( warningRow != null ) {
-			rv.add( new edu.cmu.cs.dennisc.croquet.Component< ? >[] { edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 16 ), null } );
-			rv.add( warningRow );
+			addIfNecessary( rv, edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 16 ), null ) );
+			//addIfNecessary( rv, edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 16 ), null );
+			addIfNecessary( rv, warningRow );
 		}
 		return rv;
 	}

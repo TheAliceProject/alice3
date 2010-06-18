@@ -93,8 +93,12 @@ public class SpringUtilities {
 		}
 		for( Component< ? >[] componentRow : componentRows ) {
 			for( Component< ? > component : componentRow ) {
-				assert component != null;
-				rv.internalAddComponent( component );
+				//assert component != null;
+				if( component != null ) {
+					rv.internalAddComponent( component );
+				} else {
+					rv.internalAddComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createRigidArea( 0, 0 ) );
+				}
 			}
 		}
 
