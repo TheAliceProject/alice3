@@ -57,6 +57,16 @@ public class StressTestTutorial {
 				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
 		);
 
+		tutorial.addDragAndDropToPopupMenuStep( 
+				"Drag If/Else",
+				"Drag <b>If/Else</b>.",
+				tutorial.createIfElseTemplateResolver(),
+				"Drop <b>here</b>.",
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+				"Select <b>true</b>.",
+				tutorial.createToDoCompletorValidator()
+		);
+
 		tutorial.addDragAndDropStep( 
 				"Drag Do In Order",
 				"Drag <b>Do In Order</b>.",
@@ -193,20 +203,6 @@ public class StressTestTutorial {
 //				),
 //				tutorial.createToDoCompletorValidator()
 //		);
-		tutorial.addMessageStep( 
-				"Title", 
-				"Note" 
-		);
-
-		tutorial.addDragAndDropToPopupMenuStep( 
-				"Drag If/Else",
-				"Drag <b>If/Else</b>.",
-				tutorial.createIfElseTemplateResolver(),
-				"Drop <b>here</b>.",
-				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
-				"Select <b>true</b>.",
-				tutorial.createToDoCompletorValidator()
-		);
 		for( int i=0; i<10; i++ ) {
 			tutorial.addDragAndDropToPopupMenuStep( 
 					"Drag Count Loop",
