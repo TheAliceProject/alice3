@@ -50,50 +50,64 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 		super( cls );
 	}
 
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes();
+	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes();
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
 	@Override
 	public final void createStatement( final java.awt.event.MouseEvent e, final edu.cmu.cs.dennisc.alice.ast.BlockStatement block, final int index, final edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver ) {
-		final edu.cmu.cs.dennisc.alice.ast.AbstractType[] types = getBlankExpressionTypes();
+		final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types = getBlankExpressionTypes();
 		if( types != null && types.length > 0 ) {
-			class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.Expression[], Void > {
-				@Override
-				protected edu.cmu.cs.dennisc.alice.ast.Expression[] doInBackground() throws java.lang.Exception {
-					edu.cmu.cs.dennisc.task.BlockingTaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > expressionsTaskObserver = new edu.cmu.cs.dennisc.task.BlockingTaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] >() {
-						@Override
-						public void run() {
-							getIDE().promptUserForExpressions( block, index, types, false, e, this );
-						}
-					};
-					return expressionsTaskObserver.getResult();
-				}
-				@Override
-				protected void done() {
-					edu.cmu.cs.dennisc.alice.ast.Expression[] expressions = null;
-					try {
-						expressions = this.get();
-					} catch( InterruptedException ie ) {
-						throw new RuntimeException( ie );
-					} catch( java.util.concurrent.ExecutionException ee ) {
-						throw new RuntimeException( ee );
-					} finally {
-						if( expressions != null ) {
-							taskObserver.handleCompletion( createStatement( expressions ) );
-						} else {
-							taskObserver.handleCancelation();
-						}
+			class ExpressionsTaskObserver implements edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > {
+				public void handleCompletion(edu.cmu.cs.dennisc.alice.ast.Expression[] expressions) {
+					if( expressions != null ) {
+						taskObserver.handleCompletion( createStatement( expressions ) );
+					} else {
+						taskObserver.handleCancelation();
 					}
 				}
+				public void handleCancelation() {
+					taskObserver.handleCancelation();
+				}
 			}
-			Worker worker = new Worker();
-			worker.execute();
+			ExpressionsTaskObserver expressionsTaskObserver = new ExpressionsTaskObserver();
+			getIDE().promptUserForExpressions( block, index, types, false, e, expressionsTaskObserver );
+//			class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.Expression[], Void > {
+//				@Override
+//				protected edu.cmu.cs.dennisc.alice.ast.Expression[] doInBackground() throws java.lang.Exception {
+//					edu.cmu.cs.dennisc.task.BlockingTaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > expressionsTaskObserver = new edu.cmu.cs.dennisc.task.BlockingTaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] >() {
+//						@Override
+//						public void run() {
+//							getIDE().promptUserForExpressions( block, index, types, false, e, this );
+//						}
+//					};
+//					return expressionsTaskObserver.getResult();
+//				}
+//				@Override
+//				protected void done() {
+//					edu.cmu.cs.dennisc.alice.ast.Expression[] expressions = null;
+//					try {
+//						expressions = this.get();
+//					} catch( InterruptedException ie ) {
+//						throw new RuntimeException( ie );
+//					} catch( java.util.concurrent.ExecutionException ee ) {
+//						throw new RuntimeException( ee );
+//					} finally {
+//						if( expressions != null ) {
+//							taskObserver.handleCompletion( createStatement( expressions ) );
+//						} else {
+//							taskObserver.handleCancelation();
+//						}
+//					}
+//				}
+//			}
+//			Worker worker = new Worker();
+//			worker.execute();
 		} else {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-				public void run() {
+//			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//				public void run() {
 					edu.cmu.cs.dennisc.alice.ast.Statement statement = createStatement();
 					taskObserver.handleCompletion( statement );
-				}
-			} );
+//				}
+//			} );
 		}
 	}
 }
