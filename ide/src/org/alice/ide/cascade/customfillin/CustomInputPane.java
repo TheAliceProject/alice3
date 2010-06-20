@@ -79,6 +79,9 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression, 
 		this.chooser.updateRows( rv );
 		return rv;
 	}
+	/*package-protected*/org.alice.ide.choosers.ValueChooser< F > getValueChooser() {
+		return this.chooser;
+	}
 	protected E getActualInputValue() {
 		F value = this.chooser.getValue();
 		return this.fillIn.createExpression( value );

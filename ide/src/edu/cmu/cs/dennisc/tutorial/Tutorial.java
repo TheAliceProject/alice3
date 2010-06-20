@@ -183,7 +183,7 @@ public class Tutorial {
 	
 
 	@Deprecated
-	public void EPIC_HACK_addDeclareProcedureOperationStep( String title, String text, final org.alice.ide.operations.ast.DeclareProcedureOperation.EPIC_HACK_Validator validator ) {
+	public void EPIC_HACK_addDeclareProcedureDialogOpenStep( String title, String text, final org.alice.ide.operations.ast.DeclareProcedureOperation.EPIC_HACK_Validator validator ) {
 		Step step = new DialogOpenStep<edu.cmu.cs.dennisc.croquet.InputDialogOperation>( title, text, ((org.alice.ide.tutorial.IdeTutorial)this).createDeclareProcedureOperationResolver() ) {
 			@Override
 			public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
@@ -199,7 +199,7 @@ public class Tutorial {
 		this.addStep( step );
 	}
 	@Deprecated
-	public void EPIC_HACK_addDeclareMethodParameterOperationStep( String title, String text, final org.alice.ide.operations.ast.DeclareMethodParameterOperation.EPIC_HACK_Validator validator ) {
+	public void EPIC_HACK_addDeclareMethodParameterDialogOpenStep( String title, String text, final org.alice.ide.operations.ast.DeclareMethodParameterOperation.EPIC_HACK_Validator validator ) {
 		Step step = new DialogOpenStep<edu.cmu.cs.dennisc.croquet.InputDialogOperation>( title, text, ((org.alice.ide.tutorial.IdeTutorial)this).createDeclareMethodParameterOperationResolver() ) {
 			@Override
 			public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
@@ -210,6 +210,27 @@ public class Tutorial {
 				} else {
 					return false;
 				}
+			}
+		};
+		this.addStep( step );
+	}
+	@Deprecated
+	public void EPIC_HACK_addForEachInArrayLoopDragAndDropToPopupMenuToInputDialogStep( String title, String text, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, String inputDialogText, CompletorValidator completorValidator, final org.alice.ide.cascade.customfillin.CustomInputDialogOperation.EPIC_HACK_Validator validator ) {
+		Step step = new DragAndDropStep( title, text, ((org.alice.ide.tutorial.IdeTutorial)this).createForEachInArrayLoopTemplateResolver(), dropText, dropShapeResolver, popupMenuText, inputDialogText, completorValidator, completorValidator ) {
+			@Override
+			public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
+				boolean rv = super.isWhatWeveBeenWaitingFor( child );
+				if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext ) {
+					edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext context = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext)child;
+					edu.cmu.cs.dennisc.croquet.Model<?> model = context.getModel();
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "child:", child );
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "model:", model );
+					if (model instanceof org.alice.ide.cascade.customfillin.CustomInputDialogOperation ) {
+						org.alice.ide.cascade.customfillin.CustomInputDialogOperation customInputDialogOperation = (org.alice.ide.cascade.customfillin.CustomInputDialogOperation) model;
+						customInputDialogOperation.setValidator( validator );
+					}
+				}
+				return rv;
 			}
 		};
 		this.addStep( step );

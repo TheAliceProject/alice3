@@ -51,7 +51,7 @@ public class CustomDoubleFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.a
 		return "Other Real Number...";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser createCustomPane() {
+	protected org.alice.ide.choosers.ValueChooser createValueChooser() {
 		return new org.alice.ide.choosers.DoubleChooser();
 	}
 	@Override

@@ -84,6 +84,19 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 		}
 	}
 	
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> EPIC_HACK_getArrayComponentType() {
+		if( this.typePane != null ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> arrayType = this.typePane.getValueType();
+			if( arrayType != null ) {
+				return arrayType.getComponentType();
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+	
 	public String getTitleDefault() {
 		return "Enter Custom Array";
 	}

@@ -72,7 +72,7 @@ public class DeclareProcedureOperation extends DeclareMethodOperation {
 	}
 	
 	public EPIC_HACK_Validator getValidator() {
-		return validator;
+		return this.validator;
 	}
 	public void setValidator( EPIC_HACK_Validator validator ) {
 		this.validator = validator;

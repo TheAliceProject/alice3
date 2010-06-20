@@ -47,7 +47,6 @@ package org.alice.ide.choosers;
  */
 public abstract class AbstractChooser<E> implements ValueChooser< E > {
 	private static final String[] LABEL_TEXTS = { "value:" };
-//	private edu.cmu.cs.dennisc.croquet.InputPanel< ? > inputPanel;
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
@@ -59,19 +58,7 @@ public abstract class AbstractChooser<E> implements ValueChooser< E > {
 			return null;
 		}
 	}
-	
-	protected final boolean isInputValid() {
-		return true;
-	}
-	
-//	public edu.cmu.cs.dennisc.croquet.InputPanel< ? > getInputPanel() {
-//		return this.inputPanel;
-//	}
-//	public void setInputPanel( edu.cmu.cs.dennisc.croquet.InputPanel< ? > inputPanel ) {
-//		this.inputPanel = inputPanel;
-//		this.inputPanel.addValidator( this );
-//	}
-	
+
 	protected String[] getLabelTexts() {
 		return LABEL_TEXTS;
 	}

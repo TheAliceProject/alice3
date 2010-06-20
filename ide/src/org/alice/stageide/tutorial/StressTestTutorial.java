@@ -47,7 +47,7 @@ package org.alice.stageide.tutorial;
  */
 public class StressTestTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
-		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 0 );
+		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 1 );
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = ide.getSceneField();
 		ide.getEmphasizingClassesState().setValue( false );
@@ -57,6 +57,97 @@ public class StressTestTutorial {
 				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
 		);
 
+		tutorial.EPIC_HACK_addForEachInArrayLoopDragAndDropToPopupMenuToInputDialogStep(  
+				"Drag For Each In Order",
+				"Drag <strong>For Each In Order</strong>.",
+				"Drop <strong>here</strong>.",
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+				"Select <strong>Other Array...</strong>",
+				"Select <strong>Model</strong>, add <strong>grassyGround</strong> and <strong>grassyGround</strong>, and press <strong>OK</strong>",
+				tutorial.createToDoCompletorValidator(),
+				new org.alice.ide.cascade.customfillin.CustomInputDialogOperation.EPIC_HACK_Validator() {
+					private boolean isAccessOfFieldNamed( edu.cmu.cs.dennisc.alice.ast.Expression expression, String name ) {
+						if (expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess) {
+							edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess) expression;
+							edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
+							if( field != null ) {
+								return name.equals( field.getName() );
+							}
+						}
+						return false;
+					}
+					public String getExplanationIfOkButtonShouldBeDisabled(org.alice.ide.choosers.ValueChooser<?> valueChooser) {
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( "getExplanationIfOkButtonShouldBeDisabled" );
+						final String[] desiredFieldNames = { "grassyGround", "grassyGround" };
+						final String COMPLETE_INSTRUCTIONS = "<html>Select value type <strong>Model</strong> and add <strong>" + desiredFieldNames[ 0 ] + "</strong> and <strong>" + desiredFieldNames[ 1 ] + "</strong>.</html>";
+						if (valueChooser instanceof org.alice.ide.choosers.ArrayChooser) {
+							org.alice.ide.choosers.ArrayChooser arrayChooser = (org.alice.ide.choosers.ArrayChooser) valueChooser;
+							edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation = arrayChooser.getValue();
+							if( arrayInstanceCreation != null ) {
+//								boolean isComponentTypeCorrect = false;
+//								edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> arrayType = arrayInstanceCreation.arrayType.getValue();
+//								if( arrayType != null ) {
+//									if( arrayType.isArray() ) {
+//										edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> componentType = arrayType.getComponentType();
+//										edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredComponentType = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Model.class );
+//										isComponentTypeCorrect = componentType == desiredComponentType;
+//									}
+//								}
+								edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> componentType = arrayChooser.EPIC_HACK_getArrayComponentType();
+								
+								edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentType", componentType );
+								
+								edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredComponentType = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Model.class );
+								boolean isComponentTypeCorrect = componentType == desiredComponentType;
+								
+								boolean areExpressionsCorrect = false;
+								java.util.ArrayList< edu.cmu.cs.dennisc.alice.ast.Expression > expressions = arrayInstanceCreation.expressions.getValue();
+								if( expressions != null ) {
+									if( expressions.size() == desiredFieldNames.length ) {
+										final int N = desiredFieldNames.length;
+										areExpressionsCorrect = true;
+										for( int i=0; i<N; i++ ) {
+											if( isAccessOfFieldNamed( expressions.get( i ), desiredFieldNames[ i ] ) ) {
+												//pass
+											} else {
+												areExpressionsCorrect = false;
+											}
+										}
+									}
+								}
+								if( isComponentTypeCorrect ) {
+									if( areExpressionsCorrect ) {
+										return null;
+									} else {
+										return "Add <strong>"+ desiredFieldNames[ 0 ] + "</strong> and <strong>" + desiredFieldNames[ 1 ] + "</strong>.";
+									}
+								} else {
+									if( areExpressionsCorrect ) {
+										return "Select value type <strong>Model</strong>.";
+									} else {
+										return COMPLETE_INSTRUCTIONS;
+									}
+								}
+							}
+							return COMPLETE_INSTRUCTIONS;
+						} else {
+							return "this should not happen.  you have found a bug.  ask for help.";
+						}
+					}
+				} 
+		);
+
+//		tutorial.addDragAndDropToPopupMenuToInputDialogStep(  
+//				"Drag For Each In Order",
+//				"Drag <b>For Each In Order</b>.",
+//				tutorial.createForEachInArrayLoopTemplateResolver(),
+//				"Drop <b>here</b>.",
+//				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+//				"Select <strong>Other Array...</strong>",
+//				"Select <strong>Double</strong>, add <strong>1.0</strong>, and press <strong>ok</strong>",
+//				tutorial.createToDoCompletorValidator()
+//		);
+		
 		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag If/Else",
 				"Drag <b>If/Else</b>.",
@@ -77,16 +168,6 @@ public class StressTestTutorial {
 				),
 				tutorial.createToDoCompletorValidator()
 		);
-		tutorial.addDragAndDropToPopupMenuToInputDialogStep(  
-				"Drag For Each In Order",
-				"Drag <b>For Each In Order</b>.",
-				tutorial.createForEachInArrayLoopTemplateResolver(),
-				"Drop <b>here</b>.",
-				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
-				"Select <strong>Other Array...</strong>",
-				"Select <strong>Double</strong>, add <strong>1.0</strong>, and press <strong>ok</strong>",
-				tutorial.createToDoCompletorValidator()
-		);
 
 
 //		tutorial.addDialogOpenStep( 
@@ -94,7 +175,7 @@ public class StressTestTutorial {
 //				"Declare a procedure.", 
 //				tutorial.createDeclareProcedureOperationResolver()
 //		);
-		tutorial.EPIC_HACK_addDeclareProcedureOperationStep( 
+		tutorial.EPIC_HACK_addDeclareProcedureDialogOpenStep( 
 				"Declare Procedure", 
 				"Declare a procedure.", 
 				new org.alice.ide.operations.ast.DeclareProcedureOperation.EPIC_HACK_Validator() {
@@ -120,7 +201,7 @@ public class StressTestTutorial {
 //				"Declare Parameter.", 
 //				tutorial.createDeclareMethodParameterOperationResolver() 
 //		);
-		tutorial.EPIC_HACK_addDeclareMethodParameterOperationStep( 
+		tutorial.EPIC_HACK_addDeclareMethodParameterDialogOpenStep( 
 				"Declare Parameter", 
 				"Declare Parameter.", 
 				new org.alice.ide.operations.ast.DeclareMethodParameterOperation.EPIC_HACK_Validator() {

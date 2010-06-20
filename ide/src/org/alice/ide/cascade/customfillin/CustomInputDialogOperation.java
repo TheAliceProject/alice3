@@ -40,28 +40,55 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.cascade.customfillin;
+package org.alice.ide.cascade.customfillin;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomVolumeLevelFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< edu.cmu.cs.dennisc.alice.ast.Expression, org.alice.apis.moveandturn.VolumeLevel > {
-	@Override
-	protected String getMenuProxyText() {
-		return "Other Volume Level...";
+public class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.alice.ast.Expression,F> extends org.alice.ide.operations.InputDialogWithPreviewOperation {
+	@Deprecated
+	public interface EPIC_HACK_Validator {
+		public String getExplanationIfOkButtonShouldBeDisabled( org.alice.ide.choosers.ValueChooser< ? > valueChooser );
+	}
+	private EPIC_HACK_Validator validator = null;
+
+	private CustomInputPane< E, F > customInputPane;
+	public CustomInputDialogOperation( CustomInputPane< E, F > customInputPane ) {
+		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "0e69d792-3e5b-4a17-b670-465885ade615" ) );
+		this.customInputPane = customInputPane;
+	}
+	public EPIC_HACK_Validator getValidator() {
+		return this.validator;
+	}
+	public void setValidator( EPIC_HACK_Validator validator ) {
+		this.validator = validator;
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser createValueChooser() {
-		return new org.alice.stageide.choosers.VolumeLevelChooser();
+	protected String getExplanationIfOkButtonShouldBeDisabled() {
+		String rv = super.getExplanationIfOkButtonShouldBeDisabled();
+		if( this.validator != null ) {
+			String explanation = this.validator.getExplanationIfOkButtonShouldBeDisabled( this.customInputPane.getValueChooser() );
+			if( explanation != null ) {
+				rv = explanation;
+			}
+		}
+		return rv;
+	}
+	
+	@Override
+	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
+		return this.customInputPane;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.apis.moveandturn.VolumeLevel value ) {
-		edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value.doubleValue() );
-		final boolean IS_LITERAL_DESIRED = true;
-		if( IS_LITERAL_DESIRED ) {
-			return doubleLiteral;
+	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
+		return this.customInputPane;
+	}
+	@Override
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {
+		if( isOk ) {
+			context.finish();
 		} else {
-			return org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.VolumeLevel.class, new Class<?>[] { Number.class }, doubleLiteral );
+			context.cancel();
 		}
 	}
 }

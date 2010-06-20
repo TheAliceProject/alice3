@@ -50,7 +50,6 @@ public class DeclareMethodParameterOperation extends org.alice.ide.operations.In
 	public interface EPIC_HACK_Validator {
 		public String getExplanationIfOkButtonShouldBeDisabled( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > valueType );
 	}
-
 	private EPIC_HACK_Validator validator = null;
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice, DeclareMethodParameterOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static DeclareMethodParameterOperation getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
@@ -71,11 +70,23 @@ public class DeclareMethodParameterOperation extends org.alice.ide.operations.In
 		this.setName( "Add Parameter..." );
 	}
 	public EPIC_HACK_Validator getValidator() {
-		return validator;
+		return this.validator;
 	}
 	public void setValidator( EPIC_HACK_Validator validator ) {
 		this.validator = validator;
 	}
+	@Override
+	protected String getExplanationIfOkButtonShouldBeDisabled() {
+		String rv = super.getExplanationIfOkButtonShouldBeDisabled();
+		if( this.validator != null ) {
+			String explanation = this.validator.getExplanationIfOkButtonShouldBeDisabled( this.getDeclarationName(), this.getValueType() );
+			if( explanation != null ) {
+				rv = explanation;
+			}
+		}
+		return rv;
+	}
+
 	private String getDeclarationName() {
 		if( this.createMethodParameterPane != null ) {
 			return this.createMethodParameterPane.getDeclarationName();
@@ -91,17 +102,6 @@ public class DeclareMethodParameterOperation extends org.alice.ide.operations.In
 		}
 	}
 
-	@Override
-	protected String getExplanationIfOkButtonShouldBeDisabled() {
-		String rv = super.getExplanationIfOkButtonShouldBeDisabled();
-		if( this.validator != null ) {
-			String explanation = this.validator.getExplanationIfOkButtonShouldBeDisabled( this.getDeclarationName(), this.getValueType() );
-			if( explanation != null ) {
-				rv = explanation;
-			}
-		}
-		return rv;
-	}
 	
 	@Override
 	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {

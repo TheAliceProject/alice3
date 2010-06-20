@@ -51,7 +51,7 @@ public class CustomizeAudioSourceFillIn extends org.alice.ide.cascade.customfill
 		return "Customize Audio Source...";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser createCustomPane() {
+	protected org.alice.ide.choosers.ValueChooser createValueChooser() {
 		return new org.alice.stageide.choosers.AudioSourceChooser();
 	}
 	@Override

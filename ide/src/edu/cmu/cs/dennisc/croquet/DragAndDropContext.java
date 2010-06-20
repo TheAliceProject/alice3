@@ -250,9 +250,9 @@ public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
 	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		this.setLatestMouseEvent( e );
 		if( this.currentDropReceptor != null ) {
-			this.addChild( new DroppedEvent( this, e, this.currentDropReceptor ) );
 			Operation< ?,? > operation = this.currentDropReceptor.dragDropped( this );
 			if( operation != null ) {
+				this.addChild( new DroppedEvent( this, e, this.currentDropReceptor ) );
 				operation.fire( this.getLatestMouseEvent(), this.currentDropReceptor.getViewController() );
 			} else {
 				this.cancel();

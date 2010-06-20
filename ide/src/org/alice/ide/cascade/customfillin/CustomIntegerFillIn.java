@@ -51,7 +51,7 @@ public class CustomIntegerFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.
 		return "Other Integer...";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser createCustomPane() {
+	protected org.alice.ide.choosers.ValueChooser createValueChooser() {
 		return new org.alice.ide.choosers.IntegerChooser();
 	}
 	@Override

@@ -46,38 +46,17 @@ package org.alice.ide.cascade.customfillin;
  * @author Dennis Cosgrove
  */
 public abstract class CustomFillIn<E extends edu.cmu.cs.dennisc.alice.ast.Expression, F> extends edu.cmu.cs.dennisc.cascade.FillIn< E > {
-	protected abstract org.alice.ide.choosers.ValueChooser< F > createCustomPane();
+	protected abstract org.alice.ide.choosers.ValueChooser< F > createValueChooser();
 	protected abstract E createExpression( F value );
-
 	@Override
 	public E getTransientValue() {
 		return null;
 	}
 	@Override
 	public E getValue() {
-		org.alice.ide.choosers.ValueChooser< F > chooser = this.createCustomPane();
-		final CustomInputPane< E, F > customInputPane = new CustomInputPane<E,F>(this, chooser);
-		
-		org.alice.ide.operations.InputDialogWithPreviewOperation inputDialogOperation = new org.alice.ide.operations.InputDialogWithPreviewOperation( 
-				edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "0e69d792-3e5b-4a17-b670-465885ade615" ) ) {
-			@Override
-			protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
-				return customInputPane;
-			}
-			@Override
-			protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
-				return customInputPane;
-			}
-			@Override
-			protected void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {
-				if( isOk ) {
-					context.finish();
-				} else {
-					context.cancel();
-				}
-			}
-		};
-		
+		org.alice.ide.choosers.ValueChooser< F > chooser = this.createValueChooser();
+		CustomInputPane< E, F > customInputPane = new CustomInputPane<E,F>(this, chooser);
+		CustomInputDialogOperation<E,F> inputDialogOperation = new CustomInputDialogOperation<E,F>( customInputPane );
 		edu.cmu.cs.dennisc.croquet.InputDialogOperationContext context = inputDialogOperation.fire();
 		if( context != null ) {
 			if( context.isCanceled() ) {

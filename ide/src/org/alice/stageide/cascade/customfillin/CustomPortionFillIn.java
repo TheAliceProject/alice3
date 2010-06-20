@@ -51,7 +51,7 @@ public class CustomPortionFillIn extends org.alice.ide.cascade.customfillin.Cust
 		return "Other Portion...";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser createCustomPane() {
+	protected org.alice.ide.choosers.ValueChooser createValueChooser() {
 		return new org.alice.stageide.choosers.PortionChooser();
 	}
 	@Override

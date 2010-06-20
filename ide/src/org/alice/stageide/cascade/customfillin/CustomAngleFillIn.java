@@ -54,7 +54,7 @@ public class CustomAngleFillIn extends org.alice.ide.cascade.customfillin.Custom
 		return "Other Angle...";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser createCustomPane() {
+	protected org.alice.ide.choosers.ValueChooser createValueChooser() {
 		return new AngleChooser();
 	}
 	@Override

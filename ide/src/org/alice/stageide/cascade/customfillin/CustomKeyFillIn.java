@@ -51,7 +51,7 @@ public class CustomKeyFillIn extends org.alice.ide.cascade.customfillin.CustomFi
 		return "Other Key...";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser createCustomPane() {
+	protected org.alice.ide.choosers.ValueChooser createValueChooser() {
 		return new org.alice.stageide.choosers.KeyChooser();
 	}
 	@Override

@@ -51,7 +51,7 @@ public class CustomArrayFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.as
 		return "Other Array...";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser createCustomPane() {
+	protected org.alice.ide.choosers.ValueChooser createValueChooser() {
 		return new org.alice.ide.choosers.ArrayChooser();
 	}
 	@Override
