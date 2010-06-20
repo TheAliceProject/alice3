@@ -77,7 +77,6 @@ public class StressTestTutorial {
 						return false;
 					}
 					public String getExplanationIfOkButtonShouldBeDisabled(org.alice.ide.choosers.ValueChooser<?> valueChooser) {
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "getExplanationIfOkButtonShouldBeDisabled" );
 						final String[] desiredFieldNames = { "grassyGround", "grassyGround" };
 						final String COMPLETE_INSTRUCTIONS = "<html>Select value type <strong>Model</strong> and add <strong>" + desiredFieldNames[ 0 ] + "</strong> and <strong>" + desiredFieldNames[ 1 ] + "</strong>.</html>";
 						if (valueChooser instanceof org.alice.ide.choosers.ArrayChooser) {
@@ -94,12 +93,8 @@ public class StressTestTutorial {
 //									}
 //								}
 								edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> componentType = arrayChooser.EPIC_HACK_getArrayComponentType();
-								
-								edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentType", componentType );
-								
 								edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredComponentType = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Model.class );
 								boolean isComponentTypeCorrect = componentType == desiredComponentType;
-								
 								boolean areExpressionsCorrect = false;
 								java.util.ArrayList< edu.cmu.cs.dennisc.alice.ast.Expression > expressions = arrayInstanceCreation.expressions.getValue();
 								if( expressions != null ) {
@@ -119,11 +114,11 @@ public class StressTestTutorial {
 									if( areExpressionsCorrect ) {
 										return null;
 									} else {
-										return "Add <strong>"+ desiredFieldNames[ 0 ] + "</strong> and <strong>" + desiredFieldNames[ 1 ] + "</strong>.";
+										return "<html>Add <strong>"+ desiredFieldNames[ 0 ] + "</strong> and <strong>" + desiredFieldNames[ 1 ] + "</strong>.</html>";
 									}
 								} else {
 									if( areExpressionsCorrect ) {
-										return "Select value type <strong>Model</strong>.";
+										return "<html>Select value type <strong>Model</strong>.</html>";
 									} else {
 										return COMPLETE_INSTRUCTIONS;
 									}

@@ -47,7 +47,7 @@ public class HistoryManager {
 		public void committing(edu.cmu.cs.dennisc.croquet.Edit edit) {
 		}
 		public void committed(edu.cmu.cs.dennisc.croquet.Edit edit) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "HistoryManager:", edit, edit.getGroup() );
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "HistoryManager:", edit, edit.getGroup() );
 			HistoryManager.handleOperationPerformed( edit );
 		}
 	};

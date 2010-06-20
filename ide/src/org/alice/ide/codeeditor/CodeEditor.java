@@ -738,7 +738,6 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 		}
 	}
 	public final void dragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "dragStopped" );
 		EPIC_HACK_desiredStatementListPropertyPane = null;
 		EPIC_HACK_desiredIndex = -1;
 	}

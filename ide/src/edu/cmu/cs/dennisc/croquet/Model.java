@@ -207,8 +207,7 @@ public abstract class Model<M> implements TrackableShape, Resolver< M > {
 //		Thread.dumpStack();
 		assert this.components.contains( firstComponentHint );
 		if( this.firstComponentHint != firstComponentHint ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "prevFirstComponentHint", this.firstComponentHint );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "nextFirstComponentHint", firstComponentHint );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "setFirstComponentHint", this.firstComponentHint, "->", firstComponentHint );
 			this.firstComponentHint = firstComponentHint;
 		}
 	}

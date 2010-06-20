@@ -67,13 +67,13 @@ public abstract class Application {
 		assert Application.singleton == null;
 		Application.singleton = this;
 
-		rootContext.addCommitObserver( new ModelContext.CommitObserver() {
-			public void committing( Edit edit ) {
-			}
-			public void committed( Edit edit ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( edit );
-			}
-		} );
+//		rootContext.addCommitObserver( new ModelContext.CommitObserver() {
+//			public void committing( Edit edit ) {
+//			}
+//			public void committed( Edit edit ) {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( edit );
+//			}
+//		} );
 	}
 
 	public ModelContext<?> getRootContext() {

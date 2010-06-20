@@ -223,8 +223,6 @@ public class Tutorial {
 				if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext ) {
 					edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext context = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext)child;
 					edu.cmu.cs.dennisc.croquet.Model<?> model = context.getModel();
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "child:", child );
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "model:", model );
 					if (model instanceof org.alice.ide.cascade.customfillin.CustomInputDialogOperation ) {
 						org.alice.ide.cascade.customfillin.CustomInputDialogOperation customInputDialogOperation = (org.alice.ide.cascade.customfillin.CustomInputDialogOperation) model;
 						customInputDialogOperation.setValidator( validator );

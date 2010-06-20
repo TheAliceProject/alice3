@@ -47,7 +47,6 @@ package org.alice.ide.initializer;
  */
 public class ExpressionUtilities {
 	public static edu.cmu.cs.dennisc.alice.ast.Expression getNextExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( type );
 		//todo: check to see if acceptable
 		edu.cmu.cs.dennisc.alice.ast.Expression rv;
 		if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) {
@@ -59,7 +58,6 @@ public class ExpressionUtilities {
 		} else {
 			rv = new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
 		}
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( rv );
 		return rv;
 	}
 	public static edu.cmu.cs.dennisc.alice.ast.Expression createDefaultExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {

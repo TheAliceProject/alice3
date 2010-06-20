@@ -62,7 +62,7 @@ public abstract class Component<J extends java.awt.Component> implements ScreenE
 			if( this.awtContainer instanceof javax.swing.plaf.UIResource ) {
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "javax.swing.plaf.UIResource: ", awtContainer.getClass(), awtContainer.hashCode() );
 			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "creating adapter for: ", awtContainer.getClass(), awtContainer.hashCode() );
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "creating adapter for: ", awtContainer.getClass(), awtContainer.hashCode() );
 			}
 		}
 		@Override
@@ -79,7 +79,7 @@ public abstract class Component<J extends java.awt.Component> implements ScreenE
 			if( this.awtComponent instanceof javax.swing.plaf.UIResource ) {
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "javax.swing.plaf.UIResource: ", awtComponent.getClass(), awtComponent.hashCode() );
 			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "creating adapter for: ", awtComponent.getClass(), awtComponent.hashCode() );
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "creating adapter for: ", awtComponent.getClass(), awtComponent.hashCode() );
 			}
 		}
 		@Override

@@ -174,12 +174,14 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
+		State state = this.getState();
 		if( child instanceof edu.cmu.cs.dennisc.croquet.CancelEvent ) {
-			SoundCache.FAILURE.startIfNotAlreadyActive();
-			this.reset();
+			if( state != State.WAITING_ON_INPUT_DIALOG_COMMIT || child.getParent() instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext) {
+				SoundCache.FAILURE.startIfNotAlreadyActive();
+				this.reset();
+			}
 			return false;
 		} else {
-			State state = this.getState();
 			boolean rv = false;
 			switch( state ) {
 			case WAITING_ON_DRAG:
