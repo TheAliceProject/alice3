@@ -133,24 +133,6 @@ public class Tutorial {
 		return this.addStep( step );
 	}
 
-	@Deprecated
-	public Step addDialogOpenStep( String title, String text, Resolver<? extends edu.cmu.cs.dennisc.croquet.AbstractDialogOperation> dialogOperationResolver ) {
-		Step step = new DialogOpenStep( title, text, dialogOperationResolver );
-		return this.addStep( step );
-	}
-	@Deprecated
-	public Step addDialogCloseStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.DialogOperation> dialogOperationResolver ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: use addDialogOpenAndCloseStep instead." );
-		Step step = new DialogCloseStep( title, text, dialogOperationResolver );
-		return this.addStep( step );
-	}
-	@Deprecated
-	public Step addInputDialogCommitStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> inputDialogOperationResolver, CompletorValidator completorValidator ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: use addInputDialogOpenAndCommitStep instead." );
-		Step step = new InputDialogCommitStep( title, text, inputDialogOperationResolver, completorValidator );
-		return this.addStep( step );
-	}
-
 	public Step addDialogOpenAndCloseStep( String title, String openText, String closeText, Resolver<edu.cmu.cs.dennisc.croquet.DialogOperation> dialogOperationResolver ) {
 		Step step = new DialogOpenAndCloseStep( title, openText, closeText, dialogOperationResolver );
 		return this.addStep( step );
@@ -201,40 +183,6 @@ public class Tutorial {
 	
 	
 
-	@Deprecated
-	public Step EPIC_HACK_addDeclareProcedureDialogOpenStep( String title, String text, final org.alice.ide.operations.ast.DeclareProcedureOperation.EPIC_HACK_Validator validator ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: use EPIC_HACK_addDeclareProcedureDialogOpenAndCommitStep instead." );
-		Step step = new DialogOpenStep<edu.cmu.cs.dennisc.croquet.InputDialogOperation>( title, text, ((org.alice.ide.tutorial.IdeTutorial)this).createDeclareProcedureOperationResolver() ) {
-			@Override
-			public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
-				if( super.isWhatWeveBeenWaitingFor( child ) ) {
-					org.alice.ide.operations.ast.DeclareProcedureOperation declareProcedureOperation = (org.alice.ide.operations.ast.DeclareProcedureOperation)this.getModel();
-					declareProcedureOperation.setValidator( validator );
-					return true;
-				} else {
-					return false;
-				}
-			}
-		};
-		return this.addStep( step );
-	}
-	@Deprecated
-	public Step EPIC_HACK_addDeclareMethodParameterDialogOpenStep( String title, String text, final org.alice.ide.operations.ast.DeclareMethodParameterOperation.EPIC_HACK_Validator validator ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: use EPIC_HACK_addDeclareMethodParameterDialogOpenAndCommitStep instead." );
-		Step step = new DialogOpenStep<edu.cmu.cs.dennisc.croquet.InputDialogOperation>( title, text, ((org.alice.ide.tutorial.IdeTutorial)this).createDeclareMethodParameterOperationResolver() ) {
-			@Override
-			public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
-				if( super.isWhatWeveBeenWaitingFor( child ) ) {
-					org.alice.ide.operations.ast.DeclareMethodParameterOperation declareParameterOperation = (org.alice.ide.operations.ast.DeclareMethodParameterOperation)this.getModel();
-					declareParameterOperation.setValidator( validator );
-					return true;
-				} else {
-					return false;
-				}
-			}
-		};
-		return this.addStep( step );
-	}
 	@Deprecated
 	public Step EPIC_HACK_addDeclareProcedureDialogOpenAndCommitStep( String title, String openText, String commitText, CompletorValidator completorValidator, final org.alice.ide.operations.ast.DeclareProcedureOperation.EPIC_HACK_Validator validator ) {
 		Step step = new InputDialogOpenAndCommitStep( title, openText, commitText, ((org.alice.ide.tutorial.IdeTutorial)this).createDeclareProcedureOperationResolver(), completorValidator, completorValidator ) {
