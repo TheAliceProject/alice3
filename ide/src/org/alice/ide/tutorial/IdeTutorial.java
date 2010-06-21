@@ -75,7 +75,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			for( java.lang.reflect.Method mthd : c.getMethods() ) {
 				int modifiers = mthd.getModifiers();
 				if( java.lang.reflect.Modifier.isPublic(modifiers) && java.lang.reflect.Modifier.isStatic( modifiers )==false ) {
-					if( mthd.getName().equals( methodName ) ) {
+					if( mthd.getName().equalsIgnoreCase( methodName ) ) {
 						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava m = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( mthd );
 						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava rv = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava)m.getShortestInChain();
 						assert rv != null : mthd;
@@ -92,7 +92,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		while( type.isDeclaredInAlice() ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > typeInAlice = (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >)type;
 			for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : typeInAlice.methods ) {
-				if( method.getName().equals( methodName ) ) {
+				if( method.getName().equalsIgnoreCase( methodName ) ) {
 					return method;
 				}
 			}
@@ -111,7 +111,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice.class ) {
 				@Override
 				protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local ) {
-					return localName.equals( local.getName() );
+					return localName.equalsIgnoreCase( local.getName() );
 				}
 			};
 			edu.cmu.cs.dennisc.alice.ast.BlockStatement body = codeInAlice.getBodyProperty().getValue();
@@ -139,7 +139,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 				@Override
 				protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
-					return methodName.equals( method.getName() );
+					return methodName.equalsIgnoreCase( method.getName() );
 				}
 			};
 			edu.cmu.cs.dennisc.alice.ast.BlockStatement body = codeInAlice.getBodyProperty().getValue();
@@ -294,12 +294,12 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			public edu.cmu.cs.dennisc.alice.ast.AbstractCode getResolved() {
 				edu.cmu.cs.dennisc.alice.ast.AbstractField foundField = null;
 				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = ide.getSceneField();
-				if( sceneField.getName().equals( fieldName ) ) {
+				if( sceneField.getName().equalsIgnoreCase( fieldName ) ) {
 					foundField = sceneField;
 				} else {
 					java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = sceneField.getValueType().getDeclaredFields();
 					for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : fields ) {
-						if( field.getName().equals( fieldName ) ) {
+						if( field.getName().equalsIgnoreCase( fieldName ) ) {
 							foundField = field;
 							break;
 						}
@@ -463,7 +463,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return new Resolver< edu.cmu.cs.dennisc.alice.ast.Accessible >() {
 			public edu.cmu.cs.dennisc.alice.ast.Accessible getResolved() {
 				for( edu.cmu.cs.dennisc.alice.ast.Accessible accessible : ide.getAccessibleListState() ) {
-					if( name.equals( accessible.getName() ) ) {
+					if( name.equalsIgnoreCase( accessible.getName() ) ) {
 						return accessible;
 					}
 				}
