@@ -46,7 +46,8 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 public enum SoundCache {
-	SUCCESS( javax.swing.plaf.metal.MetalLookAndFeel.class, "sounds/OptionPaneInformation.wav", false ),
+	//SUCCESS( javax.swing.plaf.metal.MetalLookAndFeel.class, "sounds/OptionPaneInformation.wav", false ),
+	SUCCESS( null, null, false ),
 	FAILURE( javax.swing.plaf.metal.MetalLookAndFeel.class, "sounds/OptionPaneError.wav", true );
 	private Class<?> cls;
 	private String resourceName;
