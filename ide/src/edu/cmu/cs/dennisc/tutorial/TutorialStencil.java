@@ -78,8 +78,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	private NextStepOperation nextStepOperation = new NextStepOperation( this.stepsComboBoxModel );
 	//private ExitOperation exitOperation = new ExitOperation();
 
-	private static boolean isEventInterceptEnabledByDefault = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyFalse( "edu.cmu.cs.dennisc.tutorial.Stencil.isEventInterceptEnabled" ) == false;
-	private edu.cmu.cs.dennisc.croquet.BooleanState isInterceptingEvents = new edu.cmu.cs.dennisc.croquet.BooleanState( TUTORIAL_GROUP, java.util.UUID.fromString( "c3a009d6-976e-439e-8f99-3c8ff8a0324a" ), isEventInterceptEnabledByDefault, "intercept events" );
+	private edu.cmu.cs.dennisc.croquet.BooleanState isInterceptingEvents = new edu.cmu.cs.dennisc.croquet.BooleanState( TUTORIAL_GROUP, java.util.UUID.fromString( "c3a009d6-976e-439e-8f99-3c8ff8a0324a" ), true, "intercept events" );
 	private edu.cmu.cs.dennisc.croquet.BooleanState isPaintingStencil = new edu.cmu.cs.dennisc.croquet.BooleanState( TUTORIAL_GROUP, java.util.UUID.fromString( "b1c1b125-cfe3-485f-9453-1e57e5b02cb1" ), true, "paint stecil" );
 	private edu.cmu.cs.dennisc.croquet.BooleanState isPlayingSounds = new edu.cmu.cs.dennisc.croquet.BooleanState( TUTORIAL_GROUP, java.util.UUID.fromString( "4d8ac630-0679-415a-882f-780c7cb014ef" ), true, "play sounds" );
 
@@ -143,6 +142,8 @@ package edu.cmu.cs.dennisc.tutorial;
 			}
 			public void changed( boolean nextValue ) {
 				TutorialStencil.this.revalidateAndRepaint();
+				isInterceptingEvents.setValue( nextValue );
+				isInterceptingEvents.setEnabled( nextValue );
 			}
 		} );
 

@@ -828,8 +828,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 						public java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.ScreenElement asSeenBy, java.awt.Insets insets ) {
 							java.awt.Rectangle bounds = CodeEditor.this.getAsSeenBy().convertRectangle( boundsAtIndex, asSeenBy );
 							//note: ignore insets
-//							java.awt.Rectangle visibleBounds = statementListPropertyPane.getVisibleRectangle( asSeenBy );
-//							return bounds.intersection( visibleBounds );
+//								java.awt.Rectangle visibleBounds = statementListPropertyPane.getVisibleRectangle( asSeenBy );
+//								return bounds.intersection( visibleBounds );
 							return bounds;
 						}
 						public boolean isInView() {
