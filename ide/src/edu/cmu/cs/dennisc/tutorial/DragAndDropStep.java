@@ -50,8 +50,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		WAITING_ON_DRAG,
 		WAITING_ON_DROP,
 		WAITING_ON_POPUP_MENU_COMMIT,
-		WAITING_ON_INPUT_DIALOG_COMMIT,
-		COMPLETE
+		WAITING_ON_INPUT_DIALOG_COMMIT
 	}
 	
 	private boolean isPopupMenuNotePresent;
@@ -127,12 +126,6 @@ package edu.cmu.cs.dennisc.tutorial;
 	protected void complete( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
 		context.commitAndInvokeDo( this.completor.getEdit() );
 	}
-	private void setActiveNote( int activeIndex ) {
-		final int N = this.getNoteCount();
-		for( int i=0; i<N; i++ ) {
-			this.getNoteAt( i ).setActive( i==activeIndex );
-		}
-	}
 	@Override
 	public void reset() {
 		super.reset();
@@ -143,16 +136,6 @@ package edu.cmu.cs.dennisc.tutorial;
 		return false;
 	}
 
-	private int getIndexOfFirstActiveNote() { 
-		final int N = this.getNoteCount();
-		for( int i=0; i<N; i++ ) {
-			Note note = this.getNoteAt( i );
-			if( note.isActive() ) {
-				return i;
-			}
-		}
-		return -1;
-	}
 	private State getState() {
 		int index = this.getIndexOfFirstActiveNote();
 		switch( index ) {

@@ -132,17 +132,47 @@ public class StressTestTutorial {
 				} 
 		);
 
-//		tutorial.addDragAndDropToPopupMenuToInputDialogStep(  
-//				"Drag For Each In Order",
-//				"Drag <b>For Each In Order</b>.",
-//				tutorial.createForEachInArrayLoopTemplateResolver(),
-//				"Drop <b>here</b>.",
-//				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
-//				"Select <strong>Other Array...</strong>",
-//				"Select <strong>Double</strong>, add <strong>1.0</strong>, and press <strong>ok</strong>",
-//				tutorial.createToDoCompletorValidator()
-//		);
-		
+		tutorial.EPIC_HACK_addDeclareProcedureDialogOpenAndCommitStep( 
+				"Declare Procedure Foo", 
+				"Declare procedure...", 
+				"Type <b>foo</b> and press <i>Ok</i>",
+				tutorial.createToDoCompletorValidator(),
+				new org.alice.ide.operations.ast.DeclareProcedureOperation.EPIC_HACK_Validator() {
+					public String getExplanationIfOkButtonShouldBeDisabled( String name ) {
+						if( "foo".equalsIgnoreCase( name ) ) {
+							return null;
+						} else {
+							return "<html>Please enter in the name <b>foo</b> and press <b>Ok</b> button.</html>";
+						}
+					}
+				}
+		);
+
+		tutorial.EPIC_HACK_addDeclareMethodParameterDialogOpenAndCommitStep( 
+				"Declare Parameter HowHigh", 
+				"Declare parameter...", 
+				"1) Select <i>value type:</i> <b>Double</b><p>2) Enter <i>name:</i> <b>howHigh</b><p>and press the <b>OK</b> button.",
+				tutorial.createToDoCompletorValidator(),				
+				new org.alice.ide.operations.ast.DeclareMethodParameterOperation.EPIC_HACK_Validator() {
+					public String getExplanationIfOkButtonShouldBeDisabled( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > valueType ) {
+						if( "howHigh".equalsIgnoreCase( name ) ) {
+							if( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE == valueType ) {
+								return null;
+							} else {
+								return "<html>Please select <b>Double</b> value type, and press <b>Ok</b>.</html>";
+							}
+						} else {
+							if( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE == valueType ) {
+								return "<html>Please enter in name <b>howHigh</b>, and press <b>Ok</b>.</html>";
+							} else {
+								return "<html>Please select <b>Double</b> value type, enter in name <b>howHigh</b>, and press <b>OK</b>.</html>";
+							}
+						}
+					}
+				}
+		);
+
+
 		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag If/Else",
 				"Drag <b>If/Else</b>.",
@@ -164,67 +194,6 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
-
-//		tutorial.addDialogOpenStep( 
-//				"Declare Procedure", 
-//				"Declare a procedure.", 
-//				tutorial.createDeclareProcedureOperationResolver()
-//		);
-		tutorial.EPIC_HACK_addDeclareProcedureDialogOpenStep( 
-				"Declare Procedure", 
-				"Declare a procedure.", 
-				new org.alice.ide.operations.ast.DeclareProcedureOperation.EPIC_HACK_Validator() {
-					public String getExplanationIfOkButtonShouldBeDisabled( String name ) {
-						if( "foo".equals( name ) ) {
-							return null;
-						} else {
-							return "<html>Please enter in the name <b>foo</b> and press <b>Ok</b> button.</html>";
-						}
-					}
-				}
-		);
-
-		tutorial.addInputDialogCommitStep( 
-				"Name Foo", 
-				"Type <b>foo</b> and press <i>Ok</i>",
-				tutorial.createDeclareProcedureOperationResolver(),
-				tutorial.createToDoCompletorValidator()
-		);
-
-//		tutorial.addDialogOpenStep( 
-//				"Declare Parameter", 
-//				"Declare Parameter.", 
-//				tutorial.createDeclareMethodParameterOperationResolver() 
-//		);
-		tutorial.EPIC_HACK_addDeclareMethodParameterDialogOpenStep( 
-				"Declare Parameter", 
-				"Declare Parameter.", 
-				new org.alice.ide.operations.ast.DeclareMethodParameterOperation.EPIC_HACK_Validator() {
-					public String getExplanationIfOkButtonShouldBeDisabled( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > valueType ) {
-						if( "howHigh".equals( name ) ) {
-							if( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE == valueType ) {
-								return null;
-							} else {
-								return "<html>Please select <b>Double</b> value type, and press <b>Ok</b>.</html>";
-							}
-						} else {
-							if( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE == valueType ) {
-								return "<html>Please enter in name <b>howHigh</b>, and press <b>Ok</b>.</html>";
-							} else {
-								return "<html>Please select <b>Double</b> value type, enter in name <b>howHigh</b>, and press <b>OK</b>.</html>";
-							}
-						}
-					}
-				}
-		);
-
-		tutorial.addInputDialogCommitStep( 
-				"Name HowHigh", 
-				"1) Select <i>value type:</i> <b>Double</b><p>2) Enter <i>name:</i> <b>howHigh</b><p>and press the <b>OK</b> button.",
-				tutorial.createDeclareMethodParameterOperationResolver(),
-				tutorial.createToDoCompletorValidator()				
-		);
-		
 
 		tutorial.addSelectTabStep(   
 				"Select Run", 
@@ -399,14 +368,10 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
-		tutorial.addDialogOpenStep( 
-				"Declare Procedure", 
-				"Declare a procedure.", 
-				tutorial.createDeclareProcedureOperationResolver()
-		);
 
-		tutorial.addInputDialogCommitStep( 
-				"Name Foo", 
+		tutorial.addInputDialogOpenAndCommitStep( 
+				"Declare Procedure Foo", 
+				"Declare a procedure...", 
 				"Type <b>foo</b> and press <i>Ok</i>",
 				tutorial.createDeclareProcedureOperationResolver(),
 				tutorial.createToDoCompletorValidator()
@@ -419,14 +384,9 @@ public class StressTestTutorial {
 //				tutorial.createCurrentCodeResolver()
 //		);
 //
-		tutorial.addDialogOpenStep( 
-				"Declare Parameter", 
-				"Declare Parameter.", 
-				tutorial.createDeclareMethodParameterOperationResolver() 
-		);
-
-		tutorial.addInputDialogCommitStep( 
-				"Name HowHigh", 
+		tutorial.addInputDialogOpenAndCommitStep( 
+				"Declare Parameter How High", 
+				"Declare parameter....", 
 				"Type <b>howHigh</b> and select <b>Double</b> and press <i>Ok</i>",
 				tutorial.createDeclareMethodParameterOperationResolver(),
 				tutorial.createToDoCompletorValidator()				
@@ -655,27 +615,13 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
-		tutorial.addDialogOpenStep( 
+		tutorial.addDialogOpenAndCloseStep( 
 				"Run", 
 				"Now, try running your program again.<p>The <b>iceSkater</b> should spin and then skate.", 
-				ide.getRunOperation() 
-		);
-		
-//		tutorial.addSpotlightStep( 
-//				"Dialog Box", 
-//				"Note the Dialog Box.", 
-//				new edu.cmu.cs.dennisc.tutorial.TrackableShapeResolver() {
-//					@Override
-//					protected edu.cmu.cs.dennisc.croquet.TrackableShape resolveTrackableShape() {
-//						return ide.getRunOperation().getActiveDialog();
-//					}
-//				} 
-//		);
-		tutorial.addDialogCloseStep( 
-				"Run", 
 				"Press the <b>Close</b> button", 
 				ide.getRunOperation() 
 		);
+		
 		tutorial.addSpotlightStep( 
 				"Count Loop", 
 				"This is the Count Loop tile.", 

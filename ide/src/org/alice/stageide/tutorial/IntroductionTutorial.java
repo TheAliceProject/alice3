@@ -121,13 +121,9 @@ public class IntroductionTutorial {
 				tutorial.createFirstInvocationResolver( "doSimpleSpin" )
 		);
 		
-		tutorial.addDialogOpenStep( 
+		tutorial.addDialogOpenAndCloseStep( 
 				"Run", 
 				"Press the <b>Run</b> button", 
-				ide.getRunOperation() 
-		);
-		tutorial.addDialogCloseStep( 
-				"Close", 
 				"Press the <b>Close</b> button", 
 				ide.getRunOperation() 
 		);
@@ -191,13 +187,9 @@ public class IntroductionTutorial {
 				tutorial.createFirstInvocationResolver( "skate" )
 		);
 		
-		tutorial.addDialogOpenStep( 
+		tutorial.addDialogOpenAndCloseStep( 
 				"Run", 
 				"Now, try running your program again.<p>The <b>iceSkater</b> should spin and then skate.", 
-				ide.getRunOperation() 
-		);
-		tutorial.addDialogCloseStep( 
-				"Run", 
 				"Press the <b>Close</b> button", 
 				ide.getRunOperation() 
 		);

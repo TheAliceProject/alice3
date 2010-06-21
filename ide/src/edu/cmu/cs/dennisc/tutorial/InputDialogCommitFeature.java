@@ -45,26 +45,23 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-/*package-private*/ class DialogOpenStep<M extends edu.cmu.cs.dennisc.croquet.AbstractDialogOperation> extends WaitingStep<M> {
-	public DialogOpenStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver<M> dialogOperationResolver ) {
-		super( title, text, new Hole( dialogOperationResolver, Feature.ConnectionPreference.EAST_WEST ), dialogOperationResolver );
+/*package-private*/class InputDialogCommitFeature extends Feature {
+	public InputDialogCommitFeature(edu.cmu.cs.dennisc.croquet.Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> trackableShapeResolver) {
+		super(trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST);
 	}
 	@Override
-	protected boolean isAlreadyInTheDesiredState() {
-		return false;
+	protected java.awt.Insets getBoundsInsets() {
+		return null;
 	}
 	@Override
-	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
-		if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent ) {
-			edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent)child;
-			return windowOpenedEvent.getParent().getModel() == this.getModel();
-		} else {
-			return false;
-		}
+	protected java.awt.Insets getContainsInsets() {
+		return null;
 	}
 	@Override
-	protected void complete( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
-		//this.getModel().fire();
+	protected java.awt.Insets getPaintInsets() {
+		return null;
+	}
+	@Override
+	protected void paint(java.awt.Graphics2D g2, java.awt.Shape shape) {
 	}
 }

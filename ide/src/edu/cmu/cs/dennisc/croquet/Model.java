@@ -186,7 +186,6 @@ public abstract class Model<M> implements TrackableShape, Resolver< M > {
 				}
 			}
 		}
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "return null" );
 		return null;
 	}
 	@Deprecated

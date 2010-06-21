@@ -45,27 +45,8 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 /*package-private*/ class InputDialogCommitStep extends AbstractDialogCloseStep<edu.cmu.cs.dennisc.croquet.InputDialogOperation> {
-	private static class InputDialogCommitFeature extends Feature {
-		public InputDialogCommitFeature( edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver ) {
-			super( trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST );
-		}
-		@Override
-		protected java.awt.Insets getBoundsInsets() {
-			return null;
-		}
-		@Override
-		protected java.awt.Insets getContainsInsets() {
-			return null;
-		}
-		@Override
-		protected java.awt.Insets getPaintInsets() {
-			return null;
-		}
-		@Override
-		protected void paint( java.awt.Graphics2D g2, java.awt.Shape shape ) {
-		}
-	}
 	private Completor completor;
 	private Validator validator;
 	public InputDialogCommitStep( String title, String text, final edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> inputDialogOperationResolver, CompletorValidator completorValidator ) {
@@ -92,18 +73,42 @@ package edu.cmu.cs.dennisc.tutorial;
 
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
-		if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent ) {
-			edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent windowClosedEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent)child;
-			edu.cmu.cs.dennisc.croquet.ModelContext<?> c = windowClosedEvent.getParent();
-			while( c != null ) {
-				if( c.getModel() == this.getModel() ) {
-					return true;
+		if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
+			edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent completeEvent = (edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent)child;
+			edu.cmu.cs.dennisc.croquet.Model eventModel = completeEvent.getParent().getModel();
+			if( this.getModel() == eventModel ) {
+				edu.cmu.cs.dennisc.croquet.Edit edit;
+				if (child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent) {
+					edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent) child;
+					edit = commitEvent.getEdit();
+				} else {
+					edit = null;
 				}
-				c = c.getParent();
+				boolean rv = this.validator.checkValidity( edit ).isProcedeApprorpiate();
+				if( rv ) {
+					SoundCache.SUCCESS.startIfNotAlreadyActive();
+				} else {
+					SoundCache.FAILURE.startIfNotAlreadyActive();
+				}
+				return rv;
+			} else {
+				return false;
 			}
-			return false;
 		} else {
 			return false;
 		}
+//		if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent ) {
+//			edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent windowClosedEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent)child;
+//			edu.cmu.cs.dennisc.croquet.ModelContext<?> c = windowClosedEvent.getParent();
+//			while( c != null ) {
+//				if( c.getModel() == this.getModel() ) {
+//					return true;
+//				}
+//				c = c.getParent();
+//			}
+//			return false;
+//		} else {
+//			return false;
+//		}
 	}
 }

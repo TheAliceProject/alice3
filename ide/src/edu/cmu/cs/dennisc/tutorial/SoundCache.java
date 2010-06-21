@@ -59,26 +59,28 @@ public enum SoundCache {
 		this.isBeepDesiredAsFallback = isBeepDesiredAsFallback;
 	}
 	public synchronized void startIfNotAlreadyActive() {
-		if( this.isAttempted ) {
-			//pass
-		} else {
-			this.isAttempted = true;
-			try {
-				this.clip = edu.cmu.cs.dennisc.javax.sound.SoundUtilities.createOpenedClip( this.cls, this.resourceName );
-			} catch( Exception e ) {
-				e.printStackTrace();
-			}
-		}
-		if( this.clip != null ) {
-			if( this.clip.isActive() ) {
+		if( this.cls != null && this.resourceName != null ) {
+			if( this.isAttempted ) {
 				//pass
 			} else {
-				this.clip.setFramePosition( 0 );
-				this.clip.start();
+				this.isAttempted = true;
+				try {
+					this.clip = edu.cmu.cs.dennisc.javax.sound.SoundUtilities.createOpenedClip( this.cls, this.resourceName );
+				} catch( Exception e ) {
+					e.printStackTrace();
+				}
 			}
-		} else {
-			if( this.isBeepDesiredAsFallback ) {
-				java.awt.Toolkit.getDefaultToolkit().beep();
+			if( this.clip != null ) {
+				if( this.clip.isActive() ) {
+					//pass
+				} else {
+					this.clip.setFramePosition( 0 );
+					this.clip.start();
+				}
+			} else {
+				if( this.isBeepDesiredAsFallback ) {
+					java.awt.Toolkit.getDefaultToolkit().beep();
+				}
 			}
 		}
 	}

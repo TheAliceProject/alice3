@@ -45,10 +45,12 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-/*package-private*/ class DialogCloseStep extends AbstractDialogCloseStep<edu.cmu.cs.dennisc.croquet.DialogOperation> {
-	public DialogCloseStep( String title, String text, final edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.DialogOperation> dialogOperationResolver ) {
-		super( title, text, new DialogCloseButtonFeature( new edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
+/*package-private*/ class DialogOpenAndCloseStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DialogOperation> {
+	public DialogOpenAndCloseStep( String title, String openText, String closeText, final edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.DialogOperation> dialogOperationResolver ) {
+		super( title, openText, new Hole( dialogOperationResolver, Feature.ConnectionPreference.EAST_WEST ), dialogOperationResolver );
+
+		Note closeNote = new Note( closeText );
+		closeNote.addFeature( new DialogCloseButtonFeature( new edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
 			public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
 				edu.cmu.cs.dennisc.croquet.DialogOperation dialogOperation = dialogOperationResolver.getResolved();
 				if( dialogOperation != null ) {
@@ -62,15 +64,68 @@ package edu.cmu.cs.dennisc.tutorial;
 					return null;
 				}
 			}
-		} ), dialogOperationResolver );
+		} ) );
+		this.addNote( closeNote );
+	}
+	@Override
+	public void reset() {
+		super.reset();
+		this.setActiveNote( 0 );
+	}
+	@Override
+	protected boolean isAlreadyInTheDesiredState() {
+		return false;
+	}
+	@Override
+	protected void complete(edu.cmu.cs.dennisc.croquet.ModelContext<?> context) {
+	}
+	
+	private enum State {
+		WAITING_ON_OPEN,
+		WAITING_ON_CLOSE,
+	}
+	private State getState() {
+		int index = this.getIndexOfFirstActiveNote();
+		switch( index ) {
+		case 0:
+			return State.WAITING_ON_OPEN;
+		case 1:
+			return State.WAITING_ON_CLOSE;
+		default:
+			return null;
+		}
 	}
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
-		if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent ) {
-			edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent windowClosedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent)child;
-			return windowClosedEvent.getParent().getModel() == this.getModel();
-		} else {
-			return false;
+		boolean rv = false;
+		State state = this.getState();
+		switch( state ) {
+		case WAITING_ON_OPEN:
+			if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent ) {
+				edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent)child;
+				if( windowOpenedEvent.getParent().getModel() == this.getModel() ) {
+					this.setActiveNote( 1 );
+					
+					edu.cmu.cs.dennisc.croquet.Dialog dialog = this.getModel().getActiveDialog();
+					if( dialog != null ) {
+						java.awt.Rectangle dialogLocalBounds = dialog.getLocalBounds();
+						Note note1 = this.getNoteAt( 1 );
+						java.awt.Rectangle bounds = note1.getBounds( dialog );
+						if( bounds.intersects( dialogLocalBounds ) ) {
+							note1.setLocation( dialog.getWidth()+100, dialog.getHeight()/2, dialog );
+						}
+					}
+					
+				}
+			}
+			break;
+		case WAITING_ON_CLOSE:
+			if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent ) {
+				edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent windowClosedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent)child;
+				rv = windowClosedEvent.getParent().getModel() == this.getModel();
+			}
+			break;
 		}
+		return rv;
 	}
 }

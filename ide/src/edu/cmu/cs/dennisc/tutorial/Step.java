@@ -101,6 +101,22 @@ public abstract class Step {
 			}
 		}
 	}
+	protected int getIndexOfFirstActiveNote() { 
+		final int N = this.getNoteCount();
+		for( int i=0; i<N; i++ ) {
+			Note note = this.getNoteAt( i );
+			if( note.isActive() ) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	protected void setActiveNote( int activeIndex ) {
+		final int N = this.getNoteCount();
+		for( int i=0; i<N; i++ ) {
+			this.getNoteAt( i ).setActive( i==activeIndex );
+		}
+	}
 	
 	protected java.awt.Point calculateLocationForNoteAt( edu.cmu.cs.dennisc.croquet.Container< ? > container, int index ) {
 		return this.notes.get( 0 ).calculateLocation( container );
@@ -113,6 +129,7 @@ public abstract class Step {
 	private java.awt.Point calculateLocationOfFirstNote() {
 		return this.calculateLocationOfFirstNote( this.stepPanel );
 	}
+	
 	
 	private class StepPanel extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JPanel > {
 		@Override
