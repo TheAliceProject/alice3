@@ -93,31 +93,33 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 				super.paint(g);
 				int i = StatementListPropertyPane.this.currentPotentialDropIndex;
 				final int N = StatementListPropertyPane.this.getProperty().size();
-				if( i != -1 && N > 0 ) {
-					int y;
-					if( i == N ) {
-						java.awt.Component lastComponent = this.getComponent( N-1 );
-						y = lastComponent.getY();
-						y += lastComponent.getHeight();
-					} else {
-						java.awt.Component iComponent = this.getComponent( i );
-						y = iComponent.getY();
-						y -= INTRASTICIAL_PAD;
+				if( N == this.getComponentCount() && i >= 0 && i < N ) {
+					if( i != -1 && N > 0 ) {
+						int y;
+						if( i == N ) {
+							java.awt.Component lastComponent = this.getComponent( N-1 );
+							y = lastComponent.getY();
+							y += lastComponent.getHeight();
+						} else {
+							java.awt.Component iComponent = this.getComponent( i );
+							y = iComponent.getY();
+							y -= INTRASTICIAL_PAD;
+						}
+						int x0 = 0;
+						int x1 = INDENT;
+						int yC = Math.max( y + INTRASTICIAL_MIDDLE, 1 );
+						int y0 = yC-INDENT;
+						int y1 = yC+INDENT;
+						
+						int w = this.getWidth();
+						int[] xPoints = new int[] { x1, x0, x0 };
+						int[] yPoints = new int[] { yC, y1, y0 };
+						g.setColor( FEEDBACK_COLOR );
+						g.fillRect( 0, y, w, INTRASTICIAL_PAD );
+						g.fillPolygon( xPoints, yPoints, 3 );
+						//g.setColor( java.awt.Color.YELLOW );
+						//g.fillRect( 1, yC, w-2, 1 );
 					}
-					int x0 = 0;
-					int x1 = INDENT;
-					int yC = Math.max( y + INTRASTICIAL_MIDDLE, 1 );
-					int y0 = yC-INDENT;
-					int y1 = yC+INDENT;
-					
-					int w = this.getWidth();
-					int[] xPoints = new int[] { x1, x0, x0 };
-					int[] yPoints = new int[] { yC, y1, y0 };
-					g.setColor( FEEDBACK_COLOR );
-					g.fillRect( 0, y, w, INTRASTICIAL_PAD );
-					g.fillPolygon( xPoints, yPoints, 3 );
-					//g.setColor( java.awt.Color.YELLOW );
-					//g.fillRect( 1, yC, w-2, 1 );
 				}
 			}
 		}
@@ -296,9 +298,13 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		return this.getComponentCount() == 0 || this.getComponent( 0 ) instanceof org.alice.ide.codeeditor.EmptyStatementListAffordance;
 	}
 
-	private int getCenterYOfComponentAt( int i ) {
-		java.awt.Component componentI = this.getAwtComponent().getComponent( i );
-		return componentI.getY() + componentI.getHeight() / 2;
+	private Integer getCenterYOfComponentAt( int i ) {
+		if( i>=0 && i<this.getComponentCount() ) {
+			java.awt.Component componentI = this.getAwtComponent().getComponent( i );
+			return componentI.getY() + componentI.getHeight() / 2;
+		} else {
+			return null;
+		}
 	}
 	public int calculateIndex( java.awt.Point p ) {
 		if( isFigurativelyEmpty() ) {

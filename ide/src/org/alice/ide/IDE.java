@@ -146,9 +146,30 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 	}
 
-	private FileMenuModel fileMenuModel = new FileMenuModel( this.getNewProjectOperation(), this.getOpenProjectOperation(), edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, new RecentProjectsMenuModel(), edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, this
-			.getSaveProjectOperation(), this.getSaveAsProjectOperation(), edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, this.getRevertProjectOperation(), edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-			new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation(), edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, this.getExitOperation() );
+	private FileMenuModel fileMenuModel = new FileMenuModel( 
+			this.getNewProjectOperation(), 
+			this.getOpenProjectOperation(), 
+			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, 
+			new RecentProjectsMenuModel(), 
+			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, 
+			this.getSaveProjectOperation(), 
+			this.getSaveAsProjectOperation(), 
+			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, 
+			this.getRevertProjectOperation(), 
+			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
+			new edu.cmu.cs.dennisc.croquet.MenuModel( 
+					IDE_GROUP, 
+					java.util.UUID.fromString( "115844c7-064f-4070-b9c2-3e503a43e271" ), 
+					"Print", java.awt.event.KeyEvent.VK_P, 
+					new org.alice.ide.operations.file.PrintAllOperation(),
+					new org.alice.ide.operations.file.PrintCurrentCodeOperation(),
+					new org.alice.ide.operations.file.PrintSceneEditorOperation()
+			),
+			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
+			new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation(), 
+			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, 
+			this.getExitOperation() 
+	);
 	private EditMenuModel editMenuModel = new EditMenuModel( this.getUndoOperation(), this.getRedoOperation(), edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, new org.alice.ide.operations.edit.CutOperation(),
 			new org.alice.ide.operations.edit.CopyOperation(), new org.alice.ide.operations.edit.PasteOperation() );
 
