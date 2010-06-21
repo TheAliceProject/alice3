@@ -78,7 +78,17 @@ public abstract class Step {
 						}
 					} else {
 						if (awtComponent instanceof Note.JNote) {
-							p = new java.awt.Point( Step.this.calculateLocationOfFirstNote() );
+							if( Step.this.layoutHint != null ) {
+								p = Step.this.layoutHint;
+								if( p.x < 0 ) {
+									p.x = parentSize.width - childSize.width + p.x;
+								}
+								if( p.y < 0 ) {
+									p.y = parentSize.height - childSize.height + p.y;
+								}
+							} else {
+								p = new java.awt.Point( Step.this.calculateLocationOfFirstNote() );
+							}
 						} else {
 							p = new java.awt.Point( 10, 10 );
 						}
@@ -129,8 +139,7 @@ public abstract class Step {
 	private java.awt.Point calculateLocationOfFirstNote() {
 		return this.calculateLocationOfFirstNote( this.stepPanel );
 	}
-	
-	
+
 	private class StepPanel extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JPanel > {
 		@Override
 		protected javax.swing.JPanel createAwtComponent() {
@@ -192,30 +201,11 @@ public abstract class Step {
 			rv.setOpaque( false );
 			return rv;
 		}
-//	private class StepPanel extends edu.cmu.cs.dennisc.croquet.Panel {
-//		@Override
-//		protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-//			return new StepLayoutManager();
-//		}
 		@Override
 		protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
 			for( Note note : Step.this.getNotes() ) {
 				this.internalAddComponent( note );
 			}
-//			for( Note note : Step.this.getNotes() ) {
-//				if( note.isActive() ) {
-//					//
-//				} else {
-//					this.internalAddComponent( note );
-//				}
-//			}
-//			for( Note note : Step.this.getNotes() ) {
-//				if( note.isActive() ) {
-//					this.internalAddComponent( note );
-//				} else {
-//					//pass
-//				}
-//			}
 			super.handleAddedTo( parent );
 		}
 		@Override
@@ -230,6 +220,7 @@ public abstract class Step {
 	private StepPanel stepPanel = new StepPanel();
 	private java.util.List< Note > notes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private String title;
+	private java.awt.Point layoutHint = null;
 	
 	private int[] historyIndices = null;
 	
@@ -258,6 +249,17 @@ public abstract class Step {
 	public java.util.UUID getId() {
 		return this.id;
 	}
+	
+	public java.awt.Point getLayoutHint() {
+		return this.layoutHint;
+	}
+	public void setLayoutHint(java.awt.Point layoutHint) {
+		this.layoutHint = layoutHint;
+	}
+	public final void setLayoutHint( int x, int y ) {
+		this.setLayoutHint( new java.awt.Point( x, y ) );
+	}
+	
 	public void addNote( Note note ) {
 		this.notes.add( note );
 		note.setTutorialStencil( this.tutorialStencil );

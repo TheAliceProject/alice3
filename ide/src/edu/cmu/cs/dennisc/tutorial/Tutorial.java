@@ -55,16 +55,9 @@ public class Tutorial {
 	public void setSelectedIndex( int index ) {
 		this.stencil.setSelectedIndex( index );
 	}
-	private void addStep( Step step ) {
-		this.stencil.addStep( step );
-	}
-	public void addMessageStep( String title, String text ) {
-		Step step = new MessageStep( title, text );
-		this.addStep( step );
-	}
-	public void addSpotlightStep( String title, String text, Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver ) {
-		Step step = new SpotlightStep( title, text, trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST );
-		this.addStep( step );
+	private Step addStep( Step rv ) {
+		this.stencil.addStep( rv );
+		return rv;
 	}
 
 	/*package-private*/ static class ItemSelectionStateItemResolver<E> implements Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape > {
@@ -122,85 +115,94 @@ public class Tutorial {
 			return itemSelectionState.getScrollPaneFor( item );
 		}
 	}
-	public void addActionStep( String title, String text, Resolver< ? extends edu.cmu.cs.dennisc.croquet.Operation< ?,? > > operationResolver, CompletorValidator completorValidator ) {
-		Step step = new OperationStep( title, text, operationResolver, completorValidator, completorValidator );
-		this.addStep( step );
+
+	public Step addMessageStep( String title, String text ) {
+		Step step = new MessageStep( title, text );
+		return this.addStep( step );
 	}
-	public void addBooleanStateStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.BooleanState> booleanStateResolver, boolean desiredValue ) {
+	public Step addSpotlightStep( String title, String text, Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver ) {
+		Step step = new SpotlightStep( title, text, trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST );
+		return this.addStep( step );
+	}
+	public Step addActionStep( String title, String text, Resolver< ? extends edu.cmu.cs.dennisc.croquet.Operation< ?,? > > operationResolver, CompletorValidator completorValidator ) {
+		Step step = new OperationStep( title, text, operationResolver, completorValidator, completorValidator );
+		return this.addStep( step );
+	}
+	public Step addBooleanStateStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.BooleanState> booleanStateResolver, boolean desiredValue ) {
 		Step step = new BooleanStateStep( title, text, booleanStateResolver, desiredValue );
-		this.addStep( step );
+		return this.addStep( step );
 	}
 
 	@Deprecated
-	public void addDialogOpenStep( String title, String text, Resolver<? extends edu.cmu.cs.dennisc.croquet.AbstractDialogOperation> dialogOperationResolver ) {
+	public Step addDialogOpenStep( String title, String text, Resolver<? extends edu.cmu.cs.dennisc.croquet.AbstractDialogOperation> dialogOperationResolver ) {
 		Step step = new DialogOpenStep( title, text, dialogOperationResolver );
-		this.addStep( step );
+		return this.addStep( step );
 	}
 	@Deprecated
-	public void addDialogCloseStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.DialogOperation> dialogOperationResolver ) {
+	public Step addDialogCloseStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.DialogOperation> dialogOperationResolver ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: use addDialogOpenAndCloseStep instead." );
 		Step step = new DialogCloseStep( title, text, dialogOperationResolver );
-		this.addStep( step );
+		return this.addStep( step );
 	}
 	@Deprecated
-	public void addInputDialogCommitStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> inputDialogOperationResolver, CompletorValidator completorValidator ) {
+	public Step addInputDialogCommitStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> inputDialogOperationResolver, CompletorValidator completorValidator ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: use addInputDialogOpenAndCommitStep instead." );
 		Step step = new InputDialogCommitStep( title, text, inputDialogOperationResolver, completorValidator );
-		this.addStep( step );
+		return this.addStep( step );
 	}
 
-	public void addDialogOpenAndCloseStep( String title, String openText, String closeText, Resolver<edu.cmu.cs.dennisc.croquet.DialogOperation> dialogOperationResolver ) {
+	public Step addDialogOpenAndCloseStep( String title, String openText, String closeText, Resolver<edu.cmu.cs.dennisc.croquet.DialogOperation> dialogOperationResolver ) {
 		Step step = new DialogOpenAndCloseStep( title, openText, closeText, dialogOperationResolver );
-		this.addStep( step );
+		return this.addStep( step );
 	}
-	public void addInputDialogOpenAndCommitStep( String title, String openText, String commitText, Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> inputDialogOperationResolver, CompletorValidator completorValidator ) {
+	public Step addInputDialogOpenAndCommitStep( String title, String openText, String commitText, Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> inputDialogOperationResolver, CompletorValidator completorValidator ) {
 		Step step = new InputDialogOpenAndCommitStep( title, openText, commitText, inputDialogOperationResolver, completorValidator, completorValidator );
-		this.addStep( step );
+		return this.addStep( step );
 	}
 	
-	public <E> void addListSelectionStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
+	public <E> Step addListSelectionStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
 		Step step = new ListSelectionStateStep<E>( title, text, itemSelectionStateResolver, itemResolver, Feature.ConnectionPreference.EAST_WEST );
-		this.addStep( step );
+		return this.addStep( step );
 	}
-	public <E> void addSelectTabStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
+	public <E> Step addSelectTabStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
 		Step step = new ListSelectionStateStep<E>( title, text, itemSelectionStateResolver, itemResolver, Feature.ConnectionPreference.NORTH_SOUTH );
-		this.addStep( step );
+		return this.addStep( step );
 	}
-	public <E> void addSpotlightTabTitleStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
+	public <E> Step addSpotlightTabTitleStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
 		Step step = new SpotlightStep( title, text, new ItemSelectionStateItemResolver( itemSelectionStateResolver, itemResolver ), Feature.ConnectionPreference.NORTH_SOUTH );
-		this.addStep( step );
+		return this.addStep( step );
 	}
-	public <E> void addSpotlightTabMainComponentStep( String title, String text, edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
+	public <E> Step addSpotlightTabMainComponentStep( String title, String text, edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
 		Step step = new SpotlightStep( title, text, new MainComponentResolver( itemSelectionStateResolver, itemResolver ), Feature.ConnectionPreference.EAST_WEST );
-		this.addStep( step );
+		return this.addStep( step );
 	}
-	public <E> void addSpotlightTabScrollPaneStep( String title, String text, edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
+	public <E> Step addSpotlightTabScrollPaneStep( String title, String text, edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
 		Step step = new SpotlightStep( title, text, new ScrollPaneResolver( itemSelectionStateResolver, itemResolver ), Feature.ConnectionPreference.EAST_WEST );
-		this.addStep( step );
+		return this.addStep( step );
 	}
 
-	private void addDragAndDropStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, String inputDialogText, CompletorValidator completorValidator ) {
+	private Step addDragAndDropStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, String inputDialogText, CompletorValidator completorValidator ) {
 		Step step = new DragAndDropStep( title, text, dragResolver, dropText, dropShapeResolver, popupMenuText, inputDialogText, completorValidator, completorValidator );
-		this.addStep( step );
+		return this.addStep( step );
 	}
-	public void addDragAndDropStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, CompletorValidator completorValidator ) {
-		this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, null, null, completorValidator );
+	public Step addDragAndDropStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, CompletorValidator completorValidator ) {
+		return this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, null, null, completorValidator );
 	}
-	public void addDragAndDropToPopupMenuStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, CompletorValidator completorValidator ) {
-		this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, popupMenuText, null, completorValidator );
+	public Step addDragAndDropToPopupMenuStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, CompletorValidator completorValidator ) {
+		return this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, popupMenuText, null, completorValidator );
 	}
-	public void addDragAndDropToInputDialogStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String inputDialogText, CompletorValidator completorValidator ) {
-		this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, null, inputDialogText, completorValidator );
+	public Step addDragAndDropToInputDialogStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String inputDialogText, CompletorValidator completorValidator ) {
+		return this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, null, inputDialogText, completorValidator );
 	}
-	public void addDragAndDropToPopupMenuToInputDialogStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, String inputDialogText, CompletorValidator completorValidator ) {
-		this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, popupMenuText, inputDialogText, completorValidator );
+	public Step addDragAndDropToPopupMenuToInputDialogStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, String inputDialogText, CompletorValidator completorValidator ) {
+		return this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, popupMenuText, inputDialogText, completorValidator );
 	}
 
 	
 	
 
 	@Deprecated
-	public void EPIC_HACK_addDeclareProcedureDialogOpenStep( String title, String text, final org.alice.ide.operations.ast.DeclareProcedureOperation.EPIC_HACK_Validator validator ) {
+	public Step EPIC_HACK_addDeclareProcedureDialogOpenStep( String title, String text, final org.alice.ide.operations.ast.DeclareProcedureOperation.EPIC_HACK_Validator validator ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: use EPIC_HACK_addDeclareProcedureDialogOpenAndCommitStep instead." );
 		Step step = new DialogOpenStep<edu.cmu.cs.dennisc.croquet.InputDialogOperation>( title, text, ((org.alice.ide.tutorial.IdeTutorial)this).createDeclareProcedureOperationResolver() ) {
 			@Override
@@ -214,10 +216,10 @@ public class Tutorial {
 				}
 			}
 		};
-		this.addStep( step );
+		return this.addStep( step );
 	}
 	@Deprecated
-	public void EPIC_HACK_addDeclareMethodParameterDialogOpenStep( String title, String text, final org.alice.ide.operations.ast.DeclareMethodParameterOperation.EPIC_HACK_Validator validator ) {
+	public Step EPIC_HACK_addDeclareMethodParameterDialogOpenStep( String title, String text, final org.alice.ide.operations.ast.DeclareMethodParameterOperation.EPIC_HACK_Validator validator ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: use EPIC_HACK_addDeclareMethodParameterDialogOpenAndCommitStep instead." );
 		Step step = new DialogOpenStep<edu.cmu.cs.dennisc.croquet.InputDialogOperation>( title, text, ((org.alice.ide.tutorial.IdeTutorial)this).createDeclareMethodParameterOperationResolver() ) {
 			@Override
@@ -231,10 +233,10 @@ public class Tutorial {
 				}
 			}
 		};
-		this.addStep( step );
+		return this.addStep( step );
 	}
 	@Deprecated
-	public void EPIC_HACK_addDeclareProcedureDialogOpenAndCommitStep( String title, String openText, String commitText, CompletorValidator completorValidator, final org.alice.ide.operations.ast.DeclareProcedureOperation.EPIC_HACK_Validator validator ) {
+	public Step EPIC_HACK_addDeclareProcedureDialogOpenAndCommitStep( String title, String openText, String commitText, CompletorValidator completorValidator, final org.alice.ide.operations.ast.DeclareProcedureOperation.EPIC_HACK_Validator validator ) {
 		Step step = new InputDialogOpenAndCommitStep( title, openText, commitText, ((org.alice.ide.tutorial.IdeTutorial)this).createDeclareProcedureOperationResolver(), completorValidator, completorValidator ) {
 			@Override
 			protected void setActiveNote(int activeIndex) {
@@ -245,10 +247,10 @@ public class Tutorial {
 				}
 			}
 		};
-		this.addStep( step );
+		return this.addStep( step );
 	}
 	@Deprecated
-	public void EPIC_HACK_addDeclareMethodParameterDialogOpenAndCommitStep( String title, String openText, String commitText, CompletorValidator completorValidator, final org.alice.ide.operations.ast.DeclareMethodParameterOperation.EPIC_HACK_Validator validator ) {
+	public Step EPIC_HACK_addDeclareMethodParameterDialogOpenAndCommitStep( String title, String openText, String commitText, CompletorValidator completorValidator, final org.alice.ide.operations.ast.DeclareMethodParameterOperation.EPIC_HACK_Validator validator ) {
 		Step step = new InputDialogOpenAndCommitStep( title, openText, commitText, ((org.alice.ide.tutorial.IdeTutorial)this).createDeclareMethodParameterOperationResolver(), completorValidator, completorValidator ) {
 			@Override
 			protected void setActiveNote(int activeIndex) {
@@ -259,12 +261,12 @@ public class Tutorial {
 				}
 			}
 		};
-		this.addStep( step );
+		return this.addStep( step );
 	}
 
 	
 	@Deprecated
-	public void EPIC_HACK_addForEachInArrayLoopDragAndDropToPopupMenuToInputDialogStep( String title, String text, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, String inputDialogText, CompletorValidator completorValidator, final org.alice.ide.cascade.customfillin.CustomInputDialogOperation.EPIC_HACK_Validator validator ) {
+	public Step EPIC_HACK_addForEachInArrayLoopDragAndDropToPopupMenuToInputDialogStep( String title, String text, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, String inputDialogText, CompletorValidator completorValidator, final org.alice.ide.cascade.customfillin.CustomInputDialogOperation.EPIC_HACK_Validator validator ) {
 		Step step = new DragAndDropStep( title, text, ((org.alice.ide.tutorial.IdeTutorial)this).createForEachInArrayLoopTemplateResolver(), dropText, dropShapeResolver, popupMenuText, inputDialogText, completorValidator, completorValidator ) {
 			@Override
 			public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
@@ -280,7 +282,7 @@ public class Tutorial {
 				return rv;
 			}
 		};
-		this.addStep( step );
+		return this.addStep( step );
 	}
 
 

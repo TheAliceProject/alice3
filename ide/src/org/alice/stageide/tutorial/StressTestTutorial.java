@@ -57,6 +57,20 @@ public class StressTestTutorial {
 				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
 		);
 
+		java.awt.Point[] layoutHints = new java.awt.Point[] {
+				new java.awt.Point( 100, 100 ),
+				new java.awt.Point( 100, -100 ),
+				new java.awt.Point( -100, -100 ),
+				new java.awt.Point( -100, 100 )
+		};
+		for( java.awt.Point layoutHint : layoutHints ) {
+			edu.cmu.cs.dennisc.tutorial.Step step = tutorial.addMessageStep( 
+					"Layout Hint Example", 
+					"layoutHint: " + layoutHint 
+			);
+			step.setLayoutHint( layoutHint );
+		}
+
 		tutorial.EPIC_HACK_addForEachInArrayLoopDragAndDropToPopupMenuToInputDialogStep(  
 				"Drag For Each In Order",
 				"Drag <strong>For Each In Order</strong>.",
