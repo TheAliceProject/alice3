@@ -266,4 +266,14 @@ public class HistoryManager {
 //		}
 		throw new RuntimeException( "todo" );
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( "[" );
+		sb.append( this.getGroup() );
+		sb.append( "]" );
+		return sb.toString();
+	}
 }

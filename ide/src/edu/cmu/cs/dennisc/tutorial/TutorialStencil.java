@@ -159,48 +159,60 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 	private Step getStep( int index ) {
 		return (Step)this.stepsComboBoxModel.getElementAt( index );
 	}
-	private void preserveHistoryIndices( Step step ) {
+	private void preserveHistoryIndices( int stepIndex ) {
+		Step step = this.getStep( stepIndex );
 		final int N = historyManagers.length;
 		int[] indices = new int[ N ];
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "preserveHistoryIndices", stepIndex );
 		for( int i=0; i<N; i++ ) {
 			indices[ i ] = historyManagers[ i ].getInsertionIndex();
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( historyManagers[ i ], indices[ i ] );
 		}
 		step.setHistoryIndices( indices );
 	}
-	private void restoreHistoryIndices( Step step ) {
+	private void restoreHistoryIndices( int stepIndex ) {
+		Step step = this.getStep( stepIndex );
 		final int N = historyManagers.length;
 		int[] indices = step.getHistoryIndices();
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "restoreHistoryIndices", stepIndex );
 		for( int i=0; i<N; i++ ) {
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( historyManagers[ i ], indices[ i ] );
 			historyManagers[ i ].setInsertionIndex( indices[ i ] );
 		}
 	}
 	private int prevSelectedIndex = -1;
 	private void completeOrUndoIfNecessary() {
-		int nextSelectedIndex = this.comboBox.getAwtComponent().getSelectedIndex();
-		int undoIndex = Math.max( nextSelectedIndex, 0 );
-		if( undoIndex < this.prevSelectedIndex ) {
-			Step step = this.getStep( undoIndex );
-			this.restoreHistoryIndices( step );
-		} else {
-			edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getCurrentContext();
-			int index0 = Math.max( this.prevSelectedIndex, 0 );
-			int i=index0;
-			while( i<=nextSelectedIndex ) {
-				Step iStep = this.getStep( i );
-				preserveHistoryIndices( iStep );
-				if( i == nextSelectedIndex ) {
-					//pass
-				} else {
-					if( i==this.prevSelectedIndex && isResultOfNextOperation ) {
+		SoundCache.pushIgnore();
+		try {
+			int nextSelectedIndex = this.comboBox.getAwtComponent().getSelectedIndex();
+			int undoIndex = Math.max( nextSelectedIndex, 0 );
+			if( undoIndex < this.prevSelectedIndex ) {
+				this.restoreHistoryIndices( undoIndex );
+			} else {
+				edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getCurrentContext();
+				int index0 = Math.max( this.prevSelectedIndex, 0 );
+				int i=index0;
+				while( i<=nextSelectedIndex ) {
+					if( i != this.prevSelectedIndex ) {
+						preserveHistoryIndices( i );
+					}
+					if( i == nextSelectedIndex ) {
 						//pass
 					} else {
-						iStep.complete( context );
+						if( i==this.prevSelectedIndex && isResultOfNextOperation ) {
+							//pass
+						} else {
+							Step iStep = this.getStep( i );
+							iStep.complete( context );
+						}
 					}
+					i++;
 				}
-				i++;
 			}
+			this.prevSelectedIndex = nextSelectedIndex;
+		} finally {
+			SoundCache.popIgnore();
 		}
-		this.prevSelectedIndex = nextSelectedIndex;
 	}
 	private void handleStepChanged(Step step) {
 		this.completeOrUndoIfNecessary();
@@ -290,11 +302,4 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 	/*package-private*/ edu.cmu.cs.dennisc.croquet.ActionOperation getNextOperation() {
 		return this.nextStepOperation;
 	}
-//	public void setVisible( boolean isVisible ) {
-//		if( isVisible ) {
-//			stencil.addToLayeredPane();
-//			
-//			//stencil.getAwtComponent().repaint();
-//		}
-//	}
 }

@@ -54,33 +54,42 @@ public enum SoundCache {
 	private boolean isAttempted = false;
 	private javax.sound.sampled.Clip clip;
 	private boolean isBeepDesiredAsFallback;
+	private static int ignoreCount = 0;
 	SoundCache( Class<?> cls, String resourceName, boolean isBeepDesiredAsFallback ) {
 		this.cls = cls;
 		this.resourceName = resourceName;
 		this.isBeepDesiredAsFallback = isBeepDesiredAsFallback;
 	}
+	public static void pushIgnore() {
+		ignoreCount ++;
+	}
+	public static void popIgnore() {
+		ignoreCount --;
+	}
 	public synchronized void startIfNotAlreadyActive() {
-		if( this.cls != null && this.resourceName != null ) {
-			if( this.isAttempted ) {
-				//pass
-			} else {
-				this.isAttempted = true;
-				try {
-					this.clip = edu.cmu.cs.dennisc.javax.sound.SoundUtilities.createOpenedClip( this.cls, this.resourceName );
-				} catch( Exception e ) {
-					e.printStackTrace();
-				}
-			}
-			if( this.clip != null ) {
-				if( this.clip.isActive() ) {
+		if( ignoreCount == 0 ) {
+			if( this.cls != null && this.resourceName != null ) {
+				if( this.isAttempted ) {
 					//pass
 				} else {
-					this.clip.setFramePosition( 0 );
-					this.clip.start();
+					this.isAttempted = true;
+					try {
+						this.clip = edu.cmu.cs.dennisc.javax.sound.SoundUtilities.createOpenedClip( this.cls, this.resourceName );
+					} catch( Exception e ) {
+						e.printStackTrace();
+					}
 				}
-			} else {
-				if( this.isBeepDesiredAsFallback ) {
-					java.awt.Toolkit.getDefaultToolkit().beep();
+				if( this.clip != null ) {
+					if( this.clip.isActive() ) {
+						//pass
+					} else {
+						this.clip.setFramePosition( 0 );
+						this.clip.start();
+					}
+				} else {
+					if( this.isBeepDesiredAsFallback ) {
+						java.awt.Toolkit.getDefaultToolkit().beep();
+					}
 				}
 			}
 		}
