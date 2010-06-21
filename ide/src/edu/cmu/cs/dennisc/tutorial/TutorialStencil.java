@@ -48,7 +48,6 @@ package edu.cmu.cs.dennisc.tutorial;
 /*package-private*/ class TutorialStencil extends Stencil {
 	@Deprecated
 	/*package-private*/ static boolean isResultOfNextOperation = false;
-
 	/*package-private*/ static java.awt.Color CONTROL_COLOR = new java.awt.Color(255, 255, 191);
 	/*package-private*/ static edu.cmu.cs.dennisc.croquet.Group TUTORIAL_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "7bfa86e3-234e-4bd1-9177-d4acac0b12d9" ), "TUTORIAL_GROUP" );
 	private static edu.cmu.cs.dennisc.croquet.Group TUTORIAL_COMPLETION_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "ea5df77d-d74d-4364-9bf5-2df1b2ede0a4" ), "TUTORIAL_COMPLETION_GROUP" );
@@ -77,11 +76,12 @@ package edu.cmu.cs.dennisc.tutorial;
 	private StepsComboBoxModel stepsComboBoxModel = new StepsComboBoxModel();
 	private PreviousStepOperation previousStepOperation = new PreviousStepOperation( this.stepsComboBoxModel );
 	private NextStepOperation nextStepOperation = new NextStepOperation( this.stepsComboBoxModel );
-	private ExitOperation exitOperation = new ExitOperation();
+	//private ExitOperation exitOperation = new ExitOperation();
 
 	private static boolean isEventInterceptEnabledByDefault = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyFalse( "edu.cmu.cs.dennisc.tutorial.Stencil.isEventInterceptEnabled" ) == false;
 	private edu.cmu.cs.dennisc.croquet.BooleanState isInterceptingEvents = new edu.cmu.cs.dennisc.croquet.BooleanState( TUTORIAL_GROUP, java.util.UUID.fromString( "c3a009d6-976e-439e-8f99-3c8ff8a0324a" ), isEventInterceptEnabledByDefault, "intercept events" );
-
+	private edu.cmu.cs.dennisc.croquet.BooleanState isPaintingStencil = new edu.cmu.cs.dennisc.croquet.BooleanState( TUTORIAL_GROUP, java.util.UUID.fromString( "b1c1b125-cfe3-485f-9453-1e57e5b02cb1" ), true, "paint stecil" );
+	private edu.cmu.cs.dennisc.croquet.BooleanState isPlayingSounds = new edu.cmu.cs.dennisc.croquet.BooleanState( TUTORIAL_GROUP, java.util.UUID.fromString( "4d8ac630-0679-415a-882f-780c7cb014ef" ), true, "play sounds" );
 
 	private class StepsComboBox extends edu.cmu.cs.dennisc.croquet.JComponent<javax.swing.JComboBox> {
 		@Override
@@ -130,7 +130,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 		this.historyManagers[ N ] = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( TUTORIAL_COMPLETION_GROUP );
 
-		isInterceptingEvents.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
+		this.isInterceptingEvents.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
 			public void changing( boolean nextValue ) {
 			}
 			public void changed( boolean nextValue ) {
@@ -138,6 +138,22 @@ package edu.cmu.cs.dennisc.tutorial;
 			}
 		} );
 		
+		this.isPaintingStencil.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
+			public void changing( boolean nextValue ) {
+			}
+			public void changed( boolean nextValue ) {
+				TutorialStencil.this.revalidateAndRepaint();
+			}
+		} );
+
+		this.isPlayingSounds.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
+			public void changing( boolean nextValue ) {
+			}
+			public void changed( boolean nextValue ) {
+				SoundCache.setEnabled( nextValue );
+			}
+		} );
+
 		edu.cmu.cs.dennisc.croquet.FlowPanel controlPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.CENTER, 2, 0);
 		controlPanel.addComponent(this.previousStepOperation.createButton());
 		controlPanel.addComponent(comboBox);
@@ -146,8 +162,9 @@ package edu.cmu.cs.dennisc.tutorial;
 		this.controlsPanel.addComponent(controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
 		
 		edu.cmu.cs.dennisc.croquet.FlowPanel eastPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.TRAILING, 2, 0);
+		eastPanel.addComponent( this.isPlayingSounds.createCheckBox() );
 		eastPanel.addComponent( this.isInterceptingEvents.createCheckBox() );
-		eastPanel.addComponent( this.exitOperation.createButton() );
+		eastPanel.addComponent( this.isPaintingStencil.createCheckBox() );
 		this.controlsPanel.addComponent(eastPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.EAST);
 		this.controlsPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 0, 4));
 
@@ -155,6 +172,10 @@ package edu.cmu.cs.dennisc.tutorial;
 		this.internalAddComponent(this.cardPanel, java.awt.BorderLayout.CENTER);
 	}
 
+	@Override
+	protected boolean isPaintingStencilEnabled() {
+		return this.isPaintingStencil.getValue();
+	}
 	private Step getStep( int index ) {
 		return (Step)this.stepsComboBoxModel.getElementAt( index );
 	}
@@ -197,7 +218,7 @@ package edu.cmu.cs.dennisc.tutorial;
 
 	private int prevSelectedIndex = -1;
 	private void completeOrUndoIfNecessary() {
-		SoundCache.pushIgnore();
+		SoundCache.pushIgnoreStartRequests();
 		try {
 			int nextSelectedIndex = this.comboBox.getAwtComponent().getSelectedIndex();
 			int undoIndex = Math.max( nextSelectedIndex, 0 );
@@ -225,7 +246,7 @@ package edu.cmu.cs.dennisc.tutorial;
 			}
 			this.prevSelectedIndex = nextSelectedIndex;
 		} finally {
-			SoundCache.popIgnore();
+			SoundCache.popIgnoreStartRequests();
 		}
 	}
 	private void handleStepChanged(Step step) {

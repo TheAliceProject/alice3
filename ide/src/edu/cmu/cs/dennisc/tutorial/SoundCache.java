@@ -54,20 +54,30 @@ public enum SoundCache {
 	private boolean isAttempted = false;
 	private javax.sound.sampled.Clip clip;
 	private boolean isBeepDesiredAsFallback;
+	
 	private static int ignoreCount = 0;
+	private static boolean isEnabled = true;
 	SoundCache( Class<?> cls, String resourceName, boolean isBeepDesiredAsFallback ) {
 		this.cls = cls;
 		this.resourceName = resourceName;
 		this.isBeepDesiredAsFallback = isBeepDesiredAsFallback;
 	}
-	public static void pushIgnore() {
+	public static void pushIgnoreStartRequests() {
 		ignoreCount ++;
 	}
-	public static void popIgnore() {
+	public static void popIgnoreStartRequests() {
 		ignoreCount --;
 	}
+	
+	public static void setEnabled( boolean isEnabled ) {
+		SoundCache.isEnabled = isEnabled;
+	}
+	public static boolean isEnabled() {
+		return SoundCache.isEnabled;
+	}
+	
 	public synchronized void startIfNotAlreadyActive() {
-		if( ignoreCount == 0 ) {
+		if( SoundCache.isEnabled && SoundCache.ignoreCount == 0 ) {
 			if( this.cls != null && this.resourceName != null ) {
 				if( this.isAttempted ) {
 					//pass

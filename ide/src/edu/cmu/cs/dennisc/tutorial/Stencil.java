@@ -164,6 +164,9 @@ package edu.cmu.cs.dennisc.tutorial;
 			}
 		}
 	}
+	
+	protected abstract boolean isPaintingStencilEnabled();
+	
 	private java.awt.event.AWTEventListener awtEventListener = new java.awt.event.AWTEventListener() {
 		public void eventDispatched(java.awt.AWTEvent event) {
 			java.awt.event.MouseEvent e = (java.awt.event.MouseEvent)event;
@@ -222,27 +225,31 @@ package edu.cmu.cs.dennisc.tutorial;
 				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 
 				Step step = Stencil.this.getCurrentStep();
-				if( step != null ) {
-					java.awt.geom.Area area = new java.awt.geom.Area(g2.getClip());
-					for( Note note : step.getNotes() ) {
-						if( note.isActive() ) {
-							for( Feature feature : note.getFeatures() ) {
-								java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( Stencil.this );
-								if( featureArea != null ) {
-									area.subtract( featureArea );
+				if( Stencil.this.isPaintingStencilEnabled() ) {
+					if( step != null ) {
+						java.awt.geom.Area area = new java.awt.geom.Area(g2.getClip());
+						for( Note note : step.getNotes() ) {
+							if( note.isActive() ) {
+								for( Feature feature : note.getFeatures() ) {
+									java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( Stencil.this );
+									if( featureArea != null ) {
+										area.subtract( featureArea );
+									}
 								}
 							}
 						}
+						g2.setPaint(getStencilPaint());
+						g2.fill(area);
 					}
-					g2.setPaint(getStencilPaint());
-					g2.fill(area);
 				}
 				super.paintComponent(g);
-				if( step != null ) {
-					for( Note note : step.getNotes() ) {
-						if( note.isActive() ) {
-							for( Feature feature : note.getFeatures() ) {
-								feature.paint( g2, Stencil.this, note );
+				if( Stencil.this.isPaintingStencilEnabled() ) {
+					if( step != null ) {
+						for( Note note : step.getNotes() ) {
+							if( note.isActive() ) {
+								for( Feature feature : note.getFeatures() ) {
+									feature.paint( g2, Stencil.this, note );
+								}
 							}
 						}
 					}
