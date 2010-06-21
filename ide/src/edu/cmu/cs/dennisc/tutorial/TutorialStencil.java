@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.Resolver;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -54,6 +52,7 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 	/*package-private*/ static java.awt.Color CONTROL_COLOR = new java.awt.Color(255, 255, 191);
 	/*package-private*/ static edu.cmu.cs.dennisc.croquet.Group TUTORIAL_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "7bfa86e3-234e-4bd1-9177-d4acac0b12d9" ), "TUTORIAL_GROUP" );
 	private static edu.cmu.cs.dennisc.croquet.Group TUTORIAL_COMPLETION_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "ea5df77d-d74d-4364-9bf5-2df1b2ede0a4" ), "TUTORIAL_COMPLETION_GROUP" );
+
 	private edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver childrenObserver = new edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver() {
 		public void addingChild(edu.cmu.cs.dennisc.croquet.HistoryTreeNode child) {
 		}
@@ -129,7 +128,7 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 		for( int i=0; i<N; i++ ) {
 			this.historyManagers[ i ] = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( groups[ i ] );
 		}
-		this.historyManagers[ N ] = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( TUTORIAL_GROUP );
+		this.historyManagers[ N ] = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( TUTORIAL_COMPLETION_GROUP );
 
 		isInterceptingEvents.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
 			public void changing( boolean nextValue ) {
@@ -180,6 +179,22 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 			historyManagers[ i ].setInsertionIndex( indices[ i ] );
 		}
 	}
+
+	/*package-private*/ static void complete( final edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.Operation< ?,? > > edit ) {
+		if( edit != null ) {
+			 edu.cmu.cs.dennisc.croquet.ActionOperation bogusCompletionOperation = new edu.cmu.cs.dennisc.croquet.ActionOperation( TUTORIAL_COMPLETION_GROUP, java.util.UUID.fromString( "d4b1cb3b-f642-4c90-be92-e27d616f6922" ) ) {
+				@Override
+				protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+					context.commitAndInvokeDo( edit );
+				}
+			};
+			bogusCompletionOperation.fire();
+//			edu.cmu.cs.dennisc.croquet.ModelContext< ? > parentContext = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getCurrentContext();
+//			edu.cmu.cs.dennisc.croquet.ActionOperationContext rv = new edu.cmu.cs.dennisc.croquet.ActionOperationContext( parentContext, bogusCompletionOperation, null, null );
+//			rv.commitAndInvokeDo( edit );
+		}
+	}
+
 	private int prevSelectedIndex = -1;
 	private void completeOrUndoIfNecessary() {
 		SoundCache.pushIgnore();
@@ -189,7 +204,6 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 			if( undoIndex < this.prevSelectedIndex ) {
 				this.restoreHistoryIndices( undoIndex );
 			} else {
-				edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getCurrentContext();
 				int index0 = Math.max( this.prevSelectedIndex, 0 );
 				int i=index0;
 				while( i<=nextSelectedIndex ) {
@@ -203,7 +217,7 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 							//pass
 						} else {
 							Step iStep = this.getStep( i );
-							iStep.complete( context );
+							iStep.complete();
 						}
 					}
 					i++;

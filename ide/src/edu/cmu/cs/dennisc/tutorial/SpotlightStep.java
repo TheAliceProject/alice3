@@ -50,6 +50,6 @@ package edu.cmu.cs.dennisc.tutorial;
 		super( title, text, new Frame( trackableShapeResolver, connectionPreference ) );
 	}
 	@Override
-	protected void complete( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
+	protected void complete() {
 	}
 }	

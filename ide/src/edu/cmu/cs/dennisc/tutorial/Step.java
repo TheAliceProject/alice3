@@ -231,7 +231,7 @@ public abstract class Step {
 	public TutorialStencil getTutorialStencil() {
 		return this.tutorialStencil;
 	}
-	protected abstract void complete( edu.cmu.cs.dennisc.croquet.ModelContext<?> context );
+	protected abstract void complete();
 	/*package-private*/ void setTutorialStencil( TutorialStencil tutorialStencil ) {
 		this.tutorialStencil = tutorialStencil;
 		for( Note note : this.notes ) {

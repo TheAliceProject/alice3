@@ -77,7 +77,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		return false;
 	}
 	@Override
-	protected void complete(edu.cmu.cs.dennisc.croquet.ModelContext<?> context) {
+	protected void complete() {
 	}
 	
 	private enum State {

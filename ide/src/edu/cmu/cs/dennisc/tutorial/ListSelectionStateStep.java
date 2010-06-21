@@ -60,7 +60,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		return this.isAlreadyInTheDesiredState();
 	}
 	@Override
-	protected void complete( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
+	protected void complete() {
 		this.getModel().setValue( this.desiredValueResolver.getResolved() );
 	}
 }

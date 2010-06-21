@@ -78,8 +78,8 @@ package edu.cmu.cs.dennisc.tutorial;
 		return false;
 	}
 	@Override
-	protected void complete( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
-		context.commitAndInvokeDo( this.completor.getEdit() );
+	protected void complete() {
+		TutorialStencil.complete( this.completor.getEdit() );
 	}
 
 	@Override
