@@ -495,6 +495,24 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 			
 			if( source instanceof org.alice.ide.templates.StatementTemplate ) {
 				final org.alice.ide.templates.StatementTemplate statementTemplate = (org.alice.ide.templates.StatementTemplate)source;
+				if( org.alice.ide.IDE.getSingleton().isRecursionEnabled() ) {
+					//pass
+				} else {
+					edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
+					if( statementTemplate instanceof org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate ) {
+						org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate = (org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate)statementTemplate;
+						method = procedureInvocationTemplate.getMethod();
+					} else {
+						method = null;
+					}
+					if( method != null ) {
+						if( method == this.getCode() ) {
+							org.alice.ide.IDE.getSingleton().showMessageDialog( "The code you have just dropped would create a \"recursive method call\".  Recursion is disabled.", "Recursion is disabled.", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
+							source.hideDropProxyIfNecessary();
+							return null;
+						}
+					}
+				}
 				if( this.currentUnder != null ) {
 					class DropOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 						public DropOperation() {

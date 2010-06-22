@@ -235,6 +235,8 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	public edu.cmu.cs.dennisc.croquet.BooleanState getIsSceneEditorExpandedState() {
 		return this.isSceneEditorExpandedState;
 	}
+	private edu.cmu.cs.dennisc.croquet.BooleanState isRecursionEnabledState =
+		createBooleanStatePreference( java.util.UUID.fromString( "a5e1ded2-18c7-4ae5-8676-e6deca5650fe" ), false, "Is Recursion Enabled" );
 	
 	public edu.cmu.cs.dennisc.croquet.BooleanState getExpressionTypeFeedbackDesiredState() {
 		return this.isExpressionTypeFeedbackDesiredState;
@@ -257,7 +259,8 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			this.isEmphasizingClassesOperation,
 			this.isOmissionOfThisForFieldAccessesDesiredState,
 			this.isExpressionTypeFeedbackDesiredState,
-			this.isDefaultFieldNameGenerationDesiredState
+			this.isDefaultFieldNameGenerationDesiredState,
+			this.isRecursionEnabledState
 			//			windowOperations.add( this.isEmphasizingClassesOperation );
 			//			windowOperations.add( this.isOmissionOfThisForFieldAccessesDesiredOperation );
 			//			windowOperations.add( this.isExpressionTypeFeedbackDesiredOperation );
@@ -392,6 +395,9 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 	}
 	
+	public boolean isRecursionEnabled() {
+		return this.isRecursionEnabledState.getValue();
+	}
 	private void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
 		this.refreshAccessibles();
 		if( isSceneEditorExpanded ) {

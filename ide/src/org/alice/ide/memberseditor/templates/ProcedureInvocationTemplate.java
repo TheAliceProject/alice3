@@ -84,6 +84,10 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 		super.handleRemovedFrom( parent );
 	}
 	
+	public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getMethod() {
+		return this.method;
+	}
+	
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression() {
 		return org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( this.method );
