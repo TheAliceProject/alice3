@@ -57,14 +57,14 @@ public class StressTestTutorial {
 				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
 		);
 
-		tutorial.addDragAndDropStep( 
-				"Drag Do Together",
-				"Drag <b>Do Together</b>.",
-				tutorial.createDoTogetherTemplateResolver(),
-				"Drop <b>here</b>.",
-				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
-				tutorial.createToDoCompletorValidator()
-		);
+//		tutorial.addDragAndDropStep( 
+//				"Drag Do Together",
+//				"Drag <b>Do Together</b>.",
+//				tutorial.createDoTogetherTemplateResolver(),
+//				"Drop <b>here</b>.",
+//				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+//				tutorial.createToDoCompletorValidator()
+//		);
 
 		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag Move Procedure",
@@ -82,6 +82,19 @@ public class StressTestTutorial {
 				"Drop <b>here</b>.",
 				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
 				"Select <b>FORWARD</b> and <b>1.0</b> from the menus.",
+				tutorial.createToDoCompletorValidator()
+		);
+
+		tutorial.addActionStep( 
+				"More",
+				"Click <b>more...</b>",
+				tutorial.createFirstInvocationMoreResolver( "move" ),
+				tutorial.createToDoCompletorValidator()
+		);
+		tutorial.addActionStep( 
+				"More",
+				"Click <b>more...</b>",
+				tutorial.createLastInvocationMoreResolver( "move" ),
 				tutorial.createToDoCompletorValidator()
 		);
 

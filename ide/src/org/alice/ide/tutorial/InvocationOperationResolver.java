@@ -53,6 +53,7 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 	public InvocationOperationResolver(Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int invocationIndex) {
 		this.methodResolver = methodResolver;
 		this.invocationIndex = invocationIndex;
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "InvocationOperationResolver", this.invocationIndex );
 	}
 	protected abstract edu.cmu.cs.dennisc.croquet.Operation<?, ?> getOperation(org.alice.ide.codeeditor.CodeEditor codeEditor, edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation);
 	@Override

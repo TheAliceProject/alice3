@@ -180,21 +180,31 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		}
 	}
 
-	/*package-private*/ static edu.cmu.cs.dennisc.alice.ast.MethodInvocation getMethodInvocationAt( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, int index ) {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation >( edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) {
-			@Override
-			protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
-				return methodInvocation.method.getValue() == method;
+	/*package-private*/ static edu.cmu.cs.dennisc.alice.ast.MethodInvocation getMethodInvocationAt( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, int index ) {
+		final String methodName = method.getName();
+		if( methodName != null ) {
+			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation >( edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) {
+				@Override
+				protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+					edu.cmu.cs.dennisc.alice.ast.AbstractMethod m = methodInvocation.method.getValue();
+					if( m != null ) {
+						return methodName.equals( m.getName() );
+					} else {
+						return false;
+					}
+				}
+			};
+			edu.cmu.cs.dennisc.alice.ast.BlockStatement body = code.getBodyProperty().getValue();
+			body.crawl( crawler, false );
+			java.util.List<edu.cmu.cs.dennisc.alice.ast.MethodInvocation> list = crawler.getList();
+			if( index == Short.MAX_VALUE ) {
+				index = list.size()-1;
 			}
-		};
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement body = code.getBodyProperty().getValue();
-		body.crawl( crawler, false );
-		java.util.List<edu.cmu.cs.dennisc.alice.ast.MethodInvocation> list = crawler.getList();
-		if( index == Short.MAX_VALUE ) {
-			index = list.size()-1;
-		}
-		if( list.size() > index ) {
-			return list.get( index );
+			if( list.size() > index ) {
+				return list.get( index );
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}
