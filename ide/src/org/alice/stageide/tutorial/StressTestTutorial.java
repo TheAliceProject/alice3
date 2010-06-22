@@ -47,7 +47,7 @@ package org.alice.stageide.tutorial;
  */
 public class StressTestTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
-		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 10 );
+		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 1 );
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = ide.getSceneField();
 		ide.getEmphasizingClassesState().setValue( false );
@@ -65,6 +65,18 @@ public class StressTestTutorial {
 //				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
 //				tutorial.createToDoCompletorValidator()
 //		);
+
+		for( int i=0; i<10; i++ ) {
+			tutorial.addDragAndDropToPopupMenuStep( 
+					"Drag If/Else",
+					"Drag <b>If/Else</b>.",
+					tutorial.createIfElseTemplateResolver(),
+					"Drop <b>here</b>.",
+					tutorial.createEndOfCurrentMethodBodyStatementListResolver(), 
+					"Select <b>true</b>.",
+					tutorial.createToDoCompletorValidator()
+			);
+		}
 
 		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag Move Procedure",

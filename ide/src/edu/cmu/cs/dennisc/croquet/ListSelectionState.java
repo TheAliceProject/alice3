@@ -481,13 +481,9 @@ public abstract class ListSelectionState<E> extends Model< ListSelectionState<E>
 
 	public interface TabCreator<E> {
 		public java.util.UUID getId(E item);
-
 		public JComponent<?> createInnerTitleComponent(E item);
-
 		public JComponent<?> createMainComponent(E item);
-
 		public ScrollPane createScrollPane(E item);
-
 		public boolean isCloseAffordanceDesired();
 	}
 
@@ -523,6 +519,15 @@ public abstract class ListSelectionState<E> extends Model< ListSelectionState<E>
 			return null;
 		}
 	}
+	public JComponent< ? > getRootComponentFor( E item ) {
+		AbstractTabbedPane< E, ? > abstractTabbedPane = this.getFirstComponent( AbstractTabbedPane.class );
+		if( abstractTabbedPane != null ) {
+			return abstractTabbedPane.getRootComponentFor( item );
+		} else {
+			return null;
+		}
+	}
+
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed(java.awt.event.ActionEvent e) {
 		}

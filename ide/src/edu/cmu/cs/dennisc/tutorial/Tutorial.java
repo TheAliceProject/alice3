@@ -109,10 +109,11 @@ public class Tutorial {
 	private static class ScrollPaneResolver<E> extends ItemSelectionStateTrackableShapeResolver< E, edu.cmu.cs.dennisc.croquet.JComponent< ? > > {
 		public ScrollPaneResolver(Resolver< edu.cmu.cs.dennisc.croquet.ListSelectionState<E> > itemSelectionStateResolver, Resolver< E > itemResolver ) {
 			super( itemSelectionStateResolver, itemResolver );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: rename to RootComponentResolver" );
 		}
 		@Override
 		protected edu.cmu.cs.dennisc.croquet.JComponent<?> getResolved(edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState, E item) {
-			return itemSelectionState.getScrollPaneFor( item );
+			return itemSelectionState.getRootComponentFor( item );
 		}
 	}
 

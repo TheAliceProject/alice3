@@ -222,7 +222,9 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 			this.scrollPane = scrollPane;
 
 			button.setBackgroundColor( this.mainComponent.getBackgroundColor() );
-			this.scrollPane.setViewportView( this.mainComponent );
+			if( this.scrollPane != null ) {
+				this.scrollPane.setViewportView( this.mainComponent );
+			}
 		}
 		public java.util.UUID getId() {
 			return this.id;
@@ -235,6 +237,13 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 		}
 		public ScrollPane getScrollPane() {
 			return this.scrollPane;
+		}
+		public JComponent< ? > getRootComponent() {
+			if( this.scrollPane != null ) {
+				return this.scrollPane;
+			} else {
+				return this.mainComponent;
+			}
 		}
 	}
 	private ListSelectionState.TabCreator< E > tabCreator;
@@ -281,6 +290,14 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 		TabItemDetails tabItemDetails = this.getItemDetails( item );
 		if( tabItemDetails != null ) {
 			return tabItemDetails.getScrollPane();
+		} else {
+			return null;
+		}
+	}
+	/*package-private*/ JComponent< ? > getRootComponentFor( E item ) {
+		TabItemDetails tabItemDetails = this.getItemDetails( item );
+		if( tabItemDetails != null ) {
+			return tabItemDetails.getRootComponent();
 		} else {
 			return null;
 		}

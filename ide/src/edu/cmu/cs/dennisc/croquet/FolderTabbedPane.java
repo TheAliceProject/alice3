@@ -215,7 +215,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		private edu.cmu.cs.dennisc.croquet.CardPanel.Key cardPanelKey;
 		public FolderTabItemDetails( E item, AbstractButton< ?,? > button, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent ) {
 			super( item, button, id, innerTitleComponent, scrollPane, mainComponent );
-			this.cardPanelKey = cardPanel.createKey( this.getScrollPane(), this.getId() );
+			this.cardPanelKey = cardPanel.createKey( this.getRootComponent(), this.getId() );
 		}
 		public edu.cmu.cs.dennisc.croquet.CardPanel.Key getCardPanelKey() {
 			return cardPanelKey;
@@ -296,8 +296,14 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	@Override
 	protected FolderTabItemDetails createTabItemDetails( E item, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, java.awt.event.ActionListener closeButtonActionListener ) {
 		AbstractButton<?,?> button = new FolderTabTitle(innerTitleComponent, closeButtonActionListener);
-		scrollPane.setVisible( false );
-		scrollPane.setBackgroundColor( null );
+		JComponent<?> root;
+		if( scrollPane != null ) {
+			root = scrollPane;
+		} else {
+			root = mainComponent;
+		}
+		root.setVisible( false );
+		root.setBackgroundColor( null );
 		return new FolderTabItemDetails( item, button, id, innerTitleComponent, scrollPane, mainComponent );
 	};
 	

@@ -155,7 +155,7 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, Abstra
 			public void setSelected(boolean isSelected) {
 				super.setSelected(isSelected);
 				for( TabItemDetails tabItemDetails : getAllItemDetails() ) {
-					tabItemDetails.getScrollPane().setVisible( tabItemDetails == this );
+					tabItemDetails.getRootComponent().setVisible( tabItemDetails == this );
 				}
 			}
 		};
@@ -182,7 +182,7 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, Abstra
 		gbc.weighty = 0.0f;
 		this.internalAddComponent( itemDetails.getButton(), gbc );
 		gbc.weighty = 1.0f;
-		this.internalAddComponent( itemDetails.getScrollPane(), gbc );
+		this.internalAddComponent( itemDetails.getRootComponent(), gbc );
 	}
 	@Override
 	protected void addEpilogue() {

@@ -279,9 +279,13 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 			return code.getUUID();
 		}
 		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-			edu.cmu.cs.dennisc.croquet.ScrollPane rv = new edu.cmu.cs.dennisc.croquet.ScrollPane();
-			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-			return rv;
+//			edu.cmu.cs.dennisc.croquet.ScrollPane rv = new edu.cmu.cs.dennisc.croquet.ScrollPane();
+//			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+//			rv.setHorizontalScrollbarPolicy( edu.cmu.cs.dennisc.croquet.ScrollPane.HorizontalScrollbarPolicy.NEVER );
+//			rv.setVerticalScrollbarPolicy( edu.cmu.cs.dennisc.croquet.ScrollPane.VerticalScrollbarPolicy.NEVER );
+//			rv.getAwtComponent().setWheelScrollingEnabled( false );
+//			return rv;
+			return null;
 		}
 		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 			return new CodeEditor( code );
