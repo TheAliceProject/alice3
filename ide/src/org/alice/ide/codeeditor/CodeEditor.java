@@ -916,11 +916,26 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 			return NO_SUCH_PAGE;
 		}
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
 		edu.cmu.cs.dennisc.croquet.Component<?> component0 = this.getComponent( 0 );
+		
+		int width = Math.max( component0.getAwtComponent().getPreferredSize().width, this.scrollPane.getViewportView().getAwtComponent().getPreferredSize().width );
+		double imageableWidth = pageFormat.getImageableWidth();
+		double xScale = width/imageableWidth;
+
+		int height = this.scrollPane.getY() + this.scrollPane.getViewportView().getAwtComponent().getPreferredSize().height;
+		double imageableHeight = pageFormat.getImageableHeight();
+		double yScale = height/imageableHeight;
+		
+		double scale = Math.max( xScale, yScale );
+
+		g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
+		if( scale > 1.0 ) {
+			g2.scale( 1.0/scale, 1.0/scale );
+		}
 		component0.getAwtComponent().printAll( g2 );
 		g2.translate( this.scrollPane.getX(), this.scrollPane.getY() );
 		this.scrollPane.getViewportView().getAwtComponent().printAll( g2 );
+		
 		return PAGE_EXISTS;
 	}
 }
