@@ -49,6 +49,7 @@ public class PrintAllOperation extends PrintOperation {
 	public PrintAllOperation() {
 		super( java.util.UUID.fromString( "a59df2b2-a55a-41b5-be05-60d10a615049" ) );
 		this.setName( "Print All..." );
+		this.setMnemonicKey( java.awt.event.KeyEvent.VK_A );
 	}
 	@Override
 	protected java.awt.print.Printable getPrintable() {

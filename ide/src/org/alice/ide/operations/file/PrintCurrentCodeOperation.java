@@ -49,6 +49,8 @@ public class PrintCurrentCodeOperation extends PrintOperation {
 	public PrintCurrentCodeOperation() {
 		super( java.util.UUID.fromString( "097b41bf-d1ea-4991-a0d6-0fae51be35ef" ) );
 		this.setName( "Print Current Code..." );
+		this.setMnemonicKey( java.awt.event.KeyEvent.VK_C );
+		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_P, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );
 	}
 	@Override
 	protected java.awt.print.Printable getPrintable() {

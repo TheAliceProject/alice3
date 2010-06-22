@@ -49,6 +49,7 @@ public class PrintSceneEditorOperation extends PrintOperation {
 	public PrintSceneEditorOperation() {
 		super( java.util.UUID.fromString( "b38997ea-e970-416e-86db-58623d1c3352" ) );
 		this.setName( "Print Scene Editor..." );
+		this.setMnemonicKey( java.awt.event.KeyEvent.VK_S );
 	}
 	@Override
 	protected java.awt.print.Printable getPrintable() {
