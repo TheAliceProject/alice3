@@ -71,6 +71,10 @@ package edu.cmu.cs.dennisc.tutorial;
 			}
 		} ) );
 		this.addNote( commitNote );
+		final int N = this.getNoteCount();
+		for( int i=0; i<N; i++ ) {
+			this.getNoteAt( i ).setLabel( Integer.toString(i+1) );
+		}
 	}
 
 	@Override
@@ -105,52 +109,57 @@ package edu.cmu.cs.dennisc.tutorial;
 	
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
-		boolean rv = false;
 		State state = this.getState();
-		switch( state ) {
-		case WAITING_ON_OPEN:
-			if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent ) {
-				edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent)child;
-				if( windowOpenedEvent.getParent().getModel() == this.getModel() ) {
-					this.setActiveNote( 1 );
-					
-					edu.cmu.cs.dennisc.croquet.Dialog dialog = this.getModel().getActiveDialog();
-					if( dialog != null ) {
-						java.awt.Rectangle dialogLocalBounds = dialog.getLocalBounds();
-						Note note1 = this.getNoteAt( 1 );
-						java.awt.Rectangle bounds = note1.getBounds( dialog );
-						if( bounds.intersects( dialogLocalBounds ) ) {
-							note1.setLocation( dialog.getWidth()+100, dialog.getHeight()/2, dialog );
+		boolean rv = false;
+		if( child instanceof edu.cmu.cs.dennisc.croquet.CancelEvent ) {
+			if( state != State.WAITING_ON_COMMIT || child.getParent() instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext) {
+				SoundCache.FAILURE.startIfNotAlreadyActive();
+				this.reset();
+			}
+		} else {
+			switch( state ) {
+			case WAITING_ON_OPEN:
+				if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent ) {
+					edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowOpenedEvent)child;
+					if( windowOpenedEvent.getParent().getModel() == this.getModel() ) {
+						this.setActiveNote( 1 );
+						
+						edu.cmu.cs.dennisc.croquet.Dialog dialog = this.getModel().getActiveDialog();
+						if( dialog != null ) {
+							java.awt.Rectangle dialogLocalBounds = dialog.getLocalBounds();
+							Note note1 = this.getNoteAt( 1 );
+							java.awt.Rectangle bounds = note1.getBounds( dialog );
+							if( bounds.intersects( dialogLocalBounds ) ) {
+								note1.setLocation( dialog.getWidth()+100, dialog.getHeight()/2, dialog );
+							}
+						}
+						
+					}
+				}
+				break;
+			case WAITING_ON_COMMIT:
+				if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
+					edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent completeEvent = (edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent)child;
+					edu.cmu.cs.dennisc.croquet.Model eventModel = completeEvent.getParent().getModel();
+					if( this.getModel() == eventModel ) {
+						edu.cmu.cs.dennisc.croquet.Edit edit;
+						if (child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent) {
+							edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent) child;
+							edit = commitEvent.getEdit();
+						} else {
+							edit = null;
+						}
+						rv = this.validator.checkValidity( edit ).isProcedeApprorpiate();
+						if( rv ) {
+							SoundCache.SUCCESS.startIfNotAlreadyActive();
+						} else {
+							SoundCache.FAILURE.startIfNotAlreadyActive();
 						}
 					}
-					
 				}
+				break;
 			}
-			break;
-		case WAITING_ON_COMMIT:
-			if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
-				edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent completeEvent = (edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent)child;
-				edu.cmu.cs.dennisc.croquet.Model eventModel = completeEvent.getParent().getModel();
-				if( this.getModel() == eventModel ) {
-					edu.cmu.cs.dennisc.croquet.Edit edit;
-					if (child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent) {
-						edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent) child;
-						edit = commitEvent.getEdit();
-					} else {
-						edit = null;
-					}
-					rv = this.validator.checkValidity( edit ).isProcedeApprorpiate();
-					if( rv ) {
-						SoundCache.SUCCESS.startIfNotAlreadyActive();
-					} else {
-						SoundCache.FAILURE.startIfNotAlreadyActive();
-					}
-					return rv;
-				}
-			}
-			break;
 		}
 		return rv;
-
 	}
 }

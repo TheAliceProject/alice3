@@ -66,6 +66,10 @@ package edu.cmu.cs.dennisc.tutorial;
 			}
 		} ) );
 		this.addNote( closeNote );
+		final int N = this.getNoteCount();
+		for( int i=0; i<N; i++ ) {
+			this.getNoteAt( i ).setLabel( Integer.toString(i+1) );
+		}
 	}
 	@Override
 	public void reset() {
