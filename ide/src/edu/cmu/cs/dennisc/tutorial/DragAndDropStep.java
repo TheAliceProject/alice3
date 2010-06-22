@@ -193,6 +193,25 @@ package edu.cmu.cs.dennisc.tutorial;
 				if( this.isInputDialogNotePresent ) {
 					if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent ) {
 						this.setActiveNote( 3 );
+
+						edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent)child;
+						edu.cmu.cs.dennisc.croquet.ModelContext<?> model = windowOpenedEvent.getParent();
+						if( model instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext ) {
+							edu.cmu.cs.dennisc.croquet.InputDialogOperationContext inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext)model;
+							edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation = inputDialogOperationContext.getModel();
+							if( inputDialogOperation != null ) {
+								edu.cmu.cs.dennisc.croquet.Dialog dialog = inputDialogOperation.getActiveDialog();
+								if( dialog != null ) {
+									edu.cmu.cs.dennisc.print.PrintUtilities.println( "move note if necessary" );
+									java.awt.Rectangle dialogLocalBounds = dialog.getLocalBounds();
+									Note note3 = this.getNoteAt( 3 );
+									java.awt.Rectangle bounds = note3.getBounds( dialog );
+									if( bounds.intersects( dialogLocalBounds ) ) {
+										note3.setLocation( dialog.getWidth()+100, dialog.getHeight()/2, dialog );
+									}
+								}
+							}
+						}
 					}
 				} else {
 					if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
