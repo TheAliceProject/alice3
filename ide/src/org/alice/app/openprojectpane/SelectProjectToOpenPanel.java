@@ -51,13 +51,14 @@ public class SelectProjectToOpenPanel extends edu.cmu.cs.dennisc.croquet.BorderP
 		public ContentTab(java.util.UUID individualId, String title) {
 			super(individualId, title);
 		}
-//		@Override
-//		protected edu.cmu.cs.dennisc.croquet.ScrollPane createSingletonScrollPane() {
-//			edu.cmu.cs.dennisc.croquet.ScrollPane rv = super.createSingletonScrollPane();
-//			rv.setHorizontalScrollbarPolicy( edu.cmu.cs.dennisc.croquet.ScrollPane.HorizontalScrollbarPolicy.NEVER );
-//			rv.setVerticalScrollbarPolicy( edu.cmu.cs.dennisc.croquet.ScrollPane.VerticalScrollbarPolicy.AS_NEEDED );
-//			return rv;
-//		}
+		@Override
+		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane() {
+			edu.cmu.cs.dennisc.croquet.ScrollPane rv = super.createScrollPane();
+			rv.setHorizontalScrollbarPolicy( edu.cmu.cs.dennisc.croquet.ScrollPane.HorizontalScrollbarPolicy.NEVER );
+			rv.setVerticalScrollbarPolicy( edu.cmu.cs.dennisc.croquet.ScrollPane.VerticalScrollbarPolicy.AS_NEEDED );
+			rv.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
+			return rv;
+		}
 	}
 
 	private ContentTab templatesTab = new ContentTab(java.util.UUID.fromString("e658dbd1-c58b-42ec-9338-49f186aecc71"), "Templates") {

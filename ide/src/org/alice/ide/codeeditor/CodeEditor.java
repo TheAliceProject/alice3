@@ -72,22 +72,6 @@ class StatementListPropertyPaneInfo /* implements edu.cmu.cs.dennisc.croquet.Tra
 	public void setBounds( java.awt.Rectangle bounds ) {
 		this.bounds = bounds;
 	}
-//	public boolean isInView() {
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: StatementListPropertyPaneInfo isInView" );
-//		return this.statementListPropertyPane.isInView();
-//	}
-//	public edu.cmu.cs.dennisc.croquet.ScrollPane getScrollPaneAncestor() {
-//		return this.statementListPropertyPane.getScrollPaneAncestor();
-//	}
-//	public java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
-//		java.awt.Rectangle rv = this.statementListPropertyPane.convertRectangle( this.bounds, asSeenBy );
-//		rv = edu.cmu.cs.dennisc.java.awt.RectangleUtilties.inset( rv, insets );
-//		return rv;
-//	}
-//	public java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy, java.awt.Insets insets ) {
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: StatementListPropertyPaneInfo getVisibleShape" );
-//		return getShape( asSeenBy, insets );
-//	}
 }
 
 /**
