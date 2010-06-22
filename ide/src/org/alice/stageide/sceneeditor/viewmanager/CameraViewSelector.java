@@ -139,13 +139,20 @@ public class CameraViewSelector extends JPanel implements ItemListener, ActionLi
 		}
 		
 		int newCount = this.cameraViewComboBox.getItemCount();
-		if (originalSelectedIndex == -1 && newCount > 0)
-		{
-			this.cameraViewComboBox.setSelectedIndex(0);
-		}
-		else
-		{
-			this.cameraViewComboBox.setSelectedIndex( originalSelectedIndex );
+		if( newCount > 0 ) {
+			if (originalSelectedIndex == -1 )
+			{
+				this.cameraViewComboBox.setSelectedIndex(0);
+			}
+			else
+			{
+				this.cameraViewComboBox.setSelectedIndex( originalSelectedIndex );
+			}
+		} else {
+//			if (originalSelectedIndex != -1 ) {
+//				javax.swing.JOptionPane.showMessageDialog( null, "caught potential exception" );
+//			}
+			this.cameraViewComboBox.setSelectedIndex(-1);
 		}
 		
 		//Start listening again
