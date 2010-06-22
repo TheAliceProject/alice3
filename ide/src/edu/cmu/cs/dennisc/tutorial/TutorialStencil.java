@@ -79,7 +79,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	//private ExitOperation exitOperation = new ExitOperation();
 
 	private edu.cmu.cs.dennisc.croquet.BooleanState isInterceptingEvents = new edu.cmu.cs.dennisc.croquet.BooleanState( TUTORIAL_GROUP, java.util.UUID.fromString( "c3a009d6-976e-439e-8f99-3c8ff8a0324a" ), true, "intercept events" );
-	private edu.cmu.cs.dennisc.croquet.BooleanState isPaintingStencil = new edu.cmu.cs.dennisc.croquet.BooleanState( TUTORIAL_GROUP, java.util.UUID.fromString( "b1c1b125-cfe3-485f-9453-1e57e5b02cb1" ), true, "paint stecil" );
+	private edu.cmu.cs.dennisc.croquet.BooleanState isPaintingStencil = new edu.cmu.cs.dennisc.croquet.BooleanState( TUTORIAL_GROUP, java.util.UUID.fromString( "b1c1b125-cfe3-485f-9453-1e57e5b02cb1" ), true, "paint stencil" );
 	private edu.cmu.cs.dennisc.croquet.BooleanState isPlayingSounds = new edu.cmu.cs.dennisc.croquet.BooleanState( TUTORIAL_GROUP, java.util.UUID.fromString( "4d8ac630-0679-415a-882f-780c7cb014ef" ), true, "play sounds" );
 
 	private class StepsComboBox extends edu.cmu.cs.dennisc.croquet.JComponent<javax.swing.JComboBox> {
@@ -162,10 +162,24 @@ package edu.cmu.cs.dennisc.tutorial;
 
 		this.controlsPanel.addComponent(controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
 		
+		this.isPaintingStencil.setTrueText( "" );
+		this.isPaintingStencil.setFalseText( "WARNING: stencil is disabled.  Click here to turn re-enable." );
+		
+		
+		edu.cmu.cs.dennisc.croquet.CheckBox isPlayingSoundsCheckBox = this.isPlayingSounds.createCheckBox();
+		isPlayingSoundsCheckBox.getAwtComponent().setOpaque( false );
+		edu.cmu.cs.dennisc.croquet.CheckBox isInterceptingEventsCheckBox = this.isInterceptingEvents.createCheckBox();
+		isInterceptingEventsCheckBox.getAwtComponent().setOpaque( false );
+		edu.cmu.cs.dennisc.croquet.CheckBox isPaintingStencilCheckBox = this.isPaintingStencil.createCheckBox();
+		isPaintingStencilCheckBox.getAwtComponent().setOpaque( false );
+				
+		edu.cmu.cs.dennisc.croquet.FlowPanel westPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.TRAILING, 2, 0);
+		westPanel.addComponent( isPlayingSoundsCheckBox );
+		this.controlsPanel.addComponent(westPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.WEST);
+
 		edu.cmu.cs.dennisc.croquet.FlowPanel eastPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.TRAILING, 2, 0);
-		eastPanel.addComponent( this.isPlayingSounds.createCheckBox() );
-		eastPanel.addComponent( this.isInterceptingEvents.createCheckBox() );
-		eastPanel.addComponent( this.isPaintingStencil.createCheckBox() );
+		//eastPanel.addComponent( isInterceptingEventsCheckBox );
+		eastPanel.addComponent( isPaintingStencilCheckBox );
 		this.controlsPanel.addComponent(eastPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.EAST);
 		this.controlsPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 0, 4));
 

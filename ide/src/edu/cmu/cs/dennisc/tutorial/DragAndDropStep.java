@@ -202,7 +202,6 @@ package edu.cmu.cs.dennisc.tutorial;
 							if( inputDialogOperation != null ) {
 								edu.cmu.cs.dennisc.croquet.Dialog dialog = inputDialogOperation.getActiveDialog();
 								if( dialog != null ) {
-									edu.cmu.cs.dennisc.print.PrintUtilities.println( "move note if necessary" );
 									java.awt.Rectangle dialogLocalBounds = dialog.getLocalBounds();
 									Note note3 = this.getNoteAt( 3 );
 									java.awt.Rectangle bounds = note3.getBounds( dialog );
