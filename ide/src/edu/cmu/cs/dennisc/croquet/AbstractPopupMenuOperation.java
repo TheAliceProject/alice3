@@ -57,17 +57,17 @@ public abstract class AbstractPopupMenuOperation extends Operation<AbstractPopup
 		return parent.createPopupMenuOperationContext( this, e, viewController );
 	}
  	@Override
-	protected final void perform(PopupMenuOperationContext context) {
+	protected final void perform(final PopupMenuOperationContext context) {
 		PopupMenu popupMenu = this.createPopupMenu();
-//		javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
-//		popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
-//			public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
-//			}
-//			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
-//			}
-//			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-//			}
-//		} );
+		popupMenu.getAwtComponent().addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
+			public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
+			}
+			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
+			}
+			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
+				context.cancel();
+			}
+		} );
 
 		ViewController<?,?> viewController = context.getViewController();
 		java.awt.Point pt = context.getPoint();
