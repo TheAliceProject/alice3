@@ -57,6 +57,41 @@ public class StressTestTutorial {
 				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
 		);
 
+		tutorial.addDragAndDropToPopupMenuStep( 
+				"Drag Move Procedure",
+				"Drag <b>move</b> procedure.",
+				tutorial.createProcedureInvocationTemplateResolver( "move" ),
+				"Drop <b>here</b>.",
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+				"Select <b>FORWARD</b> and <b>1.0</b> from the menus.",
+				tutorial.createToDoCompletorValidator()
+		);
+
+		tutorial.addPopupMenuStep(  
+				"Delete Move",
+				"Right Click on <b>move</b>.",
+				tutorial.createFirstInvocationPopupMenuResolver( "move" ),
+				"Select <b>Delete Statement</b.",
+				tutorial.createToDoCompletorValidator()
+		);
+		
+		tutorial.addDragAndDropStep( 
+				"Drag Do Together",
+				"Drag <b>Do Together</b>.",
+				tutorial.createDoTogetherTemplateResolver(),
+				"Drop <b>here</b>.",
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+				tutorial.createToDoCompletorValidator()
+		);
+
+		tutorial.addPopupMenuStep(  
+				"Delete Do Together",
+				"Right Click on <b>Do Together</b>.",
+				tutorial.createFirstStatementAssignableToPopupMenuResolver( edu.cmu.cs.dennisc.alice.ast.DoTogether.class ),
+				"Select <b>Delete Statement</b.",
+				tutorial.createToDoCompletorValidator()
+		);
+		
 //		tutorial.addDragAndDropStep( 
 //				"Drag Do Together",
 //				"Drag <b>Do Together</b>.",

@@ -877,6 +877,17 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 		}
 		return null;
 	}
+	public edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation getPopupMenuOperationForStatement( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		if( statement != null ) {
+			java.util.List< org.alice.ide.common.AbstractStatementPane > statementPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.AbstractStatementPane.class );
+			for( org.alice.ide.common.AbstractStatementPane statementPane : statementPanes ) {
+				if( statementPane.getStatement() == statement ) {
+					return statementPane.getPopupMenuOperation();
+				}
+			}
+		}
+		return null;
+	}
 	public edu.cmu.cs.dennisc.croquet.DragAndDropOperation getDragAndDropOperationForStatement( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		if( statement != null ) {
 			java.util.List< org.alice.ide.common.AbstractStatementPane > statementPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.AbstractStatementPane.class );

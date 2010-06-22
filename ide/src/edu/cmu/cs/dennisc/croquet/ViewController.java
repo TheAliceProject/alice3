@@ -65,6 +65,9 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 	
 	private AbstractPopupMenuOperation popupMenuOperation;
 	public final AbstractPopupMenuOperation getPopupMenuOperation() {
+		if( this.popupMenuOperation != null ) {
+			this.popupMenuOperation.setFirstComponentHint( this );
+		}
 		return this.popupMenuOperation;
 	}
 	public final void setPopupMenuOperation( AbstractPopupMenuOperation popupMenuOperation ) {
@@ -73,7 +76,13 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: setPopupMenuOperation" );
 		}
+		if( this.popupMenuOperation != null ) {
+			this.popupMenuOperation.removeComponent( this );
+		}
 		this.popupMenuOperation = popupMenuOperation;
+		if( this.popupMenuOperation != null ) {
+			this.popupMenuOperation.addComponent( this );
+		}
 	}
 
 	private edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter lenientMouseClickAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {

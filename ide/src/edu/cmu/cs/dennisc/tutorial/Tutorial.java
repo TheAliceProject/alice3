@@ -142,6 +142,10 @@ public class Tutorial {
 		Step step = new InputDialogOpenAndCommitStep( title, openText, commitText, inputDialogOperationResolver, completorValidator, completorValidator );
 		return this.addStep( step );
 	}
+	public Step addPopupMenuStep( String title, String popupText, Resolver<edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation> popupMenuResolver, String commitText, CompletorValidator completorValidator ) {
+		Step step = new PopupMenuStep( title, popupText, popupMenuResolver, commitText, completorValidator, completorValidator );
+		return this.addStep( step );
+	}
 	
 	public <E> Step addListSelectionStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
 		Step step = new ListSelectionStateStep<E>( title, text, itemSelectionStateResolver, itemResolver, Feature.ConnectionPreference.EAST_WEST );

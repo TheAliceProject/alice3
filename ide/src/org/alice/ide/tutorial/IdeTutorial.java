@@ -270,16 +270,6 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	}
 
 
-	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int index ) {
-		return new StatementAssignableToResolver( cls, index );
-	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createFirstStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
-		return this.createStatementAssignableToResolver( cls, 0 );
-	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createLastStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
-		return this.createStatementAssignableToResolver( cls, Short.MAX_VALUE );
-	}
-
 	public Resolver< edu.cmu.cs.dennisc.croquet.PredeterminedTab > getProceduresTab() {
 		return new PredeterminedTabResolver( ide.getMembersEditor().getTabbedPaneSelectionState(), java.util.UUID.fromString( "2731d704-1f80-444e-a610-e6e5866c0b9a" ) );
 	}
@@ -424,6 +414,36 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 //	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createLastInvocationResolver( final Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver ) {
 //		return this.createInvocationResolver(methodResolver, Short.MAX_VALUE);
 //	}
+
+	public Resolver< edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation > createStatementAssignableToPopupMenuResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int index ) {
+		return new StatementAssignableToPopupMenuResolver( cls, index );
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation > createFirstStatementAssignableToPopupMenuResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+		return this.createStatementAssignableToPopupMenuResolver( cls, 0 );
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation > createLastStatementAssignableToPopupMenuResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+		return this.createStatementAssignableToPopupMenuResolver( cls, Short.MAX_VALUE );
+	}
+
+	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int index ) {
+		return new StatementAssignableToResolver( cls, index );
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createFirstStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+		return this.createStatementAssignableToResolver( cls, 0 );
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createLastStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+		return this.createStatementAssignableToResolver( cls, Short.MAX_VALUE );
+	}
+
+	public Resolver< edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation > createInvocationPopupMenuResolver( String methodName, int index ) {
+		return new MethodInvocationStatementPopupMenuResolver(this.createCurrentCodeMethodResolver(methodName), index);
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation > createFirstInvocationPopupMenuResolver( String methodName ) {
+		return this.createInvocationPopupMenuResolver(methodName, 0);
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation > createLastInvocationPopupMenuResolver( String methodName ) {
+		return this.createInvocationPopupMenuResolver(methodName, Short.MAX_VALUE);
+	}
 	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createInvocationResolver( String methodName, int index ) {
 		return new MethodInvocationStatementResolver(this.createCurrentCodeMethodResolver(methodName), index);
 	}
