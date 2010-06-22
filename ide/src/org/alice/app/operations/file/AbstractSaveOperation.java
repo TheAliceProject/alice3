@@ -62,10 +62,10 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
 	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		org.alice.app.ProjectApplication application = this.getProjectApplication();
 		java.io.File filePrevious = application.getFile();
-		boolean isExceptionRaised;
+		boolean isExceptionRaised = false;
 		do {
 			java.io.File fileNext;
-			if( this.isPromptNecessary( filePrevious ) ) {
+			if( isExceptionRaised || this.isPromptNecessary( filePrevious ) ) {
 				fileNext = application.showSaveFileDialog( this.getDefaultDirectory( application ), this.getInitialFilename(), this.getExtension(), true );
 			} else {
 				fileNext = filePrevious;
