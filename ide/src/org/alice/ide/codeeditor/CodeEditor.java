@@ -211,7 +211,9 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 			class RootStatementListPropertyPane extends StatementListPropertyPane {
 				public RootStatementListPropertyPane() {
 					super( getIDE().getCodeFactory(), codeDeclaredInAlice.getBodyProperty().getValue().statements );
+					this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 48, 0 ) );
 				}
+				
 				//@Override
 				//protected boolean isMaximumSizeClampedToPreferredSize() {
 				//	return false;
