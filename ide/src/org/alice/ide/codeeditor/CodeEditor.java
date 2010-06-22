@@ -44,6 +44,7 @@ package org.alice.ide.codeeditor;
 
 import org.alice.ide.common.DefaultStatementPane;
 import org.alice.ide.common.StatementListPropertyPane;
+import org.alice.ide.operations.file.PrintOperation;
 
 
 /**
@@ -77,7 +78,7 @@ class StatementListPropertyPaneInfo /* implements edu.cmu.cs.dennisc.croquet.Tra
 /**
  * @author Dennis Cosgrove
  */
-public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax.swing.JPanel, edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.croquet.DropReceptor {
+public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax.swing.JPanel, edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.croquet.DropReceptor, java.awt.print.Printable {
 	private StatementListPropertyPane EPIC_HACK_desiredStatementListPropertyPane = null;
 	private int EPIC_HACK_desiredIndex = -1;
 
@@ -208,6 +209,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 				throw new RuntimeException();
 			}
 
+//			header.setBackgroundColor( this.getBackgroundColor() );
 			class RootStatementListPropertyPane extends StatementListPropertyPane {
 				public RootStatementListPropertyPane() {
 					super( getIDE().getCodeFactory(), codeDeclaredInAlice.getBodyProperty().getValue().statements );
@@ -878,5 +880,18 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 			}
 		}
 		return null;
+	}
+	
+	public int print(java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex) throws java.awt.print.PrinterException {
+		if( pageIndex > 0 ) {
+			return NO_SUCH_PAGE;
+		}
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
+		edu.cmu.cs.dennisc.croquet.Component<?> component0 = this.getComponent( 0 );
+		component0.getAwtComponent().printAll( g2 );
+		g2.translate( this.scrollPane.getX(), this.scrollPane.getY() );
+		this.scrollPane.getViewportView().getAwtComponent().printAll( g2 );
+		return PAGE_EXISTS;
 	}
 }

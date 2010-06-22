@@ -49,21 +49,23 @@ public abstract class PrintOperation extends org.alice.ide.operations.Inconseque
 	public PrintOperation( java.util.UUID individualId ) {
 		super( individualId );
 	}
-	protected abstract void print( java.awt.Graphics2D g2 );
+	protected abstract java.awt.print.Printable getPrintable();
 	@Override
 	protected final void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		java.awt.print.PrinterJob job = java.awt.print.PrinterJob.getPrinterJob();
-		job.setPrintable( new java.awt.print.Printable() {
-			public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
-				if( pageIndex > 0 ) {
-					return NO_SUCH_PAGE;
+		java.awt.print.Printable printable = this.getPrintable();
+		if( printable != null ) {
+			job.setPrintable( printable );
+			if( job.printDialog() ) {
+				try {
+					job.print();
+				} catch( java.awt.print.PrinterException pe ) {
+					//todo
+					pe.printStackTrace();
 				}
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				g2.translate( pageFormat.getImageableX(), pageFormat.getImageableX() );
-				PrintOperation.this.print( g2 );
-				return PAGE_EXISTS;
 			}
-		} );
-		job.printDialog();
+		} else {
+			//todo
+		}
 	}
 }

@@ -51,11 +51,22 @@ public class PrintSceneEditorOperation extends PrintOperation {
 		this.setName( "Print Scene Editor..." );
 	}
 	@Override
-	protected void print( java.awt.Graphics2D g2 ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = ide.getSceneEditor();
-		if( sceneEditor != null ) {
-			sceneEditor.getAwtComponent().paintAll( g2 );
-		}
+	protected java.awt.print.Printable getPrintable() {
+		return new java.awt.print.Printable() {
+			public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
+				if( pageIndex > 0 ) {
+					return NO_SUCH_PAGE;
+				}
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
+				org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+				org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = ide.getSceneEditor();
+				if( sceneEditor != null ) {
+					sceneEditor.getAwtComponent().paintAll( g2 );
+				}
+				return PAGE_EXISTS;
+			}
+		};
 	}
+	
 }

@@ -51,8 +51,18 @@ public class PrintAllOperation extends PrintOperation {
 		this.setName( "Print All..." );
 	}
 	@Override
-	protected void print( java.awt.Graphics2D g2 ) {
-		edu.cmu.cs.dennisc.croquet.Frame frame = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame();
-		frame.getAwtComponent().paintAll( g2 );
+	protected java.awt.print.Printable getPrintable() {
+		return new java.awt.print.Printable() {
+			public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
+				if( pageIndex > 0 ) {
+					return NO_SUCH_PAGE;
+				}
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
+				edu.cmu.cs.dennisc.croquet.Frame frame = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame();
+				frame.getContentPanel().getAwtComponent().paintAll( g2 );
+				return PAGE_EXISTS;
+			}
+		};
 	}
 }

@@ -51,11 +51,9 @@ public class PrintCurrentCodeOperation extends PrintOperation {
 		this.setName( "Print Current Code..." );
 	}
 	@Override
-	protected void print( java.awt.Graphics2D g2 ) {
+	protected java.awt.print.Printable getPrintable() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		org.alice.ide.codeeditor.CodeEditor codeEditor = ide.getCodeEditorInFocus();
-		if( codeEditor != null ) {
-			codeEditor.getAwtComponent().paintAll( g2 );
-		}
+		return codeEditor;
 	}
 }
