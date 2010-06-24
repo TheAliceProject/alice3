@@ -40,39 +40,44 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.codeeditor;
+package edu.cmu.cs.dennisc.java.awt;
 
 /**
  * @author Dennis Cosgrove
  */
-class AbstractCodeHeaderPane extends edu.cmu.cs.dennisc.croquet.Panel {
-	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclarationInAlice;
-	private ParametersPane parametersPane;
-	private boolean isPreview;
-	public AbstractCodeHeaderPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclarationInAlice, ParametersPane parametersPane, boolean isPreview ) {
-		this.codeDeclarationInAlice = codeDeclarationInAlice;
-		this.parametersPane = parametersPane;
-		this.isPreview = isPreview;
+public class DimensionUtilities {
+	public static java.awt.Dimension constrainToMinimumWidth( java.awt.Dimension rv, int minimumWidth ) {
+		rv.width = Math.max( rv.width, minimumWidth );
+		return rv;
 	}
-	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		if( this.isPreview ) {
-			return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
-		} else {
-			return new wrap.WrappedFlowLayout( java.awt.FlowLayout.LEADING );
-		}
+	public static java.awt.Dimension constrainToMinimumHeight( java.awt.Dimension rv, int minimumHeight ) {
+		rv.height = Math.max( rv.height, minimumHeight );
+		return rv;
 	}
-	protected void addParametersPaneAndInstanceLineIfDesired() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		if( this.parametersPane != null ) {
-			this.addComponent( parametersPane );
-		}
-		boolean isInstanceLineDesired = ide.isEmphasizingClasses() && ide.isInstanceLineDesired();
-		if( isInstanceLineDesired ) {
-			this.addComponent( new InstanceLine( this.codeDeclarationInAlice ) );
-		}
+	public static java.awt.Dimension constrainToMinimumSize( java.awt.Dimension rv, int minimumWidth, int minimumHeight ) {
+		rv = constrainToMinimumWidth( rv, minimumWidth );
+		rv = constrainToMinimumHeight( rv, minimumHeight );
+		return rv;
 	}
-	protected void addComponent( edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
-		this.internalAddComponent( component );
+	public static java.awt.Dimension constrainToMaximumWidth( java.awt.Dimension rv, int maximumWidth ) {
+		rv.width = Math.min( rv.width, maximumWidth );
+		return rv;
+	}
+	public static java.awt.Dimension constrainToMaximumHeight( java.awt.Dimension rv, int maximumHeight ) {
+		rv.height = Math.min( rv.height, maximumHeight );
+		return rv;
+	}
+	public static java.awt.Dimension constrainToMaximumSize( java.awt.Dimension rv, int maximumWidth, int maximumHeight ) {
+		rv = constrainToMaximumWidth( rv, maximumWidth );
+		rv = constrainToMaximumHeight( rv, maximumHeight );
+		return rv;
+	}
+	public static java.awt.Dimension constrainToWidth( java.awt.Dimension rv, int width ) {
+		rv.width = width;
+		return rv;
+	}
+	public static java.awt.Dimension constrainToHeight( java.awt.Dimension rv, int height ) {
+		rv.height = height;
+		return rv;
 	}
 }
