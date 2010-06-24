@@ -108,7 +108,6 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractChooser< edu.cmu.
 	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
 		return this.components;
 	}
-	@Override
 	public edu.cmu.cs.dennisc.alice.ast.FieldAccess getValue() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Key.class );
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = type.getDeclaredField( type, this.key.name() );

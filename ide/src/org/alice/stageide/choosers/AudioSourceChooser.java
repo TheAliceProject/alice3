@@ -284,7 +284,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( testOperation.createButton(), null ) );
 		return rv;
 	}
-	@Override
+
 	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation getValue() {
 		org.alice.apis.moveandturn.AudioSource audioSource = this.getAudioSource();
 		if( audioSource != null ) {

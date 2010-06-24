@@ -146,15 +146,12 @@ abstract class AbstractNumberChooser implements ValueChooser< edu.cmu.cs.dennisc
 	public AbstractNumberChooser( NumberModel numberModel ) {
 		this.numberModel = numberModel;
 	}
-	@Override
 	public String getExplanationIfOkButtonShouldBeDisabled() {
 		return null;
 	}
-	@Override
 	public edu.cmu.cs.dennisc.alice.ast.Expression getValue() {
 		return this.numberModel.getValue();
 	}
-	@Override
 	public java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
 		edu.cmu.cs.dennisc.croquet.Group group = this.numberModel.getGroup();
 		NumeralOperation[] numeralOperations = new NumeralOperation[ 10 ];
