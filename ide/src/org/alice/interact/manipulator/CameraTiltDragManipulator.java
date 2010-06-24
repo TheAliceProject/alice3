@@ -150,6 +150,17 @@ public class CameraTiltDragManipulator extends CameraManipulator implements OnSc
 			
 			standIn.vehicle.setValue(null);
 			
+			//Make sure the camera's x-axis is still horizontal
+			AffineMatrix4x4 cameraTransform = this.manipulatedTransformable.getAbsoluteTransformation();
+			Vector3 rightAxis = cameraTransform.orientation.right;
+			rightAxis.y = 0;
+			rightAxis.normalize();
+			Vector3 upAxis = Vector3.createCrossProduct( cameraTransform.orientation.backward, rightAxis );
+			upAxis.normalize();
+			cameraTransform.orientation.right.set( rightAxis );
+			cameraTransform.orientation.up.set( upAxis );
+			this.manipulatedTransformable.setTransformation(cameraTransform, AsSeenBy.SCENE);
+			
 			
 			this.cameraFacingPickPlane = new Plane(newPickPoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward);
 		}
