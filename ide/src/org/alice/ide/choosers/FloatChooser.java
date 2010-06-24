@@ -52,8 +52,8 @@ class FloatModel extends NumberModel {
 		return true;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression valueOf( StringBuffer sb ) {
-		this.literal.value.setValue( Float.parseFloat( sb.toString() ) );
+	protected edu.cmu.cs.dennisc.alice.ast.Expression valueOf( String s ) {
+		this.literal.value.setValue( Float.parseFloat( s ) );
 		return this.literal;
 	}
 }

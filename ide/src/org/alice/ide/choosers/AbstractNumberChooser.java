@@ -48,34 +48,63 @@ abstract class NumberModel extends edu.cmu.cs.dennisc.croquet.StringState {
 	public NumberModel( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id, String text ) {
 		super( group, id, text );
 	}
-	private StringBuffer sb = new StringBuffer();
+	private void append( String s ) {
+		javax.swing.text.Document document = this.getDocument();
+		try {
+			document.insertString( document.getLength(), s, null );
+		} catch( javax.swing.text.BadLocationException ble ) {
+			throw new RuntimeException( ble );
+		}
+	}
 	public void append( short numeral ) {
-		sb.append( numeral );
+		this.append( Short.toString( numeral ) );
 	}
 	public void appendDecimalPoint() {
-		sb.append( "." );
+		this.append( "." );
 	}
 	public void negate() {
-		if( sb.charAt( 0 ) == '-' ) {
-			sb.deleteCharAt( 0 );
-		} else {
-			sb.insert( 0, '-' );
+		javax.swing.text.Document document = this.getDocument();
+		final int N = document.getLength();
+		try {
+			boolean isNegative;
+			if( N > 0 ) {
+				String s0 = document.getText( 0, 1 );
+				isNegative = s0.charAt( 0 ) == '-';
+			} else {
+				isNegative = false;
+			}
+			if( isNegative ) {
+				document.remove( 0, 1 );
+			} else {
+				document.insertString( 0, "-", null );
+			}
+		} catch( javax.swing.text.BadLocationException ble ) {
+			throw new RuntimeException( ble );
 		}
 	}
 	public void deleteLastCharacter() {
-		if( sb.length() > 0 ) {
-			sb.deleteCharAt( sb.length()-1 );
+		javax.swing.text.Document document = this.getDocument();
+		final int N = document.getLength();
+		if( document.getLength() > 0 ) {
+			try {
+				document.remove( N-1, 1 );
+			} catch( javax.swing.text.BadLocationException ble ) {
+				throw new RuntimeException( ble );
+			}
 		}
 
 	}
 	protected abstract boolean isDecimalPointSupported();
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression valueOf( StringBuffer sb );
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression valueOf( String s );
 	public edu.cmu.cs.dennisc.alice.ast.Expression getValue() {
 		try {
-			edu.cmu.cs.dennisc.alice.ast.Expression rv = this.valueOf( this.sb );
+			javax.swing.text.Document document = this.getDocument();
+			edu.cmu.cs.dennisc.alice.ast.Expression rv = this.valueOf( document.getText( 0, document.getLength() ) );
 			return rv;
 		} catch( NumberFormatException nfe ) {
 			return null;
+		} catch( javax.swing.text.BadLocationException ble ) {
+			throw new RuntimeException( ble );
 		}
 	}
 }
@@ -178,7 +207,7 @@ abstract class AbstractNumberChooser implements ValueChooser< edu.cmu.cs.dennisc
 		gridPanel.addComponent( plusMinusOperation.createButton() );
 
 		edu.cmu.cs.dennisc.croquet.TextField view = this.numberModel.createTextField();
-		view.getAwtComponent().setEditable( false );
+		//view.getAwtComponent().setEditable( false );
 		
 		BackspaceOperation backspaceOperation = new BackspaceOperation( group, this.numberModel );
 		edu.cmu.cs.dennisc.croquet.LineAxisPanel lineAxisPanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel(

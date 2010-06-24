@@ -52,8 +52,8 @@ class DoubleModel extends NumberModel {
 		return true;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression valueOf( StringBuffer sb ) {
-		this.literal.value.setValue( Double.parseDouble( sb.toString() ) );
+	protected edu.cmu.cs.dennisc.alice.ast.Expression valueOf( String s ) {
+		this.literal.value.setValue( Double.parseDouble( s ) );
 		return this.literal;
 	}
 }

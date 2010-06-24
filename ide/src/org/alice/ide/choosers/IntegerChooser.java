@@ -64,8 +64,8 @@ class IntegerModel extends NumberModel {
 		return false;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression valueOf( StringBuffer sb ) {
-		long l = Long.parseLong( sb.toString() );
+	protected edu.cmu.cs.dennisc.alice.ast.Expression valueOf( String s ) {
+		long l = Long.parseLong( s );
 		if( l > Integer.MAX_VALUE ) {
 			return this.maxValue;
 		} else if ( l < Integer.MIN_VALUE ) {
