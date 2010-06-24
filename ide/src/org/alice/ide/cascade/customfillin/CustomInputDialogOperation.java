@@ -45,15 +45,15 @@ package org.alice.ide.cascade.customfillin;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.alice.ast.Expression,F> extends org.alice.ide.operations.InputDialogWithPreviewOperation {
+public class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends org.alice.ide.operations.InputDialogWithPreviewOperation {
 	@Deprecated
 	public interface EPIC_HACK_Validator {
 		public String getExplanationIfOkButtonShouldBeDisabled( org.alice.ide.choosers.ValueChooser< ? > valueChooser );
 	}
 	private EPIC_HACK_Validator validator = null;
 
-	private CustomInputPane< E, F > customInputPane;
-	public CustomInputDialogOperation( CustomInputPane< E, F > customInputPane ) {
+	private CustomInputPane< E > customInputPane;
+	public CustomInputDialogOperation( CustomInputPane< E > customInputPane ) {
 		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "0e69d792-3e5b-4a17-b670-465885ade615" ) );
 		this.customInputPane = customInputPane;
 	}

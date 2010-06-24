@@ -92,7 +92,8 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 		@Override
 		public edu.cmu.cs.dennisc.croquet.ComboBox<edu.cmu.cs.dennisc.alice.ast.AbstractType> createComboBox() {
 			edu.cmu.cs.dennisc.croquet.ComboBox<edu.cmu.cs.dennisc.alice.ast.AbstractType> rv = super.createComboBox();
-			rv.setRenderer( new TypeListCellRenderer() );
+			TypeListCellRenderer typeListCellRenderer = new TypeListCellRenderer();
+			rv.setRenderer( typeListCellRenderer );
 			rv.setMaximumRowCount( Math.min( this.getItemCount(), 20 ) );
 			return rv;
 		}

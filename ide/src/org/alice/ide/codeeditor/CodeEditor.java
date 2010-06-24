@@ -145,7 +145,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 		} else {
 			rv = new javax.swing.JPanel();
 		}
-		rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.PAGE_AXIS ) );
+//		rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.PAGE_AXIS ) );
+		rv.setLayout( new java.awt.BorderLayout() );
 		
 		return rv;
 	}
@@ -183,10 +184,6 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 //		}
 //	}
 
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createParametersPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
-		return new ParametersPane( this.getIDE().getCodeFactory(), code );
-	}
-
 	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
 		return this.code;
 	}
@@ -197,14 +194,14 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 		this.forgetAndRemoveAllComponents();
 		if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ) {
 			final edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code;
-			edu.cmu.cs.dennisc.croquet.Component< ? > parametersPane = createParametersPane( codeDeclaredInAlice );
+			ParametersPane parametersPane = new ParametersPane( this.getIDE().getCodeFactory(), codeDeclaredInAlice );
 			AbstractCodeHeaderPane header;
 			if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
-				header = new MethodHeaderPane( methodDeclaredInAlice, parametersPane );
+				header = new MethodHeaderPane( methodDeclaredInAlice, parametersPane, false );
 			} else if( code instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {
 				edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructorDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice)code;
-				header = new ConstructorHeaderPane( constructorDeclaredInAlice, parametersPane );
+				header = new ConstructorHeaderPane( constructorDeclaredInAlice, parametersPane, false );
 			} else {
 				throw new RuntimeException();
 			}
@@ -265,14 +262,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 			this.scrollPane.getAwtComponent().getViewport().setOpaque( false );
 			//this.scrollPane.setBackground( java.awt.Color.RED );
 			this.scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
-			this.internalAddComponent( header );
-			if( this.getIDE().isEmphasizingClasses() || this.getIDE().isInstanceLineDesired() == false ) {
-				//pass
-			} else {
-				header.addComponent( new InstanceLine( this.code ) );
-			}
-			//			this.add( javax.swing.Box.createVerticalStrut( 8 ) );
-			this.internalAddComponent( scrollPane );
+			this.internalAddComponent( header, java.awt.BorderLayout.NORTH );
+			this.internalAddComponent( scrollPane, java.awt.BorderLayout.CENTER );
 		}
 		this.revalidateAndRepaint();
 	}

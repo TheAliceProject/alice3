@@ -45,17 +45,13 @@ package org.alice.ide.cascade.customfillin;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomDoubleFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.ast.DoubleLiteral, Double > {
+public class CustomDoubleFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	@Override
 	protected String getMenuProxyText() {
 		return "Other Real Number...";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser createValueChooser() {
+	protected org.alice.ide.choosers.ValueChooser< edu.cmu.cs.dennisc.alice.ast.Expression > createValueChooser() {
 		return new org.alice.ide.choosers.DoubleChooser();
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.DoubleLiteral createExpression( Double value ) {
-		return new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value );
 	}
 }

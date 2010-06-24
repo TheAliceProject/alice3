@@ -84,6 +84,12 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
+		tutorial.addSpotlightStep(  
+				"Note Do Together",
+				"Note <b>Do Together</b>.",
+				tutorial.createFirstStatementAssignableToPopupMenuResolver( edu.cmu.cs.dennisc.alice.ast.DoTogether.class )
+		);
+
 		tutorial.addPopupMenuStep(  
 				"Delete Do Together",
 				"Right Click on <b>Do Together</b>.",

@@ -121,10 +121,4 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.Expression > expressions = this.bogusNode.arrayExpressions.getValue();
 		return org.alice.ide.ast.NodeUtilities.createArrayInstanceCreation( this.bogusNode.getType(), expressions );
 	}
-	
-	public static void main( String[] args ) {
-		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
-		org.alice.ide.cascade.customfillin.CustomArrayFillIn customArrayFillIn = new org.alice.ide.cascade.customfillin.CustomArrayFillIn();
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( customArrayFillIn.getValue() );
-	}
 }

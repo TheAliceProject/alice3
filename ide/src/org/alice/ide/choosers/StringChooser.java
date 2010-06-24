@@ -45,7 +45,7 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public class StringChooser extends AbstractChooserWithTextField< String > {
+public class StringChooser extends AbstractChooserWithTextField< edu.cmu.cs.dennisc.alice.ast.StringLiteral > {
 	public StringChooser() {
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.StringLiteral ) {
@@ -57,7 +57,7 @@ public class StringChooser extends AbstractChooserWithTextField< String > {
 		return "Enter Custom String";
 	}
 	@Override
-	protected String valueOf( String text ) {
-		return text;
+	protected edu.cmu.cs.dennisc.alice.ast.StringLiteral valueOf( String text ) {
+		return new edu.cmu.cs.dennisc.alice.ast.StringLiteral( text );
 	}
 }

@@ -69,9 +69,9 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 		if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
 			rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)member;
-//			if( getIDE().isEmphasizingClasses() ) {
-//				//pass
-//			} else {
+			if( getIDE().isEmphasizingClasses() ) {
+				//pass
+			} else {
 				if( field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 					edu.cmu.cs.dennisc.croquet.Component<?> declarationPane = new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field);
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: add popup menu to field declaration pane" );
@@ -85,7 +85,6 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 							edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "todo" );
 						}
 					}
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: EditFieldDeclarationOperation" );
 					rv.add( new edu.cmu.cs.dennisc.croquet.LineAxisPanel(
 								new EditFieldDeclarationOperation().createButton(),
 								edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ),
@@ -93,7 +92,7 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 							) 
 					);
 				}
-//			}
+			}
 			rv.add( TemplateFactory.getAccessorTemplate( field ) );
 			if( field.getValueType().isArray() ) {
 				rv.add( TemplateFactory.getAccessArrayAtIndexTemplate( field ) );

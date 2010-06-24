@@ -233,14 +233,39 @@ class TypeFillIn extends edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.denni
 	@Override
 	protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		if( this.type != null ) {
-			blank.addFillIn( new ProceduresFillIn( this.type ) );
-			blank.addFillIn( new FunctionsFillIn( this.type ) );
+			blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.RenameTypeOperation( this.type ) ) );
+			blank.addSeparator();
+			blank.addFillIn( new OperatorFillIn( org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance( this.type ) ) );
+			for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.type.methods ) {
+				if( method.isProcedure() ) {
+					blank.addFillIn( new OperatorFillIn( new EditMethodOperation( method ) ) );
+				}
+			}
+			blank.addSeparator();
+			for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.type.methods ) {
+				if( method.isFunction() ) {
+					blank.addFillIn( new OperatorFillIn( new EditMethodOperation( method ) ) );
+				}
+			}
+			blank.addFillIn( new OperatorFillIn( org.alice.ide.operations.ast.DeclareFunctionOperation.getInstance( this.type ) ) );
+			blank.addSeparator();
 			blank.addFillIn( new OperatorFillIn( new EditConstructorOperation( this.type.getDeclaredConstructor() ) ) );
 			blank.addSeparator();
-			blank.addFillIn( new FieldsFillIn( this.type ) );
+			blank.addFillIn( new OperatorFillIn( org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( this.type ) ) );
+			for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : this.type.fields ) {
+				blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.EditFieldOperation( field ) ) );
+			}
 			blank.addSeparator();
-			blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.RenameTypeOperation( this.type ) ) );
-			//blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.file.SaveAsTypeOperation( this.type ) ) );
+			blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.file.SaveAsTypeOperation( this.type ) ) );
+			
+//			ProceduresFillIn proceduresFillIn = new ProceduresFillIn( this.type );
+//			FunctionsFillIn functionsFillIn = new FunctionsFillIn( this.type );
+//			blank.addFillIn( proceduresFillIn );
+//			blank.addFillIn( functionsFillIn );
+//			blank.addFillIn( new OperatorFillIn( new EditConstructorOperation( this.type.getDeclaredConstructor() ) ) );
+//			blank.addSeparator();
+//			blank.addFillIn( new FieldsFillIn( this.type ) );
+//			blank.addSeparator();
 		} else {
 			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.CancelFillIn( "type is not set.  canceling." ) );
 		}

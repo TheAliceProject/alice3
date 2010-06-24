@@ -47,47 +47,72 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractEditFieldOperation extends org.alice.ide.operations.ActionOperation {
-	public AbstractEditFieldOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, String name ) {
+public abstract class AbstractEditFieldOperation extends org.alice.ide.operations.InputDialogWithPreviewOperation {
+	private FieldDeclaredInAlice field;
+	private org.alice.ide.declarationpanes.EditFieldPane editFieldPane;
+	private edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither prevFinalVolatileOrNeither;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> prevValueType;
+	private String prevName;
+	private edu.cmu.cs.dennisc.alice.ast.Expression prevInitializer;
+	public AbstractEditFieldOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, String name, FieldDeclaredInAlice field ) {
 		super( group, individualId );
 		this.setName( name );
+		this.field = field;
 	}
-	protected final void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context, final FieldDeclaredInAlice field, java.util.Set< FieldDeclaredInAlice > referencedFields, java.util.Set< FieldDeclaredInAlice > reassignedFields ) {
-		if( field != null ) {
-			final edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither prevFinalVolatileOrNeither = field.finalVolatileOrNeither.getValue();
-			final edu.cmu.cs.dennisc.alice.ast.AbstractType prevValueType = field.valueType.getValue();
-			final String prevName = field.getName();
-			final edu.cmu.cs.dennisc.alice.ast.Expression prevInitializer = field.initializer.getValue();
-			//todo: convert to operation
-			org.alice.ide.declarationpanes.EditFieldPane editFieldPane = new org.alice.ide.declarationpanes.EditFieldPane( field, referencedFields.contains( field ), reassignedFields.contains( field ) );
-			FieldDeclaredInAlice tempField = editFieldPane.getActualInputValue();
-			if( tempField != null ) {
-				final edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither nextFinalVolatileOrNeither = tempField.finalVolatileOrNeither.getValue();
-				final edu.cmu.cs.dennisc.alice.ast.AbstractType nextValueType = tempField.valueType.getValue();
-				final String nextName = tempField.getName();
-				final edu.cmu.cs.dennisc.alice.ast.Expression nextInitializer = tempField.initializer.getValue();
-				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
-					@Override
-					public void doOrRedo( boolean isDo ) {
-						field.finalVolatileOrNeither.setValue( nextFinalVolatileOrNeither );
-						field.valueType.setValue( nextValueType );
-						field.name.setValue( nextName );
-						field.initializer.setValue( nextInitializer );
-					}
-					@Override
-					public void undo() {
-						field.finalVolatileOrNeither.setValue( prevFinalVolatileOrNeither );
-						field.valueType.setValue( prevValueType );
-						field.name.setValue( prevName );
-						field.initializer.setValue( prevInitializer );
-					}
-					@Override
-					protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
-						rv.append( "edit: " );
-						edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, field, locale );
-						return rv;
-					}
-				} );
+	protected FieldDeclaredInAlice getField() {
+		return this.field;
+	}
+	@Override
+	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
+		return this.editFieldPane;
+	}
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > prologue( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context, java.util.Set< FieldDeclaredInAlice > referencedFields, java.util.Set< FieldDeclaredInAlice > reassignedFields ) {
+		if( this.field != null ) {
+			this.prevFinalVolatileOrNeither = field.finalVolatileOrNeither.getValue();
+			this.prevValueType = field.valueType.getValue();
+			this.field.getName();
+			this.prevInitializer = field.initializer.getValue();
+			this.editFieldPane = new org.alice.ide.declarationpanes.EditFieldPane( field, referencedFields.contains( field ), reassignedFields.contains( field ) );
+			return this.editFieldPane;
+		} else {
+			return null;
+		}
+	}
+	@Override
+	protected void epilogue( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context, boolean isOk ) {
+		if( this.editFieldPane != null ) {
+			if( isOk ) {
+				FieldDeclaredInAlice tempField = editFieldPane.getActualInputValue();
+				if( tempField != null ) {
+					final edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither nextFinalVolatileOrNeither = tempField.finalVolatileOrNeither.getValue();
+					final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> nextValueType = tempField.valueType.getValue();
+					final String nextName = tempField.getName();
+					final edu.cmu.cs.dennisc.alice.ast.Expression nextInitializer = tempField.initializer.getValue();
+					context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+						@Override
+						public void doOrRedo( boolean isDo ) {
+							field.finalVolatileOrNeither.setValue( nextFinalVolatileOrNeither );
+							field.valueType.setValue( nextValueType );
+							field.name.setValue( nextName );
+							field.initializer.setValue( nextInitializer );
+						}
+						@Override
+						public void undo() {
+							field.finalVolatileOrNeither.setValue( prevFinalVolatileOrNeither );
+							field.valueType.setValue( prevValueType );
+							field.name.setValue( prevName );
+							field.initializer.setValue( prevInitializer );
+						}
+						@Override
+						protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+							rv.append( "edit: " );
+							edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, field, locale );
+							return rv;
+						}
+					} );
+				} else {
+					context.cancel();
+				}
 			} else {
 				context.cancel();
 			}

@@ -45,20 +45,13 @@ package org.alice.stageide.cascade.customfillin;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomKeyFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< edu.cmu.cs.dennisc.alice.ast.FieldAccess, org.alice.apis.moveandturn.Key > {
+public class CustomKeyFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< edu.cmu.cs.dennisc.alice.ast.FieldAccess > {
 	@Override
 	protected String getMenuProxyText() {
 		return "Other Key...";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser createValueChooser() {
+	protected org.alice.ide.choosers.ValueChooser< edu.cmu.cs.dennisc.alice.ast.FieldAccess > createValueChooser() {
 		return new org.alice.stageide.choosers.KeyChooser();
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.FieldAccess createExpression( org.alice.apis.moveandturn.Key key ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Key.class );
-		edu.cmu.cs.dennisc.alice.ast.AbstractField field = type.getDeclaredField( type, key.name() );
-		assert field.isPublicAccess() && field.isStatic() && field.isFinal();
-		return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), field );
 	}
 }

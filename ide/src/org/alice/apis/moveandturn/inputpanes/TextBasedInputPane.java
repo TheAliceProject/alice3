@@ -49,7 +49,7 @@ public abstract class TextBasedInputPane< E > extends InputPane< E > {
 	private javax.swing.JTextField textField = new javax.swing.JTextField() {
 		@Override
 		public java.awt.Dimension getPreferredSize() {
-			return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+			return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 320 );
 		}
 	};
 	public TextBasedInputPane( String message ) {

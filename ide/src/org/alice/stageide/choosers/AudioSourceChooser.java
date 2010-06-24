@@ -105,7 +105,7 @@ class TimeSlider extends javax.swing.JSlider {
 /**
  * @author Dennis Cosgrove
  */
-public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< org.alice.apis.moveandturn.AudioSource > {
+public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< edu.cmu.cs.dennisc.alice.ast.InstanceCreation > {
 	class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
 		private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty bogusProperty = new edu.cmu.cs.dennisc.alice.ast.ExpressionProperty( this ) {
 			@Override
@@ -140,7 +140,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 		}
 		@Override
 		protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-			org.alice.apis.moveandturn.AudioSource audioSource = getValue();
+			org.alice.apis.moveandturn.AudioSource audioSource = getAudioSource();
 			edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
 			edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( audioSource.getAudioResource(), audioSource.getVolume(), audioSource.getStartTime(), audioSource.getStopTime() );
 			player.test( context.getViewController().getAwtComponent() );
@@ -284,8 +284,75 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( testOperation.createButton(), null ) );
 		return rv;
 	}
-		
-	public org.alice.apis.moveandturn.AudioSource getValue() {
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation getValue() {
+		org.alice.apis.moveandturn.AudioSource audioSource = this.getAudioSource();
+		if( audioSource != null ) {
+			org.alice.virtualmachine.resources.AudioResource audioResource = audioSource.getAudioResource();
+
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+			if( project != null ) {
+				project.addResource( audioResource );
+			}
+
+			edu.cmu.cs.dennisc.alice.ast.Expression arg0Expression;
+			if( audioResource != null ) {
+				arg0Expression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( org.alice.virtualmachine.resources.AudioResource.class, audioResource );				
+			} else {
+				arg0Expression = new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
+			}
+
+			double volume = audioSource.getVolume();
+			double startTime = audioSource.getStartTime();
+			double stopTime = audioSource.getStopTime();
+
+			// apologies for the negative logic
+			boolean isNotDefaultVolume = org.alice.apis.moveandturn.AudioSource.isWithinReasonableEpsilonOfDefaultVolume( volume ) == false;
+			boolean isNotDefaultStartTime = org.alice.apis.moveandturn.AudioSource.isWithinReasonableEpsilonOfDefaultStartTime( startTime ) == false;
+			boolean isNotDefaultStopTime = org.alice.apis.moveandturn.AudioSource.isDefaultStopTime_aka_NaN( stopTime ) == false;
+
+			if( isNotDefaultVolume || isNotDefaultStartTime || isNotDefaultStopTime ) {
+				edu.cmu.cs.dennisc.alice.ast.DoubleLiteral volumeLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( volume );
+				if( isNotDefaultStartTime || isNotDefaultStopTime ) {
+					edu.cmu.cs.dennisc.alice.ast.DoubleLiteral startTimeLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( startTime );
+					if( isNotDefaultStopTime ) {
+						edu.cmu.cs.dennisc.alice.ast.DoubleLiteral stopTimeLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( stopTime );
+
+						edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
+								org.alice.apis.moveandturn.AudioSource.class, 
+								org.alice.virtualmachine.resources.AudioResource.class,
+								Number.class, 
+								Number.class, 
+								Number.class );
+						return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral, startTimeLiteral, stopTimeLiteral );
+					} else {
+						edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
+								org.alice.apis.moveandturn.AudioSource.class, 
+								org.alice.virtualmachine.resources.AudioResource.class,
+								Number.class, 
+								Number.class );
+						return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral, startTimeLiteral );
+					}
+				} else {
+					edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
+							org.alice.apis.moveandturn.AudioSource.class, 
+							org.alice.virtualmachine.resources.AudioResource.class,
+							Number.class );
+					return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral );
+				}
+			} else {
+				edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
+						org.alice.apis.moveandturn.AudioSource.class, 
+						org.alice.virtualmachine.resources.AudioResource.class );
+				return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression );
+			}
+		} else {
+			return null;
+		}
+	}
+	
+	private org.alice.apis.moveandturn.AudioSource getAudioSource() {
 		org.alice.virtualmachine.resources.AudioResource audioResource;
 		double volume = this.volumeLevelControl.getVolumeLevel();
 		double start;
@@ -323,15 +390,4 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 		}
 		return new org.alice.apis.moveandturn.AudioSource( audioResource, volume, start, stop );
 	}
-	public static void main( String[] args ) {
-		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
-		try {
-			org.alice.stageide.cascade.customfillin.CustomizeAudioSourceFillIn fillIn = new org.alice.stageide.cascade.customfillin.CustomizeAudioSourceFillIn();
-			if( fillIn != null ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( fillIn.getValue() );
-			}
-		} catch( edu.cmu.cs.dennisc.cascade.CancelException ce ) {
-		}
-	}
-	
 }

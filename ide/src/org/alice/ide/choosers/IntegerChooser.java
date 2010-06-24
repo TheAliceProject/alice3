@@ -42,23 +42,55 @@
  */
 package org.alice.ide.choosers;
 
+class IntegerModel extends NumberModel {
+	private edu.cmu.cs.dennisc.alice.ast.Expression maxValue = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( 
+			new edu.cmu.cs.dennisc.alice.ast.TypeExpression(
+				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE
+			),
+			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField.get( Integer.class, "MAX_VALUE" )
+	);
+	private edu.cmu.cs.dennisc.alice.ast.Expression minValue = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( 
+			new edu.cmu.cs.dennisc.alice.ast.TypeExpression(
+				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE
+			),
+			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField.get( Integer.class, "MIN_VALUE" )
+	);
+	private edu.cmu.cs.dennisc.alice.ast.IntegerLiteral literal = new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral();
+	public IntegerModel() {
+		 super( CALCULATOR_GROUP, java.util.UUID.fromString( "fceee598-ccd1-46f9-8539-5f2a42b021b2" ), ""  );
+	}
+	@Override
+	protected boolean isDecimalPointSupported() {
+		return false;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression valueOf( StringBuffer sb ) {
+		long l = Long.parseLong( sb.toString() );
+		if( l > Integer.MAX_VALUE ) {
+			return this.maxValue;
+		} else if ( l < Integer.MIN_VALUE ) {
+			return this.minValue;
+		} else {
+			this.literal.value.setValue( (int)l );
+			return this.literal;
+		}
+	}
+}
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class IntegerChooser extends AbstractNumberChooser< Integer > {
+public class IntegerChooser extends AbstractNumberChooser {
 	public IntegerChooser() {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.IntegerLiteral ) {
-			edu.cmu.cs.dennisc.alice.ast.IntegerLiteral integerLiteral = (edu.cmu.cs.dennisc.alice.ast.IntegerLiteral)previousExpression;
-			this.setAndSelectText( Integer.toString( integerLiteral.value.getValue() ) );
-		}
+		super( new IntegerModel() );
+//		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
+//		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.IntegerLiteral ) {
+//			edu.cmu.cs.dennisc.alice.ast.IntegerLiteral integerLiteral = (edu.cmu.cs.dennisc.alice.ast.IntegerLiteral)previousExpression;
+//			this.setAndSelectText( Integer.toString( integerLiteral.value.getValue() ) );
+//		}
 	}
 	public String getTitleDefault() {
 		return "Enter Custom Integer";
-	}
-	@Override
-	protected Integer valueOf( String text ) {
-		return Integer.valueOf( text );
 	}
 }

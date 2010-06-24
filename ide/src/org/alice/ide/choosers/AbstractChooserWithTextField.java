@@ -45,15 +45,8 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractChooserWithTextField<E> extends AbstractChooser<E> {
+public abstract class AbstractChooserWithTextField<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends AbstractChooser<E> {
 	private edu.cmu.cs.dennisc.croquet.StringState stringState = new edu.cmu.cs.dennisc.croquet.StringState( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "6213f5a4-b4b4-4c49-a5e3-2db644edb2cd" ), "" );
-	
-//	private edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField textField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField() {
-//		@Override
-//		public java.awt.Dimension getPreferredSize() {
-//			return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 240 );
-//		}
-//	};
 	private edu.cmu.cs.dennisc.croquet.TextField textField = stringState.createTextField();
 	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components = { this.textField };
 
@@ -79,19 +72,4 @@ public abstract class AbstractChooserWithTextField<E> extends AbstractChooser<E>
 		this.stringState.setState( text );
 		this.textField.selectAll();
 	}
-//	@Override
-//	public void setInputPanel( final edu.cmu.cs.dennisc.croquet.InputPanel< ? > inputPanel ) {
-//		super.setInputPanel( inputPanel );
-//		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
-//			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
-//				inputPanel.updateOKButton();
-//			}
-//			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
-//				inputPanel.updateOKButton();
-//			}
-//			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
-//				inputPanel.updateOKButton();
-//			}
-//		} );
-//	}
 }

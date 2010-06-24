@@ -81,7 +81,7 @@ public class JSuggestiveTextArea extends javax.swing.JTextArea {
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
-		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), 64 );
+		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), 64 );
 	}
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {

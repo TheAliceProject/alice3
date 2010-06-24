@@ -45,21 +45,45 @@ package org.alice.stageide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public class AngleChooser extends org.alice.ide.choosers.AbstractChooserWithTextField< org.alice.apis.moveandturn.Angle > {
+public class AngleChooser extends org.alice.ide.choosers.DoubleChooser {
 	public AngleChooser() {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		//todo: handle other numbers
-		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
-			edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)previousExpression;
-			this.setAndSelectText( Double.toString( doubleLiteral.value.getValue() ) );
-		}
+//		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
+//		//todo: handle other numbers
+//		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
+//			edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)previousExpression;
+//			this.setAndSelectText( Double.toString( doubleLiteral.value.getValue() ) );
+//		}
 	}
 	public String getTitleDefault() {
 		return "Enter Custom Angle";
 	}
-	@Override
-	protected org.alice.apis.moveandturn.Angle valueOf( String text ) {
-		double value = Double.valueOf( text );
-		return new org.alice.apis.moveandturn.AngleInRevolutions( value );
-	}
 }
+//public class AngleChooser extends org.alice.ide.choosers.AbstractChooserWithTextField< edu.cmu.cs.dennisc.alice.ast.Expression > {
+//	public AngleChooser() {
+//		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
+//		//todo: handle other numbers
+//		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
+//			edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)previousExpression;
+//			this.setAndSelectText( Double.toString( doubleLiteral.value.getValue() ) );
+//		}
+//	}
+//	public String getTitleDefault() {
+//		return "Enter Custom Angle";
+//	}
+//	@Override
+//	protected org.alice.apis.moveandturn.Angle valueOf( String text ) {
+//		double value = Double.valueOf( text );
+//		return new org.alice.apis.moveandturn.AngleInRevolutions( value );
+//	}
+//
+//	public edu.cmu.cs.dennisc.alice.ast.Expression getValue() {
+//		double value = this.slider.getValue() / 100.0;
+//		edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value );
+//		final boolean IS_LITERAL_DESIRED = true;
+//		if( IS_LITERAL_DESIRED ) {
+//			return doubleLiteral;
+//		} else {
+//			return org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.Portion.class, new Class<?>[] { Number.class }, doubleLiteral );
+//		}
+//	}
+//}

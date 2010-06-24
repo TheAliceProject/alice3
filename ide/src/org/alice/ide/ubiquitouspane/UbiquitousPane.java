@@ -132,7 +132,7 @@ class TransientStatementsWrapper extends edu.cmu.cs.dennisc.croquet.LineAxisPane
 /**
  * @author Dennis Cosgrove
  */
-public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
+public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.WrappedFlowPanel {
 	private DoInOrderTemplate doInOrderTemplate = new DoInOrderTemplate();
 //	private LoopTemplate loopTemplate = new LoopTemplate();
 	private CountLoopTemplate countLoopTemplate = new CountLoopTemplate();
@@ -155,6 +155,7 @@ public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	};
 
 	public UbiquitousPane() {
+		super( Alignment.LEADING );
 		final int PAD = 6;
 		this.addComponent( this.doInOrderTemplate );
 		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( PAD ) );

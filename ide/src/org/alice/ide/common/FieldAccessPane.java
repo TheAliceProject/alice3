@@ -65,6 +65,8 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 				this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "." ) );
 			}
 		}
+		Class< ? extends edu.cmu.cs.dennisc.alice.ast.Expression > cls = edu.cmu.cs.dennisc.alice.ast.FieldAccess.class;
+		this.setBackgroundPaint( getIDE().getColorFor( cls ) );
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.fieldAccess.field.getValue();
 		org.alice.ide.common.DeclarationNameLabel nodeNameLabel = new org.alice.ide.common.DeclarationNameLabel( field );
 		//nodeNameLabel.scaleFont( 1.2f );
@@ -84,7 +86,6 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 				}
 			}
 		}
-		this.setBackgroundPaint( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
 	}
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {

@@ -226,9 +226,11 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 	private edu.cmu.cs.dennisc.croquet.BooleanState isExpressionTypeFeedbackDesiredState =
 		createBooleanStatePreference( java.util.UUID.fromString( "e80adbfe-9e1a-408f-8067-ddbd30d0ffb9" ), true, "Is Type Feedback Desired" );
+	private edu.cmu.cs.dennisc.croquet.BooleanState isInactiveFeedbackState =
+		createBooleanStatePreference( java.util.UUID.fromString( "2645a33c-3a37-41c1-83fe-521ed8dd0382" ), true, "Is Inactive Feedback Desired" );
 	private edu.cmu.cs.dennisc.croquet.BooleanState isOmissionOfThisForFieldAccessesDesiredState =
 		createBooleanStatePreference( java.util.UUID.fromString( "bcf1ce48-f54a-4e80-8b9e-42c2cc302b01" ), false, "Is Omission Of This For Field Accesses Desired" );
-	private edu.cmu.cs.dennisc.croquet.BooleanState isEmphasizingClassesOperation =
+	private edu.cmu.cs.dennisc.croquet.BooleanState isEmphasizingClassesState =
 		createBooleanStatePreference( java.util.UUID.fromString( "c6d27bf1-f8c0-470d-b9ef-3c9fa7e6f4b0" ), true, "Is Emphasizing Classes" );
 	private edu.cmu.cs.dennisc.croquet.BooleanState isDefaultFieldNameGenerationDesiredState =
 		createBooleanStatePreference( java.util.UUID.fromString( "3e551420-bb50-4e33-9175-9f29738998f0" ), false, "Is Default Field Name Generation Desired" );
@@ -242,11 +244,14 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return this.isExpressionTypeFeedbackDesiredState;
 	}
 	public edu.cmu.cs.dennisc.croquet.BooleanState getEmphasizingClassesState() {
-		return this.isEmphasizingClassesOperation;
+		return this.isEmphasizingClassesState;
+	}
+	public boolean isInactiveFeedbackDesired() {
+		return this.isInactiveFeedbackState.getValue();
 	}
 	@Deprecated
 	public boolean isEmphasizingClasses() {
-		return this.isEmphasizingClassesOperation.getValue();
+		return this.isEmphasizingClassesState.getValue();
 	}
 	public edu.cmu.cs.dennisc.croquet.BooleanState getOmissionOfThisForFieldAccessesDesiredState() {
 		return this.isOmissionOfThisForFieldAccessesDesiredState;
@@ -256,7 +261,8 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 
 	private WindowMenuModel windowMenuModel = new WindowMenuModel( 
-			this.isEmphasizingClassesOperation,
+			this.isEmphasizingClassesState,
+			this.isInactiveFeedbackState,
 			this.isOmissionOfThisForFieldAccessesDesiredState,
 			this.isExpressionTypeFeedbackDesiredState,
 			this.isDefaultFieldNameGenerationDesiredState,
@@ -1917,13 +1923,19 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			if( edu.cmu.cs.dennisc.alice.ast.Comment.class.isAssignableFrom( cls ) ) {
 				return edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 245 );
 			} else {
-				return new java.awt.Color( 0xd3d7f0 );
+				if( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class.isAssignableFrom( cls ) ) {
+					return new java.awt.Color( 255, 230, 180 );
+//				} else if( edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement.class.isAssignableFrom( cls ) ) {
+//					return new java.awt.Color( 255, 230, 180 );
+				} else {
+					return new java.awt.Color( 0xd3d7f0 );
+					//return new java.awt.Color( 255, 255, 210 );
+				}
 			}
 		} else if( edu.cmu.cs.dennisc.alice.ast.Expression.class.isAssignableFrom( cls ) ) {
 			if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) ) {
 				return new java.awt.Color( 0xd3e7c7 );
-			} else if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplement.class,
-					edu.cmu.cs.dennisc.alice.ast.StringConcatenation.class ) ) {
+			} else if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplement.class, edu.cmu.cs.dennisc.alice.ast.StringConcatenation.class ) ) {
 				return new java.awt.Color( 0xDEEBD3 );
 			} else if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class, edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation.class ) ) {
 				return new java.awt.Color( 0xbdcfb3 );
@@ -1933,6 +1945,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 				if( edu.cmu.cs.dennisc.alice.ast.NullLiteral.class.isAssignableFrom( cls ) ) {
 					return java.awt.Color.RED;
 				} else {
+					//return new java.awt.Color( 255, 255, 210 );
 					return new java.awt.Color( 0xfdf6c0 );
 				}
 			}
@@ -1942,7 +1955,16 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 	public java.awt.Color getColorFor( edu.cmu.cs.dennisc.alice.ast.Node node ) {
 		if( node != null ) {
-			return this.getColorFor( node.getClass() );
+			Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls = node.getClass();
+//			if( node instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
+//				edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)node;
+//				if( fieldAccess.expression.getValue() instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
+//					//pass
+//				} else {
+//					cls = edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class;
+//				}
+//			}
+			return this.getColorFor( cls );
 		} else {
 			return java.awt.Color.RED;
 		}

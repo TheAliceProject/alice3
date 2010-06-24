@@ -42,23 +42,48 @@
  */
 package org.alice.ide.editorstabbedpane;
 
+//class CheckMarkIcon implements javax.swing.Icon {
+//	@Override
+//	public int getIconWidth() {
+//		return 16;
+//	}
+//	@Override
+//	public int getIconHeight() {
+//		return 16;
+//	}
+//	@Override
+//	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+//		g.setColor( java.awt.Color.RED );
+//		g.fillRect( x, y, 16, 16 );
+//	}
+//}
 /**
 * @author Dennis Cosgrove
 */
 //todo
 class EditMethodOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+//	private static CheckMarkIcon checkMarkIcon = new CheckMarkIcon();
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
 
 	public EditMethodOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		super( java.util.UUID.fromString( "4a6e51f7-630a-4f36-b7db-5fa37c62eb54" ) );
 		this.method = method;
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
 		sb.append( "Edit " );
+		sb.append( "<strong>" );
 		sb.append( this.method.getName() );
 		if( this.method == org.alice.ide.IDE.getSingleton().getFocusedCode() ) {
-			sb.append( "    (current)" );
+			sb.append( " <font color=007F00>&#x2713;</font>" );
 		}
+		sb.append( "</strong>" );
+		sb.append( "</html>" );
 		this.setName( sb.toString() );
+//		if( this.method == org.alice.ide.IDE.getSingleton().getFocusedCode() ) {
+//			this.setSmallIcon( checkMarkIcon );
+//		} else {
+//			this.setSmallIcon( null );
+//		}
 	}
 	@Override
 	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {

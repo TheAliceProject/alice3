@@ -45,11 +45,9 @@ package org.alice.ide.cascade.customfillin;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression, F> extends org.alice.ide.preview.PanelWithPreview {
-	private CustomFillIn< E, F > fillIn;
-	private org.alice.ide.choosers.ValueChooser< F > chooser;
-	public CustomInputPane( CustomFillIn< E, F > fillIn, org.alice.ide.choosers.ValueChooser< F > chooser ) {
-		this.fillIn = fillIn;
+public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends org.alice.ide.preview.PanelWithPreview {
+	private org.alice.ide.choosers.ValueChooser< E > chooser;
+	public CustomInputPane( org.alice.ide.choosers.ValueChooser< E > chooser ) {
 		this.chooser = chooser;
 	}
 	
@@ -79,11 +77,10 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression, 
 		this.chooser.updateRows( rv );
 		return rv;
 	}
-	/*package-protected*/org.alice.ide.choosers.ValueChooser< F > getValueChooser() {
+	/*package-protected*/org.alice.ide.choosers.ValueChooser< E > getValueChooser() {
 		return this.chooser;
 	}
 	protected E getActualInputValue() {
-		F value = this.chooser.getValue();
-		return this.fillIn.createExpression( value );
+		return this.chooser.getValue();
 	}
 }

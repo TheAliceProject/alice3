@@ -72,7 +72,7 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	};
 	
 	private edu.cmu.cs.dennisc.alice.ast.Accessible accessible = null;
-	private edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label();
+	private edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label( "", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 	public SelectedFieldExpressionPane( org.alice.ide.ast.SelectedFieldExpression selectedFieldExpression ) {
 		this.addComponent( this.label );
 		this.setBackgroundPaint( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );

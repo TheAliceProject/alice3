@@ -219,7 +219,7 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 		edu.cmu.cs.dennisc.javax.swing.components.JBorderPane content = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane() {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
-				return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 320 );
 			}
 		};
 		

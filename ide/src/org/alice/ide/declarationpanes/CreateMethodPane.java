@@ -68,7 +68,7 @@ public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTyp
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent() {
-		return new org.alice.ide.codeeditor.MethodHeaderPane( this.getActualInputValue(), null );
+		return new org.alice.ide.codeeditor.MethodHeaderPane( this.getActualInputValue(), null, true );
 	}
 	
 	@Override

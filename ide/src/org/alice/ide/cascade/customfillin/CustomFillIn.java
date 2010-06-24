@@ -45,18 +45,17 @@ package org.alice.ide.cascade.customfillin;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomFillIn<E extends edu.cmu.cs.dennisc.alice.ast.Expression, F> extends edu.cmu.cs.dennisc.cascade.FillIn< E > {
-	protected abstract org.alice.ide.choosers.ValueChooser< F > createValueChooser();
-	protected abstract E createExpression( F value );
+public abstract class CustomFillIn<E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends edu.cmu.cs.dennisc.cascade.FillIn< E > {
+	protected abstract org.alice.ide.choosers.ValueChooser< E > createValueChooser();
 	@Override
 	public E getTransientValue() {
 		return null;
 	}
 	@Override
 	public E getValue() {
-		org.alice.ide.choosers.ValueChooser< F > chooser = this.createValueChooser();
-		CustomInputPane< E, F > customInputPane = new CustomInputPane<E,F>(this, chooser);
-		CustomInputDialogOperation<E,F> inputDialogOperation = new CustomInputDialogOperation<E,F>( customInputPane );
+		org.alice.ide.choosers.ValueChooser< E > chooser = this.createValueChooser();
+		CustomInputPane< E > customInputPane = new CustomInputPane<E>(chooser);
+		CustomInputDialogOperation<E> inputDialogOperation = new CustomInputDialogOperation<E>( customInputPane );
 		edu.cmu.cs.dennisc.croquet.InputDialogOperationContext context = inputDialogOperation.fire();
 		if( context != null ) {
 			if( context.isCanceled() ) {

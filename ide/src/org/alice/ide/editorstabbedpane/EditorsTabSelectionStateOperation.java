@@ -307,6 +307,8 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 		private javax.swing.ButtonModel buttonModel;
 		public DropDownPanel() {
 			edu.cmu.cs.dennisc.croquet.Button button = this.rootOperation.createButton();
+			button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+			
 			this.buttonModel = button.getAwtComponent().getModel();
 			//button.setBorder( new javax.swing.border.EmptyBorder( 4,4,4,4 ) );
 			button.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.LEADING );

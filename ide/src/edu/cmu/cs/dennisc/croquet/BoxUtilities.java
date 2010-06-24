@@ -136,10 +136,10 @@ public class BoxUtilities {
 //					edu.cmu.cs.dennisc.print.PrintUtilities.println();
 //					edu.cmu.cs.dennisc.print.PrintUtilities.println( rv );
 					if( ClampedComponent.this.minimumPreferredWidth != null ) {
-						rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( rv, ClampedComponent.this.minimumPreferredWidth );
+						rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( rv, ClampedComponent.this.minimumPreferredWidth );
 					}
 					if( ClampedComponent.this.minimumPreferredHeight != null ) {
-						rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumHeight( rv, ClampedComponent.this.minimumPreferredHeight );
+						rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( rv, ClampedComponent.this.minimumPreferredHeight );
 					}
 //					edu.cmu.cs.dennisc.print.PrintUtilities.println( rv );
 //					edu.cmu.cs.dennisc.print.PrintUtilities.println();

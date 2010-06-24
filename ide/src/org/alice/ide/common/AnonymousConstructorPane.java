@@ -50,7 +50,7 @@ class MethodPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //		header.setAlignmentX( 0.0f );
 		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		org.alice.ide.codeeditor.ParametersPane parametersPane = new org.alice.ide.codeeditor.ParametersPane( factory, method );
-		this.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( method, parametersPane ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
+		this.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( method, parametersPane, false ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
 		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 12 ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.WEST );
 		this.addComponent( new BodyPane( factory.createComponent( method.body.getValue() ) ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 		this.setAlignmentX( 0.0f );

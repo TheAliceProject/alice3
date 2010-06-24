@@ -50,7 +50,7 @@ class PasswordPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPa
 		private javax.swing.JPasswordField hidden = new javax.swing.JPasswordField() {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
-				return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 256 );
+				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 256 );
 			}
 		};
 		private javax.swing.JTextField exposed = new javax.swing.JTextField();
@@ -217,7 +217,7 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.J
 		private javax.swing.JLabel nameLabel = new javax.swing.JLabel( "Full Name" ) {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
-				return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 320 );
 			}
 			@Override
 			public java.awt.Dimension getMaximumSize() {

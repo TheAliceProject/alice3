@@ -208,7 +208,7 @@ package edu.cmu.cs.dennisc.tutorial;
 			@Override
 			public java.awt.Dimension getPreferredSize() {
 				java.awt.Dimension rv = super.getPreferredSize();
-				rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumHeight( rv, 256 );
+				rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( rv, 256 );
 				rv.width = 256;
 				return rv;
 			}

@@ -75,7 +75,7 @@ abstract class OrganizedByTypeMembersContentPanel extends MembersContentPanel {
 				if( type.isConsumptionBySubClassDesired() ) {
 					//pass
 				} else {
-					if( org.alice.ide.IDE.getSingleton().isEmphasizingClasses() || type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice || isFirstNonConsumedTypeEncounteredInJava ) {
+					if( /*org.alice.ide.IDE.getSingleton().isEmphasizingClasses() ||*/ type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice || isFirstNonConsumedTypeEncounteredInJava ) {
 						this.addComponent( MembersEditor.getComponentFor( this.getClass(), type ) );
 					}
 				}
@@ -255,9 +255,9 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				return rv;
 			}
 		} );
-//		edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label( "instance:" );
-//		label.scaleFont( FONT_SCALAR );
-		edu.cmu.cs.dennisc.croquet.LineAxisPanel instancePanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( /*label,*/ comboBox );
+		edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label( "instance:" );
+		label.scaleFont( FONT_SCALAR );
+		edu.cmu.cs.dennisc.croquet.LineAxisPanel instancePanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( label, comboBox );
 
 		this.tabbedPaneSelectionState.setValue( this.proceduresTab );
 		//edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.tabbedPaneSelectionState.createDefaultToolPaletteTabbedPane();

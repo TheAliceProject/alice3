@@ -136,6 +136,6 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupM
 				return grandparent instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation || grandparent instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression || grandparent instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess; 
 			}
 		}
-		return true;
+		return super.isInactiveFeedbackDesired();
 	}
 }

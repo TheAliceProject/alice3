@@ -46,8 +46,8 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 public class MethodHeaderPane extends AbstractCodeHeaderPane {
-	public MethodHeaderPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice, edu.cmu.cs.dennisc.croquet.Component< ? > parametersPane ) {
-		super( methodDeclaredInAlice );
+	public MethodHeaderPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice, ParametersPane parametersPane, boolean isPreview ) {
+		super( methodDeclaredInAlice, parametersPane, isPreview );
 		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( methodDeclaredInAlice.getReturnType() ) );
@@ -109,8 +109,6 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 
 		
 		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
-		if( parametersPane != null ) {
-			this.addComponent( parametersPane );
-		}
+		this.addParametersPaneAndInstanceLineIfDesired();
 	}
 }

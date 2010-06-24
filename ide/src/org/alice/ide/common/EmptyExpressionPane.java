@@ -58,6 +58,14 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
 		this( new EmptyExpression( type ) );
 	}
 	@Override
+	protected int getInsetTop() {
+		return 0;
+	}
+	@Override
+	protected int getInsetBottom() {
+		return 0;
+	}
+	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
 		return this.emptyExpression.getType();
 	}

@@ -49,7 +49,7 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 	class PreviewPane extends edu.cmu.cs.dennisc.croquet.JComponent<javax.swing.JPanel> {
 		public void refresh() {
 			this.forgetAndRemoveAllComponents();
-			this.internalAddComponent( PanelWithPreview.this.createPreviewSubComponent(), java.awt.BorderLayout.WEST );
+			this.internalAddComponent( PanelWithPreview.this.createPreviewSubComponent(), java.awt.BorderLayout.CENTER );
 			this.revalidateAndRepaint();
 		}
 		@Override
@@ -61,7 +61,7 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 				}
 				@Override
 				public java.awt.Dimension getPreferredSize() {
-					return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+					return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 320 );
 				}
 			};
 			rv.setOpaque( false );

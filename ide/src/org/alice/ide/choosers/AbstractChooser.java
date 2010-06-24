@@ -45,7 +45,7 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractChooser<E> implements ValueChooser< E > {
+public abstract class AbstractChooser<E extends edu.cmu.cs.dennisc.alice.ast.Expression> implements ValueChooser< E > {
 	private static final String[] LABEL_TEXTS = { "value:" };
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();

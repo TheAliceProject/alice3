@@ -47,7 +47,7 @@ package org.alice.stageide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public class PortionChooser extends org.alice.ide.choosers.AbstractChooser< org.alice.apis.moveandturn.Portion > {
+public class PortionChooser extends org.alice.ide.choosers.AbstractChooser< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	class PortionOperation extends edu.cmu.cs.dennisc.zoot.AbstractBoundedRangeOperation {
 		public PortionOperation() {
 			super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP );
@@ -71,9 +71,15 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractChooser< org.
 	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
 		return this.components;
 	}
-	public org.alice.apis.moveandturn.Portion getValue() {
+	public edu.cmu.cs.dennisc.alice.ast.Expression getValue() {
 		double value = this.slider.getValue() / 100.0;
-		return new org.alice.apis.moveandturn.Portion( value );
+		edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value );
+		final boolean IS_LITERAL_DESIRED = true;
+		if( IS_LITERAL_DESIRED ) {
+			return doubleLiteral;
+		} else {
+			return org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.Portion.class, new Class<?>[] { Number.class }, doubleLiteral );
+		}
 	}
 	public String getExplanationIfOkButtonShouldBeDisabled() {
 		return null;

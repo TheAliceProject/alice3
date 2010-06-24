@@ -46,8 +46,8 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 class ConstructorHeaderPane extends AbstractCodeHeaderPane {
-	public ConstructorHeaderPane( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructorDeclaredInAlice, edu.cmu.cs.dennisc.croquet.Component< ? > parametersPane ) {
-		super( constructorDeclaredInAlice );
+	public ConstructorHeaderPane( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructorDeclaredInAlice, ParametersPane parametersPane, boolean isPreview ) {
+		super( constructorDeclaredInAlice, parametersPane, isPreview );
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( constructorDeclaredInAlice.getDeclaringType() ) );
 			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "()" ) );
@@ -56,7 +56,7 @@ class ConstructorHeaderPane extends AbstractCodeHeaderPane {
 			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "constructor", 1.5f ) );
 			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " on class " ) );
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( constructorDeclaredInAlice.getDeclaringType() ) );
-			this.addComponent( parametersPane );
+			this.addParametersPaneAndInstanceLineIfDesired();
 		}
 	}
 }
