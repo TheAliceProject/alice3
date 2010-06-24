@@ -155,7 +155,7 @@ public class CameraTiltDragManipulator extends CameraManipulator implements OnSc
 			Vector3 rightAxis = cameraTransform.orientation.right;
 			rightAxis.y = 0;
 			rightAxis.normalize();
-			Vector3 upAxis = Vector3.createCrossProduct(rightAxis, cameraTransform.orientation.backward);
+			Vector3 upAxis = Vector3.createCrossProduct( cameraTransform.orientation.backward, rightAxis );
 			upAxis.normalize();
 			cameraTransform.orientation.right.set( rightAxis );
 			cameraTransform.orientation.up.set( upAxis );
