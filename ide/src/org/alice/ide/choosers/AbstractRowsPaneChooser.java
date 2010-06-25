@@ -45,20 +45,8 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractChooser<E extends edu.cmu.cs.dennisc.alice.ast.Expression> implements ValueChooser< E > {
+public abstract class AbstractRowsPaneChooser<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends ValueChooser< E > {
 	private static final String[] LABEL_TEXTS = { "value:" };
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
-	}
-	protected edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
-		org.alice.ide.IDE ide = this.getIDE();
-		if( ide != null ) {
-			return ide.getPreviousExpression();
-		} else {
-			return null;
-		}
-	}
-
 	protected String[] getLabelTexts() {
 		return LABEL_TEXTS;
 	}
@@ -80,5 +68,14 @@ public abstract class AbstractChooser<E extends edu.cmu.cs.dennisc.alice.ast.Exp
 		}
 		return rv;
 	}
-	
+	@Override
+	public edu.cmu.cs.dennisc.croquet.Component< ? > createMainComponent() {
+		edu.cmu.cs.dennisc.croquet.RowsSpringPanel rowsSpringPanel = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel() {
+			@Override
+			protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv) {
+				return AbstractRowsPaneChooser.this.updateRows( rv );
+			}
+		};
+		return rowsSpringPanel;
+	}
 }

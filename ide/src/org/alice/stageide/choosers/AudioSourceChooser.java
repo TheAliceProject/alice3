@@ -105,7 +105,7 @@ class TimeSlider extends javax.swing.JSlider {
 /**
  * @author Dennis Cosgrove
  */
-public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< edu.cmu.cs.dennisc.alice.ast.InstanceCreation > {
+public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.InstanceCreation > {
 	class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
 		private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty bogusProperty = new edu.cmu.cs.dennisc.alice.ast.ExpressionProperty( this ) {
 			@Override
@@ -240,10 +240,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 			}
 		} );
 	}
-	public String getTitleDefault() {
-		return "Enter Custom Audio Source";
-	}
-	
+	@Override
 	public String getExplanationIfOkButtonShouldBeDisabled() {
 		edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = (edu.cmu.cs.dennisc.alice.ast.ResourceExpression)bogusNode.bogusProperty.getValue();
 		if( resourceExpression != null ) {
@@ -285,6 +282,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 		return rv;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation getValue() {
 		org.alice.apis.moveandturn.AudioSource audioSource = this.getAudioSource();
 		if( audioSource != null ) {

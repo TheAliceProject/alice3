@@ -45,7 +45,7 @@ package org.alice.stageide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public class VolumeLevelChooser extends org.alice.ide.choosers.AbstractChooser< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public class VolumeLevelChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	private org.alice.stageide.controls.VolumeLevelControl volumeLevelControl = new org.alice.stageide.controls.VolumeLevelControl();
 	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components = { new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.volumeLevelControl ) };
 	public VolumeLevelChooser() {
@@ -56,6 +56,7 @@ public class VolumeLevelChooser extends org.alice.ide.choosers.AbstractChooser< 
 	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
 		return this.components;
 	}
+	@Override
 	public edu.cmu.cs.dennisc.alice.ast.Expression getValue() {
 		edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( this.volumeLevelControl.getVolumeLevel() );
 		final boolean IS_LITERAL_DESIRED = true;
@@ -65,11 +66,9 @@ public class VolumeLevelChooser extends org.alice.ide.choosers.AbstractChooser< 
 			return org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.VolumeLevel.class, new Class<?>[] { Number.class }, doubleLiteral );
 		}
 	}
+	@Override
 	public String getExplanationIfOkButtonShouldBeDisabled() {
 		return null;
-	}
-	public String getTitleDefault() {
-		return "Enter Custom Volume Level";
 	}
 }
 

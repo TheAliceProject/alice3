@@ -45,7 +45,7 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation > {
+public class ArrayChooser extends AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation > {
 	private org.alice.ide.initializer.BogusNode bogusNode = new org.alice.ide.initializer.BogusNode( null, false );
 	private org.alice.ide.declarationpanes.TypePane typePane;
 	private org.alice.ide.initializer.ArrayInitializerPane arrayInitializerPane;
@@ -97,10 +97,7 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 		}
 	}
 	
-	public String getTitleDefault() {
-		return "Enter Custom Array";
-	}
-	
+	@Override
 	public String getExplanationIfOkButtonShouldBeDisabled() {
 		if( this.typePane.getValueType() != null ) {
 			return null;
@@ -117,6 +114,7 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
 		return this.components;
 	}
+	@Override
 	public edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation getValue() {
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.Expression > expressions = this.bogusNode.arrayExpressions.getValue();
 		return org.alice.ide.ast.NodeUtilities.createArrayInstanceCreation( this.bogusNode.getType(), expressions );

@@ -87,17 +87,12 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, 0, PAD ) );
 	}
 	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent();
+	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createMainComponent();
 	private void initializeIfNecessary() {
 		if( this.previewPane != null ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.croquet.RowsSpringPanel rowsSpringPanel = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel() {
-				@Override
-				protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv) {
-					return PanelWithPreview.this.updateComponentRows( rv );
-				}
-			};
-			this.addComponent( rowsSpringPanel, Constraint.CENTER );
+			this.addComponent( this.createMainComponent(), Constraint.CENTER );
 
 			this.previewPane = new PreviewPane();
 			edu.cmu.cs.dennisc.croquet.PageAxisPanel northPanel = new edu.cmu.cs.dennisc.croquet.PageAxisPanel(
@@ -128,13 +123,6 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 		}
 	}
 
-	protected abstract java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateInternalComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv );
-
-	protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv) {
-		this.updateInternalComponentRows( rv );
-//		this.setAlignmentX( 0.0f );
-		return rv;
-	}
 
 	
 //	@Override

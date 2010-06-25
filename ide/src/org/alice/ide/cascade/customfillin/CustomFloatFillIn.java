@@ -47,8 +47,8 @@ package org.alice.ide.cascade.customfillin;
  */
 public class CustomFloatFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	@Override
-	protected String getMenuProxyText() {
-		return "Other (Single Precision) Real Number...";
+	protected String getTypeDescription() {
+		return "(Single Precision) Real Number";
 	}
 	@Override
 	protected org.alice.ide.choosers.ValueChooser< edu.cmu.cs.dennisc.alice.ast.Expression > createValueChooser() {

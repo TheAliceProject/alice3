@@ -96,13 +96,34 @@ abstract class NumberModel extends edu.cmu.cs.dennisc.croquet.StringState {
 	}
 	protected abstract boolean isDecimalPointSupported();
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression valueOf( String s );
+//	protected abstract String getEmptyTextExplanation();
+	public String getExplanationIfOkButtonShouldBeDisabled() {
+		try {
+			javax.swing.text.Document document = this.getDocument();
+			final int N = document.getLength();
+			if( N > 0 ) {
+				try {
+					edu.cmu.cs.dennisc.alice.ast.Expression rv = this.valueOf( document.getText( 0, N ) );
+					return null;
+				} catch( NumberFormatException nfe ) {
+					return document.getText( 0, document.getLength() ) + " is not valid.";
+				}
+			} else {
+				return "Enter a number.";
+			}
+		} catch( javax.swing.text.BadLocationException ble ) {
+			throw new RuntimeException( ble );
+		}
+	}
 	public edu.cmu.cs.dennisc.alice.ast.Expression getValue() {
 		try {
 			javax.swing.text.Document document = this.getDocument();
-			edu.cmu.cs.dennisc.alice.ast.Expression rv = this.valueOf( document.getText( 0, document.getLength() ) );
-			return rv;
-		} catch( NumberFormatException nfe ) {
-			return null;
+			try {
+				edu.cmu.cs.dennisc.alice.ast.Expression rv = this.valueOf( document.getText( 0, document.getLength() ) );
+				return rv;
+			} catch( NumberFormatException nfe ) {
+				return null;
+			}
 		} catch( javax.swing.text.BadLocationException ble ) {
 			throw new RuntimeException( ble );
 		}
@@ -170,18 +191,21 @@ class BackspaceOperation extends CalculatorOperation {
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractNumberChooser implements ValueChooser< edu.cmu.cs.dennisc.alice.ast.Expression > {
+abstract class AbstractNumberChooser extends ValueChooser< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	private NumberModel numberModel;
 	public AbstractNumberChooser( NumberModel numberModel ) {
 		this.numberModel = numberModel;
 	}
+	@Override
 	public String getExplanationIfOkButtonShouldBeDisabled() {
-		return null;
+		return this.numberModel.getExplanationIfOkButtonShouldBeDisabled();
 	}
+	@Override
 	public edu.cmu.cs.dennisc.alice.ast.Expression getValue() {
 		return this.numberModel.getValue();
 	}
-	public java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
+	@Override
+	public edu.cmu.cs.dennisc.croquet.Component< ? > createMainComponent() {
 		edu.cmu.cs.dennisc.croquet.Group group = this.numberModel.getGroup();
 		NumeralOperation[] numeralOperations = new NumeralOperation[ 10 ];
 		for( short i=0; i<numeralOperations.length; i++ ) {
@@ -189,22 +213,64 @@ abstract class AbstractNumberChooser implements ValueChooser< edu.cmu.cs.dennisc
 		}
 		
 		PlusMinusOperation plusMinusOperation = new PlusMinusOperation( group, this.numberModel );
-		DecimalPointOperation decimalPointOperation = new DecimalPointOperation( group, this.numberModel );
-		decimalPointOperation.setEnabled( this.numberModel.isDecimalPointSupported() );
+		if( this.numberModel.isDecimalPointSupported() ) {
+			DecimalPointOperation decimalPointOperation = new DecimalPointOperation( group, this.numberModel );
+			decimalPointOperation.setEnabled( this.numberModel.isDecimalPointSupported() );
+		}
 		
-		edu.cmu.cs.dennisc.croquet.GridPanel gridPanel = edu.cmu.cs.dennisc.croquet.GridPanel.createGridPane( 4, 3 );
-		gridPanel.addComponent( numeralOperations[ 7 ].createButton() );
-		gridPanel.addComponent( numeralOperations[ 8 ].createButton() );
-		gridPanel.addComponent( numeralOperations[ 9 ].createButton() );
-		gridPanel.addComponent( numeralOperations[ 4 ].createButton() );
-		gridPanel.addComponent( numeralOperations[ 5 ].createButton() );
-		gridPanel.addComponent( numeralOperations[ 6 ].createButton() );
-		gridPanel.addComponent( numeralOperations[ 1 ].createButton() );
-		gridPanel.addComponent( numeralOperations[ 2 ].createButton() );
-		gridPanel.addComponent( numeralOperations[ 3 ].createButton() );
-		gridPanel.addComponent( numeralOperations[ 0 ].createButton() );
-		gridPanel.addComponent( decimalPointOperation.createButton() );
-		gridPanel.addComponent( plusMinusOperation.createButton() );
+//		edu.cmu.cs.dennisc.croquet.GridPanel gridPanel = edu.cmu.cs.dennisc.croquet.GridPanel.createGridPane( 4, 3 );
+//		gridPanel.addComponent( numeralOperations[ 7 ].createButton() );
+//		gridPanel.addComponent( numeralOperations[ 8 ].createButton() );
+//		gridPanel.addComponent( numeralOperations[ 9 ].createButton() );
+//		gridPanel.addComponent( numeralOperations[ 4 ].createButton() );
+//		gridPanel.addComponent( numeralOperations[ 5 ].createButton() );
+//		gridPanel.addComponent( numeralOperations[ 6 ].createButton() );
+//		gridPanel.addComponent( numeralOperations[ 1 ].createButton() );
+//		gridPanel.addComponent( numeralOperations[ 2 ].createButton() );
+//		gridPanel.addComponent( numeralOperations[ 3 ].createButton() );
+//		gridPanel.addComponent( numeralOperations[ 0 ].createButton() );
+//		
+//		if( this.numberModel.isDecimalPointSupported() ) {
+//			DecimalPointOperation decimalPointOperation = new DecimalPointOperation( group, this.numberModel );
+//			gridPanel.addComponent( decimalPointOperation.createButton() );
+//		} else {
+//			gridPanel.addComponent( new edu.cmu.cs.dennisc.croquet.Label() );
+//		}
+//		gridPanel.addComponent( plusMinusOperation.createButton() );
+
+		edu.cmu.cs.dennisc.croquet.GridBagPanel gridBagPanel = new edu.cmu.cs.dennisc.croquet.GridBagPanel();
+		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+		gbc.fill = java.awt.GridBagConstraints.BOTH;
+		gbc.weightx = 1.0;
+		gridBagPanel.addComponent( numeralOperations[ 7 ].createButton(), gbc );
+		gridBagPanel.addComponent( numeralOperations[ 8 ].createButton(), gbc );
+		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		gridBagPanel.addComponent( numeralOperations[ 9 ].createButton(), gbc );
+
+		gbc.weightx = 0.0;
+		gbc.gridwidth = 1;
+		gridBagPanel.addComponent( numeralOperations[ 4 ].createButton(), gbc );
+		gridBagPanel.addComponent( numeralOperations[ 5 ].createButton(), gbc );
+		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		gridBagPanel.addComponent( numeralOperations[ 6 ].createButton(), gbc );
+
+		gbc.gridwidth = 1;
+		gridBagPanel.addComponent( numeralOperations[ 1 ].createButton(), gbc );
+		gridBagPanel.addComponent( numeralOperations[ 2 ].createButton(), gbc );
+		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		gridBagPanel.addComponent( numeralOperations[ 3 ].createButton(), gbc );
+
+		
+		if( this.numberModel.isDecimalPointSupported() ) {
+			gbc.gridwidth = 1;
+			gridBagPanel.addComponent( numeralOperations[ 0 ].createButton(), gbc );
+			DecimalPointOperation decimalPointOperation = new DecimalPointOperation( group, this.numberModel );
+			gridBagPanel.addComponent( decimalPointOperation.createButton(), gbc );
+		} else {
+			gbc.gridwidth = 2;
+			gridBagPanel.addComponent( numeralOperations[ 0 ].createButton(), gbc );
+		}
+		gridBagPanel.addComponent( plusMinusOperation.createButton(), gbc );
 
 		edu.cmu.cs.dennisc.croquet.TextField view = this.numberModel.createTextField();
 		//view.getAwtComponent().setEditable( false );
@@ -215,18 +281,15 @@ abstract class AbstractNumberChooser implements ValueChooser< edu.cmu.cs.dennisc
 				backspaceOperation.createButton()
 		);
 
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( lineAxisPanel ) );
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( gridPanel ) );
-		
-		java.awt.Font font = edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont( gridPanel.getFont(), 3.0f );
-		view.setFont( font );
-		for( edu.cmu.cs.dennisc.croquet.Button button : edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( gridPanel, edu.cmu.cs.dennisc.croquet.Button.class ) ) {
-			button.setFont( font );
-		}
-		for( edu.cmu.cs.dennisc.croquet.Button button : edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( lineAxisPanel, edu.cmu.cs.dennisc.croquet.Button.class ) ) {
-			button.setFont( font );
-		}
+		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		rv.addComponent( lineAxisPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
+		rv.addComponent( gridBagPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 
+		java.awt.Font font = edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont( gridBagPanel.getFont(), 3.0f );
+		view.setFont( font );
+		for( edu.cmu.cs.dennisc.croquet.Button button : edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( rv, edu.cmu.cs.dennisc.croquet.Button.class ) ) {
+			button.setFont( font );
+		}
 		return rv;
 	}
 }

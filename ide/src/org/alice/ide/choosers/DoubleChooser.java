@@ -43,9 +43,8 @@
 package org.alice.ide.choosers;
 
 class DoubleModel extends NumberModel {
-	private edu.cmu.cs.dennisc.alice.ast.DoubleLiteral literal = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral();
 	public DoubleModel() {
-		 super( CALCULATOR_GROUP, java.util.UUID.fromString( "034bda41-f608-4c03-8090-f7c8b8e0bf1a" ), ""  );
+		 super( CALCULATOR_GROUP, java.util.UUID.fromString( "034bda41-f608-4c03-8090-f7c8b8e0bf1a" ), "" );
 	}
 	@Override
 	protected boolean isDecimalPointSupported() {
@@ -53,8 +52,12 @@ class DoubleModel extends NumberModel {
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression valueOf( String s ) {
-		this.literal.value.setValue( Double.parseDouble( s ) );
-		return this.literal;
+		double d = Double.parseDouble( s );
+		if( Double.isNaN( d ) ) {
+			return null;
+		} else {
+			return new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( d );
+		}
 	}
 }
 
@@ -65,14 +68,5 @@ class DoubleModel extends NumberModel {
 public class DoubleChooser extends AbstractNumberChooser {
 	public DoubleChooser() {
 		super( new DoubleModel() );
-//		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-//		//todo: handle other numbers
-//		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
-//			edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)previousExpression;
-//			this.setAndSelectText( Double.toString( doubleLiteral.value.getValue() ) );
-//		}
-	}
-	public String getTitleDefault() {
-		return "Enter Custom Double";
 	}
 }

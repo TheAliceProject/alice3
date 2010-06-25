@@ -47,8 +47,8 @@ package org.alice.stageide.cascade.customfillin;
  */
 public class CustomKeyFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< edu.cmu.cs.dennisc.alice.ast.FieldAccess > {
 	@Override
-	protected String getMenuProxyText() {
-		return "Other Key...";
+	protected String getTypeDescription() {
+		return "Key";
 	}
 	@Override
 	protected org.alice.ide.choosers.ValueChooser< edu.cmu.cs.dennisc.alice.ast.FieldAccess > createValueChooser() {

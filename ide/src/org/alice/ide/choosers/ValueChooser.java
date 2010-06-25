@@ -42,15 +42,32 @@
  */
 package org.alice.ide.choosers;
 
-
-//todo: better name
 /**
  * @author Dennis Cosgrove
  */
-public interface ValueChooser<E> {
-	public String getTitleDefault();
-	public String getExplanationIfOkButtonShouldBeDisabled();
-	public java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv );
-	public E getValue();
+public abstract class ValueChooser<E extends edu.cmu.cs.dennisc.alice.ast.Expression> {
+	private String typeDescription;
+	public void setTypeDescription( String typeDescription ) {
+		this.typeDescription = typeDescription;
+	}
+	protected org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
+	}
+	protected edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+		org.alice.ide.IDE ide = this.getIDE();
+		if( ide != null ) {
+			return ide.getPreviousExpression();
+		} else {
+			return null;
+		}
+	}
+	public String getTitleDefault() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "Enter Custom ");
+		sb.append( this.typeDescription );
+		return sb.toString();
+	}
+	public abstract edu.cmu.cs.dennisc.croquet.Component< ? > createMainComponent();
+	public abstract E getValue();
+	public abstract String getExplanationIfOkButtonShouldBeDisabled();
 }
-

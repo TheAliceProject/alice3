@@ -55,10 +55,6 @@ public class AngleChooser extends org.alice.ide.choosers.DoubleChooser {
 //		}
 	}
 
-	@Override
-	public String getTitleDefault() {
-		return "Enter Custom Angle";
-	}
 }
 //public class AngleChooser extends org.alice.ide.choosers.AbstractChooserWithTextField< edu.cmu.cs.dennisc.alice.ast.Expression > {
 //	public AngleChooser() {

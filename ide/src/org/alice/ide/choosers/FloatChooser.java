@@ -43,7 +43,6 @@
 package org.alice.ide.choosers;
 
 class FloatModel extends NumberModel {
-	private edu.cmu.cs.dennisc.alice.ast.FloatLiteral literal = new edu.cmu.cs.dennisc.alice.ast.FloatLiteral();
 	public FloatModel() {
 		 super( CALCULATOR_GROUP, java.util.UUID.fromString( "f34ce6db-6de0-48cb-ba43-98e89f55b59b" ), ""  );
 	}
@@ -53,8 +52,12 @@ class FloatModel extends NumberModel {
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression valueOf( String s ) {
-		this.literal.value.setValue( Float.parseFloat( s ) );
-		return this.literal;
+		float f = Float.parseFloat( s );
+		if( Float.isNaN( f ) ) {
+			return null;
+		} else {
+			return new edu.cmu.cs.dennisc.alice.ast.FloatLiteral( f );
+		}
 	}
 }
 
@@ -70,8 +73,5 @@ public class FloatChooser extends AbstractNumberChooser {
 //			edu.cmu.cs.dennisc.alice.ast.FloatLiteral floatLiteral = (edu.cmu.cs.dennisc.alice.ast.FloatLiteral)previousExpression;
 //			this.setAndSelectText( Float.toString( floatLiteral.value.getValue() ) );
 //		}
-	}
-	public String getTitleDefault() {
-		return "Enter Custom Float";
 	}
 }

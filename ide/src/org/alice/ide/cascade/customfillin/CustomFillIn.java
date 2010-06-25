@@ -54,6 +54,7 @@ public abstract class CustomFillIn<E extends edu.cmu.cs.dennisc.alice.ast.Expres
 	@Override
 	public E getValue() {
 		org.alice.ide.choosers.ValueChooser< E > chooser = this.createValueChooser();
+		chooser.setTypeDescription( this.getTypeDescription() );
 		CustomInputPane< E > customInputPane = new CustomInputPane<E>(chooser);
 		CustomInputDialogOperation<E> inputDialogOperation = new CustomInputDialogOperation<E>( customInputPane );
 		edu.cmu.cs.dennisc.croquet.InputDialogOperationContext context = inputDialogOperation.fire();
@@ -73,7 +74,15 @@ public abstract class CustomFillIn<E extends edu.cmu.cs.dennisc.alice.ast.Expres
 	@Override
 	protected void addChildren() {
 	}
-	protected abstract String getMenuProxyText();
+	
+	protected abstract String getTypeDescription();
+	protected final String getMenuProxyText() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "Other " );
+		sb.append( this.getTypeDescription() );
+		sb.append( "..." );
+		return sb.toString();
+	}
 	@Override
 	protected javax.swing.JComponent createMenuProxy() {
 		return new javax.swing.JLabel( this.getMenuProxyText() );

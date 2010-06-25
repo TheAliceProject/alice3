@@ -53,9 +53,6 @@ public class StringChooser extends AbstractChooserWithTextField< edu.cmu.cs.denn
 			this.setAndSelectText( stringLiteral.value.getValue() );
 		}
 	}
-	public String getTitleDefault() {
-		return "Enter Custom String";
-	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.StringLiteral valueOf( String text ) {
 		return new edu.cmu.cs.dennisc.alice.ast.StringLiteral( text );

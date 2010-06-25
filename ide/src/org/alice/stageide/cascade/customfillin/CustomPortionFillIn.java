@@ -47,8 +47,8 @@ package org.alice.stageide.cascade.customfillin;
  */
 public class CustomPortionFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	@Override
-	protected String getMenuProxyText() {
-		return "Other Portion...";
+	protected String getTypeDescription() {
+		return "Portion";
 	}
 	@Override
 	protected org.alice.ide.choosers.ValueChooser< edu.cmu.cs.dennisc.alice.ast.Expression > createValueChooser() {

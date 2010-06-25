@@ -47,8 +47,8 @@ package org.alice.stageide.cascade.customfillin;
  */
 public class CustomizeAudioSourceFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn<edu.cmu.cs.dennisc.alice.ast.InstanceCreation> {
 	@Override
-	protected String getMenuProxyText() {
-		return "Customize Audio Source...";
+	protected String getTypeDescription() {
+		return "Audio Source";
 	}
 	@Override
 	protected org.alice.ide.choosers.ValueChooser<edu.cmu.cs.dennisc.alice.ast.InstanceCreation> createValueChooser() {

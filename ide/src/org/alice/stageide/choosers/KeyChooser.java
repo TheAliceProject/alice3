@@ -45,7 +45,7 @@ package org.alice.stageide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public class KeyChooser extends org.alice.ide.choosers.AbstractChooser< edu.cmu.cs.dennisc.alice.ast.FieldAccess > {
+public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.FieldAccess > {
 	//	private javax.swing.JLabel keyReceiver = zoot.ZLabel.acquire( "<press any key>", zoot.font.ZTextWeight.LIGHT );
 	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
 		public void keyPressed( java.awt.event.KeyEvent e ) {
@@ -108,6 +108,7 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractChooser< edu.cmu.
 	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
 		return this.components;
 	}
+	@Override
 	public edu.cmu.cs.dennisc.alice.ast.FieldAccess getValue() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Key.class );
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = type.getDeclaredField( type, this.key.name() );
@@ -115,6 +116,7 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractChooser< edu.cmu.
 		return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), field );
 	}
 	
+	@Override
 	public String getExplanationIfOkButtonShouldBeDisabled() {
 		if( this.getValue() != null ) {
 			return null;
@@ -122,6 +124,7 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractChooser< edu.cmu.
 			return "value not set";
 		}
 	}
+	@Override
 	public String getTitleDefault() {
 		return "Press Key on Keyboard To Enter Custom Key";
 	}

@@ -50,7 +50,7 @@ import org.alice.stageide.choosers.AngleChooser;
  */
 public class CustomAngleFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	@Override
-	protected String getMenuProxyText() {
+	protected String getTypeDescription() {
 		return "Other Angle...";
 	}
 	@Override

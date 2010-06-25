@@ -42,6 +42,8 @@
  */
 package org.alice.ide.declarationpanes;
 
+import org.alice.ide.preview.PanelWithPreview;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -104,6 +106,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	public void setNodeNameValidator(org.alice.ide.name.validators.NodeNameValidator nodeNameValidator) {
 		this.nodeNameValidator = nodeNameValidator;
 	}
+	
 
 	@Override
 	public String getExplanationIfOkButtonShouldBeDisabled() {
@@ -267,8 +270,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		}
 		return rv;
 	}
-	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateInternalComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
 		edu.cmu.cs.dennisc.croquet.Component< ? >[] isReassignableRow = createIsReassignableRow();
 		edu.cmu.cs.dennisc.croquet.Component< ? >[] valueTypeRow = createValueTypeRow();
 		edu.cmu.cs.dennisc.croquet.Component< ? >[] nameRow = createNameRow();
@@ -283,6 +285,16 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 			//addIfNecessary( rv, edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 16 ), null );
 			addIfNecessary( rv, warningRow );
 		}
+		return rv;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createMainComponent() {
+		edu.cmu.cs.dennisc.croquet.RowsSpringPanel rv = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel() {
+			@Override
+			protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv) {
+				return AbstractDeclarationPane.this.updateComponentRows( rv );
+			}
+		};
 		return rv;
 	}
 	

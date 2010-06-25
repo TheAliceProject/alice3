@@ -47,8 +47,8 @@ package org.alice.ide.cascade.customfillin;
  */
 public class CustomIntegerFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	@Override
-	protected String getMenuProxyText() {
-		return "Other Integer...";
+	protected String getTypeDescription() {
+		return "Integer";
 	}
 	@Override
 	protected org.alice.ide.choosers.ValueChooser< edu.cmu.cs.dennisc.alice.ast.Expression > createValueChooser() {

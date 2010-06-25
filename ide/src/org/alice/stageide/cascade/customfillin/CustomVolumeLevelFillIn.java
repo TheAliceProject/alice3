@@ -47,8 +47,8 @@ package org.alice.stageide.cascade.customfillin;
  */
 public class CustomVolumeLevelFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	@Override
-	protected String getMenuProxyText() {
-		return "Other Volume Level...";
+	protected String getTypeDescription() {
+		return "Volume";
 	}
 	@Override
 	protected org.alice.ide.choosers.ValueChooser< edu.cmu.cs.dennisc.alice.ast.Expression > createValueChooser() {

@@ -50,12 +50,7 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression> 
 	public CustomInputPane( org.alice.ide.choosers.ValueChooser< E > chooser ) {
 		this.chooser = chooser;
 	}
-	
-	@Override
-	protected String getTitleDefault() {
-		return this.chooser.getTitleDefault();
-	}
-	
+		
 	@Override
 	public String getExplanationIfOkButtonShouldBeDisabled() {
 		return this.chooser.getExplanationIfOkButtonShouldBeDisabled();
@@ -73,9 +68,8 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression> 
 		return org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( expression );
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateInternalComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
-		this.chooser.updateRows( rv );
-		return rv;
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createMainComponent() {
+		return this.chooser.createMainComponent();
 	}
 	/*package-protected*/org.alice.ide.choosers.ValueChooser< E > getValueChooser() {
 		return this.chooser;

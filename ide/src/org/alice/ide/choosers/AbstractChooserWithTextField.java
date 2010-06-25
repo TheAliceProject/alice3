@@ -45,7 +45,7 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractChooserWithTextField<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends AbstractChooser<E> {
+public abstract class AbstractChooserWithTextField<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends AbstractRowsPaneChooser<E> {
 	private edu.cmu.cs.dennisc.croquet.StringState stringState = new edu.cmu.cs.dennisc.croquet.StringState( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "6213f5a4-b4b4-4c49-a5e3-2db644edb2cd" ), "" );
 	private edu.cmu.cs.dennisc.croquet.TextField textField = stringState.createTextField();
 	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components = { this.textField };
@@ -55,10 +55,12 @@ public abstract class AbstractChooserWithTextField<E extends edu.cmu.cs.dennisc.
 		return this.components;
 	}
 	protected abstract E valueOf( String text );
+	@Override
 	public final E getValue() {
 		return this.valueOf( this.stringState.getState() );
 	}
 	
+	@Override
 	public String getExplanationIfOkButtonShouldBeDisabled() {
 		try {
 			this.valueOf( this.stringState.getState() );
