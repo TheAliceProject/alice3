@@ -67,7 +67,15 @@ public class FauxIDE extends IDE {
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.DialogOperation createRunOperation() {
-		return null;
+		return new edu.cmu.cs.dennisc.croquet.DialogOperation( null, java.util.UUID.fromString( "158967ad-956c-4870-8f3c-fb1f790523a6" ) ) {
+			@Override
+			protected edu.cmu.cs.dennisc.croquet.Container< ? > createContentPane( edu.cmu.cs.dennisc.croquet.DialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+				return null;
+			}
+			@Override
+			protected void releaseContentPane( edu.cmu.cs.dennisc.croquet.DialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container< ? > contentPane ) {
+			}
+		};
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Operation createRestartOperation() {
