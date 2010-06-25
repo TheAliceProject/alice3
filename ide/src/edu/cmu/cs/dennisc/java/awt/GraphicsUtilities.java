@@ -42,12 +42,10 @@
  */
 package edu.cmu.cs.dennisc.java.awt;
 
-import java.awt.Rectangle;
-
 /**
  * @author Dennis Cosgrove
  */
-public class GraphicsUtilties {
+public class GraphicsUtilities {
 	public static void setRenderingHint( java.awt.Graphics g, java.awt.RenderingHints.Key key, Object value ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		g2.setRenderingHint( key, value );

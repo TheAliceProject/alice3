@@ -67,7 +67,7 @@ package edu.cmu.cs.dennisc.tutorial;
 			this.isCurveDesired = isCurveDesired;
 		}
 		public java.awt.Point getPoint( java.awt.Rectangle bounds ) {
-			java.awt.Point rv = edu.cmu.cs.dennisc.java.awt.RectangleUtilties.getPoint( bounds, this.xConstraint, this.yConstraint );
+			java.awt.Point rv = edu.cmu.cs.dennisc.java.awt.RectangleUtilities.getPoint( bounds, this.xConstraint, this.yConstraint );
 			if( this.xConstraint == javax.swing.SwingConstants.CENTER ) {
 				rv.x = Math.min( rv.x, bounds.x + 128 );
 			}
@@ -327,7 +327,7 @@ package edu.cmu.cs.dennisc.tutorial;
 				if( scrollPane != null ) {
 					javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
 					java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), asSeenBy.getAwtComponent() );
-					return edu.cmu.cs.dennisc.java.awt.RectangleUtilties.inset( rect, this.getPaintInsets() );
+					return edu.cmu.cs.dennisc.java.awt.RectangleUtilities.inset( rect, this.getPaintInsets() );
 				} else {
 					return null;
 				}
@@ -465,7 +465,7 @@ package edu.cmu.cs.dennisc.tutorial;
 				} else {
 					xContraint = javax.swing.SwingConstants.TRAILING;
 				}
-				java.awt.Point ptNote = edu.cmu.cs.dennisc.java.awt.RectangleUtilties.getPoint( noteBounds, xContraint, javax.swing.SwingConstants.CENTER );
+				java.awt.Point ptNote = edu.cmu.cs.dennisc.java.awt.RectangleUtilities.getPoint( noteBounds, xContraint, javax.swing.SwingConstants.CENTER );
 				g2.setStroke( ARROW_STROKE );
 				drawPath( g2, ptNote.x, ptNote.y, ptComponent.x, ptComponent.y, actualConnection.isCurveDesired() );
 			}

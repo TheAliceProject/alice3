@@ -88,7 +88,7 @@ public class JSuggestiveTextArea extends javax.swing.JTextArea {
 		super.paintComponent( g );
 		int xDelta = this.getInsets().left;
 		g.translate( xDelta, 0 );
-		SuggestiveTextUtilties.drawBlankTextIfNecessary( this, g, this.textForBlankCondition );
+		SuggestiveTextUtilities.drawBlankTextIfNecessary( this, g, this.textForBlankCondition );
 		g.translate( -xDelta, 0 );
 	}
 }

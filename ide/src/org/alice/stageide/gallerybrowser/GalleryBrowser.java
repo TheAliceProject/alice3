@@ -108,7 +108,7 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 
 //	@Override
 //	public java.awt.Dimension getPreferredSize() {
-//		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumHeight(super.getPreferredSize(), 256);
+//		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight(super.getPreferredSize(), 256);
 //	}
 
 //	public static void main(String[] args) {

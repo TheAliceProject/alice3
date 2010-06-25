@@ -359,11 +359,11 @@ public abstract class Component<J extends java.awt.Component> implements ScreenE
 
 	public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
 		java.awt.Rectangle rv = this.getBounds( asSeenBy );
-		return edu.cmu.cs.dennisc.java.awt.RectangleUtilties.inset( rv, insets );
+		return edu.cmu.cs.dennisc.java.awt.RectangleUtilities.inset( rv, insets );
 	}
 	public java.awt.Shape getVisibleShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
 		java.awt.Rectangle rv = this.getVisibleRectangle( asSeenBy );
-		return edu.cmu.cs.dennisc.java.awt.RectangleUtilties.inset( rv, insets );
+		return edu.cmu.cs.dennisc.java.awt.RectangleUtilities.inset( rv, insets );
 	}
 
 	public boolean isInView() {

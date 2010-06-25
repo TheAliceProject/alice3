@@ -135,7 +135,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 									g2.draw( bounds );
 								}
 								g2.setColor( java.awt.Color.BLACK );
-								edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g2, Integer.toString( i ), bounds.x, bounds.y, 32, bounds.height );
+								edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g2, Integer.toString( i ), bounds.x, bounds.y, 32, bounds.height );
 							}
 							i++;
 						}

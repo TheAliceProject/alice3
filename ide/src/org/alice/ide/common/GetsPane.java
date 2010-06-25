@@ -102,7 +102,7 @@ public class GetsPane extends edu.cmu.cs.dennisc.croquet.Label {
 				}
 
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
-				edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.setRenderingHint(g2, java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setRenderingHint(g2, java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
 
 				g2.setPaint(GetsPane.createGradientPaint(width, isReversalDesired));
 				g2.fillPolygon(xPoints, yPoints, xPoints.length);

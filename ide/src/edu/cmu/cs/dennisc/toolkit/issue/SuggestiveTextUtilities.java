@@ -70,7 +70,7 @@ class FocusAdapter implements java.awt.event.FocusListener {
  * @author Dennis Cosgrove
  */
 @Deprecated
-class SuggestiveTextUtilties {
+class SuggestiveTextUtilities {
 	public static void drawBlankTextIfNecessary( javax.swing.text.JTextComponent textComponent, java.awt.Graphics g, String textForBlankCondition ) {
 		String text = textComponent.getText();
 		if( text.length() > 0 ) {
@@ -129,7 +129,7 @@ class SuggestiveTextField extends javax.swing.JTextField {
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );
-		SuggestiveTextUtilties.drawBlankTextIfNecessary( this, g, this.textForBlankCondition );
+		SuggestiveTextUtilities.drawBlankTextIfNecessary( this, g, this.textForBlankCondition );
 	}
 }
 
@@ -173,6 +173,6 @@ class SuggestiveTextArea extends javax.swing.JTextArea {
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );
-		SuggestiveTextUtilties.drawBlankTextIfNecessary( this, g, this.textForBlankCondition );
+		SuggestiveTextUtilities.drawBlankTextIfNecessary( this, g, this.textForBlankCondition );
 	}
 }

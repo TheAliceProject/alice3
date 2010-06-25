@@ -118,7 +118,7 @@ public abstract class AbstractDialogOperation< M extends AbstractDialogOperation
 			if( location != null ) {
 				dialog.setLocation( location );
 			} else {
-				edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog.getAwtComponent(), Application.getSingleton().getFrame().getAwtComponent() ); 
+				edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog.getAwtComponent(), Application.getSingleton().getFrame().getAwtComponent() ); 
 			}
 			
 			dialog.setTitle( this.getDialogTitle() );

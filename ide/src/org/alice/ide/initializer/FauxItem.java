@@ -121,6 +121,6 @@ abstract class FauxItem extends javax.swing.AbstractButton {
 //	}
 //	@Override
 //	public java.awt.Dimension getPreferredSize() {
-//		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 240, 180 );
+//		return edu.cmu.cs.dennisc.awt.DimensionUtilities.constrainToMinimumSize( super.getPreferredSize(), 240, 180 );
 //	}
 //}

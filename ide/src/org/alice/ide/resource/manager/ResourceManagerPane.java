@@ -310,7 +310,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		}
 		//		@Override
 		//		public java.awt.Dimension getPreferredSize() {
-		//			return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+		//			return edu.cmu.cs.dennisc.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 320 );
 		//		}
 	}
 
@@ -659,6 +659,6 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 
 //	@Override
 //	public java.awt.Dimension getPreferredSize() {
-//		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 400 );
+//		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 400 );
 //	}
 }

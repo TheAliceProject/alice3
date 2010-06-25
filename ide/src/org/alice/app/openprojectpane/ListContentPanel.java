@@ -70,7 +70,7 @@ public abstract class ListContentPanel extends TabContentPanel {
 //						java.awt.Font font = this.getFont();
 //						font = font.deriveFont( java.awt.Font.ITALIC );
 //						g.setFont( font );
-//						edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g, ListContentPanel.this.getTextForZeroProjects(), this.getSize() );
+//						edu.cmu.cs.dennisc.awt.GraphicsUtilities.drawCenteredText( g, ListContentPanel.this.getTextForZeroProjects(), this.getSize() );
 //					}
 //				}
 //			};

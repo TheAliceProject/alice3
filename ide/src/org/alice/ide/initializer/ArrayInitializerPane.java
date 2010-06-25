@@ -408,7 +408,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 //		{
 //			@Override
 //			public java.awt.Dimension getPreferredSize() {
-//				return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 240, 180 );
+//				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumSize( super.getPreferredSize(), 240, 180 );
 //			}
 //		};
 		scrollPane.setBorder( null );

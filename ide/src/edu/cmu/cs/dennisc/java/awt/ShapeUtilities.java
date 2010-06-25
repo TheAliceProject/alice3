@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.java.awt;
 /**
  * @author Dennis Cosgrove
  */
-public class ShapeUtilties {
+public class ShapeUtilities {
 	private static java.awt.geom.GeneralPath s_generalPath = new java.awt.geom.GeneralPath( java.awt.geom.GeneralPath.WIND_NON_ZERO, 2 );
 
 	public static void paintBorder( java.awt.Graphics2D g2, java.awt.Shape shape, java.awt.Color a, java.awt.Color b, int width ) {

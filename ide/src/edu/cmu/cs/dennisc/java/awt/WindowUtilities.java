@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.java.awt;
 /**
  * @author Dennis Cosgrove
  */
-public class WindowUtilties {
+public class WindowUtilities {
 	public static void setLocationOnScreenToCenteredWithin( java.awt.Window window, java.awt.Component root ) {
 		java.awt.Dimension sizeDialog = window.getSize();
 		java.awt.Rectangle boundsRoot;
@@ -78,7 +78,7 @@ public class WindowUtilties {
 		} else {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
-					WindowUtilties.ensureTopLeftCornerIsOnScreen( window );
+					WindowUtilities.ensureTopLeftCornerIsOnScreen( window );
 				}
 			} );
 		}

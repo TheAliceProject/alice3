@@ -236,7 +236,7 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 		}
 		dialog.pack();
 
-		edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, owner );
+		edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog, owner );
 
 		new Thread() {
 			@Override

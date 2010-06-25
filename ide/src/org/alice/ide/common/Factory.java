@@ -268,7 +268,7 @@ public abstract class Factory {
 								g.drawLine( xD, yBottom, xD, cLast.getY() );
 								
 								final int HALF_TRIANGLE_WIDTH = 3;
-								edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.fillTriangle( g, edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.Heading.NORTH, xA-HALF_TRIANGLE_WIDTH, yTop, HALF_TRIANGLE_WIDTH+1+HALF_TRIANGLE_WIDTH, 10 );
+								edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.NORTH, xA-HALF_TRIANGLE_WIDTH, yTop, HALF_TRIANGLE_WIDTH+1+HALF_TRIANGLE_WIDTH, 10 );
 							}
 							g.setColor( prev );
 							super.paintComponent(g);

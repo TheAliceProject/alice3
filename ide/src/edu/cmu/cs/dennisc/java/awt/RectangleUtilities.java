@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.java.awt;
 /**
  * @author Dennis Cosgrove
  */
-public class RectangleUtilties {
+public class RectangleUtilities {
 	public static java.awt.Rectangle createCenteredRectangle( java.awt.Rectangle bound, int width, int height ) {
 		int x0 = bound.x;
 		int x1 = bound.x + bound.width-1;

@@ -75,7 +75,7 @@ public class TypeDropDownIcon extends TypeIcon {
 		
 		int w = this.getIconWidth();
 		int h = this.getIconHeight();
-		edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.fillTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.Heading.SOUTH, x+w-ARROW_SIZE, y+(h-ARROW_SIZE)/2, ARROW_SIZE, ARROW_SIZE );
+		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH, x+w-ARROW_SIZE, y+(h-ARROW_SIZE)/2, ARROW_SIZE, ARROW_SIZE );
 	}
 }
 

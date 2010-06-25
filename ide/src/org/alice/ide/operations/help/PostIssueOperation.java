@@ -55,7 +55,7 @@ public abstract class PostIssueOperation extends org.alice.ide.operations.Incons
 		final org.alice.ide.issue.PostIssuePane pane = new org.alice.ide.issue.PostIssuePane( this.getIssueType() );
 
 		javax.swing.JFrame window = edu.cmu.cs.dennisc.javax.swing.JFrameUtilities.createPackedJFrame( pane, "Report Issue", javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
-		edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( window, context.getViewController().getAwtComponent() );
+		edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( window, context.getViewController().getAwtComponent() );
 		window.getRootPane().setDefaultButton( pane.getSubmitButton() );
 		window.addComponentListener( new java.awt.event.ComponentListener() {
 			public void componentHidden( java.awt.event.ComponentEvent e ) {

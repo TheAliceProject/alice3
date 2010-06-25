@@ -180,7 +180,7 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.J
 			LogInPane pane = new LogInPane();
 			java.awt.Component owner = this.getSourceComponent( actionContext );
 			javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( pane, owner, "Log In", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
-			edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, javax.swing.SwingUtilities.getRoot( owner ) );
+			edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog, javax.swing.SwingUtilities.getRoot( owner ) );
 			dialog.getRootPane().setDefaultButton( pane.getLogInButton() );
 			dialog.setVisible( true );
 			edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( LogInStatusPane.BUGS_ALICE_ORG_KEY );

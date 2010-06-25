@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.java.awt;
 /**
  * @author Dennis Cosgrove
  */
-public class KeyboardFocusManagerUtilties {
+public class KeyboardFocusManagerUtilities {
 	//todo
 //	final java.awt.KeyboardFocusManager focusManager = java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager();
 //	focusManager.addPropertyChangeListener( new java.beans.PropertyChangeListener() {

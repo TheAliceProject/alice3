@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.javax.swing.components;
 /**
  * @author Dennis Cosgrove
  */
-class SuggestiveTextUtilties {
+class SuggestiveTextUtilities {
 	public static void drawBlankTextIfNecessary( javax.swing.text.JTextComponent textComponent, java.awt.Graphics g, String textForBlankCondition ) {
 		if( textComponent.isEditable() && textComponent.isEnabled() ) {
 			String text = textComponent.getText();

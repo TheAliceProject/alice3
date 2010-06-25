@@ -156,7 +156,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> implements Scree
 	}
 
 	public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
-		return edu.cmu.cs.dennisc.java.awt.RectangleUtilties.inset( this.getBounds( asSeenBy ), insets );
+		return edu.cmu.cs.dennisc.java.awt.RectangleUtilities.inset( this.getBounds( asSeenBy ), insets );
 	}
 	public java.awt.Shape getVisibleShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
 		return this.getShape( asSeenBy, insets );
@@ -175,7 +175,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> implements Scree
 				if( bounds != null ) {
 					bounds.height = bounds.height - AbstractWindow.this.getRootPane().getHeight();
 					bounds.height -= 8;
-					return edu.cmu.cs.dennisc.java.awt.RectangleUtilties.inset( bounds, insets );
+					return edu.cmu.cs.dennisc.java.awt.RectangleUtilities.inset( bounds, insets );
 				} else {
 					return null;
 				}

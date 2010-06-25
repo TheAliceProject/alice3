@@ -169,7 +169,7 @@ package edu.cmu.cs.dennisc.tutorial;
 					
 					java.awt.Font font = edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont(prevFont, 2.5f);
 					g2.setFont( font );
-					edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText(g2, label, 0, 0, X_PAD*3, Y_PAD*3 );
+					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText(g2, label, 0, 0, X_PAD*3, Y_PAD*3 );
 					g2.setFont( prevFont );
 				}
 				
