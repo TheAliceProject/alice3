@@ -51,6 +51,10 @@ public abstract class InputDialogWithPreviewOperation extends edu.cmu.cs.dennisc
 	}
 	protected abstract org.alice.ide.preview.PanelWithPreview getPanelWithPreview();
 	@Override
+	protected java.lang.String getDialogTitle() {
+		return this.getPanelWithPreview().getDialogTitle();
+	}
+	@Override
 	protected String getExplanationIfOkButtonShouldBeDisabled() {
 		org.alice.ide.preview.PanelWithPreview panelWithPreview = this.getPanelWithPreview();
 		String rv = null;

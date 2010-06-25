@@ -44,7 +44,7 @@ package org.alice.ide.choosers;
 
 class FloatModel extends NumberModel {
 	public FloatModel() {
-		 super( CALCULATOR_GROUP, java.util.UUID.fromString( "f34ce6db-6de0-48cb-ba43-98e89f55b59b" ), ""  );
+		 super( CALCULATOR_GROUP, java.util.UUID.fromString( "f34ce6db-6de0-48cb-ba43-98e89f55b59b" )  );
 	}
 	@Override
 	protected boolean isDecimalPointSupported() {

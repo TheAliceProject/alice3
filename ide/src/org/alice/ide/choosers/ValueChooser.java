@@ -50,11 +50,8 @@ public abstract class ValueChooser<E extends edu.cmu.cs.dennisc.alice.ast.Expres
 	public void setTypeDescription( String typeDescription ) {
 		this.typeDescription = typeDescription;
 	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
-	}
 	protected edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
-		org.alice.ide.IDE ide = this.getIDE();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		if( ide != null ) {
 			return ide.getPreviousExpression();
 		} else {

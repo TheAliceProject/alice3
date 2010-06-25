@@ -44,7 +44,7 @@ package org.alice.ide.choosers;
 
 class DoubleModel extends NumberModel {
 	public DoubleModel() {
-		 super( CALCULATOR_GROUP, java.util.UUID.fromString( "034bda41-f608-4c03-8090-f7c8b8e0bf1a" ), "" );
+		 super( CALCULATOR_GROUP, java.util.UUID.fromString( "034bda41-f608-4c03-8090-f7c8b8e0bf1a" ) );
 	}
 	@Override
 	protected boolean isDecimalPointSupported() {

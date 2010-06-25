@@ -65,7 +65,9 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression> 
 			//re.printStackTrace();
 			expression = new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
 		}
-		return org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( expression );
+		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		rv.addComponent( org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( expression ), Constraint.WEST );
+		return rv;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createMainComponent() {
@@ -73,6 +75,11 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression> 
 	}
 	/*package-protected*/org.alice.ide.choosers.ValueChooser< E > getValueChooser() {
 		return this.chooser;
+	}
+	
+	@Override
+	public final String getDialogTitle() {
+		return this.chooser.getTitleDefault();
 	}
 	protected E getActualInputValue() {
 		return this.chooser.getValue();

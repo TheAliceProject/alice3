@@ -82,7 +82,7 @@ public abstract class CreateParameterPane extends CreateDeclarationPane<edu.cmu.
 		return new org.alice.ide.codeeditor.TypedParameterPane( null, this.getActualInputValue() );
 	}
 	@Override
-	protected String getTitleDefault() {
+	public String getDialogTitle() {
 		return "Declare Parameter";
 	}
 	@Override

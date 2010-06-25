@@ -141,10 +141,7 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 	}
 	
 	public abstract String getExplanationIfOkButtonShouldBeDisabled();
-	@Deprecated
-	protected String getTitleDefault() {
-		return null;
-	}
+	public abstract String getDialogTitle();
 	
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {

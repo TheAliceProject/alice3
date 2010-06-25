@@ -65,4 +65,8 @@ public class TypeLiteral extends AbstractValueLiteral {
 		rv.append( this.value.getValue() );
 		return rv;
 	}
+	@Override
+	public edu.cmu.cs.dennisc.property.InstanceProperty<?> getValueProperty() {
+		return this.value;
+	}
 }

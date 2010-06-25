@@ -44,7 +44,7 @@ package org.alice.ide.choosers;
 
 class IntegerModel extends NumberModel {
 	public IntegerModel() {
-		super( CALCULATOR_GROUP, java.util.UUID.fromString( "fceee598-ccd1-46f9-8539-5f2a42b021b2" ), "" );
+		super( CALCULATOR_GROUP, java.util.UUID.fromString( "fceee598-ccd1-46f9-8539-5f2a42b021b2" ) );
 	}
 	@Override
 	protected boolean isDecimalPointSupported() {

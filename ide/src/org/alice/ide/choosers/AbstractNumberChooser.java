@@ -45,8 +45,20 @@ package org.alice.ide.choosers;
 abstract class NumberModel extends edu.cmu.cs.dennisc.croquet.StringState {
 	@Deprecated
 	protected final static edu.cmu.cs.dennisc.croquet.Group CALCULATOR_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "afe9fee0-e91f-4344-9b80-6fa84f3458d3" ), "CALCULATOR_GROUP" );
-	public NumberModel( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id, String text ) {
-		super( group, id, text );
+	private static String getInitialText() {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		if( ide != null ) {
+			edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = ide.getPreviousExpression();
+			if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle previous expression; replace selected text later." );
+//				edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral valueLiteral = (edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral)previousExpression;
+//				return valueLiteral.getValueProperty().getValue().toString();
+			}
+		}
+		return "";
+	}
+	public NumberModel( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id ) {
+		super( group, id, getInitialText() );
 	}
 	private void append( String s ) {
 		javax.swing.text.Document document = this.getDocument();
@@ -217,26 +229,6 @@ abstract class AbstractNumberChooser extends ValueChooser< edu.cmu.cs.dennisc.al
 			DecimalPointOperation decimalPointOperation = new DecimalPointOperation( group, this.numberModel );
 			decimalPointOperation.setEnabled( this.numberModel.isDecimalPointSupported() );
 		}
-		
-//		edu.cmu.cs.dennisc.croquet.GridPanel gridPanel = edu.cmu.cs.dennisc.croquet.GridPanel.createGridPane( 4, 3 );
-//		gridPanel.addComponent( numeralOperations[ 7 ].createButton() );
-//		gridPanel.addComponent( numeralOperations[ 8 ].createButton() );
-//		gridPanel.addComponent( numeralOperations[ 9 ].createButton() );
-//		gridPanel.addComponent( numeralOperations[ 4 ].createButton() );
-//		gridPanel.addComponent( numeralOperations[ 5 ].createButton() );
-//		gridPanel.addComponent( numeralOperations[ 6 ].createButton() );
-//		gridPanel.addComponent( numeralOperations[ 1 ].createButton() );
-//		gridPanel.addComponent( numeralOperations[ 2 ].createButton() );
-//		gridPanel.addComponent( numeralOperations[ 3 ].createButton() );
-//		gridPanel.addComponent( numeralOperations[ 0 ].createButton() );
-//		
-//		if( this.numberModel.isDecimalPointSupported() ) {
-//			DecimalPointOperation decimalPointOperation = new DecimalPointOperation( group, this.numberModel );
-//			gridPanel.addComponent( decimalPointOperation.createButton() );
-//		} else {
-//			gridPanel.addComponent( new edu.cmu.cs.dennisc.croquet.Label() );
-//		}
-//		gridPanel.addComponent( plusMinusOperation.createButton() );
 
 		edu.cmu.cs.dennisc.croquet.GridBagPanel gridBagPanel = new edu.cmu.cs.dennisc.croquet.GridBagPanel();
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
@@ -273,8 +265,8 @@ abstract class AbstractNumberChooser extends ValueChooser< edu.cmu.cs.dennisc.al
 		gridBagPanel.addComponent( plusMinusOperation.createButton(), gbc );
 
 		edu.cmu.cs.dennisc.croquet.TextField view = this.numberModel.createTextField();
-		//view.getAwtComponent().setEditable( false );
-		
+		view.selectAll();
+
 		BackspaceOperation backspaceOperation = new BackspaceOperation( group, this.numberModel );
 		edu.cmu.cs.dennisc.croquet.LineAxisPanel lineAxisPanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel(
 				view, 

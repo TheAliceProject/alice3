@@ -65,6 +65,10 @@ public abstract class AbstractDialogOperation< M extends AbstractDialogOperation
 	protected abstract void releaseContentPane(C context, Dialog dialog, Container<?> contentPane );
 	protected void handleFinally( C context, Dialog dialog ) {
 	}
+	
+	protected String getDialogTitle() {
+		return this.getName();
+	}
 	@Override
 	protected final void perform( final C context ) {
 		ViewController<?,?> viewController = context.getViewController();
@@ -75,7 +79,6 @@ public abstract class AbstractDialogOperation< M extends AbstractDialogOperation
 			owner = Application.getSingleton().getFrame().getContentPanel();
 		}
 		final Dialog dialog = new Dialog( owner );
-		dialog.setTitle( this.getName() );
 		dialog.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Dialog.DefaultCloseOperation.DO_NOTHING );
 
 		java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
@@ -118,6 +121,7 @@ public abstract class AbstractDialogOperation< M extends AbstractDialogOperation
 				edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog.getAwtComponent(), Application.getSingleton().getFrame().getAwtComponent() ); 
 			}
 			
+			dialog.setTitle( this.getDialogTitle() );
 			this.activeDialog = dialog;
 			try {
 				dialog.setVisible( true );
