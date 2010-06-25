@@ -235,10 +235,34 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	};
 
+	private void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance, boolean isAnimationDesired ) {
+		assert instance instanceof org.alice.apis.moveandturn.Transformable;
+		final org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instance;
+		//declaringType.fields.add( field );
+		this.putInstanceForField( field, transformable );
+		this.getIDE().getAccessibleListState().setValue( field );
+		final org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera = this.scene.findFirstMatch( org.alice.apis.moveandturn.SymmetricPerspectiveCamera.class );
+		if( isAnimationDesired && camera != null && transformable instanceof org.alice.apis.moveandturn.Model ) {
+			new Thread() {
+				@Override
+				public void run() {
+					MoveAndTurnSceneEditor.this.getGoodLookAtShowInstanceAndReturnCamera( camera, (org.alice.apis.moveandturn.Model)transformable );
+				}
+			}.start();
+		} else {
+			this.scene.addComponent( transformable );
+		}
+		//getIDE().markChanged( "scene program addInstance" );
+	}
+
 	private void handleFieldAdded(edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e)
 	{
 		for( final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice element : e.getElements() ) 
 		{
+			Object instance = this.getAndRemoveInstanceForInitializingPendingField( element );
+			if( instance != null ) {
+				this.handleFieldCreation( element, instance, true );
+			}
 			if (element.getDesiredValueType().isAssignableFrom(CameraMarker.class))
 			{
 				this.mainViewSelector.setSelectedView( element );
@@ -676,27 +700,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			}
 		}
 	}
-	
-	@Override
-	public void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance, boolean isAnimationDesired ) {
-		assert instance instanceof org.alice.apis.moveandturn.Transformable;
-		final org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instance;
-		//declaringType.fields.add( field );
-		this.putInstanceForField( field, transformable );
-		this.getIDE().getAccessibleListState().setValue( field );
-		final org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera = this.scene.findFirstMatch( org.alice.apis.moveandturn.SymmetricPerspectiveCamera.class );
-		if( isAnimationDesired && camera != null && transformable instanceof org.alice.apis.moveandturn.Model ) {
-			new Thread() {
-				@Override
-				public void run() {
-					MoveAndTurnSceneEditor.this.getGoodLookAtShowInstanceAndReturnCamera( camera, (org.alice.apis.moveandturn.Model)transformable );
-				}
-			}.start();
-		} else {
-			this.scene.addComponent( transformable );
-		}
-		//getIDE().markChanged( "scene program addInstance" );
-	}
+		
 	private void getGoodLookAtShowInstanceAndReturnCamera( org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera, org.alice.apis.moveandturn.Model model ) {
 		model.setOpacity( 0.0, org.alice.apis.moveandturn.Composite.RIGHT_NOW );
 		org.alice.apis.moveandturn.PointOfView pov = camera.getPointOfView( this.scene );
@@ -1211,7 +1215,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			defaultViewField.finalVolatileOrNeither.setValue(edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL);
 			defaultViewField.access.setValue(edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE);
 			this.sceneType.fields.add( this.sceneType.fields.size(), defaultViewField );
-			this.handleFieldCreation(this.sceneType, defaultViewField, defaultViewMarker, false );
+			
+			this.handleFieldCreation( defaultViewField, defaultViewMarker, false );
 			
 			ensureCodeIsUpToDate();
 			

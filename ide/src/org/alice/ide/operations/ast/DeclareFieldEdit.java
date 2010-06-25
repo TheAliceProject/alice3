@@ -63,10 +63,13 @@ public class DeclareFieldEdit extends org.alice.ide.ToDoEdit {
 
 	@Override
 	public void doOrRedo(boolean isDo) {
-		this.ownerType.fields.add(this.index, this.field);
 		if (this.isInstanceValid) {
-			org.alice.ide.IDE.getSingleton().getSceneEditor().handleFieldCreation(ownerType, this.field, this.instance, isDo);
+			org.alice.ide.IDE.getSingleton().getSceneEditor().putInstanceForInitializingPendingField( this.field, this.instance );
 		}
+		this.ownerType.fields.add(this.index, this.field);
+//		if (this.isInstanceValid) {
+//			org.alice.ide.IDE.getSingleton().getSceneEditor().handleFieldCreation(ownerType, this.field, this.instance, isDo);
+//		}
 	}
 
 	@Override

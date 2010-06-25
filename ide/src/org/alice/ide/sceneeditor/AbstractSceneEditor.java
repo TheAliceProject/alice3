@@ -59,8 +59,22 @@ public abstract class AbstractSceneEditor extends edu.cmu.cs.dennisc.croquet.Bor
 	public abstract void enableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering );
 	public abstract void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses );
 	
-	@Deprecated
-	public abstract void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance, boolean isAnimationDesired );
+	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object > mapFieldToInstance = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	protected Object getAndRemoveInstanceForInitializingPendingField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+		if( this.mapFieldToInstance.containsKey( field ) ) {
+			Object rv = this.mapFieldToInstance.get( field );
+			this.mapFieldToInstance.remove( field );
+			return rv;
+		} else {
+			return null;
+		}
+	}
+	public void putInstanceForInitializingPendingField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance ) {
+		this.mapFieldToInstance.put( field, instance );
+	}
+	
+//	@Deprecated
+//	public abstract void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance, boolean isAnimationDesired );
 	public abstract Object getInstanceInJavaForUndo( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field );
 	
 	public abstract void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty );

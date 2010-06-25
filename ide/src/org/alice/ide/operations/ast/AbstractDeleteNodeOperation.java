@@ -77,10 +77,13 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 				}
 				@Override
 				public void undo() {
-					owner.add( index, node );
-					if( field != null && instance != null ) {
-						getIDE().getSceneEditor().handleFieldCreation((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)field.getDeclaringType(), field, instance, false );
+					if( instance != null ) {
+						getIDE().getSceneEditor().putInstanceForInitializingPendingField( field, instance );
 					}
+					owner.add( index, node );
+//					if( field != null && instance != null ) {
+//						getIDE().getSceneEditor().handleFieldCreation((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)field.getDeclaringType(), field, instance, false );
+//					}
 				}
 				@Override
 				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
