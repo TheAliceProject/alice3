@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class LogicalComplement extends Expression {
 	public ExpressionProperty operand = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			return TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE;
 		}
 	};
@@ -60,7 +60,7 @@ public class LogicalComplement extends Expression {
 		this.operand.setValue( operand );
 	}
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		return TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE;
 	}
 }

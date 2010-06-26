@@ -93,9 +93,9 @@ abstract class CreateInstanceFromFileActionOperation extends AbstractGalleryDecl
 					}
 				}
 				if( zipFile != null ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractType type;
+					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
 					try {
-						edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.AbstractType, java.util.Set< org.alice.virtualmachine.Resource > > tuple = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readType( zipFile );
+						edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > tuple = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readType( zipFile );
 						type = tuple.getA();
 						edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO: add in resources" );
 					} catch( java.io.IOException ioe ) {

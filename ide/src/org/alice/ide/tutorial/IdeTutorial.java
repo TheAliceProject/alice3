@@ -297,7 +297,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 				if( sceneField.getName().equalsIgnoreCase( fieldName ) ) {
 					foundField = sceneField;
 				} else {
-					java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = sceneField.getValueType().getDeclaredFields();
+					java.util.List< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = sceneField.getValueType().getDeclaredFields();
 					for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : fields ) {
 						if( field.getName().equalsIgnoreCase( fieldName ) ) {
 							foundField = field;

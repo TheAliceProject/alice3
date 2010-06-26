@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.alice.virtualmachine;
 
-import edu.cmu.cs.dennisc.alice.ProgramClosedException;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -53,7 +51,7 @@ public abstract class VirtualMachine {
 		return get( field, instance );
 	}
 	@Deprecated
-	public Object createInstanceForSceneEditor( edu.cmu.cs.dennisc.alice.ast.AbstractType entryPointType ) {
+	public Object createInstanceForSceneEditor( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> entryPointType ) {
 		pushCurrentThread( null );
 		try {
 			return this.createInstance( this.entryPointType.getDeclaredConstructor() );

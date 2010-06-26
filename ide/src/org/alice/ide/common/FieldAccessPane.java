@@ -96,7 +96,7 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
 		if( this.fieldAccess != null ) {
 			return this.fieldAccess.field.getValue().getValueType();
 		} else {

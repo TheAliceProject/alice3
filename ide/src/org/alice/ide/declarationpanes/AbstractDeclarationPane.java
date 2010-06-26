@@ -58,7 +58,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	private org.alice.ide.initializer.InitializerPane initializerPane;
 
 	private org.alice.ide.name.validators.NodeNameValidator nodeNameValidator;
-	public AbstractDeclarationPane( org.alice.ide.name.validators.NodeNameValidator nodeNameValidator, edu.cmu.cs.dennisc.alice.ast.AbstractType initialType, edu.cmu.cs.dennisc.alice.ast.Expression initialExpression ) {
+	public AbstractDeclarationPane( org.alice.ide.name.validators.NodeNameValidator nodeNameValidator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> initialType, edu.cmu.cs.dennisc.alice.ast.Expression initialExpression ) {
 		this.nodeNameValidator = nodeNameValidator;
 		this.bogusNode = new org.alice.ide.initializer.BogusNode( initialType, false );
 		if( initialExpression != null ) {
@@ -148,7 +148,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		}
 	}
 	//todo: reduce to protected
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getValueType() {
 		if( this.typePane != null ) {
 			return this.typePane.getValueType();
 		} else {

@@ -49,13 +49,13 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class AssertStatement extends Statement {
 	public ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			throw new RuntimeException( "todo" );
 		}
 	};
 	public ExpressionProperty message = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			throw new RuntimeException( "todo" );
 		}
 	};

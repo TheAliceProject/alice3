@@ -56,6 +56,7 @@ class TypeFillIn extends edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.denni
 	@Override
 	protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		if( this.type != null ) {
+			blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.EditTypeOperation( this.type ) ) );
 			blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.RenameTypeOperation( this.type ) ) );
 			blank.addSeparator();
 			blank.addFillIn( new OperatorFillIn( org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance( this.type ) ) );
@@ -96,7 +97,7 @@ class ProjectBlank extends edu.cmu.cs.dennisc.cascade.Blank {
 	@Override
 	protected void addChildren() {
 		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice.class );
-		final edu.cmu.cs.dennisc.alice.ast.AbstractType programType = this.project.getProgramType();
+		final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = this.project.getProgramType();
 		programType.crawl( crawler, true );
 		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type : crawler.getList() ) {
 			if( type == programType ) {

@@ -205,7 +205,7 @@ public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShap
 	}
 
 	//todo: make constructor
-	public static BeveledShapeForType createBeveledShapeFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type, float x0, float y0, float width, float height ) {
+	public static BeveledShapeForType createBeveledShapeFor( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, float x0, float y0, float width, float height ) {
 		assert type != null;
 		float x1 = x0 + width;
 		float y1 = y0 + height;
@@ -396,7 +396,7 @@ public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShap
 		return rv;
 	}
 	//todo: make constructor
-	public static BeveledShapeForType createBeveledShapeFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type, java.awt.geom.Rectangle2D.Float rect, float width, float height ) {
+	public static BeveledShapeForType createBeveledShapeFor( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, java.awt.geom.Rectangle2D.Float rect, float width, float height ) {
 		float x0 = rect.x - width;
 		float y0 = rect.y + (rect.height - height) * 0.5f;
 
@@ -406,7 +406,7 @@ public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShap
 		return beveledShapeForType;
 	}
 	//todo: make constructor
-	public static BeveledShapeForType createBeveledShapeFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type, java.awt.geom.RoundRectangle2D.Float roundRect, float width, float height ) {
+	public static BeveledShapeForType createBeveledShapeFor( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, java.awt.geom.RoundRectangle2D.Float roundRect, float width, float height ) {
 		float x0 = roundRect.x - width;
 		float y0 = roundRect.y + (roundRect.height - height) * 0.5f;
 

@@ -49,7 +49,7 @@ public class EntryPointTypeExpression extends Expression {
 	public EntryPointTypeExpression() {
 	}
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		//todo
 		return TypeDeclaredInJava.get( Class.class );
 	}

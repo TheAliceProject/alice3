@@ -723,11 +723,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 	protected void updateSceneBasedOnScope() {
 		//		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getIDE().getFocusedCode();
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getIDE().getTypeInScope();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = this.getIDE().getTypeInScope();
 		if( type != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
 			if( sceneField != null ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
+				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType = sceneField.getValueType();
 				boolean isSceneScope = type.isAssignableFrom( sceneType ) || this.sidePane.isExpanded();
 
 				java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = sceneType.getDeclaredFields();
@@ -780,13 +780,13 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private void handleFocusedCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		this.updateSceneBasedOnScope();
 		if( code != null ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType type = code.getDeclaringType();
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = code.getDeclaringType();
 			if( type != null ) {
 				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = this.getIDE().getAccessibleListState().getValue();
 				if( accessible instanceof AbstractField ) {
 					AbstractField selectedField = (AbstractField)accessible;
 					if( selectedField != null ) {
-						edu.cmu.cs.dennisc.alice.ast.AbstractType selectedType = selectedField.getValueType();
+						edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> selectedType = selectedField.getValueType();
 						if( type.isAssignableFrom( selectedType ) ) {
 							//pass
 						} else {

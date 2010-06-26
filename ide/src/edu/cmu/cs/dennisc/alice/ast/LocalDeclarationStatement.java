@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 public abstract class LocalDeclarationStatement extends Statement {
 	public ExpressionProperty initializer = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			return LocalDeclarationStatement.this.getLocal().valueType.getValue();
 		}
 	};

@@ -108,7 +108,7 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
 		return this.anonymousConstructor.getDeclaringType();
 	}
 	@Override

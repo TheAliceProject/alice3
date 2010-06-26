@@ -68,7 +68,7 @@ package org.alice.ide.memberseditor.templates;
 		return org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( this.method );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
 		return this.method.getReturnType();
 	}
 	
@@ -88,7 +88,7 @@ package org.alice.ide.memberseditor.templates;
 		super.handleRemovedFrom( parent );
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
+	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > rv ) {
 		return org.alice.ide.ast.NodeUtilities.getDesiredParameterValueTypes( rv, this.method );
 	}
 	@Override

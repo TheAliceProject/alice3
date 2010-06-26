@@ -64,5 +64,5 @@ public interface Validator {
 			return this == UNDO_AND_TRY_AGAIN;
 		}
 	}
-	public Result checkValidity( edu.cmu.cs.dennisc.croquet.Edit edit );
+	public Result checkValidity( edu.cmu.cs.dennisc.croquet.Edit<?> edit );
 }

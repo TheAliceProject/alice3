@@ -46,7 +46,7 @@ package org.alice.ide.memberseditor;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractTypeMethodsPane extends AbstractTypeMembersPane {
-	public AbstractTypeMethodsPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public AbstractTypeMethodsPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		super( type );
 	}
 	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createProcedureTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method );

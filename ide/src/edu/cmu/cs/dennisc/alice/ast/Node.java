@@ -138,7 +138,7 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 	@Override
 	public void fireClearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent e ) {
 		super.fireClearing( e );
-		edu.cmu.cs.dennisc.property.ListProperty listProperty = (edu.cmu.cs.dennisc.property.ListProperty)e.getSource();
+		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
 		if( listProperty instanceof NodeListProperty< ? > ) {
 			NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
 			for( Node node : nodeListProperty ) {
@@ -151,7 +151,7 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 	@Override
 	public void fireRemoving( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent e ) {
 		super.fireRemoving( e );
-		edu.cmu.cs.dennisc.property.ListProperty listProperty = (edu.cmu.cs.dennisc.property.ListProperty)e.getSource();
+		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
 		if( listProperty instanceof NodeListProperty< ? > ) {
 			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
 			for( Object o : e.getElements() ) {
@@ -164,7 +164,7 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 	@Override
 	public void fireSetting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
 		super.fireSetting( e );
-		edu.cmu.cs.dennisc.property.ListProperty listProperty = (edu.cmu.cs.dennisc.property.ListProperty)e.getSource();
+		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
 		if( listProperty instanceof NodeListProperty< ? > ) {
 			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
 			for( Object o : e.getElements() ) {
@@ -177,7 +177,7 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 	@Override
 	public void fireSet( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
 		super.fireSet( e );
-		edu.cmu.cs.dennisc.property.ListProperty listProperty = (edu.cmu.cs.dennisc.property.ListProperty)e.getSource();
+		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
 		if( listProperty instanceof NodeListProperty< ? > ) {
 			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
 			for( Object o : e.getElements() ) {
@@ -190,7 +190,7 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 	@Override
 	public void fireAdded( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
 		super.fireAdded( e );
-		edu.cmu.cs.dennisc.property.ListProperty listProperty = (edu.cmu.cs.dennisc.property.ListProperty)e.getSource();
+		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
 		if( listProperty instanceof NodeListProperty< ? > ) {
 			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
 			for( Object o : e.getElements() ) {
@@ -234,8 +234,8 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 				}
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( property.getName() );
 				Object value = property.getValue( this );
-				if( value instanceof Iterable ) {
-					Iterable iterable = (Iterable)value;
+				if( value instanceof Iterable<?> ) {
+					Iterable<?> iterable = (Iterable<?>)value;
 					for( Object item : iterable ) {
 						acceptIfCrawlable( alreadyVisited, item, crawler );
 					}
@@ -445,8 +445,8 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 				} else {
 					((Node)value).fillInDeclarationSet( rv, nodes );
 				}
-			} else if( value instanceof Iterable ) {
-				for( Object item : (Iterable)value ) {
+			} else if( value instanceof Iterable<?> ) {
+				for( Object item : (Iterable<?>)value ) {
 					if( item instanceof Node ) {
 						if( nodes.contains( item ) ) {
 							//pass
@@ -482,8 +482,8 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 				} else {
 					((Node)value).removeDeclarationsThatNeedToBeCopied( rv, nodes );
 				}
-			} else if( value instanceof Iterable ) {
-				for( Object item : (Iterable)value ) {
+			} else if( value instanceof Iterable<?> ) {
+				for( Object item : (Iterable<?>)value ) {
 					if( item instanceof Node ) {
 						if( nodes.contains( item ) ) {
 							//pass

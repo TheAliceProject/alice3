@@ -66,7 +66,7 @@ public class Menu< M extends Model > extends AbstractMenu< javax.swing.JMenu, M 
 		this.getAwtComponent().setMnemonic( mnemonic );
 	}
 	@Override
-	public void addMenu( Menu menu ) {
+	public void addMenu( Menu<?> menu ) {
 		this.getAwtComponent().add( menu.getAwtComponent() );
 	}
 	@Override

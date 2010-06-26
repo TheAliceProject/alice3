@@ -63,7 +63,7 @@ public abstract class MemberReflectionProxy< E > extends ReflectionProxy< E > {
 	}
 	@Override
 	protected boolean equalsInstanceOfSameClassButNonReifiable( edu.cmu.cs.dennisc.alice.ast.ReflectionProxy< ? > o ) {
-		MemberReflectionProxy<E> other = (MemberReflectionProxy<E>)o;
+		MemberReflectionProxy<?> other = (MemberReflectionProxy<?>)o;
 		return this.declaringClassReflectionProxy != null ? this.declaringClassReflectionProxy.equals( other.declaringClassReflectionProxy ) : other.declaringClassReflectionProxy == null;
 	}
 	public ClassReflectionProxy getDeclaringClassReflectionProxy() {

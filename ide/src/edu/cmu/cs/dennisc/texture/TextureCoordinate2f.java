@@ -42,9 +42,6 @@
  */
 package edu.cmu.cs.dennisc.texture;
 
-import edu.cmu.cs.dennisc.math.Tuple3;
-import edu.cmu.cs.dennisc.math.Tuple3f;
-
 /**
  * @author Dennis Cosgrove
  */

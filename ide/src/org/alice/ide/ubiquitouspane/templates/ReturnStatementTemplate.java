@@ -49,7 +49,7 @@ public class ReturnStatementTemplate extends CascadingUbiquitousStatementTemplat
 	public ReturnStatementTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.ReturnStatement.class, org.alice.ide.ast.NodeUtilities.createIncompleteReturnStatement( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE ) );
 	}
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType getReturnType() {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getReturnType() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = getIDE().getFocusedCode();
 		if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
@@ -60,8 +60,8 @@ public class ReturnStatementTemplate extends CascadingUbiquitousStatementTemplat
 		return null;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType returnType = this.getReturnType();
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> returnType = this.getReturnType();
 		if( returnType != null ) {
 			return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { returnType };
 		} else {

@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class FieldAccess extends Expression {
 	public ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			AbstractField f = field.getValue();
 			if( f != null ) {
 				return f.getDeclaringType();
@@ -68,7 +68,7 @@ public class FieldAccess extends Expression {
 		this.field.setValue( field );
 	}
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		return field.getValue().getValueType();
 	}
 	

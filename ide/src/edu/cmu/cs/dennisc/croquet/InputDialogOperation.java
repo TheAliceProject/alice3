@@ -120,6 +120,8 @@ public abstract class InputDialogOperation extends AbstractDialogOperation<Input
 	}
 	protected abstract Component<?> prologue( ModelContext<?> context );
 	protected abstract void epilogue( ModelContext<?> context, boolean isOk );
+//	protected abstract Component<?> prologue( InputDialogOperationContext context );
+//	protected abstract void epilogue( InputDialogOperationContext context, boolean isOk );
 
 	protected void updateOkOperationAndExplanation() {
 		String explanation = this.getExplanationIfOkButtonShouldBeDisabled();

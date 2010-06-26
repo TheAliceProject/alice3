@@ -46,8 +46,6 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public final class BooleanStateEdit extends Edit<BooleanState> {
-	private BooleanState model;
-	private java.util.UUID modelId;
 	//can't really imagine this values being the same, but it doesn't seem likely to hurt to track both values
 	private boolean previousValue;
 	private boolean nextValue;
@@ -55,9 +53,7 @@ public final class BooleanStateEdit extends Edit<BooleanState> {
 	public BooleanStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public BooleanStateEdit( java.awt.event.ItemEvent e, BooleanState model ) {
-		this.model = model;
-		this.modelId = model.getIndividualUUID();
+	public BooleanStateEdit( java.awt.event.ItemEvent e ) {
 		if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
 			this.previousValue = false;
 			this.nextValue = true;

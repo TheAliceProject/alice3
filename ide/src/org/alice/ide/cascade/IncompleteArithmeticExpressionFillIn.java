@@ -46,18 +46,18 @@ package org.alice.ide.cascade;
  * @author Dennis Cosgrove
  */
 public class IncompleteArithmeticExpressionFillIn extends IncompleteInfixExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator > {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType expressionType;
-	public IncompleteArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractType operandType, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType expressionType ) {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType;
+	public IncompleteArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> operandType, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType ) {
 		super( operandType, operator, operandType );
 		this.expressionType = expressionType;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createIncomplete( edu.cmu.cs.dennisc.alice.ast.AbstractType leftOperandType, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator,
-			edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType ) {
+	protected edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createIncomplete( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> leftOperandType, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator,
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType ) {
 		return org.alice.ide.ast.NodeUtilities.createIncompleteArithmeticInfixExpression( leftOperandType, operator, rightOperandType, this.expressionType );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression left, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.Expression right, edu.cmu.cs.dennisc.alice.ast.AbstractType leftOperandType, edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType ) {
+	protected edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression left, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.Expression right, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> leftOperandType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType ) {
 		return new edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression( left, operator, right, this.expressionType );
 	}
 }

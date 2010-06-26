@@ -114,7 +114,7 @@ public class Tuple7<A, B, C, D, E, F, G> {
 		if( super.equals( other ) ) {
 			return true;
 		} else {
-			if( other instanceof Tuple7 ) {
+			if( other instanceof Tuple7<?,?,?,?,?,?,?> ) {
 				Tuple7<?,?,?,?,?,?,?> otherT = (Tuple7<?,?,?,?,?,?,?>)other;
 				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_a, otherT.m_a ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_b, otherT.m_b ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_c, otherT.m_c ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_d, otherT.m_d ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_e, otherT.m_e ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_f, otherT.m_f ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_g, otherT.m_g );
 			} else {

@@ -44,10 +44,10 @@ package org.alice.stageide;
 
 public class MoveAndTurnRuntimeProgram extends org.alice.apis.moveandturn.Program {
 	private static java.awt.Dimension preferredSize = new java.awt.Dimension( 400, 300 );
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType;
 	private edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice sceneInstance;
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm;
-	public MoveAndTurnRuntimeProgram( edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType, edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm ) {
+	public MoveAndTurnRuntimeProgram( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType, edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm ) {
 		this.sceneType = sceneType;
 		this.vm = vm;
 		this.addComponentListener( new java.awt.event.ComponentListener() {

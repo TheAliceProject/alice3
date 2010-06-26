@@ -62,7 +62,7 @@ public abstract class AbstractDropDownListItemExpressionPane extends org.alice.i
 		this.expressionListProperty = expressionListProperty;
 		this.setLeftButtonPressOperation( new org.alice.ide.operations.ast.FillInExpressionListPropertyItemOperation( java.util.UUID.fromString( "dec13fc9-4b3f-4e4e-8b1f-21956e789b32" ), this.index, this.expressionListProperty ) {
 			@Override
-			protected edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType() {
+			protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getFillInType() {
 				return AbstractDropDownListItemExpressionPane.this.getFillInType();
 			}
 		});
@@ -81,7 +81,7 @@ public abstract class AbstractDropDownListItemExpressionPane extends org.alice.i
 		this.expressionListProperty.removeListPropertyListener( this.listPropertyAdapter );
 		super.handleRemovedFrom( parent );
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType();
+	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getFillInType();
 	public void refresh() {
 		this.forgetAndRemoveAllComponents();
 		if( this.index < this.expressionListProperty.size() ) {

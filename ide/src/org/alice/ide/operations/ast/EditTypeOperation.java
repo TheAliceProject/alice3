@@ -40,21 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ubiquitouspane.templates;
+package org.alice.ide.operations.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class EachInArrayTogetherTemplate extends CascadingUbiquitousStatementTemplate {
-	public EachInArrayTogetherTemplate() {
-		super( edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether.class, org.alice.ide.ast.NodeUtilities.createIncompleteEachInArrayTogether() );
+public class EditTypeOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
+	public EditTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "027be381-1467-4ca4-82c1-67f908dc0297" ) );
+		this.type = type;
+		this.setName( "Edit..." );
+		this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
+	}
+	private org.alice.ide.editorstabbedpane.EditTypePanel editTypePanel;
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > prologue( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
+		this.editTypePanel = new org.alice.ide.editorstabbedpane.EditTypePanel( this.type );
+		return this.editTypePanel;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
-		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object[].class ) };
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createEachInArrayTogether( expressions[ 0 ] );
+	protected void epilogue( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context, boolean isOk ) {
+		if( isOk ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: EditTypeOperation" );
+		} else {
+			context.cancel();
+		}
 	}
 }

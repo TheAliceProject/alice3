@@ -161,11 +161,11 @@ public abstract class AbstractTypeDeclaredInAlice<C extends AbstractConstructor>
 		return false;
 	}
 	@Override
-	public final edu.cmu.cs.dennisc.alice.ast.AbstractType getComponentType() {
+	public final AbstractType<?,?,?> getComponentType() {
 		return null;
 	}
 	@Override
-	public final AbstractType getArrayType() {
+	public final AbstractType<?,?,?> getArrayType() {
 		return ArrayTypeDeclaredInAlice.get( this, 1 );
 	}
 }

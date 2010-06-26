@@ -46,10 +46,10 @@ package org.alice.ide.declarationpanes;
  * @author Dennis Cosgrove
  */
 public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.declarationpanes.AbstractCreateFieldPane {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType valueType;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType;
 	private edu.cmu.cs.dennisc.alice.ast.Expression initializer;
 
-	public CreateLargelyPredeterminedFieldPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class< ? > cls, edu.cmu.cs.dennisc.alice.ast.AbstractType valueType ) {
+	public CreateLargelyPredeterminedFieldPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class< ? > cls, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
 		super( declaringType );
 		if( cls != null ) {
 			assert valueType == null;
@@ -72,7 +72,7 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getValueType() {
 		return this.valueType;
 	}
 	@Override

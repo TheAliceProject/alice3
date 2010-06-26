@@ -42,7 +42,7 @@
  */
 package edu.cmu.cs.dennisc.zoot;
 
-class EnumComboBoxModel< E extends Enum > extends javax.swing.DefaultComboBoxModel {
+class EnumComboBoxModel< E extends Enum<E> > extends javax.swing.DefaultComboBoxModel {
 	public EnumComboBoxModel( Class< E > cls ) {
 		for( E e : cls.getEnumConstants() ) {
 			this.addElement( e );
@@ -54,7 +54,7 @@ class EnumComboBoxModel< E extends Enum > extends javax.swing.DefaultComboBoxMod
 /**
  * @author Dennis Cosgrove
  */
-public abstract class EnumConstantSelectionOperation< E extends Enum > extends AbstractItemSelectionOperation< E > {
+public abstract class EnumConstantSelectionOperation< E extends Enum<E> > extends AbstractItemSelectionOperation< E > {
 	public EnumConstantSelectionOperation( java.util.UUID groupUUID, Class< E > cls ) {
 		super( groupUUID, new EnumComboBoxModel( cls ) );
 	}

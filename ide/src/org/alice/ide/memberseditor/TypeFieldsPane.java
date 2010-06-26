@@ -48,7 +48,7 @@ import org.alice.ide.memberseditor.templates.TemplateFactory;
  * @author Dennis Cosgrove
  */
 public class TypeFieldsPane extends AbstractTypeMembersPane {
-	public TypeFieldsPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public TypeFieldsPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		super( type );
 	}
 	@Override

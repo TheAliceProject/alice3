@@ -48,8 +48,8 @@ package edu.cmu.cs.dennisc.croquet;
 public class MenuModel extends Model< MenuModel > {
 	public static final Model SEPARATOR = null;
 	private class MenuListener implements javax.swing.event.MenuListener {
-		private Menu menu;
-		public MenuListener( Menu menu ) {
+		private Menu<?> menu;
+		public MenuListener( Menu<?> menu ) {
 			this.menu = menu;
 		}
 		public void menuSelected( javax.swing.event.MenuEvent e ) {

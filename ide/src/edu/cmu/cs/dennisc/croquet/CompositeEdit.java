@@ -46,10 +46,10 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class CompositeEdit extends Edit {
-	private Edit[] edits;
+	private Edit<?>[] edits;
 	private boolean isDoToBeIgnored;
 	private String presentation;
-	public CompositeEdit( Edit[] edits, boolean isDoToBeIgnored, String presentation ) {
+	public CompositeEdit( Edit<?>[] edits, boolean isDoToBeIgnored, String presentation ) {
 		this.edits = edits;
 		this.isDoToBeIgnored = isDoToBeIgnored;
 		this.presentation = presentation;
@@ -63,7 +63,7 @@ public class CompositeEdit extends Edit {
 		if( isDo && this.isDoToBeIgnored ) {
 			//pass
 		} else {
-			for( Edit edit : this.edits ) {
+			for( Edit<?> edit : this.edits ) {
 				edit.doOrRedo( isDo );
 			}
 		}
@@ -77,7 +77,7 @@ public class CompositeEdit extends Edit {
 	}
 	@Override
 	public boolean canRedo() {
-		for( Edit edit : this.edits ) {
+		for( Edit<?> edit : this.edits ) {
 			if( edit.canRedo() ) {
 				//pass
 			} else {
@@ -88,7 +88,7 @@ public class CompositeEdit extends Edit {
 	}
 	@Override
 	public boolean canUndo() {
-		for( Edit edit : this.edits ) {
+		for( Edit<?> edit : this.edits ) {
 			if( edit.canUndo() ) {
 				//pass
 			} else {

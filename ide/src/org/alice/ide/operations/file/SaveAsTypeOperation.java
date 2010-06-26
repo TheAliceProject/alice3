@@ -52,7 +52,7 @@ public class SaveAsTypeOperation extends org.alice.app.operations.file.AbstractS
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: SaveAsTypeOperation" );
 		this.type = type;
 		this.setName( "Save As..." );
-		this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
+		//this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
 	}
 	@Override
 	protected java.io.File getDefaultDirectory( org.alice.app.ProjectApplication application ) {

@@ -216,11 +216,12 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	}
 
-	/*package-private*/ static void complete( final edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.Operation< ?,? > > edit ) {
+	/*package-private*/ static void complete( final edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 		if( edit != null ) {
 			 edu.cmu.cs.dennisc.croquet.ActionOperation bogusCompletionOperation = new edu.cmu.cs.dennisc.croquet.ActionOperation( TUTORIAL_COMPLETION_GROUP, java.util.UUID.fromString( "d4b1cb3b-f642-4c90-be92-e27d616f6922" ) ) {
 				@Override
 				protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: context edit type" );
 					context.commitAndInvokeDo( edit );
 				}
 			};

@@ -47,5 +47,5 @@ package edu.cmu.cs.dennisc.tutorial;
  */
 
 public interface Completor {
-	public edu.cmu.cs.dennisc.croquet.Edit getEdit();
+	public edu.cmu.cs.dennisc.croquet.Edit<?> getEdit();
 }

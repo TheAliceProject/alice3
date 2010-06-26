@@ -62,11 +62,11 @@ public abstract class MembersContentPanel extends edu.cmu.cs.dennisc.croquet.Pag
 		super.handleRemovedFrom( parent );
 	}
 	
-	protected abstract void handleAccessibleSelection( edu.cmu.cs.dennisc.alice.ast.Accessible accessible, java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > types );
+	protected abstract void handleAccessibleSelection( edu.cmu.cs.dennisc.alice.ast.Accessible accessible, java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > types );
 	private void handleAccessibleSelection( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > types = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > types = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( accessible != null ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType type = accessible.getValueType();
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = accessible.getValueType();
 			while( type != null ) {
 				types.add( type );
 				if( type.isFollowToSuperClassDesired() ) {

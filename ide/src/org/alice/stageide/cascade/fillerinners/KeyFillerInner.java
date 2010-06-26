@@ -103,7 +103,7 @@ public class KeyFillerInner extends org.alice.ide.cascade.fillerinners.Expressio
 				Key.DOWN,
 		};
 		
-		final edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getType();
+		final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = this.getType();
 		String[] names = { "letters (A-M)", "letters (N-Z)", "digits (0-9)", "arrows" };
 		Key[][] keySets = new Key[][] { lettersAM, lettersNZ, digits, arrows };
 		final int N = names.length;

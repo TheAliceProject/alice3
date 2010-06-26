@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class BooleanExpressionBodyPair extends Node {
 	public ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			return TypeDeclaredInJava.get( Boolean.class );
 		}
 	};

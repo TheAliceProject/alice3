@@ -60,7 +60,7 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 				edu.cmu.cs.dennisc.alice.ast.Expression leftOperand = previousArithmeticInfixExpression.leftOperand.getValue();
 				edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator prevOperator = previousArithmeticInfixExpression.operator.getValue();
 				edu.cmu.cs.dennisc.alice.ast.Expression rightOperand = previousArithmeticInfixExpression.rightOperand.getValue();
-				edu.cmu.cs.dennisc.alice.ast.AbstractType expressionType = previousArithmeticInfixExpression.expressionType.getValue();
+				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType = previousArithmeticInfixExpression.expressionType.getValue();
 				for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : PRIME_TIME_ARITHMETIC_OPERATORS ) {
 					if( operator != prevOperator ) {
 						blank.addFillIn( new org.alice.ide.cascade.LabeledExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression( leftOperand, operator, rightOperand, expressionType ), "(replace operator)" ) );

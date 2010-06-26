@@ -48,7 +48,7 @@ package org.alice.ide.common;
 public class TypeComponent extends edu.cmu.cs.dennisc.croquet.ViewController<javax.swing.AbstractButton, edu.cmu.cs.dennisc.croquet.Model > {
 //public class TypeComponent extends edu.cmu.cs.dennisc.croquet.AbstractButton<javax.swing.AbstractButton> {
 	private static final java.awt.Color ROLLOVER_COLOR = java.awt.Color.BLUE.darker();
-	public static TypeComponent createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public static TypeComponent createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		TypeComponent rv = new TypeComponent(type);
 		if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
@@ -92,8 +92,8 @@ public class TypeComponent extends edu.cmu.cs.dennisc.croquet.ViewController<jav
 		}
 	};
 //	private boolean isRollover = false;
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
-	private TypeComponent( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
+	private TypeComponent( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		super( null );
 		this.type = type;
 //		this.setCursor( java.awt.Cursor.getDefaultCursor() );

@@ -55,7 +55,7 @@ public class ParameterAccess extends Expression {
 		this.parameter.setValue( parameter );
 	}
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		return parameter.getValue().getValueType();
 	}
 }

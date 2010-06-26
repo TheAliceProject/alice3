@@ -55,7 +55,7 @@ public abstract class FillInExpressionListPropertyItemOperation extends org.alic
 		this.index = index;
 		this.expressionListProperty = expressionListProperty;
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType();
+	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getFillInType();
 	@Override
 	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext operationContext) {
 		class FillInExpressionEdit extends org.alice.ide.ToDoEdit {
@@ -86,7 +86,7 @@ public abstract class FillInExpressionListPropertyItemOperation extends org.alic
 			}
 			public FillInExpressionEdit initialize(FillInExpressionEdit rv, edu.cmu.cs.dennisc.croquet.ModelContext context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver) {
 				rv.prevExpression = expressionListProperty.get( index );
-				edu.cmu.cs.dennisc.alice.ast.AbstractType type = getFillInType();
+				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = getFillInType();
 				getIDE().promptUserForExpression( type, rv.prevExpression, viewController, p, taskObserver );
 				return rv;
 			}

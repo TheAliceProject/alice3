@@ -47,7 +47,7 @@ package org.alice.ide.initializer;
  */
 abstract class AbstractInitializerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //	public abstract edu.cmu.cs.dennisc.alice.ast.Expression getInitializer();
-	public abstract void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type );
+	public abstract void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type );
 //	protected abstract void handleInitializerChange();
 	public AbstractInitializerPane( int hgap, int vgap ) {
 		super( hgap, vgap );

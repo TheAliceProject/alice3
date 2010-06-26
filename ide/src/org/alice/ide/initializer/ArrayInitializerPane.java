@@ -330,7 +330,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 			for( int i=M; i<N; i++ ) {
 				FauxItem fauxItem = new FauxItem( i, ArrayInitializerPane.this.arrayExpressions ) {
 					@Override
-					protected edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType() {
+					protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getFillInType() {
 						return ArrayInitializerPane.this.type.getComponentType();
 					}
 					@Override
@@ -367,7 +367,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 	private MoveItemUpOperation moveItemUpOperation = new MoveItemUpOperation();
 	private MoveItemDownOperation moveItemDownOperation = new MoveItemDownOperation();
 
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
 
 	public ArrayInitializerPane( edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty arrayExpressions ) {
 		super( 8, 0 );
@@ -436,7 +436,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 	}
 
 	@Override
-	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		this.type = type;
 		this.updateButtons();
 	}

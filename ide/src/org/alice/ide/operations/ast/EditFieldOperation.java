@@ -58,7 +58,7 @@ public class EditFieldOperation extends AbstractEditFieldOperation {
 		if( project != null ) {
 			final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = this.getField();
 			ide.ensureProjectCodeUpToDate();
-			edu.cmu.cs.dennisc.alice.ast.AbstractType programType = project.getProgramType();
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = project.getProgramType();
 			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess >( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) {
 				@Override
 				protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {

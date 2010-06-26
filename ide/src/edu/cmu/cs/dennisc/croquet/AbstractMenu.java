@@ -50,7 +50,7 @@ public abstract class AbstractMenu< C extends javax.swing.JComponent, M extends 
 	/*package-private*/ AbstractMenu( M model ) {
 		super( model );
 	}
-	public abstract void addMenu( Menu menu );
+	public abstract void addMenu( Menu<?> menu );
 	public abstract void addMenuItem( AbstractMenuItem<?,?> menuItem );
 	public abstract void addSeparator();
 }

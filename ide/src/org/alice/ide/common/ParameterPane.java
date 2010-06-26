@@ -80,7 +80,7 @@ public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.Pa
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
 		return this.getTransient().getValueType();
 	}
 	@Override

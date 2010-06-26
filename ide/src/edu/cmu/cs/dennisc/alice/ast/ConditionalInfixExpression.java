@@ -67,15 +67,15 @@ public class ConditionalInfixExpression extends InfixExpression< ConditionalInfi
 		super( leftOperand, operator, rightOperand );
 	}
 	@Override
-	protected AbstractType getLeftOperandType() {
+	protected AbstractType<?,?,?> getLeftOperandType() {
 		return TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE;
 	}
 	@Override
-	protected AbstractType getRightOperandType() {
+	protected AbstractType<?,?,?> getRightOperandType() {
 		return TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		return TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE;
 	}
 	@Override

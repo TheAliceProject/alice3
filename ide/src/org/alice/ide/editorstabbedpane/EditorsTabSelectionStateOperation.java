@@ -340,7 +340,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 			super.handleRemovedFrom( parent );
 		}
 		private void updateOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType type;
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
 			if( code != null ) {
 				type = code.getDeclaringType();
 			} else {

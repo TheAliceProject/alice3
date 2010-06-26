@@ -56,7 +56,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.getModel().getValue(), this.desiredValueResolver.getResolved() );
 	}
 	@Override
-	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Edit edit) {
+	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
 		return this.isAlreadyInTheDesiredState();
 	}
 	@Override

@@ -48,7 +48,7 @@ import org.alice.ide.memberseditor.templates.TemplateFactory;
  * @author Dennis Cosgrove
  */
 public class TypeProceduresPane extends AbstractTypeMethodsPane {
-	public TypeProceduresPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public TypeProceduresPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		super( type );
 	}
 	@Override

@@ -46,11 +46,11 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class ResourceExpression extends Expression {
-	public DeclarationProperty< AbstractType > type = new DeclarationProperty< AbstractType >( this );
+	public DeclarationProperty< AbstractType<?,?,?> > type = new DeclarationProperty< AbstractType<?,?,?> >( this );
 	public edu.cmu.cs.dennisc.alice.ast.ResourceProperty resource = new edu.cmu.cs.dennisc.alice.ast.ResourceProperty( this );
 	public ResourceExpression() {
 	}
-	public ResourceExpression( AbstractType type, org.alice.virtualmachine.Resource resource ) {
+	public ResourceExpression( AbstractType<?,?,?> type, org.alice.virtualmachine.Resource resource ) {
 		this.type.setValue( type );
 		this.resource.setValue( resource );
 	}
@@ -58,7 +58,7 @@ public class ResourceExpression extends Expression {
 		this( TypeDeclaredInJava.get( cls ), resource );
 	}
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		return type.getValue();
 	}
 }

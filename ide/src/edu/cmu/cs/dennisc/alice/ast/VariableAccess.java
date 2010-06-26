@@ -54,7 +54,7 @@ public class VariableAccess extends Expression {
 		this.variable.setValue( variable );
 	}
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		return variable.getValue().valueType.getValue();
 	}
 }

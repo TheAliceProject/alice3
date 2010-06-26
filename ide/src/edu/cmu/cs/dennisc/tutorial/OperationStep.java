@@ -54,7 +54,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		this.validator = validator;
 	}
 	@Override
-	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Edit edit) {
+	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
 		return this.validator.checkValidity( edit ).isProcedeApprorpiate();
 	}
 	@Override

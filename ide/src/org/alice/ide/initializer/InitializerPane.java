@@ -59,7 +59,7 @@ public class InitializerPane extends edu.cmu.cs.dennisc.croquet.CardPanel {
 			}
 
 			public void propertyChanged(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType type = InitializerPane.this.bogusNode.componentType.getValue();
+				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = InitializerPane.this.bogusNode.componentType.getValue();
 				if (type != null) {
 					arrayInitializerPane.handleTypeChange(type.getArrayType());
 				}

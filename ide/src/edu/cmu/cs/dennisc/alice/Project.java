@@ -199,21 +199,21 @@ public class Project {
 	}
 	
 	private java.util.Set< Resource > resources = java.util.Collections.synchronizedSet( new java.util.HashSet< Resource >() );
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType programType = null;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = null;
 	private Properties properties = new Properties();
-	public Project( edu.cmu.cs.dennisc.alice.ast.AbstractType programType, java.util.Set< Resource > resources ) {
+	public Project( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType, java.util.Set< Resource > resources ) {
 		this( programType );
 		synchronized( this.resources ) {
 			this.resources.addAll( resources );
 		}
 	}
-	public Project( edu.cmu.cs.dennisc.alice.ast.AbstractType programType ) {
+	public Project( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType ) {
 		setProgramType( programType );
 	}
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getProgramType() {
 		return this.programType;
 	}
-	/*public*/private void setProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType programType ) {
+	/*public*/private void setProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType ) {
 		this.programType = programType;
 	}
 	public Properties getProperties() {

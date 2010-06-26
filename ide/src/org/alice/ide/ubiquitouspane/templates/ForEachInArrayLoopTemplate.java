@@ -50,7 +50,7 @@ public class ForEachInArrayLoopTemplate extends CascadingUbiquitousStatementTemp
 		super( edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop.class, org.alice.ide.ast.NodeUtilities.createIncompleteForEachInArrayLoop() );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
 		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object[].class ) };
 	}
 	@Override

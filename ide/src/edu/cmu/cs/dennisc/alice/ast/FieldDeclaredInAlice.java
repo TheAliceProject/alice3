@@ -57,7 +57,7 @@ public class FieldDeclaredInAlice extends AbstractField implements MemberDeclare
 
 	public ExpressionProperty initializer = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			return FieldDeclaredInAlice.this.valueType.getValue();
 		}
 	};
@@ -86,11 +86,11 @@ public class FieldDeclaredInAlice extends AbstractField implements MemberDeclare
 	}
 	
 	@Override
-	public AbstractType getValueType() {
+	public AbstractType<?,?,?> getValueType() {
 		return valueType.getValue();
 	}
 	@Override
-	public AbstractType getDesiredValueType() {
+	public AbstractType<?,?,?> getDesiredValueType() {
 		return getValueType();
 	}
 

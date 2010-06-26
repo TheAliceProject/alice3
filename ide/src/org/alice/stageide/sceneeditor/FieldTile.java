@@ -130,7 +130,7 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 	protected java.util.List< edu.cmu.cs.dennisc.croquet.Model > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.croquet.Model > rv ) {
 		if( this.accessible instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.accessible;
-			edu.cmu.cs.dennisc.alice.ast.AbstractType fieldType = fieldInAlice.getValueType();
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> fieldType = fieldInAlice.getValueType();
 			rv.add( new org.alice.ide.operations.ast.RenameFieldOperation( fieldInAlice ) );
 			if( fieldType.isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
 				if( fieldType.isAssignableTo( org.alice.apis.moveandturn.AbstractCamera.class ) ) {

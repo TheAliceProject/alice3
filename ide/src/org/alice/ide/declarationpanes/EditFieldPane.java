@@ -83,7 +83,7 @@ public class EditFieldPane extends AbstractDeclarationPane< edu.cmu.cs.dennisc.a
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getValueType() {
 		if( this.isDropDownForFieldInitializerDesired ) {
 			return super.getValueType();
 		} else {

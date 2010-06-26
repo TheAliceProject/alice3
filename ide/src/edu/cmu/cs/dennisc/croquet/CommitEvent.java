@@ -46,11 +46,11 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class CommitEvent extends AbstractCompleteEvent {
-	private Edit edit;
+	private Edit<?> edit;
 	public CommitEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public CommitEvent( ModelContext parent, Edit edit ) {
+	public CommitEvent( ModelContext parent, Edit<?> edit ) {
 		super( parent );
 		this.edit = edit;
 	}
@@ -66,7 +66,7 @@ public class CommitEvent extends AbstractCompleteEvent {
 	public State getState() {
 		return State.COMMITTED;
 	}
-	public Edit getEdit() {
+	public Edit<?> getEdit() {
 		return this.edit;
 	}
 }

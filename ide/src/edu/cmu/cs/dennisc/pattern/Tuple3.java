@@ -82,7 +82,7 @@ public class Tuple3<A, B, C> {
 		if( super.equals( other ) ) {
 			return true;
 		} else {
-			if( other instanceof Tuple3 ) {
+			if( other instanceof Tuple3<?,?,?> ) {
 				Tuple3<?,?,?> otherT = (Tuple3<?,?,?>)other;
 				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_a, otherT.m_a ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_b, otherT.m_b ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_c, otherT.m_c );
 			} else {

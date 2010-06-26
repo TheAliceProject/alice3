@@ -50,7 +50,7 @@ public abstract class ProjectUtilities {
 	}
 
 	public static java.util.Set< org.alice.virtualmachine.Resource > getReferencedResources( edu.cmu.cs.dennisc.alice.Project project ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType programType = project.getProgramType();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = project.getProgramType();
 		java.util.Set< org.alice.virtualmachine.Resource > resources = project.getResources();
 		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ResourceExpression > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ResourceExpression >( edu.cmu.cs.dennisc.alice.ast.ResourceExpression.class ) {
 			@Override
@@ -163,10 +163,10 @@ public abstract class ProjectUtilities {
 		return edu.cmu.cs.dennisc.xml.XMLUtilities.read( zipFile.getInputStream( entry ) );
 	}
 
-	private static edu.cmu.cs.dennisc.alice.ast.AbstractType readType( java.util.zip.ZipFile zipFile, String entryName ) throws java.io.IOException {
+	private static edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> readType( java.util.zip.ZipFile zipFile, String entryName ) throws java.io.IOException {
 		String version = readVersion( zipFile );
 		org.w3c.dom.Document xmlDocument = readXML( zipFile, entryName );
-		return (edu.cmu.cs.dennisc.alice.ast.AbstractType)edu.cmu.cs.dennisc.alice.ast.Node.decode( xmlDocument, version );
+		return (edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>)edu.cmu.cs.dennisc.alice.ast.Node.decode( xmlDocument, version );
 	}
 	private static java.util.Set< org.alice.virtualmachine.Resource > readResources( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
 		java.util.Set< org.alice.virtualmachine.Resource > rv = new java.util.HashSet< org.alice.virtualmachine.Resource >();
@@ -201,7 +201,7 @@ public abstract class ProjectUtilities {
 
 	public static edu.cmu.cs.dennisc.alice.Project readProject( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
 		assert zipFile != null;
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = readType( zipFile, PROGRAM_TYPE_ENTRY_NAME );
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = readType( zipFile, PROGRAM_TYPE_ENTRY_NAME );
 		java.util.Set< org.alice.virtualmachine.Resource > resources = readResources( zipFile );
 		edu.cmu.cs.dennisc.alice.Project rv = new edu.cmu.cs.dennisc.alice.Project( type, resources );
 		readProperties( rv.getProperties(), zipFile );
@@ -220,12 +220,12 @@ public abstract class ProjectUtilities {
 		assert path != null;
 		return readProject( new java.io.File( path ) );
 	}
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.AbstractType, java.util.Set< org.alice.virtualmachine.Resource >> readType( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = readType( zipFile, TYPE_ENTRY_NAME );
+	public static edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource >> readType( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = readType( zipFile, TYPE_ENTRY_NAME );
 		java.util.Set< org.alice.virtualmachine.Resource > resources = readResources( zipFile );
-		return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.AbstractType, java.util.Set< org.alice.virtualmachine.Resource >>( type, resources );
+		return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource >>( type, resources );
 	}
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.AbstractType, java.util.Set< org.alice.virtualmachine.Resource >> readType( java.io.File file ) {
+	public static edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource >> readType( java.io.File file ) {
 		assert file != null;
 		assert file.exists();
 		try {
@@ -234,7 +234,7 @@ public abstract class ProjectUtilities {
 			throw new RuntimeException( file.getAbsolutePath(), ioe );
 		}
 	}
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.AbstractType, java.util.Set< org.alice.virtualmachine.Resource >> readType( String path ) {
+	public static edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource >> readType( String path ) {
 		return readType( new java.io.File( path ) );
 	}
 
@@ -258,7 +258,7 @@ public abstract class ProjectUtilities {
 			}
 		} );
 	}
-	private static void writeType( edu.cmu.cs.dennisc.alice.ast.AbstractType type, java.util.zip.ZipOutputStream zos, String entryName ) throws java.io.IOException {
+	private static void writeType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, java.util.zip.ZipOutputStream zos, String entryName ) throws java.io.IOException {
 		writeXML( type.encode(), zos, entryName );
 	}
 	private static void writeDataSources( java.util.zip.ZipOutputStream zos, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
@@ -331,7 +331,7 @@ public abstract class ProjectUtilities {
 		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( os );
 		writeVersion( zos );
 
-		edu.cmu.cs.dennisc.alice.ast.AbstractType programType = project.getProgramType();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = project.getProgramType();
 		writeType( programType, zos, PROGRAM_TYPE_ENTRY_NAME );
 		final edu.cmu.cs.dennisc.alice.Project.Properties properties = project.getProperties();
 		if( properties != null ) {
@@ -381,7 +381,7 @@ public abstract class ProjectUtilities {
 		writeProject( new java.io.File( path ), project, dataSources );
 	}
 
-	public static void writeType( java.io.OutputStream os, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
+	public static void writeType( java.io.OutputStream os, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
 		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( os );
 		writeVersion( zos );
 		writeType( type, zos, TYPE_ENTRY_NAME );
@@ -403,11 +403,11 @@ public abstract class ProjectUtilities {
 		zos.flush();
 		zos.close();
 	}
-	public static void writeType( java.io.File file, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
+	public static void writeType( java.io.File file, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
 		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
 		writeType( new java.io.FileOutputStream( file ), type, dataSources );
 	}
-	public static void writeType( String path, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
+	public static void writeType( String path, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
 		writeType( new java.io.File( path ), type, dataSources );
 	}
 

@@ -60,7 +60,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		return this.getModel().getValue() == this.desiredValue;
 	}
 	@Override
-	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Edit edit) {
+	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
 		return this.isAlreadyInTheDesiredState();
 	}
 }

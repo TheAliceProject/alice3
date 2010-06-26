@@ -52,7 +52,7 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.LineAxi
 		this.assignmentExpression = assignmentExpression;
 		edu.cmu.cs.dennisc.alice.ast.Expression left = this.assignmentExpression.leftHandSide.getValue();
 		
-		edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType;
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType;
 		edu.cmu.cs.dennisc.alice.ast.Expression expression;
 		edu.cmu.cs.dennisc.croquet.AxisPanel parent;
 		if( left instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {

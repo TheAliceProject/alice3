@@ -68,9 +68,15 @@ public class SimpleFillIn< E > extends FillIn< E > {
 	protected String getMenuProxyText() {
 		return this.model.toString(); 
 	}
+	protected javax.swing.Icon getMenuProxyIcon() {
+		return null;
+	}
+	protected int getMenuProxyHorizontalAlignment() {
+		return javax.swing.SwingConstants.LEADING;
+	}
 	
 	@Override
 	protected javax.swing.JComponent createMenuProxy() {
-		return new javax.swing.JLabel( this.getMenuProxyText() );
+		return new javax.swing.JLabel( this.getMenuProxyText(), this.getMenuProxyIcon(), this.getMenuProxyHorizontalAlignment() );
 	}
 }

@@ -270,10 +270,10 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
-	public java.util.List< ? extends ExpressionPropertyDropDownPane > createListOfPotentialDropReceptors( final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public java.util.List< ? extends ExpressionPropertyDropDownPane > createListOfPotentialDropReceptors( final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		return edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
 			public boolean accept( ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
+				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
 				if( expressionType.isAssignableFrom( type ) ) {
 					return true;
 				} else {
@@ -281,7 +281,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 						if( expressionType.isAssignableFrom( type.getComponentType() ) ) {
 							return true;
 						} else {
-							for( edu.cmu.cs.dennisc.alice.ast.AbstractType integerType : edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_TYPES ) {
+							for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava integerType : edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_TYPES ) {
 								if( expressionType == integerType ) {
 									return true;
 								}

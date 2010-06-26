@@ -76,7 +76,7 @@ public /*final*/ class BooleanState extends Model< BooleanState > {
 			Application application = Application.getSingleton();
 			ModelContext<?> parentContext = application.getCurrentContext();
 			BooleanStateContext childContext = parentContext.createBooleanStateContext( BooleanState.this, e, null );
-			childContext.commitAndInvokeDo( new BooleanStateEdit( e, BooleanState.this ) );
+			childContext.commitAndInvokeDo( new BooleanStateEdit( e ) );
 		}
 	};
 
