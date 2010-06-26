@@ -280,27 +280,31 @@ public class ListProperty<E> extends InstanceProperty< java.util.ArrayList< E > 
 	}
 
 	public void swap( int indexA, int indexB ) {
-		//todo: test
-		java.util.List< E > subList = this.subList( indexA, indexB+1 );
-		final int N = subList.size();
-		E eA = subList.get( 0 );
-		E eB = subList.get( N-1 );
-		subList.set( 0, eB );
-		subList.set( N-1, eA );
-		this.set( indexA, subList );
+		if( indexA != indexB ) {
+			//todo: test
+			java.util.List< E > subList = this.subList( indexA, indexB+1 );
+			final int N = subList.size();
+			E eA = subList.get( 0 );
+			E eB = subList.get( N-1 );
+			subList.set( 0, eB );
+			subList.set( N-1, eA );
+			this.set( indexA, subList );
+		}
 	}
 	
 	public void slide( int prevIndex, int nextIndex ) {
-		//todo: test
-		E element = this.getValue().get( prevIndex );
-		if( prevIndex < nextIndex ) {
-			java.util.List< E > subList = this.subList( prevIndex+1, nextIndex+1 );
-			subList.add( element );
-			this.set( prevIndex, subList );
-		} else {
-			java.util.List< E > subList = this.subList( prevIndex, nextIndex );
-			subList.add( 0, element );
-			this.set( nextIndex, subList );
+		if( prevIndex != nextIndex ) {
+			//todo: test
+			E element = this.getValue().get( prevIndex );
+			if( prevIndex < nextIndex ) {
+				java.util.List< E > subList = this.subList( prevIndex+1, nextIndex+1 );
+				subList.add( element );
+				this.set( prevIndex, subList );
+			} else {
+				java.util.List< E > subList = this.subList( prevIndex, nextIndex );
+				subList.add( 0, element );
+				this.set( nextIndex, subList );
+			}
 		}
 	}
 	
