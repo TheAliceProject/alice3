@@ -40,51 +40,10 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.javax.swing.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ToolPalette extends BorderPanel {
-	private AbstractButton<?,BooleanState> title;
-	private Component< ? > mainComponent;
-	/*package-private*/ ToolPalette( AbstractButton<?,BooleanState> title, Component<?> mainComponent ) {
-		this.title = title;
-		this.mainComponent = mainComponent;
-		this.addComponent( this.title, Constraint.NORTH );
-		this.addComponent( this.mainComponent, Constraint.CENTER );
-	}
-	private BooleanState.ValueObserver valueObserver = new BooleanState.ValueObserver() {
-		public void changing(boolean nextValue) {
-		}
-		public void changed(boolean nextValue) {
-			mainComponent.setVisible( nextValue );
-		}
-	};
-	
-	public AbstractButton< ?, BooleanState > getTitle() {
-		return this.title;
-	}
-	public Component< ? > getMainComponent() {
-		return this.mainComponent;
-	}
-
-	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo(parent);
-		this.title.getModel().addAndInvokeValueObserver( this.valueObserver );
-	}
-	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		this.title.getModel().removeValueObserver( this.valueObserver );
-		super.handleRemovedFrom(parent);
-	}
-	
-	@Override
-	public void setBackgroundColor( java.awt.Color color ) {
-		super.setBackgroundColor( color );
-		this.title.setBackgroundColor( color );
-	}
-	
+public abstract class AbstractReorderableListModel<E> extends AbstractListModel<E> implements ReorderableListModel<E> {
 }

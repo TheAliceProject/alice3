@@ -45,33 +45,15 @@ package edu.cmu.cs.dennisc.javax.swing.models;
 /**
  * @author Dennis Cosgrove
  */
-public class ListPropertyListModel< E > extends javax.swing.AbstractListModel {
-	private edu.cmu.cs.dennisc.property.ListProperty< E > listProperty;
-	private ListPropertyListModel( edu.cmu.cs.dennisc.property.ListProperty< E > listProperty ) {
-		this.listProperty = listProperty;
-	}
-	public static <E> ListPropertyListModel< E > createInstance( edu.cmu.cs.dennisc.property.ListProperty< E > listProperty ) {
-		return new ListPropertyListModel( listProperty );
-	}
-	public int getSize() {
-		return this.listProperty.size();
-	}
-	public E getElementAt( int index ) {
-		return this.listProperty.get( index );
-	}
-	public void add( int index, E e ) {
-		this.listProperty.add( index, e );
-		this.fireIntervalAdded( this, index, index );
-	}
-	public void remove( int index, E e ) {
-		assert this.listProperty.get( index ) == e;
-		this.listProperty.remove( index );
-		this.fireIntervalRemoved( this, index, index );
-	}
-	public void set( int index, E... es ) {
-		if( es.length > 0 ) {
-			this.listProperty.set( index, es );
-			this.fireContentsChanged( this, index, index+es.length-1 );
-		}
-	}
+public interface MutableListModel<E> extends ReorderableListModel<E> {
+	public void add( E element );
+	public void add( E... elements );
+	public void insert( int i, E element );
+	public void insert( int i, E... elements );
+	public void set( E... elements );
+
+	public void remove( int i );
+	public void removeExclusive( int fromIndex, int upToButExcludingIndex );
+	public void removeInclusive( int fromIndex, int upToAndIncludingIndex );
+	public void clear();
 }

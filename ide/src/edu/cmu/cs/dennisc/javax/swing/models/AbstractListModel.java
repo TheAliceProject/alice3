@@ -40,17 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.editorstabbedpane;
+package edu.cmu.cs.dennisc.javax.swing.models;
 
 /**
-* @author Dennis Cosgrove
-*/
-public class EditFunctionsPane extends EditMethodsPane {
-	public EditFunctionsPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
-		super( declaringType );
+ * @author Dennis Cosgrove
+ */
+public abstract class AbstractListModel<E> extends javax.swing.AbstractListModel implements ListModel<E> {
+	public E get( int index ) {
+		return (E)this.getElementAt( index );
 	}
-	@Override
-	protected org.alice.ide.declarationpanes.CreateMethodPane createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
-		return new org.alice.ide.declarationpanes.CreateFunctionPane( declaringType );
+	public int indexOf( E element ) {
+		final int N = this.getSize();
+		for( int i=0; i<N; i++ ) {
+			E item = this.get( i );
+			if( element != null ? element.equals( item ) : element == null ) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	public int lastIndexOf( E element ) {
+		final int N = this.getSize();
+		for( int i=0; i<N; i++ ) {
+			int index = N-1-i;
+			E item = this.get( index );
+			if( element != null ? element.equals( item ) : element == null ) {
+				return index;
+			}
+		}
+		return -1;
+	}
+	public boolean contains(E element) {
+		return this.indexOf( element ) != -1;
+	}
+	public boolean isEmpty() {
+		return this.getSize() == 0;
 	}
 }

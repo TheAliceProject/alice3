@@ -555,7 +555,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return null;
 	}
 	public javax.swing.Icon getIconFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		return new org.alice.ide.common.TypeIcon( type );
+		return org.alice.ide.common.TypeIcon.getInstance( type );
 	}
 
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType[] typesForComboBoxes;

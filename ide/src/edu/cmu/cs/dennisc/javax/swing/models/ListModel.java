@@ -45,19 +45,9 @@ package edu.cmu.cs.dennisc.javax.swing.models;
 /**
  * @author Dennis Cosgrove
  */
-public class ListListModel extends javax.swing.AbstractListModel {
-	private java.util.List< ? > list;
-	public ListListModel( java.util.List< ? > list ) {
-		this.list = list;
-	}
-	public Object getElementAt( int index ) {
-		return this.list.get( index );
-	}
-	public int getSize() {
-		if( this.list != null ) {
-			return this.list.size();
-		} else {
-			return 0;
-		}
-	}
+public interface ListModel<E> extends javax.swing.ListModel {
+	public E get( int index );
+	public int indexOf( E element );
+	public int lastIndexOf( E element );
+	public boolean contains( E element );
 }
