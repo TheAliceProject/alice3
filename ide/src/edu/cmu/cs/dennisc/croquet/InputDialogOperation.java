@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogOperation extends AbstractDialogOperation<InputDialogOperation, InputDialogOperationContext> {
+public abstract class InputDialogOperation<J extends Component<?>> extends AbstractDialogOperation<InputDialogOperation<J>, InputDialogOperationContext<J>> {
 	private class ButtonOperation extends ActionOperation {
 		private boolean isOk;
 		private Dialog dialog;
@@ -115,21 +115,25 @@ public abstract class InputDialogOperation extends AbstractDialogOperation<Input
 	}
 
 
-	protected String getExplanationIfOkButtonShouldBeDisabled() {
+	protected String getExplanationIfOkButtonShouldBeDisabled( InputDialogOperationContext<J> context ) {
 		return null;
 	}
-	protected abstract Component<?> prologue( ModelContext<?> context );
-	protected abstract void epilogue( ModelContext<?> context, boolean isOk );
-//	protected abstract Component<?> prologue( InputDialogOperationContext context );
-//	protected abstract void epilogue( InputDialogOperationContext context, boolean isOk );
+	protected abstract J prologue( InputDialogOperationContext<J> context );
+	protected abstract void epilogue( InputDialogOperationContext<J> context, boolean isOk );
 
-	protected void updateOkOperationAndExplanation() {
-		String explanation = this.getExplanationIfOkButtonShouldBeDisabled();
-		this.okOperation.setEnabled( explanation == null );
-		if( explanation != null ) {
-			this.explanationLabel.setText( explanation );
+	protected void updateOkOperationAndExplanation( InputDialogOperationContext<J> context ) {
+		if( context != null ) {
+			String explanation = this.getExplanationIfOkButtonShouldBeDisabled( context );
+			this.okOperation.setEnabled( explanation == null );
+			if( explanation != null ) {
+				this.explanationLabel.setText( explanation );
+			} else {
+				this.explanationLabel.setText( NULL_EXPLANATION );
+			}
 		} else {
-			this.explanationLabel.setText( NULL_EXPLANATION );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: updateOkOperationAndExplanation context==null" );
+//			this.explanationLabel.setText( "todo: updateOkOperationAndExplanation context==null" );
+//			this.okOperation.setEnabled( true );
 		}
 	}
 
@@ -137,14 +141,15 @@ public abstract class InputDialogOperation extends AbstractDialogOperation<Input
 		public void addingChild(HistoryTreeNode child) {
 		}
 		public void addedChild(HistoryTreeNode child) {
-			InputDialogOperation.this.updateOkOperationAndExplanation();
+			InputDialogOperation.this.updateOkOperationAndExplanation( (InputDialogOperationContext<J>)child.findContextFor( InputDialogOperation.this ) );
 		}
 	};
 
 	@Override
-	protected final Container<?> createContentPane(InputDialogOperationContext context, Dialog dialog) {
-		Component<?> contentPane = this.prologue(context);
-		assert contentPane != null;
+	protected final Container<?> createContentPane(InputDialogOperationContext<J> context, Dialog dialog) {
+		J mainPane = this.prologue(context);
+		assert mainPane != null;
+		context.setMainPanel( mainPane );
 		class OkCancelPanel extends Panel {
 			private Button okButton = okOperation.createButton();
 			public OkCancelPanel() {
@@ -184,12 +189,12 @@ public abstract class InputDialogOperation extends AbstractDialogOperation<Input
 		southPanel.addComponent( this.explanationLabel );
 		southPanel.addComponent( okCancelPanel );
 
-		java.awt.Color backgroundColor = contentPane.getBackgroundColor();
+		java.awt.Color backgroundColor = mainPane.getBackgroundColor();
 		this.explanationLabel.setBackgroundColor( backgroundColor );
 		
 		BorderPanel borderPanel = dialog.getContentPanel();
 		borderPanel.setBackgroundColor( backgroundColor );
-		borderPanel.addComponent( contentPane, BorderPanel.Constraint.CENTER );
+		borderPanel.addComponent( mainPane, BorderPanel.Constraint.CENTER );
 		borderPanel.addComponent( southPanel, BorderPanel.Constraint.SOUTH );
 		
 		dialog.setDefaultButton( okCancelPanel.getOkButton() );
@@ -200,12 +205,12 @@ public abstract class InputDialogOperation extends AbstractDialogOperation<Input
 
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate.  observer should not need to be added to the root" );
 		Application.getSingleton().getRootContext().addChildrenObserver( this.childrenObserver );
-		this.updateOkOperationAndExplanation();
+		this.updateOkOperationAndExplanation( context );
 
 		return borderPanel;
 	}
 	@Override
-	protected final void releaseContentPane(InputDialogOperationContext context, Dialog dialog, Container<?> contentPane) {
+	protected final void releaseContentPane(InputDialogOperationContext<J> context, Dialog dialog, Container<?> contentPane) {
 		this.epilogue(context, this.isOk);
 		
 		Application.getSingleton().getRootContext().removeChildrenObserver( this.childrenObserver );

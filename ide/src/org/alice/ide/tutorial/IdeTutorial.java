@@ -516,33 +516,33 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 //		};
 //	}
 
-	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > createDeclareProcedureOperationResolver() {
+	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> > createDeclareProcedureOperationResolver() {
 		return new DeclareMemberResolver() {
 			@Override
-			protected edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+			protected edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
 				return org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance( type );
 			}
 		};
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > createDeclareFunctionOperationResolver() {
+	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> > createDeclareFunctionOperationResolver() {
 		return new DeclareMemberResolver() {
 			@Override
-			protected edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+			protected edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
 				return org.alice.ide.operations.ast.DeclareFunctionOperation.getInstance( type );
 			}
 		};
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > createDeclareFieldOperationResolver() {
+	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> > createDeclareFieldOperationResolver() {
 		return new DeclareMemberResolver() {
 			@Override
-			protected edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+			protected edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
 				return org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( type );
 			}
 		};
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation > createDeclareMethodParameterOperationResolver() {
-		return new Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation >() {
-			public edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved() {
+	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> > createDeclareMethodParameterOperationResolver() {
+		return new Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> >() {
+			public edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> getResolved() {
 				edu.cmu.cs.dennisc.alice.ast.AbstractCode code = ide.getFocusedCode();
 				if( code != null ) {
 					if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {

@@ -45,7 +45,7 @@ package org.alice.stageide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class EditPersonActionOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
+public class EditPersonActionOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.stageide.personeditor.PersonEditor> {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	public EditPersonActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "ad113b0e-acb2-4e43-8196-eba6a4961dc8" ) );
@@ -65,7 +65,7 @@ public class EditPersonActionOperation extends edu.cmu.cs.dennisc.croquet.InputD
 	private org.alice.apis.stage.Hair prevHair;
 	private Double prevFitnessLevel;
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
+	protected org.alice.stageide.personeditor.PersonEditor prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.stageide.personeditor.PersonEditor> context) {
 		final org.alice.apis.stage.Person person = this.getMoveAndTurnSceneEditor().getInstanceInJavaForField( this.field, org.alice.apis.stage.Person.class );
 		if( person != null ) {
 			this.prevGender = person.getGender(); 
@@ -81,8 +81,9 @@ public class EditPersonActionOperation extends edu.cmu.cs.dennisc.croquet.InputD
 		return this.personEditor; 
 	}
 	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {
-		final org.alice.apis.stage.Person person = this.personEditor.getPerson();
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.stageide.personeditor.PersonEditor> context, boolean isOk) {
+		org.alice.stageide.personeditor.PersonEditor personEditor = context.getMainPanel();
+		final org.alice.apis.stage.Person person = personEditor.getPerson();
 		if( isOk ) {
 			final org.alice.apis.stage.Gender nextGender = person.getGender();
 			final org.alice.apis.stage.SkinTone nextSkinTone = person.getSkinTone();

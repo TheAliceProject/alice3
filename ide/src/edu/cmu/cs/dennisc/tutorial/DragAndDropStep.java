@@ -196,9 +196,9 @@ package edu.cmu.cs.dennisc.tutorial;
 
 						edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent)child;
 						edu.cmu.cs.dennisc.croquet.ModelContext<?> model = windowOpenedEvent.getParent();
-						if( model instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext ) {
-							edu.cmu.cs.dennisc.croquet.InputDialogOperationContext inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext)model;
-							edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation = inputDialogOperationContext.getModel();
+						if( model instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> ) {
+							edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?>)model;
+							edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> inputDialogOperation = inputDialogOperationContext.getModel();
 							if( inputDialogOperation != null ) {
 								edu.cmu.cs.dennisc.croquet.Dialog dialog = inputDialogOperation.getActiveDialog();
 								if( dialog != null ) {

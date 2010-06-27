@@ -46,34 +46,24 @@ package org.alice.app.operations.file;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectAndLoadProjectOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
+public abstract class SelectAndLoadProjectOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.app.openprojectpane.SelectProjectToOpenPanel> {
 	private org.alice.app.openprojectpane.SelectProjectToOpenPanel selectProjectToOpenPanel;
 	public SelectAndLoadProjectOperation( java.util.UUID individualUUID ) {
 		super( org.alice.app.ProjectApplication.URI_GROUP, individualUUID, "Load Project" );
 	}
 	protected abstract boolean isNew();
-//	@Override
-//	public boolean isOKButtonValid() {
-//		return super.isOKButtonValid() && this.getActualInputValue() != null;
-//	}
-	
 	@Override
-	protected java.awt.Dimension getDesiredDialogSize( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
-		return new java.awt.Dimension( 620, 480 );
-	}
-	
-	@Override
-	protected String getExplanationIfOkButtonShouldBeDisabled() {
+	protected String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.app.openprojectpane.SelectProjectToOpenPanel> context) {
 		assert this.selectProjectToOpenPanel != null;
 		if( this.selectProjectToOpenPanel.getSelectedURI() != null ) {
-			return super.getExplanationIfOkButtonShouldBeDisabled();
+			return super.getExplanationIfOkButtonShouldBeDisabled(context);
 		} else {
 			return "must select project to open.";
 		}
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
+	protected org.alice.app.openprojectpane.SelectProjectToOpenPanel prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.app.openprojectpane.SelectProjectToOpenPanel> context) {
 		if( this.selectProjectToOpenPanel != null ) {
 			//pass
 		} else {
@@ -84,8 +74,9 @@ public abstract class SelectAndLoadProjectOperation extends edu.cmu.cs.dennisc.c
 		return this.selectProjectToOpenPanel;
 	}
 	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.app.openprojectpane.SelectProjectToOpenPanel> context, boolean isOk) {
 		if( isOk ) {
+			org.alice.app.openprojectpane.SelectProjectToOpenPanel selectProjectToOpenPanel = context.getMainPanel();
 			java.net.URI uri = this.selectProjectToOpenPanel.getSelectedURI();
 			if (uri != null) {
 				context.commitAndInvokeDo( new LoadUriEdit( uri ) );
@@ -96,25 +87,8 @@ public abstract class SelectAndLoadProjectOperation extends edu.cmu.cs.dennisc.c
 			context.cancel();
 		}
 	}
-//	@Override
-//	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, Component<?> component ) {
-//		org.alice.app.ProjectApplication application = this.getProjectApplication();
-//		org.alice.app.openprojectpane.OpenProjectPane openProjectPane = application.getOpenProjectPane();
-//		openProjectPane.selectAppropriateTab( this.isNew() );
-//		while( true ) {
-//			java.net.URI uri = openProjectPane.showInJDialog( button, "Open Project" );
-//			//todo: just load default project
-//			if( uri != null ) {
-//				context.commitAndInvokeDo( new LoadUriEdit( context, uri ) );
-//				break;
-//			} else {
-//				if( application.getFile() == null ) {
-//					application.showMessageDialog( "Please select a project to open." );
-//				} else {
-//					context.cancel();
-//					break;
-//				}
-//			}
-//		}
-//	}
+	@Override
+	protected java.awt.Dimension getDesiredDialogSize( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+		return new java.awt.Dimension( 620, 480 );
+	}
 }

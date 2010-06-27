@@ -138,7 +138,7 @@ public class Tutorial {
 		Step step = new DialogOpenAndCloseStep( title, openText, closeText, dialogOperationResolver );
 		return this.addStep( step );
 	}
-	public Step addInputDialogOpenAndCommitStep( String title, String openText, String commitText, Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> inputDialogOperationResolver, CompletorValidator completorValidator ) {
+	public Step addInputDialogOpenAndCommitStep( String title, String openText, String commitText, Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> inputDialogOperationResolver, CompletorValidator completorValidator ) {
 		Step step = new InputDialogOpenAndCommitStep( title, openText, commitText, inputDialogOperationResolver, completorValidator, completorValidator );
 		return this.addStep( step );
 	}

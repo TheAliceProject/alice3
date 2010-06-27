@@ -78,10 +78,10 @@ public class DeclareProcedureOperation extends DeclareMethodOperation {
 		this.validator = validator;
 	}
 	@Override
-	protected String getExplanationIfOkButtonShouldBeDisabled() {
-		String rv = super.getExplanationIfOkButtonShouldBeDisabled();
+	protected String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> context) {
+		String rv = super.getExplanationIfOkButtonShouldBeDisabled(context);
 		if( this.validator != null ) {
-			String explanation = this.validator.getExplanationIfOkButtonShouldBeDisabled( this.getDeclarationName() );
+			String explanation = this.validator.getExplanationIfOkButtonShouldBeDisabled( this.getDeclarationName( context ) );
 			if( explanation != null ) {
 				rv = explanation;
 			}

@@ -45,34 +45,30 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclareMethodOperation extends org.alice.ide.operations.InputDialogWithPreviewOperation {
+public abstract class DeclareMethodOperation extends org.alice.ide.operations.InputDialogWithPreviewOperation<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type;
-	private org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane;
 	public DeclareMethodOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 		this.type = type;
 	}
-	protected String getDeclarationName() {
-		if( this.createMethodPane != null ) {
-			return this.createMethodPane.getDeclarationName();
+	protected String getDeclarationName(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> context) {
+		org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = context.getMainPanel();
+		if( createMethodPane != null ) {
+			return createMethodPane.getDeclarationName();
 		} else {
 			return null;
 		}
 	}
-	@Override
-	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
-		return this.createMethodPane;
-	}
 	protected abstract org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type );
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
-		this.createMethodPane = this.createCreateMethodPane( this.type );
-		return this.createMethodPane;
+	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > > context) {
+		return this.createCreateMethodPane( this.type );
 	}
 	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> context, boolean isOk) {
 		if( isOk ) {
-			final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = this.createMethodPane.getActualInputValue();
+			org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = context.getMainPanel();
+			final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.getActualInputValue();
 			if( method != null ) {
 				final org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 				final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = ide.getFocusedCode();

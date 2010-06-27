@@ -45,7 +45,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class EditTypeOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
+public class EditTypeOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.ide.editorstabbedpane.EditTypePanel> {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
 	public EditTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "027be381-1467-4ca4-82c1-67f908dc0297" ) );
@@ -53,14 +53,12 @@ public class EditTypeOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOpe
 		this.setName( "Edit..." );
 		this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
 	}
-	private org.alice.ide.editorstabbedpane.EditTypePanel editTypePanel;
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > prologue( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
-		this.editTypePanel = new org.alice.ide.editorstabbedpane.EditTypePanel( this.type );
-		return this.editTypePanel;
+	protected org.alice.ide.editorstabbedpane.EditTypePanel prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.editorstabbedpane.EditTypePanel > context ) {
+		return new org.alice.ide.editorstabbedpane.EditTypePanel( this.type );
 	}
 	@Override
-	protected void epilogue( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context, boolean isOk ) {
+	protected void epilogue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.editorstabbedpane.EditTypePanel > context, boolean isOk ) {
 		if( isOk ) {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: EditTypeOperation" );
 		} else {

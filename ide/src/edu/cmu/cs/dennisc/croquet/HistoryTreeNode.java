@@ -168,18 +168,18 @@ package edu.cmu.cs.dennisc.croquet;
 //	
 //}
 
-public abstract class HistoryTreeNode< M extends ModelContext<?> > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable, javax.swing.tree.TreeNode {
-	private M parent;
+public abstract class HistoryTreeNode< C extends ModelContext<?> > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable, javax.swing.tree.TreeNode {
+	private C parent;
 	private java.util.UUID id;
 
 	public HistoryTreeNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.decode( binaryDecoder );
 	}
-	public HistoryTreeNode( M parent ) {
+	public HistoryTreeNode( C parent ) {
 		this.parent = parent;
 		this.id = java.util.UUID.randomUUID();
 	}
-	public M getParent() {
+	public C getParent() {
 		return this.parent;
 	}
 	public java.util.UUID getId() {
@@ -195,6 +195,13 @@ public abstract class HistoryTreeNode< M extends ModelContext<?> > implements ed
 	}
 	public abstract State getState();
 	
+	public ModelContext<?> findContextFor( Model< ? > model ) {
+		if( this.parent != null ) {
+			return this.parent.findContextFor( model );
+		} else {
+			return null;
+		}
+	}
 	protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
 	protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
 	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

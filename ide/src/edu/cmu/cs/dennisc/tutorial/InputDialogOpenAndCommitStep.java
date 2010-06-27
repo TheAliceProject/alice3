@@ -45,10 +45,10 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class InputDialogOpenAndCommitStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.InputDialogOperation> {
+/*package-private*/ class InputDialogOpenAndCommitStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> {
 	private Completor completor;
 	private Validator validator;
-	public InputDialogOpenAndCommitStep( String title, String openText, String commitText, final edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> inputDialogOperationResolver, Completor completor, Validator validator ) {
+	public InputDialogOpenAndCommitStep( String title, String openText, String commitText, final edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> inputDialogOperationResolver, Completor completor, Validator validator ) {
 		super( title, openText, new Hole( inputDialogOperationResolver, Feature.ConnectionPreference.EAST_WEST ), inputDialogOperationResolver );
 		this.completor = completor;
 		this.validator = validator;
