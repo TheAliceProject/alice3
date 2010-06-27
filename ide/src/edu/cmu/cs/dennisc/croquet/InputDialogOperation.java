@@ -131,9 +131,8 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 				this.explanationLabel.setText( NULL_EXPLANATION );
 			}
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: updateOkOperationAndExplanation context==null" );
-//			this.explanationLabel.setText( "todo: updateOkOperationAndExplanation context==null" );
-//			this.okOperation.setEnabled( true );
+			this.explanationLabel.setText( "todo: updateOkOperationAndExplanation context==null" );
+			this.okOperation.setEnabled( true );
 		}
 	}
 

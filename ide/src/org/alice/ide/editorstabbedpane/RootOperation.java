@@ -58,6 +58,14 @@ class TypeFillIn extends edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.denni
 		if( this.type != null ) {
 			blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.EditTypeOperation( this.type ) ) );
 			blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.RenameTypeOperation( this.type ) ) );
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			if( ide.isInstanceCreationAllowableFor( this.type ) ) {
+				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = ide.getSceneType();
+				blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.DeclareFieldOfPredeterminedTypeOperation( ownerType, this.type ) ) );
+			}
+			blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.file.SaveAsTypeOperation( this.type ) ) );
+			blank.addSeparator();
+			blank.addFillIn( new OperatorFillIn( new EditConstructorOperation( this.type.getDeclaredConstructor() ) ) );
 			blank.addSeparator();
 			blank.addFillIn( new OperatorFillIn( org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance( this.type ) ) );
 			for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.type.methods ) {
@@ -73,14 +81,10 @@ class TypeFillIn extends edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.denni
 			}
 			blank.addFillIn( new OperatorFillIn( org.alice.ide.operations.ast.DeclareFunctionOperation.getInstance( this.type ) ) );
 			blank.addSeparator();
-			blank.addFillIn( new OperatorFillIn( new EditConstructorOperation( this.type.getDeclaredConstructor() ) ) );
-			blank.addSeparator();
 			blank.addFillIn( new OperatorFillIn( org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( this.type ) ) );
 			for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : this.type.fields ) {
 				blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.EditFieldOperation( field ) ) );
 			}
-			blank.addSeparator();
-			blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.file.SaveAsTypeOperation( this.type ) ) );
 		} else {
 			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.CancelFillIn( "type is not set.  canceling." ) );
 		}

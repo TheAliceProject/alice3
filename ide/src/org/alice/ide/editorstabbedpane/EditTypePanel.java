@@ -46,7 +46,7 @@ package org.alice.ide.editorstabbedpane;
 /**
  * @author Dennis Cosgrove
  */
-public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
+public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	interface MemberFilter< M extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice > {
 		public boolean isAcceptable( M member );
 	}
@@ -147,24 +147,21 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 				return null;
 			}
 		}
-		public static Integer getIndex( javax.swing.TransferHandler.TransferSupport transferSupport ) {
-			java.awt.datatransfer.Transferable transferable = transferSupport.getTransferable();
-			return getIndex( transferable );
-		}
+//		public static Integer getIndex( javax.swing.TransferHandler.TransferSupport transferSupport ) {
+//			java.awt.datatransfer.Transferable transferable = transferSupport.getTransferable();
+//			return getIndex( transferable );
+//		}
 	}
 	
 	static class ListIndexAsStringTransferHandler extends javax.swing.TransferHandler {
 		@Override
-		public boolean importData( javax.swing.TransferHandler.TransferSupport transferSupport ) {
-			if( this.canImport( transferSupport ) ) {
-				return IndexAsStringSelectionUtilities.getIndex( transferSupport ) != null;
-			} else {
-				return false;
-			}
+		public boolean importData( javax.swing.JComponent comp, java.awt.datatransfer.Transferable t ) {
+			Integer index = IndexAsStringSelectionUtilities.getIndex( t );
+			return index != null;
 		}
 		@Override
-		public boolean canImport( javax.swing.TransferHandler.TransferSupport transferSupport ) {
-			return transferSupport.isDataFlavorSupported( java.awt.datatransfer.DataFlavor.stringFlavor );
+		public boolean canImport( javax.swing.JComponent comp, java.awt.datatransfer.DataFlavor[] transferFlavors ) {
+			return true;
 		}
 	}
 
@@ -174,7 +171,9 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 			final javax.swing.JList rv = new javax.swing.JList();
 			rv.setAlignmentX( 0.0f );
 			rv.setDragEnabled( true );
-			rv.setDropMode( javax.swing.DropMode.INSERT );
+
+			//1.6
+			//rv.setDropMode( javax.swing.DropMode.INSERT );
 			
 			final java.awt.dnd.DragSource dragSource = new java.awt.dnd.DragSource();
 			final javax.swing.ListSelectionModel listSelectionModel = rv.getSelectionModel();
@@ -186,7 +185,8 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 						public void dragDropEnd( java.awt.dnd.DragSourceDropEvent dsde ) {
 							if( dsde.getDropSuccess() ) {
 								
-								// 1.6 getDropLocation()
+								//1.6
+								//getDropLocation()
 								
 								java.awt.Point dropLocation = dsde.getLocation();
 								java.awt.Point listLocation = rv.getLocationOnScreen();
@@ -257,7 +257,7 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 		edu.cmu.cs.dennisc.croquet.PageAxisPanel rv = new edu.cmu.cs.dennisc.croquet.PageAxisPanel();
 		rv.addComponent( list );
 		rv.addComponent( operation.createButton() );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 32, 4, 0 ) );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 16, 4, 0 ) );
 		return rv;
 	}
 
@@ -288,31 +288,36 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 		fieldsList.setBackgroundColor( null );
 
 		edu.cmu.cs.dennisc.croquet.BooleanState proceduresToolPaletteState = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "4236c740-8881-4cf1-82e3-e3aef61c13dd" ), true, "procedures" );
-		edu.cmu.cs.dennisc.croquet.ToolPalette proceduresToolPalette = proceduresToolPaletteState.createToolPalette( 
-				createMembersPanel( proceduresList, org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance( type ) )
-		);
+		edu.cmu.cs.dennisc.croquet.ToolPalette proceduresToolPalette = proceduresToolPaletteState.createToolPalette( createMembersPanel( proceduresList, org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance( type ) ) );
 		proceduresToolPalette.setBackgroundColor( ide.getProcedureColor() );
 
 		edu.cmu.cs.dennisc.croquet.BooleanState functionsToolPaletteState = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "ea7e601f-255b-41aa-bccd-af181c6b3bf0" ), true, "functions" );
-		edu.cmu.cs.dennisc.croquet.ToolPalette functionsToolPalette = functionsToolPaletteState.createToolPalette(  
-				createMembersPanel( functionsList, org.alice.ide.operations.ast.DeclareFunctionOperation.getInstance( type ) )
-		);
+		edu.cmu.cs.dennisc.croquet.ToolPalette functionsToolPalette = functionsToolPaletteState.createToolPalette( createMembersPanel( functionsList, org.alice.ide.operations.ast.DeclareFunctionOperation.getInstance( type ) ) );
 		functionsToolPalette.setBackgroundColor( ide.getFunctionColor() );
 
 		edu.cmu.cs.dennisc.croquet.BooleanState fieldsToolPaletteState = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "7176c895-4e0f-4ebe-98a2-f820b27c9206" ), true, "properties" );
-		edu.cmu.cs.dennisc.croquet.ToolPalette fieldsToolPalette = fieldsToolPaletteState.createToolPalette(   
-				createMembersPanel( fieldsList, org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( type ) )
-		);
+		edu.cmu.cs.dennisc.croquet.ToolPalette fieldsToolPalette = fieldsToolPaletteState.createToolPalette( createMembersPanel( fieldsList, org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( type ) ) );
 		fieldsToolPalette.setBackgroundColor( ide.getFieldColor() );
 
 		proceduresToolPalette.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 		functionsToolPalette.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 		fieldsToolPalette.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 
-		this.addComponent( new Title( type ) );
-		this.addComponent( proceduresToolPalette );
-		this.addComponent( functionsToolPalette );
-		this.addComponent( fieldsToolPalette );
+		edu.cmu.cs.dennisc.croquet.PageAxisPanel pageAxisPanel = new edu.cmu.cs.dennisc.croquet.PageAxisPanel();
+		pageAxisPanel.addComponent( proceduresToolPalette );
+		pageAxisPanel.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 4 ) );
+		pageAxisPanel.addComponent( functionsToolPalette );
+		pageAxisPanel.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 4 ) );
+		pageAxisPanel.addComponent( fieldsToolPalette );
+		pageAxisPanel.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() );
+		pageAxisPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,14,0,0 ) );
+
+		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( pageAxisPanel );
+		scrollPane.setBorder( null );
+		
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
+		this.addComponent( new Title( type ), Constraint.NORTH );
+		this.addComponent( scrollPane, Constraint.CENTER );
 
 		//java.awt.Font font = edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont( this.getFont(), 2.0f );
 		for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this.getAwtComponent(), edu.cmu.cs.dennisc.pattern.HowMuch.DESCENDANTS_ONLY, javax.swing.JComponent.class ) ) {

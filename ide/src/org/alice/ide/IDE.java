@@ -2077,9 +2077,9 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class, "edu.cmu.cs.dennisc.alice.ast.Templates" );
 	}
 
-	public boolean isDeclareFieldOfPredeterminedTypeSupported( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType ) {
-		return true;
-	}
+//	public boolean isDeclareFieldOfPredeterminedTypeSupported( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType ) {
+//		return true;
+//	}
 
 	//	def _isFieldNameFree( self, name ):
 	//		sceneType = self.getSceneType()

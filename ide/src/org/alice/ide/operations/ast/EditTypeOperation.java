@@ -50,8 +50,12 @@ public class EditTypeOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOpe
 	public EditTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "027be381-1467-4ca4-82c1-67f908dc0297" ) );
 		this.type = type;
-		this.setName( "Edit..." );
-		this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
+		this.setName( "<html>Edit <strong>" + this.type.getName() + "</strong>...</html>" );
+		//this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
+	}
+	@Override
+	protected java.awt.Dimension getDesiredDialogSize( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+		return new java.awt.Dimension( 640, 480 );
 	}
 	@Override
 	protected org.alice.ide.editorstabbedpane.EditTypePanel prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.editorstabbedpane.EditTypePanel > context ) {
