@@ -42,10 +42,6 @@
  */
 package edu.cmu.cs.dennisc.tutorial;
 
-import java.awt.event.ComponentEvent;
-
-import edu.cmu.cs.dennisc.croquet.Component;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -125,14 +121,14 @@ import edu.cmu.cs.dennisc.croquet.Component;
 		}
 	};
 	private java.awt.event.ComponentListener componentListener = new java.awt.event.ComponentListener() {
-		public void componentShown(ComponentEvent e) {
+		public void componentShown(java.awt.event.ComponentEvent e) {
 		}
-		public void componentHidden(ComponentEvent e) {
+		public void componentHidden(java.awt.event.ComponentEvent e) {
 		}
-		public void componentMoved(ComponentEvent e) {
+		public void componentMoved(java.awt.event.ComponentEvent e) {
 			repaintAll();
 		}
-		public void componentResized(ComponentEvent e) {
+		public void componentResized(java.awt.event.ComponentEvent e) {
 			repaintAll();
 		}
 	};

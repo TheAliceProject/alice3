@@ -79,10 +79,13 @@ public abstract class Program extends javax.swing.JApplet {
 		this.argNameToValueMap = new java.util.HashMap< String, String >();
 		for( String arg : args ) {
 			int i = arg.indexOf( '=' );
-			assert i != -1;
-			String key = arg.substring( 0, i );
-			String value = arg.substring( i + 1 );
-			this.argNameToValueMap.put( key, value );
+			if( i != -1 ) {
+				String key = arg.substring( 0, i );
+				String value = arg.substring( i + 1 );
+				this.argNameToValueMap.put( key, value );
+			} else {
+				//todo
+			}
 		}
 	}
 

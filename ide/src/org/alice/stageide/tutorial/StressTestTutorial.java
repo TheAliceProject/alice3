@@ -73,6 +73,22 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
+		tutorial.EPIC_HACK_addDeclareProcedureDialogOpenAndCommitStep( 
+				"Declare Procedure Foo", 
+				"Declare procedure...", 
+				"Type <b>foo</b> and press <i>Ok</i>",
+				tutorial.createToDoCompletorValidator(),
+				new org.alice.ide.operations.ast.DeclareProcedureOperation.EPIC_HACK_Validator() {
+					public String getExplanationIfOkButtonShouldBeDisabled( String name ) {
+						if( "foo".equalsIgnoreCase( name ) ) {
+							return null;
+						} else {
+							return "<html>Please enter in the name <b>foo</b> and press <b>Ok</b> button.</html>";
+						}
+					}
+				}
+		);
+
 		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag Move Procedure",
 				"Drag <b>move</b> procedure.",

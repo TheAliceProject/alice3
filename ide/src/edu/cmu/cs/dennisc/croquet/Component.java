@@ -366,7 +366,6 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 
 	public boolean isInView() {
 		java.awt.Rectangle visibleRect = this.getVisibleRectangle();
-		java.awt.Rectangle bounds = this.getBounds();
 		java.awt.Dimension size = this.getAwtComponent().getSize();
 		return visibleRect.width == size.width || visibleRect.height == size.height;
 	}
