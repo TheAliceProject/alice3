@@ -56,7 +56,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		Note commitNote = new Note( commitText );
 		commitNote.addFeature( new InputDialogCommitFeature( new edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
 			public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
-				edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation = inputDialogOperationResolver.getResolved();
+				edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> inputDialogOperation = inputDialogOperationResolver.getResolved();
 				if( inputDialogOperation != null ) {
 					edu.cmu.cs.dennisc.croquet.Dialog activeDialog = inputDialogOperation.getActiveDialog();
 					if( activeDialog != null ) {

@@ -100,7 +100,7 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
-		tutorial.addSpotlightStep(  
+		tutorial.addSpotlightStepForModel(  
 				"Note Do Together",
 				"Note <b>Do Together</b>.",
 				tutorial.createFirstStatementAssignableToPopupMenuResolver( edu.cmu.cs.dennisc.alice.ast.DoTogether.class )
