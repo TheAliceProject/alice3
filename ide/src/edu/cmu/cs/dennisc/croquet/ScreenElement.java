@@ -46,7 +46,24 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface ScreenElement {
-	public java.awt.Component getAwtComponent();
-	public java.awt.Point convertPoint( java.awt.Point pt, ScreenElement asSeenBy );
+public abstract class ScreenElement implements TrackableShape, Resolver< ScreenElement > {
+	/*package-private*/ public abstract java.awt.Component getAwtComponent();
+	public final java.awt.Point convertPoint( java.awt.Point pt, ScreenElement destination ) {
+		return javax.swing.SwingUtilities.convertPoint( this.getAwtComponent(), pt, destination.getAwtComponent() );
+	}
+	public final ScreenElement getResolved() {
+		return this;
+	}
+	public final void addComponentListener(java.awt.event.ComponentListener listener) {
+		this.getAwtComponent().addComponentListener( listener );
+	}
+	public final void removeComponentListener(java.awt.event.ComponentListener listener) {
+		this.getAwtComponent().removeComponentListener( listener );
+	}
+	public final void addHierarchyBoundsListener(java.awt.event.HierarchyBoundsListener listener) {
+		this.getAwtComponent().addHierarchyBoundsListener( listener );
+	}
+	public final void removeHierarchyBoundsListener(java.awt.event.HierarchyBoundsListener listener) {
+		this.getAwtComponent().removeHierarchyBoundsListener( listener );
+	}
 }

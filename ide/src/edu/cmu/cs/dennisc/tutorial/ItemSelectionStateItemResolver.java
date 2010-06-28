@@ -40,20 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package edu.cmu.cs.dennisc.tutorial;
 
-package edu.cmu.cs.dennisc.croquet;
+import edu.cmu.cs.dennisc.croquet.Resolver;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface TrackableShape {
-	public boolean isInView();
-	public ScrollPane getScrollPaneAncestor();
-	public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets );
-	public java.awt.Shape getVisibleShape( ScreenElement asSeenBy, java.awt.Insets insets );
-	
-	public void addComponentListener( java.awt.event.ComponentListener listener );
-	public void removeComponentListener( java.awt.event.ComponentListener listener );
-	public void addHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener );
-	public void removeHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener );
+/* package-private */class ItemSelectionStateItemResolver<E> implements Resolver<edu.cmu.cs.dennisc.croquet.TrackableShape> {
+	private Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver;
+	private Resolver<E> itemResolver;
+
+	public ItemSelectionStateItemResolver(Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<E> itemResolver) {
+		this.itemSelectionStateResolver = itemSelectionStateResolver;
+		this.itemResolver = itemResolver;
+	}
+
+	public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
+		edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState = this.itemSelectionStateResolver.getResolved();
+		if (itemSelectionState != null) {
+			E item = itemResolver.getResolved();
+			return itemSelectionState.getTrackableShapeFor(item);
+		} else {
+			return null;
+		}
+	}
 }

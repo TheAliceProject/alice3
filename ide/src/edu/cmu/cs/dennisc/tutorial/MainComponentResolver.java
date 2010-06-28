@@ -40,20 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package edu.cmu.cs.dennisc.tutorial;
 
-package edu.cmu.cs.dennisc.croquet;
+import edu.cmu.cs.dennisc.croquet.Resolver;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface TrackableShape {
-	public boolean isInView();
-	public ScrollPane getScrollPaneAncestor();
-	public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets );
-	public java.awt.Shape getVisibleShape( ScreenElement asSeenBy, java.awt.Insets insets );
-	
-	public void addComponentListener( java.awt.event.ComponentListener listener );
-	public void removeComponentListener( java.awt.event.ComponentListener listener );
-	public void addHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener );
-	public void removeHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener );
+/* package-private */class MainComponentResolver<E> extends ItemSelectionStateTrackableShapeResolver<E, edu.cmu.cs.dennisc.croquet.JComponent<?>> {
+	public MainComponentResolver(Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<E> itemResolver) {
+		super(itemSelectionStateResolver, itemResolver);
+	}
+
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.JComponent<?> getResolved(edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState, E item) {
+		return itemSelectionState.getMainComponentFor(item);
+	}
 }

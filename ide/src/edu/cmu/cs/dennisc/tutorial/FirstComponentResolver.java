@@ -40,20 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package edu.cmu.cs.dennisc.tutorial;
 
-package edu.cmu.cs.dennisc.croquet;
+import edu.cmu.cs.dennisc.croquet.Resolver;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface TrackableShape {
-	public boolean isInView();
-	public ScrollPane getScrollPaneAncestor();
-	public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets );
-	public java.awt.Shape getVisibleShape( ScreenElement asSeenBy, java.awt.Insets insets );
-	
-	public void addComponentListener( java.awt.event.ComponentListener listener );
-	public void removeComponentListener( java.awt.event.ComponentListener listener );
-	public void addHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener );
-	public void removeHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener );
+/*package-private*/ class FirstComponentResolver implements Resolver< edu.cmu.cs.dennisc.croquet.Component<?> > {
+	private Resolver< ? extends edu.cmu.cs.dennisc.croquet.Model<?> > modelResolver;
+	public FirstComponentResolver( Resolver< ? extends edu.cmu.cs.dennisc.croquet.Model<?> > modelResolver ) {
+		this.modelResolver = modelResolver;
+	}
+	public edu.cmu.cs.dennisc.croquet.Component<?> getResolved() {
+		edu.cmu.cs.dennisc.croquet.Model<?> model = this.modelResolver.getResolved();
+		if( model != null ) {
+			return model.getFirstComponent();
+		} else {
+			return null;
+		}
+	}
 }

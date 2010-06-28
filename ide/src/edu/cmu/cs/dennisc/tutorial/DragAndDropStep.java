@@ -58,7 +58,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	private Completor completor;
 	private Validator validator;
 	public DragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > dropShapeResolver, String popupMenuText, String inputDialogText, Completor completor, Validator validator ) {
-		super( title, text, new Hole( dragResolver, Feature.ConnectionPreference.EAST_WEST ), dragResolver );
+		super( title, text, new Hole( new FirstComponentResolver( dragResolver ), Feature.ConnectionPreference.EAST_WEST ), dragResolver );
 		this.completor = completor;
 		this.validator = validator;
 		Note dropNote = new Note( dropText );

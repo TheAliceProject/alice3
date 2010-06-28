@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	private Completor completor;
 	private Validator validator;
 	public InputDialogOpenAndCommitStep( String title, String openText, String commitText, final edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> inputDialogOperationResolver, Completor completor, Validator validator ) {
-		super( title, openText, new Hole( inputDialogOperationResolver, Feature.ConnectionPreference.EAST_WEST ), inputDialogOperationResolver );
+		super( title, openText, new Hole( new FirstComponentResolver( inputDialogOperationResolver ), Feature.ConnectionPreference.EAST_WEST ), inputDialogOperationResolver );
 		this.completor = completor;
 		this.validator = validator;
 

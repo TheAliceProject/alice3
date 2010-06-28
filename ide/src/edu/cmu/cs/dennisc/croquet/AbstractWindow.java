@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 //todo: better name
-public abstract class AbstractWindow<W extends java.awt.Window> implements ScreenElement, TrackableShape {
+public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenElement {
 	private static java.util.Map< java.awt.Component, AbstractWindow<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
 	/*package-private*/ static AbstractWindow<?> lookup( java.awt.Component component ) {
 		if( component != null ) {
@@ -64,11 +64,9 @@ public abstract class AbstractWindow<W extends java.awt.Window> implements Scree
 		AbstractWindow.map.put( window, this );
 	}
 
+	@Override
 	/*protected*/ public final W getAwtComponent() {
 		return this.window;
-	}
-	public java.awt.Point convertPoint( java.awt.Point pt, ScreenElement asSeenBy ) {
-		return javax.swing.SwingUtilities.convertPoint( this.getAwtComponent(), pt, asSeenBy.getAwtComponent() );
 	}
 	
 	protected abstract javax.swing.JRootPane getRootPane();
@@ -188,6 +186,18 @@ public abstract class AbstractWindow<W extends java.awt.Window> implements Scree
 			}
 			public boolean isInView() {
 				return AbstractWindow.this.isInView();
+			}
+			public void addComponentListener(java.awt.event.ComponentListener listener) {
+				AbstractWindow.this.addComponentListener( listener );
+			}
+			public void removeComponentListener(java.awt.event.ComponentListener listener) {
+				AbstractWindow.this.removeComponentListener( listener );
+			}
+			public void addHierarchyBoundsListener(java.awt.event.HierarchyBoundsListener listener) {
+				AbstractWindow.this.addHierarchyBoundsListener( listener );
+			}
+			public void removeHierarchyBoundsListener(java.awt.event.HierarchyBoundsListener listener) {
+				AbstractWindow.this.removeHierarchyBoundsListener( listener );
 			}
 		};
 	}
