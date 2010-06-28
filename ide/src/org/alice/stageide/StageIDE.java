@@ -346,10 +346,10 @@ public class StageIDE extends org.alice.ide.IDE {
 //		}
 //	}
 
-	public void showInContainer( MoveAndTurnRuntimeProgram rtProgram, edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
-		String[] args = {};
-		rtProgram.showInAWTContainer( container.getAwtComponent(), args );
-	}
+//	public void showInContainer( MoveAndTurnRuntimeProgram rtProgram, edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
+//		String[] args = {};
+//		rtProgram.showInAWTContainer( container.getAwtComponent(), args );
+//	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.DialogOperation createRunOperation() {
 		return new org.alice.stageide.operations.run.RunOperation();
