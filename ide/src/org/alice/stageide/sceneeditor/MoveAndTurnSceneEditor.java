@@ -47,6 +47,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -122,8 +123,19 @@ import edu.cmu.cs.dennisc.zoot.ZManager;
  * @author Dennis Cosgrove
  */
 public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractInstantiatingSceneEditor implements LookingGlassListener{
+	
+	public static interface FieldObserver
+	{
+		public void fieldsAdded( Collection<? extends AbstractField> addedField );
+		public void fieldsRemoved( Collection<? extends AbstractField> removedField );
+		public void fieldsCleared();
+		public void fieldsSet();
+	}
+	
 	private static final int INSET = 8;
 
+	private java.util.List< FieldObserver > fieldObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	
 	private edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createLightweightOnscreenLookingGlass();
 	
 	private class LookingGlassPanel extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JPanel > {
@@ -208,30 +220,57 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.snapGrid = new SnapGrid();
 	}
 
+	public void addFieldObserver( FieldObserver fieldObserver ) {
+		this.fieldObservers.add( fieldObserver );
+	}
+	public void addAndInvokeFieldObserver( FieldObserver fieldObserver ) {
+		this.addFieldObserver(fieldObserver);
+		if (this.sceneType != null)
+		{
+			fieldObserver.equals(this.sceneType.fields);
+			
+		}
+	}
+	
+	public void removeFieldObserver( FieldObserver fieldObserver ) {
+		this.fieldObservers.remove( fieldObserver );
+	}
+	
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > fieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
 		}
 		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-			MoveAndTurnSceneEditor.this.refreshFields();
-			MoveAndTurnSceneEditor.this.handleFieldAdded(e);
+			for (FieldObserver observer : MoveAndTurnSceneEditor.this.fieldObservers)
+			{
+				observer.fieldsAdded(e.getElements());
+			}
 		}
 
 		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
 		}
 		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-			MoveAndTurnSceneEditor.this.refreshFields();
+			for (FieldObserver observer : MoveAndTurnSceneEditor.this.fieldObservers)
+			{
+				observer.fieldsCleared();
+			}
 		}
 
 		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
 		}
 		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-			MoveAndTurnSceneEditor.this.refreshFields();
+			for (FieldObserver observer : MoveAndTurnSceneEditor.this.fieldObservers)
+			{
+				observer.fieldsRemoved(e.getElements());
+			}
 		}
 
 		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
 		}
 		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-			MoveAndTurnSceneEditor.this.refreshFields();
+			for (FieldObserver observer : MoveAndTurnSceneEditor.this.fieldObservers)
+			{
+				observer.fieldsSet();
+			}
 		}
 	};
 
@@ -259,10 +298,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	{
 		for( final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice element : e.getElements() ) 
 		{
-			Object instance = this.getAndRemoveInstanceForInitializingPendingField( element );
-			if( instance != null ) {
-				this.handleFieldCreation( element, instance, true );
-			}
+//			Object instance = this.getAndRemoveInstanceForInitializingPendingField( element );
+//			if( instance != null ) {
+//				this.handleFieldCreation( element, instance, true );
+//			}
 			if (element.getDesiredValueType().isAssignableFrom(CameraMarker.class))
 			{
 				this.mainViewSelector.setSelectedView( element );
@@ -317,16 +356,22 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getRootTypeDeclaredInAlice() {
 		return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)this.rootField.valueType.getValue();
 	}
-	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getRootField() {
-		return this.rootField;
-	}
+
 	public void setRootField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField ) {
 		if( this.rootField != null ) {
 			getRootTypeDeclaredInAlice().fields.removeListPropertyListener( this.fieldsAdapter );
 		}
+		for (FieldObserver observer : this.fieldObservers)
+		{
+			observer.fieldsCleared();
+		}
 		this.rootField = rootField;
 		if( this.rootField != null ) {
 			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
+			for (FieldObserver observer : this.fieldObservers)
+			{
+				observer.fieldsAdded(getRootTypeDeclaredInAlice().fields.getValue());
+			}
 		}
 		this.refreshFields();
 	}
@@ -993,6 +1038,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		if( this.sceneType != null ) {
 			this.sceneType.fields.removeListPropertyListener( this.listPropertyAdapter );
 		}
+		
 
 		Object rv = super.createScene( sceneField );
 		this.sceneType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)sceneField.getValueType();
@@ -1214,7 +1260,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice defaultViewField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice("defaultCameraView", org.alice.apis.moveandturn.PerspectiveCameraMarker.class, initializer);
 			defaultViewField.finalVolatileOrNeither.setValue(edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL);
 			defaultViewField.access.setValue(edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE);
+			
+			getIDE().getSceneEditor().putInstanceForInitializingPendingField( defaultViewField, defaultViewMarker );
+			
 			this.sceneType.fields.add( this.sceneType.fields.size(), defaultViewField );
+			
+			
 			
 			this.handleFieldCreation( defaultViewField, defaultViewMarker, false );
 			

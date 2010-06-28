@@ -125,7 +125,13 @@ public class CameraViewSelector extends JPanel implements ItemListener, ActionLi
 		{
 			if (field.getValueType().isAssignableTo( org.alice.apis.moveandturn.CameraMarker.class ))
 			{
-				fieldBasedOptions.add( new CameraFieldAndMarker(field, getMarkerForField(field)) );
+				CameraMarker marker = getMarkerForField(field); 
+				if (marker == null)
+				{
+					System.out.println("null");
+					marker = getMarkerForField(field); 
+				}
+				fieldBasedOptions.add( new CameraFieldAndMarker(field, marker) );
 			}
 		}
 		//Populate the combobox with the elements

@@ -42,6 +42,8 @@
  */
 package org.alice.ide.sceneeditor;
 
+import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -78,9 +80,15 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 	protected Object getInstanceForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		return this.mapFieldToInstance.get( field );
 	}
+	@Override
+	public void putInstanceForInitializingPendingField(FieldDeclaredInAlice field, Object instance) 
+	{
+		this.putInstanceForField(field, instance);
+	}
+	
 	protected Object getInstanceInJavaForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		Object rv;
-		Object instance = this.mapFieldToInstance.get( field );
+		Object instance = this.getInstanceForField( field );
 		if( instance instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
 			edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
 			rv = instanceInAlice.getInstanceInJava();
