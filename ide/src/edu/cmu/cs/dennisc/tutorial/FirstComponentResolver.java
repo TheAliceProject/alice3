@@ -42,25 +42,22 @@
  */
 package edu.cmu.cs.dennisc.tutorial;
 
+import edu.cmu.cs.dennisc.croquet.Resolver;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class ListSelectionStateStep<E> extends WaitingOnCompleteStep<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> {
-	private edu.cmu.cs.dennisc.croquet.Resolver< ? extends E > desiredValueResolver;
-	public ListSelectionStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState< E >> itemSelectionStateResolver, edu.cmu.cs.dennisc.croquet.Resolver< ? extends E > desiredValueResolver, Feature.ConnectionPreference connectionPreference ) {
-		super( title, text, new ItemSelectionStateItemResolver( itemSelectionStateResolver, desiredValueResolver ), connectionPreference, itemSelectionStateResolver );
-		this.desiredValueResolver = desiredValueResolver;
+/*package-private*/ class FirstComponentResolver implements Resolver< edu.cmu.cs.dennisc.croquet.Component<?> > {
+	private Resolver< ? extends edu.cmu.cs.dennisc.croquet.Model<?> > modelResolver;
+	public FirstComponentResolver( Resolver< ? extends edu.cmu.cs.dennisc.croquet.Model<?> > modelResolver ) {
+		this.modelResolver = modelResolver;
 	}
-	@Override
-	protected boolean isAlreadyInTheDesiredState() {
-		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.getModel().getValue(), this.desiredValueResolver.getResolved() );
-	}
-	@Override
-	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
-		return this.isAlreadyInTheDesiredState();
-	}
-	@Override
-	protected void complete() {
-		this.getModel().setValue( this.desiredValueResolver.getResolved() );
+	public edu.cmu.cs.dennisc.croquet.Component<?> getResolved() {
+		edu.cmu.cs.dennisc.croquet.Model<?> model = this.modelResolver.getResolved();
+		if( model != null ) {
+			return model.getFirstComponent();
+		} else {
+			return null;
+		}
 	}
 }

@@ -119,7 +119,10 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.DialogOperation {
 			vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.KeyListener.class, org.alice.stageide.apis.moveandturn.event.KeyAdapter.class );
 			vm.setEntryPointType( ide.getProgramType() );
 			org.alice.stageide.MoveAndTurnRuntimeProgram rtProgram = new org.alice.stageide.MoveAndTurnRuntimeProgram( ide.getSceneType(), vm );
-			ide.showInContainer( rtProgram, rv );
+
+			String[] args = {};
+			rtProgram.showInAWTContainer( rv.getAwtComponent(), dialog.getAwtComponent(), args );
+
 			ide.disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
 		} else {
 			ide.showMessageDialog( "Please open a project first." );

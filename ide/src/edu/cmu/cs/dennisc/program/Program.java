@@ -194,11 +194,8 @@ public abstract class Program extends javax.swing.JApplet {
 		public void componentResized( java.awt.event.ComponentEvent e ) {
 		}
 	}
-
-	protected void showInWindow( final java.awt.Window window, final boolean isExitDesiredOnClose ) {
-		int xLocation = toInt( getParameter( "X_LOCATION" ), 0 );
-		int yLocation = toInt( getParameter( "Y_LOCATION" ), 0 );
-		window.setLocation( xLocation, yLocation );
+	
+	private void addWindowListener( final java.awt.Window window, final boolean isExitDesiredOnClose ) {
 		window.addWindowListener( new java.awt.event.WindowListener() {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
 //				Program.this.handleShownForTheFirstTime();
@@ -224,6 +221,13 @@ public abstract class Program extends javax.swing.JApplet {
 				Program.this.setClosed( true );
 			}
 		} );
+	}
+
+	protected void showInWindow( java.awt.Window window, boolean isExitDesiredOnClose ) {
+		int xLocation = toInt( getParameter( "X_LOCATION" ), 0 );
+		int yLocation = toInt( getParameter( "Y_LOCATION" ), 0 );
+		window.setLocation( xLocation, yLocation );
+		this.addWindowListener(window, isExitDesiredOnClose);
 		window.addComponentListener( new java.awt.event.ComponentListener() {
 			public void componentHidden( java.awt.event.ComponentEvent e ) {
 			}
@@ -325,7 +329,7 @@ public abstract class Program extends javax.swing.JApplet {
 		showInWindow( window, false );
 	}
 
-	public void showInAWTContainer( java.awt.Container awtContainer, String[] args ) {
+	public void showInAWTContainer( java.awt.Container awtContainer, java.awt.Window awtWindow, String[] args ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "showInAWTContainer", awtContainer, args );
 		setArgs( args );
 		init();
@@ -352,6 +356,10 @@ public abstract class Program extends javax.swing.JApplet {
 		awtContainer.add( this );
 		if( awtContainer instanceof javax.swing.JComponent ) {
 			((javax.swing.JComponent)awtContainer).revalidate();
+		}
+		
+		if( awtWindow != null ) {
+			this.addWindowListener(awtWindow, false);
 		}
 		awtContainer.repaint();
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {

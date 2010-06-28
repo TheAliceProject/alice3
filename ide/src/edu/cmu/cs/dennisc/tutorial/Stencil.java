@@ -191,7 +191,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		if( this.enteredFeature != enteredFeature ) {
 			if( this.enteredFeature != null ) {
 				this.enteredFeature.setEntered( false );
-				java.awt.Rectangle bounds = this.enteredFeature.getBounds( this );
+				java.awt.Rectangle bounds = this.enteredFeature.getBoundsForRepaint( this );
 				if( bounds != null ) {
 					this.getAwtComponent().repaint( bounds );
 				}
@@ -199,7 +199,7 @@ package edu.cmu.cs.dennisc.tutorial;
 			this.enteredFeature = enteredFeature;
 			if( this.enteredFeature != null ) {
 				this.enteredFeature.setEntered( true );
-				java.awt.Rectangle bounds = this.enteredFeature.getBounds( this );
+				java.awt.Rectangle bounds = this.enteredFeature.getBoundsForRepaint( this );
 				if( bounds != null ) {
 					this.getAwtComponent().repaint( bounds );
 				}
@@ -242,9 +242,25 @@ package edu.cmu.cs.dennisc.tutorial;
 						for( Note note : step.getNotes() ) {
 							if( note.isActive() ) {
 								for( Feature feature : note.getFeatures() ) {
-									java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( Stencil.this );
-									if( featureArea != null ) {
-										area.subtract( featureArea );
+									edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = feature.getTrackableShape();
+									if( trackableShape != null ) {
+										if( trackableShape.isInView() ) {
+											java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( Stencil.this );
+											if( featureArea != null ) {
+												area.subtract( featureArea );
+											}
+										} else {
+											edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
+											if( scrollPane != null ) {
+												javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
+												java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
+												area.subtract( new java.awt.geom.Area( rect ) );
+											} else {
+												System.err.println( "cannot find scroll pane for: " + feature );
+											}
+										}
+									} else {
+										System.err.println( "cannot find trackable shape for: " + feature );
 									}
 								}
 							}
@@ -276,9 +292,25 @@ package edu.cmu.cs.dennisc.tutorial;
 					for( Note note : step.getNotes() ) {
 						if( note.isActive() ) {
 							for( Feature feature : note.getFeatures() ) {
-								java.awt.geom.Area featureArea = feature.getAreaToSubstractForContains( Stencil.this );
-								if( featureArea != null ) {
-									area.subtract( featureArea );
+								edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = feature.getTrackableShape();
+								if( trackableShape != null ) {
+									if( trackableShape.isInView() ) {
+										java.awt.geom.Area featureArea = feature.getAreaToSubstractForContains( Stencil.this );
+										if( featureArea != null ) {
+											area.subtract( featureArea );
+										}
+									} else {
+										edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
+										if( scrollPane != null ) {
+											javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
+											java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
+											area.subtract( new java.awt.geom.Area( rect ) );
+										} else {
+											System.err.println( "cannot find scroll pane for: " + feature );
+										}
+									}
+								} else {
+									System.err.println( "cannot find trackable shape for: " + feature );
 								}
 							}
 						}

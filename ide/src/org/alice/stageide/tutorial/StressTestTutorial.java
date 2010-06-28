@@ -57,6 +57,22 @@ public class StressTestTutorial {
 				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
 		);
 
+		tutorial.addSpotlightStepForModel( 
+				"Note Delay",
+				"Note the <b>delay</b> template.",
+				tutorial.createProcedureInvocationTemplateResolver( "delay" )
+		);
+
+		tutorial.addDragAndDropToPopupMenuStep( 
+				"Drag Delay Procedure",
+				"Drag <b>delay</b> procedure.",
+				tutorial.createProcedureInvocationTemplateResolver( "delay" ),
+				"Drop <b>here</b>.",
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+				"Select <b>1.0</b>.",
+				tutorial.createToDoCompletorValidator()
+		);
+
 		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag Move Procedure",
 				"Drag <b>move</b> procedure.",
@@ -440,7 +456,7 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Note Move",
 				"Note that <b>move</b> has been added to your run method.",
 				tutorial.createFirstInvocationResolver( "move" )
@@ -476,7 +492,7 @@ public class StressTestTutorial {
 				"Select <b>2.0</b> from the menus.",
 				tutorial.createToDoCompletorValidator()
 		);
-		tutorial.addDragAndDropStep( 
+		tutorial.addDragAndDropStepForModel( 
 				"Drag Local I",
 				"Drag <b>i</b> local.",
 				tutorial.createLocalNamedResolver( "i" ),
@@ -519,7 +535,7 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
-		tutorial.addDragAndDropStep( 
+		tutorial.addDragAndDropStepForModel( 
 				"Drag Parameter",
 				"Drag <b>howHigh</b> parameter.",
 				tutorial.createFirstParameterResolver(),
@@ -530,7 +546,7 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Note For Each Variable",
 				"Note For Each Variable.",
 				tutorial.createFirstForEachInArrayLoopVariableResolver()
@@ -548,13 +564,13 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Note Move",
 				"Note that <b>move</b> has been added to your run method.",
 				tutorial.createFirstInvocationResolver( "move" )
 		);
 
-		tutorial.addDragAndDropToPopupMenuStep( 
+		tutorial.addDragAndDropToPopupMenuStepForModel( 
 				"Drag For Each In Array Variable",
 				"Drag For Each In Array Variable.",
 				tutorial.createFirstForEachInArrayLoopVariableResolver(),
@@ -591,12 +607,12 @@ public class StressTestTutorial {
 				membersEditor.getTabbedPaneSelectionState(),
 				tutorial.getFunctionsTab()
 		);
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Note isWithinThresholdOf",
 				"Note <b>isWithinThresholdOf</b>.",
 				tutorial.createFunctionInvocationTemplateResolver( "isWithinThresholdOf" )
 		);
-		tutorial.addDragAndDropStep( 
+		tutorial.addDragAndDropStepForModel( 
 				"Drag isWithinThresholdOf",
 				"Drag <b>isWithinThresholdOf</b>.",
 				tutorial.createFunctionInvocationTemplateResolver( "isWithinThresholdOf" ),
@@ -612,7 +628,7 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
-		tutorial.addDragAndDropStep( 
+		tutorial.addDragAndDropStepForModel( 
 				"Drag getDistanceTo",
 				"Drag <b>getDistanceTo</b>.",
 				tutorial.createFunctionInvocationTemplateResolver( "getDistanceTo" ),
@@ -702,7 +718,7 @@ public class StressTestTutorial {
 				tutorial.getProceduresTab()
 		);
 
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"For Each In Array", 
 				"This is the For Each In Array tile.", 
 				tutorial.createForEachInArrayLoopTemplateResolver() 
@@ -716,7 +732,7 @@ public class StressTestTutorial {
 				"Select <b>Other Array...</b>.",
 				tutorial.createToDoCompletorValidator()
 		);
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Do In Order", 
 				"This is the Do In Order tile.", 
 				tutorial.createDoInOrderTemplateResolver() 
@@ -739,7 +755,7 @@ public class StressTestTutorial {
 				ide.getRunOperation() 
 		);
 		
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Count Loop", 
 				"This is the Count Loop tile.", 
 				tutorial.createCountLoopTemplateResolver() 
@@ -753,7 +769,7 @@ public class StressTestTutorial {
 				"Select <b>2</b>.",
 				tutorial.createToDoCompletorValidator()
 		);
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Do Together", 
 				"This is the Do Together tile.", 
 				tutorial.createDoTogetherTemplateResolver() 
@@ -766,7 +782,7 @@ public class StressTestTutorial {
 				tutorial.createCurrentMethodBodyStatementListResolver( 1 ),
 				tutorial.createToDoCompletorValidator()
 		);
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Note Do Together", 
 				"Note <b>Do Together</b>.",
 				tutorial.createFirstStatementAssignableToResolver( edu.cmu.cs.dennisc.alice.ast.DoTogether.class )
@@ -777,7 +793,7 @@ public class StressTestTutorial {
 				"This is the scene editor.", 
 				ide.getSceneEditor() 
 		);
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Curent Instance", 
 				"The current instance is displayed here.", 
 				ide.getAccessibleListState()
@@ -788,7 +804,7 @@ public class StressTestTutorial {
 				membersEditor 
 		);
 
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Instance Details", 
 				"This is the code editor.", 
 				ide.getEditorsTabSelectionState() 
@@ -887,7 +903,7 @@ public class StressTestTutorial {
 				"Select <b>1.0</b> from the menu.",
 				tutorial.createToDoCompletorValidator()
 		);
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Note Delay",
 				"Note that <b>delay</b> has been added to your run method.",
 				tutorial.createFirstInvocationResolver("delay")
@@ -901,7 +917,7 @@ public class StressTestTutorial {
 				"Select <b>2.0</b> from the menu.",
 				tutorial.createToDoCompletorValidator()
 		);
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Note Resize",
 				"Note that <b>resize</b> has been added to your run method.",
 				tutorial.createFirstInvocationResolver("resize")
@@ -916,7 +932,7 @@ public class StressTestTutorial {
 				"Select <b>FORWARD</b> and <b>1.0</b> from the menus.",
 				tutorial.createToDoCompletorValidator()
 		);
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Note Move",
 				"Note that <b>move</b> has been added to your run method.",
 				tutorial.createFirstInvocationResolver("move")
@@ -931,7 +947,7 @@ public class StressTestTutorial {
 				"Select <b>LEFT</b> and <b>0.25</b> from the menus.",
 				tutorial.createToDoCompletorValidator()
 		);
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Note Turn",
 				"Note that <b>turn</b> has been added to your run method.",
 				tutorial.createFirstInvocationResolver("turn")

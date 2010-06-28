@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Model<M> implements TrackableShape, Resolver< M > {
+public abstract class Model<M> implements Resolver< M > {
 	private Group group;
 	private java.util.UUID inividualUUID;
 	public Model( Group group, java.util.UUID inividualUUID ) {
@@ -210,38 +210,39 @@ public abstract class Model<M> implements TrackableShape, Resolver< M > {
 			this.firstComponentHint = firstComponentHint;
 		}
 	}
-	public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
-		Component< ? > component = this.getFirstComponent();
-		if( component != null ) {
-			return component.getShape( asSeenBy, insets );
-		} else {
-			return null;
-		}
-	}
-	public java.awt.Shape getVisibleShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
-		Component< ? > component = this.getFirstComponent();
-		if( component != null ) {
-			return component.getVisibleShape( asSeenBy, insets );
-		} else {
-			return null;
-		}
-	}
-	public ScrollPane getScrollPaneAncestor() {
-		Component< ? > component = this.getFirstComponent();
-		if( component != null ) {
-			return component.getScrollPaneAncestor();
-		} else {
-			return null;
-		}
-	}
-	public boolean isInView() {
-		Component< ? > component = this.getFirstComponent();
-		if( component != null ) {
-			return component.isInView();
-		} else {
-			return false;
-		}
-	}
+//	public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
+//		Component< ? > component = this.getFirstComponent();
+//		if( component != null ) {
+//			return component.getShape( asSeenBy, insets );
+//		} else {
+//			return null;
+//		}
+//	}
+//	public java.awt.Shape getVisibleShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
+//		Component< ? > component = this.getFirstComponent();
+//		if( component != null ) {
+//			return component.getVisibleShape( asSeenBy, insets );
+//		} else {
+//			return null;
+//		}
+//	}
+//	public ScrollPane getScrollPaneAncestor() {
+//		Component< ? > component = this.getFirstComponent();
+//		if( component != null ) {
+//			return component.getScrollPaneAncestor();
+//		} else {
+//			return null;
+//		}
+//	}
+//	public boolean isInView() {
+//		Component< ? > component = this.getFirstComponent();
+//		if( component != null ) {
+//			return component.isInView();
+//		} else {
+//			return false;
+//		}
+//	}
+
 //	@Deprecated
 //	public <J extends Component<?>> J getFirstComponent( Class<J> cls ) {
 //		for( Component<?> component : this.components ) {

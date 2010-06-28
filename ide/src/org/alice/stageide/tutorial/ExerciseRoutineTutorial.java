@@ -66,7 +66,7 @@ public class ExerciseRoutineTutorial {
 				"The currently selected instance procedures, functions, and properties are displayed here.", 
 				membersEditor 
 		);
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Curent Instance", 
 				"The currently selected instance is <strong>daughter</strong>.", 
 				ide.getAccessibleListState()
@@ -97,7 +97,7 @@ public class ExerciseRoutineTutorial {
 				}
 		);
 
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Code Editor", 
 				"This is the code editor.", 
 				ide.getEditorsTabSelectionState() 

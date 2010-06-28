@@ -841,6 +841,18 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 						public edu.cmu.cs.dennisc.croquet.ScrollPane getScrollPaneAncestor() {
 							return statementListPropertyPane.getScrollPaneAncestor();
 						}
+						public void addComponentListener(java.awt.event.ComponentListener listener) {
+							statementListPropertyPane.addComponentListener(listener);
+						}
+						public void removeComponentListener(java.awt.event.ComponentListener listener) {
+							statementListPropertyPane.removeComponentListener(listener);
+						}
+						public void addHierarchyBoundsListener(java.awt.event.HierarchyBoundsListener listener) {
+							statementListPropertyPane.addHierarchyBoundsListener(listener);
+						}
+						public void removeHierarchyBoundsListener(java.awt.event.HierarchyBoundsListener listener) {
+							statementListPropertyPane.removeHierarchyBoundsListener(listener);
+						}
 					};
 				}
 			}

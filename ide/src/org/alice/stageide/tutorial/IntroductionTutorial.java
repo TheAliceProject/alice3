@@ -82,7 +82,7 @@ public class IntroductionTutorial {
 				"This is the scene editor.", 
 				ide.getSceneEditor() 
 		);
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Curent Instance", 
 				"The current instance is displayed here.", 
 				ide.getAccessibleListState()
@@ -93,7 +93,7 @@ public class IntroductionTutorial {
 				membersEditor 
 		);
 
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Instance Details", 
 				"This is the code editor.", 
 				ide.getEditorsTabSelectionState() 
@@ -109,13 +109,13 @@ public class IntroductionTutorial {
 				"In this tutorial, we're going to make the <b>iceSkater</b> perform a routine."
 		);
 
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Prepare To Skate", 
 				"Right now, her routine is pretty simple.<p>First she <b>prepares to skate</b>...",
 				tutorial.createFirstInvocationResolver( "prepareToSkate" )
 				
 		);
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Do Simple Spin", 
 				"Second, she <b>does a simple spin</b>.",
 				tutorial.createFirstInvocationResolver( "doSimpleSpin" )
@@ -181,7 +181,7 @@ public class IntroductionTutorial {
 					}
 				}
 		);
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Note iceSkater.skate( 2 )",
 				"This line tells the <b>iceSkater</b> to skate <b>2</b> strides.",
 				tutorial.createFirstInvocationResolver( "skate" )
@@ -240,7 +240,7 @@ public class IntroductionTutorial {
 					}
 				}
 		);
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Note iceSkater.skateBackwards( 1 )",
 				"This line tells the <b>iceSkater</b> to skate backwards <b>1</b> stride.",
 				tutorial.createFirstInvocationResolver( "skateBackwards" )
@@ -273,7 +273,7 @@ public class IntroductionTutorial {
 					}
 				}
 		);
-		tutorial.addSpotlightStep( 
+		tutorial.addSpotlightStepForModel( 
 				"Note iceSkater.jump()",
 				"This line tells the <b>iceSkater</b> to jump.",
 				tutorial.createFirstInvocationResolver("jump")
