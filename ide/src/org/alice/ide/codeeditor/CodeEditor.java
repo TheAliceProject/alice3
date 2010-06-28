@@ -832,11 +832,16 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 							return rv;
 						}
 						public java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.ScreenElement asSeenBy, java.awt.Insets insets ) {
-							java.awt.Rectangle bounds = CodeEditor.this.getAsSeenBy().convertRectangle( boundsAtIndex, asSeenBy );
-							//note: ignore insets
-//								java.awt.Rectangle visibleBounds = statementListPropertyPane.getVisibleRectangle( asSeenBy );
-//								return bounds.intersection( visibleBounds );
-							return bounds;
+							edu.cmu.cs.dennisc.croquet.Component<?> src = CodeEditor.this.getAsSeenBy();
+							if( src != null ) {
+								java.awt.Rectangle bounds = src.convertRectangle( boundsAtIndex, asSeenBy );
+								//note: ignore insets
+//									java.awt.Rectangle visibleBounds = statementListPropertyPane.getVisibleRectangle( asSeenBy );
+//									return bounds.intersection( visibleBounds );
+								return bounds;
+							} else {
+								return null;
+							}
 						}
 						public boolean isInView() {
 							if( isWarningAlreadyPrinted ) {
