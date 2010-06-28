@@ -227,7 +227,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		this.setEnteredFeature( null );
 	}
 	
-	private static void drawBounds( java.awt.Graphics2D g2, java.awt.Rectangle rect ) {
+	private static void drawScrollFeedback( java.awt.Graphics2D g2, java.awt.Rectangle rect ) {
 		g2.setColor( java.awt.Color.BLACK );
 		g2.drawRect( rect.x, rect.y, rect.width, rect.height );
 		g2.setColor( java.awt.Color.YELLOW );
@@ -235,6 +235,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		g2.setColor( java.awt.Color.BLACK );
 		g2.drawRect( rect.x-2, rect.y-2, rect.width+4, rect.height+4 );
 	}
+
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
 		class JStencil extends javax.swing.JPanel {
@@ -243,8 +244,6 @@ package edu.cmu.cs.dennisc.tutorial;
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
 				java.awt.Paint prevPaint = g2.getPaint();
 				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-
-				boolean isScrollRequired = false;
 
 				Step step = Stencil.this.getCurrentStep();
 				if( Stencil.this.isPaintingStencilEnabled() ) {
@@ -266,7 +265,6 @@ package edu.cmu.cs.dennisc.tutorial;
 												javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
 												java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
 												area.subtract( new java.awt.geom.Area( rect ) );
-												isScrollRequired = true;
 											} else {
 												System.err.println( "cannot find scroll pane for: " + feature );
 											}
@@ -292,7 +290,17 @@ package edu.cmu.cs.dennisc.tutorial;
 							}
 						}
 					}
-					if( isScrollRequired ) {
+				}
+				g2.setPaint( prevPaint );
+			}
+			
+			@Override
+			public void paint(java.awt.Graphics g) {
+				super.paint(g);
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+				Step step = Stencil.this.getCurrentStep();
+				if( Stencil.this.isPaintingStencilEnabled() ) {
+					if( step != null ) {
 						for( Note note : step.getNotes() ) {
 							if( note.isActive() ) {
 								for( Feature feature : note.getFeatures() ) {
@@ -309,36 +317,40 @@ package edu.cmu.cs.dennisc.tutorial;
 												if( shape != null ) {
 													java.awt.geom.Rectangle2D bounds = shape.getBounds2D();
 													double portion = bounds.getCenterY() / view.getHeight();
-
+		
 													javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
 													java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
-
+		
 													StringBuilder sb = new StringBuilder();
 													sb.append( "You must SCROLL " );
 													
-													if( bounds.getX() > scrollBar.getValue() ) {
+													javax.swing.JViewport viewport = scrollPane.getAwtComponent().getViewport();
+													java.awt.Rectangle viewBounds = viewport.getViewRect();
+													if( bounds.getY() < viewBounds.y ) {
+														sb.append( "UP" );
+													} else if( bounds.getY() > ( viewBounds.y + viewBounds.height ) ) {
 														sb.append( "DOWN" );
 													} else {
-														sb.append( "UP" );
+														//pass
 													}
 													sb.append( " first." );
 													
 													String s = sb.toString();
-
+		
 													java.awt.FontMetrics fm = g2.getFontMetrics();
 													java.awt.Rectangle textBounds = fm.getStringBounds( s, g2 ).getBounds();
 													
-													textBounds.x += rect.x + rect.width + 32;
+													textBounds.x += rect.x + rect.width + 12;
 													textBounds.y += rect.y + rect.height/2;
 													
 													
 													edu.cmu.cs.dennisc.java.awt.RectangleUtilties.inset( textBounds, new java.awt.Insets( 4,4,4,4 ) );
 													g2.setColor( java.awt.Color.WHITE );
 													g2.fill( textBounds );
-													drawBounds( g2, textBounds );
+													drawScrollFeedback( g2, textBounds );
 													edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText(g2, s, textBounds );
-
-													drawBounds( g2, rect );
+		
+													drawScrollFeedback( g2, rect );
 													int y = rect.y + (int)( rect.height * portion );
 													
 													float xSize = 24.0f;
@@ -350,12 +362,12 @@ package edu.cmu.cs.dennisc.tutorial;
 													path.closePath();
 													
 													java.awt.geom.AffineTransform m = g2.getTransform();
-													g2.translate( rect.x, y );
+													g2.translate( rect.x-2, y );
 													g2.setColor( java.awt.Color.YELLOW );
 													g2.fill( path );
 													g2.setColor( java.awt.Color.BLACK );
 													g2.draw( path );
-													g2.translate( rect.width, 0 );
+													g2.translate( rect.width+4, 0 );
 													g2.rotate( Math.PI );
 													g2.setColor( java.awt.Color.YELLOW );
 													g2.fill( path );
@@ -371,7 +383,6 @@ package edu.cmu.cs.dennisc.tutorial;
 						}
 					}
 				}
-				g2.setPaint( prevPaint );
 			}
 
 			@Override
