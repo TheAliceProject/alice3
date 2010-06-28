@@ -344,11 +344,11 @@ package edu.cmu.cs.dennisc.tutorial;
 													textBounds.y += rect.y + rect.height/2;
 													
 													
-													edu.cmu.cs.dennisc.java.awt.RectangleUtilties.inset( textBounds, new java.awt.Insets( 4,4,4,4 ) );
+													edu.cmu.cs.dennisc.java.awt.RectangleUtilities.inset( textBounds, new java.awt.Insets( 4,4,4,4 ) );
 													g2.setColor( java.awt.Color.WHITE );
 													g2.fill( textBounds );
 													drawScrollFeedback( g2, textBounds );
-													edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText(g2, s, textBounds );
+													edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText(g2, s, textBounds );
 		
 													drawScrollFeedback( g2, rect );
 													int y = rect.y + (int)( rect.height * portion );
