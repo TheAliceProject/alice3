@@ -268,25 +268,25 @@ public class RelationalInfixExpression extends InfixExpression< RelationalInfixE
 		};
 		public abstract Boolean operate( Object leftOperand, Object rightOperand );
 	}
-	public DeclarationProperty<AbstractType> leftOperandType = new DeclarationProperty<AbstractType>( this );
-	public DeclarationProperty<AbstractType> rightOperandType = new DeclarationProperty<AbstractType>( this );
+	public DeclarationProperty<AbstractType<?,?,?>> leftOperandType = new DeclarationProperty<AbstractType<?,?,?>>( this );
+	public DeclarationProperty<AbstractType<?,?,?>> rightOperandType = new DeclarationProperty<AbstractType<?,?,?>>( this );
 	public RelationalInfixExpression() {
 	}
-	public RelationalInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand, AbstractType leftOperandType, AbstractType rightOperandType ) {
+	public RelationalInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand, AbstractType<?,?,?> leftOperandType, AbstractType<?,?,?> rightOperandType ) {
 		super( leftOperand, operator, rightOperand );
 		this.leftOperandType.setValue( leftOperandType );
 		this.rightOperandType.setValue( rightOperandType );
 	}
 	@Override
-	protected AbstractType getLeftOperandType() {
+	protected AbstractType<?,?,?> getLeftOperandType() {
 		return this.leftOperandType.getValue();
 	}
 	@Override
-	protected AbstractType getRightOperandType() {
+	protected AbstractType<?,?,?> getRightOperandType() {
 		return this.rightOperandType.getValue();
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		return TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE;
 	}
 	@Override
@@ -295,8 +295,8 @@ public class RelationalInfixExpression extends InfixExpression< RelationalInfixE
 		if( value == TypeDeclaredInJava.DOUBLE_OBJECT_TYPE ) {
 			value = TypeDeclaredInJava.get( Number.class );
 		}
-		this.leftOperandType.setValue( (AbstractType)value );
-		this.rightOperandType.setValue( (AbstractType)value );
+		this.leftOperandType.setValue( (AbstractType<?,?,?>)value );
+		this.rightOperandType.setValue( (AbstractType<?,?,?>)value );
 	}
 	
 }

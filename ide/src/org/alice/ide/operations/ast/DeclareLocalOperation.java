@@ -45,32 +45,29 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareLocalOperation extends org.alice.ide.operations.InputDialogWithPreviewOperation {
-	private org.alice.ide.declarationpanes.CreateLocalPane createLocalPane;
+public class DeclareLocalOperation extends org.alice.ide.operations.InputDialogWithPreviewOperation<org.alice.ide.declarationpanes.CreateLocalPane> {
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement block;
+	@Deprecated
 	private edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement localDeclarationStatement;
 	public DeclareLocalOperation( edu.cmu.cs.dennisc.alice.ast.BlockStatement block ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "aa3d337d-b409-46ae-816f-54f139b32d86" ) );
 		this.block = block;
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
-		this.localDeclarationStatement = null;
-		this.createLocalPane = new org.alice.ide.declarationpanes.CreateLocalPane( this.block );
-		return this.createLocalPane;
-	}
-	@Override
-	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
-		return this.createLocalPane;
-	}
-	
+	@Deprecated
 	public edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement getLocalDeclarationStatement() {
 		return this.localDeclarationStatement;
 	}
 	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {
+	protected org.alice.ide.declarationpanes.CreateLocalPane prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateLocalPane> context) {
+		this.localDeclarationStatement = null;
+		return new org.alice.ide.declarationpanes.CreateLocalPane( this.block );
+	}
+	@Override
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateLocalPane> context, boolean isOk) {
 		if( isOk ) {
-			this.localDeclarationStatement = this.createLocalPane.getActualInputValue();
+			org.alice.ide.declarationpanes.CreateLocalPane createLocalPane = context.getMainPanel();
+			this.localDeclarationStatement = createLocalPane.getActualInputValue();
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: DeclareLocalOperation" );
 			context.finish();
 		} else {
 			context.cancel();

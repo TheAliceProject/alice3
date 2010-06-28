@@ -46,13 +46,13 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class ArrayInstanceCreation extends Expression {
-	public DeclarationProperty< AbstractType > arrayType = new DeclarationProperty< AbstractType >( this );
+	public DeclarationProperty< AbstractType<?,?,?> > arrayType = new DeclarationProperty< AbstractType<?,?,?> >( this );
 	public edu.cmu.cs.dennisc.property.ListProperty< Integer > lengths = new edu.cmu.cs.dennisc.property.ListProperty< Integer >( this );
 	public ExpressionListProperty expressions = new ExpressionListProperty( this );
 
 	public ArrayInstanceCreation() {
 	}
-	public ArrayInstanceCreation( AbstractType arrayType, Integer[] lengths, Expression... expressions ) {
+	public ArrayInstanceCreation( AbstractType<?,?,?> arrayType, Integer[] lengths, Expression... expressions ) {
 		this.arrayType.setValue( arrayType );
 		this.lengths.add( lengths );
 		this.expressions.add( expressions );
@@ -62,7 +62,7 @@ public class ArrayInstanceCreation extends Expression {
 	}
 	
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		return arrayType.getValue();
 	}
 }

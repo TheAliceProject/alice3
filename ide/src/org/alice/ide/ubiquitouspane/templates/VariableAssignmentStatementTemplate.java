@@ -64,7 +64,7 @@ public class VariableAssignmentStatementTemplate extends CascadingUbiquitousStat
 		return this.variable.getName() + "\u2190\u2423";
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
 		assert this.variable != null;
 		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { this.variable.valueType.getValue() };
 	}

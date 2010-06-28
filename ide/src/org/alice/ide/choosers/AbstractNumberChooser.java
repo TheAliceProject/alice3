@@ -116,7 +116,11 @@ abstract class NumberModel extends edu.cmu.cs.dennisc.croquet.StringState {
 			if( N > 0 ) {
 				try {
 					edu.cmu.cs.dennisc.alice.ast.Expression rv = this.valueOf( document.getText( 0, N ) );
-					return null;
+					if( rv != null ) {
+						return null;
+					} else {
+						return document.getText( 0, document.getLength() ) + " is not valid.";
+					}
 				} catch( NumberFormatException nfe ) {
 					return document.getText( 0, document.getLength() ) + " is not valid.";
 				}

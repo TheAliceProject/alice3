@@ -59,7 +59,7 @@ package org.alice.ide.memberseditor.templates;
 		return org.alice.ide.ast.NodeUtilities.createIncompleteAssignmentExpression( this.field );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
 		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { this.field.getDesiredValueType() };
 	}
 	@Override

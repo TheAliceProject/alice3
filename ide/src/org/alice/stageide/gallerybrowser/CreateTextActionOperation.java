@@ -42,9 +42,12 @@
  */
 package org.alice.stageide.gallerybrowser;
 
+import org.alice.ide.operations.ast.DeclareFieldEdit;
+
 /**
  * @author Dennis Cosgrove
  */
+//class CreateTextPane extends org.alice.ide.declarationpanes.CreateLargelyPredeterminedFieldPane {
 class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 	private static abstract class TextAttributeSelectionOperation extends edu.cmu.cs.dennisc.croquet.ListSelectionState<String> {
 		public TextAttributeSelectionOperation( java.util.UUID individualId, int selectedIndex, String... items ) {
@@ -141,6 +144,8 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 
 	private edu.cmu.cs.dennisc.croquet.Label sample;
 
+//	public CreateTextPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+//		super( declaringType, org.alice.apis.moveandturn.Billboard.class, null );
 	public CreateTextPane() {
 		final int INSET = 16;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
@@ -310,7 +315,8 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 			this.instanceNameVC.setText( instanceName );
 		}
 	}
-	protected org.alice.apis.moveandturn.Text getActualInputValue() {
+
+	protected org.alice.apis.moveandturn.Text createText() {
 		org.alice.apis.moveandturn.Text rv = new org.alice.apis.moveandturn.Text();
 		org.alice.apis.moveandturn.font.FamilyAttribute familyAttribute = this.familySelection.getFamilyAttribute();
 		org.alice.apis.moveandturn.font.WeightAttribute weightAttribute = this.styleSelection.getWeightAttribute();
@@ -322,39 +328,30 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 		rv.setLetterHeight( Double.parseDouble( this.heightTextField.getText() ) );
 		return rv;
 	}
-//	public static void main( String[] args ) {
-//		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
-//		CreateTextPane createTextPane = new CreateTextPane();
-//		org.alice.apis.moveandturn.Text text = createTextPane.showInJDialog( ide.getJFrame() );
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( text );
-//		System.exit( 0 );
-//	}
+	
 }
 
 /**
  * @author Dennis Cosgrove
  */
-class CreateTextActionOperation extends AbstractGalleryDeclareFieldOperation {
-	private CreateTextPane createTextPane;
+class CreateTextActionOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.stageide.gallerybrowser.CreateTextPane> {
 	public CreateTextActionOperation() {
-		super( java.util.UUID.fromString( "37c0a6d6-a21b-4abb-829b-bd3621cada8d" ) );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "37c0a6d6-a21b-4abb-829b-bd3621cada8d" ) );
 		this.setName( "Create Text..." );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: extend AbstractGalleryDeclareFieldOperation" );
 	}
+
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
-		this.createTextPane = new CreateTextPane(); 
-		return this.createTextPane;
+	protected org.alice.stageide.gallerybrowser.CreateTextPane prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.gallerybrowser.CreateTextPane > context ) {
+		return new CreateTextPane(); 
 	}
-	@Override
-	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
-		return null;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.ModelContext context ) {
+	
+	private edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.gallerybrowser.CreateTextPane > context ) {
 		//"Create Text"
-		org.alice.apis.moveandturn.Text text = this.createTextPane.getActualInputValue();
+		CreateTextPane createTextPane = context.getMainPanel();
+		org.alice.apis.moveandturn.Text text = createTextPane.createText();
 		if( text != null ) {
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = this.getIDE().getTypeDeclaredInAliceFor( org.alice.apis.moveandturn.Text.class );
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = org.alice.ide.IDE.getSingleton().getTypeDeclaredInAliceFor( org.alice.apis.moveandturn.Text.class );
 			edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( type );
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( text.getName(), type, initializer );
 			field.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
@@ -362,6 +359,34 @@ class CreateTextActionOperation extends AbstractGalleryDeclareFieldOperation {
 			return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object >( field, text );
 		} else {
 			return null;
+		}
+	}
+	
+	private final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
+		return org.alice.ide.IDE.getSingleton().getSceneType();
+	}
+	private boolean isInstanceValid() {
+		return true;
+	}
+	
+	@Override
+	protected final void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.stageide.gallerybrowser.CreateTextPane> context, boolean isOk) {
+		if( isOk ) {
+			edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> tuple = this.createFieldAndInstance( context );
+			if( tuple != null ) {
+				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
+				if( field != null ) {
+					edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType = this.getOwnerType();
+					int index = ownerType.fields.size();
+					context.commitAndInvokeDo( new DeclareFieldEdit( ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
+				} else {
+					context.cancel();
+				}
+			} else {
+				context.cancel();
+			}
+		} else {
+			context.cancel();
 		}
 	}
 }

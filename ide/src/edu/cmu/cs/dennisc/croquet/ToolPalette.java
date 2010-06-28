@@ -48,20 +48,28 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public class ToolPalette extends BorderPanel {
 	private AbstractButton<?,BooleanState> title;
-	private Component< ? > component;
-	/*package-private*/ ToolPalette( AbstractButton<?,BooleanState> title, Component<?> component ) {
+	private Component< ? > mainComponent;
+	/*package-private*/ ToolPalette( AbstractButton<?,BooleanState> title, Component<?> mainComponent ) {
 		this.title = title;
-		this.component = component;
+		this.mainComponent = mainComponent;
 		this.addComponent( this.title, Constraint.NORTH );
-		this.addComponent( this.component, Constraint.CENTER );
+		this.addComponent( this.mainComponent, Constraint.CENTER );
 	}
 	private BooleanState.ValueObserver valueObserver = new BooleanState.ValueObserver() {
 		public void changing(boolean nextValue) {
 		}
 		public void changed(boolean nextValue) {
-			component.setVisible( nextValue );
+			mainComponent.setVisible( nextValue );
 		}
 	};
+	
+	public AbstractButton< ?, BooleanState > getTitle() {
+		return this.title;
+	}
+	public Component< ? > getMainComponent() {
+		return this.mainComponent;
+	}
+
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo(parent);
@@ -72,4 +80,11 @@ public class ToolPalette extends BorderPanel {
 		this.title.getModel().removeValueObserver( this.valueObserver );
 		super.handleRemovedFrom(parent);
 	}
+	
+	@Override
+	public void setBackgroundColor( java.awt.Color color ) {
+		super.setBackgroundColor( color );
+		this.title.setBackgroundColor( color );
+	}
+	
 }

@@ -45,8 +45,16 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class InputDialogOperationContext extends AbstractDialogOperationContext<InputDialogOperation> {
+public class InputDialogOperationContext<J extends Component<?>> extends AbstractDialogOperationContext<InputDialogOperation<J>> {
+	private J mainPanel;
 	/*package-private*/ InputDialogOperationContext( ModelContext<?> parent, InputDialogOperation inputDialogOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( parent, inputDialogOperation, e, viewController );
+	}
+	
+	public J getMainPanel() {
+		return this.mainPanel;
+	}
+	/*package-private*/ void setMainPanel( J mainPanel ) {
+		this.mainPanel = mainPanel;
 	}
 }

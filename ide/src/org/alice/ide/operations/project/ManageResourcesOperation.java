@@ -42,21 +42,22 @@
  */
 package org.alice.ide.operations.project;
 
-public class ManageResourcesOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
+public class ManageResourcesOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.ide.resource.manager.ResourceManagerPane> {
 	public ManageResourcesOperation() {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "ec7dc4b0-d1f8-420d-b6f0-7a25bd92639d" ) );
 		this.setName( "Manage Resources..." );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ManageResourcesOperation handle cancel" );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle cancel" );
+	protected org.alice.ide.resource.manager.ResourceManagerPane prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.resource.manager.ResourceManagerPane> context) {
 		return new org.alice.ide.resource.manager.ResourceManagerPane();
 	}
 	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.resource.manager.ResourceManagerPane> context, boolean isOk) {
 		if( isOk ) {
 			context.finish();
 		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle cancel" );
 			context.cancel();
 		}
 	}

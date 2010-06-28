@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orientation, edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orientation {
 	private static final OrthogonalMatrix3x3 IDENTITY = new OrthogonalMatrix3x3();
 	public static OrthogonalMatrix3x3 accessIdentity() {
 		IDENTITY.setIdentity();

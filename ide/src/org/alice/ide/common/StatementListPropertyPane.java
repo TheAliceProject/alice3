@@ -85,6 +85,17 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 	}
 	
 	@Override
+	protected int getBoxLayoutPad() {
+		int rv;
+		if( this.getProperty().getOwner() instanceof edu.cmu.cs.dennisc.alice.ast.DoTogether ) {
+			rv = 0;
+		} else {
+			rv = INTRASTICIAL_PAD;
+		}
+		return rv;
+	}
+
+	@Override
 	protected javax.swing.JPanel createJPanel() {
 		final java.awt.Color FEEDBACK_COLOR = java.awt.Color.GREEN.darker().darker();
 		class FeedbackJPanel extends DefaultJPanel {
@@ -122,8 +133,14 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 					}
 				}
 			}
+			@Override
+			public java.awt.Dimension getMaximumSize() {
+				return this.getPreferredSize();
+			}
 		}
-		return new FeedbackJPanel();
+		FeedbackJPanel rv = new FeedbackJPanel();
+		rv.setLayout( this.createLayoutManager( rv ) );
+		return rv;
 	}
 	public int getAvailableDropProxyHeight() {
 //		int heightAvailable = this.getHeight();
@@ -196,17 +213,6 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		}
 	}
 	
-	@Override
-	protected int getBoxLayoutPad() {
-		int rv;
-		if( this.getProperty().getOwner() instanceof edu.cmu.cs.dennisc.alice.ast.DoTogether ) {
-			rv = 0;
-		} else {
-			rv = INTRASTICIAL_PAD;
-		}
-		return rv;
-	}
-
 	private edu.cmu.cs.dennisc.alice.ast.Node getOwningBlockStatementOwningNode() {
 		edu.cmu.cs.dennisc.property.PropertyOwner owner = this.getProperty().getOwner();
 		if( owner instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
@@ -276,7 +282,6 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 			} else {
 				alternateListProperty = null;
 			}
-
 			this.addComponent( new org.alice.ide.codeeditor.EmptyStatementListAffordance( this.getProperty(), alternateListProperty ) );
 			bottom = 0;
 		} else {
@@ -292,7 +297,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 			}
 		}
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INTRASTICIAL_PAD, INDENT, bottom, 16 ) );
-		repaint();
+		this.revalidateAndRepaint();
 	}
 	public boolean isFigurativelyEmpty() {
 		return this.getComponentCount() == 0 || this.getComponent( 0 ) instanceof org.alice.ide.codeeditor.EmptyStatementListAffordance;

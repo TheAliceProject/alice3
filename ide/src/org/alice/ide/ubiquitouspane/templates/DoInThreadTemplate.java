@@ -50,7 +50,7 @@ public class DoInThreadTemplate extends CascadingUbiquitousStatementTemplate {
 		super( edu.cmu.cs.dennisc.alice.ast.DoInThread.class, org.alice.ide.ast.NodeUtilities.createDoInThread() );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
 		return null;
 	}
 	@Override

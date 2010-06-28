@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class ArithmeticInfixExpression extends InfixExpression< ArithmeticInfixExpression.Operator > {
-	public DeclarationProperty<AbstractType> expressionType = new DeclarationProperty<AbstractType>( this );
+	public DeclarationProperty<AbstractType<?,?,?>> expressionType = new DeclarationProperty<AbstractType<?,?,?>>( this );
 	public enum Operator {
 		PLUS() { 
 			@Override
@@ -213,7 +213,7 @@ public class ArithmeticInfixExpression extends InfixExpression< ArithmeticInfixE
 	}
 	public ArithmeticInfixExpression() {
 	}
-	public ArithmeticInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand, AbstractType expressionType ) {
+	public ArithmeticInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand, AbstractType<?,?,?> expressionType ) {
 		super( leftOperand, operator, rightOperand );
 		//todo
 		assert 
@@ -228,15 +228,15 @@ public class ArithmeticInfixExpression extends InfixExpression< ArithmeticInfixE
 		this( leftOperand, operator, rightOperand, TypeDeclaredInJava.get( expressionCls ) );
 	}
 	@Override
-	protected AbstractType getLeftOperandType() {
+	protected AbstractType<?,?,?> getLeftOperandType() {
 		return this.expressionType.getValue();
 	}
 	@Override
-	protected AbstractType getRightOperandType() {
+	protected AbstractType<?,?,?> getRightOperandType() {
 		return this.expressionType.getValue();
 	}
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		return this.expressionType.getValue();
 	}
 }

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDialogOperation< M extends AbstractDialogOperation, C extends AbstractDialogOperationContext > extends Operation<M, C> {
+public abstract class AbstractDialogOperation< M extends AbstractDialogOperation, C extends AbstractDialogOperationContext< M > > extends Operation<M, C> {
 	public AbstractDialogOperation(Group group, java.util.UUID individualUUID) {
 		super(group, individualUUID);
 	}
@@ -66,7 +66,7 @@ public abstract class AbstractDialogOperation< M extends AbstractDialogOperation
 	protected void handleFinally( C context, Dialog dialog ) {
 	}
 	
-	protected String getDialogTitle() {
+	protected String getDialogTitle(C context) {
 		return this.getName();
 	}
 	@Override
@@ -121,7 +121,7 @@ public abstract class AbstractDialogOperation< M extends AbstractDialogOperation
 				edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog.getAwtComponent(), Application.getSingleton().getFrame().getAwtComponent() ); 
 			}
 			
-			dialog.setTitle( this.getDialogTitle() );
+			dialog.setTitle( this.getDialogTitle(context) );
 			this.activeDialog = dialog;
 			try {
 				dialog.setVisible( true );

@@ -46,7 +46,7 @@ package org.alice.stageide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public abstract class IngredientFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
-	public IngredientFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public IngredientFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		super( type, edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
 	}
 	protected abstract Class<?>[] getClses( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender );

@@ -50,7 +50,7 @@ public class Argument extends Node {
 	public DeclarationProperty< AbstractParameter > parameter = new DeclarationProperty< AbstractParameter >( this );
 	public ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			return Argument.this.parameter.getValue().getValueType();
 		}
 	};

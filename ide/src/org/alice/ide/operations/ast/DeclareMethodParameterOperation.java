@@ -45,7 +45,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareMethodParameterOperation extends org.alice.ide.operations.InputDialogWithPreviewOperation {
+public class DeclareMethodParameterOperation extends org.alice.ide.operations.InputDialogWithPreviewOperation<org.alice.ide.declarationpanes.CreateMethodParameterPane> {
 	@Deprecated
 	public interface EPIC_HACK_Validator {
 		public String getExplanationIfOkButtonShouldBeDisabled( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > valueType );
@@ -62,7 +62,6 @@ public class DeclareMethodParameterOperation extends org.alice.ide.operations.In
 		}
 		return rv;
 	}
-	private org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane;
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
 	private DeclareMethodParameterOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "aa3d337d-b409-46ae-816f-54f139b32d86" ) );
@@ -76,10 +75,10 @@ public class DeclareMethodParameterOperation extends org.alice.ide.operations.In
 		this.validator = validator;
 	}
 	@Override
-	protected String getExplanationIfOkButtonShouldBeDisabled() {
-		String rv = super.getExplanationIfOkButtonShouldBeDisabled();
+	protected String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context) {
+		String rv = super.getExplanationIfOkButtonShouldBeDisabled( context );
 		if( this.validator != null ) {
-			String explanation = this.validator.getExplanationIfOkButtonShouldBeDisabled( this.getDeclarationName(), this.getValueType() );
+			String explanation = this.validator.getExplanationIfOkButtonShouldBeDisabled( this.getDeclarationName( context ), this.getValueType( context ) );
 			if( explanation != null ) {
 				rv = explanation;
 			}
@@ -87,16 +86,18 @@ public class DeclareMethodParameterOperation extends org.alice.ide.operations.In
 		return rv;
 	}
 
-	private String getDeclarationName() {
-		if( this.createMethodParameterPane != null ) {
-			return this.createMethodParameterPane.getDeclarationName();
+	private String getDeclarationName(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context) {
+		org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = context.getMainPanel();
+		if( createMethodParameterPane != null ) {
+			return createMethodParameterPane.getDeclarationName();
 		} else {
 			return null;
 		}
 	}
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > getValueType() {
-		if( this.createMethodParameterPane != null ) {
-			return this.createMethodParameterPane.getValueType();
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > getValueType(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context) {
+		org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = context.getMainPanel();
+		if( createMethodParameterPane != null ) {
+			return createMethodParameterPane.getValueType();
 		} else {
 			return null;
 		}
@@ -104,19 +105,15 @@ public class DeclareMethodParameterOperation extends org.alice.ide.operations.In
 
 	
 	@Override
-	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
-		return this.createMethodParameterPane;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
+	protected org.alice.ide.declarationpanes.CreateMethodParameterPane prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context) {
 		//todo: create before hand and refresh at this point
-		this.createMethodParameterPane = new org.alice.ide.declarationpanes.CreateMethodParameterPane( method, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
-		return this.createMethodParameterPane;
+		return new org.alice.ide.declarationpanes.CreateMethodParameterPane( method, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
 	}
 	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context, boolean isOk) {
 		if( isOk ) {
-			final edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = this.createMethodParameterPane.getActualInputValue();
+			org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = context.getMainPanel();
+			final edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = createMethodParameterPane.getActualInputValue();
 			if( parameter != null ) {
 				final int index = method.parameters.size();
 				final java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument >();

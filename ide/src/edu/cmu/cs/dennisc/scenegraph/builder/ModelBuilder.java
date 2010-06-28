@@ -46,7 +46,7 @@ public class ModelBuilder {
 	public static void forget( java.io.File file ) {
 		map.remove( file );
 	}
-	public static ModelBuilder getInstance( java.io.File file ) throws java.io.IOException {
+	public static ModelBuilder getInstance( java.io.File file ) {
 		ModelBuilder rv = map.get( file );
 		if( rv != null ) {
 			//pass

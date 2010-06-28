@@ -46,28 +46,15 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public final class ListSelectionEdit<E> extends Edit<ListSelectionState<E>> {
-	private ListSelectionState<E> operation;
-	private java.util.UUID operationId;
 	private E prevValue;
 	private E nextValue;
 	public ListSelectionEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public ListSelectionEdit( java.util.EventObject e, E prevValue, E nextValue, ListSelectionState< E > operation ) {
+	public ListSelectionEdit( java.util.EventObject e, E prevValue, E nextValue ) {
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
-		this.operation = operation;
-		this.operationId = operation.getIndividualUUID();
 	}
-//	private ItemSelectionState<E> getOperation() {
-//		if( this.operation != null ) {
-//			//pass
-//		} else {
-//			this.operation = Application.getSingleton().lookupOperation( this.operationId );
-//		}
-//		return this.operation;
-//	}
-
 	@Override
 	public boolean canRedo() {
 		return this.getModel() != null;

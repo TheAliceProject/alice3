@@ -165,7 +165,7 @@ public abstract class ListSelectionState<E> extends Model< ListSelectionState<E>
 					Application application = Application.getSingleton();
 					ModelContext<?> parentContext = application.getCurrentContext();
 					ListSelectionStateContext< E > childContext = parentContext.createItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController, prevIndex, prevSelection, nextIndex, nextSelection );
-					childContext.commitAndInvokeDo( new ListSelectionEdit<E>( this.mostRecentEvent, prevSelection, nextSelection, ListSelectionState.this ));
+					childContext.commitAndInvokeDo( new ListSelectionEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ) );
 					ListSelectionState.this.fireValueChanged(nextSelection);
 
 					this.mostRecentEvent = null;

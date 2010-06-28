@@ -47,9 +47,9 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class DeclareMemberResolver implements Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> {
-	protected abstract edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved(edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type);
-	public edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved() {
+/*package-private*/ abstract class DeclareMemberResolver implements Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> {
+	protected abstract edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> getResolved(edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type);
+	public edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> getResolved() {
 		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.IDE.getSingleton().getAccessibleListState().getValue();
 		if( accessible != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type = accessible.getValueType();

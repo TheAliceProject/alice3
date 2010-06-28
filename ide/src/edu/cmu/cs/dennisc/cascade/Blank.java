@@ -47,16 +47,16 @@ package edu.cmu.cs.dennisc.cascade;
  */
 public abstract class Blank extends Node {
 	private edu.cmu.cs.dennisc.task.TaskObserver taskObserver;
-	private FillIn selectedFillIn;
+	private FillIn<?> selectedFillIn;
 
-	public FillIn getFillInAt( int index ) {
-		return (FillIn)getChildren().get( index );
+	public FillIn<?> getFillInAt( int index ) {
+		return (FillIn<?>)getChildren().get( index );
 	}
-	public FillIn getParentFillIn() {
-		return (FillIn)getParent();
+	public FillIn<?> getParentFillIn() {
+		return (FillIn<?>)getParent();
 	}
 	
-	public void addFillIn( edu.cmu.cs.dennisc.cascade.FillIn fillIn ) {
+	public void addFillIn( FillIn<?> fillIn ) {
 		super.addChild( fillIn );
 	}
 
@@ -71,11 +71,11 @@ public abstract class Blank extends Node {
 	public FillIn getSelectedFillIn() {
 		return this.selectedFillIn;
 	}
-	public void setSelectedFillIn( FillIn fillIn ) {
+	public void setSelectedFillIn( FillIn<?> fillIn ) {
 		this.selectedFillIn = fillIn;
 		Node parent = this.getParent();
-		if( parent instanceof FillIn ) {
-			FillIn parentFillIn = (FillIn)parent;
+		if( parent instanceof FillIn<?> ) {
+			FillIn<?> parentFillIn = (FillIn<?>)parent;
 			for( Node child : parent.getChildren() ) {
 				Blank blank = (Blank)child;
 				if( blank.selectedFillIn != null ) {

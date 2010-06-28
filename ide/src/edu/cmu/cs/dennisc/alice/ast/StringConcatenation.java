@@ -48,14 +48,14 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class StringConcatenation extends Expression {
 	public ExpressionProperty leftOperand = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			//todo: allow both objects?
 			return TypeDeclaredInJava.OBJECT_TYPE;
 		}
 	};
 	public ExpressionProperty rightOperand = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			return TypeDeclaredInJava.OBJECT_TYPE;
 		}
 	};
@@ -66,7 +66,7 @@ public class StringConcatenation extends Expression {
 		this.rightOperand.setValue( rightOperand );
 	}
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		return TypeDeclaredInJava.get( String.class );
 	}
 	@Override

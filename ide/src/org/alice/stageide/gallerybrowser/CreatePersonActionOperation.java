@@ -59,31 +59,26 @@ class CreateFieldFromPersonPane extends org.alice.ide.declarationpanes.CreateLar
 /**
  * @author Dennis Cosgrove
  */
-class CreatePersonActionOperation extends AbstractGalleryDeclareFieldOperation {
+class CreatePersonActionOperation extends AbstractGalleryDeclareFieldOperation<CreateFieldFromPersonPane> {
 	private org.alice.apis.stage.Person person;
-	private CreateFieldFromPersonPane createFieldFromPersonPane;
 	public CreatePersonActionOperation( org.alice.apis.stage.Person person ) {
 		super( java.util.UUID.fromString( "7f4b7217-336c-4661-ac31-ed6ea7b963fe" ) );
 		this.person = person;
 	}
+	
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
+	protected org.alice.stageide.gallerybrowser.CreateFieldFromPersonPane prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.gallerybrowser.CreateFieldFromPersonPane > context ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = ide.getSceneType();
-		this.createFieldFromPersonPane = new CreateFieldFromPersonPane( declaringType, person );
-		return this.createFieldFromPersonPane;
+		return new CreateFieldFromPersonPane( declaringType, person );
 	}
 	@Override
-	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
-		return this.createFieldFromPersonPane;
-	}
-
-	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(edu.cmu.cs.dennisc.croquet.ModelContext context) {
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = this.createFieldFromPersonPane.getActualInputValue();
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.gallerybrowser.CreateFieldFromPersonPane > context ) {
+		CreateFieldFromPersonPane createFieldFromPersonPane = context.getMainPanel();
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromPersonPane.getActualInputValue();
 		if( field != null ) {
 			//ide.getSceneEditor().handleFieldCreation( declaringType, field, person );
-			return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object >( field, this.createFieldFromPersonPane.getPerson() );
+			return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object >( field, createFieldFromPersonPane.getPerson() );
 		} else {
 			return null;
 		}

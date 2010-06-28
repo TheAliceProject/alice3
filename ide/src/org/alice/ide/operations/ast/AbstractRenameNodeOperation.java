@@ -45,21 +45,21 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRenameNodeOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
-	private org.alice.ide.name.RenamePane renameNodePane;
+public abstract class AbstractRenameNodeOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.ide.name.RenamePane> {
 	public AbstractRenameNodeOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, String name ) {
 		super( group, individualId, name );
-		this.renameNodePane = new org.alice.ide.name.RenamePane();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
-		this.renameNodePane.setAndSelectNameText( this.getNameProperty().getValue() );
-		return this.renameNodePane;
+	protected org.alice.ide.name.RenamePane prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.name.RenamePane> context) {
+		org.alice.ide.name.RenamePane renamePane = new org.alice.ide.name.RenamePane();
+		renamePane.setAndSelectNameText( this.getNameProperty().getValue() );
+		return renamePane;
 	}
 	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.name.RenamePane> context, boolean isOk) {
 		if( isOk ) {
-			final String nextValue = this.renameNodePane.getNameText();
+			org.alice.ide.name.RenamePane renamePane = context.getMainPanel();
+			final String nextValue = renamePane.getNameText();
 			final edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNameProperty();
 			final String prevValue = nameProperty.getValue();
 			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
@@ -93,41 +93,14 @@ public abstract class AbstractRenameNodeOperation extends edu.cmu.cs.dennisc.cro
 	protected abstract org.alice.ide.name.validators.NodeNameValidator getNodeNameValidator();
 	
 	@Override
-	protected String getExplanationIfOkButtonShouldBeDisabled() {
+	protected String getExplanationIfOkButtonShouldBeDisabled( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.name.RenamePane> context ) {
+		org.alice.ide.name.RenamePane renamePane = context.getMainPanel();
 		org.alice.ide.name.validators.NodeNameValidator nodeNameValidator = this.getNodeNameValidator();
-		String rv = nodeNameValidator.getExplanationIfOkButtonShouldBeDisabled( this.renameNodePane.getNameText() );
+		String rv = nodeNameValidator.getExplanationIfOkButtonShouldBeDisabled( renamePane.getNameText() );
 		if( rv != null ) {
 			return rv;
 		} else {
-			return super.getExplanationIfOkButtonShouldBeDisabled();
+			return super.getExplanationIfOkButtonShouldBeDisabled( context );
 		}
 	}
-//	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
-//		org.alice.ide.name.RenamePane renameNodePane = new org.alice.ide.name.RenamePane( nodeNameValidator );
-//		renameNodePane.setAndSelectNameText( nameProperty.getValue() );
-//		final String nextValue = renameNodePane.showInJDialog( button );
-//		if( nextValue != null && nextValue.length() > 0 ) {
-//			final String prevValue = nameProperty.getValue();
-//			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
-//				@Override
-//				public void doOrRedo( boolean isDo ) {
-//					nameProperty.setValue( nextValue );
-//				}
-//				@Override
-//				public void undo() {
-//					nameProperty.setValue( prevValue );
-//				}
-//				@Override
-//				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-//					rv.append( "rename: " );
-//					rv.append( prevValue );
-//					rv.append( " ===> " );
-//					rv.append( nextValue );
-//					return rv;
-//				}
-//			} );
-//		} else {
-//			context.cancel();
-//		}
-//	}
 }

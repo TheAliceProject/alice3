@@ -47,25 +47,25 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class ArrayAccess extends Expression {
-	public DeclarationProperty< AbstractType > arrayType = new DeclarationProperty< AbstractType >( this );
+	public DeclarationProperty< AbstractType<?,?,?> > arrayType = new DeclarationProperty< AbstractType<?,?,?> >( this );
 	public ExpressionProperty array = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
-			AbstractType arrayType = ArrayAccess.this.arrayType.getValue();
+		public AbstractType<?,?,?> getExpressionType() {
+			AbstractType<?,?,?> arrayType = ArrayAccess.this.arrayType.getValue();
 			assert arrayType != null;
 			return arrayType;
 		}
 	};
 	public ExpressionProperty index = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			return TypeDeclaredInJava.get( Integer.class );
 		}
 	};
 
 	public ArrayAccess() {
 	}
-	public ArrayAccess( AbstractType arrayType, Expression array, Expression index ){
+	public ArrayAccess( AbstractType<?,?,?> arrayType, Expression array, Expression index ){
 		assert arrayType.isArray();
 		this.arrayType.setValue( arrayType );
 		this.array.setValue( array );
@@ -75,8 +75,8 @@ public class ArrayAccess extends Expression {
 		this( TypeDeclaredInJava.get( arrayCls ), array, index );
 	}
 	@Override
-	public AbstractType getType() {
-		AbstractType arrayType = this.arrayType.getValue();
+	public AbstractType<?,?,?> getType() {
+		AbstractType<?,?,?> arrayType = this.arrayType.getValue();
 		assert arrayType != null;
 		return arrayType.getComponentType();
 	}

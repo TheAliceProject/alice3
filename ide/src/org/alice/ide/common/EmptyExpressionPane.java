@@ -54,7 +54,7 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
 		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "???" ) );
 		this.setBackgroundPaint( new java.awt.Color( 127, 127, 191 ) );
 	}
-	public EmptyExpressionPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public EmptyExpressionPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		this( new EmptyExpression( type ) );
 	}
 	@Override
@@ -66,7 +66,7 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
 		return 0;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
 		return this.emptyExpression.getType();
 	}
 	@Override

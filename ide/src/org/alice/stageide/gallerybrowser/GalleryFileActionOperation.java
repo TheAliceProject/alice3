@@ -45,26 +45,24 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-class GalleryFileActionOperation extends AbstractGalleryDeclareFieldOperation {
-	private org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldPane;
+class GalleryFileActionOperation extends AbstractGalleryDeclareFieldOperation<org.alice.ide.declarationpanes.CreateFieldFromGalleryPane> {
+	private java.io.File file;
 	public GalleryFileActionOperation(java.io.File file) {
 		super( java.util.UUID.fromString( "19e8291e-3b0b-48f5-8bc9-1d02b754f9d4" ) );
-		this.createFieldPane = new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane(this.getOwnerType(), file);
+		this.file = file;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
-		return this.createFieldPane;
+	protected org.alice.ide.declarationpanes.CreateFieldFromGalleryPane prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.CreateFieldFromGalleryPane > context ) {
+		return new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane(this.getOwnerType(), this.file);
 	}
+	
+	//"Create New Instance"
 	@Override
-	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
-		return this.createFieldPane;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(edu.cmu.cs.dennisc.croquet.ModelContext context) {
-		//"Create New Instance"
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.getActualInputValue();
+	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.CreateFieldFromGalleryPane > context) {
+		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldFromGalleryPane = context.getMainPanel();
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromGalleryPane.getActualInputValue();
 		if (field != null) {
-			return new edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object>( field, createFieldPane.createInstanceInJava() );
+			return new edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object>( field, createFieldFromGalleryPane.createInstanceInJava() );
 		} else {
 			return null;
 		}

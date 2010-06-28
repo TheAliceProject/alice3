@@ -48,6 +48,6 @@ package org.alice.ide.operations.ast;
 public class RenameTypeOperation extends RenameNodeOperation {
 	public RenameTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		super( java.util.UUID.fromString( "94fd3bb8-2f02-4e70-a16c-05df244b317b" ), type.name, new org.alice.ide.name.validators.TypeNameValidator( type ) );
-		this.setSmallIcon( new org.alice.ide.common.TypeIcon( type ) );
+		//this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
 	}
 }

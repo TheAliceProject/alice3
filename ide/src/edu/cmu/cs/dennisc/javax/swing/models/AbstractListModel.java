@@ -45,33 +45,35 @@ package edu.cmu.cs.dennisc.javax.swing.models;
 /**
  * @author Dennis Cosgrove
  */
-public class ListPropertyListModel< E > extends javax.swing.AbstractListModel {
-	private edu.cmu.cs.dennisc.property.ListProperty< E > listProperty;
-	private ListPropertyListModel( edu.cmu.cs.dennisc.property.ListProperty< E > listProperty ) {
-		this.listProperty = listProperty;
+public abstract class AbstractListModel<E> extends javax.swing.AbstractListModel implements ListModel<E> {
+	public E get( int index ) {
+		return (E)this.getElementAt( index );
 	}
-	public static <E> ListPropertyListModel< E > createInstance( edu.cmu.cs.dennisc.property.ListProperty< E > listProperty ) {
-		return new ListPropertyListModel( listProperty );
-	}
-	public int getSize() {
-		return this.listProperty.size();
-	}
-	public E getElementAt( int index ) {
-		return this.listProperty.get( index );
-	}
-	public void add( int index, E e ) {
-		this.listProperty.add( index, e );
-		this.fireIntervalAdded( this, index, index );
-	}
-	public void remove( int index, E e ) {
-		assert this.listProperty.get( index ) == e;
-		this.listProperty.remove( index );
-		this.fireIntervalRemoved( this, index, index );
-	}
-	public void set( int index, E... es ) {
-		if( es.length > 0 ) {
-			this.listProperty.set( index, es );
-			this.fireContentsChanged( this, index, index+es.length-1 );
+	public int indexOf( E element ) {
+		final int N = this.getSize();
+		for( int i=0; i<N; i++ ) {
+			E item = this.get( i );
+			if( element != null ? element.equals( item ) : element == null ) {
+				return i;
+			}
 		}
+		return -1;
+	}
+	public int lastIndexOf( E element ) {
+		final int N = this.getSize();
+		for( int i=0; i<N; i++ ) {
+			int index = N-1-i;
+			E item = this.get( index );
+			if( element != null ? element.equals( item ) : element == null ) {
+				return index;
+			}
+		}
+		return -1;
+	}
+	public boolean contains(E element) {
+		return this.indexOf( element ) != -1;
+	}
+	public boolean isEmpty() {
+		return this.getSize() == 0;
 	}
 }

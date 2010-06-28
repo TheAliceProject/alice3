@@ -50,7 +50,7 @@ abstract class FauxItem extends javax.swing.AbstractButton {
 	public FauxItem( int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
 		this.dropDownListItemExpressionPane = new org.alice.ide.common.AbstractDropDownListItemExpressionPane( index, expressionListProperty ) {
 			@Override
-			protected edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType() {
+			protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getFillInType() {
 				return FauxItem.this.getFillInType();
 			}
 		};
@@ -75,7 +75,7 @@ abstract class FauxItem extends javax.swing.AbstractButton {
 			}
 		} );
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType();
+	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getFillInType();
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		//super.paintComponent( g );

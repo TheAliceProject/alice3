@@ -66,7 +66,7 @@ public class InstanceCreation extends Expression {
 //		this( ConstructorDeclaredInJava.get( cnstrctr ), arguments );
 //	}
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		return constructor.getValue().getDeclaringType();
 	}
 

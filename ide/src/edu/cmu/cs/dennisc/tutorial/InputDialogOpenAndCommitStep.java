@@ -45,10 +45,10 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class InputDialogOpenAndCommitStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.InputDialogOperation> {
+/*package-private*/ class InputDialogOpenAndCommitStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> {
 	private Completor completor;
 	private Validator validator;
-	public InputDialogOpenAndCommitStep( String title, String openText, String commitText, final edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> inputDialogOperationResolver, Completor completor, Validator validator ) {
+	public InputDialogOpenAndCommitStep( String title, String openText, String commitText, final edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> inputDialogOperationResolver, Completor completor, Validator validator ) {
 		super( title, openText, new Hole( inputDialogOperationResolver, Feature.ConnectionPreference.EAST_WEST ), inputDialogOperationResolver );
 		this.completor = completor;
 		this.validator = validator;
@@ -142,7 +142,7 @@ package edu.cmu.cs.dennisc.tutorial;
 					edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent completeEvent = (edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent)child;
 					edu.cmu.cs.dennisc.croquet.Model eventModel = completeEvent.getParent().getModel();
 					if( this.getModel() == eventModel ) {
-						edu.cmu.cs.dennisc.croquet.Edit edit;
+						edu.cmu.cs.dennisc.croquet.Edit<?> edit;
 						if (child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent) {
 							edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent) child;
 							edit = commitEvent.getEdit();

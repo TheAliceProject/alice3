@@ -48,10 +48,10 @@ package edu.cmu.cs.dennisc.alice.ast;
  */
 public class ParameterDeclaredInAlice extends AbstractParameter {
 	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
-	public DeclarationProperty< AbstractType > valueType = new DeclarationProperty< AbstractType >( this );
+	public DeclarationProperty< AbstractType<?,?,?> > valueType = new DeclarationProperty< AbstractType<?,?,?> >( this );
 	public ParameterDeclaredInAlice() {
 	}
-	public ParameterDeclaredInAlice( String name, AbstractType valueType ) {
+	public ParameterDeclaredInAlice( String name, AbstractType<?,?,?> valueType ) {
 		this.name.setValue( name );
 		this.valueType.setValue( valueType );
 	}
@@ -71,11 +71,11 @@ public class ParameterDeclaredInAlice extends AbstractParameter {
 		return this.name;
 	}
 	@Override
-	public AbstractType getValueType() {
+	public AbstractType<?,?,?> getValueType() {
 		return valueType.getValue();
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getDesiredValueType() {
+	public AbstractType<?,?,?> getDesiredValueType() {
 		return getValueType();
 	}
 	@Override

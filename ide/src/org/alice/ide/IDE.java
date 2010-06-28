@@ -523,7 +523,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava superType ) {
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > aliceTypes = this.addAliceTypes( new java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.AbstractType >() );
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : aliceTypes ) {
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type : aliceTypes ) {
 			assert type != null;
 			if( type.getFirstTypeEncounteredDeclaredInJava() == superType ) {
 				return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
@@ -547,15 +547,15 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	public boolean isDropDownDesiredFor( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		return (expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression || expression instanceof edu.cmu.cs.dennisc.alice.ast.ResourceExpression) == false;
 	}
-	public org.alice.ide.common.TypeComponent getComponentFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public org.alice.ide.common.TypeComponent getComponentFor( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		//todo:
 		return org.alice.ide.common.TypeComponent.createInstance( type );
 	}
-	public String getTextFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public String getTextFor( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		return null;
 	}
-	public javax.swing.Icon getIconFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		return new org.alice.ide.common.TypeIcon( type );
+	public javax.swing.Icon getIconFor( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		return org.alice.ide.common.TypeIcon.getInstance( type );
 	}
 
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType[] typesForComboBoxes;
@@ -732,7 +732,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return rv;
 	}
 
-	private java.util.Map< Class< ? extends Enum >, org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner > map = new java.util.HashMap< Class< ? extends Enum >, org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner >();
+	private java.util.Map< Class< ? extends Enum >, org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	protected org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner getExpressionFillerInnerFor( Class< ? extends Enum > clsEnum ) {
 		org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner rv = map.get( clsEnum );
@@ -943,7 +943,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 	//public abstract void handleDelete( edu.cmu.cs.dennisc.alice.ast.Node node );
 
-	public void showStencilOver( edu.cmu.cs.dennisc.croquet.DragComponent potentialDragSource, final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public void showStencilOver( edu.cmu.cs.dennisc.croquet.DragComponent potentialDragSource, final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorInFocus();
 		if( codeEditor != null ) {
 			this.holes = codeEditor.createListOfPotentialDropReceptors( type );
@@ -1198,7 +1198,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return dst;
 	}
 
-	//	public abstract void handleRun( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType programType );
+	//	public abstract void handleRun( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType );
 	//	public abstract void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation );
 	//	public abstract void handleRestart( edu.cmu.cs.dennisc.croquet.ModelContext context );
 
@@ -1285,7 +1285,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	//		}
 	//		return false;
 	//	}
-	protected void addFillInAndPossiblyPartFills( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.AbstractType type2 ) {
+	protected void addFillInAndPossiblyPartFills( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type2 ) {
 		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.Expression >( expression ) );
 	}
 
@@ -1302,7 +1302,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return crawler.getList();
 	}
 
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getTypeInScope() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getTypeInScope() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus = this.getFocusedCode();
 		if( codeInFocus != null ) {
 			return codeInFocus.getDeclaringType();
@@ -1313,7 +1313,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 	//todo: remove this
 	@Deprecated
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getActualTypeForDesiredParameterType( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getActualTypeForDesiredParameterType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		return type;
 	}
 
@@ -1361,7 +1361,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		updateAccessibleLocals( rv, blockStatement );
 		return rv;
 	}
-	protected void addExpressionBonusFillInsForType( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	protected void addExpressionBonusFillInsForType( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus = this.getFocusedCode();
 		if( codeInFocus != null ) {
 
@@ -1375,14 +1375,14 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 				this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), selectedType, type );
 			}
 			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : selectedType.getDeclaredFields() ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType fieldType = field.getValueType();
+				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> fieldType = field.getValueType();
 				if( type.isAssignableFrom( fieldType ) ) {
 					//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
 					edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
 					this.addFillInAndPossiblyPartFills( blank, fieldAccess, fieldType, type );
 				}
 				if( fieldType.isArray() ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractType fieldComponentType = fieldType.getComponentType();
+					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> fieldComponentType = fieldType.getComponentType();
 					if( type.isAssignableFrom( fieldComponentType ) ) {
 						//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
 						edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
@@ -1430,7 +1430,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
 		return this.previousExpression;
 	}
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getEnumTypeForInterfaceType( edu.cmu.cs.dennisc.alice.ast.AbstractType interfaceType ) {
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getEnumTypeForInterfaceType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> interfaceType ) {
 		return null;
 	}
 	protected void addFillInsForObjectType( edu.cmu.cs.dennisc.cascade.Blank blank ) {
@@ -1448,10 +1448,10 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			blank.addSeparator();
 		}
 	}
-	protected void addCustomFillIns( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	protected void addCustomFillIns( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 	}
 
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getTypeFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getTypeFor( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Number.class ) ) {
 			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE;
 		} else {
@@ -1459,13 +1459,13 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 	}
 
-	protected boolean areEnumConstantsDesired( edu.cmu.cs.dennisc.alice.ast.AbstractType enumType ) {
+	protected boolean areEnumConstantsDesired( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> enumType ) {
 		return true;
 	}
-	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		if( type != null ) {
 			if( this.previousExpression != null ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType prevExpressionType = this.previousExpression.getType();
+				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> prevExpressionType = this.previousExpression.getType();
 				if( prevExpressionType != null && prevExpressionType.isAssignableTo( type ) ) {
 					if( blank.getParentFillIn() != null ) {
 						//pass
@@ -1487,7 +1487,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 				}
 			}
 
-			edu.cmu.cs.dennisc.alice.ast.AbstractType enumType;
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> enumType;
 			if( type.isInterface() ) {
 				enumType = this.getEnumTypeForInterfaceType( type );
 			} else {
@@ -1542,20 +1542,20 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			}
 		}
 	}
-	private edu.cmu.cs.dennisc.cascade.Blank createExpressionBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
+	private edu.cmu.cs.dennisc.cascade.Blank createExpressionBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
 		this.previousExpression = prevExpression;
 		if( this.previousExpression != null ) {
 			this.setDropParentAndIndex( this.previousExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.Statement.class ) );
 		}
 		return new org.alice.ide.cascade.ExpressionBlank( type );
 	}
-	private edu.cmu.cs.dennisc.cascade.FillIn createExpressionsFillIn( final edu.cmu.cs.dennisc.alice.ast.AbstractType[] types, final boolean isArrayLengthDesired ) {
+	private edu.cmu.cs.dennisc.cascade.FillIn createExpressionsFillIn( final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types, final boolean isArrayLengthDesired ) {
 		edu.cmu.cs.dennisc.cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.Expression[] > rv = new edu.cmu.cs.dennisc.cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.Expression[] >() {
 			@Override
 			protected void addChildren() {
 				int N = types.length;
 				int i = 0;
-				for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : types ) {
+				for( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type : types ) {
 					this.addBlank( new org.alice.ide.cascade.ExpressionBlank( type, i == N - 1 && isArrayLengthDesired ) );
 					i++;
 				}
@@ -1583,13 +1583,13 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		};
 		return rv;
 	}
-	public void promptUserForExpressions( edu.cmu.cs.dennisc.alice.ast.BlockStatement dropParent, int dropIndex, edu.cmu.cs.dennisc.alice.ast.AbstractType[] types, boolean isArrayLengthDesired, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > taskObserver ) {
+	public void promptUserForExpressions( edu.cmu.cs.dennisc.alice.ast.BlockStatement dropParent, int dropIndex, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types, boolean isArrayLengthDesired, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > taskObserver ) {
 		this.dropParent = dropParent;
 		this.dropIndex = dropIndex;
 		edu.cmu.cs.dennisc.cascade.FillIn fillIn = createExpressionsFillIn( types, isArrayLengthDesired );
 		fillIn.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
 	}
-	public void promptUserForExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, edu.cmu.cs.dennisc.croquet.ViewController< ?,? > viewController, java.awt.Point p,
+	public void promptUserForExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, edu.cmu.cs.dennisc.croquet.ViewController< ?,? > viewController, java.awt.Point p,
 			edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
 		edu.cmu.cs.dennisc.cascade.Blank blank = createExpressionBlank( type, prevExpression );
 		if( p != null ) {
@@ -1748,7 +1748,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 
 	@Deprecated
-	protected static edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneFieldFromProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType programType ) {
+	protected static edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneFieldFromProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType ) {
 		if( programType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programAliceType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)programType;
 			if( programAliceType.fields.size() > 0 ) {
@@ -1761,7 +1761,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 	}
 	@Deprecated
-	protected static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getSceneTypeFromProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType programType ) {
+	protected static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getSceneTypeFromProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType ) {
 		if( programType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = getSceneFieldFromProgramType( programType );
 			return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)sceneField.getValueType();
@@ -1788,7 +1788,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 				text = field.getName();
 				edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = getFocusedCode();
 				if( focusedCode != null ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractType scopeType = focusedCode.getDeclaringType();
+					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> scopeType = focusedCode.getDeclaringType();
 					if( field.getValueType() == scopeType ) {
 						text = "this (a.k.a. " + text + ")";
 					} else if( field.getDeclaringType() == scopeType ) {
@@ -1816,7 +1816,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			if( accessible != null ) {
 				if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)accessible;
-					edu.cmu.cs.dennisc.alice.ast.AbstractType focusedCodeDeclaringType = focusedCode.getDeclaringType();
+					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> focusedCodeDeclaringType = focusedCode.getDeclaringType();
 					if( focusedCodeDeclaringType != null ) {
 						edu.cmu.cs.dennisc.alice.ast.ThisExpression thisExpression = new edu.cmu.cs.dennisc.alice.ast.ThisExpression();
 						if( focusedCodeDeclaringType.equals( field.getValueType() ) ) {
@@ -2077,9 +2077,9 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class, "edu.cmu.cs.dennisc.alice.ast.Templates" );
 	}
 
-	public boolean isDeclareFieldOfPredeterminedTypeSupported( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType ) {
-		return true;
-	}
+//	public boolean isDeclareFieldOfPredeterminedTypeSupported( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType ) {
+//		return true;
+//	}
 
 	//	def _isFieldNameFree( self, name ):
 	//		sceneType = self.getSceneType()
@@ -2116,7 +2116,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 		return rv;
 	}
-	public String getPotentialInstanceNameFor( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType valueType ) {
+	public String getPotentialInstanceNameFor( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
 		if( valueType != null ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
 			if( typeInJava != null ) {

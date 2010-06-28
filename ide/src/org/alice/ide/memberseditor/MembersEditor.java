@@ -47,13 +47,13 @@ package org.alice.ide.memberseditor;
  */
 abstract class OrganizedByTypeMembersContentPanel extends MembersContentPanel {
 	@Override
-	protected void handleAccessibleSelection( edu.cmu.cs.dennisc.alice.ast.Accessible accessible, java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > types ) {
+	protected void handleAccessibleSelection( edu.cmu.cs.dennisc.alice.ast.Accessible accessible, java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > types ) {
 		this.removeAllComponents();
 		boolean isNonConsumedTypeDeclaredInJavaAlreadyEncountered = false;
 
 		if( types.size() > 0 ) {
 			boolean isSeparatorDesired = types.get( 0 ) instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
-			for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : types ) {
+			for( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type : types ) {
 				boolean isFirstNonConsumedTypeEncounteredInJava = false;
 				if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava ) {
 					if( isSeparatorDesired ) {
@@ -85,9 +85,9 @@ abstract class OrganizedByTypeMembersContentPanel extends MembersContentPanel {
 		this.revalidateAndRepaint();
 	}
 
-	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType, AbstractTypeMembersPane > mapTypeToPane = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractType, AbstractTypeMembersPane >();
-	protected abstract AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type );
-	protected AbstractTypeMembersPane getTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, AbstractTypeMembersPane > mapTypeToPane = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, AbstractTypeMembersPane >();
+	protected abstract AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type );
+	protected AbstractTypeMembersPane getTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		AbstractTypeMembersPane rv = this.mapTypeToPane.get( type );
 		if( rv != null ) {
 			//todo?
@@ -108,7 +108,7 @@ class ProceduresContentPanel extends MethodsContentPanel {
 		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getProcedureColor() );
 	}
 	@Override
-	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		return new TypeProceduresPane( type );
 	}
 }
@@ -118,7 +118,7 @@ class FunctionsContentPanel extends MethodsContentPanel {
 		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getFunctionColor() );
 	}
 	@Override
-	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		return new TypeFunctionsPane( type );
 	}
 }
@@ -128,7 +128,7 @@ class FieldsContentPanel extends OrganizedByTypeMembersContentPanel {
 		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getFieldColor() );
 	}
 	@Override
-	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		return new TypeFieldsPane( type );
 	}
 }
@@ -212,9 +212,9 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //	}
 
 	//private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType, java.awt.Component > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static edu.cmu.cs.dennisc.map.MapToMap< Class< ? >, edu.cmu.cs.dennisc.alice.ast.AbstractType, edu.cmu.cs.dennisc.croquet.Component< ? > > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap< Class< ? >, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, edu.cmu.cs.dennisc.croquet.Component< ? > > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
-	public static edu.cmu.cs.dennisc.croquet.Component< ? > getComponentFor( Class< ? > cls, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public static edu.cmu.cs.dennisc.croquet.Component< ? > getComponentFor( Class< ? > cls, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		edu.cmu.cs.dennisc.croquet.Component< ? > rv = map.get( cls, type );
 		if( rv != null ) {
 			//pass

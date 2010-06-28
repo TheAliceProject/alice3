@@ -109,7 +109,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 	class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
 		private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty bogusProperty = new edu.cmu.cs.dennisc.alice.ast.ExpressionProperty( this ) {
 			@Override
-			public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+			public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
 				return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.virtualmachine.resources.AudioResource.class );
 			}
 		};

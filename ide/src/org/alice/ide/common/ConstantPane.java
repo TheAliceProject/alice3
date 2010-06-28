@@ -51,7 +51,7 @@ public class ConstantPane extends LocalPane< edu.cmu.cs.dennisc.alice.ast.Consta
 		this.setBackgroundPaint( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ConstantAccess.class ) );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
 		return this.getTransient().valueType.getValue();
 	}
 	@Override

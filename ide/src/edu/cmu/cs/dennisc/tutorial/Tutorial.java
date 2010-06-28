@@ -138,7 +138,7 @@ public class Tutorial {
 		Step step = new DialogOpenAndCloseStep( title, openText, closeText, dialogOperationResolver );
 		return this.addStep( step );
 	}
-	public Step addInputDialogOpenAndCommitStep( String title, String openText, String commitText, Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> inputDialogOperationResolver, CompletorValidator completorValidator ) {
+	public Step addInputDialogOpenAndCommitStep( String title, String openText, String commitText, Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> inputDialogOperationResolver, CompletorValidator completorValidator ) {
 		Step step = new InputDialogOpenAndCommitStep( title, openText, commitText, inputDialogOperationResolver, completorValidator, completorValidator );
 		return this.addStep( step );
 	}
@@ -224,8 +224,8 @@ public class Tutorial {
 			@Override
 			public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
 				boolean rv = super.isWhatWeveBeenWaitingFor( child );
-				if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext ) {
-					edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext context = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext)child;
+				if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext<?> ) {
+					edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext<?> context = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext<?>)child;
 					edu.cmu.cs.dennisc.croquet.Model<?> model = context.getModel();
 					if (model instanceof org.alice.ide.cascade.customfillin.CustomInputDialogOperation ) {
 						org.alice.ide.cascade.customfillin.CustomInputDialogOperation customInputDialogOperation = (org.alice.ide.cascade.customfillin.CustomInputDialogOperation) model;

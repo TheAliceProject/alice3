@@ -47,7 +47,7 @@ package org.alice.ide.operations.ast;
  */
 public class FillInExpressionPropertyActionOperation extends AbstractExpressionPropertyActionOperation {
 	private static java.util.Map<edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, FillInExpressionPropertyActionOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static FillInExpressionPropertyActionOperation getInstance( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredType ) {
+	public static FillInExpressionPropertyActionOperation getInstance( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
 		FillInExpressionPropertyActionOperation rv = map.get( expressionProperty );
 		if( rv != null ) {
 			assert rv.desiredType == desiredType;
@@ -58,14 +58,14 @@ public class FillInExpressionPropertyActionOperation extends AbstractExpressionP
 		}
 		return rv;
 	}
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType desiredType;
-	private FillInExpressionPropertyActionOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredType ) {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType;
+	private FillInExpressionPropertyActionOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
 		super( java.util.UUID.fromString( "6ec3825b-459d-4c3c-a4fe-ca57525c77df" ), expressionProperty );
 		this.desiredType = desiredType;
 	}
 	@Override
 	protected void initializeInternal( edu.cmu.cs.dennisc.croquet.ModelContext<?> context, java.util.UUID id, edu.cmu.cs.dennisc.croquet.ViewController<?, ?> viewController, java.awt.Point p, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type;
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
 		if( this.desiredType != null ) {
 			type = this.desiredType;
 		} else {

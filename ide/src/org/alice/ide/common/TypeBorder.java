@@ -61,7 +61,7 @@ class TypeBorder implements javax.swing.border.Border {
 	private static TypeBorder singletonForDeclaredInJava = new TypeBorder( false );
 	private static TypeBorder singletonForNull = new TypeBorder( null );
 
-	public static TypeBorder getSingletonFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public static TypeBorder getSingletonFor( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		if( type != null ) {
 			if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 				return TypeBorder.singletonForDeclaredInAlice;

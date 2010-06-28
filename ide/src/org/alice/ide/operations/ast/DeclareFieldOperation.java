@@ -45,20 +45,19 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperation {
+public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperation<org.alice.ide.declarationpanes.CreateFieldPane> {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >, DeclareFieldOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static DeclareFieldOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
-		DeclareFieldOperation rv = map.get( type );
+	public static DeclareFieldOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > ownerType ) {
+		DeclareFieldOperation rv = map.get( ownerType );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new DeclareFieldOperation( type );
-			map.put( type, rv );
+			rv = new DeclareFieldOperation( ownerType );
+			map.put( ownerType, rv );
 		}
 		return rv;
 	}
 	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > ownerType;
-	private org.alice.ide.declarationpanes.CreateFieldPane createFieldPane;
 	private DeclareFieldOperation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > ownerType ) {
 		super( java.util.UUID.fromString( "e935b0ea-e927-49ff-b33b-2c8eaf5c8b57" ) );
 		this.setName( "Declare Property..." );
@@ -66,20 +65,16 @@ public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperati
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getOwnerType() {
-		return this.createFieldPane.getDeclaringType();
+		return this.ownerType;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
-		this.createFieldPane = new org.alice.ide.declarationpanes.CreateFieldPane( this.ownerType );
-		return this.createFieldPane;
+	protected org.alice.ide.declarationpanes.CreateFieldPane prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateFieldPane> context) {
+		return new org.alice.ide.declarationpanes.CreateFieldPane( this.ownerType );
 	}
 	@Override
-	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
-		return this.createFieldPane;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.croquet.ModelContext context ) {
-		return this.createFieldPane.getActualInputValue();
+	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.CreateFieldPane > context ) {
+		org.alice.ide.declarationpanes.CreateFieldPane createFieldPane = context.getMainPanel();
+		return createFieldPane.getActualInputValue();
 	}
 	@Override
 	protected boolean isInstanceValid() {

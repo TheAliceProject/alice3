@@ -53,7 +53,7 @@ public class DoubleLiteral extends AbstractValueLiteral {
 		this.value.setValue( value );
 	}
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		return TypeDeclaredInJava.get( Double.class );
 	}
 	@Override

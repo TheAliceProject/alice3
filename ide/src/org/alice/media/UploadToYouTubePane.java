@@ -82,9 +82,6 @@ import com.google.gdata.data.youtube.YouTubeNamespace;
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.javax.swing.components.JPane;
 
-import javax.swing.JLabel;
-
-
 /**
  * @author David Culyba
  */

@@ -53,5 +53,9 @@ public class OperatorFillIn extends edu.cmu.cs.dennisc.cascade.SimpleFillIn<  ed
 	protected String getMenuProxyText() {
 		return this.getModel().getName();
 	}
+	@Override
+	protected javax.swing.Icon getMenuProxyIcon() {
+		return this.getModel().getSmallIcon();
+	}
 }
 

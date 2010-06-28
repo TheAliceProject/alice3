@@ -47,7 +47,7 @@ package org.alice.ide.memberseditor.templates;
  */
 //todo: reduce visibility
 public class GetterTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
-	private static final edu.cmu.cs.dennisc.alice.ast.AbstractType[] ZERO_LENGTH_TYPE_ARRAY = new edu.cmu.cs.dennisc.alice.ast.AbstractType[] {};  
+	private static final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] ZERO_LENGTH_TYPE_ARRAY = new edu.cmu.cs.dennisc.alice.ast.AbstractType[] {};  
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	protected GetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		this.field = field;
@@ -61,11 +61,11 @@ public class GetterTemplate extends org.alice.ide.templates.CascadingExpressions
 		return org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( field );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
 		return this.field.getValueType();
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
+	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > rv ) {
 		return rv;
 	}
 	@Override

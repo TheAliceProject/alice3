@@ -40,17 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.editorstabbedpane;
+package edu.cmu.cs.dennisc.javax.swing.models;
 
 /**
-* @author Dennis Cosgrove
-*/
-public class EditFunctionsPane extends EditMethodsPane {
-	public EditFunctionsPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
-		super( declaringType );
-	}
-	@Override
-	protected org.alice.ide.declarationpanes.CreateMethodPane createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
-		return new org.alice.ide.declarationpanes.CreateFunctionPane( declaringType );
-	}
+ * @author Dennis Cosgrove
+ */
+public interface ListModel<E> extends javax.swing.ListModel {
+	public E get( int index );
+	public int indexOf( E element );
+	public int lastIndexOf( E element );
+	public boolean contains( E element );
 }

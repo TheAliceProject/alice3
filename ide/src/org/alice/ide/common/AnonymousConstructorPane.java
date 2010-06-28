@@ -44,11 +44,6 @@ package org.alice.ide.common;
 
 class MethodPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	public MethodPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-//		javax.swing.Box header = javax.swing.Box.createHorizontalBox();
-//		header.add( zoot.ZLabel.acquire( "declare procedure " ) );
-//		header.add( zoot.ZLabel.acquire( method.getName() ) );
-//		header.setAlignmentX( 0.0f );
-		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		org.alice.ide.codeeditor.ParametersPane parametersPane = new org.alice.ide.codeeditor.ParametersPane( factory, method );
 		this.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( method, parametersPane, false ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
 		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 12 ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.WEST );
@@ -108,7 +103,7 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
 		return this.anonymousConstructor.getDeclaringType();
 	}
 	@Override

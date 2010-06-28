@@ -53,7 +53,7 @@ public class NumberLiteral extends AbstractValueLiteral {
 		this.value.setValue( value );
 	}
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		return TypeDeclaredInJava.get( Number.class );
 	}
 	@Override

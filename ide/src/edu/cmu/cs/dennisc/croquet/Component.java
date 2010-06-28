@@ -234,11 +234,11 @@ public abstract class Component<J extends java.awt.Component> implements ScreenE
 	}
 
 	public void setFont( java.awt.Font font ) {
-		if( font != null ) {
+//		if( font != null ) {
 			this.getAwtComponent().setFont( font );
-		} else {
-			throw new NullPointerException();
-		}
+//		} else {
+//			throw new NullPointerException();
+//		}
 	}
 
 	public final void scaleFont( float scaleFactor ) {

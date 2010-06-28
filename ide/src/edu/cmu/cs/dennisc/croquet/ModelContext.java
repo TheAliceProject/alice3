@@ -42,11 +42,11 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-/*package-private*/ abstract class Event< M extends ModelContext< ? > > extends HistoryTreeNode< M > {
+/*package-private*/ abstract class Event< C extends ModelContext< ? > > extends HistoryTreeNode< C > {
 	public Event( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public Event( M parent ) {
+	public Event( C parent ) {
 		super( parent );
 	}
 	public boolean isLeaf() {
@@ -69,11 +69,11 @@ package edu.cmu.cs.dennisc.croquet;
 	}
 }
 
-/*package-private*/ abstract class ModelEvent< M extends ModelContext< ? > > extends Event< M > {
+/*package-private*/ abstract class ModelEvent< C extends ModelContext< ? > > extends Event< C > {
 	public ModelEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public ModelEvent( M parent ) {
+	public ModelEvent( C parent ) {
 		super( parent );
 	}
 	@Override
@@ -136,6 +136,14 @@ public abstract class ModelContext<M extends Model> extends HistoryTreeNode<Mode
 	}
 	public void removeChildrenObserver( ChildrenObserver childrenObserver ) {
 		this.childrenObservers.remove( childrenObserver );
+	}
+	@Override
+	public ModelContext<?> findContextFor( Model< ? > model ) {
+		if( this.model == model ) {
+			return this;
+		} else {
+			return super.findContextFor( model );
+		}
 	}
 
 	public boolean isLeaf() {

@@ -71,12 +71,12 @@ public class TestMethodProgram extends org.alice.apis.moveandturn.Program {
 		}
 	}
 	private static java.awt.Dimension preferredSize = new java.awt.Dimension( 400, 300 );
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType;
 	private edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice sceneInstance;
 	private TestVirtualMachine vm;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	private edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation;
-	public TestMethodProgram( edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType, edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
+	public TestMethodProgram( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType, edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
 		this.sceneType = sceneType;
 		this.field = field;
 		this.emptyExpressionMethodInvocation = emptyExpressionMethodInvocation;

@@ -46,10 +46,10 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class AssignmentExpression extends Expression {
-	public DeclarationProperty<AbstractType> expressionType = new DeclarationProperty<AbstractType>( this );
+	public DeclarationProperty<AbstractType<?,?,?>> expressionType = new DeclarationProperty<AbstractType<?,?,?>>( this );
 	public ExpressionProperty leftHandSide = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			return AssignmentExpression.this.expressionType.getValue();
 		}
 	};
@@ -60,20 +60,20 @@ public class AssignmentExpression extends Expression {
 	//todo: new name
 	public ExpressionProperty rightHandSide = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			return AssignmentExpression.this.expressionType.getValue();
 		}
 	};
 	public AssignmentExpression() {
 	}
-	public AssignmentExpression( AbstractType expressionType, Expression leftHandSide, Operator operator, Expression rightHandSide ) {
+	public AssignmentExpression( AbstractType<?,?,?> expressionType, Expression leftHandSide, Operator operator, Expression rightHandSide ) {
 		this.expressionType.setValue( expressionType );
 		this.leftHandSide.setValue( leftHandSide );
 		this.operator.setValue( operator );
 		this.rightHandSide.setValue( rightHandSide );
 	}
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		return TypeDeclaredInJava.VOID_TYPE;
 	}
 }

@@ -92,7 +92,7 @@ public class ParameterDeclaredInJavaConstructor extends ParameterDeclaredInJava 
 		return m_name;
 	}
 	@Override
-	public AbstractType getValueType() {
+	public AbstractType<?,?,?> getValueType() {
 		return m_valueType;
 	}
 

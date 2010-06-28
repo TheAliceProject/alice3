@@ -62,7 +62,7 @@ public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance
 	}
 	
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
 		if( this.expression != null ) {
 			return this.expression.getType();
 		} else {

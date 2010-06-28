@@ -47,5 +47,5 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public abstract class Expression extends Node {
-	public abstract AbstractType getType();
+	public abstract AbstractType<?,?,?> getType();
 }

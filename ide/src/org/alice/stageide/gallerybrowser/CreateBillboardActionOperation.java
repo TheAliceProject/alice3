@@ -76,16 +76,15 @@ class CreateFieldFromBillboardPane extends org.alice.ide.declarationpanes.Create
 /**
  * @author Dennis Cosgrove
  */
-class CreateBillboardActionOperation extends AbstractGalleryDeclareFieldOperation {
-	private CreateFieldFromBillboardPane createFieldFromBillboardPane;
+class CreateBillboardActionOperation extends AbstractGalleryDeclareFieldOperation<CreateFieldFromBillboardPane> {
 	public CreateBillboardActionOperation() {
 		super( java.util.UUID.fromString( "6ec4f250-7bb7-4f73-830b-1e9b511b69d5" ) );
 		this.setName( "Create Billboard..." );
-		this.createFieldFromBillboardPane = new CreateFieldFromBillboardPane( this.getOwnerType() );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
+	protected org.alice.stageide.gallerybrowser.CreateFieldFromBillboardPane prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.gallerybrowser.CreateFieldFromBillboardPane > context ) {
 		org.alice.ide.resource.prompter.ImageResourcePrompter imageResourcePrompter = org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton();
+		CreateFieldFromBillboardPane rv = new CreateFieldFromBillboardPane( this.getOwnerType() );
 		try {
 			org.alice.virtualmachine.resources.ImageResource frontImageResource = imageResourcePrompter.promptUserForResource( this.getIDE().getFrame() );
 			if( frontImageResource != null ) {
@@ -96,7 +95,7 @@ class CreateBillboardActionOperation extends AbstractGalleryDeclareFieldOperatio
 				org.alice.apis.moveandturn.ImageSource frontImageSource = new org.alice.apis.moveandturn.ImageSource( frontImageResource );
 				org.alice.apis.moveandturn.Billboard billboard = new org.alice.apis.moveandturn.Billboard();
 				billboard.setFrontImageSource( frontImageSource );
-				this.createFieldFromBillboardPane.setBillboard( billboard );
+				rv.setBillboard( billboard );
 				//				String name = "billboard";
 				//				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = this.getIDE().getTypeDeclaredInAliceFor(org.alice.apis.moveandturn.Billboard.class);
 				//				edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation(type);
@@ -110,19 +109,15 @@ class CreateBillboardActionOperation extends AbstractGalleryDeclareFieldOperatio
 		} catch( java.io.IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
-		return this.createFieldFromBillboardPane;
+		return rv;
 	}
 	@Override
-	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
-		return this.createFieldFromBillboardPane;
-	}
-	
-	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.ModelContext context ) {
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = this.createFieldFromBillboardPane.getActualInputValue();
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.gallerybrowser.CreateFieldFromBillboardPane > context ) {
+		CreateFieldFromBillboardPane createFieldFromBillboardPane = context.getMainPanel();
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromBillboardPane.getActualInputValue();
 		if( field != null ) {
 			//ide.getSceneEditor().handleFieldCreation( declaringType, field, person );
-			return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object >( field, this.createFieldFromBillboardPane.getBillboard() );
+			return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object >( field, createFieldFromBillboardPane.getBillboard() );
 		} else {
 			return null;
 		}

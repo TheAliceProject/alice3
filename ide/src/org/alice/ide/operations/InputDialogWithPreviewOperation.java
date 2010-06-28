@@ -45,18 +45,18 @@ package org.alice.ide.operations;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogWithPreviewOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
+public abstract class InputDialogWithPreviewOperation<J extends org.alice.ide.preview.PanelWithPreview> extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<J> {
 	public InputDialogWithPreviewOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId ) {
 		super( group, individualId );
 	}
-	protected abstract org.alice.ide.preview.PanelWithPreview getPanelWithPreview();
 	@Override
-	protected java.lang.String getDialogTitle() {
-		return this.getPanelWithPreview().getDialogTitle();
+	protected String getDialogTitle( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< J > context ) {
+		org.alice.ide.preview.PanelWithPreview panelWithPreview = context.getMainPanel();
+		return panelWithPreview.getDialogTitle();
 	}
 	@Override
-	protected String getExplanationIfOkButtonShouldBeDisabled() {
-		org.alice.ide.preview.PanelWithPreview panelWithPreview = this.getPanelWithPreview();
+	protected String getExplanationIfOkButtonShouldBeDisabled( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< J > context ) {
+		org.alice.ide.preview.PanelWithPreview panelWithPreview = context.getMainPanel();
 		String rv = null;
 		if( panelWithPreview != null ) {
 			panelWithPreview.updatePreview();
@@ -65,7 +65,7 @@ public abstract class InputDialogWithPreviewOperation extends edu.cmu.cs.dennisc
 		if( rv != null ) {
 			return rv;
 		} else {
-			return super.getExplanationIfOkButtonShouldBeDisabled();
+			return super.getExplanationIfOkButtonShouldBeDisabled( context );
 		}
 	}
 }

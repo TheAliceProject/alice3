@@ -40,17 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.editorstabbedpane;
+package edu.cmu.cs.dennisc.javax.swing.models;
 
 /**
-* @author Dennis Cosgrove
-*/
-public class EditProceduresPane extends EditMethodsPane {
-	public EditProceduresPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
-		super( declaringType );
-	}
-	@Override
-	protected org.alice.ide.declarationpanes.CreateMethodPane createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
-		return new org.alice.ide.declarationpanes.CreateProcedurePane( declaringType );
-	}
+ * @author Dennis Cosgrove
+ */
+public interface ReorderableListModel<E> extends ListModel<E> {
+	public void swap( int indexA, int indexB );
+	public void slide( int prevIndex, int nextIndex );
 }

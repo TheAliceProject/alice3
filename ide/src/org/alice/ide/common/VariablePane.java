@@ -51,7 +51,7 @@ public class VariablePane extends LocalPane<edu.cmu.cs.dennisc.alice.ast.Variabl
 		this.setBackgroundPaint( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.VariableAccess.class ) );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
 		return this.getTransient().valueType.getValue();
 	}
 	@Override

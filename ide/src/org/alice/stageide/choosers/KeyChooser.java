@@ -81,7 +81,7 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< 
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)previousExpression;
-			edu.cmu.cs.dennisc.alice.ast.AbstractType type = fieldAccess.getType();
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = fieldAccess.getType();
 			if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Key.class ) ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
 				if( field != null ) {
@@ -110,7 +110,7 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< 
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.FieldAccess getValue() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Key.class );
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Key.class );
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = type.getDeclaredField( type, this.key.name() );
 		assert field.isPublicAccess() && field.isStatic() && field.isFinal();
 		return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), field );

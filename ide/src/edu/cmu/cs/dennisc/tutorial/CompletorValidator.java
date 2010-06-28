@@ -47,5 +47,5 @@ package edu.cmu.cs.dennisc.tutorial;
  */
 
 public interface CompletorValidator extends Completor, Validator {
-	public edu.cmu.cs.dennisc.croquet.Edit getEdit();
+	public edu.cmu.cs.dennisc.croquet.Edit<?> getEdit();
 }

@@ -50,7 +50,7 @@ public class EditFieldOperation extends AbstractEditFieldOperation {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "66bf123b-f047-4cba-86ea-04d3a0a1f689" ), "<html>Edit <strong>" + field.getName() + "</strong>...</html>", field );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > prologue( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
+	protected org.alice.ide.declarationpanes.EditFieldPane prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.EditFieldPane > context ) {
 		final java.util.Set< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > referencedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 		final java.util.Set< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > reassignedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
@@ -58,7 +58,7 @@ public class EditFieldOperation extends AbstractEditFieldOperation {
 		if( project != null ) {
 			final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = this.getField();
 			ide.ensureProjectCodeUpToDate();
-			edu.cmu.cs.dennisc.alice.ast.AbstractType programType = project.getProgramType();
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = project.getProgramType();
 			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess >( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) {
 				@Override
 				protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {

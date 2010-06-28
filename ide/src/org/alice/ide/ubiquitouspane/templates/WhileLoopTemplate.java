@@ -50,7 +50,7 @@ public class WhileLoopTemplate extends CascadingUbiquitousStatementTemplate {
 		super( edu.cmu.cs.dennisc.alice.ast.WhileLoop.class, org.alice.ide.ast.NodeUtilities.createIncompleteWhileLoop() );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
 		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE };
 	}
 	@Override

@@ -78,9 +78,9 @@ public class SceneAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegrap
 			synchronized( m_ghostAdapters ) {
 				m_ghostAdapters.add( (GhostAdapter)componentAdapter );
 			}
-		} else if( componentAdapter instanceof VisualAdapter ) {
+		} else if( componentAdapter instanceof VisualAdapter<?> ) {
 			synchronized( m_visualAdapters ) {
-				m_visualAdapters.add( (VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>)componentAdapter );
+				m_visualAdapters.add( (VisualAdapter<?>)componentAdapter );
 			}
 			if( componentAdapter instanceof PlanarReflectorAdapter ) {
 				synchronized( m_planarReflectorAdapters ) {
@@ -94,7 +94,7 @@ public class SceneAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegrap
 			synchronized( m_ghostAdapters ) {
 				m_ghostAdapters.remove( componentAdapter );
 			}
-		} else if( componentAdapter instanceof VisualAdapter ) {
+		} else if( componentAdapter instanceof VisualAdapter<?> ) {
 			synchronized( m_visualAdapters ) {
 				m_visualAdapters.remove( componentAdapter );
 			}

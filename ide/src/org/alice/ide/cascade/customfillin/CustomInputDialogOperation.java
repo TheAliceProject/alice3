@@ -45,7 +45,7 @@ package org.alice.ide.cascade.customfillin;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends org.alice.ide.operations.InputDialogWithPreviewOperation {
+public class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends org.alice.ide.operations.InputDialogWithPreviewOperation<CustomInputPane< E >> {
 	@Deprecated
 	public interface EPIC_HACK_Validator {
 		public String getExplanationIfOkButtonShouldBeDisabled( org.alice.ide.choosers.ValueChooser< ? > valueChooser );
@@ -64,8 +64,8 @@ public class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.alice.ast.E
 		this.validator = validator;
 	}
 	@Override
-	protected String getExplanationIfOkButtonShouldBeDisabled() {
-		String rv = super.getExplanationIfOkButtonShouldBeDisabled();
+	protected String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context) {
+		String rv = super.getExplanationIfOkButtonShouldBeDisabled( context );
 		if( this.validator != null ) {
 			String explanation = this.validator.getExplanationIfOkButtonShouldBeDisabled( this.customInputPane.getValueChooser() );
 			if( explanation != null ) {
@@ -76,15 +76,11 @@ public class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.alice.ast.E
 	}
 	
 	@Override
-	protected org.alice.ide.preview.PanelWithPreview getPanelWithPreview() {
+	protected CustomInputPane< E > prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context) {
 		return this.customInputPane;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
-		return this.customInputPane;
-	}
-	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context, boolean isOk) {
 		if( isOk ) {
 			context.finish();
 		} else {

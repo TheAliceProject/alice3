@@ -48,8 +48,8 @@ package org.alice.ide.cascade;
 public abstract class MostlyDeterminedInfixExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.InfixExpression< ? >, O > extends edu.cmu.cs.dennisc.cascade.FillIn< E > {
 	private edu.cmu.cs.dennisc.alice.ast.Expression leftOperand;
 	private O operator;
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType;
-	public MostlyDeterminedInfixExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand, O operator, edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType ) {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType;
+	public MostlyDeterminedInfixExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand, O operator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType ) {
 		this.leftOperand = leftOperand;
 		this.operator = operator;
 		this.rightOperandType = rightOperandType;
@@ -61,7 +61,7 @@ public abstract class MostlyDeterminedInfixExpressionFillIn< E extends edu.cmu.c
 	protected void addChildren() {
 		this.addChild( new ExpressionBlank( this.rightOperandType ) );
 	}
-	protected abstract E createIncompleteExpression( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand, O operator, edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType );
+	protected abstract E createIncompleteExpression( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand, O operator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType );
 	protected abstract E createExpression( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand, O operator, edu.cmu.cs.dennisc.alice.ast.Expression right );
 	@Override
 	protected final javax.swing.JComponent createMenuProxy() {

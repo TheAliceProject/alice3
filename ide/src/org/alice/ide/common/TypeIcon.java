@@ -48,10 +48,15 @@ package org.alice.ide.common;
 public class TypeIcon implements javax.swing.Icon {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
 	private TypeBorder border;
-	public TypeIcon( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	
+	public static TypeIcon getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		return new TypeIcon( type );
+	}
+	protected TypeIcon( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		this.type = type;
 		this.border = TypeBorder.getSingletonFor( type );
 	}
+
 	private String getText() {
 		String rv;
 		if( this.type != null ) {

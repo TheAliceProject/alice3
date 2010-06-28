@@ -99,7 +99,7 @@ class TransientStatementsWrapper extends edu.cmu.cs.dennisc.croquet.LineAxisPane
 			for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : code.getParameters() ) {
 				if( parameter instanceof edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice ) {
 					edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameterInAlice = (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)parameter;
-					edu.cmu.cs.dennisc.alice.ast.AbstractType type = parameterInAlice.getValueType();
+					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = parameterInAlice.getValueType();
 					if( type.isArray() ) {
 						this.addComponent( this.getParameterArrayAssignmentStatementTemplate( parameterInAlice ) );
 					}
@@ -110,7 +110,7 @@ class TransientStatementsWrapper extends edu.cmu.cs.dennisc.croquet.LineAxisPane
 			for( edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement variableDeclarationStatement : crawler.getList() ) {
 				edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = variableDeclarationStatement.variable.getValue();
 				this.addComponent( this.getVariableAssignmentStatementTemplate( variable ) );
-				edu.cmu.cs.dennisc.alice.ast.AbstractType type = variable.valueType.getValue();
+				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = variable.valueType.getValue();
 				if( type.isArray() ) {
 					this.addComponent( this.getVariableArrayAssignmentStatementTemplate( variable ) );
 				}

@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class WhileLoop extends AbstractLoop {
 	public ExpressionProperty conditional = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			return TypeDeclaredInJava.get( Boolean.class );
 		}
 	};

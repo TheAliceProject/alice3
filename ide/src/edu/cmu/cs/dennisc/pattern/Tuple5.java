@@ -98,7 +98,7 @@ public class Tuple5<A, B, C, D, E> {
 		if( super.equals( other ) ) {
 			return true;
 		} else {
-			if( other instanceof Tuple5 ) {
+			if( other instanceof Tuple5<?,?,?,?,?> ) {
 				Tuple5<?,?,?,?,?> otherT = (Tuple5<?,?,?,?,?>)other;
 				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_a, otherT.m_a ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_b, otherT.m_b ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_c, otherT.m_c ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_d, otherT.m_d ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_e, otherT.m_e );
 			} else {

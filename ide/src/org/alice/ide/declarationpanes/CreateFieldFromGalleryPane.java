@@ -63,7 +63,7 @@ class GalleryIcon extends edu.cmu.cs.dennisc.croquet.Label {
  */
 public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldPane {
 	private GalleryIcon galleryIcon;
-	private CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class<?> cls, java.io.File file, edu.cmu.cs.dennisc.alice.ast.AbstractType valueType ) {
+	private CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class<?> cls, java.io.File file, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
 		super( declaringType, cls, valueType );
 		if( file != null ) {
 			if( file.exists() ) {
@@ -78,7 +78,7 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, java.io.File file ) {
 		this( declaringType, getClsFromGalleryFile( file ), file, null );
 	}
-	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType valueType ) {
+	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
 		this( declaringType, null, getGalleryFileFromCls( valueType.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getName() ), valueType );
 	}
 	

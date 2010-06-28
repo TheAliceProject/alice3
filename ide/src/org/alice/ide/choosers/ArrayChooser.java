@@ -75,7 +75,7 @@ public class ArrayChooser extends AbstractRowsPaneChooser< edu.cmu.cs.dennisc.al
 		edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getPreviousExpression(), edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation.class );
 		if( arrayInstanceCreation != null ) {
 			//typePane.setAndLockType( arrayInstanceCreation.arrayType.getValue() );
-			edu.cmu.cs.dennisc.alice.ast.AbstractType type = arrayInstanceCreation.arrayType.getValue().getComponentType();
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = arrayInstanceCreation.arrayType.getValue().getComponentType();
 			bogusNode.componentType.setValue( type );
 			for( edu.cmu.cs.dennisc.alice.ast.Expression expression : arrayInstanceCreation.expressions ) {
 				bogusNode.arrayExpressions.add( expression );

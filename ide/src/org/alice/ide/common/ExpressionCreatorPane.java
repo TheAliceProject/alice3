@@ -60,13 +60,13 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 	protected boolean isAlphaDesiredWhenOverDropReceptor() {
 		return true;
 	}
-	protected abstract java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv );
+	protected abstract java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > rv );
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
 //	@Override
 	public final void createExpression( final edu.cmu.cs.dennisc.croquet.ModelContext context, final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, final edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
-		final java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > types = getBlankExpressionTypes( new java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.AbstractType >() );
-		final edu.cmu.cs.dennisc.alice.ast.AbstractType thisType = this.getExpressionType();
-		edu.cmu.cs.dennisc.alice.ast.AbstractType propertyType = expressionProperty.getExpressionType();
+		final java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > types = getBlankExpressionTypes( new java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> >() );
+		final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> thisType = this.getExpressionType();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> propertyType = expressionProperty.getExpressionType();
 		
 		final boolean[] accessible = { false, false };
 		if( propertyType.isAssignableFrom( thisType ) ) {
@@ -77,7 +77,7 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 					types.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE );
 					accessible[ 0 ] = true;
 				}
-				for( edu.cmu.cs.dennisc.alice.ast.AbstractType integerType : edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_TYPES ) {
+				for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava integerType : edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_TYPES ) {
 					if( propertyType == integerType ) {
 						accessible[ 1 ] = true;
 					}
@@ -111,7 +111,9 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 			ExpressionsTaskObserver expressionsTaskObserver = new ExpressionsTaskObserver();
 			edu.cmu.cs.dennisc.alice.ast.BlockStatement parentStatement = null;
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate parentStatement" );
-			getIDE().promptUserForExpressions( parentStatement, -1, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( types, edu.cmu.cs.dennisc.alice.ast.AbstractType.class ), accessible[ 1 ], (java.awt.event.MouseEvent)context.getAwtEvent(), expressionsTaskObserver );
+			edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? >[] array = new edu.cmu.cs.dennisc.alice.ast.AbstractType[ types.size() ];
+			types.toArray( array );
+			getIDE().promptUserForExpressions( parentStatement, -1, array, accessible[ 1 ], (java.awt.event.MouseEvent)context.getAwtEvent(), expressionsTaskObserver );
 			
 //			class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.Expression[], Void > {
 //				@Override

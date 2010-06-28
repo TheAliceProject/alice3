@@ -45,18 +45,18 @@ package org.alice.ide.operations.preferences;
 /**
  * @author Dennis Cosgrove
  */
-public class PreferencesOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation {
+public class PreferencesOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.ide.preferencesinputpane.PreferencesPanel> {
 	public PreferencesOperation() {
 		super( org.alice.ide.IDE.PREFERENCES_GROUP, java.util.UUID.fromString( "8662d722-9a02-47d5-a7ed-27d20528175a" ) );
 		this.setName( "Preferences..." );
 	}
 	private org.alice.ide.preferencesinputpane.PreferencesPanel preferencesInputPane = new org.alice.ide.preferencesinputpane.PreferencesPanel();
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component<?> prologue(edu.cmu.cs.dennisc.croquet.ModelContext context) {
+	protected org.alice.ide.preferencesinputpane.PreferencesPanel prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.preferencesinputpane.PreferencesPanel> context) {
 		return this.preferencesInputPane;
 	}
 	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.ModelContext context, boolean isOk) {
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.preferencesinputpane.PreferencesPanel> context, boolean isOk) {
 		//todo
 		if( isOk ) {
 			context.finish();

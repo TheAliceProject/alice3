@@ -46,8 +46,8 @@ package org.alice.ide.cascade;
  * @author Dennis Cosgrove
  */
 public class MostlyDeterminedArithmeticInfixExpressionFillIn extends MostlyDeterminedInfixExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator > {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType expressionType;
-	public MostlyDeterminedArithmeticInfixExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.Expression leftExpression, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType, edu.cmu.cs.dennisc.alice.ast.AbstractType expressionType ) {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType;
+	public MostlyDeterminedArithmeticInfixExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.Expression leftExpression, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType ) {
 		super( leftExpression, operator, rightOperandType );
 		this.expressionType = expressionType;
 	}
@@ -55,7 +55,7 @@ public class MostlyDeterminedArithmeticInfixExpressionFillIn extends MostlyDeter
 		this( leftExpression, operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( rightOperandCls ), edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( expressionCls ) );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createIncompleteExpression( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType ) {
+	protected edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createIncompleteExpression( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType ) {
 		return org.alice.ide.ast.NodeUtilities.createIncompleteArithmeticInfixExpression( leftOperand, operator, rightOperandType, this.expressionType );
 	}
 	@Override

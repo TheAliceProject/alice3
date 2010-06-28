@@ -49,10 +49,10 @@ package edu.cmu.cs.dennisc.alice.ast;
  */
 public abstract class AbstractMember extends AbstractAccessibleDeclaration {
 	public abstract edu.cmu.cs.dennisc.alice.annotations.Visibility getVisibility();
-	public abstract AbstractType getDeclaringType();
+	public abstract AbstractType<?,?,?> getDeclaringType();
 	@Override
 	public boolean isDeclaredInAlice() {
-		AbstractType declaringType = getDeclaringType();
+		AbstractType<?,?,?> declaringType = getDeclaringType();
 		//assert declaringType != null;
 		if( declaringType != null ) {
 			return declaringType.isDeclaredInAlice();

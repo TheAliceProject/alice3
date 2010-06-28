@@ -67,7 +67,7 @@ public abstract class Factory {
 	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createTextComponent( String text ) { 
 		return new edu.cmu.cs.dennisc.croquet.Label( text, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 	}
-	public abstract edu.cmu.cs.dennisc.croquet.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType );
+	public abstract edu.cmu.cs.dennisc.croquet.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType );
 	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane ) {
 		return createExpressionPropertyPane( expressionProperty, prefixPane, null );
 	}
@@ -184,8 +184,8 @@ public abstract class Factory {
 			Object o = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( owner, mthd );
 			String s;
 			if( o != null ) {
-				if( o instanceof edu.cmu.cs.dennisc.alice.ast.AbstractType ) {
-					s = ((edu.cmu.cs.dennisc.alice.ast.AbstractType)o).getName();
+				if( o instanceof edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> ) {
+					s = ((edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>)o).getName();
 				} else {
 					s = o.toString();
 				}
