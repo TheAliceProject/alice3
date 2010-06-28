@@ -45,7 +45,6 @@ package org.alice.interact.handle;
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
-import org.alice.interact.handle.HandleSet;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.event.EventCriteriaManager;
 import org.alice.interact.event.ManipulationEvent;

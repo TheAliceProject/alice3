@@ -108,11 +108,14 @@ public class PopupMenuButton extends edu.cmu.cs.dennisc.croquet.AbstractButton<j
 	}
 	@Override
 	protected javax.swing.AbstractButton createAwtComponent() {
-		javax.swing.AbstractButton rv = new javax.swing.JButton() {
+		class JPopupMenuButton extends javax.swing.JButton {
+			public JPopupMenuButton() {
+//				this.setModel( new javax.swing.DefaultButtonModel() );
+				this.setRolloverEnabled(true);
+			}
 			@Override
 			public void updateUI() {
 				this.setUI(new javax.swing.plaf.basic.BasicButtonUI());
-				this.setRolloverEnabled(true);
 			}
 			@Override
 			public java.awt.Dimension getMaximumSize() {
@@ -189,6 +192,8 @@ public class PopupMenuButton extends edu.cmu.cs.dennisc.croquet.AbstractButton<j
 				g2.setPaint(prevPaint);
 			}
 		};
+
+		javax.swing.AbstractButton rv = new JPopupMenuButton();
 
 		int insetLeft = 3;
 		if (this.prefixComponent != null || this.mainComponent != null || this.postfixComponent != null) {

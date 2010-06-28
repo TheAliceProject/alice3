@@ -53,7 +53,6 @@ import org.alice.interact.event.EventCriteriaManager;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;
-import org.alice.interact.handle.HandleState;
 import org.alice.interact.manipulator.AbstractManipulator;
 
 import edu.cmu.cs.dennisc.animation.Animator;

@@ -224,8 +224,8 @@ public class Tutorial {
 			@Override
 			public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
 				boolean rv = super.isWhatWeveBeenWaitingFor( child );
-				if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext ) {
-					edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext context = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext)child;
+				if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext<?> ) {
+					edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext<?> context = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext<?>)child;
 					edu.cmu.cs.dennisc.croquet.Model<?> model = context.getModel();
 					if (model instanceof org.alice.ide.cascade.customfillin.CustomInputDialogOperation ) {
 						org.alice.ide.cascade.customfillin.CustomInputDialogOperation customInputDialogOperation = (org.alice.ide.cascade.customfillin.CustomInputDialogOperation) model;

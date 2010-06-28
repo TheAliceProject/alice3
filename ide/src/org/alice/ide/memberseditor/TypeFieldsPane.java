@@ -52,7 +52,7 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 		super( type );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.property.ListProperty< ? >[] getListPropertiesToListenTo( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected edu.cmu.cs.dennisc.property.ListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice >[] getListPropertiesToListenTo( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.fields };
 	}
 	@Override

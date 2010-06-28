@@ -132,7 +132,11 @@ public class WrappedFlowLayout extends java.awt.FlowLayout {
 			//  target containter so shrinking the container size works
 			//  correctly. Removing the horizontal gap is an easy way to do this.
 
-			dim.width -= (hgap + 1);
+			
+			//note: this was causing problems so replaced w/ Math.min- dennisc
+			//dim.width -= (hgap + 1);
+			
+			dim.width = Math.min( dim.width, targetWidth );
 
 			return dim;
 		}

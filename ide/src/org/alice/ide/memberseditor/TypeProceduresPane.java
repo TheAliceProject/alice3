@@ -42,33 +42,36 @@
  */
 package org.alice.ide.memberseditor;
 
-import org.alice.ide.memberseditor.templates.TemplateFactory;
-
 /**
  * @author Dennis Cosgrove
  */
 public class TypeProceduresPane extends AbstractTypeMethodsPane {
-	public TypeProceduresPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		super( type );
+	public TypeProceduresPane(edu.cmu.cs.dennisc.alice.ast.AbstractType<?, ?, ?> type) {
+		super(type);
 	}
+
 	@Override
-	protected edu.cmu.cs.dennisc.property.ListProperty< ? >[] getListPropertiesToListenTo( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected edu.cmu.cs.dennisc.property.ListProperty<? extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice>[] getListPropertiesToListenTo(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type) {
 		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.methods };
 	}
+
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Button createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		return org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance( type ).createButton();
+	protected edu.cmu.cs.dennisc.croquet.Button createDeclareMemberButton(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type) {
+		return org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance(type).createButton();
 	}
+
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Button createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected edu.cmu.cs.dennisc.croquet.Button createEditConstructorButton(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type) {
 		return null;
 	}
+
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createFunctionTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	protected edu.cmu.cs.dennisc.croquet.Component<?> createFunctionTemplate(edu.cmu.cs.dennisc.alice.ast.AbstractMethod method) {
 		return null;
 	}
+
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createProcedureTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		return TemplateFactory.getProcedureInvocationTemplate( method );
+	protected edu.cmu.cs.dennisc.croquet.Component<?> createProcedureTemplate(edu.cmu.cs.dennisc.alice.ast.AbstractMethod method) {
+		return org.alice.ide.memberseditor.templates.TemplateFactory.getProcedureInvocationTemplate(method);
 	}
 }
