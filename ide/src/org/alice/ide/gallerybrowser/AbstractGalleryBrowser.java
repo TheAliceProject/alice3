@@ -57,10 +57,12 @@ public abstract class AbstractGalleryBrowser extends edu.cmu.cs.dennisc.croquet.
 		this.addComponent( this.assetsPane, Constraint.CENTER );
 	}
 	protected AssetsPane createAssetsPane( java.io.File rootDirectory ) {
-		java.io.InputStream is = AbstractGalleryBrowser.class.getResourceAsStream( "images/folder.png" );
-		java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is );
-		javax.swing.ImageIcon folderIcon = new javax.swing.ImageIcon( image );
-		javax.swing.ImageIcon folderIconSmall = new javax.swing.ImageIcon( image.getScaledInstance( 16, 16, java.awt.Image.SCALE_SMOOTH ) );
+//		java.io.InputStream is = AbstractGalleryBrowser.class.getResourceAsStream( "images/folder.png" );
+//		java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is );
+//		javax.swing.ImageIcon folderIcon = new javax.swing.ImageIcon( image );
+//		javax.swing.ImageIcon folderIconSmall = new javax.swing.ImageIcon( image.getScaledInstance( 32, 32, java.awt.Image.SCALE_SMOOTH ) );
+		javax.swing.ImageIcon folderIcon = new javax.swing.ImageIcon( AbstractGalleryBrowser.class.getResource( "images/folder.png" ) );
+		javax.swing.ImageIcon folderIconSmall = new javax.swing.ImageIcon( AbstractGalleryBrowser.class.getResource( "images/folder24.png" ) );
 		
 		return new AssetsPane( rootDirectory, folderIcon, folderIconSmall ) {
 			@Override
