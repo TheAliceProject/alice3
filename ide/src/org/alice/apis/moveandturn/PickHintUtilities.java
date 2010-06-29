@@ -100,9 +100,12 @@ public class PickHintUtilities {
 			}
 		} else if( rv instanceof org.alice.apis.moveandturn.Light ) {
 			sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.LIGHT );
-		} else if( rv instanceof org.alice.apis.moveandturn.AbstractCamera ) {
-			sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.CAMERA );
+		} else if( rv instanceof org.alice.apis.moveandturn.SymmetricPerspectiveCamera ) {
+			sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.PERSPECTIVE_CAMERA );
+		} else if( rv instanceof org.alice.apis.moveandturn.OrthographicCamera ) {
+			sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.ORTHOGRAPHIC_CAMERA );
 		}
+		
 		return rv;
 	}
 }

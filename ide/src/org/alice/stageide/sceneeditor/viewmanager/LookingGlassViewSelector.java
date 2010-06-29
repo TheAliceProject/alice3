@@ -79,6 +79,7 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Prop
 	private QuaternionAndTranslationTargetBasedAnimation cameraAnimation = null;
 	private PointOfViewAnimation pointOfViewAnimation = null;
 	private CameraMarker markerToUpdate = null;
+	private boolean shouldAnimate = true;
 	
 	public LookingGlassViewSelector(MoveAndTurnSceneEditor sceneEditor, Animator animator, List<CameraFieldAndMarker> extraOptions)
 	{
@@ -94,13 +95,6 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Prop
 	public void setPerspectiveCamera(SymmetricPerspectiveCamera camera)
 	{
 		this.perspectiveCamera = camera;
-//		if (this.perspectiveCamera != null)
-//		{
-//			if (doesMarkerMatchCamera(this.activeMarker, this.perspectiveCamera) && this.markerToUpdate == null)
-//			{
-//				startTrackingCamera(this.perspectiveCamera, this.activeMarker);
-//			}
-//		}
 	}
 	
 	public void setOrthographicCamera(OrthographicCamera camera)
@@ -113,13 +107,18 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Prop
 		if (this.orthographicCamera != null)
 		{
 			this.orthographicCamera.picturePlane.addPropertyListener(this);
-			if (doesMarkerMatchCamera(this.activeMarker, this.orthographicCamera) && this.markerToUpdate == null)
-			{
-				startTrackingCamera(this.orthographicCamera, this.activeMarker);
-			}
 		}
 	}
 	
+	public boolean getShouldAnimate()
+	{
+		return this.shouldAnimate;
+	}
+	
+	public void setShouldAnimate(boolean shouldAnimate)
+	{
+		this.shouldAnimate = shouldAnimate;
+	}
 	
 	private synchronized boolean isAnimatingCamera()
 	{
@@ -169,7 +168,7 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Prop
 			this.pointOfViewAnimation.complete(null);
 			this.doEpilogue = true;
 		}
-		if (transformsAreWithinReasonableEpsilonOfEachOther( currentTransform, targetTransform))
+		if (!this.shouldAnimate || transformsAreWithinReasonableEpsilonOfEachOther( currentTransform, targetTransform))
 		{
 			startTrackingCamera(LookingGlassViewSelector.this.perspectiveCamera, LookingGlassViewSelector.this.activeMarker);
 		}
@@ -240,9 +239,32 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Prop
 		
 	}
 	
+	private void setCameraToSelectedMarker()
+	{
+		stopTrackingCamera();
+		if (this.activeMarker instanceof OrthographicCameraMarker)
+		{
+			OrthographicCameraMarker orthoMarker = (OrthographicCameraMarker)this.activeMarker;
+			switchToOrthographicView();
+			Transformable cameraParent = (Transformable)LookingGlassViewSelector.this.orthographicCamera.getParent();
+			LookingGlassViewSelector.this.orthographicCamera.picturePlane.setValue(new ClippedZPlane(orthoMarker.getPicturePlane()) );
+			cameraParent.setTransformation( LookingGlassViewSelector.this.activeMarker.getTransformation( AsSeenBy.SCENE ), LookingGlassViewSelector.this.orthographicCamera.getRoot() );
+			startTrackingCamera(this.orthographicCamera, orthoMarker);
+		}
+		else
+		{
+			switchToPerspectiveView();
+			animateToTargetView();
+		}
+	}
+	
 	@Override
 	public void doSetSelectedView(int index)
 	{
+		if (this.perspectiveCamera == null)
+		{
+			return;
+		}
 		CameraMarker previousMarker = this.activeMarker;
 		super.doSetSelectedView(index);
 		
@@ -254,21 +276,7 @@ public class LookingGlassViewSelector extends CameraViewSelector implements Prop
 		{
 			if (previousMarker != this.activeMarker)
 			{
-				stopTrackingCamera();
-				if (this.activeMarker instanceof OrthographicCameraMarker)
-				{
-					OrthographicCameraMarker orthoMarker = (OrthographicCameraMarker)this.activeMarker;
-					switchToOrthographicView();
-					Transformable cameraParent = (Transformable)LookingGlassViewSelector.this.orthographicCamera.getParent();
-					LookingGlassViewSelector.this.orthographicCamera.picturePlane.setValue(new ClippedZPlane(orthoMarker.getPicturePlane()) );
-					cameraParent.setTransformation( LookingGlassViewSelector.this.activeMarker.getTransformation( AsSeenBy.SCENE ), LookingGlassViewSelector.this.orthographicCamera.getRoot() );
-					startTrackingCamera(this.orthographicCamera, orthoMarker);
-				}
-				else
-				{
-					switchToPerspectiveView();
-					animateToTargetView();
-				}
+				setCameraToSelectedMarker();
 			}
 		}
 	}

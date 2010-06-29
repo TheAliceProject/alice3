@@ -102,6 +102,11 @@ public class StartingCameraViewManager extends JPanel {
 		
 	}
 	
+	public CameraViewSelector getCameraViewSelector()
+	{
+		return this.viewSelector;
+	}
+	
 	public void setDesiredSelectedView(AbstractField desiredView)
 	{
 		this.desiredSelectedField = desiredView;

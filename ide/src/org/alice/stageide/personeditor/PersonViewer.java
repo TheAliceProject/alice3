@@ -43,6 +43,7 @@
 package org.alice.stageide.personeditor;
 
 import org.alice.apis.stage.*;
+import org.alice.interact.AbstractDragAdapter.CameraView;
 
 /**
  * @author Dennis Cosgrove
@@ -261,6 +262,8 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		}
 		//this._sunLight.turn( apis.moveandturn.TurnDirection.FORWARD, org.alice.apis.moveandturn.AngleInRevolutions( 0.125 ) );
 		this.dragAdapter.setOnscreenLookingGlass( this.getOnscreenLookingGlass() );
+		this.dragAdapter.addCameraView( CameraView.MAIN, this.getCamera().getSGSymmetricPerspectiveCamera(), null );
+		this.dragAdapter.makeCameraActive( this.getCamera().getSGSymmetricPerspectiveCamera() );
 	}
 	
 	public LifeStage getLifeStage() {

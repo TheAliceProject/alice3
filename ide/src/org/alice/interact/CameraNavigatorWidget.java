@@ -113,7 +113,7 @@ public class CameraNavigatorWidget extends JPanel {
 			this.cameraDriver.addCondition( new ManipulationEventCriteria(
 					event.getType(),
 					event.getMovementDescription(),
-					PickHint.CAMERA ) );
+					PickHint.PERSPECTIVE_CAMERA ) );
 		}
 		//Set the handle to listen to the relevant events so it can update its appearance as things happen
 		this.dragAdapter.addManipulationListener( this.cameraDriver );
@@ -134,7 +134,7 @@ public class CameraNavigatorWidget extends JPanel {
 			this.cameraControlUpDown.addCondition( new ManipulationEventCriteria(
 					event.getType(),
 					event.getMovementDescription(),
-					PickHint.CAMERA ) );
+					PickHint.PERSPECTIVE_CAMERA ) );
 		}
 		//Set the handle to listen to the relevant events so it can update its appearance as things happen
 		this.dragAdapter.addManipulationListener( this.cameraControlUpDown );
@@ -155,7 +155,7 @@ public class CameraNavigatorWidget extends JPanel {
 			this.cameraControlStrafe.addCondition( new ManipulationEventCriteria(
 					event.getType(),
 					event.getMovementDescription(),
-					PickHint.CAMERA ) );
+					PickHint.PERSPECTIVE_CAMERA ) );
 		}
 		//Set the handle to listen to the relevant events so it can update its appearance as things happen
 		this.dragAdapter.addManipulationListener( this.cameraControlStrafe );
@@ -187,7 +187,7 @@ public class CameraNavigatorWidget extends JPanel {
 			this.orthographicCameraControlStrafe.addCondition( new ManipulationEventCriteria(
 					event.getType(),
 					event.getMovementDescription(),
-					PickHint.CAMERA ) );
+					PickHint.ORTHOGRAPHIC_CAMERA ) );
 		}
 		//Set the handle to listen to the relevant events so it can update its appearance as things happen
 		this.dragAdapter.addManipulationListener( this.orthographicCameraControlStrafe );
@@ -208,7 +208,7 @@ public class CameraNavigatorWidget extends JPanel {
 			this.orthographicCameraControlZoom.addCondition( new ManipulationEventCriteria(
 					event.getType(),
 					event.getMovementDescription(),
-					PickHint.CAMERA ) );
+					PickHint.ORTHOGRAPHIC_CAMERA ) );
 		}
 		//Set the handle to listen to the relevant events so it can update its appearance as things happen
 		this.dragAdapter.addManipulationListener( this.orthographicCameraControlZoom );

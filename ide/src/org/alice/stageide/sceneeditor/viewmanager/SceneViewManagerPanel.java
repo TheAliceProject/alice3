@@ -51,6 +51,7 @@ import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -65,17 +66,21 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
+import org.alice.apis.moveandturn.CameraMarker;
 import org.alice.ide.common.FieldDeclarationPane;
-
+import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
+import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.ast.ThisExpression;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.zoot.ZManager;
 
 /**
  * @author David Culyba
  */
-public class SceneViewManagerPanel extends JPanel{
+public class SceneViewManagerPanel extends JPanel implements MoveAndTurnSceneEditor.SceneEditorFieldObserver{
 	
 	private boolean isActive = false;
 	
@@ -252,6 +257,31 @@ public class SceneViewManagerPanel extends JPanel{
 		{
 			this.isActive = isActive;
 		}
+	}
+
+	public void fieldAdded(final FieldDeclaredInAlice addedField) {
+		PrintUtilities.println("todo: implement a better fieldsAdded in "+this.getClass().getSimpleName());
+		refreshFields();
+		if (addedField.getDesiredValueType().isAssignableFrom(CameraMarker.class))
+		{
+			SwingUtilities.invokeLater(new Runnable()
+			{
+				public void run()
+				{
+					scrollToField(addedField);
+				}
+			});
+		}
+		
+	}
+
+	public void fieldRemoved(FieldDeclaredInAlice removedField) {
+		PrintUtilities.println("todo: implement a better fieldsRemoved in "+this.getClass().getSimpleName());
+		refreshFields();
+	}
+
+	public void fieldsSet(Collection<? extends FieldDeclaredInAlice> newFields) {
+		refreshFields();
 	}
 
 }

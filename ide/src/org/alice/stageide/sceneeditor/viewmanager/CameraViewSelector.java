@@ -45,19 +45,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
 import org.alice.apis.moveandturn.CameraMarker;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
+import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 
 /**
  * @author David Culyba
  */
-public class CameraViewSelector extends JPanel implements ItemListener, ActionListener{
+public class CameraViewSelector extends JPanel implements ItemListener, ActionListener, MoveAndTurnSceneEditor.SceneEditorFieldObserver{
 	
 	protected MoveAndTurnSceneEditor sceneEditor;
 	protected JComboBox cameraViewComboBox;
@@ -120,12 +125,18 @@ public class CameraViewSelector extends JPanel implements ItemListener, ActionLi
 		this.stopListening();
 		
 		this.cameraViewComboBox.removeAllItems();
-		List<AbstractField> declaredFields = this.sceneEditor.getDeclaredFields();
+		List<FieldDeclaredInAlice> declaredFields = this.sceneEditor.getDeclaredFields();
 		for( AbstractField field : declaredFields) 
 		{
 			if (field.getValueType().isAssignableTo( org.alice.apis.moveandturn.CameraMarker.class ))
 			{
-				fieldBasedOptions.add( new CameraFieldAndMarker(field, getMarkerForField(field)) );
+				CameraMarker marker = getMarkerForField(field); 
+				if (marker == null)
+				{
+					System.out.println("null");
+					marker = getMarkerForField(field); 
+				}
+				fieldBasedOptions.add( new CameraFieldAndMarker(field, marker) );
 			}
 		}
 		//Populate the combobox with the elements
@@ -327,6 +338,20 @@ public class CameraViewSelector extends JPanel implements ItemListener, ActionLi
 
 	public void actionPerformed(ActionEvent e) {
 		this.doSetSelectedView( this.cameraViewComboBox.getSelectedIndex() );
+	}
+
+	public void fieldAdded(final FieldDeclaredInAlice addedField) {
+		PrintUtilities.println("todo: implement a better fieldsAdded in "+this.getClass().getSimpleName());
+		refreshFields();
+	}
+
+	public void fieldRemoved(FieldDeclaredInAlice removedField) {
+		PrintUtilities.println("todo: implement a better fieldsRemoved in "+this.getClass().getSimpleName());
+		refreshFields();
+	}
+
+	public void fieldsSet(Collection<? extends FieldDeclaredInAlice> newFields) {
+		refreshFields();
 	}
 
 
