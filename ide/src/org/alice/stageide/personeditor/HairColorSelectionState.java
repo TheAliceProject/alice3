@@ -45,34 +45,17 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-class HairSelectionOperation extends AbstractItemSelectionOperation<org.alice.apis.stage.Hair> {
-	public HairSelectionOperation( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, final String hairColor ) {
-		super( 
-			java.util.UUID.fromString( "682e4dea-91f3-4b0a-8004-51942613c643" ), 
-			edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
-					edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
-							org.alice.apis.stage.HairManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
-							new edu.cmu.cs.dennisc.pattern.Criterion< org.alice.apis.stage.Hair >() {
-								public boolean accept( org.alice.apis.stage.Hair hair ) {
-									return hair.toString().equals( hairColor );
-								}
-							} 
-					),
-					org.alice.apis.stage.Hair.class
-			) 
-		);
+abstract class HairColorSelectionState extends AbstractListSelectionState< String > {
+	public HairColorSelectionState( java.util.UUID individualId, String... colorNames ) {
+		super( individualId, colorNames );
 	}
 	@Override
-	protected void handlePerformSelectionChange( org.alice.apis.stage.Hair value ) {
-		PersonViewer.getSingleton().setHair( value );
+	protected void handlePerformSelectionChange( String value ) {
+		PersonViewer.getSingleton().setHairColor( value );
 	}
 	@Override
-	protected int getVisibleRowCount() {
-		return -1;
-	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Hair> createList() {
-		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Hair> rv = super.createList();
+	public edu.cmu.cs.dennisc.croquet.List<String> createList() {
+		edu.cmu.cs.dennisc.croquet.List<String> rv = super.createList();
 		rv.setCellRenderer( new HairListCellRenderer() );
 		return rv;
 	}

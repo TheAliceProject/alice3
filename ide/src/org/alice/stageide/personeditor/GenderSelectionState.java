@@ -45,31 +45,18 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-class FullBodyOutfitSelectionOperation extends AbstractItemSelectionOperation<org.alice.apis.stage.FullBodyOutfit> {
-	public FullBodyOutfitSelectionOperation( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
-		super( 
-			java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ), 
-			edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
-					edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
-							org.alice.apis.stage.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
-							null 
-					),
-					org.alice.apis.stage.FullBodyOutfit.class
-			) 
-		);
+class GenderSelectionState extends AbstractListSelectionState< org.alice.apis.stage.Gender > {
+	public GenderSelectionState() {
+		super( java.util.UUID.fromString( "0a4c1622-e482-46bb-bb00-be3916f5549c" ), org.alice.apis.stage.Gender.values() );
 	}
 	@Override
-	protected void handlePerformSelectionChange( org.alice.apis.stage.FullBodyOutfit value ) {
-		PersonViewer.getSingleton().setFullBodyOutfit( value );
+	protected void handlePerformSelectionChange( org.alice.apis.stage.Gender value ) {
+		PersonViewer.getSingleton().setGender( value );
 	}
 	@Override
-	protected int getVisibleRowCount() {
-		return -1;
-	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.FullBodyOutfit> createList() {
-		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.FullBodyOutfit> rv = super.createList();
-		rv.setCellRenderer( new FullBodyOutfitListCellRenderer() );
+	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Gender> createList() {
+		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Gender> rv = super.createList();
+		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
 		return rv;
 	}
 }

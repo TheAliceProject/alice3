@@ -45,64 +45,18 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractItemSelectionOperation<E> extends edu.cmu.cs.dennisc.croquet.ListSelectionState< E > {
-//	private class ItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<E> {
-//		public ItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
-//			super( java.util.UUID.fromString( "a10c07e8-bd0a-45e2-87aa-a3715fefb847" ), comboBoxModel );
-//		}
-//		@Override
-//		protected void handleSelectionChange(E value) {
-//			AbstractList.this.handlePerformSelectionChange( value );
-//		}
-//	}
-
-	public AbstractItemSelectionOperation( java.util.UUID individualId, E... items ) {
-		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId );
-		this.setListData( -1, items );
-//		this.setItemSelectionOperation( new ItemSelectionOperation( comboBoxModel ) );
-		this.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< E >() {
-			public void changed(E nextValue) {
-//				if( e.getValueIsAdjusting() ) {
-//					//pass
-//				} else {
-					E item = AbstractItemSelectionOperation.this.getValue();
-					if( item != null ) {
-						AbstractItemSelectionOperation.this.handlePerformSelectionChange( item );
-					}
-//				}
-			}
-		} );
-//		this.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
-//			public void valueChanged(javax.swing.event.ListSelectionEvent e) {
-//				if( e.getValueIsAdjusting() ) {
-//					//pass
-//				} else {
-//					E item = (E)AbstractItemSelectionOperation.this.getValue();
-//					if( item != null ) {
-//						AbstractItemSelectionOperation.this.handlePerformSelectionChange( item );
-//					}
-//				}
-//			}
-//		} );
+class BaseSkinToneSelectionState extends AbstractListSelectionState< org.alice.apis.stage.BaseSkinTone > {
+	public BaseSkinToneSelectionState() {
+		super( java.util.UUID.fromString( "16db5f23-5fa8-41e5-8477-de0f9271e797" ), org.alice.apis.stage.BaseSkinTone.values() );
 	}
 	@Override
-	protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, E value) {
-		throw new RuntimeException( "todo" );
+	protected void handlePerformSelectionChange( org.alice.apis.stage.BaseSkinTone value ) {
+		PersonViewer.getSingleton().setBaseSkinTone( value );
 	}
 	@Override
-	protected E decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
-	}
-	protected abstract void handlePerformSelectionChange( E value );
-	protected int getVisibleRowCount() {
-		return 1;
-	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.List<E> createList() {
-		edu.cmu.cs.dennisc.croquet.List<E> rv = super.createList();
-		rv.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
-		rv.setVisibleRowCount( this.getVisibleRowCount() );
-		rv.setBackgroundColor( null );
+	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseSkinTone> createList() {
+		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseSkinTone> rv = super.createList();
+		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
 		return rv;
-	}	
+	}
 }

@@ -53,7 +53,7 @@ class FullBodyOutfitCardPanel extends IngredientCardPanel<org.alice.apis.stage.F
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new FullBodyOutfitSelectionOperation( lifeStage, gender );
+			rv = new FullBodyOutfitSelectionState( lifeStage, gender );
 			this.mapToMap.put( lifeStage, gender, rv );
 		}
 		return rv;

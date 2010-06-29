@@ -45,17 +45,17 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-class GenderSelectionOperation extends AbstractItemSelectionOperation< org.alice.apis.stage.Gender > {
-	public GenderSelectionOperation() {
-		super( java.util.UUID.fromString( "0a4c1622-e482-46bb-bb00-be3916f5549c" ), org.alice.apis.stage.Gender.values() );
+class BaseEyeColorSelectionState extends AbstractListSelectionState<org.alice.apis.stage.BaseEyeColor> {
+	public BaseEyeColorSelectionState() {
+		super(java.util.UUID.fromString("04672192-417f-4446-abbc-16c3ee015802"), org.alice.apis.stage.BaseEyeColor.values() );
 	}
 	@Override
-	protected void handlePerformSelectionChange( org.alice.apis.stage.Gender value ) {
-		PersonViewer.getSingleton().setGender( value );
+	protected void handlePerformSelectionChange(org.alice.apis.stage.BaseEyeColor value) {
+		PersonViewer.getSingleton().setBaseEyeColor(value);
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Gender> createList() {
-		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Gender> rv = super.createList();
+	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseEyeColor> createList() {
+		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseEyeColor> rv = super.createList();
 		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
 		return rv;
 	}

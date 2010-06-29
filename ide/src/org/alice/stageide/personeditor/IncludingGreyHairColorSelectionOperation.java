@@ -45,7 +45,7 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-class IncludingGreyHairColorSelectionOperation extends HairColorSelectionOperation {
+class IncludingGreyHairColorSelectionOperation extends HairColorSelectionState {
 	public IncludingGreyHairColorSelectionOperation() {
 		super( java.util.UUID.fromString( "d73132ca-9c7e-4e74-8dfe-c8b191044de6" ), "BLACK", "BROWN", "RED", "BLOND", "GREY" );
 	}

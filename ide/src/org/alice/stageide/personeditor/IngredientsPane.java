@@ -51,10 +51,10 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	/*package private*/ static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
 
 	private RandomPersonActionOperation randomPersonActionOperation = new RandomPersonActionOperation();
-	private LifeStageSelectionOperation lifeStageSelection = new LifeStageSelectionOperation();
-	private GenderSelectionOperation genderSelection = new GenderSelectionOperation();
-	private BaseSkinToneSelectionOperation baseSkinToneSelection = new BaseSkinToneSelectionOperation();
-	private BaseEyeColorSelectionOperation baseEyeColorSelection = new BaseEyeColorSelectionOperation();
+	private LifeStageSelectionState lifeStageSelection = new LifeStageSelectionState();
+	private GenderSelectionState genderSelection = new GenderSelectionState();
+	private BaseSkinToneSelectionState baseSkinToneSelection = new BaseSkinToneSelectionState();
+	private BaseEyeColorSelectionState baseEyeColorSelection = new BaseEyeColorSelectionState();
 	private HairCardPanel hairCardPanel = new HairCardPanel();
 	private HairColorCardPanel hairColorCardPanel = new HairColorCardPanel();
 	private FullBodyOutfitCardPanel fullBodyOutfitCardPanel = new FullBodyOutfitCardPanel();

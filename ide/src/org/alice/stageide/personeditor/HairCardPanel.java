@@ -53,7 +53,7 @@ class HairCardPanel extends IngredientCardPanel<org.alice.apis.stage.Hair> {
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new HairSelectionOperation( lifeStage, gender, hairColor );
+			rv = new HairSelectionState( lifeStage, gender, hairColor );
 			this.mapToMapToMap.put( lifeStage, gender, hairColor, rv );
 		}
 		return rv;

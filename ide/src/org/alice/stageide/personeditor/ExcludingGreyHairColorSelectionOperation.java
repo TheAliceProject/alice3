@@ -45,7 +45,7 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-class ExcludingGreyHairColorSelectionOperation extends HairColorSelectionOperation {
+class ExcludingGreyHairColorSelectionOperation extends HairColorSelectionState {
 	public ExcludingGreyHairColorSelectionOperation() {
 		super(java.util.UUID.fromString("11945667-ee73-493d-88f1-f5d9188ec91d"), "BLACK", "BROWN", "RED", "BLOND");
 	}
