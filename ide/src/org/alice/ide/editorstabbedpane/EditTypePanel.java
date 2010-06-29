@@ -245,9 +245,9 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	class Title extends edu.cmu.cs.dennisc.croquet.FlowPanel {
 		public Title( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 			super( Alignment.LEADING );
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type ) );
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type.getSuperType() ) );
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,8 ) );
 		}

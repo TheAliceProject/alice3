@@ -65,7 +65,7 @@ public abstract class Factory {
 		return new org.alice.ide.common.GetsPane( isTowardLeading );
 	}
 	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createTextComponent( String text ) { 
-		return new edu.cmu.cs.dennisc.croquet.Label( text, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		return new edu.cmu.cs.dennisc.croquet.Label( text );
 	}
 	public abstract edu.cmu.cs.dennisc.croquet.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType );
 	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane ) {
@@ -151,7 +151,7 @@ public abstract class Factory {
 		return this.createGetsComponent( getsChunk.isTowardLeading() );
 	}
 	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createComponent( org.alice.ide.i18n.TextChunk textChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		return new edu.cmu.cs.dennisc.croquet.Label( textChunk.getText(), edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		return new edu.cmu.cs.dennisc.croquet.Label( textChunk.getText() );
 	}	
 	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createComponent( org.alice.ide.i18n.PropertyChunk propertyChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		int underscoreCount = propertyChunk.getUnderscoreCount();
@@ -193,7 +193,7 @@ public abstract class Factory {
 				s = null;
 			}
 			//s = "<html><h1>" + s + "</h1></html>";
-			rv = new edu.cmu.cs.dennisc.croquet.Label( s, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+			rv = new edu.cmu.cs.dennisc.croquet.Label( s );
 		}
 		return rv;
 	}

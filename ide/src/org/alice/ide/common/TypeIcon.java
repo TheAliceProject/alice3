@@ -72,18 +72,25 @@ public class TypeIcon implements javax.swing.Icon {
 	public int getIconHeight() {
 		return this.getBorderHeight();
 	}
+	private java.awt.geom.Rectangle2D getTextBounds() {
+		java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
+		java.awt.Font font = javax.swing.UIManager.getFont( "defaultFont" );
+		java.awt.FontMetrics fm;
+		if( font != null ) {
+			fm = g.getFontMetrics( font );
+		} else {
+			fm = g.getFontMetrics();
+		}
+		return fm.getStringBounds( this.getText(), g );
+	}
 	private int getBorderWidth() {
 		java.awt.Insets insets = this.border.getBorderInsets( null );
-		java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
-		java.awt.FontMetrics fm = g.getFontMetrics();
-		java.awt.geom.Rectangle2D bounds = fm.getStringBounds( this.getText(), g );
+		java.awt.geom.Rectangle2D bounds = this.getTextBounds();
 		return insets.left + insets.right + (int)bounds.getWidth();
 	}
 	private int getBorderHeight() {
 		java.awt.Insets insets = this.border.getBorderInsets( null );
-		java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
-		java.awt.FontMetrics fm = g.getFontMetrics();
-		java.awt.geom.Rectangle2D bounds = fm.getStringBounds( this.getText(), g );
+		java.awt.geom.Rectangle2D bounds = this.getTextBounds();
 		return insets.top + insets.bottom + (int)bounds.getHeight();
 	}
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {

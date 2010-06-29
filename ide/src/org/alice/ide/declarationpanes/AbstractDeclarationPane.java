@@ -42,8 +42,6 @@
  */
 package org.alice.ide.declarationpanes;
 
-import org.alice.ide.preview.PanelWithPreview;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -69,36 +67,6 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 				this.bogusNode.componentExpression.setValue( initialExpression );
 			}
 		}
-//		bogusNode.componentType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-//			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-//			}
-//			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-//				AbstractDeclarationPane.this.handleChange();
-//			}
-//		} );
-//		bogusNode.isArray.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-//			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-//			}
-//			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-//				AbstractDeclarationPane.this.handleChange();
-//			}
-//		} );
-//		bogusNode.componentExpression.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-//			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-//			}
-//			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-//				AbstractDeclarationPane.this.handleChange();
-//			}
-//		} );
-//		bogusNode.arrayExpressions.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.Expression >() {
-//			@Override
-//			protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
-//			}
-//			@Override
-//			protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
-//				AbstractDeclarationPane.this.handleChange();
-//			}
-//		} );
 	}
 	public AbstractDeclarationPane( org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
 		this( nodeNameValidator, null, null );
@@ -313,13 +281,6 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 			}
 		} );
 	}
-
-//	protected void handleIsReassignableChange( boolean value ) {
-//		this.updateOKButton();
-//	}
-//	protected void handleDeclarationNameUpdate( javax.swing.event.DocumentEvent e ) {
-//		this.updateOKButton();
-//	}
 	protected String getExplanationIfOkButtonShouldBeDisabled(String name) {
 		if( this.nodeNameValidator != null ) {
 			return this.nodeNameValidator.getExplanationIfOkButtonShouldBeDisabled( this.declarationNameState.getState() );
@@ -334,9 +295,5 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 			return true;
 		}
 	}
-//	@Override
-//	public boolean isOKButtonValid() {
-//		return super.isOKButtonValid() && this.isDeclarationNameValidAndAvailable() && this.isValueTypeValid();
-//	}
 	public abstract T getActualInputValue();
 }

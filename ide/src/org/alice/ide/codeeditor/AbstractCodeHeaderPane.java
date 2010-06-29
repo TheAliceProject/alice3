@@ -46,6 +46,7 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 class AbstractCodeHeaderPane extends edu.cmu.cs.dennisc.croquet.Panel {
+	protected static final float NAME_SCALE = 1.8f;
 	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclarationInAlice;
 	private ParametersPane parametersPane;
 	private boolean isPreview;
@@ -59,7 +60,7 @@ class AbstractCodeHeaderPane extends edu.cmu.cs.dennisc.croquet.Panel {
 		if( this.isPreview ) {
 			return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
 		} else {
-			return new wrap.WrappedFlowLayout( java.awt.FlowLayout.LEADING );
+			return new wrap.WrappedFlowLayout( java.awt.FlowLayout.LEADING, 0, 0 );
 		}
 	}
 	protected void addParametersPaneAndInstanceLineIfDesired() {

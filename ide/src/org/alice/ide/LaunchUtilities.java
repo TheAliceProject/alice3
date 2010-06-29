@@ -94,6 +94,10 @@ public class LaunchUtilities {
 				t.printStackTrace();
 			}
 		}
+
+		java.awt.Font defaultFont = new java.awt.Font( null, java.awt.Font.BOLD, 14 );
+		javax.swing.UIManager.getLookAndFeelDefaults().put( "defaultFont", defaultFont );
+
 		if( splashScreen != null ) {
 			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.LaunchUtilities.isSupressionOfSplashScreenDesired" ) ) {
 				//pass
