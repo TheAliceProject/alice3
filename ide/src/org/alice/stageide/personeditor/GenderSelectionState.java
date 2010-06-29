@@ -50,7 +50,7 @@ class GenderSelectionState extends AbstractListSelectionState< org.alice.apis.st
 		super( java.util.UUID.fromString( "0a4c1622-e482-46bb-bb00-be3916f5549c" ), org.alice.apis.stage.Gender.values() );
 	}
 	@Override
-	protected void handlePerformSelectionChange( org.alice.apis.stage.Gender value ) {
+	protected void handleSelectionChange( org.alice.apis.stage.Gender value ) {
 		PersonViewer.getSingleton().setGender( value );
 	}
 	@Override

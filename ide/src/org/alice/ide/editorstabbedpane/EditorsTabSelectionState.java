@@ -323,7 +323,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 		private javax.swing.JButton button;
 		public AttentionGrabbingBorder( javax.swing.JButton button ) {
 			this.button = button;
-			insets = new java.awt.Insets(4,5,4,5);
+			insets = new java.awt.Insets(5,5,5,5);
 		}
 		public java.awt.Insets getBorderInsets(java.awt.Component c) {
 			return this.insets;

@@ -46,44 +46,17 @@ package org.alice.stageide.personeditor;
  * @author Dennis Cosgrove
  */
 abstract class AbstractListSelectionState<E> extends edu.cmu.cs.dennisc.croquet.ListSelectionState< E > {
-//	private class ItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<E> {
-//		public ItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
-//			super( java.util.UUID.fromString( "a10c07e8-bd0a-45e2-87aa-a3715fefb847" ), comboBoxModel );
-//		}
-//		@Override
-//		protected void handleSelectionChange(E value) {
-//			AbstractList.this.handlePerformSelectionChange( value );
-//		}
-//	}
-
 	public AbstractListSelectionState( java.util.UUID individualId, E... items ) {
 		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId );
 		this.setListData( -1, items );
-//		this.setItemSelectionOperation( new ItemSelectionOperation( comboBoxModel ) );
 		this.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< E >() {
 			public void changed(E nextValue) {
-//				if( e.getValueIsAdjusting() ) {
-//					//pass
-//				} else {
-					E item = AbstractListSelectionState.this.getValue();
-					if( item != null ) {
-						AbstractListSelectionState.this.handlePerformSelectionChange( item );
-					}
-//				}
+				E item = AbstractListSelectionState.this.getValue();
+				if( item != null ) {
+					AbstractListSelectionState.this.handleSelectionChange( item );
+				}
 			}
 		} );
-//		this.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
-//			public void valueChanged(javax.swing.event.ListSelectionEvent e) {
-//				if( e.getValueIsAdjusting() ) {
-//					//pass
-//				} else {
-//					E item = (E)AbstractItemSelectionOperation.this.getValue();
-//					if( item != null ) {
-//						AbstractItemSelectionOperation.this.handlePerformSelectionChange( item );
-//					}
-//				}
-//			}
-//		} );
 	}
 	@Override
 	protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, E value) {
@@ -93,7 +66,13 @@ abstract class AbstractListSelectionState<E> extends edu.cmu.cs.dennisc.croquet.
 	protected E decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
-	protected abstract void handlePerformSelectionChange( E value );
+
+	public void setToRandomValue() {
+		assert this.getItemCount() > 0;
+		this.setValue( this.getItemAt( 0 ) );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setToRandomValue" );
+	}
+	protected abstract void handleSelectionChange( E value );
 	protected int getVisibleRowCount() {
 		return 1;
 	}
@@ -102,7 +81,8 @@ abstract class AbstractListSelectionState<E> extends edu.cmu.cs.dennisc.croquet.
 		edu.cmu.cs.dennisc.croquet.List<E> rv = super.createList();
 		rv.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
 		rv.setVisibleRowCount( this.getVisibleRowCount() );
-		rv.setBackgroundColor( null );
+		rv.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		//rv.getAwtComponent().setOpaque( false );
 		return rv;
 	}	
 }

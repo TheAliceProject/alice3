@@ -61,16 +61,36 @@ class FitnessLevelActionOperation extends org.alice.ide.operations.Inconsequenti
 	}
 }
 
+class PersonInfo {
+	public static PersonInfo createFromPerson( org.alice.apis.stage.Person person ) {
+		PersonInfo rv = new PersonInfo();
+		rv.lifeStage = person.getLifeStage();
+		rv.gender = person.getGender();
+		return rv;
+	}
+	public static PersonInfo createRandom() {
+		PersonInfo rv = new PersonInfo();
+		rv.lifeStage = org.alice.apis.stage.LifeStage.ADULT;
+		rv.gender = org.alice.apis.stage.Gender.getRandom();
+		return rv;
+	}
+	private org.alice.apis.stage.LifeStage lifeStage;
+	private org.alice.apis.stage.Gender gender;
+	private PersonInfo() {
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
 public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	private static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 220, 220, 255 );
-	/*package-private*/ static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
-	/*package-private*/ static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
-
-
 	public static final edu.cmu.cs.dennisc.croquet.Group GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "2d7d725d-1806-40d1-ac2b-d9cd48cb0abb" ), "PersonEditor.GROUP" );
+
+	///*package-private*/ static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 220, 220, 255 );
+	/*package-private*/ static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
+	/*package-private*/ static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
+
+
 
 	private RandomPersonActionOperation randomPersonActionOperation = new RandomPersonActionOperation();
 
@@ -79,6 +99,10 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	
 	private BaseSkinToneSelectionState baseSkinToneSelection = new BaseSkinToneSelectionState();
 	private BaseEyeColorSelectionState baseEyeColorSelection = new BaseEyeColorSelectionState();
+	
+	private FullBodyOutfitSelectionState fullBodyOutfitSelection = new FullBodyOutfitSelectionState();
+	private HairColorSelectionState hairColorSelection = new HairColorSelectionState();
+	private HairSelectionState hairSelection = new HairSelectionState();
 
 	private edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState fitnessState = new edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8e172c61-c2b6-43e4-9777-e9d8fd2b0d65" ), 0, 50, 100 );
 	private FitnessLevelActionOperation softOperation = new FitnessLevelActionOperation( this.fitnessState, this.fitnessState.getMinimum(), "out of shape" );
@@ -90,42 +114,33 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 		@Override
 		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane() {
-			edu.cmu.cs.dennisc.croquet.ScrollPane rv = super.createScrollPane();
-			rv.setVerticalScrollbarPolicy( edu.cmu.cs.dennisc.croquet.ScrollPane.VerticalScrollbarPolicy.NEVER );
-			rv.setHorizontalScrollbarPolicy( edu.cmu.cs.dennisc.croquet.ScrollPane.HorizontalScrollbarPolicy.NEVER );
-			rv.setBackgroundColor( null );
-			return rv;
+			return null;
 		}
 	}
 
 	private ContentTabStateOperation bodyTabState = new ContentTabStateOperation(java.util.UUID.fromString( "10c0d057-a5d7-4a36-8cd7-c30f46f5aac2" ), "Body") {
 		@Override
 		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createMainComponent() {
-			FullBodyOutfitCardPanel fullBodyOutfitCardPanel = new FullBodyOutfitCardPanel( lifeStageSelection, genderSelection );
-
-			edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( fullBodyOutfitCardPanel );
+			edu.cmu.cs.dennisc.croquet.List< ? > list = fullBodyOutfitSelection.createList();
+			edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( list );
 			scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 66 );
-			//scrollPane.getVerticalScrollBar().setBlockIncrement( 10 );
-			
 			scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-			scrollPane.setBackgroundColor( null );
-			scrollPane.getAwtComponent().getViewport().setOpaque( false );
 
-
-			edu.cmu.cs.dennisc.croquet.BorderPanel bodyPane = new edu.cmu.cs.dennisc.croquet.BorderPanel( 8, 8 );
-
+			edu.cmu.cs.dennisc.croquet.Slider slider = fitnessState.createSlider();
+			slider.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 			
 			edu.cmu.cs.dennisc.croquet.BorderPanel fitnessLevelPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 			fitnessLevelPane.addComponent( softOperation.createButton(), Constraint.WEST );
-			fitnessLevelPane.addComponent( fitnessState.createSlider(), Constraint.CENTER );
+			fitnessLevelPane.addComponent( slider, Constraint.CENTER );
 			fitnessLevelPane.addComponent( cutOperation.createButton(), Constraint.EAST );
 
-			
-			bodyPane.addComponent( scrollPane, Constraint.CENTER );
-			bodyPane.addComponent( fitnessLevelPane, Constraint.SOUTH );
-			bodyPane.setBackgroundColor( BACKGROUND_COLOR );
-			bodyPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8  ) );
-			return bodyPane;
+			edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel( 8, 8 );
+			rv.addComponent( scrollPane, Constraint.CENTER );
+			rv.addComponent( fitnessLevelPane, Constraint.SOUTH );
+			rv.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+			rv.getAwtComponent().setOpaque( true );
+			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
+			return rv;
 		}
 	};
 	private ContentTabStateOperation headTabState = new ContentTabStateOperation(java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ), "Head") {
@@ -134,18 +149,15 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			edu.cmu.cs.dennisc.croquet.RowsSpringPanel rv = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 8 ) {
 				@Override
 				protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
-					HairCardPanel hairCardPanel = new HairCardPanel( lifeStageSelection, genderSelection );
-					HairColorCardPanel hairColorCardPanel = new HairColorCardPanel( lifeStageSelection, genderSelection );
-	
-					rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "hair:", hairColorCardPanel ) );
-					rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, hairCardPanel ) );
+					rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "hair:", hairColorSelection.createList() ) );
+					rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, hairSelection.createList() ) );
 					rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "eye color:", baseEyeColorSelection.createList() ) );
 					rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() ) );
 					return rv;
 				}
 			};
-			rv.setBackgroundColor( BACKGROUND_COLOR );
-			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8  ) );
+			rv.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
 			return rv;
 		}
 	};
@@ -177,24 +189,46 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //	};
 //	
 	
-	private void handleCataclysm() {
-		
+	private void handleCataclysm( boolean isLifeStageChange, boolean isGenderChange, boolean isHairColorChange ) {
+		if( isLifeStageChange || isGenderChange || isHairColorChange ) {
+			this.hairSelection.handleCataclysmicChange( this.lifeStageSelection.getValue(), this.genderSelection.getValue(), this.hairColorSelection.getValue() );
+		}
+		if( isLifeStageChange || isGenderChange ) {
+			this.fullBodyOutfitSelection.handleCataclysmicChange( this.lifeStageSelection.getValue(), this.genderSelection.getValue() );
+		}
+		if( isLifeStageChange ) {
+			this.hairColorSelection.handleCataclysmicChange( this.lifeStageSelection.getValue() );
+		}
 	}
 	
 	public PersonEditor( org.alice.apis.stage.Person person ) {
-		lifeStageSelection.setValue( person.getLifeStage() );
-		genderSelection.setValue( person.getGender() );
+		if( person != null ) {
+			this.lifeStageSelection.setValue( person.getLifeStage() );
+			this.genderSelection.setValue( person.getGender() );
+			this.hairColorSelection.setValue( person.getHair().toString() );
+		} else {
+			this.lifeStageSelection.setValue( org.alice.apis.stage.LifeStage.ADULT );
+			this.genderSelection.setToRandomValue();
+			this.hairColorSelection.setToRandomValue();
+		}
 		
 		lifeStageSelection.addValueObserver( new LifeStageSelectionState.ValueObserver<org.alice.apis.stage.LifeStage>() {
 			public void changed(org.alice.apis.stage.LifeStage nextValue) {
-				handleCataclysm();
+				handleCataclysm( true, false, false );
 			}
 		} );
 		genderSelection.addValueObserver( new LifeStageSelectionState.ValueObserver<org.alice.apis.stage.Gender>() {
 			public void changed(org.alice.apis.stage.Gender nextValue) {
-				handleCataclysm();
+				handleCataclysm( false, true, false );
 			}
 		} );
+		hairColorSelection.addValueObserver( new LifeStageSelectionState.ValueObserver<String>() {
+			public void changed(String nextValue) {
+				handleCataclysm( false, false, true );
+			}
+		} );
+		
+		this.handleCataclysm( true, true, true );
 
 		edu.cmu.cs.dennisc.croquet.BorderPanel northPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		northPane.addComponent(  this.randomPersonActionOperation.createButton(), Constraint.NORTH );
@@ -207,14 +241,17 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				return rv;
 			}
 		};
+		ubiquitousPane.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		northPane.addComponent( ubiquitousPane, Constraint.CENTER );
-				
+
+		this.tabbedPaneSelection.setValue( bodyTabState );
 		edu.cmu.cs.dennisc.croquet.FolderTabbedPane<?> tabbedPane = this.tabbedPaneSelection.createDefaultFolderTabbedPane();
 		tabbedPane.scaleFont( 1.5f );
 
 		edu.cmu.cs.dennisc.croquet.BorderPanel ingredientsPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		ingredientsPanel.addComponent( northPane, Constraint.NORTH );
 		ingredientsPanel.addComponent( tabbedPane, Constraint.CENTER );
+		ingredientsPanel.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 
 		//		this.personViewer.initializeValues( this.person );
 		edu.cmu.cs.dennisc.croquet.HorizontalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane( PersonViewer.getSingleton(), ingredientsPanel );
@@ -227,32 +264,32 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //			}
 //		} );
 	}
-	public org.alice.apis.stage.Person getPerson() {
-		org.alice.apis.stage.Person rv;
-		
-//		if( this.personViewer.getLifeStage() == org.alice.apis.stage.LifeStage.ADULT ) {
-//			if( this.person != null ) {
-//				rv = this.person;
-//			} else {
-//				rv = new org.alice.apis.stage.Adult();
-//			}
-//		} else if( this.personViewer.getLifeStage() == org.alice.apis.stage.LifeStage.CHILD ) {
+
+//	public org.alice.apis.stage.Person createInstance() {
+//		PersonViewer personViewer = PersonViewer.getSingleton();
+//		org.alice.apis.stage.Person rv;
+//		
+//		if( personViewer.getLifeStage() == org.alice.apis.stage.LifeStage.ADULT ) {
+//			rv = new org.alice.apis.stage.Adult();
+//		} else if( personViewer.getLifeStage() == org.alice.apis.stage.LifeStage.CHILD ) {
 //			rv = new org.alice.apis.stage.Child();
 //		} else {
 //			rv = null;
 //		}
 //		if( rv != null ) {
-//			rv.setGender( this.personViewer.getGender() );
-//			rv.setHair( this.personViewer.getHair() );
-//			rv.setSkinTone( this.personViewer.getBaseSkinTone() );
-//			rv.setEyeColor( this.personViewer.getBaseEyeColor() );
-//			rv.setFitnessLevel( this.personViewer.getFitnessLevel() );
-//			rv.setOutfit( this.personViewer.getFullBodyOutfit() );
+//			rv.setGender( personViewer.getGender() );
+//			rv.setHair( personViewer.getHair() );
+//			rv.setSkinTone( personViewer.getBaseSkinTone() );
+//			rv.setEyeColor( personViewer.getBaseEyeColor() );
+//			rv.setFitnessLevel( personViewer.getFitnessLevel() );
+//			rv.setOutfit( personViewer.getFullBodyOutfit() );
 //		}
-		
-		rv = null;
-		
-		return rv;
+//		
+//		return rv;
+//	}
+	
+	public org.alice.apis.stage.Person getPerson() {
+		return null;
 	}
 //	@Override
 //	public java.awt.Dimension getPreferredSize() {
@@ -260,6 +297,15 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //	}
 	
 	public static void main( String[] args ) {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			try {
+				edu.cmu.cs.dennisc.javax.swing.plaf.nimbus.NimbusUtilities.installModifiedNimbus( lookAndFeelInfo );
+			} catch( Throwable t ) {
+				t.printStackTrace();
+			}
+		}
+
 		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
 		edu.cmu.cs.dennisc.javax.swing.ApplicationFrame frame = new edu.cmu.cs.dennisc.javax.swing.ApplicationFrame() {
 			@Override

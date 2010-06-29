@@ -46,20 +46,22 @@ package org.alice.stageide.personeditor;
  * @author Dennis Cosgrove
  */
 class FullBodyOutfitSelectionState extends AbstractListSelectionState<org.alice.apis.stage.FullBodyOutfit> {
-	public FullBodyOutfitSelectionState( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
-		super( 
-			java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ), 
-			edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
-					edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
-							org.alice.apis.stage.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
-							null 
-					),
-					org.alice.apis.stage.FullBodyOutfit.class
-			) 
-		);
+	public FullBodyOutfitSelectionState() {
+		super( java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ) );
 	}
+	
+	/*package-private*/ void handleCataclysmicChange( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
+		this.setListData( -1, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
+				edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
+						org.alice.apis.stage.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
+						null 
+				),
+				org.alice.apis.stage.FullBodyOutfit.class
+		) );
+	}
+
 	@Override
-	protected void handlePerformSelectionChange( org.alice.apis.stage.FullBodyOutfit value ) {
+	protected void handleSelectionChange( org.alice.apis.stage.FullBodyOutfit value ) {
 		PersonViewer.getSingleton().setFullBodyOutfit( value );
 	}
 	@Override

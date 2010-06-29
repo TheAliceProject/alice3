@@ -50,7 +50,7 @@ class BaseEyeColorSelectionState extends AbstractListSelectionState<org.alice.ap
 		super(java.util.UUID.fromString("04672192-417f-4446-abbc-16c3ee015802"), org.alice.apis.stage.BaseEyeColor.values() );
 	}
 	@Override
-	protected void handlePerformSelectionChange(org.alice.apis.stage.BaseEyeColor value) {
+	protected void handleSelectionChange(org.alice.apis.stage.BaseEyeColor value) {
 		PersonViewer.getSingleton().setBaseEyeColor(value);
 	}
 	@Override

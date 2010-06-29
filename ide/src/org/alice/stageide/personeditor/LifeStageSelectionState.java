@@ -51,7 +51,7 @@ class LifeStageSelectionState extends AbstractListSelectionState< org.alice.apis
 		super( java.util.UUID.fromString( "ee61b76d-b154-4e45-a07c-fb2eac906895" ), org.alice.apis.stage.LifeStage.CHILD, org.alice.apis.stage.LifeStage.ADULT );
 	}
 	@Override
-	protected void handlePerformSelectionChange( org.alice.apis.stage.LifeStage value ) {
+	protected void handleSelectionChange( org.alice.apis.stage.LifeStage value ) {
 		PersonViewer.getSingleton().setLifeStage( value );
 	}
 	@Override

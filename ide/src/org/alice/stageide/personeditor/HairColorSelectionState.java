@@ -45,18 +45,28 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class HairColorSelectionState extends AbstractListSelectionState< String > {
-	public HairColorSelectionState( java.util.UUID individualId, String... colorNames ) {
-		super( individualId, colorNames );
+class HairColorSelectionState extends AbstractListSelectionState< String > {
+	private static final String[] INCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND", "GREY" };
+	private static final String[] EXCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND" };
+	public HairColorSelectionState() {
+		super( java.util.UUID.fromString("11945667-ee73-493d-88f1-f5d9188ec91d"), EXCLUDE_GREY );
 	}
+	/*package-private*/ void handleCataclysmicChange( org.alice.apis.stage.LifeStage lifeStage ) {
+//		if( lifeStage == org.alice.apis.stage.LifeStage.ADULT ) {
+//			this.setListData( 0, "BLACK", "BROWN", "RED", "BLOND", "GREY" );
+//		} else {
+//			this.setListData( 0, "BLACK", "BROWN", "RED", "BLOND" );
+//		}
+	}
+
 	@Override
-	protected void handlePerformSelectionChange( String value ) {
+	protected void handleSelectionChange( String value ) {
 		PersonViewer.getSingleton().setHairColor( value );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.List<String> createList() {
 		edu.cmu.cs.dennisc.croquet.List<String> rv = super.createList();
-		rv.setCellRenderer( new HairListCellRenderer() );
+		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
 		return rv;
 	}
 }

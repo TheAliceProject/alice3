@@ -46,24 +46,27 @@ package org.alice.stageide.personeditor;
  * @author Dennis Cosgrove
  */
 class HairSelectionState extends AbstractListSelectionState<org.alice.apis.stage.Hair> {
-	public HairSelectionState( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, final String hairColor ) {
-		super( 
-			java.util.UUID.fromString( "682e4dea-91f3-4b0a-8004-51942613c643" ), 
-			edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
-					edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
-							org.alice.apis.stage.HairManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
-							new edu.cmu.cs.dennisc.pattern.Criterion< org.alice.apis.stage.Hair >() {
-								public boolean accept( org.alice.apis.stage.Hair hair ) {
-									return hair.toString().equals( hairColor );
-								}
-							} 
-					),
-					org.alice.apis.stage.Hair.class
-			) 
+	public HairSelectionState() {
+		super( java.util.UUID.fromString( "682e4dea-91f3-4b0a-8004-51942613c643" ) );
+	}
+	/*package-private*/ void handleCataclysmicChange( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, final String hairColor ) {
+		this.setListData( -1, 
+				edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
+						edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
+								org.alice.apis.stage.HairManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
+								new edu.cmu.cs.dennisc.pattern.Criterion< org.alice.apis.stage.Hair >() {
+									public boolean accept( org.alice.apis.stage.Hair hair ) {
+										return hair.toString().equals( hairColor );
+									}
+								} 
+						),
+						org.alice.apis.stage.Hair.class
+				) 
 		);
 	}
+	
 	@Override
-	protected void handlePerformSelectionChange( org.alice.apis.stage.Hair value ) {
+	protected void handleSelectionChange( org.alice.apis.stage.Hair value ) {
 		PersonViewer.getSingleton().setHair( value );
 	}
 	@Override
