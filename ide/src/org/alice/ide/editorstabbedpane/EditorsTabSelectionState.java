@@ -241,7 +241,7 @@ class Cycle< E > {
 /**
  * @author Dennis Cosgrove
  */
-public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croquet.ListSelectionState<edu.cmu.cs.dennisc.alice.ast.AbstractCode> {
+public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState<edu.cmu.cs.dennisc.alice.ast.AbstractCode> {
 	class EditPreviousCodeOperation extends org.alice.ide.operations.ActionOperation {
 		public EditPreviousCodeOperation() {
 			super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "71ff1171-9e5e-443f-a7aa-cb4012f05fec" ) );
@@ -249,7 +249,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 		}
 		@Override
 		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-			EditorsTabSelectionStateOperation.this.editPreviousCode();
+			EditorsTabSelectionState.this.editPreviousCode();
 		}
 	}
 	private EditPreviousCodeOperation editPreviousCodeOperation;
@@ -268,7 +268,7 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 //			EditorsTabSelectionStateOperation.this.updateFocusedCode();
 //		}
 //	};
-	public EditorsTabSelectionStateOperation() {
+	public EditorsTabSelectionState() {
 		super( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "846ef10d-b22b-44a7-8fdd-a6b5d459948d" ) );
 //		this.addSelectionObserver( this.selectionObserver );
 		org.alice.ide.IDE.getSingleton().addProjectObserver( this.projectObserver );
@@ -302,16 +302,71 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 	private edu.cmu.cs.dennisc.croquet.FolderTabbedPane<edu.cmu.cs.dennisc.alice.ast.AbstractCode> singleton;
 //	private DeclarationsDropDown declarationsDropDown = new DeclarationsDropDown();
 
+	private static final int UI_ROUND = 3;
+	private static class AttentionGrabbingBorder implements javax.swing.border.Border {
+		private java.awt.Insets insets;
+		private java.awt.Stroke[] strokes = {
+				new java.awt.BasicStroke( UI_ROUND + 10.0f ),
+				new java.awt.BasicStroke( UI_ROUND + 8.0f ),
+				new java.awt.BasicStroke( UI_ROUND + 6.0f ),
+				new java.awt.BasicStroke( UI_ROUND + 4.0f ),
+				new java.awt.BasicStroke( UI_ROUND + 2.0f ),
+		};
+		private final int alpha = 23;
+		private java.awt.Paint[] paints = {
+				new java.awt.Color( 255, 255, 0, alpha ),
+				new java.awt.Color( 255, 255, 0, alpha ),
+				new java.awt.Color( 255, 255, 0, alpha ),
+				new java.awt.Color( 255, 255, 0, alpha ),
+				new java.awt.Color( 0, 0, 0, 91 ),
+		};
+		private javax.swing.JButton button;
+		public AttentionGrabbingBorder( javax.swing.JButton button ) {
+			this.button = button;
+			insets = new java.awt.Insets(4,5,4,5);
+		}
+		public java.awt.Insets getBorderInsets(java.awt.Component c) {
+			return this.insets;
+		}
+		public boolean isBorderOpaque() {
+			return false;
+		}
+		public void paintBorder(java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height) {
+			if( this.button.hasFocus() ) {
+				//pass
+			} else {
+				int xShape = x+this.insets.left+UI_ROUND;
+				int yShape = y+this.insets.top+UI_ROUND;
+				int widthShape = width-this.insets.left-this.insets.right-UI_ROUND-UI_ROUND; 
+				int heightShape = height-this.insets.top-this.insets.bottom-UI_ROUND-UI_ROUND; 
+				java.awt.Shape shape = new java.awt.geom.RoundRectangle2D.Float( xShape, yShape, widthShape, heightShape, UI_ROUND, UI_ROUND );
+				
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				java.awt.Stroke prevStroke = g2.getStroke();
+				try {
+					final int N = this.strokes.length;
+					for( int i=0; i<N; i++ ) {
+						g2.setStroke( this.strokes[ i ] );
+						g2.setPaint( this.paints[ i ] );
+						g2.draw( shape );
+					}
+				} finally {
+					g2.setStroke( prevStroke );
+				}
+			}
+		}
+	};
 	private static class DropDownPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		private RootOperation rootOperation = new RootOperation();
 		private javax.swing.ButtonModel buttonModel;
 		public DropDownPanel() {
 			edu.cmu.cs.dennisc.croquet.Button button = this.rootOperation.createButton();
+			button.getAwtComponent().setFocusable( false );
 			this.buttonModel = button.getAwtComponent().getModel();
-			//button.setBorder( new javax.swing.border.EmptyBorder( 4,4,4,4 ) );
 			button.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.LEADING );
 			this.addComponent( button, Constraint.CENTER );
-			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,4 ) );
+			this.setBorder( new AttentionGrabbingBorder( button.getAwtComponent() ) );
+			//button.setBorder( new AttentionGrabbingBorder( button.getAwtComponent() ) );
 		}
 		private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode> selectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.AbstractCode>() {
 			public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractCode nextValue) {
@@ -491,9 +546,9 @@ public class EditorsTabSelectionStateOperation extends edu.cmu.cs.dennisc.croque
 
 	private org.alice.app.ProjectApplication.ProjectObserver projectObserver = new org.alice.app.ProjectApplication.ProjectObserver() {
 		public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
-			EditorsTabSelectionStateOperation.this.clear();
-			EditorsTabSelectionStateOperation.this.editedCodes.clear();
-			EditorsTabSelectionStateOperation.this.updateBackOperationsEnabled();
+			EditorsTabSelectionState.this.clear();
+			EditorsTabSelectionState.this.editedCodes.clear();
+			EditorsTabSelectionState.this.updateBackOperationsEnabled();
 		}
 		public void projectOpened( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
 		}

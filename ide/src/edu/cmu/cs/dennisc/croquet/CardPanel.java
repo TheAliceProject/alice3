@@ -97,7 +97,7 @@ public class CardPanel extends Panel {
 				//pass
 			} else {
 				Label label = new Label();
-				//label.setText( "unset" );
+				label.setText( "unset" );
 				label.setBackgroundColor( null );
 				label.setHorizontalAlignment( HorizontalAlignment.CENTER );
 				this.nullKey = this.createKey( label, java.util.UUID.randomUUID() );

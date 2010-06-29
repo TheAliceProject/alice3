@@ -47,6 +47,10 @@ package org.alice.stageide.personeditor;
  */
 class HairCardPanel extends IngredientCardPanel<org.alice.apis.stage.Hair> {
 	private edu.cmu.cs.dennisc.map.MapToMapToMap< org.alice.apis.stage.LifeStage, org.alice.apis.stage.Gender, String, edu.cmu.cs.dennisc.croquet.ListSelectionState<org.alice.apis.stage.Hair> > mapToMapToMap = edu.cmu.cs.dennisc.map.MapToMapToMap.newInstance();
+	
+	public HairCardPanel( LifeStageSelectionState lifeStageSelectionState, GenderSelectionState genderSelectionState ) {
+		super( lifeStageSelectionState, genderSelectionState );
+	}
 	@Override
 	protected synchronized edu.cmu.cs.dennisc.croquet.ListSelectionState<org.alice.apis.stage.Hair> getItemSelectionOperation( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor ) {
 		edu.cmu.cs.dennisc.croquet.ListSelectionState<org.alice.apis.stage.Hair> rv = this.mapToMapToMap.get( lifeStage, gender, hairColor );

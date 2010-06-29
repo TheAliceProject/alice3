@@ -48,8 +48,12 @@ package org.alice.stageide.personeditor;
 abstract class IngredientCardPanel<E> extends edu.cmu.cs.dennisc.croquet.CardPanel {
 	private java.util.Map< edu.cmu.cs.dennisc.croquet.ListSelectionState<E>, Key > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
+	public IngredientCardPanel( LifeStageSelectionState lifeStageSelectionState, GenderSelectionState genderSelectionState ) {
+		
+	}
+
 	protected abstract edu.cmu.cs.dennisc.croquet.ListSelectionState<E> getItemSelectionOperation( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor );
-	public void handleEpicChange( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor  ) {
+	private void handleEpicChange( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor  ) {
 		assert lifeStage != null;
 		assert gender != null;
 		edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionOperation = getItemSelectionOperation( lifeStage, gender, hairColor );
@@ -60,8 +64,8 @@ abstract class IngredientCardPanel<E> extends edu.cmu.cs.dennisc.croquet.CardPan
 			edu.cmu.cs.dennisc.croquet.List<E> list = itemSelectionOperation.createList();
 			key = this.createKey(list, itemSelectionOperation.getIndividualUUID() );
 			this.map.put(itemSelectionOperation, key);
-			this.show( key );
 		}
+		this.show( key );
 	}
 	
 	public void setValue( E value ) {

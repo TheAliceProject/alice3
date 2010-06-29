@@ -87,7 +87,7 @@ public class LaunchUtilities {
 	private static Runnable preLaunchAndCreateRunnable( final Class<? extends IDE> cls, final java.awt.Window splashScreen, final String[] args, final boolean isVisible ) {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
 		if( lookAndFeelInfo != null ) {
-			javax.swing.LookAndFeel laf = javax.swing.UIManager.getLookAndFeel();
+//			javax.swing.LookAndFeel laf = javax.swing.UIManager.getLookAndFeel();
 			try {
 				edu.cmu.cs.dennisc.javax.swing.plaf.nimbus.NimbusUtilities.installModifiedNimbus( lookAndFeelInfo );
 			} catch( Throwable t ) {

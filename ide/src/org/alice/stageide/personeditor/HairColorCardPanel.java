@@ -48,6 +48,9 @@ package org.alice.stageide.personeditor;
 class HairColorCardPanel extends IngredientCardPanel<String> {
 	private IncludingGreyHairColorSelectionOperation includingGrey = new IncludingGreyHairColorSelectionOperation();
 	private ExcludingGreyHairColorSelectionOperation excludingGrey = new ExcludingGreyHairColorSelectionOperation();
+	public HairColorCardPanel( LifeStageSelectionState lifeStageSelectionState, GenderSelectionState genderSelectionState ) {
+		super( lifeStageSelectionState, genderSelectionState );
+	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.ListSelectionState<String> getItemSelectionOperation( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor ) {
 		if( lifeStage == org.alice.apis.stage.LifeStage.ADULT ) {

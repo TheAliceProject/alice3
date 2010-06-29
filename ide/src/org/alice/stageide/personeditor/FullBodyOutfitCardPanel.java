@@ -47,6 +47,9 @@ package org.alice.stageide.personeditor;
  */
 class FullBodyOutfitCardPanel extends IngredientCardPanel<org.alice.apis.stage.FullBodyOutfit> {
 	private edu.cmu.cs.dennisc.map.MapToMap< org.alice.apis.stage.LifeStage, org.alice.apis.stage.Gender, edu.cmu.cs.dennisc.croquet.ListSelectionState<org.alice.apis.stage.FullBodyOutfit> > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public FullBodyOutfitCardPanel( LifeStageSelectionState lifeStageSelectionState, GenderSelectionState genderSelectionState ) {
+		super( lifeStageSelectionState, genderSelectionState );
+	}
 	@Override
 	protected synchronized edu.cmu.cs.dennisc.croquet.ListSelectionState<org.alice.apis.stage.FullBodyOutfit> getItemSelectionOperation( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor ) {
 		edu.cmu.cs.dennisc.croquet.ListSelectionState<org.alice.apis.stage.FullBodyOutfit> rv = this.mapToMap.get( lifeStage, gender );

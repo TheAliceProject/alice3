@@ -380,7 +380,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor;
 	private org.alice.ide.gallerybrowser.AbstractGalleryBrowser galleryBrowser;
 	private org.alice.ide.memberseditor.MembersEditor membersEditor;
-	private org.alice.ide.editorstabbedpane.EditorsTabSelectionStateOperation editorsTabbedPaneOperation;
+	private org.alice.ide.editorstabbedpane.EditorsTabSelectionState editorsTabSelectionState;
 	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
 
 	private edu.cmu.cs.dennisc.croquet.VerticalSplitPane left = new edu.cmu.cs.dennisc.croquet.VerticalSplitPane();
@@ -602,8 +602,8 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	protected org.alice.ide.memberseditor.MembersEditor createClassMembersEditor() {
 		return new org.alice.ide.memberseditor.MembersEditor();
 	}
-	protected org.alice.ide.editorstabbedpane.EditorsTabSelectionStateOperation createEditorsTabbedPaneOperation() {
-		return new org.alice.ide.editorstabbedpane.EditorsTabSelectionStateOperation();
+	protected org.alice.ide.editorstabbedpane.EditorsTabSelectionState createEditorsTabSelectionState() {
+		return new org.alice.ide.editorstabbedpane.EditorsTabSelectionState();
 	}
 	protected org.alice.ide.ubiquitouspane.UbiquitousPane createUbiquitousPane() {
 		return new org.alice.ide.ubiquitouspane.UbiquitousPane();
@@ -614,8 +614,8 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	public org.alice.ide.ubiquitouspane.UbiquitousPane getUbiquitousPane() {
 		return this.ubiquitousPane;
 	}
-	public org.alice.ide.editorstabbedpane.EditorsTabSelectionStateOperation getEditorsTabSelectionState() {
-		return this.editorsTabbedPaneOperation;
+	public org.alice.ide.editorstabbedpane.EditorsTabSelectionState getEditorsTabSelectionState() {
+		return this.editorsTabSelectionState;
 	}
 	public org.alice.ide.memberseditor.MembersEditor getMembersEditor() {
 		return this.membersEditor;
@@ -678,10 +678,10 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		this.sceneEditor = this.createSceneEditor();
 		this.galleryBrowser = this.createGalleryBrowser( this.getGalleryRootDirectory() );
 		this.membersEditor = this.createClassMembersEditor();
-		this.editorsTabbedPaneOperation = this.createEditorsTabbedPaneOperation();
+		this.editorsTabSelectionState = this.createEditorsTabSelectionState();
 		this.ubiquitousPane = this.createUbiquitousPane();
 
-		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.editorsTabbedPaneOperation.createEditorsFolderTabbedPane();
+		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.editorsTabSelectionState.createEditorsFolderTabbedPane();
 		tabbedPane.scaleFont( 2.0f );
 		this.right.addComponent( this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
 		this.right.addComponent( tabbedPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
@@ -714,7 +714,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			}
 		} );
 		
-		this.editorsTabbedPaneOperation.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
+		this.editorsTabSelectionState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
 			public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextValue ) {
 				refreshAccessibles();
 			}
@@ -837,7 +837,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	//	private java.util.List< zoot.DropReceptor > dropReceptors = new java.util.LinkedList< zoot.DropReceptor >();
 
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		return this.editorsTabbedPaneOperation.getCodeEditorInFocus();
+		return this.editorsTabSelectionState.getCodeEditorInFocus();
 	}
 
 	private ComponentStencil stencil;

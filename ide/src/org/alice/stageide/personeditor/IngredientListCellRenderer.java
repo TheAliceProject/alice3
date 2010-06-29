@@ -75,7 +75,7 @@ abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.
 
 			rv.setOpaque( isSelected );
 			if( isSelected ) {
-				rv.setBackground( IngredientsPane.SELECTED_COLOR );
+				rv.setBackground( PersonEditor.SELECTED_COLOR );
 			}
 			
 			javax.swing.Icon icon = new javax.swing.ImageIcon( pathForIcon );
