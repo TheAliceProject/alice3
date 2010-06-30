@@ -49,8 +49,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.SwingUtilities;
-
 import org.alice.apis.moveandturn.AsSeenBy;
 import org.alice.apis.moveandturn.CameraMarker;
 import org.alice.apis.moveandturn.PerspectiveCameraMarker;
@@ -67,9 +65,7 @@ import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
-import org.alice.stageide.sceneeditor.viewmanager.CameraFieldAndMarker;
-import org.alice.stageide.sceneeditor.viewmanager.LookingGlassViewSelector;
-import org.alice.stageide.sceneeditor.viewmanager.StartingCameraViewManager;
+import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerTracker;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 import edu.cmu.cs.dennisc.alice.ast.Argument;
@@ -84,6 +80,7 @@ import edu.cmu.cs.dennisc.alice.ast.MethodReflectionProxy;
 import edu.cmu.cs.dennisc.alice.ast.Statement;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.croquet.AbstractButton;
+import edu.cmu.cs.dennisc.croquet.ComboBox;
 import edu.cmu.cs.dennisc.croquet.ListSelectionState;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical;
@@ -129,13 +126,13 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			return rv;
 		}
 	}
+	
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
 	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane();
 	private SidePane sidePane;
-	private LookingGlassViewSelector mainViewSelector = null;
 	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
-	private int expandedViewSelectedIndex = -1;
+	private CameraMarker expandedViewSelectedMarker = null;
 	//SNAP STATE
 	protected SnapState snapState = new SnapState();
 	protected SnapGrid snapGrid;
@@ -145,6 +142,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgOrthographicCamera = null;
 	private edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgPerspectiveCamera = null;
 	
+	private ComboBox<CameraMarker> mainCameraViewSelector;
+	private CameraMarkerTracker mainCameraViewTracker;
 	private ListSelectionState<CameraMarker> mainCameraMarkerList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< CameraMarker >( ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "951c85e8-e8db-45d8-aa10-3e906c8d4bbf" ) ) {
 		@Override
 		protected CameraMarker decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -156,7 +155,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	};
 	
-	private ListSelectionState<FieldDeclaredInAlice> startingViewMarkerList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< FieldDeclaredInAlice >( ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "926deb18-44b9-4c35-ae3b-f80bd5574983" ) ) {
+	private ListSelectionState<FieldDeclaredInAlice> startingViewMarkerFieldList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< FieldDeclaredInAlice >( ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "926deb18-44b9-4c35-ae3b-f80bd5574983" ) ) {
 		@Override
 		protected FieldDeclaredInAlice decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			throw new RuntimeException( "todo" );
@@ -167,7 +166,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	};
 	
-	private ListSelectionState<FieldDeclaredInAlice> sceneMarkerList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< FieldDeclaredInAlice >( ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "a09eeae2-53fc-4cbe-ab09-a6d6d7975d4d" ) ) {
+	private ListSelectionState<FieldDeclaredInAlice> sceneMarkerFieldList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< FieldDeclaredInAlice >( ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "a09eeae2-53fc-4cbe-ab09-a6d6d7975d4d" ) ) {
 		@Override
 		protected FieldDeclaredInAlice decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			throw new RuntimeException( "todo" );
@@ -301,6 +300,21 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	{
 	}
 
+	public ListSelectionState<CameraMarker> getMainCameraMarkerList()
+	{
+		return this.mainCameraMarkerList;
+	}
+	
+	public ListSelectionState<FieldDeclaredInAlice> getSceneMarkerFieldList()
+	{
+		return this.sceneMarkerFieldList;
+	}
+	
+	public ListSelectionState<FieldDeclaredInAlice> getStartingViewMarkerFieldList()
+	{
+		return this.startingViewMarkerFieldList;
+	}
+	
 	public void addSceneEditorFieldObserver( SceneEditorFieldObserver fieldObserver ) {
 		this.fieldObservers.add( fieldObserver );
 	}
@@ -337,12 +351,18 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 	
+	private CameraMarker getCameraMarkerForField( FieldDeclaredInAlice field )
+	{
+		CameraMarker cameraMarker = this.getInstanceInJavaForField(field, org.alice.apis.moveandturn.CameraMarker.class);
+		return cameraMarker;
+	}
+	
 	private void handleFieldAdded(FieldDeclaredInAlice addedField)
 	{
 		this.handleFieldCreation( addedField, true );
 		if (addedField.getDesiredValueType().isAssignableFrom(CameraMarker.class))
 		{
-			this.mainViewSelector.setSelectedView( addedField );
+			this.mainCameraMarkerList.setValue(this.getCameraMarkerForField(addedField));
 		}
 	}
 	
@@ -359,20 +379,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	{
 		//Sets come in and are already in the scene, so we don't really need to worry about them
 		//The object tree is handled by the FieldRadioButtons
-		PrintUtilities.println( "new fields set:" );
-		for (FieldDeclaredInAlice field : newFields)
-		{
-			Object instance = this.getInstanceInJavaForField(field);
-			if (instance instanceof org.alice.apis.moveandturn.Transformable)
-			{	
-				org.alice.apis.moveandturn.Transformable t = (org.alice.apis.moveandturn.Transformable)instance;
-				PrintUtilities.println(field.getName()+": "+instance+", "+t.getVehicle());
-			}
-			else
-			{
-				PrintUtilities.println(field.getName()+": "+instance);
-			}
-		}
 	}
 	
 	
@@ -388,21 +394,21 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			}
 		}
 		
-		FieldDeclaredInAlice sceneMarkerSelectedValue = this.sceneMarkerList.getValue();
+		FieldDeclaredInAlice sceneMarkerSelectedValue = this.sceneMarkerFieldList.getValue();
 		int sceneMarkerSelectedIndex = -1;
 		if (sceneMarkerSelectedValue != null)
 		{
 			sceneMarkerSelectedIndex = cameraMarkerFields.indexOf(sceneMarkerSelectedValue);
 		}
-		this.sceneMarkerList.setListData(sceneMarkerSelectedIndex, cameraMarkerFields);
+		this.sceneMarkerFieldList.setListData(sceneMarkerSelectedIndex, cameraMarkerFields);
 
-		FieldDeclaredInAlice startingViewSelectedValue = this.startingViewMarkerList.getValue();
+		FieldDeclaredInAlice startingViewSelectedValue = this.startingViewMarkerFieldList.getValue();
 		int startingViewSelectedIndex = -1;
 		if (startingViewSelectedValue != null)
 		{
 			startingViewSelectedIndex = cameraMarkerFields.indexOf(startingViewSelectedValue);
 		}
-		this.startingViewMarkerList.setListData(startingViewSelectedIndex, cameraMarkerFields);
+		this.startingViewMarkerFieldList.setListData(startingViewSelectedIndex, cameraMarkerFields);
 		
 		List<CameraMarker> cameraMarkerFieldsAndOrthoOptions =  edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		for (FieldDeclaredInAlice field : cameraMarkerFields)
@@ -500,17 +506,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private void addFieldListening()
 	{
 		this.addAndInvokeSceneEditorFieldObserver(this.sceneEditorFieldObserver);
-		this.addAndInvokeSceneEditorFieldObserver(this.mainViewSelector);
-		this.addAndInvokeSceneEditorFieldObserver(this.sidePane.getStartingCameraViewManager().getCameraViewSelector());
-		this.addAndInvokeSceneEditorFieldObserver(this.sidePane.getViewManager());
 	}
 	
 	private void removeFieldListening()
 	{
 		this.removeSceneEditorFieldObserver(this.sceneEditorFieldObserver);
-		this.removeSceneEditorFieldObserver(this.mainViewSelector);
-		this.removeSceneEditorFieldObserver(this.sidePane.getStartingCameraViewManager().getCameraViewSelector());
-		this.removeSceneEditorFieldObserver(this.sidePane.getViewManager());
 	}
 	
 	
@@ -570,8 +570,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.globalDragAdapter.addClickAdapter(rightClickAdapter, rightMouseAndInteractive);
 			this.onscreenLookingGlass.addLookingGlassListener(this);
 			this.mainCameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter, CameraView.MAIN);
-			this.mainViewSelector = new LookingGlassViewSelector(this, animator);
-			this.mainViewSelector.setExtraMarkerOptions(this.orthographicCameraMarkers);
+			this.mainCameraViewTracker = new CameraMarkerTracker(this, animator);
+			this.mainCameraMarkerList.addAndInvokeValueObserver(this.mainCameraViewTracker);
+			this.mainCameraViewSelector = this.mainCameraMarkerList.createComboBox();
 			
 			edu.cmu.cs.dennisc.croquet.BooleanState isSceneEditorExpandedOperation = this.getIDE().getIsSceneEditorExpandedState();
 			final edu.cmu.cs.dennisc.croquet.CheckBox isSceneEditorExpandedCheckBox = isSceneEditorExpandedOperation.createCheckBox();
@@ -598,7 +599,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			
 			if (isSceneEditorExpandedOperation.getValue())
 			{
-				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( lgPanel, this.mainViewSelector, Horizontal.EAST, -INSET, Vertical.NORTH, INSET + 30 );
+				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( lgPanel, this.mainCameraViewSelector.getAwtComponent(), Horizontal.EAST, -INSET, Vertical.NORTH, INSET + 30 );
 			}
 
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouth( lgPanel, mainCameraNavigatorWidget, INSET );
@@ -649,15 +650,15 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.splitPane.setRightComponent( this.sidePane );
 			this.splitPane.setDividerSize( 10 );
 			
-			if (this.mainViewSelector != null)
+			if (this.mainCameraViewSelector != null)
 			{
 				//Add the camera view selector back
-				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( this.getLGPanel(), this.mainViewSelector, Horizontal.EAST, -INSET, Vertical.NORTH, INSET + 30 );
+				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( this.getLGPanel(), this.mainCameraViewSelector.getAwtComponent(), Horizontal.EAST, -INSET, Vertical.NORTH, INSET + 30 );
 				
 				//Switch the main view to the previously selected index
-				if (this.expandedViewSelectedIndex != -1)
+				if (this.expandedViewSelectedMarker != null)
 				{
-					this.mainViewSelector.setSelectedIndex(this.expandedViewSelectedIndex);
+					this.mainCameraMarkerList.setValue(this.expandedViewSelectedMarker);
 				}
 			}
 			
@@ -667,26 +668,20 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.splitPane.setDividerSize( 0 );
 			
 			//Take the camera view selector out
-			if (this.mainViewSelector != null)
+			if (this.mainCameraViewSelector != null)
 			{
-				if (this.mainViewSelector.getParent() == this.getLGPanel())
+				if (this.mainCameraViewSelector.getAwtComponent().getParent() == this.getLGPanel())
 				{
-					this.getLGPanel().remove(this.mainViewSelector);
+					this.getLGPanel().remove(this.mainCameraViewSelector.getAwtComponent());
 				}
 			
 				//Cache the currently selected view index
-				this.expandedViewSelectedIndex = this.mainViewSelector.getSelectedIndex();
+				this.expandedViewSelectedMarker = this.mainCameraMarkerList.getValue();
 				
 				//Switch the main view to the starting view
-				CameraFieldAndMarker cfAm = this.sidePane.getStartingCameraViewManager().getSelectedView();
-				//assert cfAm != null;
-				if( cfAm != null ) {
-					int startingViewIndex = this.mainViewSelector.getIndexForField(cfAm.field);
-					//assert startingViewIndex != -1;
-					if (startingViewIndex != -1)
-					{
-						this.mainViewSelector.setSelectedIndex(startingViewIndex);
-					}
+				FieldDeclaredInAlice startIngViewField = this.startingViewMarkerFieldList.getValue();
+				if( startIngViewField != null ) {
+					this.mainCameraMarkerList.setValue(this.getCameraMarkerForField(startIngViewField));
 				} else {
 					PrintUtilities.println( "todo: handle cfAm == null" );
 				}
@@ -917,8 +912,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		if( this.onscreenLookingGlass.getCameraCount() > 0 ) {
 			onscreenLookingGlass.clearCameras();
 		}
-		this.mainViewSelector.setPerspectiveCamera(null);
-		this.mainViewSelector.setOrthographicCamera(null);
+		this.mainCameraViewTracker.setCameras(null, null);
 		this.globalDragAdapter.clearCameraViews();
 	}
 	
@@ -926,8 +920,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	{
 		this.globalDragAdapter.addCameraView( CameraView.MAIN, perspectiveCamera, orthographicCamera );
 		this.globalDragAdapter.makeCameraActive( perspectiveCamera );
-		this.mainViewSelector.setPerspectiveCamera( perspectiveCamera );
-		this.mainViewSelector.setOrthographicCamera( orthographicCamera );
+		this.mainCameraViewTracker.setCameras(perspectiveCamera, orthographicCamera);
 		this.snapGrid.addCamera(perspectiveCamera);
 		this.snapGrid.addCamera(orthographicCamera);
 		this.snapGrid.setCurrentCamera(perspectiveCamera);
@@ -993,7 +986,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		} );
 		
 		//Turn animation off on the main view selector so all sets make it go instantly
-		this.mainViewSelector.setShouldAnimate(false);
+		this.mainCameraViewTracker.setShouldAnimate(false);
 		
 		//Find the new scene's main perspective camera
 		this.sgPerspectiveCamera = null;
@@ -1023,16 +1016,15 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		setCameraMarkerVisibility(true);
 		
 		//Find the camera.moveAndOrientTo(<starting camera point of view>) statement and set the StartingCameraViewManager to have that view selected
-		AbstractField startingPointOfViewField = getStartingPointOfViewField();
+		FieldDeclaredInAlice startingPointOfViewField = getStartingPointOfViewField();
 		if (startingPointOfViewField != null)
 		{	
-			StartingCameraViewManager startingViewManager = this.sidePane.getStartingCameraViewManager();
-			startingViewManager.setSelectedView(startingPointOfViewField);
-			this.mainViewSelector.setSelectedView(startingPointOfViewField);
+			this.startingViewMarkerFieldList.setValue(startingPointOfViewField);
+			this.mainCameraMarkerList.setValue(this.getCameraMarkerForField(startingPointOfViewField));
 		}
 		sidePane.showSceneGraphView(this.scene.getSGComposite());
 		//Turn animation back on
-		this.mainViewSelector.setShouldAnimate(true);
+		this.mainCameraViewTracker.setShouldAnimate(true);
 		return rv;
 	}
 
@@ -1066,7 +1058,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return false;
 	}
 
-	private AbstractField getStartingPointOfViewField()
+	private FieldDeclaredInAlice getStartingPointOfViewField()
 	{
 		if (this.sceneType != null)
 		{
@@ -1152,6 +1144,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			
 			getIDE().getSceneEditor().putInstanceForInitializingPendingField( defaultViewField, defaultViewMarker );
 			this.sceneType.fields.add( this.sceneType.fields.size(), defaultViewField );
+			this.startingViewMarkerFieldList.setValue(defaultViewField);
 			ensureCodeIsUpToDate();
 			
 			IDE.getSingleton().refreshAccessibles();
@@ -1167,13 +1160,13 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		SetUpMethodGenerator.fillInAutomaticSetUpMethod( bodyStatementsProperty, isThis, field, this.getInstanceInJavaForField( field ) );
 	}
 	
-	private AbstractField getPointOfViewFieldForField( AbstractField field )
+	private FieldDeclaredInAlice getPointOfViewFieldForField( AbstractField field )
 	{
 		if (field.getName().equals("camera"))
 		{
-			PrintUtilities.println( "merge: todo getPointOfViewFieldForField" );
+			//PrintUtilities.println( "merge: todo getPointOfViewFieldForField" );
 			try {
-				return this.sidePane.getStartingCameraViewManager().getSelectedView().field;
+				return this.startingViewMarkerFieldList.getValue();
 			} catch( NullPointerException npe ) {
 				return null;
 			}
@@ -1416,12 +1409,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	
 	public boolean isCameraMarkerActive( CameraMarker marker )
 	{
-		CameraFieldAndMarker fieldAndMarker = this.mainViewSelector.getSelectedMarker();
-		if (fieldAndMarker != null)
-		{
-			return fieldAndMarker.marker == marker;
-		}
-		return false;
+		CameraMarker activeMarker = this.mainCameraMarkerList.getValue();
+		return marker == activeMarker;
 	}
 	
 	public SnapState getSnapState()
