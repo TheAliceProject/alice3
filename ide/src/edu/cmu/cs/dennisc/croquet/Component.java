@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Component<J extends java.awt.Component> implements ScreenElement, TrackableShape, Resolver< TrackableShape > {
+public abstract class Component<J extends java.awt.Component> extends ScreenElement {
 	public interface ContainmentObserver {
 		public void addedTo( Component< ? > parent );
 		public void removedFrom( Component< ? > parent );
@@ -203,6 +203,7 @@ public abstract class Component<J extends java.awt.Component> implements ScreenE
 
 	///*package-private*/ final J getAwtComponent() {
 	// todo: reduce visibility to /*package-private*/
+	@Override
 	public final J getAwtComponent() {
 		if( this.awtComponent != null ) {
 			// pass
@@ -347,9 +348,6 @@ public abstract class Component<J extends java.awt.Component> implements ScreenE
 		}
 	}
 
-	public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
-		return this;
-	}
 	public java.awt.Rectangle getVisibleRectangle() {
 		return this.getBounds();
 	}
@@ -368,7 +366,6 @@ public abstract class Component<J extends java.awt.Component> implements ScreenE
 
 	public boolean isInView() {
 		java.awt.Rectangle visibleRect = this.getVisibleRectangle();
-		java.awt.Rectangle bounds = this.getBounds();
 		java.awt.Dimension size = this.getAwtComponent().getSize();
 		return visibleRect.width == size.width || visibleRect.height == size.height;
 	}
@@ -388,9 +385,6 @@ public abstract class Component<J extends java.awt.Component> implements ScreenE
 
 	public ScrollPane getScrollPaneAncestor() {
 		return this.getFirstAncestorAssignableTo( ScrollPane.class );
-	}
-	public java.awt.Point convertPoint( java.awt.Point pt, ScreenElement destination ) {
-		return javax.swing.SwingUtilities.convertPoint( this.getAwtComponent(), pt, destination.getAwtComponent() );
 	}
 	public java.awt.Rectangle convertRectangle( java.awt.Rectangle rectangle, ScreenElement destination ) {
 		return javax.swing.SwingUtilities.convertRectangle( this.getAwtComponent(), rectangle, destination.getAwtComponent() );
@@ -424,6 +418,7 @@ public abstract class Component<J extends java.awt.Component> implements ScreenE
 	public void requestFocus() {
 		this.getAwtComponent().requestFocus();
 	}
+
 	@Deprecated
 	public void addKeyListener( java.awt.event.KeyListener listener ) {
 		this.getAwtComponent().addKeyListener( listener );

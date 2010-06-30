@@ -57,7 +57,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 			StringBuffer sb = new StringBuffer();
 			if( methodDeclaredInAlice.isProcedure() ) {
-				sb.append( " procedure " );
+				sb.append( "procedure " );
 			} else {
 				this.addComponent( org.alice.ide.common.TypeComponent.createInstance( methodDeclaredInAlice.getReturnType() ) );
 				sb.append( " function " );
@@ -68,7 +68,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		
 		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
 		org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( methodDeclaredInAlice );
-		nameLabel.scaleFont( 2.0f );
+		nameLabel.scaleFont( NAME_SCALE );
 
 		if( methodDeclaredInAlice.isSignatureLocked.getValue() ) {
 			this.addComponent( nameLabel );

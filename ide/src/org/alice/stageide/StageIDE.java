@@ -346,10 +346,10 @@ public class StageIDE extends org.alice.ide.IDE {
 //		}
 //	}
 
-	public void showInContainer( MoveAndTurnRuntimeProgram rtProgram, edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
-		String[] args = {};
-		rtProgram.showInAWTContainer( container.getAwtComponent(), args );
-	}
+//	public void showInContainer( MoveAndTurnRuntimeProgram rtProgram, edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
+//		String[] args = {};
+//		rtProgram.showInAWTContainer( container.getAwtComponent(), args );
+//	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.DialogOperation createRunOperation() {
 		return new org.alice.stageide.operations.run.RunOperation();
@@ -427,9 +427,12 @@ public class StageIDE extends org.alice.ide.IDE {
 	protected java.util.Map< String, String > createGalleryThumbnailsMap() {
 		java.util.Map< String, String > rv = new java.util.HashMap< String, String >();
 		rv.put( "thumbnails", "gallery" );
-		rv.put( "org.alice.apis.moveandturn.gallery", "Generic Alice Models" );
-		rv.put( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters", "Looking Glass Characters" );
-		rv.put( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.scenes", "Looking Glass Scenery" );
+//		rv.put( "org.alice.apis.moveandturn.gallery", "Generic Alice Models" );
+//		rv.put( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters", "Looking Glass Characters" );
+//		rv.put( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.scenes", "Looking Glass Scenery" );
+		rv.put( "gallery", "Generic Alice Models" );
+		rv.put( "characters", "Looking Glass Characters" );
+		rv.put( "scenes", "Looking Glass Scenery" );
 		return rv;
 	}
 
@@ -566,14 +569,59 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	@Override
-	public java.io.File getGalleryRootDirectory() {
-		return org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory();
+	public javax.swing.tree.TreeNode getGalleryRoot() {
+		try {
+			String jarPath = org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory() + "/mtwtGalleryLargeIcons.jar";
+			edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode jarRoot = edu.cmu.cs.dennisc.zip.ZipUtilities.createTreeNode( jarPath, false );
+			String[] paths = {
+					 "org/alice/stageide/gallerybrowser/images/edu/wustl/cse/lookingglass/apis/walkandtouch/gallery/characters", 
+					 "org/alice/stageide/gallerybrowser/images/edu/wustl/cse/lookingglass/apis/walkandtouch/gallery/scenes", 
+					 "org/alice/stageide/gallerybrowser/images/org/alice/apis/moveandturn/gallery", 
+			};
+			final int N = paths.length;
+			final java.util.ArrayList< javax.swing.tree.TreeNode > children = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+			children.ensureCapacity( N );
+			javax.swing.tree.TreeNode rv = new javax.swing.tree.TreeNode() {
+				public java.util.Enumeration< javax.swing.tree.TreeNode > children() {
+					return java.util.Collections.enumeration( children );
+				}
+				public javax.swing.tree.TreeNode getChildAt(int childIndex) {
+					return children.get( childIndex );
+				}
+				public int getChildCount() {
+					return children.size();
+				}
+				public int getIndex(javax.swing.tree.TreeNode node) {
+					return children.indexOf( node );
+				}
+				public javax.swing.tree.TreeNode getParent() {
+					return null;
+				}
+				public boolean getAllowsChildren() {
+					return true;
+				}
+				public boolean isLeaf() {
+					return false;
+				}
+				@Override
+				public String toString() {
+					return "thumbnails";
+				}
+			};
+			for( String path : paths ) {
+				edu.cmu.cs.dennisc.zip.ZipTreeNode zipTreeNode = jarRoot.getDescendant( path );
+				zipTreeNode.setParent( rv );
+				children.add( zipTreeNode );
+			}
+			return rv;
+		} catch( java.io.IOException ioe ) {
+			throw new RuntimeException( ioe );
+		}
 	}
 	@Override
-	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser( java.io.File galleryRoot ) {
-		java.io.File thumbnailRoot = new java.io.File( galleryRoot, "thumbnails" );
+	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser( javax.swing.tree.TreeNode root ) {
 		java.util.Map< String, String > map = this.createGalleryThumbnailsMap();
-		return new org.alice.stageide.gallerybrowser.GalleryBrowser( thumbnailRoot, map );
+		return new org.alice.stageide.gallerybrowser.GalleryBrowser( root, map );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getEnumTypeForInterfaceType( edu.cmu.cs.dennisc.alice.ast.AbstractType interfaceType ) {

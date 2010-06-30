@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	private Completor completor;
 	private Validator validator;
 	public PopupMenuStep( String title, String popupText, final edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation> popupMenuOperationResolver, String commitText, Completor completor, Validator validator ) {
-		super( title, popupText, new Hole( popupMenuOperationResolver, Feature.ConnectionPreference.EAST_WEST ), popupMenuOperationResolver );
+		super( title, popupText, new Hole( new FirstComponentResolver( popupMenuOperationResolver ), Feature.ConnectionPreference.EAST_WEST ), popupMenuOperationResolver );
 		this.completor = completor;
 		this.validator = validator;
 

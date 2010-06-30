@@ -46,13 +46,71 @@ package edu.cmu.cs.dennisc.zip;
  * @author Dennis Cosgrove
  */
 public class ZipUtilities {
-	public static java.util.HashMap< String, byte[] > extract( java.io.InputStream is ) throws java.io.IOException {
+	private static byte[] extractBytes( java.util.zip.ZipInputStream zis, java.util.zip.ZipEntry zipEntry ) throws java.io.IOException {
+		final int BUFFER_SIZE = 2048;
+		byte[] buffer = new byte[BUFFER_SIZE];
+		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream( BUFFER_SIZE );
+		int count;
+		while ((count = zis.read( buffer, 0, BUFFER_SIZE )) != -1) {
+			baos.write( buffer, 0, count );
+		}
+		zis.closeEntry();
+		return baos.toByteArray();
+	}
+
+	public static DirectoryZipTreeNode createTreeNode( java.util.zip.ZipInputStream zis, boolean isDataExtractionDesired ) throws java.io.IOException {
+		java.util.Map< String, DirectoryZipTreeNode > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		DirectoryZipTreeNode rv = new DirectoryZipTreeNode( null );
+		map.put( "", rv );
+		java.util.zip.ZipEntry zipEntry;
+		while ((zipEntry = zis.getNextEntry()) != null) {
+			String name = zipEntry.getName();
+			ZipTreeNode zipTreeNode;
+			if( zipEntry.isDirectory() ) {
+				DirectoryZipTreeNode directoryZipTreeNode = new DirectoryZipTreeNode( name );
+				map.put( name, directoryZipTreeNode );
+				zipTreeNode = directoryZipTreeNode;
+			} else {
+				byte[] data;
+				if( isDataExtractionDesired ) {
+					data = extractBytes(zis, zipEntry);
+				} else {
+					data = null;
+				}
+				        
+				zipTreeNode = new FileZipTreeNode( name, data );
+			}
+			String parentName; 
+			int index = name.lastIndexOf( '/', name.length()-2 );
+			if( index != -1 ) {
+				parentName = name.substring( 0, index+1 );
+			} else {
+				parentName = "";
+			}
+			DirectoryZipTreeNode parent = map.get( parentName );
+			assert parent != null : parentName;
+			zipTreeNode.setParent( parent );
+		}
+		return rv;
+	}
+	public static DirectoryZipTreeNode createTreeNode( java.io.InputStream is, boolean isDataExtractionDesired ) throws java.io.IOException {
 		java.util.zip.ZipInputStream zis;
 		if( is instanceof java.util.zip.ZipInputStream ) {
 			zis = (java.util.zip.ZipInputStream) is;
 		} else {
 			zis = new java.util.zip.ZipInputStream( is );
 		}
+		return createTreeNode( zis, isDataExtractionDesired );
+	}
+	public static DirectoryZipTreeNode createTreeNode( java.io.File file, boolean isDataExtractionDesired ) throws java.io.IOException {
+		return createTreeNode( new java.io.FileInputStream( file ), isDataExtractionDesired );
+	}
+	public static DirectoryZipTreeNode createTreeNode( String path, boolean isDataExtractionDesired ) throws java.io.IOException {
+		return createTreeNode( new java.io.File( path ), isDataExtractionDesired );
+	}
+	
+	
+	public static java.util.HashMap< String, byte[] > extract( java.util.zip.ZipInputStream zis ) throws java.io.IOException {
 		java.util.HashMap<String, byte[]> filenameToBytesMap = new java.util.HashMap<String, byte[]>();
 		java.util.zip.ZipEntry zipEntry;
 		while ((zipEntry = zis.getNextEntry()) != null) {
@@ -60,19 +118,27 @@ public class ZipUtilities {
 			if( zipEntry.isDirectory() ) {
 				// pass
 			} else {
-				final int BUFFER_SIZE = 2048;
-				byte[] buffer = new byte[BUFFER_SIZE];
-				java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream( BUFFER_SIZE );
-				int count;
-				while ((count = zis.read( buffer, 0, BUFFER_SIZE )) != -1) {
-					baos.write( buffer, 0, count );
-				}
-				zis.closeEntry();
-				filenameToBytesMap.put( name, baos.toByteArray() );
+				filenameToBytesMap.put( name, extractBytes(zis, zipEntry) );
 			}
 		}
 		return filenameToBytesMap;
 	}
+	public static java.util.HashMap< String, byte[] > extract( java.io.InputStream is ) throws java.io.IOException {
+		java.util.zip.ZipInputStream zis;
+		if( is instanceof java.util.zip.ZipInputStream ) {
+			zis = (java.util.zip.ZipInputStream) is;
+		} else {
+			zis = new java.util.zip.ZipInputStream( is );
+		}
+		return extract( zis );
+	}
+	public static java.util.HashMap< String, byte[] > extract( java.io.File file ) throws java.io.IOException {
+		return extract( new java.io.FileInputStream( file ) );
+	}
+	public static java.util.HashMap< String, byte[] > extract( String path ) throws java.io.IOException {
+		return extract( new java.io.File( path ) );
+	}
+
 	
 	public static void write( java.util.zip.ZipOutputStream zos, DataSource dataSource ) throws java.io.IOException {
 		assert dataSource != null;

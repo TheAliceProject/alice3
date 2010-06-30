@@ -159,12 +159,6 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,Model> {
 //		rv.setOpaque( true );
 		return rv;
 	}
-	public void addComponentListener( java.awt.event.ComponentListener componentListener ) {
-		this.getAwtComponent().addComponentListener( componentListener );
-	}
-	public void removeComponentListener( java.awt.event.ComponentListener componentListener ) {
-		this.getAwtComponent().removeComponentListener( componentListener );
-	}
 	
 	protected boolean contains( int x, int y, boolean jContains ) {
 		return jContains;

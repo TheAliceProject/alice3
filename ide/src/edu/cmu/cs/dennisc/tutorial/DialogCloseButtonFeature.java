@@ -62,6 +62,14 @@ package edu.cmu.cs.dennisc.tutorial;
 		return null;
 	}
 	@Override
+	public java.awt.geom.Area getAreaToSubstractForPaint(edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy) {
+		return null;
+	}
+	@Override
+	public java.awt.geom.Area getAreaToSubstractForContains(edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy) {
+		return null;
+	}
+	@Override
 	protected void paint(java.awt.Graphics2D g2, java.awt.Shape shape) {
 	}
 }

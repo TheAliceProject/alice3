@@ -245,9 +245,9 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	class Title extends edu.cmu.cs.dennisc.croquet.FlowPanel {
 		public Title( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 			super( Alignment.LEADING );
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type ) );
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type.getSuperType() ) );
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,8 ) );
 		}
@@ -309,10 +309,12 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		pageAxisPanel.addComponent( functionsToolPalette );
 		pageAxisPanel.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 4 ) );
 		pageAxisPanel.addComponent( fieldsToolPalette );
-		pageAxisPanel.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() );
+//		pageAxisPanel.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() );
 		pageAxisPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,14,0,0 ) );
 
-		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( pageAxisPanel );
+		edu.cmu.cs.dennisc.croquet.BorderPanel borderPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		borderPanel.addComponent( pageAxisPanel, Constraint.NORTH );
+		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( borderPanel );
 		scrollPane.setBorder( null );
 		
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );

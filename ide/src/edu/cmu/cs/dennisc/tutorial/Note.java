@@ -98,6 +98,33 @@ package edu.cmu.cs.dennisc.tutorial;
 		return rv;
 	}
 
+//	private boolean prevFeatureInView = false;
+//	private boolean isRepaintRequiredForFeatureViewChanged = false;
+//
+//	private boolean isFeatureInView() {
+//		for( Feature feature : this.features ) {
+//			edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = feature.getTrackableShape();
+//			if( trackableShape != null ) {
+//				if( trackableShape.isInView() ) {
+//					return true;
+//				}
+//			}
+//		}
+//		return false;
+//	}
+//
+//	/*package-private*/ boolean isRepaintAllRequired() {
+//		boolean nextFeatureInView = isFeatureInView();
+//		if( nextFeatureInView != prevFeatureInView ) {
+//			prevFeatureInView = nextFeatureInView;
+//			if( isRepaintRequiredForFeatureViewChanged ) {
+//				return true;
+//			}
+//		}
+//		isRepaintRequiredForFeatureViewChanged = true;
+//		return false;
+//	}
+	
 	@Override
 	protected javax.swing.JComponent createAwtComponent() {
 		javax.swing.JEditorPane textComponent = new javax.swing.JEditorPane() {
@@ -172,7 +199,7 @@ package edu.cmu.cs.dennisc.tutorial;
 					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText(g2, label, 0, 0, X_PAD*3, Y_PAD*3 );
 					g2.setFont( prevFont );
 				}
-				
+
 				if( Note.this.isActive() ) {
 					g2.translate(x, y);
 					g2.setPaint( java.awt.Color.GRAY );
@@ -275,7 +302,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 		
 	};
-	
+		
 	private boolean isActive = true;
 	public boolean isActive() {
 		return this.isActive;
@@ -283,10 +310,24 @@ package edu.cmu.cs.dennisc.tutorial;
 	public void setActive( boolean isActive ) {
 		if( this.isActive != isActive ) {
 			this.isActive = isActive;
+			for( Feature feature : this.features ) {
+				feature.updateTrackableShapeIfNecessary();
+			}
 			edu.cmu.cs.dennisc.croquet.Container< ? > container = this.getParent();
 			if( container != null ) {
 				container.repaint();
 			}
+		}
+	}
+	
+	private void bind() {
+		for( Feature feature : this.features ) {
+			feature.bind();
+		}
+	}
+	private void unbind() {
+		for( Feature feature : this.features ) {
+			feature.unbind();
 		}
 	}
 
@@ -295,9 +336,11 @@ package edu.cmu.cs.dennisc.tutorial;
 		super.handleAddedTo( parent );
 		this.addMouseListener( this.mouseInputListener );
 		this.addMouseMotionListener( this.mouseInputListener );
+		this.bind();
 	}
 	@Override
 	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		this.unbind();
 		this.removeMouseMotionListener( this.mouseInputListener );
 		this.removeMouseListener( this.mouseInputListener );
 		super.handleRemovedFrom( parent );

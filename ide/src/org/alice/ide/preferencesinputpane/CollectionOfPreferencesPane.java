@@ -47,7 +47,7 @@ package org.alice.ide.preferencesinputpane;
  */
 class TitlePane extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 	public TitlePane( String title ) {
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( title, 2.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ) );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( title, 2.0f ) );
 		this.addComponent( new edu.cmu.cs.dennisc.croquet.HorizontalSeparator() );
 	}
 }

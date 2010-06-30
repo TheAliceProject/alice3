@@ -43,8 +43,8 @@
 package org.alice.ide.declarationpanes;
 
 class GalleryIcon extends edu.cmu.cs.dennisc.croquet.Label {
-	public GalleryIcon( java.io.File file ) {
-		this.setIcon( new javax.swing.ImageIcon( file.getAbsolutePath() ) );
+	public GalleryIcon( java.net.URL url ) {
+		this.setIcon( new javax.swing.ImageIcon( url ) );
 		this.setVerticalAlignment( edu.cmu.cs.dennisc.croquet.VerticalAlignment.BOTTOM );
 	}
 	@Override
@@ -63,23 +63,21 @@ class GalleryIcon extends edu.cmu.cs.dennisc.croquet.Label {
  */
 public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldPane {
 	private GalleryIcon galleryIcon;
-	private CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class<?> cls, java.io.File file, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
+	private CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class<?> cls, java.net.URL url, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
 		super( declaringType, cls, valueType );
-		if( file != null ) {
-			if( file.exists() ) {
-				this.galleryIcon = new GalleryIcon( file );
-				this.addComponent( this.galleryIcon, Constraint.EAST );
-			}
+		if( url != null ) {
+			this.galleryIcon = new GalleryIcon( url );
+			this.addComponent( this.galleryIcon, Constraint.EAST );
 		}
 	}
 	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class<?> cls ) {
-		this( declaringType, cls, getGalleryFileFromCls( cls.getName() ), null );
+		this( declaringType, cls, org.alice.stageide.gallerybrowser.ResourceManager.getLargeIconResourceForGalleryClassName( cls.getName() ), null );
 	}
-	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, java.io.File file ) {
-		this( declaringType, getClsFromGalleryFile( file ), file, null );
+	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, javax.swing.tree.TreeNode treeNode ) {
+		this( declaringType, org.alice.stageide.gallerybrowser.ResourceManager.getGalleryCls(treeNode), org.alice.stageide.gallerybrowser.ResourceManager.getLargeIconResource(treeNode), null );
 	}
 	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
-		this( declaringType, null, getGalleryFileFromCls( valueType.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getName() ), valueType );
+		this( declaringType, null, org.alice.stageide.gallerybrowser.ResourceManager.getLargeIconResourceForGalleryClassName( valueType.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getName() ), valueType );
 	}
 	
 
@@ -95,36 +93,36 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 		prefixSet.add( "org.alice.apis.moveandturn.gallery" );
 	}
 	
-	private static Class<?> getClsFromGalleryFile( java.io.File file ) {
-		String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file );
-		int index = -1;
-		for( String prefix : prefixSet ) {
-			int i = path.indexOf( prefix );
-			if( i >= 0 ) {
-				index = i;
-				break;
-			}
-		}
-		if( index >= 0 ) {
-			String s = path.substring( index, path.length()-4 );
-			s = s.replace( '\\', '/' );
-			s = s.replace( '/', '.' );
-			return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( s );
-		} else {
-			return null;
-		}
-	}
-	private static java.io.File getGalleryFileFromCls( String clsName ) {
-		for( String prefix : prefixSet ) {
-			if( clsName.startsWith( prefix ) ) {
-				String post = clsName.substring( prefix.length() );
-				String path = prefix + post.replaceAll( "\\.", "/" ) + ".png";
-				java.io.File rootDirectory = new java.io.File( org.alice.ide.IDE.getSingleton().getGalleryRootDirectory(), "thumbnails" );
-				return new java.io.File( rootDirectory, path );
-			}
-		}
-		return null;
-	}
+//	private static Class<?> getClsFromGalleryFile( javax.swing.tree.TreeNode treeNode ) {
+//		String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file );
+//		int index = -1;
+//		for( String prefix : prefixSet ) {
+//			int i = path.indexOf( prefix );
+//			if( i >= 0 ) {
+//				index = i;
+//				break;
+//			}
+//		}
+//		if( index >= 0 ) {
+//			String s = path.substring( index, path.length()-4 );
+//			s = s.replace( '\\', '/' );
+//			s = s.replace( '/', '.' );
+//			return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( s );
+//		} else {
+//			return null;
+//		}
+//	}
+//	private static javax.swing.tree.TreeNode getGalleryFileFromCls( String clsName ) {
+//		for( String prefix : prefixSet ) {
+//			if( clsName.startsWith( prefix ) ) {
+//				String post = clsName.substring( prefix.length() );
+//				String path = prefix + post.replaceAll( "\\.", "/" ) + ".png";
+//				java.io.File rootDirectory = new java.io.File( org.alice.ide.IDE.getSingleton().getGalleryRootDirectory(), "thumbnails" );
+//				return new java.io.File( rootDirectory, path );
+//			}
+//		}
+//		return null;
+//	}
 
 //	public static void main( String[] args ) {
 //		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();

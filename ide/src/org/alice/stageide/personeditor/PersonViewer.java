@@ -60,7 +60,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		return PersonViewer.singleton;
 	}
 
-	private IngredientsPane ingredientsPane;
+//	private IngredientsPane ingredientsPane;
 	private org.alice.interact.CreateASimDragAdapter dragAdapter = new org.alice.interact.CreateASimDragAdapter();
 	private edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Person > mapLifeStageGenderToPerson = new edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Person >();
 	private LifeStage lifeStage = null;
@@ -144,15 +144,15 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		this.positionAndOrientCamera( person.getHeight(), index, duration );
 	}
 	
-	public IngredientsPane getIngredientsPane() {
-		return this.ingredientsPane;
-	}
-	public void setIngredientsPane( IngredientsPane ingredientsPane ) {
-		this.ingredientsPane = ingredientsPane;
-		if( this.ingredientsPane != null ) {
-			this.ingredientsPane.refresh();
-		}
-	}
+//	public IngredientsPane getIngredientsPane() {
+//		return this.ingredientsPane;
+//	}
+//	public void setIngredientsPane( IngredientsPane ingredientsPane ) {
+//		this.ingredientsPane = ingredientsPane;
+//		if( this.ingredientsPane != null ) {
+//			this.ingredientsPane.refresh();
+//		}
+//	}
 	
 	public org.alice.apis.stage.Person getPerson() {
 		if( this.lifeStage != null && this.gender != null ) {
@@ -209,9 +209,9 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 					} else {
 						edu.cmu.cs.dennisc.print.PrintUtilities.println( "updatePerson person is null:", this.lifeStage, this.gender );
 					}
-					if( this.ingredientsPane != null ) {
-						this.ingredientsPane.refresh();
-					}
+//					if( this.ingredientsPane != null ) {
+//						this.ingredientsPane.refresh();
+//					}
 				}
 //			} finally {
 //				//edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().releaseRenderingLock();

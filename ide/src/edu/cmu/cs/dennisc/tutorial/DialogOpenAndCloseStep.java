@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.tutorial;
  */
 /*package-private*/ class DialogOpenAndCloseStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DialogOperation> {
 	public DialogOpenAndCloseStep( String title, String openText, String closeText, final edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.DialogOperation> dialogOperationResolver ) {
-		super( title, openText, new Hole( dialogOperationResolver, Feature.ConnectionPreference.EAST_WEST ), dialogOperationResolver );
+		super( title, openText, new Hole( new FirstComponentResolver( dialogOperationResolver ), Feature.ConnectionPreference.EAST_WEST ), dialogOperationResolver );
 
 		Note closeNote = new Note( closeText );
 		closeNote.addFeature( new DialogCloseButtonFeature( new edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {

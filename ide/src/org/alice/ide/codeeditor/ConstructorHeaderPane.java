@@ -52,9 +52,9 @@ class ConstructorHeaderPane extends AbstractCodeHeaderPane {
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( constructorDeclaredInAlice.getDeclaringType() ) );
 			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "()" ) );
 		} else {
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "declare " ) );
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "constructor", 1.5f ) );
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " on class " ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "constructor", NAME_SCALE ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " on class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( constructorDeclaredInAlice.getDeclaringType() ) );
 			this.addParametersPaneAndInstanceLineIfDesired();
 		}

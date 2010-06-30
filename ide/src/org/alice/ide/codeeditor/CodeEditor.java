@@ -823,11 +823,16 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 							return rv;
 						}
 						public java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.ScreenElement asSeenBy, java.awt.Insets insets ) {
-							java.awt.Rectangle bounds = CodeEditor.this.getAsSeenBy().convertRectangle( boundsAtIndex, asSeenBy );
-							//note: ignore insets
-//								java.awt.Rectangle visibleBounds = statementListPropertyPane.getVisibleRectangle( asSeenBy );
-//								return bounds.intersection( visibleBounds );
-							return bounds;
+							edu.cmu.cs.dennisc.croquet.Component<?> src = CodeEditor.this.getAsSeenBy();
+							if( src != null ) {
+								java.awt.Rectangle bounds = src.convertRectangle( boundsAtIndex, asSeenBy );
+								//note: ignore insets
+//									java.awt.Rectangle visibleBounds = statementListPropertyPane.getVisibleRectangle( asSeenBy );
+//									return bounds.intersection( visibleBounds );
+								return bounds;
+							} else {
+								return null;
+							}
 						}
 						public boolean isInView() {
 							if( isWarningAlreadyPrinted ) {
@@ -840,6 +845,18 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 						}
 						public edu.cmu.cs.dennisc.croquet.ScrollPane getScrollPaneAncestor() {
 							return statementListPropertyPane.getScrollPaneAncestor();
+						}
+						public void addComponentListener(java.awt.event.ComponentListener listener) {
+							statementListPropertyPane.addComponentListener(listener);
+						}
+						public void removeComponentListener(java.awt.event.ComponentListener listener) {
+							statementListPropertyPane.removeComponentListener(listener);
+						}
+						public void addHierarchyBoundsListener(java.awt.event.HierarchyBoundsListener listener) {
+							statementListPropertyPane.addHierarchyBoundsListener(listener);
+						}
+						public void removeHierarchyBoundsListener(java.awt.event.HierarchyBoundsListener listener) {
+							statementListPropertyPane.removeHierarchyBoundsListener(listener);
 						}
 					};
 				}

@@ -59,64 +59,6 @@ public class Tutorial {
 		this.stencil.addStep( rv );
 		return rv;
 	}
-
-	/*package-private*/ static class ItemSelectionStateItemResolver<E> implements Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape > {
-		private Resolver< edu.cmu.cs.dennisc.croquet.ListSelectionState<E> > itemSelectionStateResolver;
-		private Resolver< E > itemResolver;
-		public ItemSelectionStateItemResolver( Resolver< edu.cmu.cs.dennisc.croquet.ListSelectionState<E> > itemSelectionStateResolver, Resolver< E > itemResolver ) {
-			this.itemSelectionStateResolver = itemSelectionStateResolver;
-			this.itemResolver = itemResolver;
-		}
-		public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
-			edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState = this.itemSelectionStateResolver.getResolved();
-			if( itemSelectionState != null ) {
-				E item = itemResolver.getResolved();
-				return itemSelectionState.getTrackableShapeFor( item );
-			} else {
-				return null;
-			}
-		}
-	}
-
-	private static abstract class ItemSelectionStateTrackableShapeResolver<E,T> implements Resolver< T > {
-		private Resolver< edu.cmu.cs.dennisc.croquet.ListSelectionState<E> > itemSelectionStateResolver;
-		private Resolver< E > itemResolver;
-		public ItemSelectionStateTrackableShapeResolver(Resolver< edu.cmu.cs.dennisc.croquet.ListSelectionState<E> > itemSelectionStateResolver, Resolver< E > itemResolver ) {
-			this.itemSelectionStateResolver = itemSelectionStateResolver;
-			this.itemResolver = itemResolver;
-		}
-		protected abstract T getResolved( edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState, E item );
-		public final T getResolved() {
-			edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState = itemSelectionStateResolver.getResolved();
-			if( itemSelectionState != null ) {
-				E item = this.itemResolver.getResolved();
-				return getResolved( itemSelectionState, item );
-			} else {
-				return null;
-			}
-		}
-	}
-	
-	private static class MainComponentResolver<E> extends ItemSelectionStateTrackableShapeResolver< E, edu.cmu.cs.dennisc.croquet.JComponent< ? > > {
-		public MainComponentResolver(Resolver< edu.cmu.cs.dennisc.croquet.ListSelectionState<E> > itemSelectionStateResolver, Resolver< E > itemResolver ) {
-			super( itemSelectionStateResolver, itemResolver );
-		}
-		@Override
-		protected edu.cmu.cs.dennisc.croquet.JComponent<?> getResolved(edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState, E item) {
-			return itemSelectionState.getMainComponentFor( item );
-		}
-	}
-	private static class ScrollPaneResolver<E> extends ItemSelectionStateTrackableShapeResolver< E, edu.cmu.cs.dennisc.croquet.JComponent< ? > > {
-		public ScrollPaneResolver(Resolver< edu.cmu.cs.dennisc.croquet.ListSelectionState<E> > itemSelectionStateResolver, Resolver< E > itemResolver ) {
-			super( itemSelectionStateResolver, itemResolver );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: rename to RootComponentResolver" );
-		}
-		@Override
-		protected edu.cmu.cs.dennisc.croquet.JComponent<?> getResolved(edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState, E item) {
-			return itemSelectionState.getRootComponentFor( item );
-		}
-	}
-
 	public Step addMessageStep( String title, String text ) {
 		Step step = new MessageStep( title, text );
 		return this.addStep( step );
@@ -124,6 +66,9 @@ public class Tutorial {
 	public Step addSpotlightStep( String title, String text, Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver ) {
 		Step step = new SpotlightStep( title, text, trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST );
 		return this.addStep( step );
+	}
+	public Step addSpotlightStepForModel( String title, String text, Resolver< ? extends edu.cmu.cs.dennisc.croquet.Model<?> > modelResolver ) {
+		return this.addSpotlightStep( title, text, new FirstComponentResolver(modelResolver) );
 	}
 	public Step addActionStep( String title, String text, Resolver< ? extends edu.cmu.cs.dennisc.croquet.Operation< ?,? > > operationResolver, CompletorValidator completorValidator ) {
 		Step step = new OperationStep( title, text, operationResolver, completorValidator, completorValidator );
@@ -172,6 +117,7 @@ public class Tutorial {
 		Step step = new DragAndDropStep( title, text, dragResolver, dropText, dropShapeResolver, popupMenuText, inputDialogText, completorValidator, completorValidator );
 		return this.addStep( step );
 	}
+
 	public Step addDragAndDropStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, CompletorValidator completorValidator ) {
 		return this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, null, null, completorValidator );
 	}
@@ -183,6 +129,19 @@ public class Tutorial {
 	}
 	public Step addDragAndDropToPopupMenuToInputDialogStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, String inputDialogText, CompletorValidator completorValidator ) {
 		return this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, popupMenuText, inputDialogText, completorValidator );
+	}
+
+	public Step addDragAndDropStepForModel( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.Model<?>> dropModelResolver, CompletorValidator completorValidator ) {
+		return this.addDragAndDropStep(title, text, dragResolver, dropText, new FirstComponentResolver(dropModelResolver), null, null, completorValidator );
+	}
+	public Step addDragAndDropToPopupMenuStepForModel( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.Model<?>> dropModelResolver, String popupMenuText, CompletorValidator completorValidator ) {
+		return this.addDragAndDropStep(title, text, dragResolver, dropText, new FirstComponentResolver(dropModelResolver), popupMenuText, null, completorValidator );
+	}
+	public Step addDragAndDropToInputDialogStepForModel( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.Model<?>> dropModelResolver, String inputDialogText, CompletorValidator completorValidator ) {
+		return this.addDragAndDropStep(title, text, dragResolver, dropText, new FirstComponentResolver(dropModelResolver), null, inputDialogText, completorValidator );
+	}
+	public Step addDragAndDropToPopupMenuToInputDialogStepForModel( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.Model<?>> dropModelResolver, String popupMenuText, String inputDialogText, CompletorValidator completorValidator ) {
+		return this.addDragAndDropStep(title, text, dragResolver, dropText, new FirstComponentResolver(dropModelResolver), popupMenuText, inputDialogText, completorValidator );
 	}
 
 	

@@ -55,6 +55,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 8 ) );
 			this.setOpaque( false );
 			this.setBackground( null );
+			this.setAlignmentY( 1.0f );
 		}
 		protected void repaintPlus() {
 			this.getParent().repaint( this.getX(), this.getY(), this.getWidth() + EAST_TAB_PAD, this.getHeight() );
@@ -268,15 +269,23 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		this.getAwtComponent().setOpaque( true );
 	}
 
-	public void setHeaderLeadingComponent( Component< ? > component ) {
-		//todo
-		component.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
+	public void setHeaderLeadingComponent( JComponent< ? > component ) {
+		if( component.isOpaque() ) {
+			//pass
+		} else {
+			component.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
+		}
+		component.setAlignmentY( 1.0f );
 		this.headerPanel.addComponent( component, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_START );
 		this.headerPanel.revalidateAndRepaint();
 	}
-	public void setHeaderTrailingComponent( Component< ? > component ) {
-		//todo
-		component.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
+	public void setHeaderTrailingComponent( JComponent< ? > component ) {
+		if( component.isOpaque() ) {
+			//pass
+		} else {
+			component.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
+		}
+		component.setAlignmentY( 1.0f );
 		this.headerPanel.addComponent( component, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END );
 		this.headerPanel.revalidateAndRepaint();
 	}
