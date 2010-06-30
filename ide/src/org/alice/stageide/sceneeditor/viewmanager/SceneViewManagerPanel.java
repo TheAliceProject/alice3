@@ -70,6 +70,7 @@ import javax.swing.SwingUtilities;
 
 import org.alice.apis.moveandturn.CameraMarker;
 import org.alice.ide.common.FieldDeclarationPane;
+import org.alice.ide.swing.FieldListCellRenderer;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
@@ -102,6 +103,7 @@ public class SceneViewManagerPanel extends JPanel{
 		this.sceneEditor = sceneEditor;
 		this.createCameraMarkerAction = new CreateCameraMarkerActionOperation(this.sceneEditor);	
 		this.markerFieldList = this.sceneEditor.getSceneMarkerFieldList().createList();
+		this.markerFieldList.setCellRenderer(new FieldListCellRenderer() {});
 		JLabel cameraMarkerTitle = new JLabel( "Camera Markers:");
 		cameraMarkerTitle.setFont( cameraMarkerTitle.getFont().deriveFont( Font.BOLD, 18f ) );
 		

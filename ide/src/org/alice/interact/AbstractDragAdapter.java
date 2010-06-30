@@ -75,7 +75,7 @@ import org.alice.interact.manipulator.ClickAdapterManipulator;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.interact.manipulator.OnScreenLookingGlassInformedManipulator;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
-
+import edu.cmu.cs.dennisc.croquet.ListSelectionState;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
@@ -129,6 +129,13 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			return this.perspectiveCamera == camera || this.orthographicCamera == camera;
 		}
 	}
+	
+	public ListSelectionState.ValueObserver<HandleSet> handleStateValueObserver = new ListSelectionState.ValueObserver<HandleSet>() {
+		public void changed(HandleSet nextValue) {
+			AbstractDragAdapter.this.setHandleSet(nextValue);
+		}
+		
+	};
 	
 	
 	private MoveAndTurnSceneEditor sceneEditor;

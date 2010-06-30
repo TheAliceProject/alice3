@@ -64,6 +64,7 @@ import org.alice.interact.SnapState;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.PickCondition;
+import org.alice.interact.handle.HandleSet;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerTracker;
 
@@ -110,7 +111,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	{
 		public void fieldAdded( FieldDeclaredInAlice addedField );
 		public void fieldRemoved( FieldDeclaredInAlice removedField );
-//		public void fieldsCleared();
 		public void fieldsSet(Collection<? extends FieldDeclaredInAlice> newFields);
 	}
 	
@@ -173,6 +173,17 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 		@Override
 		protected void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, FieldDeclaredInAlice value ) {
+			throw new RuntimeException( "todo" );
+		}
+	};
+	
+	private ListSelectionState<HandleSet> handleSelectionState = new ListSelectionState< HandleSet >( ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "639f27a5-896d-454b-af00-8527cbdf551c" ) ) {
+		@Override
+		protected HandleSet decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			throw new RuntimeException( "todo" );
+		}
+		@Override
+		protected void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, HandleSet value ) {
 			throw new RuntimeException( "todo" );
 		}
 	};
@@ -315,6 +326,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return this.startingViewMarkerFieldList;
 	}
 	
+	public ListSelectionState<HandleSet> getHandleSelectionStateList()
+	{
+		return this.handleSelectionState;
+	}
+	
 	public void addSceneEditorFieldObserver( SceneEditorFieldObserver fieldObserver ) {
 		this.fieldObservers.add( fieldObserver );
 	}
@@ -360,7 +376,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private void handleFieldAdded(FieldDeclaredInAlice addedField)
 	{
 		this.handleFieldCreation( addedField, true );
-		if (addedField.getDesiredValueType().isAssignableFrom(CameraMarker.class))
+		if (addedField.getDesiredValueType().isAssignableTo(CameraMarker.class))
 		{
 			this.mainCameraMarkerList.setValue(this.getCameraMarkerForField(addedField));
 		}
@@ -368,7 +384,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	
 	private void handleFieldRemoved( FieldDeclaredInAlice removedField)
 	{
-		PrintUtilities.println( "fields removed" );
+//		PrintUtilities.println( "fields removed" );
 		org.alice.apis.moveandturn.Transformable transformable = this.getInstanceInJavaForField( removedField, org.alice.apis.moveandturn.Transformable.class );
 		if( transformable != null ) {
 			this.scene.removeComponent( transformable );
@@ -431,11 +447,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	
 	private void handleGlobalFieldsAdded(Collection<? extends FieldDeclaredInAlice> addedFields)
 	{
-		PrintUtilities.println( "fields added" );
-		if (addedFields.size() > 1)
-		{
-			PrintUtilities.println( "MORE THAN ONE FIELD ADDED" );
-		}
+//		PrintUtilities.println( "fields added" );
+//		if (addedFields.size() > 1)
+//		{
+//			PrintUtilities.println( "MORE THAN ONE FIELD ADDED" );
+//		}
+		refreshMarkerLists();
 		for (SceneEditorFieldObserver observer : MoveAndTurnSceneEditor.this.fieldObservers)
 		{
 			
@@ -444,17 +461,16 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				observer.fieldAdded(addedField);
 			}
 		}
-		refreshMarkerLists();
-		
 	}
 	
 	private void handleGlobalFieldsRemoved(Collection<? extends FieldDeclaredInAlice> removedFields)
 	{
-		PrintUtilities.println( "fields removed" );
-		if (removedFields.size() > 1)
-		{
-			PrintUtilities.println( "MORE THAN ONE FIELD REMOVED" );
-		}
+//		PrintUtilities.println( "fields removed" );
+//		if (removedFields.size() > 1)
+//		{
+//			PrintUtilities.println( "MORE THAN ONE FIELD REMOVED" );
+//		}
+		refreshMarkerLists();
 		for (SceneEditorFieldObserver observer : MoveAndTurnSceneEditor.this.fieldObservers)
 		{
 			for (FieldDeclaredInAlice removedField : removedFields)
@@ -462,26 +478,25 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				observer.fieldRemoved(removedField);
 			}
 		}
-		refreshMarkerLists();
 	}
 	
 	private void handleGlobalFieldsCleared()
 	{
-		PrintUtilities.println( "fields cleared" );
+//		PrintUtilities.println( "fields cleared" );
+		refreshMarkerLists();
 		for (SceneEditorFieldObserver observer : MoveAndTurnSceneEditor.this.fieldObservers)
 		{
 			observer.fieldsSet(null);
 		}
-		refreshMarkerLists();
 	}
 	
 	private void handleGlobalFieldsSet(Collection<? extends FieldDeclaredInAlice> newFields)
 	{
+		refreshMarkerLists();
 		for (SceneEditorFieldObserver observer : MoveAndTurnSceneEditor.this.fieldObservers)
 		{
 			observer.fieldsSet(newFields);
 		}
-		refreshMarkerLists();
 	}
 
 	@Override
@@ -560,6 +575,14 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.globalDragAdapter.setSnapState(this.snapState);
 			this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 			
+			this.handleSelectionState.addItem(HandleSet.DEFAULT_INTERACTION);
+			this.handleSelectionState.addItem(HandleSet.ROTATION_INTERACTION);
+			this.handleSelectionState.addItem(HandleSet.TRANSLATION_INTERACTION);
+			this.handleSelectionState.addItem(HandleSet.RESIZE_INTERACTION);
+			this.handleSelectionState.setValue(HandleSet.DEFAULT_INTERACTION);
+			
+			this.handleSelectionState.addAndInvokeValueObserver(this.globalDragAdapter.handleStateValueObserver);
+			
 			MouseDragCondition rightMouseAndInteractive = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON3 , new PickCondition( PickHint.MOVEABLE_OBJECTS ) );
 			ManipulatorClickAdapter rightClickAdapter = new ManipulatorClickAdapter() {
 				public void onClick(InputState clickInput) {
@@ -613,8 +636,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 					MoveAndTurnSceneEditor.this.handleSelection( e );
 				}
 			} );
-
-			this.sidePane.setDragAdapter( this.globalDragAdapter );
 		}
 	}
 	
