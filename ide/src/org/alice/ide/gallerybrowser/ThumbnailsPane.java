@@ -42,6 +42,8 @@
  */
 package org.alice.ide.gallerybrowser;
 
+import org.alice.stageide.gallerybrowser.ResourceManager;
+
 //class SingleOrDoubleClickListUI extends javax.swing.plaf.basic.BasicListUI {
 //	@Override
 //	protected javax.swing.event.MouseInputListener createMouseInputListener() {
@@ -96,26 +98,36 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.LineAxis
 		public void setFolderIcon( javax.swing.Icon folderIcon ) {
 			this.folderIcon = folderIcon;
 		}
+		
+		private java.net.URL getIconResource( javax.swing.tree.TreeNode treeNode ) {
+			if (treeNode instanceof edu.cmu.cs.dennisc.zip.ZipTreeNode) {
+				edu.cmu.cs.dennisc.zip.ZipTreeNode zipTreeNode = (edu.cmu.cs.dennisc.zip.ZipTreeNode) treeNode;
+				if (zipTreeNode instanceof edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode) {
+					edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode directoryZipTreeNode = (edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode) zipTreeNode;
+					zipTreeNode = directoryZipTreeNode.getChildNamed( "directoryThumbnail.png" );
+				}
+				if( zipTreeNode != null ) {
+					return ResourceManager.getLargeIconResource(zipTreeNode);
+				}
+			}
+			return null;
+		}
 		@Override
 		protected javax.swing.JLabel updateLabel( javax.swing.JLabel rv, Object value ) {
-			java.io.File file = (java.io.File)value;
+			javax.swing.tree.TreeNode file = (javax.swing.tree.TreeNode)value;
 			if( file != null ) {
 				String text = ThumbnailsPane.this.getTextFor( file );
-				java.io.File iconFile;
-				if( file.isDirectory() ) {
-					iconFile = new java.io.File( file, "directoryThumbnail.png" );
-				} else {
-					iconFile = file;
-				}
+				java.net.URL iconResource = this.getIconResource( file );
 				rv.setText( text );
 				javax.swing.Icon icon;
-				if( iconFile.exists() ) {
-					String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( iconFile );
-					icon = new javax.swing.ImageIcon( path );
+				if( iconResource != null ) {
+					icon = new javax.swing.ImageIcon( iconResource );
 				} else {
 					icon = null;
 				}
-				if( file.isDirectory() ) {
+				if( file.isLeaf() ) {
+					//pass
+				} else {
 					if( this.folderIcon != null ) {
 						if( icon != null ) {
 							icon = new edu.cmu.cs.dennisc.javax.swing.icons.CompositeIcon( this.folderIcon, icon );
@@ -130,25 +142,25 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.LineAxis
 		}
 	}
 	
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState<java.io.File> itemSelection = new edu.cmu.cs.dennisc.croquet.ListSelectionState<java.io.File>( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "1814e4cc-1463-4191-bd85-72b61893d1e5" ) ) {
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState<javax.swing.tree.TreeNode> itemSelection = new edu.cmu.cs.dennisc.croquet.ListSelectionState<javax.swing.tree.TreeNode>( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "1814e4cc-1463-4191-bd85-72b61893d1e5" ) ) {
 		@Override
-		protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.io.File value) {
+		protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, javax.swing.tree.TreeNode value) {
 			throw new RuntimeException("todo");
 		}
 		@Override
-		protected java.io.File decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+		protected javax.swing.tree.TreeNode decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 			throw new RuntimeException("todo");
 		}
 	};
 	private ThumbnailSnapshotListCellRenderer thumbnailSnapshotListCellRenderer = new ThumbnailSnapshotListCellRenderer();
 
 	public ThumbnailsPane() {
-		final edu.cmu.cs.dennisc.croquet.List<java.io.File> list = itemSelection.createList();
+		final edu.cmu.cs.dennisc.croquet.List<javax.swing.tree.TreeNode> list = itemSelection.createList();
 		list.setCellRenderer( this.thumbnailSnapshotListCellRenderer );
 		list.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
 		list.setVisibleRowCount( 1 );
-		itemSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<java.io.File>() {
-			public void changed(final java.io.File nextValue) {
+		itemSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<javax.swing.tree.TreeNode>() {
+			public void changed(final javax.swing.tree.TreeNode nextValue) {
 				if( nextValue != null ) {
 //					itemSelection.setValue( null );
 					ThumbnailsPane.this.handleFileActivation( nextValue );
@@ -176,39 +188,63 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.LineAxis
 		this.addComponent( new edu.cmu.cs.dennisc.croquet.ScrollPane( list ) );
 	}
 
-	protected abstract String getTextFor( java.io.File file );
-	protected abstract void handleFileActivation( java.io.File file );
+	protected abstract String getTextFor( javax.swing.tree.TreeNode file );
+	protected abstract void handleFileActivation( javax.swing.tree.TreeNode file );
 	protected abstract void handleBackSpaceKey();
 	public void setFolderIcon( javax.swing.Icon folderIcon ) {
 		this.thumbnailSnapshotListCellRenderer.setFolderIcon( folderIcon );
 	}
 	
-	/*package private*/ static java.io.File[] listPackages( java.io.File directory ) {
-		return edu.cmu.cs.dennisc.java.io.FileUtilities.listDirectories( directory );
-	}
-	/*package private*/ static java.io.File[] listClasses( java.io.File directory ) {
-		return edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( directory, new java.io.FileFilter() {
-			public boolean accept( java.io.File file ) {
-				String lcFilename = file.getName().toLowerCase();
-				return file.isFile() && lcFilename.equals( "directorythumbnail.png" ) == false;
-			}
-		} );
-	}
-	public void setDirectory( java.io.File directory ) {
-		java.io.File[] directories = ThumbnailsPane.listPackages( directory );
-		java.io.File[] thumbnails = ThumbnailsPane.listClasses( directory );
+//	/*package private*/ static java.io.File[] listPackages( java.io.File directory ) {
+//		return edu.cmu.cs.dennisc.java.io.FileUtilities.listDirectories( directory );
+//	}
+//	/*package private*/ static java.io.File[] listClasses( java.io.File directory ) {
+//		return edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( directory, new java.io.FileFilter() {
+//			public boolean accept( java.io.File file ) {
+//				String lcFilename = file.getName().toLowerCase();
+//				return file.isFile() && lcFilename.equals( "directorythumbnail.png" ) == false;
+//			}
+//		} );
+//	}
+	
+	/*package private*/ static javax.swing.tree.TreeNode[] getSortedChildren( javax.swing.tree.TreeNode directory ) {
+		
+		java.util.ArrayList< edu.cmu.cs.dennisc.zip.ZipTreeNode > list = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+		list.ensureCapacity( directory.getChildCount() );
 
-		java.util.Vector< java.io.File > data = new java.util.Vector< java.io.File >();
-		data.ensureCapacity( directories.length + thumbnails.length );
-		for( java.io.File file : directories ) {
-			data.add( file );
+		java.util.Enumeration< javax.swing.tree.TreeNode > e = directory.children();
+		while( e.hasMoreElements() ) {
+			javax.swing.tree.TreeNode treeNode = e.nextElement();
+			if (treeNode instanceof edu.cmu.cs.dennisc.zip.ZipTreeNode) {
+				edu.cmu.cs.dennisc.zip.ZipTreeNode zipTreeNode = (edu.cmu.cs.dennisc.zip.ZipTreeNode)treeNode;
+				if( "directoryThumbnail.png".equals( zipTreeNode.getName() ) ) {
+					//pass
+				} else {
+					list.add( zipTreeNode );
+				}
+			}
 		}
-		for( java.io.File file : thumbnails ) {
-			data.add( file );
-		}
-		
-		java.util.Collections.sort( data, edu.cmu.cs.dennisc.java.io.FileUtilities.createComparator() );
-		
-		this.itemSelection.setListData( -1, data );
+		edu.cmu.cs.dennisc.zip.ZipTreeNode[] array = new edu.cmu.cs.dennisc.zip.ZipTreeNode[ list.size() ];
+		list.toArray( array );
+		java.util.Arrays.sort( array );
+		return array;
+	}
+	
+	public void setDirectory( javax.swing.tree.TreeNode directory ) {
+//		java.io.File[] directories = ThumbnailsPane.listPackages( directory );
+//		java.io.File[] thumbnails = ThumbnailsPane.listClasses( directory );
+//
+//		java.util.Vector< java.io.File > data = new java.util.Vector< java.io.File >();
+//		data.ensureCapacity( directories.length + thumbnails.length );
+//		for( java.io.File file : directories ) {
+//			data.add( file );
+//		}
+//		for( java.io.File file : thumbnails ) {
+//			data.add( file );
+//		}
+//		
+//		java.util.Collections.sort( data, edu.cmu.cs.dennisc.java.io.FileUtilities.createComparator() );
+//		
+		this.itemSelection.setListData( -1, getSortedChildren( directory ) );
 	}
 }

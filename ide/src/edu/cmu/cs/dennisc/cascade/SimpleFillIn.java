@@ -77,6 +77,11 @@ public class SimpleFillIn< E > extends FillIn< E > {
 	
 	@Override
 	protected javax.swing.JComponent createMenuProxy() {
-		return new javax.swing.JLabel( this.getMenuProxyText(), this.getMenuProxyIcon(), this.getMenuProxyHorizontalAlignment() );
+		String text = this.getMenuProxyText();
+		javax.swing.JLabel rv = new javax.swing.JLabel( text, this.getMenuProxyIcon(), this.getMenuProxyHorizontalAlignment() );
+		if( text != null && text.startsWith( "<html>" ) ) {
+			edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, edu.cmu.cs.dennisc.java.awt.font.TextWeight.REGULAR );
+		}
+		return rv;
 	}
 }

@@ -97,15 +97,19 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 			}
 		}
 
-		private java.io.File file;
+		private javax.swing.tree.TreeNode file;
 
 		//todo: remove. rely only on operations.
 		private edu.cmu.cs.dennisc.croquet.Button selectChildButton;
 
-		public DirectoryControl( java.io.File file ) {
+		public DirectoryControl( javax.swing.tree.TreeNode file ) {
 			this.file = file;
 			this.selectChildButton = new SelectChildDirectoryActionOperation().createButton();
-			selectChildButton.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.GRAY ) );
+			if( javax.swing.UIManager.getLookAndFeel().getName().contains( "Nimbus" ) ) {
+				selectChildButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 2, 0, 2 ) );
+			} else {
+				this.selectChildButton.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.GRAY ) );
+			}
 			this.addComponent( new SelectDirectoryActionOperation().createButton(), Constraint.CENTER );
 			this.addComponent( selectChildButton, Constraint.EAST );
 		}
@@ -122,20 +126,19 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 		private edu.cmu.cs.dennisc.croquet.Model[] getOperations() {
 			return PathControl.this.getOperations( this.file );
 		}
-
 	}
 
-	private java.io.File rootDirectory;
-	private java.io.File currentDirectory;
+	private javax.swing.tree.TreeNode rootDirectory;
+	private javax.swing.tree.TreeNode currentDirectory;
 	private javax.swing.Icon folderIconSmall;
 	private javax.swing.Icon fileIconSmall;
 
-	public PathControl( java.io.File rootDirectory ) {
+	public PathControl( javax.swing.tree.TreeNode rootDirectory ) {
 		this.rootDirectory = rootDirectory;
 		setCurrentDirectory( rootDirectory );
 	}
 
-	public java.io.File getRootDirectory() {
+	public javax.swing.tree.TreeNode getRootDirectory() {
 		return this.rootDirectory;
 	}
 
@@ -159,22 +162,22 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 		if( this.currentDirectory.equals( this.rootDirectory ) ) {
 			// pass
 		} else {
-			setCurrentDirectory( this.currentDirectory.getParentFile() );
+			setCurrentDirectory( this.currentDirectory.getParent() );
 		}
 	}
 
-	protected abstract String getTextFor( java.io.File file );
+	protected abstract String getTextFor( javax.swing.tree.TreeNode file );
 
-	public void setCurrentDirectory( java.io.File nextDirectory ) {
-		java.util.Stack< java.io.File > ancestors = new java.util.Stack< java.io.File >();
-		java.io.File d = nextDirectory;
+	public void setCurrentDirectory( javax.swing.tree.TreeNode nextDirectory ) {
+		java.util.Stack< javax.swing.tree.TreeNode > ancestors = new java.util.Stack< javax.swing.tree.TreeNode >();
+		javax.swing.tree.TreeNode d = nextDirectory;
 		while( d.equals( this.rootDirectory ) == false ) {
-			d = d.getParentFile();
+			d = d.getParent();
 			ancestors.add( d );
 		}
 		this.removeAllComponents();
 		while( ancestors.size() > 0 ) {
-			java.io.File ancestor = ancestors.pop();
+			javax.swing.tree.TreeNode ancestor = ancestors.pop();
 			this.addComponent( new DirectoryControl( ancestor ) );
 			this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 2 ) );
 		}
@@ -184,50 +187,43 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 		this.revalidateAndRepaint();
 	}
 
-	private void handleSelectDirectory( java.io.File directory ) {
+	private void handleSelectDirectory( javax.swing.tree.TreeNode directory ) {
 		setCurrentDirectory( directory );
 	}
 
-	protected abstract void handleSelectFile( java.io.File file );
+	protected abstract void handleSelectFile( javax.swing.tree.TreeNode file );
 
-	private edu.cmu.cs.dennisc.croquet.Model[] getOperations( java.io.File directory ) {
-		java.io.File[] packages = ThumbnailsPane.listPackages( directory );
-		java.util.Arrays.sort( packages, edu.cmu.cs.dennisc.java.io.FileUtilities.createComparator() );
-		java.io.File[] classes = ThumbnailsPane.listClasses( directory );
-		java.util.Arrays.sort( classes, edu.cmu.cs.dennisc.java.io.FileUtilities.createComparator() );
-
+	private edu.cmu.cs.dennisc.croquet.Model[] getOperations( javax.swing.tree.TreeNode directory ) {
 		class SelectFileActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-			private java.io.File file;
+			private javax.swing.tree.TreeNode file;
 
-			public SelectFileActionOperation( java.io.File file ) {
+			public SelectFileActionOperation( javax.swing.tree.TreeNode file ) {
 				super( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "b8a442d5-4a36-4d27-be67-061ea9a5d2b7" ) );
 				this.file = file;
 				this.setName( PathControl.this.getTextFor( this.file ) );
 				javax.swing.Icon icon;
-				if( this.file.isDirectory() ) {
-					icon = PathControl.this.folderIconSmall;
-				} else {
+				if( this.file.isLeaf() ) {
 					icon = PathControl.this.fileIconSmall;
+				} else {
+					icon = PathControl.this.folderIconSmall;
 				}
 				this.setSmallIcon( icon );
 			}
 
 			@Override
 			protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-				if( this.file.isDirectory() ) {
-					PathControl.this.handleSelectDirectory( this.file );
-				} else {
+				if( this.file.isLeaf() ) {
 					PathControl.this.handleSelectFile( this.file );
+				} else {
+					PathControl.this.handleSelectDirectory( this.file );
 				}
 			}
 		}
 
-		edu.cmu.cs.dennisc.croquet.Model[] rv = new edu.cmu.cs.dennisc.croquet.Model[ packages.length + classes.length ];
+		javax.swing.tree.TreeNode[] children = ThumbnailsPane.getSortedChildren(directory);
+		edu.cmu.cs.dennisc.croquet.Model[] rv = new edu.cmu.cs.dennisc.croquet.Model[ children.length ];
 		int i=0;
-		for( java.io.File file : packages ) {
-			rv[ i++ ] = new SelectFileActionOperation( file );
-		}
-		for( java.io.File file : classes ) {
+		for( javax.swing.tree.TreeNode file : children ) {
 			rv[ i++ ] = new SelectFileActionOperation( file );
 		}
 		return rv;

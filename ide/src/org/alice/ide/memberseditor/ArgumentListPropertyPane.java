@@ -59,7 +59,7 @@ package org.alice.ide.memberseditor;
 		String parameterName = argument.parameter.getValue().getName();
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( parameterName );
 		if( parameterName != null && parameterName.length() > 0 ) {
-			rv.addComponent( new edu.cmu.cs.dennisc.croquet.Label( parameterName + ": ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			rv.addComponent( new edu.cmu.cs.dennisc.croquet.Label( parameterName + ": ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 		}
 		rv.addComponent( new org.alice.ide.common.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)argument.expression.getValue() ) );
 		return rv;

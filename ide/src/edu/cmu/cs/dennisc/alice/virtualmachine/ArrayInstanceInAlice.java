@@ -73,4 +73,8 @@ public class ArrayInstanceInAlice {
 	public int getLength() {
 		return this.lengths[ 0 ];
 	}
+	
+	/*package-private*/ Object[] getValues() {
+		return this.values;
+	}
 }

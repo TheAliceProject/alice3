@@ -62,7 +62,6 @@ public class DeclarationNameLabel extends edu.cmu.cs.dennisc.croquet.Label {
 		this.declaration = declaration;
 		this.updateText();
 		this.setForegroundColor( java.awt.Color.BLACK );
-		this.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 	}
 	public DeclarationNameLabel( edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration declaration, float fontScaleFactor ) {
 		this( declaration );

@@ -661,16 +661,21 @@ public abstract class VirtualMachine {
 		}
 	}
 	protected final <E extends Object> E evaluate( edu.cmu.cs.dennisc.alice.ast.Expression expression, Class< E > cls ) {
-		//todo: for python
-//		Object result = this.evaluate( booleanExpressionBodyPair.expression.getValue() );
-//		Boolean condition;
-//		if( result instanceof Integer ) {
-//			condition = ((Integer)result) != 0;
-//		} else {
-//			condition = (Boolean)result;
-//		}
-//		if( condition ) {
-		return cls.cast( this.evaluate( expression ) );
+		//in order to support python...
+		//if( result instanceof Integer ) {
+		//	condition = ((Integer)result) != 0;
+		//} else {
+		//	condition = (Boolean)result;
+		//}
+		Object value = this.evaluate( expression );
+		if( cls.isArray() ) {
+			if( value instanceof ArrayInstanceInAlice ) {
+				ArrayInstanceInAlice arrayInstanceInAlice = (ArrayInstanceInAlice)value;
+				//todo
+				value = arrayInstanceInAlice.getValues();
+			}
+		}
+		return cls.cast( value );
 	}
 
 

@@ -89,12 +89,12 @@ package edu.cmu.cs.dennisc.tutorial;
 		this.connectionPreference = connectionPreference;
 	}
 	
-	public java.awt.Rectangle getBounds( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy ) {
-		edu.cmu.cs.dennisc.croquet.TrackableShape featureTrackableShape = this.getTrackableShape();
-		if( featureTrackableShape != null ) {
+	public java.awt.Rectangle getBoundsForRepaint( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy ) {
+		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getTrackableShape();
+		if( trackableShape != null ) {
 			java.awt.Insets boundsInsets = this.getBoundsInsets();
 			if( boundsInsets != null ) {
-				java.awt.Shape shape = featureTrackableShape.getShape( asSeenBy, boundsInsets );
+				java.awt.Shape shape = trackableShape.getShape( asSeenBy, boundsInsets );
 				return shape.getBounds();
 			} else {
 				return null;
@@ -107,10 +107,57 @@ package edu.cmu.cs.dennisc.tutorial;
 	/*package-private*/ void setHeightConstraint( Integer heightConstraint ) {
 		this.heightConstraint = heightConstraint;
 	}
-	
-	private edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape() {
-		return this.trackableShapeResolver.getResolved();
+
+	private static void repaintAll() {
+		edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getContentPanel().repaint();
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "repaintAll" );
 	}
+	private java.awt.event.HierarchyBoundsListener hierarchyBoundsListener = new java.awt.event.HierarchyBoundsListener() {
+		public void ancestorMoved(java.awt.event.HierarchyEvent e) {
+			repaintAll();
+		}
+		public void ancestorResized(java.awt.event.HierarchyEvent e) {
+			repaintAll();
+		}
+	};
+	private java.awt.event.ComponentListener componentListener = new java.awt.event.ComponentListener() {
+		public void componentShown(java.awt.event.ComponentEvent e) {
+		}
+		public void componentHidden(java.awt.event.ComponentEvent e) {
+		}
+		public void componentMoved(java.awt.event.ComponentEvent e) {
+			repaintAll();
+		}
+		public void componentResized(java.awt.event.ComponentEvent e) {
+			repaintAll();
+		}
+	};
+	private edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape;
+	/*package-private*/ void updateTrackableShapeIfNecessary() {
+		edu.cmu.cs.dennisc.croquet.TrackableShape nextTrackableShape = this.trackableShapeResolver.getResolved();
+		if( nextTrackableShape != this.trackableShape ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "trackableShape change" );
+			if( this.trackableShape != null ) {
+				this.trackableShape.removeHierarchyBoundsListener( this.hierarchyBoundsListener);
+				this.trackableShape.removeComponentListener( this.componentListener );
+			}
+			this.trackableShape = nextTrackableShape;
+			if( this.trackableShape != null ) {
+				this.trackableShape.addComponentListener( this.componentListener );
+				this.trackableShape.addHierarchyBoundsListener( this.hierarchyBoundsListener);
+			}
+		}
+	}
+	/*package-private*/ void bind() {
+		this.updateTrackableShapeIfNecessary();
+	}
+	/*package-private*/ void unbind() {
+		this.trackableShape = null;
+	}
+	protected edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape() {
+		return this.trackableShape;
+	}
+	
 	
 	public boolean isEntered() {
 		return this.isEntered;
@@ -323,14 +370,7 @@ package edu.cmu.cs.dennisc.tutorial;
 				shape = constrainHeightIfNecessary( shape, this.heightConstraint );
 				return shape;
 			} else {
-				edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
-				if( scrollPane != null ) {
-					javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
-					java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), asSeenBy.getAwtComponent() );
-					return edu.cmu.cs.dennisc.java.awt.RectangleUtilities.inset( rect, this.getPaintInsets() );
-				} else {
-					return null;
-				}
+				return null;
 			}
 		} else {
 			return null;
@@ -421,7 +461,6 @@ package edu.cmu.cs.dennisc.tutorial;
 			
 			if( isBreaking  ) {
 				theta = Math.atan2( yDelta, xDelta );
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "t", t );
 				break;
 			}
 			

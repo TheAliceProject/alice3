@@ -98,7 +98,7 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 			edu.cmu.cs.dennisc.croquet.PageAxisPanel northPanel = new edu.cmu.cs.dennisc.croquet.PageAxisPanel(
 					new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
 							edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ),
-							new edu.cmu.cs.dennisc.croquet.Label( "preview:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ),
+							new edu.cmu.cs.dennisc.croquet.Label( "preview:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ),
 							edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ),
 							this.previewPane
 					),
@@ -109,33 +109,13 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 			this.addComponent( northPanel, Constraint.NORTH );
 		}
 	}
-	
-//	todo: croquet switch
-//	@Override
-//	public void updateOKButton() {
-//		super.updateOKButton();
-//		this.updatePreview();
-//		this.updateSizeIfNecessary();
-//	}
+
 	public void updatePreview() {
 		if( this.previewPane != null ) {
 			this.previewPane.refresh();
 		}
 	}
 
-
-	
-//	@Override
-//	protected boolean paintComponent( java.awt.Graphics2D g2 ) {
-//		if( this.spacer != null ) {
-//			int y = this.spacer.getY() + this.spacer.getHeight();
-//			java.awt.Insets insets = this.getInsets();
-//			g2.setColor( java.awt.Color.GRAY );
-//			g2.drawLine( insets.left, y, this.getWidth()-insets.right, y );
-//		}
-//		return super.paintComponent( g2 );
-//	}
-	
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
@@ -154,3 +134,4 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 //		super.handleRemovedFrom(parent);
 //	}
 }
+

@@ -46,8 +46,8 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 class GalleryFileActionOperation extends AbstractGalleryDeclareFieldOperation<org.alice.ide.declarationpanes.CreateFieldFromGalleryPane> {
-	private java.io.File file;
-	public GalleryFileActionOperation(java.io.File file) {
+	private javax.swing.tree.TreeNode file;
+	public GalleryFileActionOperation(javax.swing.tree.TreeNode file) {
 		super( java.util.UUID.fromString( "19e8291e-3b0b-48f5-8bc9-1d02b754f9d4" ) );
 		this.file = file;
 	}

@@ -87,13 +87,17 @@ public class LaunchUtilities {
 	private static Runnable preLaunchAndCreateRunnable( final Class<? extends IDE> cls, final java.awt.Window splashScreen, final String[] args, final boolean isVisible ) {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
 		if( lookAndFeelInfo != null ) {
-			javax.swing.LookAndFeel laf = javax.swing.UIManager.getLookAndFeel();
+//			javax.swing.LookAndFeel laf = javax.swing.UIManager.getLookAndFeel();
 			try {
 				edu.cmu.cs.dennisc.javax.swing.plaf.nimbus.NimbusUtilities.installModifiedNimbus( lookAndFeelInfo );
 			} catch( Throwable t ) {
 				t.printStackTrace();
 			}
 		}
+
+		java.awt.Font defaultFont = new java.awt.Font( null, java.awt.Font.BOLD, 14 );
+		javax.swing.UIManager.getLookAndFeelDefaults().put( "defaultFont", defaultFont );
+
 		if( splashScreen != null ) {
 			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.LaunchUtilities.isSupressionOfSplashScreenDesired" ) ) {
 				//pass
@@ -189,6 +193,8 @@ public class LaunchUtilities {
 				ide.setSplashScreen( splashScreen );
 				ide.initialize( args );
 				ide.getFrame().setVisible( isVisible );
+				
+				//ide.getIsSceneEditorExpandedState().setValue( true );
 			}
 		};
 	}

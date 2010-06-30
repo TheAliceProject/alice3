@@ -49,7 +49,7 @@ public abstract class AssetsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 	private ThumbnailsPane thumbnailsPane;
 	private PathControl pathControl;
 
-	public AssetsPane( java.io.File rootDirectory, javax.swing.Icon folderIcon, javax.swing.ImageIcon folderIconSmall ) {
+	public AssetsPane( javax.swing.tree.TreeNode rootDirectory, javax.swing.Icon folderIcon, javax.swing.ImageIcon folderIconSmall ) {
 		this.thumbnailsPane = this.createThumbnailsPane();
 		this.thumbnailsPane.setFolderIcon( folderIcon );
 		this.pathControl = this.createPathControl( rootDirectory );
@@ -57,22 +57,22 @@ public abstract class AssetsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		this.addComponent( this.pathControl, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
 		this.addComponent( this.thumbnailsPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 	}
-	protected PathControl createPathControl( java.io.File rootDirectory ) {
+	protected PathControl createPathControl( javax.swing.tree.TreeNode rootDirectory ) {
 		return new PathControl( rootDirectory ) {
 			@Override
-			public void setCurrentDirectory(java.io.File nextDirectory) {
+			public void setCurrentDirectory(javax.swing.tree.TreeNode nextDirectory) {
 				super.setCurrentDirectory( nextDirectory );
 				AssetsPane.this.handleDirectoryActivationFromPathControl( nextDirectory );
 			}
 			@Override
-			protected void handleSelectFile( java.io.File file ) {
-				assert file.isFile();
+			protected void handleSelectFile( javax.swing.tree.TreeNode file ) {
+				assert file.isLeaf();
 				//todo: remove?
-				this.setCurrentDirectory( file.getParentFile() );
+				this.setCurrentDirectory( file.getParent() );
 				AssetsPane.this.handleFileActivationFromThumbnails( file );
 			}
 			@Override
-			protected String getTextFor( java.io.File file ) {
+			protected String getTextFor( javax.swing.tree.TreeNode file ) {
 				return AssetsPane.this.getTextFor( file, true );
 			}
 		};
@@ -84,11 +84,11 @@ public abstract class AssetsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 	protected ThumbnailsPane createThumbnailsPane() {
 		return new ThumbnailsPane() {
 			@Override
-			protected void handleFileActivation( java.io.File file ) {
+			protected void handleFileActivation( javax.swing.tree.TreeNode file ) {
 				AssetsPane.this.handleFileActivationFromThumbnails( file );
 			}
 			@Override
-			protected String getTextFor( java.io.File file ) {
+			protected String getTextFor( javax.swing.tree.TreeNode file ) {
 				return AssetsPane.this.getTextFor( file, false );
 			}
 			@Override
@@ -97,13 +97,15 @@ public abstract class AssetsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 			}
 		};
 	}
-	protected abstract String getTextFor( java.io.File file, boolean isRequestedByPath );
-	protected void handleFileActivationFromThumbnails( java.io.File file ) {
-		if( file.isDirectory() ) {
+	protected abstract String getTextFor( javax.swing.tree.TreeNode file, boolean isRequestedByPath );
+	protected void handleFileActivationFromThumbnails( javax.swing.tree.TreeNode file ) {
+		if( file.isLeaf() ) {
+			//pass
+		} else {
 			this.pathControl.setCurrentDirectory( file );
 		}
 	}
-	protected void handleDirectoryActivationFromPathControl( java.io.File directory ) {
+	protected void handleDirectoryActivationFromPathControl( javax.swing.tree.TreeNode directory ) {
 		this.thumbnailsPane.setDirectory( directory );
 	}
 }

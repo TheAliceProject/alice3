@@ -60,9 +60,9 @@ enum SimpleListCellRenderer implements javax.swing.ListCellRenderer {
 	public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 		this.label.setText( value.toString() );
 		if( isSelected ) {
-			this.label.setBackground( IngredientsPane.SELECTED_COLOR );
+			this.label.setBackground( PersonEditor.SELECTED_COLOR );
 		} else {
-			this.label.setBackground( IngredientsPane.UNSELECTED_COLOR );
+			this.label.setBackground( PersonEditor.UNSELECTED_COLOR );
 		}
 		return this.pane;
 	}

@@ -84,7 +84,13 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	@Override
 	public java.awt.geom.Area getAreaToSubstractForContains( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy ) {
-		return null;
+//		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getTrackableShape();
+//		java.awt.Rectangle bounds = this.getScrollBarBoundsIfNecessary( trackableShape, asSeenBy);
+//		if( bounds != null ) {
+//			return new java.awt.geom.Area( bounds );
+//		} else {
+			return null;
+//		}
 	}
 
 	private static void fill( java.awt.Graphics2D g2, java.awt.Shape shape, float x, float y, double theta ) {

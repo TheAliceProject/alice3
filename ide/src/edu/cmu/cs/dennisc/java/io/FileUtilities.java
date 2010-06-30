@@ -348,8 +348,23 @@ public class FileUtilities {
 		inChannel.close();
 		outChannel.close();
 	}
+	
 	public static void copyFile( String inPath, String outPath ) throws java.io.IOException {
 		copyFile( new java.io.File( inPath ), new java.io.File( outPath ) );
+	}
+	
+	public static void copyDirectory( java.io.File in, java.io.File out ) throws java.io.IOException {
+		createParentDirectoriesIfNecessary( out );
+		if( in.isDirectory() ) {
+			for( String filename : in.list() ) {
+				copyDirectory( new java.io.File( in, filename ), new java.io.File( out, filename ) );
+			}
+		} else {
+			copyFile( in, out );
+		}
+	}
+	public static void copyDirectory( String inPath, String outPath ) throws java.io.IOException {
+		copyDirectory( new java.io.File( inPath ), new java.io.File( outPath ) );
 	}
 
 	public static void delete( java.io.File file ) {

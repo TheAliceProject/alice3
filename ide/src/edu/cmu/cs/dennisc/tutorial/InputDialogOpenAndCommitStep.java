@@ -49,14 +49,14 @@ package edu.cmu.cs.dennisc.tutorial;
 	private Completor completor;
 	private Validator validator;
 	public InputDialogOpenAndCommitStep( String title, String openText, String commitText, final edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> inputDialogOperationResolver, Completor completor, Validator validator ) {
-		super( title, openText, new Hole( inputDialogOperationResolver, Feature.ConnectionPreference.EAST_WEST ), inputDialogOperationResolver );
+		super( title, openText, new Hole( new FirstComponentResolver( inputDialogOperationResolver ), Feature.ConnectionPreference.EAST_WEST ), inputDialogOperationResolver );
 		this.completor = completor;
 		this.validator = validator;
 
 		Note commitNote = new Note( commitText );
 		commitNote.addFeature( new InputDialogCommitFeature( new edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
 			public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
-				edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation = inputDialogOperationResolver.getResolved();
+				edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> inputDialogOperation = inputDialogOperationResolver.getResolved();
 				if( inputDialogOperation != null ) {
 					edu.cmu.cs.dennisc.croquet.Dialog activeDialog = inputDialogOperation.getActiveDialog();
 					if( activeDialog != null ) {
