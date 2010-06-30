@@ -169,22 +169,24 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPan
 	protected abstract String getTextFor( javax.swing.tree.TreeNode file );
 
 	public void setCurrentDirectory( javax.swing.tree.TreeNode nextDirectory ) {
-		java.util.Stack< javax.swing.tree.TreeNode > ancestors = new java.util.Stack< javax.swing.tree.TreeNode >();
-		javax.swing.tree.TreeNode d = nextDirectory;
-		while( d.equals( this.rootDirectory ) == false ) {
-			d = d.getParent();
-			ancestors.add( d );
+		if( this.rootDirectory != null ) {
+			java.util.Stack< javax.swing.tree.TreeNode > ancestors = new java.util.Stack< javax.swing.tree.TreeNode >();
+			javax.swing.tree.TreeNode d = nextDirectory;
+			while( d.equals( this.rootDirectory ) == false ) {
+				d = d.getParent();
+				ancestors.add( d );
+			}
+			this.removeAllComponents();
+			while( ancestors.size() > 0 ) {
+				javax.swing.tree.TreeNode ancestor = ancestors.pop();
+				this.addComponent( new DirectoryControl( ancestor ) );
+				this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 2 ) );
+			}
+			this.addComponent( new DirectoryControl( nextDirectory ) );
+			this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() );
+			this.currentDirectory = nextDirectory;
+			this.revalidateAndRepaint();
 		}
-		this.removeAllComponents();
-		while( ancestors.size() > 0 ) {
-			javax.swing.tree.TreeNode ancestor = ancestors.pop();
-			this.addComponent( new DirectoryControl( ancestor ) );
-			this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 2 ) );
-		}
-		this.addComponent( new DirectoryControl( nextDirectory ) );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() );
-		this.currentDirectory = nextDirectory;
-		this.revalidateAndRepaint();
 	}
 
 	private void handleSelectDirectory( javax.swing.tree.TreeNode directory ) {

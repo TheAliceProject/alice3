@@ -68,10 +68,12 @@ public abstract class AbstractDialogOperation< M extends AbstractDialogOperation
 	
 	protected String getDialogTitle(C context) {
 		String rv = this.getName();
-		rv = rv.replaceAll( "<[a-z]*>", "" );
-		rv = rv.replaceAll( "</[a-z]*>", "" );
-		if( rv.endsWith( "..." ) ) {
-			rv = rv.substring( 0, rv.length()-3 );
+		if( rv != null ) {
+			rv = rv.replaceAll( "<[a-z]*>", "" );
+			rv = rv.replaceAll( "</[a-z]*>", "" );
+			if( rv.endsWith( "..." ) ) {
+				rv = rv.substring( 0, rv.length()-3 );
+			}
 		}
 		return rv;
 	}

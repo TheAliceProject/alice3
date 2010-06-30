@@ -208,26 +208,29 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.LineAxis
 //	}
 	
 	/*package private*/ static javax.swing.tree.TreeNode[] getSortedChildren( javax.swing.tree.TreeNode directory ) {
-		
-		java.util.ArrayList< edu.cmu.cs.dennisc.zip.ZipTreeNode > list = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
-		list.ensureCapacity( directory.getChildCount() );
+		if( directory != null ) {
+			java.util.ArrayList< edu.cmu.cs.dennisc.zip.ZipTreeNode > list = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+			list.ensureCapacity( directory.getChildCount() );
 
-		java.util.Enumeration< javax.swing.tree.TreeNode > e = directory.children();
-		while( e.hasMoreElements() ) {
-			javax.swing.tree.TreeNode treeNode = e.nextElement();
-			if (treeNode instanceof edu.cmu.cs.dennisc.zip.ZipTreeNode) {
-				edu.cmu.cs.dennisc.zip.ZipTreeNode zipTreeNode = (edu.cmu.cs.dennisc.zip.ZipTreeNode)treeNode;
-				if( "directoryThumbnail.png".equals( zipTreeNode.getName() ) ) {
-					//pass
-				} else {
-					list.add( zipTreeNode );
+			java.util.Enumeration< javax.swing.tree.TreeNode > e = directory.children();
+			while( e.hasMoreElements() ) {
+				javax.swing.tree.TreeNode treeNode = e.nextElement();
+				if (treeNode instanceof edu.cmu.cs.dennisc.zip.ZipTreeNode) {
+					edu.cmu.cs.dennisc.zip.ZipTreeNode zipTreeNode = (edu.cmu.cs.dennisc.zip.ZipTreeNode)treeNode;
+					if( "directoryThumbnail.png".equals( zipTreeNode.getName() ) ) {
+						//pass
+					} else {
+						list.add( zipTreeNode );
+					}
 				}
 			}
+			edu.cmu.cs.dennisc.zip.ZipTreeNode[] array = new edu.cmu.cs.dennisc.zip.ZipTreeNode[ list.size() ];
+			list.toArray( array );
+			java.util.Arrays.sort( array );
+			return array;
+		} else {
+			return new edu.cmu.cs.dennisc.zip.ZipTreeNode[ 0 ];
 		}
-		edu.cmu.cs.dennisc.zip.ZipTreeNode[] array = new edu.cmu.cs.dennisc.zip.ZipTreeNode[ list.size() ];
-		list.toArray( array );
-		java.util.Arrays.sort( array );
-		return array;
 	}
 	
 	public void setDirectory( javax.swing.tree.TreeNode directory ) {

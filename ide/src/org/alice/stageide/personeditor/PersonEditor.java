@@ -245,9 +245,15 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		northPane.addComponent( ubiquitousPane, Constraint.CENTER );
 
 		this.tabbedPaneSelection.setValue( bodyTabState );
-		edu.cmu.cs.dennisc.croquet.FolderTabbedPane<?> tabbedPane = this.tabbedPaneSelection.createDefaultFolderTabbedPane();
+		final edu.cmu.cs.dennisc.croquet.FolderTabbedPane<?> tabbedPane = this.tabbedPaneSelection.createDefaultFolderTabbedPane();
 		tabbedPane.scaleFont( 1.5f );
 
+		this.baseSkinToneSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.BaseSkinTone>() {
+			public void changed(org.alice.apis.stage.BaseSkinTone nextValue) {
+				tabbedPane.repaint();
+			}
+		} );
+		
 		edu.cmu.cs.dennisc.croquet.BorderPanel ingredientsPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		ingredientsPanel.addComponent( northPane, Constraint.NORTH );
 		ingredientsPanel.addComponent( tabbedPane, Constraint.CENTER );
