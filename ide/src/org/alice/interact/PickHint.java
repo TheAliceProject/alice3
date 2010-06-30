@@ -63,6 +63,8 @@ public class PickHint extends BitSet{
 		LIGHT(5),
 		TWO_D_HANDLE(6),
 		MARKER(7),
+		ORTHOGRAPHIC(8),
+		PERSPECTIVE(9)
 		;
 		
 		public int index;
@@ -86,6 +88,8 @@ public class PickHint extends BitSet{
 	public static final PickHint GROUND = new PickHint( PickType.GROUND );
 	public static final PickHint LIGHT = new PickHint( PickType.LIGHT );
 	public static final PickHint CAMERA = new PickHint( PickType.CAMERA );
+	public static final PickHint PERSPECTIVE_CAMERA = new PickHint( PickType.CAMERA, PickType.PERSPECTIVE );
+	public static final PickHint ORTHOGRAPHIC_CAMERA = new PickHint( PickType.CAMERA, PickType.ORTHOGRAPHIC );
 	public static final PickHint TWO_D_HANDLES = new PickHint( PickType.TWO_D_HANDLE );
 	public static final PickHint MARKERS = new PickHint( PickType.MARKER );
 	public static final PickHint EVERYTHING = createEverythingHint();
@@ -167,6 +171,14 @@ public class PickHint extends BitSet{
 		if (this.intersects(CAMERA))
 		{
 			return "pick:CAMERA";
+		}
+		if (this.intersects(PERSPECTIVE_CAMERA))
+		{
+			return "pick:PERSPECTIVE_CAMERA";
+		}
+		if (this.intersects(ORTHOGRAPHIC_CAMERA))
+		{
+			return "pick:ORTHOGRAPHIC_CAMERA";
 		}
 		if (this.intersects(TWO_D_HANDLES))
 		{
