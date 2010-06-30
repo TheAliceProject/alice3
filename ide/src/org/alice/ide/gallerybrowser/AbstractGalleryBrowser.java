@@ -48,64 +48,78 @@ package org.alice.ide.gallerybrowser;
 public abstract class AbstractGalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private static final int GAP = 4;
 	private AssetsPane assetsPane;
+
 	public AbstractGalleryBrowser() {
-		super( GAP*2, 0 );
+		super(GAP * 2, 0);
 	}
-	protected void initialize( java.io.File rootDirectory ) {
-		this.assetsPane = this.createAssetsPane( rootDirectory );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( GAP, GAP, GAP, GAP ) );
-		this.addComponent( this.assetsPane, Constraint.CENTER );
+
+	protected void initialize(javax.swing.tree.TreeNode rootDirectory) {
+		this.assetsPane = this.createAssetsPane(rootDirectory);
+		this.setBorder(javax.swing.BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
+		this.addComponent(this.assetsPane, Constraint.CENTER);
 	}
-	protected AssetsPane createAssetsPane( java.io.File rootDirectory ) {
-//		java.io.InputStream is = AbstractGalleryBrowser.class.getResourceAsStream( "images/folder.png" );
-//		java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is );
-//		javax.swing.ImageIcon folderIcon = new javax.swing.ImageIcon( image );
-//		javax.swing.ImageIcon folderIconSmall = new javax.swing.ImageIcon( image.getScaledInstance( 32, 32, java.awt.Image.SCALE_SMOOTH ) );
-		javax.swing.ImageIcon folderIcon = new javax.swing.ImageIcon( AbstractGalleryBrowser.class.getResource( "images/folder.png" ) );
-		javax.swing.ImageIcon folderIconSmall = new javax.swing.ImageIcon( AbstractGalleryBrowser.class.getResource( "images/folder24.png" ) );
-		
-		return new AssetsPane( rootDirectory, folderIcon, folderIconSmall ) {
+
+	protected AssetsPane createAssetsPane(javax.swing.tree.TreeNode rootDirectory) {
+		// java.io.InputStream is =
+		// AbstractGalleryBrowser.class.getResourceAsStream( "images/folder.png"
+		// );
+		// java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read(
+		// edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is );
+		// javax.swing.ImageIcon folderIcon = new javax.swing.ImageIcon( image
+		// );
+		// javax.swing.ImageIcon folderIconSmall = new javax.swing.ImageIcon(
+		// image.getScaledInstance( 32, 32, java.awt.Image.SCALE_SMOOTH ) );
+		javax.swing.ImageIcon folderIcon = new javax.swing.ImageIcon(AbstractGalleryBrowser.class.getResource("images/folder.png"));
+		javax.swing.ImageIcon folderIconSmall = new javax.swing.ImageIcon(AbstractGalleryBrowser.class.getResource("images/folder24.png"));
+
+		return new AssetsPane(rootDirectory, folderIcon, folderIconSmall) {
 			@Override
-			protected String getTextFor( java.io.File file, boolean isRequestedByPath ) {
-				return AbstractGalleryBrowser.this.getTextFor( file, isRequestedByPath );
+			protected String getTextFor(javax.swing.tree.TreeNode file, boolean isRequestedByPath) {
+				return AbstractGalleryBrowser.this.getTextFor(file, isRequestedByPath);
 			}
+
 			@Override
-			protected void handleFileActivationFromThumbnails( java.io.File file ) {
-				super.handleFileActivationFromThumbnails( file );
-				if( file.isDirectory() ) {
-					//pass
-				} else {
-					AbstractGalleryBrowser.this.handleFileActivation( file );
+			protected void handleFileActivationFromThumbnails(javax.swing.tree.TreeNode file) {
+				super.handleFileActivationFromThumbnails(file);
+				if (file.isLeaf()) {
+					AbstractGalleryBrowser.this.handleFileActivation(file);
 				}
 			}
 		};
 	}
-	
-	protected java.io.File getRootDirectory() {
+
+	protected javax.swing.tree.TreeNode getRootDirectory() {
 		return this.assetsPane.getPathControl().getRootDirectory();
 	}
-	
-	protected abstract void handleFileActivation( java.io.File file );
-	protected String getAdornedTextFor( String name, boolean isDirectory, boolean isRequestedByPath ) {
+
+	protected abstract void handleFileActivation(javax.swing.tree.TreeNode file);
+
+	protected String getAdornedTextFor(String name, boolean isDirectory, boolean isRequestedByPath) {
 		String rv;
-		if( isRequestedByPath ) {
+		if (isRequestedByPath) {
 			rv = name;
 		} else {
-			if( isDirectory ) {
-				rv = "<html><i>package:</i> <b>" + name + "</b></html>"; 
+			if (isDirectory) {
+				rv = "<html><i>package:</i> <b>" + name + "</b></html>";
 			} else {
-				rv = "<html><i>class:</i> <b>" + name + "</b></html>"; 
+				rv = "<html><i>class:</i> <b>" + name + "</b></html>";
 			}
 		}
 		return rv;
 	}
-	protected final String getTextFor( java.io.File file, boolean isRequestedByPath ) {
-		String name = file.getName();
-		if( file.isDirectory() ) {
-			//pass
+
+	protected final String getTextFor(javax.swing.tree.TreeNode file, boolean isRequestedByPath) {
+		String name;
+		if (file instanceof edu.cmu.cs.dennisc.zip.ZipTreeNode) {
+			edu.cmu.cs.dennisc.zip.ZipTreeNode zipTreeNode = (edu.cmu.cs.dennisc.zip.ZipTreeNode) file;
+			name = zipTreeNode.getName();
+			if (zipTreeNode.isLeaf()) {
+				name = name.substring(0, name.length() - 4);
+			}
+
 		} else {
-			name = name.substring( 0, name.length() - 4 );
+			name = file.toString();
 		}
-		return this.getAdornedTextFor( name, file.isDirectory(), isRequestedByPath );
+		return this.getAdornedTextFor(name, file.isLeaf() == false, isRequestedByPath);
 	}
 }

@@ -176,8 +176,13 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private ProjectMenuModel projectMenuModel = new ProjectMenuModel( new org.alice.ide.operations.project.ManageResourcesOperation() );
 	private RunMenuModel runMenuModel = new RunMenuModel( this.runOperation );
 
-	private edu.cmu.cs.dennisc.croquet.BooleanState isSceneEditorExpandedState = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "704ea7d2-9da8-461f-b7dd-d086815c3e52" ), false,
-			"Edit Code", "Edit Scene" );
+	private edu.cmu.cs.dennisc.croquet.BooleanState isSceneEditorExpandedState = new edu.cmu.cs.dennisc.croquet.BooleanState( 
+			org.alice.app.ProjectApplication.IDE_GROUP, 
+			java.util.UUID.fromString( "704ea7d2-9da8-461f-b7dd-d086815c3e52" ), 
+			false,
+			"Edit Code", 
+			"Edit Scene" 
+	);
 
 	private org.alice.ide.operations.window.IsMemoryUsageShowingOperation isMemoryUsageShowingOperation = new org.alice.ide.operations.window.IsMemoryUsageShowingOperation();
 	private org.alice.ide.operations.window.IsHistoryShowingOperation isHistoryShowingOperation = new org.alice.ide.operations.window.IsHistoryShowingOperation();
@@ -420,7 +425,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			//this.root.setRightComponent( null );
 			this.right.setVisible( false );
 			this.root.setDividerSize( 0 );
-			this.left.setDividerLocation( this.getFrame().getHeight() - 300 );
+			this.left.setDividerLocation( this.getFrame().getHeight() - 320 );
 		} else {
 			this.left.setResizeWeight( 0.0 );
 			this.root.setLeftComponent( this.left );
@@ -453,9 +458,11 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getPerformEditorGeneratedSetUpMethod() {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = this.getSceneType();
-		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : sceneType.methods ) {
-			if( IDE.performSceneEditorGeneratedSetUpMethodNameSet.contains( method.name.getValue() ) ) {
-				return method;
+		if( sceneType != null ) {
+			for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : sceneType.methods ) {
+				if( IDE.performSceneEditorGeneratedSetUpMethodNameSet.contains( method.name.getValue() ) ) {
+					return method;
+				}
 			}
 		}
 		return null;
@@ -597,8 +604,8 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return this.typesForComboBoxes;
 	}
 	protected abstract org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor();
-	public abstract java.io.File getGalleryRootDirectory();
-	protected abstract org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser( java.io.File galleryRootDirectory );
+	public abstract javax.swing.tree.TreeNode getGalleryRoot();
+	protected abstract org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser( javax.swing.tree.TreeNode root );
 	protected org.alice.ide.memberseditor.MembersEditor createClassMembersEditor() {
 		return new org.alice.ide.memberseditor.MembersEditor();
 	}
@@ -676,7 +683,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		this.runOperation.setEnabled( false );
 
 		this.sceneEditor = this.createSceneEditor();
-		this.galleryBrowser = this.createGalleryBrowser( this.getGalleryRootDirectory() );
+		this.galleryBrowser = this.createGalleryBrowser( this.getGalleryRoot() );
 		this.membersEditor = this.createClassMembersEditor();
 		this.editorsTabSelectionState = this.createEditorsTabSelectionState();
 		this.ubiquitousPane = this.createUbiquitousPane();

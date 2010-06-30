@@ -46,14 +46,14 @@ package org.alice.ide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class FauxGalleryBrowser extends AbstractGalleryBrowser {
-	public FauxGalleryBrowser( java.io.File galleryRootDirectory ) {
-		this.initialize( new java.io.File( galleryRootDirectory, "thumbnails" ) );
+	public FauxGalleryBrowser( javax.swing.tree.TreeNode root ) {
+		this.initialize( root );
 	}
 //	@Override
 //	public java.awt.Dimension getPreferredSize() {
 //		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), 256 );
 //	}
 	@Override
-	protected void handleFileActivation( java.io.File file ) {
+	protected void handleFileActivation( javax.swing.tree.TreeNode file ) {
 	}
 }

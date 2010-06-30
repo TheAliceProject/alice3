@@ -193,6 +193,8 @@ public class LaunchUtilities {
 				ide.setSplashScreen( splashScreen );
 				ide.initialize( args );
 				ide.getFrame().setVisible( isVisible );
+				
+				//ide.getIsSceneEditorExpandedState().setValue( true );
 			}
 		};
 	}

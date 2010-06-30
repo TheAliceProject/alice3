@@ -55,7 +55,7 @@ public class DeclareFieldOfPredeterminedTypeOperation extends AbstractNonGallery
 		this.ownerType = ownerType;
 		this.valueType = valueType;
 		//this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( this.valueType ) );
-		this.setName( "Declare New Instance..." );
+		this.setName( "<html>Declare New Instance...</html>" );
 		
 	}
 	@Override

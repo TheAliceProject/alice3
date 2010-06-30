@@ -48,7 +48,7 @@ package org.alice.stageide.gallerybrowser;
 public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGalleryBrowser {
 	private java.util.Map<String, String> map;
 
-	public GalleryBrowser(java.io.File thumbnailRoot, java.util.Map<String, String> map) {
+	public GalleryBrowser(javax.swing.tree.TreeNode thumbnailRoot, java.util.Map<String, String> map) {
 		this.map = map;
 		this.initialize(thumbnailRoot);
 		
@@ -100,8 +100,8 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 	}
 
 	@Override
-	protected void handleFileActivation(java.io.File file) {
-		assert file.isFile();
+	protected void handleFileActivation(javax.swing.tree.TreeNode file) {
+		assert file.isLeaf();
 		//todo
 		new GalleryFileActionOperation(file).fire();
 	}
