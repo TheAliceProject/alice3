@@ -571,12 +571,12 @@ public class StageIDE extends org.alice.ide.IDE {
 	@Override
 	public javax.swing.tree.TreeNode getGalleryRoot() {
 		try {
-			String jarPath = org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory() + "/thumbnails.jar";
+			String jarPath = org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory() + "/mtwtGalleryLargeIcons.jar";
 			edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode jarRoot = edu.cmu.cs.dennisc.zip.ZipUtilities.createTreeNode( jarPath, false );
 			String[] paths = {
-					 "org/alice/ide/gallerybrowser/edu/wustl/cse/lookingglass/apis/walkandtouch/gallery/characters", 
-					 "org/alice/ide/gallerybrowser/edu/wustl/cse/lookingglass/apis/walkandtouch/gallery/scenes", 
-					 "org/alice/ide/gallerybrowser/org/alice/apis/moveandturn/gallery", 
+					 "org/alice/stageide/gallerybrowser/images/edu/wustl/cse/lookingglass/apis/walkandtouch/gallery/characters", 
+					 "org/alice/stageide/gallerybrowser/images/edu/wustl/cse/lookingglass/apis/walkandtouch/gallery/scenes", 
+					 "org/alice/stageide/gallerybrowser/images/org/alice/apis/moveandturn/gallery", 
 			};
 			final int N = paths.length;
 			final java.util.ArrayList< javax.swing.tree.TreeNode > children = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();

@@ -42,6 +42,8 @@
  */
 package org.alice.ide.gallerybrowser;
 
+import org.alice.stageide.gallerybrowser.ResourceManager;
+
 //class SingleOrDoubleClickListUI extends javax.swing.plaf.basic.BasicListUI {
 //	@Override
 //	protected javax.swing.event.MouseInputListener createMouseInputListener() {
