@@ -249,6 +249,11 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
+	public void clearCameraViews()
+	{
+		this.cameraMap.clear();
+	}
+	
 	public void addCameraView(CameraView viewType, SymmetricPerspectiveCamera perspectiveCamera, OrthographicCamera orthographicCamera)
 	{
 		addCameraView(viewType, new CameraPair(perspectiveCamera, orthographicCamera));
@@ -515,8 +520,9 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		CameraPair activeCameraPair = this.cameraMap.get( CameraView.MAIN );
 		if (activeCameraPair == null || activeCameraPair.getActiveCamera() == null)
 		{
-			return null;
+			PrintUtilities.println("MAIN camera view not set.");
 		}
+		assert( activeCameraPair != null && activeCameraPair.getActiveCamera() != null );
 		return activeCameraPair.getActiveCamera();
 	}
 	

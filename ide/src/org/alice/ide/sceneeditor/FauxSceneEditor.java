@@ -42,6 +42,8 @@
  */
 package org.alice.ide.sceneeditor;
 
+import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -65,5 +67,11 @@ public class FauxSceneEditor extends AbstractSceneEditor {
 	@Override
 	public Object getInstanceInJavaForUndo( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		return null;
+	}
+	@Override
+	public void putInstanceForInitializingPendingField(
+			FieldDeclaredInAlice field, Object instance) {
+		// TODO Auto-generated method stub
+		
 	}
 }
