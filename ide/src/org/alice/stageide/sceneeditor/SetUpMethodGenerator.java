@@ -52,7 +52,6 @@ import org.alice.apis.moveandturn.gallery.environments.grounds.SandyGround;
 import org.alice.apis.moveandturn.gallery.environments.grounds.SeaSurface;
 import org.alice.apis.moveandturn.gallery.environments.grounds.SnowyGround;
 import org.alice.interact.AbstractDragAdapter;
-import org.alice.stageide.sceneeditor.viewmanager.ManipulationHandleControlPanel;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;

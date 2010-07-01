@@ -56,6 +56,21 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 		this.mapInstanceInJavaToField.put( instanceInJava, field );
 	}
 
+	protected void removeField( edu.cmu.cs.dennisc.alice.ast.AbstractField field )
+	{
+		Object instance = this.mapFieldToInstance.get(field);
+		Object javaInstance = this.mapInstanceInJavaToField.get(field);
+		this.mapFieldToInstance.remove(field);
+		if (instance != null)
+		{
+			this.mapInstanceToField.remove(instance);
+		}
+		if (javaInstance != null)
+		{
+			this.mapInstanceInJavaToField.remove(javaInstance);
+		}
+	}
+	
 	protected void putInstanceForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance ) {
 		this.mapFieldToInstance.put( field, instance );
 		this.mapInstanceToField.put( instance, field );
