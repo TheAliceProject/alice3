@@ -627,7 +627,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.handleSelectionState.addItem(HandleSet.ROTATION_INTERACTION);
 			this.handleSelectionState.addItem(HandleSet.TRANSLATION_INTERACTION);
 			this.handleSelectionState.addItem(HandleSet.RESIZE_INTERACTION);
-			this.handleSelectionState.setValue(HandleSet.DEFAULT_INTERACTION);
+			this.handleSelectionState.setSelectedItem(HandleSet.DEFAULT_INTERACTION);
 			
 			this.handleSelectionState.addAndInvokeValueObserver(this.globalDragAdapter.handleStateValueObserver);
 			
