@@ -40,65 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.zip;
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class ZipTreeNode implements edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>, Comparable<ZipTreeNode> {
-	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> parent;
-	private String path;
-	private String name;
-	public ZipTreeNode( String path ) {
-		this.path = path;
-		if( this.path != null ) {
-			String[] chunks = this.path.split( "/" );
-			if( chunks.length > 0 ) {
-				this.name = chunks[ chunks.length-1 ];
-			} else {
-				this.name = null;
-			}
-		} else {
-			this.name = null;
+package edu.cmu.cs.dennisc.croquet;
+
+public class SelectDirectoryActionOperation extends ActionOperation {
+	public static SelectDirectoryActionOperation getInstance( TreeSelectionState<String> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: SelectDirectoryActionOperation.getInstance()" );
+		return new SelectDirectoryActionOperation(treeSelectionState, treeNode, initializer);
+	}
+
+	private TreeSelectionState<String> treeSelectionState;
+	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode;
+	
+	private SelectDirectoryActionOperation( TreeSelectionState<String> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
+		super( Application.INHERIT_GROUP, java.util.UUID.fromString( "ca407baf-13b1-4530-bf35-67764efbf5f0" ) );
+		this.treeSelectionState = treeSelectionState;
+		this.treeNode = treeNode;
+		if( initializer != null ) {
+			initializer.configure( this, this.treeNode );
 		}
 	}
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getParent() {
-		return this.parent;
-	}
-	public void setParent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> parent ) {
-		if( this.parent instanceof DirectoryZipTreeNode ) {
-			DirectoryZipTreeNode directoryZipTreeNode = (DirectoryZipTreeNode)this.parent;
-			directoryZipTreeNode.removeChild( this );
-		}
-		this.parent = parent;
-		if( this.parent instanceof DirectoryZipTreeNode ) {
-			DirectoryZipTreeNode directoryZipTreeNode = (DirectoryZipTreeNode)this.parent;
-			directoryZipTreeNode.addChild( this );
-		}
-	}
-	public String getValue() {
-		return this.path;
-	}
-	public String getName() {
-		return this.name;
-	}
-	public int compareTo(edu.cmu.cs.dennisc.zip.ZipTreeNode other) {
-		if( this.getAllowsChildren() ) {
-			if( other.getAllowsChildren() ) {
-				return this.getName().compareToIgnoreCase( other.getName() );
-			} else {
-				return -1;
-			}
-		} else {
-			if( other.getAllowsChildren() ) {
-				return 1;
-			} else {
-				return this.getName().compareToIgnoreCase( other.getName() );
-			}
-		}
-	}
+
 	@Override
-	public String toString() {
-		return this.getClass().getSimpleName() + "[" + this.getValue() + "]";
+	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		//todo: create edit
+		this.treeSelectionState.setSelectedTreeNode( this.treeNode );
+		context.finish();
 	}
 }

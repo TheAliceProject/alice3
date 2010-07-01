@@ -557,7 +557,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	@Override
-	public javax.swing.tree.TreeNode getGalleryRoot() {
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getGalleryRoot() {
 		try {
 			String jarPath = org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory() + "/mtwtGalleryLargeIcons.jar";
 			edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode jarRoot = edu.cmu.cs.dennisc.zip.ZipUtilities.createTreeNode( jarPath, false );
@@ -567,13 +567,13 @@ public class StageIDE extends org.alice.ide.IDE {
 					 "org/alice/stageide/gallerybrowser/images/org/alice/apis/moveandturn/gallery", 
 			};
 			final int N = paths.length;
-			final java.util.ArrayList< javax.swing.tree.TreeNode > children = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+			final java.util.ArrayList< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > children = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 			children.ensureCapacity( N );
-			javax.swing.tree.TreeNode rv = new javax.swing.tree.TreeNode() {
-				public java.util.Enumeration< javax.swing.tree.TreeNode > children() {
+			edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> rv = new edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>() {
+				public java.util.Enumeration< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > children() {
 					return java.util.Collections.enumeration( children );
 				}
-				public javax.swing.tree.TreeNode getChildAt(int childIndex) {
+				public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getChildAt(int childIndex) {
 					return children.get( childIndex );
 				}
 				public int getChildCount() {
@@ -582,7 +582,7 @@ public class StageIDE extends org.alice.ide.IDE {
 				public int getIndex(javax.swing.tree.TreeNode node) {
 					return children.indexOf( node );
 				}
-				public javax.swing.tree.TreeNode getParent() {
+				public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getParent() {
 					return null;
 				}
 				public boolean getAllowsChildren() {
@@ -590,6 +590,9 @@ public class StageIDE extends org.alice.ide.IDE {
 				}
 				public boolean isLeaf() {
 					return false;
+				}
+				public String getValue() {
+					return null;
 				}
 				@Override
 				public String toString() {
@@ -607,7 +610,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	@Override
-	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser( javax.swing.tree.TreeNode root ) {
+	protected edu.cmu.cs.dennisc.croquet.JComponent<?> createGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> root ) {
 		return new org.alice.stageide.gallerybrowser.GalleryBrowser( root );
 	}
 	@Override

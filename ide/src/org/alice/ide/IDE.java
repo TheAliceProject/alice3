@@ -378,12 +378,12 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			this.getAboutOperation()
 	);
 
-	private int rootDividerLocation = 320;
+	private int rootDividerLocation = 340;
 	private int leftDividerLocation = 240;
 
 	private edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin concealedBin = new edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin();
 	private org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor;
-	private org.alice.ide.gallerybrowser.AbstractGalleryBrowser galleryBrowser;
+	private edu.cmu.cs.dennisc.croquet.JComponent<?> galleryBrowser;
 	private org.alice.ide.memberseditor.MembersEditor membersEditor;
 	private org.alice.ide.editorstabbedpane.EditorsTabSelectionState editorsTabSelectionState;
 	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
@@ -425,7 +425,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			//this.root.setRightComponent( null );
 			this.right.setVisible( false );
 			this.root.setDividerSize( 0 );
-			this.left.setDividerLocation( this.getFrame().getHeight() - 320 );
+			this.left.setDividerLocation( this.getFrame().getHeight() - 340 );
 		} else {
 			this.left.setResizeWeight( 0.0 );
 			this.root.setLeftComponent( this.left );
@@ -604,8 +604,8 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return this.typesForComboBoxes;
 	}
 	protected abstract org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor();
-	public abstract javax.swing.tree.TreeNode getGalleryRoot();
-	protected abstract org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser( javax.swing.tree.TreeNode root );
+	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getGalleryRoot();
+	protected abstract edu.cmu.cs.dennisc.croquet.JComponent<?> createGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> root );
 	protected org.alice.ide.memberseditor.MembersEditor createClassMembersEditor() {
 		return new org.alice.ide.memberseditor.MembersEditor();
 	}
@@ -627,7 +627,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	public org.alice.ide.memberseditor.MembersEditor getMembersEditor() {
 		return this.membersEditor;
 	}
-	public org.alice.ide.gallerybrowser.AbstractGalleryBrowser getGalleryBrowser() {
+	public edu.cmu.cs.dennisc.croquet.JComponent<?> getGalleryBrowser() {
 		return this.galleryBrowser;
 	}
 	public org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor() {

@@ -102,14 +102,14 @@ class FieldTreeSelectionState extends edu.cmu.cs.dennisc.croquet.TreeSelectionSt
 		throw new RuntimeException( "todo" );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractField decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+	protected edu.cmu.cs.dennisc.javax.swing.models.TreeNode<edu.cmu.cs.dennisc.alice.ast.AbstractField> decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 		throw new RuntimeException( "todo" );
 	}
 	@Override
-	protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.alice.ast.AbstractField value) {
+	protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<edu.cmu.cs.dennisc.alice.ast.AbstractField> value) {
 		throw new RuntimeException( "todo" );
 	}
-	
+	@Deprecated
 	public void setSwingTreeModel( javax.swing.tree.TreeModel swingTreeModel ) {
 		throw new RuntimeException( "todo" );
 	}

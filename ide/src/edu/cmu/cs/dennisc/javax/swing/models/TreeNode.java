@@ -40,65 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.zip;
+package edu.cmu.cs.dennisc.javax.swing.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ZipTreeNode implements edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>, Comparable<ZipTreeNode> {
-	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> parent;
-	private String path;
-	private String name;
-	public ZipTreeNode( String path ) {
-		this.path = path;
-		if( this.path != null ) {
-			String[] chunks = this.path.split( "/" );
-			if( chunks.length > 0 ) {
-				this.name = chunks[ chunks.length-1 ];
-			} else {
-				this.name = null;
-			}
-		} else {
-			this.name = null;
-		}
-	}
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getParent() {
-		return this.parent;
-	}
-	public void setParent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> parent ) {
-		if( this.parent instanceof DirectoryZipTreeNode ) {
-			DirectoryZipTreeNode directoryZipTreeNode = (DirectoryZipTreeNode)this.parent;
-			directoryZipTreeNode.removeChild( this );
-		}
-		this.parent = parent;
-		if( this.parent instanceof DirectoryZipTreeNode ) {
-			DirectoryZipTreeNode directoryZipTreeNode = (DirectoryZipTreeNode)this.parent;
-			directoryZipTreeNode.addChild( this );
-		}
-	}
-	public String getValue() {
-		return this.path;
-	}
-	public String getName() {
-		return this.name;
-	}
-	public int compareTo(edu.cmu.cs.dennisc.zip.ZipTreeNode other) {
-		if( this.getAllowsChildren() ) {
-			if( other.getAllowsChildren() ) {
-				return this.getName().compareToIgnoreCase( other.getName() );
-			} else {
-				return -1;
-			}
-		} else {
-			if( other.getAllowsChildren() ) {
-				return 1;
-			} else {
-				return this.getName().compareToIgnoreCase( other.getName() );
-			}
-		}
-	}
-	@Override
-	public String toString() {
-		return this.getClass().getSimpleName() + "[" + this.getValue() + "]";
-	}
+public interface TreeNode<E> extends javax.swing.tree.TreeNode {
+	public TreeNode<E> getChildAt(int childIndex);
+	public TreeNode<E> getParent();
+	public E getValue();
 }

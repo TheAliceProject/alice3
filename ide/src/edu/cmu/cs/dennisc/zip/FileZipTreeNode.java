@@ -57,7 +57,7 @@ public class FileZipTreeNode extends ZipTreeNode {
 	public java.util.Enumeration< ZipTreeNode > children() {
 		return null;
 	}
-	public javax.swing.tree.TreeNode getChildAt(int childIndex) {
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getChildAt(int childIndex) {
 		return null;
 	}
 	public int getChildCount() {

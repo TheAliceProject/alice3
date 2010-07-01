@@ -47,18 +47,27 @@ package edu.cmu.cs.dennisc.zip;
  */
 public class DirectoryZipTreeNode extends ZipTreeNode {
 	private java.util.List< ZipTreeNode > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-
+	private boolean isSorted = false;
 	public DirectoryZipTreeNode( String path ) {
 		super( path );
 	}
 	public boolean getAllowsChildren() {
 		return true;
 	}
-	public java.util.Enumeration< ZipTreeNode > children() {
-		return java.util.Collections.enumeration( this.children );
+	private java.util.List< ZipTreeNode > getSortedChildren() {
+		if( this.isSorted ) {
+			//pass
+		} else {
+			java.util.Collections.sort( this.children );
+			this.isSorted = true;
+		}
+		return this.children;
 	}
-	public javax.swing.tree.TreeNode getChildAt(int childIndex) {
-		return this.children.get( childIndex );
+	public java.util.Enumeration< ZipTreeNode > children() {
+		return java.util.Collections.enumeration( this.getSortedChildren() );
+	}
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getChildAt(int childIndex) {
+		return this.getSortedChildren().get( childIndex );
 	}
 	public int getChildCount() {
 		return this.children.size();
@@ -67,11 +76,12 @@ public class DirectoryZipTreeNode extends ZipTreeNode {
 		return false;
 	}
 	public int getIndex(javax.swing.tree.TreeNode node) {
-		return this.children.indexOf( node );
+		return this.getSortedChildren().indexOf( node );
 	}
 	
 	/*package-private*/ void addChild( ZipTreeNode zipTreeNode ) {
 		this.children.add( zipTreeNode );
+		this.isSorted = false;
 	}
 	/*package-private*/ void removeChild( ZipTreeNode zipTreeNode ) {
 		this.children.remove( zipTreeNode );

@@ -50,9 +50,10 @@ public class ResourceManager {
 	private ResourceManager() {
 	}
 	public static java.net.URL getLargeIconResource( javax.swing.tree.TreeNode treeNode ) {
-		if( treeNode instanceof edu.cmu.cs.dennisc.zip.FileZipTreeNode ) {
-			edu.cmu.cs.dennisc.zip.FileZipTreeNode fileZipTreeNode = (edu.cmu.cs.dennisc.zip.FileZipTreeNode)treeNode;
-			String path = fileZipTreeNode.getPath();
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( treeNode );
+		if( treeNode instanceof edu.cmu.cs.dennisc.zip.ZipTreeNode ) {
+			edu.cmu.cs.dennisc.zip.ZipTreeNode zipTreeNode = (edu.cmu.cs.dennisc.zip.ZipTreeNode)treeNode;
+			String path = zipTreeNode.getValue();
 			String resourceName = path.substring( PACKAGE_NAME_PREFIX.length()+1 );
 			java.net.URL rv = ResourceManager.class.getResource( resourceName );
 			if( rv != null ) {
@@ -73,7 +74,7 @@ public class ResourceManager {
 		if( treeNode instanceof edu.cmu.cs.dennisc.zip.FileZipTreeNode ) {
 			final String IMAGES_TEXT = ".images.";
 			edu.cmu.cs.dennisc.zip.FileZipTreeNode fileZipTreeNode = (edu.cmu.cs.dennisc.zip.FileZipTreeNode)treeNode;
-			String path = fileZipTreeNode.getPath();
+			String path = fileZipTreeNode.getValue();
 			path = path.replace( '/', '.' );
 			assert path.startsWith( PACKAGE_NAME_PREFIX + IMAGES_TEXT ) : path;
 			assert path.endsWith( ".png" ) : path;
