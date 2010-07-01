@@ -43,11 +43,14 @@
 package org.alice.stageide.sceneeditor;
 
 import edu.cmu.cs.dennisc.croquet.BooleanState;
+import edu.cmu.cs.dennisc.property.StringProperty;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class FieldTile extends edu.cmu.cs.dennisc.croquet.CustomBooleanStateButton<javax.swing.AbstractButton> {
+/*package-private*/ class FieldTile extends edu.cmu.cs.dennisc.croquet.CustomBooleanStateButton<javax.swing.AbstractButton>{
 	private edu.cmu.cs.dennisc.alice.ast.Accessible accessible;
 //	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
 //		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
@@ -80,6 +83,14 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 		this.updateLabel();
 	}
 
+	private PropertyListener namePropertyListener = new PropertyListener(){
+		public void propertyChanged(PropertyEvent e) {
+			FieldTile.this.updateLabel();
+		}
+		public void propertyChanging(PropertyEvent e) {
+		}
+	};
+	
 	private BooleanState.ValueObserver valueObserver = new BooleanState.ValueObserver() {
 		public void changing(boolean nextValue) {
 		}
@@ -91,10 +102,20 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo(parent);
 		org.alice.ide.IDE.getSingleton().getOmissionOfThisForFieldAccessesDesiredState().addAndInvokeValueObserver( this.valueObserver );
+		StringProperty nameProperty = accessible.getNamePropertyIfItExists();
+		if (nameProperty != null)
+		{
+			nameProperty.addPropertyListener(this.namePropertyListener);
+		}
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		org.alice.ide.IDE.getSingleton().getOmissionOfThisForFieldAccessesDesiredState().removeValueObserver( this.valueObserver );
+		StringProperty nameProperty = accessible.getNamePropertyIfItExists();
+		if (nameProperty != null)
+		{
+			nameProperty.removePropertyListener(this.namePropertyListener);
+		}
 		super.handleRemovedFrom(parent);
 	}
 	@Override
@@ -169,6 +190,11 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 		return color;
 	}
 
+	public edu.cmu.cs.dennisc.alice.ast.Accessible getAccessible()
+	{
+		return this.accessible;
+	}
+	
 	protected boolean isInScope() {
 		return org.alice.ide.IDE.getSingleton().isAccessibleInScope( accessible );
 	}
