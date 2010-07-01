@@ -132,7 +132,7 @@ public abstract class ListContentPanel extends TabContentPanel {
 	}
 	@Override
 	public java.net.URI getSelectedURI() {
-		return this.uriSelection.getValue();
+		return this.uriSelection.getSelectedItem();
 	}
 }
 

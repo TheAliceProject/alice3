@@ -378,12 +378,12 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			this.getAboutOperation()
 	);
 
-	private int rootDividerLocation = 320;
+	private int rootDividerLocation = 340;
 	private int leftDividerLocation = 240;
 
 	private edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin concealedBin = new edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin();
 	private org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor;
-	private org.alice.ide.gallerybrowser.AbstractGalleryBrowser galleryBrowser;
+	private edu.cmu.cs.dennisc.croquet.JComponent<?> galleryBrowser;
 	private org.alice.ide.memberseditor.MembersEditor membersEditor;
 	private org.alice.ide.editorstabbedpane.EditorsTabSelectionState editorsTabSelectionState;
 	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
@@ -425,7 +425,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			//this.root.setRightComponent( null );
 			this.right.setVisible( false );
 			this.root.setDividerSize( 0 );
-			this.left.setDividerLocation( this.getFrame().getHeight() - 320 );
+			this.left.setDividerLocation( this.getFrame().getHeight() - 340 );
 		} else {
 			this.left.setResizeWeight( 0.0 );
 			this.root.setLeftComponent( this.left );
@@ -604,8 +604,8 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return this.typesForComboBoxes;
 	}
 	protected abstract org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor();
-	public abstract javax.swing.tree.TreeNode getGalleryRoot();
-	protected abstract org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser( javax.swing.tree.TreeNode root );
+	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getGalleryRoot();
+	protected abstract edu.cmu.cs.dennisc.croquet.JComponent<?> createGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> root );
 	protected org.alice.ide.memberseditor.MembersEditor createClassMembersEditor() {
 		return new org.alice.ide.memberseditor.MembersEditor();
 	}
@@ -627,7 +627,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	public org.alice.ide.memberseditor.MembersEditor getMembersEditor() {
 		return this.membersEditor;
 	}
-	public org.alice.ide.gallerybrowser.AbstractGalleryBrowser getGalleryBrowser() {
+	public edu.cmu.cs.dennisc.croquet.JComponent<?> getGalleryBrowser() {
 		return this.galleryBrowser;
 	}
 	public org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor() {
@@ -1123,7 +1123,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of refreshFields" );
 	
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getFocusedCode();
-		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = this.accessibleListState.getValue();
+		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = this.accessibleListState.getSelectedItem();
 		
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibles = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( this.rootField != null ) {
@@ -1264,25 +1264,29 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	//	protected abstract void handleWindowClosing();
 
 	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.DragComponent source ) {
-		assert source != null;
-		org.alice.ide.codeeditor.CodeEditor codeEditor = this.getCodeEditorInFocus();
-		if( codeEditor != null ) {
-			if( source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance ) {
-				org.alice.ide.common.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.common.ExpressionLikeSubstance)source.getSubject();
-				return codeEditor.createListOfPotentialDropReceptors( expressionLikeSubstance.getExpressionType() );
-			} else {
-				java.util.List< edu.cmu.cs.dennisc.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				rv.add( codeEditor );
-				//			for( alice.ide.ast.DropReceptor dropReceptor : this.dropReceptors ) {
-				//				if( dropReceptor.isPotentiallyAcceptingOf( source ) ) {
-				//					rv.add( dropReceptor );
-				//				}
-				//			}
-				return rv;
-			}
+		if( source instanceof org.alice.stageide.gallerybrowser.GalleryDragComponent ) {
+			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.getSceneEditor() );
 		} else {
-			//todo: investigate
-			return new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.DropReceptor >();
+			assert source != null;
+			org.alice.ide.codeeditor.CodeEditor codeEditor = this.getCodeEditorInFocus();
+			if( codeEditor != null ) {
+				if( source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance ) {
+					org.alice.ide.common.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.common.ExpressionLikeSubstance)source.getSubject();
+					return codeEditor.createListOfPotentialDropReceptors( expressionLikeSubstance.getExpressionType() );
+				} else {
+					java.util.List< edu.cmu.cs.dennisc.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					rv.add( codeEditor );
+					//			for( alice.ide.ast.DropReceptor dropReceptor : this.dropReceptors ) {
+					//				if( dropReceptor.isPotentiallyAcceptingOf( source ) ) {
+					//					rv.add( dropReceptor );
+					//				}
+					//			}
+					return rv;
+				}
+			} else {
+				//todo: investigate
+				return java.util.Collections.emptyList();
+			}
 		}
 	}
 
@@ -1667,7 +1671,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		if( this.isSceneEditorExpandedState.getValue() ) {
 			return this.getPerformEditorGeneratedSetUpMethod();
 		} else {
-			return this.getEditorsTabSelectionState().getValue();
+			return this.getEditorsTabSelectionState().getSelectedItem();
 		}
 		//		org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)this.getEditorsTabSelectionState().getCurrentTabStateOperation().getSingletonView();
 		//		if( codeEditor != null ) {
@@ -1864,23 +1868,19 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 	}
 	public final edu.cmu.cs.dennisc.alice.ast.Expression createInstanceExpression() /*throws OutOfScopeException*/{
-		return createInstanceExpression( this.getAccessibleListState().getValue() );
+		return createInstanceExpression( this.getAccessibleListState().getSelectedItem() );
 	}
 
 	public boolean isAccessibleInScope( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
 		return createInstanceExpression( accessible ) != null;
 	}
 	public final boolean isSelectedAccessibleInScope() {
-		return isAccessibleInScope( this.getAccessibleListState().getValue() );
+		return isAccessibleInScope( this.getAccessibleListState().getSelectedItem() );
 	}
 
 	@Override
-	public boolean isDragInProgress() {
-		return this.isDragInProgress;
-	}
-	@Override
 	public void setDragInProgress( boolean isDragInProgress ) {
-		this.isDragInProgress = isDragInProgress;
+		super.setDragInProgress(isDragInProgress);
 		this.currentDropReceptorComponent = null;
 	}
 

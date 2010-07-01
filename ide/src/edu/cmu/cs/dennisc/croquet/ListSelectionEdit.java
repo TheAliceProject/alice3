@@ -77,11 +77,11 @@ public final class ListSelectionEdit<E> extends Edit<ListSelectionState<E>> {
 
 	@Override
 	public void doOrRedo( boolean isDo ) {
-		this.getModel().setValue( this.nextValue );
+		this.getModel().setSelectedItem( this.nextValue );
 	}
 	@Override
 	public void undo() {
-		this.getModel().setValue( this.prevValue );
+		this.getModel().setSelectedItem( this.prevValue );
 	}
 	@Override
 	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {

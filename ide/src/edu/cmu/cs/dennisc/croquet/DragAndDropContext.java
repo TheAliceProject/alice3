@@ -253,7 +253,14 @@ public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
 			Operation< ?,? > operation = this.currentDropReceptor.dragDropped( this );
 			if( operation != null ) {
 				this.addChild( new DroppedEvent( this, e, this.currentDropReceptor ) );
-				operation.fire( this.getLatestMouseEvent(), this.currentDropReceptor.getViewController() );
+				JComponent<?> component = this.currentDropReceptor.getViewController();
+				ViewController<?,?> viewController; 
+				if( component instanceof ViewController<?,?> ) {
+					viewController = (ViewController<?,?>)component;
+				} else {
+					viewController = null;
+				}
+				operation.fire( this.getLatestMouseEvent(), viewController );
 			} else {
 				this.cancel();
 			}

@@ -44,8 +44,8 @@ package edu.cmu.cs.dennisc.croquet;
 
 public abstract class Control extends Widget {
 	private Operation<?,?> leftButtonPressOperation;
+	private Operation<?,?> leftButtonClickOperation;
 	private Operation<?,?> leftButtonDoubleClickOperation;
-	private Operation<?,?> popupOperation;
 
 	private boolean isActive = false;
 	private boolean isPressed = false;
@@ -85,7 +85,7 @@ public abstract class Control extends Widget {
 	}
 	private ControlAdapter controlAdapter = null;
 	protected boolean isMouseListeningDesired() { 
-		return this.leftButtonPressOperation != null || this.leftButtonDoubleClickOperation != null || this.popupOperation != null;
+		return this.leftButtonPressOperation != null || this.leftButtonClickOperation != null || this.leftButtonDoubleClickOperation != null;
 	}
 
 //	@Override
@@ -133,24 +133,31 @@ public abstract class Control extends Widget {
 			if( this.leftButtonPressOperation != null ) {
 				this.leftButtonPressOperation.fire( e, this );
 			}
-		} else if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
-			if( Application.getSingleton().isDragInProgress() ) {
-				this.isWithinClickThreshold = false;
-			} else {
-				if( this.popupOperation != null ) {
-					this.popupOperation.fire( e, this );
-				}
-			}
+//		} else if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
+//			if( Application.getSingleton().isDragInProgress() ) {
+//				this.isWithinClickThreshold = false;
+//			} else {
+//				if( this.popupOperation != null ) {
+//					this.popupOperation.fire( e, this );
+//				}
+//			}
 		}
 	}
 	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		this.setPressed( false );
 	}
 	public void handleMouseClicked( java.awt.event.MouseEvent e ) {
-		if( e.getClickCount() == 2 ) {
+		switch( e.getClickCount() ) {
+		case 1:
+			if( this.leftButtonClickOperation != null ) {
+				this.leftButtonClickOperation.fire( e, this );
+			}
+			break;
+		case 2:
 			if( this.leftButtonDoubleClickOperation != null ) {
 				this.leftButtonDoubleClickOperation.fire( e, this );
 			}
+			break;
 		}
 	}
 	public void handleMouseEntered( java.awt.event.MouseEvent e ) {
@@ -201,17 +208,17 @@ public abstract class Control extends Widget {
 	public void setLeftButtonPressOperation( Operation leftButtonPressOperation ) {
 		this.leftButtonPressOperation = leftButtonPressOperation;
 	}
+	public Operation getLeftButtonClickOperation() {
+		return this.leftButtonClickOperation;
+	}
+	public void setLeftButtonClickOperation( Operation leftButtonClickOperation ) {
+		this.leftButtonClickOperation = leftButtonClickOperation;
+	}
 	public Operation getLeftButtonDoubleClickOperation() {
 		return this.leftButtonDoubleClickOperation;
 	}
 	public void setLeftButtonDoubleClickOperation( Operation leftButtonDoubleClickOperation ) {
 		this.leftButtonDoubleClickOperation = leftButtonDoubleClickOperation;
-	}
-	public Operation getPopupOperation() {
-		return this.popupOperation;
-	}
-	public void setPopupOperation( Operation popupOperation ) {
-		this.popupOperation = popupOperation;
 	}
 	public boolean isActive() {
 		return this.isActive;

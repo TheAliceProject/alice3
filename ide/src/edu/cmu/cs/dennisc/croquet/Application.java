@@ -311,17 +311,13 @@ public abstract class Application {
 		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( this.frame.getAwtComponent(), directory, filename, extension, isSharingDesired );
 	}
 
+	private boolean isDragInProgress = false;
 	@Deprecated
-	public <T> T showInJDialog( edu.cmu.cs.dennisc.inputpane.KInputPane< T > inputPane, String title, boolean isModal ) {
-		return inputPane.showInJDialog( this.frame.getAwtComponent(), title, isModal );
+	public final boolean isDragInProgress() {
+		return this.isDragInProgress;
 	}
-	//	@Deprecated
-	//	public javax.swing.JFrame getJFrame() {
-	//		return (javax.swing.JFrame)this.getFrame().getAwtWindow();
-	//	}
-
 	@Deprecated
-	public abstract boolean isDragInProgress();
-	@Deprecated
-	public abstract void setDragInProgress( boolean isDragInProgress );
+	public void setDragInProgress( boolean isDragInProgress ) {
+		this.isDragInProgress = isDragInProgress;
+	}
 }

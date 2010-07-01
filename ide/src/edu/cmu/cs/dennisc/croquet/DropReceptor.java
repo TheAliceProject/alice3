@@ -48,7 +48,8 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public interface DropReceptor {
 	public boolean isPotentiallyAcceptingOf( DragComponent source );
-	public ViewController<?,?> getViewController();
+	//public ViewController<?,?> getViewController();
+	public JComponent<?> getViewController();
 	public void dragStarted( DragAndDropContext dragAndDropContext );
 	public void dragEntered( DragAndDropContext dragAndDropContext );
 	public void dragUpdated( DragAndDropContext dragAndDropContext );

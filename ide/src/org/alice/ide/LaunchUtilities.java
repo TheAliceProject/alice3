@@ -194,7 +194,7 @@ public class LaunchUtilities {
 				ide.initialize( args );
 				ide.getFrame().setVisible( isVisible );
 				
-				//ide.getIsSceneEditorExpandedState().setValue( true );
+				ide.getIsSceneEditorExpandedState().setValue( true );
 			}
 		};
 	}

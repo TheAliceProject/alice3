@@ -53,7 +53,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	@Override
 	protected boolean isAlreadyInTheDesiredState() {
-		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.getModel().getValue(), this.desiredValueResolver.getResolved() );
+		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.getModel().getSelectedItem(), this.desiredValueResolver.getResolved() );
 	}
 	@Override
 	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
@@ -61,6 +61,6 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	@Override
 	protected void complete() {
-		this.getModel().setValue( this.desiredValueResolver.getResolved() );
+		this.getModel().setSelectedItem( this.desiredValueResolver.getResolved() );
 	}
 }

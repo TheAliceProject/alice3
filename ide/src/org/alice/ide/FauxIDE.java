@@ -58,12 +58,12 @@ public class FauxIDE extends IDE {
 		return new org.alice.ide.sceneeditor.FauxSceneEditor();
 	}
 	@Override
-	public javax.swing.tree.TreeNode getGalleryRoot() {
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getGalleryRoot() {
 		return null;
 	}
 	@Override
-	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser( javax.swing.tree.TreeNode root ) {
-		return new org.alice.ide.gallerybrowser.FauxGalleryBrowser( root );
+	protected edu.cmu.cs.dennisc.croquet.JComponent<?> createGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> root ) {
+		return null;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.DialogOperation createRunOperation() {

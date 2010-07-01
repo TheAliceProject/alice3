@@ -462,7 +462,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 		} else {
 			this.addItem( code );
 		}
-		this.setValue( code );
+		this.setSelectedItem( code );
 //		for( edu.cmu.cs.dennisc.croquet.TabStateOperation tabIsSelectedOperation : this.getTabStateOperations() ) {
 //			edu.cmu.cs.dennisc.croquet.Component< ? > component = tabIsSelectedOperation.getSingletonView();
 //			edu.cmu.cs.dennisc.print.PrintUtilities.println( component.getClass() );
@@ -554,7 +554,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 		}
 	};
 	public CodeEditor getCodeEditorInFocus() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getValue();
+		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getSelectedItem();
 		if( code != null ) {
 			return (CodeEditor)this.getMainComponentFor( code );
 		} else {

@@ -58,7 +58,7 @@ class TreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.DefaultM
  */
 public class PreferencesPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane();
-	private edu.cmu.cs.dennisc.croquet.Tree<?> tree = new edu.cmu.cs.dennisc.croquet.Tree();
+	//private edu.cmu.cs.dennisc.croquet.Tree<?> tree = new edu.cmu.cs.dennisc.croquet.Tree();
 	class TreeSelectionAdapter extends edu.cmu.cs.dennisc.javax.swing.event.DefaultMutableTreeNodeTreeSelectionAdapter<org.alice.ide.preferencesinputpane.CollectionOfPreferencesPane> {
 		@Override
 		protected void valueChangedUserObject(javax.swing.event.TreeSelectionEvent e, CollectionOfPreferencesPane oldLeadValue, org.alice.ide.preferencesinputpane.CollectionOfPreferencesPane newLeadValue) {
@@ -131,15 +131,14 @@ public class PreferencesPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		root.add( new javax.swing.tree.DefaultMutableTreeNode( sceneEditorPreferencesPane ) );
 		javax.swing.tree.TreeModel treeModel = new javax.swing.tree.DefaultTreeModel( root );
 
-		this.tree.setSwingTreeModel( treeModel );
-		this.tree.setRootVisible( false );
-		this.tree.setCellRenderer( new TreeCellRenderer() );
-		this.tree.addTreeSelectionListener( new TreeSelectionAdapter() );
-		this.splitPane.setLeftComponent( new edu.cmu.cs.dennisc.croquet.ScrollPane( this.tree ) );
+//		this.tree.setSwingTreeModel( treeModel );
+//		this.tree.setRootVisible( false );
+//		this.tree.setCellRenderer( new TreeCellRenderer() );
+//		this.tree.addTreeSelectionListener( new TreeSelectionAdapter() );
+//		this.splitPane.setLeftComponent( new edu.cmu.cs.dennisc.croquet.ScrollPane( this.tree ) );
+//		this.tree.setSelectionRow( 1 );
 		this.splitPane.setRightComponent( new edu.cmu.cs.dennisc.croquet.Label( "please select" ) );
 		this.splitPane.setDividerLocation( 200 );
 		this.addComponent( this.splitPane, Constraint.CENTER );
-		//this.setPreferredSize( new java.awt.Dimension( 640, 480 ) );
-		this.tree.setSelectionRow( 1 );
 	}
 }

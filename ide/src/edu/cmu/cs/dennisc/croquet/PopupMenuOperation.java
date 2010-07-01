@@ -46,16 +46,16 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class PopupMenuOperation extends AbstractPopupMenuOperation {
-	private Model[] operations;
-	public PopupMenuOperation( java.util.UUID individualId, Model... operations ) {
+	private Model<?>[] models;
+	public PopupMenuOperation( java.util.UUID individualId, Model<?>... models ) {
 		super( individualId );
-		this.operations = operations;
+		this.models = models;
 	}
-	public PopupMenuOperation( java.util.UUID individualId, java.util.Collection< Model > operations ) {
-		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(operations, Model.class ) );
+	public PopupMenuOperation( java.util.UUID individualId, java.util.Collection< Model > models ) {
+		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(models, Model.class ) );
 	}
 	@Override
-	public Model[] getOperations() {
-		return this.operations;
+	public Model<?>[] getModels() {
+		return this.models;
 	}
 }

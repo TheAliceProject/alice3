@@ -73,7 +73,7 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class<?> cls ) {
 		this( declaringType, cls, org.alice.stageide.gallerybrowser.ResourceManager.getLargeIconResourceForGalleryClassName( cls.getName() ), null );
 	}
-	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, javax.swing.tree.TreeNode treeNode ) {
+	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
 		this( declaringType, org.alice.stageide.gallerybrowser.ResourceManager.getGalleryCls(treeNode), org.alice.stageide.gallerybrowser.ResourceManager.getLargeIconResource(treeNode), null );
 	}
 	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {

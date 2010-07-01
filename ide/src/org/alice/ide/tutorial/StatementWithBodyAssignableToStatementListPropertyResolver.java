@@ -55,7 +55,7 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 		this.index = index;
 	}
 	public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getResolved() {
-		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getValue();
+		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getSelectedItem();
 		edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody = IdeTutorial.getNodeAt(code, this.cls, this.index);
 		if (statementWithBody != null) {
 			return statementWithBody.body.getValue().statements;

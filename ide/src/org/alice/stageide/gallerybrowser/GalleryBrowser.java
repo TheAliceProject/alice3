@@ -45,12 +45,95 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGalleryBrowser {
-	private java.util.Map<String, String> map;
+public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 
-	public GalleryBrowser(javax.swing.tree.TreeNode thumbnailRoot, java.util.Map<String, String> map) {
-		this.map = map;
-		this.initialize(thumbnailRoot);
+	class DirectoryView extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
+		private edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver<String> selectionObserver = new edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver<String>() {
+			public void selectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> nextValue) {
+				DirectoryView.this.handleSelectionChanged( nextValue );
+			}
+		};
+		@Override
+		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+			super.handleAddedTo(parent);
+			treeSelectionState.addAndInvokeSelectionObserver(this.selectionObserver);
+		}
+		@Override
+		protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+			treeSelectionState.addAndInvokeSelectionObserver(this.selectionObserver);
+			super.handleRemovedFrom(parent);
+		}
+		
+		private void handleSelectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> nextValue) {
+			this.removeAllComponents();
+			if( nextValue != null ) {
+				java.util.Enumeration<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> enumeration = nextValue.children();
+				while( enumeration.hasMoreElements() ) {
+					edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> child = enumeration.nextElement();
+					String name = GalleryBrowser.this.getTextFor(child, false);
+					if( name != null ) {
+						if( child.isLeaf() ) {
+							this.addComponent( new GalleryDragComponent( child, name ) );
+						} else {
+							edu.cmu.cs.dennisc.croquet.Operation<?, ?> operation = edu.cmu.cs.dennisc.croquet.SelectDirectoryActionOperation.getInstance(treeSelectionState, child, null);
+							java.net.URL url = ResourceManager.getLargeIconResource( child );
+							if (child instanceof edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode) {
+								edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode directoryZipTreeNode = (edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode) child;
+								edu.cmu.cs.dennisc.zip.ZipTreeNode thumbnailNode = directoryZipTreeNode.getChildNamed( "directoryThumbnail.png" );
+								url = ResourceManager.getLargeIconResource( thumbnailNode );
+							} else {
+								url = null;
+							}
+							if( url != null ) {
+								edu.cmu.cs.dennisc.javax.swing.icons.CompositeIcon icon = new edu.cmu.cs.dennisc.javax.swing.icons.CompositeIcon( new javax.swing.ImageIcon( url ), FOLDER_SMALL_ICON );
+								operation.setSmallIcon( icon );
+							} else {
+								operation.setSmallIcon( FOLDER_LARGE_ICON );
+							}
+							if( operation != null ) {
+								operation.setName( name );
+								edu.cmu.cs.dennisc.croquet.Button button = operation.createButton();
+								button.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
+								button.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.CENTER );
+								button.setAlignmentY( 0.0f );
+								this.addComponent( button );
+							}
+						}
+					}
+				}
+				this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() );
+			}
+			this.revalidateAndRepaint();
+		}
+	}
+	
+	private static java.util.Map<String, String> map;
+	static {
+		map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		map.put( "thumbnails", "gallery" );
+		map.put( "gallery", "Generic Alice Models" );
+		map.put( "characters", "Looking Glass Characters" );
+		map.put( "scenes", "Looking Glass Scenery" );
+	}
+
+	private static final int GAP = 4;
+	private edu.cmu.cs.dennisc.croquet.TreeSelectionState<String> treeSelectionState;
+	private static final javax.swing.ImageIcon FOLDER_LARGE_ICON = new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/folder.png"));
+	private static final javax.swing.ImageIcon FOLDER_SMALL_ICON = new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/folder24.png"));
+	
+	public GalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> root ) {
+		super(GAP * 2, 0);
+
+		this.treeSelectionState = new edu.cmu.cs.dennisc.croquet.TreeSelectionState<String>( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "42798d37-0815-4ca8-9fb6-107d47e4642f" ), root, root ) {
+			@Override
+			protected edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+				throw new RuntimeException("todo");
+			}
+			@Override
+			protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> value) {
+				throw new RuntimeException("todo");
+			}
+		};
 		
 		CreateTextActionOperation createTextActionOperation = new CreateTextActionOperation();
 		CreateBillboardActionOperation createBillboardActionOperation = new CreateBillboardActionOperation();
@@ -80,61 +163,84 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		createPersonButton.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.CENTER );
 		createPersonButton.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
 
-		//todo
-		java.io.InputStream is = GalleryBrowser.class.getResourceAsStream("images/create_person.png");
-		java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read(edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is);
-		indirectCreatePersonActionOperation.setSmallIcon(new javax.swing.ImageIcon(image));
+		indirectCreatePersonActionOperation.setSmallIcon(new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/create_person.png")));
 		
-		this.addComponent(createPersonButton, Constraint.WEST);
-		this.addComponent(buttonPane, Constraint.EAST);
+		edu.cmu.cs.dennisc.croquet.BorderPanel borderPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		borderPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
+		borderPanel.setBackgroundColor( null );
+		borderPanel.addComponent( this.treeSelectionState.createPathControl( this.createInitializer() ), Constraint.NORTH );
+
+		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( new DirectoryView() );
+		scrollPane.setBorder( null );
+		scrollPane.setBackgroundColor( null );
+		borderPanel.addComponent( scrollPane, Constraint.CENTER );
+		
+		this.setBackgroundColor( null );
+		this.addComponent( createPersonButton, Constraint.WEST);
+		this.addComponent( buttonPane, Constraint.EAST);
+		this.addComponent( borderPanel, Constraint.CENTER );
 	}
 
-	@Override
-	protected String getAdornedTextFor(String name, boolean isDirectory, boolean isRequestedByPath) {
-		if (this.map != null) {
-			if (this.map.containsKey(name)) {
-				name = this.map.get(name);
+	private String getAdornedTextFor(String name, boolean isDirectory, boolean isRequestedByPath) {
+		String rv;
+		if (map != null) {
+			if (map.containsKey(name)) {
+				name = map.get(name);
 			}
 		}
-		return super.getAdornedTextFor(name, isDirectory, isRequestedByPath);
+		if (isRequestedByPath) {
+			rv = name;
+		} else {
+			if (isDirectory) {
+				rv = "<html><i>package:</i><br><strong>" + name + "</strong></html>";
+			} else {
+				rv = "<html><i>class:</i><br><strong>" + name + "</strong></html>";
+			}
+		}
+		return rv;
 	}
 
-	@Override
-	protected void handleFileActivation(javax.swing.tree.TreeNode file) {
-		assert file.isLeaf();
-		//todo
-		new GalleryFileActionOperation(file).fire();
+	private final String getTextFor(javax.swing.tree.TreeNode treeNode, boolean isRequestedByPath) {
+		String name;
+		if (treeNode instanceof edu.cmu.cs.dennisc.zip.ZipTreeNode) {
+			edu.cmu.cs.dennisc.zip.ZipTreeNode zipTreeNode = (edu.cmu.cs.dennisc.zip.ZipTreeNode) treeNode;
+			name = zipTreeNode.getName();
+			if (zipTreeNode.isLeaf()) {
+				name = name.substring(0, name.length() - 4);
+			}
+
+		} else {
+			name = treeNode.toString();
+		}
+		if( "directoryThumbnail".equals( name ) ) {
+			return null;
+		} else {
+			return this.getAdornedTextFor(name, treeNode.isLeaf() == false, isRequestedByPath);
+		}
 	}
 
-//	@Override
-//	public java.awt.Dimension getPreferredSize() {
-//		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight(super.getPreferredSize(), 256);
-//	}
-
-//	public static void main(String[] args) {
-//
-//		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
-//
-//		java.io.File thumbnailRoot = new java.io.File(org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory(), "thumbnails");
-//		edu.cmu.cs.dennisc.javax.swing.ApplicationFrame frame = new edu.cmu.cs.dennisc.javax.swing.ApplicationFrame() {
-//			@Override
-//			protected void handleWindowOpened(java.awt.event.WindowEvent e) {
-//			}
-//			
-//			@Override
-//			protected void handleAbout( java.util.EventObject e ) {
-//			}
-//			@Override
-//			protected void handlePreferences( java.util.EventObject e ) {
-//			}
-//
-//			@Override
-//			protected void handleQuit(java.util.EventObject e) {
-//				System.exit(0);
-//			}
-//		};
-//		frame.setSize(new java.awt.Dimension(1024, 256));
-//		frame.getContentPane().add(new GalleryBrowser(thumbnailRoot, null));
-//		frame.setVisible(true);
-//	}
+	private edu.cmu.cs.dennisc.croquet.PathControl.Initializer createInitializer() {
+		return new edu.cmu.cs.dennisc.croquet.PathControl.Initializer() {
+			public edu.cmu.cs.dennisc.croquet.ActionOperation configure(edu.cmu.cs.dennisc.croquet.ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode) {
+				if (treeNode instanceof edu.cmu.cs.dennisc.zip.ZipTreeNode) {
+					edu.cmu.cs.dennisc.zip.ZipTreeNode zipTreeNode = (edu.cmu.cs.dennisc.zip.ZipTreeNode) treeNode;
+					rv.setName( zipTreeNode.getName() );
+				} else {
+					rv.setName( treeNode.toString() );
+				}
+				rv.setSmallIcon( FOLDER_SMALL_ICON );
+				return rv;
+			}
+			public edu.cmu.cs.dennisc.croquet.Operation<?, ?> getOperationForLeaf(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode) {
+				String name = GalleryBrowser.this.getTextFor(treeNode, true);
+				if( name != null ) {
+					edu.cmu.cs.dennisc.croquet.Operation<?, ?> rv = GalleryFileActionOperation.getInstance( treeNode );
+					rv.setName( name );
+					return rv;
+				} else {
+					return null;
+				}
+			}
+		};
+	}
 }

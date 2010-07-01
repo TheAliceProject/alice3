@@ -45,8 +45,8 @@ package edu.cmu.cs.dennisc.zip;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ZipTreeNode implements javax.swing.tree.TreeNode, Comparable<ZipTreeNode> {
-	private javax.swing.tree.TreeNode parent;
+public abstract class ZipTreeNode implements edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>, Comparable<ZipTreeNode> {
+	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> parent;
 	private String path;
 	private String name;
 	public ZipTreeNode( String path ) {
@@ -62,10 +62,10 @@ public abstract class ZipTreeNode implements javax.swing.tree.TreeNode, Comparab
 			this.name = null;
 		}
 	}
-	public javax.swing.tree.TreeNode getParent() {
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getParent() {
 		return this.parent;
 	}
-	public void setParent( javax.swing.tree.TreeNode parent ) {
+	public void setParent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> parent ) {
 		if( this.parent instanceof DirectoryZipTreeNode ) {
 			DirectoryZipTreeNode directoryZipTreeNode = (DirectoryZipTreeNode)this.parent;
 			directoryZipTreeNode.removeChild( this );
@@ -76,29 +76,29 @@ public abstract class ZipTreeNode implements javax.swing.tree.TreeNode, Comparab
 			directoryZipTreeNode.addChild( this );
 		}
 	}
-	public String getPath() {
+	public String getValue() {
 		return this.path;
 	}
 	public String getName() {
 		return this.name;
 	}
 	public int compareTo(edu.cmu.cs.dennisc.zip.ZipTreeNode other) {
-		if( this.isLeaf() ) {
-			if( other.isLeaf() ) {
-				return this.getName().compareTo( other.getName() );
+		if( this.getAllowsChildren() ) {
+			if( other.getAllowsChildren() ) {
+				return this.getName().compareToIgnoreCase( other.getName() );
 			} else {
-				return 1;
+				return -1;
 			}
 		} else {
-			if( other.isLeaf() ) {
-				return -1;
+			if( other.getAllowsChildren() ) {
+				return 1;
 			} else {
-				return this.getName().compareTo( other.getName() );
+				return this.getName().compareToIgnoreCase( other.getName() );
 			}
 		}
 	}
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName() + "[" + this.getPath() + "]";
+		return this.getClass().getSimpleName() + "[" + this.getValue() + "]";
 	}
 }

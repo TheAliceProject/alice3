@@ -424,18 +424,6 @@ public class StageIDE extends org.alice.ide.IDE {
 		return new org.alice.stageide.operations.help.AboutOperation();
 	}
 
-	protected java.util.Map< String, String > createGalleryThumbnailsMap() {
-		java.util.Map< String, String > rv = new java.util.HashMap< String, String >();
-		rv.put( "thumbnails", "gallery" );
-//		rv.put( "org.alice.apis.moveandturn.gallery", "Generic Alice Models" );
-//		rv.put( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters", "Looking Glass Characters" );
-//		rv.put( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.scenes", "Looking Glass Scenery" );
-		rv.put( "gallery", "Generic Alice Models" );
-		rv.put( "characters", "Looking Glass Characters" );
-		rv.put( "scenes", "Looking Glass Scenery" );
-		return rv;
-	}
-
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType, String > mapTypeToText;
 
 	private static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getDeclaredMethod( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, String name, Class< ? >... paramClses ) {
@@ -569,7 +557,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	@Override
-	public javax.swing.tree.TreeNode getGalleryRoot() {
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getGalleryRoot() {
 		try {
 			String jarPath = org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory() + "/mtwtGalleryLargeIcons.jar";
 			edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode jarRoot = edu.cmu.cs.dennisc.zip.ZipUtilities.createTreeNode( jarPath, false );
@@ -579,13 +567,13 @@ public class StageIDE extends org.alice.ide.IDE {
 					 "org/alice/stageide/gallerybrowser/images/org/alice/apis/moveandturn/gallery", 
 			};
 			final int N = paths.length;
-			final java.util.ArrayList< javax.swing.tree.TreeNode > children = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+			final java.util.ArrayList< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > children = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 			children.ensureCapacity( N );
-			javax.swing.tree.TreeNode rv = new javax.swing.tree.TreeNode() {
-				public java.util.Enumeration< javax.swing.tree.TreeNode > children() {
+			edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> rv = new edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>() {
+				public java.util.Enumeration< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > children() {
 					return java.util.Collections.enumeration( children );
 				}
-				public javax.swing.tree.TreeNode getChildAt(int childIndex) {
+				public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getChildAt(int childIndex) {
 					return children.get( childIndex );
 				}
 				public int getChildCount() {
@@ -594,7 +582,7 @@ public class StageIDE extends org.alice.ide.IDE {
 				public int getIndex(javax.swing.tree.TreeNode node) {
 					return children.indexOf( node );
 				}
-				public javax.swing.tree.TreeNode getParent() {
+				public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getParent() {
 					return null;
 				}
 				public boolean getAllowsChildren() {
@@ -602,6 +590,9 @@ public class StageIDE extends org.alice.ide.IDE {
 				}
 				public boolean isLeaf() {
 					return false;
+				}
+				public String getValue() {
+					return null;
 				}
 				@Override
 				public String toString() {
@@ -619,9 +610,8 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	@Override
-	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser( javax.swing.tree.TreeNode root ) {
-		java.util.Map< String, String > map = this.createGalleryThumbnailsMap();
-		return new org.alice.stageide.gallerybrowser.GalleryBrowser( root, map );
+	protected edu.cmu.cs.dennisc.croquet.JComponent<?> createGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> root ) {
+		return new org.alice.stageide.gallerybrowser.GalleryBrowser( root );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getEnumTypeForInterfaceType( edu.cmu.cs.dennisc.alice.ast.AbstractType interfaceType ) {

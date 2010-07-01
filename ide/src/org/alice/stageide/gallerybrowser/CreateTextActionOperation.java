@@ -68,7 +68,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 			super( java.util.UUID.fromString( "a5678cc6-78b0-4cc1-adbb-e90969d42823" ), 0, "Serif", "SansSerif" );
 		}
 		public org.alice.apis.moveandturn.font.FamilyAttribute getFamilyAttribute() {
-			Object value = this.getValue();
+			Object value = this.getSelectedItem();
 			org.alice.apis.moveandturn.font.FamilyAttribute rv;
 			if( value.equals( "Serif" ) ) {
 				rv = org.alice.apis.moveandturn.font.FamilyConstant.SERIF;
@@ -79,9 +79,9 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 		}
 		public void setFamilyAttribute( org.alice.apis.moveandturn.font.FamilyAttribute familyAttribute ) {
 			if( familyAttribute == org.alice.apis.moveandturn.font.FamilyConstant.SERIF ) {
-				this.setValue( "Serif" );
+				this.setSelectedItem( "Serif" );
 			} else {
-				this.setValue( "SansSerif" );
+				this.setSelectedItem( "SansSerif" );
 			}
 		}
 	}
@@ -91,7 +91,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 			super( java.util.UUID.fromString( "a5678cc6-78b0-4cc1-adbb-e90969d42823" ), 0, "Regular", "Bold", "Italic", "Bold Italic" );
 		}
 		public org.alice.apis.moveandturn.font.WeightAttribute getWeightAttribute() {
-			Object value = this.getValue();
+			Object value = this.getSelectedItem();
 			org.alice.apis.moveandturn.font.WeightAttribute rv;
 			if( value != null && (value.equals( "Bold" ) || value.equals( "Bold Italic" )) ) {
 				rv = org.alice.apis.moveandturn.font.WeightConstant.BOLD;
@@ -101,7 +101,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 			return rv;
 		}
 		public org.alice.apis.moveandturn.font.PostureAttribute getPostureAttribute() {
-			Object value = this.getValue();
+			Object value = this.getSelectedItem();
 			org.alice.apis.moveandturn.font.PostureAttribute rv;
 			if( value != null && (value.equals( "Italic" ) || value.equals( "Bold Italic" )) ) {
 				rv = org.alice.apis.moveandturn.font.PostureConstant.OBLIQUE;
@@ -127,7 +127,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 					selectedValue = "Regular";
 				}
 			}
-			this.setValue( selectedValue );
+			this.setSelectedItem( selectedValue );
 		}
 	}
 
