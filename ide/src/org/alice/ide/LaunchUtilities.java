@@ -194,7 +194,9 @@ public class LaunchUtilities {
 				ide.initialize( args );
 				ide.getFrame().setVisible( isVisible );
 				
-				ide.getIsSceneEditorExpandedState().setValue( true );
+				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isSceneEditorExpanded" ) ) {
+					ide.getIsSceneEditorExpandedState().setValue( true );
+				}
 			}
 		};
 	}
