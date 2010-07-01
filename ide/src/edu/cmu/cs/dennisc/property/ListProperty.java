@@ -157,6 +157,12 @@ public class ListProperty<E> extends InstanceProperty< java.util.ArrayList< E > 
 	public java.util.List< E > subList( int fromIndex, int upToButExcludingIndex ) {
 		return getValue().subList( fromIndex, upToButExcludingIndex );
 	}
+	public java.util.List< E > subListCopy( int fromIndex, int upToButExcludingIndex ) {
+		java.util.ArrayList< E > rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+		rv.ensureCapacity( upToButExcludingIndex-fromIndex+1-1 );
+		rv.addAll( this.subList(fromIndex, upToButExcludingIndex));
+		return rv;
+	}
 
 	public int indexOf( Object element ) {
 		return getValue().indexOf( element );
@@ -243,7 +249,7 @@ public class ListProperty<E> extends InstanceProperty< java.util.ArrayList< E > 
 
 	public void removeExclusive( int fromIndex, int upToButExcludingIndex ) {
 		//assert isLocked() == false;
-		edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e = new edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E >( this, fromIndex, getValue().subList( fromIndex, upToButExcludingIndex ) );
+		edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e = new edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E >( this, fromIndex, this.subListCopy( fromIndex, upToButExcludingIndex ) );
 		fireRemoving( e );
 		for( int i=fromIndex; i<upToButExcludingIndex; i++ ) {
 			getValue().remove( i );
