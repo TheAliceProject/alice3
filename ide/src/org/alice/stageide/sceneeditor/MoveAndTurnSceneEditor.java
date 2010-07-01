@@ -81,7 +81,11 @@ import edu.cmu.cs.dennisc.alice.ast.Statement;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.croquet.AbstractButton;
 import edu.cmu.cs.dennisc.croquet.ComboBox;
+import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
+import edu.cmu.cs.dennisc.croquet.DragComponent;
 import edu.cmu.cs.dennisc.croquet.ListSelectionState;
+import edu.cmu.cs.dennisc.croquet.Operation;
+import edu.cmu.cs.dennisc.croquet.ViewController;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical;
 import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
@@ -1454,4 +1458,46 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	{
 	}
 
+	public void dragStarted(DragAndDropContext dragAndDropContext) {
+		DragComponent dragSource = dragAndDropContext.getDragSource();
+		org.alice.stageide.gallerybrowser.GalleryDragComponent galleryDragComponent = (org.alice.stageide.gallerybrowser.GalleryDragComponent)dragSource;
+		edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode = galleryDragComponent.getTreeNode();
+		edu.cmu.cs.dennisc.math.AxisAlignedBox box = org.alice.stageide.gallerybrowser.ResourceManager.getAxisAlignedBox(treeNode);
+		System.err.println( "bounding box: " + box );
+	}
+
+	public void dragStopped(DragAndDropContext dragAndDropContext) {
+	}
+
+	public void dragEntered(DragAndDropContext dragAndDropContext) {
+		DragComponent dragSource = dragAndDropContext.getDragSource();
+		dragSource.hideDragProxy();
+	}
+	public void dragExited(DragAndDropContext dragAndDropContext, boolean isDropRecipient) {
+		DragComponent dragSource = dragAndDropContext.getDragSource();
+		dragSource.showDragProxy();
+	}
+
+	public void dragUpdated(DragAndDropContext dragAndDropContext) {
+		DragComponent dragSource = dragAndDropContext.getDragSource();
+		
+		java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
+		java.awt.Point p = dragSource.convertPoint(eSource.getPoint(), this );
+		
+		PrintUtilities.println( "updated", p );
+	}
+
+	public edu.cmu.cs.dennisc.croquet.JComponent<?> getViewController() {
+		return this;
+	}
+
+	public boolean isPotentiallyAcceptingOf(DragComponent source) {
+		return source instanceof org.alice.stageide.gallerybrowser.GalleryDragComponent;
+	}
+	public Operation<?, ?> dragDropped(DragAndDropContext dragAndDropContext) {
+		DragComponent dragSource = dragAndDropContext.getDragSource();
+		return dragSource.getLeftButtonClickOperation();
+	}
+
+	
 }

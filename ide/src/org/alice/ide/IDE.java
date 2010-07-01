@@ -1264,25 +1264,29 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	//	protected abstract void handleWindowClosing();
 
 	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.DragComponent source ) {
-		assert source != null;
-		org.alice.ide.codeeditor.CodeEditor codeEditor = this.getCodeEditorInFocus();
-		if( codeEditor != null ) {
-			if( source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance ) {
-				org.alice.ide.common.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.common.ExpressionLikeSubstance)source.getSubject();
-				return codeEditor.createListOfPotentialDropReceptors( expressionLikeSubstance.getExpressionType() );
-			} else {
-				java.util.List< edu.cmu.cs.dennisc.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				rv.add( codeEditor );
-				//			for( alice.ide.ast.DropReceptor dropReceptor : this.dropReceptors ) {
-				//				if( dropReceptor.isPotentiallyAcceptingOf( source ) ) {
-				//					rv.add( dropReceptor );
-				//				}
-				//			}
-				return rv;
-			}
+		if( source instanceof org.alice.stageide.gallerybrowser.GalleryDragComponent ) {
+			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.getSceneEditor() );
 		} else {
-			//todo: investigate
-			return new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.DropReceptor >();
+			assert source != null;
+			org.alice.ide.codeeditor.CodeEditor codeEditor = this.getCodeEditorInFocus();
+			if( codeEditor != null ) {
+				if( source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance ) {
+					org.alice.ide.common.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.common.ExpressionLikeSubstance)source.getSubject();
+					return codeEditor.createListOfPotentialDropReceptors( expressionLikeSubstance.getExpressionType() );
+				} else {
+					java.util.List< edu.cmu.cs.dennisc.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					rv.add( codeEditor );
+					//			for( alice.ide.ast.DropReceptor dropReceptor : this.dropReceptors ) {
+					//				if( dropReceptor.isPotentiallyAcceptingOf( source ) ) {
+					//					rv.add( dropReceptor );
+					//				}
+					//			}
+					return rv;
+				}
+			} else {
+				//todo: investigate
+				return java.util.Collections.emptyList();
+			}
 		}
 	}
 

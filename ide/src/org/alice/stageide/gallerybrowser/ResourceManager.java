@@ -49,11 +49,9 @@ public class ResourceManager {
 	private static final String PACKAGE_NAME_PREFIX = ResourceManager.class.getPackage().getName();
 	private ResourceManager() {
 	}
-	public static java.net.URL getLargeIconResource( javax.swing.tree.TreeNode treeNode ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( treeNode );
-		if( treeNode instanceof edu.cmu.cs.dennisc.zip.ZipTreeNode ) {
-			edu.cmu.cs.dennisc.zip.ZipTreeNode zipTreeNode = (edu.cmu.cs.dennisc.zip.ZipTreeNode)treeNode;
-			String path = zipTreeNode.getValue();
+	public static java.net.URL getLargeIconResource(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
+		if( treeNode != null ) {
+			String path = treeNode.getValue();
 			String resourceName = path.substring( PACKAGE_NAME_PREFIX.length()+1 );
 			java.net.URL rv = ResourceManager.class.getResource( resourceName );
 			if( rv != null ) {
@@ -61,7 +59,6 @@ public class ResourceManager {
 			} else {
 				System.err.println( resourceName );
 			}
-			//assert rv != null : resourceName;
 			return rv;
 		} else {
 			return null;
@@ -70,6 +67,21 @@ public class ResourceManager {
 	public static java.net.URL getLargeIconResourceForGalleryClassName( String className ) {
 		return ResourceManager.class.getResource( "images/" + className.replace( '.', '/' ) + ".png" );
 	}
+	
+	public static edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedBox( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
+		String path = treeNode.getValue();
+		String resourceName = "boxes" + path.substring( PACKAGE_NAME_PREFIX.length()+1+"images".length(), path.length()-3 ) + "bin";
+		java.io.InputStream is = ResourceManager.class.getResourceAsStream( resourceName );
+
+		if( is != null ) {
+			edu.cmu.cs.dennisc.math.AxisAlignedBox rv = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary(is, edu.cmu.cs.dennisc.math.AxisAlignedBox.class);
+			return rv;
+		} else {
+			System.err.println( "no axis aligned bounding box information for: " + resourceName );
+			return new edu.cmu.cs.dennisc.math.AxisAlignedBox( -0.5, 0, -0.5, 0.5, 1, 0.5 );
+		}
+	}
+	
 	public static Class<?> getGalleryCls( javax.swing.tree.TreeNode treeNode ) {
 		if( treeNode instanceof edu.cmu.cs.dennisc.zip.FileZipTreeNode ) {
 			final String IMAGES_TEXT = ".images.";

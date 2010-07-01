@@ -270,6 +270,12 @@ public abstract class DragComponent extends Control {
 		}
 	}
 
+	public void showDragProxy() {
+		this.dragProxy.setVisible( true );
+	}
+	public void hideDragProxy() {
+		this.dragProxy.setVisible( false );
+	}
 	public void setDropProxyLocationAndShowIfNecessary( java.awt.Point p, Component<?> asSeenBy, Integer heightToAlignLeftCenterOn, int availableHeight ) {
 		javax.swing.JLayeredPane layeredPane = getLayeredPane();
 		p = javax.swing.SwingUtilities.convertPoint( asSeenBy.getAwtComponent(), p, layeredPane );

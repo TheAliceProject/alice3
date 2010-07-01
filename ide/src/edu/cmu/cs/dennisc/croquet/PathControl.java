@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
-/*package-private*/ class SelectChildDirectoryPopupMenuOperation extends edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation {
+/*package-private*/ class SelectChildDirectoryPopupMenuOperation extends AbstractPopupMenuOperation {
 	public static SelectChildDirectoryPopupMenuOperation getInstance( TreeSelectionState<String> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: SelectChildDirectoryPopupMenuOperation.getInstance()" );
 		return new SelectChildDirectoryPopupMenuOperation(treeSelectionState, treeNode, initializer);
@@ -51,7 +51,7 @@ package edu.cmu.cs.dennisc.croquet;
 
 	private static final int ARROW_SIZE = 10;
 	private static final int ARROW_BORDER_HALF_SIZE = 3;
-	private edu.cmu.cs.dennisc.croquet.Model[] models;
+	private Model[] models;
 	private SelectChildDirectoryPopupMenuOperation( TreeSelectionState<String> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
 		super( java.util.UUID.fromString( "cc6a0de7-91b1-4a2b-86ff-21ca9de14bed" ) );
 		javax.swing.Icon icon = new javax.swing.Icon() {
@@ -98,12 +98,12 @@ package edu.cmu.cs.dennisc.croquet;
 	}
 	
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Model<?>[] getModels() {
+	public Model<?>[] getModels() {
 		return this.models;
 	}
 }
 
-/*package-private*/ class DirectoryControl extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+/*package-private*/ class DirectoryControl extends BorderPanel {
 	public static DirectoryControl getInstance( TreeSelectionState<String> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: DirectoryControl.getInstance()" );
 		return new DirectoryControl( treeSelectionState, treeNode, initializer );

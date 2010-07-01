@@ -42,11 +42,11 @@
  */
 package org.alice.stageide.gallerybrowser;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+
 	class DirectoryView extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 		private edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver<String> selectionObserver = new edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver<String>() {
 			public void selectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> nextValue) {
@@ -72,24 +72,32 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 					edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> child = enumeration.nextElement();
 					String name = GalleryBrowser.this.getTextFor(child, false);
 					if( name != null ) {
-						edu.cmu.cs.dennisc.croquet.Operation<?, ?> operation;
 						if( child.isLeaf() ) {
-							operation = GalleryFileActionOperation.getInstance( child );
-							java.net.URL url = ResourceManager.getLargeIconResource( child );
-							if( url != null ) {
-								operation.setSmallIcon( new javax.swing.ImageIcon( url ) );
-							}
+							this.addComponent( new GalleryDragComponent( child, name ) );
 						} else {
-							operation = edu.cmu.cs.dennisc.croquet.SelectDirectoryActionOperation.getInstance(treeSelectionState, child, null);
-							operation.setSmallIcon( FOLDER_LARGE_ICON );
-						}
-						if( operation != null ) {
-							operation.setName( name );
-							edu.cmu.cs.dennisc.croquet.Button button = operation.createButton();
-							button.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
-							button.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.CENTER );
-							button.setAlignmentY( 0.0f );
-							this.addComponent( button );
+							edu.cmu.cs.dennisc.croquet.Operation<?, ?> operation = edu.cmu.cs.dennisc.croquet.SelectDirectoryActionOperation.getInstance(treeSelectionState, child, null);
+							java.net.URL url = ResourceManager.getLargeIconResource( child );
+							if (child instanceof edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode) {
+								edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode directoryZipTreeNode = (edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode) child;
+								edu.cmu.cs.dennisc.zip.ZipTreeNode thumbnailNode = directoryZipTreeNode.getChildNamed( "directoryThumbnail.png" );
+								url = ResourceManager.getLargeIconResource( thumbnailNode );
+							} else {
+								url = null;
+							}
+							if( url != null ) {
+								edu.cmu.cs.dennisc.javax.swing.icons.CompositeIcon icon = new edu.cmu.cs.dennisc.javax.swing.icons.CompositeIcon( new javax.swing.ImageIcon( url ), FOLDER_SMALL_ICON );
+								operation.setSmallIcon( icon );
+							} else {
+								operation.setSmallIcon( FOLDER_LARGE_ICON );
+							}
+							if( operation != null ) {
+								operation.setName( name );
+								edu.cmu.cs.dennisc.croquet.Button button = operation.createButton();
+								button.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
+								button.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.CENTER );
+								button.setAlignmentY( 0.0f );
+								this.addComponent( button );
+							}
 						}
 					}
 				}
