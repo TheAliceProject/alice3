@@ -154,7 +154,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		org.alice.ide.preferences.programming.Configuration[] configurations = org.alice.ide.preferences.ProgrammingPreferences.getSingleton().getBuiltInPreferenceNodes();
 		ConfigurationSelectionOperation configurationSelectionOperation = new ConfigurationSelectionOperation( configurations );
 		edu.cmu.cs.dennisc.croquet.ComboBox<org.alice.ide.preferences.programming.Configuration> activeConfigurationComboBox = configurationSelectionOperation.createComboBox();
-		configurationSelectionOperation.setValue( configurations[ 0 ] );
+		configurationSelectionOperation.setSelectedItem( configurations[ 0 ] );
 		EditVariantOperation editVariantOperation = new EditVariantOperation();
 		editVariantOperation.setEnabled( false );
 		editVariantOperation.setToolTipText( "coming soon" );
@@ -179,7 +179,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 				edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() );
 
 		this.preview = new ConfigurationPreview();
-		this.preview.updateValues( configurationSelectionOperation.getValue() );
+		this.preview.updateValues( configurationSelectionOperation.getSelectedItem() );
 		this.pane = new edu.cmu.cs.dennisc.croquet.PageAxisPanel(
 				new edu.cmu.cs.dennisc.croquet.Label( "active variant:" ),
 				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 4 ),  

@@ -1123,7 +1123,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of refreshFields" );
 	
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getFocusedCode();
-		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = this.accessibleListState.getValue();
+		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = this.accessibleListState.getSelectedItem();
 		
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibles = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( this.rootField != null ) {
@@ -1667,7 +1667,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		if( this.isSceneEditorExpandedState.getValue() ) {
 			return this.getPerformEditorGeneratedSetUpMethod();
 		} else {
-			return this.getEditorsTabSelectionState().getValue();
+			return this.getEditorsTabSelectionState().getSelectedItem();
 		}
 		//		org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)this.getEditorsTabSelectionState().getCurrentTabStateOperation().getSingletonView();
 		//		if( codeEditor != null ) {
@@ -1864,23 +1864,19 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 	}
 	public final edu.cmu.cs.dennisc.alice.ast.Expression createInstanceExpression() /*throws OutOfScopeException*/{
-		return createInstanceExpression( this.getAccessibleListState().getValue() );
+		return createInstanceExpression( this.getAccessibleListState().getSelectedItem() );
 	}
 
 	public boolean isAccessibleInScope( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
 		return createInstanceExpression( accessible ) != null;
 	}
 	public final boolean isSelectedAccessibleInScope() {
-		return isAccessibleInScope( this.getAccessibleListState().getValue() );
+		return isAccessibleInScope( this.getAccessibleListState().getSelectedItem() );
 	}
 
 	@Override
-	public boolean isDragInProgress() {
-		return this.isDragInProgress;
-	}
-	@Override
 	public void setDragInProgress( boolean isDragInProgress ) {
-		this.isDragInProgress = isDragInProgress;
+		super.setDragInProgress(isDragInProgress);
 		this.currentDropReceptorComponent = null;
 	}
 

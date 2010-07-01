@@ -73,7 +73,7 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation(
 				java.util.UUID.fromString( "8e3989b2-34d6-44cf-998c-dda26662b3a0" ) ) {
 			@Override
-			public edu.cmu.cs.dennisc.croquet.Model[] getOperations() {
+			public edu.cmu.cs.dennisc.croquet.Model<?>[] getModels() {
 				return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( FieldTile.this.createPopupOperations(), edu.cmu.cs.dennisc.croquet.Model.class );
 			}
 		});
@@ -156,7 +156,7 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 	protected java.awt.Color calculateColor() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		java.awt.Color color = ide.getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
-		if( this.accessible == ide.getAccessibleListState().getValue() ) {
+		if( this.accessible == ide.getAccessibleListState().getSelectedItem() ) {
 			color = java.awt.Color.YELLOW;
 		} else {
 			if( ide.isAccessibleInScope( this.accessible ) ) {

@@ -63,7 +63,7 @@ public class FauxIDE extends IDE {
 	}
 	@Override
 	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser( javax.swing.tree.TreeNode root ) {
-		return new org.alice.ide.gallerybrowser.FauxGalleryBrowser( root );
+		return null;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.DialogOperation createRunOperation() {

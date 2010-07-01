@@ -69,7 +69,7 @@ public class IntroductionTutorial {
 
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				ide.getAccessibleListState().setValue( cameraField );
+				ide.getAccessibleListState().setSelectedItem( cameraField );
 			}
 		} );
 		

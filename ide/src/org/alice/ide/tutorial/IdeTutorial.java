@@ -316,7 +316,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	public Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > createCurrentAccessibleMethodResolver( final String methodName ) {
 		return new Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod >() {
 			public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getResolved() {
-				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = ide.getAccessibleListState().getValue();
+				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = ide.getAccessibleListState().getSelectedItem();
 				return findShortestMethod( accessible, methodName );
 			}
 		};

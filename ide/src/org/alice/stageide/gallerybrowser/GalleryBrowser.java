@@ -46,12 +46,18 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGalleryBrowser {
-	private java.util.Map<String, String> map;
+	private static java.util.Map<String, String> map;
+	static {
+		map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		map.put( "thumbnails", "gallery" );
+		map.put( "gallery", "Generic Alice Models" );
+		map.put( "characters", "Looking Glass Characters" );
+		map.put( "scenes", "Looking Glass Scenery" );
+	}
 
-	public GalleryBrowser(javax.swing.tree.TreeNode thumbnailRoot, java.util.Map<String, String> map) {
-		this.map = map;
-		this.initialize(thumbnailRoot);
-		
+	public GalleryBrowser(javax.swing.tree.TreeNode thumbnailRoot) {
+		super( thumbnailRoot );
+
 		CreateTextActionOperation createTextActionOperation = new CreateTextActionOperation();
 		CreateBillboardActionOperation createBillboardActionOperation = new CreateBillboardActionOperation();
 		CreateMyInstanceActionOperation createMyInstanceActionOperation = new CreateMyInstanceActionOperation();
@@ -80,10 +86,7 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		createPersonButton.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.CENTER );
 		createPersonButton.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
 
-		//todo
-		java.io.InputStream is = GalleryBrowser.class.getResourceAsStream("images/create_person.png");
-		java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read(edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is);
-		indirectCreatePersonActionOperation.setSmallIcon(new javax.swing.ImageIcon(image));
+		indirectCreatePersonActionOperation.setSmallIcon(new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/create_person.png")));
 		
 		this.addComponent(createPersonButton, Constraint.WEST);
 		this.addComponent(buttonPane, Constraint.EAST);
@@ -91,19 +94,45 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 
 	@Override
 	protected String getAdornedTextFor(String name, boolean isDirectory, boolean isRequestedByPath) {
-		if (this.map != null) {
-			if (this.map.containsKey(name)) {
-				name = this.map.get(name);
+		if (map != null) {
+			if (map.containsKey(name)) {
+				name = map.get(name);
 			}
 		}
 		return super.getAdornedTextFor(name, isDirectory, isRequestedByPath);
 	}
 
+	
 	@Override
-	protected void handleFileActivation(javax.swing.tree.TreeNode file) {
-		assert file.isLeaf();
-		//todo
-		new GalleryFileActionOperation(file).fire();
+	protected edu.cmu.cs.dennisc.croquet.PathControl.Initializer createInitializer() {
+		
+		return new edu.cmu.cs.dennisc.croquet.PathControl.Initializer() {
+			public edu.cmu.cs.dennisc.croquet.ActionOperation configure(edu.cmu.cs.dennisc.croquet.ActionOperation rv, javax.swing.tree.TreeNode treeNode) {
+				if (treeNode instanceof edu.cmu.cs.dennisc.zip.ZipTreeNode) {
+					edu.cmu.cs.dennisc.zip.ZipTreeNode zipTreeNode = (edu.cmu.cs.dennisc.zip.ZipTreeNode) treeNode;
+					rv.setName( zipTreeNode.getName() );
+				} else {
+					rv.setName( treeNode.toString() );
+				}
+				return rv;
+			}
+			public edu.cmu.cs.dennisc.croquet.Operation<?, ?> getOperationForLeaf(javax.swing.tree.TreeNode treeNode) {
+				String name;
+				if (treeNode instanceof edu.cmu.cs.dennisc.zip.ZipTreeNode) {
+					edu.cmu.cs.dennisc.zip.ZipTreeNode zipTreeNode = (edu.cmu.cs.dennisc.zip.ZipTreeNode) treeNode;
+					name = zipTreeNode.getName();
+				} else {
+					name = treeNode.toString();
+				}
+				if( "directoryThumbnail.png".equals( name ) ) {
+					return null;
+				} else {
+					edu.cmu.cs.dennisc.croquet.Operation<?, ?> rv = GalleryFileActionOperation.getInstance( treeNode );
+					rv.setName( name );
+					return rv;
+				}
+			}
+		};
 	}
 
 //	@Override

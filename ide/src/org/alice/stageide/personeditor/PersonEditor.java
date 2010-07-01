@@ -191,23 +191,23 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	
 	private void handleCataclysm( boolean isLifeStageChange, boolean isGenderChange, boolean isHairColorChange ) {
 		if( isLifeStageChange || isGenderChange || isHairColorChange ) {
-			this.hairSelection.handleCataclysmicChange( this.lifeStageSelection.getValue(), this.genderSelection.getValue(), this.hairColorSelection.getValue() );
+			this.hairSelection.handleCataclysmicChange( this.lifeStageSelection.getSelectedItem(), this.genderSelection.getSelectedItem(), this.hairColorSelection.getSelectedItem() );
 		}
 		if( isLifeStageChange || isGenderChange ) {
-			this.fullBodyOutfitSelection.handleCataclysmicChange( this.lifeStageSelection.getValue(), this.genderSelection.getValue() );
+			this.fullBodyOutfitSelection.handleCataclysmicChange( this.lifeStageSelection.getSelectedItem(), this.genderSelection.getSelectedItem() );
 		}
 		if( isLifeStageChange ) {
-			this.hairColorSelection.handleCataclysmicChange( this.lifeStageSelection.getValue() );
+			this.hairColorSelection.handleCataclysmicChange( this.lifeStageSelection.getSelectedItem() );
 		}
 	}
 	
 	public PersonEditor( org.alice.apis.stage.Person person ) {
 		if( person != null ) {
-			this.lifeStageSelection.setValue( person.getLifeStage() );
-			this.genderSelection.setValue( person.getGender() );
-			this.hairColorSelection.setValue( person.getHair().toString() );
+			this.lifeStageSelection.setSelectedItem( person.getLifeStage() );
+			this.genderSelection.setSelectedItem( person.getGender() );
+			this.hairColorSelection.setSelectedItem( person.getHair().toString() );
 		} else {
-			this.lifeStageSelection.setValue( org.alice.apis.stage.LifeStage.ADULT );
+			this.lifeStageSelection.setSelectedItem( org.alice.apis.stage.LifeStage.ADULT );
 			this.genderSelection.setToRandomValue();
 			this.hairColorSelection.setToRandomValue();
 		}
@@ -244,7 +244,7 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		ubiquitousPane.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		northPane.addComponent( ubiquitousPane, Constraint.CENTER );
 
-		this.tabbedPaneSelection.setValue( bodyTabState );
+		this.tabbedPaneSelection.setSelectedItem( bodyTabState );
 		final edu.cmu.cs.dennisc.croquet.FolderTabbedPane<?> tabbedPane = this.tabbedPaneSelection.createDefaultFolderTabbedPane();
 		tabbedPane.scaleFont( 1.5f );
 

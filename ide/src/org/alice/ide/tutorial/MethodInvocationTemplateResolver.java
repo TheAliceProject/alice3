@@ -54,7 +54,7 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 	}
 	protected abstract edu.cmu.cs.dennisc.croquet.DragComponent getDragComponent(edu.cmu.cs.dennisc.alice.ast.AbstractMethod method);
 	public edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved() {
-		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.IDE.getSingleton().getAccessibleListState().getValue();
+		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.IDE.getSingleton().getAccessibleListState().getSelectedItem();
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = IdeTutorial.findShortestMethod(accessible, methodName);
 		assert method != null;
 		if (method != null) {

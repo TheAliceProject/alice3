@@ -47,52 +47,32 @@ package org.alice.ide.gallerybrowser;
  */
 public abstract class AbstractGalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private static final int GAP = 4;
-	private AssetsPane assetsPane;
-
-	public AbstractGalleryBrowser() {
+	private edu.cmu.cs.dennisc.croquet.TreeSelectionState<?> treeSelectionState;
+	private static final javax.swing.ImageIcon folderIcon = new javax.swing.ImageIcon(AbstractGalleryBrowser.class.getResource("images/folder.png"));
+	private static final javax.swing.ImageIcon folderIconSmall = new javax.swing.ImageIcon(AbstractGalleryBrowser.class.getResource("images/folder24.png"));
+	
+	public AbstractGalleryBrowser( javax.swing.tree.TreeNode root ) {
 		super(GAP * 2, 0);
-	}
 
-	protected void initialize(javax.swing.tree.TreeNode rootDirectory) {
-		this.assetsPane = this.createAssetsPane(rootDirectory);
-		this.setBorder(javax.swing.BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
-		this.addComponent(this.assetsPane, Constraint.CENTER);
-	}
-
-	protected AssetsPane createAssetsPane(javax.swing.tree.TreeNode rootDirectory) {
-		// java.io.InputStream is =
-		// AbstractGalleryBrowser.class.getResourceAsStream( "images/folder.png"
-		// );
-		// java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read(
-		// edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is );
-		// javax.swing.ImageIcon folderIcon = new javax.swing.ImageIcon( image
-		// );
-		// javax.swing.ImageIcon folderIconSmall = new javax.swing.ImageIcon(
-		// image.getScaledInstance( 32, 32, java.awt.Image.SCALE_SMOOTH ) );
-		javax.swing.ImageIcon folderIcon = new javax.swing.ImageIcon(AbstractGalleryBrowser.class.getResource("images/folder.png"));
-		javax.swing.ImageIcon folderIconSmall = new javax.swing.ImageIcon(AbstractGalleryBrowser.class.getResource("images/folder24.png"));
-
-		return new AssetsPane(rootDirectory, folderIcon, folderIconSmall) {
+		this.treeSelectionState = new edu.cmu.cs.dennisc.croquet.TreeSelectionState( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "42798d37-0815-4ca8-9fb6-107d47e4642f" ), root, root ) {
 			@Override
-			protected String getTextFor(javax.swing.tree.TreeNode file, boolean isRequestedByPath) {
-				return AbstractGalleryBrowser.this.getTextFor(file, isRequestedByPath);
+			protected java.lang.Object decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+				throw new RuntimeException("todo");
 			}
-
 			@Override
-			protected void handleFileActivationFromThumbnails(javax.swing.tree.TreeNode file) {
-				super.handleFileActivationFromThumbnails(file);
-				if (file.isLeaf()) {
-					AbstractGalleryBrowser.this.handleFileActivation(file);
-				}
+			protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.lang.Object value) {
+				throw new RuntimeException("todo");
 			}
 		};
+		
+		edu.cmu.cs.dennisc.croquet.BorderPanel borderPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		borderPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
+		borderPanel.addComponent( this.treeSelectionState.createPathControl( this.createInitializer() ), Constraint.NORTH );
+		
+		this.addComponent( borderPanel, Constraint.CENTER );
 	}
 
-	protected javax.swing.tree.TreeNode getRootDirectory() {
-		return this.assetsPane.getPathControl().getRootDirectory();
-	}
-
-	protected abstract void handleFileActivation(javax.swing.tree.TreeNode file);
+	protected abstract edu.cmu.cs.dennisc.croquet.PathControl.Initializer createInitializer();
 
 	protected String getAdornedTextFor(String name, boolean isDirectory, boolean isRequestedByPath) {
 		String rv;

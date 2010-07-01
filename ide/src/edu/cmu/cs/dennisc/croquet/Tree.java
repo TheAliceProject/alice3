@@ -46,10 +46,11 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class Tree<E> extends JComponent< javax.swing.JTree > {
-//	public KTree( javax.swing.tree.TreeModel treeModel ) {
-//		this.getJComponent().setModel( treeModel );
-//	}
+public class Tree<E> extends ViewController< javax.swing.JTree, TreeSelectionState<E> > {
+	public Tree( TreeSelectionState<E> model ) {
+		super( model );
+	}
+
 	@Override
 	protected javax.swing.JTree createAwtComponent() {
 		return new javax.swing.JTree();
@@ -77,31 +78,10 @@ public class Tree<E> extends JComponent< javax.swing.JTree > {
 		this.getAwtComponent().setRootVisible( isRootVisible );
 	}
 	
-	@Deprecated
-	public void addTreeSelectionListener( javax.swing.event.TreeSelectionListener treeSelectionListener ) {
-		this.getAwtComponent().addTreeSelectionListener( treeSelectionListener );
+	/*package-private*/ void setSwingTreeModel( javax.swing.tree.TreeModel treeModel ) {
+		this.getAwtComponent().setModel( treeModel );
 	}
-	@Deprecated
-	public void removeTreeSelectionListener( javax.swing.event.TreeSelectionListener treeSelectionListener ) {
-		this.getAwtComponent().removeTreeSelectionListener( treeSelectionListener );
-	}
-
-	@Deprecated
-	public javax.swing.tree.TreeModel getModel() {
-		return this.getAwtComponent().getModel();
-	}
-
-	@Deprecated
-	public void setSwingTreeModel( javax.swing.tree.TreeModel model ) {
-		this.getAwtComponent().setModel( model );
-	}
-	@Deprecated
-	public void setSelectionRow( int selectionRow ) {
-		this.getAwtComponent().setSelectionRow( selectionRow );
-	}
-
-	@Deprecated
-	public void setItemSelectionOperation( ListSelectionState< E > operation ) {
-		throw new RuntimeException( "todo" );
+	/*package-private*/ void setSwingTreeSelectionModel( javax.swing.tree.TreeSelectionModel treeSelectionModel ) {
+		this.getAwtComponent().setSelectionModel( treeSelectionModel );
 	}
 }

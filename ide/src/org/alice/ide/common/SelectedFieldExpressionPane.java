@@ -79,7 +79,7 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
-		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = getIDE().getAccessibleListState().getValue();
+		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = getIDE().getAccessibleListState().getSelectedItem();
 		if( accessible != null ) {
 			return accessible.getValueType();
 		} else {

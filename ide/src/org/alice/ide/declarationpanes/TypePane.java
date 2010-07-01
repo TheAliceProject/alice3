@@ -131,7 +131,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 		}
 
 		this.typeSelectionOperation.setEnabled( isTypeComboBoxEnabled );
-		this.typeSelectionOperation.setValue( componentType );
+		this.typeSelectionOperation.setSelectedItem( componentType );
 		//todo: listen to changes on typeProperty
 
 		isArrayProperty.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
@@ -147,7 +147,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			}
 			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-				typeSelectionOperation.setValue( (edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>)e.getValue() );
+				typeSelectionOperation.setSelectedItem( (edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>)e.getValue() );
 			}
 		} );
 		
@@ -168,7 +168,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	}
 	
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getValueType() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rv = this.typeSelectionOperation.getValue();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rv = this.typeSelectionOperation.getSelectedItem();
 		if( rv != null ) {
 			if( this.isArrayStateOperation.getValue() ) {
 				rv = rv.getArrayType();
@@ -189,6 +189,6 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	}
 	
 	private void updateTypeProperty() {
-		this.typeProperty.setValue( this.typeSelectionOperation.getValue() );
+		this.typeProperty.setValue( this.typeSelectionOperation.getSelectedItem() );
 	}
 }

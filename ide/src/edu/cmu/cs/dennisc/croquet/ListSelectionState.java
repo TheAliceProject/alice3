@@ -58,7 +58,7 @@ public abstract class ListSelectionState<E> extends Model< ListSelectionState<E>
 
 	public void addAndInvokeValueObserver(ValueObserver<E> valueObserver) {
 		this.addValueObserver(valueObserver);
-		valueObserver.changed(this.getValue());
+		valueObserver.changed(this.getSelectedItem());
 	}
 
 	public void removeValueObserver(ValueObserver<E> valueObserver) {
@@ -211,9 +211,7 @@ public abstract class ListSelectionState<E> extends Model< ListSelectionState<E>
 
 	};
 
-	private SingleListSelectionModel listSelectionModel = new SingleListSelectionModel();
-
-	class ComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
+	private class ComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
 		private java.util.ArrayList<E> items = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 
 		public Object getSelectedItem() {
@@ -296,6 +294,7 @@ public abstract class ListSelectionState<E> extends Model< ListSelectionState<E>
 		}
 	}
 
+	private final SingleListSelectionModel listSelectionModel = new SingleListSelectionModel();
 	private final ComboBoxModel comboBoxModel = new ComboBoxModel();
 
 	private ListSelectionState(Group group, java.util.UUID individualUUID, int selectedIndex, E... items) {
@@ -309,16 +308,15 @@ public abstract class ListSelectionState<E> extends Model< ListSelectionState<E>
 	}
 
 	protected abstract E decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder);
-
 	protected abstract void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, E value);
 
 
-	public E getValue() {
+	public E getSelectedItem() {
 		return (E) this.comboBoxModel.getSelectedItem();
 	}
 
-	public void setValue(E value) {
-		this.comboBoxModel.setSelectedItem(value);
+	public void setSelectedItem(E selectedItem) {
+		this.comboBoxModel.setSelectedItem(selectedItem);
 	}
 
 	public java.util.Iterator< E > iterator() {
@@ -386,28 +384,6 @@ public abstract class ListSelectionState<E> extends Model< ListSelectionState<E>
 		java.util.Collection<E> items = java.util.Collections.emptyList();
 		this.setListData(-1, items);
 	}
-
-	// private class ItemListener implements java.awt.event.ItemListener {
-	// private Component< ? > component;
-	// public ItemListener( Component< ? > component ) {
-	// this.component = component;
-	// }
-	// public void itemStateChanged( java.awt.event.ItemEvent e ) {
-	// ItemSelectionOperation.this.listSelectionModel.setMostRecentEventAndComponent(
-	// e, this.component );
-	// }
-	// };
-	// private class ListSelectionListener implements
-	// javax.swing.event.ListSelectionListener {
-	// private Component< ? > component;
-	// public ListSelectionListener( Component< ? > component ) {
-	// this.component = component;
-	// }
-	// public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-	// ItemSelectionOperation.this.listSelectionModel.setMostRecentEventAndComponent(
-	// e, this.component );
-	// }
-	// };
 
 	public ComboBox<E> createComboBox() {
 		ComboBox<E> rv = new ComboBox<E>( this ) {
@@ -558,7 +534,7 @@ public abstract class ListSelectionState<E> extends Model< ListSelectionState<E>
 	}
 
 	public Menu<ListSelectionState<E>> createMenu() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: ItemSelectionOperation createMenu()");
+		edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: ListSelectionState createMenu()");
 		Menu<ListSelectionState<E>> rv = new Menu<ListSelectionState<E>>( this ) {
 			@Override
 			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {

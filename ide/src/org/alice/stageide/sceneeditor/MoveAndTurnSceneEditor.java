@@ -337,7 +337,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		final org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instance;
 		//declaringType.fields.add( field );
 		this.putInstanceForField( field, transformable );
-		this.getIDE().getAccessibleListState().setValue( field );
+		this.getIDE().getAccessibleListState().setSelectedItem( field );
 		final org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera = this.scene.findFirstMatch( org.alice.apis.moveandturn.SymmetricPerspectiveCamera.class );
 		if( isAnimationDesired && camera != null && transformable instanceof org.alice.apis.moveandturn.Model ) {
 			new Thread() {
@@ -362,7 +362,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.handleFieldCreation( addedField, true );
 		if (addedField.getDesiredValueType().isAssignableFrom(CameraMarker.class))
 		{
-			this.mainCameraMarkerList.setValue(this.getCameraMarkerForField(addedField));
+			this.mainCameraMarkerList.setSelectedItem(this.getCameraMarkerForField(addedField));
 		}
 	}
 	
@@ -394,7 +394,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			}
 		}
 		
-		FieldDeclaredInAlice sceneMarkerSelectedValue = this.sceneMarkerFieldList.getValue();
+		FieldDeclaredInAlice sceneMarkerSelectedValue = this.sceneMarkerFieldList.getSelectedItem();
 		int sceneMarkerSelectedIndex = -1;
 		if (sceneMarkerSelectedValue != null)
 		{
@@ -402,7 +402,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 		this.sceneMarkerFieldList.setListData(sceneMarkerSelectedIndex, cameraMarkerFields);
 
-		FieldDeclaredInAlice startingViewSelectedValue = this.startingViewMarkerFieldList.getValue();
+		FieldDeclaredInAlice startingViewSelectedValue = this.startingViewMarkerFieldList.getSelectedItem();
 		int startingViewSelectedIndex = -1;
 		if (startingViewSelectedValue != null)
 		{
@@ -420,7 +420,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			}
 		}
 		cameraMarkerFieldsAndOrthoOptions.addAll(this.orthographicCameraMarkers);
-		CameraMarker mainCameraViewSelectedValue = this.mainCameraMarkerList.getValue();
+		CameraMarker mainCameraViewSelectedValue = this.mainCameraMarkerList.getSelectedItem();
 		int mainCameraViewSelectedIndex = -1;
 		if (mainCameraViewSelectedValue != null)
 		{ 
@@ -658,7 +658,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				//Switch the main view to the previously selected index
 				if (this.expandedViewSelectedMarker != null)
 				{
-					this.mainCameraMarkerList.setValue(this.expandedViewSelectedMarker);
+					this.mainCameraMarkerList.setSelectedItem(this.expandedViewSelectedMarker);
 				}
 			}
 			
@@ -676,12 +676,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				}
 			
 				//Cache the currently selected view index
-				this.expandedViewSelectedMarker = this.mainCameraMarkerList.getValue();
+				this.expandedViewSelectedMarker = this.mainCameraMarkerList.getSelectedItem();
 				
 				//Switch the main view to the starting view
-				FieldDeclaredInAlice startIngViewField = this.startingViewMarkerFieldList.getValue();
+				FieldDeclaredInAlice startIngViewField = this.startingViewMarkerFieldList.getSelectedItem();
 				if( startIngViewField != null ) {
-					this.mainCameraMarkerList.setValue(this.getCameraMarkerForField(startIngViewField));
+					this.mainCameraMarkerList.setSelectedItem(this.getCameraMarkerForField(startIngViewField));
 				} else {
 					PrintUtilities.println( "todo: handle cfAm == null" );
 				}
@@ -740,7 +740,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		org.alice.apis.moveandturn.Element element = org.alice.apis.moveandturn.Element.getElement( sgTransformable );
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldForInstanceInJava( element );
 		if( field != null ) {
-			this.getIDE().getAccessibleListState().setValue( field );
+			this.getIDE().getAccessibleListState().setSelectedItem( field );
 		}
 	}
 
@@ -807,7 +807,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		if( code != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = code.getDeclaringType();
 			if( type != null ) {
-				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = this.getIDE().getAccessibleListState().getValue();
+				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = this.getIDE().getAccessibleListState().getSelectedItem();
 				if( accessible instanceof AbstractField ) {
 					AbstractField selectedField = (AbstractField)accessible;
 					if( selectedField != null ) {
@@ -823,7 +823,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 								} else {
 									for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
 										if( type.isAssignableFrom( field.getValueType() ) ) {
-											this.getIDE().getAccessibleListState().setValue( field );
+											this.getIDE().getAccessibleListState().setSelectedItem( field );
 											break;
 										}
 									}
@@ -1019,8 +1019,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		FieldDeclaredInAlice startingPointOfViewField = getStartingPointOfViewField();
 		if (startingPointOfViewField != null)
 		{	
-			this.startingViewMarkerFieldList.setValue(startingPointOfViewField);
-			this.mainCameraMarkerList.setValue(this.getCameraMarkerForField(startingPointOfViewField));
+			this.startingViewMarkerFieldList.setSelectedItem(startingPointOfViewField);
+			this.mainCameraMarkerList.setSelectedItem(this.getCameraMarkerForField(startingPointOfViewField));
 		}
 		sidePane.showSceneGraphView(this.scene.getSGComposite());
 		//Turn animation back on
@@ -1144,7 +1144,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			
 			getIDE().getSceneEditor().putInstanceForInitializingPendingField( defaultViewField, defaultViewMarker );
 			this.sceneType.fields.add( this.sceneType.fields.size(), defaultViewField );
-			this.startingViewMarkerFieldList.setValue(defaultViewField);
+			this.startingViewMarkerFieldList.setSelectedItem(defaultViewField);
 			ensureCodeIsUpToDate();
 			
 			IDE.getSingleton().refreshAccessibles();
@@ -1166,7 +1166,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		{
 			//PrintUtilities.println( "merge: todo getPointOfViewFieldForField" );
 			try {
-				return this.startingViewMarkerFieldList.getValue();
+				return this.startingViewMarkerFieldList.getSelectedItem();
 			} catch( NullPointerException npe ) {
 				return null;
 			}
@@ -1409,7 +1409,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	
 	public boolean isCameraMarkerActive( CameraMarker marker )
 	{
-		CameraMarker activeMarker = this.mainCameraMarkerList.getValue();
+		CameraMarker activeMarker = this.mainCameraMarkerList.getSelectedItem();
 		return marker == activeMarker;
 	}
 	

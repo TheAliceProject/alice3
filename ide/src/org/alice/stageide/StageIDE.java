@@ -424,18 +424,6 @@ public class StageIDE extends org.alice.ide.IDE {
 		return new org.alice.stageide.operations.help.AboutOperation();
 	}
 
-	protected java.util.Map< String, String > createGalleryThumbnailsMap() {
-		java.util.Map< String, String > rv = new java.util.HashMap< String, String >();
-		rv.put( "thumbnails", "gallery" );
-//		rv.put( "org.alice.apis.moveandturn.gallery", "Generic Alice Models" );
-//		rv.put( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters", "Looking Glass Characters" );
-//		rv.put( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.scenes", "Looking Glass Scenery" );
-		rv.put( "gallery", "Generic Alice Models" );
-		rv.put( "characters", "Looking Glass Characters" );
-		rv.put( "scenes", "Looking Glass Scenery" );
-		return rv;
-	}
-
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType, String > mapTypeToText;
 
 	private static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getDeclaredMethod( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, String name, Class< ? >... paramClses ) {
@@ -620,8 +608,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 	@Override
 	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser( javax.swing.tree.TreeNode root ) {
-		java.util.Map< String, String > map = this.createGalleryThumbnailsMap();
-		return new org.alice.stageide.gallerybrowser.GalleryBrowser( root, map );
+		return new org.alice.stageide.gallerybrowser.GalleryBrowser( root );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getEnumTypeForInterfaceType( edu.cmu.cs.dennisc.alice.ast.AbstractType interfaceType ) {

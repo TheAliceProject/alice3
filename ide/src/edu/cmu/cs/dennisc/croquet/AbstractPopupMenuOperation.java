@@ -51,7 +51,7 @@ public abstract class AbstractPopupMenuOperation extends Operation<AbstractPopup
 	public AbstractPopupMenuOperation( java.util.UUID individualUUID ) {
 		super( POPUP_MENU_GROUP, individualUUID );
 	}
-	public abstract Model[] getOperations();
+	public abstract Model<?>[] getModels();
 	@Override
 	protected PopupMenuOperationContext createContext( ModelContext< ? > parent, java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return parent.createPopupMenuOperationContext( this, e, viewController );
@@ -100,7 +100,7 @@ public abstract class AbstractPopupMenuOperation extends Operation<AbstractPopup
 				super.handleRemovedFrom( parent );
 			}
 		};
-		Application.addMenuElements( rv, this.getOperations() );
+		Application.addMenuElements( rv, this.getModels() );
 		return rv;
 	}
 }

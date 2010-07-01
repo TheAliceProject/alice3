@@ -124,7 +124,7 @@ public class SelectProjectToOpenPanel extends edu.cmu.cs.dennisc.croquet.BorderP
 		((MyProjectsPane) this.myProjectsTab.getMainComponent()).refresh();
 	}
 	public java.net.URI getSelectedURI() {
-		edu.cmu.cs.dennisc.croquet.PredeterminedTab current = this.tabSelectionOperation.getValue();
+		edu.cmu.cs.dennisc.croquet.PredeterminedTab current = this.tabSelectionOperation.getSelectedItem();
 		if( current != null ) {
 			return ((TabContentPanel)(current.getMainComponent())).getSelectedURI();
 		} else {
@@ -138,7 +138,7 @@ public class SelectProjectToOpenPanel extends edu.cmu.cs.dennisc.croquet.BorderP
 		} else {
 			tab = this.myProjectsTab; // todo: recentPane?
 		}
-		this.tabSelectionOperation.setValue( tab );
+		this.tabSelectionOperation.setSelectedItem( tab );
 		//operation.setState( true );
 //		this.tabSelectionOperation.setCurrentTabStateOperation(operation);
 	}

@@ -46,14 +46,18 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 class GalleryFileActionOperation extends AbstractGalleryDeclareFieldOperation<org.alice.ide.declarationpanes.CreateFieldFromGalleryPane> {
-	private javax.swing.tree.TreeNode file;
-	public GalleryFileActionOperation(javax.swing.tree.TreeNode file) {
+	private javax.swing.tree.TreeNode treeNode;
+	public static GalleryFileActionOperation getInstance( javax.swing.tree.TreeNode treeNode ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: GalleryFileActionOperation getInstance" );
+		return new GalleryFileActionOperation( treeNode );
+	}
+	private GalleryFileActionOperation(javax.swing.tree.TreeNode treeNode) {
 		super( java.util.UUID.fromString( "19e8291e-3b0b-48f5-8bc9-1d02b754f9d4" ) );
-		this.file = file;
+		this.treeNode = treeNode;
 	}
 	@Override
 	protected org.alice.ide.declarationpanes.CreateFieldFromGalleryPane prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.CreateFieldFromGalleryPane > context ) {
-		return new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane(this.getOwnerType(), this.file);
+		return new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane(this.getOwnerType(), this.treeNode);
 	}
 	
 	//"Create New Instance"

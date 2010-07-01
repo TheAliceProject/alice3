@@ -83,14 +83,14 @@ public abstract class ZipTreeNode implements javax.swing.tree.TreeNode, Comparab
 		return this.name;
 	}
 	public int compareTo(edu.cmu.cs.dennisc.zip.ZipTreeNode other) {
-		if( this.isLeaf() ) {
-			if( other.isLeaf() ) {
+		if( this.getAllowsChildren() ) {
+			if( other.getAllowsChildren() ) {
 				return this.getName().compareTo( other.getName() );
 			} else {
 				return 1;
 			}
 		} else {
-			if( other.isLeaf() ) {
+			if( other.getAllowsChildren() ) {
 				return -1;
 			} else {
 				return this.getName().compareTo( other.getName() );
