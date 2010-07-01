@@ -425,7 +425,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			//this.root.setRightComponent( null );
 			this.right.setVisible( false );
 			this.root.setDividerSize( 0 );
-			this.left.setDividerLocation( this.getFrame().getHeight() - 340 );
+			this.left.setDividerLocation( this.getFrame().getHeight() - 325 );
 		} else {
 			this.left.setResizeWeight( 0.0 );
 			this.root.setLeftComponent( this.left );

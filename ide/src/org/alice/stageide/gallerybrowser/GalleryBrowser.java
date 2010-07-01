@@ -53,6 +53,10 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				DirectoryView.this.handleSelectionChanged( nextValue );
 			}
 		};
+//		@Override
+//		protected boolean isMaximumSizeClampedToPreferredSize() {
+//			return true;
+//		}
 		@Override
 		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 			super.handleAddedTo(parent);
@@ -170,7 +174,10 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		borderPanel.setBackgroundColor( null );
 		borderPanel.addComponent( this.treeSelectionState.createPathControl( this.createInitializer() ), Constraint.NORTH );
 
-		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( new DirectoryView() );
+		edu.cmu.cs.dennisc.croquet.BorderPanel clampSizePanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		clampSizePanel.addComponent( new DirectoryView(), Constraint.WEST );
+		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( clampSizePanel );
+		scrollPane.getAwtComponent().getHorizontalScrollBar().setUnitIncrement( 16 );
 		scrollPane.setBorder( null );
 		scrollPane.setBackgroundColor( null );
 		borderPanel.addComponent( scrollPane, Constraint.CENTER );

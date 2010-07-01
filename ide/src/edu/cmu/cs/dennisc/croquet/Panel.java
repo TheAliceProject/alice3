@@ -55,14 +55,17 @@ public abstract class Panel extends JComponent< javax.swing.JPanel > {
 			this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 			this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 		}
-//		@Override
-//		public java.awt.Dimension getMaximumSize() {
-//			if( true ) {
-//				return this.getPreferredSize();
-//			} else {
-//				return super.getMaximumSize();
-//			}
-//		}
+		@Override
+		public java.awt.Dimension getMaximumSize() {
+			if( Panel.this.isMaximumSizeClampedToPreferredSize() ) {
+				return this.getPreferredSize();
+			} else {
+				return super.getMaximumSize();
+			}
+		}
+	}
+	protected boolean isMaximumSizeClampedToPreferredSize() {
+		return false;
 	}
 	protected javax.swing.JPanel createJPanel() {
 		return new DefaultJPanel();
