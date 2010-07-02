@@ -125,7 +125,7 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private static final javax.swing.ImageIcon FOLDER_SMALL_ICON = new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/folder24.png"));
 	
 	public GalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> root ) {
-		super(GAP * 2, 0);
+		//super(GAP * 2, 0);
 
 		this.treeSelectionState = new edu.cmu.cs.dennisc.croquet.TreeSelectionState<String>( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "42798d37-0815-4ca8-9fb6-107d47e4642f" ), root, root ) {
 			@Override
@@ -155,9 +155,6 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		buttonPane.addComponent(fromFilePane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH);
 		buttonPane.addComponent(bonusPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.SOUTH);
 
-		// this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4,
-		// 4 ) );
-		
 		
 		this.setBackgroundColor(new java.awt.Color(220, 220, 255));
 
@@ -168,7 +165,7 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 
 		indirectCreatePersonActionOperation.setSmallIcon(new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/create_person.png")));
 		
-		edu.cmu.cs.dennisc.croquet.BorderPanel borderPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		edu.cmu.cs.dennisc.croquet.BorderPanel borderPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel( 0, GAP );
 		borderPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
 		borderPanel.setBackgroundColor( null );
 		borderPanel.addComponent( this.treeSelectionState.createPathControl( this.createInitializer() ), Constraint.NORTH );

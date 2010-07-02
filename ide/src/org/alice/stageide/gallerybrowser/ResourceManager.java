@@ -53,13 +53,19 @@ public class ResourceManager {
 		if( treeNode != null ) {
 			String path = treeNode.getValue();
 			String resourceName = path.substring( PACKAGE_NAME_PREFIX.length()+1 );
-			java.net.URL rv = ResourceManager.class.getResource( resourceName );
-			if( rv != null ) {
-				//pass
+			System.out.println( resourceName );
+			if( resourceName.startsWith( "images/org/alice/apis/moveandturn/gallery/environments/grounds/" ) ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle grounds" );
+				return null;
 			} else {
-				System.err.println( resourceName );
+				java.net.URL rv = ResourceManager.class.getResource( resourceName );
+				if( rv != null ) {
+					//pass
+				} else {
+					System.err.println( resourceName );
+				}
+				return rv;
 			}
-			return rv;
 		} else {
 			return null;
 		}
@@ -73,12 +79,20 @@ public class ResourceManager {
 		}
 	}
 	public static javax.swing.Icon getSmallIcon(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
-		javax.swing.Icon largeIcon = getLargeIcon(treeNode);
-		if( largeIcon != null ) {
-			return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon(largeIcon, 32, 32 );
+		java.net.URL url = getLargeIconResource(treeNode);
+		if( url != null ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: use scaled icon" );
+			return new javax.swing.ImageIcon( new javax.swing.ImageIcon( url ).getImage().getScaledInstance( 32, 32, java.awt.Image.SCALE_FAST ) );
+			//return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( new javax.swing.ImageIcon( url ).getImage(), 32, 32 );
 		} else {
 			return null;
 		}
+//		javax.swing.Icon largeIcon = getLargeIcon(treeNode);
+//		if( largeIcon != null ) {
+//			return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon(largeIcon, 32, 32 );
+//		} else {
+//			return null;
+//		}
 	}
 	
 //	private static String convertLargeIconResourceNameToShortIconResourceName( String largeIconResourceName ) {
@@ -115,7 +129,12 @@ public class ResourceManager {
 	}
 	
 	private static java.net.URL getLargeIconResourceForGalleryClassName( String className ) {
-		return ResourceManager.class.getResource( getLargeIconResourceNameForClassName( className ) );
+		if( className.startsWith( "org.alice.apis.moveandturn.gallery.environments.grounds." ) ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle grounds" );
+			return null;
+		} else {
+			return ResourceManager.class.getResource( getLargeIconResourceNameForClassName( className ) );
+		}
 	}
 	public static javax.swing.Icon getLargeIconForGalleryClassName( String className ) {
 		java.net.URL url = getLargeIconResourceForGalleryClassName(className);
@@ -125,7 +144,31 @@ public class ResourceManager {
 			return null;
 		}
 	}
-//	public static java.net.URL getSmallIconResourceForGalleryClassName( String className ) {
+	public static javax.swing.Icon getSmallIconForGalleryClassName(String className) {
+		java.net.URL url = getLargeIconResourceForGalleryClassName(className);
+		if( url != null ) {
+//			try {
+//				java.awt.image.BufferedImage image = javax.imageio.ImageIO.read( url );
+//				return new javax.swing.ImageIcon( image.getScaledInstance( 32, 32, java.awt.Image.SCALE_FAST ) );
+//				//return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon(image, 32, 32);
+//			} catch( java.io.IOException ioe) {
+//				throw new RuntimeException( ioe );
+//			}
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: use scaled icon" );
+			return new javax.swing.ImageIcon( new javax.swing.ImageIcon( url ).getImage().getScaledInstance( 32, 32, java.awt.Image.SCALE_FAST ) );
+			//return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( new javax.swing.ImageIcon( url ).getImage(), 32, 32 );
+		} else {
+			return null;
+		}
+//		javax.swing.Icon largeIcon = getLargeIconForGalleryClassName(className);
+//		if( largeIcon != null ) {
+//			return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon(largeIcon, 32, 32 );
+//		} else {
+//			return null;
+//		}
+	}
+
+	//	public static java.net.URL getSmallIconResourceForGalleryClassName( String className ) {
 //		return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( ResourceManager.class.getResource( getLargeIconResourceNameForClassName(className) ) ) );
 //	}
 	

@@ -45,12 +45,12 @@ package edu.cmu.cs.dennisc.javax.swing.icons;
 /**
  * @author Dennis Cosgrove
  */
-public class ScaledIcon implements javax.swing.Icon {
-	private javax.swing.Icon icon;
+public class ScaledImageIcon implements javax.swing.Icon {
+	private java.awt.Image image;
 	private int width;
 	private int height;
-	public ScaledIcon( javax.swing.Icon icon, int width, int height ) {
-		this.icon = icon;
+	public ScaledImageIcon( java.awt.Image image, int width, int height ) {
+		this.image = image;
 		this.width = width;
 		this.height = height;
 	}
@@ -68,12 +68,17 @@ public class ScaledIcon implements javax.swing.Icon {
 ////		g2.fillRect(x, y, this.width, this.height);
 ////		g2.setPaint( prevPaint );
 //
-		java.awt.geom.AffineTransform prevTransform = g2.getTransform();
-		java.awt.geom.AffineTransform transform = new java.awt.geom.AffineTransform();
-		transform.translate( x, y );
-		transform.scale( this.width/(double)this.icon.getIconWidth(), this.height/(double)this.icon.getIconHeight() );
-		g2.setTransform( transform );
-		this.icon.paintIcon(c, g2, 0, 0);
-		g2.setTransform( prevTransform );
+		int imageWidth = this.image.getWidth( c );
+		int imageHeight = this.image.getHeight( c );
+		if( imageWidth > 0 && imageHeight > 0 ) {
+			java.awt.geom.AffineTransform prevTransform = g2.getTransform();
+			java.awt.geom.AffineTransform transform = new java.awt.geom.AffineTransform();
+			transform.translate( x, y );
+			transform.scale( this.width/(double)imageWidth, this.height/(double)imageHeight );
+			g2.setTransform( transform );
+			g.drawImage( this.image, 0, 0, c );
+			g2.setTransform( prevTransform );
+		}
+		
 	}
 }
