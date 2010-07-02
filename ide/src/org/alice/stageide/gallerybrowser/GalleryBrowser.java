@@ -80,17 +80,16 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 							this.addComponent( new GalleryDragComponent( child, name ) );
 						} else {
 							edu.cmu.cs.dennisc.croquet.Operation<?, ?> operation = edu.cmu.cs.dennisc.croquet.SelectDirectoryActionOperation.getInstance(treeSelectionState, child, null);
-							java.net.URL url = ResourceManager.getLargeIconResource( child );
+							javax.swing.Icon icon;
 							if (child instanceof edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode) {
 								edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode directoryZipTreeNode = (edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode) child;
 								edu.cmu.cs.dennisc.zip.ZipTreeNode thumbnailNode = directoryZipTreeNode.getChildNamed( "directoryThumbnail.png" );
-								url = ResourceManager.getLargeIconResource( thumbnailNode );
+								icon = ResourceManager.getLargeIcon( thumbnailNode );
 							} else {
-								url = null;
+								icon = ResourceManager.getLargeIcon( child );
 							}
-							if( url != null ) {
-								edu.cmu.cs.dennisc.javax.swing.icons.CompositeIcon icon = new edu.cmu.cs.dennisc.javax.swing.icons.CompositeIcon( new javax.swing.ImageIcon( url ), FOLDER_SMALL_ICON );
-								operation.setSmallIcon( icon );
+							if( icon != null ) {
+								operation.setSmallIcon( new edu.cmu.cs.dennisc.javax.swing.icons.CompositeIcon( icon, FOLDER_SMALL_ICON ) );
 							} else {
 								operation.setSmallIcon( FOLDER_LARGE_ICON );
 							}
@@ -126,7 +125,7 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private static final javax.swing.ImageIcon FOLDER_SMALL_ICON = new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/folder24.png"));
 	
 	public GalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> root ) {
-		super(GAP * 2, 0);
+		//super(GAP * 2, 0);
 
 		this.treeSelectionState = new edu.cmu.cs.dennisc.croquet.TreeSelectionState<String>( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "42798d37-0815-4ca8-9fb6-107d47e4642f" ), root, root ) {
 			@Override
@@ -156,9 +155,6 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		buttonPane.addComponent(fromFilePane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH);
 		buttonPane.addComponent(bonusPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.SOUTH);
 
-		// this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4,
-		// 4 ) );
-		
 		
 		this.setBackgroundColor(new java.awt.Color(220, 220, 255));
 
@@ -169,7 +165,7 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 
 		indirectCreatePersonActionOperation.setSmallIcon(new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/create_person.png")));
 		
-		edu.cmu.cs.dennisc.croquet.BorderPanel borderPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		edu.cmu.cs.dennisc.croquet.BorderPanel borderPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel( 0, GAP );
 		borderPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
 		borderPanel.setBackgroundColor( null );
 		borderPanel.addComponent( this.treeSelectionState.createPathControl( this.createInitializer() ), Constraint.NORTH );
@@ -243,6 +239,7 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				if( name != null ) {
 					edu.cmu.cs.dennisc.croquet.Operation<?, ?> rv = GalleryFileActionOperation.getInstance( treeNode );
 					rv.setName( name );
+					rv.setSmallIcon( ResourceManager.getSmallIcon(treeNode) );
 					return rv;
 				} else {
 					return null;

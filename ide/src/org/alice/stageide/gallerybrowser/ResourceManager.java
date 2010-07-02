@@ -46,28 +46,112 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class ResourceManager {
+	private static final int SMALL_ICON_SIZE = 32;
 	private static final String PACKAGE_NAME_PREFIX = ResourceManager.class.getPackage().getName();
+	
 	private ResourceManager() {
 	}
-	public static java.net.URL getLargeIconResource(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
+	private static javax.swing.Icon getSmallIconFor( javax.swing.Icon largeIcon ) {
+		if( largeIcon != null ) {
+			return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( ((javax.swing.ImageIcon)largeIcon).getImage(), SMALL_ICON_SIZE, SMALL_ICON_SIZE );
+			//return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( largeIcon, SMALL_ICON_SIZE, SMALL_ICON_SIZE );
+		} else {
+			//todo
+			return new edu.cmu.cs.dennisc.javax.swing.icons.ShapeIcon( new java.awt.geom.Ellipse2D.Float( 0, 0, SMALL_ICON_SIZE-8, SMALL_ICON_SIZE-8 ), java.awt.Color.LIGHT_GRAY, java.awt.Color.DARK_GRAY, 4, 4, 4, 4 );
+		}
+	}
+	private static java.net.URL getLargeIconResource(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
 		if( treeNode != null ) {
 			String path = treeNode.getValue();
 			String resourceName = path.substring( PACKAGE_NAME_PREFIX.length()+1 );
-			java.net.URL rv = ResourceManager.class.getResource( resourceName );
-			if( rv != null ) {
-				//pass
+			System.out.println( resourceName );
+			if( resourceName.startsWith( "images/org/alice/apis/moveandturn/gallery/environments/grounds/" ) ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle grounds" );
+				return null;
 			} else {
-				System.err.println( resourceName );
+				java.net.URL rv = ResourceManager.class.getResource( resourceName );
+				if( rv != null ) {
+					//pass
+				} else {
+					System.err.println( resourceName );
+				}
+				return rv;
 			}
-			return rv;
 		} else {
 			return null;
 		}
 	}
-	public static java.net.URL getLargeIconResourceForGalleryClassName( String className ) {
-		return ResourceManager.class.getResource( "images/" + className.replace( '.', '/' ) + ".png" );
+	public static javax.swing.Icon getLargeIcon(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
+		java.net.URL url = getLargeIconResource(treeNode);
+		if( url != null ) {
+			return new javax.swing.ImageIcon( url );
+		} else {
+			return null;
+		}
+	}
+	public static javax.swing.Icon getSmallIcon(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
+		return getSmallIconFor( getLargeIcon(treeNode) );
+//		javax.swing.Icon largeIcon = getLargeIcon(treeNode);
+//		if( largeIcon != null ) {
+//			return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon(largeIcon, SMALL_ICON_SIZE, SMALL_ICON_SIZE );
+//		} else {
+//			return null;
+//		}
 	}
 	
+//	private static String convertLargeIconResourceNameToShortIconResourceName( String largeIconResourceName ) {
+//		int i = largeIconResourceName.lastIndexOf( "/" );
+//		if( i != -1 ) {
+//			return largeIconResourceName.substring( 0, i+1 ) + "small_" + largeIconResourceName.substring( i+1 );
+//		} else {
+//			return null;
+//		}
+//	}
+//	public static java.net.URL getSmallIconResource(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
+//		if( treeNode != null ) {
+//			String path = treeNode.getValue();
+//			String resourceName = path.substring( PACKAGE_NAME_PREFIX.length()+1 );
+//			
+//			resourceName = convertLargeIconResourceNameToShortIconResourceName( resourceName );
+//			if( resourceName != null ) {
+//				java.net.URL rv = ResourceManager.class.getResource( resourceName );
+//				if( rv != null ) {
+//					//pass
+//				} else {
+//					System.err.println( resourceName );
+//				}
+//				return rv;
+//			} else {
+//				return null;
+//			}
+//		} else {
+//			return null;
+//		}
+//	}
+	private static String getLargeIconResourceNameForClassName( String className ) {
+		return "images/" + className.replace( '.', '/' ) + ".png";
+	}
+	
+	private static java.net.URL getLargeIconResourceForGalleryClassName( String className ) {
+		if( className.startsWith( "org.alice.apis.moveandturn.gallery.environments.grounds." ) ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle grounds" );
+			return null;
+		} else {
+			return ResourceManager.class.getResource( getLargeIconResourceNameForClassName( className ) );
+		}
+	}
+	public static javax.swing.Icon getLargeIconForGalleryClassName( String className ) {
+		java.net.URL url = getLargeIconResourceForGalleryClassName(className);
+		if( url != null ) {
+			return new javax.swing.ImageIcon( url );
+		} else {
+			return null;
+		}
+	}
+	public static javax.swing.Icon getSmallIconForGalleryClassName(String className) {
+		return getSmallIconFor( getLargeIconForGalleryClassName(className) );
+	}
+
 	public static edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedBox( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
 		String path = treeNode.getValue();
 		String resourceName = "boxes" + path.substring( PACKAGE_NAME_PREFIX.length()+1+"images".length(), path.length()-3 ) + "bin";

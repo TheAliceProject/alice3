@@ -251,6 +251,19 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 					sb.append( "</b>" );
 					sb.append( "</html>" );
 					rv.setText( sb.toString() );
+					
+					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = value.getValueType();
+					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava valueTypeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
+					String className = valueTypeInJava.getClassReflectionProxy().getName();
+					
+					rv.setIcon( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForGalleryClassName(className));
+					
+//					rv = new javax.swing.JLabel( rv.getText(), rv.getIcon(), javax.swing.SwingConstants.LEADING ) {
+//						@Override
+//						public boolean isOptimizedDrawingEnabled() {
+//							return false;
+//						}
+//					};
 				}
 				return rv;
 			}

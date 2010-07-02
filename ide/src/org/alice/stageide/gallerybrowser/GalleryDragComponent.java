@@ -54,10 +54,7 @@ public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance
 	public GalleryDragComponent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, String name ) {
 		this.treeNode = treeNode;
 		edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label();
-		java.net.URL url = ResourceManager.getLargeIconResource( this.treeNode );
-		if( url != null ) {
-			label.setIcon( new javax.swing.ImageIcon( url ) );
-		}
+		label.setIcon( ResourceManager.getLargeIcon( this.treeNode ) );
 		label.setText( name );
 		label.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
 		label.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.CENTER );
