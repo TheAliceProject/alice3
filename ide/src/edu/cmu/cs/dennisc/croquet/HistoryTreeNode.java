@@ -195,7 +195,7 @@ public abstract class HistoryTreeNode< C extends ModelContext<?> > implements ed
 	}
 	public abstract State getState();
 	
-	public ModelContext<?> findContextFor( Model< ? > model ) {
+	public ModelContext<?> findContextFor( Model model ) {
 		if( this.parent != null ) {
 			return this.parent.findContextFor( model );
 		} else {

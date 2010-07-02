@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogOperation extends AbstractDialogOperation<DialogOperation, DialogOperationContext> {
+public abstract class DialogOperation extends AbstractDialogOperation<DialogOperationContext> {
 	public DialogOperation(Group group, java.util.UUID individualUUID) {
 		super(group, individualUUID);
 	}

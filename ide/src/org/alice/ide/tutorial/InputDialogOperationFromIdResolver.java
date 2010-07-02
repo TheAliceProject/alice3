@@ -53,8 +53,8 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 		this.id = id;
 	}
 	public edu.cmu.cs.dennisc.croquet.InputDialogOperation getResolved() {
-//		java.util.Set<edu.cmu.cs.dennisc.croquet.Model<?>> models = org.alice.ide.IDE.getSingleton().lookupModels(this.id);
-//		for (edu.cmu.cs.dennisc.croquet.Model<?> model : models) {
+//		java.util.Set<edu.cmu.cs.dennisc.croquet.Model> models = org.alice.ide.IDE.getSingleton().lookupModels(this.id);
+//		for (edu.cmu.cs.dennisc.croquet.Model model : models) {
 //			if (model instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperation) {
 //				if (model.isInView()) {
 //					return (edu.cmu.cs.dennisc.croquet.InputDialogOperation) model;

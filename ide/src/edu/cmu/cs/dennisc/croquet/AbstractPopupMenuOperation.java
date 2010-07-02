@@ -45,13 +45,13 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPopupMenuOperation extends Operation<AbstractPopupMenuOperation,PopupMenuOperationContext> {
+public abstract class AbstractPopupMenuOperation extends Operation<PopupMenuOperationContext> {
 	public static final Group POPUP_MENU_GROUP = new Group( java.util.UUID.fromString( "4fe7cbeb-627f-4965-a2d3-f4bf42796c59" ), "POPUP_MENU_GROUP" );
 
 	public AbstractPopupMenuOperation( java.util.UUID individualUUID ) {
 		super( POPUP_MENU_GROUP, individualUUID );
 	}
-	public abstract Model<?>[] getModels();
+	public abstract Model[] getModels();
 	@Override
 	protected PopupMenuOperationContext createContext( ModelContext< ? > parent, java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return parent.createPopupMenuOperationContext( this, e, viewController );

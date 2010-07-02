@@ -45,12 +45,11 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public /*final*/ class BooleanState extends Model< BooleanState > {
+public /*final*/ class BooleanState extends Model {
 	public static interface ValueObserver {
 		public void changing( boolean nextValue );
 		public void changed( boolean nextValue );
 	};
-		
 	private java.util.List< ValueObserver > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	public void addValueObserver( ValueObserver valueObserver ) {
 		this.valueObservers.add( valueObserver );
@@ -62,7 +61,7 @@ public /*final*/ class BooleanState extends Model< BooleanState > {
 	public void removeValueObserver( ValueObserver valueObserver ) {
 		this.valueObservers.remove( valueObserver );
 	}
-	
+
 	private javax.swing.ButtonModel createButtonModel() {
 		return new javax.swing.JToggleButton.ToggleButtonModel();
 	}

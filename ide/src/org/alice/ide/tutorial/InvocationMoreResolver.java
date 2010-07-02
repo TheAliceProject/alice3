@@ -52,7 +52,7 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 		super( methodResolver, invocationIndex );
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.croquet.Operation< ?, ? > getOperation( org.alice.ide.codeeditor.CodeEditor codeEditor, edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+	protected final edu.cmu.cs.dennisc.croquet.Operation<?> getOperation( org.alice.ide.codeeditor.CodeEditor codeEditor, edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
 		return codeEditor.getMoreOperation( methodInvocation );
 	}
 }

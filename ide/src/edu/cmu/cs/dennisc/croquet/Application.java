@@ -61,7 +61,7 @@ public abstract class Application {
 	}
 
 	private ModelContext<Model> rootContext = new ModelContext<Model>( null, null, null, null ) {};
-	private java.util.Map< java.util.UUID, java.util.Set< Model< ? > > > mapUUIDToModels = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map< java.util.UUID, java.util.Set< Model > > mapUUIDToModels = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public Application() {
 		assert Application.singleton == null;
@@ -83,13 +83,13 @@ public abstract class Application {
 		return this.rootContext.getCurrentContext();
 	}
 
-	private java.util.Set< Model< ? > > lookupModels( java.util.UUID id ) {
+	private java.util.Set< Model > lookupModels( java.util.UUID id ) {
 		return this.mapUUIDToModels.get( id );
 	}
 	@Deprecated
-	public Model< ? > findFirstAppropriateModel( java.util.UUID id ) {
-		java.util.Set< Model< ? > > models = lookupModels( id );
-		for( Model<?> model : models ) {
+	public Model findFirstAppropriateModel( java.util.UUID id ) {
+		java.util.Set< Model > models = lookupModels( id );
+		for( Model model : models ) {
 			for( JComponent<?> component : model.getComponents() ) {
 				if( component.getAwtComponent().isShowing() ) {
 					return model;
@@ -191,7 +191,7 @@ public abstract class Application {
 
 	/*package-private*/void register( Model model ) {
 		java.util.UUID id = model.getIndividualUUID();
-		java.util.Set< Model< ? > > set = this.mapUUIDToModels.get( id );
+		java.util.Set< Model > set = this.mapUUIDToModels.get( id );
 		if( set != null ) {
 			//pass
 		} else {
@@ -212,8 +212,8 @@ public abstract class Application {
 					rv.addMenu( itemSelectionOperation.createMenu() );
 				} else {
 					AbstractMenuItem< ?,? > menuItem = null;
-					if( model instanceof Operation<?,?> ) {
-						Operation<?,?> operation = (Operation<?,?>)model;
+					if( model instanceof Operation<?> ) {
+						Operation<?> operation = (Operation<?>)model;
 						menuItem = operation.createMenuItem();
 					} else if( model instanceof BooleanState ) {
 						BooleanState booleanState = (BooleanState)model;

@@ -42,6 +42,8 @@
  */
 package org.alice.ide.codeeditor;
 
+import edu.cmu.cs.dennisc.croquet.Operation;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -92,8 +94,8 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupM
 	}
 	public void dragUpdated( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 	}
-	public edu.cmu.cs.dennisc.croquet.Operation< ?,? > dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
-		edu.cmu.cs.dennisc.croquet.Operation< ?,? > rv;
+	public edu.cmu.cs.dennisc.croquet.Operation<?> dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+		edu.cmu.cs.dennisc.croquet.Operation<?> rv;
 		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
 		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
 		if( source instanceof org.alice.ide.common.ExpressionCreatorPane ) {

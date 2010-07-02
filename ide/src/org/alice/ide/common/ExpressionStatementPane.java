@@ -84,8 +84,8 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 		super.handleRemovedFrom( parent );
 	}
 
-	private edu.cmu.cs.dennisc.croquet.Operation< ?, ? > moreOperation = null;
-	public edu.cmu.cs.dennisc.croquet.Operation< ?, ? > getMoreOperation() {
+	private edu.cmu.cs.dennisc.croquet.Operation<?> moreOperation = null;
+	public edu.cmu.cs.dennisc.croquet.Operation<?> getMoreOperation() {
 		return this.moreOperation;
 	}
 	private void refresh() {

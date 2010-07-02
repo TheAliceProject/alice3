@@ -42,10 +42,12 @@
  */
 package edu.cmu.cs.dennisc.tutorial;
 
+import edu.cmu.cs.dennisc.croquet.Operation;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class OperationStep<M extends edu.cmu.cs.dennisc.croquet.Operation< ?,? > > extends WaitingOnCompleteStep<M> {
+/*package-private*/ class OperationStep<M extends edu.cmu.cs.dennisc.croquet.Operation<?> > extends WaitingOnCompleteStep<M> {
 	private Completor completor;
 	private Validator validator;
 	public OperationStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver< M > operationResolver, Completor completor, Validator validator ) {

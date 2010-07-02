@@ -46,6 +46,8 @@ import org.alice.ide.common.DefaultStatementPane;
 import org.alice.ide.common.StatementListPropertyPane;
 import org.alice.ide.operations.file.PrintOperation;
 
+import edu.cmu.cs.dennisc.croquet.Operation;
+
 
 /**
  * @author Dennis Cosgrove
@@ -459,8 +461,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 		this.repaint();
 
 	}
-	public final edu.cmu.cs.dennisc.croquet.Operation<?,?> dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
-		edu.cmu.cs.dennisc.croquet.Operation<?,?> rv = null;
+	public final edu.cmu.cs.dennisc.croquet.Operation<?> dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+		edu.cmu.cs.dennisc.croquet.Operation<?> rv = null;
 		final java.awt.Point viewPosition = this.scrollPane.getAwtComponent().getViewport().getViewPosition();
 		final edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
 		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
@@ -865,7 +867,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 		return null;
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.Operation<?,?> getOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public edu.cmu.cs.dennisc.croquet.Operation<?> getOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		java.util.List< ExpressionPropertyDropDownPane > expressionPropertyDropDownPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class );
 		for( final ExpressionPropertyDropDownPane expressionPropertyDropDownPane : expressionPropertyDropDownPanes ) {
 			if( expressionPropertyDropDownPane.getExpressionProperty() == expressionProperty ) {
@@ -874,7 +876,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 		}
 		return null;
 	}
-	public edu.cmu.cs.dennisc.croquet.Operation<?,?> getMoreOperation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+	public edu.cmu.cs.dennisc.croquet.Operation<?> getMoreOperation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
 		if( methodInvocation != null ) {
 			java.util.List< org.alice.ide.common.ExpressionStatementPane > statementPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.ExpressionStatementPane.class );
 			for( org.alice.ide.common.ExpressionStatementPane statementPane : statementPanes ) {

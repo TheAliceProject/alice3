@@ -43,9 +43,9 @@
 package edu.cmu.cs.dennisc.croquet;
 
 public abstract class Control extends Widget {
-	private Operation<?,?> leftButtonPressOperation;
-	private Operation<?,?> leftButtonClickOperation;
-	private Operation<?,?> leftButtonDoubleClickOperation;
+	private Operation<?> leftButtonPressOperation;
+	private Operation<?> leftButtonClickOperation;
+	private Operation<?> leftButtonDoubleClickOperation;
 
 	private boolean isActive = false;
 	private boolean isPressed = false;

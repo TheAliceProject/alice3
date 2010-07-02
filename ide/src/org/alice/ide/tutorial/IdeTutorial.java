@@ -358,23 +358,23 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		};
 	}
 	
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createIfElseStatementConditionResolver( int index ) {
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createIfElseStatementConditionResolver( int index ) {
 		return new IfElseStatementConditionResolver( index );
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createFirstIfElseStatementConditionResolver() {
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createFirstIfElseStatementConditionResolver() {
 		return this.createIfElseStatementConditionResolver(0);
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createLastIfElseStatementConditionResolver() {
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createLastIfElseStatementConditionResolver() {
 		return this.createIfElseStatementConditionResolver(Short.MAX_VALUE);
 	}
 
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createWhileLoopConditionResolver( int index ) {
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createWhileLoopConditionResolver( int index ) {
 		return new WhileLoopConditionResolver( index );
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createFirstWhileLoopConditionResolver() {
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createFirstWhileLoopConditionResolver() {
 		return this.createWhileLoopConditionResolver(0);
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createLastWhileLoopConditionResolver() {
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createLastWhileLoopConditionResolver() {
 		return this.createWhileLoopConditionResolver(Short.MAX_VALUE);
 	}
 
@@ -454,38 +454,38 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return this.createInvocationResolver(methodName, Short.MAX_VALUE);
 	}
 
-//	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createInvocationArgumentResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex, int argumentIndex ) {
+//	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createInvocationArgumentResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex, int argumentIndex ) {
 //		return new InvocationArgumentResolver( methodResolver, invocationIndex, argumentIndex );
 //	}
-//	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createInvocationInstanceResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex ) {
+//	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createInvocationInstanceResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver, int invocationIndex ) {
 //		return new InvocationInstanceResolver( methodResolver, invocationIndex );
 //	}
-//	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createFirstInvocationInstanceResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver ) {
+//	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createFirstInvocationInstanceResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver ) {
 //		return this.createInvocationInstanceResolver( methodResolver, 0 );
 //	}
-//	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createLastInvocationInstanceResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver ) {
+//	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createLastInvocationInstanceResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver ) {
 //		return this.createInvocationInstanceResolver( methodResolver, Short.MAX_VALUE );
 //	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createInvocationArgumentResolver( String methodName, int invocationIndex, int argumentIndex ) {
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createInvocationArgumentResolver( String methodName, int invocationIndex, int argumentIndex ) {
 		return new InvocationArgumentResolver( this.createCurrentCodeMethodResolver(methodName), invocationIndex, argumentIndex );
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createInvocationInstanceResolver( String methodName, int invocationIndex ) {
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createInvocationInstanceResolver( String methodName, int invocationIndex ) {
 		return new InvocationInstanceResolver( this.createCurrentCodeMethodResolver(methodName), invocationIndex );
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createFirstInvocationInstanceResolver( String methodName ) {
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createFirstInvocationInstanceResolver( String methodName ) {
 		return this.createInvocationInstanceResolver( methodName, 0 );
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createLastInvocationInstanceResolver(String methodName ) {
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createLastInvocationInstanceResolver(String methodName ) {
 		return this.createInvocationInstanceResolver( methodName, Short.MAX_VALUE );
 	}
 
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createInvocationMoreResolver( String methodName, int invocationIndex ) {
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createInvocationMoreResolver( String methodName, int invocationIndex ) {
 		return new InvocationMoreResolver( this.createCurrentCodeMethodResolver(methodName), invocationIndex );
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createFirstInvocationMoreResolver( String methodName ) {
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createFirstInvocationMoreResolver( String methodName ) {
 		return this.createInvocationMoreResolver( methodName, 0 );
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?, ?> > createLastInvocationMoreResolver(String methodName ) {
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createLastInvocationMoreResolver(String methodName ) {
 		return this.createInvocationMoreResolver( methodName, Short.MAX_VALUE );
 	}
 	

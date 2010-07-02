@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuItem extends AbstractMenuItem< javax.swing.JMenuItem, Operation<?,?> > {
-	/*package-private*/ MenuItem( Operation<?,?> model ) {
+public class MenuItem extends AbstractMenuItem< javax.swing.JMenuItem, Operation<?> > {
+	/*package-private*/ MenuItem( Operation<?> model ) {
 		super( model );
 	}
 	@Override

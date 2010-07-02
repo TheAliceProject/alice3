@@ -1553,7 +1553,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	public boolean isPotentiallyAcceptingOf(DragComponent source) {
 		return source instanceof org.alice.stageide.gallerybrowser.GalleryDragComponent;
 	}
-	public Operation<?, ?> dragDropped(DragAndDropContext dragAndDropContext) {
+	public Operation<?> dragDropped(DragAndDropContext dragAndDropContext) {
 		DragComponent dragSource = dragAndDropContext.getDragSource();
 		return dragSource.getLeftButtonClickOperation();
 	}

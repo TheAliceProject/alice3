@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListSelectionState<E> extends Model< ListSelectionState<E> > implements Iterable<E> {
+public abstract class ListSelectionState<E> extends Model implements Iterable<E> {
 	public static interface ValueObserver<E> {
 		public void changed(E nextValue);
 	};
