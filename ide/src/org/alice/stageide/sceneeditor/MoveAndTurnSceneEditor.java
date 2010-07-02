@@ -1519,8 +1519,17 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		
 		java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 		java.awt.Point p = dragSource.convertPoint(eSource.getPoint(), this );
-		
-		PrintUtilities.println( "updated", p );
+		java.awt.Point pointInLookingGlass = javax.swing.SwingUtilities.convertPoint( eSource.getComponent(), eSource.getPoint(), this.lookingGlassPanel.getAwtComponent() );
+		if (this.lookingGlassPanel.getAwtComponent().contains(pointInLookingGlass))
+		{
+			PrintUtilities.println( "INSIDE", pointInLookingGlass );
+			dragSource.hideDragProxy();
+		}
+		else
+		{
+			PrintUtilities.println( "OUTSIDE", pointInLookingGlass );
+			dragSource.showDragProxy();
+		}
 	}
 
 	public edu.cmu.cs.dennisc.croquet.JComponent<?> getViewController() {
