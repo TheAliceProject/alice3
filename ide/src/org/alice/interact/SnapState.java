@@ -49,7 +49,6 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 import edu.cmu.cs.dennisc.math.AngleInDegrees;
 
 import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
 
 public class SnapState 
 {
