@@ -42,36 +42,26 @@
  */
 package org.alice.stageide.sceneeditor;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.SwingUtilities;
 
 import org.alice.stageide.sceneeditor.viewmanager.SceneViewManagerPanel;
 import org.alice.stageide.sceneeditor.viewmanager.SnapControlPanel;
 import org.alice.ide.IDE;
 import org.alice.ide.swing.FieldListCellRenderer;
-import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.SnapState;
 
-import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+import edu.cmu.cs.dennisc.croquet.ActionOperation;
 import edu.cmu.cs.dennisc.croquet.ComboBox;
+import edu.cmu.cs.dennisc.croquet.GridBagPanel;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.toolkit.scenegraph.SceneGraphViewerPanel;
+import edu.cmu.cs.dennisc.croquet.BorderPanel;
 
 /**
  * @author Dennis Cosgrove
@@ -81,42 +71,59 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private SceneViewManagerPanel viewManagerPanel = null;
 	private SnapControlPanel snapControlPanel = null;
 	private MoveAndTurnSceneEditor sceneEditor = null;
-	private JPanel mainPanel = null;
+	private GridBagPanel mainPanel = null;
 	
 	private SceneGraphViewerPanel sceneGraphViewer = null;
 //	private JSplitPane sceneGraphViewSplitPane = null;
 	private JDialog sceneGraphViewDialog = null;
-	private JButton showSceneGraphButton = null;
+	
+	private ActionOperation showSceneGraphActionOperation; 
+	
+	
+	private class ShowSceneGraphViewerActionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+		public ShowSceneGraphViewerActionOperation() {
+			super( java.util.UUID.fromString( "41f92d36-2b83-4268-8d0f-f8cd3502f12c" ) );
+			this.setName( "Show SceneGraph" );
+		}
+		@Override
+		protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+			if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
+			{
+				if (SidePane.this.sceneGraphViewer == null)
+				{
+					Component root = SidePane.this.sceneEditor.getScene().getSGComposite();
+					SidePane.this.sceneGraphViewer = new SceneGraphViewerPanel();
+					SidePane.this.sceneGraphViewer.setRoot(root);
+				}
+				if (SidePane.this.sceneGraphViewDialog == null)
+				{
+					SidePane.this.sceneGraphViewDialog = new JDialog(edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getRootJFrame(SidePane.this.getAwtComponent()), "Scene Graph Viewer", false);
+					SidePane.this.sceneGraphViewDialog.getContentPane().add(SidePane.this.sceneGraphViewer);
+					SidePane.this.sceneGraphViewDialog.setSize(new Dimension(1024, 768));
+					SidePane.this.sceneGraphViewDialog.setLocation(100, 100);
+				}
+				SidePane.this.sceneGraphViewDialog.setVisible(true);
+			}
+		}
+	}
 	
 	public SidePane(MoveAndTurnSceneEditor sceneEditor) {
 		this.sceneEditor = sceneEditor;
-		this.mainPanel = new JPanel();
+		this.mainPanel = new GridBagPanel();
 		this.viewManagerPanel = new SceneViewManagerPanel(sceneEditor);
 		this.snapControlPanel = new SnapControlPanel(sceneEditor.getSnapState(), sceneEditor);
 
-		this.showSceneGraphButton = new JButton("Show Scene Graph");
-		this.showSceneGraphButton.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e) {
-				showSceneGraphView();
-			}
-		}
-		);
 		
-		JPanel handleControlPanel = new JPanel();
-		handleControlPanel.setOpaque( false );
-		handleControlPanel.setLayout( new BorderLayout() );
-		javax.swing.JLabel title = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabelWithScaledFont( "Handle Style", 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD);
-		handleControlPanel.add( title, BorderLayout.NORTH );
-		handleControlPanel.add(sceneEditor.getHandleSelectionStateList().createDefaultRadioButtons().getAwtComponent(), BorderLayout.CENTER);
+		edu.cmu.cs.dennisc.croquet.BorderPanel handleControlPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+//		handleControlPanel.setOpaque( false );
+		
+		handleControlPanel.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "Handle Style", 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), BorderPanel.Constraint.NORTH );
+		handleControlPanel.addComponent(sceneEditor.getHandleSelectionStateList().createDefaultRadioButtons(), BorderPanel.Constraint.CENTER);
 		handleControlPanel.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		
-		JPanel startingCameraViewManager = new JPanel();
-		startingCameraViewManager.setOpaque(false);
-		JLabel startingViewLabel = new JLabel("Starting View: ");
-		startingViewLabel.setFont(startingViewLabel.getFont().deriveFont(Font.BOLD, 14));
-		startingCameraViewManager.setLayout(new GridBagLayout());
-		startingCameraViewManager.add(startingViewLabel, new GridBagConstraints( 
+		GridBagPanel startingCameraViewManager = new GridBagPanel();
+//		startingCameraViewManager.setOpaque(false);
+		startingCameraViewManager.addComponent(new edu.cmu.cs.dennisc.croquet.Label( "Starting View:", 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), new GridBagConstraints( 
 				0, //gridX
 				0, //gridY
 				1, //gridWidth
@@ -129,9 +136,9 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				0, //ipadX
 				0 ) //ipadY
 		);
-		ComboBox<FieldDeclaredInAlice> startingViewComboBox = sceneEditor.getStartingViewMarkerFieldList().createComboBox();
+		ComboBox startingViewComboBox = sceneEditor.getStartingViewMarkerFieldList().createComboBox();
 		startingViewComboBox.setRenderer(new FieldListCellRenderer() {});
-		startingCameraViewManager.add(startingViewComboBox.getAwtComponent(), new GridBagConstraints( 
+		startingCameraViewManager.addComponent(startingViewComboBox, new GridBagConstraints( 
 				1, //gridX
 				0, //gridY
 				1, //gridWidth
@@ -145,9 +152,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				0 ) //ipadY
 		);
 		
-		this.mainPanel.setLayout(new GridBagLayout());
-
-		this.mainPanel.add(startingCameraViewManager, new GridBagConstraints(
+		this.mainPanel.addComponent(startingCameraViewManager, new GridBagConstraints(
 				0, // gridX
 				0, // gridY
 				1, // gridWidth
@@ -161,7 +166,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				0) // ipadY
 				);
 		
-		this.mainPanel.add(this.viewManagerPanel, new GridBagConstraints(
+		this.mainPanel.addComponent(this.viewManagerPanel, new GridBagConstraints(
 				0, // gridX
 				1, // gridY
 				1, // gridWidth
@@ -175,7 +180,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				0) // ipadY
 				);
 
-		this.mainPanel.add(handleControlPanel, new GridBagConstraints(
+		this.mainPanel.addComponent(handleControlPanel, new GridBagConstraints(
 				0, // gridX
 				2, // gridY
 				1, // gridWidth
@@ -188,7 +193,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				0, // ipadX
 				0) // ipadY
 				);
-		this.mainPanel.add(this.snapControlPanel, new GridBagConstraints(
+		this.mainPanel.addComponent(this.snapControlPanel, new GridBagConstraints(
 				0, // gridX
 				3, // gridY
 				1, // gridWidth
@@ -202,9 +207,11 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				0) // ipadY
 				);
 		
+		this.showSceneGraphActionOperation = new ShowSceneGraphViewerActionOperation();
+		
 		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
 		{
-			this.mainPanel.add(showSceneGraphButton, new GridBagConstraints(
+			this.mainPanel.addComponent(this.showSceneGraphActionOperation.createButton(), new GridBagConstraints(
 					0, // gridX
 					4, // gridY
 					1, // gridWidth
@@ -222,9 +229,14 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		this.mainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
 		
 //		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( mainPanel ), Constraint.CENTER);
+		this.addComponent( mainPanel, Constraint.CENTER);
 	}
 
+	public ActionOperation getShowSceneGraphViewerActionOperation()
+	{
+		return this.showSceneGraphActionOperation;
+	}
+	
 	public boolean isExpanded() {
 		return this.isExpanded;
 	}
@@ -234,42 +246,6 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		this.revalidateAndRepaint();
 	}
 
-	public void showSceneGraphView()
-	{
-		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
-		{
-			if (this.sceneGraphViewDialog == null)
-			{
-				showSceneGraphView(this.sceneEditor.getScene().getSGComposite());
-			}
-			else
-			{
-				this.sceneGraphViewDialog.setVisible(true);
-			}
-		}
-	}
-	
-	public void showSceneGraphView( Component root )
-	{
-		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
-		{
-			if (this.sceneGraphViewer == null)
-			{
-				this.sceneGraphViewer = new SceneGraphViewerPanel();
-			}
-			this.sceneGraphViewer.setRoot(root);
-			if (this.sceneGraphViewDialog == null)
-			{
-	//			this.sceneGraphViewDialog = new JDialog();
-				this.sceneGraphViewDialog = new JDialog(edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getRootJFrame(this.getAwtComponent()), "Scene Graph Viewer", false);
-				this.sceneGraphViewDialog.getContentPane().add(this.sceneGraphViewer);
-				this.sceneGraphViewDialog.setSize(new Dimension(1024, 768));
-	//			this.sceneGraphViewDialog.setMinimumSize(new Dimension(800, 600));
-				this.sceneGraphViewDialog.setLocation(100, 100);
-			}
-			this.sceneGraphViewDialog.setVisible(true);
-		}
-	}
 
 	public SceneViewManagerPanel getViewManager() {
 		return this.viewManagerPanel;

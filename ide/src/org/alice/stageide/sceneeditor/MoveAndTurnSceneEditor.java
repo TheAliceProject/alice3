@@ -46,8 +46,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -93,7 +91,6 @@ import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
 import edu.cmu.cs.dennisc.croquet.DragComponent;
 import edu.cmu.cs.dennisc.croquet.ListSelectionState;
 import edu.cmu.cs.dennisc.javax.swing.SwingUtilities;import edu.cmu.cs.dennisc.croquet.Operation;
-import edu.cmu.cs.dennisc.croquet.ViewController;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical;
 import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
@@ -597,10 +594,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		org.alice.ide.IDE.getSingleton().getAccessibleListState().removeValueObserver( this.fieldSelectionObserver );
 		super.handleRemovedFrom( parent );
 	}
-
-	private javax.swing.JPanel getLGPanel() {
-		return this.onscreenLookingGlass.getJPanel();
-	}
 	
 	private void initializeIfNecessary() {
 		if( this.globalDragAdapter != null ) {
@@ -667,11 +660,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			javax.swing.JPanel lgPanel = this.lookingGlassPanel.getAwtComponent();
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouthEast( lgPanel, isSceneEditorExpandedCheckBox.getAwtComponent(), INSET );
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthEast( lgPanel, this.getIDE().getRunOperation().createButton().getAwtComponent(), INSET );
+			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( lgPanel, this.mainCameraViewSelector.getAwtComponent(), Horizontal.EAST, -INSET, Vertical.NORTH, INSET + 30 );
+			this.mainCameraViewSelector.getAwtComponent().setVisible(isSceneEditorExpandedOperation.getValue());
 			
-			if (isSceneEditorExpandedOperation.getValue())
-			{
-				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( lgPanel, this.mainCameraViewSelector.getAwtComponent(), Horizontal.EAST, -INSET, Vertical.NORTH, INSET + 30 );
-			}
 
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouth( lgPanel, mainCameraNavigatorWidget, INSET );
 
@@ -711,56 +702,42 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		if( isExpanded ) {
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthWest( lgPanel, fieldRadioButtons.getAwtComponent(), INSET );
 		}
-		if( mainCameraNavigatorWidget != null ) {
-			mainCameraNavigatorWidget.setExpanded( isExpanded );
-		}
+		this.mainCameraViewSelector.getAwtComponent().setVisible(isExpanded);
 		if( isExpanded ) {
 			//Add the camera view controls into the split pane and show it
 			this.splitPane.setRightComponent( this.sidePane );
 			this.splitPane.setDividerSize( 10 );
-			
-			if (this.mainCameraViewSelector != null)
-			{
-				//Add the camera view selector back
-				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( this.getLGPanel(), this.mainCameraViewSelector.getAwtComponent(), Horizontal.EAST, -INSET, Vertical.NORTH, INSET + 30 );
-				
 				//Switch the main view to the previously selected index
-				if (this.expandedViewSelectedMarker != null)
-				{
-					this.mainCameraMarkerList.setSelectedItem(this.expandedViewSelectedMarker);
-				}
+			if (this.expandedViewSelectedMarker != null)
+			{
+				this.mainCameraMarkerList.setSelectedItem(this.expandedViewSelectedMarker);
+			} 
+			else
+			{
+				this.mainCameraMarkerList.setSelectedItem(this.getCameraMarkerForField(this.startingViewMarkerFieldList.getSelectedItem()));
 			}
 			
 		} else {
 			lgPanel.remove( fieldRadioButtons.getAwtComponent() );
 			this.splitPane.setRightComponent( null );
 			this.splitPane.setDividerSize( 0 );
+		
+			//Cache the currently selected view index
+			this.expandedViewSelectedMarker = this.mainCameraMarkerList.getSelectedItem();
 			
-			//Take the camera view selector out
-			if (this.mainCameraViewSelector != null)
-			{
-				if (this.mainCameraViewSelector.getAwtComponent().getParent() == this.getLGPanel())
-				{
-					this.getLGPanel().remove(this.mainCameraViewSelector.getAwtComponent());
-				}
-			
-				//Cache the currently selected view index
-				this.expandedViewSelectedMarker = this.mainCameraMarkerList.getSelectedItem();
-				
-				//Switch the main view to the starting view
-				FieldDeclaredInAlice startIngViewField = this.startingViewMarkerFieldList.getSelectedItem();
-				if( startIngViewField != null ) {
-					this.mainCameraMarkerList.setSelectedItem(this.getCameraMarkerForField(startIngViewField));
-				} else {
-					PrintUtilities.println( "todo: handle cfAm == null" );
-				}
+			//Switch the main view to the starting view
+			FieldDeclaredInAlice startIngViewField = this.startingViewMarkerFieldList.getSelectedItem();
+			if( startIngViewField != null ) {
+				this.mainCameraMarkerList.setSelectedItem(this.getCameraMarkerForField(startIngViewField));
+			} else {
+				PrintUtilities.println( "todo: handle cfAm == null" );
 			}
 		}
 		this.updateSceneBasedOnScope();
-		
-		if( this.mainCameraNavigatorWidget != null ) {
-			this.mainCameraNavigatorWidget.setExpanded( isExpanded );
-		}
+		this.mainCameraViewSelector.revalidateAndRepaint();
+		this.lookingGlassPanel.getAwtComponent().revalidate();
+		this.sidePane.revalidateAndRepaint();
+		this.revalidateAndRepaint();
 	}
 
 	private FieldTile getFieldTileForClick(InputState input)
@@ -1086,7 +1063,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.startingViewMarkerFieldList.setSelectedItem(startingPointOfViewField);
 			this.mainCameraMarkerList.setSelectedItem(this.getCameraMarkerForField(startingPointOfViewField));
 		}
-		sidePane.showSceneGraphView(this.scene.getSGComposite());
+		sidePane.getShowSceneGraphViewerActionOperation().fire();
 		//Turn animation back on
 		this.mainCameraViewTracker.setShouldAnimate(true);
 		return rv;

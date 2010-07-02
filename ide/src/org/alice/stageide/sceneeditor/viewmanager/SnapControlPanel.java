@@ -43,20 +43,12 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerListModel;
 import javax.swing.SpinnerNumberModel;
@@ -67,20 +59,23 @@ import org.alice.interact.SnapState;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.croquet.BooleanState;
-import edu.cmu.cs.dennisc.math.Angle;
+import edu.cmu.cs.dennisc.croquet.GridBagPanel;
+import edu.cmu.cs.dennisc.croquet.Label;
+import edu.cmu.cs.dennisc.croquet.LineAxisPanel;
+import edu.cmu.cs.dennisc.croquet.SwingAdapter;
 import edu.cmu.cs.dennisc.math.AngleInDegrees;
 
-public class SnapControlPanel extends JPanel implements ChangeListener, ActionListener
+public class SnapControlPanel extends GridBagPanel implements ChangeListener, ActionListener
 {
 	private SnapState snapState;
 	private MoveAndTurnSceneEditor sceneEditor;
 	
 	private JSpinner gridSizeSpinner;
-	private JLabel gridSpacingLabel;
+	private Label gridSizeLabel;
 	private SpinnerNumberModel gridSizeModel;
 	
 	private JSpinner snapAngleSpinner;
-	private JLabel snapAngleLabel;
+	private Label snapAngleLabel;
 	private SpinnerListModel snapAngleModel;
 	
 	private BooleanState.ValueObserver snapStateValueObserver = new BooleanState.ValueObserver() {
@@ -103,8 +98,7 @@ public class SnapControlPanel extends JPanel implements ChangeListener, ActionLi
 	
 	protected void initializeUI()
 	{
-		this.removeAll();
-		this.setLayout(new GridBagLayout());
+		this.removeAllComponents();
 		
 		Dimension spinnerSize = new Dimension(50, 26);
 		this.gridSizeModel = new SpinnerNumberModel(this.snapState.getGridSpacing(), .01d, 10d, .05d);
@@ -114,8 +108,6 @@ public class SnapControlPanel extends JPanel implements ChangeListener, ActionLi
 		this.gridSizeSpinner.setMaximumSize(spinnerSize);
 		this.gridSizeSpinner.addChangeListener(this);
 		this.gridSizeModel.addChangeListener(this);
-		this.gridSpacingLabel = new JLabel("Grid Spacing: ");
-		this.gridSpacingLabel.setFont(this.gridSpacingLabel.getFont().deriveFont(Font.PLAIN, 12));
 		
 		this.snapAngleModel = new SpinnerListModel(SnapState.ANGLE_SNAP_OPTIONS);
 		this.snapAngleModel.setValue(SnapState.getAngleOptionForAngle((int)this.snapState.getRotationSnapAngle().getAsDegrees()));
@@ -124,26 +116,22 @@ public class SnapControlPanel extends JPanel implements ChangeListener, ActionLi
 		this.snapAngleSpinner.setPreferredSize(spinnerSize);
 		this.snapAngleSpinner.setMinimumSize(spinnerSize);
 		this.snapAngleSpinner.setMaximumSize(spinnerSize);
-		this.snapAngleLabel = new JLabel("Angle Snap: ");
-		this.snapAngleLabel.setFont(this.snapAngleLabel.getFont().deriveFont(Font.PLAIN, 12));
 		
-		JPanel snapToGridPanel = new JPanel();
-		snapToGridPanel.setLayout(new BoxLayout(snapToGridPanel, BoxLayout.X_AXIS));
+		LineAxisPanel snapToGridPanel = new LineAxisPanel();
 		snapToGridPanel.setBorder(null);
-		snapToGridPanel.add(this.snapState.getShowSnapGridState().createCheckBox().getAwtComponent());
-		snapToGridPanel.add(Box.createHorizontalStrut(10));
-		snapToGridPanel.add(this.gridSpacingLabel);
-		snapToGridPanel.add(this.gridSizeSpinner);
+		snapToGridPanel.addComponent(this.snapState.getShowSnapGridState().createCheckBox());
+		this.gridSizeLabel = new Label("   Grid Spacing: ");
+		snapToGridPanel.addComponent(this.gridSizeLabel);
+		snapToGridPanel.addComponent(new SwingAdapter(this.gridSizeSpinner));
 		
-		JPanel rotationSnapPanel = new JPanel();
-		rotationSnapPanel.setLayout(new BoxLayout(rotationSnapPanel, BoxLayout.X_AXIS));
+		LineAxisPanel rotationSnapPanel = new LineAxisPanel();
 		rotationSnapPanel.setBorder(null);
-		rotationSnapPanel.add(this.snapState.getIsRotationSnapEnabledState().createCheckBox().getAwtComponent());
-		rotationSnapPanel.add(Box.createHorizontalStrut(10));
-		rotationSnapPanel.add(this.snapAngleLabel);
-		rotationSnapPanel.add(this.snapAngleSpinner);
+		rotationSnapPanel.addComponent(this.snapState.getIsRotationSnapEnabledState().createCheckBox());
+		this.snapAngleLabel = new Label("   Angle Snap:  ");
+		rotationSnapPanel.addComponent(this.snapAngleLabel);
+		rotationSnapPanel.addComponent(new SwingAdapter(this.snapAngleSpinner));
 
-		this.add(this.snapState.getIsSnapEnabledState().createCheckBox().getAwtComponent() , new GridBagConstraints( 
+		this.addComponent(this.snapState.getIsSnapEnabledState().createCheckBox() , new GridBagConstraints( 
 				0, //gridX
 				0, //gridY
 				1, //gridWidth
@@ -156,7 +144,7 @@ public class SnapControlPanel extends JPanel implements ChangeListener, ActionLi
 				0, //ipadX
 				0 ) //ipadY
 		);
-		this.add(snapToGridPanel, new GridBagConstraints( 
+		this.addComponent(snapToGridPanel, new GridBagConstraints( 
 				1, //gridX
 				0, //gridY
 				1, //gridWidth
@@ -169,7 +157,7 @@ public class SnapControlPanel extends JPanel implements ChangeListener, ActionLi
 				0, //ipadX
 				0 ) //ipadY
 		);
-		this.add(snapToGridPanel , new GridBagConstraints( 
+		this.addComponent(snapToGridPanel , new GridBagConstraints( 
 				0, //gridX
 				1, //gridY
 				2, //gridWidth
@@ -182,7 +170,7 @@ public class SnapControlPanel extends JPanel implements ChangeListener, ActionLi
 				0, //ipadX
 				0 ) //ipadY
 		);
-		this.add(rotationSnapPanel , new GridBagConstraints( 
+		this.addComponent(rotationSnapPanel , new GridBagConstraints( 
 				0, //gridX
 				2, //gridY
 				2, //gridWidth
@@ -195,7 +183,7 @@ public class SnapControlPanel extends JPanel implements ChangeListener, ActionLi
 				0, //ipadX
 				0 ) //ipadY
 		);
-		this.add(this.snapState.getIsSnapToGroundEnabledState().createCheckBox().getAwtComponent() , new GridBagConstraints( 
+		this.addComponent(this.snapState.getIsSnapToGroundEnabledState().createCheckBox() , new GridBagConstraints( 
 				0, //gridX
 				3, //gridY
 				2, //gridWidth
@@ -218,12 +206,12 @@ public class SnapControlPanel extends JPanel implements ChangeListener, ActionLi
 		this.gridSizeModel.setValue(new Double(this.snapState.getGridSpacing()));
 		this.snapState.getIsSnapToGridEnabledState().setEnabled(this.snapState.isSnapEnabled());
 		this.gridSizeSpinner.setEnabled(this.snapState.isSnapEnabled());
-		this.gridSpacingLabel.setEnabled(this.snapState.isSnapEnabled());
+		this.gridSizeLabel.getAwtComponent().setEnabled(this.snapState.isSnapEnabled());
 		
 		this.snapAngleModel.setValue(SnapState.getAngleOptionForAngle((int)this.snapState.getRotationSnapAngle().getAsDegrees()));
 		this.snapState.getIsRotationSnapEnabledState().setEnabled(this.snapState.isSnapEnabled());
 		this.snapAngleSpinner.setEnabled(this.snapState.isSnapEnabled());
-		this.snapAngleLabel.setEnabled(this.snapState.isSnapEnabled());
+		this.snapAngleLabel.getAwtComponent().setEnabled(this.snapState.isSnapEnabled());
 	}
 	
 	protected void updateSnapStateFromUI()
