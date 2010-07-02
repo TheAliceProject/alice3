@@ -40,27 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.javax.swing.components;
+package edu.cmu.cs.dennisc.javax.swing.border;
 
 /**
  * @author Dennis Cosgrove
  */
-class SuggestiveTextUtilities {
-	public static void drawBlankTextIfNecessary( javax.swing.text.JTextComponent textComponent, java.awt.Graphics g, String textForBlankCondition ) {
-		if( textComponent.isEditable() && textComponent.isEnabled() ) {
-			String text = textComponent.getText();
-			if( text.length() > 0 || textForBlankCondition == null ) {
-				//pass
-			} else {
-				java.awt.Font font = textComponent.getFont().deriveFont( java.awt.Font.ITALIC );
-				g.setFont( font );
-				g.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 127 ) );
-				java.awt.FontMetrics fm = g.getFontMetrics();
-				//java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( text, g );
-				//int y = textComponent.getHeight()-textComponent.getInsets().bottom-fm.getDescent();
-				int y = textComponent.getInsets().top + fm.getAscent();
-				g.drawString( textForBlankCondition, textComponent.getInsets().left, y );
-			}
-		}
+public class TextComponentBorder extends javax.swing.border.CompoundBorder {
+	public TextComponentBorder() {
+		super( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ), javax.swing.BorderFactory.createEmptyBorder( 1, 3, 1, 3 ) );
 	}
 }
