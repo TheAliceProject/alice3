@@ -45,46 +45,58 @@ package edu.cmu.cs.dennisc.javax.swing.icons;
 /**
  * @author Dennis Cosgrove
  */
-public class ScaledImageIcon implements javax.swing.Icon {
-	private java.awt.Image image;
-	private int width;
-	private int height;
-	public ScaledImageIcon( java.awt.Image image, int width, int height ) {
-		this.image = image;
-		this.width = width;
-		this.height = height;
+public class ShapeIcon implements javax.swing.Icon {
+	private java.awt.Shape shape;
+	private java.awt.Paint fillPaint;
+	private java.awt.Paint drawPaint;
+	private int top;
+	private int left;
+	private int bottom;
+	private int right;
+	public ShapeIcon( java.awt.Shape shape, java.awt.Paint fillPaint, java.awt.Paint drawPaint, int top, int left, int bottom, int right ) {
+		this.shape = shape;
+		this.fillPaint = fillPaint;
+		this.drawPaint = drawPaint;
+		this.top = top;
+		this.left = left;
+		this.bottom = bottom;
+		this.right = right;
+	}
+	public ShapeIcon( java.awt.Shape shape, java.awt.Paint fillPaint, java.awt.Paint drawPaint, java.awt.Insets insets ) {
+		this( shape, fillPaint, drawPaint, insets.top, insets.left, insets.bottom, insets.right );
+	}
+	public ShapeIcon( java.awt.Shape shape, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+		this( shape, fillPaint, drawPaint, 0, 0, 0, 0 );
 	}
 	public int getIconWidth() {
-		return this.width;
+		int rv = this.shape.getBounds().width;
+		rv += this.left;
+		rv += this.right;
+		return rv;
 	}
 	public int getIconHeight() {
-		return this.height;
+		int rv = this.shape.getBounds().height;
+		rv += this.top;
+		rv += this.bottom;
+		return rv;
 	}
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-//
-////		java.awt.Paint prevPaint = g2.getPaint();
-////		g2.setColor( java.awt.Color.RED );
-////		g2.fillRect(x, y, this.width, this.height);
-////		g2.setPaint( prevPaint );
-//
-		int imageWidth = this.image.getWidth( c );
-		int imageHeight = this.image.getHeight( c );
-		if( imageWidth > 0 && imageHeight > 0 ) {
-//			java.awt.geom.AffineTransform prevTransform = g2.getTransform();
-//			java.awt.geom.AffineTransform transform = new java.awt.geom.AffineTransform();
-//			transform.translate( x, y );
-//			transform.scale( this.width/(double)imageWidth, this.height/(double)imageHeight );
-//			g2.setTransform( transform );
-			
-			//g2.drawImage( this.image, 0, 0, c );
-			g2.translate( x, y );
-			g2.drawImage( this.image, 0, 0, this.width, this.height, 0, 0, imageWidth, imageHeight, c );
-			g2.translate( -x, -y );
-//			g2.setTransform( prevTransform );
-		} else {
-			System.err.println( this );
+
+		g2.translate( x+this.left, y+this.top );
+
+		java.awt.Paint prevPaint = g2.getPaint();
+		if( this.fillPaint != null ) {
+			g2.setPaint( this.fillPaint );
+			g2.fill( this.shape );
+		}
+		if( this.drawPaint != null ) {
+			g2.setPaint( this.drawPaint );
+			g2.draw( this.shape );
 		}
 		
+		g2.translate( -(x+this.left), -(y+this.top) );
+
+		g2.setPaint( prevPaint );
 	}
 }

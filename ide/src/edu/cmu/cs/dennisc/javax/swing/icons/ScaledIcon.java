@@ -50,6 +50,7 @@ public class ScaledIcon implements javax.swing.Icon {
 	private int width;
 	private int height;
 	public ScaledIcon( javax.swing.Icon icon, int width, int height ) {
+		assert icon != null;
 		this.icon = icon;
 		this.width = width;
 		this.height = height;
@@ -70,8 +71,9 @@ public class ScaledIcon implements javax.swing.Icon {
 //
 		java.awt.geom.AffineTransform prevTransform = g2.getTransform();
 		java.awt.geom.AffineTransform transform = new java.awt.geom.AffineTransform();
-		transform.translate( x, y );
+		//transform.translate( x, y );
 		transform.scale( this.width/(double)this.icon.getIconWidth(), this.height/(double)this.icon.getIconHeight() );
+		//transform.scale( 0.25, 0.25 );
 		g2.setTransform( transform );
 		this.icon.paintIcon(c, g2, 0, 0);
 		g2.setTransform( prevTransform );

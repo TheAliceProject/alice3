@@ -46,8 +46,19 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class ResourceManager {
+	private static final int SMALL_ICON_SIZE = 32;
 	private static final String PACKAGE_NAME_PREFIX = ResourceManager.class.getPackage().getName();
+	
 	private ResourceManager() {
+	}
+	private static javax.swing.Icon getSmallIconFor( javax.swing.Icon largeIcon ) {
+		if( largeIcon != null ) {
+			return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( ((javax.swing.ImageIcon)largeIcon).getImage(), SMALL_ICON_SIZE, SMALL_ICON_SIZE );
+			//return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( largeIcon, SMALL_ICON_SIZE, SMALL_ICON_SIZE );
+		} else {
+			//todo
+			return new edu.cmu.cs.dennisc.javax.swing.icons.ShapeIcon( new java.awt.geom.Ellipse2D.Float( 0, 0, SMALL_ICON_SIZE-8, SMALL_ICON_SIZE-8 ), java.awt.Color.LIGHT_GRAY, java.awt.Color.DARK_GRAY, 4, 4, 4, 4 );
+		}
 	}
 	private static java.net.URL getLargeIconResource(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
 		if( treeNode != null ) {
@@ -79,17 +90,10 @@ public class ResourceManager {
 		}
 	}
 	public static javax.swing.Icon getSmallIcon(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
-		java.net.URL url = getLargeIconResource(treeNode);
-		if( url != null ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: use scaled icon" );
-			return new javax.swing.ImageIcon( new javax.swing.ImageIcon( url ).getImage().getScaledInstance( 32, 32, java.awt.Image.SCALE_FAST ) );
-			//return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( new javax.swing.ImageIcon( url ).getImage(), 32, 32 );
-		} else {
-			return null;
-		}
+		return getSmallIconFor( getLargeIcon(treeNode) );
 //		javax.swing.Icon largeIcon = getLargeIcon(treeNode);
 //		if( largeIcon != null ) {
-//			return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon(largeIcon, 32, 32 );
+//			return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon(largeIcon, SMALL_ICON_SIZE, SMALL_ICON_SIZE );
 //		} else {
 //			return null;
 //		}
@@ -145,33 +149,9 @@ public class ResourceManager {
 		}
 	}
 	public static javax.swing.Icon getSmallIconForGalleryClassName(String className) {
-		java.net.URL url = getLargeIconResourceForGalleryClassName(className);
-		if( url != null ) {
-//			try {
-//				java.awt.image.BufferedImage image = javax.imageio.ImageIO.read( url );
-//				return new javax.swing.ImageIcon( image.getScaledInstance( 32, 32, java.awt.Image.SCALE_FAST ) );
-//				//return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon(image, 32, 32);
-//			} catch( java.io.IOException ioe) {
-//				throw new RuntimeException( ioe );
-//			}
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: use scaled icon" );
-			return new javax.swing.ImageIcon( new javax.swing.ImageIcon( url ).getImage().getScaledInstance( 32, 32, java.awt.Image.SCALE_FAST ) );
-			//return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( new javax.swing.ImageIcon( url ).getImage(), 32, 32 );
-		} else {
-			return null;
-		}
-//		javax.swing.Icon largeIcon = getLargeIconForGalleryClassName(className);
-//		if( largeIcon != null ) {
-//			return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon(largeIcon, 32, 32 );
-//		} else {
-//			return null;
-//		}
+		return getSmallIconFor( getLargeIconForGalleryClassName(className) );
 	}
 
-	//	public static java.net.URL getSmallIconResourceForGalleryClassName( String className ) {
-//		return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( ResourceManager.class.getResource( getLargeIconResourceNameForClassName(className) ) ) );
-//	}
-	
 	public static edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedBox( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
 		String path = treeNode.getValue();
 		String resourceName = "boxes" + path.substring( PACKAGE_NAME_PREFIX.length()+1+"images".length(), path.length()-3 ) + "bin";
