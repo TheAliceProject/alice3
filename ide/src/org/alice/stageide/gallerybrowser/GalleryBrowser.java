@@ -80,17 +80,16 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 							this.addComponent( new GalleryDragComponent( child, name ) );
 						} else {
 							edu.cmu.cs.dennisc.croquet.Operation<?, ?> operation = edu.cmu.cs.dennisc.croquet.SelectDirectoryActionOperation.getInstance(treeSelectionState, child, null);
-							java.net.URL url = ResourceManager.getLargeIconResource( child );
+							javax.swing.Icon icon;
 							if (child instanceof edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode) {
 								edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode directoryZipTreeNode = (edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode) child;
 								edu.cmu.cs.dennisc.zip.ZipTreeNode thumbnailNode = directoryZipTreeNode.getChildNamed( "directoryThumbnail.png" );
-								url = ResourceManager.getLargeIconResource( thumbnailNode );
+								icon = ResourceManager.getLargeIcon( thumbnailNode );
 							} else {
-								url = null;
+								icon = ResourceManager.getLargeIcon( child );
 							}
-							if( url != null ) {
-								edu.cmu.cs.dennisc.javax.swing.icons.CompositeIcon icon = new edu.cmu.cs.dennisc.javax.swing.icons.CompositeIcon( new javax.swing.ImageIcon( url ), FOLDER_SMALL_ICON );
-								operation.setSmallIcon( icon );
+							if( icon != null ) {
+								operation.setSmallIcon( new edu.cmu.cs.dennisc.javax.swing.icons.CompositeIcon( icon, FOLDER_SMALL_ICON ) );
 							} else {
 								operation.setSmallIcon( FOLDER_LARGE_ICON );
 							}
@@ -243,6 +242,7 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				if( name != null ) {
 					edu.cmu.cs.dennisc.croquet.Operation<?, ?> rv = GalleryFileActionOperation.getInstance( treeNode );
 					rv.setName( name );
+					rv.setSmallIcon( ResourceManager.getSmallIcon(treeNode) );
 					return rv;
 				} else {
 					return null;

@@ -42,42 +42,41 @@
  */
 package org.alice.ide.declarationpanes;
 
-class GalleryIcon extends edu.cmu.cs.dennisc.croquet.Label {
-	public GalleryIcon( java.net.URL url ) {
-		this.setIcon( new javax.swing.ImageIcon( url ) );
-		this.setVerticalAlignment( edu.cmu.cs.dennisc.croquet.VerticalAlignment.BOTTOM );
-	}
-	@Override
-	protected javax.swing.JLabel createAwtComponent() {
-		return new javax.swing.JLabel() {
-			@Override
-			public java.awt.Dimension getMaximumSize() {
-				return this.getPreferredSize();
-			}
-		};
-	}
-}
+//class GalleryLabel extends edu.cmu.cs.dennisc.croquet.Label {
+//	public GalleryLabel( java.net.URL url ) {
+//		this.setIcon( new javax.swing.ImageIcon( url ) );
+//		this.setVerticalAlignment( edu.cmu.cs.dennisc.croquet.VerticalAlignment.BOTTOM );
+//	}
+//	@Override
+//	protected javax.swing.JLabel createAwtComponent() {
+//		return new javax.swing.JLabel() {
+//			@Override
+//			public java.awt.Dimension getMaximumSize() {
+//				return this.getPreferredSize();
+//			}
+//		};
+//	}
+//}
 
 /**
  * @author Dennis Cosgrove
  */
 public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldPane {
-	private GalleryIcon galleryIcon;
-	private CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class<?> cls, java.net.URL url, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
+	//private GalleryLabel galleryIcon;
+	private CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class<?> cls, javax.swing.Icon icon, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
 		super( declaringType, cls, valueType );
-		if( url != null ) {
-			this.galleryIcon = new GalleryIcon( url );
-			this.addComponent( this.galleryIcon, Constraint.EAST );
+		if( icon != null ) {
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( icon ), Constraint.EAST );
 		}
 	}
 	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class<?> cls ) {
-		this( declaringType, cls, org.alice.stageide.gallerybrowser.ResourceManager.getLargeIconResourceForGalleryClassName( cls.getName() ), null );
+		this( declaringType, cls, org.alice.stageide.gallerybrowser.ResourceManager.getLargeIconForGalleryClassName( cls.getName() ), null );
 	}
 	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
-		this( declaringType, org.alice.stageide.gallerybrowser.ResourceManager.getGalleryCls(treeNode), org.alice.stageide.gallerybrowser.ResourceManager.getLargeIconResource(treeNode), null );
+		this( declaringType, org.alice.stageide.gallerybrowser.ResourceManager.getGalleryCls(treeNode), org.alice.stageide.gallerybrowser.ResourceManager.getLargeIcon(treeNode), null );
 	}
 	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
-		this( declaringType, null, org.alice.stageide.gallerybrowser.ResourceManager.getLargeIconResourceForGalleryClassName( valueType.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getName() ), valueType );
+		this( declaringType, null, org.alice.stageide.gallerybrowser.ResourceManager.getLargeIconForGalleryClassName( valueType.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getName() ), valueType );
 	}
 	
 
