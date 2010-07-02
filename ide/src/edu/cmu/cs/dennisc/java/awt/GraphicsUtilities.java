@@ -122,4 +122,48 @@ public class GraphicsUtilities {
 	public static void fillTriangle( java.awt.Graphics g, Heading heading, java.awt.Rectangle rect ) {
 		fillTriangle( g, heading, rect.x, rect.y, rect.width, rect.height );
 	}
+	
+	private static java.awt.geom.GeneralPath createPath( float x, float y, float width, float height, boolean isTopLeft ) {
+		 java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
+		 float halfSize = Math.min( width/2, height/2 );
+		 if( isTopLeft ) {
+			 rv.moveTo( x, y );
+		 } else {
+			 rv.moveTo( x + width, y + height );
+		 }
+		 rv.lineTo( x + width, y );
+		 rv.lineTo( x + width - halfSize, y + halfSize );
+		 rv.lineTo( x + halfSize, y + height - halfSize );
+		 rv.lineTo( x, y + height );
+		 rv.closePath();
+		 return rv;
+	}
+	private static java.awt.Shape createClip( java.awt.geom.RoundRectangle2D rr, boolean isTopLeft ) {
+		java.awt.geom.Area rv = new java.awt.geom.Area( rr );
+		rv.subtract( new java.awt.geom.Area( createPath( (float)rr.getX(), (float)rr.getY(), (float)rr.getWidth(), (float)rr.getHeight(), isTopLeft==false ) ) );
+		return rv;
+	}
+	public static void draw3DRoundRectangle( java.awt.Graphics g, java.awt.geom.RoundRectangle2D rr, java.awt.Paint topLeftPaint, java.awt.Paint bottomRightPaint, java.awt.Stroke stroke ) {
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		java.awt.Paint prevPaint = g2.getPaint();
+		java.awt.Stroke prevStroke = g2.getStroke();
+		java.awt.Shape prevClip = g2.getClip();
+		Object antialiasingValue = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+		
+		g2.setStroke( stroke );
+		g2.setClip( createClip( rr, true ) );
+		g2.setPaint( topLeftPaint );
+		g2.draw( rr );
+		
+		g2.setClip( createClip( rr, false ) );
+		g2.setPaint( bottomRightPaint );
+		g2.draw( rr );
+
+		g2.setClip( prevClip );
+		g2.setStroke( prevStroke );
+		g2.setPaint( prevPaint );
+
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, antialiasingValue );
+	}
 }

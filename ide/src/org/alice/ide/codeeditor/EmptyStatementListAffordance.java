@@ -56,10 +56,10 @@ public class EmptyStatementListAffordance extends edu.cmu.cs.dennisc.croquet.JCo
 
 	private boolean isDrawingDesired = true;
 	
-	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty;
+//	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty;
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty alternateListProperty;
 	public EmptyStatementListAffordance( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, edu.cmu.cs.dennisc.alice.ast.StatementListProperty alternateListProperty ) {
-		this.statementListProperty = statementListProperty;
+//		this.statementListProperty = statementListProperty;
 		this.alternateListProperty = alternateListProperty;
 	}
 	
@@ -72,26 +72,6 @@ public class EmptyStatementListAffordance extends edu.cmu.cs.dennisc.croquet.JCo
 					super.paint(g);
 				}
 			}
-			private java.awt.geom.GeneralPath createPath( java.awt.geom.RoundRectangle2D.Float rr, boolean isTopLeft ) {
-				 java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
-				 float halfSize = Math.min( rr.width/2, rr.height/2 );
-				 if( isTopLeft ) {
-					 rv.moveTo( rr.x, rr.y );
-				 } else {
-					 rv.moveTo( rr.x + rr.width, rr.y + rr.height );
-				 }
-				 rv.lineTo( rr.x + rr.width, rr.y );
-				 rv.lineTo( rr.x + rr.width - halfSize, rr.y + halfSize );
-				 rv.lineTo( rr.x + halfSize, rr.y + rr.height - halfSize );
-				 rv.lineTo( rr.x, rr.y + rr.height );
-				 rv.closePath();
-				 return rv;
-			}
-			private java.awt.Shape createClip( java.awt.geom.RoundRectangle2D.Float rr, boolean isTopLeft ) {
-				java.awt.geom.Area rv = new java.awt.geom.Area( rr );
-				rv.subtract( new java.awt.geom.Area( this.createPath( rr, isTopLeft==false ) ) );
-				return rv;
-			}
 			private boolean isMuted() {
 				return alternateListProperty != null && alternateListProperty.size() > 0;
 			}
@@ -102,32 +82,14 @@ public class EmptyStatementListAffordance extends edu.cmu.cs.dennisc.croquet.JCo
 				} else {
 					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 					java.awt.Paint prevPaint = g2.getPaint();
-					java.awt.Stroke prevStroke = g2.getStroke();
-					java.awt.Shape prevClip = g2.getClip();
-					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-					
-					int x = 0;
-					int y = 0;
-					int width = this.getWidth();
-					int height = this.getHeight();
-					java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( x, y, width-1, height-1, 8, 8 );
-					g2.setPaint( new java.awt.GradientPaint( 0, 0, TOP_COLOR, 0, height, BOTTOM_COLOR ) );
+
+					java.awt.Rectangle bounds = this.getBounds();
+					java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( bounds.x, bounds.y, bounds.width-1, bounds.height-1, 8, 8 );
+					g2.setPaint( new java.awt.GradientPaint( 0, 0, TOP_COLOR, 0, bounds.height, BOTTOM_COLOR ) );
 					g2.fill( rr );
-					
-					g2.setStroke( SOLID_STROKE );
-					g2.setClip( this.createClip( rr, true ) );
-					g2.setPaint( SHADOW_COLOR );
-					g2.draw( rr );
-					
-					g2.setClip( this.createClip( rr, false ) );
-					g2.setPaint( HIGHLIGHT_COLOR );
-					g2.draw( rr );
 
-					g2.setClip( prevClip );
-					g2.setStroke( prevStroke );
+					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.draw3DRoundRectangle(g2, rr, SHADOW_COLOR, HIGHLIGHT_COLOR, SOLID_STROKE);
 					g2.setPaint( prevPaint );
-
-					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_DEFAULT );
 				}
 				super.paintComponent( g );
 			}

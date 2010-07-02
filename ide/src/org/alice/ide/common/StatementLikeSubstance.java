@@ -96,32 +96,39 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 		return getIDE().getPaintFor( this.statementCls, x, y, width, height );
 	}
 
+	private java.awt.geom.RoundRectangle2D.Float createRoundRectangle( int x, int y, int width, int height ) {
+		return new java.awt.geom.RoundRectangle2D.Float( x, y, width-1, height-1, 8, 8 );
+	}
 	@Override
 	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		g2.fillRoundRect( x, y, width - 1, height - 1, 8, 8 );
+		g2.fill( this.createRoundRectangle(x, y, width, height) );
 	}
 	
 	@Override
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		java.awt.geom.RoundRectangle2D rr = new java.awt.geom.RoundRectangle2D.Float( x+1, y+1, width-3, height-3, 8, 8 );
-		g2.fill( rr );
+		this.fillBounds( g2, x, y, width, height );
 	}
 	
+	private static final java.awt.Stroke ACTIVE_STROKE = new java.awt.BasicStroke( 3.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
+	private static final java.awt.Stroke PASSIVE_STROKE = new java.awt.BasicStroke( 1.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
+	private static final java.awt.Color HIGHLIGHT_COLOR = new java.awt.Color( 160, 160, 100 );
+	private static final java.awt.Color SHADOW_COLOR = new java.awt.Color( 0, 0, 0 );
 	protected void paintOutline( java.awt.Graphics2D g2, java.awt.geom.RoundRectangle2D.Float rr ) {
 		java.awt.Stroke prevStroke = g2.getStroke();
 		if( this.isActive() ) {
-			g2.setPaint( java.awt.Color.BLUE );
-			g2.setStroke( new java.awt.BasicStroke( 3.0f ) );
+			//g2.setPaint( java.awt.Color.BLUE );
+			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.draw3DRoundRectangle(g2, rr, HIGHLIGHT_COLOR, SHADOW_COLOR, ACTIVE_STROKE );
 		} else {
 			g2.setPaint( java.awt.Color.GRAY );
+			g2.setStroke( PASSIVE_STROKE );
+			g2.draw( rr );
 		}
-		g2.draw( rr );
 		g2.setStroke( prevStroke );
 	}
 	@Override
 	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		super.paintEpilogue( g2, x, y, width, height );
-		this.paintOutline( g2, new java.awt.geom.RoundRectangle2D.Float( x+1, y+1, width-3, height-3, 8, 8 ) );
+		this.paintOutline( g2, this.createRoundRectangle(x, y, width, height) );
 	}
 	
 //	@Override

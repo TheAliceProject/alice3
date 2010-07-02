@@ -111,7 +111,7 @@ public abstract class NodeLikeSubstance extends org.alice.ide.Component {
 			if( this.isActive() ) {
 				grayscale = 0;
 			} else {
-				grayscale = 60;
+				grayscale = 127;
 			}
 			g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( grayscale ) );
 			edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g2, x+this.getDockInsetLeft(), y + 2, KNURL_WIDTH, height - 5 );
