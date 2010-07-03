@@ -131,7 +131,7 @@ abstract class NumberModel extends edu.cmu.cs.dennisc.croquet.StringState {
 			throw new RuntimeException( ble );
 		}
 	}
-	public edu.cmu.cs.dennisc.alice.ast.Expression getValue() {
+	public edu.cmu.cs.dennisc.alice.ast.Expression getExpressionValue() {
 		try {
 			javax.swing.text.Document document = this.getDocument();
 			try {
@@ -218,7 +218,7 @@ abstract class AbstractNumberChooser extends ValueChooser< edu.cmu.cs.dennisc.al
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.Expression getValue() {
-		return this.numberModel.getValue();
+		return this.numberModel.getExpressionValue();
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Component< ? > createMainComponent() {

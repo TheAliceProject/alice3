@@ -46,16 +46,24 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance {
-//	public static GalleryDragComponent getInstance( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
-//		return new GalleryDragComponent( treeNode );
-//	}
+	private static java.util.Map<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>, GalleryDragComponent> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static GalleryDragComponent getInstance( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
+		GalleryDragComponent rv = map.get( treeNode );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new GalleryDragComponent( treeNode );
+			map.put( treeNode, rv );
+		}
+		return rv;
+	}
 	
 	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode;
-	public GalleryDragComponent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, String name ) {
+	private GalleryDragComponent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
 		this.treeNode = treeNode;
 		edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label();
 		label.setIcon( ResourceManager.getLargeIcon( this.treeNode ) );
-		label.setText( name );
+		label.setText( GalleryBrowser.getTextFor( this.treeNode, false ) );
 		label.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
 		label.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.CENTER );
 		this.setAlignmentY( 0.0f );

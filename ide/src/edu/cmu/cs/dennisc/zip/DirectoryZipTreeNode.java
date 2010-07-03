@@ -54,7 +54,7 @@ public class DirectoryZipTreeNode extends ZipTreeNode {
 	public boolean getAllowsChildren() {
 		return true;
 	}
-	private java.util.List< ZipTreeNode > getSortedChildren() {
+	private java.util.List< ? extends edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > getSortedChildren() {
 		if( this.isSorted ) {
 			//pass
 		} else {
@@ -63,9 +63,15 @@ public class DirectoryZipTreeNode extends ZipTreeNode {
 		}
 		return this.children;
 	}
-	public java.util.Enumeration< ZipTreeNode > children() {
+	public java.util.Enumeration< ? extends edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > children() {
 		return java.util.Collections.enumeration( this.getSortedChildren() );
 	}
+	public java.util.Iterator iterator() {
+		return this.children.iterator();
+	}
+//	public java.util.Iterator< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > iterator() {
+//		return this.children.iterator();
+//	}
 	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getChildAt(int childIndex) {
 		return this.getSortedChildren().get( childIndex );
 	}

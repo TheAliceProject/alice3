@@ -56,7 +56,7 @@ public abstract class NameInputPane extends edu.cmu.cs.dennisc.croquet.RowsSprin
 
 	public void setAndSelectNameText( String text ) {
 		if( text != null ) {
-			this.nameState.setState( text );
+			this.nameState.setValue( text );
 			this.getTextField().selectAll();
 		}
 	}
@@ -72,7 +72,7 @@ public abstract class NameInputPane extends edu.cmu.cs.dennisc.croquet.RowsSprin
 		return this.textField;
 	}
 	public String getNameText() {
-		return this.nameState.getState();
+		return this.nameState.getValue();
 	}
 //	@Override
 //	public boolean isOKButtonValid() {

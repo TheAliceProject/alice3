@@ -585,6 +585,9 @@ public class StageIDE extends org.alice.ide.IDE {
 				public java.util.Enumeration< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > children() {
 					return java.util.Collections.enumeration( children );
 				}
+				public java.util.Iterator<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> iterator() {
+					return children.iterator();
+				}
 				public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getChildAt(int childIndex) {
 					return children.get( childIndex );
 				}

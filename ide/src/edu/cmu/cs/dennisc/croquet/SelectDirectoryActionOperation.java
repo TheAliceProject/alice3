@@ -44,9 +44,18 @@
 package edu.cmu.cs.dennisc.croquet;
 
 public class SelectDirectoryActionOperation extends ActionOperation {
+	private static edu.cmu.cs.dennisc.map.MapToMap<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>, PathControl.Initializer, SelectDirectoryActionOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	public static SelectDirectoryActionOperation getInstance( TreeSelectionState<String> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: SelectDirectoryActionOperation.getInstance()" );
-		return new SelectDirectoryActionOperation(treeSelectionState, treeNode, initializer);
+		assert initializer != null;
+		SelectDirectoryActionOperation rv = mapToMap.get(treeNode, initializer);
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new SelectDirectoryActionOperation(treeSelectionState, treeNode, initializer);
+			mapToMap.put( treeNode, initializer, rv );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "SelectDirectoryActionOperation", initializer );
+		}
+		return rv;
 	}
 
 	private TreeSelectionState<String> treeSelectionState;

@@ -92,6 +92,9 @@ public abstract class TreeSelectionState<E> extends Model {
 	protected abstract edu.cmu.cs.dennisc.javax.swing.models.TreeNode<E> decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder);
 	protected abstract void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<E> value);
 
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<E> getRootTreeNode() {
+		return (edu.cmu.cs.dennisc.javax.swing.models.TreeNode<E>)this.treeModel.getRoot();
+	}
 	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<E> getSelectedTreeNode() {
 		javax.swing.tree.TreePath path = this.treeSelectionModel.getSelectionPath();
 		if( path != null ) {
@@ -127,7 +130,8 @@ public abstract class TreeSelectionState<E> extends Model {
 	}
 
 	public PathControl createPathControl( PathControl.Initializer initializer ) {
-		PathControl rv = new PathControl( this, initializer );
+		//todo
+		PathControl rv = new PathControl( (TreeSelectionState<String>)this, initializer );
 		Application.getSingleton().register(this);
 		rv.setSwingTreeModel( this.treeModel );
 		rv.setSwingTreeSelectionModel( this.treeSelectionModel );

@@ -47,54 +47,90 @@ package org.alice.stageide.gallerybrowser;
  */
 public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 
+	private static edu.cmu.cs.dennisc.croquet.PathControl.Initializer initializer = new edu.cmu.cs.dennisc.croquet.PathControl.Initializer() {
+		public edu.cmu.cs.dennisc.croquet.ActionOperation configure(edu.cmu.cs.dennisc.croquet.ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<java.lang.String> treeNode) {
+			javax.swing.Icon icon;
+			if (treeNode instanceof edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode) {
+				edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode directoryZipTreeNode = (edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode) treeNode;
+				edu.cmu.cs.dennisc.zip.ZipTreeNode thumbnailNode = directoryZipTreeNode.getChildNamed( "directoryThumbnail.png" );
+				icon = ResourceManager.getLargeIcon( thumbnailNode );
+			} else {
+				icon = ResourceManager.getLargeIcon( treeNode );
+			}
+			if( icon != null ) {
+				rv.setSmallIcon( new edu.cmu.cs.dennisc.javax.swing.icons.CompositeIcon( icon, FOLDER_SMALL_ICON ) );
+			} else {
+				rv.setSmallIcon( FOLDER_LARGE_ICON );
+			}
+			rv.setName( GalleryBrowser.getTextFor(treeNode, false) );
+			return rv;
+		}
+		public edu.cmu.cs.dennisc.croquet.Operation<?> getOperationForLeaf(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<java.lang.String> treeNode) {
+			return null;
+		}
+	};
+	
 	class DirectoryView extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 		private edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver<String> selectionObserver = new edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver<String>() {
 			public void selectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> nextValue) {
 				DirectoryView.this.handleSelectionChanged( nextValue );
 			}
 		};
-//		@Override
-//		protected boolean isMaximumSizeClampedToPreferredSize() {
-//			return true;
-//		}
+		private edu.cmu.cs.dennisc.croquet.StringState.ValueObserver filterObserver = new edu.cmu.cs.dennisc.croquet.StringState.ValueObserver() {
+			public void changed(String nextValue) {
+				DirectoryView.this.handleFilterChanged( nextValue );
+			}		
+		};
 		@Override
 		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 			super.handleAddedTo(parent);
 			treeSelectionState.addAndInvokeSelectionObserver(this.selectionObserver);
+			filterState.addAndInvokeValueObserver( this.filterObserver );
 		}
 		@Override
 		protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-			treeSelectionState.addAndInvokeSelectionObserver(this.selectionObserver);
+			filterState.removeValueObserver( this.filterObserver );
+			treeSelectionState.removeSelectionObserver(this.selectionObserver);
 			super.handleRemovedFrom(parent);
 		}
 		
-		private void handleSelectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> nextValue) {
+		private java.util.LinkedList<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> update( java.util.LinkedList<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, String lowerCaseFilter ) {
+			String path = treeNode.getValue();
+			if( path != null ) {
+				String[] chunks = path.split( "/" );
+				if( chunks.length > 0 ) {
+					String name = chunks[ chunks.length-1 ];
+					if( name.toLowerCase().contains( lowerCaseFilter ) ) {
+						rv.add( treeNode );
+					}
+				}
+			}
+			for( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> child : treeNode ) {
+				update( rv, child, lowerCaseFilter );
+			}
+			return rv;
+		}
+
+		private void refresh() {
 			this.removeAllComponents();
-			if( nextValue != null ) {
-				java.util.Enumeration<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> enumeration = nextValue.children();
-				while( enumeration.hasMoreElements() ) {
-					edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> child = enumeration.nextElement();
+			String filter = filterState.getValue();
+			Iterable<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> iterable;
+			if( filter != null && filter.length() > 0 ) {
+				java.util.LinkedList<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				update( list, treeSelectionState.getRootTreeNode(), filter.toLowerCase() );
+				iterable = list;
+			} else {
+				iterable =  treeSelectionState.getSelectedTreeNode();
+			}
+			if( iterable != null ) {
+				for( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> child : iterable ) {
 					String name = GalleryBrowser.this.getTextFor(child, false);
 					if( name != null ) {
 						if( child.isLeaf() ) {
-							this.addComponent( new GalleryDragComponent( child, name ) );
+							this.addComponent( GalleryDragComponent.getInstance( child ) );
 						} else {
-							edu.cmu.cs.dennisc.croquet.Operation<?> operation = edu.cmu.cs.dennisc.croquet.SelectDirectoryActionOperation.getInstance(treeSelectionState, child, null);
-							javax.swing.Icon icon;
-							if (child instanceof edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode) {
-								edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode directoryZipTreeNode = (edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode) child;
-								edu.cmu.cs.dennisc.zip.ZipTreeNode thumbnailNode = directoryZipTreeNode.getChildNamed( "directoryThumbnail.png" );
-								icon = ResourceManager.getLargeIcon( thumbnailNode );
-							} else {
-								icon = ResourceManager.getLargeIcon( child );
-							}
-							if( icon != null ) {
-								operation.setSmallIcon( new edu.cmu.cs.dennisc.javax.swing.icons.CompositeIcon( icon, FOLDER_SMALL_ICON ) );
-							} else {
-								operation.setSmallIcon( FOLDER_LARGE_ICON );
-							}
+							edu.cmu.cs.dennisc.croquet.Operation<?> operation = edu.cmu.cs.dennisc.croquet.SelectDirectoryActionOperation.getInstance(treeSelectionState, child, initializer );
 							if( operation != null ) {
-								operation.setName( name );
 								edu.cmu.cs.dennisc.croquet.Button button = operation.createButton();
 								button.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
 								button.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.CENTER );
@@ -104,9 +140,14 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 						}
 					}
 				}
-				this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() );
 			}
 			this.revalidateAndRepaint();
+		}
+		private void handleFilterChanged( String filter ) {
+			this.refresh();
+		}
+		private void handleSelectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> nextValue) {
+			this.refresh();
 		}
 	}
 	
@@ -120,10 +161,12 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	}
 
 	private static final int GAP = 4;
-	private edu.cmu.cs.dennisc.croquet.TreeSelectionState<String> treeSelectionState;
 	private static final javax.swing.ImageIcon FOLDER_LARGE_ICON = new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/folder.png"));
 	private static final javax.swing.ImageIcon FOLDER_SMALL_ICON = new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/folder24.png"));
 	
+	private edu.cmu.cs.dennisc.croquet.TreeSelectionState<String> treeSelectionState;
+	private edu.cmu.cs.dennisc.croquet.StringState filterState;
+
 	public GalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> root ) {
 		//super(GAP * 2, 0);
 
@@ -138,6 +181,30 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			}
 		};
 		
+		this.filterState = new edu.cmu.cs.dennisc.croquet.StringState( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "8648d640-5676-4627-a002-44db06ce58ce" ), "" );
+		
+		this.treeSelectionState.addSelectionObserver( new edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver<String>() {
+			public void selectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<java.lang.String> nextValue) {
+				filterState.setValue( "" );
+			}
+		} );
+
+		final DirectoryView directoryView = new DirectoryView();
+		
+		final edu.cmu.cs.dennisc.croquet.TextField filterTextField = this.filterState.createTextField();
+		filterTextField.setPreferredSize( new java.awt.Dimension( 256, 32 ) );
+		filterTextField.scaleFont( 1.5f );
+		org.alice.ide.IDE.getSingleton().getIsSceneEditorExpandedState().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
+			public void changing(boolean nextValue) {
+			}
+			public void changed(boolean nextValue) {
+				javax.swing.SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						filterTextField.requestFocus();
+					}
+				} );
+			}
+		} );
 		CreateTextActionOperation createTextActionOperation = new CreateTextActionOperation();
 		CreateBillboardActionOperation createBillboardActionOperation = new CreateBillboardActionOperation();
 		CreateMyInstanceActionOperation createMyInstanceActionOperation = new CreateMyInstanceActionOperation();
@@ -164,14 +231,18 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		createPersonButton.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
 
 		indirectCreatePersonActionOperation.setSmallIcon(new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/create_person.png")));
+
+		edu.cmu.cs.dennisc.croquet.BorderPanel pathControlPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		pathControlPanel.addComponent( this.treeSelectionState.createPathControl( this.createInitializer() ), Constraint.WEST );
+		pathControlPanel.addComponent( filterTextField, Constraint.EAST );
 		
 		edu.cmu.cs.dennisc.croquet.BorderPanel borderPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel( 0, GAP );
 		borderPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
 		borderPanel.setBackgroundColor( null );
-		borderPanel.addComponent( this.treeSelectionState.createPathControl( this.createInitializer() ), Constraint.NORTH );
+		borderPanel.addComponent( pathControlPanel, Constraint.NORTH );
 
 		edu.cmu.cs.dennisc.croquet.BorderPanel clampSizePanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		clampSizePanel.addComponent( new DirectoryView(), Constraint.WEST );
+		clampSizePanel.addComponent( directoryView, Constraint.WEST );
 		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( clampSizePanel );
 		scrollPane.getAwtComponent().getHorizontalScrollBar().setUnitIncrement( 16 );
 		scrollPane.setBorder( null );
@@ -184,7 +255,7 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		this.addComponent( borderPanel, Constraint.CENTER );
 	}
 
-	private String getAdornedTextFor(String name, boolean isDirectory, boolean isRequestedByPath) {
+	private static String getAdornedTextFor(String name, boolean isDirectory, boolean isRequestedByPath) {
 		String rv;
 		if (map != null) {
 			if (map.containsKey(name)) {
@@ -202,8 +273,8 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 		return rv;
 	}
-
-	private final String getTextFor(javax.swing.tree.TreeNode treeNode, boolean isRequestedByPath) {
+	
+	/*package-private*/ final static String getTextFor(javax.swing.tree.TreeNode treeNode, boolean isRequestedByPath) {
 		String name;
 		if (treeNode instanceof edu.cmu.cs.dennisc.zip.ZipTreeNode) {
 			edu.cmu.cs.dennisc.zip.ZipTreeNode zipTreeNode = (edu.cmu.cs.dennisc.zip.ZipTreeNode) treeNode;
@@ -218,19 +289,20 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		if( "directoryThumbnail".equals( name ) ) {
 			return null;
 		} else {
-			return this.getAdornedTextFor(name, treeNode.isLeaf() == false, isRequestedByPath);
+			return getAdornedTextFor(name, treeNode.isLeaf() == false, isRequestedByPath);
 		}
 	}
 
 	private edu.cmu.cs.dennisc.croquet.PathControl.Initializer createInitializer() {
 		return new edu.cmu.cs.dennisc.croquet.PathControl.Initializer() {
 			public edu.cmu.cs.dennisc.croquet.ActionOperation configure(edu.cmu.cs.dennisc.croquet.ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode) {
-				if (treeNode instanceof edu.cmu.cs.dennisc.zip.ZipTreeNode) {
-					edu.cmu.cs.dennisc.zip.ZipTreeNode zipTreeNode = (edu.cmu.cs.dennisc.zip.ZipTreeNode) treeNode;
-					rv.setName( zipTreeNode.getName() );
-				} else {
-					rv.setName( treeNode.toString() );
-				}
+//				if (treeNode instanceof edu.cmu.cs.dennisc.zip.ZipTreeNode) {
+//					edu.cmu.cs.dennisc.zip.ZipTreeNode zipTreeNode = (edu.cmu.cs.dennisc.zip.ZipTreeNode) treeNode;
+//					rv.setName( zipTreeNode.getName() );
+//				} else {
+//					rv.setName( treeNode.toString() );
+//				}
+				rv.setName( getTextFor(treeNode, true) );
 				rv.setSmallIcon( FOLDER_SMALL_ICON );
 				return rv;
 			}

@@ -57,13 +57,13 @@ public abstract class AbstractChooserWithTextField<E extends edu.cmu.cs.dennisc.
 	protected abstract E valueOf( String text );
 	@Override
 	public final E getValue() {
-		return this.valueOf( this.stringState.getState() );
+		return this.valueOf( this.stringState.getValue() );
 	}
 	
 	@Override
 	public String getExplanationIfOkButtonShouldBeDisabled() {
 		try {
-			this.valueOf( this.stringState.getState() );
+			this.valueOf( this.stringState.getValue() );
 			return null;
 		} catch( RuntimeException re ) {
 			return "invalid value";
@@ -71,7 +71,7 @@ public abstract class AbstractChooserWithTextField<E extends edu.cmu.cs.dennisc.
 	}
 
 	public void setAndSelectText( String text ) {
-		this.stringState.setState( text );
+		this.stringState.setValue( text );
 		this.textField.selectAll();
 	}
 }

@@ -134,7 +134,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class PathControl extends ViewController< javax.swing.JComponent, TreeSelectionState > {
+public class PathControl extends ViewController< javax.swing.JComponent, TreeSelectionState<String> > {
 	private javax.swing.tree.TreeSelectionModel treeSelectionModel;
 	private javax.swing.event.TreeSelectionListener treeSelectionListener = new javax.swing.event.TreeSelectionListener() {
 		public void valueChanged(javax.swing.event.TreeSelectionEvent e) {
@@ -151,7 +151,7 @@ public class PathControl extends ViewController< javax.swing.JComponent, TreeSel
 	private java.util.Map< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>, DirectoryControl > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
 	private Initializer initializer;
-	/*package-private*/ PathControl( TreeSelectionState model, Initializer initializer ) {
+	/*package-private*/ PathControl( TreeSelectionState<String> model, Initializer initializer ) {
 		super( model );
 		this.initializer = initializer;
 	}

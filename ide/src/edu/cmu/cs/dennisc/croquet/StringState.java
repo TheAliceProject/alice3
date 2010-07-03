@@ -53,6 +53,10 @@ public class StringState extends Model {
 	public void addValueObserver( ValueObserver valueObserver ) {
 		this.valueObservers.add( valueObserver );
 	}
+	public void addAndInvokeValueObserver( ValueObserver valueObserver ) {
+		this.addValueObserver(valueObserver);
+		valueObserver.changed(this.getValue());
+	}
 	public void removeValueObserver( ValueObserver valueObserver ) {
 		this.valueObservers.remove( valueObserver );
 	}
@@ -72,6 +76,11 @@ public class StringState extends Model {
 				stringStateContext = (StringStateContext)context;
 			} else {
 				stringStateContext = context.createStringStateContext( StringState.this );
+			}
+			try {
+				fireValueChanged( document.getText( 0, document.getLength() ) );
+			} catch( javax.swing.text.BadLocationException ble ) {
+				throw new RuntimeException( ble );
 			}
 			stringStateContext.handleDocumentEvent( e );
 		}
@@ -97,14 +106,14 @@ public class StringState extends Model {
 		this.document.addDocumentListener( this.documentListener );
 	}
 
-	public String getState() {
+	public String getValue() {
 		try {
 			return this.document.getText( 0, this.document.getLength() );
 		} catch( javax.swing.text.BadLocationException ble ) {
 			throw new RuntimeException( ble );
 		}
 	}
-	public void setState( String value ) {
+	public void setValue( String value ) {
 		try {
 			this.document.remove( 0, this.document.getLength() );
 			this.document.insertString( 0, value, null );
