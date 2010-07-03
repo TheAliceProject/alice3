@@ -134,7 +134,7 @@ public class PopupMenuButton extends edu.cmu.cs.dennisc.croquet.AbstractButton<j
 				boolean isActive = buttonModel.isRollover();
 				if (isActive || PopupMenuButton.this.isInactiveFeedbackDesired()) {
 					if (isActive) {
-						g2.setColor(java.awt.Color.WHITE);
+						g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 220 ) );
 					} else {
 						g2.setColor(this.getBackground());
 					}
@@ -178,8 +178,17 @@ public class PopupMenuButton extends edu.cmu.cs.dennisc.croquet.AbstractButton<j
 
 				if (isActive) {
 					g2.setStroke(new java.awt.BasicStroke(3.0f));
-					g2.setColor(java.awt.Color.BLUE);
-					g2.draw(new java.awt.geom.Rectangle2D.Float(1.5f, 1.5f, width - 3.0f, height - 3.0f));
+//					g2.setColor(java.awt.Color.BLUE);
+//					g2.draw(new java.awt.geom.Rectangle2D.Float(1.5f, 1.5f, width - 3.0f, height - 3.0f));
+					int xMax = x+width-1;
+					int yMax = y+height-1;
+					g2.setColor( java.awt.Color.WHITE );
+					g2.drawLine( x, yMax, x, y );
+					g2.drawLine( x, y, xMax, y );
+					g2.setColor( java.awt.Color.BLACK );
+					g2.drawLine( x, yMax, xMax, yMax );
+					g2.drawLine( xMax, yMax, xMax, y );
+					
 				} else {
 					if (PopupMenuButton.this.isInactiveFeedbackDesired()) {
 						g2.setColor(java.awt.Color.WHITE);

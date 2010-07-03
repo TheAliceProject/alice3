@@ -138,9 +138,10 @@ public class GraphicsUtilities {
 		 rv.closePath();
 		 return rv;
 	}
-	private static java.awt.Shape createClip( java.awt.geom.RoundRectangle2D rr, boolean isTopLeft ) {
-		java.awt.geom.Area rv = new java.awt.geom.Area( rr );
-		rv.subtract( new java.awt.geom.Area( createPath( (float)rr.getX(), (float)rr.getY(), (float)rr.getWidth(), (float)rr.getHeight(), isTopLeft==false ) ) );
+	private static java.awt.Shape createClip( java.awt.Shape shape, boolean isTopLeft ) {
+		java.awt.geom.Rectangle2D bounds = shape.getBounds2D();
+		java.awt.geom.Area rv = new java.awt.geom.Area( shape );
+		rv.subtract( new java.awt.geom.Area( createPath( (float)bounds.getX(), (float)bounds.getY(), (float)bounds.getWidth(), (float)bounds.getHeight(), isTopLeft==false ) ) );
 		return rv;
 	}
 	public static void draw3DRoundRectangle( java.awt.Graphics g, java.awt.geom.RoundRectangle2D rr, java.awt.Paint topLeftPaint, java.awt.Paint bottomRightPaint, java.awt.Stroke stroke ) {
@@ -159,6 +160,29 @@ public class GraphicsUtilities {
 		g2.setClip( createClip( rr, false ) );
 		g2.setPaint( bottomRightPaint );
 		g2.draw( rr );
+
+		g2.setClip( prevClip );
+		g2.setStroke( prevStroke );
+		g2.setPaint( prevPaint );
+
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, antialiasingValue );
+	}
+	public static void draw3DishShape( java.awt.Graphics g, java.awt.Shape shape, java.awt.Paint topLeftPaint, java.awt.Paint bottomRightPaint, java.awt.Stroke stroke ) {
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		java.awt.Paint prevPaint = g2.getPaint();
+		java.awt.Stroke prevStroke = g2.getStroke();
+		java.awt.Shape prevClip = g2.getClip();
+		Object antialiasingValue = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+		
+		g2.setStroke( stroke );
+		g2.setClip( createClip( shape, true ) );
+		g2.setPaint( topLeftPaint );
+		g2.draw( shape );
+		
+		g2.setClip( createClip( shape, false ) );
+		g2.setPaint( bottomRightPaint );
+		g2.draw( shape );
 
 		g2.setClip( prevClip );
 		g2.setStroke( prevStroke );

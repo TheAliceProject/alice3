@@ -103,6 +103,7 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 			return false;
 		}
 	}
+		
 	@Override
 	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		super.paintEpilogue( g2, x, y, width, height );

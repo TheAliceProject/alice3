@@ -941,10 +941,10 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 						//							g2.drawLine( x1, y1, x1, y0 );
 						//						}
 					}
-					if( potentialDragSourceBounds != null ) {
-						g2.setColor( java.awt.Color.BLUE );
-						g2.draw( potentialDragSourceBounds );
-					}
+//					if( potentialDragSourceBounds != null ) {
+//						g2.setColor( java.awt.Color.BLUE );
+//						g2.draw( potentialDragSourceBounds );
+//					}
 				}
 			}
 		}

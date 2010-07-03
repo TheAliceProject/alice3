@@ -155,7 +155,7 @@ public abstract class AbstractDropDownPane extends edu.cmu.cs.dennisc.croquet.Co
 		}
 	}
 	@Override
-	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+	protected final void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		if( this.isActive() ) {
 			g2.setStroke( new java.awt.BasicStroke( 3.0f ) );
 			g2.setColor( java.awt.Color.BLUE );

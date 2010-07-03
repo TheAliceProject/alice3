@@ -71,8 +71,12 @@ public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance
 	}
 
 	@Override
+	protected java.awt.geom.RoundRectangle2D.Float createShape( int x, int y, int width, int height ) {
+		return new java.awt.geom.RoundRectangle2D.Float( x, y, width-1, height-1, 8, 8 );
+	}
+	@Override
 	protected void fillBounds(java.awt.Graphics2D g2, int x, int y, int width, int height) {
-		g2.fillRoundRect(x, y, width, height, 8, 8);
+		g2.fill( this.createShape(x, y, width, height));
 	}
 
 	@Override
@@ -104,22 +108,6 @@ public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance
 	protected void paintPrologue(java.awt.Graphics2D g2, int x, int y, int width, int height) {
 		java.awt.geom.RoundRectangle2D rr = new java.awt.geom.RoundRectangle2D.Float( x+1, y+1, width-3, height-3, 8, 8 );
 		g2.fill( rr );
-	}
-	protected void paintOutline( java.awt.Graphics2D g2, java.awt.geom.RoundRectangle2D.Float rr ) {
-		java.awt.Stroke prevStroke = g2.getStroke();
-		if( this.isActive() ) {
-			g2.setPaint( java.awt.Color.BLUE );
-			g2.setStroke( new java.awt.BasicStroke( 3.0f ) );
-		} else {
-			g2.setPaint( java.awt.Color.GRAY );
-		}
-		g2.draw( rr );
-		g2.setStroke( prevStroke );
-	}
-	@Override
-	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		super.paintEpilogue( g2, x, y, width, height );
-		this.paintOutline( g2, new java.awt.geom.RoundRectangle2D.Float( x+1, y+1, width-3, height-3, 8, 8 ) );
 	}
 }
 

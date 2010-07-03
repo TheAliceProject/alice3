@@ -306,14 +306,24 @@ public class StageIDE extends org.alice.ide.IDE {
 	public boolean isDropDownDesiredFor( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		if( super.isDropDownDesiredFor( expression ) ) {
 			if( expression != null ) {
-				edu.cmu.cs.dennisc.alice.ast.Node parent = expression.getParent();
-				if( parent instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-					edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)parent;
-					edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
-					assert field != null;
-					if( field.getDeclaringType().isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
-						if( field.getValueType().isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
+				if (expression instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation) {
+					edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation) expression;
+					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = instanceCreation.getType();
+					if( type instanceof edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice ) {
+						if( type.isAssignableTo( org.alice.apis.moveandturn.event.KeyListener.class ) || type.isAssignableTo( org.alice.apis.moveandturn.event.MouseButtonListener.class ) ) {
 							return false;
+						}
+					}
+				} else {
+					edu.cmu.cs.dennisc.alice.ast.Node parent = expression.getParent();
+					if( parent instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
+						edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)parent;
+						edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
+						assert field != null;
+						if( field.getDeclaringType().isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
+							if( field.getValueType().isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
+								return false;
+							}
 						}
 					}
 				}

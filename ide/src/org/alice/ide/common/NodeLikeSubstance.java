@@ -124,8 +124,30 @@ public abstract class NodeLikeSubstance extends org.alice.ide.Component {
 		}
 	}
 
+	private static final java.awt.Stroke ACTIVE_STROKE = new java.awt.BasicStroke( 3.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
+	private static final java.awt.Stroke PASSIVE_STROKE = new java.awt.BasicStroke( 1.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
+	private static final java.awt.Color HIGHLIGHT_COLOR = new java.awt.Color( 255, 255, 255 );
+	private static final java.awt.Color SHADOW_COLOR = new java.awt.Color( 0, 0, 0 );
+	protected void paintOutline( java.awt.Graphics2D g2, java.awt.Shape shape ) {
+		if( shape != null ) {
+			java.awt.Stroke prevStroke = g2.getStroke();
+			if( this.isActive() ) {
+//				g2.setPaint( SHADOW_COLOR );
+//				g2.setStroke( ACTIVE_STROKE );
+//				g2.draw( shape );
+				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.draw3DishShape(g2, shape, HIGHLIGHT_COLOR, SHADOW_COLOR, ACTIVE_STROKE );
+			} else {
+				g2.setPaint( java.awt.Color.GRAY );
+				g2.setStroke( PASSIVE_STROKE );
+				g2.draw( shape );
+			}
+			g2.setStroke( prevStroke );
+		}
+	}
+	protected abstract java.awt.Shape createShape( int x, int y, int width, int height );
 	@Override
 	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		this.paintOutline( g2, this.createShape(x, y, width, height) );
 		if( isKnurlDesired() ) {
 			int grayscale;
 			if( this.isActive() ) {
