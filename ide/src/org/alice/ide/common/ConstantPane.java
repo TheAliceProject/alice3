@@ -48,7 +48,7 @@ package org.alice.ide.common;
 public class ConstantPane extends LocalPane< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice > {
 	public ConstantPane( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant ) {
 		super( constant );
-		this.setBackgroundPaint( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ConstantAccess.class ) );
+		this.setEnabledBackgroundPaint( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ConstantAccess.class ) );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {

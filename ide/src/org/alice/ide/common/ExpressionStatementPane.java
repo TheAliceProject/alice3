@@ -59,7 +59,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 	}
 
 	@Override
-	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
+	protected java.awt.Paint getEnabledBackgroundPaint( int x, int y, int width, int height ) {
 		final edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)getStatement();
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
@@ -70,7 +70,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 				return java.awt.Color.RED;
 			}
 		}
-		return super.getBackgroundPaint( x, y, width, height );
+		return super.getEnabledBackgroundPaint( x, y, width, height );
 	}
 	
 	@Override

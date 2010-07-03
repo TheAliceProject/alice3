@@ -1793,7 +1793,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 	}
 
-	public String getInstanceTextForAccessible( edu.cmu.cs.dennisc.alice.ast.Accessible accessible, boolean isOutOfScopeTagDesired ) {
+	public String getInstanceTextForAccessible( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
 		String text;
 		if( accessible != null ) {
 			if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
@@ -1803,15 +1803,13 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 				if( focusedCode != null ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> scopeType = focusedCode.getDeclaringType();
 					if( field.getValueType() == scopeType ) {
-						text = "this (a.k.a. " + text + ")";
+						text = "this";
 					} else if( field.getDeclaringType() == scopeType ) {
 						if( this.isOmissionOfThisForFieldAccessesDesiredState.getValue() ) {
 							//pass
 						} else {
 							text = "this." + text;
 						}
-					} else if( isOutOfScopeTagDesired ) {
-						text = "out of scope: " + text;
 					}
 				}
 			} else {

@@ -63,7 +63,7 @@ public class CameraViewFieldComponent extends GetterTemplate {
 	}
 	
 	@Override
-	protected boolean isFieldInScope() 
+	protected boolean isInScope() 
 	{
 		return true;
 	}

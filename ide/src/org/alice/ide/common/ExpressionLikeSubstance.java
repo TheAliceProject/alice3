@@ -49,20 +49,6 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	private static final int INSET = 2;
 	public static final int DOCKING_BAY_INSET_LEFT = 5;
 
-	public ExpressionLikeSubstance() {
-		this.setBackgroundColor( null );
-	}
-	private java.awt.Paint paint;
-	protected void setBackgroundPaint( java.awt.Paint paint ) {
-		//super.setBackgroundColor( color );
-		this.paint = paint;
-		//assert false;
-	}
-	
-//	@Override
-//	private void setBackgroundColor( java.awt.Color color ) {
-//		assert false;
-//	}
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
@@ -148,7 +134,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 			//edu.cmu.cs.dennisc.awt.BevelState bevelState = this.getBevelState();
 			edu.cmu.cs.dennisc.java.awt.BevelState bevelState = edu.cmu.cs.dennisc.java.awt.BevelState.FLUSH;
 			edu.cmu.cs.dennisc.java.awt.BeveledShape beveledShape = createBoundsShape( x, y, width, height );
-			g2.setPaint( this.paint );
+			g2.setPaint( this.getBackgroundPaint( x, y, width, height ) );
 			beveledShape.paint( g2, bevelState, 3.0f, 1.0f, 1.0f );
 		}
 	}

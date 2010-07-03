@@ -47,11 +47,17 @@ package org.alice.ide.common;
  */
 public abstract class NodeLikeSubstance extends org.alice.ide.Component {
 	protected static final int KNURL_WIDTH = 8;
+	private java.awt.Paint enabledBackgroundPaint;
 	public NodeLikeSubstance() {
 		if( this.isKnurlDesired() ) {
 			this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.HAND_CURSOR ) );
 		}
+		this.setEnabledBackgroundPaint( null );
 	}
+	protected void setEnabledBackgroundPaint( java.awt.Paint enabledBackgroundPaint ) {
+		this.enabledBackgroundPaint = enabledBackgroundPaint;
+	}
+
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
@@ -103,6 +109,20 @@ public abstract class NodeLikeSubstance extends org.alice.ide.Component {
 //			return super.contains( x, y );
 //		}
 //	}
+	protected java.awt.Paint getEnabledBackgroundPaint(int x, int y, int width, int height) {
+		return this.enabledBackgroundPaint;
+	}
+	protected boolean isInScope() {
+		return true;
+	}
+	@Override
+	protected final java.awt.Paint getBackgroundPaint(int x, int y, int width, int height) {
+		if( this.isInScope() ) {
+			return this.getEnabledBackgroundPaint(x, y, width, height);
+		} else {
+			return java.awt.Color.WHITE;
+		}
+	}
 
 	@Override
 	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {

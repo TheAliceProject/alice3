@@ -92,7 +92,7 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 		return StatementLikeSubstance.INSET + 4;
 	}
 	@Override
-	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
+	protected java.awt.Paint getEnabledBackgroundPaint( int x, int y, int width, int height ) {
 		return getIDE().getPaintFor( this.statementCls, x, y, width, height );
 	}
 
@@ -116,8 +116,10 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 	protected void paintOutline( java.awt.Graphics2D g2, java.awt.geom.RoundRectangle2D.Float rr ) {
 		java.awt.Stroke prevStroke = g2.getStroke();
 		if( this.isActive() ) {
-			//g2.setPaint( java.awt.Color.BLUE );
-			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.draw3DRoundRectangle(g2, rr, HIGHLIGHT_COLOR, SHADOW_COLOR, ACTIVE_STROKE );
+			g2.setPaint( java.awt.Color.BLUE );
+			g2.setStroke( ACTIVE_STROKE );
+			g2.draw( rr );
+			//edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.draw3DRoundRectangle(g2, rr, HIGHLIGHT_COLOR, SHADOW_COLOR, ACTIVE_STROKE );
 		} else {
 			g2.setPaint( java.awt.Color.GRAY );
 			g2.setStroke( PASSIVE_STROKE );
