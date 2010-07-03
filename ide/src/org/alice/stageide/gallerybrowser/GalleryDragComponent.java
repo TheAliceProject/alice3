@@ -59,7 +59,7 @@ public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance
 		label.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
 		label.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.CENTER );
 		this.setAlignmentY( 0.0f );
-		this.setBackgroundColor( new java.awt.Color( 0xf7e4b6 ) );
+		this.setEnabledBackgroundPaint( new java.awt.Color( 0xf7e4b6 ) );
 		this.addComponent( label );
 		this.setLeftButtonClickOperation( GalleryFileActionOperation.getInstance( treeNode ) );
 		this.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragOperation( edu.cmu.cs.dennisc.alice.Project.GROUP ) );
