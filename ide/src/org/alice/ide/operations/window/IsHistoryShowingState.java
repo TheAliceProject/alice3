@@ -40,25 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations;
+package org.alice.ide.operations.window;
 
-/**
- * @author Dennis Cosgrove
- */
-@Deprecated
-public abstract class AbstractBooleanStateOperation extends edu.cmu.cs.dennisc.croquet.BooleanState {
-	public AbstractBooleanStateOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, Boolean initialValue, String trueText, String falseText ) {
-		super( group, individualId, initialValue, trueText, falseText );
+public class IsHistoryShowingState extends IsFrameShowingState {
+	public IsHistoryShowingState() {
+		//todo: PREFERENCES_GROUP?
+		super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "cf08f7ac-16b2-4121-9f36-9aca59db4cf7" ), false, "Show History?" );
 	}
-	public AbstractBooleanStateOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, Boolean initialValue, String trueAndFalseText ) {
-		super( group, individualId, initialValue, trueAndFalseText );
+	@Override
+	protected String getTitle() {
+		return "History";
 	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+	@Override
+	protected java.awt.Component createPane() {
+		return new edu.cmu.cs.dennisc.history.HistoryPane( edu.cmu.cs.dennisc.alice.Project.GROUP );
 	}
-	@Deprecated
-	protected boolean isPreservedAndRestored() {
-		return false;
-	}
-	protected abstract void handleStateChange( boolean value );
 }

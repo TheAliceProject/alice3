@@ -70,6 +70,22 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	};
 	
+	private enum Criterion {
+		STARTS_WITH {
+			@Override
+			public boolean accept(String lcName, String lcFilter) {
+				return lcName.startsWith(lcFilter);
+			}
+		},
+		CONTAINS_BUT_DOES_NOT_START_WITH {
+			@Override
+			public boolean accept(String lcName, String lcFilter) {
+				return lcName.startsWith(lcFilter)==false && lcName.contains(lcFilter);
+			}
+		};
+		public abstract boolean accept( String lcName, String lcFilter );
+	}
+
 	class DirectoryView extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 		private edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver<String> selectionObserver = new edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver<String>() {
 			public void selectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> nextValue) {
@@ -94,19 +110,20 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			super.handleRemovedFrom(parent);
 		}
 		
-		private java.util.LinkedList<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> update( java.util.LinkedList<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, String lowerCaseFilter ) {
+		private java.util.LinkedList<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> update( java.util.LinkedList<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, String lcFilter, Criterion criterion ) {
 			String path = treeNode.getValue();
 			if( path != null ) {
 				String[] chunks = path.split( "/" );
 				if( chunks.length > 0 ) {
 					String name = chunks[ chunks.length-1 ];
-					if( name.toLowerCase().contains( lowerCaseFilter ) ) {
+					String lcName = name.toLowerCase();
+					if( criterion.accept(lcName, lcFilter) ) {
 						rv.add( treeNode );
 					}
 				}
 			}
 			for( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> child : treeNode ) {
-				update( rv, child, lowerCaseFilter );
+				update( rv, child, lcFilter, criterion );
 			}
 			return rv;
 		}
@@ -117,7 +134,11 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			Iterable<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> iterable;
 			if( filter != null && filter.length() > 0 ) {
 				java.util.LinkedList<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				update( list, treeSelectionState.getRootTreeNode(), filter.toLowerCase() );
+				String lcFilter = filter.toLowerCase();
+				update( list, treeSelectionState.getRootTreeNode(), lcFilter, Criterion.STARTS_WITH );
+				if( lcFilter.length() > 1 ) {
+					update( list, treeSelectionState.getRootTreeNode(), lcFilter, Criterion.CONTAINS_BUT_DOES_NOT_START_WITH );
+				}
 				iterable = list;
 			} else {
 				iterable =  treeSelectionState.getSelectedTreeNode();

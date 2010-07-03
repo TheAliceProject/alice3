@@ -186,8 +186,8 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			"Edit Scene" 
 	);
 
-	private org.alice.ide.operations.window.IsMemoryUsageShowingOperation isMemoryUsageShowingOperation = new org.alice.ide.operations.window.IsMemoryUsageShowingOperation();
-	private org.alice.ide.operations.window.IsHistoryShowingOperation isHistoryShowingOperation = new org.alice.ide.operations.window.IsHistoryShowingOperation();
+	private org.alice.ide.operations.window.IsMemoryUsageShowingState isMemoryUsageShowingOperation = new org.alice.ide.operations.window.IsMemoryUsageShowingState();
+	private org.alice.ide.operations.window.IsHistoryShowingState isHistoryShowingOperation = new org.alice.ide.operations.window.IsHistoryShowingState();
 
 //	private static <E> E createBooleanOperation( Class< E > cls, Boolean defaultInitialValue ) {
 //		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
@@ -273,7 +273,10 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			this.isOmissionOfThisForFieldAccessesDesiredState,
 			this.isExpressionTypeFeedbackDesiredState,
 			this.isDefaultFieldNameGenerationDesiredState,
-			this.isRecursionEnabledState
+			this.isRecursionEnabledState,
+			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
+			this.isHistoryShowingOperation,
+			this.isMemoryUsageShowingOperation
 			//			windowOperations.add( this.isEmphasizingClassesOperation );
 			//			windowOperations.add( this.isOmissionOfThisForFieldAccessesDesiredOperation );
 			//			windowOperations.add( this.isExpressionTypeFeedbackDesiredOperation );

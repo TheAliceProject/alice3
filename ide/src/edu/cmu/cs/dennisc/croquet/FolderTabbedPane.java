@@ -167,6 +167,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 				@Override
 				protected void paintChildren( java.awt.Graphics g ) {
 					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+					Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
 					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 					javax.swing.AbstractButton selectedButton = null;
 					java.awt.Component[] components = this.getComponents();
@@ -192,7 +193,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 						this.paintTabBorder( g2, selectedButton );
 					}
 					super.paintChildren( g2 );
-					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_DEFAULT );
+					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
 				}
 			};
 			rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.LINE_AXIS ) );
