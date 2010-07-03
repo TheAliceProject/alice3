@@ -83,9 +83,9 @@ public class EmptyStatementListAffordance extends edu.cmu.cs.dennisc.croquet.JCo
 					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 					java.awt.Paint prevPaint = g2.getPaint();
 
-					java.awt.Rectangle bounds = this.getBounds();
-					java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( bounds.x, bounds.y, bounds.width-1, bounds.height-1, 8, 8 );
-					g2.setPaint( new java.awt.GradientPaint( 0, 0, TOP_COLOR, 0, bounds.height, BOTTOM_COLOR ) );
+					java.awt.Dimension size = this.getSize();
+					java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( 0, 0, size.width-1, size.height-1, 8, 8 );
+					g2.setPaint( new java.awt.GradientPaint( 0, 0, TOP_COLOR, 0, size.height, BOTTOM_COLOR ) );
 					g2.fill( rr );
 
 					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.draw3DRoundRectangle(g2, rr, SHADOW_COLOR, HIGHLIGHT_COLOR, SOLID_STROKE);
