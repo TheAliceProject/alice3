@@ -46,22 +46,13 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class TextField extends TextComponent< javax.swing.JTextField > {
+public class TextField extends TextComponent< edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField > {
 	/*package-private*/ TextField( StringState model ) {
 		super( model );
 	}
 	@Override
-	protected javax.swing.JTextField createAwtComponent() {
-		javax.swing.JTextField rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField() {
-			@Override
-			public void setMargin(java.awt.Insets m) {
-				super.setMargin(m);
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "setMargin", m );
-				//Thread.dumpStack();
-			}
-		};
-//		rv.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.SunkenBorder( 4,4,2,2 ) );
-//		rv.setMargin( new java.awt.Insets(4,4,2,2));
+	protected edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField createAwtComponent() {
+		edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField();
 		return rv;
 	}
 }

@@ -46,13 +46,13 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class TextArea extends TextComponent< javax.swing.JTextArea > {
+public class TextArea extends TextComponent< edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea > {
 	/*package-private*/ TextArea( StringState model ) {
 		super( model );
 	}
 	@Override
-	protected javax.swing.JTextArea createAwtComponent() {
-		javax.swing.JTextArea rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea();
+	protected edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea createAwtComponent() {
+		edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea();
 //		rv.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.SunkenBorder( 4,4,2,2 ) );
 		return rv;
 	}
