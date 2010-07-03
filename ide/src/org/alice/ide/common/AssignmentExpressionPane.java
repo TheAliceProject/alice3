@@ -74,7 +74,7 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.LineAxi
 			org.alice.ide.IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = org.alice.ide.IDE.getSingleton().getAccessorAndMutatorDisplayStyle( field );
 			isSetter = accessorAndMutatorDisplayStyle == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
 			desiredValueType = field.getDesiredValueType();
-			parent.addComponent( factory.createExpressionPropertyPane( fieldAccess.expression, null, desiredValueType ) );
+			parent.addComponent( factory.createExpressionPropertyPane( fieldAccess.expression, null, field.getDeclaringType() ) );
 			if( org.alice.ide.IDE.getSingleton().isJava() ) {
 				parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " . " ) );
 			} else {
