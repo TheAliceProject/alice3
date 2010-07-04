@@ -40,23 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.tutorial;
+package edu.cmu.cs.dennisc.javax.swing.models;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class WaitingStep<M extends edu.cmu.cs.dennisc.croquet.Model > extends FeatureStep {
-	private edu.cmu.cs.dennisc.croquet.Resolver< M > modelResolver;
-	public WaitingStep( String title, String text, Feature feature, edu.cmu.cs.dennisc.croquet.Resolver< M > modelResolver ) {
-		super( title, text, feature );
-		this.modelResolver = modelResolver;
+public class DefaultTreeModel<E> extends javax.swing.tree.DefaultTreeModel implements TreeModel< TreeNode< E > > {
+	public DefaultTreeModel( TreeNode<E> root ) {
+		super( root );
 	}
-	private edu.cmu.cs.dennisc.croquet.Resolver< M > getModelResolver() {
-		return this.modelResolver;
+	@Override
+	public TreeNode< E > getChild(Object parent, int index) {
+		return (TreeNode< E >)super.getChild(parent, index);
 	}
-	protected M getModel() {
-		return this.getModelResolver().getResolved();
+	@Override
+	public TreeNode< E > getRoot() {
+		return (TreeNode< E >)super.getRoot();
 	}
-	protected abstract boolean isAlreadyInTheDesiredState();
-	public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode child );
+	public javax.swing.tree.TreePath getTreePath( TreeNode< E > e ) {
+		Object[] nodes = this.getPathToRoot( e );
+		javax.swing.tree.TreePath path = new javax.swing.tree.TreePath( nodes );
+		return path;
+	}
 }

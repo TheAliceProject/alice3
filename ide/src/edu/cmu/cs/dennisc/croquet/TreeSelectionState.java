@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public abstract class TreeSelectionState<E> extends Model {
 	public static interface SelectionObserver<E> {
-		public void selectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<E> nextValue);
+		public void selectionChanged(E nextValue);
 	};
 
 	private java.util.List<SelectionObserver<E>> selectionObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
@@ -56,13 +56,13 @@ public abstract class TreeSelectionState<E> extends Model {
 	}
 	public void addAndInvokeSelectionObserver(SelectionObserver<E> selectionObserver) {
 		this.addSelectionObserver(selectionObserver);
-		selectionObserver.selectionChanged(this.getSelectedTreeNode());
+		selectionObserver.selectionChanged(this.getSelection());
 	}
 	public void removeSelectionObserver(SelectionObserver<E> selectionObserver) {
 		this.selectionObservers.remove(selectionObserver);
 	}
 
-	private void fireValueChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<E> nextValue) {
+	private void fireValueChanged( E nextValue) {
 		for (SelectionObserver<E> selectionObserver : this.selectionObservers) {
 			selectionObserver.selectionChanged(nextValue);
 		}
@@ -70,43 +70,35 @@ public abstract class TreeSelectionState<E> extends Model {
 
 	private class SingleTreeSelectionModel extends javax.swing.tree.DefaultTreeSelectionModel {
 	}
-	private class TreeModel extends javax.swing.tree.DefaultTreeModel {
-		public TreeModel( javax.swing.tree.TreeNode treeNode ) {
-			super( treeNode );
-		}
-	}
-
 	private SingleTreeSelectionModel treeSelectionModel;
-	private TreeModel treeModel;
-	public TreeSelectionState(Group group, java.util.UUID individualUUID, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<E> root, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<E> selectedNode ) {
+	private edu.cmu.cs.dennisc.javax.swing.models.TreeModel<E> treeModel;
+	public TreeSelectionState(Group group, java.util.UUID individualUUID, edu.cmu.cs.dennisc.javax.swing.models.TreeModel<E> treeModel, E initialSelection ) {
 		super(group, individualUUID);
 		this.treeSelectionModel = new SingleTreeSelectionModel();
-		this.treeModel = new TreeModel( root );
-		this.setSelectedTreeNode( selectedNode );
+		this.treeModel = treeModel;
+		this.setSelection( initialSelection );
 		this.treeSelectionModel.addTreeSelectionListener( new javax.swing.event.TreeSelectionListener() {
 			public void valueChanged(javax.swing.event.TreeSelectionEvent e) {
-				fireValueChanged( getSelectedTreeNode() );
+				fireValueChanged( getSelection() );
 			}
 		} );
 	}
-	protected abstract edu.cmu.cs.dennisc.javax.swing.models.TreeNode<E> decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder);
-	protected abstract void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<E> value);
+	protected abstract E decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder);
+	protected abstract void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, E value);
 
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<E> getRootTreeNode() {
-		return (edu.cmu.cs.dennisc.javax.swing.models.TreeNode<E>)this.treeModel.getRoot();
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeModel<E> getTreeModel() {
+		return this.treeModel;
 	}
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<E> getSelectedTreeNode() {
+	public E getSelection() {
 		javax.swing.tree.TreePath path = this.treeSelectionModel.getSelectionPath();
 		if( path != null ) {
-			return (edu.cmu.cs.dennisc.javax.swing.models.TreeNode<E>)path.getLastPathComponent();
+			return (E)path.getLastPathComponent();
 		} else {
 			return null;
 		}
 	}
-	public void setSelectedTreeNode( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<E> treeNode ) {
-		javax.swing.tree.TreeNode[] nodes = this.treeModel.getPathToRoot( treeNode );
-		javax.swing.tree.TreePath path = new javax.swing.tree.TreePath( nodes );
-		this.treeSelectionModel.setSelectionPath( path );
+	public void setSelection( E e ) {
+		this.treeSelectionModel.setSelectionPath( this.treeModel.getTreePath( e ) );
 	}
 
 	public Tree<E> createTree() {
@@ -130,8 +122,9 @@ public abstract class TreeSelectionState<E> extends Model {
 	}
 
 	public PathControl createPathControl( PathControl.Initializer initializer ) {
-		//todo
-		PathControl rv = new PathControl( (TreeSelectionState<String>)this, initializer );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: createPathControl" );
+		PathControl rv = new PathControl( (TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>)this, initializer );
+		
 		Application.getSingleton().register(this);
 		rv.setSwingTreeModel( this.treeModel );
 		rv.setSwingTreeSelectionModel( this.treeSelectionModel );

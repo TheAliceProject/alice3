@@ -243,7 +243,7 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				}
 			};
 			
-			java.awt.dnd.DragGestureRecognizer dragGestureRecognizer = dragSource.createDefaultDragGestureRecognizer( rv, java.awt.dnd.DnDConstants.ACTION_MOVE, dragGestureListener );
+			dragSource.createDefaultDragGestureRecognizer( rv, java.awt.dnd.DnDConstants.ACTION_MOVE, dragGestureListener );
 			
 			ListIndexAsStringTransferHandler listIndexAsStringTransferHandler = new ListIndexAsStringTransferHandler();
 			rv.setTransferHandler( listIndexAsStringTransferHandler );

@@ -51,7 +51,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	protected abstract boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Edit<?> edit);
 	@Override
-	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
+	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode child ) {
 		if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
 			edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent completeEvent = (edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent)child;
 			edu.cmu.cs.dennisc.croquet.Model eventModel = completeEvent.getParent().getModel();

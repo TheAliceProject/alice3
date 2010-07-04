@@ -40,23 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.tutorial;
+package edu.cmu.cs.dennisc.javax.swing.models;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class WaitingStep<M extends edu.cmu.cs.dennisc.croquet.Model > extends FeatureStep {
-	private edu.cmu.cs.dennisc.croquet.Resolver< M > modelResolver;
-	public WaitingStep( String title, String text, Feature feature, edu.cmu.cs.dennisc.croquet.Resolver< M > modelResolver ) {
-		super( title, text, feature );
-		this.modelResolver = modelResolver;
-	}
-	private edu.cmu.cs.dennisc.croquet.Resolver< M > getModelResolver() {
-		return this.modelResolver;
-	}
-	protected M getModel() {
-		return this.getModelResolver().getResolved();
-	}
-	protected abstract boolean isAlreadyInTheDesiredState();
-	public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode child );
+public interface TreeModel<E> extends javax.swing.tree.TreeModel {
+	public E getChild(Object parent, int index);
+	public E getRoot();
+	public javax.swing.tree.TreePath getTreePath( E e );
 }

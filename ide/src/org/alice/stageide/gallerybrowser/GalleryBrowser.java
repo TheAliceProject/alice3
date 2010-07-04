@@ -87,7 +87,7 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	}
 
 	class DirectoryView extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
-		private edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver<String> selectionObserver = new edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver<String>() {
+		private edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> selectionObserver = new edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>() {
 			public void selectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> nextValue) {
 				DirectoryView.this.handleSelectionChanged( nextValue );
 			}
@@ -135,13 +135,13 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			if( filter != null && filter.length() > 0 ) {
 				java.util.LinkedList<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 				String lcFilter = filter.toLowerCase();
-				update( list, treeSelectionState.getRootTreeNode(), lcFilter, Criterion.STARTS_WITH );
+				update( list, treeSelectionState.getTreeModel().getRoot(), lcFilter, Criterion.STARTS_WITH );
 				if( lcFilter.length() > 1 ) {
-					update( list, treeSelectionState.getRootTreeNode(), lcFilter, Criterion.CONTAINS_BUT_DOES_NOT_START_WITH );
+					update( list, treeSelectionState.getTreeModel().getRoot(), lcFilter, Criterion.CONTAINS_BUT_DOES_NOT_START_WITH );
 				}
 				iterable = list;
 			} else {
-				iterable =  treeSelectionState.getSelectedTreeNode();
+				iterable = treeSelectionState.getSelection();
 			}
 			if( iterable != null ) {
 				for( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> child : iterable ) {
@@ -185,13 +185,15 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private static final javax.swing.ImageIcon FOLDER_LARGE_ICON = new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/folder.png"));
 	private static final javax.swing.ImageIcon FOLDER_SMALL_ICON = new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/folder24.png"));
 	
-	private edu.cmu.cs.dennisc.croquet.TreeSelectionState<String> treeSelectionState;
+	private edu.cmu.cs.dennisc.croquet.TreeSelectionState< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > treeSelectionState;
 	private edu.cmu.cs.dennisc.croquet.StringState filterState;
 
 	public GalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> root ) {
 		//super(GAP * 2, 0);
 
-		this.treeSelectionState = new edu.cmu.cs.dennisc.croquet.TreeSelectionState<String>( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "42798d37-0815-4ca8-9fb6-107d47e4642f" ), root, root ) {
+		edu.cmu.cs.dennisc.javax.swing.models.DefaultTreeModel<String> treeModel = new edu.cmu.cs.dennisc.javax.swing.models.DefaultTreeModel<String>( root );
+		this.treeSelectionState = new edu.cmu.cs.dennisc.croquet.TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "42798d37-0815-4ca8-9fb6-107d47e4642f" ), treeModel, treeModel.getRoot() ) {
+			
 			@Override
 			protected edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 				throw new RuntimeException("todo");
@@ -204,7 +206,7 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		
 		this.filterState = new edu.cmu.cs.dennisc.croquet.StringState( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "8648d640-5676-4627-a002-44db06ce58ce" ), "" );
 		
-		this.treeSelectionState.addSelectionObserver( new edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver<String>() {
+		this.treeSelectionState.addSelectionObserver( new edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>() {
 			public void selectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<java.lang.String> nextValue) {
 				filterState.setValue( "" );
 			}
