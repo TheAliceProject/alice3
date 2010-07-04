@@ -172,9 +172,18 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			rv.setAlignmentX( 0.0f );
 			rv.setDragEnabled( true );
 
-			//1.6
-			//rv.setDropMode( javax.swing.DropMode.INSERT );
-			
+			try {
+				Class<Enum<?>> dropModeClass = (Class<Enum<?>>)Class.forName( "javax.swing.DropMode" );
+				java.lang.reflect.Method setDropModeMethod = javax.swing.JList.class.getMethod( "setDropMode", dropModeClass );
+				java.lang.reflect.Field insertField = dropModeClass.getField( "INSERT" );
+				Object insertConstant = insertField.get( null );
+				setDropModeMethod.invoke(rv, insertConstant );
+				//1.6
+				//rv.setDropMode( javax.swing.DropMode.INSERT );
+			} catch( Exception e ) {
+				//pass
+				e.printStackTrace();
+			}
 			final java.awt.dnd.DragSource dragSource = new java.awt.dnd.DragSource();
 			final javax.swing.ListSelectionModel listSelectionModel = rv.getSelectionModel();
 			java.awt.dnd.DragGestureListener dragGestureListener = new java.awt.dnd.DragGestureListener() {
