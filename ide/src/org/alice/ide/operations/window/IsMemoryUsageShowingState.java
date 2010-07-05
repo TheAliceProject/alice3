@@ -63,7 +63,7 @@ class MemoryUsagePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 public class IsMemoryUsageShowingState extends IsFrameShowingState {
 	public IsMemoryUsageShowingState() {
 		//todo: PREFERENCES_GROUP?
-		super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "e460dca7-e707-4075-883a-ff47367c21fd" ), false, "Show Memory Usage?" );
+		super( org.alice.app.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "e460dca7-e707-4075-883a-ff47367c21fd" ), false, "Show Memory Usage?" );
 	}
 	@Override
 	protected String getTitle() {

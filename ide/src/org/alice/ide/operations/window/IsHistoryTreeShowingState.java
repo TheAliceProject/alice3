@@ -101,7 +101,7 @@ class HistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMut
 public class IsHistoryTreeShowingState extends IsFrameShowingState {
 	public IsHistoryTreeShowingState() {
 		//todo: PREFERENCES_GROUP?
-		super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "3fb1e733-1736-476d-b40c-7729c82f0b21" ), false, "Show History Tree?" );
+		super( org.alice.app.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "3fb1e733-1736-476d-b40c-7729c82f0b21" ), false, "Show History Tree?" );
 	}
 	@Override
 	protected String getTitle() {

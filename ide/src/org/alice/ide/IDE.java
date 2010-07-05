@@ -106,43 +106,43 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 	private static class FileMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 		public FileMenuModel( edu.cmu.cs.dennisc.croquet.Model... operations ) {
-			super( IDE_GROUP, java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ), "File", java.awt.event.KeyEvent.VK_F, operations );
+			super( UI_STATE_GROUP, java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ), "File", java.awt.event.KeyEvent.VK_F, operations );
 		}
 	}
 
 	private static class RecentProjectsMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 		public RecentProjectsMenuModel() {
-			super( IDE_GROUP, java.util.UUID.fromString( "f94dda45-71e1-48df-9291-a8681b08f1c0" ), "Recent Projects", java.awt.event.KeyEvent.VK_R );
+			super( UI_STATE_GROUP, java.util.UUID.fromString( "f94dda45-71e1-48df-9291-a8681b08f1c0" ), "Recent Projects", java.awt.event.KeyEvent.VK_R );
 		}
 	}
 
 	private static class EditMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 		public EditMenuModel( edu.cmu.cs.dennisc.croquet.Model... operations ) {
-			super( IDE_GROUP, java.util.UUID.fromString( "dbfe00f8-a401-4858-be5c-a544cad7c938" ), "Edit", java.awt.event.KeyEvent.VK_E, operations );
+			super( UI_STATE_GROUP, java.util.UUID.fromString( "dbfe00f8-a401-4858-be5c-a544cad7c938" ), "Edit", java.awt.event.KeyEvent.VK_E, operations );
 		}
 	}
 
 	private static class ProjectMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 		public ProjectMenuModel( edu.cmu.cs.dennisc.croquet.Model... operations ) {
-			super( IDE_GROUP, java.util.UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ), "Project", java.awt.event.KeyEvent.VK_P, operations );
+			super( UI_STATE_GROUP, java.util.UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ), "Project", java.awt.event.KeyEvent.VK_P, operations );
 		}
 	}
 
 	private static class RunMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 		public RunMenuModel( edu.cmu.cs.dennisc.croquet.Model... operations ) {
-			super( IDE_GROUP, java.util.UUID.fromString( "e441d150-d53b-4bc1-9dbf-a61843a53a34" ), "Run", java.awt.event.KeyEvent.VK_R, operations );
+			super( UI_STATE_GROUP, java.util.UUID.fromString( "e441d150-d53b-4bc1-9dbf-a61843a53a34" ), "Run", java.awt.event.KeyEvent.VK_R, operations );
 		}
 	}
 
 	private static class WindowMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 		public WindowMenuModel( edu.cmu.cs.dennisc.croquet.Model... operations ) {
-			super( IDE_GROUP, java.util.UUID.fromString( "58a7297b-a5f8-499a-abd1-db6fca4083c8" ), "Window", java.awt.event.KeyEvent.VK_W, operations );
+			super( UI_STATE_GROUP, java.util.UUID.fromString( "58a7297b-a5f8-499a-abd1-db6fca4083c8" ), "Window", java.awt.event.KeyEvent.VK_W, operations );
 		}
 	}
 
 	private static class HelpMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 		public HelpMenuModel( edu.cmu.cs.dennisc.croquet.Model... operations ) {
-			super( IDE_GROUP, java.util.UUID.fromString( "435770a7-fb94-49ee-8c4d-b55a80618a09" ), "Help", java.awt.event.KeyEvent.VK_H, operations );
+			super( UI_STATE_GROUP, java.util.UUID.fromString( "435770a7-fb94-49ee-8c4d-b55a80618a09" ), "Help", java.awt.event.KeyEvent.VK_H, operations );
 		}
 	}
 
@@ -158,7 +158,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			this.getRevertProjectOperation(), 
 			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
 			new edu.cmu.cs.dennisc.croquet.MenuModel( 
-					IDE_GROUP, 
+					UI_STATE_GROUP, 
 					java.util.UUID.fromString( "115844c7-064f-4070-b9c2-3e503a43e271" ), 
 					"Print", java.awt.event.KeyEvent.VK_P, 
 					new org.alice.ide.operations.file.PrintAllOperation(),
@@ -177,7 +177,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private RunMenuModel runMenuModel = new RunMenuModel( this.runOperation );
 
 	private edu.cmu.cs.dennisc.croquet.BooleanState isSceneEditorExpandedState = new edu.cmu.cs.dennisc.croquet.BooleanState( 
-			org.alice.app.ProjectApplication.IDE_GROUP, 
+			org.alice.app.ProjectApplication.UI_STATE_GROUP, 
 			java.util.UUID.fromString( "704ea7d2-9da8-461f-b7dd-d086815c3e52" ), 
 			false,
 			"Edit Code", 
@@ -404,7 +404,8 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 	
 	public AccessorAndMutatorDisplayStyle getAccessorAndMutatorDisplayStyle( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		if( field.getDeclaringType().isDeclaredInAlice() ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
+		if( declaringType != null && declaringType.isDeclaredInAlice() ) {
 			return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
 		} else {
 			//return AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
@@ -452,7 +453,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.MenuBarModel createMenuBarOperation() {
-		edu.cmu.cs.dennisc.croquet.MenuBarModel rv = new edu.cmu.cs.dennisc.croquet.MenuBarModel( IDE_GROUP, java.util.UUID.fromString( "f621208a-244e-4cbe-8263-52ebb6916c2d" ) );
+		edu.cmu.cs.dennisc.croquet.MenuBarModel rv = new edu.cmu.cs.dennisc.croquet.MenuBarModel( UI_STATE_GROUP, java.util.UUID.fromString( "f621208a-244e-4cbe-8263-52ebb6916c2d" ) );
 		rv.addMenuModel( this.fileMenuModel );
 		rv.addMenuModel( this.editMenuModel );
 		rv.addMenuModel( this.projectMenuModel );
@@ -1074,7 +1075,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForRuntimeProgram;
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForSceneEditor;
 
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibleListState = new edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible >( IDE_GROUP, java.util.UUID.fromString( "a6d09409-82b8-4dfe-b156-588f1983893c" ) ) {
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibleListState = new edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible >( UI_STATE_GROUP, java.util.UUID.fromString( "a6d09409-82b8-4dfe-b156-588f1983893c" ) ) {
 		
 		@Override
 		protected edu.cmu.cs.dennisc.alice.ast.Accessible decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

@@ -244,7 +244,7 @@ class Cycle< E > {
 public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState<edu.cmu.cs.dennisc.alice.ast.AbstractCode> {
 	class EditPreviousCodeOperation extends org.alice.ide.operations.ActionOperation {
 		public EditPreviousCodeOperation() {
-			super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "71ff1171-9e5e-443f-a7aa-cb4012f05fec" ) );
+			super( org.alice.app.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "71ff1171-9e5e-443f-a7aa-cb4012f05fec" ) );
 			this.setName( "previous" );
 		}
 		@Override
@@ -269,7 +269,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 //		}
 //	};
 	public EditorsTabSelectionState() {
-		super( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "846ef10d-b22b-44a7-8fdd-a6b5d459948d" ) );
+		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "846ef10d-b22b-44a7-8fdd-a6b5d459948d" ) );
 //		this.addSelectionObserver( this.selectionObserver );
 		org.alice.ide.IDE.getSingleton().addProjectObserver( this.projectObserver );
 //		org.alice.ide.IDE.getSingleton().addCodeInFocusObserver( this.codeInFocusObserver );
@@ -290,11 +290,15 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 			return new CodeEditor( code );
 		}
-		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createInnerTitleComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-			edu.cmu.cs.dennisc.croquet.Label rv = new edu.cmu.cs.dennisc.croquet.Label( code.getName() );
-			rv.scaleFont( 1.5f );
-			return rv;
+		public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+			booleanState.setTrueText( code.getName() );
+			button.scaleFont( 1.5f );
 		}
+//		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createInnerTitleComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+//			edu.cmu.cs.dennisc.croquet.Label rv = new edu.cmu.cs.dennisc.croquet.Label( code.getName() );
+//			rv.scaleFont( 1.5f );
+//			return rv;
+//		}
 		public boolean isCloseAffordanceDesired() {
 			return true;
 		}

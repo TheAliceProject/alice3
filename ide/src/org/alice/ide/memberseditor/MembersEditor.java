@@ -143,7 +143,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			return resourceBundle.getString( key );
 		}
 		public MemberTab( java.util.UUID individualId, String key ) {
-			super( individualId, getTitle( key ) );
+			super( individualId, getTitle( key ), null );
 		}
 		@Override
 		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane() {
@@ -183,7 +183,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //	}
 
 	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabbedPaneSelectionState = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( 
-			org.alice.ide.IDE.IDE_GROUP, 
+			org.alice.ide.IDE.UI_STATE_GROUP, 
 			java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ),
 			this.proceduresTab, this.functionsTab, this.fieldsTab );
 
@@ -372,8 +372,8 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		edu.cmu.cs.dennisc.croquet.LineAxisPanel instancePanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( label, comboBox );
 
 		this.tabbedPaneSelectionState.setSelectedItem( this.proceduresTab );
-		//edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.tabbedPaneSelectionState.createDefaultToolPaletteTabbedPane();
-		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.tabbedPaneSelectionState.createDefaultFolderTabbedPane();
+		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.tabbedPaneSelectionState.createDefaultToolPaletteTabbedPane();
+		//edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.tabbedPaneSelectionState.createDefaultFolderTabbedPane();
 		this.addComponent( instancePanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
 		this.addComponent( tabbedPane, Constraint.CENTER );
 		tabbedPane.scaleFont( 1.5f );

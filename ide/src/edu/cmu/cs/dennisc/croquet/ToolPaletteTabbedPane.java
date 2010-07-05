@@ -47,110 +47,86 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, AbstractTabbedPane.TabItemDetails> {
-	private static class JToolPaletteTabTitle extends JTabTitle {
-		public JToolPaletteTabTitle( javax.swing.JComponent jComponent, java.awt.event.ActionListener closeButtonActionListener ) {
-			super( jComponent, closeButtonActionListener );
-			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 32, 4, 4 ) );
-			this.setOpaque( true );
-		}
-		@Override
-		protected void paintComponent(java.awt.Graphics g) {
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			java.awt.Paint paint;
-			final double FACTOR;
-			if( this.getModel().isArmed() ) {
-				FACTOR = 1.3;
-			} else {
-				FACTOR = 1.15;
-			}
-			final double INVERSE_FACTOR = 1.0 / FACTOR;
-			java.awt.Color colorA = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB(this.getBackground(), 1.0, FACTOR, FACTOR );
-			java.awt.Color colorB = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB(this.getBackground(), 1.0, INVERSE_FACTOR, INVERSE_FACTOR );
-			paint = new java.awt.GradientPaint(0,0, colorA, 0, this.getHeight(), colorB );
-			g2.setPaint( paint );
-			g2.fill( g2.getClip() );
-
-			super.paintComponent(g);
-			
-			int height = this.getHeight();
-			final int SIZE = 6;
-			java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-			path.moveTo( SIZE, 0 );
-			path.lineTo( -SIZE, SIZE );
-			path.lineTo( -SIZE, -SIZE );
-			path.closePath();
-			
-			int x = 18;
-			int y = height/2;
-			
-			java.awt.geom.AffineTransform m = g2.getTransform();
-
-			g.translate(x, y);
-			if( this.getModel().isSelected() || this.getModel().isPressed() ) {
-				g2.rotate( Math.PI/2 );
-			}
-			java.awt.Paint fillPaint = java.awt.Color.WHITE;
-			if( this.getModel().isSelected() ) {
-				//pass
-			} else {
-				if( this.getModel().isPressed() ) {
-					fillPaint = java.awt.Color.YELLOW.darker();
-				} else {
-					if( this.getModel().isArmed() ) {
-						fillPaint = java.awt.Color.YELLOW;
-					}
-				}
-			}
-			g2.setPaint( fillPaint );
-			g2.fill( path );
-			g2.setPaint( java.awt.Color.BLACK );
-			g2.draw( path );
-			
-			g2.setTransform( m );
-		}
-	}
-
-	private static class ToolPaletteTabTitle extends TabTitle {
-		public ToolPaletteTabTitle( JComponent<?> innerTitleComponent, java.awt.event.ActionListener closeButtonActionListener ) {
-			super( new JToolPaletteTabTitle( innerTitleComponent.getAwtComponent(), closeButtonActionListener ) );
-		}
-	}
-
-//	private class ToolPaletteTab<E> extends Tab< E > {
-//		private ToolPaletteTabTitle outerTileComponent;
-//		public ToolPaletteTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator ) {
-//			super( item, tabCreator );
-//			this.outerTileComponent = new ToolPaletteTabTitle( this.getInnerTitleComponent(), this.isCloseButtonDesired() );
-//			this.outerTileComponent.getAwtComponent().getModel().addChangeListener( new javax.swing.event.ChangeListener() {
-//				public void stateChanged(javax.swing.event.ChangeEvent e) {
-//					getScrollPane().setVisible( outerTileComponent.getAwtComponent().getModel().isSelected() );
-//					ToolPaletteTabbedPane.this.revalidateAndRepaint();
+//	private static class JToolPaletteTabTitle extends JTabTitle {
+//		public JToolPaletteTabTitle( javax.swing.JComponent jComponent, java.awt.event.ActionListener closeButtonActionListener ) {
+//			super( jComponent, closeButtonActionListener );
+//			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 32, 4, 4 ) );
+//			this.setOpaque( true );
+//		}
+//		@Override
+//		protected void paintComponent(java.awt.Graphics g) {
+//			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+//			java.awt.Paint paint;
+//			final double FACTOR;
+//			if( this.getModel().isArmed() ) {
+//				FACTOR = 1.3;
+//			} else {
+//				FACTOR = 1.15;
+//			}
+//			final double INVERSE_FACTOR = 1.0 / FACTOR;
+//			java.awt.Color colorA = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB(this.getBackground(), 1.0, FACTOR, FACTOR );
+//			java.awt.Color colorB = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB(this.getBackground(), 1.0, INVERSE_FACTOR, INVERSE_FACTOR );
+//			paint = new java.awt.GradientPaint(0,0, colorA, 0, this.getHeight(), colorB );
+//			g2.setPaint( paint );
+//			g2.fill( g2.getClip() );
+//
+//			super.paintComponent(g);
+//			
+//			int height = this.getHeight();
+//			final int SIZE = 6;
+//			java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+//			path.moveTo( SIZE, 0 );
+//			path.lineTo( -SIZE, SIZE );
+//			path.lineTo( -SIZE, -SIZE );
+//			path.closePath();
+//			
+//			int x = 18;
+//			int y = height/2;
+//			
+//			java.awt.geom.AffineTransform m = g2.getTransform();
+//
+//			g.translate(x, y);
+//			if( this.getModel().isSelected() || this.getModel().isPressed() ) {
+//				g2.rotate( Math.PI/2 );
+//			}
+//			java.awt.Paint fillPaint = java.awt.Color.WHITE;
+//			if( this.getModel().isSelected() ) {
+//				//pass
+//			} else {
+//				if( this.getModel().isPressed() ) {
+//					fillPaint = java.awt.Color.YELLOW.darker();
+//				} else {
+//					if( this.getModel().isArmed() ) {
+//						fillPaint = java.awt.Color.YELLOW;
+//					}
 //				}
-//			} );
-//		}
-//		@Override
-//		public AbstractButton< ? > getOuterTitleComponent() {
-//			return this.outerTileComponent;
-//		}
-//		@Override
-//		public void select() {
-//			throw new RuntimeException( "todo" );
+//			}
+//			g2.setPaint( fillPaint );
+//			g2.fill( path );
+//			g2.setPaint( java.awt.Color.BLACK );
+//			g2.draw( path );
+//			
+//			g2.setTransform( m );
 //		}
 //	}
 //
+//	private static class ToolPaletteTabTitle extends TabTitle {
+//		public ToolPaletteTabTitle( JComponent<?> innerTitleComponent, java.awt.event.ActionListener closeButtonActionListener ) {
+//			super( new JToolPaletteTabTitle( innerTitleComponent.getAwtComponent(), closeButtonActionListener ) );
+//		}
+//	}
 	public ToolPaletteTabbedPane( ListSelectionState<E> model, ListSelectionState.TabCreator< E > tabCreator ) {
 		super( model, tabCreator );
 	}
-//	@Override
-//	protected AbstractTabbedPane.Tab< E > createTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator ) {
-//		return new ToolPaletteTab<E>( item, tabCreator );
-//	}
 
 	@Override
-	protected TabItemDetails createTabItemDetails( E item, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, java.awt.event.ActionListener closeButtonActionListener ) {
-		AbstractButton<?,?> button = new ToolPaletteTabTitle(innerTitleComponent, closeButtonActionListener);
+	protected AbstractButton< ?, BooleanState > createTitleButton( BooleanState booleanState ) {
+		return new ToolPaletteTitle( booleanState );
+	}
+	@Override
+	protected TabItemDetails createTabItemDetails( E item, java.util.UUID id, AbstractButton<?,BooleanState> button, ScrollPane scrollPane, JComponent<?> mainComponent, java.awt.event.ActionListener closeButtonActionListener ) {
 		scrollPane.setVisible( false );
-		return new TabItemDetails( item, button, id, innerTitleComponent, scrollPane, mainComponent ) {
+		return new TabItemDetails( item, button, id, scrollPane, mainComponent ) {
 			@Override
 			public void setSelected(boolean isSelected) {
 				super.setSelected(isSelected);

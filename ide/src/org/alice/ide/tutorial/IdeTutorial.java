@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	private org.alice.ide.IDE ide;
 	public IdeTutorial( org.alice.stageide.StageIDE ide, final int selectedIndex ) {
-		super( new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.IDE_GROUP } );
+		super( new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
 		assert ide != null;
 		this.ide = ide;
 		this.ide.getFrame().addWindowListener( new java.awt.event.WindowAdapter() {

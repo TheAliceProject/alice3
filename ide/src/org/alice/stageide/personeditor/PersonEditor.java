@@ -110,7 +110,7 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 
 	private static abstract class ContentTabStateOperation extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
 		public ContentTabStateOperation(java.util.UUID individualId, String title) {
-			super(individualId, title);
+			super(individualId, title, null);
 		}
 		@Override
 		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane() {

@@ -238,7 +238,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 
 	class ConstrainInstanceNameToTextBooleanStateOperation extends edu.cmu.cs.dennisc.croquet.BooleanState {
 		public ConstrainInstanceNameToTextBooleanStateOperation() {
-			super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "74c18933-e5d7-4c48-ad88-46a7a83ff12d" ), false, "constrain to text" );
+			super( org.alice.app.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "74c18933-e5d7-4c48-ad88-46a7a83ff12d" ), false, "constrain to text" );
 			this.addValueObserver( new ValueObserver() {
 				public void changing( boolean nextValue ) {
 				}

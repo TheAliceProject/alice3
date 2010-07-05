@@ -49,7 +49,7 @@ package org.alice.app.openprojectpane;
 public class SelectProjectToOpenPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private static abstract class ContentTab extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
 		public ContentTab(java.util.UUID individualId, String title) {
-			super(individualId, title);
+			super(individualId, title, null);
 		}
 		@Override
 		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane() {

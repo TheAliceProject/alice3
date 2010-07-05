@@ -58,7 +58,6 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 
 	public static final edu.cmu.cs.dennisc.croquet.Group HISTORY_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
 	public static final edu.cmu.cs.dennisc.croquet.Group URI_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
-	public static final edu.cmu.cs.dennisc.croquet.Group IDE_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "d92c1a48-a6ae-473b-9b9f-94734e1606c1" ), "IDE_GROUP" );
 
 	private edu.cmu.cs.dennisc.croquet.Operation saveProjectOperation = new org.alice.app.operations.file.SaveProjectOperation();
 	private edu.cmu.cs.dennisc.croquet.Operation saveAsProjectOperation = new org.alice.app.operations.file.SaveAsProjectOperation();

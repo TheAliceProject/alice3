@@ -56,12 +56,12 @@ public class SnapState
 	
 	
 	
-	private BooleanState isSnapEnabled = new BooleanState( ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "c4db1a3d-9d27-4c21-971d-78059b37abed" ), false, "Use snap" );
-	private BooleanState isSnapToGroundEnabled = new BooleanState( ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "46b05c1f-b980-45c2-a587-4000400f7add" ), true, "Snap to ground" );
-	private BooleanState isSnapToGridEnabled = new BooleanState( ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "60d5a5be-e1ec-4932-be62-f90e9bad22c7" ), true, "Snap to grid" );
-	private BooleanState isRotationSnapEnabled = new BooleanState( ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "6933d462-d5c5-4ff6-9918-240511d2c731" ), true, "Snap rotation" );
+	private BooleanState isSnapEnabled = new BooleanState( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "c4db1a3d-9d27-4c21-971d-78059b37abed" ), false, "Use snap" );
+	private BooleanState isSnapToGroundEnabled = new BooleanState( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "46b05c1f-b980-45c2-a587-4000400f7add" ), true, "Snap to ground" );
+	private BooleanState isSnapToGridEnabled = new BooleanState( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "60d5a5be-e1ec-4932-be62-f90e9bad22c7" ), true, "Snap to grid" );
+	private BooleanState isRotationSnapEnabled = new BooleanState( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "6933d462-d5c5-4ff6-9918-240511d2c731" ), true, "Snap rotation" );
 	private double gridSpacing = .5d;
-	private BooleanState showSnapGrid = new BooleanState( ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "6537de4c-f4e9-475d-86ae-5d1ca873923e" ), true, "Show snap grid" );
+	private BooleanState showSnapGrid = new BooleanState( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "6537de4c-f4e9-475d-86ae-5d1ca873923e" ), true, "Show snap grid" );
 	private Angle rotationSnapAngle = new AngleInDegrees(45); //In degrees
 	
 	

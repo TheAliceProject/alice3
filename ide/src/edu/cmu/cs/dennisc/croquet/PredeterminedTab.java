@@ -44,21 +44,21 @@ package edu.cmu.cs.dennisc.croquet;
 
 public abstract class PredeterminedTab {
 	private java.util.UUID id;
-	private JComponent<?> titleComponent;
+	private String titleText;
+	private javax.swing.Icon titleIcon;
 	private JComponent< ? > mainComponent;
-	public PredeterminedTab( java.util.UUID id, JComponent<?> titleComponent ) {
+	public PredeterminedTab( java.util.UUID id, String titleText, javax.swing.Icon titleIcon ) {
 		assert id != null;
 		this.id = id;
-		this.titleComponent = titleComponent;
-	}
-	public PredeterminedTab( java.util.UUID id, String title ) {
-		this( id, new Label( title ) );
+		this.titleText = titleText;
+		this.titleIcon = titleIcon;
 	}
 	public java.util.UUID getId() {
 		return this.id;
 	}
-	public JComponent<?> getTitleComponent() {
-		return this.titleComponent;
+	public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button ) {
+		button.getAwtComponent().setText( this.titleText );
+		button.getAwtComponent().setIcon( this.titleIcon );
 	}
 	protected abstract JComponent<?> createMainComponent();
 	public JComponent<?> getMainComponent() {

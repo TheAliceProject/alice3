@@ -214,12 +214,12 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	private BorderPanel headerPanel = new BorderPanel();
 
 	/*package-private*/ class FolderTabItemDetails extends AbstractTabbedPane.TabItemDetails {
-		private edu.cmu.cs.dennisc.croquet.CardPanel.Key cardPanelKey;
-		public FolderTabItemDetails( E item, AbstractButton< ?,? > button, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent ) {
-			super( item, button, id, innerTitleComponent, scrollPane, mainComponent );
+		private CardPanel.Key cardPanelKey;
+		public FolderTabItemDetails( E item, AbstractButton< ?,? > button, java.util.UUID id, ScrollPane scrollPane, JComponent<?> mainComponent ) {
+			super( item, button, id, scrollPane, mainComponent );
 			this.cardPanelKey = cardPanel.createKey( this.getRootComponent(), this.getId() );
 		}
-		public edu.cmu.cs.dennisc.croquet.CardPanel.Key getCardPanelKey() {
+		public CardPanel.Key getCardPanelKey() {
 			return cardPanelKey;
 		}
 		@Override
@@ -277,7 +277,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 			component.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
 		}
 		component.setAlignmentY( 1.0f );
-		this.headerPanel.addComponent( component, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_START );
+		this.headerPanel.addComponent( component, BorderPanel.Constraint.LINE_START );
 		this.headerPanel.revalidateAndRepaint();
 	}
 	public void setHeaderTrailingComponent( JComponent< ? > component ) {
@@ -287,13 +287,13 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 			component.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
 		}
 		component.setAlignmentY( 1.0f );
-		this.headerPanel.addComponent( component, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END );
+		this.headerPanel.addComponent( component, BorderPanel.Constraint.LINE_END );
 		this.headerPanel.revalidateAndRepaint();
 	}
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
 		javax.swing.JPanel rv = super.createAwtComponent();
-		this.headerPanel.addComponent( this.titlesPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		this.headerPanel.addComponent( this.titlesPanel, BorderPanel.Constraint.CENTER );
 		rv.add( this.headerPanel.getAwtComponent(), java.awt.BorderLayout.NORTH );
 		rv.add( this.cardPanel.getAwtComponent(), java.awt.BorderLayout.CENTER );
 		return rv;
@@ -304,8 +304,12 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	}
 
 	@Override
-	protected FolderTabItemDetails createTabItemDetails( E item, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, java.awt.event.ActionListener closeButtonActionListener ) {
-		AbstractButton<?,?> button = new FolderTabTitle(innerTitleComponent, closeButtonActionListener);
+	protected AbstractButton< ?, BooleanState > createTitleButton( BooleanState booleanState ) {
+		return booleanState.createCheckBox();
+	}
+	@Override
+	protected FolderTabItemDetails createTabItemDetails( E item, java.util.UUID id, AbstractButton< ?, BooleanState > titleButton, ScrollPane scrollPane, JComponent<?> mainComponent, java.awt.event.ActionListener closeButtonActionListener ) {
+//		AbstractButton<?,?> button = new FolderTabTitle(innerTitleComponent, closeButtonActionListener);
 		JComponent<?> root;
 		if( scrollPane != null ) {
 			root = scrollPane;
@@ -314,7 +318,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		}
 		root.setVisible( false );
 		root.setBackgroundColor( null );
-		return new FolderTabItemDetails( item, button, id, innerTitleComponent, scrollPane, mainComponent );
+		return new FolderTabItemDetails( item, titleButton, id, scrollPane, mainComponent );
 	};
 	
 
@@ -327,7 +331,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	protected void addPrologue(int count) {
 	}
 	@Override
-	protected void addItem(edu.cmu.cs.dennisc.croquet.FolderTabbedPane.FolderTabItemDetails folderTabItemDetails) {
+	protected void addItem(FolderTabbedPane.FolderTabItemDetails folderTabItemDetails) {
 		this.titlesPanel.addComponent( folderTabItemDetails.getButton() );
 		this.cardPanel.addComponent( folderTabItemDetails.getCardPanelKey() );
 	}
@@ -346,7 +350,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 ////		this.revalidateAndRepaint();
 //	}
 //	@Override
-//	protected void removeTab(edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.Tab<E> tab) {
+//	protected void removeTab(AbstractTabbedPane.Tab<E> tab) {
 //		this.headerPane.removeComponent( tab.getOuterTitleComponent() );
 //		this.cardPanel.removeComponent( ((FolderTab<E>)tab).getCardPanelKey() );
 //	}
@@ -356,7 +360,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	//	/* package-private */class Key {
 	//		private AbstractButton<?> headerComponent;
 	//		private TabStateOperation tabStateOperation;
-	//		private edu.cmu.cs.dennisc.croquet.CardPanel.Key mainComponentKey;
+	//		private CardPanel.Key mainComponentKey;
 	//
 	//		private Key( AbstractButton<?> headerComponent, Component<?> mainComponent, TabStateOperation tabStateOperation ) {
 	//			this.headerComponent = headerComponent;
@@ -367,9 +371,9 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	//			return this.tabStateOperation;
 	//		}
 	//	}
-	//	private java.util.Map<TabStateOperation, edu.cmu.cs.dennisc.croquet.CardPanel.Key> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	//	private edu.cmu.cs.dennisc.croquet.CardPanel.Key getKey( TabStateOperation tabStateOperation ) {
-	//		edu.cmu.cs.dennisc.croquet.CardPanel.Key rv = this.map.get( tabStateOperation );
+	//	private java.util.Map<TabStateOperation, CardPanel.Key> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	//	private CardPanel.Key getKey( TabStateOperation tabStateOperation ) {
+	//		CardPanel.Key rv = this.map.get( tabStateOperation );
 	//		if( rv != null ) {
 	//			//pass
 	//		} else {

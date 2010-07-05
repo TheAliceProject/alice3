@@ -192,7 +192,7 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		//super(GAP * 2, 0);
 
 		edu.cmu.cs.dennisc.javax.swing.models.DefaultTreeModel<String> treeModel = new edu.cmu.cs.dennisc.javax.swing.models.DefaultTreeModel<String>( root );
-		this.treeSelectionState = new edu.cmu.cs.dennisc.croquet.TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "42798d37-0815-4ca8-9fb6-107d47e4642f" ), treeModel, treeModel.getRoot() ) {
+		this.treeSelectionState = new edu.cmu.cs.dennisc.croquet.TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "42798d37-0815-4ca8-9fb6-107d47e4642f" ), treeModel, treeModel.getRoot() ) {
 			
 			@Override
 			protected edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
@@ -204,7 +204,7 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			}
 		};
 		
-		this.filterState = new edu.cmu.cs.dennisc.croquet.StringState( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "8648d640-5676-4627-a002-44db06ce58ce" ), "" );
+		this.filterState = new edu.cmu.cs.dennisc.croquet.StringState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "8648d640-5676-4627-a002-44db06ce58ce" ), "" );
 		
 		this.treeSelectionState.addSelectionObserver( new edu.cmu.cs.dennisc.croquet.TreeSelectionState.SelectionObserver<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>() {
 			public void selectionChanged(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<java.lang.String> nextValue) {

@@ -252,7 +252,8 @@ public class StageIDE extends org.alice.ide.IDE {
 			edu.cmu.cs.dennisc.alice.ast.Expression fieldExpression = fieldAccess.expression.getValue();
 			if( fieldExpression instanceof edu.cmu.cs.dennisc.alice.ast.ThisExpression ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
-				if( field.getDeclaringType().isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
+				edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
+				if( declaringType != null && declaringType.isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
 					if( field.getValueType().isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
 						return new org.alice.ide.common.ExpressionPane( expression, this.createDeclarationNameLabel( field ) ) {
 							@Override
@@ -320,7 +321,8 @@ public class StageIDE extends org.alice.ide.IDE {
 						edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)parent;
 						edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
 						assert field != null;
-						if( field.getDeclaringType().isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
+						edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
+						if( declaringType != null && declaringType.isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
 							if( field.getValueType().isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
 								return false;
 							}
