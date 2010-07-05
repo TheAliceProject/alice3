@@ -46,5 +46,6 @@ package edu.cmu.cs.dennisc.javax.swing.models;
  * @author Dennis Cosgrove
  */
 public interface MutableTreeModel<E> extends TreeModel<E> {
+	public void reload( E node );
 	public void reload();
 }

@@ -137,9 +137,9 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 	}
 
 	private ModelContext.ChildrenObserver childrenObserver = new ModelContext.ChildrenObserver() {
-		public void addingChild(HistoryTreeNode child) {
+		public void addingChild(HistoryNode child) {
 		}
-		public void addedChild(HistoryTreeNode child) {
+		public void addedChild(HistoryNode child) {
 			InputDialogOperation.this.updateOkOperationAndExplanation( (InputDialogOperationContext<J>)child.findContextFor( InputDialogOperation.this ) );
 		}
 	};

@@ -42,10 +42,10 @@
  */
 package org.alice.ide.operations.window;
 
-public class IsHistoryShowingState extends IsFrameShowingState {
-	public IsHistoryShowingState() {
+public class IsProjectHistoryShowingState extends IsFrameShowingState {
+	public IsProjectHistoryShowingState() {
 		//todo: PREFERENCES_GROUP?
-		super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "cf08f7ac-16b2-4121-9f36-9aca59db4cf7" ), false, "Show History?" );
+		super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "cf08f7ac-16b2-4121-9f36-9aca59db4cf7" ), false, "Show Project History?" );
 	}
 	@Override
 	protected String getTitle() {

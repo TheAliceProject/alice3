@@ -48,11 +48,36 @@ package edu.cmu.cs.dennisc.javax.swing.models;
 public abstract class AbstractTreeModel<E> implements TreeModel< E > {
 	private java.util.List<javax.swing.event.TreeModelListener> treeModelListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	public void addTreeModelListener(javax.swing.event.TreeModelListener treeModelListener) {
-		this.treeModelListeners.add( treeModelListener );
+		this.treeModelListeners.add( 0, treeModelListener );
 	}
 	public void removeTreeModelListener(javax.swing.event.TreeModelListener treeModelListener) {
 		this.treeModelListeners.remove( treeModelListener );
 	}
+	protected void fireTreeNodeChanged( Object source, Object[] path, int[] childIndices, Object[] children ) {
+		javax.swing.event.TreeModelEvent e = new javax.swing.event.TreeModelEvent( source, path, childIndices, children );
+		for( javax.swing.event.TreeModelListener listener : this.treeModelListeners ) {
+			listener.treeNodesChanged( e );
+		}
+	}
+	protected void fireTreeNodeInserted( Object source, Object[] path, int[] childIndices, Object[] children ) {
+		javax.swing.event.TreeModelEvent e = new javax.swing.event.TreeModelEvent( source, path, childIndices, children );
+		for( javax.swing.event.TreeModelListener listener : this.treeModelListeners ) {
+			listener.treeNodesInserted( e );
+		}
+	}
+	protected void fireTreeNodeRemoved( Object source, Object[] path, int[] childIndices, Object[] children ) {
+		javax.swing.event.TreeModelEvent e = new javax.swing.event.TreeModelEvent( source, path, childIndices, children );
+		for( javax.swing.event.TreeModelListener listener : this.treeModelListeners ) {
+			listener.treeNodesRemoved( e );
+		}
+	}
+	protected void fireTreeStructureChanged( Object source, Object[] path, int[] childIndices, Object[] children ) {
+		javax.swing.event.TreeModelEvent e = new javax.swing.event.TreeModelEvent( source, path, childIndices, children );
+		for( javax.swing.event.TreeModelListener listener : this.treeModelListeners ) {
+			listener.treeStructureChanged( e );
+		}
+	}
+	
 	public void valueForPathChanged(javax.swing.tree.TreePath path, Object newValue) {
 		throw new RuntimeException( "todo" );
 	}

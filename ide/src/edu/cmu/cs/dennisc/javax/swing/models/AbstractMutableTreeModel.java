@@ -46,7 +46,11 @@ package edu.cmu.cs.dennisc.javax.swing.models;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMutableTreeModel<E> extends AbstractTreeModel<E> implements MutableTreeModel< E > {
+	public void reload( E node ) {
+		javax.swing.tree.TreePath treePath = this.getTreePath( node );
+        this.fireTreeStructureChanged(this, treePath.getPath(), null, null);
+	}
 	public void reload() {
-		throw new RuntimeException( "todo" );
+		this.reload( this.getRoot() );
 	}
 }

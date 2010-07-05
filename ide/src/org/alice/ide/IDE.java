@@ -42,8 +42,6 @@
  */
 package org.alice.ide;
 
-import edu.cmu.cs.dennisc.croquet.Operation;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -187,8 +185,9 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	);
 
 	private org.alice.ide.operations.window.IsMemoryUsageShowingState isMemoryUsageShowingOperation = new org.alice.ide.operations.window.IsMemoryUsageShowingState();
-	private org.alice.ide.operations.window.IsHistoryShowingState isHistoryShowingOperation = new org.alice.ide.operations.window.IsHistoryShowingState();
-
+	private org.alice.ide.operations.window.IsProjectHistoryShowingState isProjectHistoryShowingOperation = new org.alice.ide.operations.window.IsProjectHistoryShowingState();
+	private org.alice.ide.operations.window.IsHistoryTreeShowingState isHistoryTreeShowingOperation = new org.alice.ide.operations.window.IsHistoryTreeShowingState();
+	
 //	private static <E> E createBooleanOperation( Class< E > cls, Boolean defaultInitialValue ) {
 //		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
 //		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
@@ -275,8 +274,10 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			this.isDefaultFieldNameGenerationDesiredState,
 			this.isRecursionEnabledState,
 			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-			this.isHistoryShowingOperation,
-			this.isMemoryUsageShowingOperation
+			this.isProjectHistoryShowingOperation,
+			this.isMemoryUsageShowingOperation,
+			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
+			this.isHistoryTreeShowingOperation
 			//			windowOperations.add( this.isEmphasizingClassesOperation );
 			//			windowOperations.add( this.isOmissionOfThisForFieldAccessesDesiredOperation );
 			//			windowOperations.add( this.isExpressionTypeFeedbackDesiredOperation );

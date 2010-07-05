@@ -42,6 +42,24 @@
  */
 package org.alice.ide.operations.window;
 
+class MemoryUsagePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+	private javax.swing.Timer timer = new javax.swing.Timer( 50, new java.awt.event.ActionListener() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
+		}
+	} );
+	@Override
+	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		super.handleAddedTo( parent );
+		this.timer.start();
+	}
+	@Override
+	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		this.timer.stop();
+		super.handleRemovedFrom( parent );
+	}
+}
+
 public class IsMemoryUsageShowingState extends IsFrameShowingState {
 	public IsMemoryUsageShowingState() {
 		//todo: PREFERENCES_GROUP?
@@ -53,6 +71,6 @@ public class IsMemoryUsageShowingState extends IsFrameShowingState {
 	}
 	@Override
 	protected java.awt.Component createPane() {
-		return new edu.cmu.cs.dennisc.memory.MemoryPane();
+		return new edu.cmu.cs.dennisc.memory.MemoryUsagePanel().getAwtComponent();
 	}
 }

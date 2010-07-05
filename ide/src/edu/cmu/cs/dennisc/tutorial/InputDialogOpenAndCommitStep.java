@@ -108,7 +108,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	
 	@Override
-	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode child ) {
+	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
 		State state = this.getState();
 		boolean rv = false;
 		if( child instanceof edu.cmu.cs.dennisc.croquet.CancelEvent ) {

@@ -96,7 +96,7 @@ public abstract class IsFrameShowingState extends edu.cmu.cs.dennisc.croquet.Boo
 	protected abstract java.awt.Component createPane();
 	protected abstract String getTitle();
 
-	private void handleChanged(boolean value) {
+	protected void handleChanged(boolean value) {
 		javax.swing.JFrame frame = this.getFrame();
 		frame.setVisible( value );
 	}

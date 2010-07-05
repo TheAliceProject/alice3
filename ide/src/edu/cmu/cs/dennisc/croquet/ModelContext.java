@@ -42,7 +42,7 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-/*package-private*/abstract class Event<C extends ModelContext<?>> extends HistoryTreeNode {
+/*package-private*/abstract class Event<C extends ModelContext<?>> extends HistoryNode {
 	public Event(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 		super(binaryDecoder);
 	}
@@ -77,18 +77,18 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ModelContext<M extends Model> extends HistoryTreeNode {
+public abstract class ModelContext<M extends Model> extends HistoryNode {
 	public interface CommitObserver {
 		public void committing(Edit edit);
 		public void committed(Edit edit);
 	}
 	public interface ChildrenObserver {
-		public void addingChild(HistoryTreeNode child);
-		public void addedChild(HistoryTreeNode child);
+		public void addingChild(HistoryNode child);
+		public void addedChild(HistoryNode child);
 	}
 	private java.util.List<CommitObserver> commitObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private java.util.List<ChildrenObserver> childrenObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private java.util.List<HistoryTreeNode> children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private java.util.List<HistoryNode> children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private M model;
 	private java.util.EventObject awtEvent;
 	private ViewController<?, ?> viewController;
@@ -135,20 +135,23 @@ public abstract class ModelContext<M extends Model> extends HistoryTreeNode {
 	public java.util.Iterator iterator() {
 		return this.children.iterator();
 	}
-	public java.util.Enumeration<HistoryTreeNode> children() {
+	public java.util.Enumeration<HistoryNode> children() {
 		return java.util.Collections.enumeration(this.children);
 	}
 	public boolean getAllowsChildren() {
 		return true;
 	}
-	public HistoryTreeNode getChildAt(int childIndex) {
+	public HistoryNode getChildAt(int childIndex) {
 		return this.children.get(childIndex);
 	}
 	public int getChildCount() {
 		return this.children.size();
 	}
-	public int getIndex(javax.swing.tree.TreeNode node) {
-		return this.children.indexOf(node);
+	public int getIndex(HistoryNode child) {
+		return this.children.indexOf(child);
+	}
+	public int getIndexOfChild( HistoryNode child ) {
+		return this.children.indexOf( child );
 	}
 
 	protected void fireCommitting(Edit edit) {
@@ -174,8 +177,8 @@ public abstract class ModelContext<M extends Model> extends HistoryTreeNode {
 		}
 	}
 
-	protected void fireAddingChild(HistoryTreeNode child) {
-		if (this.commitObservers.size() > 0) {
+	protected void fireAddingChild(HistoryNode child) {
+		if (this.childrenObservers.size() > 0) {
 			for (ChildrenObserver childObserver : this.childrenObservers) {
 				childObserver.addingChild(child);
 			}
@@ -185,8 +188,8 @@ public abstract class ModelContext<M extends Model> extends HistoryTreeNode {
 			parent.fireAddingChild(child);
 		}
 	}
-	protected void fireAddedChild(HistoryTreeNode child) {
-		if (this.commitObservers.size() > 0) {
+	protected void fireAddedChild(HistoryNode child) {
+		if (this.childrenObservers.size() > 0) {
 			for (ChildrenObserver childObserver : this.childrenObservers) {
 				childObserver.addedChild(child);
 			}
@@ -210,7 +213,7 @@ public abstract class ModelContext<M extends Model> extends HistoryTreeNode {
 	public ModelContext<?> getCurrentContext() {
 		final int N = this.children.size();
 		if (N > 0) {
-			HistoryTreeNode lastChild = this.children.get(N - 1);
+			HistoryNode lastChild = this.children.get(N - 1);
 			if (lastChild instanceof ModelContext<?>) {
 				ModelContext<?> lastContext = (ModelContext<?>) lastChild;
 				if (lastContext.getState() != null) {
@@ -232,7 +235,7 @@ public abstract class ModelContext<M extends Model> extends HistoryTreeNode {
 	//	}
 	public final boolean isCanceled() {
 		//todo
-		for (HistoryTreeNode node : this.children) {
+		for (HistoryNode node : this.children) {
 			if (node.getState() == State.CANCELED) {
 				return true;
 			}
@@ -240,7 +243,7 @@ public abstract class ModelContext<M extends Model> extends HistoryTreeNode {
 		return false;
 	}
 
-	protected void addChild(HistoryTreeNode child) {
+	protected void addChild(HistoryNode child) {
 		this.fireAddingChild(child);
 		synchronized (this.children) {
 			this.children.add(child);
@@ -356,12 +359,12 @@ public abstract class ModelContext<M extends Model> extends HistoryTreeNode {
 
 	@Override
 	protected void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		HistoryTreeNode[] array = binaryDecoder.decodeBinaryEncodableAndDecodableArray(HistoryTreeNode.class);
+		HistoryNode[] array = binaryDecoder.decodeBinaryEncodableAndDecodableArray(HistoryNode.class);
 		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set(this.children, array);
 	}
 	@Override
 	protected void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		HistoryTreeNode[] array = new HistoryTreeNode[this.children.size()];
+		HistoryNode[] array = new HistoryNode[this.children.size()];
 		this.children.toArray(array);
 		binaryEncoder.encode(array);
 	}
