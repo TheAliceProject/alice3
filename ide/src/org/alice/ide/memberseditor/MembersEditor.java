@@ -137,13 +137,34 @@ class FieldsContentPanel extends OrganizedByTypeMembersContentPanel {
  * @author Dennis Cosgrove
  */
 public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+	private static class IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
+		private javax.swing.Icon getCurrentAccessibleTypeIcon() {
+			edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.IDE.getSingleton().getAccessibleListState().getSelectedItem();
+			String className;
+			if( accessible != null ) {
+				className = accessible.getValueType().getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getName();
+			} else {
+				className = null;
+			}
+			return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForGalleryClassName( className );
+		}
+		public int getIconHeight() {
+			return getCurrentAccessibleTypeIcon().getIconHeight();
+		}
+		public int getIconWidth() {
+			return getCurrentAccessibleTypeIcon().getIconWidth();
+		}
+		public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+			getCurrentAccessibleTypeIcon().paintIcon(c, g, x, y);		
+		}
+	}
 	private static abstract class MemberTab extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
 		private static String getTitle( String key ) {
 			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "org.alice.ide.memberseditor.TabTitles", javax.swing.JComponent.getDefaultLocale() );
 			return resourceBundle.getString( key );
 		}
 		public MemberTab( java.util.UUID individualId, String key ) {
-			super( individualId, getTitle( key ), null );
+			super( individualId, getTitle( key ), new IndirectCurrentAccessibleTypeIcon() );
 		}
 		@Override
 		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane() {

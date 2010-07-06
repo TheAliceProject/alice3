@@ -46,67 +46,67 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class ToolPaletteTitle extends AbstractButton<javax.swing.AbstractButton,BooleanState> {
+	private static class ArrowIcon implements javax.swing.Icon {
+		private int size;
+		public ArrowIcon( int size ) {
+			this.size = size;
+		}
+		public int getIconWidth() {
+			return this.size;
+		}
+		public int getIconHeight() {
+			return this.size;
+		}
+		public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+			float x0 = x;
+			float x1 = x + this.size - 1;
+			float xC = ( x0 + x1 ) * 0.5f;
+			float y0 = y;
+			float y1 = y + this.size - 1;
+			float yC = ( y0 + y1 ) * 0.5f;
+			java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+			path.moveTo( x0, y0);
+			if( button.getModel().isSelected() || button.getModel().isPressed() ) {
+				path.lineTo( x1, y0 );
+				path.lineTo( xC, y1 );
+			} else {
+				path.lineTo( x1, yC );
+				path.lineTo( x0, y1 );
+			}
+			path.closePath();
+
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			
+//					g2.setColor( java.awt.Color.RED );
+//					g2.fillRect( x, y, this.getIconWidth(), this.getIconHeight() );
+
+			java.awt.Paint fillPaint = java.awt.Color.WHITE;
+//					if( button.getModel().isSelected() ) {
+//						//pass
+//					} else {
+				if( button.getModel().isPressed() ) {
+					fillPaint = java.awt.Color.YELLOW.darker();
+				} else {
+					if( button.getModel().isRollover() ) {
+						fillPaint = java.awt.Color.YELLOW;
+					}
+				}
+//					}
+			
+			g2.setPaint( fillPaint );
+			g2.fill( path );
+			g2.setPaint( java.awt.Color.BLACK );
+			g2.draw( path );
+		}
+	}
+	private static final ArrowIcon ARROW_ICON = new ArrowIcon( 14 ); 
 	public ToolPaletteTitle( BooleanState booleanState ) {
 		super( booleanState );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 4, 2, 4 ) );
 	}
 	@Override
 	protected javax.swing.AbstractButton createAwtComponent() {
-		class ArrowIcon implements javax.swing.Icon {
-			private int size;
-			public ArrowIcon( int size ) {
-				this.size = size;
-			}
-			public int getIconWidth() {
-				return this.size;
-			}
-			public int getIconHeight() {
-				return this.size;
-			}
-			public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
-				javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
-				float x0 = x;
-				float x1 = x + this.size - 1;
-				float xC = ( x0 + x1 ) * 0.5f;
-				float y0 = y;
-				float y1 = y + this.size - 1;
-				float yC = ( y0 + y1 ) * 0.5f;
-				java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-				path.moveTo( x0, y0);
-				if( button.getModel().isSelected() || button.getModel().isPressed() ) {
-					path.lineTo( x1, y0 );
-					path.lineTo( xC, y1 );
-				} else {
-					path.lineTo( x1, yC );
-					path.lineTo( x0, y1 );
-				}
-				path.closePath();
-
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				
-//						g2.setColor( java.awt.Color.RED );
-//						g2.fillRect( x, y, this.getIconWidth(), this.getIconHeight() );
-
-				java.awt.Paint fillPaint = java.awt.Color.WHITE;
-//						if( button.getModel().isSelected() ) {
-//							//pass
-//						} else {
-					if( button.getModel().isPressed() ) {
-						fillPaint = java.awt.Color.YELLOW.darker();
-					} else {
-						if( button.getModel().isRollover() ) {
-							fillPaint = java.awt.Color.YELLOW;
-						}
-					}
-//						}
-				
-				g2.setPaint( fillPaint );
-				g2.fill( path );
-				g2.setPaint( java.awt.Color.BLACK );
-				g2.draw( path );
-			}
-		}
-		javax.swing.JCheckBox rv = new javax.swing.JCheckBox() {
+		javax.swing.JRadioButton rv = new javax.swing.JRadioButton() {
 			@Override
 			protected void paintComponent(java.awt.Graphics g) {
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
@@ -130,14 +130,18 @@ package edu.cmu.cs.dennisc.croquet;
 				g2.setPaint( paint );
 				g2.fill( g2.getClip() );
 				super.paintComponent(g);
+			
+				int x = 4;
+				int y = ( this.getHeight() - ARROW_ICON.getIconHeight() ) / 2;
+				ARROW_ICON.paintIcon(this, g2, x, y);
 			}
 			@Override
 			public void updateUI() {
 				this.setUI( new javax.swing.plaf.basic.BasicButtonUI() );
 			}
 		};
-		rv.setIcon( new ArrowIcon( 14 ) );
-		//rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+		//rv.setIcon( new ArrowIcon( 14 ) );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 24, 4, 4 ) );
 		rv.setOpaque( false );
 		rv.setVerticalTextPosition( javax.swing.SwingConstants.CENTER );
 		return rv;

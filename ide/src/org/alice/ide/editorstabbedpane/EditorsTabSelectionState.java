@@ -291,7 +291,8 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 			return new CodeEditor( code );
 		}
 		public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-			booleanState.setTrueText( code.getName() );
+			button.getAwtComponent().setText( code.getName() );
+			button.getAwtComponent().setIcon( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( code.getDeclaringType() ) );
 			button.scaleFont( 1.5f );
 		}
 //		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createInnerTitleComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
