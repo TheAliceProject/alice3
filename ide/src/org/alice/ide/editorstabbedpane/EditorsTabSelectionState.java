@@ -310,7 +310,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 				//runButton.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( button.getAwtComponent(), runButton.getAwtComponent(), edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 1 );
 				runButton.getAwtComponent().setText( null );
-				runButton.getAwtComponent().setToolTipText( "Play..." );
+				runButton.getAwtComponent().setToolTipText( runOperation.getName() );
 			}
 		}
 //		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createInnerTitleComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {

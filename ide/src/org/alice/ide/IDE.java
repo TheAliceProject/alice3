@@ -1459,11 +1459,13 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		if( blank.getParentFillIn() != null ) {
 			//pass
 		} else {
-			if( this.previousExpression != null ) {
+			if( previousExpression == null || previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.NullLiteral ) {
+				//pass
+			} else {
 				blank.addFillIn( new org.alice.ide.cascade.MostlyDeterminedStringConcatenationFillIn( this.previousExpression ) );
+				blank.addFillIn( new org.alice.ide.cascade.IncompleteStringConcatenationFillIn() );
+				blank.addSeparator();
 			}
-			blank.addFillIn( new org.alice.ide.cascade.IncompleteStringConcatenationFillIn() );
-			blank.addSeparator();
 		}
 	}
 	protected void addCustomFillIns( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
