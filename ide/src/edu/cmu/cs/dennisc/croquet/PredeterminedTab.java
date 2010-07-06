@@ -47,6 +47,10 @@ public abstract class PredeterminedTab {
 	private String titleText;
 	private javax.swing.Icon titleIcon;
 	private JComponent< ? > mainComponent;
+
+	//todo: track BooleanState
+	private edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button = null;
+	
 	public PredeterminedTab( java.util.UUID id, String titleText, javax.swing.Icon titleIcon ) {
 		assert id != null;
 		this.id = id;
@@ -56,9 +60,29 @@ public abstract class PredeterminedTab {
 	public java.util.UUID getId() {
 		return this.id;
 	}
+	
+	public void setTitleText( String titleText ) {
+		this.titleText = titleText;
+		this.updateTitleText();
+	}
+	public void setTitleIcon( javax.swing.Icon titleIcon ) {
+		this.titleIcon = titleIcon;
+		this.updateTitleIcon();
+	}
+	private void updateTitleText() {
+		if( this.button != null ) {
+			this.button.getAwtComponent().setText( this.titleText );
+		}
+	}
+	private void updateTitleIcon() {
+		if( this.button != null ) {
+			this.button.getAwtComponent().setIcon( this.titleIcon );
+		}
+	}
 	public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button ) {
-		button.getAwtComponent().setText( this.titleText );
-		button.getAwtComponent().setIcon( this.titleIcon );
+		this.button = button;
+		this.updateTitleText();
+		this.updateTitleIcon();
 	}
 	protected abstract JComponent<?> createMainComponent();
 	public JComponent<?> getMainComponent() {
