@@ -526,7 +526,7 @@ public class StageIDE extends org.alice.ide.IDE {
 			//pass
 		} else {
 			mapTypeToText = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractType, String >();
-			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE, "<html><em>examples:</em> 0.25, 3.14159, 98.6</html>" );
+			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE, "<html><em>examples:</em> 0.25, 1.0, 3.14, 98.6</html>" );
 			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, "<html><em>examples:</em> 1, 2, 42, 100</html>" );
 			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE, "<html><em>examples:</em> true, false</html>" );
 			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( String.class ), "<html><em>examples:</em> \"hello\", \"goodbye\"</html>" );
