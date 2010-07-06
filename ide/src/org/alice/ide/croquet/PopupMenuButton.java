@@ -104,7 +104,12 @@ public class PopupMenuButton extends edu.cmu.cs.dennisc.croquet.AbstractButton<j
 		return this.mainComponent;
 	}
 	protected boolean isInactiveFeedbackDesired() {
-		return org.alice.ide.IDE.getSingleton().isInactiveFeedbackDesired();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		if( ide != null ) {
+			return ide.isInactiveFeedbackDesired();
+		} else {
+			return false;
+		}
 	}
 	@Override
 	protected javax.swing.AbstractButton createAwtComponent() {

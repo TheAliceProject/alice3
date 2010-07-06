@@ -138,6 +138,14 @@ class FieldsContentPanel extends OrganizedByTypeMembersContentPanel {
  */
 public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private static class IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
+//todo:
+//		public IndirectCurrentAccessibleTypeIcon() {
+//			org.alice.ide.IDE.getSingleton().getAccessibleListState().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible >() {
+//				public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) {
+//					MembersEditor.this.repaint();
+//				}
+//			} );
+//		}
 		private javax.swing.Icon getCurrentAccessibleTypeIcon() {
 			edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.IDE.getSingleton().getAccessibleListState().getSelectedItem();
 			String className;
@@ -171,8 +179,8 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			}
 		}
 	}
-	private static boolean isFolderTabbedPane = false;
-	private static javax.swing.Icon ICON = isFolderTabbedPane ? null : new IndirectCurrentAccessibleTypeIcon();
+	private static boolean IS_FOLDER_TABBED_PANE_DESIRED = true;
+	private static javax.swing.Icon ICON = IS_FOLDER_TABBED_PANE_DESIRED ? null : new IndirectCurrentAccessibleTypeIcon();
 	
 	private static abstract class MemberTab extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
 		private static String getTitle( String key ) {
@@ -409,7 +417,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		edu.cmu.cs.dennisc.croquet.LineAxisPanel instancePanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( label, comboBox );
 
 		this.tabbedPaneSelectionState.setSelectedItem( this.proceduresTab );
-		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = isFolderTabbedPane ? this.tabbedPaneSelectionState.createDefaultFolderTabbedPane() : this.tabbedPaneSelectionState.createDefaultToolPaletteTabbedPane();
+		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = IS_FOLDER_TABBED_PANE_DESIRED ? this.tabbedPaneSelectionState.createDefaultFolderTabbedPane() : this.tabbedPaneSelectionState.createDefaultToolPaletteTabbedPane();
 		this.addComponent( instancePanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
 		this.addComponent( tabbedPane, Constraint.CENTER );
 		tabbedPane.scaleFont( 1.5f );
