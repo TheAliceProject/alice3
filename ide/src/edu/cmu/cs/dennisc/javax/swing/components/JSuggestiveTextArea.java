@@ -48,7 +48,8 @@ package edu.cmu.cs.dennisc.javax.swing.components;
 public class JSuggestiveTextArea extends javax.swing.JTextArea {
 	private String textForBlankCondition;
 
-	public JSuggestiveTextArea() {
+	public JSuggestiveTextArea( String text, String textForBlankCondition ) {
+		this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
 		//this.setBorder( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ) );
 		//this.setToolTipText( this.textForBlankCondition );
 		this.addFocusListener( new SuggestiveTextFocusAdapter( this ) );
@@ -68,7 +69,20 @@ public class JSuggestiveTextArea extends javax.swing.JTextArea {
 			public void keyTyped( java.awt.event.KeyEvent e ) {
 			}
 		} );
+		if( text != null ) {
+			this.setText( text );
+		}
+		if( textForBlankCondition != null ) {
+			this.setTextForBlankCondition( textForBlankCondition );
+		}
 	}
+	public JSuggestiveTextArea( String text ) {
+		this( text, null );
+	}
+	public JSuggestiveTextArea() {
+		this( null, null );
+	}
+	
 	public String getTextForBlankCondition() {
 		return this.textForBlankCondition;
 	}

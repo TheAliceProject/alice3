@@ -42,6 +42,8 @@
  */
 package org.alice.ide.editorstabbedpane;
 
+import edu.cmu.cs.dennisc.croquet.Operation;
+
 class TypeFillIn extends edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.dennisc.zoot.ActionOperation > {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
 
@@ -127,8 +129,8 @@ public class RootOperation extends org.alice.ide.operations.InconsequentialActio
 		int y = viewController.getHeight();
 		edu.cmu.cs.dennisc.alice.Project project = getIDE().getProject();
 		if( project != null ) {
-			new ProjectBlank( project ).showPopupMenu( viewController.getAwtComponent(), x, y, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.croquet.Operation< ?,? > >() {
-				public void handleCompletion( edu.cmu.cs.dennisc.croquet.Operation< ?,? > operation ) {
+			new ProjectBlank( project ).showPopupMenu( viewController.getAwtComponent(), x, y, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.croquet.Operation<?> >() {
+				public void handleCompletion( edu.cmu.cs.dennisc.croquet.Operation<?> operation ) {
 					operation.fire();
 				}
 				public void handleCancelation() {

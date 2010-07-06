@@ -57,7 +57,9 @@ class SuggestiveTextUtilities {
 				g.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 127 ) );
 				java.awt.FontMetrics fm = g.getFontMetrics();
 				//java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( text, g );
-				g.drawString( textForBlankCondition, 0, textComponent.getHeight()-textComponent.getInsets().bottom-fm.getDescent() );
+				//int y = textComponent.getHeight()-textComponent.getInsets().bottom-fm.getDescent();
+				int y = textComponent.getInsets().top + fm.getAscent();
+				g.drawString( textForBlankCondition, textComponent.getInsets().left, y );
 			}
 		}
 	}

@@ -76,7 +76,7 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation(
 				java.util.UUID.fromString( "8e3989b2-34d6-44cf-998c-dda26662b3a0" ) ) {
 			@Override
-			public edu.cmu.cs.dennisc.croquet.Model<?>[] getModels() {
+			public edu.cmu.cs.dennisc.croquet.Model[] getModels() {
 				return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( FieldTile.this.createPopupOperations(), edu.cmu.cs.dennisc.croquet.Model.class );
 			}
 		});

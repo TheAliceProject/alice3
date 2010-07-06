@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Model<M> implements Resolver< M > {
+public abstract class Model implements Resolver< Model > {
 	private Group group;
 	private java.util.UUID inividualUUID;
 	public Model( Group group, java.util.UUID inividualUUID ) {
@@ -59,8 +59,8 @@ public abstract class Model<M> implements Resolver< M > {
 		return this.inividualUUID;
 	}
 	
-	public M getResolved() {
-		return (M)this;
+	public final Model getResolved() {
+		return (Model)this;
 	}
 
 //	public CompositeContext getCurrentCompositeContext() {	

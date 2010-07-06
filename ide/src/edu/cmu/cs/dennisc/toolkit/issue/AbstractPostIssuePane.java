@@ -78,6 +78,11 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 
 
 	private javax.swing.JPanel centerPane = new javax.swing.JPanel();
+	private static class TextComponentBorder extends javax.swing.border.CompoundBorder {
+		public TextComponentBorder() {
+			super( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ), javax.swing.BorderFactory.createEmptyBorder( 1, 3, 1, 3 ) );
+		}
+	}
 
 	public AbstractPostIssuePane() {
 		this.textEnvironment.setBorder( new TextComponentBorder() );

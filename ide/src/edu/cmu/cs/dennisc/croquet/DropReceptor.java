@@ -55,7 +55,7 @@ public interface DropReceptor {
 	public void dragUpdated( DragAndDropContext dragAndDropContext );
 	
 	//todo: Dropped or Exited but not both?
-	public Operation<?,?> dragDropped( DragAndDropContext dragAndDropContext );
+	public Operation<?> dragDropped( DragAndDropContext dragAndDropContext );
 	public void dragExited( DragAndDropContext dragAndDropContext, boolean isDropRecipient );
 	
 	

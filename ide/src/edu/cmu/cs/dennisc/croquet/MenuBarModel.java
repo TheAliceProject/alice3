@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuBarModel extends Model< MenuBarModel > {
+public class MenuBarModel extends Model {
 //	private class MenuBarChangeListener implements javax.swing.event.ChangeListener {
 //		private KMenuBar menuBar;
 //		public MenuBarChangeListener( KMenuBar menuBar ) {

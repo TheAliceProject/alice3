@@ -40,17 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.javax.swing.border;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogOperation extends AbstractDialogOperation<DialogOperationContext> {
-	public DialogOperation(Group group, java.util.UUID individualUUID) {
-		super(group, individualUUID);
-	}
-	@Override
-	protected DialogOperationContext createContext( ModelContext< ? > parent, java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return parent.createDialogOperationContext( this, e, viewController );
+public class TextComponentBorder extends javax.swing.border.CompoundBorder {
+	public TextComponentBorder() {
+		super( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ), javax.swing.BorderFactory.createEmptyBorder( 1, 3, 1, 3 ) );
 	}
 }

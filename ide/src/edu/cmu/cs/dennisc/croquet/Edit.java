@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Edit<M extends Model<M>> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public abstract class Edit<M extends Model> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	private ModelContext<M> context;
 	private java.util.UUID contextId;
 	

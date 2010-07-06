@@ -78,7 +78,7 @@ public class FauxSceneEditor extends AbstractSceneEditor {
 		// TODO Auto-generated method stub
 		
 	}
-	public Operation<?, ?> dragDropped(DragAndDropContext dragAndDropContext) {
+	public Operation<?> dragDropped(DragAndDropContext dragAndDropContext) {
 		return null;
 	}
 	public void dragEntered(DragAndDropContext dragAndDropContext) {

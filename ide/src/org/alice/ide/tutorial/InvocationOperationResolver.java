@@ -47,16 +47,16 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/abstract class InvocationOperationResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.Operation<?, ?>> {
+/*package-private*/abstract class InvocationOperationResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.Operation<?>> {
 	private Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver;
 	private int invocationIndex;
 	public InvocationOperationResolver(Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int invocationIndex) {
 		this.methodResolver = methodResolver;
 		this.invocationIndex = invocationIndex;
 	}
-	protected abstract edu.cmu.cs.dennisc.croquet.Operation<?, ?> getOperation(org.alice.ide.codeeditor.CodeEditor codeEditor, edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation);
+	protected abstract edu.cmu.cs.dennisc.croquet.Operation<?> getOperation(org.alice.ide.codeeditor.CodeEditor codeEditor, edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation);
 	@Override
-	protected final edu.cmu.cs.dennisc.croquet.Operation<?, ?> getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
+	protected final edu.cmu.cs.dennisc.croquet.Operation<?> getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.methodResolver.getResolved();
 		if (method != null) {
 			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getSelectedItem();

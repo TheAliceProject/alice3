@@ -87,7 +87,7 @@ package edu.cmu.cs.dennisc.croquet;
 				if( child.getAllowsChildren() ) {
 					list.add( SelectDirectoryActionOperation.getInstance(treeSelectionState, child, initializer ) );
 				} else {
-					Operation<?,?> leafOperation = initializer.getOperationForLeaf( child );
+					Operation<?> leafOperation = initializer.getOperationForLeaf( child );
 					if( leafOperation != null ) {
 						list.add( leafOperation );
 					}
@@ -98,7 +98,7 @@ package edu.cmu.cs.dennisc.croquet;
 	}
 	
 	@Override
-	public Model<?>[] getModels() {
+	public Model[] getModels() {
 		return this.models;
 	}
 }
@@ -145,7 +145,7 @@ public class PathControl extends ViewController< javax.swing.JComponent, TreeSel
 	//todo: better name
 	public interface Initializer {
 		public ActionOperation configure( ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode );
-		public Operation<?,?> getOperationForLeaf( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode );
+		public Operation<?> getOperationForLeaf( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode );
 	}
 
 	private java.util.Map< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>, DirectoryControl > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();

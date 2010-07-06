@@ -53,7 +53,7 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty(edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation);
 	@Override
-	protected final edu.cmu.cs.dennisc.croquet.Operation< ?, ? > getOperation( org.alice.ide.codeeditor.CodeEditor codeEditor, edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+	protected final edu.cmu.cs.dennisc.croquet.Operation<?> getOperation( org.alice.ide.codeeditor.CodeEditor codeEditor, edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
 		return codeEditor.getOperation(this.getExpressionProperty(methodInvocation));
 	}
 }

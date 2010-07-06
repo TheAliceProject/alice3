@@ -79,7 +79,7 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 						if( child.isLeaf() ) {
 							this.addComponent( new GalleryDragComponent( child, name ) );
 						} else {
-							edu.cmu.cs.dennisc.croquet.Operation<?, ?> operation = edu.cmu.cs.dennisc.croquet.SelectDirectoryActionOperation.getInstance(treeSelectionState, child, null);
+							edu.cmu.cs.dennisc.croquet.Operation<?> operation = edu.cmu.cs.dennisc.croquet.SelectDirectoryActionOperation.getInstance(treeSelectionState, child, null);
 							javax.swing.Icon icon;
 							if (child instanceof edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode) {
 								edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode directoryZipTreeNode = (edu.cmu.cs.dennisc.zip.DirectoryZipTreeNode) child;
@@ -234,10 +234,10 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				rv.setSmallIcon( FOLDER_SMALL_ICON );
 				return rv;
 			}
-			public edu.cmu.cs.dennisc.croquet.Operation<?, ?> getOperationForLeaf(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode) {
+			public edu.cmu.cs.dennisc.croquet.Operation<?> getOperationForLeaf(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode) {
 				String name = GalleryBrowser.this.getTextFor(treeNode, true);
 				if( name != null ) {
-					edu.cmu.cs.dennisc.croquet.Operation<?, ?> rv = GalleryFileActionOperation.getInstance( treeNode );
+					edu.cmu.cs.dennisc.croquet.Operation<?> rv = GalleryFileActionOperation.getInstance( treeNode );
 					rv.setName( name );
 					rv.setSmallIcon( ResourceManager.getSmallIcon(treeNode) );
 					return rv;
