@@ -120,11 +120,11 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, Abstra
 	}
 
 	@Override
-	protected AbstractButton< ?, BooleanState > createTitleButton( BooleanState booleanState ) {
+	protected AbstractButton< ?, BooleanState > createTitleButton( BooleanState booleanState, java.awt.event.ActionListener closeButtonActionListener ) {
 		return new ToolPaletteTitle( booleanState );
 	}
 	@Override
-	protected TabItemDetails createTabItemDetails( E item, java.util.UUID id, AbstractButton<?,BooleanState> button, ScrollPane scrollPane, JComponent<?> mainComponent, java.awt.event.ActionListener closeButtonActionListener ) {
+	protected TabItemDetails createTabItemDetails( E item, java.util.UUID id, AbstractButton<?,BooleanState> button, ScrollPane scrollPane, JComponent<?> mainComponent ) {
 		scrollPane.setVisible( false );
 		return new TabItemDetails( item, button, id, scrollPane, mainComponent ) {
 			@Override

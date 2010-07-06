@@ -89,14 +89,14 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 		}
 	}
 
-	protected abstract AbstractButton< ?, BooleanState > createTitleButton( BooleanState booleanState );
-	protected abstract D createTabItemDetails( E item, java.util.UUID id, AbstractButton< ?, BooleanState > titleButton, ScrollPane scrollPane, JComponent<?> mainComponent, java.awt.event.ActionListener closeButtonActionListener );
+	protected abstract AbstractButton< ?, BooleanState > createTitleButton( BooleanState booleanState, java.awt.event.ActionListener closeButtonActionListener );
+	protected abstract D createTabItemDetails( E item, java.util.UUID id, AbstractButton< ?, BooleanState > titleButton, ScrollPane scrollPane, JComponent<?> mainComponent );
 	@Override
 	protected final D createItemDetails( final E item ) {
 		java.util.UUID id = this.tabCreator.getId( item );
 		assert id != null : item;
 		java.awt.event.ActionListener closeButtonActionListener;
-		if( this.tabCreator.isCloseAffordanceDesired() ) {
+		if( this.tabCreator.isCloseable( item ) ) {
 			closeButtonActionListener = new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					AbstractTabbedPane.this.getModel().removeItem( item );
@@ -106,9 +106,9 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 			closeButtonActionListener = null;
 		}
 		BooleanState booleanState = new BooleanState( Application.UI_STATE_GROUP, java.util.UUID.fromString( "a6ed465d-39f4-4604-a5d0-e6c9463606b0" ), false );
-		AbstractButton< ?, BooleanState > titleButton = this.createTitleButton( booleanState );
+		AbstractButton< ?, BooleanState > titleButton = this.createTitleButton( booleanState, closeButtonActionListener );
 		this.tabCreator.customizeTitleComponent( booleanState, titleButton, item );
-		return createTabItemDetails( item, id, titleButton, this.tabCreator.createScrollPane( item ), this.tabCreator.createMainComponent( item ), closeButtonActionListener );
+		return createTabItemDetails( item, id, titleButton, this.tabCreator.createScrollPane( item ), this.tabCreator.createMainComponent( item ) );
 	}
 	
 	public AbstractTabbedPane( ListSelectionState<E> model, ListSelectionState.TabCreator< E > tabCreator ) {

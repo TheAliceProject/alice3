@@ -55,12 +55,13 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		private static final java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, +0.25f );
 		private static final java.awt.Color PRESS_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, -0.125f );
 
-		private int getIconWidth() {
-			return 14;
-		}
-		private int getIconHeight() {
-			return getIconWidth();
-		}
+		private static final int SIZE = 14;
+//		private int getIconWidth() {
+//			return 14;
+//		}
+//		private int getIconHeight() {
+//			return getIconWidth();
+//		}
 
 		@Override
 		public void paint(java.awt.Graphics g, javax.swing.JComponent c) {
@@ -69,7 +70,9 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 
-			float size = Math.min( this.getIconWidth(), this.getIconHeight() ) * 0.9f;
+			int closeWidth = SIZE;
+			int closeHeight = closeWidth;
+			float size = Math.min( closeWidth, closeHeight ) * 0.9f;
 
 			float w = size;
 			float h = size * 0.25f;
@@ -94,12 +97,13 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 			int y0 = 0;
 			
 			java.awt.geom.AffineTransform m = new java.awt.geom.AffineTransform();
-			m.translate( x0 + getIconWidth() / 2, y0 + getIconWidth() / 2 );
+			m.translate( x0 + closeWidth / 2, y0 + closeHeight / 2 );
 			area0.transform( m );
 
 			java.awt.Paint prevPaint = g2.getPaint();
 			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-			if( model.isRollover() ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "paint", model );
+			if( model.isRollover() || model.isArmed() ) {
 				if( model.isPressed() ) {
 					g2.setPaint( PRESS_COLOR );
 				} else {
@@ -113,162 +117,245 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 				g2.fill( area0 );
 				g2.setPaint( java.awt.Color.BLACK );
 			} else {
-				g2.setPaint( java.awt.Color.DARK_GRAY );
+				g2.setPaint( java.awt.Color.GRAY );
 			}
 			g2.draw( area0 );
 			g2.setPaint( prevPaint );
 		}
 		@Override
 		public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) {
-			return new java.awt.Dimension( this.getIconWidth(), this.getIconHeight() );
+			return new java.awt.Dimension( SIZE, SIZE );
 		}
 	}
 
-	protected static abstract class JTabTitle extends javax.swing.AbstractButton {
-		private java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
-			public void mouseEntered( java.awt.event.MouseEvent e ) {
-				JTabTitle.this.setArmed( true );
-			}
-			public void mouseExited( java.awt.event.MouseEvent e ) {
-				JTabTitle.this.setArmed( false );
-			}
-			public void mousePressed( java.awt.event.MouseEvent e ) {
-				JTabTitle.this.setPressed( true );
-			}
-			public void mouseReleased( java.awt.event.MouseEvent e ) {
-				JTabTitle.this.setPressed( false );
-			}
-			public void mouseClicked(java.awt.event.MouseEvent e) {
-				JTabTitle.this.select();
-			}
-		};
-
-		protected void setArmed( boolean isArmed ) {
-			this.getModel().setArmed( isArmed );
-		}
-		protected void setPressed( boolean isPressed ) {
-			this.getModel().setPressed( isPressed );
-		}
-		protected void select() {
-			this.setSelected( true );
-		}
-
-		private javax.swing.JComponent jComponent;
-		private javax.swing.JButton closeButton;
-		private java.awt.event.ActionListener closeActionListener;
-		public JTabTitle( javax.swing.JComponent jComponent, java.awt.event.ActionListener closeActionListener ) {
-			this.jComponent = jComponent;
-			this.setModel( new javax.swing.JToggleButton.ToggleButtonModel() );
-			this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
-			this.add( this.jComponent );
-			this.closeActionListener = closeActionListener;
-			if( this.closeActionListener != null ) {
-				this.closeButton = new javax.swing.JButton();
-				this.closeButton.setUI( new CloseButtonUI() );
-				this.closeButton.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-				this.closeButton.setOpaque( false );
-				this.add( this.closeButton );
-			}
-		}
-		@Override
-		public void setFont(java.awt.Font font) {
-			super.setFont(font);
-			this.jComponent.setFont( font );
-		}
-		@Override
-		public void addNotify() {
-			super.addNotify();
-			this.addMouseListener( this.mouseListener );
-			if( this.closeButton != null ) {
-				assert this.closeActionListener != null;
-				this.closeButton.addActionListener( this.closeActionListener );
-			}
-		}
-		@Override
-		public void removeNotify() {
-			if( this.closeButton != null ) {
-				assert this.closeActionListener != null;
-				this.closeButton.removeActionListener( this.closeActionListener );
-			}
-			this.removeMouseListener( this.mouseListener );
-			super.removeNotify();
-		}
-	}
-
-	@Deprecated
-	private final static BooleanState TAB_TITLE_BOOLEAN_STATE = null;
-	
-	protected static abstract class TabTitle extends AbstractButton< javax.swing.AbstractButton, BooleanState > {
-		private JTabTitle jTabTitle;
-		public TabTitle( JTabTitle jTabTitle ) {
-			super( TAB_TITLE_BOOLEAN_STATE );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: TAB_TITLE_BOOLEAN_STATE" );
-			this.jTabTitle = jTabTitle;
-		}
-		@Override
-		protected final javax.swing.AbstractButton createAwtComponent() {
-			return this.jTabTitle;
-		}
-	}
-
-	private static class JFolderTabTitle extends JTabTitle {
-		public JFolderTabTitle( javax.swing.JComponent jComponent, java.awt.event.ActionListener closeButtonActionListener ) {
-			super( jComponent, closeButtonActionListener );
-			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 8 ) );
-			this.setOpaque( false );
-			this.setBackground( null );
-			this.setAlignmentY( 1.0f );
-		}
-		protected void repaintPlus() {
-			this.getParent().repaint( this.getX(), this.getY(), this.getWidth() + EAST_TAB_PAD, this.getHeight() );
-		}
-		@Override
-		protected void setArmed( boolean isArmed ) {
-			super.setArmed(isArmed);
-			this.repaintPlus();
-		}
-		@Override
-		protected void setPressed( boolean isPressed ) {
-			super.setPressed(isPressed);
-			this.repaintPlus();
-		}
-		@Override
-		protected void select() {
-			super.select();
-			this.repaintPlus();
-		}
-	}
+//	protected static abstract class JTabTitle extends javax.swing.AbstractButton {
+//		private java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+//			public void mouseEntered( java.awt.event.MouseEvent e ) {
+//				JTabTitle.this.setArmed( true );
+//			}
+//			public void mouseExited( java.awt.event.MouseEvent e ) {
+//				JTabTitle.this.setArmed( false );
+//			}
+//			public void mousePressed( java.awt.event.MouseEvent e ) {
+//				JTabTitle.this.setPressed( true );
+//			}
+//			public void mouseReleased( java.awt.event.MouseEvent e ) {
+//				JTabTitle.this.setPressed( false );
+//			}
+//			public void mouseClicked(java.awt.event.MouseEvent e) {
+//				JTabTitle.this.select();
+//			}
+//		};
+//
+//		protected void setArmed( boolean isArmed ) {
+//			this.getModel().setArmed( isArmed );
+//		}
+//		protected void setPressed( boolean isPressed ) {
+//			this.getModel().setPressed( isPressed );
+//		}
+//		protected void select() {
+//			this.setSelected( true );
+//		}
+//
+//		private javax.swing.JComponent jComponent;
+//		private javax.swing.JButton closeButton;
+//		private java.awt.event.ActionListener closeActionListener;
+//		public JTabTitle( javax.swing.JComponent jComponent, java.awt.event.ActionListener closeActionListener ) {
+//			this.jComponent = jComponent;
+//			this.setModel( new javax.swing.JToggleButton.ToggleButtonModel() );
+//			this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
+//			this.add( this.jComponent );
+//			this.closeActionListener = closeActionListener;
+//			if( this.closeActionListener != null ) {
+//				this.closeButton = new javax.swing.JButton();
+//				this.closeButton.setUI( new CloseButtonUI() );
+//				this.closeButton.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+//				this.closeButton.setOpaque( false );
+//				this.add( this.closeButton );
+//			}
+//		}
+//		@Override
+//		public void setFont(java.awt.Font font) {
+//			super.setFont(font);
+//			this.jComponent.setFont( font );
+//		}
+//		@Override
+//		public void addNotify() {
+//			super.addNotify();
+//			this.addMouseListener( this.mouseListener );
+//			if( this.closeButton != null ) {
+//				assert this.closeActionListener != null;
+//				this.closeButton.addActionListener( this.closeActionListener );
+//			}
+//		}
+//		@Override
+//		public void removeNotify() {
+//			if( this.closeButton != null ) {
+//				assert this.closeActionListener != null;
+//				this.closeButton.removeActionListener( this.closeActionListener );
+//			}
+//			this.removeMouseListener( this.mouseListener );
+//			super.removeNotify();
+//		}
+//	}
+//
+//	@Deprecated
+//	private final static BooleanState TAB_TITLE_BOOLEAN_STATE = null;
+//	
+//	protected static abstract class TabTitle extends AbstractButton< javax.swing.AbstractButton, BooleanState > {
+//		private JTabTitle jTabTitle;
+//		public TabTitle( JTabTitle jTabTitle ) {
+//			super( TAB_TITLE_BOOLEAN_STATE );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: TAB_TITLE_BOOLEAN_STATE" );
+//			this.jTabTitle = jTabTitle;
+//		}
+//		@Override
+//		protected final javax.swing.AbstractButton createAwtComponent() {
+//			return this.jTabTitle;
+//		}
+//	}
+//
+//	private static class JFolderTabTitle extends JTabTitle {
+//		public JFolderTabTitle( javax.swing.JComponent jComponent, java.awt.event.ActionListener closeButtonActionListener ) {
+//			super( jComponent, closeButtonActionListener );
+//			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 8 ) );
+//			this.setOpaque( false );
+//			this.setBackground( null );
+//			this.setAlignmentY( 1.0f );
+//		}
+//		protected void repaintPlus() {
+//			this.getParent().repaint( this.getX(), this.getY(), this.getWidth() + EAST_TAB_PAD, this.getHeight() );
+//		}
+//		@Override
+//		protected void setArmed( boolean isArmed ) {
+//			super.setArmed(isArmed);
+//			this.repaintPlus();
+//		}
+//		@Override
+//		protected void setPressed( boolean isPressed ) {
+//			super.setPressed(isPressed);
+//			this.repaintPlus();
+//		}
+//		@Override
+//		protected void select() {
+//			super.select();
+//			this.repaintPlus();
+//		}
+//	}
 
 //	private static class FolderTabTitle extends TabTitle {
 //		public FolderTabTitle( JComponent<?> innerTitleComponent, java.awt.event.ActionListener closeButtonActionListener ) {
 //			super( new JFolderTabTitle( innerTitleComponent.getAwtComponent(), closeButtonActionListener ) );
 //		}
 //	}
+
+	private static class FolderTabTitleUI extends javax.swing.plaf.basic.BasicButtonUI {
+		@Override
+		public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) {
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+			java.awt.Font font = button.getFont();
+			java.awt.FontMetrics fm = button.getFontMetrics( font );
+			String text = button.getText();
+			javax.swing.Icon icon = button.getIcon();
+			int verticalAlignment = button.getVerticalAlignment();
+			int horizontalAlignment = button.getHorizontalAlignment();
+			int verticalTextPosition = button.getVerticalTextPosition();
+			int horizontalTextPosition = button.getHorizontalTextPosition();
+			java.awt.Rectangle viewR = new java.awt.Rectangle( Short.MAX_VALUE, Short.MAX_VALUE );
+			java.awt.Rectangle iconR = new java.awt.Rectangle();
+			java.awt.Rectangle textR = new java.awt.Rectangle();
+			int textIconGap = button.getIconTextGap();
+			javax.swing.SwingUtilities.layoutCompoundLabel(c, fm, text, icon, verticalAlignment, horizontalAlignment, verticalTextPosition, horizontalTextPosition, viewR, iconR, textR, textIconGap);
+			
+	        java.awt.Rectangle bounds = iconR.union(textR);
+
+	        java.awt.Insets insets = button.getInsets();
+	        bounds.width += insets.left + insets.right;
+	        bounds.height += insets.top + insets.bottom;
+
+	        for( java.awt.Component component : button.getComponents() ) {
+	        	//if( component.isVisible() ) {
+	        		bounds.width += 2;
+			        bounds.width += component.getPreferredSize().width;
+	        	//}
+	        }
+	        
+	        return bounds.getSize();
+		}
+	}
+	
+	private static class JFolderTabTitle extends javax.swing.JRadioButton {
+		public JFolderTabTitle() {
+			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 8 ) );
+			this.setOpaque( false );
+			this.setAlignmentY( 1.0f );
+			//this.setLayout( new java.awt.BorderLayout() );
+			this.setLayout( new javax.swing.SpringLayout() );
+			//this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
+			this.getModel().addItemListener( new java.awt.event.ItemListener() {
+				public void itemStateChanged(java.awt.event.ItemEvent e) {
+					JFolderTabTitle.this.revalidate();
+				}				
+			} );
+		}
+		@Override
+		public void updateUI() {
+			this.setUI( new FolderTabTitleUI() );
+		}
+		@Override
+		public void repaint() {
+			java.awt.Container parent = this.getParent();
+			if( parent != null ) {
+				parent.repaint( this.getX(), this.getY(), this.getWidth() + EAST_TAB_PAD, this.getHeight() );
+			} else {
+				super.repaint();
+			}
+		}
+	}
 	
 	private static class FolderTabTitle extends AbstractButton<javax.swing.AbstractButton,BooleanState> {
-		public FolderTabTitle( BooleanState booleanState ) {
+		private java.awt.event.ActionListener closeButtonActionListener;
+		public FolderTabTitle( BooleanState booleanState, java.awt.event.ActionListener closeButtonActionListener ) {
 			super( booleanState );
+			this.closeButtonActionListener = closeButtonActionListener;
 		}
 		@Override
 		protected javax.swing.AbstractButton createAwtComponent() {
-			javax.swing.JRadioButton rv = new javax.swing.JRadioButton() {
+			final JFolderTabTitle rv = new JFolderTabTitle();
+			javax.swing.JButton closeButton = new javax.swing.JButton() {
 				@Override
 				public void updateUI() {
-					this.setUI( new javax.swing.plaf.basic.BasicButtonUI() );
+					this.setUI( new CloseButtonUI() );
 				}
 				@Override
-				public void repaint() {
-					java.awt.Container parent = this.getParent();
-					if( parent != null ) {
-						parent.repaint( this.getX(), this.getY(), this.getWidth() + EAST_TAB_PAD, this.getHeight() );
+				public java.awt.Dimension getMaximumSize() {
+					return this.getPreferredSize();
+				}
+				@Override
+				public boolean contains(int x, int y) {
+					if( rv.isSelected() ) {
+						return super.contains(x, y);
 					} else {
-						super.repaint();
+						return false;
+					}
+				}
+				@Override
+				public boolean isVisible() {
+					if( rv.isSelected() ) {
+						return super.isVisible();
+					} else {
+						return false;
 					}
 				}
 			};
-			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 8 ) );
-			rv.setOpaque( false );
-			rv.setAlignmentY( 1.0f );
+			
+			if( this.closeButtonActionListener != null ) {
+				closeButton.addActionListener( this.closeButtonActionListener );
+				closeButton.setOpaque( false );
+				closeButton.setAlignmentY( 0.5f );
+				closeButton.setRolloverEnabled( true );
+				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( rv, closeButton, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 4 );
+			}
 			return rv;
 		}
 	}
@@ -428,7 +515,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		this.headerPanel.setBackgroundColor( null );
 		this.headerPanel.getAwtComponent().setOpaque( false );
 		this.titlesPanel.setBackgroundColor( null );
-		this.headerPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 0, 0, 0 ) );
+		this.headerPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 0, 0, 0 ) );
 		this.cardPanel.setBorder( new javax.swing.border.Border() {
 			public java.awt.Insets getBorderInsets( java.awt.Component c ) {
 				return new java.awt.Insets( 1,1,0,0 );
@@ -493,11 +580,11 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	}
 
 	@Override
-	protected AbstractButton< ?, BooleanState > createTitleButton( BooleanState booleanState ) {
-		return new FolderTabTitle( booleanState );
+	protected AbstractButton< ?, BooleanState > createTitleButton( BooleanState booleanState, java.awt.event.ActionListener closeButtonActionListener ) {
+		return new FolderTabTitle( booleanState, closeButtonActionListener );
 	}
 	@Override
-	protected FolderTabItemDetails createTabItemDetails( E item, java.util.UUID id, AbstractButton< ?, BooleanState > titleButton, ScrollPane scrollPane, JComponent<?> mainComponent, java.awt.event.ActionListener closeButtonActionListener ) {
+	protected FolderTabItemDetails createTabItemDetails( E item, java.util.UUID id, AbstractButton< ?, BooleanState > titleButton, ScrollPane scrollPane, JComponent<?> mainComponent ) {
 //		AbstractButton<?,?> button = new FolderTabTitle(innerTitleComponent, closeButtonActionListener);
 		JComponent<?> root;
 		if( scrollPane != null ) {

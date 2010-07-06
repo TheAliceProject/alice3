@@ -290,18 +290,36 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 			return new CodeEditor( code );
 		}
+		
+		private boolean isEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+			if( "run".equals( code.getName() ) ) { 
+				return code.getDeclaringType() == org.alice.ide.IDE.getSingleton().getSceneType();
+			}
+			return false;
+		}
 		public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 			button.getAwtComponent().setText( code.getName() );
 			button.getAwtComponent().setIcon( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( code.getDeclaringType() ) );
 			button.scaleFont( 1.5f );
+			
+			if( isEntryPoint(code) ) {
+				edu.cmu.cs.dennisc.croquet.DialogOperation runOperation = org.alice.ide.IDE.getSingleton().getRunOperation();
+				//runOperation.setName( "Play..." );
+				//runOperation.setName( null );
+				edu.cmu.cs.dennisc.croquet.Button runButton = runOperation.createButton();
+				//runButton.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( button.getAwtComponent(), runButton.getAwtComponent(), edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 1 );
+				runButton.getAwtComponent().setText( null );
+				runButton.getAwtComponent().setToolTipText( "Play..." );
+			}
 		}
 //		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createInnerTitleComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 //			edu.cmu.cs.dennisc.croquet.Label rv = new edu.cmu.cs.dennisc.croquet.Label( code.getName() );
 //			rv.scaleFont( 1.5f );
 //			return rv;
 //		}
-		public boolean isCloseAffordanceDesired() {
-			return true;
+		public boolean isCloseable(edu.cmu.cs.dennisc.alice.ast.AbstractCode code) {
+			return isEntryPoint(code) == false;
 		}
 	};
 	private edu.cmu.cs.dennisc.croquet.FolderTabbedPane<edu.cmu.cs.dennisc.alice.ast.AbstractCode> singleton;

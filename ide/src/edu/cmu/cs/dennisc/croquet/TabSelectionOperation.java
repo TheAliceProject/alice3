@@ -58,13 +58,10 @@ public final class TabSelectionOperation extends ListSelectionState<Predetermine
 		public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, edu.cmu.cs.dennisc.croquet.PredeterminedTab item ) {
 			item.customizeTitleComponent( booleanState, button );
 		}
-//		public final JComponent<?> createInnerTitleComponent(PredeterminedTab item) {
-//			return item.getTitleComponent();
-//		}
 		public final ScrollPane createScrollPane( PredeterminedTab item ) {
 			return item.createScrollPane();
 		}
-		public final boolean isCloseAffordanceDesired() {
+		public final boolean isCloseable(edu.cmu.cs.dennisc.croquet.PredeterminedTab item) {
 			return false;
 		}
 	};

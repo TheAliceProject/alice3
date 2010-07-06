@@ -149,22 +149,38 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForGalleryClassName( className );
 		}
 		public int getIconHeight() {
-			return getCurrentAccessibleTypeIcon().getIconHeight();
+			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
+			if( icon != null ) {
+				return icon.getIconHeight();
+			} else {
+				return 0;
+			}
 		}
 		public int getIconWidth() {
-			return getCurrentAccessibleTypeIcon().getIconWidth();
+			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
+			if( icon != null ) {
+				return icon.getIconWidth();
+			} else {
+				return 0;
+			}
 		}
 		public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
-			getCurrentAccessibleTypeIcon().paintIcon(c, g, x, y);		
+			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
+			if( icon != null ) {
+				icon.paintIcon(c, g, x, y);
+			}
 		}
 	}
+	private static boolean isFolderTabbedPane = false;
+	private static javax.swing.Icon ICON = isFolderTabbedPane ? null : new IndirectCurrentAccessibleTypeIcon();
+	
 	private static abstract class MemberTab extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
 		private static String getTitle( String key ) {
 			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "org.alice.ide.memberseditor.TabTitles", javax.swing.JComponent.getDefaultLocale() );
 			return resourceBundle.getString( key );
 		}
 		public MemberTab( java.util.UUID individualId, String key ) {
-			super( individualId, getTitle( key ), new IndirectCurrentAccessibleTypeIcon() );
+			super( individualId, getTitle( key ), ICON );
 		}
 		@Override
 		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane() {
@@ -393,8 +409,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		edu.cmu.cs.dennisc.croquet.LineAxisPanel instancePanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( label, comboBox );
 
 		this.tabbedPaneSelectionState.setSelectedItem( this.proceduresTab );
-		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.tabbedPaneSelectionState.createDefaultToolPaletteTabbedPane();
-		//edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.tabbedPaneSelectionState.createDefaultFolderTabbedPane();
+		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = isFolderTabbedPane ? this.tabbedPaneSelectionState.createDefaultFolderTabbedPane() : this.tabbedPaneSelectionState.createDefaultToolPaletteTabbedPane();
 		this.addComponent( instancePanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
 		this.addComponent( tabbedPane, Constraint.CENTER );
 		tabbedPane.scaleFont( 1.5f );
