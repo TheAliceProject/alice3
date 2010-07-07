@@ -50,6 +50,9 @@ public abstract class AbstractRowsPaneChooser<E extends edu.cmu.cs.dennisc.alice
 	protected String[] getLabelTexts() {
 		return LABEL_TEXTS;
 	}
+	protected edu.cmu.cs.dennisc.croquet.Component<?> createLabel( String text ) {
+		return edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( text );
+	}
 	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents();
 	public java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
 		String[] labelTexts = this.getLabelTexts();
@@ -58,7 +61,7 @@ public abstract class AbstractRowsPaneChooser<E extends edu.cmu.cs.dennisc.alice
 		for( int i=0; i<N; i++ ) {
 			rv.add( 
 					edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
-						edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( labelTexts[ i ] ), 
+						this.createLabel( labelTexts[ i ] ), 
 						new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
 								components[ i ],
 								edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue()

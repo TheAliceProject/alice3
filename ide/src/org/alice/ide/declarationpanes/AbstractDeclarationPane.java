@@ -220,7 +220,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	protected final edu.cmu.cs.dennisc.croquet.Component< ? >[] createInitializerRow() {
 		edu.cmu.cs.dennisc.croquet.Component< ? > component = this.createInitializerComponent();
 		if( component != null ) {
-			return edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "initializer:" ), component );
+			return edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "initializer:" ), component );
 		} else {
 			return null;
 		}

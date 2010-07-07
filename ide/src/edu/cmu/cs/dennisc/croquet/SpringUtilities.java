@@ -58,6 +58,7 @@ public class SpringUtilities {
 		Label rv = new Label( text );
 		rv.setHorizontalAlignment( HorizontalAlignment.TRAILING );
 		rv.setVerticalAlignment( VerticalAlignment.TOP );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 6, 0, 0, 0 ) );
 		return rv;
 	}
 	

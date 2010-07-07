@@ -56,6 +56,23 @@ public abstract class Panel extends JComponent< javax.swing.JPanel > {
 			this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 		}
 		@Override
+		public java.awt.Dimension getPreferredSize() {
+			java.awt.Dimension rv = super.getPreferredSize();
+			if( minimumPreferredWidth != null ) {
+				rv.width = Math.max( rv.width, minimumPreferredWidth );
+			}
+			if( maximumPreferredWidth != null ) {
+				rv.width = Math.min( rv.width, maximumPreferredWidth );
+			}
+			if( minimumPreferredHeight != null ) {
+				rv.height = Math.max( rv.height, minimumPreferredHeight );
+			}
+			if( maximumPreferredHeight != null ) {
+				rv.height = Math.min( rv.height, maximumPreferredHeight );
+			}
+			return rv;
+		}
+		@Override
 		public java.awt.Dimension getMaximumSize() {
 			if( Panel.this.isMaximumSizeClampedToPreferredSize() ) {
 				return this.getPreferredSize();
@@ -70,6 +87,37 @@ public abstract class Panel extends JComponent< javax.swing.JPanel > {
 	protected javax.swing.JPanel createJPanel() {
 		return new DefaultJPanel();
 	}
+	
+	private Integer minimumPreferredWidth = null;
+	private Integer maximumPreferredWidth = null;
+	private Integer minimumPreferredHeight = null;
+	private Integer maximumPreferredHeight = null;
+	
+	public final Integer getMaximumPreferredWidth() {
+		return this.maximumPreferredWidth;
+	}
+	public final void setMaximumPreferredWidth( Integer maximumPreferredWidth ) {
+		this.maximumPreferredWidth = maximumPreferredWidth;
+	}
+	public final Integer getMinimumPreferredWidth() {
+		return this.minimumPreferredWidth;
+	}
+	public final void setMinimumPreferredWidth( Integer minimumPreferredWidth ) {
+		this.minimumPreferredWidth = minimumPreferredWidth;
+	}
+	public final Integer getMaximumPreferredHeight() {
+		return this.maximumPreferredHeight;
+	}
+	public final void setMaximumPreferredHeight( Integer maximumPreferredHeight ) {
+		this.maximumPreferredHeight = maximumPreferredHeight;
+	}
+	public final Integer getMinimumPreferredHeight() {
+		return this.minimumPreferredHeight;
+	}
+	public final void setMinimumPreferredHeight( Integer minimumPreferredHeight ) {
+		this.minimumPreferredHeight = minimumPreferredHeight;
+	}
+	
 	@Override
 	protected final javax.swing.JPanel createAwtComponent() {
 		javax.swing.JPanel rv = this.createJPanel();

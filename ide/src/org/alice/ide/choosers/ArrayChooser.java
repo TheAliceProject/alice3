@@ -84,6 +84,16 @@ public class ArrayChooser extends AbstractRowsPaneChooser< edu.cmu.cs.dennisc.al
 		}
 	}
 	
+	//todo
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createLabel( String text ) {
+		if( LABEL_TEXTS[ 1 ].equals( text ) ) {
+			return edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( text );
+		} else {
+			return super.createLabel( text );
+		}
+	}
+	
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> EPIC_HACK_getArrayComponentType() {
 		if( this.typePane != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> arrayType = this.typePane.getValueType();

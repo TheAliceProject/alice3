@@ -811,32 +811,22 @@ class AddExpressionOperation extends edu.cmu.cs.dennisc.croquet.FauxPopupMenuOpe
 				org.alice.ide.IDE.getSingleton().unsetPreviousExpressionAndDropStatement();
 			}
 		} );
-
-//		Expression expression = org.alice.ide.initializer.ExpressionUtilities.createDefaultExpression( this.componentTypeProperty.getValue() );
-//
-//		
-//		new org.alice.ide.operations.ast.FillInExpressionListPropertyItemOperation( java.util.UUID.fromString( "dec13fc9-4b3f-4e4e-8b1f-21956e789b32" ), this.index, this.expressionListProperty ) {
-//			@Override
-//			protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getFillInType() {
-//				return AbstractDropDownListItemExpressionPane.this.getFillInType();
-//			}
-//		}
-//		//
-//		expression = new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( new java.util.Random().nextInt( 100 ) );
-//		//
-//		
-//		
-//		this.expressionListProperty.add( expression );
 	}
 }
 
-public class ArrayInitializerPane extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
+public class ArrayInitializerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	//private org.alice.ide.initializer.BogusNode bogusNode = new org.alice.ide.initializer.BogusNode( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE.getArrayType(), true );
     public ArrayInitializerPane( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty arrayExpressions ) {
-    	MutableList mutableList = new MutableList( componentTypeProperty, arrayExpressions );
+        MutableList mutableList = new MutableList( componentTypeProperty, arrayExpressions );
         AddExpressionOperation addExpressionOperation = new AddExpressionOperation( componentTypeProperty, arrayExpressions );
-        this.addComponent( mutableList );
         edu.cmu.cs.dennisc.croquet.Button button = addExpressionOperation.createButton();
-        this.addComponent( button );
+        edu.cmu.cs.dennisc.croquet.PageAxisPanel pageAxisPanel = new edu.cmu.cs.dennisc.croquet.PageAxisPanel( mutableList, button );
+        edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( pageAxisPanel );
+        scrollPane.setBorder( null );
+        scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
+        scrollPane.setBackgroundColor( null );
+        scrollPane.getAwtComponent().setOpaque( false );
+        this.addComponent( scrollPane, Constraint.CENTER );
+        this.setMinimumPreferredHeight( 200 );
     }
 } 
