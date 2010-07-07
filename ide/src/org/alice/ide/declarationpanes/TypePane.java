@@ -86,7 +86,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 			private Label trailingLabel = new Label();
 			public TypeListCellRenderer() {
 				this.add( this.leadingLabel, java.awt.BorderLayout.LINE_START );
-				this.add( javax.swing.Box.createHorizontalStrut( 48 ) );
+				this.add( javax.swing.Box.createHorizontalStrut( 16 ) );
 				this.add( this.trailingLabel, java.awt.BorderLayout.LINE_END );
 				this.setOpaque( true );
 				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
