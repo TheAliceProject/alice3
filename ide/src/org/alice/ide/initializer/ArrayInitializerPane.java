@@ -571,9 +571,12 @@ class MutableList extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 			//MutableList.this.refresh();
 		}
 	};
-	public MutableList( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
+	
+	private edu.cmu.cs.dennisc.croquet.Button buttonToScrollToVisibleOnAdd;
+	public MutableList( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, edu.cmu.cs.dennisc.croquet.Button buttonToScrollToVisibleOnAdd ) {
         this.componentTypeProperty = componentTypeProperty;
         this.expressionListProperty = expressionListProperty;
+        this.buttonToScrollToVisibleOnAdd = buttonToScrollToVisibleOnAdd;
     	this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
     	this.getAwtComponent().setFocusable( true );
     }
@@ -746,6 +749,14 @@ class MutableList extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
     	if( buttonModel != null ) {
     		buttonModel.setSelected( false );
     	}
+    	
+    	javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+		    	if( MutableList.this.buttonToScrollToVisibleOnAdd != null ) {
+		    		MutableList.this.buttonToScrollToVisibleOnAdd.scrollToVisible();
+		    	}
+			}
+		} );
     	this.revalidateAndRepaint();
     }
 	
@@ -816,9 +827,10 @@ class AddExpressionOperation extends edu.cmu.cs.dennisc.croquet.FauxPopupMenuOpe
 
 public class ArrayInitializerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
     public ArrayInitializerPane( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty arrayExpressions ) {
-        MutableList mutableList = new MutableList( componentTypeProperty, arrayExpressions );
         AddExpressionOperation addExpressionOperation = new AddExpressionOperation( componentTypeProperty, arrayExpressions );
         edu.cmu.cs.dennisc.croquet.Button button = addExpressionOperation.createButton();
+
+        MutableList mutableList = new MutableList( componentTypeProperty, arrayExpressions, button );
         edu.cmu.cs.dennisc.croquet.PageAxisPanel pageAxisPanel = new edu.cmu.cs.dennisc.croquet.PageAxisPanel( 
         		mutableList, 
         		new edu.cmu.cs.dennisc.croquet.LineAxisPanel( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 14 ), button ) 
