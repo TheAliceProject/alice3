@@ -57,7 +57,6 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 			this.id = id;
 			this.mainComponent = mainComponent;
 			this.scrollPane = scrollPane;
-
 			titleButton.setBackgroundColor( this.mainComponent.getBackgroundColor() );
 			if( this.scrollPane != null ) {
 				this.scrollPane.setViewportView( this.mainComponent );

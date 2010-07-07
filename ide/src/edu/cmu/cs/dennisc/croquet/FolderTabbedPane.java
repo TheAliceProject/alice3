@@ -89,9 +89,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 8 ) );
 			this.setOpaque( false );
 			this.setAlignmentY( 1.0f );
-			//this.setLayout( new java.awt.BorderLayout() );
 			this.setLayout( new javax.swing.SpringLayout() );
-			//this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
 			this.getModel().addItemListener( new java.awt.event.ItemListener() {
 				public void itemStateChanged(java.awt.event.ItemEvent e) {
 					JFolderTabTitle.this.revalidate();
@@ -358,7 +356,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 			root = mainComponent;
 		}
 		root.setVisible( false );
-		root.setBackgroundColor( null );
+		//root.setBackgroundColor( null );
 		return new FolderTabItemDetails( item, titleButton, id, scrollPane, mainComponent );
 	};
 	

@@ -206,62 +206,18 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 			} else {
 				throw new RuntimeException();
 			}
-
-//			header.setBackgroundColor( this.getBackgroundColor() );
 			class RootStatementListPropertyPane extends StatementListPropertyPane {
 				public RootStatementListPropertyPane() {
 					super( getIDE().getCodeFactory(), codeDeclaredInAlice.getBodyProperty().getValue().statements );
 					this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 48, 0 ) );
 				}
-				
-				//@Override
-				//protected boolean isMaximumSizeClampedToPreferredSize() {
-				//	return false;
-				//}
-				//				@Override
-				//				protected void paintComponent( java.awt.Graphics g ) {
-				//					super.paintComponent( g );
-				//					int x = 0;
-				//					int y = 0;
-				//					int width = this.getWidth() -1;
-				//					int height = this.getHeight() -1;
-				//					int arcWidth = 8;
-				//					int arcHeight = 8;
-				//					g.setColor( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class ) );
-				//					g.fillRoundRect( x, y, width, height, arcWidth, arcHeight );
-				//					g.setColor( java.awt.Color.GRAY );
-				//					g.drawRoundRect( x, y, width, height, arcWidth, arcHeight );
-				//
-				////					if( getIDE().isJava() ) {
-				////						//pass
-				////					} else {
-				////						java.awt.FontMetrics fm = g.getFontMetrics();
-				////					    int ascent = fm.getMaxAscent ();
-				////					    int descent= fm.getMaxDescent ();
-				////					    
-				////						g.setColor( java.awt.Color.BLACK );
-				////					    x = 4;
-				////					    y = 4;
-				////						g.drawString( "do in order", x, y + ascent-descent );
-				////					}
-				//				}
 			}
-			//			RootStatementListPropertyPane bodyPane = new RootStatementListPropertyPane();
-			//bodyPane.setFont( bodyPane.getFont().deriveFont( java.awt.Font.BOLD ) );
-			//bodyPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( bodyPane.getFont().getSize() + 8, 16, 4, 4 ) );
-
 			org.alice.ide.common.BodyPane bodyPane = new org.alice.ide.common.BodyPane( new RootStatementListPropertyPane() );
-
-			//			javax.swing.JPanel panel = new javax.swing.JPanel();
-			//			panel.setLayout( new java.awt.GridLayout() );
-			//			panel.add( bodyPane );
-
 			this.scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( bodyPane );
 			this.scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
 			this.scrollPane.setBorder( null );
 			this.scrollPane.setBackgroundColor( null );
 			this.scrollPane.getAwtComponent().getViewport().setOpaque( false );
-			//this.scrollPane.setBackground( java.awt.Color.RED );
 			this.scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
 			this.internalAddComponent( header, java.awt.BorderLayout.NORTH );
 			this.internalAddComponent( scrollPane, java.awt.BorderLayout.CENTER );
