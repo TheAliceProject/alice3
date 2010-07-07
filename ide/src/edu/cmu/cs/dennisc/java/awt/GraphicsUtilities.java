@@ -52,11 +52,13 @@ public class GraphicsUtilities {
 		
 	}
 	public static void drawCenteredText( java.awt.Graphics g, String s, int x, int y, int width, int height ) {
-		java.awt.FontMetrics fm = g.getFontMetrics();
-		int messageWidth = fm.stringWidth( s );
-	    int ascent = fm.getMaxAscent ();
-	    int descent= fm.getMaxDescent ();
-		g.drawString( s, x+width/2-messageWidth/2, y+height/2+ascent/2-descent/2 );
+		if( s != null ) {
+			java.awt.FontMetrics fm = g.getFontMetrics();
+			int messageWidth = fm.stringWidth( s );
+		    int ascent = fm.getMaxAscent ();
+		    int descent= fm.getMaxDescent ();
+			g.drawString( s, x+width/2-messageWidth/2, y+height/2+ascent/2-descent/2 );
+		}
 	}
 	public static void drawCenteredText( java.awt.Graphics g, String s, java.awt.Dimension size ) {
 		drawCenteredText( g, s, 0, 0, size.width, size.height );

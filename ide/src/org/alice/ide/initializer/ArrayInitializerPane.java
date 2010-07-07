@@ -676,11 +676,11 @@ class MutableList extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 				fauxItem.getAwtComponent().setSelected( true );
 			}
 		} else {
+			component.setVisible( true );
 			this.expressionListProperty.remove( this.originalIndex );
 		}
 		this.dropIndex = -1;
 		this.originalIndex = -1;
-		component.setVisible( isWithinBounds );
 		this.revalidateAndRepaint();
 	}
 	public void handleKeyPressed(java.awt.event.KeyEvent e) {
@@ -815,17 +815,19 @@ class AddExpressionOperation extends edu.cmu.cs.dennisc.croquet.FauxPopupMenuOpe
 }
 
 public class ArrayInitializerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	//private org.alice.ide.initializer.BogusNode bogusNode = new org.alice.ide.initializer.BogusNode( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE.getArrayType(), true );
     public ArrayInitializerPane( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty arrayExpressions ) {
         MutableList mutableList = new MutableList( componentTypeProperty, arrayExpressions );
         AddExpressionOperation addExpressionOperation = new AddExpressionOperation( componentTypeProperty, arrayExpressions );
         edu.cmu.cs.dennisc.croquet.Button button = addExpressionOperation.createButton();
-        edu.cmu.cs.dennisc.croquet.PageAxisPanel pageAxisPanel = new edu.cmu.cs.dennisc.croquet.PageAxisPanel( mutableList, button );
+        edu.cmu.cs.dennisc.croquet.PageAxisPanel pageAxisPanel = new edu.cmu.cs.dennisc.croquet.PageAxisPanel( 
+        		mutableList, 
+        		new edu.cmu.cs.dennisc.croquet.LineAxisPanel( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 14 ), button ) 
+        );
         edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( pageAxisPanel );
-        scrollPane.setBorder( null );
+        scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
         scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
-        scrollPane.setBackgroundColor( null );
-        scrollPane.getAwtComponent().setOpaque( false );
+        //pageAxisPanel.getAwtComponent().setOpaque( false );
+        pageAxisPanel.setBackgroundColor( null );
         this.addComponent( scrollPane, Constraint.CENTER );
         this.setMinimumPreferredHeight( 200 );
     }

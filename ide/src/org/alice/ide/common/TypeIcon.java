@@ -89,15 +89,20 @@ public class TypeIcon implements javax.swing.Icon {
 		return this.getBorderHeight();
 	}
 	private java.awt.geom.Rectangle2D getTextBounds() {
-		java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
-		java.awt.Font font = javax.swing.UIManager.getFont( "defaultFont" );
-		java.awt.FontMetrics fm;
-		if( font != null ) {
-			fm = g.getFontMetrics( font );
+		String text = this.getText();
+		if( text != null ) {
+			java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
+			java.awt.Font font = javax.swing.UIManager.getFont( "defaultFont" );
+			java.awt.FontMetrics fm;
+			if( font != null ) {
+				fm = g.getFontMetrics( font );
+			} else {
+				fm = g.getFontMetrics();
+			}
+			return fm.getStringBounds( text, g );
 		} else {
-			fm = g.getFontMetrics();
+			return new java.awt.geom.Rectangle2D.Float( 0,0,0,0 );
 		}
-		return fm.getStringBounds( this.getText(), g );
 	}
 	private int getBorderWidth() {
 		java.awt.Insets insets = this.border.getBorderInsets( null );

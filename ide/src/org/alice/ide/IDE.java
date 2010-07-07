@@ -1536,7 +1536,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			}
 		} else {
 			//todo:
-			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.CancelFillIn( "type is <unset>.  canceling." ) );
+			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.CancelFillIn( "value type is <unset>.  you must first set the value type.  canceling." ) );
 		}
 
 	}
