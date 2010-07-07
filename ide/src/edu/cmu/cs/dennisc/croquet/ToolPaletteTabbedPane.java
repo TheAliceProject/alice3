@@ -144,7 +144,7 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, Abstra
 
 	@Override
 	protected void removeAllDetails() {
-		this.removeAllComponents();
+		this.internalRemoveAllComponents();
 	}
 	@Override
 	protected void addPrologue(int count) {

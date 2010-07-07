@@ -75,6 +75,7 @@ public abstract class AbstractDropDownListItemExpressionPane extends org.alice.i
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
 		this.expressionListProperty.addListPropertyListener( this.listPropertyAdapter );
+		this.refresh();
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {

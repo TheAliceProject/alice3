@@ -101,14 +101,6 @@ public abstract class Container<J extends java.awt.Container> extends Component<
 		return getAwtComponent().getComponentCount();
 	}
 
-	@Deprecated
-	protected final void forgetAndRemoveAllComponents() {
-		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this.getAwtComponent() );
-	}
-	@Deprecated
-	protected final void removeAllComponents() {
-		this.getAwtComponent().removeAll();
-	}
 	public boolean isAncestorOf(Component<?> other) {
 		return this.getAwtComponent().isAncestorOf(other.getAwtComponent());
 	}
@@ -117,14 +109,27 @@ public abstract class Container<J extends java.awt.Container> extends Component<
 		assert component != null;
 		this.getAwtComponent().add(component.getAwtComponent());
 	}
-
 	protected void internalAddComponent(Component<?> component, Object constraints) {
 		assert component != null;
 		this.getAwtComponent().add(component.getAwtComponent(), constraints);
 	}
-
 	protected void internalRemoveComponent(Component<?> component) {
 		assert component != null;
 		this.getAwtComponent().remove(component.getAwtComponent());
+	}
+
+	protected final void internalRemoveAllComponents() {
+		this.getAwtComponent().removeAll();
+	}
+	protected void internalForgetAndRemoveComponent( Component<?> component ) {
+		if( component instanceof Container<?> ) {
+			edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( ((Container<?>)component).getAwtComponent() );
+		}
+		this.internalRemoveComponent( component );
+		this.repaint();
+	}
+	protected void internalForgetAndRemoveAllComponents() {
+		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this.getAwtComponent() );
+		this.repaint();
 	}
 }

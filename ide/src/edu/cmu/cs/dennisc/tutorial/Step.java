@@ -186,6 +186,7 @@ public abstract class Step {
 				}
 				@Override
 				protected void paintChildren(java.awt.Graphics g) {
+					//todo: use setComponentZOrder?
 					if( this.getComponentCount() > 1 ) {
 						this.updateSortedComponents();
 						this.isSortingDesired = true;
@@ -210,7 +211,7 @@ public abstract class Step {
 		}
 		@Override
 		protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-			this.removeAllComponents();
+			this.internalRemoveAllComponents();
 			super.handleRemovedFrom( parent );
 		}
 	}

@@ -54,17 +54,17 @@ public class InitializerPane extends edu.cmu.cs.dennisc.croquet.CardPanel {
 
 	public InitializerPane(BogusNode bogusNode) {
 		this.bogusNode = bogusNode;
-		this.bogusNode.componentType.addPropertyListener(new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-			public void propertyChanging(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
-			}
-
-			public void propertyChanged(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = InitializerPane.this.bogusNode.componentType.getValue();
-				if (type != null) {
-					arrayInitializerPane.handleTypeChange(type.getArrayType());
-				}
-			}
-		});
+//		this.bogusNode.componentType.addPropertyListener(new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+//			public void propertyChanging(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
+//			}
+//
+//			public void propertyChanged(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
+//				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = InitializerPane.this.bogusNode.componentType.getValue();
+//				if (type != null) {
+//					arrayInitializerPane.handleTypeChange(type.getArrayType());
+//				}
+//			}
+//		});
 		this.bogusNode.isArray.addPropertyListener(new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
 			}
@@ -75,7 +75,7 @@ public class InitializerPane extends edu.cmu.cs.dennisc.croquet.CardPanel {
 		});
 
 		this.itemInitializerPane = new ItemInitializerPane(this.bogusNode.componentExpression);
-		this.arrayInitializerPane = new ArrayInitializerPane(this.bogusNode.arrayExpressions);
+		this.arrayInitializerPane = new ArrayInitializerPane(bogusNode.componentType, this.bogusNode.arrayExpressions);
 
 		this.itemKey = this.createKey(this.itemInitializerPane, java.util.UUID.fromString("21574d0d-fb16-46df-8124-a0fdef77a4eb"));
 		this.arrayKey = this.createKey(this.arrayInitializerPane, java.util.UUID.fromString("c6d6e1d9-93f3-45d7-956a-61a8d6914fb3"));

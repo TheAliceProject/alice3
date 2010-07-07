@@ -85,6 +85,15 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,Model> {
 	public void addComponent(Component<?> component, Object constraints) {
 		this.internalAddComponent(component, constraints);
 	}
+	public void forgetAndRemoveComponent( Component< ? > component ) {
+		this.internalForgetAndRemoveComponent( component );
+	}
+	public void removeAllComponents() {
+		this.internalRemoveAllComponents();
+	}
+	public void forgetAndRemoveAllComponents() {
+		this.internalForgetAndRemoveAllComponents();
+	}
 
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
 	@Override

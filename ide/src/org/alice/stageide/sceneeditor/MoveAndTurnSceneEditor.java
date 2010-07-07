@@ -295,7 +295,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		private edu.cmu.cs.dennisc.croquet.Component<?> rootComponent;
 		@Override
 		protected void removeAllDetails() {
-			this.removeAllComponents();
+			this.internalRemoveAllComponents();
 		}
 		@Override
 		protected void addPrologue(int count) {

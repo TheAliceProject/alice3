@@ -45,65 +45,11 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPopupMenuOperation extends Operation<PopupMenuOperationContext> {
-	public static final Group POPUP_MENU_GROUP = new Group( java.util.UUID.fromString( "4fe7cbeb-627f-4965-a2d3-f4bf42796c59" ), "POPUP_MENU_GROUP" );
-
-	public AbstractPopupMenuOperation( java.util.UUID individualUUID ) {
-		super( POPUP_MENU_GROUP, individualUUID );
+@Deprecated
+public abstract class FauxPopupMenuOperation extends ActionOperation {
+	public FauxPopupMenuOperation( Group group, java.util.UUID individualUUID ) {
+		super( group, individualUUID );
 	}
-	public abstract Model[] getModels();
-	@Override
-	protected PopupMenuOperationContext createContext( ModelContext< ? > parent, java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return parent.createPopupMenuOperationContext( this, e, viewController );
-	}
- 	@Override
-	protected final void perform(final PopupMenuOperationContext context) {
-		PopupMenu popupMenu = this.createPopupMenu();
-		popupMenu.getAwtComponent().addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
-			public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
-			}
-			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
-			}
-			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-				context.cancel();
-			}
-		} );
-
-		ViewController<?,?> viewController = context.getViewController();
-		java.awt.Point pt = context.getPoint();
-		if (pt != null) {
-			popupMenu.showAtLocation( viewController, pt.x, pt.y );
-		} else {
-			popupMenu.showBelow( viewController );
-		}
-	}
-
-	private void addPopupMenu( PopupMenu popupMenu ) {
-		this.addComponent( popupMenu );
-	}
-	private void removePopupMenu( PopupMenu popupMenu ) {
-		this.removeComponent( popupMenu );
-	}
-
-	private PopupMenu createPopupMenu() {
-		Application.getSingleton().register( this );
-		PopupMenu rv = new PopupMenu( this ) {
-			@Override
-			protected void handleAddedTo(Component<?> parent) {
-				super.handleAddedTo( parent );
-				AbstractPopupMenuOperation.this.addPopupMenu(this);
-			}
-
-			@Override
-			protected void handleRemovedFrom(Component<?> parent) {
-				AbstractPopupMenuOperation.this.removePopupMenu(this);
-				super.handleRemovedFrom( parent );
-			}
-		};
-		Application.addMenuElements( rv, this.getModels() );
-		return rv;
-	}
-	
 	private static class ArrowIcon extends AbstractArrowIcon {
 		public ArrowIcon( int size ) {
 			super( size );
@@ -127,7 +73,6 @@ public abstract class AbstractPopupMenuOperation extends Operation<PopupMenuOper
 		}
 	}
 	private static final ArrowIcon ARROW_ICON = new ArrowIcon( 14 ); 
-	
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Button createButton() {
 		if( this.getSmallIcon() != null ) {

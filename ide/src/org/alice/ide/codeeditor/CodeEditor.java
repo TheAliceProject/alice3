@@ -80,7 +80,7 @@ class StatementListPropertyPaneInfo /* implements edu.cmu.cs.dennisc.croquet.Tra
 /**
  * @author Dennis Cosgrove
  */
-public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax.swing.JPanel, edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.croquet.DropReceptor, java.awt.print.Printable {
+public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implements edu.cmu.cs.dennisc.croquet.DropReceptor, java.awt.print.Printable {
 	private StatementListPropertyPane EPIC_HACK_desiredStatementListPropertyPane = null;
 	private int EPIC_HACK_desiredIndex = -1;
 
@@ -98,7 +98,6 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 	};
 	
 	public CodeEditor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-		super( null );
 		this.code = code;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		java.awt.Color color = getIDE().getCodeDeclaredInAliceColor( this.code );
@@ -108,7 +107,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 	}
 
 	@Override
-	protected javax.swing.JPanel createAwtComponent() {
+	protected javax.swing.JPanel createJPanel() {
 		final boolean IS_FEEDBACK_DESIRED = false;
 		javax.swing.JPanel rv;
 		if( IS_FEEDBACK_DESIRED ) {
@@ -189,7 +188,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.ViewController< javax
 	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
 		return this.code;
 	}
-	public edu.cmu.cs.dennisc.croquet.ViewController<?,?> getViewController() {
+	public edu.cmu.cs.dennisc.croquet.JComponent<?> getViewController() {
 		return this;
 	}
 	public void refresh() {

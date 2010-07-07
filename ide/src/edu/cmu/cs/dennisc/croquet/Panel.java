@@ -85,4 +85,13 @@ public abstract class Panel extends JComponent< javax.swing.JPanel > {
 	public void removeComponent( Component< ? > component ) {
 		this.internalRemoveComponent( component );
 	}
+	public void forgetAndRemoveComponent( Component< ? > component ) {
+		this.internalForgetAndRemoveComponent( component );
+	}
+	public void removeAllComponents() {
+		this.internalRemoveAllComponents();
+	}
+	public void forgetAndRemoveAllComponents() {
+		this.internalForgetAndRemoveAllComponents();
+	}
 }

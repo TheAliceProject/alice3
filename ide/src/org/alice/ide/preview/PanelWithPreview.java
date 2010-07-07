@@ -48,7 +48,7 @@ package org.alice.ide.preview;
 public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	class PreviewPane extends edu.cmu.cs.dennisc.croquet.JComponent<javax.swing.JPanel> {
 		public void refresh() {
-			this.forgetAndRemoveAllComponents();
+			this.internalForgetAndRemoveAllComponents();
 			this.internalAddComponent( PanelWithPreview.this.createPreviewSubComponent(), java.awt.BorderLayout.CENTER );
 			this.revalidateAndRepaint();
 		}
@@ -75,7 +75,7 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 		}
 		@Override
 		protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-			this.forgetAndRemoveAllComponents();
+			this.internalForgetAndRemoveAllComponents();
 			super.handleRemovedFrom( parent );
 		}
 	}

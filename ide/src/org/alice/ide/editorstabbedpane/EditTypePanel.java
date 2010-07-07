@@ -325,6 +325,7 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		borderPanel.addComponent( pageAxisPanel, Constraint.NORTH );
 		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( borderPanel );
 		scrollPane.setBorder( null );
+		scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
 		
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
 		this.addComponent( new Title( type ), Constraint.NORTH );

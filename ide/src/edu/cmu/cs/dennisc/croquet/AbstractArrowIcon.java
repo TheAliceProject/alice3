@@ -42,23 +42,51 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public interface DropReceptor {
-	public boolean isPotentiallyAcceptingOf( DragComponent source );
-	//public ViewController<?,?> getViewController();
-	//todo: rename
-	public JComponent<?> getViewController();
-	public void dragStarted( DragAndDropContext dragAndDropContext );
-	public void dragEntered( DragAndDropContext dragAndDropContext );
-	public void dragUpdated( DragAndDropContext dragAndDropContext );
-	
-	//todo: Dropped or Exited but not both?
-	public Operation<?> dragDropped( DragAndDropContext dragAndDropContext );
-	public void dragExited( DragAndDropContext dragAndDropContext, boolean isDropRecipient );
-	
-	
-	public void dragStopped( DragAndDropContext dragAndDropContext );
+/*package-private*/abstract class AbstractArrowIcon implements javax.swing.Icon {
+	protected static enum Heading {
+		EAST() {
+			@Override
+			public java.awt.geom.GeneralPath addPoints(java.awt.geom.GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1) {
+				rv.moveTo(x0, y0);
+				rv.lineTo(x1, yC);
+				rv.lineTo(x0, y1);
+				return rv;
+			}
+		},
+		SOUTH() {
+			@Override
+			public java.awt.geom.GeneralPath addPoints(java.awt.geom.GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1) {
+				rv.moveTo(x0, y0);
+				rv.lineTo(x1, y0);
+				rv.lineTo(xC, y1);
+				return rv;
+			}
+		};
+		protected abstract java.awt.geom.GeneralPath addPoints(java.awt.geom.GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1);
+	}
+	private int size;
+	public AbstractArrowIcon(int size) {
+		this.size = size;
+	}
+	public int getIconWidth() {
+		return this.size;
+	}
+	public int getIconHeight() {
+		return this.size;
+	}
+	protected java.awt.geom.GeneralPath createPath(int x, int y, Heading heading) {
+		float x0 = x;
+		float x1 = x + this.size - 1;
+		float xC = (x0 + x1) * 0.5f;
+		float y0 = y;
+		float y1 = y + this.size - 1;
+		float yC = (y0 + y1) * 0.5f;
+		java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
+		heading.addPoints(rv, x0, xC, x1, y0, yC, y1);
+		rv.closePath();
+		return rv;
+	}
 }

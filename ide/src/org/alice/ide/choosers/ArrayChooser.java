@@ -55,15 +55,15 @@ public class ArrayChooser extends AbstractRowsPaneChooser< edu.cmu.cs.dennisc.al
 	public ArrayChooser() {
 		bogusNode.isArray.setValue( true );
 		this.typePane = new org.alice.ide.declarationpanes.TypePane( bogusNode.componentType, bogusNode.isArray, true, false );
-		this.arrayInitializerPane = new org.alice.ide.initializer.ArrayInitializerPane( bogusNode.arrayExpressions );
+		this.arrayInitializerPane = new org.alice.ide.initializer.ArrayInitializerPane( bogusNode.componentType, bogusNode.arrayExpressions );
 		this.components = new edu.cmu.cs.dennisc.croquet.Component< ? >[] { this.typePane, this.arrayInitializerPane };
-		bogusNode.componentType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-			}
-			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-				ArrayChooser.this.arrayInitializerPane.handleTypeChange( bogusNode.getType() );
-			}
-		} );
+//		bogusNode.componentType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+//			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+//			}
+//			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+//				ArrayChooser.this.arrayInitializerPane.handleTypeChange( bogusNode.getType() );
+//			}
+//		} );
 //		bogusNode.arrayExpressions.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.Expression >() {
 //			@Override
 //			protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {

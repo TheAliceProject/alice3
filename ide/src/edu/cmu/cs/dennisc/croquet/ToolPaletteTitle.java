@@ -46,45 +46,24 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class ToolPaletteTitle extends AbstractButton<javax.swing.AbstractButton,BooleanState> {
-	private static class ArrowIcon implements javax.swing.Icon {
-		private int size;
+	private static class ArrowIcon extends AbstractArrowIcon {
 		public ArrowIcon( int size ) {
-			this.size = size;
-		}
-		public int getIconWidth() {
-			return this.size;
-		}
-		public int getIconHeight() {
-			return this.size;
+			super( size );
 		}
 		public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
 			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
-			float x0 = x;
-			float x1 = x + this.size - 1;
-			float xC = ( x0 + x1 ) * 0.5f;
-			float y0 = y;
-			float y1 = y + this.size - 1;
-			float yC = ( y0 + y1 ) * 0.5f;
-			java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-			path.moveTo( x0, y0);
+			Heading heading;
 			if( button.getModel().isSelected() || button.getModel().isPressed() ) {
-				path.lineTo( x1, y0 );
-				path.lineTo( xC, y1 );
+				heading = Heading.SOUTH;
 			} else {
-				path.lineTo( x1, yC );
-				path.lineTo( x0, y1 );
+				heading = Heading.EAST;
 			}
-			path.closePath();
-
+			java.awt.geom.GeneralPath path = this.createPath(x, y, heading);
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			
-//					g2.setColor( java.awt.Color.RED );
-//					g2.fillRect( x, y, this.getIconWidth(), this.getIconHeight() );
-
 			java.awt.Paint fillPaint = java.awt.Color.WHITE;
-//					if( button.getModel().isSelected() ) {
-//						//pass
-//					} else {
+//			if( button.getModel().isSelected() ) {
+//				//pass
+//			} else {
 				if( button.getModel().isPressed() ) {
 					fillPaint = java.awt.Color.YELLOW.darker();
 				} else {
@@ -92,7 +71,7 @@ package edu.cmu.cs.dennisc.croquet;
 						fillPaint = java.awt.Color.YELLOW;
 					}
 				}
-//					}
+//			}
 			
 			g2.setPaint( fillPaint );
 			g2.fill( path );

@@ -157,7 +157,7 @@ public class PathControl extends ViewController< javax.swing.JComponent, TreeSel
 	}
 
 	private void refresh() {
-		this.removeAllComponents();
+		this.internalRemoveAllComponents();
 		javax.swing.tree.TreePath treePath = this.treeSelectionModel.getSelectionPath();
 		if( treePath != null ) {
 			final int N = treePath.getPathCount();

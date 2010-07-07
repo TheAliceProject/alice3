@@ -288,13 +288,15 @@ public class ListProperty<E> extends InstanceProperty< java.util.ArrayList< E > 
 	public void swap( int indexA, int indexB ) {
 		if( indexA != indexB ) {
 			//todo: test
-			java.util.List< E > subList = this.subList( indexA, indexB+1 );
+			int indexMin = Math.min( indexA, indexB );
+			int indexMax = Math.max( indexA, indexB );
+			java.util.List< E > subList = this.subList( indexMin, indexMax+1 );
 			final int N = subList.size();
-			E eA = subList.get( 0 );
-			E eB = subList.get( N-1 );
-			subList.set( 0, eB );
-			subList.set( N-1, eA );
-			this.set( indexA, subList );
+			E eMin = subList.get( 0 );
+			E eMax = subList.get( N-1 );
+			subList.set( 0, eMax );
+			subList.set( N-1, eMin );
+			this.set( indexMin, subList );
 		}
 	}
 	
