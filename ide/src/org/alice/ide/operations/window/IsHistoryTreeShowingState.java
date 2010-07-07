@@ -109,8 +109,22 @@ public class IsHistoryTreeShowingState extends IsFrameShowingState {
 	}
 	@Override
 	protected java.awt.Component createPane() {
-		HistoryTreeModel treeModel = new HistoryTreeModel( edu.cmu.cs.dennisc.croquet.Application.getSingleton().getRootContext() );
-		return new javax.swing.JTree( treeModel );
+		edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getRootContext();
+		final HistoryTreeModel treeModel = new HistoryTreeModel( context );
+		final javax.swing.JTree tree = new javax.swing.JTree( treeModel );
+		context.addChildrenObserver( new edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver() {
+			public void addingChild( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+			}
+			public void addedChild( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+				treeModel.reload();
+				for( int i=0; i<tree.getRowCount(); i++ ) {
+					tree.expandRow( i );
+				}
+			}
+		} );
+		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( tree );
+		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
+		return scrollPane;
 	}
 	@Override
 	protected void handleChanged( boolean value ) {

@@ -88,6 +88,8 @@ public abstract class Panel extends JComponent< javax.swing.JPanel > {
 		return new DefaultJPanel();
 	}
 	
+	
+	//todo: move to Component<?>
 	private Integer minimumPreferredWidth = null;
 	private Integer maximumPreferredWidth = null;
 	private Integer minimumPreferredHeight = null;
