@@ -91,4 +91,16 @@ public class AbstractDialogOperationContext<M extends AbstractDialogOperation> e
 	/*package-private*/ void handleWindowClosed( java.awt.event.WindowEvent e ) {
 		this.addChild( new WindowClosedEvent( this, e ) );
 	}
+	
+	@Override
+	public State getState() {
+		final int N = this.getChildCount();
+		if( N > 1 ) {
+			if( this.getChildAt(N-1) instanceof WindowClosedEvent ) {
+				return this.getChildAt(N-2).getState();
+			}
+		}
+		return null;
+	}
+	
 }

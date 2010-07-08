@@ -65,13 +65,6 @@ package edu.cmu.cs.dennisc.croquet;
 	protected void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
 	}
 	//	
-	//	@Override
-	//	protected StringBuilder appendRepr( StringBuilder rv ) {
-	//		super.appendRepr( rv );
-	//		rv.append( " model:" );
-	//		rv.append( this.model );
-	//		return rv;
-	//	}
 }
 
 /**
@@ -367,5 +360,21 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		HistoryNode[] array = new HistoryNode[this.children.size()];
 		this.children.toArray(array);
 		binaryEncoder.encode(array);
+	}
+	@Override
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		super.appendRepr( rv );
+		State state = this.getState();
+		rv.append( "[" );
+		rv.append( this.getState() );
+		rv.append( "]" );
+		
+		if( state != null ) {
+			//pass
+		} else {
+			rv.append( " " );
+			rv.append( this.getModel() );
+		}
+		return rv;
 	}
 }

@@ -66,6 +66,7 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 			InputDialogOperation.this.isOk = this.isOk;
 			this.dialog.setVisible( false );
 			//this.dialog.getAwtWindow().dispose();
+			context.finish();
 		}
 	}
 

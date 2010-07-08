@@ -64,7 +64,9 @@ class HistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMut
 	public edu.cmu.cs.dennisc.croquet.HistoryNode getChild(Object parent, int index) {
 		if( parent instanceof edu.cmu.cs.dennisc.croquet.ModelContext<?> ) {
 			edu.cmu.cs.dennisc.croquet.ModelContext<?> modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext<?>)parent;
-			return modelContext.getChildAt( index );
+			edu.cmu.cs.dennisc.croquet.HistoryNode rv = modelContext.getChildAt( index );
+			assert rv != null;
+			return rv;
 		} else {
 			throw new IndexOutOfBoundsException();
 		}
@@ -116,10 +118,15 @@ public class IsHistoryTreeShowingState extends IsFrameShowingState {
 			public void addingChild( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
 			}
 			public void addedChild( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
-				treeModel.reload();
-				for( int i=0; i<tree.getRowCount(); i++ ) {
-					tree.expandRow( i );
-				}
+				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+					public void run() {
+						treeModel.reload();
+						for( int i=0; i<tree.getRowCount(); i++ ) {
+							tree.expandRow( i );
+						}
+						tree.scrollRowToVisible( tree.getRowCount()-1 );
+					}
+				} );
 			}
 		} );
 		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( tree );
