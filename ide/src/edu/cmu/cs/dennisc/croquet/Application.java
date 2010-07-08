@@ -232,6 +232,9 @@ public abstract class Application {
 	}
 
 	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
+		if( message instanceof Component<?> ) {
+			message = ((Component<?>)message).getAwtComponent();
+		}
 		javax.swing.JOptionPane.showMessageDialog( this.frame.getAwtComponent(), message, title, messageType.internal, icon );
 	}
 	public void showMessageDialog( Object message, String title, MessageType messageType ) {

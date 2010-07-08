@@ -45,19 +45,20 @@ package org.alice.ide.operations.help;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BrowserOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+class BrowserOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	private String url;
-	public BrowserOperation( java.util.UUID individualId, String url ) {
-		super( individualId );
+	public BrowserOperation( java.util.UUID id, String url ) {
+		super( id );
 		this.url = url;
+		this.setName( this.url );
 	}
-	protected abstract String getTitle(); 
-	protected abstract int getMessageType();
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		edu.cmu.cs.dennisc.browser.BrowserProgressDialog dialog = new edu.cmu.cs.dennisc.browser.BrowserProgressDialog( this.getIDE().getFrame().getAwtComponent(), this.url);
-		dialog.createAndExecuteWorker();
-		dialog.pack();
-		dialog.setVisible( true );
-	}	
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		try {
+			edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( this.url );
+		} catch( Exception e ) {
+			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( this.url );
+			edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + this.url + "\n\nso that you may paste it into your web browser." );
+		}
+	}
 }

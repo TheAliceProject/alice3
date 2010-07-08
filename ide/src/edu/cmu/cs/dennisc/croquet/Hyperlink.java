@@ -58,6 +58,7 @@ public class Hyperlink extends AbstractButton< javax.swing.JButton, Operation<?>
 				this.setUI( edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI.createUI( this ) );
 			}
 		};
+		rv.setRolloverEnabled( true );
 //		javax.swing.JButton rv = new javax.swing.JButton();
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		rv.setOpaque( false );

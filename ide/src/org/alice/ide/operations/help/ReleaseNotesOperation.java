@@ -45,29 +45,14 @@ package org.alice.ide.operations.help;
 /**
  * @author Dennis Cosgrove
  */
-public class ReleaseNotesOperation extends BrowserOperation {
+public class ReleaseNotesOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public ReleaseNotesOperation() {
-		super( java.util.UUID.fromString( "79d29dd0-278b-4c8a-8f1b-816257f0a621" ), "http://kenai.com/projects/alice/pages/ReleaseNotes" );
+		super( java.util.UUID.fromString( "79d29dd0-278b-4c8a-8f1b-816257f0a621" ) );
 		this.setName( "Browse Release Notes..." );
 	}
-//	@Override
-//	protected StringBuffer getMessage( StringBuffer rv ) {
-//		String url = "http://kenai.com/projects/alice/pages/ReleaseNotes";
-//		rv.append( "Release notes are available " );
-//		rv.append( "<a href=\"" );
-//		rv.append( url );
-//		rv.append( "\">" );
-//		rv.append( "on the web" );
-//		rv.append( "</a>" );
-//		rv.append( "." );
-//		return rv;
-//	}
 	@Override
-	protected String getTitle() {
-		return "Release Notes";
-	}
-	@Override
-	protected int getMessageType() {
-		return javax.swing.JOptionPane.PLAIN_MESSAGE;
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		BrowserOperation browserOperation = new BrowserOperation( java.util.UUID.fromString( "7a93cf56-04ad-4159-a0e9-7047642d3b1e" ), "http://kenai.com/projects/alice/pages/ReleaseNotes" );
+		edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( browserOperation.createHyperlink(), this.getName(), edu.cmu.cs.dennisc.croquet.MessageType.PLAIN );
 	}
 }

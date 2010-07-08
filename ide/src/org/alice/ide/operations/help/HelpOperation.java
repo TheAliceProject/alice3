@@ -45,30 +45,38 @@ package org.alice.ide.operations.help;
 /**
  * @author Dennis Cosgrove
  */
-public class HelpOperation extends BrowserOperation {
+public class HelpOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	class HelpPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+		public HelpPanel() {
+			BrowserOperation browserOperation = new BrowserOperation( java.util.UUID.fromString( "5a1b1db2-da93-4c85-bca5-e1796bd07d00" ), "http://help.alice.org/" ); //"http://kenai.com/projects/alice/pages/Help"
+
+			edu.cmu.cs.dennisc.croquet.Hyperlink hyperlink = browserOperation.createHyperlink();
+			edu.cmu.cs.dennisc.croquet.Label iconLabel = new edu.cmu.cs.dennisc.croquet.Label( new javax.swing.ImageIcon( HelpPanel.class.getResource( "images/help.png" ) ) );
+			edu.cmu.cs.dennisc.croquet.Label textLabel = new edu.cmu.cs.dennisc.croquet.Label( "Help is available on the web:" );
+			
+			textLabel.scaleFont( 2.0f );
+			hyperlink.scaleFont( 2.0f );
+
+			edu.cmu.cs.dennisc.croquet.PageAxisPanel pageAxisPanel = new edu.cmu.cs.dennisc.croquet.PageAxisPanel(
+					edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalGlue(),
+					textLabel,
+					hyperlink,
+					edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalGlue()
+			);
+			pageAxisPanel.setAlignmentY( 0.5f );
+			this.addComponent( iconLabel, Constraint.LINE_START );
+			this.addComponent( pageAxisPanel, Constraint.LINE_END );
+		}
+	}
+
 	public HelpOperation() {
-		super( java.util.UUID.fromString( "b478d150-03c2-4972-843a-a1e64dbd2b58" ), "http://kenai.com/projects/alice/pages/Help" );
+		super( java.util.UUID.fromString( "b478d150-03c2-4972-843a-a1e64dbd2b58" ) );
 		this.setName( "Help..." );
 		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F1, 0 ) );
 	}
-//	@Override
-//	protected StringBuffer getMessage( StringBuffer rv ) {
-//		String url = "http://kenai.com/projects/alice/pages/Help";
-//		rv.append( "Help is available " );
-//		rv.append( "<a href=\"" );
-//		rv.append( url );
-//		rv.append( "\">" );
-//		rv.append( "on the web" );
-//		rv.append( "</a>" );
-//		rv.append( "." );
-//		return rv;
-//	}
+
 	@Override
-	protected String getTitle() {
-		return "Help";
-	}
-	@Override
-	protected int getMessageType() {
-		return javax.swing.JOptionPane.PLAIN_MESSAGE;
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( new HelpPanel(), "Help", edu.cmu.cs.dennisc.croquet.MessageType.PLAIN );
 	}
 }
