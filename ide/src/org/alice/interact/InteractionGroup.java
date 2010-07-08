@@ -40,42 +40,44 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact.condition;
 
-import org.alice.interact.InputState;
-import org.alice.interact.ModifierMask;
+package org.alice.interact;
 
-/**
- * @author David Culyba
- */
-public class ModifierSensitiveCondition extends InputCondition {
+import java.util.ArrayList;
+import java.util.List;
 
-	protected ModifierMask modifierMask = null;
-	
-	public ModifierSensitiveCondition()
+import org.alice.interact.condition.ManipulatorConditionSet;
+import org.alice.interact.handle.HandleSet;
+
+public class InteractionGroup 
+{
+	private HandleSet handleSet;
+	private List<ManipulatorConditionSet> manipulators = new ArrayList<ManipulatorConditionSet>();
+
+	public InteractionGroup(HandleSet handleSet, ManipulatorConditionSet...manipulators)
 	{
-		this.modifierMask = null;
+		this.handleSet = handleSet;
+		for (ManipulatorConditionSet manipulator : manipulators)
+		{
+			this.manipulators.add(manipulator);
+		}
 	}
 	
-	public ModifierSensitiveCondition( ModifierMask modifierMask )
+	public HandleSet getHandleSet()
 	{
-		this.modifierMask = modifierMask;
+		return this.handleSet;
+	}
+	
+	public void enabledManipulators(boolean enabled)
+	{
+		for (ManipulatorConditionSet manipulator : this.manipulators)
+		{
+			manipulator.setEnabled(enabled);
+		}
 	}
 	
 	@Override
-	protected boolean testState( InputState state ) {
-		if (state.getIsDragEvent())
-		{
-			return false;
-		}
-		if (this.modifierMask != null)
-		{
-			return this.modifierMask.test( state );
-		}
-		else
-		{
-			return true;
-		}
+	public String toString() {
+		return HandleSet.getStringForSet(this.handleSet);
 	}
-
 }

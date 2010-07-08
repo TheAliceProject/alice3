@@ -71,7 +71,7 @@ public abstract class AbstractManipulator {
 	private boolean hasStarted = false;
 	protected AbstractDragAdapter dragAdapter;
 	protected boolean hasDoneUpdate = false;
-	
+
 	protected List< ManipulationEvent > manipulationEvents = new Vector< ManipulationEvent >();
 	
 	public void setManipulatedTransformable( edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedTransformable)

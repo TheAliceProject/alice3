@@ -40,94 +40,98 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.interact.manipulator;
 
+import java.awt.Point;
+
 import org.alice.interact.InputState;
-import org.alice.interact.PickHint;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.LinearScaleHandle;
 import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.interact.operations.PredeterminedScaleActionOperation;
-import org.alice.interact.operations.PredeterminedSetLocalTransformationActionOperation;
+
+import com.google.gdata.util.common.io.LineReader;
 
 import edu.cmu.cs.dennisc.alice.Project;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.pattern.Criterion;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
-import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities;
-import edu.cmu.cs.dennisc.zoot.ZManager;
 
-/**
- * @author David Culyba
- */
-public class ScaleDragManipulator extends LinearDragManipulator {
+public class ResizeDragManipulator extends AbstractManipulator
+{
 
-	public static final double MIN_HANDLE_PULL = .1d;
-
+	protected Point initialPoint;
 	private Vector3 accumulatedScaleVector = new Vector3(1.0, 1.0, 1.0);
+	
+	@Override
+	public void doClickManipulator(InputState endInput, InputState previousInput) {
+		// TODO Auto-generated method stub
+		
+	}
 
-	protected static Vector3 getInvertedScaleVector( Vector3 scaleVector )
+	@Override
+	public void doDataUpdateManipulator(InputState currentInput, InputState previousInput) {
+		if ( !currentInput.getMouseLocation().equals( previousInput.getMouseLocation() ) )
+		{
+			int xDif = currentInput.getMouseLocation().x - this.initialPoint.x;
+			int yDif = -(currentInput.getMouseLocation().y - this.initialPoint.y);
+			
+			double scaleAmount = 1.0 + ((xDif + yDif)*.01);
+			if (scaleAmount < ScaleDragManipulator.MIN_HANDLE_PULL)
+			{
+				scaleAmount = ScaleDragManipulator.MIN_HANDLE_PULL;
+			}
+			setScale(scaleAmount);
+		}
+	}
+
+	@Override
+	public void doEndManipulator(InputState endInput, InputState previousInput) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	protected void initManipulator( InputState startInput )
 	{
-		Vector3 invertedScale = new Vector3();
-		if (scaleVector.x != 0)
-		{
-			invertedScale.x = 1.0 / scaleVector.x;
-		}
-		else
-		{
-			invertedScale.x = 1;
-		}
-		if (scaleVector.y != 0)
-		{
-			invertedScale.y = 1.0 / scaleVector.y;
-		}
-		else
-		{
-			invertedScale.y = 1;
-		}
-		if (scaleVector.z != 0)
-		{
-			invertedScale.z = 1.0 / scaleVector.z;
-		}
-		else
-		{
-			invertedScale.z = 1;
-		}
-		return invertedScale;
+		this.initialPoint = new Point(startInput.getMouseLocation());
 	}
 	
 	@Override
-	protected void updateBasedOnHandlePull( double initialPull, double newPull ) 
+	public boolean doStartManipulator(InputState startInput) {
+		this.manipulatedTransformable = startInput.getClickPickTransformable();
+		if (this.manipulatedTransformable != null)
+		{
+			this.initManipulator( startInput );
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	protected void setScale( double scaleAmount ) 
 	{
-		double pullDif = (newPull) / (initialPull);
-		LinearScaleHandle scaleHandle = (LinearScaleHandle)this.linearHandle;
-		Vector3 scaleVector;
-		if( scaleHandle.applyAlongAxis() ) {
-			scaleVector = new Vector3( 1.0d, 1.0d, 1.0d );
-			if( scaleHandle.getDragAxis().x != 0.0d )
-				scaleVector.x = Math.abs( scaleHandle.getDragAxis().x ) * pullDif;
-			if( scaleHandle.getDragAxis().y != 0.0d )
-				scaleVector.y = Math.abs( scaleHandle.getDragAxis().y ) * pullDif;
-			if( scaleHandle.getDragAxis().z != 0.0d )
-				scaleVector.z = Math.abs( scaleHandle.getDragAxis().z ) * pullDif;
-		} else {
-			scaleVector = new Vector3( pullDif, pullDif, pullDif );
-		}
-
-		//Don't scale if the handles are pulled past their origin
-		if( newPull <= MIN_HANDLE_PULL ) {
-			scaleVector = new Vector3( 1.0d, 1.0d, 1.0d );
-		}
-		
+		Vector3 scaleVector = new Vector3( scaleAmount, scaleAmount, scaleAmount );
 		//First remove the old scale
-		Vector3 inverseScale = getInvertedScaleVector(accumulatedScaleVector);
+		Vector3 inverseScale = ScaleDragManipulator.getInvertedScaleVector(accumulatedScaleVector);
 		ScaleUtilities.applyScale( this.manipulatedTransformable, inverseScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION );
 		//Now apply the new scale
 		accumulatedScaleVector.set( scaleVector );
 		ScaleUtilities.applyScale( this.manipulatedTransformable, scaleVector, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION );
 
+	}
+
+	@Override
+	public void doTimeUpdateManipulator(double dTime, InputState currentInput) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected HandleSet getHandleSetToEnable() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -149,15 +153,11 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 			undoOperation.fire();
 		}
 	}
-
+	
 	@Override
 	public String getUndoRedoDescription() {
+		// TODO Auto-generated method stub
 		return "Object Resize";
-	}
-
-	@Override
-	protected HandleSet getHandleSetToEnable() {
-		return new HandleSet( this.linearHandle.getMovementDescription().direction.getHandleGroup(), HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.RESIZE );
 	}
 
 }

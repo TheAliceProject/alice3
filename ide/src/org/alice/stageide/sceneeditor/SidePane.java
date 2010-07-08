@@ -118,7 +118,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //		handleControlPanel.setOpaque( false );
 		
 		handleControlPanel.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "Handle Style", 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), BorderPanel.Constraint.NORTH );
-		handleControlPanel.addComponent(sceneEditor.getHandleSelectionStateList().createDefaultRadioButtons(), BorderPanel.Constraint.CENTER);
+		handleControlPanel.addComponent(sceneEditor.getDragAdapter().getInteractionSelectionStateList().createDefaultRadioButtons(), BorderPanel.Constraint.CENTER);
 		handleControlPanel.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		
 		GridBagPanel startingCameraViewManager = new GridBagPanel();

@@ -42,10 +42,16 @@
  */
 package org.alice.stageide.gallerybrowser;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
+
 /**
  * @author Dennis Cosgrove
  */
-class GalleryFileActionOperation extends AbstractGalleryDeclareFieldOperation<org.alice.ide.declarationpanes.CreateFieldFromGalleryPane> {
+public class GalleryFileActionOperation extends AbstractGalleryDeclareFieldOperation<org.alice.ide.declarationpanes.CreateFieldFromGalleryPane> {
+	private AffineMatrix4x4 desiredTransformation = null;
+	
 	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode;
 	public static GalleryFileActionOperation getInstance( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: GalleryFileActionOperation getInstance" );
@@ -60,13 +66,27 @@ class GalleryFileActionOperation extends AbstractGalleryDeclareFieldOperation<or
 		return new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane(this.getOwnerType(), this.treeNode);
 	}
 	
+	public void setDesiredTransformation( AffineMatrix4x4 desiredTransformation )
+	{
+		this.desiredTransformation = desiredTransformation;
+	}
+
+	
 	//"Create New Instance"
 	@Override
 	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.CreateFieldFromGalleryPane > context) {
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldFromGalleryPane = context.getMainPanel();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromGalleryPane.getActualInputValue();
 		if (field != null) {
-			return new edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object>( field, createFieldFromGalleryPane.createInstanceInJava() );
+			Object fieldObject = createFieldFromGalleryPane.createInstanceInJava();
+			if (fieldObject instanceof org.alice.apis.moveandturn.Transformable)
+			{
+				if (this.desiredTransformation != null)
+				{
+					((org.alice.apis.moveandturn.Transformable)fieldObject).getSGTransformable().localTransformation.setValue(this.desiredTransformation);
+				}
+			}
+			return new edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object>( field, fieldObject );
 		} else {
 			return null;
 		}

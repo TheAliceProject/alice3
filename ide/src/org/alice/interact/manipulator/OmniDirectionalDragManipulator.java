@@ -94,7 +94,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	private static final boolean SHOW_PLANE_TRANSITION_POINT = false;
 	private DebugSphere planeTransitionPointDebugSphere = new DebugSphere();
 	
-	private void addPlaneTransitionPointSphereToScene()
+	protected void addPlaneTransitionPointSphereToScene()
 	{
 		if (SHOW_PLANE_TRANSITION_POINT)
 		{
@@ -227,10 +227,9 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		return Point3.createSubtraction(newPosition, this.getManipulatedTransformable().getAbsoluteTransformation().translation);
 	}
 	
-	private Point3 getPerspectiveMovementVector(InputState currentInput, InputState previousInput)
+	protected Point3 getPerspectivePositionBasedOnInput( InputState currentInput )
 	{
 		Point mousePoint = new Point(currentInput.getMouseLocation().x + this.mousePlaneOffset.x, currentInput.getMouseLocation().y + this.mousePlaneOffset.y);
-//		Point mousePoint = new Point(currentInput.getMouseLocation().x, currentInput.getMouseLocation().y);
 		Vector3 cameraForward = this.getCamera().getParent().getAbsoluteTransformation().orientation.backward;
 		cameraForward.multiply(-1);
 		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x, mousePoint.y );
@@ -262,52 +261,41 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		}
 		else if (levelPickPoint == null && skewedPickPoint != null)
 		{
-//			System.out.println("skewed 1!");
 			pointToUse = skewedPickPoint;
 		}
 		else if (levelPickPoint != null && skewedPickPoint == null)
 		{
-//			System.out.println("level 1!");
 			pointToUse = levelPickPoint;
 		}
 		else
 		{
 			Point3 cameraPosition = this.getCamera().getParent().getAbsoluteTransformation().translation;
-			Point3 currentPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation;
 			double levelDistanceToCamera = Point3.calculateDistanceBetween(cameraPosition, levelPickPoint);
 			double skewedDistanceToCamera = Point3.calculateDistanceBetween(cameraPosition, skewedPickPoint);
-			
-			double levelDistanceToCurrent = Point3.calculateDistanceBetween(currentPosition, levelPickPoint);
-			double skewedDistanceToCurrent = Point3.calculateDistanceBetween(currentPosition, skewedPickPoint);
-			
-			double distanceBetweenOptions = Point3.calculateDistanceBetween(levelPickPoint, skewedPickPoint);
-			
-			
-//			System.out.println("\nlevel: "+levelPickPoint+":\n  to camera: "+levelDistanceToCamera+"\n  to previous: "+levelDistanceToCurrent);
-//			System.out.println("skewed: "+skewedPickPoint+":\n  to camera: "+skewedDistanceToCamera+"\n  to previous: "+skewedDistanceToCurrent);
-//			if (levelDistanceToCurrent < skewedDistanceToCurrent)
-//			{
-//				System.out.println("level 2!");
-//				pointToUse = levelPickPoint;
-//			}
-//			else
-//			{
-//				System.out.println("skewed 2!");
-//				pointToUse = skewedPickPoint;
-//			}
-			
 			if (levelDistanceToCamera <= skewedDistanceToCamera)
 			{
-//				System.out.println("level 2!");
 				pointToUse = levelPickPoint;
 			}
 			else
 			{
-//				System.out.println("skewed 2!");
 				pointToUse = skewedPickPoint;
 			}
 			
 		}
+		if (pointToUse != null)
+		{
+			pointToUse.y = this.manipulatedTransformable.getAbsoluteTransformation().translation.y;
+			return pointToUse;
+		}
+		else
+		{
+			return null;
+		}	
+	}
+	
+	private Point3 getPerspectiveMovementVector(InputState currentInput, InputState previousInput)
+	{
+		Point3 pointToUse = getPerspectivePositionBasedOnInput( currentInput );
 		if (pointToUse != null)
 		{
 			Point3 movementChange = Point3.createSubtraction(pointToUse, this.getManipulatedTransformable().getAbsoluteTransformation().translation);
@@ -356,6 +344,11 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 			{	
 				this.manipulatedTransformable.setTranslationOnly( newPosition, AsSeenBy.SCENE );
 				planeTransitionPointDebugSphere.setLocalTranslation(newPosition);
+				Point awtPoint = getMouseCursorPositionInLookingGlass();
+				if (!isPointInsideLookingGlass(awtPoint))
+				{
+					moveCursorToPointInLookingGlass(awtPoint);
+				}
 			}
 		}
 	}
@@ -372,9 +365,22 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		this.showCursor();
 	}
 
+	protected Transformable getInitialTransformable( InputState startInput )
+	{
+		return startInput.getClickPickTransformable();
+	}
+	
+	protected Point3 getInitialClickPoint( InputState startInput )
+	{
+		Point3 initialClickPoint = new Point3();
+		startInput.getClickPickResult().getPositionInSource(initialClickPoint);
+		startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn( initialClickPoint, startInput.getClickPickResult().getSource().getRoot() );
+		return initialClickPoint;
+	}
+	
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-		this.manipulatedTransformable = startInput.getClickPickTransformable();
+		this.manipulatedTransformable = this.getInitialTransformable(startInput);
 		this.hidCursor = false;
 		if (this.manipulatedTransformable != null)
 		{
@@ -391,9 +397,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 			Point3 orthoPickPoint = PlaneUtilities.getPointInPlane( orthographicPickPlane, orthoPickRay );
 			this.orthographicOffsetToOrigin = Point3.createSubtraction(this.originalPosition, orthoPickPoint);
 			
-			Point3 initialClickPoint = new Point3();
-			startInput.getClickPickResult().getPositionInSource(initialClickPoint);
-			startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn( initialClickPoint, startInput.getClickPickResult().getSource().getRoot() );
+			Point3 initialClickPoint = this.getInitialClickPoint(startInput);
 			
 			this.offsetFromOrigin = Point3.createSubtraction( initialClickPoint, this.originalPosition );			
 			this.mousePlaneOffset = calculateMousePlaneOffset(startInput.getMouseLocation());
@@ -413,7 +417,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 
 	private static final double MAX_DISTANCE_PER_PIXEL = .17d;
 	
-	private void setUpPlanes(Point3 planePosition, Point mousePoint )
+	protected void setUpPlanes(Point3 planePosition, Point mousePoint )
 	{
 		Plane horizontalPlane = new Plane(planePosition, Vector3.accessPositiveYAxis());
 		AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation();
@@ -496,23 +500,41 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		this.hidCursor = true;
 	}
 	
+	protected boolean isPointInsideLookingGlass(Point awtPoint)
+	{
+		return this.getOnscreenLookingGlass().getAWTComponent().contains(awtPoint);
+	}
+	
+	protected Point getMouseCursorPositionInLookingGlass()
+	{
+		Point3 new3DPoint = Point3.createAddition(this.manipulatedTransformable.getAbsoluteTransformation().translation, this.offsetFromOrigin);
+		Point3 pointInCamera = this.camera.transformFrom_New(new3DPoint, this.camera.getRoot());
+		Point awtPoint = edu.cmu.cs.dennisc.lookingglass.util.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.getOnscreenLookingGlass(), this.getCamera() );
+		return awtPoint;
+	}
+	
+	protected void moveCursorToPointInLookingGlass(Point awtPoint)
+	{
+		try {
+			SwingUtilities.convertPointToScreen( awtPoint, this.getOnscreenLookingGlass().getAWTComponent() );
+			Robot mouseMover = new Robot();
+			mouseMover.mouseMove(awtPoint.x, awtPoint.y);
+		} catch( AWTException e ) {
+		}
+	}
+	
+	protected void moveCursorToObjectRelativePosition()
+	{
+		Point awtPoint = getMouseCursorPositionInLookingGlass();
+		moveCursorToPointInLookingGlass(awtPoint);
+	}
+	
 	protected void showCursor()
 	{
 		if (this.hidCursor)
 		{
-			try {
-				Point3 new3DPoint = Point3.createAddition(this.manipulatedTransformable.getAbsoluteTransformation().translation, this.offsetFromOrigin);
-				Point3 pointInCamera = this.camera.transformFrom_New(new3DPoint, this.camera.getRoot());
-				Point awtPoint = edu.cmu.cs.dennisc.lookingglass.util.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.getOnscreenLookingGlass(), this.getCamera() );
-				SwingUtilities.convertPointToScreen( awtPoint, this.getOnscreenLookingGlass().getAWTComponent() );
-				Robot mouseMover = new Robot();
-				mouseMover.mouseMove(awtPoint.x, awtPoint.y);
-			} catch( AWTException e ) {
-			}
-			finally
-			{
-				CursorUtilities.popAndSet( this.getOnscreenLookingGlass().getAWTComponent() );
-			}
+			this.moveCursorToObjectRelativePosition();
+			CursorUtilities.popAndSet( this.getOnscreenLookingGlass().getAWTComponent() );
 		}
 	}
 	

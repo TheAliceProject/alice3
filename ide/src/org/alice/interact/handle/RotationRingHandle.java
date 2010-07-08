@@ -334,7 +334,7 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	}
 	
 	@Override
-	public void resizeToObject( )
+	public void resizeToObject()
 	{
 		this.setPositionRelativeToObjectSize( );
 		double radius = this.getMajorAxisRadius( );

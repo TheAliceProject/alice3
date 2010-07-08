@@ -62,6 +62,7 @@ import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.pattern.Criterion;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
@@ -97,10 +98,27 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	protected AbstractDragAdapter dragAdapter = null;
 	protected boolean isPickable = false; //This is false until a manipulation is set on the handle
 	
+	public static Criterion< Component > NOT_3D_HANDLE_CRITERION = new Criterion< Component >() {
+		protected boolean isHandle( Component c ) {
+			if( c == null )
+				return false;
+			Object bonusData = c.getBonusDataFor( PickHint.PICK_HINT_KEY );
+			if( bonusData instanceof PickHint && ((PickHint)bonusData).intersects( PickHint.THREE_D_HANDLES ) )
+				return true;
+			else
+				return isHandle( c.getParent() );
+		}
+
+		public boolean accept( Component c ) {
+			return !isHandle( c );
+		}
+	};
+	
 	protected class ScaleChangeListener implements PropertyListener
 	{
 		public void propertyChanged( PropertyEvent e ) {
 			ManipulationHandle3D.this.setScale( ManipulationHandle3D.this.getObjectScale() );
+			ManipulationHandle3D.this.resizeToObject();
 			ManipulationHandle3D.this.positionRelativeToObject();
 		}
 
