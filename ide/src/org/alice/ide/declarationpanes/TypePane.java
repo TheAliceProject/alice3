@@ -130,6 +130,18 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 			rv.setMaximumRowCount( Math.min( this.getItemCount(), 20 ) );
 			return rv;
 		}
+		
+		@Override
+		public void setSelectedItem(edu.cmu.cs.dennisc.alice.ast.AbstractType<?, ?, ?> selectedItem) {
+			if( selectedItem != null ) {
+				if( this.containsItem( selectedItem ) ) {
+					//pass
+				} else {
+					this.addItem( selectedItem );
+				}
+			}
+			super.setSelectedItem(selectedItem);
+		}
 		@Override
 		protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> value) {
 			throw new RuntimeException( "todo" );
