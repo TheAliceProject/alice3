@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.alice.annotations.Visibility;
  * @author Dennis Cosgrove
  */
 @ClassTemplate(isFollowToSuperClassDesired = true, isConsumptionBySubClassDesired=true)
-public abstract class GalleryModel extends org.alice.apis.moveandturn.PolygonalModel {
+public abstract class GalleryModel extends edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel /*org.alice.apis.moveandturn.PolygonalModel*/ {
 	public static final edu.cmu.cs.dennisc.property.GetterSetterProperty< String > MODELED_BY_CREDIT_PROPERTY = new edu.cmu.cs.dennisc.property.GetterSetterProperty< String >( GalleryModel.class, "ModeledByCredit" );
 	public static final edu.cmu.cs.dennisc.property.GetterSetterProperty< String > PAINTED_BY_CREDIT_PROPERTY = new edu.cmu.cs.dennisc.property.GetterSetterProperty< String >( GalleryModel.class, "PaintedByCredit" );
 	public static final edu.cmu.cs.dennisc.property.GetterSetterProperty< String > PROGRAMMED_BY_CREDIT_PROPERTY = new edu.cmu.cs.dennisc.property.GetterSetterProperty< String >( GalleryModel.class, "ProgrammedByCredit" );
