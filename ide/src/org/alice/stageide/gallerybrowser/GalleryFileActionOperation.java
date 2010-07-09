@@ -43,6 +43,7 @@
 package org.alice.stageide.gallerybrowser;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
@@ -83,7 +84,9 @@ public class GalleryFileActionOperation extends AbstractGalleryDeclareFieldOpera
 			{
 				if (this.desiredTransformation != null)
 				{
-					((org.alice.apis.moveandturn.Transformable)fieldObject).getSGTransformable().localTransformation.setValue(this.desiredTransformation);
+//					PrintUtilities.println("setting drop item "+ ((org.alice.apis.moveandturn.Transformable)fieldObject).getSGTransformable().hashCode()+" to "+this.desiredTransformation.translation);
+					((org.alice.apis.moveandturn.Transformable)fieldObject).setLocalTransformation(new AffineMatrix4x4(this.desiredTransformation));
+//					((org.alice.apis.moveandturn.Transformable)fieldObject).getSGTransformable().localTransformation.setValue();
 				}
 			}
 			return new edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object>( field, fieldObject );

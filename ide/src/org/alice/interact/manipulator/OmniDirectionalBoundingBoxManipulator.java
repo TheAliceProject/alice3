@@ -111,9 +111,6 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 		this.sgBoundingBoxTransformable.setTranslationOnly(new Point3(0,0,0), AsSeenBy.SCENE);
 		this.manipulatedTransformable = this.sgBoundingBoxTransformable;
 		this.hidCursor = false;
-
-		
-		
 		this.initializeEventMessages();
 		this.hasMoved = false;
 		this.orthographicOffsetToOrigin = new Point3(0,0,0);
@@ -149,6 +146,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 	{
 		super.doEndManipulator(endInput, previousInput);
 		this.sgBoundingBoxTransformable.setParent(null);
+//		System.out.println("End drag position = "+this.sgBoundingBoxTransformable.localTransformation.getValue().translation);
 		DragComponent dragSource = endInput.getDragAndDropContext().getDragSource();
 		dragSource.showDragProxy();
 	}
