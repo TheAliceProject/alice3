@@ -138,8 +138,8 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.DialogOperation {
 	}
 	
 	@Override
-	protected void handleFinally( edu.cmu.cs.dennisc.croquet.DialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
-		super.handleFinally( context, dialog );
+	protected void handleFinally( edu.cmu.cs.dennisc.croquet.DialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container< ? > contentPane ) {
+		super.handleFinally( context, dialog, contentPane );
 		org.alice.ide.IDE.getSingleton().enableRendering();
 	}
 }

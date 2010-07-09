@@ -61,25 +61,6 @@ class FitnessLevelActionOperation extends org.alice.ide.operations.Inconsequenti
 	}
 }
 
-class PersonInfo {
-	public static PersonInfo createFromPerson( org.alice.apis.stage.Person person ) {
-		PersonInfo rv = new PersonInfo();
-		rv.lifeStage = person.getLifeStage();
-		rv.gender = person.getGender();
-		return rv;
-	}
-	public static PersonInfo createRandom() {
-		PersonInfo rv = new PersonInfo();
-		rv.lifeStage = org.alice.apis.stage.LifeStage.ADULT;
-		rv.gender = org.alice.apis.stage.Gender.getRandom();
-		return rv;
-	}
-	private org.alice.apis.stage.LifeStage lifeStage;
-	private org.alice.apis.stage.Gender gender;
-	private PersonInfo() {
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
