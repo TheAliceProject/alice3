@@ -65,10 +65,6 @@ public class ScrollPane extends JComponent< javax.swing.JScrollPane > {
 			this.internal = internal;
 		}
 	}
-	@Override
-	protected javax.swing.JScrollPane createAwtComponent() {
-		return new javax.swing.JScrollPane();
-	}
 	public ScrollPane() {
 	}
 	public ScrollPane( Component<?> viewportView ) {
@@ -82,6 +78,15 @@ public class ScrollPane extends JComponent< javax.swing.JScrollPane > {
 	public ScrollPane( VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
 		this.setVerticalScrollbarPolicy( verticalScrollbarPolicy );
 		this.setHorizontalScrollbarPolicy( horizontalScrollbarPolicy );
+	}
+	@Override
+	protected javax.swing.JScrollPane createAwtComponent() {
+		return new javax.swing.JScrollPane() {
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
+			}
+		};
 	}
 	public Component<?> getViewportView() {
 		return Component.lookup( this.getAwtComponent().getViewport().getView() );

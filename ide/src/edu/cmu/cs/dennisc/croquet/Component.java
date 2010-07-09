@@ -252,6 +252,51 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 		this.setFont( edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont( this.getAwtComponent(), textAttributes ) );
 	}
 
+	protected java.awt.Dimension constrainPreferredSizeIfNecessary( java.awt.Dimension rv ) {
+		if( minimumPreferredWidth != null ) {
+			rv.width = Math.max( rv.width, minimumPreferredWidth );
+		}
+		if( maximumPreferredWidth != null ) {
+			rv.width = Math.min( rv.width, maximumPreferredWidth );
+		}
+		if( minimumPreferredHeight != null ) {
+			rv.height = Math.max( rv.height, minimumPreferredHeight );
+		}
+		if( maximumPreferredHeight != null ) {
+			rv.height = Math.min( rv.height, maximumPreferredHeight );
+		}
+		return rv;
+	}
+	private Integer minimumPreferredWidth = null;
+	private Integer maximumPreferredWidth = null;
+	private Integer minimumPreferredHeight = null;
+	private Integer maximumPreferredHeight = null;
+	
+	public final Integer getMaximumPreferredWidth() {
+		return this.maximumPreferredWidth;
+	}
+	public final void setMaximumPreferredWidth( Integer maximumPreferredWidth ) {
+		this.maximumPreferredWidth = maximumPreferredWidth;
+	}
+	public final Integer getMinimumPreferredWidth() {
+		return this.minimumPreferredWidth;
+	}
+	public final void setMinimumPreferredWidth( Integer minimumPreferredWidth ) {
+		this.minimumPreferredWidth = minimumPreferredWidth;
+	}
+	public final Integer getMaximumPreferredHeight() {
+		return this.maximumPreferredHeight;
+	}
+	public final void setMaximumPreferredHeight( Integer maximumPreferredHeight ) {
+		this.maximumPreferredHeight = maximumPreferredHeight;
+	}
+	public final Integer getMinimumPreferredHeight() {
+		return this.minimumPreferredHeight;
+	}
+	public final void setMinimumPreferredHeight( Integer minimumPreferredHeight ) {
+		this.minimumPreferredHeight = minimumPreferredHeight;
+	}
+
 	/*package-private*/boolean isEnabled() {
 		return this.getAwtComponent().isEnabled();
 	}

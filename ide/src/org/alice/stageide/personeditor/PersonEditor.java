@@ -264,6 +264,7 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		splitPane.setDividerLocation( 400 );
 		this.addComponent( splitPane, Constraint.CENTER );
 
+		this.setPreferredSize( new java.awt.Dimension( 1000, 800 ) );
 //		this.fitnessState.addValueObserver( new edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState.ValueObserver() {
 //			public void changed(int nextValue) {
 //				PersonViewer.getSingleton().setFitnessLevel( nextValue*0.01 );
