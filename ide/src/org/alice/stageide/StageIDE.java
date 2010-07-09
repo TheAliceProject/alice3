@@ -252,7 +252,8 @@ public class StageIDE extends org.alice.ide.IDE {
 			edu.cmu.cs.dennisc.alice.ast.Expression fieldExpression = fieldAccess.expression.getValue();
 			if( fieldExpression instanceof edu.cmu.cs.dennisc.alice.ast.ThisExpression ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
-				if( field.getDeclaringType().isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
+				edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
+				if( declaringType != null && declaringType.isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
 					if( field.getValueType().isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
 						return new org.alice.ide.common.ExpressionPane( expression, this.createDeclarationNameLabel( field ) ) {
 							@Override
@@ -306,14 +307,25 @@ public class StageIDE extends org.alice.ide.IDE {
 	public boolean isDropDownDesiredFor( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		if( super.isDropDownDesiredFor( expression ) ) {
 			if( expression != null ) {
-				edu.cmu.cs.dennisc.alice.ast.Node parent = expression.getParent();
-				if( parent instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-					edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)parent;
-					edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
-					assert field != null;
-					if( field.getDeclaringType().isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
-						if( field.getValueType().isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
+				if (expression instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation) {
+					edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation) expression;
+					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = instanceCreation.getType();
+					if( type instanceof edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice ) {
+						if( type.isAssignableTo( org.alice.apis.moveandturn.event.KeyListener.class ) || type.isAssignableTo( org.alice.apis.moveandturn.event.MouseButtonListener.class ) ) {
 							return false;
+						}
+					}
+				} else {
+					edu.cmu.cs.dennisc.alice.ast.Node parent = expression.getParent();
+					if( parent instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
+						edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)parent;
+						edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
+						assert field != null;
+						edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
+						if( declaringType != null && declaringType.isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
+							if( field.getValueType().isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
+								return false;
+							}
 						}
 					}
 				}
@@ -507,18 +519,28 @@ public class StageIDE extends org.alice.ide.IDE {
 		super.setProject( project );
 	}
 
+	private static final boolean IS_LIMITED_TO_LOOKING_GLASS_TYPES = true;
 	@Override
 	public String getTextFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		if( mapTypeToText != null ) {
 			//pass
 		} else {
 			mapTypeToText = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractType, String >();
-			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Model.class ), "(a.k.a. Generic Alice Model)" );
-			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel.class ), "(a.k.a. Looking Glass Scenery)" );
-			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.Character.class ), "(a.k.a. Looking Glass Character)" );
-			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.Person.class ), "(a.k.a. Looking Glass Person)" );
-			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Adult.class ), "(a.k.a. Stage Adult)" );
-			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Child.class ), "(a.k.a. Stage Child)" );
+			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE, "<html><em>examples:</em> 0.25, 1.0, 3.14, 98.6</html>" );
+			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, "<html><em>examples:</em> 1, 2, 42, 100</html>" );
+			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE, "<html><em>examples:</em> true, false</html>" );
+			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( String.class ), "<html><em>examples:</em> \"hello\", \"goodbye\"</html>" );
+			
+			if( IS_LIMITED_TO_LOOKING_GLASS_TYPES ) {
+				
+			} else {
+				mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Model.class ), "(a.k.a. Generic Alice Model)" );
+				mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel.class ), "(a.k.a. Looking Glass Scenery)" );
+				mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.Character.class ), "(a.k.a. Looking Glass Character)" );
+				mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.Person.class ), "(a.k.a. Looking Glass Person)" );
+				mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Adult.class ), "(a.k.a. Stage Adult)" );
+				mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Child.class ), "(a.k.a. Stage Child)" );
+			}
 		}
 		return mapTypeToText.get( type );
 	}
@@ -526,12 +548,20 @@ public class StageIDE extends org.alice.ide.IDE {
 	@Override
 	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > addJavaTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
 		rv = super.addJavaTypes( rv );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Model.class ) );
+		if( IS_LIMITED_TO_LOOKING_GLASS_TYPES ) {
+			//pass
+		} else {
+			rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Model.class ) );
+		}
 		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel.class ) );
 		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.Character.class ) );
 		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.Person.class ) );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Adult.class ) );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Child.class ) );
+		if( IS_LIMITED_TO_LOOKING_GLASS_TYPES ) {
+			//pass
+		} else {
+			rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Adult.class ) );
+			rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Child.class ) );
+		}
 		return rv;
 	}
 
@@ -574,6 +604,9 @@ public class StageIDE extends org.alice.ide.IDE {
 			edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> rv = new edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>() {
 				public java.util.Enumeration< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > children() {
 					return java.util.Collections.enumeration( children );
+				}
+				public java.util.Iterator<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> iterator() {
+					return children.iterator();
 				}
 				public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getChildAt(int childIndex) {
 					return children.get( childIndex );

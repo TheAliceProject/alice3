@@ -125,7 +125,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	}
 	//todo: reduce to protected
 	public final String getDeclarationName() {
-		return this.declarationNameState.getState();
+		return this.declarationNameState.getValue();
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
 		if( this.initializerPane != null ) {
@@ -273,7 +273,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
-		this.declarationNameState.setState( this.getDefaultNameText() );
+		this.declarationNameState.setValue( this.getDefaultNameText() );
 		this.declarationNameTextField.selectAll();
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -283,7 +283,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	}
 	protected String getExplanationIfOkButtonShouldBeDisabled(String name) {
 		if( this.nodeNameValidator != null ) {
-			return this.nodeNameValidator.getExplanationIfOkButtonShouldBeDisabled( this.declarationNameState.getState() );
+			return this.nodeNameValidator.getExplanationIfOkButtonShouldBeDisabled( this.declarationNameState.getValue() );
 		} else {
 			return null;
 		}

@@ -50,7 +50,7 @@ public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance
 	public ExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
 		this.expression = expression;
 		this.addComponent( component );
-		this.setBackgroundPaint( getIDE().getColorFor( expression ) );
+		this.setEnabledBackgroundPaint( getIDE().getColorFor( expression ) );
 	}
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {

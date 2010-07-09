@@ -40,20 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.operations.window;
 
-package edu.cmu.cs.dennisc.croquet;
-
-/**
- * @author Dennis Cosgrove
- */
-public class TextArea extends TextComponent< edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea > {
-	/*package-private*/ TextArea( StringState model ) {
-		super( model );
+public class IsProjectHistoryShowingState extends IsFrameShowingState {
+	public IsProjectHistoryShowingState() {
+		//todo: PREFERENCES_GROUP?
+		super( org.alice.app.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "cf08f7ac-16b2-4121-9f36-9aca59db4cf7" ), false, "Show Project History?" );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea createAwtComponent() {
-		edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea();
-//		rv.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.SunkenBorder( 4,4,2,2 ) );
-		return rv;
+	protected String getTitle() {
+		return "History";
+	}
+	@Override
+	protected java.awt.Component createPane() {
+		return new edu.cmu.cs.dennisc.history.HistoryPane( edu.cmu.cs.dennisc.alice.Project.GROUP );
 	}
 }

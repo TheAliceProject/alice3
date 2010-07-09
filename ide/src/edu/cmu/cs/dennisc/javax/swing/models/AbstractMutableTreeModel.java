@@ -40,20 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.javax.swing.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TextArea extends TextComponent< edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea > {
-	/*package-private*/ TextArea( StringState model ) {
-		super( model );
+public abstract class AbstractMutableTreeModel<E> extends AbstractTreeModel<E> implements MutableTreeModel< E > {
+	public void reload( E node ) {
+		javax.swing.tree.TreePath treePath = this.getTreePath( node );
+        this.fireTreeStructureChanged(this, treePath.getPath(), null, null);
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea createAwtComponent() {
-		edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea();
-//		rv.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.SunkenBorder( 4,4,2,2 ) );
-		return rv;
+	public void reload() {
+		this.reload( this.getRoot() );
 	}
 }

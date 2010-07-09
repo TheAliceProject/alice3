@@ -44,15 +44,24 @@
 package edu.cmu.cs.dennisc.croquet;
 
 public class SelectDirectoryActionOperation extends ActionOperation {
-	public static SelectDirectoryActionOperation getInstance( TreeSelectionState<String> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: SelectDirectoryActionOperation.getInstance()" );
-		return new SelectDirectoryActionOperation(treeSelectionState, treeNode, initializer);
+	private static edu.cmu.cs.dennisc.map.MapToMap<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>, PathControl.Initializer, SelectDirectoryActionOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static SelectDirectoryActionOperation getInstance( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
+		assert initializer != null;
+		SelectDirectoryActionOperation rv = mapToMap.get(treeNode, initializer);
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new SelectDirectoryActionOperation(treeSelectionState, treeNode, initializer);
+			mapToMap.put( treeNode, initializer, rv );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "SelectDirectoryActionOperation", initializer );
+		}
+		return rv;
 	}
 
-	private TreeSelectionState<String> treeSelectionState;
+	private TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState;
 	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode;
 	
-	private SelectDirectoryActionOperation( TreeSelectionState<String> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
+	private SelectDirectoryActionOperation( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
 		super( Application.INHERIT_GROUP, java.util.UUID.fromString( "ca407baf-13b1-4530-bf35-67764efbf5f0" ) );
 		this.treeSelectionState = treeSelectionState;
 		this.treeNode = treeNode;
@@ -64,7 +73,7 @@ public class SelectDirectoryActionOperation extends ActionOperation {
 	@Override
 	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		//todo: create edit
-		this.treeSelectionState.setSelectedTreeNode( this.treeNode );
+		this.treeSelectionState.setSelection( this.treeNode );
 		context.finish();
 	}
 }

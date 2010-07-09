@@ -137,13 +137,50 @@ class FieldsContentPanel extends OrganizedByTypeMembersContentPanel {
  * @author Dennis Cosgrove
  */
 public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+	private static class IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
+		private javax.swing.Icon getCurrentAccessibleTypeIcon() {
+			edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.IDE.getSingleton().getAccessibleListState().getSelectedItem();
+			String className;
+			if( accessible != null ) {
+				className = accessible.getValueType().getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getName();
+			} else {
+				className = null;
+			}
+			return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForGalleryClassName( className );
+		}
+		public int getIconHeight() {
+			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
+			if( icon != null ) {
+				return icon.getIconHeight();
+			} else {
+				return 0;
+			}
+		}
+		public int getIconWidth() {
+			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
+			if( icon != null ) {
+				return icon.getIconWidth();
+			} else {
+				return 0;
+			}
+		}
+		public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
+			if( icon != null ) {
+				icon.paintIcon(c, g, x, y);
+			}
+		}
+	}
+	private static boolean isFolderTabbedPane = false;
+	private static javax.swing.Icon ICON = isFolderTabbedPane ? null : new IndirectCurrentAccessibleTypeIcon();
+	
 	private static abstract class MemberTab extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
 		private static String getTitle( String key ) {
 			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "org.alice.ide.memberseditor.TabTitles", javax.swing.JComponent.getDefaultLocale() );
 			return resourceBundle.getString( key );
 		}
 		public MemberTab( java.util.UUID individualId, String key ) {
-			super( individualId, getTitle( key ) );
+			super( individualId, getTitle( key ), ICON );
 		}
 		@Override
 		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane() {
@@ -183,7 +220,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //	}
 
 	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabbedPaneSelectionState = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( 
-			org.alice.ide.IDE.IDE_GROUP, 
+			org.alice.ide.IDE.UI_STATE_GROUP, 
 			java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ),
 			this.proceduresTab, this.functionsTab, this.fieldsTab );
 
@@ -231,50 +268,148 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		comboBox.scaleFont( FONT_SCALAR );
 		//comboBox.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		
-		comboBox.setRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.Accessible >() {
-			@Override
-			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.Accessible value, int index, boolean isSelected, boolean cellHasFocus ) {
-				if( value != null ) {
+		class AccessibleCellRenderer extends javax.swing.JLabel implements javax.swing.ListCellRenderer {
+			private boolean isInScope = true;
+			public AccessibleCellRenderer() {
+				this.setOpaque( true );
+			}
+			public java.awt.Component getListCellRendererComponent(javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = (edu.cmu.cs.dennisc.alice.ast.Accessible)value;
+				if( accessible != null ) {
+					this.isInScope = true;
 					StringBuilder sb = new StringBuilder();
 					sb.append( "<html>" );
-					if( value instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
+					if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
 						//pass
-					} else if( value instanceof edu.cmu.cs.dennisc.alice.ast.AbstractParameter ) {
+					} else if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.AbstractParameter ) {
 						sb.append( "<i>parameter:</i> " );
-					} else if( value instanceof edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice ) {
+					} else if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice ) {
 						sb.append( "<i>variable:</i> " );
-					} else if( value instanceof edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice ) {
+					} else if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice ) {
 						sb.append( "<i>constant:</i> " );
 					}
-					sb.append( "<b>" );
-					sb.append( value.getValidName() );
-					sb.append( "</b>" );
+					sb.append( "<strong>" );
+					sb.append( accessible.getValidName() );
+					sb.append( "</strong>" );
+
+					//rv.setEnabled( true );
+					if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
+						edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)accessible;
+						edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = org.alice.ide.IDE.getSingleton().getFocusedCode();
+						if( focusedCode != null ) {
+							edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> scopeType = focusedCode.getDeclaringType();
+							if( field.getValueType() == scopeType ) {
+								sb.append( " <em>(currently: this)</em>" );
+							} else if( field.getDeclaringType() == scopeType ) {
+								//pass
+							} else {
+								this.isInScope = false;
+								sb.append( " -out-of-scope-" );
+							}
+						}
+					}
 					sb.append( "</html>" );
-					rv.setText( sb.toString() );
+					this.setText( sb.toString() );
 					
-					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = value.getValueType();
+					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = accessible.getValueType();
 					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava valueTypeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
 					String className = valueTypeInJava.getClassReflectionProxy().getName();
 					
-					rv.setIcon( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForGalleryClassName(className));
-					
-//					rv = new javax.swing.JLabel( rv.getText(), rv.getIcon(), javax.swing.SwingConstants.LEADING ) {
-//						@Override
-//						public boolean isOptimizedDrawingEnabled() {
-//							return false;
-//						}
-//					};
+					this.setIcon( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForGalleryClassName(className));
+					if( this.isInScope ) {
+						if( isSelected ) {
+							this.setForeground( list.getSelectionForeground() );
+							this.setBackground( list.getSelectionBackground() );
+						} else {
+							this.setForeground( list.getForeground() );
+							this.setBackground( list.getBackground() );
+						}
+					} else {
+						if( isSelected ) {
+							this.setForeground( java.awt.Color.LIGHT_GRAY );
+							this.setBackground( java.awt.Color.GRAY );
+						} else {
+							this.setForeground( java.awt.Color.DARK_GRAY );
+							this.setBackground( list.getBackground() );
+						}
+					}
 				}
-				return rv;
+				return this;
 			}
-		} );
+			@Override
+			public void paint(java.awt.Graphics g) {
+				super.paint(g);
+				if( this.isInScope ) {
+					//pass
+				} else {
+					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+					g2.setPaint( edu.cmu.cs.dennisc.croquet.PaintUtilities.getDisabledTexturePaint() );
+					g2.fillRect( 0, 0, this.getWidth(), this.getHeight() );
+				}
+			}
+		}
+		comboBox.setRenderer( new AccessibleCellRenderer() );
+//		comboBox.setRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.Accessible >() {
+//			@Override
+//			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.Accessible value, int index, boolean isSelected, boolean cellHasFocus ) {
+//				if( value != null ) {
+//					boolean isEnabled = true;
+//					StringBuilder sb = new StringBuilder();
+//					sb.append( "<html>" );
+//					if( value instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
+//						//pass
+//					} else if( value instanceof edu.cmu.cs.dennisc.alice.ast.AbstractParameter ) {
+//						sb.append( "<i>parameter:</i> " );
+//					} else if( value instanceof edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice ) {
+//						sb.append( "<i>variable:</i> " );
+//					} else if( value instanceof edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice ) {
+//						sb.append( "<i>constant:</i> " );
+//					}
+//					sb.append( "<b>" );
+//					sb.append( value.getValidName() );
+//					sb.append( "</b>" );
+//
+//					//rv.setEnabled( true );
+//					if( value instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
+//						edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)value;
+//						edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = org.alice.ide.IDE.getSingleton().getFocusedCode();
+//						if( focusedCode != null ) {
+//							edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> scopeType = focusedCode.getDeclaringType();
+//							if( field.getValueType() == scopeType ) {
+//								sb.append( " <em>(a.k.a. this)</em>" );
+//							} else if( field.getDeclaringType() == scopeType ) {
+//								//pass
+//							} else {
+//								isEnabled = false;
+//							}
+//						}
+//					}
+//					sb.append( "</html>" );
+//					rv.setText( sb.toString() );
+//					
+//					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = value.getValueType();
+//					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava valueTypeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
+//					String className = valueTypeInJava.getClassReflectionProxy().getName();
+//					
+//					rv.setIcon( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForGalleryClassName(className));
+//					if( isEnabled ) {
+//						//pass
+//					} else {
+////						rv.setBackground( list.getBackground() );
+////						rv.setForeground( javax.swing.UIManager.getColor( "Label.disabledForeground" ) );
+//						rv.setBackground( java.awt.Color.LIGHT_GRAY );
+//						rv.setForeground( java.awt.Color.GRAY );
+//					}
+//				}
+//				return rv;
+//			}
+//		} );
 		edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label( "instance:" );
 		label.scaleFont( FONT_SCALAR );
 		edu.cmu.cs.dennisc.croquet.LineAxisPanel instancePanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( label, comboBox );
 
 		this.tabbedPaneSelectionState.setSelectedItem( this.proceduresTab );
-		//edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.tabbedPaneSelectionState.createDefaultToolPaletteTabbedPane();
-		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.tabbedPaneSelectionState.createDefaultFolderTabbedPane();
+		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = isFolderTabbedPane ? this.tabbedPaneSelectionState.createDefaultFolderTabbedPane() : this.tabbedPaneSelectionState.createDefaultToolPaletteTabbedPane();
 		this.addComponent( instancePanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
 		this.addComponent( tabbedPane, Constraint.CENTER );
 		tabbedPane.scaleFont( 1.5f );

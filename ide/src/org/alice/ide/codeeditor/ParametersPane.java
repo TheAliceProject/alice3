@@ -75,16 +75,17 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 			String text;
 			switch( n ) {
 			case 0:
-				text = "";
+				text = null;
 				break;
 			case 1:
-				text = "with parameter: ";
+				text = " with parameter: ";
 				break;
 			default:
-				text = "with parameters: ";
+				text = " with parameters: ";
 			}
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
-			this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 4 ) );
+			if( text != null ) {
+				this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
+			}
 		}
 	}
 	@Override
@@ -111,7 +112,7 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 		if( getIDE().isJava() ) {
 			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " )" ) );
 		}
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ) );
+		//this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ) );
 	}
 	
 	@Override

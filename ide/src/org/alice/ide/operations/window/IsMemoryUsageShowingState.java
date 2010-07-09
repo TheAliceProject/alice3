@@ -40,34 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.memory;
+package org.alice.ide.operations.window;
 
-public class MemoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
-	private static final long K = 1024;
-	private static final long M = K*K;
-
-	private MemoryView memoryView = new MemoryView();
-	private javax.swing.JLabel label0 = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "0" );
-	private javax.swing.JLabel labelMax = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel();
-	
-	public MemoryPane() {
-		java.lang.management.MemoryMXBean memory = java.lang.management.ManagementFactory.getMemoryMXBean();
-		java.lang.management.MemoryUsage heapUsage = memory.getHeapMemoryUsage();
-		long maxMB = heapUsage.getMax()/M;
-		labelMax.setText( maxMB + "MB" );
-
-		this.add( memoryView, java.awt.BorderLayout.CENTER );
-		edu.cmu.cs.dennisc.javax.swing.components.JBorderPane labels = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane();
-		labels.add( label0, java.awt.BorderLayout.WEST );
-		labels.add( labelMax, java.awt.BorderLayout.EAST );
-		this.add( labels, java.awt.BorderLayout.SOUTH );
-		this.setPreferredSize( new java.awt.Dimension( 300, 80 ) );
+class MemoryUsagePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+	private javax.swing.Timer timer = new javax.swing.Timer( 50, new java.awt.event.ActionListener() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
+		}
+	} );
+	@Override
+	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		super.handleAddedTo( parent );
+		this.timer.start();
 	}
-	
-	public static void main(String[] args) {
-		javax.swing.JFrame frame = new javax.swing.JFrame();
-		frame.getContentPane().add( new MemoryPane() );
-		frame.setDefaultCloseOperation( javax.swing.WindowConstants.EXIT_ON_CLOSE );
-		frame.setVisible( true );
+	@Override
+	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		this.timer.stop();
+		super.handleRemovedFrom( parent );
+	}
+}
+
+public class IsMemoryUsageShowingState extends IsFrameShowingState {
+	public IsMemoryUsageShowingState() {
+		//todo: PREFERENCES_GROUP?
+		super( org.alice.app.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "e460dca7-e707-4075-883a-ff47367c21fd" ), false, "Show Memory Usage?" );
+	}
+	@Override
+	protected String getTitle() {
+		return "Memory Usage";
+	}
+	@Override
+	protected java.awt.Component createPane() {
+		return new edu.cmu.cs.dennisc.memory.MemoryUsagePanel().getAwtComponent();
 	}
 }

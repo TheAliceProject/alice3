@@ -56,9 +56,9 @@ public class PaintUtilities {
 			java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)image.getGraphics();
 			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-			g2.setColor( new java.awt.Color( 128, 128, 128, 96 ) );
+			g2.setColor( new java.awt.Color( 128, 128, 128, 31 ) );
 			g2.fillRect( 0, 0, width, height );
-			g2.setColor( java.awt.Color.DARK_GRAY );
+			g2.setColor( new java.awt.Color( 31, 31, 31, 127 ) );
 			g2.drawLine( 0, height, width, 0 );
 			g2.drawLine( 0, 0, 0, 0 );
 			g2.dispose();

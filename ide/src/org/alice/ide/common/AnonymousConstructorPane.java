@@ -96,7 +96,7 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 		if( getIDE().isJava() ) {
 			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "}" ) );
 		}
-		this.setBackgroundPaint( org.alice.ide.IDE.getSingleton().getColorFor( edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class ) );
+		this.setEnabledBackgroundPaint( org.alice.ide.IDE.getSingleton().getColorFor( edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class ) );
 	}
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {

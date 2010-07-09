@@ -53,9 +53,9 @@ package edu.cmu.cs.dennisc.tutorial;
 	private static edu.cmu.cs.dennisc.croquet.Group TUTORIAL_COMPLETION_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "ea5df77d-d74d-4364-9bf5-2df1b2ede0a4" ), "TUTORIAL_COMPLETION_GROUP" );
 
 	private edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver childrenObserver = new edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver() {
-		public void addingChild(edu.cmu.cs.dennisc.croquet.HistoryTreeNode child) {
+		public void addingChild(edu.cmu.cs.dennisc.croquet.HistoryNode child) {
 		}
-		public void addedChild(edu.cmu.cs.dennisc.croquet.HistoryTreeNode child) {
+		public void addedChild(edu.cmu.cs.dennisc.croquet.HistoryNode child) {
 			Step step = (Step)stepsComboBoxModel.getSelectedItem();
 			if (step instanceof WaitingStep<?>) {
 				WaitingStep<?> waitingStep = (WaitingStep<?>) step;

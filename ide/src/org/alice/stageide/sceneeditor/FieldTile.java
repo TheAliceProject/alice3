@@ -195,19 +195,19 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 		return this.accessible;
 	}
 	
-	protected boolean isInScope() {
-		return org.alice.ide.IDE.getSingleton().isAccessibleInScope( accessible );
-	}
+//	protected boolean isInScope() {
+//		return org.alice.ide.IDE.getSingleton().isAccessibleInScope( accessible );
+//	}
 	
 	/*package-private*/ void updateLabel() {
 		String prevText = this.getAwtComponent().getText();
 		String nextText;
 		if( this.accessible != null ) {
-			nextText = org.alice.ide.IDE.getSingleton().getInstanceTextForAccessible( this.accessible, false );
+			nextText = this.accessible.getValidName();//org.alice.ide.IDE.getSingleton().getInstanceTextForAccessible( this.accessible );
 			this.setBackgroundColor( this.calculateColor() );
 		} else {
 			this.setBackgroundColor( java.awt.Color.RED );
-			nextText = "null";
+			nextText = org.alice.ide.IDE.getSingleton().getTextForNull();
 		}
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( prevText, nextText ) ) {
 			//pass

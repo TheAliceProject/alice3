@@ -64,7 +64,6 @@ public class ResourceManager {
 		if( treeNode != null ) {
 			String path = treeNode.getValue();
 			String resourceName = path.substring( PACKAGE_NAME_PREFIX.length()+1 );
-			System.out.println( resourceName );
 			if( resourceName.startsWith( "images/org/alice/apis/moveandturn/gallery/environments/grounds/" ) ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle grounds" );
 				return null;
@@ -133,11 +132,15 @@ public class ResourceManager {
 	}
 	
 	private static java.net.URL getLargeIconResourceForGalleryClassName( String className ) {
-		if( className.startsWith( "org.alice.apis.moveandturn.gallery.environments.grounds." ) ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle grounds" );
-			return null;
+		if( className != null ) {
+			if( className.startsWith( "org.alice.apis.moveandturn.gallery.environments.grounds." ) ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle grounds" );
+				return null;
+			} else {
+				return ResourceManager.class.getResource( getLargeIconResourceNameForClassName( className ) );
+			}
 		} else {
-			return ResourceManager.class.getResource( getLargeIconResourceNameForClassName( className ) );
+			return null;
 		}
 	}
 	public static javax.swing.Icon getLargeIconForGalleryClassName( String className ) {
@@ -151,6 +154,30 @@ public class ResourceManager {
 	public static javax.swing.Icon getSmallIconForGalleryClassName(String className) {
 		return getSmallIconFor( getLargeIconForGalleryClassName(className) );
 	}
+
+	private static java.net.URL getLargeIconResourceForType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		String className;
+		if( type != null ) {
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
+			className = typeInJava.getClassReflectionProxy().getName();
+		} else {
+			className = null;
+		}
+		return getLargeIconResourceForGalleryClassName(className);
+	}
+
+	public static javax.swing.Icon getLargeIconForType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		java.net.URL url = getLargeIconResourceForType(type);
+		if( url != null ) {
+			return new javax.swing.ImageIcon( url );
+		} else {
+			return null;
+		}
+	}
+	public static javax.swing.Icon getSmallIconForType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		return getSmallIconFor( getLargeIconForType(type) );
+	}
+	
 
 	public static edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedBox( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
 		String path = treeNode.getValue();
@@ -166,11 +193,10 @@ public class ResourceManager {
 		}
 	}
 	
-	public static Class<?> getGalleryCls( javax.swing.tree.TreeNode treeNode ) {
-		if( treeNode instanceof edu.cmu.cs.dennisc.zip.FileZipTreeNode ) {
+	public static Class<?> getGalleryCls( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
+		if( treeNode != null ) {
 			final String IMAGES_TEXT = ".images.";
-			edu.cmu.cs.dennisc.zip.FileZipTreeNode fileZipTreeNode = (edu.cmu.cs.dennisc.zip.FileZipTreeNode)treeNode;
-			String path = fileZipTreeNode.getValue();
+			String path = treeNode.getValue();
 			path = path.replace( '/', '.' );
 			assert path.startsWith( PACKAGE_NAME_PREFIX + IMAGES_TEXT ) : path;
 			assert path.endsWith( ".png" ) : path;

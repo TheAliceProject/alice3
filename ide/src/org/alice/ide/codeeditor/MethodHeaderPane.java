@@ -48,11 +48,10 @@ package org.alice.ide.codeeditor;
 public class MethodHeaderPane extends AbstractCodeHeaderPane {
 	public MethodHeaderPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice, ParametersPane parametersPane, boolean isPreview ) {
 		super( methodDeclaredInAlice, parametersPane, isPreview );
-		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
+//		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( methodDeclaredInAlice.getReturnType() ) );
-			this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
-			//this.add( zoot.ZLabel.acquire( " {" ) );
+//			this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
 		} else {
 			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 			StringBuffer sb = new StringBuffer();
@@ -66,9 +65,10 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		}
 		
 		
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
+//		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
 		org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( methodDeclaredInAlice );
 		nameLabel.scaleFont( NAME_SCALE );
+		nameLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,4,0,4 ) );
 
 		if( methodDeclaredInAlice.isSignatureLocked.getValue() ) {
 			this.addComponent( nameLabel );
@@ -106,9 +106,6 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 					) 
 			);
 		}
-
-		
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
 		this.addParametersPaneAndInstanceLineIfDesired();
 	}
 }

@@ -46,20 +46,28 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance {
-//	public static GalleryDragComponent getInstance( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
-//		return new GalleryDragComponent( treeNode );
-//	}
+	private static java.util.Map<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>, GalleryDragComponent> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static GalleryDragComponent getInstance( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
+		GalleryDragComponent rv = map.get( treeNode );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new GalleryDragComponent( treeNode );
+			map.put( treeNode, rv );
+		}
+		return rv;
+	}
 	
 	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode;
-	public GalleryDragComponent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, String name ) {
+	private GalleryDragComponent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
 		this.treeNode = treeNode;
 		edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label();
 		label.setIcon( ResourceManager.getLargeIcon( this.treeNode ) );
-		label.setText( name );
+		label.setText( GalleryBrowser.getTextFor( this.treeNode, false ) );
 		label.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
 		label.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.CENTER );
 		this.setAlignmentY( 0.0f );
-		this.setBackgroundColor( new java.awt.Color( 0xf7e4b6 ) );
+		this.setEnabledBackgroundPaint( new java.awt.Color( 0xf7e4b6 ) );
 		this.addComponent( label );
 		this.setLeftButtonClickOperation( GalleryFileActionOperation.getInstance( treeNode ) );
 		this.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragOperation( edu.cmu.cs.dennisc.alice.Project.GROUP ) );
@@ -71,8 +79,12 @@ public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance
 	}
 
 	@Override
+	protected java.awt.geom.RoundRectangle2D.Float createShape( int x, int y, int width, int height ) {
+		return new java.awt.geom.RoundRectangle2D.Float( x, y, width-1, height-1, 8, 8 );
+	}
+	@Override
 	protected void fillBounds(java.awt.Graphics2D g2, int x, int y, int width, int height) {
-		g2.fillRoundRect(x, y, width, height, 8, 8);
+		g2.fill( this.createShape(x, y, width, height));
 	}
 
 	@Override
@@ -104,22 +116,6 @@ public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance
 	protected void paintPrologue(java.awt.Graphics2D g2, int x, int y, int width, int height) {
 		java.awt.geom.RoundRectangle2D rr = new java.awt.geom.RoundRectangle2D.Float( x+1, y+1, width-3, height-3, 8, 8 );
 		g2.fill( rr );
-	}
-	protected void paintOutline( java.awt.Graphics2D g2, java.awt.geom.RoundRectangle2D.Float rr ) {
-		java.awt.Stroke prevStroke = g2.getStroke();
-		if( this.isActive() ) {
-			g2.setPaint( java.awt.Color.BLUE );
-			g2.setStroke( new java.awt.BasicStroke( 3.0f ) );
-		} else {
-			g2.setPaint( java.awt.Color.GRAY );
-		}
-		g2.draw( rr );
-		g2.setStroke( prevStroke );
-	}
-	@Override
-	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		super.paintEpilogue( g2, x, y, width, height );
-		this.paintOutline( g2, new java.awt.geom.RoundRectangle2D.Float( x+1, y+1, width-3, height-3, 8, 8 ) );
 	}
 }
 

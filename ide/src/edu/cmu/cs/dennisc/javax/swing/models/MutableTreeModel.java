@@ -40,25 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations;
+package edu.cmu.cs.dennisc.javax.swing.models;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public abstract class AbstractBooleanStateOperation extends edu.cmu.cs.dennisc.croquet.BooleanState {
-	public AbstractBooleanStateOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, Boolean initialValue, String trueText, String falseText ) {
-		super( group, individualId, initialValue, trueText, falseText );
-	}
-	public AbstractBooleanStateOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, Boolean initialValue, String trueAndFalseText ) {
-		super( group, individualId, initialValue, trueAndFalseText );
-	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
-	}
-	@Deprecated
-	protected boolean isPreservedAndRestored() {
-		return false;
-	}
-	protected abstract void handleStateChange( boolean value );
+public interface MutableTreeModel<E> extends TreeModel<E> {
+	public void reload( E node );
+	public void reload();
 }

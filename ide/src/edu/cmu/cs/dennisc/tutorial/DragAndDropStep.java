@@ -156,7 +156,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	}
 	@Override
-	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child ) {
+	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
 		State state = this.getState();
 		if( child instanceof edu.cmu.cs.dennisc.croquet.CancelEvent ) {
 			if( state != State.WAITING_ON_INPUT_DIALOG_COMMIT || child.getParent() instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext) {

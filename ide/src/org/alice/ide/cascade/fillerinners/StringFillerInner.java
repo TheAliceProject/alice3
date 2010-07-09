@@ -58,10 +58,12 @@ public class StringFillerInner extends ExpressionFillerInner {
 		final edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getPreviousExpression();
 		final boolean isTop = blank.getParentFillIn() == null;
 		if( isTop ) {
-			if( previousExpression != null ) {
+			if( previousExpression == null || previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.NullLiteral ) {
+				//pass
+			} else {
 				blank.addFillIn( new org.alice.ide.cascade.MostlyDeterminedStringConcatenationFillIn( previousExpression ) );
+				blank.addFillIn( new org.alice.ide.cascade.IncompleteStringConcatenationFillIn() );
 			}
-			blank.addFillIn( new org.alice.ide.cascade.IncompleteStringConcatenationFillIn() );
 		}
 	}
 }

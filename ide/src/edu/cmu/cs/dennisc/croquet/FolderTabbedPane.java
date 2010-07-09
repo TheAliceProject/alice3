@@ -49,39 +49,315 @@ package edu.cmu.cs.dennisc.croquet;
 public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabbedPane.FolderTabItemDetails > {
 	private static final int EAST_TAB_PAD = 32;
 	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 );
-	private static class JFolderTabTitle extends JTabTitle {
-		public JFolderTabTitle( javax.swing.JComponent jComponent, java.awt.event.ActionListener closeButtonActionListener ) {
-			super( jComponent, closeButtonActionListener );
-			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 8 ) );
-			this.setOpaque( false );
-			this.setBackground( null );
-			this.setAlignmentY( 1.0f );
-		}
-		protected void repaintPlus() {
-			this.getParent().repaint( this.getX(), this.getY(), this.getWidth() + EAST_TAB_PAD, this.getHeight() );
+
+	private static class CloseButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
+		private static final java.awt.Color BASE_COLOR = new java.awt.Color( 127, 63, 63 );
+		private static final java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, +0.25f );
+		private static final java.awt.Color PRESS_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, -0.125f );
+
+		private static final int SIZE = 14;
+//		private int getIconWidth() {
+//			return 14;
+//		}
+//		private int getIconHeight() {
+//			return getIconWidth();
+//		}
+
+		@Override
+		public void paint(java.awt.Graphics g, javax.swing.JComponent c) {
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+			javax.swing.ButtonModel model = button.getModel();
+
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+
+			int closeWidth = SIZE;
+			int closeHeight = closeWidth;
+			float size = Math.min( closeWidth, closeHeight ) * 0.9f;
+
+			float w = size;
+			float h = size * 0.25f;
+			float xC = -w * 0.5f;
+			float yC = -h * 0.5f;
+			java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( xC, yC, w, h, h, h );
+
+			java.awt.geom.Area area0 = new java.awt.geom.Area( rr );
+			java.awt.geom.Area area1 = new java.awt.geom.Area( rr );
+
+			java.awt.geom.AffineTransform m0 = new java.awt.geom.AffineTransform();
+			m0.rotate( Math.PI * 0.25 );
+			area0.transform( m0 );
+
+			java.awt.geom.AffineTransform m1 = new java.awt.geom.AffineTransform();
+			m1.rotate( Math.PI * 0.75 );
+			area1.transform( m1 );
+
+			area0.add( area1 );
+
+			int x0 = 0;
+			int y0 = 0;
+			
+			java.awt.geom.AffineTransform m = new java.awt.geom.AffineTransform();
+			m.translate( x0 + closeWidth / 2, y0 + closeHeight / 2 );
+			area0.transform( m );
+
+			java.awt.Paint prevPaint = g2.getPaint();
+			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "paint", model );
+			if( model.isRollover() || model.isArmed() ) {
+				if( model.isPressed() ) {
+					g2.setPaint( PRESS_COLOR );
+				} else {
+					g2.setPaint( HIGHLIGHT_COLOR );
+				}
+			} else {
+				g2.setPaint( java.awt.Color.WHITE );
+			}
+			javax.swing.AbstractButton parent = (javax.swing.AbstractButton)button.getParent();
+			if( parent.isSelected() ) {
+				g2.fill( area0 );
+				g2.setPaint( java.awt.Color.BLACK );
+			} else {
+				g2.setPaint( java.awt.Color.GRAY );
+			}
+			g2.draw( area0 );
+			g2.setPaint( prevPaint );
 		}
 		@Override
-		protected void setArmed( boolean isArmed ) {
-			super.setArmed(isArmed);
-			this.repaintPlus();
-		}
-		@Override
-		protected void setPressed( boolean isPressed ) {
-			super.setPressed(isPressed);
-			this.repaintPlus();
-		}
-		@Override
-		protected void select() {
-			super.select();
-			this.repaintPlus();
+		public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) {
+			return new java.awt.Dimension( SIZE, SIZE );
 		}
 	}
 
-	private static class FolderTabTitle extends TabTitle {
-		public FolderTabTitle( JComponent<?> innerTitleComponent, java.awt.event.ActionListener closeButtonActionListener ) {
-			super( new JFolderTabTitle( innerTitleComponent.getAwtComponent(), closeButtonActionListener ) );
+//	protected static abstract class JTabTitle extends javax.swing.AbstractButton {
+//		private java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+//			public void mouseEntered( java.awt.event.MouseEvent e ) {
+//				JTabTitle.this.setArmed( true );
+//			}
+//			public void mouseExited( java.awt.event.MouseEvent e ) {
+//				JTabTitle.this.setArmed( false );
+//			}
+//			public void mousePressed( java.awt.event.MouseEvent e ) {
+//				JTabTitle.this.setPressed( true );
+//			}
+//			public void mouseReleased( java.awt.event.MouseEvent e ) {
+//				JTabTitle.this.setPressed( false );
+//			}
+//			public void mouseClicked(java.awt.event.MouseEvent e) {
+//				JTabTitle.this.select();
+//			}
+//		};
+//
+//		protected void setArmed( boolean isArmed ) {
+//			this.getModel().setArmed( isArmed );
+//		}
+//		protected void setPressed( boolean isPressed ) {
+//			this.getModel().setPressed( isPressed );
+//		}
+//		protected void select() {
+//			this.setSelected( true );
+//		}
+//
+//		private javax.swing.JComponent jComponent;
+//		private javax.swing.JButton closeButton;
+//		private java.awt.event.ActionListener closeActionListener;
+//		public JTabTitle( javax.swing.JComponent jComponent, java.awt.event.ActionListener closeActionListener ) {
+//			this.jComponent = jComponent;
+//			this.setModel( new javax.swing.JToggleButton.ToggleButtonModel() );
+//			this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
+//			this.add( this.jComponent );
+//			this.closeActionListener = closeActionListener;
+//			if( this.closeActionListener != null ) {
+//				this.closeButton = new javax.swing.JButton();
+//				this.closeButton.setUI( new CloseButtonUI() );
+//				this.closeButton.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+//				this.closeButton.setOpaque( false );
+//				this.add( this.closeButton );
+//			}
+//		}
+//		@Override
+//		public void setFont(java.awt.Font font) {
+//			super.setFont(font);
+//			this.jComponent.setFont( font );
+//		}
+//		@Override
+//		public void addNotify() {
+//			super.addNotify();
+//			this.addMouseListener( this.mouseListener );
+//			if( this.closeButton != null ) {
+//				assert this.closeActionListener != null;
+//				this.closeButton.addActionListener( this.closeActionListener );
+//			}
+//		}
+//		@Override
+//		public void removeNotify() {
+//			if( this.closeButton != null ) {
+//				assert this.closeActionListener != null;
+//				this.closeButton.removeActionListener( this.closeActionListener );
+//			}
+//			this.removeMouseListener( this.mouseListener );
+//			super.removeNotify();
+//		}
+//	}
+//
+//	@Deprecated
+//	private final static BooleanState TAB_TITLE_BOOLEAN_STATE = null;
+//	
+//	protected static abstract class TabTitle extends AbstractButton< javax.swing.AbstractButton, BooleanState > {
+//		private JTabTitle jTabTitle;
+//		public TabTitle( JTabTitle jTabTitle ) {
+//			super( TAB_TITLE_BOOLEAN_STATE );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: TAB_TITLE_BOOLEAN_STATE" );
+//			this.jTabTitle = jTabTitle;
+//		}
+//		@Override
+//		protected final javax.swing.AbstractButton createAwtComponent() {
+//			return this.jTabTitle;
+//		}
+//	}
+//
+//	private static class JFolderTabTitle extends JTabTitle {
+//		public JFolderTabTitle( javax.swing.JComponent jComponent, java.awt.event.ActionListener closeButtonActionListener ) {
+//			super( jComponent, closeButtonActionListener );
+//			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 8 ) );
+//			this.setOpaque( false );
+//			this.setBackground( null );
+//			this.setAlignmentY( 1.0f );
+//		}
+//		protected void repaintPlus() {
+//			this.getParent().repaint( this.getX(), this.getY(), this.getWidth() + EAST_TAB_PAD, this.getHeight() );
+//		}
+//		@Override
+//		protected void setArmed( boolean isArmed ) {
+//			super.setArmed(isArmed);
+//			this.repaintPlus();
+//		}
+//		@Override
+//		protected void setPressed( boolean isPressed ) {
+//			super.setPressed(isPressed);
+//			this.repaintPlus();
+//		}
+//		@Override
+//		protected void select() {
+//			super.select();
+//			this.repaintPlus();
+//		}
+//	}
+
+//	private static class FolderTabTitle extends TabTitle {
+//		public FolderTabTitle( JComponent<?> innerTitleComponent, java.awt.event.ActionListener closeButtonActionListener ) {
+//			super( new JFolderTabTitle( innerTitleComponent.getAwtComponent(), closeButtonActionListener ) );
+//		}
+//	}
+
+	private static class FolderTabTitleUI extends javax.swing.plaf.basic.BasicButtonUI {
+		@Override
+		public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) {
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+			java.awt.Font font = button.getFont();
+			java.awt.FontMetrics fm = button.getFontMetrics( font );
+			String text = button.getText();
+			javax.swing.Icon icon = button.getIcon();
+			int verticalAlignment = button.getVerticalAlignment();
+			int horizontalAlignment = button.getHorizontalAlignment();
+			int verticalTextPosition = button.getVerticalTextPosition();
+			int horizontalTextPosition = button.getHorizontalTextPosition();
+			java.awt.Rectangle viewR = new java.awt.Rectangle( Short.MAX_VALUE, Short.MAX_VALUE );
+			java.awt.Rectangle iconR = new java.awt.Rectangle();
+			java.awt.Rectangle textR = new java.awt.Rectangle();
+			int textIconGap = button.getIconTextGap();
+			javax.swing.SwingUtilities.layoutCompoundLabel(c, fm, text, icon, verticalAlignment, horizontalAlignment, verticalTextPosition, horizontalTextPosition, viewR, iconR, textR, textIconGap);
+			
+	        java.awt.Rectangle bounds = iconR.union(textR);
+
+	        java.awt.Insets insets = button.getInsets();
+	        bounds.width += insets.left + insets.right;
+	        bounds.height += insets.top + insets.bottom;
+
+	        for( java.awt.Component component : button.getComponents() ) {
+	        	//if( component.isVisible() ) {
+	        		bounds.width += 2;
+			        bounds.width += component.getPreferredSize().width;
+	        	//}
+	        }
+	        
+	        return bounds.getSize();
 		}
-		
+	}
+	
+	private static class JFolderTabTitle extends javax.swing.JRadioButton {
+		public JFolderTabTitle() {
+			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 8 ) );
+			this.setOpaque( false );
+			this.setAlignmentY( 1.0f );
+			//this.setLayout( new java.awt.BorderLayout() );
+			this.setLayout( new javax.swing.SpringLayout() );
+			//this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
+			this.getModel().addItemListener( new java.awt.event.ItemListener() {
+				public void itemStateChanged(java.awt.event.ItemEvent e) {
+					JFolderTabTitle.this.revalidate();
+				}				
+			} );
+		}
+		@Override
+		public void updateUI() {
+			this.setUI( new FolderTabTitleUI() );
+		}
+		@Override
+		public void repaint() {
+			java.awt.Container parent = this.getParent();
+			if( parent != null ) {
+				parent.repaint( this.getX(), this.getY(), this.getWidth() + EAST_TAB_PAD, this.getHeight() );
+			} else {
+				super.repaint();
+			}
+		}
+	}
+	
+	private static class FolderTabTitle extends AbstractButton<javax.swing.AbstractButton,BooleanState> {
+		private java.awt.event.ActionListener closeButtonActionListener;
+		public FolderTabTitle( BooleanState booleanState, java.awt.event.ActionListener closeButtonActionListener ) {
+			super( booleanState );
+			this.closeButtonActionListener = closeButtonActionListener;
+		}
+		@Override
+		protected javax.swing.AbstractButton createAwtComponent() {
+			final JFolderTabTitle rv = new JFolderTabTitle();
+			javax.swing.JButton closeButton = new javax.swing.JButton() {
+				@Override
+				public void updateUI() {
+					this.setUI( new CloseButtonUI() );
+				}
+				@Override
+				public java.awt.Dimension getMaximumSize() {
+					return this.getPreferredSize();
+				}
+				@Override
+				public boolean contains(int x, int y) {
+					if( rv.isSelected() ) {
+						return super.contains(x, y);
+					} else {
+						return false;
+					}
+				}
+				@Override
+				public boolean isVisible() {
+					if( rv.isSelected() ) {
+						return super.isVisible();
+					} else {
+						return false;
+					}
+				}
+			};
+			
+			if( this.closeButtonActionListener != null ) {
+				closeButton.addActionListener( this.closeButtonActionListener );
+				closeButton.setOpaque( false );
+				closeButton.setAlignmentY( 0.5f );
+				closeButton.setRolloverEnabled( true );
+				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( rv, closeButton, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 4 );
+			}
+			return rv;
+		}
 	}
 
 	private static java.awt.Color SELECTED_BORDER_COLOR = java.awt.Color.WHITE;
@@ -167,6 +443,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 				@Override
 				protected void paintChildren( java.awt.Graphics g ) {
 					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+					Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
 					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 					javax.swing.AbstractButton selectedButton = null;
 					java.awt.Component[] components = this.getComponents();
@@ -192,7 +469,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 						this.paintTabBorder( g2, selectedButton );
 					}
 					super.paintChildren( g2 );
-					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_DEFAULT );
+					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
 				}
 			};
 			rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.LINE_AXIS ) );
@@ -213,12 +490,12 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	private BorderPanel headerPanel = new BorderPanel();
 
 	/*package-private*/ class FolderTabItemDetails extends AbstractTabbedPane.TabItemDetails {
-		private edu.cmu.cs.dennisc.croquet.CardPanel.Key cardPanelKey;
-		public FolderTabItemDetails( E item, AbstractButton< ?,? > button, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent ) {
-			super( item, button, id, innerTitleComponent, scrollPane, mainComponent );
+		private CardPanel.Key cardPanelKey;
+		public FolderTabItemDetails( E item, AbstractButton< ?,? > button, java.util.UUID id, ScrollPane scrollPane, JComponent<?> mainComponent ) {
+			super( item, button, id, scrollPane, mainComponent );
 			this.cardPanelKey = cardPanel.createKey( this.getRootComponent(), this.getId() );
 		}
-		public edu.cmu.cs.dennisc.croquet.CardPanel.Key getCardPanelKey() {
+		public CardPanel.Key getCardPanelKey() {
 			return cardPanelKey;
 		}
 		@Override
@@ -238,7 +515,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		this.headerPanel.setBackgroundColor( null );
 		this.headerPanel.getAwtComponent().setOpaque( false );
 		this.titlesPanel.setBackgroundColor( null );
-		this.headerPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 0, 0, 0 ) );
+		this.headerPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 0, 0, 0 ) );
 		this.cardPanel.setBorder( new javax.swing.border.Border() {
 			public java.awt.Insets getBorderInsets( java.awt.Component c ) {
 				return new java.awt.Insets( 1,1,0,0 );
@@ -276,7 +553,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 			component.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
 		}
 		component.setAlignmentY( 1.0f );
-		this.headerPanel.addComponent( component, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_START );
+		this.headerPanel.addComponent( component, BorderPanel.Constraint.LINE_START );
 		this.headerPanel.revalidateAndRepaint();
 	}
 	public void setHeaderTrailingComponent( JComponent< ? > component ) {
@@ -286,13 +563,13 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 			component.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
 		}
 		component.setAlignmentY( 1.0f );
-		this.headerPanel.addComponent( component, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END );
+		this.headerPanel.addComponent( component, BorderPanel.Constraint.LINE_END );
 		this.headerPanel.revalidateAndRepaint();
 	}
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
 		javax.swing.JPanel rv = super.createAwtComponent();
-		this.headerPanel.addComponent( this.titlesPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		this.headerPanel.addComponent( this.titlesPanel, BorderPanel.Constraint.CENTER );
 		rv.add( this.headerPanel.getAwtComponent(), java.awt.BorderLayout.NORTH );
 		rv.add( this.cardPanel.getAwtComponent(), java.awt.BorderLayout.CENTER );
 		return rv;
@@ -303,8 +580,12 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	}
 
 	@Override
-	protected FolderTabItemDetails createTabItemDetails( E item, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, java.awt.event.ActionListener closeButtonActionListener ) {
-		AbstractButton<?,?> button = new FolderTabTitle(innerTitleComponent, closeButtonActionListener);
+	protected AbstractButton< ?, BooleanState > createTitleButton( BooleanState booleanState, java.awt.event.ActionListener closeButtonActionListener ) {
+		return new FolderTabTitle( booleanState, closeButtonActionListener );
+	}
+	@Override
+	protected FolderTabItemDetails createTabItemDetails( E item, java.util.UUID id, AbstractButton< ?, BooleanState > titleButton, ScrollPane scrollPane, JComponent<?> mainComponent ) {
+//		AbstractButton<?,?> button = new FolderTabTitle(innerTitleComponent, closeButtonActionListener);
 		JComponent<?> root;
 		if( scrollPane != null ) {
 			root = scrollPane;
@@ -313,7 +594,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		}
 		root.setVisible( false );
 		root.setBackgroundColor( null );
-		return new FolderTabItemDetails( item, button, id, innerTitleComponent, scrollPane, mainComponent );
+		return new FolderTabItemDetails( item, titleButton, id, scrollPane, mainComponent );
 	};
 	
 
@@ -326,7 +607,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	protected void addPrologue(int count) {
 	}
 	@Override
-	protected void addItem(edu.cmu.cs.dennisc.croquet.FolderTabbedPane.FolderTabItemDetails folderTabItemDetails) {
+	protected void addItem(FolderTabbedPane.FolderTabItemDetails folderTabItemDetails) {
 		this.titlesPanel.addComponent( folderTabItemDetails.getButton() );
 		this.cardPanel.addComponent( folderTabItemDetails.getCardPanelKey() );
 	}
@@ -345,7 +626,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 ////		this.revalidateAndRepaint();
 //	}
 //	@Override
-//	protected void removeTab(edu.cmu.cs.dennisc.croquet.AbstractTabbedPane.Tab<E> tab) {
+//	protected void removeTab(AbstractTabbedPane.Tab<E> tab) {
 //		this.headerPane.removeComponent( tab.getOuterTitleComponent() );
 //		this.cardPanel.removeComponent( ((FolderTab<E>)tab).getCardPanelKey() );
 //	}
@@ -355,7 +636,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	//	/* package-private */class Key {
 	//		private AbstractButton<?> headerComponent;
 	//		private TabStateOperation tabStateOperation;
-	//		private edu.cmu.cs.dennisc.croquet.CardPanel.Key mainComponentKey;
+	//		private CardPanel.Key mainComponentKey;
 	//
 	//		private Key( AbstractButton<?> headerComponent, Component<?> mainComponent, TabStateOperation tabStateOperation ) {
 	//			this.headerComponent = headerComponent;
@@ -366,9 +647,9 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	//			return this.tabStateOperation;
 	//		}
 	//	}
-	//	private java.util.Map<TabStateOperation, edu.cmu.cs.dennisc.croquet.CardPanel.Key> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	//	private edu.cmu.cs.dennisc.croquet.CardPanel.Key getKey( TabStateOperation tabStateOperation ) {
-	//		edu.cmu.cs.dennisc.croquet.CardPanel.Key rv = this.map.get( tabStateOperation );
+	//	private java.util.Map<TabStateOperation, CardPanel.Key> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	//	private CardPanel.Key getKey( TabStateOperation tabStateOperation ) {
+	//		CardPanel.Key rv = this.map.get( tabStateOperation );
 	//		if( rv != null ) {
 	//			//pass
 	//		} else {

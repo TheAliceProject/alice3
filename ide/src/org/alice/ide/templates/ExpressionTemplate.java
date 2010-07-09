@@ -82,7 +82,7 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 	protected void refresh() {
 		this.removeAllComponents();
 		edu.cmu.cs.dennisc.alice.ast.Expression incompleteExpression = this.createIncompleteExpression();
-		this.setBackgroundPaint( getIDE().getColorFor( incompleteExpression ) );
+		this.setEnabledBackgroundPaint( getIDE().getColorFor( incompleteExpression ) );
 		this.addComponent( getIDE().getTemplatesFactory().createComponent( incompleteExpression ) );
 	}
 	@Override
@@ -90,22 +90,24 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 		return false;
 	}
 	
-	protected boolean isFieldInScope() {
+	@Override
+	protected boolean isInScope() {
 		return getIDE().isSelectedAccessibleInScope();
 	}
 	
 	@Override
 	protected boolean contains( int x, int y, boolean jContains ) {
-		if( this.isFieldInScope() ) {
+		if( this.isInScope() ) {
 			return super.contains( x, y, jContains );
 		} else {
 			return false;
 		}
 	}
+		
 	@Override
 	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		super.paintEpilogue( g2, x, y, width, height );
-		if( this.isFieldInScope() ) {
+		if( this.isInScope() ) {
 			//pass
 		} else {
 			g2.setPaint( edu.cmu.cs.dennisc.zoot.PaintUtilities.getDisabledTexturePaint() );

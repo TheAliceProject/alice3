@@ -368,26 +368,31 @@ public abstract class AbstractTransformable extends Composite {
 		getSGAbstractTransformable().setTransformation( pointOfView, sgReferenceFrame );
 	}
 	protected void setPointOfView( edu.cmu.cs.dennisc.math.AffineMatrix4x4 pointOfView, Number duration, ReferenceFrame asSeenBy, Style style ) {
-		final edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgReferenceFrame = asSeenBy.getSGReferenceFrame();
-		duration = adjustDurationIfNecessary( duration );
-		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
-			if( pointOfView.isNaN() ) {
-				//pass
+		//assert asSeenBy != null;
+		if( asSeenBy != null ) {
+			final edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgReferenceFrame = asSeenBy.getSGReferenceFrame();
+			duration = adjustDurationIfNecessary( duration );
+			if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
+				if( pointOfView.isNaN() ) {
+					//pass
+				} else {
+					setPointOfView( pointOfView, sgReferenceFrame );
+				}
 			} else {
-				setPointOfView( pointOfView, sgReferenceFrame );
+				if( pointOfView.isNaN() ) {
+					alreadyAdjustedDelay( duration );
+				} else {
+					edu.cmu.cs.dennisc.math.AffineMatrix4x4 m0 = getTransformation( asSeenBy );
+					perform( new edu.cmu.cs.dennisc.math.animation.AffineMatrix4x4Animation( duration, style, m0, pointOfView ) {
+						@Override
+						protected void updateValue( edu.cmu.cs.dennisc.math.AffineMatrix4x4 pointOfView ) {
+							setPointOfView( pointOfView, sgReferenceFrame );
+						}
+					} );
+				}
 			}
 		} else {
-			if( pointOfView.isNaN() ) {
-				alreadyAdjustedDelay( duration );
-			} else {
-				edu.cmu.cs.dennisc.math.AffineMatrix4x4 m0 = getTransformation( asSeenBy );
-				perform( new edu.cmu.cs.dennisc.math.animation.AffineMatrix4x4Animation( duration, style, m0, pointOfView ) {
-					@Override
-					protected void updateValue( edu.cmu.cs.dennisc.math.AffineMatrix4x4 pointOfView ) {
-						setPointOfView( pointOfView, sgReferenceFrame );
-					}
-				} );
-			}
+			javax.swing.JOptionPane.showMessageDialog( null, "asSeenBy==null" );
 		}
 	}
 	

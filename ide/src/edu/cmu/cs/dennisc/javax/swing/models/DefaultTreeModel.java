@@ -40,20 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.javax.swing.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TextArea extends TextComponent< edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea > {
-	/*package-private*/ TextArea( StringState model ) {
-		super( model );
+public class DefaultTreeModel<E> extends javax.swing.tree.DefaultTreeModel implements TreeModel< TreeNode< E > > {
+	public DefaultTreeModel( TreeNode<E> root ) {
+		super( root );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea createAwtComponent() {
-		edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea();
-//		rv.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.SunkenBorder( 4,4,2,2 ) );
-		return rv;
+	public TreeNode< E > getChild(Object parent, int index) {
+		return (TreeNode< E >)super.getChild(parent, index);
+	}
+	@Override
+	public TreeNode< E > getRoot() {
+		return (TreeNode< E >)super.getRoot();
+	}
+	public javax.swing.tree.TreePath getTreePath( TreeNode< E > e ) {
+		Object[] nodes = this.getPathToRoot( e );
+		javax.swing.tree.TreePath path = new javax.swing.tree.TreePath( nodes );
+		return path;
 	}
 }

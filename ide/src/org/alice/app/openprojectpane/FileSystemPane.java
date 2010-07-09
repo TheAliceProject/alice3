@@ -77,7 +77,7 @@ class FileSystemPane extends TabContentPanel {
 			protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 				java.io.File file = edu.cmu.cs.dennisc.croquet.Application.getSingleton().showOpenFileDialog(org.alice.app.ProjectApplication.getSingleton().getMyProjectsDirectory(), null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION, true);
 				if (file != null) {
-					FileSystemPane.this.textState.setState(edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible(file));
+					FileSystemPane.this.textState.setValue(edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible(file));
 				}
 				context.finish();
 			}
@@ -94,7 +94,7 @@ class FileSystemPane extends TabContentPanel {
 
 	@Override
 	public java.net.URI getSelectedURI() {
-		String path = this.textState.getState();
+		String path = this.textState.getValue();
 		java.io.File file = new java.io.File(path);
 		if (file.exists()) {
 			return file.toURI();

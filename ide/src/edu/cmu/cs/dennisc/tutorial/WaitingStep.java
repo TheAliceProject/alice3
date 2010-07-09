@@ -58,5 +58,5 @@ package edu.cmu.cs.dennisc.tutorial;
 		return this.getModelResolver().getResolved();
 	}
 	protected abstract boolean isAlreadyInTheDesiredState();
-	public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryTreeNode<?> child );
+	public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child );
 }

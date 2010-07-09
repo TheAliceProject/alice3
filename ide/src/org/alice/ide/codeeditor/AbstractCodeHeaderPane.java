@@ -64,14 +64,16 @@ class AbstractCodeHeaderPane extends edu.cmu.cs.dennisc.croquet.Panel {
 		}
 	}
 	protected void addParametersPaneAndInstanceLineIfDesired() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		if( this.parametersPane != null ) {
 			this.addComponent( parametersPane );
 		}
-		boolean isInstanceLineDesired = ide.isEmphasizingClasses() && ide.isInstanceLineDesired();
-		if( isInstanceLineDesired ) {
-			this.addComponent( new InstanceLine( this.codeDeclarationInAlice ) );
-		}
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " on class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( this.codeDeclarationInAlice.getDeclaringType() ) );
+//		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+//		boolean isInstanceLineDesired = ide.isEmphasizingClasses() && ide.isInstanceLineDesired();
+//		if( isInstanceLineDesired ) {
+//			this.addComponent( new InstanceLine( this.codeDeclarationInAlice ) );
+//		}
 	}
 	protected void addComponent( edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
 		this.internalAddComponent( component );

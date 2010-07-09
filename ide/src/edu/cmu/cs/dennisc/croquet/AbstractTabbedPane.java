@@ -47,190 +47,24 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemDetails> extends ItemSelectablePanel<E, D> {
-	private static class CloseButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
-		private static final java.awt.Color BASE_COLOR = new java.awt.Color( 127, 63, 63 );
-		private static final java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, +0.25f );
-		private static final java.awt.Color PRESS_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, -0.125f );
-
-		private int getIconWidth() {
-			return 14;
-		}
-		private int getIconHeight() {
-			return getIconWidth();
-		}
-
-		@Override
-		public void paint(java.awt.Graphics g, javax.swing.JComponent c) {
-			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
-			javax.swing.ButtonModel model = button.getModel();
-
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-
-			float size = Math.min( this.getIconWidth(), this.getIconHeight() ) * 0.9f;
-
-			float w = size;
-			float h = size * 0.25f;
-			float xC = -w * 0.5f;
-			float yC = -h * 0.5f;
-			java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( xC, yC, w, h, h, h );
-
-			java.awt.geom.Area area0 = new java.awt.geom.Area( rr );
-			java.awt.geom.Area area1 = new java.awt.geom.Area( rr );
-
-			java.awt.geom.AffineTransform m0 = new java.awt.geom.AffineTransform();
-			m0.rotate( Math.PI * 0.25 );
-			area0.transform( m0 );
-
-			java.awt.geom.AffineTransform m1 = new java.awt.geom.AffineTransform();
-			m1.rotate( Math.PI * 0.75 );
-			area1.transform( m1 );
-
-			area0.add( area1 );
-
-			int x0 = 0;
-			int y0 = 0;
-			
-			java.awt.geom.AffineTransform m = new java.awt.geom.AffineTransform();
-			m.translate( x0 + getIconWidth() / 2, y0 + getIconWidth() / 2 );
-			area0.transform( m );
-
-			java.awt.Paint prevPaint = g2.getPaint();
-			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-			if( model.isRollover() ) {
-				if( model.isPressed() ) {
-					g2.setPaint( PRESS_COLOR );
-				} else {
-					g2.setPaint( HIGHLIGHT_COLOR );
-				}
-			} else {
-				g2.setPaint( java.awt.Color.WHITE );
-			}
-			javax.swing.AbstractButton parent = (javax.swing.AbstractButton)button.getParent();
-			if( parent.isSelected() ) {
-				g2.fill( area0 );
-				g2.setPaint( java.awt.Color.BLACK );
-			} else {
-				g2.setPaint( java.awt.Color.DARK_GRAY );
-			}
-			g2.draw( area0 );
-			g2.setPaint( prevPaint );
-		}
-		@Override
-		public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) {
-			return new java.awt.Dimension( this.getIconWidth(), this.getIconHeight() );
-		}
-	}
-
-	protected static abstract class JTabTitle extends javax.swing.AbstractButton {
-		private java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
-			public void mouseEntered( java.awt.event.MouseEvent e ) {
-				JTabTitle.this.setArmed( true );
-			}
-			public void mouseExited( java.awt.event.MouseEvent e ) {
-				JTabTitle.this.setArmed( false );
-			}
-			public void mousePressed( java.awt.event.MouseEvent e ) {
-				JTabTitle.this.setPressed( true );
-			}
-			public void mouseReleased( java.awt.event.MouseEvent e ) {
-				JTabTitle.this.setPressed( false );
-			}
-			public void mouseClicked(java.awt.event.MouseEvent e) {
-				JTabTitle.this.select();
-			}
-		};
-
-		protected void setArmed( boolean isArmed ) {
-			this.getModel().setArmed( isArmed );
-		}
-		protected void setPressed( boolean isPressed ) {
-			this.getModel().setPressed( isPressed );
-		}
-		protected void select() {
-			this.setSelected( true );
-		}
-
-		private javax.swing.JComponent jComponent;
-		private javax.swing.JButton closeButton;
-		private java.awt.event.ActionListener closeActionListener;
-		public JTabTitle( javax.swing.JComponent jComponent, java.awt.event.ActionListener closeActionListener ) {
-			this.jComponent = jComponent;
-			this.setModel( new javax.swing.JToggleButton.ToggleButtonModel() );
-			this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
-			this.add( this.jComponent );
-			this.closeActionListener = closeActionListener;
-			if( this.closeActionListener != null ) {
-				this.closeButton = new javax.swing.JButton();
-				this.closeButton.setUI( new CloseButtonUI() );
-				this.closeButton.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-				this.closeButton.setOpaque( false );
-				this.add( this.closeButton );
-			}
-		}
-		@Override
-		public void setFont(java.awt.Font font) {
-			super.setFont(font);
-			this.jComponent.setFont( font );
-		}
-		@Override
-		public void addNotify() {
-			super.addNotify();
-			this.addMouseListener( this.mouseListener );
-			if( this.closeButton != null ) {
-				assert this.closeActionListener != null;
-				this.closeButton.addActionListener( this.closeActionListener );
-			}
-		}
-		@Override
-		public void removeNotify() {
-			if( this.closeButton != null ) {
-				assert this.closeActionListener != null;
-				this.closeButton.removeActionListener( this.closeActionListener );
-			}
-			this.removeMouseListener( this.mouseListener );
-			super.removeNotify();
-		}
-	}
-
-	@Deprecated
-	private final static BooleanState TAB_TITLE_BOOLEAN_STATE = null;
-	
-	protected static abstract class TabTitle extends AbstractButton< javax.swing.AbstractButton, BooleanState > {
-		private JTabTitle jTabTitle;
-		public TabTitle( JTabTitle jTabTitle ) {
-			super( TAB_TITLE_BOOLEAN_STATE );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: TAB_TITLE_BOOLEAN_STATE" );
-			this.jTabTitle = jTabTitle;
-		}
-		@Override
-		protected final javax.swing.AbstractButton createAwtComponent() {
-			return this.jTabTitle;
-		}
-	}
-	
 	protected class TabItemDetails extends ItemDetails {
 		private java.util.UUID id;
-		private JComponent<?> innerTitleComponent;
 		private JComponent<?> mainComponent;
 		private ScrollPane scrollPane;
-		public TabItemDetails( E item, AbstractButton< ?,? > button, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent ) {
-			super( item, button );
+		public TabItemDetails( E item, AbstractButton< ?,BooleanState > titleButton, java.util.UUID id, ScrollPane scrollPane, JComponent<?> mainComponent ) {
+			super( item, titleButton );
 			assert id != null;
 			this.id = id;
-			this.innerTitleComponent = innerTitleComponent;
 			this.mainComponent = mainComponent;
 			this.scrollPane = scrollPane;
 
-			button.setBackgroundColor( this.mainComponent.getBackgroundColor() );
+			titleButton.setBackgroundColor( this.mainComponent.getBackgroundColor() );
 			if( this.scrollPane != null ) {
 				this.scrollPane.setViewportView( this.mainComponent );
 			}
 		}
 		public java.util.UUID getId() {
 			return this.id;
-		}
-		public JComponent< ? > getInnerTitleComponent() {
-			return this.innerTitleComponent;
 		}
 		public JComponent< ? > getMainComponent() {
 			return this.mainComponent;
@@ -251,17 +85,18 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 	public void setFont(java.awt.Font font) {
 		super.setFont( font );
 		for( D tabItemDetails : this.getAllItemDetails() ) {
-			tabItemDetails.getInnerTitleComponent().setFont( font );
+			tabItemDetails.getButton().setFont( font );
 		}
 	}
 
-	protected abstract D createTabItemDetails( E item, java.util.UUID id, JComponent<?> innerTitleComponent, ScrollPane scrollPane, JComponent<?> mainComponent, java.awt.event.ActionListener closeButtonActionListener );
+	protected abstract AbstractButton< ?, BooleanState > createTitleButton( BooleanState booleanState, java.awt.event.ActionListener closeButtonActionListener );
+	protected abstract D createTabItemDetails( E item, java.util.UUID id, AbstractButton< ?, BooleanState > titleButton, ScrollPane scrollPane, JComponent<?> mainComponent );
 	@Override
-	protected final D createItemDetails( final E item) {
+	protected final D createItemDetails( final E item ) {
 		java.util.UUID id = this.tabCreator.getId( item );
 		assert id != null : item;
 		java.awt.event.ActionListener closeButtonActionListener;
-		if( this.tabCreator.isCloseAffordanceDesired() ) {
+		if( this.tabCreator.isCloseable( item ) ) {
 			closeButtonActionListener = new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					AbstractTabbedPane.this.getModel().removeItem( item );
@@ -270,7 +105,10 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 		} else {
 			closeButtonActionListener = null;
 		}
-		return createTabItemDetails( item, id, this.tabCreator.createInnerTitleComponent( item ), this.tabCreator.createScrollPane( item ), this.tabCreator.createMainComponent( item ), closeButtonActionListener );
+		BooleanState booleanState = new BooleanState( Application.UI_STATE_GROUP, java.util.UUID.fromString( "a6ed465d-39f4-4604-a5d0-e6c9463606b0" ), false );
+		AbstractButton< ?, BooleanState > titleButton = this.createTitleButton( booleanState, closeButtonActionListener );
+		this.tabCreator.customizeTitleComponent( booleanState, titleButton, item );
+		return createTabItemDetails( item, id, titleButton, this.tabCreator.createScrollPane( item ), this.tabCreator.createMainComponent( item ) );
 	}
 	
 	public AbstractTabbedPane( ListSelectionState<E> model, ListSelectionState.TabCreator< E > tabCreator ) {

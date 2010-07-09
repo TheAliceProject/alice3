@@ -99,13 +99,14 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 //		this.setDragAndDropOperation(null);
 //		super.handleRemovedFrom(parent);
 //	}
-	protected boolean isFieldInScope() {
+	@Override
+	protected boolean isInScope() {
 		return getIDE().isSelectedAccessibleInScope();
 	}
 
 	@Override
 	protected boolean contains(int x, int y, boolean jContains) {
-		if( this.isFieldInScope() ) {
+		if( this.isInScope() ) {
 			return super.contains(x, y, jContains);
 		} else {
 			return false;
@@ -115,7 +116,7 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 	@Override
 	protected void paintEpilogue(java.awt.Graphics2D g2, int x, int y, int width, int height) {
 		super.paintEpilogue(g2, x, y, width, height);
-		if( this.isFieldInScope() ) {
+		if( this.isInScope() ) {
 			//pass
 		} else {
 			g2.setPaint(edu.cmu.cs.dennisc.zoot.PaintUtilities.getDisabledTexturePaint());

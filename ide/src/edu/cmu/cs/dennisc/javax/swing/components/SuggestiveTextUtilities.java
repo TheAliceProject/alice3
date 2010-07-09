@@ -52,9 +52,9 @@ class SuggestiveTextUtilities {
 			if( text.length() > 0 || textForBlankCondition == null ) {
 				//pass
 			} else {
-				java.awt.Font font = textComponent.getFont().deriveFont( java.awt.Font.ITALIC );
+				java.awt.Font font = edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont(textComponent.getFont(), edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 				g.setFont( font );
-				g.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 127 ) );
+				g.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 ) );
 				java.awt.FontMetrics fm = g.getFontMetrics();
 				//java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( text, g );
 				//int y = textComponent.getHeight()-textComponent.getInsets().bottom-fm.getDescent();

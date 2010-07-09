@@ -44,7 +44,7 @@
 package edu.cmu.cs.dennisc.croquet;
 
 /*package-private*/ class SelectChildDirectoryPopupMenuOperation extends AbstractPopupMenuOperation {
-	public static SelectChildDirectoryPopupMenuOperation getInstance( TreeSelectionState<String> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
+	public static SelectChildDirectoryPopupMenuOperation getInstance( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: SelectChildDirectoryPopupMenuOperation.getInstance()" );
 		return new SelectChildDirectoryPopupMenuOperation(treeSelectionState, treeNode, initializer);
 	}
@@ -52,7 +52,7 @@ package edu.cmu.cs.dennisc.croquet;
 	private static final int ARROW_SIZE = 10;
 	private static final int ARROW_BORDER_HALF_SIZE = 3;
 	private Model[] models;
-	private SelectChildDirectoryPopupMenuOperation( TreeSelectionState<String> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
+	private SelectChildDirectoryPopupMenuOperation( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
 		super( java.util.UUID.fromString( "cc6a0de7-91b1-4a2b-86ff-21ca9de14bed" ) );
 		javax.swing.Icon icon = new javax.swing.Icon() {
 			public int getIconHeight() {
@@ -104,12 +104,12 @@ package edu.cmu.cs.dennisc.croquet;
 }
 
 /*package-private*/ class DirectoryControl extends BorderPanel {
-	public static DirectoryControl getInstance( TreeSelectionState<String> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
+	public static DirectoryControl getInstance( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: DirectoryControl.getInstance()" );
 		return new DirectoryControl( treeSelectionState, treeNode, initializer );
 	}
 
-	private DirectoryControl( TreeSelectionState<String> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
+	private DirectoryControl( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
 		Button selectChildButton = SelectChildDirectoryPopupMenuOperation.getInstance( treeSelectionState, treeNode, initializer ).createButton();
 		if( javax.swing.UIManager.getLookAndFeel().getName().contains( "Nimbus" ) ) {
 			selectChildButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 2, 0, 2 ) );
@@ -134,7 +134,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class PathControl extends ViewController< javax.swing.JComponent, TreeSelectionState > {
+public class PathControl extends ViewController< javax.swing.JComponent, TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> > {
 	private javax.swing.tree.TreeSelectionModel treeSelectionModel;
 	private javax.swing.event.TreeSelectionListener treeSelectionListener = new javax.swing.event.TreeSelectionListener() {
 		public void valueChanged(javax.swing.event.TreeSelectionEvent e) {
@@ -148,10 +148,10 @@ public class PathControl extends ViewController< javax.swing.JComponent, TreeSel
 		public Operation<?> getOperationForLeaf( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode );
 	}
 
-	private java.util.Map< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>, DirectoryControl > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	//private java.util.Map< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>, DirectoryControl > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
 	private Initializer initializer;
-	/*package-private*/ PathControl( TreeSelectionState model, Initializer initializer ) {
+	/*package-private*/ PathControl( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> model, Initializer initializer ) {
 		super( model );
 		this.initializer = initializer;
 	}

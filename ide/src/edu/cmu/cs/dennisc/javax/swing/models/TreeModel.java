@@ -40,19 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.window;
+package edu.cmu.cs.dennisc.javax.swing.models;
 
-public class IsHistoryShowingOperation extends IsFrameShowingOperation {
-	public IsHistoryShowingOperation() {
-		//todo: PREFERENCES_GROUP?
-		super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "cf08f7ac-16b2-4121-9f36-9aca59db4cf7" ), false, "Show History?" );
-	}
-	@Override
-	protected String getTitle() {
-		return "History";
-	}
-	@Override
-	protected java.awt.Component createPane() {
-		return new edu.cmu.cs.dennisc.history.HistoryPane( edu.cmu.cs.dennisc.alice.Project.GROUP );
-	}
+/**
+ * @author Dennis Cosgrove
+ */
+public interface TreeModel<E> extends javax.swing.tree.TreeModel {
+	public E getChild(Object parent, int index);
+	public E getRoot();
+	public javax.swing.tree.TreePath getTreePath( E e );
 }

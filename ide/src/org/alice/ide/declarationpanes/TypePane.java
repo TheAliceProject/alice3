@@ -63,23 +63,56 @@ class IsArrayStateOperation extends edu.cmu.cs.dennisc.croquet.BooleanState {
 
 public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	private static class TypeSelectionOperation extends edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > {
-		private static class TypeListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > {
-			@Override
-			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> value, int index, boolean isSelected, boolean cellHasFocus ) {
+//		private static class TypeListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > {
+//			@Override
+//			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> value, int index, boolean isSelected, boolean cellHasFocus ) {
+//				org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+//				rv.setText( ide.getTextFor( value ) );
+//				rv.setIcon( ide.getIconFor( value ) );
+//				return rv;
+//			}
+//		}
+		private static class TypeListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane implements javax.swing.ListCellRenderer {
+			private javax.swing.JLabel leadingLabel = new javax.swing.JLabel();
+			private class Label extends javax.swing.JLabel {
+				private boolean isPaintingDesired = true;
+				@Override
+				protected void paintComponent(java.awt.Graphics g) {
+					if( this.isPaintingDesired ) {
+						super.paintComponent( g );
+					}
+				}
+			}
+			private Label trailingLabel = new Label();
+			public TypeListCellRenderer() {
+				this.add( this.leadingLabel, java.awt.BorderLayout.LINE_START );
+				this.add( javax.swing.Box.createHorizontalStrut( 48 ) );
+				this.add( this.trailingLabel, java.awt.BorderLayout.LINE_END );
+				this.setOpaque( true );
+				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
+			}
+			public java.awt.Component getListCellRendererComponent(javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = (edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>)value;
 				org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-				rv.setText( ide.getTextFor( value ) );
-				rv.setIcon( ide.getIconFor( value ) );
-//				if( value != null ) {
-//					org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-//					rv.setText( ide.getTextFor( value ) );
-//					rv.setIcon( ide.getIconFor( value ) );
-////					rv.setHorizontalTextPosition( javax.swing.SwingConstants.TRAILING );
+				this.leadingLabel.setIcon( ide.getIconFor( type ) );
+				this.trailingLabel.setText( ide.getTextFor( type ) );
+				
+				if( isSelected ) {
+					this.setBackground( list.getSelectionBackground() );
+					this.leadingLabel.setForeground( list.getSelectionForeground() );
+					this.trailingLabel.setForeground( list.getSelectionForeground() );
+				} else {
+					this.setBackground( list.getBackground() );
+					this.leadingLabel.setForeground( list.getForeground() );
+					this.trailingLabel.setForeground( list.getForeground() );
+				}
+				this.trailingLabel.isPaintingDesired = index != -1;
+//				if( index != -1 ) {
+//					//pass
 //				} else {
-//					rv.setText( null );
-//					rv.setIcon( null );
-////					rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
+//					this.trailingLabel.setForeground( null );
 //				}
-				return rv;
+				return this;
 			}
 		}
 

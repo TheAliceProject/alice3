@@ -172,9 +172,18 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			rv.setAlignmentX( 0.0f );
 			rv.setDragEnabled( true );
 
-			//1.6
-			//rv.setDropMode( javax.swing.DropMode.INSERT );
-			
+			try {
+				Class<Enum<?>> dropModeClass = (Class<Enum<?>>)Class.forName( "javax.swing.DropMode" );
+				java.lang.reflect.Method setDropModeMethod = javax.swing.JList.class.getMethod( "setDropMode", dropModeClass );
+				java.lang.reflect.Field insertField = dropModeClass.getField( "INSERT" );
+				Object insertConstant = insertField.get( null );
+				setDropModeMethod.invoke(rv, insertConstant );
+				//1.6
+				//rv.setDropMode( javax.swing.DropMode.INSERT );
+			} catch( Exception e ) {
+				//pass
+				e.printStackTrace();
+			}
 			final java.awt.dnd.DragSource dragSource = new java.awt.dnd.DragSource();
 			final javax.swing.ListSelectionModel listSelectionModel = rv.getSelectionModel();
 			java.awt.dnd.DragGestureListener dragGestureListener = new java.awt.dnd.DragGestureListener() {
@@ -234,7 +243,7 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				}
 			};
 			
-			java.awt.dnd.DragGestureRecognizer dragGestureRecognizer = dragSource.createDefaultDragGestureRecognizer( rv, java.awt.dnd.DnDConstants.ACTION_MOVE, dragGestureListener );
+			dragSource.createDefaultDragGestureRecognizer( rv, java.awt.dnd.DnDConstants.ACTION_MOVE, dragGestureListener );
 			
 			ListIndexAsStringTransferHandler listIndexAsStringTransferHandler = new ListIndexAsStringTransferHandler();
 			rv.setTransferHandler( listIndexAsStringTransferHandler );
@@ -287,15 +296,15 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		functionsList.setBackgroundColor( null );
 		fieldsList.setBackgroundColor( null );
 
-		edu.cmu.cs.dennisc.croquet.BooleanState proceduresToolPaletteState = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "4236c740-8881-4cf1-82e3-e3aef61c13dd" ), true, "procedures" );
+		edu.cmu.cs.dennisc.croquet.BooleanState proceduresToolPaletteState = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "4236c740-8881-4cf1-82e3-e3aef61c13dd" ), true, "procedures" );
 		edu.cmu.cs.dennisc.croquet.ToolPalette proceduresToolPalette = proceduresToolPaletteState.createToolPalette( createMembersPanel( proceduresList, org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance( type ) ) );
 		proceduresToolPalette.setBackgroundColor( ide.getProcedureColor() );
 
-		edu.cmu.cs.dennisc.croquet.BooleanState functionsToolPaletteState = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "ea7e601f-255b-41aa-bccd-af181c6b3bf0" ), true, "functions" );
+		edu.cmu.cs.dennisc.croquet.BooleanState functionsToolPaletteState = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "ea7e601f-255b-41aa-bccd-af181c6b3bf0" ), true, "functions" );
 		edu.cmu.cs.dennisc.croquet.ToolPalette functionsToolPalette = functionsToolPaletteState.createToolPalette( createMembersPanel( functionsList, org.alice.ide.operations.ast.DeclareFunctionOperation.getInstance( type ) ) );
 		functionsToolPalette.setBackgroundColor( ide.getFunctionColor() );
 
-		edu.cmu.cs.dennisc.croquet.BooleanState fieldsToolPaletteState = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.ide.IDE.IDE_GROUP, java.util.UUID.fromString( "7176c895-4e0f-4ebe-98a2-f820b27c9206" ), true, "properties" );
+		edu.cmu.cs.dennisc.croquet.BooleanState fieldsToolPaletteState = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "7176c895-4e0f-4ebe-98a2-f820b27c9206" ), true, "properties" );
 		edu.cmu.cs.dennisc.croquet.ToolPalette fieldsToolPalette = fieldsToolPaletteState.createToolPalette( createMembersPanel( fieldsList, org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( type ) ) );
 		fieldsToolPalette.setBackgroundColor( ide.getFieldColor() );
 

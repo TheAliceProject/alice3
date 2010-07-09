@@ -40,56 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.window;
+package edu.cmu.cs.dennisc.javax.swing.models;
 
-public abstract class IsFrameShowingOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
-	private javax.swing.JFrame frame;
-	public IsFrameShowingOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, boolean initialValue, String trueAndFalseText ) {
-		super( group, individualId, initialValue, trueAndFalseText );
-		//todo
-		if( initialValue ) {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-				public void run() {
-					handleStateChange( true );
-				}
-			} );
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class AbstractTreeModel<E> implements TreeModel< E > {
+	private java.util.List<javax.swing.event.TreeModelListener> treeModelListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	public void addTreeModelListener(javax.swing.event.TreeModelListener treeModelListener) {
+		this.treeModelListeners.add( 0, treeModelListener );
+	}
+	public void removeTreeModelListener(javax.swing.event.TreeModelListener treeModelListener) {
+		this.treeModelListeners.remove( treeModelListener );
+	}
+	protected void fireTreeNodeChanged( Object source, Object[] path, int[] childIndices, Object[] children ) {
+		javax.swing.event.TreeModelEvent e = new javax.swing.event.TreeModelEvent( source, path, childIndices, children );
+		for( javax.swing.event.TreeModelListener listener : this.treeModelListeners ) {
+			listener.treeNodesChanged( e );
 		}
 	}
-	private javax.swing.JFrame getFrame() {
-		if( this.frame != null ) {
-			//pass
-		} else {
-			this.frame = new javax.swing.JFrame();
-			this.frame.setTitle( this.getTitle() );
-			this.frame.getContentPane().add( this.createPane() );
-			this.frame.setDefaultCloseOperation( javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE );
-			this.frame.addWindowListener( new java.awt.event.WindowListener() {
-				public void windowOpened(java.awt.event.WindowEvent e) {
-				} 
-				public void windowActivated(java.awt.event.WindowEvent e) {
-				}
-				public void windowDeiconified(java.awt.event.WindowEvent e) {
-				}
-				public void windowIconified(java.awt.event.WindowEvent e) {
-				}
-				public void windowDeactivated(java.awt.event.WindowEvent e) {
-				}
-				public void windowClosing(java.awt.event.WindowEvent e) {
-					IsFrameShowingOperation.this.setValue( false );
-				}
-				public void windowClosed(java.awt.event.WindowEvent e) {
-				}
-			} );
-			this.frame.pack();
+	protected void fireTreeNodeInserted( Object source, Object[] path, int[] childIndices, Object[] children ) {
+		javax.swing.event.TreeModelEvent e = new javax.swing.event.TreeModelEvent( source, path, childIndices, children );
+		for( javax.swing.event.TreeModelListener listener : this.treeModelListeners ) {
+			listener.treeNodesInserted( e );
 		}
-		return this.frame;
 	}
-	protected abstract java.awt.Component createPane();
-	protected abstract String getTitle();
-	@Override
-	protected final void handleStateChange(boolean value) {
-		javax.swing.JFrame frame = this.getFrame();
-		//frame.setLocation( 1024, 0 );
-		frame.setVisible( value );
+	protected void fireTreeNodeRemoved( Object source, Object[] path, int[] childIndices, Object[] children ) {
+		javax.swing.event.TreeModelEvent e = new javax.swing.event.TreeModelEvent( source, path, childIndices, children );
+		for( javax.swing.event.TreeModelListener listener : this.treeModelListeners ) {
+			listener.treeNodesRemoved( e );
+		}
+	}
+	protected void fireTreeStructureChanged( Object source, Object[] path, int[] childIndices, Object[] children ) {
+		javax.swing.event.TreeModelEvent e = new javax.swing.event.TreeModelEvent( source, path, childIndices, children );
+		for( javax.swing.event.TreeModelListener listener : this.treeModelListeners ) {
+			listener.treeStructureChanged( e );
+		}
+	}
+	
+	public void valueForPathChanged(javax.swing.tree.TreePath path, Object newValue) {
+		throw new RuntimeException( "todo" );
 	}
 }

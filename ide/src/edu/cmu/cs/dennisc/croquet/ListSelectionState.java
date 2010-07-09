@@ -457,10 +457,10 @@ public abstract class ListSelectionState<E> extends Model implements Iterable<E>
 
 	public interface TabCreator<E> {
 		public java.util.UUID getId(E item);
-		public JComponent<?> createInnerTitleComponent(E item);
+		public void customizeTitleComponent(BooleanState booleanState, AbstractButton< ?, BooleanState > button, E item);
 		public JComponent<?> createMainComponent(E item);
 		public ScrollPane createScrollPane(E item);
-		public boolean isCloseAffordanceDesired();
+		public boolean isCloseable(E item);
 	}
 
 	public FolderTabbedPane<E> createFolderTabbedPane(TabCreator<E> tabCreator) {

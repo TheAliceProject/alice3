@@ -53,11 +53,19 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 public class GalleryFileActionOperation extends AbstractGalleryDeclareFieldOperation<org.alice.ide.declarationpanes.CreateFieldFromGalleryPane> {
 	private AffineMatrix4x4 desiredTransformation = null;
 	
-	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode;
+	private static java.util.Map<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>, GalleryFileActionOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static GalleryFileActionOperation getInstance( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: GalleryFileActionOperation getInstance" );
-		return new GalleryFileActionOperation( treeNode );
+		GalleryFileActionOperation rv = map.get( treeNode );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new GalleryFileActionOperation( treeNode );
+			map.put( treeNode, rv );
+		}
+		return rv;
 	}
+
+	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode;
 	private GalleryFileActionOperation(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode) {
 		super( java.util.UUID.fromString( "19e8291e-3b0b-48f5-8bc9-1d02b754f9d4" ) );
 		this.treeNode = treeNode;

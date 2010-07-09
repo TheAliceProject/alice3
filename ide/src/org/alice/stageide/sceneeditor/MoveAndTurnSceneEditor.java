@@ -158,7 +158,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	
 	private ComboBox<CameraMarker> mainCameraViewSelector;
 	private CameraMarkerTracker mainCameraViewTracker;
-	private ListSelectionState<CameraMarker> mainCameraMarkerList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< CameraMarker >( ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "951c85e8-e8db-45d8-aa10-3e906c8d4bbf" ) ) {
+	private ListSelectionState<CameraMarker> mainCameraMarkerList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< CameraMarker >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "951c85e8-e8db-45d8-aa10-3e906c8d4bbf" ) ) {
 		@Override
 		protected CameraMarker decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			throw new RuntimeException( "todo" );
@@ -169,7 +169,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	};
 	
-	private ListSelectionState<FieldDeclaredInAlice> startingViewMarkerFieldList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< FieldDeclaredInAlice >( ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "926deb18-44b9-4c35-ae3b-f80bd5574983" ) ) {
+	private ListSelectionState<FieldDeclaredInAlice> startingViewMarkerFieldList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< FieldDeclaredInAlice >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "926deb18-44b9-4c35-ae3b-f80bd5574983" ) ) {
 		@Override
 		protected FieldDeclaredInAlice decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			throw new RuntimeException( "todo" );
@@ -180,7 +180,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	};
 	
-	private ListSelectionState<FieldDeclaredInAlice> sceneMarkerFieldList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< FieldDeclaredInAlice >( ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "a09eeae2-53fc-4cbe-ab09-a6d6d7975d4d" ) ) {
+	private ListSelectionState<FieldDeclaredInAlice> sceneMarkerFieldList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< FieldDeclaredInAlice >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "a09eeae2-53fc-4cbe-ab09-a6d6d7975d4d" ) ) {
 		@Override
 		protected FieldDeclaredInAlice decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			throw new RuntimeException( "todo" );
@@ -672,7 +672,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 			javax.swing.JPanel lgPanel = this.lookingGlassPanel.getAwtComponent();
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouthEast( lgPanel, isSceneEditorExpandedCheckBox.getAwtComponent(), INSET );
-			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthEast( lgPanel, this.getIDE().getRunOperation().createButton().getAwtComponent(), INSET );
+			//edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthEast( lgPanel, this.getIDE().getRunOperation().createButton().getAwtComponent(), INSET );
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( lgPanel, this.mainCameraViewSelector.getAwtComponent(), Horizontal.EAST, -INSET, Vertical.NORTH, INSET + 30 );
 			this.mainCameraViewSelector.getAwtComponent().setVisible(isSceneEditorExpandedOperation.getValue());
 			
@@ -793,59 +793,59 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private edu.cmu.cs.dennisc.scenegraph.Background cameraBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
 
 	protected void updateSceneBasedOnScope() {
-		//		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getIDE().getFocusedCode();
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = this.getIDE().getTypeInScope();
-		if( type != null ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
-			if( sceneField != null ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType = sceneField.getValueType();
-				boolean isSceneScope = type.isAssignableFrom( sceneType ) || this.sidePane.isExpanded();
-
-				java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = sceneType.getDeclaredFields();
-
-				try {
-					edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera = this.getOnscreenLookingGlass().getCameraAt( 0 );
-					if( isSceneScope ) {
-						camera.background.setValue( null );
-					} else {
-						cameraBackground.color.setValue( edu.cmu.cs.dennisc.color.Color4f.BLACK );
-						camera.background.setValue( cameraBackground );
-					}
-				} catch( Throwable t ) {
-					//pass
-				}
-				//				Object sceneInstanceInJava = this.getInstanceInJavaForField( sceneField );
-				//				if( sceneInstanceInJava instanceof org.alice.apis.moveandturn.Scene ) {
-				//					org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)sceneInstanceInJava;
-				//					if( isSceneScope ) {
-				//						scene.setAtmosphereColor( new org.alice.apis.moveandturn.Color( 0.75f, 0.75f, 1.0f ), org.alice.apis.moveandturn.Scene.RIGHT_NOW );
-				//					} else {
-				//						scene.setAtmosphereColor( org.alice.apis.moveandturn.Color.BLACK, org.alice.apis.moveandturn.Scene.RIGHT_NOW );
-				//					}
-				//				}
-				for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : fields ) {
-					Object instanceInJava = this.getInstanceInJavaForField( field );
-					if( instanceInJava instanceof org.alice.apis.moveandturn.Model ) {
-						org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instanceInJava;
-						if( isSceneScope || type.isAssignableTo( model.getClass() ) ) {
-							model.setColor( org.alice.apis.moveandturn.Color.WHITE, org.alice.apis.moveandturn.Model.RIGHT_NOW );
-							//							model.setOpacity( 1.0f, org.alice.apis.moveandturn.Model.RIGHT_NOW );
-						} else {
-							model.setColor( new org.alice.apis.moveandturn.Color( 0.25, 0.25, 0.25 ), org.alice.apis.moveandturn.Model.RIGHT_NOW );
-							//							model.setOpacity( 0.125f, org.alice.apis.moveandturn.Model.RIGHT_NOW );
-						}
-					}
-				}
-			}
-		}
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "force repaint" );
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				if( onscreenLookingGlass != null ) {
-					onscreenLookingGlass.repaint();
-				}
-			}
-		} );
+//		//		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getIDE().getFocusedCode();
+//		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = this.getIDE().getTypeInScope();
+//		if( type != null ) {
+//			edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
+//			if( sceneField != null ) {
+//				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType = sceneField.getValueType();
+//				boolean isSceneScope = type.isAssignableFrom( sceneType ) || this.sidePane.isExpanded();
+//
+//				java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = sceneType.getDeclaredFields();
+//
+//				try {
+//					edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera = this.getOnscreenLookingGlass().getCameraAt( 0 );
+//					if( isSceneScope ) {
+//						camera.background.setValue( null );
+//					} else {
+//						cameraBackground.color.setValue( edu.cmu.cs.dennisc.color.Color4f.BLACK );
+//						camera.background.setValue( cameraBackground );
+//					}
+//				} catch( Throwable t ) {
+//					//pass
+//				}
+//				//				Object sceneInstanceInJava = this.getInstanceInJavaForField( sceneField );
+//				//				if( sceneInstanceInJava instanceof org.alice.apis.moveandturn.Scene ) {
+//				//					org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)sceneInstanceInJava;
+//				//					if( isSceneScope ) {
+//				//						scene.setAtmosphereColor( new org.alice.apis.moveandturn.Color( 0.75f, 0.75f, 1.0f ), org.alice.apis.moveandturn.Scene.RIGHT_NOW );
+//				//					} else {
+//				//						scene.setAtmosphereColor( org.alice.apis.moveandturn.Color.BLACK, org.alice.apis.moveandturn.Scene.RIGHT_NOW );
+//				//					}
+//				//				}
+//				for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : fields ) {
+//					Object instanceInJava = this.getInstanceInJavaForField( field );
+//					if( instanceInJava instanceof org.alice.apis.moveandturn.Model ) {
+//						org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instanceInJava;
+//						if( isSceneScope || type.isAssignableTo( model.getClass() ) ) {
+//							model.setColor( org.alice.apis.moveandturn.Color.WHITE, org.alice.apis.moveandturn.Model.RIGHT_NOW );
+//							//							model.setOpacity( 1.0f, org.alice.apis.moveandturn.Model.RIGHT_NOW );
+//						} else {
+//							model.setColor( new org.alice.apis.moveandturn.Color( 0.25, 0.25, 0.25 ), org.alice.apis.moveandturn.Model.RIGHT_NOW );
+//							//							model.setOpacity( 0.125f, org.alice.apis.moveandturn.Model.RIGHT_NOW );
+//						}
+//					}
+//				}
+//			}
+//		}
+//		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "force repaint" );
+//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//			public void run() {
+//				if( onscreenLookingGlass != null ) {
+//					onscreenLookingGlass.repaint();
+//				}
+//			}
+//		} );
 	}
 
 	private void handleFocusedCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
