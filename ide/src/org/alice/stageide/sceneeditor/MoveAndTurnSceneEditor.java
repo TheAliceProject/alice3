@@ -47,6 +47,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,8 +59,11 @@ import org.alice.apis.moveandturn.Scene;
 import org.alice.apis.moveandturn.Transformable;
 import org.alice.app.ProjectApplication;
 import org.alice.ide.IDE;
+import org.alice.ide.declarationpanes.CreateFieldFromGalleryPane;
 import org.alice.ide.name.validators.FieldNameValidator;
+import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
+import org.alice.interact.InteractionGroup;
 import org.alice.interact.PickHint;
 import org.alice.interact.SnapGrid;
 import org.alice.interact.SnapState;
@@ -68,6 +72,7 @@ import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
+import org.alice.stageide.gallerybrowser.GalleryFileActionOperation;
 import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerTracker;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
@@ -91,6 +96,7 @@ import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
 import edu.cmu.cs.dennisc.croquet.DragComponent;
 import edu.cmu.cs.dennisc.croquet.ListSelectionState;
 import edu.cmu.cs.dennisc.javax.swing.SwingUtilities;import edu.cmu.cs.dennisc.croquet.Operation;
+import edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical;
 import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
@@ -185,27 +191,18 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	};
 	
-	private ListSelectionState<HandleSet> handleSelectionState = new ListSelectionState< HandleSet >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "639f27a5-896d-454b-af00-8527cbdf551c" ) ) {
-		@Override
-		protected HandleSet decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			throw new RuntimeException( "todo" );
-		}
-		@Override
-		protected void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, HandleSet value ) {
-			throw new RuntimeException( "todo" );
-		}
-	};
-	
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
 		public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractCode next ) {
 			MoveAndTurnSceneEditor.this.handleFocusedCodeChanged( next );
 		}
 	};
+	
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible> fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>() {
 		public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) {
 			MoveAndTurnSceneEditor.this.handleAccessibleSelection( nextValue );
 		}
 	};
+	
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > globalFieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
 		}
@@ -358,14 +355,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return this.startingViewMarkerFieldList;
 	}
 	
-	public ListSelectionState<HandleSet> getHandleSelectionStateList()
-	{
-		return this.handleSelectionState;
-	}
-	
 	public void addSceneEditorFieldObserver( SceneEditorFieldObserver fieldObserver ) {
 		this.fieldObservers.add( fieldObserver );
 	}
+	
 	public void addAndInvokeSceneEditorFieldObserver( SceneEditorFieldObserver fieldObserver ) {
 		this.addSceneEditorFieldObserver(fieldObserver);
 		if (this.sceneType != null)
@@ -379,14 +372,62 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.fieldObservers.remove(fieldObserver);
 	}
 	
-	private void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, boolean isAnimationDesired ) {
-		Object instance = this.getInstanceInJavaForField( field );
+	
+	/**
+	 * Selection Handling
+	 */
+	
+	//Called when a selection changes on org.alice.ide.IDE.getSingleton().getAccessibleListState()
+	private void handleAccessibleSelection( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
+		if( accessible instanceof AbstractField ) {
+			AbstractField field = (AbstractField)accessible;
+			Object instance = this.getInstanceForField( field );
+			if( instance instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
+				edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
+				instance = instanceInAlice.getInstanceInJava();
+			}
+			if( instance instanceof org.alice.apis.moveandturn.Model ) {
+				org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instance;
+				this.globalDragAdapter.setSelectedObject( model.getSGTransformable() );
+			}
+			else if( instance instanceof org.alice.apis.moveandturn.Marker ) {
+				org.alice.apis.moveandturn.Marker marker = (org.alice.apis.moveandturn.Marker)instance;
+				this.globalDragAdapter.setSelectedObject( marker.getSGTransformable() );
+			}
+			this.updateFieldLabels();
+		}
+	}
+	
+	private void handleSelectionEvent( org.alice.interact.event.SelectionEvent e ) {
+		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = e.getTransformable();
+		org.alice.apis.moveandturn.Element element = org.alice.apis.moveandturn.Element.getElement( sgTransformable );
+		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldForInstanceInJava( element );
+		org.alice.ide.IDE.getSingleton().getAccessibleListState().setSelectedItem(field);
+	}
+	
+	/**
+	 * End Selection Handling
+	 */
+
+	private CameraMarker getCameraMarkerForField( FieldDeclaredInAlice field )
+	{
+		CameraMarker cameraMarker = this.getInstanceInJavaForField(field, org.alice.apis.moveandturn.CameraMarker.class);
+		return cameraMarker;
+	}
+	
+
+	/**
+	 * Field Added/Removed Handling
+	 */
+	
+	private void handleFieldAdded(FieldDeclaredInAlice addedField)
+	{
+		Object instance = this.getInstanceInJavaForField( addedField );
 		assert instance instanceof org.alice.apis.moveandturn.Transformable;
 		final org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instance;
-		//declaringType.fields.add( field );
-		this.putInstanceForField( field, transformable );
-		this.getIDE().getAccessibleListState().setSelectedItem( field );
+		this.putInstanceForField( addedField, transformable );
 		final org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera = this.scene.findFirstMatch( org.alice.apis.moveandturn.SymmetricPerspectiveCamera.class );
+		boolean isAnimationDesired = true;
 		if( isAnimationDesired && camera != null && transformable instanceof org.alice.apis.moveandturn.Model ) {
 			new Thread() {
 				@Override
@@ -397,17 +438,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		} else {
 			this.scene.addComponent( transformable );
 		}
-	}
-	
-	private CameraMarker getCameraMarkerForField( FieldDeclaredInAlice field )
-	{
-		CameraMarker cameraMarker = this.getInstanceInJavaForField(field, org.alice.apis.moveandturn.CameraMarker.class);
-		return cameraMarker;
-	}
-	
-	private void handleFieldAdded(FieldDeclaredInAlice addedField)
-	{
-		this.handleFieldCreation( addedField, true );
 		if (addedField.getDesiredValueType().isAssignableTo(CameraMarker.class))
 		{
 			this.mainCameraMarkerList.setSelectedItem(this.getCameraMarkerForField(addedField));
@@ -423,12 +453,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		final org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instance;
 		this.scene.removeComponent( transformable );
 		this.removeField(removedField);
-//		
-//		List<FieldDeclaredInAlice> declaredFields = this.getDeclaredFields();
-//		for( FieldDeclaredInAlice field : declaredFields) 
-//		{
-//			this.getInstanceInJavaForField(field);
-//		}
 	}
 	
 	private void handleFieldsSet(Collection<? extends FieldDeclaredInAlice> newFields)
@@ -437,6 +461,48 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		//The object tree is handled by the FieldRadioButtons
 	}
 	
+	private void handleGlobalFieldsAdded(Collection<? extends FieldDeclaredInAlice> addedFields)
+	{
+		refreshMarkerLists();
+		for (SceneEditorFieldObserver observer : MoveAndTurnSceneEditor.this.fieldObservers)
+		{
+			
+			for (FieldDeclaredInAlice addedField : addedFields)
+			{
+				observer.fieldAdded(addedField);
+			}
+		}
+	}
+	
+	private void handleGlobalFieldsRemoved(Collection<? extends FieldDeclaredInAlice> removedFields)
+	{
+		refreshMarkerLists();
+		for (SceneEditorFieldObserver observer : MoveAndTurnSceneEditor.this.fieldObservers)
+		{
+			for (FieldDeclaredInAlice removedField : removedFields)
+			{
+				observer.fieldRemoved(removedField);
+			}
+		}
+	}
+	
+	private void handleGlobalFieldsCleared()
+	{
+		refreshMarkerLists();
+		for (SceneEditorFieldObserver observer : MoveAndTurnSceneEditor.this.fieldObservers)
+		{
+			observer.fieldsSet(null);
+		}
+	}
+	
+	private void handleGlobalFieldsSet(Collection<? extends FieldDeclaredInAlice> newFields)
+	{
+		refreshMarkerLists();
+		for (SceneEditorFieldObserver observer : MoveAndTurnSceneEditor.this.fieldObservers)
+		{
+			observer.fieldsSet(newFields);
+		}
+	}
 	
 	private void refreshMarkerLists()
 	{
@@ -485,62 +551,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.mainCameraMarkerList.setListData(mainCameraViewSelectedIndex, cameraMarkerFieldsAndOrthoOptions);
 	}
 	
-	private void handleGlobalFieldsAdded(Collection<? extends FieldDeclaredInAlice> addedFields)
-	{
-//		PrintUtilities.println( "fields added" );
-//		if (addedFields.size() > 1)
-//		{
-//			PrintUtilities.println( "MORE THAN ONE FIELD ADDED" );
-//		}
-		refreshMarkerLists();
-		for (SceneEditorFieldObserver observer : MoveAndTurnSceneEditor.this.fieldObservers)
-		{
-			
-			for (FieldDeclaredInAlice addedField : addedFields)
-			{
-				observer.fieldAdded(addedField);
-			}
-		}
-	}
-	
-	private void handleGlobalFieldsRemoved(Collection<? extends FieldDeclaredInAlice> removedFields)
-	{
-//		PrintUtilities.println( "fields removed" );
-//		if (removedFields.size() > 1)
-//		{
-//			PrintUtilities.println( "MORE THAN ONE FIELD REMOVED" );
-//		}
-		refreshMarkerLists();
-		for (SceneEditorFieldObserver observer : MoveAndTurnSceneEditor.this.fieldObservers)
-		{
-			PrintUtilities.println("todo: Fix the concurrency problem with ListProperty.removeExclusive() so we can actually iterate over the removedFields list.");
-			//TEMP: this is because iterating over the removed list results in a concurrency error
-			for (FieldDeclaredInAlice removedField : removedFields)
-			{
-				observer.fieldRemoved(removedField);
-			}
-			//observer.fieldRemoved(null);
-		}
-	}
-	
-	private void handleGlobalFieldsCleared()
-	{
-//		PrintUtilities.println( "fields cleared" );
-		refreshMarkerLists();
-		for (SceneEditorFieldObserver observer : MoveAndTurnSceneEditor.this.fieldObservers)
-		{
-			observer.fieldsSet(null);
-		}
-	}
-	
-	private void handleGlobalFieldsSet(Collection<? extends FieldDeclaredInAlice> newFields)
-	{
-		refreshMarkerLists();
-		for (SceneEditorFieldObserver observer : MoveAndTurnSceneEditor.this.fieldObservers)
-		{
-			observer.fieldsSet(newFields);
-		}
-	}
+	/**
+	 * End Field Added/Removed Handling
+	 */
 
 	@Override
 	public void enableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
@@ -595,6 +608,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		super.handleRemovedFrom( parent );
 	}
 	
+	public AbstractDragAdapter getDragAdapter()
+	{
+		return this.globalDragAdapter;
+	}
+	
 	private void initializeIfNecessary() {
 		if( this.globalDragAdapter != null ) {
 			//pass
@@ -604,25 +622,20 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			
 			this.snapGrid = new SnapGrid();
 			this.snapState = new SnapState();
+			this.snapState.getShowSnapGridState().addAndInvokeValueObserver(this.showSnapGridObserver);
+			
+			this.globalDragAdapter = new org.alice.interact.GlobalDragAdapter(this);
+			this.globalDragAdapter.setSnapState(this.snapState);
+			this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
+			
 			this.sidePane = new SidePane(this);
+			this.sidePane.setSnapState(this.snapState);
 			this.splitPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 			this.splitPane.setResizeWeight( 1.0 );
 			this.splitPane.setDividerProportionalLocation( 1.0 );
 			this.addComponent( this.splitPane, Constraint.CENTER );
 			
-			this.snapState.getShowSnapGridState().addAndInvokeValueObserver(this.showSnapGridObserver);
-			this.sidePane.setSnapState(this.snapState);
-			this.globalDragAdapter = new org.alice.interact.GlobalDragAdapter(this);
-			this.globalDragAdapter.setSnapState(this.snapState);
-			this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 			
-			this.handleSelectionState.addItem(HandleSet.DEFAULT_INTERACTION);
-			this.handleSelectionState.addItem(HandleSet.ROTATION_INTERACTION);
-			this.handleSelectionState.addItem(HandleSet.TRANSLATION_INTERACTION);
-			this.handleSelectionState.addItem(HandleSet.RESIZE_INTERACTION);
-			this.handleSelectionState.setSelectedItem(HandleSet.DEFAULT_INTERACTION);
-			
-			this.handleSelectionState.addAndInvokeValueObserver(this.globalDragAdapter.handleStateValueObserver);
 			
 			MouseDragCondition rightMouseAndInteractive = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON3 , new PickCondition( PickHint.MOVEABLE_OBJECTS ) );
 			ManipulatorClickAdapter rightClickAdapter = new ManipulatorClickAdapter() {
@@ -672,7 +685,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				public void selecting( org.alice.interact.event.SelectionEvent e ) {
 				}
 				public void selected( org.alice.interact.event.SelectionEvent e ) {
-					MoveAndTurnSceneEditor.this.handleSelection( e );
+					MoveAndTurnSceneEditor.this.handleSelectionEvent( e );
 				}
 			} );
 		}
@@ -775,15 +788,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		model.setOpacity( 1.0 );
 		camera.moveAndOrientTo( this.scene.createOffsetStandIn( pov.getInternal() ), 0.5 );
 	}
-	
-	private void handleSelection( org.alice.interact.event.SelectionEvent e ) {
-		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = e.getTransformable();
-		org.alice.apis.moveandturn.Element element = org.alice.apis.moveandturn.Element.getElement( sgTransformable );
-		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldForInstanceInJava( element );
-		if( field != null ) {
-			this.getIDE().getAccessibleListState().setSelectedItem( field );
-		}
-	}
+
 
 	private edu.cmu.cs.dennisc.scenegraph.Background cameraBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
 
@@ -891,28 +896,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			org.alice.apis.moveandturn.PickHintUtilities.setPickHint( transformable );
 		}
 	}
-
-	private void handleAccessibleSelection( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
-		if( accessible instanceof AbstractField ) {
-			AbstractField field = (AbstractField)accessible;
-			Object instance = this.getInstanceForField( field );
-			if( instance instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
-				edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
-				instance = instanceInAlice.getInstanceInJava();
-			}
-			if( instance instanceof org.alice.apis.moveandturn.Model ) {
-				org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instance;
-				this.globalDragAdapter.setSelectedObject( model.getSGTransformable() );
-			}
-			else if( instance instanceof org.alice.apis.moveandturn.Marker ) {
-				org.alice.apis.moveandturn.Marker marker = (org.alice.apis.moveandturn.Marker)instance;
-				this.globalDragAdapter.setSelectedObject( marker.getSGTransformable() );
-			}
-			this.updateFieldLabels();
-		}
-	}
-
-	
 
 	private void setCameraMarkerVisibility(boolean isShowing)
 	{
@@ -1496,31 +1479,48 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 	public void dragStarted(DragAndDropContext dragAndDropContext) {
 		DragComponent dragSource = dragAndDropContext.getDragSource();
-		org.alice.stageide.gallerybrowser.GalleryDragComponent galleryDragComponent = (org.alice.stageide.gallerybrowser.GalleryDragComponent)dragSource;
-		edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode = galleryDragComponent.getTreeNode();
-		edu.cmu.cs.dennisc.math.AxisAlignedBox box = org.alice.stageide.gallerybrowser.ResourceManager.getAxisAlignedBox(treeNode);
-		System.err.println( "bounding box: " + box );
-	}
-
-	public void dragStopped(DragAndDropContext dragAndDropContext) {
-	}
-
-	public void dragEntered(DragAndDropContext dragAndDropContext) {
-		DragComponent dragSource = dragAndDropContext.getDragSource();
-		dragSource.hideDragProxy();
-	}
-	public void dragExited(DragAndDropContext dragAndDropContext, boolean isDropRecipient) {
-		DragComponent dragSource = dragAndDropContext.getDragSource();
 		dragSource.showDragProxy();
 	}
 
-	public void dragUpdated(DragAndDropContext dragAndDropContext) {
-		DragComponent dragSource = dragAndDropContext.getDragSource();
-		
+	public void dragStopped(DragAndDropContext dragAndDropContext) 
+	{
+		this.globalDragAdapter.dragExited(dragAndDropContext);
+	}
+
+	public void dragEntered(DragAndDropContext dragAndDropContext) 
+	{
+	}
+	public void dragExited(DragAndDropContext dragAndDropContext, boolean isDropRecipient) 
+	{
+	}
+
+	private boolean overLookingGlass = false;
+	
+	private boolean isDropLocationOverLookingGlass(DragAndDropContext dragAndDropContext)
+	{
 		java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
-		java.awt.Point p = dragSource.convertPoint(eSource.getPoint(), this );
-		
-		PrintUtilities.println( "updated", p );
+		java.awt.Point pointInLookingGlass = javax.swing.SwingUtilities.convertPoint( eSource.getComponent(), eSource.getPoint(), this.lookingGlassPanel.getAwtComponent() );
+		return this.lookingGlassPanel.getAwtComponent().contains(pointInLookingGlass);
+	}
+	
+	public void dragUpdated(DragAndDropContext dragAndDropContext) {
+		if (isDropLocationOverLookingGlass(dragAndDropContext))
+		{
+			if (!overLookingGlass)
+			{
+				overLookingGlass = true;
+				this.globalDragAdapter.dragEntered(dragAndDropContext);
+			}
+			this.globalDragAdapter.dragUpdated(dragAndDropContext);
+		}
+		else
+		{
+			if (overLookingGlass)
+			{
+				overLookingGlass = false;
+				this.globalDragAdapter.dragExited(dragAndDropContext);
+			}
+		}
 	}
 
 	public edu.cmu.cs.dennisc.croquet.JComponent<?> getViewController() {
@@ -1530,9 +1530,20 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	public boolean isPotentiallyAcceptingOf(DragComponent source) {
 		return source instanceof org.alice.stageide.gallerybrowser.GalleryDragComponent;
 	}
+	
 	public Operation<?> dragDropped(DragAndDropContext dragAndDropContext) {
 		DragComponent dragSource = dragAndDropContext.getDragSource();
-		return dragSource.getLeftButtonClickOperation();
+		if (isDropLocationOverLookingGlass(dragAndDropContext))
+		{
+			Operation<?> operation = dragSource.getLeftButtonClickOperation();
+			if (operation instanceof GalleryFileActionOperation)
+			{
+				AffineMatrix4x4 dropTargetPosition = this.globalDragAdapter.getDropTargetTransformation();
+				((GalleryFileActionOperation)operation).setDesiredTransformation(dropTargetPosition);
+			}
+			return operation;
+		}
+		return null;
 	}
 
 	

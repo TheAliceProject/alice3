@@ -40,42 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact.condition;
 
-import org.alice.interact.InputState;
-import org.alice.interact.ModifierMask;
+package org.alice.interact.manipulator;
 
-/**
- * @author David Culyba
- */
-public class ModifierSensitiveCondition extends InputCondition {
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
-	protected ModifierMask modifierMask = null;
+public interface TargetManipulator {
 	
-	public ModifierSensitiveCondition()
-	{
-		this.modifierMask = null;
-	}
-	
-	public ModifierSensitiveCondition( ModifierMask modifierMask )
-	{
-		this.modifierMask = modifierMask;
-	}
-	
-	@Override
-	protected boolean testState( InputState state ) {
-		if (state.getIsDragEvent())
-		{
-			return false;
-		}
-		if (this.modifierMask != null)
-		{
-			return this.modifierMask.test( state );
-		}
-		else
-		{
-			return true;
-		}
-	}
+	public AffineMatrix4x4 getTargetTransformation();
 
 }

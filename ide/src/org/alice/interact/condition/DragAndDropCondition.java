@@ -40,113 +40,56 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.interact.condition;
 
+import java.awt.Point;
+
 import org.alice.interact.InputState;
-import org.alice.interact.PickHint;
 
-/**
- * @author David Culyba
- */
-public class SelectedObjectCondition extends InputCondition {
+public class DragAndDropCondition extends InputCondition {
 
-	public enum ObjectSwitchBehavior
-	{
-		END_ON_SWITCH,
-		IGNORE_SWITCH,
-	}
+	protected boolean hasStarted = false;
 	
-	PickHint acceptableType = PickHint.EVERYTHING;
-	
-	protected boolean isNot = false;
-	private ObjectSwitchBehavior switchBehavior = ObjectSwitchBehavior.END_ON_SWITCH;
-	
-	public SelectedObjectCondition( PickHint acceptableType )
-	{
-		this(acceptableType, ObjectSwitchBehavior.END_ON_SWITCH);
-	}
-	
-	public SelectedObjectCondition( PickHint acceptableType, ObjectSwitchBehavior switchBehavior )
-	{
-		this.acceptableType = acceptableType;
-		this.switchBehavior = switchBehavior;
+	@Override
+	protected boolean testState(InputState state) {
+		return state.getIsDragEvent();
 	}
 	
 	@Override
-	protected boolean testState( InputState state )
-	{
-		if (state.getIsDragEvent())
-		{
-			return false;
-		}
-		boolean isValid = this.acceptableType.intersects( PickCondition.getPickType( state.getCurrentlySelectedObject() ) );
-		if (isNot)
-		{
-			return !isValid;
-		}
-		else 
-		{
-			return isValid; 
-		}
-	}
-	
-	protected boolean selectedObjectSwitched( InputState currentState, InputState previousState )
-	{
-		if (this.switchBehavior == ObjectSwitchBehavior.END_ON_SWITCH)
-		{
-			return currentState.getCurrentlySelectedObject() != previousState.getCurrentlySelectedObject();
-		}
-		else
-		{
-			return false;
-		}
+	public boolean stateChanged( InputState currentState, InputState previousState ) {
+		return ( super.stateChanged( currentState, previousState ) || !currentState.getMouseLocation().equals( previousState.getMouseLocation() ) );
 	}
 	
 	@Override
 	public boolean isRunning( InputState currentState, InputState previousState ) {
-		return ( super.isRunning( currentState, previousState ) && !selectedObjectSwitched( currentState, previousState ) );
-	}
-
-	@Override
-	public boolean justEnded( InputState currentState, InputState previousState ) {
-		if ( super.justEnded( currentState, previousState ))
+		if (this.hasStarted && testState(currentState) && testState(previousState))
 		{
 			return true;
 		}
-		else if ( testState(previousState) )
-		{
-			return selectedObjectSwitched( currentState, previousState );
-		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
-
+	
 	@Override
-	public boolean justStarted( InputState currentState, InputState previousState ) {
-		if ( super.justStarted( currentState, previousState ) )
+	public boolean justStarted( InputState currentState, InputState previousState ) 
+	{
+		if (!testState(previousState) && testState(currentState))
 		{
+			this.hasStarted = true;
 			return true;
 		}
-		else if ( testState(currentState) )
-		{
-			return selectedObjectSwitched( currentState, previousState );
-		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
-
+	
 	@Override
-	public boolean stateChanged( InputState currentState, InputState previousState ) {
-		if ( (this.switchBehavior == ObjectSwitchBehavior.END_ON_SWITCH) && currentState.getCurrentlySelectedObject() != previousState.getCurrentlySelectedObject() )
+	public boolean justEnded( InputState currentState, InputState previousState ) 
+	{
+		if (this.hasStarted && !testState(currentState) && testState(previousState))
 		{
+			this.hasStarted = false;
 			return true;
 		}
-		else return ( testState( currentState ) != testState( previousState ));
+		return false;
 	}
-
 
 }

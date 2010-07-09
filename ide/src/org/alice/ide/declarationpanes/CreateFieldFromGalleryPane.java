@@ -42,6 +42,10 @@
  */
 package org.alice.ide.declarationpanes;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
+
 //class GalleryLabel extends edu.cmu.cs.dennisc.croquet.Label {
 //	public GalleryLabel( java.net.URL url ) {
 //		this.setIcon( new javax.swing.ImageIcon( url ) );
@@ -63,6 +67,7 @@ package org.alice.ide.declarationpanes;
  */
 public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldPane {
 	//private GalleryLabel galleryIcon;
+	
 	private CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class<?> cls, javax.swing.Icon icon, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
 		super( declaringType, cls, valueType );
 		if( icon != null ) {
@@ -78,12 +83,12 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
 		this( declaringType, null, org.alice.stageide.gallerybrowser.ResourceManager.getLargeIconForGalleryClassName( valueType.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getName() ), valueType );
 	}
-	
 
 	public Object createInstanceInJava() {
 		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( this.getValueType().getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification() );
 	}
-
+	
+	
 	private static java.util.Set< String > prefixSet = new java.util.HashSet< String >();
 	static {
 		prefixSet = new java.util.HashSet< String >();
