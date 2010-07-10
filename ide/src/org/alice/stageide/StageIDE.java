@@ -525,16 +525,19 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 
 	private static final boolean IS_LIMITED_TO_LOOKING_GLASS_TYPES = true;
+	private static String createExampleText( String examples ) {
+		return "<html><em>examples:</em> " + examples + "</html>";
+	}
 	@Override
 	public String getTextFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		if( mapTypeToText != null ) {
 			//pass
 		} else {
 			mapTypeToText = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractType, String >();
-			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE, "<html><em>examples:</em> 0.25, 1.0, 3.14, 98.6</html>" );
-			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, "<html><em>examples:</em> 1, 2, 42, 100</html>" );
-			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE, "<html><em>examples:</em> true, false</html>" );
-			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( String.class ), "<html><em>examples:</em> \"hello\", \"goodbye\"</html>" );
+			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE, createExampleText( "0.25, 1.0, 3.14, 98.6" ) );
+			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, createExampleText( "1, 2, 42, 100" ) );
+			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE, createExampleText( "true, false" ) );
+			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( String.class ), createExampleText( "\"hello\", \"goodbye\"" ) );
 			
 //			if( IS_LIMITED_TO_LOOKING_GLASS_TYPES ) {
 //				

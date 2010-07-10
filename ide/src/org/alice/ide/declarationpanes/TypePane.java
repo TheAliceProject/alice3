@@ -152,6 +152,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8f3e1f74-d1fd-4484-98e0-bc37da452005" ) );
 			this.type = type;
 			this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( this.type ) );
+			this.setName( org.alice.ide.IDE.getSingleton().getTextFor( type ) );
 		}
 		@Override
 		protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
