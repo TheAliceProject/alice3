@@ -46,6 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class InputDialogOperation<J extends Component<?>> extends AbstractDialogOperation<InputDialogOperationContext<J>> {
+	protected static final Group ENCLOSING_GROUP = new Group( java.util.UUID.fromString( "8dc8d3e5-9153-423e-bf1b-caa94597f57c" ), "ENCLOSING_GROUP" );
 	private class ButtonOperation extends ActionOperation {
 		private boolean isOk;
 		private Dialog dialog;

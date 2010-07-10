@@ -234,17 +234,20 @@ public class Factory extends org.alice.ide.common.Factory {
 	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
 		return new ArgumentListPropertyPane( this, argumentListProperty );
 	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType ) {
+	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType, edu.cmu.cs.dennisc.croquet.Group group ) {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionProperty.getValue();
 		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
 		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expression ) ) {
-			org.alice.ide.operations.ast.FillInExpressionPropertyActionOperation model = org.alice.ide.operations.ast.FillInExpressionPropertyActionOperation.getInstance( expressionProperty, desiredValueType );
+			org.alice.ide.operations.ast.FillInExpressionPropertyActionOperation model = org.alice.ide.operations.ast.FillInExpressionPropertyActionOperation.getInstance( group, expressionProperty, desiredValueType );
 			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model, prefixPane, rv, expressionProperty, desiredValueType );
 			model.register( expressionPropertyDropDownPane );
 			rv = expressionPropertyDropDownPane;
 		}
 		return rv;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType ) {
+		return this.createExpressionPropertyPane( expressionProperty, prefixPane, desiredValueType, edu.cmu.cs.dennisc.alice.Project.GROUP );
 	}
 	@Override
 	public org.alice.ide.common.AbstractStatementPane createStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {

@@ -54,6 +54,21 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 	public ProjectApplication() {
 		assert ProjectApplication.singleton == null;
 		ProjectApplication.singleton = this;
+		this.getProjectHistoryManager().addHistoryListener( new edu.cmu.cs.dennisc.history.event.HistoryListener() {
+			public void operationPushing( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
+			}
+			public void operationPushed( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
+			}
+			public void insertionIndexChanging( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
+			}
+			public void insertionIndexChanged( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
+				updateTitle();
+			}
+			public void clearing( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) {
+			}
+			public void cleared( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) {
+			}
+		} );
 	}
 
 	public static final edu.cmu.cs.dennisc.croquet.Group HISTORY_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
@@ -259,7 +274,7 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 	}
 	
 	private void updateHistoryLengthAtLastFileOperation() {
-		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP );
+		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = this.getProjectHistoryManager();
 		this.projectHistoryInsertionIndexOfCurrentFile = projectHistoryManager.getInsertionIndex();
 		this.updateTitle();
 	}
@@ -299,7 +314,7 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 	
 	public void loadProjectFrom( java.net.URI uri ) {
 		this.mapUUIDToNode.clear();
-		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP );
+		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = this.getProjectHistoryManager();
 		projectHistoryManager.performClear();
 		this.updateHistoryLengthAtLastFileOperation();
 		this.restoreProjectProperties();

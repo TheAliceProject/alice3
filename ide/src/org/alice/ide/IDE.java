@@ -662,13 +662,6 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return this.sceneEditor;
 	}
 
-	private int projectHistoryInsertionIndexOfCurrentFile = 0;
-
-	private void updateHistoryLengthAtLastFileOperation() {
-		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP );
-		this.projectHistoryInsertionIndexOfCurrentFile = projectHistoryManager.getInsertionIndex();
-		this.updateTitle();
-	}
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractCode, edu.cmu.cs.dennisc.alice.ast.Accessible > mapCodeToAccessible = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible> accessibleSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>() {
@@ -691,22 +684,6 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 		//org.alice.ide.preferences.GeneralPreferences.getSingleton().desiredRecentProjectCount.setAndCommitValue( 10 );
 		//org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.clear();
-
-		edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP ).addHistoryListener( new edu.cmu.cs.dennisc.history.event.HistoryListener() {
-			public void operationPushing( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
-			}
-			public void operationPushed( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
-			}
-			public void insertionIndexChanging( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
-			}
-			public void insertionIndexChanged( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
-				updateTitle();
-			}
-			public void clearing( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) {
-			}
-			public void cleared( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) {
-			}
-		} );
 
 		this.runOperation.setEnabled( false );
 

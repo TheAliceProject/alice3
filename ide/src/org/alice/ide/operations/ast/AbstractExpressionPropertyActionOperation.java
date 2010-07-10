@@ -50,8 +50,8 @@ import edu.cmu.cs.dennisc.croquet.Component;
 public abstract class AbstractExpressionPropertyActionOperation extends org.alice.ide.operations.ActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
 
-	public AbstractExpressionPropertyActionOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
+	public AbstractExpressionPropertyActionOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		super( group, individualId );
 		this.expressionProperty = expressionProperty;
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {

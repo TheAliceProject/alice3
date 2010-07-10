@@ -49,8 +49,8 @@ public abstract class FillInExpressionListPropertyItemOperation extends org.alic
 //	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
 	private int index;
-	public FillInExpressionListPropertyItemOperation( java.util.UUID individualId, int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
+	public FillInExpressionListPropertyItemOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
+		super( group, individualId );
 		//this.type = type;
 		this.index = index;
 		this.expressionListProperty = expressionListProperty;

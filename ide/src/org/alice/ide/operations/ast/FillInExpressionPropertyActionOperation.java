@@ -47,20 +47,21 @@ package org.alice.ide.operations.ast;
  */
 public class FillInExpressionPropertyActionOperation extends AbstractExpressionPropertyActionOperation {
 	private static java.util.Map<edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, FillInExpressionPropertyActionOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static FillInExpressionPropertyActionOperation getInstance( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
+	public static FillInExpressionPropertyActionOperation getInstance( edu.cmu.cs.dennisc.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
 		FillInExpressionPropertyActionOperation rv = map.get( expressionProperty );
 		if( rv != null ) {
+			assert rv.getGroup() == group;
 			assert rv.desiredType == desiredType;
 			//pass
 		} else {
-			rv = new FillInExpressionPropertyActionOperation(expressionProperty, desiredType);
+			rv = new FillInExpressionPropertyActionOperation( group, expressionProperty, desiredType);
 			map.put( expressionProperty, rv );
 		}
 		return rv;
 	}
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType;
-	private FillInExpressionPropertyActionOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
-		super( java.util.UUID.fromString( "6ec3825b-459d-4c3c-a4fe-ca57525c77df" ), expressionProperty );
+	private FillInExpressionPropertyActionOperation( edu.cmu.cs.dennisc.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
+		super( group, java.util.UUID.fromString( "6ec3825b-459d-4c3c-a4fe-ca57525c77df" ), expressionProperty );
 		this.desiredType = desiredType;
 	}
 	@Override

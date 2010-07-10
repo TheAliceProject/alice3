@@ -423,24 +423,27 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private void handleFieldAdded(FieldDeclaredInAlice addedField)
 	{
 		Object instance = this.getInstanceInJavaForField( addedField );
-		assert instance instanceof org.alice.apis.moveandturn.Transformable;
-		final org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instance;
-		this.putInstanceForField( addedField, transformable );
-		final org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera = this.scene.findFirstMatch( org.alice.apis.moveandturn.SymmetricPerspectiveCamera.class );
-		boolean isAnimationDesired = true;
-		if( isAnimationDesired && camera != null && transformable instanceof org.alice.apis.moveandturn.Model ) {
-			new Thread() {
-				@Override
-				public void run() {
-					MoveAndTurnSceneEditor.this.getGoodLookAtShowInstanceAndReturnCamera( camera, (org.alice.apis.moveandturn.Model)transformable );
-				}
-			}.start();
+		if( instance instanceof org.alice.apis.moveandturn.Transformable ) {
+			final org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instance;
+			this.putInstanceForField( addedField, transformable );
+			final org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera = this.scene.findFirstMatch( org.alice.apis.moveandturn.SymmetricPerspectiveCamera.class );
+			boolean isAnimationDesired = true;
+			if( isAnimationDesired && camera != null && transformable instanceof org.alice.apis.moveandturn.Model ) {
+				new Thread() {
+					@Override
+					public void run() {
+						MoveAndTurnSceneEditor.this.getGoodLookAtShowInstanceAndReturnCamera( camera, (org.alice.apis.moveandturn.Model)transformable );
+					}
+				}.start();
+			} else {
+				this.scene.addComponent( transformable );
+			}
+			if (addedField.getDesiredValueType().isAssignableTo(CameraMarker.class))
+			{
+				this.mainCameraMarkerList.setSelectedItem(this.getCameraMarkerForField(addedField));
+			}
 		} else {
-			this.scene.addComponent( transformable );
-		}
-		if (addedField.getDesiredValueType().isAssignableTo(CameraMarker.class))
-		{
-			this.mainCameraMarkerList.setSelectedItem(this.getCameraMarkerForField(addedField));
+			PrintUtilities.println( "handleFieldAdded", instance );
 		}
 	}
 	
@@ -449,10 +452,13 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		PrintUtilities.println( "todo: have handleFieldRemoved just remove the passed in field rather than check for inconsistencies." );
 
 		Object instance = this.getInstanceInJavaForField( removedField );
-		assert instance instanceof org.alice.apis.moveandturn.Transformable;
-		final org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instance;
-		this.scene.removeComponent( transformable );
-		this.removeField(removedField);
+		if( instance instanceof org.alice.apis.moveandturn.Transformable ) {
+			final org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instance;
+			this.scene.removeComponent( transformable );
+			this.removeField(removedField);
+		} else {
+			PrintUtilities.println( "handleFieldRemoved", instance );
+		}
 	}
 	
 	private void handleFieldsSet(Collection<? extends FieldDeclaredInAlice> newFields)

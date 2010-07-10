@@ -44,7 +44,7 @@ package org.alice.ide.operations.project;
 
 public class ManageResourcesOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.ide.resource.manager.ResourceManagerPane> {
 	public ManageResourcesOperation() {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "ec7dc4b0-d1f8-420d-b6f0-7a25bd92639d" ) );
+		super( ENCLOSING_GROUP, java.util.UUID.fromString( "ec7dc4b0-d1f8-420d-b6f0-7a25bd92639d" ) );
 		this.setName( "Manage Resources..." );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ManageResourcesOperation handle cancel" );
 	}
