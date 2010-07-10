@@ -203,6 +203,11 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	
+//	@Override
+//	protected boolean isInclusionOfTypeDesired(edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> valueTypeInAlice) {
+//		return super.isInclusionOfTypeDesired(valueTypeInAlice) || valueTypeInAlice.isAssignableTo( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.AbstractCamera.class ) );
+//	}
+
 	@Override
 	protected boolean isAccessibleDesired( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
 		if( super.isAccessibleDesired( accessible ) ) {

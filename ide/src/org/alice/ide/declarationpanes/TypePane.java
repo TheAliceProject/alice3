@@ -118,7 +118,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 
 		public TypeSelectionOperation() {
 			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "ef5677ca-a5d9-49c4-90bb-5fb43ef15ba6" ) );
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types = org.alice.ide.IDE.getSingleton().getTypesForComboBoxes();
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( org.alice.ide.IDE.getSingleton().getTypesForComboBoxes(), edu.cmu.cs.dennisc.alice.ast.AbstractType.class );
 			//int selectedIndex = java.util.Arrays.binarySearch( types, type );
 			this.setListData( -1, types );
 		}

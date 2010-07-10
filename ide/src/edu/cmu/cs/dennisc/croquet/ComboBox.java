@@ -43,8 +43,6 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
-import edu.cmu.cs.dennisc.croquet.ItemSelectablePanel.ItemDetails;
-
 /**
  * @author Dennis Cosgrove
  */
