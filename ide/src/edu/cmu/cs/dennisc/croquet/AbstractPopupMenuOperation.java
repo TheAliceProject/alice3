@@ -71,10 +71,16 @@ public abstract class AbstractPopupMenuOperation extends Operation<PopupMenuOper
 
 		ViewController<?,?> viewController = context.getViewController();
 		java.awt.Point pt = context.getPoint();
-		if (pt != null) {
-			popupMenu.showAtLocation( viewController, pt.x, pt.y );
+		if( viewController != null ) {
+			if (pt != null) {
+				popupMenu.showAtLocation( viewController, pt.x, pt.y );
+			} else {
+				popupMenu.showBelow( viewController );
+			}
 		} else {
-			popupMenu.showBelow( viewController );
+			java.awt.Component awtComponent = context.getMouseEvent().getComponent();
+			Component<?> component = Component.lookup( awtComponent );
+			popupMenu.showAtLocation( component, pt.x, pt.y );
 		}
 	}
 
