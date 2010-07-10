@@ -551,8 +551,8 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > addJavaTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
-		rv = super.addJavaTypes( rv );
+	protected java.util.List< ? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > addPrimeTimeJavaTypes( java.util.List< ? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > rv ) {
+		rv = super.addPrimeTimeJavaTypes( rv );
 //		if( IS_LIMITED_TO_LOOKING_GLASS_TYPES ) {
 //			//pass
 //		} else {
@@ -561,6 +561,16 @@ public class StageIDE extends org.alice.ide.IDE {
 		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel.class ) );
 //		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.Character.class ) );
 		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.Person.class ) );
+		return rv;
+	}
+
+	@Override
+	protected java.util.List<? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava> addSecondaryJavaTypes(java.util.List<? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava> rv) {
+		super.addSecondaryJavaTypes(rv);
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Color.class ) );
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.MoveDirection.class ) );
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.TurnDirection.class ) );
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.RollDirection.class ) );
 		if( IS_LIMITED_TO_LOOKING_GLASS_TYPES ) {
 			//pass
 		} else {
@@ -569,7 +579,6 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 		return rv;
 	}
-
 	@Override
 	protected void addFillInAndPossiblyPartFills( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.AbstractType type2 ) {
 		super.addFillInAndPossiblyPartFills( blank, expression, type, type2 );

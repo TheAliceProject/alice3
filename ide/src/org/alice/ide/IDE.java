@@ -536,7 +536,8 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 
 	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava superType ) {
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > aliceTypes = this.addAliceTypes( new java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.AbstractType >(), true );
+		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > aliceTypes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.addAliceTypes( aliceTypes, true );
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type : aliceTypes ) {
 			assert type != null;
 			if( type.getFirstTypeEncounteredDeclaredInJava() == superType ) {
@@ -572,11 +573,14 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return org.alice.ide.common.TypeIcon.getInstance( type );
 	}
 
-	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > addJavaTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
+	protected java.util.List< ? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > addPrimeTimeJavaTypes( java.util.List< ? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > rv ) {
 		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE );
 		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE );
 		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE );
 		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( String.class ) );
+		return rv;
+	}
+	protected java.util.List< ? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > addSecondaryJavaTypes( java.util.List< ? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > rv ) {
 		return rv;
 	}
 	
@@ -585,19 +589,19 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		//return valueTypeInAlice.methods.size() > 0 || valueTypeInAlice.fields.size() > 0;
 	}
 
-	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > addAliceTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv, boolean isInclusionOfTypesWithoutMembersDesired ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType = this.getSceneType();
+	protected java.util.List< ? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > addAliceTypes( java.util.List< ? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > rv, boolean isInclusionOfTypesWithoutMembersDesired ) {
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = this.getSceneType();
 		if( sceneType != null ) {
 			rv.add( sceneType );
 			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = field.getValueType();
-				if( valueType instanceof edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> valueTypeInAlice = (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>)valueType;
+				if( valueType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
+					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueTypeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)valueType;
 					if( rv.contains( valueType ) ) {
 						//pass
 					} else {
 						if( isInclusionOfTypesWithoutMembersDesired || isInclusionOfTypeDesired( valueTypeInAlice ) ) {
-							rv.add( valueType );
+							rv.add( valueTypeInAlice );
 						}
 					}
 				}
@@ -605,12 +609,28 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 		return rv;
 	}
-	public java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > getTypesForComboBoxes() {
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		this.addJavaTypes( list );
-		this.addAliceTypes( list, false );
-		return list;
+	
+	public java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > getPrimeTimeSelectableTypesDeclaredInJava() {
+		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.addPrimeTimeJavaTypes( rv );
+		return rv;
 	}
+	public java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > getSecondarySelectableTypesDeclaredInJava() {
+		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.addSecondaryJavaTypes( rv );
+		return rv;
+	}
+	public java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > getTypesDeclaredInAlice() {
+		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.addAliceTypes( rv, true );
+		return rv;
+	}
+//	public java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > getTypesForComboBoxes() {
+//		java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+//		this.addJavaTypes( list );
+//		this.addAliceTypes( list, false );
+//		return list;
+//	}
 	protected abstract org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor();
 	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getGalleryRoot();
 	protected abstract edu.cmu.cs.dennisc.croquet.JComponent<?> createGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> root );
