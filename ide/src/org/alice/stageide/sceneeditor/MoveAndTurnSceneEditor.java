@@ -774,17 +774,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			AbstractPopupMenuOperation popUp = fieldTile.getPopupMenuOperation();
 			if (popUp != null)
 			{
-				MouseEvent convertedEvent = SwingUtilities.convertMouseEvent((Component)clickState.getInputEvent().getSource(), (MouseEvent)clickState.getInputEvent(), fieldTile.getAwtComponent());
 				if( fieldTile.getAwtComponent().isShowing() ) {
+					MouseEvent convertedEvent = SwingUtilities.convertMouseEvent((Component)clickState.getInputEvent().getSource(), (MouseEvent)clickState.getInputEvent(), fieldTile.getAwtComponent());
 					popUp.fire(convertedEvent, fieldTile);
+				} else {
+					popUp.fire( clickState.getInputEvent() );
 				}
-//				edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > viewController;
-//				if( fieldTile.getAwtComponent().isShowing() ) {
-//					viewController = fieldTile;
-//				} else {
-//					viewController = null;
-//				}
-//				popUp.fire(convertedEvent, viewController);
 			}
 		}
 	}
