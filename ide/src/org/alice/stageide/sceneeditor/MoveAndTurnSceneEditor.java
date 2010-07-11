@@ -158,39 +158,16 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	
 	private ComboBox<CameraMarker> mainCameraViewSelector;
 	private CameraMarkerTracker mainCameraViewTracker;
-	private ListSelectionState<CameraMarker> mainCameraMarkerList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< CameraMarker >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "951c85e8-e8db-45d8-aa10-3e906c8d4bbf" ) ) {
-		@Override
-		protected CameraMarker decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	private ListSelectionState<CameraMarker> mainCameraMarkerList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< CameraMarker >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "951c85e8-e8db-45d8-aa10-3e906c8d4bbf" ), new edu.cmu.cs.dennisc.croquet.Codec< CameraMarker >() {
+		public CameraMarker decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			throw new RuntimeException( "todo" );
 		}
-		@Override
-		protected void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, CameraMarker value ) {
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, CameraMarker cameraMarker ) {
 			throw new RuntimeException( "todo" );
 		}
-	};
-	
-	private ListSelectionState<FieldDeclaredInAlice> startingViewMarkerFieldList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< FieldDeclaredInAlice >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "926deb18-44b9-4c35-ae3b-f80bd5574983" ) ) {
-		@Override
-		protected FieldDeclaredInAlice decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			throw new RuntimeException( "todo" );
-		}
-		@Override
-		protected void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, FieldDeclaredInAlice value ) {
-			throw new RuntimeException( "todo" );
-		}
-	};
-	
-	private ListSelectionState<FieldDeclaredInAlice> sceneMarkerFieldList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< FieldDeclaredInAlice >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "a09eeae2-53fc-4cbe-ab09-a6d6d7975d4d" ) ) {
-		@Override
-		protected FieldDeclaredInAlice decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			throw new RuntimeException( "todo" );
-		}
-		@Override
-		protected void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, FieldDeclaredInAlice value ) {
-			throw new RuntimeException( "todo" );
-		}
-	};
-	
+	} );
+	private ListSelectionState<FieldDeclaredInAlice> startingViewMarkerFieldList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< FieldDeclaredInAlice >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "926deb18-44b9-4c35-ae3b-f80bd5574983" ), new org.alice.ide.croquet.NodeCodec< FieldDeclaredInAlice >() );
+	private ListSelectionState<FieldDeclaredInAlice> sceneMarkerFieldList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< FieldDeclaredInAlice >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "a09eeae2-53fc-4cbe-ab09-a6d6d7975d4d" ), new org.alice.ide.croquet.NodeCodec< FieldDeclaredInAlice >() );
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
 		public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractCode next ) {
 			MoveAndTurnSceneEditor.this.handleFocusedCodeChanged( next );

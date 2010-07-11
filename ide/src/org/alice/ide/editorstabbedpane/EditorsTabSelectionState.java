@@ -253,15 +253,6 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 		}
 	}
 	private EditPreviousCodeOperation editPreviousCodeOperation;
-	@Override
-	protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.alice.ast.AbstractCode value) {
-		throw new RuntimeException( "todo" );
-	}
-
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractCode decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		throw new RuntimeException( "todo" );
-	}
 	
 //	private SelectionObserver selectionObserver = new SelectionObserver() {
 //		public void selected(edu.cmu.cs.dennisc.croquet.TabStateOperation next) {
@@ -269,7 +260,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 //		}
 //	};
 	public EditorsTabSelectionState() {
-		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "846ef10d-b22b-44a7-8fdd-a6b5d459948d" ) );
+		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "846ef10d-b22b-44a7-8fdd-a6b5d459948d" ), new org.alice.ide.croquet.NodeCodec< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() );
 //		this.addSelectionObserver( this.selectionObserver );
 		org.alice.ide.IDE.getSingleton().addProjectObserver( this.projectObserver );
 //		org.alice.ide.IDE.getSingleton().addCodeInFocusObserver( this.codeInFocusObserver );

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListSelectionState<E> extends Model implements Iterable<E> {
+public class ListSelectionState<E> extends Model implements Iterable<E> {
 	public static interface ValueObserver<E> {
 		public void changed(E nextValue);
 	};
@@ -296,21 +296,24 @@ public abstract class ListSelectionState<E> extends Model implements Iterable<E>
 
 	private final SingleListSelectionModel listSelectionModel = new SingleListSelectionModel();
 	private final ComboBoxModel comboBoxModel = new ComboBoxModel();
-
-	private ListSelectionState(Group group, java.util.UUID individualUUID, int selectedIndex, E... items) {
+	private Codec< E > codec;
+	private ListSelectionState(Group group, java.util.UUID individualUUID, Codec< E > codec, int selectedIndex, E... items) {
 		super(group, individualUUID);
+		this.codec = codec;
 		this.listSelectionModel.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		this.comboBoxModel.setListData(selectedIndex, items);
 	}
 
-	public ListSelectionState(Group group, java.util.UUID individualUUID) {
-		this(group, individualUUID, -1);
+	public ListSelectionState(Group group, java.util.UUID individualUUID, Codec< E > codec) {
+		this(group, individualUUID, codec, -1);
 	}
 
-	protected abstract E decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder);
-	protected abstract void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, E value);
-
-
+	protected final E decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+		return this.codec.decode( binaryDecoder );
+	}
+	protected final void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, E value ) {
+		this.codec.encode( binaryEncoder, value );
+	}
 	public E getSelectedItem() {
 		return (E) this.comboBoxModel.getSelectedItem();
 	}

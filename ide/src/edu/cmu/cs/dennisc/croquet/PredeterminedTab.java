@@ -42,7 +42,20 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+/**
+ * @author Dennis Cosgrove
+ */
 public abstract class PredeterminedTab {
+	public enum PredeterminedTabCodec implements Codec< PredeterminedTab > {
+		SINGLETON;
+		public edu.cmu.cs.dennisc.croquet.PredeterminedTab decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			throw new RuntimeException( "todo" );
+		}
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.croquet.PredeterminedTab t ) {
+			throw new RuntimeException( "todo" );
+		}
+	}
+	
 	private java.util.UUID id;
 	private String titleText;
 	private javax.swing.Icon titleIcon;

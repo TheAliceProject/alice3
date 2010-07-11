@@ -46,8 +46,8 @@ package org.alice.stageide.personeditor;
  * @author Dennis Cosgrove
  */
 abstract class AbstractListSelectionState<E> extends edu.cmu.cs.dennisc.croquet.ListSelectionState< E > {
-	public AbstractListSelectionState( java.util.UUID individualId, E... items ) {
-		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId );
+	public AbstractListSelectionState( java.util.UUID individualId, edu.cmu.cs.dennisc.croquet.Codec< E > codec, E... items ) {
+		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId, codec );
 		this.setListData( -1, items );
 		this.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< E >() {
 			public void changed(E nextValue) {
@@ -58,15 +58,6 @@ abstract class AbstractListSelectionState<E> extends edu.cmu.cs.dennisc.croquet.
 			}
 		} );
 	}
-	@Override
-	protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, E value) {
-		throw new RuntimeException( "todo" );
-	}
-	@Override
-	protected E decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
-	}
-
 	public void setToRandomValue() {
 		assert this.getItemCount() > 0;
 		this.setSelectedItem( this.getItemAt( 0 ) );

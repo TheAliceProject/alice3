@@ -47,16 +47,14 @@ package org.alice.app.openprojectpane;
  * @author Dennis Cosgrove
  */
 public abstract class ListContentPanel extends TabContentPanel {
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState<java.net.URI> uriSelection = new edu.cmu.cs.dennisc.croquet.ListSelectionState<java.net.URI>( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "68a17b6d-353d-4473-abd3-1c78ff88e1cd" ) ) {
-		@Override
-		protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.net.URI value) {
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState<java.net.URI> uriSelection = new edu.cmu.cs.dennisc.croquet.ListSelectionState<java.net.URI>( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "68a17b6d-353d-4473-abd3-1c78ff88e1cd" ), new edu.cmu.cs.dennisc.croquet.Codec< java.net.URI >() {
+		public java.net.URI decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			throw new RuntimeException( "todo" );
 		}
-		@Override
-		protected java.net.URI decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.net.URI uri ) {
 			throw new RuntimeException( "todo" );
 		}
-	};
+	} );
 //	register( new edu.cmu.cs.dennisc.croquet.List<java.net.URI>() {
 //		@Override
 //		protected javax.swing.JList createAwtComponent() {

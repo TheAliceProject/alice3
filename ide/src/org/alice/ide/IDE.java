@@ -1073,18 +1073,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForRuntimeProgram;
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForSceneEditor;
 
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibleListState = new edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible >( UI_STATE_GROUP, java.util.UUID.fromString( "a6d09409-82b8-4dfe-b156-588f1983893c" ) ) {
-		
-		@Override
-		protected edu.cmu.cs.dennisc.alice.ast.Accessible decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			throw new RuntimeException( "todo" );
-		}
-		@Override
-		protected void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.alice.ast.Accessible value ) {
-			throw new RuntimeException( "todo" );
-		}
-	};
-
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibleListState = new edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible >( UI_STATE_GROUP, java.util.UUID.fromString( "a6d09409-82b8-4dfe-b156-588f1983893c" ), new org.alice.ide.croquet.AccessibleCodec() );
 	public edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > getAccessibleListState() {
 		return this.accessibleListState;
 	}

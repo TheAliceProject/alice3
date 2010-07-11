@@ -48,7 +48,14 @@ package org.alice.ide.preferencesinputpane;
 public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.ide.preferences.programming.Configuration> {
 	class ConfigurationSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<org.alice.ide.preferences.programming.Configuration> {
 		public ConfigurationSelectionOperation( org.alice.ide.preferences.programming.Configuration... panes ) {
-			super( java.util.UUID.fromString( "68071aa4-895c-4d30-8b8a-5bbcc5262586" ), -1, panes );
+			super( java.util.UUID.fromString( "68071aa4-895c-4d30-8b8a-5bbcc5262586" ), new edu.cmu.cs.dennisc.croquet.Codec< org.alice.ide.preferences.programming.Configuration >(){
+				public org.alice.ide.preferences.programming.Configuration decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+					throw new RuntimeException( "todo" );
+				}
+				public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.preferences.programming.Configuration t ) {
+					throw new RuntimeException( "todo" );
+				}
+			}, -1, panes );
 		}
 		
 		@Override

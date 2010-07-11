@@ -51,16 +51,8 @@ import org.alice.ide.operations.ast.DeclareFieldEdit;
 class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 	private static abstract class TextAttributeSelectionOperation extends edu.cmu.cs.dennisc.croquet.ListSelectionState<String> {
 		public TextAttributeSelectionOperation( java.util.UUID individualId, int selectedIndex, String... items ) {
-			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId );
+			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId, org.alice.ide.croquet.StringCodec.SINGLETON );
 			this.setListData(selectedIndex, items);
-		}
-		@Override
-		protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, String value) {
-			binaryEncoder.encode( value );
-		}
-		@Override
-		protected String decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			return binaryDecoder.decodeString();
 		}
 	}
 	private static class FamilySelectionOperation extends TextAttributeSelectionOperation {

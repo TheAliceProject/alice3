@@ -48,7 +48,14 @@ package org.alice.ide.preferencesinputpane;
 public class LocalePreferenceComboBoxProxy extends PreferenceLabeledPaneProxy< java.util.Locale > {
 	class LocaleSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation< java.util.Locale > {
 		public LocaleSelectionOperation() {
-			super( java.util.UUID.fromString( "5cbe1b25-a5fc-4c54-8381-bfbc7c39a4ba" ), -1, edu.cmu.cs.dennisc.java.util.LocaleUtilities.alphabetizeByDisplayName( java.util.Locale.getAvailableLocales() ) );
+			super( java.util.UUID.fromString( "5cbe1b25-a5fc-4c54-8381-bfbc7c39a4ba" ), new edu.cmu.cs.dennisc.croquet.Codec< java.util.Locale >() {
+				public java.util.Locale decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+					throw new RuntimeException( "todo" );
+				}
+				public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.util.Locale locale ) {
+					throw new RuntimeException( "todo" );
+				}
+			}, -1, edu.cmu.cs.dennisc.java.util.LocaleUtilities.alphabetizeByDisplayName( java.util.Locale.getAvailableLocales() ) );
 			this.setSelectedItem( java.util.Locale.getDefault() );
 		}
 

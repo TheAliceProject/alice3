@@ -67,19 +67,10 @@ public final class TabSelectionOperation extends ListSelectionState<Predetermine
 	};
 	
 	public TabSelectionOperation( Group group, java.util.UUID individualUUID, PredeterminedTab... tabs ) {
-		super( group, individualUUID );
+		super( group, individualUUID, PredeterminedTabCodec.SINGLETON );
 		this.setListData( -1, tabs );
 	}
 
-	@Override
-	protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.croquet.PredeterminedTab value) {
-		throw new RuntimeException( "todo" );
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.PredeterminedTab decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		throw new RuntimeException( "todo" );
-	}
-	
 	public FolderTabbedPane<PredeterminedTab> createDefaultFolderTabbedPane() {
 		return this.createFolderTabbedPane( new PredeterminedTabCreator() );
 	}

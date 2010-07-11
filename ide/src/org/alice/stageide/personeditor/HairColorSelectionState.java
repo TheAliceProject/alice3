@@ -49,7 +49,7 @@ class HairColorSelectionState extends AbstractListSelectionState< String > {
 	private static final String[] INCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND", "GREY" };
 	private static final String[] EXCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND" };
 	public HairColorSelectionState() {
-		super( java.util.UUID.fromString("11945667-ee73-493d-88f1-f5d9188ec91d"), EXCLUDE_GREY );
+		super( java.util.UUID.fromString("11945667-ee73-493d-88f1-f5d9188ec91d"), org.alice.ide.croquet.StringCodec.SINGLETON, EXCLUDE_GREY );
 	}
 	/*package-private*/ void handleCataclysmicChange( org.alice.apis.stage.LifeStage lifeStage ) {
 //		if( lifeStage == org.alice.apis.stage.LifeStage.ADULT ) {
