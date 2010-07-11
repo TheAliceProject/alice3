@@ -47,20 +47,29 @@ package org.alice.stageide.personeditor;
  */
 public class PersonInfo {
 	public static PersonInfo createFromPerson( org.alice.apis.stage.Person person ) {
-//		PersonInfo rv = new PersonInfo();
-//		rv.lifeStage = person.getLifeStage();
-//		rv.gender = person.getGender();
-//		rv.fitnessLevel = per
-//		return rv;
-		return null;
+		return new PersonInfo( 
+				person.getLifeStage(), 
+				person.getGender(), 
+				(org.alice.apis.stage.BaseSkinTone)person.getSkinTone(), 
+				(org.alice.apis.stage.BaseEyeColor)person.getEyeColor(), 
+				(org.alice.apis.stage.FullBodyOutfit)person.getOutfit(), 
+				person.getHair(), 
+				person.getFitnessLevel()
+		);
 	}
 	public static PersonInfo createRandom() {
-//		PersonInfo rv = new PersonInfo();
-//		rv.lifeStage = org.alice.apis.stage.LifeStage.ADULT;
-//		rv.gender = org.alice.apis.stage.Gender.getRandom();
-//		rv.fitnessLevel = Math.random();
-//		return rv;
-		return null;
+		org.alice.apis.stage.LifeStage[] potentialLifeStages = { org.alice.apis.stage.LifeStage.ADULT, org.alice.apis.stage.LifeStage.CHILD };
+		org.alice.apis.stage.LifeStage lifeStage = edu.cmu.cs.dennisc.random.RandomUtilities.getRandomValueFrom( potentialLifeStages );
+		org.alice.apis.stage.Gender gender = org.alice.apis.stage.Gender.getRandom();
+		return new PersonInfo( 
+				lifeStage, 
+				gender,
+				org.alice.apis.stage.BaseSkinTone.getRandom(),
+				org.alice.apis.stage.BaseEyeColor.getRandom(),
+				org.alice.apis.stage.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender ),
+				org.alice.apis.stage.HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender ),
+				edu.cmu.cs.dennisc.random.RandomUtilities.nextDouble()
+		);
 	}
 
 	private org.alice.apis.stage.LifeStage lifeStage;
@@ -71,8 +80,7 @@ public class PersonInfo {
 	private org.alice.apis.stage.Hair hair;
 	private double fitnessLevel;
 
-	private PersonInfo( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, org.alice.apis.stage.BaseSkinTone baseSkinTone, org.alice.apis.stage.BaseEyeColor baseEyeColor, org.alice.apis.stage.FullBodyOutfit fullBodyOutfit,
-			org.alice.apis.stage.Hair hair, double fitnessLevel ) {
+	private PersonInfo( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, org.alice.apis.stage.BaseSkinTone baseSkinTone, org.alice.apis.stage.BaseEyeColor baseEyeColor, org.alice.apis.stage.FullBodyOutfit fullBodyOutfit, org.alice.apis.stage.Hair hair, double fitnessLevel ) {
 		this.lifeStage = lifeStage;
 		this.gender = gender;
 		this.baseSkinTone = baseSkinTone;
@@ -80,5 +88,26 @@ public class PersonInfo {
 		this.fullBodyOutfit = fullBodyOutfit;
 		this.hair = hair;
 		this.fitnessLevel = fitnessLevel;
+	}
+	
+	public org.alice.apis.stage.Person createPerson() {
+		org.alice.apis.stage.Person rv;
+		if( this.lifeStage != null ) {
+			rv = this.lifeStage.createInstance();
+			update( rv );
+		} else {
+			rv = null;
+		}
+		return rv;
+	}
+	public org.alice.apis.stage.Person update( org.alice.apis.stage.Person rv ) {
+		assert rv.getLifeStage() == this.lifeStage;
+		rv.setGender( this.gender );
+		rv.setSkinTone( this.baseSkinTone );
+		rv.setEyeColor( this.baseEyeColor );
+		rv.setOutfit( this.fullBodyOutfit );
+		rv.setHair( this.hair );
+		rv.setFitnessLevel( this.fitnessLevel );
+		return rv;
 	}
 }
