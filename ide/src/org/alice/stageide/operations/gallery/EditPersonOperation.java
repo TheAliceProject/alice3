@@ -47,7 +47,7 @@ package org.alice.stageide.operations.gallery;
  */
 public class EditPersonOperation extends PersonOperation {
 	public EditPersonOperation() {
-		super( java.util.UUID.fromString( "bbbc5715-a41a-4740-b3fe-41ee20b1f9c5" ) );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "bbbc5715-a41a-4740-b3fe-41ee20b1f9c5" ) );
 	}
 	@Override
 	protected org.alice.stageide.operations.gallery.PersonInfo getInitialPersonInfo() {

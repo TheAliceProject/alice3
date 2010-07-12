@@ -47,12 +47,12 @@ package org.alice.stageide.operations.gallery;
  */
 public abstract class PersonOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation< org.alice.stageide.personeditor.PersonEditor > {
 	protected abstract PersonInfo getInitialPersonInfo();
-	public PersonOperation( java.util.UUID id ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, id );
+	public PersonOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id ) {
+		super( group, id );
 	}
 	@Override
 	protected org.alice.stageide.personeditor.PersonEditor prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.personeditor.PersonEditor > context ) {
-		//return new org.alice.stageide.personeditor.PersonEditor( this.getInitialPersonInfo() );
-		return null;
+		PersonInfo personInfo = this.getInitialPersonInfo();
+		return new org.alice.stageide.personeditor.PersonEditor( personInfo );
 	}
 }

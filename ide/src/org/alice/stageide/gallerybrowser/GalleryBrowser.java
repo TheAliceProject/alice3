@@ -249,12 +249,12 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		
 		this.setBackgroundColor(new java.awt.Color(220, 220, 255));
 
-		IndirectCreatePersonActionOperation indirectCreatePersonActionOperation = new IndirectCreatePersonActionOperation();
-		edu.cmu.cs.dennisc.croquet.Button createPersonButton = indirectCreatePersonActionOperation.createButton();
+		org.alice.stageide.operations.gallery.CreatePersonFieldOperation createPersonFieldOperation = new org.alice.stageide.operations.gallery.CreatePersonFieldOperation();
+		edu.cmu.cs.dennisc.croquet.Button createPersonButton = createPersonFieldOperation.createButton();
 		createPersonButton.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.CENTER );
 		createPersonButton.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
 
-		indirectCreatePersonActionOperation.setSmallIcon(new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/create_person.png")));
+		createPersonFieldOperation.setSmallIcon(new javax.swing.ImageIcon(GalleryBrowser.class.getResource("images/create_person.png")));
 
 		edu.cmu.cs.dennisc.croquet.BorderPanel pathControlPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		pathControlPanel.addComponent( this.treeSelectionState.createPathControl( this.createInitializer() ), Constraint.WEST );

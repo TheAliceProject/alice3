@@ -46,8 +46,8 @@ package org.alice.stageide.operations.gallery;
  * @author Dennis Cosgrove
  */
 public class CreatePersonOperation extends PersonOperation {
-	public CreatePersonOperation() {
-		super( java.util.UUID.fromString( "e5d143e7-2aa2-4cd0-ae65-3f20cc0faf96" ) );
+	public CreatePersonOperation( edu.cmu.cs.dennisc.croquet.Group group ) {
+		super( group, java.util.UUID.fromString( "e5d143e7-2aa2-4cd0-ae65-3f20cc0faf96" ) );
 	}
 	@Override
 	protected org.alice.stageide.operations.gallery.PersonInfo getInitialPersonInfo() {
@@ -55,5 +55,14 @@ public class CreatePersonOperation extends PersonOperation {
 	}
 	@Override
 	protected void epilogue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.personeditor.PersonEditor > context, boolean isOk ) {
+		if( isOk ) {
+			context.finish();
+		} else {
+			context.cancel();
+		}
+	}
+	
+	public org.alice.apis.stage.Person getPerson() {
+		return this.getInitialPersonInfo().createPerson();
 	}
 }

@@ -169,19 +169,10 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //		}
 //	};
 //	
-	
-	private void handleCataclysm( boolean isLifeStageChange, boolean isGenderChange, boolean isHairColorChange ) {
-		if( isLifeStageChange || isGenderChange || isHairColorChange ) {
-			this.hairSelection.handleCataclysmicChange( this.lifeStageSelection.getSelectedItem(), this.genderSelection.getSelectedItem(), this.hairColorSelection.getSelectedItem() );
-		}
-		if( isLifeStageChange || isGenderChange ) {
-			this.fullBodyOutfitSelection.handleCataclysmicChange( this.lifeStageSelection.getSelectedItem(), this.genderSelection.getSelectedItem() );
-		}
-		if( isLifeStageChange ) {
-			this.hairColorSelection.handleCataclysmicChange( this.lifeStageSelection.getSelectedItem() );
-		}
+	public PersonEditor( org.alice.stageide.operations.gallery.PersonInfo personInfo ) {
+		this( personInfo.createPerson() );
 	}
-	
+	@Deprecated
 	public PersonEditor( org.alice.apis.stage.Person person ) {
 		if( person != null ) {
 			this.lifeStageSelection.setSelectedItem( person.getLifeStage() );
@@ -252,6 +243,19 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //			}
 //		} );
 	}
+	
+	private void handleCataclysm( boolean isLifeStageChange, boolean isGenderChange, boolean isHairColorChange ) {
+		if( isLifeStageChange || isGenderChange || isHairColorChange ) {
+			this.hairSelection.handleCataclysmicChange( this.lifeStageSelection.getSelectedItem(), this.genderSelection.getSelectedItem(), this.hairColorSelection.getSelectedItem() );
+		}
+		if( isLifeStageChange || isGenderChange ) {
+			this.fullBodyOutfitSelection.handleCataclysmicChange( this.lifeStageSelection.getSelectedItem(), this.genderSelection.getSelectedItem() );
+		}
+		if( isLifeStageChange ) {
+			this.hairColorSelection.handleCataclysmicChange( this.lifeStageSelection.getSelectedItem() );
+		}
+	}
+	
 
 //	public org.alice.apis.stage.Person createInstance() {
 //		PersonViewer personViewer = PersonViewer.getSingleton();
@@ -295,24 +299,12 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 
 		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
-		edu.cmu.cs.dennisc.javax.swing.ApplicationFrame frame = new edu.cmu.cs.dennisc.javax.swing.ApplicationFrame() {
-			@Override
-			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
-			}
-			@Override
-			protected void handleAbout( java.util.EventObject e ) {
-			}
-			@Override
-			protected void handlePreferences( java.util.EventObject e ) {
-			}
-
-			@Override
-			protected void handleQuit( java.util.EventObject e ) {
-				System.exit( 0 );
-			}
-		};
-		frame.setSize( new java.awt.Dimension( 1024, 768 ) );
-		frame.getContentPane().add( new PersonEditor( null ).getAwtComponent() );
-		frame.setVisible( true );
+		ide.initialize( args );
+//		edu.cmu.cs.dennisc.croquet.Frame frame = ide.getFrame();
+//		frame.setSize( new java.awt.Dimension( 1024, 768 ) );
+//		frame.setVisible( true );
+		
+		org.alice.stageide.operations.gallery.CreatePersonFieldOperation operation = new org.alice.stageide.operations.gallery.CreatePersonFieldOperation();
+		operation.fire();
 	}
 }

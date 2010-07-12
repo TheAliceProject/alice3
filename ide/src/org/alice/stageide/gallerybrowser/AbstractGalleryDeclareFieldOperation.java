@@ -45,7 +45,7 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractGalleryDeclareFieldOperation<J extends org.alice.ide.preview.PanelWithPreview> extends org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation<J> {
+public abstract class AbstractGalleryDeclareFieldOperation<J extends org.alice.ide.preview.PanelWithPreview> extends org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation<J> {
 	public AbstractGalleryDeclareFieldOperation( java.util.UUID individualId ) {
 		super( individualId );
 	}

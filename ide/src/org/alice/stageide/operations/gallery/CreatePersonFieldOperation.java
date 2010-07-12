@@ -40,72 +40,53 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser;
+package org.alice.stageide.operations.gallery;
 
 /**
  * @author Dennis Cosgrove
  */
-class PersonCreatorDialog extends edu.cmu.cs.dennisc.progress.ProgressDialog {
+class CreateFieldFromPersonPane extends org.alice.ide.declarationpanes.CreateLargelyPredeterminedFieldPane {
 	private org.alice.apis.stage.Person person;
-
-	public PersonCreatorDialog( javax.swing.JDialog owner ) {
-		super( owner );
+	public CreateFieldFromPersonPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, org.alice.apis.stage.Person person ) {
+		super( declaringType, person.getClass(), null );
+		this.person = person;
 	}
-
-	public PersonCreatorDialog( javax.swing.JFrame owner ) {
-		super( owner );
+	public org.alice.apis.stage.Person getPerson() {
+		return this.person;
 	}
+}
 
+/**
+ * @author Dennis Cosgrove
+ */
+public class CreatePersonFieldOperation extends org.alice.stageide.gallerybrowser.AbstractGalleryDeclareFieldOperation< CreateFieldFromPersonPane > {
+	public CreatePersonFieldOperation() {
+		super( java.util.UUID.fromString( "84f3a391-4a6c-4a10-82da-6b6231937949" ) );
+	}
 	@Override
-	protected edu.cmu.cs.dennisc.progress.ProgressDialog.Worker createWorker() {
-		class PersonCreatorWorker extends edu.cmu.cs.dennisc.progress.ProgressDialog.Worker {
-			@Override
-			protected Boolean doInBackground() throws Exception {
-				this.publish( "opening person creator..." );
-				
-				class DeclarePersonInputDialogOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.stageide.personeditor.PersonEditor> {
-					public DeclarePersonInputDialogOperation() {
-						super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "19c72f46-7b7a-4edd-b598-73f17c9044b8" ) );
-					}
-					@Override
-					protected org.alice.stageide.personeditor.PersonEditor prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.personeditor.PersonEditor > context) {
-						org.alice.stageide.personeditor.PersonEditor personEditor = new org.alice.stageide.personeditor.PersonEditor( person ) {
-							@Override
-							protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-								PersonCreatorDialog.this.setVisible( false );
-								super.handleAddedTo(parent);
-							}
-						};
-						return personEditor;
-					}
-					@Override
-					protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.personeditor.PersonEditor > context, boolean isOk) {
-						if( isOk ) {
-							org.alice.stageide.personeditor.PersonEditor personEditor = context.getMainPanel();
-							PersonCreatorDialog.this.person = personEditor.getPerson();
-						}
-					}
-				}
-
-				DeclarePersonInputDialogOperation declarePersonInputDialogOperation = new DeclarePersonInputDialogOperation();
-				declarePersonInputDialogOperation.fire();
-				return true;
-			}
-		}
-		return new PersonCreatorWorker();
-	}
-
-	@Override
-	protected void handleDone( Boolean result ) {
-		if( result && this.person != null ) {
-			CreatePersonActionOperation createPersonActionOperation = new CreatePersonActionOperation( this.person );
-			createPersonActionOperation.fire();
-			this.setVisible( false );
+	protected CreateFieldFromPersonPane prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< CreateFieldFromPersonPane > context ) {
+		CreatePersonOperation createPersonOperation = new CreatePersonOperation( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP );
+		createPersonOperation.fire();
+		
+		org.alice.apis.stage.Person person = createPersonOperation.getPerson();
+		
+		if( person != null ) {
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = ide.getSceneType();
+			return new CreateFieldFromPersonPane( declaringType, person );
+		} else {
+			return null;
 		}
 	}
-
 	@Override
-	protected boolean isProgressBarDesired() {
-		return false;
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< CreateFieldFromPersonPane > context ) {
+		CreateFieldFromPersonPane createFieldFromPersonPane = context.getMainPanel();
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromPersonPane.getActualInputValue();
+		if( field != null ) {
+			//ide.getSceneEditor().handleFieldCreation( declaringType, field, person );
+			return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object >( field, createFieldFromPersonPane.getPerson() );
+		} else {
+			return null;
+		}
 	}
 }
