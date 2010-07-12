@@ -133,24 +133,27 @@ public abstract class SpringPanel extends Panel {
 			return dimension.height;
 		}
 	}
-	private void putConstraint( Component< ? > component, Horizontal horizontal, int x, Vertical vertical, int y ) {
+	private void putConstraint( Component< ? > component, Horizontal horizontal, int x, Vertical vertical, int y, Component< ? > other ) {
 		String horizontalConstraint = horizontal.getInternal();
 		String verticalConstraint = vertical.getInternal();
 		if( horizontalConstraint != null ) {
 			this.springLayout.putConstraint( horizontalConstraint, component.getAwtComponent(), x, horizontalConstraint, this.getAwtComponent() );
 		} else {
-			this.springLayout.putConstraint( javax.swing.SpringLayout.WEST, component.getAwtComponent(), new HorizontalCenterSpring( component, x ), javax.swing.SpringLayout.WEST, this.getAwtComponent() );
+			this.springLayout.putConstraint( javax.swing.SpringLayout.WEST, component.getAwtComponent(), new HorizontalCenterSpring( component, x ), javax.swing.SpringLayout.WEST, other.getAwtComponent() );
 		}
 		if( verticalConstraint != null ) {
 			this.springLayout.putConstraint( verticalConstraint, component.getAwtComponent(), y, verticalConstraint, this.getAwtComponent() );
 		} else {
-			this.springLayout.putConstraint( javax.swing.SpringLayout.NORTH, component.getAwtComponent(), new VerticalCenterSpring( component, y ), javax.swing.SpringLayout.NORTH, this.getAwtComponent() );
+			this.springLayout.putConstraint( javax.swing.SpringLayout.NORTH, component.getAwtComponent(), new VerticalCenterSpring( component, y ), javax.swing.SpringLayout.NORTH, other.getAwtComponent() );
 		}
 	}
 	
-	public void addComponent( Component< ? > component, Horizontal horizontal, int x, Vertical vertical, int y ) {
-		this.putConstraint( component, horizontal, x, vertical, y );
+	public void addComponent( Component< ? > component, Horizontal horizontal, int x, Vertical vertical, int y, Component< ? > other ) {
+		this.putConstraint( component, horizontal, x, vertical, y, other );
 		this.internalAddComponent( component );
+	}
+	public void addComponent( Component< ? > component, Horizontal horizontal, int x, Vertical vertical, int y ) {
+		this.addComponent( component, horizontal, x, vertical, y, this );
 	}
 	@Override
 	public void removeComponent( edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
