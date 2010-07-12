@@ -46,11 +46,14 @@ package org.alice.stageide.operations.gallery;
  * @author Dennis Cosgrove
  */
 public class EditPersonOperation extends PersonOperation {
-	public EditPersonOperation() {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+	public EditPersonOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "bbbc5715-a41a-4740-b3fe-41ee20b1f9c5" ) );
+		this.setName( "Edit..." );
+		this.field = field;
 	}
 	@Override
-	protected org.alice.stageide.operations.gallery.PersonInfo getInitialPersonInfo() {
+	protected org.alice.stageide.personeditor.PersonInfo getInitialPersonInfo() {
 		throw new RuntimeException( "todo" );
 	}
 	@Override
@@ -58,3 +61,80 @@ public class EditPersonOperation extends PersonOperation {
 		throw new RuntimeException( "todo" );
 	}
 }
+
+//public class EditPersonActionOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.stageide.personeditor.PersonEditor> {
+//	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+//	public EditPersonActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+//		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "ad113b0e-acb2-4e43-8196-eba6a4961dc8" ) );
+//		this.setName( "Edit..." );
+//		this.field = field;
+//	}
+//	
+//	private org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor getMoveAndTurnSceneEditor() {
+//		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.alice.ide.IDE.getSingleton().getSceneEditor(), org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor.class );
+//	}
+//	
+//	private org.alice.stageide.personeditor.PersonEditor personEditor;
+//	private org.alice.apis.stage.Gender prevGender;
+//	private org.alice.apis.stage.SkinTone prevSkinTone;
+//	private org.alice.apis.stage.EyeColor prevEyeColor;
+//	private org.alice.apis.stage.Outfit prevOutfit;
+//	private org.alice.apis.stage.Hair prevHair;
+//	private Double prevFitnessLevel;
+//	@Override
+//	protected org.alice.stageide.personeditor.PersonEditor prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.stageide.personeditor.PersonEditor> context) {
+//		final org.alice.apis.stage.Person person = this.getMoveAndTurnSceneEditor().getInstanceInJavaForField( this.field, org.alice.apis.stage.Person.class );
+//		if( person != null ) {
+//			this.prevGender = person.getGender(); 
+//			this.prevSkinTone = person.getSkinTone(); 
+//			this.prevEyeColor = person.getEyeColor(); 
+//			this.prevOutfit = person.getOutfit(); 
+//			this.prevHair = person.getHair(); 
+//			this.prevFitnessLevel = person.getFitnessLevel();
+//			this.personEditor = new org.alice.stageide.personeditor.PersonEditor( person );
+//		} else {
+//			this.personEditor = null;
+//		}
+//		return this.personEditor; 
+//	}
+//	@Override
+//	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.stageide.personeditor.PersonEditor> context, boolean isOk) {
+//		org.alice.stageide.personeditor.PersonEditor personEditor = context.getMainPanel();
+//		final org.alice.apis.stage.Person person = personEditor.getPerson();
+//		if( isOk ) {
+//			final org.alice.apis.stage.Gender nextGender = person.getGender();
+//			final org.alice.apis.stage.SkinTone nextSkinTone = person.getSkinTone();
+//			final org.alice.apis.stage.EyeColor nextEyeColor = person.getEyeColor();
+//			final org.alice.apis.stage.Outfit nextOutfit = person.getOutfit();
+//			final org.alice.apis.stage.Hair nextHair = person.getHair();
+//			final Double nextFitnessLevel = person.getFitnessLevel();
+//			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+//				@Override
+//				public void doOrRedo( boolean isDo ) {
+//					EditPersonActionOperation.set( person, nextGender, nextSkinTone, nextEyeColor, nextOutfit, nextHair, nextFitnessLevel );
+//				}
+//				@Override
+//				public void undo() {
+//					EditPersonActionOperation.set( person, prevGender, prevSkinTone, prevEyeColor, prevOutfit, prevHair, prevFitnessLevel );
+//				}
+//				@Override
+//				protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+//					rv.append( "edit: " );
+//					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, field, locale );
+//					return rv;
+//				}
+//			} );
+//		} else {
+//			EditPersonActionOperation.set( person, prevGender, prevSkinTone, prevEyeColor, prevOutfit, prevHair, prevFitnessLevel );
+//			context.cancel();
+//		}
+//	}
+//	private static void set( org.alice.apis.stage.Person person, org.alice.apis.stage.Gender gender, org.alice.apis.stage.SkinTone skinTone, org.alice.apis.stage.EyeColor eyeColor, org.alice.apis.stage.Outfit outfit, org.alice.apis.stage.Hair hair, Double fitnessLevel ) {
+//		person.setGender( gender );
+//		person.setSkinTone( skinTone );
+//		person.setEyeColor( eyeColor );
+//		person.setOutfit( outfit );
+//		person.setHair( hair );
+//		person.setFitnessLevel( fitnessLevel );
+//	}
+//}

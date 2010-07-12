@@ -58,11 +58,6 @@ class HairColorSelectionState extends AbstractListSelectionState< String > {
 //			this.setListData( 0, "BLACK", "BROWN", "RED", "BLOND" );
 //		}
 	}
-
-	@Override
-	protected void handleSelectionChange( String value ) {
-		PersonViewer.getSingleton().setHairColor( value );
-	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.List<String> createList() {
 		edu.cmu.cs.dennisc.croquet.List<String> rv = super.createList();

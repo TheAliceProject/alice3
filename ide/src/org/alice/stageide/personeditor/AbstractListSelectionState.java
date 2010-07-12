@@ -49,21 +49,7 @@ abstract class AbstractListSelectionState<E> extends edu.cmu.cs.dennisc.croquet.
 	public AbstractListSelectionState( java.util.UUID individualId, edu.cmu.cs.dennisc.croquet.Codec< E > codec, E... items ) {
 		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId, codec );
 		this.setListData( -1, items );
-		this.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< E >() {
-			public void changed(E nextValue) {
-				E item = AbstractListSelectionState.this.getSelectedItem();
-				if( item != null ) {
-					AbstractListSelectionState.this.handleSelectionChange( item );
-				}
-			}
-		} );
 	}
-	public void setToRandomValue() {
-		assert this.getItemCount() > 0;
-		this.setSelectedItem( this.getItemAt( 0 ) );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setToRandomValue" );
-	}
-	protected abstract void handleSelectionChange( E value );
 	protected int getVisibleRowCount() {
 		return 1;
 	}

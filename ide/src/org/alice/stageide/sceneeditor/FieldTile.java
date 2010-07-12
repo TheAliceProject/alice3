@@ -165,7 +165,7 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 				rv.add( new org.alice.stageide.operations.ast.PlaceOnTopOfGroundActionOperation( fieldInAlice ) );
 			}
 			if( fieldType.isAssignableTo( org.alice.apis.stage.Person.class ) ) {
-				rv.add( new org.alice.stageide.operations.ast.EditPersonActionOperation( fieldInAlice ) );
+				rv.add( new org.alice.stageide.operations.gallery.EditPersonOperation( fieldInAlice ) );
 			}
 		}
 		return rv;

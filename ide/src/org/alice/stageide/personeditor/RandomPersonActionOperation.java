@@ -42,36 +42,28 @@
  */
 package org.alice.stageide.personeditor;
 
-import org.alice.apis.stage.BaseEyeColor;
-import org.alice.apis.stage.BaseSkinTone;
-import org.alice.apis.stage.FullBodyOutfit;
-import org.alice.apis.stage.Gender;
-import org.alice.apis.stage.Hair;
-import org.alice.apis.stage.LifeStage;
-
 /**
  * @author Dennis Cosgrove
  */
 class RandomPersonActionOperation extends org.alice.ide.operations.ActionOperation {
-	public RandomPersonActionOperation() {
+	private PersonEditor personEditor;
+	public RandomPersonActionOperation( PersonEditor personEditor ) {
 		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "9ea00a57-0ea7-4c53-ac53-1e07220e76b9" ) );
+		this.personEditor = personEditor;
 		this.setName( "Generate Random Selection" );
 	}
 	@Override
 	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-		final edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> prevState = PersonViewer.getSingleton().getState();
-		
-		boolean isAdult = edu.cmu.cs.dennisc.random.RandomUtilities.nextBoolean();
-		LifeStage randomLifeStage = isAdult ? LifeStage.ADULT : LifeStage.CHILD;
-		final edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> nextState = PersonViewer.generateRandomState( randomLifeStage, Gender.getRandom() );
+		final PersonInfo prevState = this.personEditor.getPersonInfo();
+		final PersonInfo nextState = PersonInfo.createRandom();
 		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			public void doOrRedo( boolean isDo ) {
-				PersonViewer.getSingleton().setState( nextState );
+				RandomPersonActionOperation.this.personEditor.setPersonInfo( nextState );
 			}
 			@Override
 			public void undo() {
-				PersonViewer.getSingleton().setState( prevState );
+				RandomPersonActionOperation.this.personEditor.setPersonInfo( prevState );
 			}
 			@Override
 			protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {

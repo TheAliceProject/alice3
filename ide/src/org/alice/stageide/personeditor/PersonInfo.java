@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.operations.gallery;
+package org.alice.stageide.personeditor;
 
 /**
  * @author Dennis Cosgrove
@@ -88,6 +88,27 @@ public class PersonInfo {
 		this.fullBodyOutfit = fullBodyOutfit;
 		this.hair = hair;
 		this.fitnessLevel = fitnessLevel;
+	}
+	public org.alice.apis.stage.LifeStage getLifeStage() {
+		return this.lifeStage;
+	}
+	public org.alice.apis.stage.Gender getGender() {
+		return this.gender;
+	}
+	public org.alice.apis.stage.BaseSkinTone getBaseSkinTone() {
+		return this.baseSkinTone;
+	}
+	public org.alice.apis.stage.BaseEyeColor getBaseEyeColor() {
+		return this.baseEyeColor;
+	}
+	public org.alice.apis.stage.FullBodyOutfit getFullBodyOutfit() {
+		return this.fullBodyOutfit;
+	}
+	public org.alice.apis.stage.Hair getHair() {
+		return this.hair;
+	}
+	public double getFitnessLevel() {
+		return this.fitnessLevel;
 	}
 	
 	public org.alice.apis.stage.Person createPerson() {

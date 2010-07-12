@@ -47,12 +47,7 @@ package org.alice.stageide.personeditor;
  */
 class LifeStageSelectionState extends AbstractListSelectionState< org.alice.apis.stage.LifeStage > {
 	public LifeStageSelectionState() {
-		//super( new EnumConstantsComboBoxModel( org.alice.apis.stage.LifeStage.class ) );
 		super( java.util.UUID.fromString( "ee61b76d-b154-4e45-a07c-fb2eac906895" ), new org.alice.ide.croquet.EnumCodec< org.alice.apis.stage.LifeStage >(), org.alice.apis.stage.LifeStage.CHILD, org.alice.apis.stage.LifeStage.ADULT );
-	}
-	@Override
-	protected void handleSelectionChange( org.alice.apis.stage.LifeStage value ) {
-		PersonViewer.getSingleton().setLifeStage( value );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.LifeStage> createList() {

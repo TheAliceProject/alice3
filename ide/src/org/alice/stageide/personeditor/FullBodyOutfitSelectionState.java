@@ -66,11 +66,6 @@ class FullBodyOutfitSelectionState extends AbstractListSelectionState<org.alice.
 				org.alice.apis.stage.FullBodyOutfit.class
 		) );
 	}
-
-	@Override
-	protected void handleSelectionChange( org.alice.apis.stage.FullBodyOutfit value ) {
-		PersonViewer.getSingleton().setFullBodyOutfit( value );
-	}
 	@Override
 	protected int getVisibleRowCount() {
 		return -1;

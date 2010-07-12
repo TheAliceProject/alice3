@@ -50,10 +50,6 @@ class BaseSkinToneSelectionState extends AbstractListSelectionState< org.alice.a
 		super( java.util.UUID.fromString( "16db5f23-5fa8-41e5-8477-de0f9271e797" ), new org.alice.ide.croquet.EnumCodec< org.alice.apis.stage.BaseSkinTone >(), org.alice.apis.stage.BaseSkinTone.values() );
 	}
 	@Override
-	protected void handleSelectionChange( org.alice.apis.stage.BaseSkinTone value ) {
-		PersonViewer.getSingleton().setBaseSkinTone( value );
-	}
-	@Override
 	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseSkinTone> createList() {
 		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseSkinTone> rv = super.createList();
 		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );

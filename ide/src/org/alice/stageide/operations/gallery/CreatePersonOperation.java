@@ -42,27 +42,35 @@
  */
 package org.alice.stageide.operations.gallery;
 
+import org.alice.stageide.personeditor.PersonInfo;
+
 /**
  * @author Dennis Cosgrove
  */
 public class CreatePersonOperation extends PersonOperation {
+	private org.alice.apis.stage.Person person;
+
 	public CreatePersonOperation( edu.cmu.cs.dennisc.croquet.Group group ) {
 		super( group, java.util.UUID.fromString( "e5d143e7-2aa2-4cd0-ae65-3f20cc0faf96" ) );
 	}
 	@Override
-	protected org.alice.stageide.operations.gallery.PersonInfo getInitialPersonInfo() {
+	protected org.alice.stageide.personeditor.PersonInfo getInitialPersonInfo() {
 		return PersonInfo.createRandom();
 	}
 	@Override
 	protected void epilogue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.personeditor.PersonEditor > context, boolean isOk ) {
 		if( isOk ) {
+			org.alice.stageide.personeditor.PersonEditor personEditor = context.getMainPanel();
+			PersonInfo personInfo = personEditor.getPersonInfo();
+			this.person = personInfo.createPerson();
 			context.finish();
 		} else {
+			this.person = null;
 			context.cancel();
 		}
 	}
-	
+
 	public org.alice.apis.stage.Person getPerson() {
-		return this.getInitialPersonInfo().createPerson();
+		return this.person;
 	}
 }

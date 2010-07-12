@@ -63,9 +63,16 @@ abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.
 		assert rv != null : sb;
 		return rv;
 	}
-	
-	protected org.alice.apis.stage.SkinTone getSkinTone() {
-		return PersonViewer.getSingleton().getPerson().getSkinTone();
+
+	private org.alice.apis.stage.BaseSkinTone getBaseSkinTone() {
+		org.alice.apis.stage.Person person = PersonViewer.getSingleton().getPerson();
+		if( person != null ) {
+			org.alice.apis.stage.SkinTone skinTone = person.getSkinTone();
+			if( skinTone instanceof org.alice.apis.stage.BaseSkinTone ) {
+				return (org.alice.apis.stage.BaseSkinTone)skinTone;
+			}
+		}
+		return org.alice.apis.stage.BaseSkinTone.DARK;
 	}
 
 	@Override
@@ -75,14 +82,9 @@ abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.
 			String clsName = value.getClass().getSimpleName();
 			String enumConstantName = value.toString();
 			
-			org.alice.apis.stage.SkinTone skinTone = PersonViewer.getSingleton().getPerson().getSkinTone();
-			if( skinTone instanceof org.alice.apis.stage.BaseSkinTone ) {
-				//pass
-			} else {
-				skinTone = org.alice.apis.stage.BaseSkinTone.DARK;
-			}
-			
-			java.net.URL urlForIcon = this.getIngredientResourceName( skinTone, clsName, enumConstantName );
+			org.alice.apis.stage.SkinTone baseSkinTone = this.getBaseSkinTone();
+
+			java.net.URL urlForIcon = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
 			rv.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
 			rv.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
 

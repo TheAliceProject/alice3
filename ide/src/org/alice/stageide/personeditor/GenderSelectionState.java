@@ -50,10 +50,6 @@ class GenderSelectionState extends AbstractListSelectionState< org.alice.apis.st
 		super( java.util.UUID.fromString( "0a4c1622-e482-46bb-bb00-be3916f5549c" ), new org.alice.ide.croquet.EnumCodec< org.alice.apis.stage.Gender >(), org.alice.apis.stage.Gender.values() );
 	}
 	@Override
-	protected void handleSelectionChange( org.alice.apis.stage.Gender value ) {
-		PersonViewer.getSingleton().setGender( value );
-	}
-	@Override
 	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Gender> createList() {
 		edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Gender> rv = super.createList();
 		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );

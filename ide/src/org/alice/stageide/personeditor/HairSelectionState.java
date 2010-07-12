@@ -71,11 +71,6 @@ class HairSelectionState extends AbstractListSelectionState<org.alice.apis.stage
 				) 
 		);
 	}
-	
-	@Override
-	protected void handleSelectionChange( org.alice.apis.stage.Hair value ) {
-		PersonViewer.getSingleton().setHair( value );
-	}
 	@Override
 	protected int getVisibleRowCount() {
 		return -1;

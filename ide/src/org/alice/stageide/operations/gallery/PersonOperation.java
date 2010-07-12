@@ -42,6 +42,8 @@
  */
 package org.alice.stageide.operations.gallery;
 
+import org.alice.stageide.personeditor.PersonInfo;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,5 +56,9 @@ public abstract class PersonOperation extends edu.cmu.cs.dennisc.croquet.InputDi
 	protected org.alice.stageide.personeditor.PersonEditor prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.personeditor.PersonEditor > context ) {
 		PersonInfo personInfo = this.getInitialPersonInfo();
 		return new org.alice.stageide.personeditor.PersonEditor( personInfo );
+	}
+	@Override
+	protected java.awt.Dimension getDesiredDialogSize( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+		return new java.awt.Dimension( 1000, 800 );
 	}
 }
