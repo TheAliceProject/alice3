@@ -62,6 +62,7 @@ class CreateFieldFromPersonPane extends org.alice.ide.declarationpanes.CreateLar
 public class CreatePersonFieldOperation extends org.alice.stageide.gallerybrowser.AbstractGalleryDeclareFieldOperation< CreateFieldFromPersonPane > {
 	public CreatePersonFieldOperation() {
 		super( java.util.UUID.fromString( "84f3a391-4a6c-4a10-82da-6b6231937949" ) );
+		this.setName( "Create Person..." );
 	}
 	@Override
 	protected CreateFieldFromPersonPane prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< CreateFieldFromPersonPane > context ) {
