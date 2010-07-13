@@ -142,6 +142,11 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		
 	};
 	
+	private static double MOUSE_WHEEL_TIMEOUT_TIME = .5;
+	private static double CANCEL_MOUSE_WHEEL_DISTANCE = 3;
+	
+	protected double mouseWheelTimeoutTime = 0;
+	protected Point mouseWheelStartLocation = null;
 	
 	protected MoveAndTurnSceneEditor sceneEditor;
 	
@@ -538,8 +543,42 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		this.previousInputState.copyState(this.currentInputState);
 	}
 	
+	protected boolean isMouseWheelActive()
+	{
+		return (this.mouseWheelTimeoutTime > 0);
+	}
+	
+	protected void stopMouseWheel()
+	{
+		this.mouseWheelTimeoutTime = 0;
+		this.currentInputState.setMouseWheelState(0);
+		this.mouseWheelStartLocation = null;
+	}
+	
+	protected boolean shouldStopMouseWheel(Point currentMouse)
+	{
+		if (this.mouseWheelStartLocation != null)
+		{
+			double distance = currentMouse.distance(this.mouseWheelStartLocation);
+			if (distance > CANCEL_MOUSE_WHEEL_DISTANCE)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	protected void update( double timeDelta )
 	{
+		if (isMouseWheelActive())
+		{
+			mouseWheelTimeoutTime -= timeDelta;
+			if (!isMouseWheelActive())
+			{
+				stopMouseWheel();
+				handleStateChange();
+			}
+		}
 		for (int i=0; i<this.manipulators.size(); i++)
 		{
 			ManipulatorConditionSet currentManipulatorSet = this.manipulators.get( i );
@@ -767,6 +806,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			this.currentInputState.setClickHandle( this.getHandleForComponent( e.getComponent() ) );
 		}
 		this.currentInputState.setTimeCaptured();
+		this.stopMouseWheel();
 		this.handleStateChange();
 	}
 	
@@ -827,6 +867,10 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			}
 			this.currentInputState.setTimeCaptured();
 			this.currentInputState.setInputEvent(e);
+			if (shouldStopMouseWheel(e.getPoint()))
+			{
+				this.stopMouseWheel();
+			}
 			this.handleStateChange();
 		}
 	}
@@ -871,8 +915,12 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_WHEEL );
 		this.currentInputState.setTimeCaptured();
 		this.currentInputState.setInputEvent(e);
+		if (this.mouseWheelStartLocation == null)
+		{
+			this.mouseWheelStartLocation = new Point(e.getPoint());
+		}
+		this.mouseWheelTimeoutTime = MOUSE_WHEEL_TIMEOUT_TIME;
 		this.handleStateChange();
-		this.currentInputState.setMouseWheelState( 0 );
 	}
 	
 	public void keyPressed( java.awt.event.KeyEvent e ) {

@@ -60,25 +60,36 @@ import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.math.property.AffineMatrix4x4Property;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.util.BoundingBoxDecorator;
+import edu.cmu.cs.dennisc.scenegraph.util.ModestAxes;
 
 public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragManipulator implements TargetManipulator
 {
 
 	private Transformable sgBoundingBoxTransformable = new Transformable();
+	private Transformable sgBoundingBoxOffsetTransformable = new Transformable();
+	private Transformable sgDecoratorOffsetTransformable = new Transformable();
 	private BoundingBoxDecorator sgBoundingBoxDecorator = new BoundingBoxDecorator();
+	private ModestAxes sgAxes = null;
 	
 	public OmniDirectionalBoundingBoxManipulator()
 	{
-		this.sgBoundingBoxDecorator.setParent(this.sgBoundingBoxTransformable);
+		this.sgBoundingBoxOffsetTransformable.setParent(this.sgBoundingBoxTransformable);
+		this.sgBoundingBoxOffsetTransformable.setLocalTransformation(AffineMatrix4x4.createIdentity());
+		AffineMatrix4x4 decoratorTransform = AffineMatrix4x4.createIdentity();
+		decoratorTransform.translation.y = .01;
+		this.sgDecoratorOffsetTransformable.setLocalTransformation(decoratorTransform);
+		this.sgDecoratorOffsetTransformable.setParent(this.sgBoundingBoxOffsetTransformable);
+		this.sgBoundingBoxDecorator.setParent(this.sgDecoratorOffsetTransformable);
 	}
 	
 	public AffineMatrix4x4 getTargetTransformation()
 	{
-		return this.sgBoundingBoxTransformable.localTransformation.getValue();
+		return this.sgBoundingBoxOffsetTransformable.getAbsoluteTransformation();
 	}
 	
 	@Override
@@ -109,6 +120,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 	{
 		this.sgBoundingBoxTransformable.setParent(this.camera.getRoot());
 		this.sgBoundingBoxTransformable.setTranslationOnly(new Point3(0,0,0), AsSeenBy.SCENE);
+		this.sgBoundingBoxDecorator.isShowing.setValue(true);
 		this.manipulatedTransformable = this.sgBoundingBoxTransformable;
 		this.hidCursor = false;
 		this.initializeEventMessages();
@@ -136,7 +148,26 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 		org.alice.stageide.gallerybrowser.GalleryDragComponent galleryDragComponent = (org.alice.stageide.gallerybrowser.GalleryDragComponent)dragSource;
 		edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode = galleryDragComponent.getTreeNode();
 		edu.cmu.cs.dennisc.math.AxisAlignedBox box = org.alice.stageide.gallerybrowser.ResourceManager.getAxisAlignedBox(treeNode);
-		this.sgBoundingBoxDecorator.setBox(box);
+		
+		
+		AffineMatrix4x4 offsetTransform = AffineMatrix4x4.createIdentity();
+		if (this.sgAxes != null)
+		{
+			this.sgAxes.setParent(null);
+		}
+		if (box.isNaN())
+		{
+			this.sgBoundingBoxDecorator.isShowing.setValue(false);
+			this.sgAxes = new ModestAxes(1.0);
+		}
+		else
+		{
+			offsetTransform.translation.y += -box.getMinimum().y;
+			this.sgBoundingBoxDecorator.setBox(box);
+			this.sgAxes = new ModestAxes(box.getWidth()*.5);
+		}
+		this.sgBoundingBoxOffsetTransformable.setLocalTransformation(offsetTransform);
+		this.sgAxes.setParent(this.sgDecoratorOffsetTransformable);
 		return true;
 	}
 	
@@ -145,7 +176,9 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 	public void doEndManipulator( InputState endInput, InputState previousInput  )
 	{
 		super.doEndManipulator(endInput, previousInput);
-		this.sgBoundingBoxTransformable.setParent(null);
+		this.sgBoundingBoxDecorator.isShowing.setValue(false);
+		this.sgAxes.isShowing.setValue(false);
+//		this.sgBoundingBoxTransformable.setParent(null);
 //		System.out.println("End drag position = "+this.sgBoundingBoxTransformable.localTransformation.getValue().translation);
 		DragComponent dragSource = endInput.getDragAndDropContext().getDragSource();
 		dragSource.showDragProxy();
