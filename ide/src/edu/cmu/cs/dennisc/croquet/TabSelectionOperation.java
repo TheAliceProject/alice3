@@ -66,8 +66,11 @@ public final class TabSelectionOperation extends ListSelectionState<Predetermine
 		}
 	};
 	
-	public TabSelectionOperation( Group group, java.util.UUID individualUUID, int selectedIndex, PredeterminedTab... tabs ) {
+	public TabSelectionOperation( Group group, java.util.UUID individualUUID ) {
 		super( group, individualUUID, PredeterminedTabCodec.SINGLETON );
+	}
+	public TabSelectionOperation( Group group, java.util.UUID individualUUID, int selectedIndex, PredeterminedTab... tabs ) {
+		this( group, individualUUID );
 		this.setListData( selectedIndex, tabs );
 	}
 

@@ -303,7 +303,6 @@ public class ListSelectionState<E> extends Model implements Iterable<E> {
 		this.listSelectionModel.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		this.comboBoxModel.setListData(selectedIndex, items);
 	}
-
 	public ListSelectionState(Group group, java.util.UUID individualUUID, Codec< E > codec) {
 		this(group, individualUUID, codec, -1);
 	}
