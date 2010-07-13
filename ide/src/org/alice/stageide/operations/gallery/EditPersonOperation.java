@@ -67,17 +67,19 @@ public class EditPersonOperation extends PersonOperation {
 	@Override
 	protected void epilogue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.personeditor.PersonEditor > context, boolean isOk ) {
 		final org.alice.apis.stage.Person person = this.getSceneEditorPerson();
-		org.alice.stageide.personeditor.PersonEditor personEditor = context.getMainPanel();
+		final org.alice.stageide.personeditor.PersonEditor personEditor = context.getMainPanel();
 		final org.alice.stageide.personeditor.PersonInfo prevPersonInfo = this.getInitialPersonInfo();
 		final org.alice.stageide.personeditor.PersonInfo nextPersonInfo = personEditor.getPersonInfo();
 		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			public void doOrRedo( boolean isDo ) {
 				nextPersonInfo.update( person );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: repaint" );
 			}
 			@Override
 			public void undo() {
 				prevPersonInfo.update( person );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: repaint" );
 			}
 			@Override
 			protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
