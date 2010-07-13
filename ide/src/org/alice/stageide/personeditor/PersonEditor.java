@@ -42,19 +42,6 @@
  */
 package org.alice.stageide.personeditor;
 
-import org.alice.apis.stage.Adult;
-import org.alice.apis.stage.BaseEyeColor;
-import org.alice.apis.stage.BaseSkinTone;
-import org.alice.apis.stage.Child;
-import org.alice.apis.stage.FullBodyOutfit;
-import org.alice.apis.stage.FullBodyOutfitManager;
-import org.alice.apis.stage.Gender;
-import org.alice.apis.stage.Hair;
-import org.alice.apis.stage.HairManager;
-import org.alice.apis.stage.LifeStage;
-import org.alice.apis.stage.Outfit;
-import org.alice.apis.stage.Person;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -102,10 +89,7 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private FitnessLevelActionOperation softOperation = new FitnessLevelActionOperation( this.fitnessState, this.fitnessState.getMinimum(), "out of shape" );
 	private FitnessLevelActionOperation cutOperation = new FitnessLevelActionOperation( this.fitnessState, this.fitnessState.getMaximum(), "in shape" );
 
-	private Adult adult = new Adult();
-	private Child child = new Child();
-	//private edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Person > mapLifeStageGenderToPerson = new edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Person >();
-
+	private java.util.Map<org.alice.apis.stage.LifeStage, org.alice.apis.stage.Person> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private static abstract class ContentTabStateOperation extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
 		public ContentTabStateOperation(java.util.UUID individualId, String title) {
 			super(individualId, title, null);
@@ -116,7 +100,10 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	}
 
-	private ContentTabStateOperation bodyTabState = new ContentTabStateOperation(java.util.UUID.fromString( "10c0d057-a5d7-4a36-8cd7-c30f46f5aac2" ), "Body") {
+	private class BodyTab extends ContentTabStateOperation {
+		public BodyTab() {
+			super( java.util.UUID.fromString( "10c0d057-a5d7-4a36-8cd7-c30f46f5aac2" ), "Body" );
+		}
 		@Override
 		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createMainComponent() {
 			edu.cmu.cs.dennisc.croquet.List< ? > list = fullBodyOutfitSelection.createList();
@@ -140,8 +127,11 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
 			return rv;
 		}
-	};
-	private ContentTabStateOperation headTabState = new ContentTabStateOperation(java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ), "Head") {
+	}
+	private class HeadTab extends ContentTabStateOperation {
+		public HeadTab() {
+			super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ), "Head" );
+		}
 		@Override
 		protected edu.cmu.cs.dennisc.croquet.JComponent<?> createMainComponent() {
 			edu.cmu.cs.dennisc.croquet.RowsSpringPanel rv = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 8 ) {
@@ -160,10 +150,7 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	};
 
-	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabbedPaneSelection = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( 
-			PersonEditor.GROUP, 
-			java.util.UUID.fromString( "d525f0c5-9f39-4807-a9d3-f66775f9eb2d" ), 
-			bodyTabState, headTabState );
+	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabbedPaneSelection;
 	
 
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.croquet.PredeterminedTab> tabChangeAdapter = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.croquet.PredeterminedTab>() {
@@ -171,32 +158,66 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	};
 	public PersonEditor( org.alice.stageide.personeditor.PersonInfo personInfo ) {
-		Person[] people = { adult, child };
-		for( Person person : people ) {
+		org.alice.apis.stage.LifeStage[] lifeStages = {  org.alice.apis.stage.LifeStage.ADULT, org.alice.apis.stage.LifeStage.CHILD };
+		for( org.alice.apis.stage.LifeStage lifeStage : lifeStages ) {
+			map.put( lifeStage, lifeStage.createInstance() );
+		}
+		for( org.alice.apis.stage.Person person : map.values() ) {
 			person.getSGTransformable().putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
 		}
 
+		this.setPersonInfo( personInfo );
+		this.handleCataclysm( true, true, true );
 
-		lifeStageSelection.setSelectedItem( personInfo.getLifeStage() );
-		genderSelection.setSelectedItem( personInfo.getGender() );
-		
-		lifeStageSelection.addValueObserver( new LifeStageSelectionState.ValueObserver<org.alice.apis.stage.LifeStage>() {
+		this.lifeStageSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.LifeStage>() {
 			public void changed(org.alice.apis.stage.LifeStage nextValue) {
 				handleCataclysm( true, false, false );
 			}
 		} );
-		genderSelection.addValueObserver( new LifeStageSelectionState.ValueObserver<org.alice.apis.stage.Gender>() {
+		this.genderSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.Gender>() {
 			public void changed(org.alice.apis.stage.Gender nextValue) {
 				handleCataclysm( false, true, false );
 			}
 		} );
-		hairColorSelection.addValueObserver( new LifeStageSelectionState.ValueObserver<String>() {
+		this.hairColorSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<String>() {
 			public void changed(String nextValue) {
 				handleCataclysm( false, false, true );
 			}
 		} );
 		
-		this.handleCataclysm( true, true, true );
+		this.fullBodyOutfitSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.FullBodyOutfit>() {
+			public void changed(org.alice.apis.stage.FullBodyOutfit nextValue) {
+				updatePerson();
+			}
+		} );
+		this.hairSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.Hair>() {
+			public void changed(org.alice.apis.stage.Hair nextValue) {
+				updatePerson();
+			}
+		} );
+		this.fitnessState.addValueObserver( new edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState.ValueObserver() {
+			public void changed(int nextValue) {
+				updatePerson();
+			}
+		} );
+		this.baseEyeColorSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.BaseEyeColor>() {
+			public void changed(org.alice.apis.stage.BaseEyeColor nextValue) {
+				updatePerson();
+			}
+		} );
+
+
+		this.tabbedPaneSelection = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( PersonEditor.GROUP, java.util.UUID.fromString( "d525f0c5-9f39-4807-a9d3-f66775f9eb2d" ), 0, new BodyTab(), new HeadTab() );
+		final edu.cmu.cs.dennisc.croquet.FolderTabbedPane<?> tabbedPane = this.tabbedPaneSelection.createDefaultFolderTabbedPane();
+		tabbedPane.scaleFont( 1.5f );
+
+		this.baseSkinToneSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.BaseSkinTone>() {
+			public void changed(org.alice.apis.stage.BaseSkinTone nextValue) {
+				updatePerson();
+				tabbedPane.repaint();
+			}
+		} );
+		
 
 		edu.cmu.cs.dennisc.croquet.BorderPanel northPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		northPane.addComponent(  this.randomPersonActionOperation.createButton(), Constraint.NORTH );
@@ -212,16 +233,6 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		ubiquitousPane.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		northPane.addComponent( ubiquitousPane, Constraint.CENTER );
 
-		this.tabbedPaneSelection.setSelectedItem( bodyTabState );
-		final edu.cmu.cs.dennisc.croquet.FolderTabbedPane<?> tabbedPane = this.tabbedPaneSelection.createDefaultFolderTabbedPane();
-		tabbedPane.scaleFont( 1.5f );
-
-		this.baseSkinToneSelection.addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<org.alice.apis.stage.BaseSkinTone>() {
-			public void changed(org.alice.apis.stage.BaseSkinTone nextValue) {
-				tabbedPane.repaint();
-			}
-		} );
-		
 		edu.cmu.cs.dennisc.croquet.BorderPanel ingredientsPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		ingredientsPanel.addComponent( northPane, Constraint.NORTH );
 		ingredientsPanel.addComponent( tabbedPane, Constraint.CENTER );
@@ -237,189 +248,125 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //				PersonViewer.getSingleton().setFitnessLevel( nextValue*0.01 );
 //			}
 //		} );
-		Person person;
-		LifeStage lifeStage = personInfo.getLifeStage();
-		if( lifeStage == LifeStage.ADULT ) {
-			person = adult;
-		} else {
-			person = child;
-		}
-		PersonViewer.getSingleton().setPerson( person );
+
 	}
 	
+	private boolean isAlreadyHandlingCataclysm = false;
 	private void handleCataclysm( boolean isLifeStageChange, boolean isGenderChange, boolean isHairColorChange ) {
-		if( isLifeStageChange || isGenderChange || isHairColorChange ) {
-			this.hairSelection.handleCataclysmicChange( this.lifeStageSelection.getSelectedItem(), this.genderSelection.getSelectedItem(), this.hairColorSelection.getSelectedItem() );
-		}
-		if( isLifeStageChange || isGenderChange ) {
-			this.fullBodyOutfitSelection.handleCataclysmicChange( this.lifeStageSelection.getSelectedItem(), this.genderSelection.getSelectedItem() );
-		}
-		if( isLifeStageChange ) {
-			this.hairColorSelection.handleCataclysmicChange( this.lifeStageSelection.getSelectedItem() );
+		if( this.isAlreadyHandlingCataclysm ) {
+			//pass
+		} else {
+			this.isAlreadyHandlingCataclysm = true;
+			try {
+				org.alice.apis.stage.LifeStage lifeStage = this.lifeStageSelection.getSelectedItem();
+				org.alice.apis.stage.Gender gender = this.genderSelection.getSelectedItem();
+				String hairColor = this.hairColorSelection.getSelectedItem();
+				if( isLifeStageChange || isGenderChange || isHairColorChange ) {
+					this.hairSelection.handleCataclysmicChange( lifeStage, gender, hairColor );
+				}
+				if( isLifeStageChange || isGenderChange ) {
+					this.fullBodyOutfitSelection.handleCataclysmicChange( lifeStage, gender );
+				}
+				if( isLifeStageChange ) {
+					this.hairColorSelection.handleCataclysmicChange( lifeStage );
+				}
+				this.updatePerson();
+				org.alice.apis.stage.Person person = PersonViewer.getSingleton().getPerson();
+				org.alice.apis.stage.Hair hair = person.getHair();
+				if( isLifeStageChange || isGenderChange || isHairColorChange ) {
+					this.hairSelection.setSelectedItem( hair );
+				}
+				if( isLifeStageChange || isGenderChange ) {
+					this.fullBodyOutfitSelection.setSelectedItem( (org.alice.apis.stage.FullBodyOutfit)person.getOutfit() );
+				}
+				if( isLifeStageChange ) {
+					this.hairColorSelection.setSelectedItem( hair.toString() );
+				}
+			} finally {
+				this.isAlreadyHandlingCataclysm = false;
+			}
 		}
 	}
 	
-////	private boolean isAlreadyUpdating = false;
-//	private void updatePerson() {
-////		if( this.isAlreadyUpdating ) {
-////			//pass
-////		} else {
-////			this.isAlreadyUpdating = true;
-////			//edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().acquireRenderingLock();
-////			try {
-//				if( this.lifeStage != null && this.gender != null ) {
-//					Person person = this.mapLifeStageGenderToPerson.get( this.lifeStage, this.gender );
-//					if( person != null ) {
-//						this.dragAdapter.setSelectedObject( person.getSGTransformable() );
-//						if( this.baseSkinTone != null ) {
-//							person.setSkinTone( this.baseSkinTone );
-//							if( this.fitnessLevel != null ) {
-//								person.setFitnessLevel( this.fitnessLevel, org.alice.apis.stage.Person.RIGHT_NOW );
-//								if( this.fullBodyOutfit != null && FullBodyOutfitManager.getSingleton().isApplicable( this.fullBodyOutfit, this.lifeStage, this.gender ) ) {
-//									//pass
-//								} else {
-//									Outfit outfit = person.getOutfit();
-//									if( outfit instanceof FullBodyOutfit ) {
-//										this.fullBodyOutfit = ( FullBodyOutfit )outfit;
-//									} else {
-//										this.fullBodyOutfit = FullBodyOutfitManager.getSingleton().getRandomEnumConstant( this.lifeStage, this.gender );
-//									}
-//								}
-//								person.setOutfit( this.fullBodyOutfit );
-//							}
-//						}
-//						if( this.baseEyeColor != null ) {
-//							person.setEyeColor( this.baseEyeColor );
-//						}
-//						if( this.hair != null && HairManager.getSingleton().isApplicable( this.hair, this.lifeStage, this.gender ) ) {
-//							//pass
-//						} else {
-//							Hair hair = person.getHair();
-//							if( hair != null ) {
-//								this.hair = hair;
+	private boolean isAlreadyUpdating = false;
+	private void updatePerson() {
+		if( this.isAlreadyUpdating ) {
+			//pass
+		} else {
+			this.isAlreadyUpdating = true;
+			//edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().acquireRenderingLock();
+			try {
+				org.alice.apis.stage.LifeStage lifeStage = this.lifeStageSelection.getSelectedItem();
+				org.alice.apis.stage.Gender gender = this.genderSelection.getSelectedItem();
+				String hairColor = this.hairColorSelection.getSelectedItem();
+
+				org.alice.apis.stage.FullBodyOutfit fullBodyOutfit = this.fullBodyOutfitSelection.getSelectedItem();
+				org.alice.apis.stage.BaseEyeColor baseEyeColor = this.baseEyeColorSelection.getSelectedItem();
+				org.alice.apis.stage.BaseSkinTone baseSkinTone = this.baseSkinToneSelection.getSelectedItem();
+				org.alice.apis.stage.Hair hair = this.hairSelection.getSelectedItem();
+				double fitnessLevel = this.fitnessState.getValue()*0.01;
+				
+				assert lifeStage != null;
+				org.alice.apis.stage.Person person = this.map.get( lifeStage );
+				if( person != null ) {
+					if( gender != null ) {
+						person.setGender( gender );
+					}
+					if( baseSkinTone != null ) {
+						person.setSkinTone( baseSkinTone );
+						person.setFitnessLevel( fitnessLevel, org.alice.apis.stage.Person.RIGHT_NOW );
+						if( fullBodyOutfit != null && org.alice.apis.stage.FullBodyOutfitManager.getSingleton().isApplicable( fullBodyOutfit, lifeStage, gender ) ) {
+							//pass
+						} else {
+							edu.cmu.cs.dennisc.print.PrintUtilities.println( fullBodyOutfit, lifeStage, gender );
+//							org.alice.apis.stage.Outfit outfit = person.getOutfit();
+//							if( outfit instanceof org.alice.apis.stage.FullBodyOutfit ) {
+//								fullBodyOutfit = ( org.alice.apis.stage.FullBodyOutfit )outfit;
 //							} else {
-//								this.hair = HairManager.getSingleton().getRandomEnumConstant( this.lifeStage, this.gender );
+								fullBodyOutfit = org.alice.apis.stage.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
 //							}
-//						}
-//						person.setHair( this.hair );
-//						this.setModel( person );
-//					} else {
-//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "updatePerson person is null:", this.lifeStage, this.gender );
-//					}
-////					if( this.ingredientsPane != null ) {
-////						this.ingredientsPane.refresh();
-////					}
-//				}
-////			} finally {
-////				//edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().releaseRenderingLock();
-////				this.isAlreadyUpdating = false;
-////			}
-////		}
-//	}
+						}
+						person.setOutfit( fullBodyOutfit );
+					}
+					if( baseEyeColor != null ) {
+						person.setEyeColor( baseEyeColor );
+					}
+					
+					if( hair != null && org.alice.apis.stage.HairManager.getSingleton().isApplicable( hair, lifeStage, gender ) ) {
+						//pass
+					} else {
+						try {
+							Class<? extends org.alice.apis.stage.Hair> cls = org.alice.apis.stage.HairManager.getSingleton().getRandomClass(lifeStage, gender);
+							java.lang.reflect.Field field = cls.getField( hairColor );
+							hair = (org.alice.apis.stage.Hair)field.get( null );
+						} catch( Exception e ) {
+							hair = org.alice.apis.stage.HairManager.getSingleton().getRandomEnumConstant(lifeStage, gender);
+						}
+					}
+					person.setHair( hair );
+					PersonViewer.getSingleton().setPerson( person );
+				}
+			} finally {
+				//edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().releaseRenderingLock();
+				this.isAlreadyUpdating = false;
+			}
+		}
+	}
 	public PersonInfo getPersonInfo() {
-		return PersonInfo.createFromPerson( null );
+		return PersonInfo.createFromPerson( PersonViewer.getSingleton().getPerson() );
 	}
 	public void setPersonInfo( PersonInfo personInfo ) {
+		this.lifeStageSelection.setSelectedItem( personInfo.getLifeStage() );
+		this.genderSelection.setSelectedItem( personInfo.getGender() );
+		this.baseEyeColorSelection.setSelectedItem( personInfo.getBaseEyeColor() );
+		this.baseSkinToneSelection.setSelectedItem( personInfo.getBaseSkinTone() );
+		this.fullBodyOutfitSelection.setSelectedItem( personInfo.getFullBodyOutfit() );
 		
-		//todo
+		org.alice.apis.stage.Hair hair = personInfo.getHair();
+		this.hairSelection.setSelectedItem( hair );
+		this.hairColorSelection.setSelectedItem( hair.toString() );
+		this.fitnessState.setValue( (int)(personInfo.getFitnessLevel()*100) );
 	}
-//	public LifeStage getLifeStage() {
-//		return this.lifeStage;
-//	}
-//	public void setLifeStage( LifeStage lifeStage ) {
-//		if( this.lifeStage == lifeStage ) {
-//			//pass
-//		} else {
-//			this.lifeStage = lifeStage;
-//			this.updatePerson();
-//		}
-//	}
-//
-//	public Gender getGender() {
-//		return this.gender;
-//	}
-//	public void setGender( Gender gender ) {
-//		if( this.gender == gender ) {
-//			//pass
-//		} else {
-//			this.gender = gender;
-//			this.updatePerson();
-//		}
-//	}
-//	public BaseEyeColor getBaseEyeColor() {
-//		return this.baseEyeColor;
-//	}
-//	public void setBaseEyeColor( BaseEyeColor baseEyeColor ) {
-//		if( this.baseEyeColor == baseEyeColor ) {
-//			//pass
-//		} else {
-//			this.baseEyeColor = baseEyeColor;
-//			this.updatePerson();
-//		}
-//	}
-//	public BaseSkinTone getBaseSkinTone() {
-//		return this.baseSkinTone;
-//	}
-//	public void setBaseSkinTone( BaseSkinTone baseSkinTone ) {
-//		if( this.baseSkinTone == baseSkinTone ) {
-//			//pass
-//		} else {
-//			this.baseSkinTone = baseSkinTone;
-//			this.updatePerson();
-//		}
-//	}
-//	public FullBodyOutfit getFullBodyOutfit() {
-//		return this.fullBodyOutfit;
-//	}
-//	public void setFullBodyOutfit( FullBodyOutfit fullBodyOutfit ) {
-//		if( this.fullBodyOutfit == fullBodyOutfit ) {
-//			//pass
-//		} else {
-//			this.fullBodyOutfit = fullBodyOutfit;
-//			this.updatePerson();
-//		}
-//	}
-//	
-//	
-//	
-//	public Hair getHair() {
-//		return this.hair;
-//	}
-//	public void setHair( Hair hair ) {
-//		if( this.hair == hair ) {
-//			//pass
-//		} else {
-//			this.hair = hair;
-//			this.updatePerson();
-//		}
-//	}
-//	
-//	public String getHairColor() {
-//		return this.hair.toString();
-//	}
-//	public void setHairColor( String hairColor ) {
-//		if( this.hair != null ) {
-//			Class< ? extends Enum > cls = (Class<? extends Enum>)this.hair.getClass();
-//			for( Enum e : cls.getEnumConstants() ) {
-//				if( e.name().equals( hairColor ) ) {
-//					this.setHair( (Hair)e );
-//					break;
-//				}
-//			}
-//		}
-//	}
-//	
-//	public Double getFitnessLevel() {
-//		return this.fitnessLevel;
-//	}
-//	public void setFitnessLevel( Double fitnessLevel ) {
-//		if( this.fitnessLevel == fitnessLevel ) {
-//			//pass
-//		} else {
-//			this.fitnessLevel = fitnessLevel;
-//			this.updatePerson();
-//		}
-//	}
 	public static void main( String[] args ) {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
 		if( lookAndFeelInfo != null ) {

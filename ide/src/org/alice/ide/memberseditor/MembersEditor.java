@@ -230,6 +230,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabbedPaneSelectionState = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( 
 			org.alice.ide.IDE.UI_STATE_GROUP, 
 			java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ),
+			0,
 			this.proceduresTab, this.functionsTab, this.fieldsTab );
 
 
@@ -416,7 +417,6 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		label.scaleFont( FONT_SCALAR );
 		edu.cmu.cs.dennisc.croquet.LineAxisPanel instancePanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( label, comboBox );
 
-		this.tabbedPaneSelectionState.setSelectedItem( this.proceduresTab );
 		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = IS_FOLDER_TABBED_PANE_DESIRED ? this.tabbedPaneSelectionState.createDefaultFolderTabbedPane() : this.tabbedPaneSelectionState.createDefaultToolPaletteTabbedPane();
 		this.addComponent( instancePanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
 		this.addComponent( tabbedPane, Constraint.CENTER );

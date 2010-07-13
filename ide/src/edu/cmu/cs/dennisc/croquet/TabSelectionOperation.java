@@ -66,9 +66,9 @@ public final class TabSelectionOperation extends ListSelectionState<Predetermine
 		}
 	};
 	
-	public TabSelectionOperation( Group group, java.util.UUID individualUUID, PredeterminedTab... tabs ) {
+	public TabSelectionOperation( Group group, java.util.UUID individualUUID, int selectedIndex, PredeterminedTab... tabs ) {
 		super( group, individualUUID, PredeterminedTabCodec.SINGLETON );
-		this.setListData( -1, tabs );
+		this.setListData( selectedIndex, tabs );
 	}
 
 	public FolderTabbedPane<PredeterminedTab> createDefaultFolderTabbedPane() {

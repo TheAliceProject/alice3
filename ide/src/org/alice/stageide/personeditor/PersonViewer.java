@@ -166,24 +166,17 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		return (Person)this.getModel();
 	}
 	public void setPerson( Person person ) {
+		assert person != null;
 		this.setModel( person );
+		this.dragAdapter.setSelectedObject( person.getSGTransformable() );
+		double height = person.getHeight();
+		this.positionAndOrientCamera( height, 0, 0.0 );
 	}
-//	@Override
-//	protected void initialize() {
-//		super.initialize();
-//		this.updatePerson();
-//		if( this.lifeStage != null && this.gender != null ) {
-//			Person person = this.mapLifeStageGenderToPerson.get( this.lifeStage, this.gender );
-//			double height = person.getHeight();
-//			this.positionAndOrientCamera( height, 0, 0.0 );
-//		}
-//		//this._sunLight.turn( apis.moveandturn.TurnDirection.FORWARD, org.alice.apis.moveandturn.AngleInRevolutions( 0.125 ) );
-//		this.dragAdapter.setOnscreenLookingGlass( this.getOnscreenLookingGlass() );
-//		this.dragAdapter.addCameraView( CameraView.MAIN, this.getCamera().getSGSymmetricPerspectiveCamera(), null );
-//		this.dragAdapter.makeCameraActive( this.getCamera().getSGSymmetricPerspectiveCamera() );
-//	}
-
-//	public static void main( String[] args ) {
-//		PersonEditor.main( args );
-//	}
+	@Override
+	protected void initialize() {
+		super.initialize();
+		this.dragAdapter.setOnscreenLookingGlass( this.getOnscreenLookingGlass() );
+		this.dragAdapter.addCameraView( CameraView.MAIN, this.getCamera().getSGSymmetricPerspectiveCamera(), null );
+		this.dragAdapter.makeCameraActive( this.getCamera().getSGSymmetricPerspectiveCamera() );
+	}
 }

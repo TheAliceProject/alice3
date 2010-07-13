@@ -99,6 +99,7 @@ public class SelectProjectToOpenPanel extends edu.cmu.cs.dennisc.croquet.BorderP
 	};
 
 	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabSelectionOperation = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation(edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString("12e1d59b-2893-4144-b995-08090680a318"),
+			-1, 
 			this.templatesTab,
 			this.myProjectsTab, 
 			this.recentProjectsTab, 
