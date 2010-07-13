@@ -128,7 +128,7 @@ public class PersonInfo {
 		rv.setEyeColor( this.baseEyeColor );
 		rv.setOutfit( this.fullBodyOutfit );
 		rv.setHair( this.hair );
-		rv.setFitnessLevel( this.fitnessLevel );
+		rv.setFitnessLevel( this.fitnessLevel, org.alice.apis.stage.Person.RIGHT_NOW );
 		return rv;
 	}
 }

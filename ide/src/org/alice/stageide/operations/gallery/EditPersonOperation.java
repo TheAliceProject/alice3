@@ -47,18 +47,45 @@ package org.alice.stageide.operations.gallery;
  */
 public class EditPersonOperation extends PersonOperation {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+
 	public EditPersonOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "bbbc5715-a41a-4740-b3fe-41ee20b1f9c5" ) );
 		this.setName( "Edit..." );
 		this.field = field;
 	}
+	private org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor getMoveAndTurnSceneEditor() {
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.alice.ide.IDE.getSingleton().getSceneEditor(), org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor.class );
+	}
+	private org.alice.apis.stage.Person getSceneEditorPerson() {
+		return this.getMoveAndTurnSceneEditor().getInstanceInJavaForField( this.field, org.alice.apis.stage.Person.class );
+	}
 	@Override
 	protected org.alice.stageide.personeditor.PersonInfo getInitialPersonInfo() {
-		throw new RuntimeException( "todo" );
+		final org.alice.apis.stage.Person person = this.getSceneEditorPerson();
+		return org.alice.stageide.personeditor.PersonInfo.createFromPerson( person );
 	}
 	@Override
 	protected void epilogue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.personeditor.PersonEditor > context, boolean isOk ) {
-		throw new RuntimeException( "todo" );
+		final org.alice.apis.stage.Person person = this.getSceneEditorPerson();
+		org.alice.stageide.personeditor.PersonEditor personEditor = context.getMainPanel();
+		final org.alice.stageide.personeditor.PersonInfo prevPersonInfo = this.getInitialPersonInfo();
+		final org.alice.stageide.personeditor.PersonInfo nextPersonInfo = personEditor.getPersonInfo();
+		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+			@Override
+			public void doOrRedo( boolean isDo ) {
+				nextPersonInfo.update( person );
+			}
+			@Override
+			public void undo() {
+				prevPersonInfo.update( person );
+			}
+			@Override
+			protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+				rv.append( "edit: " );
+				edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, field, locale );
+				return rv;
+			}
+		} );
 	}
 }
 
