@@ -133,27 +133,35 @@ public abstract class SpringPanel extends Panel {
 			return dimension.height;
 		}
 	}
-	private void putConstraint( Component< ? > component, Horizontal horizontal, int x, Vertical vertical, int y, Component< ? > other ) {
-		String horizontalConstraint = horizontal.getInternal();
-		String verticalConstraint = vertical.getInternal();
-		if( horizontalConstraint != null ) {
-			this.springLayout.putConstraint( horizontalConstraint, component.getAwtComponent(), x, horizontalConstraint, other.getAwtComponent() );
+	private void putConstraint( Component< ? > dependent, Horizontal horizontalDependent, Horizontal horizontalAnchor, int x, Vertical verticalDependent, Vertical verticalAnchor, int y, Component< ? > anchor ) {
+		String horizontalDependentConstraint = horizontalDependent.getInternal();
+		String horizontalAnchorConstraint = horizontalAnchor.getInternal();
+		if( horizontalDependentConstraint != null && horizontalAnchorConstraint != null ) {
+			this.springLayout.putConstraint( horizontalDependentConstraint, dependent.getAwtComponent(), x, horizontalAnchorConstraint, anchor.getAwtComponent() );
 		} else {
-			this.springLayout.putConstraint( javax.swing.SpringLayout.WEST, component.getAwtComponent(), new HorizontalCenterSpring( component, x ), javax.swing.SpringLayout.WEST, other.getAwtComponent() );
+			this.springLayout.putConstraint( javax.swing.SpringLayout.WEST, dependent.getAwtComponent(), new HorizontalCenterSpring( dependent, x ), javax.swing.SpringLayout.WEST, anchor.getAwtComponent() );
 		}
-		if( verticalConstraint != null ) {
-			this.springLayout.putConstraint( verticalConstraint, component.getAwtComponent(), y, verticalConstraint, other.getAwtComponent() );
+		String verticalDependentConstraint = verticalDependent.getInternal();
+		String verticalAnchorConstraint = verticalAnchor.getInternal();
+		if( verticalDependentConstraint != null && verticalAnchorConstraint != null ) {
+			this.springLayout.putConstraint( verticalDependentConstraint, dependent.getAwtComponent(), y, verticalAnchorConstraint, anchor.getAwtComponent() );
 		} else {
-			this.springLayout.putConstraint( javax.swing.SpringLayout.NORTH, component.getAwtComponent(), new VerticalCenterSpring( component, y ), javax.swing.SpringLayout.NORTH, other.getAwtComponent() );
+			this.springLayout.putConstraint( javax.swing.SpringLayout.NORTH, dependent.getAwtComponent(), new VerticalCenterSpring( dependent, y ), javax.swing.SpringLayout.NORTH, anchor.getAwtComponent() );
 		}
 	}
 	
-	public void addComponent( Component< ? > component, Horizontal horizontal, int x, Vertical vertical, int y, Component< ? > other ) {
-		this.internalAddComponent( component );
-		this.putConstraint( component, horizontal, x, vertical, y, other );
+	public void addComponent( Component< ? > dependent, Horizontal horizontalDependent, Horizontal horizontalAnchor, int x, Vertical verticalDependent, Vertical verticalAnchor, int y, Component< ? > anchor ) {
+		this.internalAddComponent( dependent );
+		this.putConstraint( dependent, horizontalDependent, horizontalAnchor, x, verticalDependent, verticalAnchor, y, anchor );
 	}
-	public void addComponent( Component< ? > component, Horizontal horizontal, int x, Vertical vertical, int y ) {
-		this.addComponent( component, horizontal, x, vertical, y, this );
+	public void addComponent( Component< ? > dependent, Horizontal horizontalDependent, Horizontal horizontalThis, int x, Vertical verticalDependent, Vertical verticalThis, int y ) {
+		this.addComponent( dependent, horizontalDependent, horizontalThis, x, verticalDependent, verticalThis, y, this );
+	}
+	public void addComponent( Component< ? > dependent, Horizontal horizontal, int x, Vertical vertical, int y, Component< ? > anchor ) {
+		this.addComponent( dependent, horizontal, horizontal, x, vertical, vertical, y, anchor );
+	}
+	public void addComponent( Component< ? > dependent, Horizontal horizontal, int x, Vertical vertical, int y ) {
+		this.addComponent( dependent, horizontal, x, vertical, y, this );
 	}
 	@Override
 	public void removeComponent( edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
