@@ -120,6 +120,7 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
  * @author Dennis Cosgrove
  */
 public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractInstantiatingSceneEditor implements LookingGlassListener{
+
 	
 	public static interface SceneEditorFieldObserver
 	{
@@ -971,6 +972,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		//Run the GeneratedSetUp method to get everything in its starting place
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = getIDE().getPerformEditorGeneratedSetUpMethod();
 		this.getVM().invokeEntryPoint( method, rv );
+		
+		refreshMarkerLists();
+		
 		//Set up the scene
 		this.scene = (org.alice.apis.moveandturn.Scene)((edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)rv).getInstanceInJava();
 		this.scene.setOwner( new org.alice.apis.moveandturn.SceneOwner() {
@@ -998,6 +1002,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		
 		//Turn animation off on the main view selector so all sets make it go instantly
 		this.mainCameraViewTracker.setShouldAnimate(false);
+
 		
 		//Find the new scene's main perspective camera
 		this.sgPerspectiveCamera = null;
@@ -1015,6 +1020,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		//Add anything that may be missing (like a default camera view marker)
 		upgradeSceneToStateOfTheArt();
 		
+		//Clear the selection on the camera markers so we can set them to the values specified by the scene
+		this.mainCameraMarkerList.setSelectedItem(null);
+		this.startingViewMarkerFieldList.setSelectedItem(null);
+		
 		//Add and set up the snap grid (this needs to happen before setting the camera)
 		this.scene.getSGComposite().addComponent(this.snapGrid);
 		this.snapGrid.setTranslationOnly(0, 0, 0, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE);
@@ -1028,10 +1037,36 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		
 		//Find the camera.moveAndOrientTo(<starting camera point of view>) statement and set the StartingCameraViewManager to have that view selected
 		FieldDeclaredInAlice startingPointOfViewField = getStartingPointOfViewField();
-		if (startingPointOfViewField != null)
-		{	
+		boolean containsStartingField = false;
+		for (FieldDeclaredInAlice field : this.startingViewMarkerFieldList)
+		{
+			if (field == startingPointOfViewField)
+			{
+				containsStartingField = true;
+			}
+		}
+		if (containsStartingField)
+		{
 			this.startingViewMarkerFieldList.setSelectedItem(startingPointOfViewField);
 			this.mainCameraMarkerList.setSelectedItem(this.getCameraMarkerForField(startingPointOfViewField));
+		}
+		else
+		{
+			if (startingPointOfViewField != null)
+			{
+				startingPointOfViewField = getMatchingStartingViewField(startingPointOfViewField.getName());
+			}
+			if (startingPointOfViewField != null)
+			{
+				this.startingViewMarkerFieldList.setSelectedItem(startingPointOfViewField);
+				this.mainCameraMarkerList.setSelectedItem(this.getCameraMarkerForField(startingPointOfViewField));
+			}
+			else
+			{
+				this.startingViewMarkerFieldList.setSelectedItem(this.startingViewMarkerFieldList.getItemAt(0));
+				this.mainCameraMarkerList.setSelectedItem(this.getCameraMarkerForField(this.startingViewMarkerFieldList.getSelectedItem()));
+			}
+				
 		}
 		sidePane.getShowSceneGraphViewerActionOperation().fire();
 		//Turn animation back on
@@ -1039,12 +1074,25 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return rv;
 	}
 
+	private FieldDeclaredInAlice getMatchingStartingViewField(String name)
+	{
+		for (FieldDeclaredInAlice field : this.startingViewMarkerFieldList)
+		{
+			if (field.getName().equals(name))
+			{
+				return field;
+			}
+		}
+		return null;
+	}
+	
 	private boolean doesMethodInvocationMatchMethodName(MethodInvocation invocation, String methodName)
 	{
 		if (invocation.method.getValue() instanceof MethodDeclaredInJava)
 		{
 			MethodDeclaredInJava javaMethod = (MethodDeclaredInJava)invocation.method.getValue();
 			MethodReflectionProxy reflectionProxy = javaMethod.getMethodReflectionProxy();
+			//PrintUtilities.println("Checking invocation "+reflectionProxy.getName()+" against "+methodName);
 			if (reflectionProxy.getName().equals(methodName))
 			{
 				return true;

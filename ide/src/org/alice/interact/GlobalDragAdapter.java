@@ -55,6 +55,7 @@ import org.alice.interact.condition.KeyPressCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MousePressCondition;
 import org.alice.interact.condition.MouseDragCondition;
+import org.alice.interact.condition.MouseWheelCondition;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.condition.SelectedObjectCondition;
@@ -74,6 +75,7 @@ import org.alice.interact.manipulator.CameraPanDragManipulator;
 import org.alice.interact.manipulator.CameraRotateKeyManipulator;
 import org.alice.interact.manipulator.CameraTiltDragManipulator;
 import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
+import org.alice.interact.manipulator.CameraZoomMouseWheelManipulator;
 import org.alice.interact.manipulator.GetAGoodLookAtManipulator;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
 import org.alice.interact.manipulator.LinearDragManipulator;
@@ -287,6 +289,11 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		{
 			this.manipulators.get( i ).getManipulator().setDragAdapter( this );
 		}
+		
+		ManipulatorConditionSet mouseWheelCameraZoom = new ManipulatorConditionSet( new CameraZoomMouseWheelManipulator() );
+		MouseWheelCondition mouseWheelCondition = new MouseWheelCondition(new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
+		mouseWheelCameraZoom.addCondition( mouseWheelCondition );
+		this.manipulators.add( mouseWheelCameraZoom );
 		
 		
 		ManipulationHandleIndirection rotateAboutYAxis = new ManipulationHandleIndirection(new StoodUpRotationRingHandle(MovementDirection.UP, RotationRingHandle.HandlePosition.BOTTOM ));

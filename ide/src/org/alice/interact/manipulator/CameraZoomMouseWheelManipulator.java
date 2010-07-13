@@ -40,48 +40,102 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact.condition;
 
-import java.awt.event.MouseWheelEvent;
+package org.alice.interact.manipulator;
 
+import org.alice.apis.moveandturn.AbstractCamera;
+import org.alice.apis.moveandturn.Element;
+import org.alice.apis.moveandturn.MoveDirection;
 import org.alice.interact.InputState;
-import org.alice.interact.ModifierMask;
+import org.alice.interact.PlaneUtilities;
+import org.alice.interact.VectorUtilities;
+import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.debug.DebugSphere;
 
-/**
- * @author David Culyba
- */
-public class MouseWheelCondition extends ModifierSensitiveCondition {
+import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Angle;
+import edu.cmu.cs.dennisc.math.Plane;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.math.Tuple3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import edu.cmu.cs.dennisc.scenegraph.StandIn;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+
+public class CameraZoomMouseWheelManipulator extends CameraManipulator{
+
 	
-	public MouseWheelCondition()
+	static final Plane GROUND_PLANE = new edu.cmu.cs.dennisc.math.Plane( 0.0d, 1.0d, 0.0d, 0.0d );
+
+	private Plane cameraFacingPickPlane;
+	
+	
+	public CameraZoomMouseWheelManipulator()
 	{
-		this(null);
+		super();
 	}
 	
-	public MouseWheelCondition( ModifierMask modifierMask)
-	{
-		super(modifierMask);
+	
+	@Override
+	public String getUndoRedoDescription() {
+		return "Camera Zoom";
 	}
 	
 	@Override
-	public boolean stateChanged( InputState currentState, InputState previousState ) {
-		boolean fullChange = super.stateChanged( currentState, previousState );
-		if (fullChange)
+	public CameraView getDesiredCameraView() 
+	{
+		return CameraView.PICK_CAMERA;
+	}
+	
+	@Override
+	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) 
+	{
+		//System.out.println("UPDATE!");
+		zoomCamera(currentInput.getMouseWheelState());
+	}
+	
+	private void zoomCamera(int direction)
+	{
+		if (this.camera instanceof SymmetricPerspectiveCamera)
 		{
+			AbstractCamera cameraElement = (AbstractCamera)Element.getElement(this.camera);
+			MoveDirection directionToMove = (direction < 0) ? MoveDirection.FORWARD : MoveDirection.BACKWARD;
+			cameraElement.move(directionToMove, .5, .25);
+		}
+	}
+	
+	@Override
+	public void doEndManipulator( InputState endInput, InputState previousInput ) 
+	{
+		//System.out.println("Zoom end!");
+	}
+	
+	@Override
+	public void doClickManipulator(InputState clickInput, InputState previousInput) 
+	{
+		//Do nothing
+	}
+
+
+	@Override
+	public boolean doStartManipulator( InputState startInput ) {
+		if (super.doStartManipulator( startInput ))
+		{
+			//System.out.println("Zoom start!");
+			zoomCamera(startInput.getMouseWheelState());
 			return true;
 		}
-		else if (testState(currentState) && testState(previousState))			
-		{
-			if (currentState.getInputEvent() instanceof MouseWheelEvent)
-			{
-				return currentState.getInputEvent() != previousState.getInputEvent();
-			}
-		}
 		return false;
+		
+	}
+
+	@Override
+	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
+		// TODO Auto-generated method stub
+		
 	}
 	
-	@Override
-	protected boolean testState( InputState state ) {
-		return (super.testState( state ) && state.getMouseWheelState() != 0);
-	}
 
 }
