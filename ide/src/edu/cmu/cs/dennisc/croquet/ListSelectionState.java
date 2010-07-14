@@ -404,7 +404,6 @@ public class ListSelectionState<E> extends Model implements Iterable<E> {
 				super.handleRemovedFrom(parent);
 			}
 		};
-		Application.getSingleton().register(this);
 		rv.setSwingComboBoxModel(this.comboBoxModel);
 		return rv;
 	}
@@ -428,14 +427,12 @@ public class ListSelectionState<E> extends Model implements Iterable<E> {
 				super.handleRemovedFrom(parent);
 			}
 		};
-		Application.getSingleton().register(this);
 		rv.setSwingListModel(this.comboBoxModel);
 		rv.setSelectionModel(this.listSelectionModel);
 		return rv;
 	}
 
 	/*package-private*/ <R extends ItemSelectablePanel<E, ?>> R register(final R rv) {
-		Application.getSingleton().register(this);
 		rv.setSwingComboBoxModel(this.comboBoxModel);
 		rv.setSelectionModel(this.listSelectionModel);
 		rv.addContainmentObserver(new Component.ContainmentObserver() {

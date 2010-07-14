@@ -102,6 +102,9 @@ public /*final*/ class BooleanState extends Model {
 	/*package-private*/ javax.swing.ButtonModel getButtonModel() {
 		return this.buttonModel;
 	}
+	/*package-private*/ javax.swing.Action getAction() {
+		return this.action;
+	}
 	public Boolean getValue() {
 		return this.buttonModel.isSelected();
 	}
@@ -139,6 +142,11 @@ public /*final*/ class BooleanState extends Model {
 		this.falseText = falseText;
 		this.updateName();
 	}
+	public void setTrueAndFalseText(String text) {
+		this.trueText = text;
+		this.falseText = text;
+		this.updateName();
+	}
 
 
 	private void updateName() {
@@ -151,31 +159,46 @@ public /*final*/ class BooleanState extends Model {
 		this.action.putValue(javax.swing.Action.NAME, name);
 	}
 	
-	/*package-private*/ < B extends AbstractButton<?,BooleanState> > B register( final B rv ) {
-		Application.getSingleton().register( this );
-		rv.setSwingButtonModel( this.buttonModel );
-		rv.setAction( this.action );
-		rv.addContainmentObserver( new Component.ContainmentObserver() {
-			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				BooleanState.this.addComponent( rv );
-			}
-			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				BooleanState.this.removeComponent( rv );
-			}
-		} );
-		return rv;
-	}
+//	/*package-private*/ < B extends AbstractButton<?,BooleanState> > B register( final B rv ) {
+//		rv.setSwingButtonModel( this.buttonModel );
+//		rv.setAction( this.action );
+//		rv.addContainmentObserver( new Component.ContainmentObserver() {
+//			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+//				BooleanState.this.addComponent( rv );
+//			}
+//			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+//				BooleanState.this.removeComponent( rv );
+//			}
+//		} );
+//		return rv;
+//	}
+	
+//	@Override
+//	protected void addComponent( edu.cmu.cs.dennisc.croquet.JComponent< ? > component ) {
+//		assert component instanceof BooleanStateButton< ? >;
+//		BooleanStateButton< ? > booleanStateButton = (BooleanStateButton< ? >)component;
+//		booleanStateButton.setAction( this.action );
+//		super.addComponent( component );
+//	}
+//	@Override
+//	protected void removeComponent( edu.cmu.cs.dennisc.croquet.JComponent< ? > component ) {
+//		super.removeComponent( component );
+//		assert component instanceof BooleanStateButton< ? >;
+//		BooleanStateButton< ? > booleanStateButton = (BooleanStateButton< ? >)component;
+//		booleanStateButton.setAction( null );
+//	}
+
 	public RadioButton createRadioButton() {
-		return register( new RadioButton( this ) );
+		return new RadioButton( this );
 	}
 	public CheckBox createCheckBox() {
-		return register( new CheckBox( this ) );
+		return new CheckBox( this );
 	}
 	public CheckBoxMenuItem createCheckBoxMenuItem() {
-		return register( new CheckBoxMenuItem( this ) );
+		return new CheckBoxMenuItem( this );
 	}
 	public ToolPalette createToolPalette( Component<?> component ) {
-		ToolPaletteTitle title = this.register( new ToolPaletteTitle( this ) );
+		ToolPaletteTitle title = new ToolPaletteTitle( this );
 		return new ToolPalette(title, component);
 	}
 }

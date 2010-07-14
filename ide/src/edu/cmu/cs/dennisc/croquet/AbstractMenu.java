@@ -51,6 +51,7 @@ public abstract class AbstractMenu< C extends javax.swing.JComponent, M extends 
 		super( model );
 	}
 	public abstract void addMenu( Menu<?> menu );
-	public abstract void addMenuItem( AbstractMenuItem<?,?> menuItem );
+	public abstract void addMenuItem( MenuItem menuItem );
+	public abstract void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem );
 	public abstract void addSeparator();
 }

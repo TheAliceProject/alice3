@@ -46,13 +46,21 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomBooleanStateButton< J extends javax.swing.AbstractButton > extends AbstractButton< J, BooleanState > {
-	public CustomBooleanStateButton( BooleanState model ) {
+public abstract class BooleanStateButton< J extends javax.swing.AbstractButton > extends AbstractButton< J, BooleanState > {
+	public BooleanStateButton( BooleanState model ) {
 		super( model );
-		if( model != null ) {
-			model.register( this );
-		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: CustomBooleanStateButton model == null" );
-		}
+		assert model != null;
+		this.setSwingButtonModel( model.getButtonModel() );
+		this.setAction( model.getAction() );
+	}
+	@Override
+	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		super.handleAddedTo( parent );
+		this.getModel().addComponent( this );
+	}
+	@Override
+	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		this.getModel().removeComponent( this );
+		super.handleRemovedFrom( parent );
 	}
 }

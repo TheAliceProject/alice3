@@ -124,8 +124,10 @@ public abstract class Model implements Resolver< Model > {
 	}
 
 	private java.util.List< JComponent<?> > components = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	
 	protected void addComponent( JComponent<?> component ) {
+		if( this.components.size() == 0 ) {
+			Application.getSingleton().registerModel( this );
+		}
 		synchronized( this.components ) {
 			this.components.add( component );
 		}
@@ -135,6 +137,11 @@ public abstract class Model implements Resolver< Model > {
 	protected void removeComponent( JComponent<?> component ) {
 		synchronized( this.components ) {
 			this.components.remove( component );
+		}
+		if( this.components.size() == 0 ) {
+			Application.getSingleton().unregisterModel( this );
+		} else {
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "removeComponent", this.components.size(), this );
 		}
 	}
 
