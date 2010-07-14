@@ -168,7 +168,7 @@ public abstract class Factory {
 			if( declaration instanceof edu.cmu.cs.dennisc.alice.ast.AbstractMethod ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)declaration;
 				if( method.getReturnType() == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE ) {
-					label.scaleFont( 1.2f );
+					label.scaleFont( 1.1f );
 					label.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 				}
 			}
