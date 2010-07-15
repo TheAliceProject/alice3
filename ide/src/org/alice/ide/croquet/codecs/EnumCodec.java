@@ -40,17 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet;
+package org.alice.ide.croquet.codecs;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum StringCodec implements edu.cmu.cs.dennisc.croquet.Codec< String > {
-	SINGLETON;
-	public String decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+public class EnumCodec< T extends Enum< T > > implements edu.cmu.cs.dennisc.croquet.Codec< T > {
+	public final T decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, String s ) {
+	public final void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T t) {
 		throw new RuntimeException( "todo" );
 	}
 }

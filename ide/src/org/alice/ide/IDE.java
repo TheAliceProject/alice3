@@ -266,7 +266,10 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return this.isDefaultFieldNameGenerationDesiredState.getValue();
 	}
 
+	private org.alice.ide.croquet.models.ui.ProgrammingLanguageSelectionState programmingLanguageSelectionState = new org.alice.ide.croquet.models.ui.ProgrammingLanguageSelectionState();
 	private WindowMenuModel windowMenuModel = new WindowMenuModel( 
+			this.programmingLanguageSelectionState,
+			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
 			this.isEmphasizingClassesState,
 			this.isInactiveFeedbackState,
 			this.isOmissionOfThisForFieldAccessesDesiredState,
@@ -1073,7 +1076,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForRuntimeProgram;
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForSceneEditor;
 
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibleListState = new edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible >( UI_STATE_GROUP, java.util.UUID.fromString( "a6d09409-82b8-4dfe-b156-588f1983893c" ), new org.alice.ide.croquet.AccessibleCodec() );
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibleListState = new edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible >( UI_STATE_GROUP, java.util.UUID.fromString( "a6d09409-82b8-4dfe-b156-588f1983893c" ), new org.alice.ide.croquet.codecs.AccessibleCodec() );
 	public edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > getAccessibleListState() {
 		return this.accessibleListState;
 	}
@@ -1114,7 +1117,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 	
 	public void refreshAccessibles() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of refreshFields" );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of refreshAccessibles" );
 	
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getFocusedCode();
 		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = this.accessibleListState.getSelectedItem();

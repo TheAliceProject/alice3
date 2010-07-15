@@ -40,28 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+package org.alice.ide;
 
 /**
  * @author Dennis Cosgrove
  */
-class HairColorSelectionState extends AbstractListSelectionState< String > {
-	private static final String[] INCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND", "GREY" };
-	private static final String[] EXCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND" };
-	public HairColorSelectionState() {
-		super( java.util.UUID.fromString("11945667-ee73-493d-88f1-f5d9188ec91d"), org.alice.ide.croquet.codecs.StringCodec.SINGLETON, EXCLUDE_GREY );
+public enum ProgrammingLanguage {
+	ALICE( "Alice", new java.util.Locale( "en", "US" ) ),
+	JAVA( "Java", new java.util.Locale( "en", "US", "java" ) );
+	private String repr;
+	private java.util.Locale locale;
+	private ProgrammingLanguage( String repr, java.util.Locale locale ) {
+		this.repr = repr;
+		this.locale = locale;
 	}
-	/*package-private*/ void handleCataclysmicChange( org.alice.apis.stage.LifeStage lifeStage ) {
-//		if( lifeStage == org.alice.apis.stage.LifeStage.ADULT ) {
-//			this.setListData( 0, "BLACK", "BROWN", "RED", "BLOND", "GREY" );
-//		} else {
-//			this.setListData( 0, "BLACK", "BROWN", "RED", "BLOND" );
-//		}
+	public java.util.Locale getLocale() {
+		return this.locale;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.List<String> createList() {
-		edu.cmu.cs.dennisc.croquet.List<String> rv = super.createList();
-		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
-		return rv;
+	public String toString() {
+		return this.repr;
 	}
-}
+};

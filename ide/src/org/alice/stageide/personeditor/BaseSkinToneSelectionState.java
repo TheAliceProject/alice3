@@ -47,7 +47,7 @@ package org.alice.stageide.personeditor;
  */
 class BaseSkinToneSelectionState extends AbstractListSelectionState< org.alice.apis.stage.BaseSkinTone > {
 	public BaseSkinToneSelectionState() {
-		super( java.util.UUID.fromString( "16db5f23-5fa8-41e5-8477-de0f9271e797" ), new org.alice.ide.croquet.EnumCodec< org.alice.apis.stage.BaseSkinTone >(), org.alice.apis.stage.BaseSkinTone.values() );
+		super( java.util.UUID.fromString( "16db5f23-5fa8-41e5-8477-de0f9271e797" ), new org.alice.ide.croquet.codecs.EnumCodec< org.alice.apis.stage.BaseSkinTone >(), org.alice.apis.stage.BaseSkinTone.values() );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseSkinTone> createList() {

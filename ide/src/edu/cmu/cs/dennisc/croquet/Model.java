@@ -63,6 +63,24 @@ public abstract class Model implements Resolver< Model > {
 		return (Model)this;
 	}
 
+	protected String getLocalizedText() {
+		Class<?> cls = this.getClass();
+		String bundleName = cls.getPackage().getName() + ".CroquetModels";
+		try {
+			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
+			String key = cls.getSimpleName();
+			String rv = resourceBundle.getString( key );
+			if( rv != null ) {
+				//pass
+			} else {
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: localize", key );
+			}
+			return rv;
+		} catch( java.util.MissingResourceException mre ) {
+			return null;
+		}
+	}
+	
 //	public CompositeContext getCurrentCompositeContext() {	
 //		Application application = Application.getSingleton();
 //		return application.getCurrentCompositeContext();

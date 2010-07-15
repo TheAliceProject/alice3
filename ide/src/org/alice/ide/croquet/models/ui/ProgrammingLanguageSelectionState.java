@@ -40,28 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+package org.alice.ide.croquet.models.ui;
 
 /**
  * @author Dennis Cosgrove
  */
-class HairColorSelectionState extends AbstractListSelectionState< String > {
-	private static final String[] INCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND", "GREY" };
-	private static final String[] EXCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND" };
-	public HairColorSelectionState() {
-		super( java.util.UUID.fromString("11945667-ee73-493d-88f1-f5d9188ec91d"), org.alice.ide.croquet.codecs.StringCodec.SINGLETON, EXCLUDE_GREY );
-	}
-	/*package-private*/ void handleCataclysmicChange( org.alice.apis.stage.LifeStage lifeStage ) {
-//		if( lifeStage == org.alice.apis.stage.LifeStage.ADULT ) {
-//			this.setListData( 0, "BLACK", "BROWN", "RED", "BLOND", "GREY" );
-//		} else {
-//			this.setListData( 0, "BLACK", "BROWN", "RED", "BLOND" );
-//		}
-	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.List<String> createList() {
-		edu.cmu.cs.dennisc.croquet.List<String> rv = super.createList();
-		rv.setCellRenderer( SimpleListCellRenderer.SINGLETON );
-		return rv;
+public class ProgrammingLanguageSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState< org.alice.ide.ProgrammingLanguage > {
+	public ProgrammingLanguageSelectionState() {
+		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ), new org.alice.ide.croquet.codecs.EnumCodec< org.alice.ide.ProgrammingLanguage >(), 0, org.alice.ide.ProgrammingLanguage.ALICE, org.alice.ide.ProgrammingLanguage.JAVA );
 	}
 }

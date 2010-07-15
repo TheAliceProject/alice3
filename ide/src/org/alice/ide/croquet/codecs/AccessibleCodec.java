@@ -40,16 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet;
+package org.alice.ide.croquet.codecs;
 
 /**
  * @author Dennis Cosgrove
  */
-public class EnumCodec< T extends Enum< T > > implements edu.cmu.cs.dennisc.croquet.Codec< T > {
-	public T decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+public class AccessibleCodec implements edu.cmu.cs.dennisc.croquet.Codec< edu.cmu.cs.dennisc.alice.ast.Accessible > {
+	public edu.cmu.cs.dennisc.alice.ast.Accessible decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T t) {
+	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
 		throw new RuntimeException( "todo" );
 	}
 }
