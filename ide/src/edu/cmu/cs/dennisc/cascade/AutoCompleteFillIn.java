@@ -45,44 +45,24 @@ package edu.cmu.cs.dennisc.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MenuFillIn< E > extends FillIn< E > {
-	//private javax.swing.JLabel label = new javax.swing.JLabel();
-	private javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel();
-	private String title;
-	public MenuFillIn( String title ) {
-		this.title = title;
-	}
-	protected abstract void addChildrenToBlank( Blank blank );
-	private Blank createBlank() {
-		return new Blank() {
-			@Override
-			protected void addChildren() {
-				MenuFillIn.this.addChildrenToBlank( this );
-			}	
-		};
-	}
-	protected String getLabelText() {
-		return this.title;
+public class AutoCompleteFillIn< T > extends FillIn< T > {
+	private T value;
+	public AutoCompleteFillIn( T value ) {
+		this.value = value;
 	}
 	@Override
-	protected javax.swing.JComponent createMenuProxy() {
-		this.label.setText( this.getLabelText() );
-		return this.label;
+	protected final void addChildren() {
 	}
 	@Override
-	final protected void addChildren() {
-		this.addBlank( createBlank() );
-	}
-	
-	private FillIn< E > getSelectedFillInOfChild0() {
-		return (FillIn<E>)getBlankAt( 0 ).getSelectedFillIn();
+	public final T getValue() {
+		return this.value;
 	}
 	@Override
-	final public E getValue() {
-		return getSelectedFillInOfChild0().getValue();
+	public final T getTransientValue() {
+		return this.getValue();
 	}
 	@Override
-	final public E getTransientValue() {
-		return getSelectedFillInOfChild0().getTransientValue();
+	protected final javax.swing.JComponent createMenuProxy() {
+		return null;
 	}
 }

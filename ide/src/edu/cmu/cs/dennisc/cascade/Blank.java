@@ -68,8 +68,18 @@ public abstract class Blank extends Node {
 	protected Node getNextNode() {
 		return this;
 	}
-	public FillIn getSelectedFillIn() {
-		return this.selectedFillIn;
+	public FillIn<?> getSelectedFillIn() {
+		if( this.selectedFillIn != null ) {
+			//pass
+		} else {
+			if( this.getNonSeparatorFillInCount() == 1 ) {
+				FillIn<?> fillIn = this.getFirstNonSeparatorFillIn();
+				if( fillIn instanceof AutoCompleteFillIn< ? > ) {
+					return fillIn;
+				}
+			}
+		}
+ 		return this.selectedFillIn;
 	}
 	public void setSelectedFillIn( FillIn<?> fillIn ) {
 		this.selectedFillIn = fillIn;
@@ -94,24 +104,28 @@ public abstract class Blank extends Node {
 	public void addSeparator( String text ) {
 		this.addFillIn( new SeparatorFillIn( text ) );
 	}
-	public void showPopupMenu( java.awt.Component invoker, int x, int y, final edu.cmu.cs.dennisc.task.TaskObserver< ? extends Object > taskObserver ) {
+	public void showPopupMenu( java.awt.Component invoker, int x, int y, edu.cmu.cs.dennisc.task.TaskObserver taskObserver ) {
 		this.taskObserver = taskObserver;
-		final javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
-		//
-		//popupMenu.setLightWeightPopupEnabled( false );
-		//
-		popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
-			public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
-				Blank.this.addNextNodeMenuItems( popupMenu );
-			}
-			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
-				popupMenu.removeAll();
-			}
-			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-				Blank.this.handleCancel( e );
-			}
-		} );
-		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu, invoker, x, y );
+		
+		FillIn< ? > fillIn = this.getSelectedFillIn();
+		if( fillIn != null ) {
+			taskObserver.handleCompletion( fillIn.getValue() );
+		} else {
+			final javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
+			//popupMenu.setLightWeightPopupEnabled( false );
+			popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
+				public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
+					Blank.this.addNextNodeMenuItems( popupMenu );
+				}
+				public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
+					popupMenu.removeAll();
+				}
+				public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
+					Blank.this.handleCancel( e );
+				}
+			} );
+			edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu, invoker, x, y );
+		}
 	}
 
 	protected void handleActionPerformed() {
@@ -138,4 +152,25 @@ public abstract class Blank extends Node {
 		}
 	}
 
+	public int getNonSeparatorFillInCount() {
+		int rv = 0;
+		for( Node child : this.getChildren() ) {
+			if( child instanceof SeparatorFillIn ) {
+				//pass
+			} else {
+				rv += 1;
+			}
+		}
+		return rv;
+	}
+	public FillIn<?> getFirstNonSeparatorFillIn() {
+		for( Node child : this.getChildren() ) {
+			if( child instanceof SeparatorFillIn ) {
+				//pass
+			} else {
+				return (FillIn<?>)child;
+			}
+		}
+		return null;
+	}
 }

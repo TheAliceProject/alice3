@@ -213,7 +213,7 @@ public abstract class Application {
 				this.mapUUIDToModels.remove( id );
 			}
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: invstigate unregister" );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate unregister" );
 		}
 	}
 

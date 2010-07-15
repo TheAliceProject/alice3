@@ -1516,8 +1516,15 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 				blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomArrayFillIn() );
 			}
 
-			if( blank.getChildren().size() > 0 ) {
+			if( blank.getNonSeparatorFillInCount() > 0 ) {
 				//pass
+//				if( blank.getNonSeparatorFillInCount() > 1 ) {
+//					//pass
+//				} else {
+//					edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn = blank.getFirstFillIn();
+//					blank.setSelectedFillIn( fillIn );
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "SINGLETON FILL IN:", fillIn );
+//				}
 			} else {
 				blank.addFillIn( new edu.cmu.cs.dennisc.cascade.CancelFillIn( "sorry.  no fillins found for " + type.getName() + ". canceling." ) );
 			}
@@ -1593,7 +1600,17 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	public void promptUserForExpressions( edu.cmu.cs.dennisc.alice.ast.BlockStatement dropParent, int dropIndex, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types, boolean isArrayLengthDesired, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > taskObserver ) {
 		this.dropParent = dropParent;
 		this.dropIndex = dropIndex;
-		edu.cmu.cs.dennisc.cascade.FillIn fillIn = createExpressionsFillIn( types, isArrayLengthDesired );
+		edu.cmu.cs.dennisc.cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.Expression[] > fillIn = createExpressionsFillIn( types, isArrayLengthDesired );
+		java.util.List< edu.cmu.cs.dennisc.cascade.Node > children = fillIn.getChildren();
+		if( children.size() == 1 ) {
+			edu.cmu.cs.dennisc.cascade.Blank blank0 = fillIn.getBlankAt( 0 );
+			edu.cmu.cs.dennisc.cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.Expression > selectedFillIn = (edu.cmu.cs.dennisc.cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.Expression >)blank0.getSelectedFillIn();
+			if( selectedFillIn != null ) {
+				taskObserver.handleCompletion( new edu.cmu.cs.dennisc.alice.ast.Expression[] { selectedFillIn.getValue() } );
+				//note: return
+				return;
+			}
+		}
 		fillIn.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
 	}
 	public void promptUserForExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, edu.cmu.cs.dennisc.croquet.ViewController< ?,? > viewController, java.awt.Point p,

@@ -44,10 +44,6 @@ package org.alice.ide.codeeditor;
 
 import org.alice.ide.common.DefaultStatementPane;
 import org.alice.ide.common.StatementListPropertyPane;
-import org.alice.ide.operations.file.PrintOperation;
-
-import edu.cmu.cs.dennisc.croquet.Operation;
-
 
 /**
  * @author Dennis Cosgrove
@@ -103,7 +99,6 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 		java.awt.Color color = getIDE().getCodeDeclaredInAliceColor( this.code );
 		color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0f, 1.1f, 1.1f );
 		this.setBackgroundColor( color );
-		this.refresh();
 	}
 
 	@Override
@@ -191,7 +186,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 	public edu.cmu.cs.dennisc.croquet.JComponent<?> getViewController() {
 		return this;
 	}
-	public void refresh() {
+	private void refresh() {
 		this.forgetAndRemoveAllComponents();
 		if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ) {
 			final edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code;
