@@ -48,7 +48,14 @@ package edu.cmu.cs.dennisc.tutorial;
 /*package-private*/ class StepsComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
 	private int selectedIndex = -1;
 	private java.util.List<Step> steps = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-
+	private boolean isForwardEnabled;
+	public StepsComboBoxModel( boolean isForwardEnabled ) {
+		this.isForwardEnabled = isForwardEnabled;
+	}
+	
+	public boolean isForwardEnabled() {
+		return this.isForwardEnabled;
+	}
 	public Object getElementAt(int index) {
 		return this.steps.get(index);
 	}
@@ -83,13 +90,17 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 
 	public void setSelectedItem(Object item) {
-		this.selectedIndex = -1;
+		int prevSelectedIndex = this.selectedIndex;
+		int nextSelectedIndex = -1;
 		final int N = this.steps.size();
 		for (int i = 0; i < N; i++) {
 			if (this.steps.get(i) == item) {
-				this.selectedIndex = i;
+				nextSelectedIndex = i;
 				break;
 			}
+		}
+		if( this.isForwardEnabled || nextSelectedIndex < prevSelectedIndex ) {
+			this.selectedIndex = nextSelectedIndex;
 		}
 	}
 
