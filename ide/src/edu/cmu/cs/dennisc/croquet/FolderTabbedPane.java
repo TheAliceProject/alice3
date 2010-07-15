@@ -85,20 +85,30 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	}
 	
 	private static class JFolderTabTitle extends javax.swing.JRadioButton {
+		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
+			public void itemStateChanged(java.awt.event.ItemEvent e) {
+				JFolderTabTitle.this.revalidate();
+			}
+		};
 		public JFolderTabTitle() {
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 8 ) );
 			this.setOpaque( false );
 			this.setAlignmentY( 1.0f );
 			this.setLayout( new javax.swing.SpringLayout() );
-			this.getModel().addItemListener( new java.awt.event.ItemListener() {
-				public void itemStateChanged(java.awt.event.ItemEvent e) {
-					JFolderTabTitle.this.revalidate();
-				}				
-			} );
 		}
 		@Override
 		public void updateUI() {
 			this.setUI( new FolderTabTitleUI() );
+		}
+		@Override
+		public void addNotify() {
+			super.addNotify();
+			this.getModel().addItemListener( this.itemListener );
+		}
+		@Override
+		public void removeNotify() {
+			this.getModel().removeItemListener( this.itemListener );
+			super.removeNotify();
 		}
 		@Override
 		public void repaint() {
@@ -111,7 +121,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		}
 	}
 	
-	private static class FolderTabTitle extends AbstractButton<javax.swing.AbstractButton,BooleanState> {
+	private static class FolderTabTitle extends BooleanStateButton<javax.swing.AbstractButton> {
 		private java.awt.event.ActionListener closeButtonActionListener;
 		public FolderTabTitle( BooleanState booleanState, java.awt.event.ActionListener closeButtonActionListener ) {
 			super( booleanState );

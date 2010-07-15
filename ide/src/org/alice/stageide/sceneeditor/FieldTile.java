@@ -42,6 +42,7 @@
  */
 package org.alice.stageide.sceneeditor;
 
+import edu.cmu.cs.dennisc.croquet.Application;
 import edu.cmu.cs.dennisc.croquet.BooleanState;
 import edu.cmu.cs.dennisc.property.StringProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
@@ -50,7 +51,7 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class FieldTile extends edu.cmu.cs.dennisc.croquet.CustomBooleanStateButton<javax.swing.AbstractButton>{
+/*package-private*/ class FieldTile extends edu.cmu.cs.dennisc.croquet.BooleanStateButton<javax.swing.AbstractButton>{
 	private edu.cmu.cs.dennisc.alice.ast.Accessible accessible;
 //	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
 //		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
@@ -62,11 +63,8 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 //		FieldSelectedState state = FieldSelectedState.getInstance(accessible);
 //		return state.register( new FieldTile( accessible ) );
 //	}
-	@Deprecated
-	private final static BooleanState FIELD_TILE_BOOLEAN_STATE = null;
-	
 	public FieldTile( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
-		super( FIELD_TILE_BOOLEAN_STATE );
+		super( new BooleanState( Application.UI_STATE_GROUP, java.util.UUID.fromString( "d3e50396-64c2-4a7d-b255-067aa212bca7" ), false ) );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: FIELD_TILE_BOOLEAN_STATE" );
 		assert accessible != null;
 		this.accessible = accessible;
@@ -200,7 +198,7 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 //	}
 	
 	/*package-private*/ void updateLabel() {
-		String prevText = this.getAwtComponent().getText();
+		String prevText = this.getModel().getTrueText();
 		String nextText;
 		if( this.accessible != null ) {
 			nextText = this.accessible.getValidName();//org.alice.ide.IDE.getSingleton().getInstanceTextForAccessible( this.accessible );
@@ -212,7 +210,7 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( prevText, nextText ) ) {
 			//pass
 		} else {
-			this.getAwtComponent().setText( nextText );
+			this.getModel().setTrueAndFalseText( nextText );
 			//this.revalidateAndRepaint();
 		}
 		

@@ -113,23 +113,44 @@ public abstract class Container<J extends java.awt.Container> extends Component<
 		assert component != null;
 		this.getAwtComponent().add(component.getAwtComponent(), constraints);
 	}
-	protected void internalRemoveComponent(Component<?> component) {
+	
+	private void internalRemoveComponent( Component<?> component, boolean isReleaseDesired ) {
 		assert component != null;
 		this.getAwtComponent().remove(component.getAwtComponent());
+		component.handleRemovedFrom( this );
+		if( isReleaseDesired ) {
+			if( component instanceof Container< ? > ) {
+				Container< ? > container = (Container< ? >)component;
+				container.internalRemoveAllComponents( true );
+			}
+			component.release();
+		}
+	}
+
+	private final void internalRemoveAllComponents( boolean isReleaseDesired ) {
+		java.awt.Component[] awtComponents = this.getAwtComponent().getComponents();
+		for( java.awt.Component awtComponent : awtComponents ) {
+			Component< ? > component = lookup( awtComponent );
+			this.internalRemoveComponent( component, isReleaseDesired );
+		}
+	}
+
+	protected void internalRemoveComponent(Component<?> component) {
+		this.internalRemoveComponent( component, false );
 	}
 
 	protected final void internalRemoveAllComponents() {
-		this.getAwtComponent().removeAll();
+		this.internalRemoveAllComponents( false );
 	}
+	
 	protected void internalForgetAndRemoveComponent( Component<?> component ) {
-		if( component instanceof Container<?> ) {
-			edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( ((Container<?>)component).getAwtComponent() );
-		}
-		this.internalRemoveComponent( component );
-		this.repaint();
+		this.internalRemoveComponent( component, true );
+//		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveComponent( this.getAwtComponent(), component.getAwtComponent(), forgetObserver );
+//		this.repaint();
 	}
 	protected void internalForgetAndRemoveAllComponents() {
-		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this.getAwtComponent() );
-		this.repaint();
+		this.internalRemoveAllComponents( true );
+//		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this.getAwtComponent(), forgetObserver );
+//		this.repaint();
 	}
 }

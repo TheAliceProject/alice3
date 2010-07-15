@@ -115,7 +115,6 @@ public abstract class TreeSelectionState<E> extends Model {
 				super.handleRemovedFrom(parent);
 			}
 		};
-		Application.getSingleton().register(this);
 		rv.setSwingTreeModel(this.treeModel);
 		rv.setSwingTreeSelectionModel( this.treeSelectionModel );
 		return rv;
@@ -124,8 +123,6 @@ public abstract class TreeSelectionState<E> extends Model {
 	public PathControl createPathControl( PathControl.Initializer initializer ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: createPathControl" );
 		PathControl rv = new PathControl( (TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>)this, initializer );
-		
-		Application.getSingleton().register(this);
 		rv.setSwingTreeModel( this.treeModel );
 		rv.setSwingTreeSelectionModel( this.treeSelectionModel );
 		return rv;

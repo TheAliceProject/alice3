@@ -270,12 +270,6 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 			return code.getUUID();
 		}
 		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-//			edu.cmu.cs.dennisc.croquet.ScrollPane rv = new edu.cmu.cs.dennisc.croquet.ScrollPane();
-//			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-//			rv.setHorizontalScrollbarPolicy( edu.cmu.cs.dennisc.croquet.ScrollPane.HorizontalScrollbarPolicy.NEVER );
-//			rv.setVerticalScrollbarPolicy( edu.cmu.cs.dennisc.croquet.ScrollPane.VerticalScrollbarPolicy.NEVER );
-//			rv.getAwtComponent().setWheelScrollingEnabled( false );
-//			return rv;
 			return null;
 		}
 		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
@@ -289,19 +283,19 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 			return false;
 		}
 		public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-			button.getAwtComponent().setText( code.getName() );
+			booleanState.setTrueAndFalseText( code.getName() );
 			button.getAwtComponent().setIcon( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( code.getDeclaringType() ) );
 			button.scaleFont( 1.5f );
 			
-			if( isEntryPoint(code) ) {
-				edu.cmu.cs.dennisc.croquet.DialogOperation runOperation = org.alice.ide.IDE.getSingleton().getRunOperation();
-				//runOperation.setName( "Play..." );
-				//runOperation.setName( null );
-				edu.cmu.cs.dennisc.croquet.Button runButton = runOperation.createButton();
-				//runButton.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( button.getAwtComponent(), runButton.getAwtComponent(), edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 1 );
-				runButton.getAwtComponent().setText( null );
-				runButton.getAwtComponent().setToolTipText( runOperation.getName() );
+			final boolean IS_RUN_BUTTON_DESIRED = true;
+			if( IS_RUN_BUTTON_DESIRED ) {
+				if( isEntryPoint(code) ) {
+					edu.cmu.cs.dennisc.croquet.DialogOperation runOperation = org.alice.ide.IDE.getSingleton().getRunOperation();
+					edu.cmu.cs.dennisc.croquet.Button runButton = runOperation.createButton();
+					edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( button.getAwtComponent(), runButton.getAwtComponent(), edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 1 );
+					runButton.getAwtComponent().setText( null );
+					runButton.getAwtComponent().setToolTipText( runOperation.getName() );
+				}
 			}
 		}
 //		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createInnerTitleComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {

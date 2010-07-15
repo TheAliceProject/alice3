@@ -77,7 +77,6 @@ public class MenuBarModel extends Model {
 		return this.menuModels;
 	}
 	public MenuBar createMenuBar() {
-		Application.getSingleton().register( this );
 		MenuBar rv = new MenuBar( this ) {
 			@Override
 			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {

@@ -176,11 +176,10 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 	}
 
 	private java.util.List< ContainmentObserver > containmentObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-
-	public void addContainmentObserver( ContainmentObserver containmentObserver ) {
+	protected void addContainmentObserver( ContainmentObserver containmentObserver ) {
 		this.containmentObservers.add( containmentObserver );
 	}
-	public void removeContainmentObserver( ContainmentObserver containmentObserver ) {
+	protected void removeContainmentObserver( ContainmentObserver containmentObserver ) {
 		this.containmentObservers.remove( containmentObserver );
 	}
 
@@ -217,7 +216,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 		return this.awtComponent;
 	}
 
-	public void release() {
+	protected void release() {
 		if( this.awtComponent != null ) {
 			//this.jComponent.removeContainerListener( this.containerListener );
 			this.awtComponent.removeHierarchyListener( this.hierarchyListener );

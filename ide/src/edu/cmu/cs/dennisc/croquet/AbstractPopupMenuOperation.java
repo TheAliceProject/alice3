@@ -92,7 +92,6 @@ public abstract class AbstractPopupMenuOperation extends Operation<PopupMenuOper
 	}
 
 	private PopupMenu createPopupMenu() {
-		Application.getSingleton().register( this );
 		PopupMenu rv = new PopupMenu( this ) {
 			@Override
 			protected void handleAddedTo(Component<?> parent) {

@@ -118,7 +118,6 @@ public final class BoundedRangeIntegerState extends Model {
 	}
 	
 	private Slider register( final Slider rv ) {
-		Application.getSingleton().register( this );
 		rv.getAwtComponent().setModel( this.boundedRangeModel );
 		rv.addContainmentObserver( new Component.ContainmentObserver() {
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {

@@ -50,10 +50,10 @@ public abstract class AbstractRadioButtons< E > extends ItemSelectablePanel< E, 
 	/*package-private*/ AbstractRadioButtons( ListSelectionState<E> model ) {
 		super( model );
 	}
-	protected abstract AbstractButton<?,?> createButton( E item );
+	protected abstract BooleanStateButton<?> createBooleanStateButton( E item );
 	@Override
 	protected final ItemDetails createItemDetails( E item ) {
-		return new ItemDetails( item, this.createButton( item ) );
+		return new ItemDetails( item, this.createBooleanStateButton( item ) );
 	};
 }
 

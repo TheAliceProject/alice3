@@ -62,15 +62,12 @@ public class DefaultRadioButtons< E > extends AbstractRadioButtons< E > {
 	protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
 		return new java.awt.GridBagLayout();
 	}
-	@Deprecated
-	private final static BooleanState RADIO_BUTTON_BOOLEAN_STATE = null;
-	
 	@Override
-	protected AbstractButton<?,?> createButton( E item ) {
-		AbstractButton<?,?> rv = new RadioButton( RADIO_BUTTON_BOOLEAN_STATE );
+	protected edu.cmu.cs.dennisc.croquet.BooleanStateButton<?> createBooleanStateButton(E item) {
+		BooleanState booleanState = new BooleanState( Application.UI_STATE_GROUP, java.util.UUID.fromString( "721f3d0f-6b39-440c-b9ac-d0ae170e15a0" ), false );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: RADIO_BUTTON_BOOLEAN_STATE" );
-		rv.getAwtComponent().setText( item.toString() );
-		return rv;
+		booleanState.setTrueText( item.toString() );
+		return booleanState.createRadioButton(); 
 	}
 	@Override
 	protected void removeAllDetails() {
