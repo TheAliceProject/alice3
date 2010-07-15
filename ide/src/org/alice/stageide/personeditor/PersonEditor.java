@@ -50,7 +50,6 @@ class FitnessLevelActionOperation extends org.alice.ide.operations.Inconsequenti
 	private int value;
 	public FitnessLevelActionOperation( edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState fitnessState, int value, String name ) {
 		super( java.util.UUID.fromString( "979d9be8-c24c-4921-93d4-23747bdf079d" ) );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: FitnessLevelActionOperation" );
 		this.fitnessState = fitnessState;
 		this.value = value;
 		this.setName( name );
@@ -318,7 +317,6 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 						if( fullBodyOutfit != null && org.alice.apis.stage.FullBodyOutfitManager.getSingleton().isApplicable( fullBodyOutfit, lifeStage, gender ) ) {
 							//pass
 						} else {
-							edu.cmu.cs.dennisc.print.PrintUtilities.println( fullBodyOutfit, lifeStage, gender );
 //							org.alice.apis.stage.Outfit outfit = person.getOutfit();
 //							if( outfit instanceof org.alice.apis.stage.FullBodyOutfit ) {
 //								fullBodyOutfit = ( org.alice.apis.stage.FullBodyOutfit )outfit;

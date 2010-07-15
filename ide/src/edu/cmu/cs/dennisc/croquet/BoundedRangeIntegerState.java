@@ -60,7 +60,6 @@ public final class BoundedRangeIntegerState extends Model {
 			ModelContext<?> parentContext = application.getCurrentContext();
 			BoundedRangeIntegerStateContext boundedRangeIntegerStateContext;
 			if( this.previousValueIsAdjusting ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: stateChanged" );
 				boundedRangeIntegerStateContext = (BoundedRangeIntegerStateContext)parentContext;
 			} else {
 				boundedRangeIntegerStateContext = parentContext.createBoundedRangeIntegerStateContext( BoundedRangeIntegerState.this );
