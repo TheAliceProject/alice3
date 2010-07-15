@@ -133,39 +133,32 @@ public abstract class Operation< C extends OperationContext<?>> extends Model {
 	}
 
 
-	
-	//todo: /*package-private*/
-	public < B extends AbstractButton<?,?> > B register( final B rv ) {
-		rv.addContainmentObserver( new Component.ContainmentObserver() {
-			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				rv.setAction( Operation.this.action );
-//				rv.setModel( this.buttonModel );
-				assert Operation.this.mapButtonToListener.containsKey( rv ) == false;
-				ButtonActionListener buttonActionListener = new ButtonActionListener( rv );
-				Operation.this.mapButtonToListener.put( rv, buttonActionListener );
-				rv.getAwtComponent().addActionListener( buttonActionListener );
-				Operation.this.addComponent(rv);
-			}
-			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				Operation.this.removeComponent(rv);
-				ButtonActionListener buttonActionListener = Operation.this.mapButtonToListener.get( rv );
-				assert buttonActionListener != null;
-				rv.getAwtComponent().removeActionListener( buttonActionListener );
-				mapButtonToListener.remove( rv );
-//				rv.setModel( null );
-				rv.setAction( null );
-			}
-		} );
-		return rv;
+	/*package-private*/ void addButton(OperationButton<?> button) {
+		button.setAction( Operation.this.action );
+//			rv.setModel( this.buttonModel );
+		assert Operation.this.mapButtonToListener.containsKey( button ) == false;
+		ButtonActionListener buttonActionListener = new ButtonActionListener( button );
+		Operation.this.mapButtonToListener.put( button, buttonActionListener );
+		button.getAwtComponent().addActionListener( buttonActionListener );
+		this.addComponent(button);
 	}
-
+	/*package-private*/ void removeButton(OperationButton<?> button) {
+		this.removeComponent(button);
+		ButtonActionListener buttonActionListener = Operation.this.mapButtonToListener.get( button );
+		assert buttonActionListener != null;
+		button.getAwtComponent().removeActionListener( buttonActionListener );
+		mapButtonToListener.remove( button );
+//		rv.setModel( null );
+		button.setAction( null );
+	}
+	
 	public Button createButton() {
-		return register( new Button( this ) );
+		return new Button( this );
 	}
 	public Hyperlink createHyperlink() {
-		return register( new Hyperlink( this ) );
+		return new Hyperlink( this );
 	}
 	public MenuItem createMenuItem() {
-		return register( new MenuItem( this ) );
+		return new MenuItem( this );
 	}
 }

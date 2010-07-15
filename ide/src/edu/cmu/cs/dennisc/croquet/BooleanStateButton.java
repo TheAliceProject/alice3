@@ -50,8 +50,8 @@ public abstract class BooleanStateButton< J extends javax.swing.AbstractButton >
 	public BooleanStateButton( BooleanState model ) {
 		super( model );
 		assert model != null;
-		this.setSwingButtonModel( model.getButtonModel() );
-		this.setAction( model.getAction() );
+		this.setSwingButtonModel( this.getModel().getButtonModel() );
+		this.setAction( this.getModel().getAction() );
 	}
 	@Override
 	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
