@@ -122,19 +122,18 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	}
 	
 	private static class FolderTabTitle extends BooleanStateButton<javax.swing.AbstractButton> {
-		private java.awt.event.ActionListener closeButtonActionListener;
 		public FolderTabTitle( BooleanState booleanState, java.awt.event.ActionListener closeButtonActionListener ) {
 			super( booleanState );
-			this.closeButtonActionListener = closeButtonActionListener;
+			if( closeButtonActionListener != null ) {
+				javax.swing.AbstractButton awtButton = this.getAwtComponent();
+				javax.swing.JButton closeButton = new edu.cmu.cs.dennisc.javax.swing.components.JCloseButton( true );
+				closeButton.addActionListener( closeButtonActionListener );
+				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( awtButton, closeButton, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 4 );
+			}
 		}
 		@Override
 		protected javax.swing.AbstractButton createAwtComponent() {
 			final JFolderTabTitle rv = new JFolderTabTitle();
-			if( this.closeButtonActionListener != null ) {
-				javax.swing.JButton closeButton = new edu.cmu.cs.dennisc.javax.swing.components.JCloseButton( true );
-				closeButton.addActionListener( this.closeButtonActionListener );
-				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( rv, closeButton, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 4 );
-			}
 			return rv;
 		}
 	}
