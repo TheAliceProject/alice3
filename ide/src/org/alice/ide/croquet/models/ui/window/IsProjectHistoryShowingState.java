@@ -40,37 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.window;
+package org.alice.ide.croquet.models.ui.window;
 
-class MemoryUsagePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	private javax.swing.Timer timer = new javax.swing.Timer( 50, new java.awt.event.ActionListener() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
-		}
-	} );
-	@Override
-	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		super.handleAddedTo( parent );
-		this.timer.start();
+public class IsProjectHistoryShowingState extends IsFrameShowingState {
+	private static class SingletonHolder {
+		private static IsProjectHistoryShowingState instance = new IsProjectHistoryShowingState();
 	}
-	@Override
-	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		this.timer.stop();
-		super.handleRemovedFrom( parent );
+	public static IsProjectHistoryShowingState getInstance() {
+		return SingletonHolder.instance;
 	}
-}
-
-public class IsMemoryUsageShowingState extends IsFrameShowingState {
-	public IsMemoryUsageShowingState() {
-		//todo: PREFERENCES_GROUP?
-		super( org.alice.app.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "e460dca7-e707-4075-883a-ff47367c21fd" ), false, "Show Memory Usage?" );
+	private IsProjectHistoryShowingState() {
+		super( org.alice.app.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "cf08f7ac-16b2-4121-9f36-9aca59db4cf7" ), false, "Show Project History?" );
 	}
 	@Override
 	protected String getTitle() {
-		return "Memory Usage";
+		return "History";
 	}
 	@Override
 	protected java.awt.Component createPane() {
-		return new edu.cmu.cs.dennisc.memory.MemoryUsagePanel().getAwtComponent();
+		return new edu.cmu.cs.dennisc.history.HistoryPane( edu.cmu.cs.dennisc.alice.Project.GROUP );
 	}
 }

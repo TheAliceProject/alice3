@@ -87,12 +87,9 @@ class TreeCellRenderer extends javax.swing.tree.DefaultTreeCellRenderer {
 }
 
 class LookingGlass extends edu.cmu.cs.dennisc.croquet.CornerSpringPanel {
-	private edu.cmu.cs.dennisc.croquet.CheckBoxMenuItem isSceneEditorExpandedCheckBox; 
 	public LookingGlass() {
 		this.setBackgroundColor( java.awt.Color.RED );
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		this.isSceneEditorExpandedCheckBox = ide.getIsSceneEditorExpandedState().createCheckBoxMenuItem();
-		this.setSouthEastComponent( this.isSceneEditorExpandedCheckBox );
+		this.setSouthEastComponent( org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().createCheckBox() );
 	}
 }
 

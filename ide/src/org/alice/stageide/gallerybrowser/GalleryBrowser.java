@@ -218,7 +218,7 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		filterTextField.getAwtComponent().setTextForBlankCondition( "search entire gallery" );
 		filterTextField.setPreferredSize( new java.awt.Dimension( 256, 32 ) );
 		filterTextField.scaleFont( 1.5f );
-		org.alice.ide.IDE.getSingleton().getIsSceneEditorExpandedState().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
+		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
 			public void changing(boolean nextValue) {
 			}
 			public void changed(boolean nextValue) {

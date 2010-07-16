@@ -45,14 +45,14 @@ package org.alice.ide.croquet.models.ui;
 /**
  * @author Dennis Cosgrove
  */
-public class ProgrammingLanguageSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState< org.alice.ide.ProgrammingLanguage > {
+public class IsSceneEditorExpandedState extends edu.cmu.cs.dennisc.croquet.BooleanState {
 	private static class SingletonHolder {
-		private static ProgrammingLanguageSelectionState instance = new ProgrammingLanguageSelectionState();
+		private static IsSceneEditorExpandedState instance = new IsSceneEditorExpandedState();
 	}
-	public static ProgrammingLanguageSelectionState getInstance() {
+	public static IsSceneEditorExpandedState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private ProgrammingLanguageSelectionState() {
-		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ), new org.alice.ide.croquet.codecs.EnumCodec< org.alice.ide.ProgrammingLanguage >(), 0, org.alice.ide.ProgrammingLanguage.ALICE, org.alice.ide.ProgrammingLanguage.JAVA );
+	private IsSceneEditorExpandedState() {
+		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "704ea7d2-9da8-461f-b7dd-d086815c3e52" ), false, "Edit Code", "Edit Scene" );
 	}
 }

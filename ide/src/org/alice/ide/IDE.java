@@ -176,39 +176,6 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private ProjectMenuModel projectMenuModel = new ProjectMenuModel( new org.alice.ide.operations.project.ManageResourcesOperation() );
 	private RunMenuModel runMenuModel = new RunMenuModel( this.runOperation );
 
-	private edu.cmu.cs.dennisc.croquet.BooleanState isSceneEditorExpandedState = new edu.cmu.cs.dennisc.croquet.BooleanState( 
-			org.alice.app.ProjectApplication.UI_STATE_GROUP, 
-			java.util.UUID.fromString( "704ea7d2-9da8-461f-b7dd-d086815c3e52" ), 
-			false,
-			"Edit Code", 
-			"Edit Scene" 
-	);
-
-	private org.alice.ide.operations.window.IsMemoryUsageShowingState isMemoryUsageShowingOperation = new org.alice.ide.operations.window.IsMemoryUsageShowingState();
-	private org.alice.ide.operations.window.IsProjectHistoryShowingState isProjectHistoryShowingOperation = new org.alice.ide.operations.window.IsProjectHistoryShowingState();
-	private org.alice.ide.operations.window.IsHistoryTreeShowingState isHistoryTreeShowingOperation = new org.alice.ide.operations.window.IsHistoryTreeShowingState();
-	
-//	private static <E> E createBooleanOperation( Class< E > cls, Boolean defaultInitialValue ) {
-//		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
-//		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
-//			try {
-//				userPreferences.clear();
-//			} catch( java.util.prefs.BackingStoreException bse ) {
-//				throw new RuntimeException( bse );
-//			}
-//		}
-//		Boolean initialValue = userPreferences.getBoolean( cls.getSimpleName(), defaultInitialValue );
-//		Class< ? >[] parameterClses = { Boolean.class };
-//		Object[] arguments = { initialValue };
-//		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls, parameterClses, arguments );
-//	}
-//	private static void preservePreference( edu.cmu.cs.dennisc.croquet.BooleanState operation ) {
-//		if( operation != null ) {
-//			Class< ? > cls = operation.getClass();
-//			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
-//			userPreferences.putBoolean( cls.getSimpleName(), operation.getState() );
-//		}
-//	}
 	private java.util.List< edu.cmu.cs.dennisc.croquet.BooleanState > booleanStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private edu.cmu.cs.dennisc.croquet.BooleanState createBooleanStatePreference( java.util.UUID id, boolean defaultInitialValue, String name ) {
 		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( this.getClass() );
@@ -240,9 +207,11 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		createBooleanStatePreference( java.util.UUID.fromString( "c6d27bf1-f8c0-470d-b9ef-3c9fa7e6f4b0" ), true, "Is Emphasizing Classes" );
 	private edu.cmu.cs.dennisc.croquet.BooleanState isDefaultFieldNameGenerationDesiredState =
 		createBooleanStatePreference( java.util.UUID.fromString( "3e551420-bb50-4e33-9175-9f29738998f0" ), false, "Is Default Field Name Generation Desired" );
-	public edu.cmu.cs.dennisc.croquet.BooleanState getIsSceneEditorExpandedState() {
-		return this.isSceneEditorExpandedState;
-	}
+	
+//	@Deprecated
+//	public edu.cmu.cs.dennisc.croquet.BooleanState getIsSceneEditorExpandedState() {
+//		return org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance();
+//	}
 	private edu.cmu.cs.dennisc.croquet.BooleanState isRecursionEnabledState =
 		createBooleanStatePreference( java.util.UUID.fromString( "a5e1ded2-18c7-4ae5-8676-e6deca5650fe" ), false, "Is Recursion Enabled" );
 	
@@ -266,9 +235,8 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return this.isDefaultFieldNameGenerationDesiredState.getValue();
 	}
 
-	private org.alice.ide.croquet.models.ui.ProgrammingLanguageSelectionState programmingLanguageSelectionState = new org.alice.ide.croquet.models.ui.ProgrammingLanguageSelectionState();
 	private WindowMenuModel windowMenuModel = new WindowMenuModel( 
-			this.programmingLanguageSelectionState,
+			org.alice.ide.croquet.models.ui.ProgrammingLanguageSelectionState.getInstance(),
 			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
 			this.isEmphasizingClassesState,
 			this.isInactiveFeedbackState,
@@ -277,10 +245,10 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			this.isDefaultFieldNameGenerationDesiredState,
 			this.isRecursionEnabledState,
 			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-			this.isProjectHistoryShowingOperation,
-			this.isMemoryUsageShowingOperation,
+			org.alice.ide.croquet.models.ui.window.IsProjectHistoryShowingState.getInstance(),
+			org.alice.ide.croquet.models.ui.window.IsMemoryUsageShowingState.getInstance(),
 			edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-			this.isHistoryTreeShowingOperation
+			org.alice.ide.croquet.models.ui.window.IsHistoryTreeShowingState.getInstance()
 			//			windowOperations.add( this.isEmphasizingClassesOperation );
 			//			windowOperations.add( this.isOmissionOfThisForFieldAccessesDesiredOperation );
 			//			windowOperations.add( this.isExpressionTypeFeedbackDesiredOperation );
@@ -713,7 +681,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		
 		this.expressionFillerInners = this.addExpressionFillerInners( new java.util.LinkedList< org.alice.ide.cascade.fillerinners.ExpressionFillerInner >() );
 
-		this.isSceneEditorExpandedState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
+		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
 			public void changing( boolean nextValue ) {
 			}
 			public void changed( boolean nextValue ) {
@@ -1684,7 +1652,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 
 	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getFocusedCode() {
-		if( this.isSceneEditorExpandedState.getValue() ) {
+		if( org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().getValue() ) {
 			return this.getPerformEditorGeneratedSetUpMethod();
 		} else {
 			return this.getEditorsTabSelectionState().getSelectedItem();
