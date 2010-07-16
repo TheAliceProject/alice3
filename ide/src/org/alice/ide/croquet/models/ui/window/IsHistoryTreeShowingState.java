@@ -108,7 +108,7 @@ public class IsHistoryTreeShowingState extends IsFrameShowingState {
 		return SingletonHolder.instance;
 	}
 	private IsHistoryTreeShowingState() {
-		super( org.alice.app.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "3fb1e733-1736-476d-b40c-7729c82f0b21" ), false, "Show History Tree?" );
+		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "3fb1e733-1736-476d-b40c-7729c82f0b21" ), false, "Show History Tree?" );
 	}
 	@Override
 	protected String getTitle() {

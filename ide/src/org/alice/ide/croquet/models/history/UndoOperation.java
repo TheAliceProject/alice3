@@ -40,42 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ui.window;
+package org.alice.ide.croquet.models.history;
 
-class MemoryUsagePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	private javax.swing.Timer timer = new javax.swing.Timer( 50, new java.awt.event.ActionListener() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
-		}
-	} );
-	@Override
-	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		super.handleAddedTo( parent );
-		this.timer.start();
+/**
+ * @author Dennis Cosgrove
+ */
+public class UndoOperation extends HistoryOperation {
+	public UndoOperation() {
+		super( java.util.UUID.fromString( "8580fdfd-6862-4aef-bf86-c7dad41e9ccb" ) );
+		this.setName( "Undo" );
+		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_Z, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );
 	}
 	@Override
-	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		this.timer.stop();
-		super.handleRemovedFrom( parent );
-	}
-}
-
-public class IsMemoryUsageShowingState extends IsFrameShowingState {
-	private static class SingletonHolder {
-		private static IsMemoryUsageShowingState instance = new IsMemoryUsageShowingState();
-	}
-	public static IsMemoryUsageShowingState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private IsMemoryUsageShowingState() {
-		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "e460dca7-e707-4075-883a-ff47367c21fd" ), false, "Show Memory Usage?" );
-	}
-	@Override
-	protected String getTitle() {
-		return "Memory Usage";
-	}
-	@Override
-	protected java.awt.Component createPane() {
-		return new edu.cmu.cs.dennisc.memory.MemoryUsagePanel().getAwtComponent();
+	protected void performInternal(edu.cmu.cs.dennisc.history.HistoryManager historyManager) {
+		historyManager.performUndo();
 	}
 }

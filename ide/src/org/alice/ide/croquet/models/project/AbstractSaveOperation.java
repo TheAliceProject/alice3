@@ -40,42 +40,52 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ui.window;
+package org.alice.ide.croquet.models.project;
 
-class MemoryUsagePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	private javax.swing.Timer timer = new javax.swing.Timer( 50, new java.awt.event.ActionListener() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
-		}
-	} );
-	@Override
-	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		super.handleAddedTo( parent );
-		this.timer.start();
-	}
-	@Override
-	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		this.timer.stop();
-		super.handleRemovedFrom( parent );
-	}
-}
+import edu.cmu.cs.dennisc.croquet.Component;
 
-public class IsMemoryUsageShowingState extends IsFrameShowingState {
-	private static class SingletonHolder {
-		private static IsMemoryUsageShowingState instance = new IsMemoryUsageShowingState();
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class AbstractSaveOperation extends UriActionOperation {
+	public AbstractSaveOperation( java.util.UUID individualUUID ) {
+		super( individualUUID );
 	}
-	public static IsMemoryUsageShowingState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private IsMemoryUsageShowingState() {
-		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "e460dca7-e707-4075-883a-ff47367c21fd" ), false, "Show Memory Usage?" );
-	}
+
+	protected abstract boolean isPromptNecessary( java.io.File file );
+	protected abstract java.io.File getDefaultDirectory( org.alice.ide.ProjectApplication application );
+	protected abstract String getExtension();
+	protected abstract void save( org.alice.ide.ProjectApplication application, java.io.File file ) throws java.io.IOException;
+	protected abstract String getInitialFilename();
+	
 	@Override
-	protected String getTitle() {
-		return "Memory Usage";
-	}
-	@Override
-	protected java.awt.Component createPane() {
-		return new edu.cmu.cs.dennisc.memory.MemoryUsagePanel().getAwtComponent();
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		org.alice.ide.ProjectApplication application = this.getProjectApplication();
+		java.io.File filePrevious = application.getFile();
+		boolean isExceptionRaised = false;
+		do {
+			java.io.File fileNext;
+			if( isExceptionRaised || this.isPromptNecessary( filePrevious ) ) {
+				fileNext = application.showSaveFileDialog( this.getDefaultDirectory( application ), this.getInitialFilename(), this.getExtension(), true );
+			} else {
+				fileNext = filePrevious;
+			}
+			isExceptionRaised = false;
+			if( fileNext != null ) {
+				try {
+					this.save( application, fileNext );
+				} catch( java.io.IOException ioe ) {
+					isExceptionRaised = true;
+					application.showMessageDialog( ioe.getMessage(), "Unable to save file", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
+				}
+				if( isExceptionRaised ) {
+					//pass
+				} else {
+					context.finish();
+				}
+			} else {
+				context.cancel();
+			}
+		} while( isExceptionRaised );
 	}
 }

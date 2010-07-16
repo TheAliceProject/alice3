@@ -57,7 +57,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.alice.apis.moveandturn.PerspectiveCameraMarker;
-import org.alice.app.ProjectApplication;
+import org.alice.ide.ProjectApplication;
 import org.alice.interact.condition.InputCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.event.ManipulationEvent;

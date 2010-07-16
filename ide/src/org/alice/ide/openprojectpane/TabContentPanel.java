@@ -40,42 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ui.window;
 
-class MemoryUsagePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	private javax.swing.Timer timer = new javax.swing.Timer( 50, new java.awt.event.ActionListener() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
-		}
-	} );
-	@Override
-	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		super.handleAddedTo( parent );
-		this.timer.start();
-	}
-	@Override
-	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		this.timer.stop();
-		super.handleRemovedFrom( parent );
-	}
-}
+package org.alice.ide.openprojectpane;
 
-public class IsMemoryUsageShowingState extends IsFrameShowingState {
-	private static class SingletonHolder {
-		private static IsMemoryUsageShowingState instance = new IsMemoryUsageShowingState();
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class TabContentPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 191, 191, 255 );
+//	private edu.cmu.cs.dennisc.croquet.InputPanel< java.net.URI > inputPanel;
+	public TabContentPanel() {
+		this.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
+		final int INSET = 8;
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 	}
-	public static IsMemoryUsageShowingState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private IsMemoryUsageShowingState() {
-		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "e460dca7-e707-4075-883a-ff47367c21fd" ), false, "Show Memory Usage?" );
-	}
-	@Override
-	protected String getTitle() {
-		return "Memory Usage";
-	}
-	@Override
-	protected java.awt.Component createPane() {
-		return new edu.cmu.cs.dennisc.memory.MemoryUsagePanel().getAwtComponent();
-	}
+	public abstract java.net.URI getSelectedURI();
+//	public void setInputPanel( edu.cmu.cs.dennisc.croquet.InputPanel< java.net.URI > inputPanel ) {
+//		this.inputPanel = inputPanel;
+//	}
+//	public javax.swing.Icon getTabTitleIcon() {
+//		return null;
+//	}
+//	protected void updateOKButton() {
+//		if( this.inputPanel != null ) {
+//			this.inputPanel.updateOKButton();
+//		}
+//	}
+//	protected void fireOKButtonIfPossible() {
+//		if( this.inputPanel != null ) {
+//			this.inputPanel.fireOKButtonIfPossible();
+//		}
+//	}
 }

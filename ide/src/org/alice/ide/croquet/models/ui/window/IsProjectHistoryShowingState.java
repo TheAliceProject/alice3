@@ -50,7 +50,7 @@ public class IsProjectHistoryShowingState extends IsFrameShowingState {
 		return SingletonHolder.instance;
 	}
 	private IsProjectHistoryShowingState() {
-		super( org.alice.app.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "cf08f7ac-16b2-4121-9f36-9aca59db4cf7" ), false, "Show Project History?" );
+		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "cf08f7ac-16b2-4121-9f36-9aca59db4cf7" ), false, "Show Project History?" );
 	}
 	@Override
 	protected String getTitle() {

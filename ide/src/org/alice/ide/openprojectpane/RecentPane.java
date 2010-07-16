@@ -40,42 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ui.window;
 
-class MemoryUsagePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	private javax.swing.Timer timer = new javax.swing.Timer( 50, new java.awt.event.ActionListener() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
+package org.alice.ide.openprojectpane;
+
+class RecentPane extends ListContentPanel {
+	@Override
+	protected String getTextForZeroProjects() {
+		return "there are no recent projects";
+	}
+	@Override
+	protected java.net.URI[] getURIs() {
+		java.util.List< String > paths = org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.getValue();
+		java.net.URI[] rv;
+		if( paths != null ) {
+			final int N = paths.size();
+			rv = new java.net.URI[ N ];
+			for( int i=0; i<N; i++ ) {
+				rv[ i ] = new java.io.File( paths.get( i ) ).toURI();
+			}
+		} else {
+			rv = new java.net.URI[ 0 ];
 		}
-	} );
-	@Override
-	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		super.handleAddedTo( parent );
-		this.timer.start();
-	}
-	@Override
-	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-		this.timer.stop();
-		super.handleRemovedFrom( parent );
+		return rv;
 	}
 }
 
-public class IsMemoryUsageShowingState extends IsFrameShowingState {
-	private static class SingletonHolder {
-		private static IsMemoryUsageShowingState instance = new IsMemoryUsageShowingState();
-	}
-	public static IsMemoryUsageShowingState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private IsMemoryUsageShowingState() {
-		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "e460dca7-e707-4075-883a-ff47367c21fd" ), false, "Show Memory Usage?" );
-	}
-	@Override
-	protected String getTitle() {
-		return "Memory Usage";
-	}
-	@Override
-	protected java.awt.Component createPane() {
-		return new edu.cmu.cs.dennisc.memory.MemoryUsagePanel().getAwtComponent();
-	}
-}

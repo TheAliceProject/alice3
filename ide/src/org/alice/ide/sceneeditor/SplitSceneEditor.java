@@ -119,7 +119,7 @@ public class SplitSceneEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane root = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane();
 	private FieldTreeSelectionState treeSelectionState = new FieldTreeSelectionState();
 	private LookingGlass lookingGlass = new LookingGlass();
-	private org.alice.app.ProjectApplication.ProjectObserver projectObserver = new org.alice.app.ProjectApplication.ProjectObserver() { 
+	private org.alice.ide.ProjectApplication.ProjectObserver projectObserver = new org.alice.ide.ProjectApplication.ProjectObserver() { 
 		public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
 		}
 		public void projectOpened( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
@@ -139,11 +139,11 @@ public class SplitSceneEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
-		org.alice.app.ProjectApplication.getSingleton().addProjectObserver( this.projectObserver );
+		org.alice.ide.ProjectApplication.getSingleton().addProjectObserver( this.projectObserver );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		org.alice.app.ProjectApplication.getSingleton().removeProjectObserver( this.projectObserver );
+		org.alice.ide.ProjectApplication.getSingleton().removeProjectObserver( this.projectObserver );
 		super.handleRemovedFrom( parent );
 	}
 }
