@@ -63,12 +63,16 @@ public abstract class Model implements Resolver< Model > {
 		return (Model)this;
 	}
 
-	protected String getLocalizedText() {
+	protected String getLocalizedText( String subKey ) {
 		Class<?> cls = this.getClass();
 		String bundleName = cls.getPackage().getName() + ".CroquetModels";
 		try {
 			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
-			String key = cls.getSimpleName();
+			StringBuilder sb = new StringBuilder();
+			sb.append( cls.getSimpleName() );
+			sb.append( "." );
+			sb.append( subKey );
+			String key = sb.toString();
 			String rv = resourceBundle.getString( key );
 			if( rv != null ) {
 				//pass

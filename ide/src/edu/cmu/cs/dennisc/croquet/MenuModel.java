@@ -46,6 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class MenuModel extends Model {
+	private static final Group MENU_GROUP = new Group( java.util.UUID.fromString( "4ed42b1f-b4ea-4f70-99d1-5bb2c3f11081" ), "MENU_GROUP" );
 	public static final Model SEPARATOR = null;
 	private class MenuListener implements javax.swing.event.MenuListener {
 		private Menu<?> menu;
@@ -79,29 +80,50 @@ public class MenuModel extends Model {
 		}
 	};
 	private java.util.Map< Menu, MenuListener > mapMenuToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private String text;
+	private String name;
 	private int mnemonic;
 	private Model[] models;
-	public MenuModel( Group group, java.util.UUID individualId, String text, int mnemonic, Model... models ) {
-		super( group, individualId );
-		this.text = text;
-		this.mnemonic = mnemonic;
+	
+	private static final int NULL_MNEMONIC = 0;
+	public MenuModel( java.util.UUID individualId, Model... models ) {
+		super( MENU_GROUP, individualId );
+		this.name = this.getLocalizedName();
+		this.mnemonic = this.getLocalizedMnemonic();
 		this.models = models;
 	}
-	public MenuModel( Group group, java.util.UUID individualId, String text, int mnemonic, java.util.List< Model > models ) {
-		this( group, individualId, text, mnemonic, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(models, Model.class) );
+	public MenuModel( java.util.UUID individualId, java.util.List< Model > models ) {
+		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(models, Model.class) );
 	}
 
+	private String getLocalizedName() {
+		return this.getLocalizedText( "name" );
+	}
+	private int getLocalizedMnemonic() {
+		String fieldName = this.getLocalizedText( "mnemonic" );
+		if( fieldName != null ) {
+			try {
+				java.lang.reflect.Field field = java.awt.event.KeyEvent.class.getField( fieldName );
+				Object value = field.get( null );
+				if( value instanceof Integer ) {
+					return (Integer)value;
+				}
+			} catch( NoSuchFieldException nsfe ) {
+				nsfe.printStackTrace();
+			} catch( IllegalAccessException iae ) {
+				iae.printStackTrace();
+			}
+		}
+		return NULL_MNEMONIC;
+	}
 	public Model[] getOperations() {
 		return this.models;
 	}
-	
 	public Menu<MenuModel> createMenu() {
 		Menu<MenuModel> rv = new Menu<MenuModel>( this ) {
 			@Override
 			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				super.handleAddedTo( parent );
-				this.setText( MenuModel.this.text );
+				this.setText( MenuModel.this.name );
 				this.setMnemonic( MenuModel.this.mnemonic );
 				assert mapMenuToListener.containsKey( this ) == false;
 				MenuListener menuListener = new MenuListener( this );
