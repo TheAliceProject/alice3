@@ -40,20 +40,56 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SaveProjectOperation extends AbstractSaveProjectOperation {
-	public SaveProjectOperation() {
-		super( java.util.UUID.fromString( "44ffba8a-3fb3-4cb5-97b6-55cd93c88e9d" ) );
-		this.setName( "Save" );
-		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_S, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );
-		this.setMnemonicKey( java.awt.event.KeyEvent.VK_S );
+public class RevertProjectOperation extends UriActionOperation {
+	private static class SingletonHolder {
+		private static RevertProjectOperation instance = new RevertProjectOperation();
+	}
+	public static RevertProjectOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private RevertProjectOperation() {
+		super( java.util.UUID.fromString( "e1c3b3d7-dc4b-491c-8958-9a98710d5d1a" ) );
+		this.setName( "Revert" );
+		this.setMnemonicKey( java.awt.event.KeyEvent.VK_R );
 	}
 	@Override
-	protected boolean isPromptNecessary( java.io.File file ) {
-		return ( file != null && file.canWrite() ) == false;
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		org.alice.ide.ProjectApplication application = org.alice.ide.ProjectApplication.getSingleton();
+		edu.cmu.cs.dennisc.croquet.YesNoCancelOption yesNoCancelOption = application.showYesNoCancelConfirmDialog( "WARNING: revert restores your project to the last saved version.\nWould you like to continue with revert?", "Revert?", edu.cmu.cs.dennisc.croquet.MessageType.WARNING );
+		if( yesNoCancelOption == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.YES ) {
+			java.net.URI uri = application.getUri();
+			if( uri != null ) {
+				context.commitAndInvokeDo( new LoadUriEdit( uri ) );
+			} else {
+				application.showMessageDialog( "todo: revert uri == null" );
+				context.cancel();
+			}
+//			context.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+//				@Override
+//				public void doOrRedo( boolean isDo ) {
+//					getIDE().revert();
+//				}
+//				@Override
+//				public void undo() {
+//					throw new AssertionError();
+//				}
+//				@Override
+//				public boolean canUndo() {
+//					return false;
+//				}
+//				@Override
+//				protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+//					rv.append( "revert" );
+//					return rv;
+//				}
+//			} );
+		} else {
+			context.cancel();
+		}
 	}
 }

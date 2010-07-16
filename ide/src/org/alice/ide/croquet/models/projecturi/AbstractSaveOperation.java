@@ -40,20 +40,52 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.projecturi;
+
+import edu.cmu.cs.dennisc.croquet.Component;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SaveAsProjectOperation extends AbstractSaveProjectOperation {
-	public SaveAsProjectOperation() {
-		super( java.util.UUID.fromString( "14986f74-fb95-40f1-a39e-7cf89f5cd720" ) );
-		this.setName( "Save As..." );
-		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_S, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() | java.awt.event.InputEvent.SHIFT_MASK ) );
-		this.setMnemonicKey( java.awt.event.KeyEvent.VK_A );
+public abstract class AbstractSaveOperation extends UriActionOperation {
+	public AbstractSaveOperation( java.util.UUID individualUUID ) {
+		super( individualUUID );
 	}
+
+	protected abstract boolean isPromptNecessary( java.io.File file );
+	protected abstract java.io.File getDefaultDirectory( org.alice.ide.ProjectApplication application );
+	protected abstract String getExtension();
+	protected abstract void save( org.alice.ide.ProjectApplication application, java.io.File file ) throws java.io.IOException;
+	protected abstract String getInitialFilename();
+	
 	@Override
-	protected boolean isPromptNecessary( java.io.File file ) {
-		return true;
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		org.alice.ide.ProjectApplication application = this.getProjectApplication();
+		java.io.File filePrevious = application.getFile();
+		boolean isExceptionRaised = false;
+		do {
+			java.io.File fileNext;
+			if( isExceptionRaised || this.isPromptNecessary( filePrevious ) ) {
+				fileNext = application.showSaveFileDialog( this.getDefaultDirectory( application ), this.getInitialFilename(), this.getExtension(), true );
+			} else {
+				fileNext = filePrevious;
+			}
+			isExceptionRaised = false;
+			if( fileNext != null ) {
+				try {
+					this.save( application, fileNext );
+				} catch( java.io.IOException ioe ) {
+					isExceptionRaised = true;
+					application.showMessageDialog( ioe.getMessage(), "Unable to save file", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
+				}
+				if( isExceptionRaised ) {
+					//pass
+				} else {
+					context.finish();
+				}
+			} else {
+				context.cancel();
+			}
+		} while( isExceptionRaised );
 	}
 }

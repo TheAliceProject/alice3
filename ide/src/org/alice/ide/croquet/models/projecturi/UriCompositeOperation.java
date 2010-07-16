@@ -40,13 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UriActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-	public UriActionOperation( java.util.UUID individualUUID ) {
+public abstract class UriCompositeOperation extends edu.cmu.cs.dennisc.croquet.CompositeOperation {
+	public UriCompositeOperation( java.util.UUID individualUUID ) {
 		super( org.alice.ide.ProjectApplication.URI_GROUP, individualUUID );
 	}
 	protected org.alice.ide.ProjectApplication getProjectApplication() {

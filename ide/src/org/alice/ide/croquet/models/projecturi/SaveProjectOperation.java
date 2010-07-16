@@ -40,21 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
-
+package org.alice.ide.croquet.models.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ClearanceCheckingExitOperation extends ClearanceRequiringUriCompositeOperation {
-	public ClearanceCheckingExitOperation( edu.cmu.cs.dennisc.croquet.Operation saveOperation ) {
-		super( java.util.UUID.fromString( "ba357b75-2167-4b4d-9f11-bf34b48d6b2e" ), saveOperation, new SystemExitOperation() );
-		this.setName( "Exit" );
+public class SaveProjectOperation extends AbstractSaveProjectOperation {
+	private static class SingletonHolder {
+		private static SaveProjectOperation instance = new SaveProjectOperation();
 	}
-//	@Override
-//	protected void performPostCleared(edu.cmu.cs.dennisc.croquet.CompositeContext compositeContext) {
-//		assert compositeContext.isCanceled() == false;
-//		//todo?
-//		System.exit( 0 );
-//	}
+	public static SaveProjectOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private SaveProjectOperation() {
+		super( java.util.UUID.fromString( "44ffba8a-3fb3-4cb5-97b6-55cd93c88e9d" ) );
+		this.setName( "Save" );
+		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_S, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );
+		this.setMnemonicKey( java.awt.event.KeyEvent.VK_S );
+	}
+	@Override
+	protected boolean isPromptNecessary( java.io.File file ) {
+		return ( file != null && file.canWrite() ) == false;
+	}
 }

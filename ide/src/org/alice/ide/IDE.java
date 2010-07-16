@@ -1012,7 +1012,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		if( this.getUri() != null ) {
 			//pass
 		} else {
-			this.getNewProjectOperation().fire( e );
+			org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().fire( e );
 		}
 	}
 	@Override
@@ -1031,7 +1031,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 //		preservePreference( this.isOmissionOfThisForFieldAccessesDesiredState );
 //		preservePreference( this.isDefaultFieldNameGenerationDesiredOperation );
 
-		this.getExitOperation().fire( e );
+		org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().fire( e );
 		//this.performIfAppropriate( this.getExitOperation(), e, true );
 	}
 	//	protected abstract void handleWindowClosing();

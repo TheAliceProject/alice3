@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.projecturi;
 
 /**
  * @author Dennis Cosgrove

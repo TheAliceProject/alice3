@@ -40,50 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RevertProjectOperation extends UriActionOperation {
-	public RevertProjectOperation() {
-		super( java.util.UUID.fromString( "e1c3b3d7-dc4b-491c-8958-9a98710d5d1a" ) );
-		this.setName( "Revert" );
-		this.setMnemonicKey( java.awt.event.KeyEvent.VK_R );
+public abstract class AbstractOpenProjectOperation extends ClearanceRequiringUriCompositeOperation {
+	//public static final edu.cmu.cs.dennisc.croquet.Context.Key<java.io.File> FILE_KEY = edu.cmu.cs.dennisc.croquet.Context.createKey( "FILE_KEY" );
+	
+//	private edu.cmu.cs.dennisc.croquet.ActionOperation selectAndLoadProjectOperation;
+	
+	public AbstractOpenProjectOperation( java.util.UUID individualUUID, edu.cmu.cs.dennisc.croquet.Operation<?> selectAndLoadProjectOperation ) {
+		super( individualUUID, selectAndLoadProjectOperation );
+//		this.selectAndLoadProjectOperation = selectAndLoadProjectOperation;
 	}
-	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-		org.alice.ide.ProjectApplication application = org.alice.ide.ProjectApplication.getSingleton();
-		edu.cmu.cs.dennisc.croquet.YesNoCancelOption yesNoCancelOption = application.showYesNoCancelConfirmDialog( "WARNING: revert restores your project to the last saved version.\nWould you like to continue with revert?", "Revert?", edu.cmu.cs.dennisc.croquet.MessageType.WARNING );
-		if( yesNoCancelOption == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.YES ) {
-			java.net.URI uri = application.getUri();
-			if( uri != null ) {
-				context.commitAndInvokeDo( new LoadUriEdit( uri ) );
-			} else {
-				application.showMessageDialog( "todo: revert uri == null" );
-				context.cancel();
-			}
-//			context.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
-//				@Override
-//				public void doOrRedo( boolean isDo ) {
-//					getIDE().revert();
-//				}
-//				@Override
-//				public void undo() {
-//					throw new AssertionError();
-//				}
-//				@Override
-//				public boolean canUndo() {
-//					return false;
-//				}
-//				@Override
-//				protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
-//					rv.append( "revert" );
-//					return rv;
-//				}
-//			} );
-		} else {
-			context.cancel();
-		}
-	}
+//	protected abstract boolean isNew();
+//	@Override
+//	protected final void performPostCleared(edu.cmu.cs.dennisc.croquet.CompositeContext compositeContext) {
+//		assert compositeContext.isCanceled() == false;
+//		edu.cmu.cs.dennisc.croquet.ActionContext selectProjectContext = compositeContext.performInChildContext( this.selectAndLoadProjectOperation, null, edu.cmu.cs.dennisc.croquet.CancelEffectiveness.WORTHWHILE );
+//		if( selectProjectContext.isCommitted() ) {
+//			compositeContext.commit();
+//		} else {
+//			compositeContext.cancel();
+//		}
+//	}
 }

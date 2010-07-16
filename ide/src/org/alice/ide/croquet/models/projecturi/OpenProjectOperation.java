@@ -40,52 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
-
-import edu.cmu.cs.dennisc.croquet.Component;
+package org.alice.ide.croquet.models.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSaveOperation extends UriActionOperation {
-	public AbstractSaveOperation( java.util.UUID individualUUID ) {
-		super( individualUUID );
+public class OpenProjectOperation extends AbstractOpenProjectOperation {
+	private static class SingletonHolder {
+		private static OpenProjectOperation instance = new OpenProjectOperation();
 	}
-
-	protected abstract boolean isPromptNecessary( java.io.File file );
-	protected abstract java.io.File getDefaultDirectory( org.alice.ide.ProjectApplication application );
-	protected abstract String getExtension();
-	protected abstract void save( org.alice.ide.ProjectApplication application, java.io.File file ) throws java.io.IOException;
-	protected abstract String getInitialFilename();
-	
-	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-		org.alice.ide.ProjectApplication application = this.getProjectApplication();
-		java.io.File filePrevious = application.getFile();
-		boolean isExceptionRaised = false;
-		do {
-			java.io.File fileNext;
-			if( isExceptionRaised || this.isPromptNecessary( filePrevious ) ) {
-				fileNext = application.showSaveFileDialog( this.getDefaultDirectory( application ), this.getInitialFilename(), this.getExtension(), true );
-			} else {
-				fileNext = filePrevious;
-			}
-			isExceptionRaised = false;
-			if( fileNext != null ) {
-				try {
-					this.save( application, fileNext );
-				} catch( java.io.IOException ioe ) {
-					isExceptionRaised = true;
-					application.showMessageDialog( ioe.getMessage(), "Unable to save file", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
-				}
-				if( isExceptionRaised ) {
-					//pass
-				} else {
-					context.finish();
-				}
-			} else {
-				context.cancel();
-			}
-		} while( isExceptionRaised );
+	public static OpenProjectOperation getInstance() {
+		return SingletonHolder.instance;
 	}
+	private OpenProjectOperation() {
+		super( java.util.UUID.fromString( "89b65a9c-f36a-44ba-8aed-c2922d40f297" ), new org.alice.ide.croquet.models.projecturi.SelectAndLoadExistingProjectOperation() );
+		this.setName( "Open..." );
+		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_O, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );
+		this.setMnemonicKey( java.awt.event.KeyEvent.VK_O );
+	}
+//	@Override
+//	protected boolean isNew() {
+//		return false;
+//	}
+//	
 }

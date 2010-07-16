@@ -74,40 +74,40 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 	public static final edu.cmu.cs.dennisc.croquet.Group HISTORY_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
 	public static final edu.cmu.cs.dennisc.croquet.Group URI_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
 
-	private edu.cmu.cs.dennisc.croquet.Operation<?> saveProjectOperation = new org.alice.ide.croquet.models.project.SaveProjectOperation();
-	private edu.cmu.cs.dennisc.croquet.Operation<?> saveAsProjectOperation = new org.alice.ide.croquet.models.project.SaveAsProjectOperation();
-	private edu.cmu.cs.dennisc.croquet.Operation<?> newProjectOperation = new org.alice.ide.croquet.models.project.NewProjectOperation( this.saveProjectOperation );
-	private edu.cmu.cs.dennisc.croquet.Operation<?> openProjectOperation = new org.alice.ide.croquet.models.project.OpenProjectOperation( this.saveProjectOperation );
-	private edu.cmu.cs.dennisc.croquet.Operation<?> exitOperation = new org.alice.ide.croquet.models.project.ClearanceCheckingExitOperation( this.saveProjectOperation );
-	private edu.cmu.cs.dennisc.croquet.Operation<?> revertProjectOperation = new org.alice.ide.croquet.models.project.RevertProjectOperation();
-	private edu.cmu.cs.dennisc.croquet.Operation<?> undoOperation = new org.alice.ide.croquet.models.history.UndoOperation();
-	private edu.cmu.cs.dennisc.croquet.Operation<?> redoOperation = new org.alice.ide.croquet.models.history.RedoOperation();
-	
-	public edu.cmu.cs.dennisc.croquet.Operation<?> getNewProjectOperation() {
-		return this.newProjectOperation;
-	}
-	public edu.cmu.cs.dennisc.croquet.Operation<?> getOpenProjectOperation() {
-		return this.openProjectOperation;
-	}
-	public edu.cmu.cs.dennisc.croquet.Operation<?> getSaveProjectOperation() {
-		return this.saveProjectOperation;
-	}
-	public edu.cmu.cs.dennisc.croquet.Operation<?> getSaveAsProjectOperation() {
-		return this.saveAsProjectOperation;
-	}
-	public edu.cmu.cs.dennisc.croquet.Operation<?> getRevertProjectOperation() {
-		return this.revertProjectOperation;
-	}
-	public edu.cmu.cs.dennisc.croquet.Operation<?> getExitOperation() {
-		return this.exitOperation;
-	}
-	
-	public edu.cmu.cs.dennisc.croquet.Operation<?> getUndoOperation() {
-		return this.undoOperation;
-	}
-	public edu.cmu.cs.dennisc.croquet.Operation<?> getRedoOperation() {
-		return this.redoOperation;
-	}
+//	private edu.cmu.cs.dennisc.croquet.Operation<?> saveProjectOperation = new org.alice.ide.croquet.models.project.SaveProjectOperation();
+//	private edu.cmu.cs.dennisc.croquet.Operation<?> saveAsProjectOperation = new org.alice.ide.croquet.models.project.SaveAsProjectOperation();
+//	private edu.cmu.cs.dennisc.croquet.Operation<?> newProjectOperation = new org.alice.ide.croquet.models.project.NewProjectOperation( this.saveProjectOperation );
+//	private edu.cmu.cs.dennisc.croquet.Operation<?> openProjectOperation = new org.alice.ide.croquet.models.project.OpenProjectOperation( this.saveProjectOperation );
+//	private edu.cmu.cs.dennisc.croquet.Operation<?> exitOperation = new org.alice.ide.croquet.models.project.ClearanceCheckingExitOperation( this.saveProjectOperation );
+//	private edu.cmu.cs.dennisc.croquet.Operation<?> revertProjectOperation = new org.alice.ide.croquet.models.project.RevertProjectOperation();
+//	private edu.cmu.cs.dennisc.croquet.Operation<?> undoOperation = new org.alice.ide.croquet.models.history.UndoOperation();
+//	private edu.cmu.cs.dennisc.croquet.Operation<?> redoOperation = new org.alice.ide.croquet.models.history.RedoOperation();
+//	
+//	public edu.cmu.cs.dennisc.croquet.Operation<?> getNewProjectOperation() {
+//		return this.newProjectOperation;
+//	}
+//	public edu.cmu.cs.dennisc.croquet.Operation<?> getOpenProjectOperation() {
+//		return this.openProjectOperation;
+//	}
+//	public edu.cmu.cs.dennisc.croquet.Operation<?> getSaveProjectOperation() {
+//		return this.saveProjectOperation;
+//	}
+//	public edu.cmu.cs.dennisc.croquet.Operation<?> getSaveAsProjectOperation() {
+//		return this.saveAsProjectOperation;
+//	}
+//	public edu.cmu.cs.dennisc.croquet.Operation<?> getRevertProjectOperation() {
+//		return this.revertProjectOperation;
+//	}
+//	public edu.cmu.cs.dennisc.croquet.Operation<?> getExitOperation() {
+//		return this.exitOperation;
+//	}
+//	
+//	public edu.cmu.cs.dennisc.croquet.Operation<?> getUndoOperation() {
+//		return this.undoOperation;
+//	}
+//	public edu.cmu.cs.dennisc.croquet.Operation<?> getRedoOperation() {
+//		return this.redoOperation;
+//	}
 
 	protected abstract org.alice.ide.openprojectpane.TabContentPanel createTemplatesTabContentPane();
 //	private org.alice.app.openprojectpane.OpenProjectPane openProjectPane;

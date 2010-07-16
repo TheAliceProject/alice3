@@ -1,4 +1,4 @@
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.projecturi;
 
 public class LoadUriEdit extends edu.cmu.cs.dennisc.croquet.Edit {
 	private java.net.URI uri;

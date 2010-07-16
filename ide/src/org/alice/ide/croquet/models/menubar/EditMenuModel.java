@@ -54,8 +54,8 @@ public class EditMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 	}
 	private EditMenuModel() {
 		super( java.util.UUID.fromString( "dbfe00f8-a401-4858-be5c-a544cad7c938" ), 
-				org.alice.ide.IDE.getSingleton().getUndoOperation(), 
-				org.alice.ide.IDE.getSingleton().getRedoOperation(), 
+				org.alice.ide.croquet.models.history.UndoOperation.getInstance(), 
+				org.alice.ide.croquet.models.history.RedoOperation.getInstance(), 
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, 
 				new org.alice.ide.operations.edit.CutOperation(),
 				new org.alice.ide.operations.edit.CopyOperation(), 

@@ -40,29 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSaveProjectOperation extends AbstractSaveOperation {
-	public AbstractSaveProjectOperation( java.util.UUID individualUUID ) {
-		super( individualUUID );
+public class SystemExitOperation extends UriActionOperation {
+	private static class SingletonHolder {
+		private static SystemExitOperation instance = new SystemExitOperation();
+	}
+	public static SystemExitOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private SystemExitOperation() {
+		super( java.util.UUID.fromString( "ea33dc98-e41d-4a7a-850e-cc4e612efbe8" ) );
 	}
 	@Override
-	protected java.io.File getDefaultDirectory( org.alice.ide.ProjectApplication application ) {
-		return application.getMyProjectsDirectory();
-	}
-	@Override
-	protected String getExtension() {
-		return edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION;
-	}
-	@Override
-	protected String getInitialFilename() {
-		return null;
-	}
-	@Override
-	protected void save( org.alice.ide.ProjectApplication application, java.io.File file ) throws java.io.IOException {
-		application.saveProjectTo( file );
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		System.exit( 0 );
 	}
 }

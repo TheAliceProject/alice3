@@ -41,54 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectAndLoadProjectOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.ide.openprojectpane.SelectProjectToOpenPanel> {
-	private org.alice.ide.openprojectpane.SelectProjectToOpenPanel selectProjectToOpenPanel;
-	public SelectAndLoadProjectOperation( java.util.UUID individualUUID ) {
-		super( org.alice.ide.ProjectApplication.URI_GROUP, individualUUID, "Load Project" );
-	}
-	protected abstract boolean isNew();
-	@Override
-	protected String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.openprojectpane.SelectProjectToOpenPanel> context) {
-		assert this.selectProjectToOpenPanel != null;
-		if( this.selectProjectToOpenPanel.getSelectedURI() != null ) {
-			return super.getExplanationIfOkButtonShouldBeDisabled(context);
-		} else {
-			return "must select project to open.";
-		}
-	}
-	
-	@Override
-	protected org.alice.ide.openprojectpane.SelectProjectToOpenPanel prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.openprojectpane.SelectProjectToOpenPanel> context) {
-		if( this.selectProjectToOpenPanel != null ) {
-			//pass
-		} else {
-			this.selectProjectToOpenPanel = new org.alice.ide.openprojectpane.SelectProjectToOpenPanel();
-		}
-		this.selectProjectToOpenPanel.selectAppropriateTab( this.isNew() );
-		this.selectProjectToOpenPanel.refresh();
-		return this.selectProjectToOpenPanel;
+public class SelectAndLoadExistingProjectOperation extends SelectAndLoadProjectOperation {
+	public SelectAndLoadExistingProjectOperation() {
+		super( java.util.UUID.fromString( "ef47cf71-0dc3-4ff6-9fe3-756abfd524de" ) );
 	}
 	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.openprojectpane.SelectProjectToOpenPanel> context, boolean isOk) {
-		if( isOk ) {
-			org.alice.ide.openprojectpane.SelectProjectToOpenPanel selectProjectToOpenPanel = context.getMainPanel();
-			java.net.URI uri = this.selectProjectToOpenPanel.getSelectedURI();
-			if (uri != null) {
-				context.commitAndInvokeDo( new LoadUriEdit( uri ) );
-			} else {
-				context.cancel();
-			}
-		} else {
-			context.cancel();
-		}
-	}
-	@Override
-	protected java.awt.Dimension getDesiredDialogSize( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
-		return new java.awt.Dimension( 620, 480 );
+	public boolean isNew() {
+		return false;
 	}
 }

@@ -40,18 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
-
+package org.alice.ide.croquet.models.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SystemExitOperation extends UriActionOperation {
-	public SystemExitOperation() {
-		super( java.util.UUID.fromString( "ea33dc98-e41d-4a7a-850e-cc4e612efbe8" ) );
+public class ClearanceCheckingExitOperation extends ClearanceRequiringUriCompositeOperation {
+	private static class SingletonHolder {
+		private static ClearanceCheckingExitOperation instance = new ClearanceCheckingExitOperation();
 	}
-	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-		System.exit( 0 );
+	public static ClearanceCheckingExitOperation getInstance() {
+		return SingletonHolder.instance;
 	}
+	private ClearanceCheckingExitOperation() {
+		super( java.util.UUID.fromString( "ba357b75-2167-4b4d-9f11-bf34b48d6b2e" ), SystemExitOperation.getInstance() );
+		this.setName( "Exit" );
+	}
+//	@Override
+//	protected void performPostCleared(edu.cmu.cs.dennisc.croquet.CompositeContext compositeContext) {
+//		assert compositeContext.isCanceled() == false;
+//		//todo?
+//		System.exit( 0 );
+//	}
 }

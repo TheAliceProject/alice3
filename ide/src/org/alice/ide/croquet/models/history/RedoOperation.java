@@ -46,7 +46,13 @@ package org.alice.ide.croquet.models.history;
  * @author Dennis Cosgrove
  */
 public class RedoOperation extends HistoryOperation {
-	public RedoOperation() {
+	private static class SingletonHolder {
+		private static RedoOperation instance = new RedoOperation();
+	}
+	public static RedoOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private RedoOperation() {
 		super( java.util.UUID.fromString( "6391ae51-0ae5-4592-8fd9-441a72bb814a" ) );
 		this.setName( "Redo" );
 		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_Y, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );

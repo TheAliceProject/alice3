@@ -40,21 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NewProjectOperation extends AbstractOpenProjectOperation {
-	public NewProjectOperation( edu.cmu.cs.dennisc.croquet.Operation saveOperation ) {
-		super( java.util.UUID.fromString( "281eb394-1da5-4527-98a1-92ce5c604715" ), saveOperation, new org.alice.ide.croquet.models.project.SelectAndLoadTemplateProjectOperation() );
-		this.setName( "New..." );
-		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_N, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );
-		this.setMnemonicKey( java.awt.event.KeyEvent.VK_N );
+public abstract class UriActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+	public UriActionOperation( java.util.UUID individualUUID ) {
+		super( org.alice.ide.ProjectApplication.URI_GROUP, individualUUID );
 	}
-//	@Override
-//	protected boolean isNew() {
-//		return true;
-//	}
-//	
+	protected org.alice.ide.ProjectApplication getProjectApplication() {
+		return org.alice.ide.ProjectApplication.getSingleton();
+	}
 }

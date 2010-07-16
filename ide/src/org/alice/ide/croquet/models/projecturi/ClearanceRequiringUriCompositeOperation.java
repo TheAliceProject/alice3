@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.projecturi;
 
 import edu.cmu.cs.dennisc.croquet.Operation;
 
@@ -48,11 +48,9 @@ import edu.cmu.cs.dennisc.croquet.Operation;
  * @author Dennis Cosgrove
  */
 public abstract class ClearanceRequiringUriCompositeOperation extends UriCompositeOperation {
-	private edu.cmu.cs.dennisc.croquet.Operation<?> saveOperation;
 	private edu.cmu.cs.dennisc.croquet.Operation<?> otherOperation;
-	public ClearanceRequiringUriCompositeOperation( java.util.UUID individualUUID, edu.cmu.cs.dennisc.croquet.Operation<?> saveOperation, edu.cmu.cs.dennisc.croquet.Operation<?> otherOperation ) {
+	public ClearanceRequiringUriCompositeOperation( java.util.UUID individualUUID, edu.cmu.cs.dennisc.croquet.Operation<?> otherOperation ) {
 		super( individualUUID );
-		this.saveOperation = saveOperation;
 		this.otherOperation = otherOperation;
 	}
 	@Override
@@ -64,7 +62,7 @@ public abstract class ClearanceRequiringUriCompositeOperation extends UriComposi
 		} else {
 			edu.cmu.cs.dennisc.croquet.YesNoCancelOption option = application.showYesNoCancelConfirmDialog( "Your program has been modified.  Would you like to save it?", "Save changed project?" );
 			if( option == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.YES ) {
-				operations.add( this.saveOperation );
+				operations.add( SaveProjectOperation.getInstance() );
 				operations.add( this.otherOperation );
 //				edu.cmu.cs.dennisc.croquet.ActionContext saveContext = compositeContext.performInChildContext( this.saveOperation, null, edu.cmu.cs.dennisc.croquet.CancelEffectiveness.WORTHWHILE );
 //				if( saveContext.isCommitted() ) {

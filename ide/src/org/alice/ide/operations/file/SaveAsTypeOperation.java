@@ -45,7 +45,7 @@ package org.alice.ide.operations.file;
 /**
  * @author Dennis Cosgrove
  */
-public class SaveAsTypeOperation extends org.alice.ide.croquet.models.project.AbstractSaveOperation {
+public class SaveAsTypeOperation extends org.alice.ide.croquet.models.projecturi.AbstractSaveOperation {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
 	public SaveAsTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		super( java.util.UUID.fromString( "e8da4117-db15-40d6-b486-7f226d827be7" ) );

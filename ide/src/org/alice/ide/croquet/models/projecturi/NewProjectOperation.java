@@ -40,21 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public class OpenProjectOperation extends AbstractOpenProjectOperation {
-	public OpenProjectOperation( edu.cmu.cs.dennisc.croquet.Operation saveOperation ) {
-		super( java.util.UUID.fromString( "89b65a9c-f36a-44ba-8aed-c2922d40f297" ), saveOperation, new org.alice.ide.croquet.models.project.SelectAndLoadExistingProjectOperation() );
-		this.setName( "Open..." );
-		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_O, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );
-		this.setMnemonicKey( java.awt.event.KeyEvent.VK_O );
+public class NewProjectOperation extends AbstractOpenProjectOperation {
+	private static class SingletonHolder {
+		private static NewProjectOperation instance = new NewProjectOperation();
 	}
-//	@Override
-//	protected boolean isNew() {
-//		return false;
-//	}
-//	
+	public static NewProjectOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private NewProjectOperation() {
+		super( java.util.UUID.fromString( "281eb394-1da5-4527-98a1-92ce5c604715" ), new org.alice.ide.croquet.models.projecturi.SelectAndLoadTemplateProjectOperation() );
+		this.setName( "New..." );
+		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_N, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );
+		this.setMnemonicKey( java.awt.event.KeyEvent.VK_N );
+	}
 }
