@@ -120,20 +120,24 @@ public abstract class Model implements Resolver< Model > {
 			if( array.length > 0 ) {
 				int keyCode = getKeyCode( array[ 0 ] );
 				if( keyCode != NULL_MNEMONIC ) {
-					int modifiers = edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask();
+					int modifierMask;
+					if( java.awt.event.KeyEvent.VK_F1 <= keyCode && keyCode <= java.awt.event.KeyEvent.VK_F24 ) {
+						modifierMask = 0;
+					} else {
+						modifierMask = edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask();
+					}
 					if( array.length > 1 ) {
 						String[] modifierTexts = array[ 1 ].split( "\\|" );
 						for( String modifierText : modifierTexts ) {
-							System.err.println( modifierText );
 							int modifier = getModifierMask( modifierText );
 							if( modifier != NULL_ACCELERATOR_MASK ) {
-								modifiers |= modifier;
+								modifierMask |= modifier;
 							} else {
 								//todo?
 							}
 						}
 					}
-					return javax.swing.KeyStroke.getKeyStroke( keyCode, modifiers );
+					return javax.swing.KeyStroke.getKeyStroke( keyCode, modifierMask );
 				}
 				
 			}

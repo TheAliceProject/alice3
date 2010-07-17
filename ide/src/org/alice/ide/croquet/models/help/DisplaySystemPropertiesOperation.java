@@ -40,93 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.help;
-
-/**
- * @author Dennis Cosgrove
- */
-class AllSystemPropertiesOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	public AllSystemPropertiesOperation() {
-		super( java.util.UUID.fromString( "db633e18-dd47-49ca-9406-cf4988d90960" ) );
-		this.setName( "Show All Properties..." );
-	}
-	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		java.util.Properties properties = System.getProperties();
-		java.util.Map< String, String > map = new java.util.HashMap< String, String >();
-		java.util.Enumeration< String > nameEnum = (java.util.Enumeration< String >)properties.propertyNames();
-		java.util.SortedSet< String > names = new java.util.TreeSet< String >();
-		int max = 0;
-		while( nameEnum.hasMoreElements() ) {
-			String name = nameEnum.nextElement();
-			names.add( name );
-			max = Math.max( max, name.length() );
-		}
-		String formatString = "%-" + (max+1) + "s";
-		StringBuffer sb = new StringBuffer();
-		for( String name : names ) {
-			java.util.Formatter formatter = new java.util.Formatter();
-			sb.append( formatter.format( formatString, name ) );
-			sb.append( ": " );
-			sb.append( System.getProperty( name ) );
-			sb.append( "\n" );
-		}
-		javax.swing.JTextArea textArea = new javax.swing.JTextArea( sb.toString() );
-		java.awt.Font font = textArea.getFont();
-		textArea.setFont( new java.awt.Font( "Monospaced", font.getStyle(), font.getSize() ) );
-		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( textArea );
-		scrollPane.setPreferredSize( new java.awt.Dimension( 640, 480 ) );
-		this.getIDE().showMessageDialog( scrollPane, "System Properties", edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION ); 
-	}
-}
-
-/**
- * @author Dennis Cosgrove
- */
-class PathPropertyOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private String propertyName;
-	public PathPropertyOperation( String propertyName ) {
-		super( java.util.UUID.fromString( "9105ebd2-79f6-498f-a652-1bd2bcd0daa8" ) );
-		this.propertyName = propertyName;
-		this.setName( "Show..." );
-	}
-	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		edu.cmu.cs.dennisc.croquet.RowsSpringPanel formPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 2 ) {
-			private edu.cmu.cs.dennisc.croquet.Component< ? >[][] createComponentRowsForSystemProperty( String name, String separator ) {
-				String value = System.getProperty( name );
-				assert value != null;
-				String[] array = value.split( separator );
-				edu.cmu.cs.dennisc.croquet.Component< ? >[][] rv = new edu.cmu.cs.dennisc.croquet.Component< ? >[ array.length ][];
-				for( int i=0; i<array.length; i++ ) {
-					String prefix;
-					if( i==0 ) {
-						prefix = name;
-					} else {
-						prefix = "";
-					}
-					rv[ i ] = edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( prefix+"[" + i + "]:" ), new edu.cmu.cs.dennisc.croquet.Label( array[ i ] ) );
-				}
-				return rv;
-			}
-			@Override
-			protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
-				String pathSepartor = System.getProperty( "path.separator" );
-				for( edu.cmu.cs.dennisc.croquet.Component< ? >[] componentRow : createComponentRowsForSystemProperty( propertyName, pathSepartor ) ) {
-					rv.add( componentRow );
-				}
-				return rv;
-			}
-		};
-		this.getIDE().showMessageDialog( formPane, "System Property: " + this.propertyName, edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION ); 
-	}
-}
+package org.alice.ide.croquet.models.help;
 
 /**
  * @author Dennis Cosgrove
  */
 public class DisplaySystemPropertiesOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	public DisplaySystemPropertiesOperation() {
+	private static class SingletonHolder {
+		private static DisplaySystemPropertiesOperation instance = new DisplaySystemPropertiesOperation();
+	}
+	public static DisplaySystemPropertiesOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private DisplaySystemPropertiesOperation() {
 		super( java.util.UUID.fromString( "1f1ea35c-0d52-48c3-92fd-fa9f163e48a9" ) );
 		this.setName( "Display System Properties..." );
 	}
@@ -149,14 +75,19 @@ public class DisplaySystemPropertiesOperation extends org.alice.ide.operations.I
 				rv.add( createComponentRowForSystemProperty( "os.arch" ) );
 				rv.add( createComponentRowForSystemProperty( "sun.arch.data.model" ) );
 				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 ), null ) );
-				for( String propertyName : new String[] { "java.class.path", "java.library.path" } ) {				
+				DisplayPathPropertyOperation[] displayPathPropertyOperations = { 
+						DisplayClassPathPropertyOperation.getInstance(),
+						DisplayLibraryPathPropertyOperation.getInstance(),
+				};
+				for( DisplayPathPropertyOperation displayPathPropertyOperation : displayPathPropertyOperations ) {
+					String propertyName = displayPathPropertyOperation.getPropertyName();				
 					rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
 							edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( propertyName+":" ), 
-							new PathPropertyOperation(propertyName).createHyperlink() 
+							displayPathPropertyOperation.createHyperlink() 
 					) );
 				}
 				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 ), null ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, new AllSystemPropertiesOperation().createHyperlink() ) );
+				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, DisplayAllSystemPropertiesOperation.getInstance().createHyperlink() ) );
 				return rv;
 			}
 		};
@@ -168,9 +99,4 @@ public class DisplaySystemPropertiesOperation extends org.alice.ide.operations.I
 //		);
 		this.getIDE().showMessageDialog( formPane, "System Properties", edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION ); 
 	}
-	
-//	public static void main( String[] args ) {
-//		DisplaySystemPropertiesOperation displaySystemPropertiesOperation = new DisplaySystemPropertiesOperation();
-//		edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( displaySystemPropertiesOperation, null, false );
-//	}
 }

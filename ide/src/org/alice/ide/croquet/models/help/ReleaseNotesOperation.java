@@ -40,21 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.help;
+package org.alice.ide.croquet.models.help;
 
 /**
  * @author Dennis Cosgrove
  */
-public class WarningOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private boolean isSolicited;
-	public WarningOperation( boolean isSolicited ) {
-		super( java.util.UUID.fromString( "b868d8df-f743-4eab-a942-376a36f69218" ) );
-		this.setName( "Display Warning..." );
-		this.isSolicited = isSolicited;
+public class ReleaseNotesOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	private static class SingletonHolder {
+		private static ReleaseNotesOperation instance = new ReleaseNotesOperation();
+	}
+	public static ReleaseNotesOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private ReleaseNotesOperation() {
+		super( java.util.UUID.fromString( "79d29dd0-278b-4c8a-8f1b-816257f0a621" ) );
+		this.setName( "Browse Release Notes..." );
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		org.alice.ide.warningpane.WarningPane warningPane = new org.alice.ide.warningpane.WarningPane( this.isSolicited );
-		this.getIDE().showMessageDialog( warningPane, "Alice3 is currently under development", edu.cmu.cs.dennisc.croquet.MessageType.WARNING ); 
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		BrowserOperation browserOperation = new BrowserOperation( java.util.UUID.fromString( "7a93cf56-04ad-4159-a0e9-7047642d3b1e" ), "http://kenai.com/projects/alice/pages/ReleaseNotes" );
+		edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( browserOperation.createHyperlink(), this.getName(), edu.cmu.cs.dennisc.croquet.MessageType.PLAIN );
 	}
 }

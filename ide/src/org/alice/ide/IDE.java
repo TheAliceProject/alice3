@@ -46,7 +46,9 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public abstract class IDE extends org.alice.ide.ProjectApplication {
+	@Deprecated
 	public static final edu.cmu.cs.dennisc.croquet.Group PREFERENCES_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "c090cda0-4a77-4e2c-a839-faf28c98c10c" ), "PREFERENCES_GROUP" );
+	
 	public static final edu.cmu.cs.dennisc.croquet.Group RUN_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "f7a87645-567c-42c6-bf5f-ab218d93a226" ), "RUN_GROUP" );
 
 	public static final String DEBUG_PROPERTY_KEY = "org.alice.ide.DebugMode";

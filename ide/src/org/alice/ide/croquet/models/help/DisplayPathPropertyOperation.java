@@ -40,34 +40,49 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.print;
+package org.alice.ide.croquet.models.help;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PrintAllOperation extends PrintOperation {
-	private static class SingletonHolder {
-		private static PrintAllOperation instance = new PrintAllOperation();
+public abstract class DisplayPathPropertyOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	private String propertyName;
+	public DisplayPathPropertyOperation( java.util.UUID id, String propertyName ) {
+		super( id );
+		this.propertyName = propertyName;
+		this.setName( "Show..." );
 	}
-	public static PrintAllOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private PrintAllOperation() {
-		super( java.util.UUID.fromString( "a59df2b2-a55a-41b5-be05-60d10a615049" ) );
+	public String getPropertyName() {
+		return this.propertyName;
 	}
 	@Override
-	protected java.awt.print.Printable getPrintable() {
-		return new java.awt.print.Printable() {
-			public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
-				if( pageIndex > 0 ) {
-					return NO_SUCH_PAGE;
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		edu.cmu.cs.dennisc.croquet.RowsSpringPanel formPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 2 ) {
+			private edu.cmu.cs.dennisc.croquet.Component< ? >[][] createComponentRowsForSystemProperty( String name, String separator ) {
+				String value = System.getProperty( name );
+				assert value != null;
+				String[] array = value.split( separator );
+				edu.cmu.cs.dennisc.croquet.Component< ? >[][] rv = new edu.cmu.cs.dennisc.croquet.Component< ? >[ array.length ][];
+				for( int i=0; i<array.length; i++ ) {
+					String prefix;
+					if( i==0 ) {
+						prefix = name;
+					} else {
+						prefix = "";
+					}
+					rv[ i ] = edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( prefix+"[" + i + "]:" ), new edu.cmu.cs.dennisc.croquet.Label( array[ i ] ) );
 				}
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
-				edu.cmu.cs.dennisc.croquet.Frame frame = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame();
-				frame.getContentPanel().getAwtComponent().paintAll( g2 );
-				return PAGE_EXISTS;
+				return rv;
+			}
+			@Override
+			protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
+				String pathSepartor = System.getProperty( "path.separator" );
+				for( edu.cmu.cs.dennisc.croquet.Component< ? >[] componentRow : createComponentRowsForSystemProperty( propertyName, pathSepartor ) ) {
+					rv.add( componentRow );
+				}
+				return rv;
 			}
 		};
+		this.getIDE().showMessageDialog( formPane, "System Property: " + this.propertyName, edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION ); 
 	}
 }

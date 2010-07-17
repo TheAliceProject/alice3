@@ -40,18 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.help;
+package org.alice.ide.croquet.models.help;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SuggestImprovementOperation extends PostIssueOperation {
-	public SuggestImprovementOperation() {
-		super( java.util.UUID.fromString( "0590e771-d993-4f6c-99f6-c38a010cda2e" ) );
-		this.setName( "Suggest Improvement..." );
+public class DisplayWarningOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	private static class SingletonHolder {
+		private static DisplayWarningOperation instance = new DisplayWarningOperation();
+	}
+	public static DisplayWarningOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private DisplayWarningOperation() {
+		super( java.util.UUID.fromString( "b868d8df-f743-4eab-a942-376a36f69218" ) );
+		this.setName( "Display Warning..." );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType() {
-		return edu.cmu.cs.dennisc.jira.JIRAReport.Type.IMPROVEMENT;
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		org.alice.ide.warningpane.WarningPane warningPane = new org.alice.ide.warningpane.WarningPane( true );
+		this.getIDE().showMessageDialog( warningPane, "Alice3 is currently under development", edu.cmu.cs.dennisc.croquet.MessageType.WARNING ); 
 	}
 }

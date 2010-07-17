@@ -40,25 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.help;
+package org.alice.ide.croquet.models.help;
 
 /**
  * @author Dennis Cosgrove
  */
-class BrowserOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private String url;
-	public BrowserOperation( java.util.UUID id, String url ) {
-		super( id );
-		this.url = url;
-		this.setName( this.url );
+public class DisplayClassPathPropertyOperation extends DisplayPathPropertyOperation {
+	private static class SingletonHolder {
+		private static DisplayClassPathPropertyOperation instance = new DisplayClassPathPropertyOperation();
 	}
-	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-		try {
-			edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( this.url );
-		} catch( Exception e ) {
-			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( this.url );
-			edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + this.url + "\n\nso that you may paste it into your web browser." );
-		}
+	public static DisplayClassPathPropertyOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private DisplayClassPathPropertyOperation() {
+		super( java.util.UUID.fromString( "9105ebd2-79f6-498f-a652-1bd2bcd0daa8" ), "java.class.path" );
+		this.setName( "Show..." );
 	}
 }

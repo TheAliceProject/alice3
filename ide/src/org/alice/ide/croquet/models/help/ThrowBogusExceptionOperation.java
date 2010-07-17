@@ -40,34 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.print;
+package org.alice.ide.croquet.models.help;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PrintAllOperation extends PrintOperation {
+public class ThrowBogusExceptionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	private static class SingletonHolder {
-		private static PrintAllOperation instance = new PrintAllOperation();
+		private static ThrowBogusExceptionOperation instance = new ThrowBogusExceptionOperation();
 	}
-	public static PrintAllOperation getInstance() {
+	public static ThrowBogusExceptionOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private PrintAllOperation() {
-		super( java.util.UUID.fromString( "a59df2b2-a55a-41b5-be05-60d10a615049" ) );
+	private ThrowBogusExceptionOperation() {
+		super( java.util.UUID.fromString( "8c417baa-8be7-42e9-818c-b6ed4ecd8758" ) );
+		this.setName( "Throw Bogus Exception..." );
 	}
 	@Override
-	protected java.awt.print.Printable getPrintable() {
-		return new java.awt.print.Printable() {
-			public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
-				if( pageIndex > 0 ) {
-					return NO_SUCH_PAGE;
-				}
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
-				edu.cmu.cs.dennisc.croquet.Frame frame = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame();
-				frame.getContentPanel().getAwtComponent().paintAll( g2 );
-				return PAGE_EXISTS;
-			}
-		};
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		new Thread() {
+			@Override
+			public void run() {
+				throw new RuntimeException( "DELETE THIS BOGUS EXCEPTION" );
+			}			
+		}.start();
 	}
 }

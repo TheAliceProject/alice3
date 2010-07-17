@@ -40,23 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.help;
+package org.alice.ide.croquet.models.help;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThrowBogusExceptionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	public ThrowBogusExceptionOperation() {
-		super( java.util.UUID.fromString( "8c417baa-8be7-42e9-818c-b6ed4ecd8758" ) );
-		this.setName( "Throw Bogus Exception..." );
+class BrowserOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	private String url;
+	public BrowserOperation( java.util.UUID id, String url ) {
+		super( id );
+		this.url = url;
+		this.setName( this.url );
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		new Thread() {
-			@Override
-			public void run() {
-				throw new RuntimeException( "DELETE THIS BOGUS EXCEPTION" );
-			}			
-		}.start();
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		try {
+			edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( this.url );
+		} catch( Exception e ) {
+			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( this.url );
+			edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + this.url + "\n\nso that you may paste it into your web browser." );
+		}
 	}
 }

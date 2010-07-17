@@ -40,18 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.help;
+package org.alice.ide.croquet.models.help;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RequestNewFeatureOperation extends PostIssueOperation {
-	public RequestNewFeatureOperation() {
-		super( java.util.UUID.fromString( "8350a8c3-e791-47e1-bbc7-d73d1cd76ce9" ) );
-		this.setName( "Request a New Feature..." );
+public class SuggestImprovementOperation extends PostIssueOperation {
+	private static class SingletonHolder {
+		private static SuggestImprovementOperation instance = new SuggestImprovementOperation();
+	}
+	public static SuggestImprovementOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private SuggestImprovementOperation() {
+		super( java.util.UUID.fromString( "0590e771-d993-4f6c-99f6-c38a010cda2e" ) );
+		this.setName( "Suggest Improvement..." );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType() {
-		return edu.cmu.cs.dennisc.jira.JIRAReport.Type.NEW_FEAURE;
+		return edu.cmu.cs.dennisc.jira.JIRAReport.Type.IMPROVEMENT;
 	}
 }

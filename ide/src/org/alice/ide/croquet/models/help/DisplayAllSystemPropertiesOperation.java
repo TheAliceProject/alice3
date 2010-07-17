@@ -40,19 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.help;
+package org.alice.ide.croquet.models.help;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ReleaseNotesOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	public ReleaseNotesOperation() {
-		super( java.util.UUID.fromString( "79d29dd0-278b-4c8a-8f1b-816257f0a621" ) );
-		this.setName( "Browse Release Notes..." );
+public class DisplayAllSystemPropertiesOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	private static class SingletonHolder {
+		private static DisplayAllSystemPropertiesOperation instance = new DisplayAllSystemPropertiesOperation();
+	}
+	public static DisplayAllSystemPropertiesOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private DisplayAllSystemPropertiesOperation() {
+		super( java.util.UUID.fromString( "db633e18-dd47-49ca-9406-cf4988d90960" ) );
+		this.setName( "Show All Properties..." );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-		BrowserOperation browserOperation = new BrowserOperation( java.util.UUID.fromString( "7a93cf56-04ad-4159-a0e9-7047642d3b1e" ), "http://kenai.com/projects/alice/pages/ReleaseNotes" );
-		edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( browserOperation.createHyperlink(), this.getName(), edu.cmu.cs.dennisc.croquet.MessageType.PLAIN );
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		java.util.Properties properties = System.getProperties();
+		java.util.Map< String, String > map = new java.util.HashMap< String, String >();
+		java.util.Enumeration< String > nameEnum = (java.util.Enumeration< String >)properties.propertyNames();
+		java.util.SortedSet< String > names = new java.util.TreeSet< String >();
+		int max = 0;
+		while( nameEnum.hasMoreElements() ) {
+			String name = nameEnum.nextElement();
+			names.add( name );
+			max = Math.max( max, name.length() );
+		}
+		String formatString = "%-" + (max+1) + "s";
+		StringBuffer sb = new StringBuffer();
+		for( String name : names ) {
+			java.util.Formatter formatter = new java.util.Formatter();
+			sb.append( formatter.format( formatString, name ) );
+			sb.append( ": " );
+			sb.append( System.getProperty( name ) );
+			sb.append( "\n" );
+		}
+		javax.swing.JTextArea textArea = new javax.swing.JTextArea( sb.toString() );
+		java.awt.Font font = textArea.getFont();
+		textArea.setFont( new java.awt.Font( "Monospaced", font.getStyle(), font.getSize() ) );
+		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( textArea );
+		scrollPane.setPreferredSize( new java.awt.Dimension( 640, 480 ) );
+		this.getIDE().showMessageDialog( scrollPane, "System Properties", edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION ); 
 	}
 }

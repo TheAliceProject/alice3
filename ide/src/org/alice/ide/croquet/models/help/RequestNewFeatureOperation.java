@@ -40,34 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.print;
+package org.alice.ide.croquet.models.help;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PrintAllOperation extends PrintOperation {
+public class RequestNewFeatureOperation extends PostIssueOperation {
 	private static class SingletonHolder {
-		private static PrintAllOperation instance = new PrintAllOperation();
+		private static RequestNewFeatureOperation instance = new RequestNewFeatureOperation();
 	}
-	public static PrintAllOperation getInstance() {
+	public static RequestNewFeatureOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private PrintAllOperation() {
-		super( java.util.UUID.fromString( "a59df2b2-a55a-41b5-be05-60d10a615049" ) );
+	private RequestNewFeatureOperation() {
+		super( java.util.UUID.fromString( "8350a8c3-e791-47e1-bbc7-d73d1cd76ce9" ) );
+		this.setName( "Request a New Feature..." );
 	}
 	@Override
-	protected java.awt.print.Printable getPrintable() {
-		return new java.awt.print.Printable() {
-			public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
-				if( pageIndex > 0 ) {
-					return NO_SUCH_PAGE;
-				}
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
-				edu.cmu.cs.dennisc.croquet.Frame frame = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame();
-				frame.getContentPanel().getAwtComponent().paintAll( g2 );
-				return PAGE_EXISTS;
-			}
-		};
+	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType() {
+		return edu.cmu.cs.dennisc.jira.JIRAReport.Type.NEW_FEAURE;
 	}
 }
