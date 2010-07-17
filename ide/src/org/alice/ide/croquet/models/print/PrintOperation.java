@@ -40,22 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.file;
+package org.alice.ide.croquet.models.print;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PrintCurrentCodeOperation extends PrintOperation {
-	public PrintCurrentCodeOperation() {
-		super( java.util.UUID.fromString( "097b41bf-d1ea-4991-a0d6-0fae51be35ef" ) );
-		this.setName( "Print Current Code..." );
-		this.setMnemonicKey( java.awt.event.KeyEvent.VK_C );
-		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_P, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );
+public abstract class PrintOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	public PrintOperation( java.util.UUID individualId ) {
+		super( individualId );
 	}
+	protected abstract java.awt.print.Printable getPrintable();
 	@Override
-	protected java.awt.print.Printable getPrintable() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		org.alice.ide.codeeditor.CodeEditor codeEditor = ide.getCodeEditorInFocus();
-		return codeEditor;
+	protected final void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		java.awt.print.PrinterJob job = java.awt.print.PrinterJob.getPrinterJob();
+		java.awt.print.Printable printable = this.getPrintable();
+		if( printable != null ) {
+			job.setPrintable( printable );
+			if( job.printDialog() ) {
+				try {
+					job.print();
+				} catch( java.awt.print.PrinterException pe ) {
+					//todo
+					pe.printStackTrace();
+				}
+			}
+		} else {
+			//todo
+		}
 	}
 }

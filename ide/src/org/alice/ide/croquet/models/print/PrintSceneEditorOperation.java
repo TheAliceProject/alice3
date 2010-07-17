@@ -40,16 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.file;
+package org.alice.ide.croquet.models.print;
 
 /**
  * @author Dennis Cosgrove
  */
 public class PrintSceneEditorOperation extends PrintOperation {
-	public PrintSceneEditorOperation() {
+	private static class SingletonHolder {
+		private static PrintSceneEditorOperation instance = new PrintSceneEditorOperation();
+	}
+	public static PrintSceneEditorOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private PrintSceneEditorOperation() {
 		super( java.util.UUID.fromString( "b38997ea-e970-416e-86db-58623d1c3352" ) );
-		this.setName( "Print Scene Editor..." );
-		this.setMnemonicKey( java.awt.event.KeyEvent.VK_S );
 	}
 	@Override
 	protected java.awt.print.Printable getPrintable() {
