@@ -45,15 +45,14 @@ package org.alice.ide.croquet.models.help;
 /**
  * @author Dennis Cosgrove
  */
-public class DisplayLibraryPathPropertyOperation extends DisplayPathPropertyOperation {
+public class ShowClassPathPropertyOperation extends ShowPathPropertyOperation {
 	private static class SingletonHolder {
-		private static DisplayLibraryPathPropertyOperation instance = new DisplayLibraryPathPropertyOperation();
+		private static ShowClassPathPropertyOperation instance = new ShowClassPathPropertyOperation();
 	}
-	public static DisplayLibraryPathPropertyOperation getInstance() {
+	public static ShowClassPathPropertyOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private DisplayLibraryPathPropertyOperation() {
-		super( java.util.UUID.fromString( "9105ebd2-79f6-498f-a652-1bd2bcd0daa8" ), "java.library.path" );
-		this.setName( "Show..." );
+	private ShowClassPathPropertyOperation() {
+		super( java.util.UUID.fromString( "9105ebd2-79f6-498f-a652-1bd2bcd0daa8" ), "java.class.path" );
 	}
 }

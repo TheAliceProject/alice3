@@ -45,16 +45,15 @@ package org.alice.ide.croquet.models.help;
 /**
  * @author Dennis Cosgrove
  */
-public class DisplaySystemPropertiesOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+public class ShowSystemPropertiesOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	private static class SingletonHolder {
-		private static DisplaySystemPropertiesOperation instance = new DisplaySystemPropertiesOperation();
+		private static ShowSystemPropertiesOperation instance = new ShowSystemPropertiesOperation();
 	}
-	public static DisplaySystemPropertiesOperation getInstance() {
+	public static ShowSystemPropertiesOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private DisplaySystemPropertiesOperation() {
+	private ShowSystemPropertiesOperation() {
 		super( java.util.UUID.fromString( "1f1ea35c-0d52-48c3-92fd-fa9f163e48a9" ) );
-		this.setName( "Display System Properties..." );
 	}
 	@Override
 	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
@@ -75,19 +74,19 @@ public class DisplaySystemPropertiesOperation extends org.alice.ide.operations.I
 				rv.add( createComponentRowForSystemProperty( "os.arch" ) );
 				rv.add( createComponentRowForSystemProperty( "sun.arch.data.model" ) );
 				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 ), null ) );
-				DisplayPathPropertyOperation[] displayPathPropertyOperations = { 
-						DisplayClassPathPropertyOperation.getInstance(),
-						DisplayLibraryPathPropertyOperation.getInstance(),
+				ShowPathPropertyOperation[] showPathPropertyOperations = { 
+						ShowClassPathPropertyOperation.getInstance(),
+						ShowLibraryPathPropertyOperation.getInstance(),
 				};
-				for( DisplayPathPropertyOperation displayPathPropertyOperation : displayPathPropertyOperations ) {
-					String propertyName = displayPathPropertyOperation.getPropertyName();				
+				for( ShowPathPropertyOperation showPathPropertyOperation : showPathPropertyOperations ) {
+					String propertyName = showPathPropertyOperation.getPropertyName();				
 					rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
 							edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( propertyName+":" ), 
-							displayPathPropertyOperation.createHyperlink() 
+							showPathPropertyOperation.createHyperlink() 
 					) );
 				}
 				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 ), null ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, DisplayAllSystemPropertiesOperation.getInstance().createHyperlink() ) );
+				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, ShowAllSystemPropertiesOperation.getInstance().createHyperlink() ) );
 				return rv;
 			}
 		};

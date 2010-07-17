@@ -45,15 +45,19 @@ package org.alice.ide.croquet.models.help;
 /**
  * @author Dennis Cosgrove
  */
-public class DisplayClassPathPropertyOperation extends DisplayPathPropertyOperation {
+public class BrowseReleaseNotesOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	private static class SingletonHolder {
-		private static DisplayClassPathPropertyOperation instance = new DisplayClassPathPropertyOperation();
+		private static BrowseReleaseNotesOperation instance = new BrowseReleaseNotesOperation();
 	}
-	public static DisplayClassPathPropertyOperation getInstance() {
+	public static BrowseReleaseNotesOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private DisplayClassPathPropertyOperation() {
-		super( java.util.UUID.fromString( "9105ebd2-79f6-498f-a652-1bd2bcd0daa8" ), "java.class.path" );
-		this.setName( "Show..." );
+	private BrowseReleaseNotesOperation() {
+		super( java.util.UUID.fromString( "79d29dd0-278b-4c8a-8f1b-816257f0a621" ) );
+	}
+	@Override
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		BrowserOperation browserOperation = new BrowserOperation( java.util.UUID.fromString( "7a93cf56-04ad-4159-a0e9-7047642d3b1e" ), "http://kenai.com/projects/alice/pages/ReleaseNotes" );
+		edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( browserOperation.createHyperlink(), this.getName(), edu.cmu.cs.dennisc.croquet.MessageType.PLAIN );
 	}
 }

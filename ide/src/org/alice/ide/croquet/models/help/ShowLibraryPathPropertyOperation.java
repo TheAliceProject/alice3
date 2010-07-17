@@ -45,43 +45,14 @@ package org.alice.ide.croquet.models.help;
 /**
  * @author Dennis Cosgrove
  */
-public class DisplayAllSystemPropertiesOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+public class ShowLibraryPathPropertyOperation extends ShowPathPropertyOperation {
 	private static class SingletonHolder {
-		private static DisplayAllSystemPropertiesOperation instance = new DisplayAllSystemPropertiesOperation();
+		private static ShowLibraryPathPropertyOperation instance = new ShowLibraryPathPropertyOperation();
 	}
-	public static DisplayAllSystemPropertiesOperation getInstance() {
+	public static ShowLibraryPathPropertyOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private DisplayAllSystemPropertiesOperation() {
-		super( java.util.UUID.fromString( "db633e18-dd47-49ca-9406-cf4988d90960" ) );
-		this.setName( "Show All Properties..." );
-	}
-	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		java.util.Properties properties = System.getProperties();
-		java.util.Map< String, String > map = new java.util.HashMap< String, String >();
-		java.util.Enumeration< String > nameEnum = (java.util.Enumeration< String >)properties.propertyNames();
-		java.util.SortedSet< String > names = new java.util.TreeSet< String >();
-		int max = 0;
-		while( nameEnum.hasMoreElements() ) {
-			String name = nameEnum.nextElement();
-			names.add( name );
-			max = Math.max( max, name.length() );
-		}
-		String formatString = "%-" + (max+1) + "s";
-		StringBuffer sb = new StringBuffer();
-		for( String name : names ) {
-			java.util.Formatter formatter = new java.util.Formatter();
-			sb.append( formatter.format( formatString, name ) );
-			sb.append( ": " );
-			sb.append( System.getProperty( name ) );
-			sb.append( "\n" );
-		}
-		javax.swing.JTextArea textArea = new javax.swing.JTextArea( sb.toString() );
-		java.awt.Font font = textArea.getFont();
-		textArea.setFont( new java.awt.Font( "Monospaced", font.getStyle(), font.getSize() ) );
-		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( textArea );
-		scrollPane.setPreferredSize( new java.awt.Dimension( 640, 480 ) );
-		this.getIDE().showMessageDialog( scrollPane, "System Properties", edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION ); 
+	private ShowLibraryPathPropertyOperation() {
+		super( java.util.UUID.fromString( "9105ebd2-79f6-498f-a652-1bd2bcd0daa8" ), "java.library.path" );
 	}
 }

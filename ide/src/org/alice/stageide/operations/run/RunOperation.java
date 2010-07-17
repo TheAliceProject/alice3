@@ -96,7 +96,7 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.DialogOperation {
 		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "985b3795-e1c7-4114-9819-fae4dcfe5676" ) );
 		this.setName( "Run..." );
 		this.setSmallIcon( new RunIcon() );
-		this.setMnemonicKey( java.awt.event.KeyEvent.VK_R );
+		//this.setMnemonicKey( java.awt.event.KeyEvent.VK_R );
 	}
 	private java.awt.Point location = new java.awt.Point( 100, 100 );
 	private java.awt.Dimension size = null;

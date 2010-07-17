@@ -65,9 +65,9 @@ public class HelpMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 				org.alice.ide.croquet.models.help.SuggestImprovementOperation.getInstance(), 
 				org.alice.ide.croquet.models.help.RequestNewFeatureOperation.getInstance(), 
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.help.DisplayWarningOperation.getInstance(), 
-				org.alice.ide.croquet.models.help.DisplaySystemPropertiesOperation.getInstance(), 
-				org.alice.ide.croquet.models.help.ReleaseNotesOperation.getInstance(),
+				org.alice.ide.croquet.models.help.ShowWarningOperation.getInstance(), 
+				org.alice.ide.croquet.models.help.ShowSystemPropertiesOperation.getInstance(), 
+				org.alice.ide.croquet.models.help.BrowseReleaseNotesOperation.getInstance(),
 		//			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 		//				//pass
 		//			} else {

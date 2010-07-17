@@ -45,20 +45,19 @@ package org.alice.ide.croquet.models.help;
 /**
  * @author Dennis Cosgrove
  */
-public class ReleaseNotesOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+public class ShowWarningOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	private static class SingletonHolder {
-		private static ReleaseNotesOperation instance = new ReleaseNotesOperation();
+		private static ShowWarningOperation instance = new ShowWarningOperation();
 	}
-	public static ReleaseNotesOperation getInstance() {
+	public static ShowWarningOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private ReleaseNotesOperation() {
-		super( java.util.UUID.fromString( "79d29dd0-278b-4c8a-8f1b-816257f0a621" ) );
-		this.setName( "Browse Release Notes..." );
+	private ShowWarningOperation() {
+		super( java.util.UUID.fromString( "b868d8df-f743-4eab-a942-376a36f69218" ) );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-		BrowserOperation browserOperation = new BrowserOperation( java.util.UUID.fromString( "7a93cf56-04ad-4159-a0e9-7047642d3b1e" ), "http://kenai.com/projects/alice/pages/ReleaseNotes" );
-		edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( browserOperation.createHyperlink(), this.getName(), edu.cmu.cs.dennisc.croquet.MessageType.PLAIN );
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		org.alice.ide.warningpane.WarningPane warningPane = new org.alice.ide.warningpane.WarningPane( true );
+		this.getIDE().showMessageDialog( warningPane, "Alice3 is currently under development", edu.cmu.cs.dennisc.croquet.MessageType.WARNING ); 
 	}
 }

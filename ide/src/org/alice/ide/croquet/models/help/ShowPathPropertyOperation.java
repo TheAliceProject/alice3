@@ -45,12 +45,11 @@ package org.alice.ide.croquet.models.help;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DisplayPathPropertyOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+public abstract class ShowPathPropertyOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	private String propertyName;
-	public DisplayPathPropertyOperation( java.util.UUID id, String propertyName ) {
+	public ShowPathPropertyOperation( java.util.UUID id, String propertyName ) {
 		super( id );
 		this.propertyName = propertyName;
-		this.setName( "Show..." );
 	}
 	public String getPropertyName() {
 		return this.propertyName;

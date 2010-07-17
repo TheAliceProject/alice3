@@ -125,13 +125,13 @@ public abstract class Operation< C extends OperationContext<?>> extends Model {
 	public int getMnemonicKey() {
 		return Integer.class.cast( this.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
 	}
-	public void setMnemonicKey( int mnemonicKey ) {
+	private void setMnemonicKey( int mnemonicKey ) {
 		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
 	}
 	public javax.swing.KeyStroke getAcceleratorKey() {
 		return javax.swing.KeyStroke.class.cast( this.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
 	}
-	public void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
+	private void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 	}
 

@@ -54,7 +54,6 @@ public class RequestNewFeatureOperation extends PostIssueOperation {
 	}
 	private RequestNewFeatureOperation() {
 		super( java.util.UUID.fromString( "8350a8c3-e791-47e1-bbc7-d73d1cd76ce9" ) );
-		this.setName( "Request a New Feature..." );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType() {
