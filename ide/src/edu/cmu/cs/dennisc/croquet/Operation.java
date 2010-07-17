@@ -85,7 +85,7 @@ public abstract class Operation< C extends OperationContext<?>> extends Model {
 	};
 	public Operation( Group group, java.util.UUID individualUUID ) {
 		super( group, individualUUID );
-		this.setName( this.getLocalizedText( "name" ) );
+		this.setName( this.getDefaultLocalizedText() );
 		this.setMnemonicKey( this.getLocalizedMnemonicKey() );
 		this.setAcceleratorKey( this.getLocalizedAcceleratorKey() );
 	}
@@ -125,7 +125,7 @@ public abstract class Operation< C extends OperationContext<?>> extends Model {
 	public int getMnemonicKey() {
 		return Integer.class.cast( this.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
 	}
-	private void setMnemonicKey( int mnemonicKey ) {
+	public void setMnemonicKey( int mnemonicKey ) {
 		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
 	}
 	public javax.swing.KeyStroke getAcceleratorKey() {

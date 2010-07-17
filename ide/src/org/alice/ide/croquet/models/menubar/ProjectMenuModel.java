@@ -54,7 +54,7 @@ public class ProjectMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 	}
 	private ProjectMenuModel() {
 		super( java.util.UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ),
-				new org.alice.ide.operations.project.ManageResourcesOperation()
+				org.alice.ide.croquet.models.project.ManageResourcesOperation.getInstance()
 		);
 	}
 }

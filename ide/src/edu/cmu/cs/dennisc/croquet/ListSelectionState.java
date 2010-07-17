@@ -303,7 +303,7 @@ public class ListSelectionState<E> extends Model implements Iterable<E> {
 		this.listSelectionModel.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		this.comboBoxModel.setListData(selectedIndex, items);
 		
-		this.setName( this.getLocalizedText( "name" ) );
+		this.setName( this.getDefaultLocalizedText() );
 	}
 	public ListSelectionState(Group group, java.util.UUID individualUUID, Codec< E > codec) {
 		this(group, individualUUID, codec, -1);
@@ -530,7 +530,7 @@ public class ListSelectionState<E> extends Model implements Iterable<E> {
 		return Integer.class.cast(this.action.getValue(javax.swing.Action.MNEMONIC_KEY));
 	}
 
-	public void setMnemonicKey(int mnemonicKey) {
+	private void setMnemonicKey(int mnemonicKey) {
 		this.action.putValue(javax.swing.Action.MNEMONIC_KEY, mnemonicKey);
 	}
 

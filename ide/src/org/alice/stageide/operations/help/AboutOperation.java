@@ -49,7 +49,7 @@ public class AboutOperation extends org.alice.ide.operations.InconsequentialActi
 	public AboutOperation() {
 		super( java.util.UUID.fromString( "175834c9-b8f4-4714-a212-e7d346d77835" ) );
 		this.setName( "About..." );
-		//this.setMnemonicKey( java.awt.event.KeyEvent.VK_A );
+		this.setMnemonicKey( java.awt.event.KeyEvent.VK_A );
 	}
 	@Override
 	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {

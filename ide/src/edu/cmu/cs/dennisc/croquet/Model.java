@@ -70,11 +70,14 @@ public abstract class Model implements Resolver< Model > {
 		String bundleName = cls.getPackage().getName() + ".CroquetModels";
 		try {
 			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
-			StringBuilder sb = new StringBuilder();
-			sb.append( cls.getSimpleName() );
-			sb.append( "." );
-			sb.append( subKey );
-			String key = sb.toString();
+			String key = cls.getSimpleName();
+			if( subKey != null ) {
+				StringBuilder sb = new StringBuilder();
+				sb.append( key );
+				sb.append( "." );
+				sb.append( subKey );
+				key = sb.toString();
+			}
 			String rv = resourceBundle.getString( key );
 			if( rv != null ) {
 				//pass
@@ -87,7 +90,9 @@ public abstract class Model implements Resolver< Model > {
 		}
 	}
 	
-	
+	protected String getDefaultLocalizedText() {
+		return this.getLocalizedText( null );
+	}
 	private static int getField( Class<?> cls, String fieldName, int nullValue ) {
 		if( fieldName != null ) {
 			try {

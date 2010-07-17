@@ -86,7 +86,7 @@ public class MenuModel extends Model {
 	
 	public MenuModel( java.util.UUID individualId, Model... models ) {
 		super( MENU_GROUP, individualId );
-		this.name = this.getLocalizedText( "name" );
+		this.name = this.getDefaultLocalizedText();
 		this.mnemonic = this.getLocalizedMnemonicKey();
 		this.models = models;
 	}

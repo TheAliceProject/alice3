@@ -40,12 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.project;
+package org.alice.ide.croquet.models.project;
 
 public class ManageResourcesOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.ide.resource.manager.ResourceManagerPane> {
-	public ManageResourcesOperation() {
+	private static class SingletonHolder {
+		private static ManageResourcesOperation instance = new ManageResourcesOperation();
+	}
+	public static ManageResourcesOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private ManageResourcesOperation() {
 		super( ENCLOSING_GROUP, java.util.UUID.fromString( "ec7dc4b0-d1f8-420d-b6f0-7a25bd92639d" ) );
-		this.setName( "Manage Resources..." );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ManageResourcesOperation handle cancel" );
 	}
 	@Override

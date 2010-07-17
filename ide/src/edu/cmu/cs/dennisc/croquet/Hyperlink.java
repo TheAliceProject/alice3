@@ -59,6 +59,7 @@ public class Hyperlink extends OperationButton< javax.swing.JButton > {
 			}
 		};
 		rv.setRolloverEnabled( true );
+		rv.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
 //		javax.swing.JButton rv = new javax.swing.JButton();
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		rv.setOpaque( false );

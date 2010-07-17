@@ -49,7 +49,7 @@ package org.alice.ide.croquet.models.projecturi;
 public abstract class SelectAndLoadProjectOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.ide.openprojectpane.SelectProjectToOpenPanel> {
 	private org.alice.ide.openprojectpane.SelectProjectToOpenPanel selectProjectToOpenPanel;
 	public SelectAndLoadProjectOperation( java.util.UUID individualUUID ) {
-		super( org.alice.ide.ProjectApplication.URI_GROUP, individualUUID, "Load Project" );
+		super( org.alice.ide.ProjectApplication.URI_GROUP, individualUUID );
 	}
 	protected abstract boolean isNew();
 	@Override
