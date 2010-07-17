@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.operations.run;
+package org.alice.stageide.croquet.models.run;
 
 class RunIcon implements javax.swing.Icon {
 	private static final java.awt.Color ENABLED_CIRCLE_COLOR = java.awt.Color.GREEN.darker();
@@ -94,9 +94,7 @@ class RunIcon implements javax.swing.Icon {
 public class RunOperation extends edu.cmu.cs.dennisc.croquet.DialogOperation {
 	public RunOperation() {
 		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "985b3795-e1c7-4114-9819-fae4dcfe5676" ) );
-		this.setName( "Run..." );
 		this.setSmallIcon( new RunIcon() );
-		this.setMnemonicKey( java.awt.event.KeyEvent.VK_R );
 	}
 	private java.awt.Point location = new java.awt.Point( 100, 100 );
 	private java.awt.Dimension size = null;

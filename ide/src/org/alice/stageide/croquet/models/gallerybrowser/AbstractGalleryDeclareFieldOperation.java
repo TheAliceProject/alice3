@@ -40,54 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.operations.gallery;
+package org.alice.stageide.croquet.models.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-class CreateFieldFromPersonPane extends org.alice.ide.declarationpanes.CreateLargelyPredeterminedFieldPane {
-	private org.alice.apis.stage.Person person;
-	public CreateFieldFromPersonPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, org.alice.apis.stage.Person person ) {
-		super( declaringType, person.getClass(), null );
-		this.person = person;
+public abstract class AbstractGalleryDeclareFieldOperation<J extends org.alice.ide.preview.PanelWithPreview> extends org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation<J> {
+	public AbstractGalleryDeclareFieldOperation( java.util.UUID individualId ) {
+		super( individualId );
 	}
-	public org.alice.apis.stage.Person getPerson() {
-		return this.person;
+	@Override
+	protected final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
+		return this.getIDE().getSceneType();
 	}
-}
+	@Override
+	protected boolean isInstanceValid() {
+		return true;
+	}
 
-/**
- * @author Dennis Cosgrove
- */
-public class CreatePersonFieldOperation extends org.alice.stageide.gallerybrowser.AbstractGalleryDeclareFieldOperation< CreateFieldFromPersonPane > {
-	public CreatePersonFieldOperation() {
-		super( java.util.UUID.fromString( "84f3a391-4a6c-4a10-82da-6b6231937949" ) );
-		this.setName( "Create Person..." );
-	}
-	@Override
-	protected CreateFieldFromPersonPane prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< CreateFieldFromPersonPane > context ) {
-		CreatePersonOperation createPersonOperation = new CreatePersonOperation( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP );
-		createPersonOperation.fire();
-		
-		org.alice.apis.stage.Person person = createPersonOperation.getPerson();
-		
-		if( person != null ) {
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = ide.getSceneType();
-			return new CreateFieldFromPersonPane( declaringType, person );
-		} else {
-			return null;
-		}
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< CreateFieldFromPersonPane > context ) {
-		CreateFieldFromPersonPane createFieldFromPersonPane = context.getMainPanel();
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromPersonPane.getActualInputValue();
-		if( field != null ) {
-			//ide.getSceneEditor().handleFieldCreation( declaringType, field, person );
-			return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object >( field, createFieldFromPersonPane.getPerson() );
-		} else {
-			return null;
-		}
-	}
 }

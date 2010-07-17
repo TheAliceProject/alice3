@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser;
+package org.alice.stageide.croquet.models.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
@@ -76,13 +76,18 @@ class CreateFieldFromBillboardPane extends org.alice.ide.declarationpanes.Create
 /**
  * @author Dennis Cosgrove
  */
-class CreateBillboardActionOperation extends AbstractGalleryDeclareFieldOperation<CreateFieldFromBillboardPane> {
-	public CreateBillboardActionOperation() {
+public class CreateBillboardOperation extends AbstractGalleryDeclareFieldOperation<CreateFieldFromBillboardPane> {
+	private static class SingletonHolder {
+		private static CreateBillboardOperation instance = new CreateBillboardOperation();
+	}
+	public static CreateBillboardOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private CreateBillboardOperation() {
 		super( java.util.UUID.fromString( "6ec4f250-7bb7-4f73-830b-1e9b511b69d5" ) );
-		this.setName( "Create Billboard..." );
 	}
 	@Override
-	protected org.alice.stageide.gallerybrowser.CreateFieldFromBillboardPane prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.gallerybrowser.CreateFieldFromBillboardPane > context ) {
+	protected org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromBillboardPane prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromBillboardPane > context ) {
 		org.alice.ide.resource.prompter.ImageResourcePrompter imageResourcePrompter = org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton();
 		CreateFieldFromBillboardPane rv = new CreateFieldFromBillboardPane( this.getOwnerType() );
 		try {
@@ -112,7 +117,7 @@ class CreateBillboardActionOperation extends AbstractGalleryDeclareFieldOperatio
 		return rv;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.gallerybrowser.CreateFieldFromBillboardPane > context ) {
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromBillboardPane > context ) {
 		CreateFieldFromBillboardPane createFieldFromBillboardPane = context.getMainPanel();
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromBillboardPane.getActualInputValue();
 		if( field != null ) {

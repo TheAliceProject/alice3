@@ -163,9 +163,7 @@ package edu.cmu.cs.dennisc.tutorial;
 
 		this.controlsPanel.addComponent(controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
 		
-		this.isPaintingStencil.setTrueText( "" );
-		this.isPaintingStencil.setFalseText( "WARNING: stencil is disabled.  Click here to turn re-enable." );
-		
+		this.isPaintingStencil.setTextForTrueAndTextForFalse( "", "WARNING: stencil is disabled.  Click here to turn re-enable." );
 		
 		edu.cmu.cs.dennisc.croquet.CheckBox isPlayingSoundsCheckBox = this.isPlayingSounds.createCheckBox();
 		isPlayingSoundsCheckBox.getAwtComponent().setOpaque( false );

@@ -75,7 +75,7 @@ public abstract class PredeterminedTab {
 	}
 	private void updateTitleText() {
 		if( this.button != null ) {
-			this.booleanState.setTrueAndFalseText( this.titleText );
+			this.booleanState.setTextForBothTrueAndFalse( this.titleText );
 		}
 	}
 	private void updateTitleIcon() {

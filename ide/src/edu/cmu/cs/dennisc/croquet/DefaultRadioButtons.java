@@ -66,7 +66,7 @@ public class DefaultRadioButtons< E > extends AbstractRadioButtons< E > {
 	protected edu.cmu.cs.dennisc.croquet.BooleanStateButton<?> createBooleanStateButton(E item) {
 		BooleanState booleanState = new BooleanState( Application.UI_STATE_GROUP, java.util.UUID.fromString( "721f3d0f-6b39-440c-b9ac-d0ae170e15a0" ), false );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: RADIO_BUTTON_BOOLEAN_STATE" );
-		booleanState.setTrueText( item.toString() );
+		booleanState.setTextForBothTrueAndFalse( item.toString() );
 		return booleanState.createRadioButton(); 
 	}
 	@Override

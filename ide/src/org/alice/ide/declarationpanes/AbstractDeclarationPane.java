@@ -147,8 +147,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		if( isIsReassignableComponentDesired() ) {
 			this.isReassignableStateOperation = new edu.cmu.cs.dennisc.croquet.BooleanState( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "c95e177e-8fea-4916-a401-1b865594b135" ), this.getIsReassignableInitialState() );
 			 //"(is constant)", "(is variable)"
-			this.isReassignableStateOperation.setTrueText( "yes" );
-			this.isReassignableStateOperation.setFalseText( "no" );
+			this.isReassignableStateOperation.setTextForTrueAndTextForFalse( "yes", "no" );
 			this.isReassignableStateOperation.setEnabled( this.isIsReassignableComponentEnabled() );
 			rv = this.isReassignableStateOperation.createCheckBox();
 			rv.setBackgroundColor( null );

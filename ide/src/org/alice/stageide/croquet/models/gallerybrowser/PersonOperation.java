@@ -40,20 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.operations.help;
+package org.alice.stageide.croquet.models.gallerybrowser;
+
+import org.alice.stageide.personeditor.PersonInfo;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AboutOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	public AboutOperation() {
-		super( java.util.UUID.fromString( "175834c9-b8f4-4714-a212-e7d346d77835" ) );
-		this.setName( "About..." );
-		this.setMnemonicKey( java.awt.event.KeyEvent.VK_A );
+public abstract class PersonOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation< org.alice.stageide.personeditor.PersonEditor > {
+	protected abstract PersonInfo getInitialPersonInfo();
+	public PersonOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id ) {
+		super( group, id );
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		org.alice.stageide.aboutpane.AboutPane aboutPane = new org.alice.stageide.aboutpane.AboutPane();
-		this.getIDE().showMessageDialog( aboutPane, "About Alice 3", edu.cmu.cs.dennisc.croquet.MessageType.PLAIN );
+	protected org.alice.stageide.personeditor.PersonEditor prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.personeditor.PersonEditor > context ) {
+		PersonInfo personInfo = this.getInitialPersonInfo();
+		return new org.alice.stageide.personeditor.PersonEditor( personInfo );
+	}
+	@Override
+	protected java.awt.Dimension getDesiredDialogSize( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+		return new java.awt.Dimension( 1000, 800 );
 	}
 }

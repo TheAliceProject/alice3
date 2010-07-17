@@ -40,17 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.operations.gallery;
+package org.alice.stageide.croquet.models.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
 public class EditPersonOperation extends PersonOperation {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+	private static java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractField, EditPersonOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static EditPersonOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		EditPersonOperation rv = map.get( field );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new EditPersonOperation( field );
+			map.put( field, rv );
+		}
+		return rv;
+	}
 
-	public EditPersonOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	private EditPersonOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "bbbc5715-a41a-4740-b3fe-41ee20b1f9c5" ) );
-		this.setName( "Edit..." );
 		this.field = field;
 	}
 	private org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor getMoveAndTurnSceneEditor() {

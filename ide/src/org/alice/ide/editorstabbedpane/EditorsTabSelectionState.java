@@ -283,7 +283,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 			return false;
 		}
 		public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-			booleanState.setTrueAndFalseText( code.getName() );
+			booleanState.setTextForBothTrueAndFalse( code.getName() );
 			button.getAwtComponent().setIcon( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( code.getDeclaringType() ) );
 			button.scaleFont( 1.5f );
 			

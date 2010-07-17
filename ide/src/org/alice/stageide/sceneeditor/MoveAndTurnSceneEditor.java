@@ -72,7 +72,7 @@ import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
-import org.alice.stageide.gallerybrowser.GalleryFileActionOperation;
+import org.alice.stageide.croquet.models.gallerybrowser.GalleryFileOperation;
 import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerTracker;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
@@ -1572,10 +1572,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		if (isDropLocationOverLookingGlass(dragAndDropContext))
 		{
 			Operation<?> operation = dragSource.getLeftButtonClickOperation();
-			if (operation instanceof GalleryFileActionOperation)
+			if (operation instanceof GalleryFileOperation)
 			{
 				AffineMatrix4x4 dropTargetPosition = this.globalDragAdapter.getDropTargetTransformation();
-				((GalleryFileActionOperation)operation).setDesiredTransformation(dropTargetPosition);
+				((GalleryFileOperation)operation).setDesiredTransformation(dropTargetPosition);
 			}
 			return operation;
 		}

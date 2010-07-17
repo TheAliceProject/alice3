@@ -42,6 +42,12 @@
  */
 package org.alice.stageide.gallerybrowser;
 
+import org.alice.stageide.croquet.models.gallerybrowser.Create3dTextOperation;
+import org.alice.stageide.croquet.models.gallerybrowser.CreateBillboardOperation;
+import org.alice.stageide.croquet.models.gallerybrowser.CreateMyInstanceOperation;
+import org.alice.stageide.croquet.models.gallerybrowser.CreateTextbookInstanceOperation;
+import org.alice.stageide.croquet.models.gallerybrowser.GalleryFileOperation;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -229,18 +235,14 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				} );
 			}
 		} );
-		CreateTextActionOperation createTextActionOperation = new CreateTextActionOperation();
-		CreateBillboardActionOperation createBillboardActionOperation = new CreateBillboardActionOperation();
-		CreateMyInstanceActionOperation createMyInstanceActionOperation = new CreateMyInstanceActionOperation();
-		CreateTextbookInstanceActionOperation createTextbookInstanceActionOperation = new CreateTextbookInstanceActionOperation();
 
 		edu.cmu.cs.dennisc.croquet.GridPanel fromFilePane = edu.cmu.cs.dennisc.croquet.GridPanel.createGridPane( 2, 1, 0, 4 );
-		fromFilePane.addComponent( createMyInstanceActionOperation.createButton());
-		fromFilePane.addComponent(createTextbookInstanceActionOperation.createButton());
+		fromFilePane.addComponent( CreateMyInstanceOperation.getInstance().createButton());
+		fromFilePane.addComponent( CreateTextbookInstanceOperation.getInstance().createButton());
 
 		edu.cmu.cs.dennisc.croquet.GridPanel bonusPane = edu.cmu.cs.dennisc.croquet.GridPanel.createGridPane( 2, 1, 0, 4 );
-		bonusPane.addComponent(createBillboardActionOperation.createButton());
-		bonusPane.addComponent(createTextActionOperation.createButton());
+		bonusPane.addComponent(CreateBillboardOperation.getInstance().createButton());
+		bonusPane.addComponent(Create3dTextOperation.getInstance().createButton());
 
 		edu.cmu.cs.dennisc.croquet.BorderPanel buttonPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		buttonPane.addComponent(fromFilePane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH);
@@ -249,7 +251,7 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		
 		this.setBackgroundColor(new java.awt.Color(220, 220, 255));
 
-		org.alice.stageide.operations.gallery.CreatePersonFieldOperation createPersonFieldOperation = new org.alice.stageide.operations.gallery.CreatePersonFieldOperation();
+		org.alice.stageide.croquet.models.gallerybrowser.CreatePersonFieldOperation createPersonFieldOperation = org.alice.stageide.croquet.models.gallerybrowser.CreatePersonFieldOperation.getInstance();
 		edu.cmu.cs.dennisc.croquet.Button createPersonButton = createPersonFieldOperation.createButton();
 		createPersonButton.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.CENTER );
 		createPersonButton.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
@@ -333,7 +335,7 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			public edu.cmu.cs.dennisc.croquet.Operation<?> getOperationForLeaf(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode) {
 				String name = GalleryBrowser.this.getTextFor(treeNode, true);
 				if( name != null ) {
-					edu.cmu.cs.dennisc.croquet.Operation<?> rv = GalleryFileActionOperation.getInstance( treeNode );
+					edu.cmu.cs.dennisc.croquet.Operation<?> rv = GalleryFileOperation.getInstance( treeNode );
 					rv.setName( name );
 					rv.setSmallIcon( ResourceManager.getSmallIcon(treeNode) );
 					return rv;

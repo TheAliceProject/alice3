@@ -80,23 +80,35 @@ public /*final*/ class BooleanState extends Model {
 	};
 
 	private boolean value;
-	private String trueText = null;
-	private String falseText = null;
+	private String trueText;
+	private String falseText;
 
-	public BooleanState(Group group, java.util.UUID individualUUID, boolean initialState, String trueText, String falseText) {
+	public BooleanState(Group group, java.util.UUID individualUUID, boolean initialState ) {
 		super(group, individualUUID);
 		this.value = initialState;
 		this.buttonModel.setSelected(initialState);
 		this.buttonModel.addItemListener(this.itemListener);
-		this.setTrueText(trueText);
-		this.setFalseText(falseText);
+		
+		String text = this.getDefaultLocalizedText();
+		if( text != null ) {
+			this.setTextForBothTrueAndFalse( text );
+		} else {
+			String trueText = this.getLocalizedText( "true" );
+			if( trueText != null ) {
+				String falseText = this.getLocalizedText( "false" );
+				if( falseText != null ) {
+					this.setTextForTrueAndTextForFalse( trueText, falseText );
+				} else {
+					//todo:
+				}
+			}
+		}
 	}
 
-	public BooleanState(Group group, java.util.UUID individualUUID, boolean initialState, String trueAndFalseText) {
-		this(group, individualUUID, initialState, trueAndFalseText, trueAndFalseText);
-	}
-	public BooleanState(Group group, java.util.UUID individualUUID, boolean initialState ) {
-		this(group, individualUUID, initialState, null, null );
+	@Deprecated
+	public BooleanState(Group group, java.util.UUID individualUUID, boolean initialState, String name ) {
+		this(group, individualUUID, initialState );
+		this.setTextForBothTrueAndFalse( name );
 	}
 
 	/*package-private*/ javax.swing.ButtonModel getButtonModel() {
@@ -129,22 +141,15 @@ public /*final*/ class BooleanState extends Model {
 	public String getTrueText() {
 		return this.trueText;
 	}
-	public void setTrueText(String trueText) {
-		this.trueText = trueText;
-		this.updateName();
-	}
-
 	public String getFalseText() {
 		return this.falseText;
 	}
-
-	public void setFalseText(String falseText) {
-		this.falseText = falseText;
-		this.updateName();
+	public void setTextForBothTrueAndFalse(String text) {
+		this.setTextForTrueAndTextForFalse( text, text );
 	}
-	public void setTrueAndFalseText(String text) {
-		this.trueText = text;
-		this.falseText = text;
+	public void setTextForTrueAndTextForFalse(String trueText, String falseText) {
+		this.trueText = trueText;
+		this.falseText = falseText;
 		this.updateName();
 	}
 
@@ -159,35 +164,6 @@ public /*final*/ class BooleanState extends Model {
 		this.action.putValue(javax.swing.Action.NAME, name);
 	}
 	
-//	/*package-private*/ < B extends AbstractButton<?,BooleanState> > B register( final B rv ) {
-//		rv.setSwingButtonModel( this.buttonModel );
-//		rv.setAction( this.action );
-//		rv.addContainmentObserver( new Component.ContainmentObserver() {
-//			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-//				BooleanState.this.addComponent( rv );
-//			}
-//			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-//				BooleanState.this.removeComponent( rv );
-//			}
-//		} );
-//		return rv;
-//	}
-	
-//	@Override
-//	protected void addComponent( edu.cmu.cs.dennisc.croquet.JComponent< ? > component ) {
-//		assert component instanceof BooleanStateButton< ? >;
-//		BooleanStateButton< ? > booleanStateButton = (BooleanStateButton< ? >)component;
-//		booleanStateButton.setAction( this.action );
-//		super.addComponent( component );
-//	}
-//	@Override
-//	protected void removeComponent( edu.cmu.cs.dennisc.croquet.JComponent< ? > component ) {
-//		super.removeComponent( component );
-//		assert component instanceof BooleanStateButton< ? >;
-//		BooleanStateButton< ? > booleanStateButton = (BooleanStateButton< ? >)component;
-//		booleanStateButton.setAction( null );
-//	}
-
 	public RadioButton createRadioButton() {
 		return new RadioButton( this );
 	}

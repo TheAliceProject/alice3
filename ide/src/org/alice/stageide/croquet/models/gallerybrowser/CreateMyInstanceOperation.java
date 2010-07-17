@@ -40,25 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.operations.gallery;
-
-import org.alice.stageide.personeditor.PersonInfo;
+package org.alice.stageide.croquet.models.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PersonOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation< org.alice.stageide.personeditor.PersonEditor > {
-	protected abstract PersonInfo getInitialPersonInfo();
-	public PersonOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id ) {
-		super( group, id );
+public class CreateMyInstanceOperation extends CreateInstanceFromFileOperation {
+	private static class SingletonHolder {
+		private static CreateMyInstanceOperation instance = new CreateMyInstanceOperation();
 	}
-	@Override
-	protected org.alice.stageide.personeditor.PersonEditor prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.personeditor.PersonEditor > context ) {
-		PersonInfo personInfo = this.getInitialPersonInfo();
-		return new org.alice.stageide.personeditor.PersonEditor( personInfo );
+	public static CreateMyInstanceOperation getInstance() {
+		return SingletonHolder.instance;
 	}
+	private CreateMyInstanceOperation() {
+		super( java.util.UUID.fromString( "d1b9047a-dd23-42be-8a64-fd4ca1fa0f78" ) );
+	}
+
 	@Override
-	protected java.awt.Dimension getDesiredDialogSize( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
-		return new java.awt.Dimension( 1000, 800 );
+	protected java.io.File getInitialDirectory() {
+		return this.getIDE().getMyTypesDirectory();
 	}
 }

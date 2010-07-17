@@ -40,19 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser;
+package org.alice.stageide.croquet.models.run;
 
 /**
  * @author Dennis Cosgrove
  */
-class CreateTextbookInstanceActionOperation extends CreateInstanceFromFileActionOperation {
-	public CreateTextbookInstanceActionOperation() {
-		super( java.util.UUID.fromString( "70394f4f-c130-48cd-a197-4a1ba7bea9b5" ) );
-		this.setName( "Textbook Classes..." );
+public class PreviewMethodOperation extends org.alice.ide.operations.ActionOperation {
+	private org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate;
+	public PreviewMethodOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
+		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "9414c780-1ba2-4b00-8cb2-3c066f0063d5" ) );
+		this.procedureInvocationTemplate = procedureInvocationTemplate;
 	}
-
 	@Override
-	protected java.io.File getInitialDirectory() {
-		return new java.io.File( this.getIDE().getApplicationRootDirectory(), "classes/textbook" );
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+//		java.awt.event.MouseEvent mouseEvent = new java.awt.event.MouseEvent( this.procedureInvocationTemplate.getAwtComponent(), 0, 0, 0, this.procedureInvocationTemplate.getWidth(), this.procedureInvocationTemplate.getHeight(), 0, false );
+//		edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( this.procedureInvocationTemplate.getAwtComponent(), null, mouseEvent );
+//		this.procedureInvocationTemplate.createStatement( dragAndDropEvent, null, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement >() {
+//			public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+//				edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( statement, edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
+//				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( expressionStatement.expression.getValue(), edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class );
+//				methodInvocation.expression.setValue( null );
+//				PreviewMethodOperation.this.getIDE().handlePreviewMethod( context, methodInvocation );
+//				context.finish();
+//			}
+//			public void handleCancelation() {
+//				context.cancel();
+//			}
+//		} );
 	}
 }

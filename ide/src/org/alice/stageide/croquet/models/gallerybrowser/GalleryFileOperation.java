@@ -40,33 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser;
-
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
-import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
+package org.alice.stageide.croquet.models.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryFileActionOperation extends AbstractGalleryDeclareFieldOperation<org.alice.ide.declarationpanes.CreateFieldFromGalleryPane> {
-	private AffineMatrix4x4 desiredTransformation = null;
+public class GalleryFileOperation extends AbstractGalleryDeclareFieldOperation<org.alice.ide.declarationpanes.CreateFieldFromGalleryPane> {
+	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 desiredTransformation = null;
 	
-	private static java.util.Map<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>, GalleryFileActionOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static GalleryFileActionOperation getInstance( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
-		GalleryFileActionOperation rv = map.get( treeNode );
+	private static java.util.Map<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>, GalleryFileOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static GalleryFileOperation getInstance( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
+		GalleryFileOperation rv = map.get( treeNode );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new GalleryFileActionOperation( treeNode );
+			rv = new GalleryFileOperation( treeNode );
 			map.put( treeNode, rv );
 		}
 		return rv;
 	}
 
 	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode;
-	private GalleryFileActionOperation(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode) {
+	private GalleryFileOperation(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode) {
 		super( java.util.UUID.fromString( "19e8291e-3b0b-48f5-8bc9-1d02b754f9d4" ) );
 		this.treeNode = treeNode;
 	}
@@ -75,7 +70,7 @@ public class GalleryFileActionOperation extends AbstractGalleryDeclareFieldOpera
 		return new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane(this.getOwnerType(), this.treeNode);
 	}
 	
-	public void setDesiredTransformation( AffineMatrix4x4 desiredTransformation )
+	public void setDesiredTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 desiredTransformation )
 	{
 		this.desiredTransformation = desiredTransformation;
 	}
@@ -93,7 +88,7 @@ public class GalleryFileActionOperation extends AbstractGalleryDeclareFieldOpera
 				if (this.desiredTransformation != null)
 				{
 //					PrintUtilities.println("setting drop item "+ ((org.alice.apis.moveandturn.Transformable)fieldObject).getSGTransformable().hashCode()+" to "+this.desiredTransformation.translation);
-					((org.alice.apis.moveandturn.Transformable)fieldObject).setLocalTransformation(new AffineMatrix4x4(this.desiredTransformation));
+					((org.alice.apis.moveandturn.Transformable)fieldObject).setLocalTransformation(new edu.cmu.cs.dennisc.math.AffineMatrix4x4(this.desiredTransformation));
 //					((org.alice.apis.moveandturn.Transformable)fieldObject).getSGTransformable().localTransformation.setValue();
 				}
 			}

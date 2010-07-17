@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser;
+package org.alice.stageide.croquet.models.gallerybrowser;
 
 import org.alice.ide.operations.ast.DeclareFieldEdit;
 
@@ -329,19 +329,24 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 /**
  * @author Dennis Cosgrove
  */
-class CreateTextActionOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.stageide.gallerybrowser.CreateTextPane> {
-	public CreateTextActionOperation() {
+public class Create3dTextOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.stageide.croquet.models.gallerybrowser.CreateTextPane> {
+	private static class SingletonHolder {
+		private static Create3dTextOperation instance = new Create3dTextOperation();
+	}
+	public static Create3dTextOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private Create3dTextOperation() {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "37c0a6d6-a21b-4abb-829b-bd3621cada8d" ) );
-		this.setName( "Create Text..." );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: extend AbstractGalleryDeclareFieldOperation" );
 	}
 
 	@Override
-	protected org.alice.stageide.gallerybrowser.CreateTextPane prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.gallerybrowser.CreateTextPane > context ) {
+	protected org.alice.stageide.croquet.models.gallerybrowser.CreateTextPane prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.croquet.models.gallerybrowser.CreateTextPane > context ) {
 		return new CreateTextPane(); 
 	}
 	
-	private edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.gallerybrowser.CreateTextPane > context ) {
+	private edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.croquet.models.gallerybrowser.CreateTextPane > context ) {
 		//"Create Text"
 		CreateTextPane createTextPane = context.getMainPanel();
 		org.alice.apis.moveandturn.Text text = createTextPane.createText();
@@ -365,7 +370,7 @@ class CreateTextActionOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOp
 	}
 	
 	@Override
-	protected final void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.stageide.gallerybrowser.CreateTextPane> context, boolean isOk) {
+	protected final void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.stageide.croquet.models.gallerybrowser.CreateTextPane> context, boolean isOk) {
 		if( isOk ) {
 			edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> tuple = this.createFieldAndInstance( context );
 			if( tuple != null ) {

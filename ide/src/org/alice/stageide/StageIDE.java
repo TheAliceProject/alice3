@@ -371,15 +371,15 @@ public class StageIDE extends org.alice.ide.IDE {
 //	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.DialogOperation createRunOperation() {
-		return new org.alice.stageide.operations.run.RunOperation();
+		return new org.alice.stageide.croquet.models.run.RunOperation();
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Operation<?> createRestartOperation() {
-		return new org.alice.stageide.operations.run.RestartOperation();
+		return new org.alice.stageide.croquet.models.run.RestartOperation();
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Operation<?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
-		return new org.alice.stageide.operations.run.PreviewMethodOperation( procedureInvocationTemplate );
+		return new org.alice.stageide.croquet.models.run.PreviewMethodOperation( procedureInvocationTemplate );
 	}
 
 //	public final void handleRun( edu.cmu.cs.dennisc.croquet.ModelContext context ) {
@@ -440,7 +440,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Operation createAboutOperation() {
-		return new org.alice.stageide.operations.help.AboutOperation();
+		return new org.alice.stageide.croquet.models.help.AboutOperation();
 	}
 
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType, String > mapTypeToText;

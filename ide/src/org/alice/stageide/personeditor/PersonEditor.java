@@ -377,7 +377,6 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 
 		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
 		ide.initialize( args );
-		org.alice.stageide.operations.gallery.CreatePersonFieldOperation operation = new org.alice.stageide.operations.gallery.CreatePersonFieldOperation();
-		operation.fire();
+		org.alice.stageide.croquet.models.gallerybrowser.CreatePersonFieldOperation.getInstance().fire();
 	}
 }

@@ -40,33 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.operations.run;
+package org.alice.stageide.croquet.models.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewMethodOperation extends org.alice.ide.operations.ActionOperation {
-	private org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate;
-	public PreviewMethodOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
-		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "9414c780-1ba2-4b00-8cb2-3c066f0063d5" ) );
-		this.setName( "Preview..." );
-		this.procedureInvocationTemplate = procedureInvocationTemplate;
+public class CreatePersonOperation extends PersonOperation {
+	private org.alice.apis.stage.Person person;
+
+	public CreatePersonOperation( edu.cmu.cs.dennisc.croquet.Group group ) {
+		super( group, java.util.UUID.fromString( "e5d143e7-2aa2-4cd0-ae65-3f20cc0faf96" ) );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: CreatePersonOperation( group )" );
 	}
 	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-//		java.awt.event.MouseEvent mouseEvent = new java.awt.event.MouseEvent( this.procedureInvocationTemplate.getAwtComponent(), 0, 0, 0, this.procedureInvocationTemplate.getWidth(), this.procedureInvocationTemplate.getHeight(), 0, false );
-//		edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( this.procedureInvocationTemplate.getAwtComponent(), null, mouseEvent );
-//		this.procedureInvocationTemplate.createStatement( dragAndDropEvent, null, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement >() {
-//			public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-//				edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( statement, edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
-//				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( expressionStatement.expression.getValue(), edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class );
-//				methodInvocation.expression.setValue( null );
-//				PreviewMethodOperation.this.getIDE().handlePreviewMethod( context, methodInvocation );
-//				context.finish();
-//			}
-//			public void handleCancelation() {
-//				context.cancel();
-//			}
-//		} );
+	protected org.alice.stageide.personeditor.PersonInfo getInitialPersonInfo() {
+		return org.alice.stageide.personeditor.PersonInfo.createRandom();
+	}
+	@Override
+	protected void epilogue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.stageide.personeditor.PersonEditor > context, boolean isOk ) {
+		if( isOk ) {
+			org.alice.stageide.personeditor.PersonEditor personEditor = context.getMainPanel();
+			org.alice.stageide.personeditor.PersonInfo personInfo = personEditor.getPersonInfo();
+			this.person = personInfo.createPerson();
+			context.finish();
+		} else {
+			this.person = null;
+			context.cancel();
+		}
+	}
+
+	public org.alice.apis.stage.Person getPerson() {
+		return this.person;
 	}
 }

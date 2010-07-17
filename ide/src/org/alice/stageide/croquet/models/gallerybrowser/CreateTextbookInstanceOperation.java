@@ -40,19 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser;
+package org.alice.stageide.croquet.models.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-class CreateMyInstanceActionOperation extends CreateInstanceFromFileActionOperation {
-	public CreateMyInstanceActionOperation() {
-		super( java.util.UUID.fromString( "d1b9047a-dd23-42be-8a64-fd4ca1fa0f78" ) );
-		this.setName( "My Classes..." );
+public class CreateTextbookInstanceOperation extends CreateInstanceFromFileOperation {
+	private static class SingletonHolder {
+		private static CreateTextbookInstanceOperation instance = new CreateTextbookInstanceOperation();
+	}
+	public static CreateTextbookInstanceOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private CreateTextbookInstanceOperation() {
+		super( java.util.UUID.fromString( "70394f4f-c130-48cd-a197-4a1ba7bea9b5" ) );
 	}
 
 	@Override
 	protected java.io.File getInitialDirectory() {
-		return this.getIDE().getMyTypesDirectory();
+		return new java.io.File( this.getIDE().getApplicationRootDirectory(), "classes/textbook" );
 	}
 }

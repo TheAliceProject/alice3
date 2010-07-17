@@ -104,15 +104,15 @@ public abstract class Operation< C extends OperationContext<?>> extends Model {
 	public void setName( String name ) {
 		this.action.putValue( javax.swing.Action.NAME, name );
 	}
-	public String getShortDescription() {
-		return String.class.cast( this.action.getValue( javax.swing.Action.SHORT_DESCRIPTION ) );
-	}
+//	public String getShortDescription() {
+//		return String.class.cast( this.action.getValue( javax.swing.Action.SHORT_DESCRIPTION ) );
+//	}
 	public void setShortDescription( String shortDescription ) {
 		this.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
 	}
-	public String getLongDescription() {
-		return String.class.cast( this.action.getValue( javax.swing.Action.LONG_DESCRIPTION ) );
-	}
+//	public String getLongDescription() {
+//		return String.class.cast( this.action.getValue( javax.swing.Action.LONG_DESCRIPTION ) );
+//	}
 	public void setLongDescription( String longDescription ) {
 		this.action.putValue( javax.swing.Action.LONG_DESCRIPTION, longDescription );
 	}
@@ -122,15 +122,15 @@ public abstract class Operation< C extends OperationContext<?>> extends Model {
 	public void setSmallIcon( javax.swing.Icon icon ) {
 		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
 	}
-	public int getMnemonicKey() {
-		return Integer.class.cast( this.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
-	}
-	public void setMnemonicKey( int mnemonicKey ) {
+//	public int getMnemonicKey() {
+//		return Integer.class.cast( this.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
+//	}
+	private void setMnemonicKey( int mnemonicKey ) {
 		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
 	}
-	public javax.swing.KeyStroke getAcceleratorKey() {
-		return javax.swing.KeyStroke.class.cast( this.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
-	}
+//	public javax.swing.KeyStroke getAcceleratorKey() {
+//		return javax.swing.KeyStroke.class.cast( this.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
+//	}
 	private void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 	}

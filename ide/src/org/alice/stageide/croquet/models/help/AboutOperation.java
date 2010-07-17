@@ -40,22 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.operations.run;
+package org.alice.stageide.croquet.models.help;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RestartOperation extends org.alice.ide.operations.ActionOperation {
-	public RestartOperation() {
-		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "f8acb9c4-f4d8-4c6e-84ae-6555cc0da4e0" ) );
-		this.setName( "Restart..." );
+public class AboutOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	public AboutOperation() {
+		super( java.util.UUID.fromString( "175834c9-b8f4-4714-a212-e7d346d77835" ) );
 	}
 	@Override
-	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				org.alice.ide.IDE.getSingleton().getRunOperation().fire();
-			}
-		} );
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		org.alice.stageide.aboutpane.AboutPane aboutPane = new org.alice.stageide.aboutpane.AboutPane();
+		this.getIDE().showMessageDialog( aboutPane, "About Alice 3", edu.cmu.cs.dennisc.croquet.MessageType.PLAIN );
 	}
 }

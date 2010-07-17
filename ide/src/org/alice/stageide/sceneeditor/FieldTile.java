@@ -163,7 +163,7 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 				rv.add( new org.alice.stageide.operations.ast.PlaceOnTopOfGroundActionOperation( fieldInAlice ) );
 			}
 			if( fieldType.isAssignableTo( org.alice.apis.stage.Person.class ) ) {
-				rv.add( new org.alice.stageide.operations.gallery.EditPersonOperation( fieldInAlice ) );
+				rv.add( org.alice.stageide.croquet.models.gallerybrowser.EditPersonOperation.getInstance( fieldInAlice ) );
 			}
 		}
 		return rv;
@@ -210,7 +210,7 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( prevText, nextText ) ) {
 			//pass
 		} else {
-			this.getModel().setTrueAndFalseText( nextText );
+			this.getModel().setTextForBothTrueAndFalse( nextText );
 			//this.revalidateAndRepaint();
 		}
 		

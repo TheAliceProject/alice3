@@ -40,22 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser;
+package org.alice.stageide.croquet.models.run;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractGalleryDeclareFieldOperation<J extends org.alice.ide.preview.PanelWithPreview> extends org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation<J> {
-	public AbstractGalleryDeclareFieldOperation( java.util.UUID individualId ) {
-		super( individualId );
+public class RestartOperation extends org.alice.ide.operations.ActionOperation {
+	public RestartOperation() {
+		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "f8acb9c4-f4d8-4c6e-84ae-6555cc0da4e0" ) );
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
-		return this.getIDE().getSceneType();
+	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				org.alice.ide.IDE.getSingleton().getRunOperation().fire();
+			}
+		} );
 	}
-	@Override
-	protected boolean isInstanceValid() {
-		return true;
-	}
-
 }

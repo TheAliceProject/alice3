@@ -53,6 +53,6 @@ public class IsSceneEditorExpandedState extends edu.cmu.cs.dennisc.croquet.Boole
 		return SingletonHolder.instance;
 	}
 	private IsSceneEditorExpandedState() {
-		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "704ea7d2-9da8-461f-b7dd-d086815c3e52" ), false, "Edit Code", "Edit Scene" );
+		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "704ea7d2-9da8-461f-b7dd-d086815c3e52" ), false );
 	}
 }
