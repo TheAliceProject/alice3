@@ -40,16 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.edit;
+package org.alice.ide.croquet.models.clipboard;
 
 /**
  * @author Dennis Cosgrove
  */
 public class CutOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	public CutOperation() {
+	private static class SingletonHolder {
+		private static CutOperation instance = new CutOperation();
+	}
+	public static CutOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private CutOperation() {
 		super( java.util.UUID.fromString( "48a0202c-8153-4772-89ca-08fe5a8f28b5" ) );
-		this.setName( "Cut" );
-		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_X, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );
 	}
 	@Override
 	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {

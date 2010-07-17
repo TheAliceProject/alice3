@@ -84,37 +84,16 @@ public class MenuModel extends Model {
 	private int mnemonic;
 	private Model[] models;
 	
-	private static final int NULL_MNEMONIC = 0;
 	public MenuModel( java.util.UUID individualId, Model... models ) {
 		super( MENU_GROUP, individualId );
-		this.name = this.getLocalizedName();
-		this.mnemonic = this.getLocalizedMnemonic();
+		this.name = this.getLocalizedText( "name" );
+		this.mnemonic = this.getLocalizedMnemonicKey();
 		this.models = models;
 	}
 	public MenuModel( java.util.UUID individualId, java.util.List< Model > models ) {
 		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(models, Model.class) );
 	}
 
-	private String getLocalizedName() {
-		return this.getLocalizedText( "name" );
-	}
-	private int getLocalizedMnemonic() {
-		String fieldName = this.getLocalizedText( "mnemonic" );
-		if( fieldName != null ) {
-			try {
-				java.lang.reflect.Field field = java.awt.event.KeyEvent.class.getField( fieldName );
-				Object value = field.get( null );
-				if( value instanceof Integer ) {
-					return (Integer)value;
-				}
-			} catch( NoSuchFieldException nsfe ) {
-				nsfe.printStackTrace();
-			} catch( IllegalAccessException iae ) {
-				iae.printStackTrace();
-			}
-		}
-		return NULL_MNEMONIC;
-	}
 	public Model[] getOperations() {
 		return this.models;
 	}

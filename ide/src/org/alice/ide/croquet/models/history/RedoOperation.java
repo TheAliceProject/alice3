@@ -54,8 +54,6 @@ public class RedoOperation extends HistoryOperation {
 	}
 	private RedoOperation() {
 		super( java.util.UUID.fromString( "6391ae51-0ae5-4592-8fd9-441a72bb814a" ) );
-		this.setName( "Redo" );
-		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_Y, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );
 	}
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.history.HistoryManager historyManager) {

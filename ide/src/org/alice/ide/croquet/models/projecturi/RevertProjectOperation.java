@@ -54,8 +54,6 @@ public class RevertProjectOperation extends UriActionOperation {
 	}
 	private RevertProjectOperation() {
 		super( java.util.UUID.fromString( "e1c3b3d7-dc4b-491c-8958-9a98710d5d1a" ) );
-		this.setName( "Revert" );
-		this.setMnemonicKey( java.awt.event.KeyEvent.VK_R );
 	}
 	@Override
 	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {

@@ -54,13 +54,5 @@ public class OpenProjectOperation extends AbstractOpenProjectOperation {
 	}
 	private OpenProjectOperation() {
 		super( java.util.UUID.fromString( "89b65a9c-f36a-44ba-8aed-c2922d40f297" ), new org.alice.ide.croquet.models.projecturi.SelectAndLoadExistingProjectOperation() );
-		this.setName( "Open..." );
-		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_O, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );
-		this.setMnemonicKey( java.awt.event.KeyEvent.VK_O );
 	}
-//	@Override
-//	protected boolean isNew() {
-//		return false;
-//	}
-//	
 }

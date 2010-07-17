@@ -40,16 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.edit;
+package org.alice.ide.croquet.models.clipboard;
 
 /**
  * @author Dennis Cosgrove
  */
 public class PasteOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	public PasteOperation() {
+	private static class SingletonHolder {
+		private static PasteOperation instance = new PasteOperation();
+	}
+	public static PasteOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private PasteOperation() {
 		super( java.util.UUID.fromString( "b6c8d189-3529-4244-9530-d71701c6e75f" ) );
-		this.setName( "Paste" );
-		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_V, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );
 	}
 	@Override
 	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {

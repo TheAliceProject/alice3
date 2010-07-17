@@ -57,9 +57,9 @@ public class EditMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 				org.alice.ide.croquet.models.history.UndoOperation.getInstance(), 
 				org.alice.ide.croquet.models.history.RedoOperation.getInstance(), 
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, 
-				new org.alice.ide.operations.edit.CutOperation(),
-				new org.alice.ide.operations.edit.CopyOperation(), 
-				new org.alice.ide.operations.edit.PasteOperation() 
+				org.alice.ide.croquet.models.clipboard.CutOperation.getInstance(),
+				org.alice.ide.croquet.models.clipboard.CopyOperation.getInstance(), 
+				org.alice.ide.croquet.models.clipboard.PasteOperation.getInstance() 
 		);
 	}
 }

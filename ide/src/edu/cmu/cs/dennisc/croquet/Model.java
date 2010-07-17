@@ -46,6 +46,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Model implements Resolver< Model > {
+	private static final int NULL_MNEMONIC = 0;
+	private static final int NULL_ACCELERATOR_MASK = 0;
 	private Group group;
 	private java.util.UUID inividualUUID;
 	public Model( Group group, java.util.UUID inividualUUID ) {
@@ -83,6 +85,60 @@ public abstract class Model implements Resolver< Model > {
 		} catch( java.util.MissingResourceException mre ) {
 			return null;
 		}
+	}
+	
+	
+	private static int getField( Class<?> cls, String fieldName, int nullValue ) {
+		if( fieldName != null ) {
+			try {
+				java.lang.reflect.Field field = cls.getField( fieldName );
+				Object value = field.get( null );
+				if( value instanceof Integer ) {
+					return (Integer)value;
+				}
+			} catch( NoSuchFieldException nsfe ) {
+				nsfe.printStackTrace();
+			} catch( IllegalAccessException iae ) {
+				iae.printStackTrace();
+			}
+		}
+		return nullValue;
+	}
+	private static int getKeyCode( String fieldName ) {
+		return getField( java.awt.event.KeyEvent.class, fieldName, NULL_MNEMONIC );
+	}
+	private static int getModifierMask( String fieldName ) {
+		return getField( java.awt.event.InputEvent.class, fieldName, NULL_ACCELERATOR_MASK );
+	}
+	protected int getLocalizedMnemonicKey() {
+		return getKeyCode( this.getLocalizedText( "mnemonic" ) );
+	}
+	protected javax.swing.KeyStroke getLocalizedAcceleratorKey() {
+		String acceleratorText = this.getLocalizedText( "accelerator" );
+		if( acceleratorText != null ) {
+			String[] array = acceleratorText.split(",");
+			if( array.length > 0 ) {
+				int keyCode = getKeyCode( array[ 0 ] );
+				if( keyCode != NULL_MNEMONIC ) {
+					int modifiers = edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask();
+					if( array.length > 1 ) {
+						String[] modifierTexts = array[ 1 ].split( "\\|" );
+						for( String modifierText : modifierTexts ) {
+							System.err.println( modifierText );
+							int modifier = getModifierMask( modifierText );
+							if( modifier != NULL_ACCELERATOR_MASK ) {
+								modifiers |= modifier;
+							} else {
+								//todo?
+							}
+						}
+					}
+					return javax.swing.KeyStroke.getKeyStroke( keyCode, modifiers );
+				}
+				
+			}
+		}
+		return null;
 	}
 	
 //	public CompositeContext getCurrentCompositeContext() {	

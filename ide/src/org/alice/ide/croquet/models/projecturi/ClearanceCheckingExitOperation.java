@@ -54,12 +54,5 @@ public class ClearanceCheckingExitOperation extends ClearanceRequiringUriComposi
 	}
 	private ClearanceCheckingExitOperation() {
 		super( java.util.UUID.fromString( "ba357b75-2167-4b4d-9f11-bf34b48d6b2e" ), SystemExitOperation.getInstance() );
-		this.setName( "Exit" );
 	}
-//	@Override
-//	protected void performPostCleared(edu.cmu.cs.dennisc.croquet.CompositeContext compositeContext) {
-//		assert compositeContext.isCanceled() == false;
-//		//todo?
-//		System.exit( 0 );
-//	}
 }

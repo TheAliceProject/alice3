@@ -54,9 +54,6 @@ public class SaveAsProjectOperation extends AbstractSaveProjectOperation {
 	}
 	private SaveAsProjectOperation() {
 		super( java.util.UUID.fromString( "14986f74-fb95-40f1-a39e-7cf89f5cd720" ) );
-		this.setName( "Save As..." );
-		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_S, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() | java.awt.event.InputEvent.SHIFT_MASK ) );
-		this.setMnemonicKey( java.awt.event.KeyEvent.VK_A );
 	}
 	@Override
 	protected boolean isPromptNecessary( java.io.File file ) {

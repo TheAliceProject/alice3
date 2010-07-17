@@ -54,8 +54,6 @@ public class UndoOperation extends HistoryOperation {
 	}
 	private UndoOperation() {
 		super( java.util.UUID.fromString( "8580fdfd-6862-4aef-bf86-c7dad41e9ccb" ) );
-		this.setName( "Undo" );
-		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_Z, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );
 	}
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.history.HistoryManager historyManager) {

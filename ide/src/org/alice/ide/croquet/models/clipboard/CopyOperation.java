@@ -40,16 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.edit;
+package org.alice.ide.croquet.models.clipboard;
 
 /**
  * @author Dennis Cosgrove
  */
 public class CopyOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	public CopyOperation() {
+	private static class SingletonHolder {
+		private static CopyOperation instance = new CopyOperation();
+	}
+	public static CopyOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private CopyOperation() {
 		super( java.util.UUID.fromString( "4caee2f0-7d3c-427c-9816-f277bc2fcecb" ) );
-		this.setName( "Copy" );
-		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_C, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );
 	}
 	@Override
 	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
