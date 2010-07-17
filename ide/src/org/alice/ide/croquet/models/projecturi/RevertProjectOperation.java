@@ -62,7 +62,8 @@ public class RevertProjectOperation extends UriActionOperation {
 		if( yesNoCancelOption == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.YES ) {
 			java.net.URI uri = application.getUri();
 			if( uri != null ) {
-				context.commitAndInvokeDo( new LoadUriEdit( uri ) );
+				application.loadProjectFrom( uri );
+				context.finish();
 			} else {
 				application.showMessageDialog( "todo: revert uri == null" );
 				context.cancel();

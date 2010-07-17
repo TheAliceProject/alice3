@@ -76,10 +76,11 @@ public abstract class SelectAndLoadProjectOperation extends edu.cmu.cs.dennisc.c
 	@Override
 	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.openprojectpane.SelectProjectToOpenPanel> context, boolean isOk) {
 		if( isOk ) {
-			org.alice.ide.openprojectpane.SelectProjectToOpenPanel selectProjectToOpenPanel = context.getMainPanel();
+			//org.alice.ide.openprojectpane.SelectProjectToOpenPanel selectProjectToOpenPanel = context.getMainPanel();
 			java.net.URI uri = this.selectProjectToOpenPanel.getSelectedURI();
 			if (uri != null) {
-				context.commitAndInvokeDo( new LoadUriEdit( uri ) );
+				org.alice.ide.ProjectApplication.getSingleton().loadProjectFrom( uri );
+				context.finish();
 			} else {
 				context.cancel();
 			}
