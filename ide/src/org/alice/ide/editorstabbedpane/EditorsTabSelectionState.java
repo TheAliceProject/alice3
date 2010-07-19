@@ -287,7 +287,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 			button.getAwtComponent().setIcon( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( code.getDeclaringType() ) );
 			button.scaleFont( 1.5f );
 			
-			final boolean IS_RUN_BUTTON_DESIRED = true;
+			final boolean IS_RUN_BUTTON_DESIRED = false;
 			if( IS_RUN_BUTTON_DESIRED ) {
 				if( isEntryPoint(code) ) {
 					edu.cmu.cs.dennisc.croquet.DialogOperation runOperation = org.alice.ide.IDE.getSingleton().getRunOperation();
