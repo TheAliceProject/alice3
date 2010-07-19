@@ -40,21 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package org.alice.ide.croquet.models.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RunMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
-	private static class SingletonHolder {
-		private static RunMenuModel instance = new RunMenuModel();
+public class OpenRecentProjectOperation extends ClearanceRequiringUriCompositeOperation {
+	private static java.util.Map< java.net.URI, OpenRecentProjectOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized OpenRecentProjectOperation getInstance( java.net.URI uri ) {
+		OpenRecentProjectOperation rv = map.get( uri );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new OpenRecentProjectOperation( uri );
+			map.put( uri, rv );
+		}
+		return rv;
 	}
-	public static RunMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-	private RunMenuModel() {
-		super( java.util.UUID.fromString( "e441d150-d53b-4bc1-9dbf-a61843a53a34" ),
-				org.alice.ide.IDE.getSingleton().getRunOperation()
-		);
+	private OpenRecentProjectOperation( java.net.URI uri ) {
+		super( java.util.UUID.fromString( "f51873eb-06ad-4974-9890-7345adff3ac4" ), new LoadProjectOperation( uri ) );
+		java.io.File file = new java.io.File( uri );
+		this.setName( file.getAbsolutePath() );
 	}
 }

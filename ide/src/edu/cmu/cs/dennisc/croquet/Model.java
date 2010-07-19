@@ -65,12 +65,16 @@ public abstract class Model implements Resolver< Model > {
 		return (Model)this;
 	}
 
-	protected String getLocalizedText( String subKey ) {
-		Class<?> cls = this.getClass();
+	protected static String getLocalizedText( Class<?> cls, String subKey ) {
 		String bundleName = cls.getPackage().getName() + ".CroquetBundle";
 		try {
 			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
-			String key = cls.getSimpleName();
+			String key;
+			if( cls.isMemberClass() ) {
+				key = cls.getSimpleName();
+			} else {
+				key = cls.getSimpleName();
+			}
 			if( subKey != null ) {
 				StringBuilder sb = new StringBuilder();
 				sb.append( key );
@@ -89,10 +93,18 @@ public abstract class Model implements Resolver< Model > {
 			return null;
 		}
 	}
-	
-	protected String getDefaultLocalizedText() {
-		return this.getLocalizedText( null );
+
+	protected String getLocalizedText( String subKey ) {
+		return getLocalizedText( this.getClass(), subKey );
 	}
+	
+	protected static String getDefaultLocalizedText( Class<?> cls ) {
+		return getLocalizedText( cls, null );
+	}
+	protected String getDefaultLocalizedText() {
+		return getDefaultLocalizedText( this.getClass() );
+	}
+
 	private static int getField( Class<?> cls, String fieldName, int nullValue ) {
 		if( fieldName != null ) {
 			try {
@@ -109,17 +121,21 @@ public abstract class Model implements Resolver< Model > {
 		}
 		return nullValue;
 	}
-	private static int getKeyCode( String fieldName ) {
-		return getField( java.awt.event.KeyEvent.class, fieldName, NULL_MNEMONIC );
+	private static int getKeyCode( String vkFieldName ) {
+		return getField( java.awt.event.KeyEvent.class, vkFieldName, NULL_MNEMONIC );
 	}
-	private static int getModifierMask( String fieldName ) {
-		return getField( java.awt.event.InputEvent.class, fieldName, NULL_ACCELERATOR_MASK );
+	private static int getModifierMask( String vkFieldName ) {
+		return getField( java.awt.event.InputEvent.class, vkFieldName, NULL_ACCELERATOR_MASK );
+	}
+	
+	protected static int getLocalizedMnemonicKey( Class<?> cls ) {
+		return getKeyCode( getLocalizedText( cls, "mnemonic" ) );
 	}
 	protected int getLocalizedMnemonicKey() {
-		return getKeyCode( this.getLocalizedText( "mnemonic" ) );
+		return getLocalizedMnemonicKey( this.getClass() );
 	}
-	protected javax.swing.KeyStroke getLocalizedAcceleratorKey() {
-		String acceleratorText = this.getLocalizedText( "accelerator" );
+	protected static javax.swing.KeyStroke getLocalizedAcceleratorKeyStroke( Class<?> cls ) {
+		String acceleratorText = getLocalizedText( cls, "accelerator" );
 		if( acceleratorText != null ) {
 			String[] array = acceleratorText.split(",");
 			if( array.length > 0 ) {
@@ -148,6 +164,9 @@ public abstract class Model implements Resolver< Model > {
 			}
 		}
 		return null;
+	}
+	protected javax.swing.KeyStroke getLocalizedAcceleratorKeyStroke() {
+		return getLocalizedAcceleratorKeyStroke( this.getClass() );
 	}
 	
 //	public CompositeContext getCurrentCompositeContext() {	

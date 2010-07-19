@@ -217,7 +217,7 @@ public abstract class Application {
 		}
 	}
 
-	/*package-private*/static AbstractMenu< ?,? > addMenuElements( AbstractMenu< ?,? > rv, Model[] models ) {
+	public static AbstractMenu< ?,? > addMenuElements( AbstractMenu< ?,? > rv, Model[] models ) {
 		for( Model model : models ) {
 			if( model != null ) {
 				if( model instanceof MenuModel ) {
@@ -225,7 +225,7 @@ public abstract class Application {
 					rv.addMenu( menuOperation.createMenu() );
 				} else if( model instanceof ListSelectionState< ? > ) {
 					ListSelectionState< ? > itemSelectionOperation = (ListSelectionState< ? >)model;
-					rv.addMenu( itemSelectionOperation.createMenu() );
+					rv.addMenu( itemSelectionOperation.getMenuModel().createMenu() );
 				} else {
 					if( model instanceof Operation<?> ) {
 						Operation<?> operation = (Operation<?>)model;

@@ -40,29 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.projecturi;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractOpenProjectOperation extends ClearanceRequiringUriCompositeOperation {
-	//public static final edu.cmu.cs.dennisc.croquet.Context.Key<java.io.File> FILE_KEY = edu.cmu.cs.dennisc.croquet.Context.createKey( "FILE_KEY" );
-	
-//	private edu.cmu.cs.dennisc.croquet.ActionOperation selectAndLoadProjectOperation;
-	
-	public AbstractOpenProjectOperation( java.util.UUID individualUUID, edu.cmu.cs.dennisc.croquet.Operation<?> selectAndLoadProjectOperation ) {
-		super( individualUUID, selectAndLoadProjectOperation );
-//		this.selectAndLoadProjectOperation = selectAndLoadProjectOperation;
+public class DefaultMenuModel extends MenuModel {
+	private Model[] models;
+	public DefaultMenuModel( java.util.UUID individualId, Model... models ) {
+		super( individualId );
+		this.models = models;
 	}
-//	protected abstract boolean isNew();
-//	@Override
-//	protected final void performPostCleared(edu.cmu.cs.dennisc.croquet.CompositeContext compositeContext) {
-//		assert compositeContext.isCanceled() == false;
-//		edu.cmu.cs.dennisc.croquet.ActionContext selectProjectContext = compositeContext.performInChildContext( this.selectAndLoadProjectOperation, null, edu.cmu.cs.dennisc.croquet.CancelEffectiveness.WORTHWHILE );
-//		if( selectProjectContext.isCommitted() ) {
-//			compositeContext.commit();
-//		} else {
-//			compositeContext.cancel();
-//		}
-//	}
+	public DefaultMenuModel( java.util.UUID individualId, java.util.List< Model > models ) {
+		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(models, Model.class) );
+	}
+	@Override
+	/*package-private*/ Menu<MenuModel> createMenu() {
+		Menu<MenuModel> rv = super.createMenu();
+		Application.addMenuElements( rv, this.models );
+		return rv;
+	}
 }

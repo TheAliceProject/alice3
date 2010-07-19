@@ -42,7 +42,7 @@
  */
 package org.alice.ide.croquet.models.ast;
 
-public class MyTypesMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+public class MyTypesMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
 	public MyTypesMenuModel( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
 		super( java.util.UUID.fromString( "71f303de-54a8-481e-b57f-f5c8ade814ea" ), models );
 	}

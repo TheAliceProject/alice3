@@ -87,7 +87,7 @@ public abstract class Operation< C extends OperationContext<?>> extends Model {
 		super( group, individualUUID );
 		this.setName( this.getDefaultLocalizedText() );
 		this.setMnemonicKey( this.getLocalizedMnemonicKey() );
-		this.setAcceleratorKey( this.getLocalizedAcceleratorKey() );
+		this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 	}
 	
 	/*package-private*/ final C handleFire( ModelContext<?> parentContext, java.util.EventObject e, ViewController< ?, ? > viewController ) {
