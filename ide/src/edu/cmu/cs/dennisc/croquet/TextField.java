@@ -52,7 +52,20 @@ public class TextField extends TextComponent< edu.cmu.cs.dennisc.javax.swing.com
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField createAwtComponent() {
-		edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField();
+		edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField() {
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
+			}
+			@Override
+			public java.awt.Dimension getMaximumSize() {
+				if( TextField.this.isMaximumSizeClampedToPreferredSize() ) {
+					return this.getPreferredSize();
+				} else {
+					return super.getMaximumSize();
+				}
+			}
+		};
 		return rv;
 	}
 }

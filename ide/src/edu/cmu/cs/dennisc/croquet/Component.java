@@ -295,6 +295,14 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 	public final void setMinimumPreferredHeight( Integer minimumPreferredHeight ) {
 		this.minimumPreferredHeight = minimumPreferredHeight;
 	}
+	
+	private boolean isMaximumSizeClampedToPreferredSize = false;
+	public boolean isMaximumSizeClampedToPreferredSize() { 
+		return this.isMaximumSizeClampedToPreferredSize;
+	}
+	public void setMaximumSizeClampedToPreferredSize(boolean isMaximumSizeClampedToPreferredSize) {
+		this.isMaximumSizeClampedToPreferredSize = isMaximumSizeClampedToPreferredSize;
+	}
 
 	/*package-private*/boolean isEnabled() {
 		return this.getAwtComponent().isEnabled();
