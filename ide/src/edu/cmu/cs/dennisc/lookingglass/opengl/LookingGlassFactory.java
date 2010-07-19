@@ -94,6 +94,10 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "The text below has been copied to the clipboard for your convenience." );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( platformText );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println();
+			
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "all properties" );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "--- ----------" );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPropertiesAsXMLString() );
 			System.exit( 0 );
 		}
 	}
