@@ -149,7 +149,7 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	};
 
-	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabbedPaneSelection;
+	private edu.cmu.cs.dennisc.croquet.TabSelectionState tabbedPaneSelection;
 	
 
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.croquet.PredeterminedTab> tabChangeAdapter = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.croquet.PredeterminedTab>() {
@@ -206,7 +206,7 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		} );
 
 
-		this.tabbedPaneSelection = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( PersonEditor.GROUP, java.util.UUID.fromString( "d525f0c5-9f39-4807-a9d3-f66775f9eb2d" ), 0, new BodyTab(), new HeadTab() );
+		this.tabbedPaneSelection = new edu.cmu.cs.dennisc.croquet.TabSelectionState( PersonEditor.GROUP, java.util.UUID.fromString( "d525f0c5-9f39-4807-a9d3-f66775f9eb2d" ), 0, new BodyTab(), new HeadTab() );
 		final edu.cmu.cs.dennisc.croquet.FolderTabbedPane<?> tabbedPane = this.tabbedPaneSelection.createDefaultFolderTabbedPane();
 		tabbedPane.scaleFont( 1.5f );
 

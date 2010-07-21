@@ -182,59 +182,51 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private static boolean IS_FOLDER_TABBED_PANE_DESIRED = true;
 	private static javax.swing.Icon ICON = IS_FOLDER_TABBED_PANE_DESIRED ? null : new IndirectCurrentAccessibleTypeIcon();
 	
-	private static abstract class MemberTab extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
-		private static String getTitle( String key ) {
-			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "org.alice.ide.memberseditor.TabTitles", javax.swing.JComponent.getDefaultLocale() );
-			return resourceBundle.getString( key );
-		}
-		public MemberTab( java.util.UUID individualId, String key ) {
-			super( individualId, getTitle( key ), ICON );
-		}
-		@Override
-		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane() {
-			edu.cmu.cs.dennisc.croquet.ScrollPane rv = super.createScrollPane();
-			rv.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
-			return rv;
-		}
-	}
-
-	private MemberTab proceduresTab = new MemberTab( java.util.UUID.fromString( "2731d704-1f80-444e-a610-e6e5866c0b9a" ), "procedure" ) {
-		@Override
-		protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
-			return new ProceduresContentPanel();
-		}
-	};
-	private MemberTab functionsTab = new MemberTab( java.util.UUID.fromString( "0f5d1f93-fc67-4109-9aff-0e7b232f201c" ), "function" ) {
-		@Override
-		protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
-			return new FunctionsContentPanel();
-		}
-	};
-	private MemberTab fieldsTab = new MemberTab( java.util.UUID.fromString( "6cb9c5a1-dc60-48e7-9a52-534009a093b8" ), "field" ) {
-		@Override
-		protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
-			return new FieldsContentPanel();
-		}
-	};
-
-//	public edu.cmu.cs.dennisc.croquet.PredeterminedTab getProceduresTab() {
-//		return this.proceduresTab;
-//	}
-//	public edu.cmu.cs.dennisc.croquet.PredeterminedTab getFunctionsTab() {
-//		return this.functionsTab;
-//	}
-//	public edu.cmu.cs.dennisc.croquet.PredeterminedTab getFieldsTab() {
-//		return this.fieldsTab;
+//	private static abstract class MemberTab extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
+//		private static String getTitle( String key ) {
+//			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "org.alice.ide.memberseditor.TabTitles", javax.swing.JComponent.getDefaultLocale() );
+//			return resourceBundle.getString( key );
+//		}
+//		public MemberTab( java.util.UUID individualId, String key ) {
+//			super( individualId, getTitle( key ), ICON );
+//		}
+//		@Override
+//		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane() {
+//			edu.cmu.cs.dennisc.croquet.ScrollPane rv = super.createScrollPane();
+//			rv.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
+//			return rv;
+//		}
 //	}
 
-	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabbedPaneSelectionState = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( 
-			org.alice.ide.IDE.UI_STATE_GROUP, 
-			java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ),
-			0,
-			this.proceduresTab, this.functionsTab, this.fieldsTab );
+//	private MemberTab proceduresTab = new MemberTab( java.util.UUID.fromString( "2731d704-1f80-444e-a610-e6e5866c0b9a" ), "procedure" ) {
+//		@Override
+//		protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+//			return new ProceduresContentPanel();
+//		}
+//	};
+//	private MemberTab functionsTab = new MemberTab( java.util.UUID.fromString( "0f5d1f93-fc67-4109-9aff-0e7b232f201c" ), "function" ) {
+//		@Override
+//		protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+//			return new FunctionsContentPanel();
+//		}
+//	};
+//	private MemberTab fieldsTab = new MemberTab( java.util.UUID.fromString( "6cb9c5a1-dc60-48e7-9a52-534009a093b8" ), "field" ) {
+//		@Override
+//		protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+//			return new FieldsContentPanel();
+//		}
+//	};
+//	private edu.cmu.cs.dennisc.croquet.TabSelectionState tabbedPaneSelectionState = new edu.cmu.cs.dennisc.croquet.TabSelectionState( 
+//			org.alice.ide.IDE.UI_STATE_GROUP, 
+//			java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ),
+//			0,
+//			this.proceduresTab, this.functionsTab, this.fieldsTab );
 
 
-	public edu.cmu.cs.dennisc.croquet.TabSelectionOperation getTabbedPaneSelectionState() {
+	private edu.cmu.cs.dennisc.croquet.TabSelectionState tabbedPaneSelectionState = new org.alice.ide.croquet.models.members.MembersTabSelectionState( 
+			new ProceduresContentPanel(), new FunctionsContentPanel(), new FieldsContentPanel(), ICON );
+	
+	public edu.cmu.cs.dennisc.croquet.TabSelectionState getTabbedPaneSelectionState() {
 		return this.tabbedPaneSelectionState;
 	}
 //	private edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractField > fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ItemSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractField >() {

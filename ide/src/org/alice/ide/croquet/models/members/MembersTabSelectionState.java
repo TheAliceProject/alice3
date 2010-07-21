@@ -40,54 +40,44 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.members;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class TabSelectionOperation extends ListSelectionState<PredeterminedTab> {
-	private static class PredeterminedTabCreator implements TabCreator< PredeterminedTab > {
-		public final java.util.UUID getId(PredeterminedTab item) {
-			java.util.UUID rv = item.getId();
-			assert rv != null;
+public class MembersTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSelectionState {
+	private static abstract class MemberTab extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
+		public MemberTab( java.util.UUID individualId, String text, javax.swing.Icon icon ) {
+			super( individualId, text, icon );
+		}
+		@Override
+		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane() {
+			edu.cmu.cs.dennisc.croquet.ScrollPane rv = super.createScrollPane();
+			rv.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
 			return rv;
 		}
-		public final JComponent<?> createMainComponent(PredeterminedTab item) {
-			return item.getMainComponent();
-		}
-		public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, edu.cmu.cs.dennisc.croquet.PredeterminedTab item ) {
-			item.customizeTitleComponent( booleanState, button );
-		}
-		public final ScrollPane createScrollPane( PredeterminedTab item ) {
-			return item.createScrollPane();
-		}
-		public final boolean isCloseable(edu.cmu.cs.dennisc.croquet.PredeterminedTab item) {
-			return false;
-		}
-	};
-	
-	public TabSelectionOperation( Group group, java.util.UUID individualUUID ) {
-		super( group, individualUUID, PredeterminedTabCodec.SINGLETON );
 	}
-	public TabSelectionOperation( Group group, java.util.UUID individualUUID, int selectedIndex, PredeterminedTab... tabs ) {
-		this( group, individualUUID );
-		this.setListData( selectedIndex, tabs );
-	}
-
-	public FolderTabbedPane<PredeterminedTab> createDefaultFolderTabbedPane() {
-		return this.createFolderTabbedPane( new PredeterminedTabCreator() );
-	}
-
-	public ToolPaletteTabbedPane<PredeterminedTab> createDefaultToolPaletteTabbedPane() {
-		return this.createToolPaletteTabbedPane( new PredeterminedTabCreator() );
-	}
-
-	public PredeterminedTab getItemForId( java.util.UUID id ) {
-		for( PredeterminedTab predeterminedTab : this ) {
-			if( predeterminedTab.getId().equals( id ) ) {
-				return predeterminedTab;
+	public MembersTabSelectionState( final edu.cmu.cs.dennisc.croquet.JComponent< ? > proceduresPanel, final edu.cmu.cs.dennisc.croquet.JComponent< ? > functionsPanel, final edu.cmu.cs.dennisc.croquet.JComponent< ? > fieldsPanel, final javax.swing.Icon icon ) {
+		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ));
+		this.setListData( 0, 
+			new MemberTab( java.util.UUID.fromString( "2731d704-1f80-444e-a610-e6e5866c0b9a" ), this.getLocalizedText( "procedures" ), icon ) {
+				@Override
+				protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+					return proceduresPanel;
+				}
+			},
+			new MemberTab( java.util.UUID.fromString( "0f5d1f93-fc67-4109-9aff-0e7b232f201c" ), this.getLocalizedText( "functions" ), icon ) {
+				@Override
+				protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+					return functionsPanel;
+				}
+			},
+			new MemberTab( java.util.UUID.fromString( "6cb9c5a1-dc60-48e7-9a52-534009a093b8" ), this.getLocalizedText( "fields" ), icon ) {
+				@Override
+				protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+					return fieldsPanel;
+				}
 			}
-		}
-		return null;
+		);
 	}
 }

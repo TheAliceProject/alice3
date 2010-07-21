@@ -40,21 +40,54 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.tutorial;
-
-import edu.cmu.cs.dennisc.croquet.Resolver;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class PredeterminedTabResolver implements Resolver< edu.cmu.cs.dennisc.croquet.PredeterminedTab > {
-		private edu.cmu.cs.dennisc.croquet.TabSelectionState tabSelectionOperation;
-		private java.util.UUID id;
-		public PredeterminedTabResolver( edu.cmu.cs.dennisc.croquet.TabSelectionState tabSelectionOperation, java.util.UUID id ) {
-			this.tabSelectionOperation = tabSelectionOperation;
-			this.id = id;
+public class TabSelectionState extends ListSelectionState<PredeterminedTab> {
+	private static class PredeterminedTabCreator implements TabCreator< PredeterminedTab > {
+		public final java.util.UUID getId(PredeterminedTab item) {
+			java.util.UUID rv = item.getId();
+			assert rv != null;
+			return rv;
 		}
-		public edu.cmu.cs.dennisc.croquet.PredeterminedTab getResolved() {
-			return this.tabSelectionOperation.getItemForId( this.id );
+		public final JComponent<?> createMainComponent(PredeterminedTab item) {
+			return item.getMainComponent();
 		}
+		public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, edu.cmu.cs.dennisc.croquet.PredeterminedTab item ) {
+			item.customizeTitleComponent( booleanState, button );
+		}
+		public final ScrollPane createScrollPane( PredeterminedTab item ) {
+			return item.createScrollPane();
+		}
+		public final boolean isCloseable(edu.cmu.cs.dennisc.croquet.PredeterminedTab item) {
+			return false;
+		}
+	};
+	
+	public TabSelectionState( Group group, java.util.UUID individualUUID ) {
+		super( group, individualUUID, PredeterminedTabCodec.SINGLETON );
 	}
+	public TabSelectionState( Group group, java.util.UUID individualUUID, int selectedIndex, PredeterminedTab... tabs ) {
+		this( group, individualUUID );
+		this.setListData( selectedIndex, tabs );
+	}
+
+	public FolderTabbedPane<PredeterminedTab> createDefaultFolderTabbedPane() {
+		return this.createFolderTabbedPane( new PredeterminedTabCreator() );
+	}
+
+	public ToolPaletteTabbedPane<PredeterminedTab> createDefaultToolPaletteTabbedPane() {
+		return this.createToolPaletteTabbedPane( new PredeterminedTabCreator() );
+	}
+
+	public PredeterminedTab getItemForId( java.util.UUID id ) {
+		for( PredeterminedTab predeterminedTab : this ) {
+			if( predeterminedTab.getId().equals( id ) ) {
+				return predeterminedTab;
+			}
+		}
+		return null;
+	}
+}
