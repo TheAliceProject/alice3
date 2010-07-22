@@ -459,6 +459,11 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.codec.Bin
 	public void setToInterpolation( UnitQuaternion a, UnitQuaternion b, double portion ) {
 		setReturnValueToInterpolation( this, a, b, portion );
 	}
+	
+	//Dot Product
+	public static double calculateDotProduct( UnitQuaternion a, UnitQuaternion b ) {
+		return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+	}
 
 	//Magnitude
 	public static double calculateMagnitudeSquared( double x, double y, double z, double w ) {

@@ -285,15 +285,19 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		getAGoodLookAtObject.addCondition( new DoubleClickedObjectCondition(java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS)) );
 		this.manipulators.add( getAGoodLookAtObject );
 		
-		for (int i=0; i<this.manipulators.size(); i++)
-		{
-			this.manipulators.get( i ).getManipulator().setDragAdapter( this );
-		}
-		
 		ManipulatorConditionSet mouseWheelCameraZoom = new ManipulatorConditionSet( new CameraZoomMouseWheelManipulator() );
 		MouseWheelCondition mouseWheelCondition = new MouseWheelCondition(new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
 		mouseWheelCameraZoom.addCondition( mouseWheelCondition );
 		this.manipulators.add( mouseWheelCameraZoom );
+		
+		
+		
+		
+		
+		for (int i=0; i<this.manipulators.size(); i++)
+		{
+			this.manipulators.get( i ).getManipulator().setDragAdapter( this );
+		}
 		
 		
 		ManipulationHandleIndirection rotateAboutYAxis = new ManipulationHandleIndirection(new StoodUpRotationRingHandle(MovementDirection.UP, RotationRingHandle.HandlePosition.BOTTOM ));
