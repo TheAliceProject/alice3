@@ -887,7 +887,7 @@ public class StressTestTutorial {
 		tutorial.addBooleanStateStep( 
 				"Edit Scene", 
 				"Press the <b>Edit Scene</b> button", 
-				ide.getIsSceneEditorExpandedState(),
+				org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance(),
 				true
 		);
 		tutorial.addMessageStep( 
@@ -897,7 +897,7 @@ public class StressTestTutorial {
 		tutorial.addBooleanStateStep( 
 				"Edit Code", 
 				"Press the <b>Edit Code</b> button", 
-				ide.getIsSceneEditorExpandedState(),
+				org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance(),
 				false
 		);
 		tutorial.addMessageStep( 

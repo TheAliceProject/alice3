@@ -42,6 +42,8 @@
  */
 package org.alice.stageide.gallerybrowser;
 
+import org.alice.stageide.croquet.models.gallerybrowser.GalleryFileOperation;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -69,7 +71,7 @@ public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance
 		this.setAlignmentY( 0.0f );
 		this.setEnabledBackgroundPaint( new java.awt.Color( 0xf7e4b6 ) );
 		this.addComponent( label );
-		this.setLeftButtonClickOperation( GalleryFileActionOperation.getInstance( treeNode ) );
+		this.setLeftButtonClickOperation( GalleryFileOperation.getInstance( treeNode ) );
 		this.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragOperation( edu.cmu.cs.dennisc.alice.Project.GROUP ) );
 		this.getAwtComponent().setOpaque( false );
 	}

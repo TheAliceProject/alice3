@@ -45,17 +45,22 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class StepCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<Step> {
+/*package-private*/class StepCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< Step > {
 	private StepsComboBoxModel stepsComboBoxModel;
 	private java.awt.Color background;
+	private java.awt.Color disabledBackground;
+	private java.awt.Color disabledForeground;
+
 	public StepCellRenderer( StepsComboBoxModel stepsComboBoxModel, java.awt.Color background ) {
 		this.stepsComboBoxModel = stepsComboBoxModel;
 		this.background = background;
+		this.disabledBackground = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.background, 1.0, 0.5, 1.25 );
+		this.disabledForeground = java.awt.Color.LIGHT_GRAY;
 	}
 	@Override
 	protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.tutorial.Step value, int index, boolean isSelected, boolean cellHasFocus) {
 		assert list != null;
-		if (value != null) {
+		if( value != null) {
 			StringBuilder sb = new StringBuilder();
 			int i;
 			if (index >= 0) {
@@ -73,10 +78,16 @@ package edu.cmu.cs.dennisc.tutorial;
 			sb.append(value);
 			rv.setText(sb.toString());
 		}
-		if( isSelected || cellHasFocus ) {
-			//pass
+		
+		if( stepsComboBoxModel.isForwardEnabled() || index <= stepsComboBoxModel.getSelectedIndex() ) {
+			if( isSelected || cellHasFocus ) {
+				//pass
+			} else {
+				rv.setBackground( this.background );
+			}
 		} else {
-			rv.setBackground( this.background );
+			rv.setBackground( this.disabledBackground );
+			rv.setForeground( this.disabledForeground );
 		}
 		return rv;
 	}

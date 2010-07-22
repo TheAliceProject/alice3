@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class Hyperlink extends AbstractButton< javax.swing.JButton, Operation<?> > {
+public class Hyperlink extends OperationButton< javax.swing.JButton > {
 	/*package-private*/ Hyperlink( Operation<?> model ) {
 		super( model );
 	}
@@ -59,6 +59,7 @@ public class Hyperlink extends AbstractButton< javax.swing.JButton, Operation<?>
 			}
 		};
 		rv.setRolloverEnabled( true );
+		rv.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
 //		javax.swing.JButton rv = new javax.swing.JButton();
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		rv.setOpaque( false );

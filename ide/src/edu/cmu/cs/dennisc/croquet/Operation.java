@@ -85,6 +85,9 @@ public abstract class Operation< C extends OperationContext<?>> extends Model {
 	};
 	public Operation( Group group, java.util.UUID individualUUID ) {
 		super( group, individualUUID );
+		this.setName( this.getDefaultLocalizedText() );
+		this.setMnemonicKey( this.getLocalizedMnemonicKey() );
+		this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 	}
 	
 	/*package-private*/ final C handleFire( ModelContext<?> parentContext, java.util.EventObject e, ViewController< ?, ? > viewController ) {
@@ -101,15 +104,15 @@ public abstract class Operation< C extends OperationContext<?>> extends Model {
 	public void setName( String name ) {
 		this.action.putValue( javax.swing.Action.NAME, name );
 	}
-	public String getShortDescription() {
-		return String.class.cast( this.action.getValue( javax.swing.Action.SHORT_DESCRIPTION ) );
-	}
+//	public String getShortDescription() {
+//		return String.class.cast( this.action.getValue( javax.swing.Action.SHORT_DESCRIPTION ) );
+//	}
 	public void setShortDescription( String shortDescription ) {
 		this.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
 	}
-	public String getLongDescription() {
-		return String.class.cast( this.action.getValue( javax.swing.Action.LONG_DESCRIPTION ) );
-	}
+//	public String getLongDescription() {
+//		return String.class.cast( this.action.getValue( javax.swing.Action.LONG_DESCRIPTION ) );
+//	}
 	public void setLongDescription( String longDescription ) {
 		this.action.putValue( javax.swing.Action.LONG_DESCRIPTION, longDescription );
 	}
@@ -119,54 +122,46 @@ public abstract class Operation< C extends OperationContext<?>> extends Model {
 	public void setSmallIcon( javax.swing.Icon icon ) {
 		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
 	}
-	public int getMnemonicKey() {
-		return Integer.class.cast( this.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
-	}
-	public void setMnemonicKey( int mnemonicKey ) {
+//	public int getMnemonicKey() {
+//		return Integer.class.cast( this.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
+//	}
+	private void setMnemonicKey( int mnemonicKey ) {
 		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
 	}
-	public javax.swing.KeyStroke getAcceleratorKey() {
-		return javax.swing.KeyStroke.class.cast( this.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
-	}
-	public void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
+//	public javax.swing.KeyStroke getAcceleratorKey() {
+//		return javax.swing.KeyStroke.class.cast( this.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
+//	}
+	private void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 	}
 
 
-	
-	//todo: /*package-private*/
-	public < B extends AbstractButton<?,?> > B register( final B rv ) {
-		Application.getSingleton().register( this );
-		rv.addContainmentObserver( new Component.ContainmentObserver() {
-			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				rv.setAction( Operation.this.action );
-//				rv.setModel( this.buttonModel );
-				assert Operation.this.mapButtonToListener.containsKey( rv ) == false;
-				ButtonActionListener buttonActionListener = new ButtonActionListener( rv );
-				Operation.this.mapButtonToListener.put( rv, buttonActionListener );
-				rv.getAwtComponent().addActionListener( buttonActionListener );
-				Operation.this.addComponent(rv);
-			}
-			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				Operation.this.removeComponent(rv);
-				ButtonActionListener buttonActionListener = Operation.this.mapButtonToListener.get( rv );
-				assert buttonActionListener != null;
-				rv.getAwtComponent().removeActionListener( buttonActionListener );
-				mapButtonToListener.remove( rv );
-//				rv.setModel( null );
-				rv.setAction( null );
-			}
-		} );
-		return rv;
+	/*package-private*/ void addButton(OperationButton<?> button) {
+		button.setAction( Operation.this.action );
+//			rv.setModel( this.buttonModel );
+		assert Operation.this.mapButtonToListener.containsKey( button ) == false;
+		ButtonActionListener buttonActionListener = new ButtonActionListener( button );
+		Operation.this.mapButtonToListener.put( button, buttonActionListener );
+		button.getAwtComponent().addActionListener( buttonActionListener );
+		this.addComponent(button);
 	}
-
+	/*package-private*/ void removeButton(OperationButton<?> button) {
+		this.removeComponent(button);
+		ButtonActionListener buttonActionListener = Operation.this.mapButtonToListener.get( button );
+		assert buttonActionListener != null;
+		button.getAwtComponent().removeActionListener( buttonActionListener );
+		mapButtonToListener.remove( button );
+//		rv.setModel( null );
+		button.setAction( null );
+	}
+	
 	public Button createButton() {
-		return register( new Button( this ) );
+		return new Button( this );
 	}
 	public Hyperlink createHyperlink() {
-		return register( new Hyperlink( this ) );
+		return new Hyperlink( this );
 	}
 	public MenuItem createMenuItem() {
-		return register( new MenuItem( this ) );
+		return new MenuItem( this );
 	}
 }

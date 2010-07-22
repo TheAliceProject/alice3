@@ -47,7 +47,7 @@ package org.alice.stageide.personeditor;
  */
 class BaseEyeColorSelectionState extends AbstractListSelectionState<org.alice.apis.stage.BaseEyeColor> {
 	public BaseEyeColorSelectionState() {
-		super(java.util.UUID.fromString("04672192-417f-4446-abbc-16c3ee015802"), new org.alice.ide.croquet.EnumCodec< org.alice.apis.stage.BaseEyeColor >(), org.alice.apis.stage.BaseEyeColor.values() );
+		super(java.util.UUID.fromString("04672192-417f-4446-abbc-16c3ee015802"), new org.alice.ide.croquet.codecs.EnumCodec< org.alice.apis.stage.BaseEyeColor >(), org.alice.apis.stage.BaseEyeColor.values() );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.BaseEyeColor> createList() {

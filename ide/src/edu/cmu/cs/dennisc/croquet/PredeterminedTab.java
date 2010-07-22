@@ -46,22 +46,13 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class PredeterminedTab {
-	public enum PredeterminedTabCodec implements Codec< PredeterminedTab > {
-		SINGLETON;
-		public edu.cmu.cs.dennisc.croquet.PredeterminedTab decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			throw new RuntimeException( "todo" );
-		}
-		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.croquet.PredeterminedTab t ) {
-			throw new RuntimeException( "todo" );
-		}
-	}
-	
 	private java.util.UUID id;
 	private String titleText;
 	private javax.swing.Icon titleIcon;
 	private JComponent< ? > mainComponent;
 
-	//todo: track BooleanState
+	private edu.cmu.cs.dennisc.croquet.BooleanState booleanState;
+	//todo: remove
 	private edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button = null;
 	
 	public PredeterminedTab( java.util.UUID id, String titleText, javax.swing.Icon titleIcon ) {
@@ -84,7 +75,7 @@ public abstract class PredeterminedTab {
 	}
 	private void updateTitleText() {
 		if( this.button != null ) {
-			this.button.getAwtComponent().setText( this.titleText );
+			this.booleanState.setTextForBothTrueAndFalse( this.titleText );
 		}
 	}
 	private void updateTitleIcon() {
@@ -93,6 +84,7 @@ public abstract class PredeterminedTab {
 		}
 	}
 	public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button ) {
+		this.booleanState = booleanState;
 		this.button = button;
 		this.updateTitleText();
 		this.updateTitleIcon();

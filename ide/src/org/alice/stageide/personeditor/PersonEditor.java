@@ -50,7 +50,6 @@ class FitnessLevelActionOperation extends org.alice.ide.operations.Inconsequenti
 	private int value;
 	public FitnessLevelActionOperation( edu.cmu.cs.dennisc.croquet.BoundedRangeIntegerState fitnessState, int value, String name ) {
 		super( java.util.UUID.fromString( "979d9be8-c24c-4921-93d4-23747bdf079d" ) );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: FitnessLevelActionOperation" );
 		this.fitnessState = fitnessState;
 		this.value = value;
 		this.setName( name );
@@ -150,7 +149,7 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	};
 
-	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabbedPaneSelection;
+	private edu.cmu.cs.dennisc.croquet.TabSelectionState tabbedPaneSelection;
 	
 
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.croquet.PredeterminedTab> tabChangeAdapter = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.croquet.PredeterminedTab>() {
@@ -207,7 +206,7 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		} );
 
 
-		this.tabbedPaneSelection = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( PersonEditor.GROUP, java.util.UUID.fromString( "d525f0c5-9f39-4807-a9d3-f66775f9eb2d" ), 0, new BodyTab(), new HeadTab() );
+		this.tabbedPaneSelection = new edu.cmu.cs.dennisc.croquet.TabSelectionState( PersonEditor.GROUP, java.util.UUID.fromString( "d525f0c5-9f39-4807-a9d3-f66775f9eb2d" ), 0, new BodyTab(), new HeadTab() );
 		final edu.cmu.cs.dennisc.croquet.FolderTabbedPane<?> tabbedPane = this.tabbedPaneSelection.createDefaultFolderTabbedPane();
 		tabbedPane.scaleFont( 1.5f );
 
@@ -318,7 +317,6 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 						if( fullBodyOutfit != null && org.alice.apis.stage.FullBodyOutfitManager.getSingleton().isApplicable( fullBodyOutfit, lifeStage, gender ) ) {
 							//pass
 						} else {
-							edu.cmu.cs.dennisc.print.PrintUtilities.println( fullBodyOutfit, lifeStage, gender );
 //							org.alice.apis.stage.Outfit outfit = person.getOutfit();
 //							if( outfit instanceof org.alice.apis.stage.FullBodyOutfit ) {
 //								fullBodyOutfit = ( org.alice.apis.stage.FullBodyOutfit )outfit;
@@ -379,7 +377,6 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 
 		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
 		ide.initialize( args );
-		org.alice.stageide.operations.gallery.CreatePersonFieldOperation operation = new org.alice.stageide.operations.gallery.CreatePersonFieldOperation();
-		operation.fire();
+		org.alice.stageide.croquet.models.gallerybrowser.CreatePersonFieldOperation.getInstance().fire();
 	}
 }

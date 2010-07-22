@@ -57,8 +57,8 @@ import org.alice.apis.moveandturn.CameraMarker;
 import org.alice.apis.moveandturn.PerspectiveCameraMarker;
 import org.alice.apis.moveandturn.Scene;
 import org.alice.apis.moveandturn.Transformable;
-import org.alice.app.ProjectApplication;
 import org.alice.ide.IDE;
+import org.alice.ide.ProjectApplication;
 import org.alice.ide.declarationpanes.CreateFieldFromGalleryPane;
 import org.alice.ide.name.validators.FieldNameValidator;
 import org.alice.interact.AbstractDragAdapter;
@@ -72,7 +72,7 @@ import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
-import org.alice.stageide.gallerybrowser.GalleryFileActionOperation;
+import org.alice.stageide.croquet.models.gallerybrowser.GalleryFileOperation;
 import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerTracker;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
@@ -90,6 +90,7 @@ import edu.cmu.cs.dennisc.alice.ast.Statement;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.croquet.AbstractButton;
 import edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation;
+import edu.cmu.cs.dennisc.croquet.Application;
 import edu.cmu.cs.dennisc.croquet.BooleanState;
 import edu.cmu.cs.dennisc.croquet.ComboBox;
 import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
@@ -167,8 +168,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			throw new RuntimeException( "todo" );
 		}
 	} );
-	private ListSelectionState<FieldDeclaredInAlice> startingViewMarkerFieldList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< FieldDeclaredInAlice >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "926deb18-44b9-4c35-ae3b-f80bd5574983" ), new org.alice.ide.croquet.NodeCodec< FieldDeclaredInAlice >() );
-	private ListSelectionState<FieldDeclaredInAlice> sceneMarkerFieldList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< FieldDeclaredInAlice >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "a09eeae2-53fc-4cbe-ab09-a6d6d7975d4d" ), new org.alice.ide.croquet.NodeCodec< FieldDeclaredInAlice >() );
+	private ListSelectionState<FieldDeclaredInAlice> startingViewMarkerFieldList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< FieldDeclaredInAlice >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "926deb18-44b9-4c35-ae3b-f80bd5574983" ), new org.alice.ide.croquet.codecs.NodeCodec< FieldDeclaredInAlice >() );
+	private ListSelectionState<FieldDeclaredInAlice> sceneMarkerFieldList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< FieldDeclaredInAlice >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "a09eeae2-53fc-4cbe-ab09-a6d6d7975d4d" ), new org.alice.ide.croquet.codecs.NodeCodec< FieldDeclaredInAlice >() );
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
 		public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractCode next ) {
 			MoveAndTurnSceneEditor.this.handleFocusedCodeChanged( next );
@@ -262,7 +263,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 		
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.AbstractButton<?,?> createButton(edu.cmu.cs.dennisc.alice.ast.Accessible item) {
+		protected edu.cmu.cs.dennisc.croquet.BooleanStateButton< ? > createBooleanStateButton( edu.cmu.cs.dennisc.alice.ast.Accessible item ) {
 			return new FieldTile( item );
 		}
 		
@@ -635,8 +636,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.mainCameraMarkerList.addAndInvokeValueObserver(this.mainCameraViewTracker);
 			this.mainCameraViewSelector = this.mainCameraMarkerList.createComboBox();
 			
-			edu.cmu.cs.dennisc.croquet.BooleanState isSceneEditorExpandedOperation = this.getIDE().getIsSceneEditorExpandedState();
-			final edu.cmu.cs.dennisc.croquet.CheckBox isSceneEditorExpandedCheckBox = isSceneEditorExpandedOperation.createCheckBox();
+			org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState isSceneEditorExpandedState = org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance();
+			final edu.cmu.cs.dennisc.croquet.CheckBox isSceneEditorExpandedCheckBox = isSceneEditorExpandedState.createCheckBox();
 			isSceneEditorExpandedCheckBox.getAwtComponent().setUI( new IsExpandedCheckBoxUI() );
 			final int X_PAD = 16;
 			final int Y_PAD = 10;
@@ -646,7 +647,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			
 			PrintUtilities.println( "todo: addAndInvokeValueObserver" );
 			this.splitPane.setDividerSize( 0 );
-			isSceneEditorExpandedOperation.addValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
+			isSceneEditorExpandedState.addValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
 				public void changing(boolean nextValue) {
 				}
 				public void changed(boolean nextValue) {
@@ -656,9 +657,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 			javax.swing.JPanel lgPanel = this.lookingGlassPanel.getAwtComponent();
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouthEast( lgPanel, isSceneEditorExpandedCheckBox.getAwtComponent(), INSET );
-			//edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthEast( lgPanel, this.getIDE().getRunOperation().createButton().getAwtComponent(), INSET );
+			final boolean IS_RUN_BUTTON_DESIRED = true;
+			if( IS_RUN_BUTTON_DESIRED ) {
+				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthEast( lgPanel, this.getIDE().getRunOperation().createButton().getAwtComponent(), INSET );
+			}
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( lgPanel, this.mainCameraViewSelector.getAwtComponent(), Horizontal.EAST, -INSET, Vertical.NORTH, INSET + 30 );
-			this.mainCameraViewSelector.getAwtComponent().setVisible(isSceneEditorExpandedOperation.getValue());
+			this.mainCameraViewSelector.getAwtComponent().setVisible(isSceneEditorExpandedState.getValue());
 			
 
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouth( lgPanel, mainCameraNavigatorWidget, INSET );
@@ -1571,10 +1575,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		if (isDropLocationOverLookingGlass(dragAndDropContext))
 		{
 			Operation<?> operation = dragSource.getLeftButtonClickOperation();
-			if (operation instanceof GalleryFileActionOperation)
+			if (operation instanceof GalleryFileOperation)
 			{
 				AffineMatrix4x4 dropTargetPosition = this.globalDragAdapter.getDropTargetTransformation();
-				((GalleryFileActionOperation)operation).setDesiredTransformation(dropTargetPosition);
+				((GalleryFileOperation)operation).setDesiredTransformation(dropTargetPosition);
 			}
 			return operation;
 		}

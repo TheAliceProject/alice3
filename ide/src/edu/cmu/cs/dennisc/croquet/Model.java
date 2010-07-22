@@ -46,6 +46,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Model implements Resolver< Model > {
+	private static final int NULL_MNEMONIC = 0;
+	private static final int NULL_ACCELERATOR_MASK = 0;
 	private Group group;
 	private java.util.UUID inividualUUID;
 	public Model( Group group, java.util.UUID inividualUUID ) {
@@ -63,6 +65,110 @@ public abstract class Model implements Resolver< Model > {
 		return (Model)this;
 	}
 
+	protected static String getLocalizedText( Class<?> cls, String subKey ) {
+		String bundleName = cls.getPackage().getName() + ".CroquetBundle";
+		try {
+			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
+			String key;
+			if( cls.isMemberClass() ) {
+				key = cls.getSimpleName();
+			} else {
+				key = cls.getSimpleName();
+			}
+			if( subKey != null ) {
+				StringBuilder sb = new StringBuilder();
+				sb.append( key );
+				sb.append( "." );
+				sb.append( subKey );
+				key = sb.toString();
+			}
+			String rv = resourceBundle.getString( key );
+			if( rv != null ) {
+				//pass
+			} else {
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: localize", key );
+			}
+			return rv;
+		} catch( java.util.MissingResourceException mre ) {
+			return null;
+		}
+	}
+
+	protected String getLocalizedText( String subKey ) {
+		return getLocalizedText( this.getClass(), subKey );
+	}
+	
+	protected static String getDefaultLocalizedText( Class<?> cls ) {
+		return getLocalizedText( cls, null );
+	}
+	protected String getDefaultLocalizedText() {
+		return getDefaultLocalizedText( this.getClass() );
+	}
+
+	private static int getField( Class<?> cls, String fieldName, int nullValue ) {
+		if( fieldName != null ) {
+			try {
+				java.lang.reflect.Field field = cls.getField( fieldName );
+				Object value = field.get( null );
+				if( value instanceof Integer ) {
+					return (Integer)value;
+				}
+			} catch( NoSuchFieldException nsfe ) {
+				nsfe.printStackTrace();
+			} catch( IllegalAccessException iae ) {
+				iae.printStackTrace();
+			}
+		}
+		return nullValue;
+	}
+	private static int getKeyCode( String vkFieldName ) {
+		return getField( java.awt.event.KeyEvent.class, vkFieldName, NULL_MNEMONIC );
+	}
+	private static int getModifierMask( String vkFieldName ) {
+		return getField( java.awt.event.InputEvent.class, vkFieldName, NULL_ACCELERATOR_MASK );
+	}
+	
+	protected static int getLocalizedMnemonicKey( Class<?> cls ) {
+		return getKeyCode( getLocalizedText( cls, "mnemonic" ) );
+	}
+	protected int getLocalizedMnemonicKey() {
+		return getLocalizedMnemonicKey( this.getClass() );
+	}
+	protected static javax.swing.KeyStroke getLocalizedAcceleratorKeyStroke( Class<?> cls ) {
+		String acceleratorText = getLocalizedText( cls, "accelerator" );
+		if( acceleratorText != null ) {
+			String[] array = acceleratorText.split(",");
+			if( array.length > 0 ) {
+				int keyCode = getKeyCode( array[ 0 ] );
+				if( keyCode != NULL_MNEMONIC ) {
+					int modifierMask;
+					if( java.awt.event.KeyEvent.VK_F1 <= keyCode && keyCode <= java.awt.event.KeyEvent.VK_F24 ) {
+						modifierMask = 0;
+					} else {
+						modifierMask = edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask();
+					}
+					if( array.length > 1 ) {
+						String[] modifierTexts = array[ 1 ].split( "\\|" );
+						for( String modifierText : modifierTexts ) {
+							int modifier = getModifierMask( modifierText );
+							if( modifier != NULL_ACCELERATOR_MASK ) {
+								modifierMask |= modifier;
+							} else {
+								//todo?
+							}
+						}
+					}
+					return javax.swing.KeyStroke.getKeyStroke( keyCode, modifierMask );
+				}
+				
+			}
+		}
+		return null;
+	}
+	protected javax.swing.KeyStroke getLocalizedAcceleratorKeyStroke() {
+		return getLocalizedAcceleratorKeyStroke( this.getClass() );
+	}
+	
 //	public CompositeContext getCurrentCompositeContext() {	
 //		Application application = Application.getSingleton();
 //		return application.getCurrentCompositeContext();
@@ -124,8 +230,10 @@ public abstract class Model implements Resolver< Model > {
 	}
 
 	private java.util.List< JComponent<?> > components = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	
 	protected void addComponent( JComponent<?> component ) {
+		if( this.components.size() == 0 ) {
+			Application.getSingleton().registerModel( this );
+		}
 		synchronized( this.components ) {
 			this.components.add( component );
 		}
@@ -135,6 +243,11 @@ public abstract class Model implements Resolver< Model > {
 	protected void removeComponent( JComponent<?> component ) {
 		synchronized( this.components ) {
 			this.components.remove( component );
+		}
+		if( this.components.size() == 0 ) {
+			Application.getSingleton().unregisterModel( this );
+		} else {
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "removeComponent", this.components.size(), this );
 		}
 	}
 

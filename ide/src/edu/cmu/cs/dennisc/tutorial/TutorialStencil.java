@@ -73,7 +73,8 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	};
 	
-	private StepsComboBoxModel stepsComboBoxModel = new StepsComboBoxModel();
+	private static final boolean IS_FORWARD_ENABLED = false;
+	private StepsComboBoxModel stepsComboBoxModel = new StepsComboBoxModel( IS_FORWARD_ENABLED );
 	private PreviousStepOperation previousStepOperation = new PreviousStepOperation( this.stepsComboBoxModel );
 	private NextStepOperation nextStepOperation = new NextStepOperation( this.stepsComboBoxModel );
 	//private ExitOperation exitOperation = new ExitOperation();
@@ -162,9 +163,7 @@ package edu.cmu.cs.dennisc.tutorial;
 
 		this.controlsPanel.addComponent(controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
 		
-		this.isPaintingStencil.setTrueText( "" );
-		this.isPaintingStencil.setFalseText( "WARNING: stencil is disabled.  Click here to turn re-enable." );
-		
+		this.isPaintingStencil.setTextForTrueAndTextForFalse( "", "WARNING: stencil is disabled.  Click here to turn re-enable." );
 		
 		edu.cmu.cs.dennisc.croquet.CheckBox isPlayingSoundsCheckBox = this.isPlayingSounds.createCheckBox();
 		isPlayingSoundsCheckBox.getAwtComponent().setOpaque( false );

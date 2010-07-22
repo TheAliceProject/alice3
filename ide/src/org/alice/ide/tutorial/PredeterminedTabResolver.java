@@ -48,9 +48,9 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class PredeterminedTabResolver implements Resolver< edu.cmu.cs.dennisc.croquet.PredeterminedTab > {
-		private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabSelectionOperation;
+		private edu.cmu.cs.dennisc.croquet.TabSelectionState tabSelectionOperation;
 		private java.util.UUID id;
-		public PredeterminedTabResolver( edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabSelectionOperation, java.util.UUID id ) {
+		public PredeterminedTabResolver( edu.cmu.cs.dennisc.croquet.TabSelectionState tabSelectionOperation, java.util.UUID id ) {
 			this.tabSelectionOperation = tabSelectionOperation;
 			this.id = id;
 		}

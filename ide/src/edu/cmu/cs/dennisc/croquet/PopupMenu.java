@@ -61,8 +61,12 @@ public class PopupMenu extends AbstractMenu< javax.swing.JPopupMenu, AbstractPop
 		this.getAwtComponent().add( menu.getAwtComponent() );
 	}
 	@Override
-	public void addMenuItem( AbstractMenuItem<?,?> menuItem ) {
+	public void addMenuItem( MenuItem menuItem ) {
 		this.getAwtComponent().add( menuItem.getAwtComponent() );
+	}
+	@Override
+	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {
+		this.getAwtComponent().add( checkBoxMenuItem.getAwtComponent() );
 	}
 	@Override
 	public void addSeparator() {

@@ -160,17 +160,6 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	}
 	
-	private class MyTypesOperation extends edu.cmu.cs.dennisc.croquet.MenuModel {
-		public MyTypesOperation( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
-			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "71f303de-54a8-481e-b57f-f5c8ade814ea" ), "My Types", 0, models );
-		}
-	}
-	private class OtherTypesOperation extends edu.cmu.cs.dennisc.croquet.MenuModel {
-		public OtherTypesOperation( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
-			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "909d8fb3-f1a0-4f21-9bbf-a871ea04d1a0" ), "Other Types", 0, models );
-		}
-	}
-	
 	private edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation popupMenuOperation = new edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation( java.util.UUID.fromString( "b59ec150-56cd-4270-8b5a-80dcb5cd7bd9" ) ) {
 		@Override
 		public edu.cmu.cs.dennisc.croquet.Model[] getModels() {
@@ -189,7 +178,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			}
 			if( myTypeModels.size() > 0 ) {
 				models.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
-				models.add( new MyTypesOperation( myTypeModels ) );
+				models.add( new org.alice.ide.croquet.models.ast.MyTypesMenuModel( myTypeModels ) );
 			}
 
 			java.util.List< edu.cmu.cs.dennisc.croquet.Model > otherTypeModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -199,7 +188,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			}
 			if( otherTypeModels.size() > 0 ) {
 				models.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
-				models.add( new OtherTypesOperation( otherTypeModels ) );
+				models.add( new org.alice.ide.croquet.models.ast.OtherTypesMenuModel( otherTypeModels ) );
 			}
 			return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( models, edu.cmu.cs.dennisc.croquet.Model.class );
 		}

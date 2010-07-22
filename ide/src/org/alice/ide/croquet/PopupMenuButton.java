@@ -45,7 +45,7 @@ package org.alice.ide.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class PopupMenuButton extends edu.cmu.cs.dennisc.croquet.AbstractButton<javax.swing.AbstractButton, edu.cmu.cs.dennisc.croquet./*AbstractPopupMenu*/Operation<?>> {
+public class PopupMenuButton extends edu.cmu.cs.dennisc.croquet.OperationButton<javax.swing.AbstractButton> {
 	private static final int AFFORDANCE_WIDTH = 6;
 	private static final int AFFORDANCE_HALF_HEIGHT = 5;
 	private static final java.awt.Color ARROW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray(191);

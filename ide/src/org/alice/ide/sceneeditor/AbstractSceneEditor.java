@@ -47,7 +47,7 @@ package org.alice.ide.sceneeditor;
  */
 public abstract class AbstractSceneEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implements edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >, edu.cmu.cs.dennisc.croquet.DropReceptor {
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = null;
-	private org.alice.app.ProjectApplication.ProjectObserver projectObserver = new org.alice.app.ProjectApplication.ProjectObserver() { 
+	private org.alice.ide.ProjectApplication.ProjectObserver projectObserver = new org.alice.ide.ProjectApplication.ProjectObserver() { 
 		public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
 		}
 		public void projectOpened( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
@@ -132,15 +132,15 @@ public abstract class AbstractSceneEditor extends edu.cmu.cs.dennisc.croquet.Bor
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
-		edu.cmu.cs.dennisc.alice.Project project = org.alice.app.ProjectApplication.getSingleton().getProject();
+		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.ProjectApplication.getSingleton().getProject();
 		if( project != null ) {
 			this.projectObserver.projectOpened(null, project);
 		}
-		org.alice.app.ProjectApplication.getSingleton().addProjectObserver( this.projectObserver );
+		org.alice.ide.ProjectApplication.getSingleton().addProjectObserver( this.projectObserver );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		org.alice.app.ProjectApplication.getSingleton().removeProjectObserver( this.projectObserver );
+		org.alice.ide.ProjectApplication.getSingleton().removeProjectObserver( this.projectObserver );
 		super.handleRemovedFrom( parent );
 	}
 }

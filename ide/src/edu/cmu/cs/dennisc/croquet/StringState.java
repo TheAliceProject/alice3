@@ -126,7 +126,6 @@ public class StringState extends Model {
 		return this.document;
 	}
 	private < T extends TextComponent<?> > T register( final T rv ) {
-		Application.getSingleton().register( this );
 		rv.setDocument(this.document);
 		rv.addContainmentObserver( new Component.ContainmentObserver() {
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {

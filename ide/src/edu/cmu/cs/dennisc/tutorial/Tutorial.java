@@ -42,7 +42,6 @@
  */
 package edu.cmu.cs.dennisc.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.Operation;
 import edu.cmu.cs.dennisc.croquet.Resolver;
 
 /**

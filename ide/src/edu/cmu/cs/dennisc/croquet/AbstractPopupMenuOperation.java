@@ -92,20 +92,20 @@ public abstract class AbstractPopupMenuOperation extends Operation<PopupMenuOper
 	}
 
 	private PopupMenu createPopupMenu() {
-		Application.getSingleton().register( this );
-		PopupMenu rv = new PopupMenu( this ) {
-			@Override
-			protected void handleAddedTo(Component<?> parent) {
-				super.handleAddedTo( parent );
-				AbstractPopupMenuOperation.this.addPopupMenu(this);
-			}
-
-			@Override
-			protected void handleRemovedFrom(Component<?> parent) {
-				AbstractPopupMenuOperation.this.removePopupMenu(this);
-				super.handleRemovedFrom( parent );
-			}
-		};
+//		PopupMenu rv = new PopupMenu( this ) {
+//			@Override
+//			protected void handleAddedTo(Component<?> parent) {
+//				super.handleAddedTo( parent );
+//				AbstractPopupMenuOperation.this.addPopupMenu(this);
+//			}
+//
+//			@Override
+//			protected void handleRemovedFrom(Component<?> parent) {
+//				AbstractPopupMenuOperation.this.removePopupMenu(this);
+//				super.handleRemovedFrom( parent );
+//			}
+//		};
+		PopupMenu rv = new PopupMenu( this );
 		Application.addMenuElements( rv, this.getModels() );
 		return rv;
 	}

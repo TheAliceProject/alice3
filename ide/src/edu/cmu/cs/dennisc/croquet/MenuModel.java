@@ -45,90 +45,91 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuModel extends Model {
+public abstract class MenuModel extends Model {
+	private static final Group MENU_GROUP = new Group( java.util.UUID.fromString( "4ed42b1f-b4ea-4f70-99d1-5bb2c3f11081" ), "MENU_GROUP" );
 	public static final Model SEPARATOR = null;
 	private class MenuListener implements javax.swing.event.MenuListener {
-		private Menu<?> menu;
-		public MenuListener( Menu<?> menu ) {
+		private Menu<MenuModel> menu;
+		public MenuListener( Menu<MenuModel> menu ) {
 			this.menu = menu;
 		}
 		public void menuSelected( javax.swing.event.MenuEvent e ) {
-			Component< ? > parent = this.menu.getParent();
-			ModelContext< ? > parentContext;
-			if( parent instanceof MenuBar ) {
-				MenuBar menuBar = (MenuBar)parent;
-				parentContext = menuBar.createMenuBarContext();
-			} else {
-				Application application = Application.getSingleton();
-				parentContext = application.getCurrentContext();
-			}
-			MenuModelContext context = parentContext.createMenuModelContext( MenuModel.this, this.menu );
-			context.handleMenuSelected( e );
+			MenuModel.this.handleMenuSelected( e, this.menu );
 		}
 		public void menuDeselected( javax.swing.event.MenuEvent e ) {
-			Application application = Application.getSingleton();
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: menuDeselected" );
-			MenuModelContext context = (MenuModelContext)application.getCurrentContext();
-			context.handleMenuDeselected( e );
+			MenuModel.this.handleMenuDeselected( e, this.menu );
 		}
 		public void menuCanceled( javax.swing.event.MenuEvent e ) {
-			Application application = Application.getSingleton();
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: menuCanceled" );
-			MenuModelContext context = (MenuModelContext)application.getCurrentContext();
-			context.handleMenuCanceled( e );
+			MenuModel.this.handleMenuCanceled( e, this.menu );
 		}
 	};
-	private java.util.Map< Menu, MenuListener > mapMenuToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private String text;
-	private int mnemonic;
-	private Model[] models;
-	public MenuModel( Group group, java.util.UUID individualId, String text, int mnemonic, Model... models ) {
-		super( group, individualId );
-		this.text = text;
-		this.mnemonic = mnemonic;
-		this.models = models;
+	private java.util.Map< Menu<MenuModel>, MenuListener > mapMenuToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private javax.swing.Action action = new javax.swing.AbstractAction() {
+		public void actionPerformed(java.awt.event.ActionEvent e) {
+		}
+	};
+	public MenuModel( java.util.UUID individualId, Class<?> clsForI18N ) {
+		super( MENU_GROUP, individualId );
+		
+		if( clsForI18N != null ) {
+			//pass
+		} else {
+			clsForI18N = this.getClass();
+		}
+		
+		this.action.putValue( javax.swing.Action.NAME, getDefaultLocalizedText( clsForI18N ) );
+		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, getLocalizedMnemonicKey( clsForI18N ) );
+		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, getLocalizedAcceleratorKeyStroke( clsForI18N ) );
 	}
-	public MenuModel( Group group, java.util.UUID individualId, String text, int mnemonic, java.util.List< Model > models ) {
-		this( group, individualId, text, mnemonic, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(models, Model.class) );
+	public MenuModel( java.util.UUID individualId ) {
+		this( individualId, null );
 	}
-
-	public Model[] getOperations() {
-		return this.models;
+	protected void handleMenuSelected( javax.swing.event.MenuEvent e, Menu<MenuModel> menu ) {
+		Component< ? > parent = menu.getParent();
+		ModelContext< ? > parentContext;
+		if( parent instanceof MenuBar ) {
+			MenuBar menuBar = (MenuBar)parent;
+			parentContext = menuBar.createMenuBarContext();
+		} else {
+			Application application = Application.getSingleton();
+			parentContext = application.getCurrentContext();
+		}
+		MenuModelContext context = parentContext.createMenuModelContext( MenuModel.this, menu );
+		context.handleMenuSelected( e );
 	}
-	
-	public Menu<MenuModel> createMenu() {
-		Application.getSingleton().register( this );
+	protected void handleMenuDeselected( javax.swing.event.MenuEvent e, Menu<MenuModel> menu ) {
+		Application application = Application.getSingleton();
+		MenuModelContext context = (MenuModelContext)application.getCurrentContext();
+		context.handleMenuDeselected( e );
+	}
+	protected void handleMenuCanceled( javax.swing.event.MenuEvent e, Menu<MenuModel> menu ) {
+		Application application = Application.getSingleton();
+		MenuModelContext context = (MenuModelContext)application.getCurrentContext();
+		context.handleMenuCanceled( e );
+	}
+	/*package-private*/ Menu<MenuModel> createMenu() {
 		Menu<MenuModel> rv = new Menu<MenuModel>( this ) {
 			@Override
 			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				super.handleAddedTo( parent );
-				this.setText( MenuModel.this.text );
-				this.setMnemonic( MenuModel.this.mnemonic );
+				this.getAwtComponent().setAction( MenuModel.this.action );
 				assert mapMenuToListener.containsKey( this ) == false;
 				MenuListener menuListener = new MenuListener( this );
 				MenuModel.this.mapMenuToListener.put( this, menuListener );
 				this.getAwtComponent().addMenuListener( menuListener );
-				this.getAwtComponent().addActionListener( new java.awt.event.ActionListener() {
-					public void actionPerformed( java.awt.event.ActionEvent e ) {
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "Menu actionPerformed", e );
-					}
-				} );
+				super.handleAddedTo( parent );
 			}
 
 			@Override
 			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+				super.handleRemovedFrom( parent );
 				MenuModel.this.removeComponent( this );
 				MenuListener menuListener = MenuModel.this.mapMenuToListener.get( this );
 				assert menuListener != null;
 				this.getAwtComponent().removeMenuListener( menuListener );
 				MenuModel.this.mapMenuToListener.remove( this );
-				this.setMnemonic( 0 );
-				this.setText( null );
-				super.handleRemovedFrom( parent );
+				this.getAwtComponent().setAction( null );
 			}
 		};
-		Application.addMenuElements( rv, this.getOperations() );
 		return rv;
-	}
-	
+	};
 }

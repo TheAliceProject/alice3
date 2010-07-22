@@ -60,7 +60,6 @@ public final class BoundedRangeIntegerState extends Model {
 			ModelContext<?> parentContext = application.getCurrentContext();
 			BoundedRangeIntegerStateContext boundedRangeIntegerStateContext;
 			if( this.previousValueIsAdjusting ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: stateChanged" );
 				boundedRangeIntegerStateContext = (BoundedRangeIntegerStateContext)parentContext;
 			} else {
 				boundedRangeIntegerStateContext = parentContext.createBoundedRangeIntegerStateContext( BoundedRangeIntegerState.this );
@@ -119,7 +118,6 @@ public final class BoundedRangeIntegerState extends Model {
 	}
 	
 	private Slider register( final Slider rv ) {
-		Application.getSingleton().register( this );
 		rv.getAwtComponent().setModel( this.boundedRangeModel );
 		rv.addContainmentObserver( new Component.ContainmentObserver() {
 			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {

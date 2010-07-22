@@ -240,7 +240,6 @@ public class Factory extends org.alice.ide.common.Factory {
 		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expression ) ) {
 			org.alice.ide.operations.ast.FillInExpressionPropertyActionOperation model = org.alice.ide.operations.ast.FillInExpressionPropertyActionOperation.getInstance( group, expressionProperty, desiredValueType );
 			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model, prefixPane, rv, expressionProperty, desiredValueType );
-			model.register( expressionPropertyDropDownPane );
 			rv = expressionPropertyDropDownPane;
 		}
 		return rv;

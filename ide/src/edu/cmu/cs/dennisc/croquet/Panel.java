@@ -68,9 +68,6 @@ public abstract class Panel extends JComponent< javax.swing.JPanel > {
 			}
 		}
 	}
-	protected boolean isMaximumSizeClampedToPreferredSize() {
-		return false;
-	}
 	protected javax.swing.JPanel createJPanel() {
 		return new DefaultJPanel();
 	}

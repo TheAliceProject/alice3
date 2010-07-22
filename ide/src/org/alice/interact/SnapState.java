@@ -43,7 +43,7 @@
 
 package org.alice.interact;
 
-import org.alice.app.ProjectApplication;
+import org.alice.ide.ProjectApplication;
 
 import edu.cmu.cs.dennisc.croquet.BooleanState;
 import edu.cmu.cs.dennisc.math.AngleInDegrees;

@@ -190,7 +190,7 @@ public abstract class Application {
 	protected abstract void handlePreferences( java.util.EventObject e );
 	protected abstract void handleQuit( java.util.EventObject e );
 
-	/*package-private*/void register( Model model ) {
+	/*package-private*/ void registerModel( Model model ) {
 		java.util.UUID id = model.getIndividualUUID();
 		java.util.Set< Model > set = this.mapUUIDToModels.get( id );
 		if( set != null ) {
@@ -201,8 +201,23 @@ public abstract class Application {
 		}
 		set.add( model );
 	}
+	/*package-private*/ void unregisterModel( Model model ) {
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "unregister:", model );
+		java.util.UUID id = model.getIndividualUUID();
+		java.util.Set< Model > set = this.mapUUIDToModels.get( id );
+		if( set != null ) {
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "pre set size:", set.size() );
+			set.remove( model );
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "post set size:", set.size() );
+			if( set.size() == 0 ) {
+				this.mapUUIDToModels.remove( id );
+			}
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate unregister" );
+		}
+	}
 
-	/*package-private*/static AbstractMenu< ?,? > addMenuElements( AbstractMenu< ?,? > rv, Model[] models ) {
+	public static AbstractMenu< ?,? > addMenuElements( AbstractMenu< ?,? > rv, Model[] models ) {
 		for( Model model : models ) {
 			if( model != null ) {
 				if( model instanceof MenuModel ) {
@@ -210,19 +225,17 @@ public abstract class Application {
 					rv.addMenu( menuOperation.createMenu() );
 				} else if( model instanceof ListSelectionState< ? > ) {
 					ListSelectionState< ? > itemSelectionOperation = (ListSelectionState< ? >)model;
-					rv.addMenu( itemSelectionOperation.createMenu() );
+					rv.addMenu( itemSelectionOperation.getMenuModel().createMenu() );
 				} else {
-					AbstractMenuItem< ?,? > menuItem = null;
 					if( model instanceof Operation<?> ) {
 						Operation<?> operation = (Operation<?>)model;
-						menuItem = operation.createMenuItem();
+						rv.addMenuItem( operation.createMenuItem() );
 					} else if( model instanceof BooleanState ) {
 						BooleanState booleanState = (BooleanState)model;
-						menuItem = booleanState.createCheckBoxMenuItem();
+						rv.addCheckBoxMenuItem( booleanState.createCheckBoxMenuItem() );
 					} else {
 						throw new RuntimeException();
 					}
-					rv.addMenuItem( menuItem );
 				}
 			} else {
 				rv.addSeparator();

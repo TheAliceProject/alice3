@@ -70,12 +70,15 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.fieldAccess.field.getValue();
 		org.alice.ide.common.DeclarationNameLabel nodeNameLabel = new org.alice.ide.common.DeclarationNameLabel( field );
 		//nodeNameLabel.scaleFont( 1.2f );
-		//nodeNameLabel.setFontToDerivedFont( zoot.font.ZTextWeight.BOLD );
+		//nodeNameLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		org.alice.ide.IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = org.alice.ide.IDE.getSingleton().getAccessorAndMutatorDisplayStyle( field );
 		boolean isGetter = accessorAndMutatorDisplayStyle == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
 		if( isExpressionDesired ) {
 			if( isGetter ) {
-				this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "get" ) );
+				edu.cmu.cs.dennisc.croquet.Label getLabel = new edu.cmu.cs.dennisc.croquet.Label( "get" );
+				//getLabel.scaleFont( 1.2f );
+				//getLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+				this.addComponent( getLabel );
 			}
 		}
 		this.addComponent( nodeNameLabel );

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class ToolPaletteTitle extends AbstractButton<javax.swing.AbstractButton,BooleanState> {
+/*package-private*/ class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractButton> {
 	private static class ArrowIcon extends AbstractArrowIcon {
 		public ArrowIcon( int size ) {
 			super( size );

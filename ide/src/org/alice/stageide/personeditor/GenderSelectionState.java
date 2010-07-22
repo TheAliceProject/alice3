@@ -47,7 +47,7 @@ package org.alice.stageide.personeditor;
  */
 class GenderSelectionState extends AbstractListSelectionState< org.alice.apis.stage.Gender > {
 	public GenderSelectionState() {
-		super( java.util.UUID.fromString( "0a4c1622-e482-46bb-bb00-be3916f5549c" ), new org.alice.ide.croquet.EnumCodec< org.alice.apis.stage.Gender >(), org.alice.apis.stage.Gender.values() );
+		super( java.util.UUID.fromString( "0a4c1622-e482-46bb-bb00-be3916f5549c" ), new org.alice.ide.croquet.codecs.EnumCodec< org.alice.apis.stage.Gender >(), org.alice.apis.stage.Gender.values() );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.List<org.alice.apis.stage.Gender> createList() {

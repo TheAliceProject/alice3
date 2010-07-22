@@ -48,22 +48,30 @@ import org.alice.ide.ast.EmptyExpression;
  * @author Dennis Cosgrove
  */
 public class EmptyExpressionPane extends ExpressionLikeSubstance {
+	private static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 180, 180, 220 );
+	private static final java.awt.Color TOP_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0f, 1.0f, 0.9f );
+	private static final java.awt.Color BOTTOM_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0f, 1.0f, 1.1f );
 	private EmptyExpression emptyExpression;
 	public EmptyExpressionPane( EmptyExpression emptyExpression ) {
 		this.emptyExpression = emptyExpression;
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "???" ) );
-		this.setEnabledBackgroundPaint( new java.awt.Color( 127, 127, 191 ) );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " ??? " ) );
+	}
+	@Override
+	protected java.awt.Paint getEnabledBackgroundPaint( int x, int y, int width, int height ) {
+		this.setEnabledBackgroundPaint( new java.awt.Color( 191, 191, 255 ) );
+		return new java.awt.GradientPaint( 0, y, TOP_COLOR, 0, y+height, BOTTOM_COLOR );
 	}
 	public EmptyExpressionPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		this( new EmptyExpression( type ) );
 	}
+	
 	@Override
 	protected int getInsetTop() {
 		return 0;
 	}
 	@Override
 	protected int getInsetBottom() {
-		return 0;
+		return 1;
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {

@@ -80,27 +80,42 @@ public /*final*/ class BooleanState extends Model {
 	};
 
 	private boolean value;
-	private String trueText = null;
-	private String falseText = null;
+	private String trueText;
+	private String falseText;
 
-	public BooleanState(Group group, java.util.UUID individualUUID, boolean initialState, String trueText, String falseText) {
+	public BooleanState(Group group, java.util.UUID individualUUID, boolean initialState ) {
 		super(group, individualUUID);
 		this.value = initialState;
 		this.buttonModel.setSelected(initialState);
 		this.buttonModel.addItemListener(this.itemListener);
-		this.setTrueText(trueText);
-		this.setFalseText(falseText);
+		
+		String text = this.getDefaultLocalizedText();
+		if( text != null ) {
+			this.setTextForBothTrueAndFalse( text );
+		} else {
+			String trueText = this.getLocalizedText( "true" );
+			if( trueText != null ) {
+				String falseText = this.getLocalizedText( "false" );
+				if( falseText != null ) {
+					this.setTextForTrueAndTextForFalse( trueText, falseText );
+				} else {
+					//todo:
+				}
+			}
+		}
 	}
 
-	public BooleanState(Group group, java.util.UUID individualUUID, boolean initialState, String trueAndFalseText) {
-		this(group, individualUUID, initialState, trueAndFalseText, trueAndFalseText);
-	}
-	public BooleanState(Group group, java.util.UUID individualUUID, boolean initialState ) {
-		this(group, individualUUID, initialState, null, null );
+	@Deprecated
+	public BooleanState(Group group, java.util.UUID individualUUID, boolean initialState, String name ) {
+		this(group, individualUUID, initialState );
+		this.setTextForBothTrueAndFalse( name );
 	}
 
 	/*package-private*/ javax.swing.ButtonModel getButtonModel() {
 		return this.buttonModel;
+	}
+	/*package-private*/ javax.swing.Action getAction() {
+		return this.action;
 	}
 	public Boolean getValue() {
 		return this.buttonModel.isSelected();
@@ -126,16 +141,14 @@ public /*final*/ class BooleanState extends Model {
 	public String getTrueText() {
 		return this.trueText;
 	}
-	public void setTrueText(String trueText) {
-		this.trueText = trueText;
-		this.updateName();
-	}
-
 	public String getFalseText() {
 		return this.falseText;
 	}
-
-	public void setFalseText(String falseText) {
+	public void setTextForBothTrueAndFalse(String text) {
+		this.setTextForTrueAndTextForFalse( text, text );
+	}
+	public void setTextForTrueAndTextForFalse(String trueText, String falseText) {
+		this.trueText = trueText;
 		this.falseText = falseText;
 		this.updateName();
 	}
@@ -151,31 +164,17 @@ public /*final*/ class BooleanState extends Model {
 		this.action.putValue(javax.swing.Action.NAME, name);
 	}
 	
-	/*package-private*/ < B extends AbstractButton<?,BooleanState> > B register( final B rv ) {
-		Application.getSingleton().register( this );
-		rv.setSwingButtonModel( this.buttonModel );
-		rv.setAction( this.action );
-		rv.addContainmentObserver( new Component.ContainmentObserver() {
-			public void addedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				BooleanState.this.addComponent( rv );
-			}
-			public void removedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				BooleanState.this.removeComponent( rv );
-			}
-		} );
-		return rv;
-	}
 	public RadioButton createRadioButton() {
-		return register( new RadioButton( this ) );
+		return new RadioButton( this );
 	}
 	public CheckBox createCheckBox() {
-		return register( new CheckBox( this ) );
+		return new CheckBox( this );
 	}
 	public CheckBoxMenuItem createCheckBoxMenuItem() {
-		return register( new CheckBoxMenuItem( this ) );
+		return new CheckBoxMenuItem( this );
 	}
 	public ToolPalette createToolPalette( Component<?> component ) {
-		ToolPaletteTitle title = this.register( new ToolPaletteTitle( this ) );
+		ToolPaletteTitle title = new ToolPaletteTitle( this );
 		return new ToolPalette(title, component);
 	}
 }

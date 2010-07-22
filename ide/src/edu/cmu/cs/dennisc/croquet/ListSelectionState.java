@@ -297,7 +297,7 @@ public class ListSelectionState<E> extends Model implements Iterable<E> {
 	private final SingleListSelectionModel listSelectionModel = new SingleListSelectionModel();
 	private final ComboBoxModel comboBoxModel = new ComboBoxModel();
 	private Codec< E > codec;
-	private ListSelectionState(Group group, java.util.UUID individualUUID, Codec< E > codec, int selectedIndex, E... items) {
+	public ListSelectionState(Group group, java.util.UUID individualUUID, Codec< E > codec, int selectedIndex, E... items) {
 		super(group, individualUUID);
 		this.codec = codec;
 		this.listSelectionModel.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -404,7 +404,6 @@ public class ListSelectionState<E> extends Model implements Iterable<E> {
 				super.handleRemovedFrom(parent);
 			}
 		};
-		Application.getSingleton().register(this);
 		rv.setSwingComboBoxModel(this.comboBoxModel);
 		return rv;
 	}
@@ -428,14 +427,12 @@ public class ListSelectionState<E> extends Model implements Iterable<E> {
 				super.handleRemovedFrom(parent);
 			}
 		};
-		Application.getSingleton().register(this);
 		rv.setSwingListModel(this.comboBoxModel);
 		rv.setSelectionModel(this.listSelectionModel);
 		return rv;
 	}
 
 	/*package-private*/ <R extends ItemSelectablePanel<E, ?>> R register(final R rv) {
-		Application.getSingleton().register(this);
 		rv.setSwingComboBoxModel(this.comboBoxModel);
 		rv.setSelectionModel(this.listSelectionModel);
 		rv.addContainmentObserver(new Component.ContainmentObserver() {
@@ -506,63 +503,37 @@ public class ListSelectionState<E> extends Model implements Iterable<E> {
 		}
 	}
 
-	private javax.swing.Action action = new javax.swing.AbstractAction() {
-		public void actionPerformed(java.awt.event.ActionEvent e) {
+	private class ListSelectionMenuModel extends MenuModel {
+		public ListSelectionMenuModel() {
+			super( java.util.UUID.fromString( "e33bc1ff-3790-4715-b88c-3c978aa16947" ), ListSelectionState.this.getClass() );
 		}
-	};
-	
-	public String getName() {
-		return String.class.cast(this.action.getValue(javax.swing.Action.NAME));
-	}
-
-	public void setName(String name) {
-		this.action.putValue(javax.swing.Action.NAME, name);
-	}
-
-	public javax.swing.Icon getSmallIcon() {
-		return javax.swing.Icon.class.cast(this.action.getValue(javax.swing.Action.SMALL_ICON));
-	}
-
-	public void setSmallIcon(javax.swing.Icon icon) {
-		this.action.putValue(javax.swing.Action.SMALL_ICON, icon);
-	}
-
-	public int getMnemonicKey() {
-		return Integer.class.cast(this.action.getValue(javax.swing.Action.MNEMONIC_KEY));
-	}
-
-	public void setMnemonicKey(int mnemonicKey) {
-		this.action.putValue(javax.swing.Action.MNEMONIC_KEY, mnemonicKey);
-	}
-
-	public Menu<ListSelectionState<E>> createMenu() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: ListSelectionState createMenu()");
-		Menu<ListSelectionState<E>> rv = new Menu<ListSelectionState<E>>( this ) {
-			@Override
-			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				super.handleAddedTo(parent);
-				javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-				for (final Object item : ListSelectionState.this.comboBoxModel.items) {
-					javax.swing.Action action = new javax.swing.AbstractAction() {
-						public void actionPerformed(java.awt.event.ActionEvent e) {
-							comboBoxModel.setSelectedItem(item);
-						}
-					};
-					action.putValue(javax.swing.Action.NAME, item.toString());
-					javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem(action);
-					buttonGroup.add(jMenuItem);
-					jMenuItem.setSelected(comboBoxModel.getSelectedItem() == item);
-					this.getAwtComponent().add(jMenuItem);
-				}
+		@Override
+		protected void handleMenuSelected(javax.swing.event.MenuEvent e, Menu<MenuModel> menu) {
+			super.handleMenuSelected(e, menu);
+			menu.getAwtComponent().removeAll();
+			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
+			for (final Object item : ListSelectionState.this.comboBoxModel.items) {
+				javax.swing.Action action = new javax.swing.AbstractAction() {
+					public void actionPerformed(java.awt.event.ActionEvent e) {
+						comboBoxModel.setSelectedItem(item);
+					}
+				};
+				action.putValue(javax.swing.Action.NAME, item.toString());
+				javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem(action);
+				buttonGroup.add(jMenuItem);
+				jMenuItem.setSelected(comboBoxModel.getSelectedItem() == item);
+				menu.getAwtComponent().add(jMenuItem);
 			}
-
-			@Override
-			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				super.handleRemovedFrom(parent);
-				this.getAwtComponent().removeAll();
-			}
-		};
-		rv.getAwtComponent().setAction(this.action);
-		return rv;
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ListSelectionMenuModel handleMenuSelected" );
+		}
+	}
+	private ListSelectionMenuModel menuModel = null;
+	public synchronized MenuModel getMenuModel() {
+		if( this.menuModel != null ) {
+			//pass
+		} else {
+			this.menuModel = new ListSelectionMenuModel();
+		}
+		return this.menuModel;
 	}
 }

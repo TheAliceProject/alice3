@@ -91,9 +91,8 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 		};
 	};
 	private boolean isOk = false;
-	public InputDialogOperation(Group group, java.util.UUID individualUUID, String name, boolean isCancelDesired) {
-		super(group, individualUUID);
-		this.setName( name );
+	public InputDialogOperation(Group group, java.util.UUID individualId, boolean isCancelDesired) {
+		super(group, individualId);
 		this.okOperation = new ButtonOperation(java.util.UUID.fromString("f6019ff0-cf2b-4d6c-8c8d-14cac8154ebc"), "OK", true);
 		if( isCancelDesired ) {
 			this.cancelOperation = new ButtonOperation(java.util.UUID.fromString( "2a7e61c8-119a-45b1-830c-f59edda720a0"), "Cancel", false);
@@ -104,11 +103,8 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 		this.explanationLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
 		this.explanationLabel.setForegroundColor( java.awt.Color.RED.darker().darker() );
 	}
-	public InputDialogOperation(Group group, java.util.UUID individualUUID, String title) {
-		this(group, individualUUID, title, true);
-	}
-	public InputDialogOperation(Group group, java.util.UUID individualUUID) {
-		this(group, individualUUID, null);
+	public InputDialogOperation(Group group, java.util.UUID individualId) {
+		this(group, individualId, true);
 	}
 
 	@Override
