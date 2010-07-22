@@ -1216,6 +1216,16 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
 		return this.previousExpression;
 	}
+	public boolean isPreviousExpressionSet() {
+		return this.previousExpression != null;
+	}
+	public edu.cmu.cs.dennisc.alice.ast.Expression createCopyOfPreviousExpression() {
+		if( this.previousExpression != null ) {
+			return (edu.cmu.cs.dennisc.alice.ast.Expression)this.createCopy( this.previousExpression );
+		} else {
+			return null;
+		}
+	}
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getEnumTypeForInterfaceType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> interfaceType ) {
 		return null;
 	}

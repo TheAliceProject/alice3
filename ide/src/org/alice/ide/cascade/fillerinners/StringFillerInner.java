@@ -55,7 +55,7 @@ public class StringFillerInner extends ExpressionFillerInner {
 		blank.addSeparator();
 		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomStringFillIn() );
 		blank.addSeparator();
-		final edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getPreviousExpression();
+		final edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().createCopyOfPreviousExpression();
 		final boolean isTop = blank.getParentFillIn() == null;
 		if( isTop ) {
 			if( previousExpression == null || previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.NullLiteral ) {
