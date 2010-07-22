@@ -69,6 +69,7 @@ import org.alice.interact.handle.HandleManager;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle;
 import org.alice.interact.manipulator.AbstractManipulator;
+import org.alice.interact.manipulator.AnimatorDependentManipulator;
 import org.alice.interact.manipulator.Camera2DDragManipulator;
 import org.alice.interact.manipulator.CameraInformedManipulator;
 import org.alice.interact.manipulator.CameraOrbitDragManipulator;
@@ -81,7 +82,9 @@ import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
 import edu.cmu.cs.dennisc.croquet.DragComponent;
 import edu.cmu.cs.dennisc.croquet.ListSelectionState;
 
+import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.history.HistoryManager;
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
@@ -142,7 +145,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		
 	};
 	
-	private static double MOUSE_WHEEL_TIMEOUT_TIME = .5;
+	private static double MOUSE_WHEEL_TIMEOUT_TIME = 1.0;
 	private static double CANCEL_MOUSE_WHEEL_DISTANCE = 3;
 	
 	protected double mouseWheelTimeoutTime = 0;
@@ -222,8 +225,43 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	public AbstractDragAdapter( MoveAndTurnSceneEditor sceneEditor )
 	{
 		this.sceneEditor = sceneEditor;
+		
+//		HistoryManager.getInstance(Project.GROUP).addHistoryListener( new edu.cmu.cs.dennisc.history.event.HistoryListener() {
+//			public void operationPushing( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) 
+//			{
+//				PrintUtilities.println("Pushing");
+//			}
+//			public void operationPushed( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) 
+//			{
+//				PrintUtilities.println("Pushed");
+//			}
+//			public void insertionIndexChanging( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) 
+//			{
+//				//AbstractDragAdapter.this.preUndo();
+//				PrintUtilities.println("Index Changing from "+e.getPrevIndex()+" to "+ e.getNextIndex());
+//			}
+//			public void insertionIndexChanged( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) 
+//			{
+//				PrintUtilities.println("Index Changed from "+e.getPrevIndex()+" to "+ e.getNextIndex());
+//			}
+//			public void clearing( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) 
+//			{
+//				PrintUtilities.println("Clearing");
+//			}
+//			public void cleared( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) 
+//			{
+//				PrintUtilities.println("Cleared");
+//			}
+//		} );
+		
 		this.setUpControls();
 	}	
+	
+	protected void preUndo()
+	{
+		stopMouseWheel();
+		handleStateChange();
+	}
 	
 	protected abstract void setUpControls();
 	
@@ -304,6 +342,13 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	{
 		this.animator = animator;
 		this.handleManager.setAnimator(animator);
+		for (ManipulatorConditionSet manipulatorSet : this.manipulators)
+		{
+			if (manipulatorSet.getManipulator() instanceof AnimatorDependentManipulator)
+			{
+				((AnimatorDependentManipulator)manipulatorSet.getManipulator()).setAnimator(this.animator);
+			}
+		}
 	}
 	
 	public Animator getAnimator()

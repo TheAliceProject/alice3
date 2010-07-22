@@ -78,8 +78,8 @@ public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulat
 	protected double initialZoomValue = 0.0d;
 	protected double originalZoomValue = 0.0d;
 	
-	private static final double MAX_ZOOM = 20.0d;
-	private static final double MIN_ZOOM = .01d;
+	protected static final double MAX_ZOOM = 20.0d;
+	protected static final double MIN_ZOOM = .01d;
 	
 	public OrthographicCameraDragZoomManipulator( ImageBasedManipulationHandle2D handle)
 	{

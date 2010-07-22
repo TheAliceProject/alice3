@@ -132,7 +132,7 @@ public class CameraPanDragManipulator extends CameraManipulator {
 			double xDoty = Vector3.calculateDotProduct(this.yDirection, this.xDirection);
 			if (Math.abs(xDoty) > EpsilonUtilities.REASONABLE_EPSILON)
 			{
-				System.out.println("Boom!");
+//				System.out.println("Boom!");
 				return false;
 			}
 			return true;
