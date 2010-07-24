@@ -47,7 +47,7 @@ package org.alice.ide.memberseditor;
  */
 abstract class OrganizedByTypeMembersContentPanel extends MembersContentPanel {
 	@Override
-	protected void handleAccessibleSelection( edu.cmu.cs.dennisc.alice.ast.Accessible accessible, java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > types ) {
+	protected void refresh( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > types ) {
 		this.removeAllComponents();
 		boolean isNonConsumedTypeDeclaredInJavaAlreadyEncountered = false;
 
@@ -262,7 +262,6 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 		return rv;
 	}
-
 	public MembersEditor() {
 		final float FONT_SCALAR = 1.4f;
 		edu.cmu.cs.dennisc.croquet.ComboBox< edu.cmu.cs.dennisc.alice.ast.Accessible > comboBox = org.alice.ide.IDE.getSingleton().getAccessibleListState().createComboBox();
@@ -350,64 +349,57 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			}
 		}
 		comboBox.setRenderer( new AccessibleCellRenderer() );
-//		comboBox.setRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.Accessible >() {
-//			@Override
-//			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.Accessible value, int index, boolean isSelected, boolean cellHasFocus ) {
-//				if( value != null ) {
-//					boolean isEnabled = true;
-//					StringBuilder sb = new StringBuilder();
-//					sb.append( "<html>" );
-//					if( value instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
-//						//pass
-//					} else if( value instanceof edu.cmu.cs.dennisc.alice.ast.AbstractParameter ) {
-//						sb.append( "<i>parameter:</i> " );
-//					} else if( value instanceof edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice ) {
-//						sb.append( "<i>variable:</i> " );
-//					} else if( value instanceof edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice ) {
-//						sb.append( "<i>constant:</i> " );
-//					}
-//					sb.append( "<b>" );
-//					sb.append( value.getValidName() );
-//					sb.append( "</b>" );
-//
-//					//rv.setEnabled( true );
-//					if( value instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
-//						edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)value;
-//						edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = org.alice.ide.IDE.getSingleton().getFocusedCode();
-//						if( focusedCode != null ) {
-//							edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> scopeType = focusedCode.getDeclaringType();
-//							if( field.getValueType() == scopeType ) {
-//								sb.append( " <em>(a.k.a. this)</em>" );
-//							} else if( field.getDeclaringType() == scopeType ) {
-//								//pass
-//							} else {
-//								isEnabled = false;
-//							}
-//						}
-//					}
-//					sb.append( "</html>" );
-//					rv.setText( sb.toString() );
-//					
-//					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = value.getValueType();
-//					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava valueTypeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
-//					String className = valueTypeInJava.getClassReflectionProxy().getName();
-//					
-//					rv.setIcon( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForGalleryClassName(className));
-//					if( isEnabled ) {
-//						//pass
-//					} else {
-////						rv.setBackground( list.getBackground() );
-////						rv.setForeground( javax.swing.UIManager.getColor( "Label.disabledForeground" ) );
-//						rv.setBackground( java.awt.Color.LIGHT_GRAY );
-//						rv.setForeground( java.awt.Color.GRAY );
-//					}
-//				}
-//				return rv;
-//			}
-//		} );
-		edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label( "instance:" );
-		label.scaleFont( FONT_SCALAR );
-		edu.cmu.cs.dennisc.croquet.LineAxisPanel instancePanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( label, comboBox );
+		edu.cmu.cs.dennisc.croquet.Label instanceLabel = new edu.cmu.cs.dennisc.croquet.Label( "instance:" );
+		instanceLabel.scaleFont( FONT_SCALAR );
+
+		edu.cmu.cs.dennisc.croquet.ComboBox<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField> partComboBox = org.alice.ide.croquet.models.members.PartSelectionState.getInstance().createComboBox();
+		partComboBox.setRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.AbstractField >() {
+			@Override
+			protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractField value, int index, boolean isSelected, boolean cellHasFocus) {
+				StringBuilder sb = new StringBuilder();
+				sb.append( "<html>" );
+				if( index == -1 ) {
+					if( list.getModel().getSize() > 0 ) {
+						sb.append( "part: " );
+					} else {
+						sb.append( "<font color=\"gray\">" );
+						sb.append( "no parts" );
+						sb.append( "</font>" );
+					}
+				}
+				if( value != null ) {
+					sb.append( "<strong>" );
+					sb.append( value.getName() );
+					sb.append( "</strong>" );
+				} else {
+					if( index == -1 && list.getModel().getSize()==0 ) {
+						//pass
+					} else {
+						sb.append( "<font color=\"gray\">" );
+						sb.append( "<em>" );
+						sb.append( "none" );
+						sb.append( "</em>" );
+						sb.append( "</font>" );
+					}
+				}
+				sb.append( "</html>" );
+				rv.setText( sb.toString() );
+				return rv;
+			}
+		} );
+		
+		comboBox.setMaximumSizeClampedToPreferredSize( true );
+		partComboBox.setMaximumSizeClampedToPreferredSize( true );
+		partComboBox.setMinimumPreferredWidth( 140 );
+
+		partComboBox.scaleFont( FONT_SCALAR );
+		partComboBox.setMaximumRowCount( 20 );
+		//edu.cmu.cs.dennisc.croquet.BorderPanel instancePanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		edu.cmu.cs.dennisc.croquet.LineAxisPanel instancePanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
+		instancePanel.addComponent( instanceLabel );
+		instancePanel.addComponent( comboBox );
+		instancePanel.addComponent( partComboBox );
+		instancePanel.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() );
 
 		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = IS_FOLDER_TABBED_PANE_DESIRED ? this.tabbedPaneSelectionState.createDefaultFolderTabbedPane() : this.tabbedPaneSelectionState.createDefaultToolPaletteTabbedPane();
 		this.addComponent( instancePanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
@@ -428,22 +420,4 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 		
 	}
-
-//	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
-//		this.refresh();
-//	}
-//	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
-//		this.refresh();
-//	}
-//	@Override
-//	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-//		super.handleAddedTo( parent );
-//
-//		org.alice.ide.IDE.getSingleton().getFieldSelectionState().addAndInvokeValueObserver( this.fieldSelectionObserver );
-//	}
-//	@Override
-//	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
-//		org.alice.ide.IDE.getSingleton().getFieldSelectionState().removeValueObserver( this.fieldSelectionObserver );
-//		super.handleRemovedFrom( parent );
-//	}
 }

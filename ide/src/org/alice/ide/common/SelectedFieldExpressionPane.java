@@ -51,9 +51,14 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 			SelectedFieldExpressionPane.this.handleCodeChanged( nextValue );
 		}
 	};
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible > fieldSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible >() {
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibleSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible >() {
 		public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) {
 			SelectedFieldExpressionPane.this.handleAccessibleChanged( nextValue );
+		}
+	};
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField > partSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField >() {
+		public void changed(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField nextValue) {
+			SelectedFieldExpressionPane.this.handlePartChanged( nextValue );
 		}
 	};
 	private edu.cmu.cs.dennisc.property.event.PropertyListener namePropertyAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
@@ -102,12 +107,27 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 		}
 		this.updateLabel();
 	}
+	private void handlePartChanged( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField field ) {
+		this.updateLabel();
+	}
 	private void handleCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		this.updateLabel();
 	}
 	
 	private void updateLabel() {
-		this.label.setText( getIDE().getInstanceTextForAccessible( this.accessible ) );
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
+		sb.append( getIDE().getInstanceTextForAccessible( this.accessible ) );
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField field = org.alice.ide.croquet.models.members.PartSelectionState.getInstance().getSelectedItem();
+		if( field != null ) {
+			//sb.append( ".getPart(" );
+			sb.append( "'s " );
+			sb.append( "<em>" );
+			sb.append( field.getName() );
+			sb.append( "</em>" );
+		}
+		sb.append( "</html>" );
+		this.label.setText( sb.toString() );
 	}
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {
@@ -118,11 +138,13 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 		super.handleAddedTo( parent );
 		org.alice.ide.IDE.getSingleton().getOmissionOfThisForFieldAccessesDesiredState().addAndInvokeValueObserver( this.valueObserver );
 		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeValueObserver( this.codeSelectionObserver );
-		org.alice.ide.IDE.getSingleton().getAccessibleListState().addAndInvokeValueObserver( this.fieldSelectionObserver );
+		org.alice.ide.IDE.getSingleton().getAccessibleListState().addAndInvokeValueObserver( this.accessibleSelectionObserver );
+		org.alice.ide.croquet.models.members.PartSelectionState.getInstance().addValueObserver( this.partSelectionObserver );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		org.alice.ide.IDE.getSingleton().getAccessibleListState().removeValueObserver( this.fieldSelectionObserver );
+		org.alice.ide.croquet.models.members.PartSelectionState.getInstance().removeValueObserver( this.partSelectionObserver );
+		org.alice.ide.IDE.getSingleton().getAccessibleListState().removeValueObserver( this.accessibleSelectionObserver );
 		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeValueObserver( this.codeSelectionObserver );
 		org.alice.ide.IDE.getSingleton().getOmissionOfThisForFieldAccessesDesiredState().removeValueObserver( this.valueObserver );
 		super.handleRemovedFrom( parent );
