@@ -313,10 +313,10 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 					this.setText( sb.toString() );
 					
 					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = accessible.getValueType();
-					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava valueTypeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
-					String className = valueTypeInJava.getClassReflectionProxy().getName();
+//					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava valueTypeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
+//					String className = valueTypeInJava.getClassReflectionProxy().getName();
 					
-					this.setIcon( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForGalleryClassName(className));
+					this.setIcon( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( valueType ) );
 					if( this.isInScope ) {
 						if( isSelected ) {
 							this.setForeground( list.getSelectionForeground() );
