@@ -40,19 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ui;
+package org.alice.ide.croquet.models.ui.formatter;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProgrammingLanguageSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState< org.alice.ide.ProgrammingLanguage > {
+public class FormatterSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState< org.alice.ide.formatter.Formatter > {
 	private static class SingletonHolder {
-		private static ProgrammingLanguageSelectionState instance = new ProgrammingLanguageSelectionState();
+		private static FormatterSelectionState instance = new FormatterSelectionState();
 	}
-	public static ProgrammingLanguageSelectionState getInstance() {
+	public static FormatterSelectionState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private ProgrammingLanguageSelectionState() {
-		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ), new org.alice.ide.croquet.codecs.EnumCodec< org.alice.ide.ProgrammingLanguage >(), 0, org.alice.ide.ProgrammingLanguage.ALICE, org.alice.ide.ProgrammingLanguage.JAVA );
+	private FormatterSelectionState() {
+		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ), 
+				new edu.cmu.cs.dennisc.croquet.Codec< org.alice.ide.formatter.Formatter >() {
+					public org.alice.ide.formatter.Formatter decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+						throw new RuntimeException( "todo" );
+					}
+					public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.formatter.Formatter t) {
+						throw new RuntimeException( "todo" );
+					}
+				}, 
+				0, org.alice.ide.formatter.AliceFormatter.getInstance(), org.alice.ide.formatter.JavaFormatter.getInstance() );
 	}
 }

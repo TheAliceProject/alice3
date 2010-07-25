@@ -252,6 +252,8 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	//private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType, java.awt.Component > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private static edu.cmu.cs.dennisc.map.MapToMap< Class< ? >, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, edu.cmu.cs.dennisc.croquet.Component< ? > > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
+	public static final byte PROTOTYPE = 0;
+	
 	public static edu.cmu.cs.dennisc.croquet.Component< ? > getComponentFor( Class< ? > cls, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		edu.cmu.cs.dennisc.croquet.Component< ? > rv = map.get( cls, type );
 		if( rv != null ) {
@@ -348,22 +350,32 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				}
 			}
 		}
+		comboBox.setMaximumRowCount( 20 );
 		comboBox.setRenderer( new AccessibleCellRenderer() );
 		edu.cmu.cs.dennisc.croquet.Label instanceLabel = new edu.cmu.cs.dennisc.croquet.Label( "instance:" );
 		instanceLabel.scaleFont( FONT_SCALAR );
-
+		
+		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField PROTOTYPE_FIELD;
+		try {
+			PROTOTYPE_FIELD = edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField.get( MembersEditor.class.getField( "PROTOTYPE" ) );
+		} catch( NoSuchFieldException nsfe ) {
+			throw new RuntimeException( nsfe );
+		}
 		edu.cmu.cs.dennisc.croquet.ComboBox<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField> partComboBox = org.alice.ide.croquet.models.members.PartSelectionState.getInstance().createComboBox();
 		partComboBox.setRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.AbstractField >() {
 			@Override
 			protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractField value, int index, boolean isSelected, boolean cellHasFocus) {
+				if( value == PROTOTYPE_FIELD ) {
+					value = null;
+				}
 				StringBuilder sb = new StringBuilder();
 				sb.append( "<html>" );
 				if( index == -1 ) {
 					if( list.getModel().getSize() > 0 ) {
-						sb.append( "part: " );
+						sb.append( "part:" );
 					} else {
 						sb.append( "<font color=\"gray\">" );
-						sb.append( "no parts" );
+						sb.append( "no_parts" );
 						sb.append( "</font>" );
 					}
 				}
@@ -390,16 +402,31 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		
 		comboBox.setMaximumSizeClampedToPreferredSize( true );
 		partComboBox.setMaximumSizeClampedToPreferredSize( true );
-		partComboBox.setMinimumPreferredWidth( 140 );
-
 		partComboBox.scaleFont( FONT_SCALAR );
 		partComboBox.setMaximumRowCount( 20 );
+		partComboBox.getAwtComponent().setPrototypeDisplayValue( PROTOTYPE_FIELD );
+		partComboBox.setMinimumPreferredWidth( partComboBox.getAwtComponent().getPreferredSize().width );
+		partComboBox.getAwtComponent().setPrototypeDisplayValue( null );
+
+
+//		partComboBox.getAwtComponent().addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
+//			public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent e) {
+//				javax.swing.JComboBox comboBox = (javax.swing.JComboBox)e.getSource();
+////				java.awt.Dimension size = popupMenu.getSize();
+////				popupMenu.setSize( size );
+//			}
+//			public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent e) {
+//			}
+//			public void popupMenuCanceled(javax.swing.event.PopupMenuEvent e) {
+//			}
+//		} );
+		
 		//edu.cmu.cs.dennisc.croquet.BorderPanel instancePanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		edu.cmu.cs.dennisc.croquet.LineAxisPanel instancePanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
 		instancePanel.addComponent( instanceLabel );
 		instancePanel.addComponent( comboBox );
 		instancePanel.addComponent( partComboBox );
-		instancePanel.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() );
+		//instancePanel.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() );
 
 		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = IS_FOLDER_TABBED_PANE_DESIRED ? this.tabbedPaneSelectionState.createDefaultFolderTabbedPane() : this.tabbedPaneSelectionState.createDefaultToolPaletteTabbedPane();
 		this.addComponent( instancePanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );

@@ -85,17 +85,19 @@ public class PartSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelection
 		}
 	}
 	private void setValueType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
-		Class<?> cls = typeInJava.getClassReflectionProxy().getReification();
 		Class<?> partEnumCls = null;
-		for( Class<?> declaredCls : cls.getDeclaredClasses() ) {
-			if( declaredCls.isEnum() && "Part".equals( declaredCls.getSimpleName() ) ) {
-				try {
-					if( cls.getMethod( "getPart", declaredCls ) != null ) {
-						partEnumCls = declaredCls;
+		if( type != null ) {
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
+			Class<?> cls = typeInJava.getClassReflectionProxy().getReification();
+			for( Class<?> declaredCls : cls.getDeclaredClasses() ) {
+				if( declaredCls.isEnum() && "Part".equals( declaredCls.getSimpleName() ) ) {
+					try {
+						if( cls.getMethod( "getPart", declaredCls ) != null ) {
+							partEnumCls = declaredCls;
+						}
+					} catch( NoSuchMethodException nsme ) {
+						//pass
 					}
-				} catch( NoSuchMethodException nsme ) {
-					//pass
 				}
 			}
 		}

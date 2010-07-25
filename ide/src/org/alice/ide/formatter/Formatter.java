@@ -40,20 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide;
+package org.alice.ide.formatter;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum ProgrammingLanguage {
-	ALICE( "Alice", new java.util.Locale( "en", "US" ) ),
-	JAVA( "Java", new java.util.Locale( "en", "US", "java" ) );
-	private String repr;
+public abstract class Formatter {
 	private java.util.Locale locale;
-	private ProgrammingLanguage( String repr, java.util.Locale locale ) {
-		this.repr = repr;
+	private String repr;
+	public Formatter( java.util.Locale locale, String repr ) {
 		this.locale = locale;
+		this.repr = repr;
 	}
+	@Deprecated
 	public java.util.Locale getLocale() {
 		return this.locale;
 	}
@@ -61,4 +60,4 @@ public enum ProgrammingLanguage {
 	public String toString() {
 		return this.repr;
 	}
-};
+}
