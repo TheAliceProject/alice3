@@ -48,6 +48,7 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public abstract class Application {
 	public static final Group UI_STATE_GROUP = new Group( java.util.UUID.fromString( "d92c1a48-a6ae-473b-9b9f-94734e1606c1" ), "UI_STATE_GROUP" );
+	public static final Group INFORMATION_GROUP = new Group( java.util.UUID.fromString( "c883259e-3346-49d0-a63f-52eeb3d9d805" ), "INFORMATION_GROUP" );
 	public static final Group INHERIT_GROUP = new Group( java.util.UUID.fromString( "488f8cf9-30cd-49fc-ab72-7fd6a3e13c3f" ), "INHERIT_GROUP" );
 
 	public static interface LocaleObserver {

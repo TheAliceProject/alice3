@@ -40,38 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ManageResourcesOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.ide.resource.manager.ResourceManagerPane> {
-	private static class SingletonHolder {
-		private static ManageResourcesOperation instance = new ManageResourcesOperation();
-	}
-	public static ManageResourcesOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private ManageResourcesOperation() {
-		super( ENCLOSING_GROUP, java.util.UUID.fromString( "ec7dc4b0-d1f8-420d-b6f0-7a25bd92639d" ) );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ManageResourcesOperation handle cancel" );
+public abstract class InformationDialogOperation<J extends Component<?>> extends AbstractDialogOperation<InformationDialogOperationContext<J>> {
+	public InformationDialogOperation(java.util.UUID individualId) {
+		super(Application.INFORMATION_GROUP, individualId);
 	}
 	@Override
-	protected org.alice.ide.resource.manager.ResourceManagerPane prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.resource.manager.ResourceManagerPane> context) {
-		return new org.alice.ide.resource.manager.ResourceManagerPane();
+	protected InformationDialogOperationContext<J> createContext( ModelContext< ? > parent, java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		return parent.createInformationDialogOperationContext( this, e, viewController );
 	}
-	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.resource.manager.ResourceManagerPane> context, boolean isOk) {
-		if( isOk ) {
-			context.finish();
-		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle cancel" );
-			context.cancel();
-		}
-	}
-//	@Override
-//	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
-//		org.alice.ide.resource.manager.ResourceManagerPane resourcesPane = new org.alice.ide.resource.manager.ResourceManagerPane();
-//		this.getIDE().showMessageDialog( resourcesPane, "Project Resources", edu.cmu.cs.dennisc.croquet.MessageType.PLAIN, null );
-//	}	
 }

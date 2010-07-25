@@ -264,6 +264,11 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		this.addChild(rv);
 		return rv;
 	}
+	/*package-private*/InformationDialogOperationContext createInformationDialogOperationContext(InformationDialogOperation informationDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		InformationDialogOperationContext rv = new InformationDialogOperationContext(this, informationDialogOperation, e, viewController);
+		this.addChild(rv);
+		return rv;
+	}
 	/*package-private*/PopupMenuOperationContext createPopupMenuOperationContext(AbstractPopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		PopupMenuOperationContext rv = new PopupMenuOperationContext(this, popupMenuOperation, e, viewController);
 		this.addChild(rv);
