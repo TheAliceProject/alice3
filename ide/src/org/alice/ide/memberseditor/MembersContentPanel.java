@@ -51,22 +51,45 @@ public abstract class MembersContentPanel extends edu.cmu.cs.dennisc.croquet.Pag
 			MembersContentPanel.this.handleAccessibleSelection( nextValue );
 		}
 	};
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField> partSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField>() {
+		public void changed(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField nextValue) {
+			MembersContentPanel.this.handlePartSelection( nextValue );
+		}
+	};
 	@Override
 	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
 		super.handleAddedTo( parent );
+		org.alice.ide.croquet.models.members.PartSelectionState.getInstance().addValueObserver( this.partSelectionObserver );
 		org.alice.ide.IDE.getSingleton().getAccessibleListState().addAndInvokeValueObserver( this.fieldSelectionObserver );
 	}
 	@Override
 	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		org.alice.ide.croquet.models.members.PartSelectionState.getInstance().removeValueObserver( this.partSelectionObserver );
 		org.alice.ide.IDE.getSingleton().getAccessibleListState().removeValueObserver( this.fieldSelectionObserver );
 		super.handleRemovedFrom( parent );
 	}
 	
-	protected abstract void handleAccessibleSelection( edu.cmu.cs.dennisc.alice.ast.Accessible accessible, java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > types );
-	private void handleAccessibleSelection( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
+	protected abstract void refresh( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > types );
+	
+	private void refresh() {
+		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.IDE.getSingleton().getAccessibleListState().getSelectedItem();
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > types = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( accessible != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = accessible.getValueType();
+			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField field = org.alice.ide.croquet.models.members.PartSelectionState.getInstance().getSelectedItem();
+			if( field != null ) {
+				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava fieldType = field.getValueType();
+				Class<?> cls = fieldType.getClassReflectionProxy().getReification();
+				Class<?> enclosingCls = cls.getEnclosingClass();
+				if( enclosingCls != null ) {
+					try {
+						java.lang.reflect.Method mthd = enclosingCls.getMethod( "getPart", cls );
+						type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( mthd.getReturnType() );
+					} catch( NoSuchMethodException nsme ) {
+						//pass
+					}
+				}
+			}
 			while( type != null ) {
 				types.add( type );
 				if( type.isFollowToSuperClassDesired() ) {
@@ -76,7 +99,13 @@ public abstract class MembersContentPanel extends edu.cmu.cs.dennisc.croquet.Pag
 				}
 			}
 		}
-		this.handleAccessibleSelection( accessible, types );
+		this.refresh( types );
+	}
+	private void handleAccessibleSelection( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
+		this.refresh();
+	}
+	private void handlePartSelection( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField field ) {
+		this.refresh();
 	}
 }
 

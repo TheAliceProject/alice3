@@ -291,6 +291,7 @@ public class PolygonalModel extends org.alice.apis.moveandturn.PolygonalModel {
 		moveRightNow( direction, amount, AsSeenBy.SELF );
 	}
 
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void setPositionRightNow( edu.cmu.cs.dennisc.math.Point3 offset, org.alice.apis.moveandturn.ReferenceFrame asSeenBy ) {
 		org.alice.apis.moveandturn.StandIn standIn = acquireStandIn( asSeenBy, offset );
 		try {
@@ -299,6 +300,7 @@ public class PolygonalModel extends org.alice.apis.moveandturn.PolygonalModel {
 			releaseStandIn( standIn );
 		}
 	}
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void setPositionRightNow( double x, double y, double z, org.alice.apis.moveandturn.ReferenceFrame asSeenBy ) {
 		setPositionRightNow( new edu.cmu.cs.dennisc.math.Point3( x, y, z ), asSeenBy );
 	}

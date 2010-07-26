@@ -129,7 +129,7 @@ public class ResourcePropertyPane extends AbstractPropertyPane<edu.cmu.cs.dennis
 			}
 			sb.append( "</html>" );
 		} else {
-			sb.append( org.alice.ide.IDE.getSingleton().getTextForNull() );
+			sb.append( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForNull() );
 		}
 		this.label.setText( sb.toString() );
 		if( nextResource != null ) {

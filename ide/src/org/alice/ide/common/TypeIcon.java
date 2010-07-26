@@ -57,30 +57,9 @@ public class TypeIcon implements javax.swing.Icon {
 		this.border = TypeBorder.getSingletonFor( type );
 	}
 
-	//todo: i18n
-	static java.util.Map< String, String > mapLocalizedTypeNames;
-	static {
-		mapLocalizedTypeNames = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-		mapLocalizedTypeNames.put( "Double", "Real Number" );
-		mapLocalizedTypeNames.put( "PolygonalModel", "Thing" );
-		mapLocalizedTypeNames.put( "String", "Text" );
-	}
-
 	private String getText() {
-		String rv;
-		if( this.type != null ) {
-			rv = this.type.getName();
-		} else {
-			rv = org.alice.ide.IDE.getSingleton().getTextForNull();
-		}
-		if( org.alice.ide.IDE.getSingleton().isJava() ) {
-			//pass
-		} else {
-			if( mapLocalizedTypeNames.containsKey( rv ) ) {
-				rv = mapLocalizedTypeNames.get( rv );
-			}
-		}
-		return rv;
+		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
+		return formatter.getTextForType( this.type );
 	}
 	public int getIconWidth() {
 		return this.getBorderWidth();

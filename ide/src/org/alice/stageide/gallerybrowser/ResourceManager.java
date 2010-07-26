@@ -64,10 +64,10 @@ public class ResourceManager {
 		if( treeNode != null ) {
 			String path = treeNode.getValue();
 			String resourceName = path.substring( PACKAGE_NAME_PREFIX.length()+1 );
-			if( resourceName.startsWith( "images/org/alice/apis/moveandturn/gallery/environments/grounds/" ) ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle grounds" );
-				return null;
-			} else {
+//			if( resourceName.startsWith( "images/org/alice/apis/moveandturn/gallery/environments/grounds/" ) ) {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle grounds" );
+//				return null;
+//			} else {
 				java.net.URL rv = ResourceManager.class.getResource( resourceName );
 				if( rv != null ) {
 					//pass
@@ -75,7 +75,7 @@ public class ResourceManager {
 					System.err.println( resourceName );
 				}
 				return rv;
-			}
+//			}
 		} else {
 			return null;
 		}
@@ -133,12 +133,12 @@ public class ResourceManager {
 	
 	private static java.net.URL getLargeIconResourceForGalleryClassName( String className ) {
 		if( className != null ) {
-			if( className.startsWith( "org.alice.apis.moveandturn.gallery.environments.grounds." ) ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle grounds" );
-				return null;
-			} else {
+//			if( className.startsWith( "org.alice.apis.moveandturn.gallery.environments.grounds." ) ) {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle grounds" );
+//				return null;
+//			} else {
 				return ResourceManager.class.getResource( getLargeIconResourceNameForClassName( className ) );
-			}
+//			}
 		} else {
 			return null;
 		}
@@ -174,8 +174,22 @@ public class ResourceManager {
 			return null;
 		}
 	}
+	
+	private static java.util.Map<edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava, javax.swing.Icon> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static void registerSmallIcon( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava, javax.swing.Icon icon ) {
+		map.put(typeInJava, icon);
+	}
+	public static void registerSmallIcon( Class<?> cls, javax.swing.Icon icon ) {
+		registerSmallIcon(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get(cls), icon);
+	}
+	
 	public static javax.swing.Icon getSmallIconForType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		return getSmallIconFor( getLargeIconForType(type) );
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
+		if( map.containsKey( typeInJava ) ) {
+			return map.get( typeInJava );
+		} else {
+			return getSmallIconFor( getLargeIconForType(type) );
+		}
 	}
 	
 

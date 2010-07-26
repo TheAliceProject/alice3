@@ -49,7 +49,7 @@ public abstract class FieldListCellRenderer extends edu.cmu.cs.dennisc.javax.swi
 		if( value != null ) {
 			rv.setText( value.getName() );
 		} else {
-			rv.setText( org.alice.ide.IDE.getSingleton().getTextForNull() );
+			rv.setText( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForNull() );
 		}
 		return rv;
 	}

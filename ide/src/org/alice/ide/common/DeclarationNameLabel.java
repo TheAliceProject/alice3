@@ -93,11 +93,12 @@ public class DeclarationNameLabel extends edu.cmu.cs.dennisc.croquet.Label {
 	}
 	
 	protected String getNameText() {
-		return this.declaration.getName();
+		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
+		return formatter.getNameForDeclaration( this.declaration );
 	}
 	
 	protected String getTextForNullName() {
-		return org.alice.ide.IDE.getSingleton().getTextForNull();
+		return org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForNull();
 	}
 	protected final String getTextForBlankName() {
 		return "<unset>";

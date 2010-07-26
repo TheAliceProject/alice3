@@ -46,6 +46,7 @@ package org.alice.ide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public class IntegerFillerInner extends AbstractNumberFillerInner {
+	private static final edu.cmu.cs.dennisc.alice.ast.TypeExpression INTEGER_UTILITIES_TYPE_EXPRESSION = org.alice.ide.ast.NodeUtilities.createTypeExpression( org.alice.integer.IntegerUtilities.class );
 	public IntegerFillerInner() {
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, edu.cmu.cs.dennisc.alice.ast.IntegerLiteral.class );
 	}
@@ -63,6 +64,15 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 				//addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFrom0ToNExclusive", Integer.class );
 				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFromAToBExclusive", Integer.class, Integer.class );
 				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFromAToBInclusive", Integer.class, Integer.class );
+			}
+		} );
+		blank.addSeparator();
+		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Real Number" ) {
+			@Override
+			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
+				addNodeChildForMethod( blank, INTEGER_UTILITIES_TYPE_EXPRESSION, "toFlooredInteger", Double.class );
+				addNodeChildForMethod( blank, INTEGER_UTILITIES_TYPE_EXPRESSION, "toRoundedInteger", Double.class );
+				addNodeChildForMethod( blank, INTEGER_UTILITIES_TYPE_EXPRESSION, "toCeilingedInteger", Double.class );
 			}
 		} );
 		blank.addSeparator();

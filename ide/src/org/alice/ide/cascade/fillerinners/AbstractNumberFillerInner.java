@@ -60,5 +60,5 @@ public abstract class AbstractNumberFillerInner extends ExpressionFillerInner {
 	public AbstractNumberFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Expression > cls ) {
 		super( type, cls );
 	}
-	protected static final edu.cmu.cs.dennisc.alice.ast.TypeExpression MATH_TYPE_EXPRESSION = org.alice.ide.ast.NodeUtilities.createTypeExpression( java.lang.Math.class );
+	protected static final edu.cmu.cs.dennisc.alice.ast.TypeExpression MATH_TYPE_EXPRESSION = org.alice.ide.ast.NodeUtilities.createTypeExpression( Math.class );
 }

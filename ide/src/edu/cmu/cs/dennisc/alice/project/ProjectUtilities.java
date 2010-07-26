@@ -163,10 +163,10 @@ public abstract class ProjectUtilities {
 		return edu.cmu.cs.dennisc.xml.XMLUtilities.read( zipFile.getInputStream( entry ) );
 	}
 
-	private static edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> readType( java.util.zip.ZipFile zipFile, String entryName ) throws java.io.IOException {
+	private static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice readType( java.util.zip.ZipFile zipFile, String entryName ) throws java.io.IOException {
 		String version = readVersion( zipFile );
 		org.w3c.dom.Document xmlDocument = readXML( zipFile, entryName );
-		return (edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>)edu.cmu.cs.dennisc.alice.ast.Node.decode( xmlDocument, version );
+		return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)edu.cmu.cs.dennisc.alice.ast.Node.decode( xmlDocument, version );
 	}
 	private static java.util.Set< org.alice.virtualmachine.Resource > readResources( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
 		java.util.Set< org.alice.virtualmachine.Resource > rv = new java.util.HashSet< org.alice.virtualmachine.Resource >();
@@ -201,7 +201,7 @@ public abstract class ProjectUtilities {
 
 	public static edu.cmu.cs.dennisc.alice.Project readProject( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
 		assert zipFile != null;
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = readType( zipFile, PROGRAM_TYPE_ENTRY_NAME );
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = readType( zipFile, PROGRAM_TYPE_ENTRY_NAME );
 		java.util.Set< org.alice.virtualmachine.Resource > resources = readResources( zipFile );
 		edu.cmu.cs.dennisc.alice.Project rv = new edu.cmu.cs.dennisc.alice.Project( type, resources );
 		readProperties( rv.getProperties(), zipFile );

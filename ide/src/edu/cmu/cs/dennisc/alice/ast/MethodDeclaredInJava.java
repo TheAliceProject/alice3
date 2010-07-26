@@ -98,10 +98,13 @@ public class MethodDeclaredInJava extends AbstractMethod {
 	}
 
 	@Override
-	public AbstractType<?,?,?> getReturnType() {
+	public TypeDeclaredInJava getReturnType() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
-		assert mthd != null;
-		return TypeDeclaredInJava.get( mthd.getReturnType() );
+		if( mthd != null ) {
+			return TypeDeclaredInJava.get( mthd.getReturnType() );
+		} else {
+			return null;
+		}
 	}
 	@Override
 	public java.util.ArrayList< ? extends AbstractParameter > getParameters() {
@@ -109,7 +112,7 @@ public class MethodDeclaredInJava extends AbstractMethod {
 	}
 
 	@Override
-	public AbstractType<?,?,?> getDeclaringType() {
+	public TypeDeclaredInJava getDeclaringType() {
 		return TypeDeclaredInJava.get( this.methodReflectionProxy.getDeclaringClassReflectionProxy() );
 	}
 	@Override

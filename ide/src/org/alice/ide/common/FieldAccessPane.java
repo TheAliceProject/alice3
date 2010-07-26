@@ -53,7 +53,7 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 		this.fieldAccess = fieldAccess;
 		boolean isExpressionDesired;
 		if( this.fieldAccess.expression.getValue() instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
-			isExpressionDesired = getIDE().isJava();
+			isExpressionDesired = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().isTypeExpressionDesired();
 		} else {
 			isExpressionDesired = true;
 		}

@@ -42,8 +42,6 @@
  */
 package org.alice.stageide;
 
-import edu.cmu.cs.dennisc.croquet.Operation;
-
 public class StageIDE extends org.alice.ide.IDE {
 	public StageIDE() {
 		//a very short window...
@@ -67,6 +65,79 @@ public class StageIDE extends org.alice.ide.IDE {
 				if( (newState & java.awt.Frame.ICONIFIED) == java.awt.Frame.ICONIFIED ) {
 					edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
 				}
+			}
+		} );
+
+		final int SMALL_ICON_SIZE = 32;
+		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.alice.apis.moveandturn.DirectionalLight.class, new javax.swing.Icon() {
+
+			public int getIconWidth() {
+				return SMALL_ICON_SIZE;
+			}
+			public int getIconHeight() {
+				return SMALL_ICON_SIZE;
+			}
+			
+			private java.awt.Shape createArc( float size ) {
+				java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
+				rv.moveTo( 0.0f, 0.0f );
+				rv.lineTo( size, 0.0f );
+				rv.quadTo( size, size, 0.0f, size );
+				rv.closePath();
+				return rv;
+			}
+			public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				java.awt.geom.AffineTransform m = g2.getTransform();
+				Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+				try {
+					java.awt.Shape innerArc = this.createArc( 20.0f );
+					java.awt.Shape outerArc = this.createArc( 22.0f );
+					
+					g2.translate( 4.0f, 4.0f );
+					java.awt.geom.GeneralPath pathRays = new java.awt.geom.GeneralPath();
+					double thetaN = Math.PI/2.0;
+					double thetaDelta = thetaN/8.0;
+					g2.setColor( new java.awt.Color( 255, 210, 0 ) );
+					for( double theta = 0.0; theta<=thetaN; theta += thetaDelta ) {
+						pathRays.moveTo( 0.0f, 0.0f );
+						pathRays.lineTo( (float)( Math.cos( theta ) * 26.0 ), (float)( Math.sin( theta ) * 26.0 ) ); 
+					}
+					g2.draw( pathRays );
+					g2.fill( outerArc );
+
+					g2.setColor( new java.awt.Color( 230, 230, 0 ) );
+					g2.fill( innerArc );
+				} finally {
+					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
+					g2.setTransform( m );
+				}
+			}
+		} );
+		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.alice.apis.moveandturn.SymmetricPerspectiveCamera.class, new javax.swing.Icon() {
+			public int getIconWidth() {
+				return SMALL_ICON_SIZE;
+			}
+			public int getIconHeight() {
+				return SMALL_ICON_SIZE;
+			}
+			public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+				path.moveTo( 4,4 );
+				path.lineTo( 20, 4 );
+				path.lineTo( 20, 12 );
+				path.lineTo( 28, 8 );
+				path.lineTo( 28, 20 );
+				path.lineTo( 20, 16 );
+				path.lineTo( 20, 24 );
+				path.lineTo( 4, 24 );
+				path.closePath();
+				g2.setColor( java.awt.Color.GRAY );
+				g2.fill( path );
+				g2.setColor( java.awt.Color.BLACK );
+				g2.draw( path );
 			}
 		} );
 	}

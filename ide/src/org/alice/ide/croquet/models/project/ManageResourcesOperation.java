@@ -42,6 +42,9 @@
  */
 package org.alice.ide.croquet.models.project;
 
+/**
+ * @author Dennis Cosgrove
+ */
 public class ManageResourcesOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.ide.resource.manager.ResourceManagerPane> {
 	private static class SingletonHolder {
 		private static ManageResourcesOperation instance = new ManageResourcesOperation();

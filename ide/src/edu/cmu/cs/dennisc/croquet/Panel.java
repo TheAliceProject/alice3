@@ -61,11 +61,11 @@ public abstract class Panel extends JComponent< javax.swing.JPanel > {
 		}
 		@Override
 		public java.awt.Dimension getMaximumSize() {
+			java.awt.Dimension rv = super.getMaximumSize();
 			if( Panel.this.isMaximumSizeClampedToPreferredSize() ) {
-				return this.getPreferredSize();
-			} else {
-				return super.getMaximumSize();
+				rv.setSize( this.getPreferredSize() );
 			}
+			return rv;
 		}
 	}
 	protected javax.swing.JPanel createJPanel() {

@@ -220,9 +220,20 @@ public class TextAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
 		}
 	}
 
+	private static final float AMBIENT_BOOST = 0.25f;
+	private static float[] ambientColor = { Float.NaN, Float.NaN, Float.NaN, Float.NaN };
+	private static java.nio.FloatBuffer ambientBuffer = java.nio.FloatBuffer.wrap( ambientColor );
 	@Override
 	protected void renderGeometry( RenderContext rc ) {
+		float globalBrightness = rc.getGlobalBrightness();
+		rc.getAmbient( ambientColor );
+		ambientColor[ 0 ] += globalBrightness * AMBIENT_BOOST;
+		ambientColor[ 1 ] += globalBrightness * AMBIENT_BOOST;
+		ambientColor[ 2 ] += globalBrightness * AMBIENT_BOOST;
+		rc.gl.glLightModelfv( GL.GL_LIGHT_MODEL_AMBIENT, ambientBuffer );
 		glText( rc, true );
+		rc.getAmbient( ambientColor );
+		rc.gl.glLightModelfv( GL.GL_LIGHT_MODEL_AMBIENT, ambientBuffer );
 	}
 	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
