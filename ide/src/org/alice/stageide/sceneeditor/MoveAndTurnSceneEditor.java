@@ -752,6 +752,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		
 			//Cache the currently selected view index
 			this.expandedViewSelectedMarker = this.mainCameraMarkerList.getSelectedItem();
+			this.globalDragAdapter.getInteractionSelectionStateList().setSelectedItem(this.globalDragAdapter.getInteractionSelectionStateList().getItemAt(0));
 			
 			//Switch the main view to the starting view
 			FieldDeclaredInAlice startIngViewField = this.startingViewMarkerFieldList.getSelectedItem();
@@ -760,6 +761,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			} else {
 				PrintUtilities.println( "todo: handle cfAm == null" );
 			}
+			
 		}
 		this.updateSceneBasedOnScope();
 		this.mainCameraViewSelector.revalidateAndRepaint();

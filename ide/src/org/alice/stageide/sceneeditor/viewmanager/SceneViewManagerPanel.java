@@ -48,6 +48,7 @@ import java.awt.Insets;
 
 
 import org.alice.apis.moveandturn.CameraMarker;
+import org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState;
 import org.alice.ide.swing.FieldListCellRenderer;
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.croquet.GridBagPanel;
@@ -73,22 +74,23 @@ public class SceneViewManagerPanel extends GridBagPanel{
 			@Override
 			protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractField value, int index, boolean isSelected, boolean cellHasFocus) {
 				if( value == null ) {
-					rv.setText( org.alice.ide.IDE.getSingleton().getTextForNull() );
+					;
+					rv.setText( FormatterSelectionState.getInstance().getSelectedItem().getTextForNull() );
 					
 				} else {
 					rv.setText( value.getName() );
-					if (SceneViewManagerPanel.this.isFieldActive(value))
-					{
-						rv.setForeground(Color.GREEN);
-					}
-					else
-					{
-						rv.setForeground(Color.BLACK);
-					}
-					if (SceneViewManagerPanel.this.isFieldStartingField(value))
-					{
-						rv.setBackground(Color.YELLOW);
-					}
+//					if (SceneViewManagerPanel.this.isFieldActive(value))
+//					{
+//						rv.setForeground(Color.GREEN);
+//					}
+//					else
+//					{
+//						rv.setForeground(Color.BLACK);
+//					}
+//					if (SceneViewManagerPanel.this.isFieldStartingField(value))
+//					{
+//						rv.setBackground(Color.YELLOW);
+//					}
 					
 				}
 				return rv;

@@ -56,6 +56,8 @@ import org.alice.interact.handle.HandleSet;
 import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
 import edu.cmu.cs.dennisc.croquet.DragComponent;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
@@ -137,6 +139,18 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 			if (!(this.getCamera() instanceof OrthographicCamera))
 			{
 				setUpPlanes(new Point3(0,0,0), startInput.getMouseLocation());
+				Vector3 cameraBackward = this.camera.getAbsoluteTransformation().orientation.backward;
+				cameraBackward.y = 0.0;
+				cameraBackward.normalize();
+				if (cameraBackward.isNaN())
+				{
+					cameraBackward = this.camera.getAbsoluteTransformation().orientation.up;
+					cameraBackward.multiply(-1);
+					cameraBackward.y = 0.0;
+					cameraBackward.normalize();
+				}
+				OrthogonalMatrix3x3 facingCameraOrientation = new OrthogonalMatrix3x3(new ForwardAndUpGuide(cameraBackward, Vector3.accessPositiveYAxis()));
+				this.sgBoundingBoxTransformable.setAxesOnly(facingCameraOrientation, AsSeenBy.SCENE);
 			}
 			this.sgBoundingBoxTransformable.setTranslationOnly(this.getPerspectivePositionBasedOnInput(startInput), AsSeenBy.SCENE);
 			this.originalPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation;
