@@ -260,25 +260,48 @@ public class ListSelectionState<E> extends Model implements Iterable<E> {
 			return this.items.size();
 		}
 
-		
-		private void setListData(int selectedIndex, E[] items) {
+//		private void forceComboBoxResize() {
+//			for( Component<?> component : ListSelectionState.this.getComponents() ) {
+//				if( component instanceof ComboBox<?> ) {
+//					ComboBox<?> comboBox = (ComboBox<?>) component;
+//					javax.swing.JComboBox jComboBox = comboBox.getAwtComponent();
+//					javax.swing.plaf.ComboBoxUI ui = jComboBox.getUI();
+//					if (ui instanceof javax.swing.plaf.basic.BasicComboBoxUI) {
+//						jComboBox.setModel( new javax.swing.DefaultComboBoxModel() );
+//						jComboBox.setModel( comboBoxModel );
+//					}
+//				}
+//			}
+//		}
+		private void setListDataPrologue() {
 			this.items.clear();
-			this.items.ensureCapacity( items.length );
+			this.items.ensureCapacity( items.size() );
+		}
+		private void setListDataEpilogue( int selectedIndex ) {
+			int index0 = 0;
+			int index1 = this.getSize() - 1;
+			if( index1 > 0 ) {
+				this.fireIntervalAdded(this, index0, index1);
+			} else {
+				this.fireContentsChanged(this, index0, index1);	
+			}
+			ListSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, true);
+			//this.forceComboBoxResize();
+		}
+		private void setListData(int selectedIndex, E[] items) {
+			this.setListDataPrologue();
 			for( E item : items ) {
 				this.items.add( item );
 			}
-			this.fireContentsChanged(this, 0, this.getSize() - 1);
-			ListSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, true);
+			this.setListDataEpilogue( selectedIndex );
 		}
 
 		private void setListData(int selectedIndex, java.util.Collection<E> items) {
-			this.items.clear();
-			this.items.ensureCapacity( items.size() );
+			this.setListDataPrologue();
 			for( E item : items ) {
 				this.items.add( item );
 			}
-			this.fireContentsChanged(this, 0, this.getSize() - 1);
-			ListSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, true);
+			this.setListDataEpilogue( selectedIndex );
 		}
 		
 		private void addItem( E item ) {

@@ -59,13 +59,13 @@ public class ComboBox< E > extends ItemSelectable<javax.swing.JComboBox, E> {
 			}
 			@Override
 			public java.awt.Dimension getMaximumSize() {
+				java.awt.Dimension rv = super.getMaximumSize();
 				if( ComboBox.this.isMaximumSizeClampedToPreferredSize() ) {
-					return this.getPreferredSize();
+					rv.setSize( this.getPreferredSize() );
 				} else {
-					java.awt.Dimension rv = super.getMaximumSize();
 					rv.height = this.getPreferredSize().height;
-					return rv;
 				}
+				return rv;
 			}
 		};
 		return rv;

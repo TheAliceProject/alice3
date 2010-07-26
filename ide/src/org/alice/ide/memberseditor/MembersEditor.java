@@ -352,6 +352,8 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 		comboBox.setMaximumRowCount( 20 );
 		comboBox.setRenderer( new AccessibleCellRenderer() );
+		comboBox.setMaximumSizeClampedToPreferredSize( true );
+
 		edu.cmu.cs.dennisc.croquet.Label instanceLabel = new edu.cmu.cs.dennisc.croquet.Label( "instance:" );
 		instanceLabel.scaleFont( FONT_SCALAR );
 		
@@ -400,7 +402,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			}
 		} );
 		
-		comboBox.setMaximumSizeClampedToPreferredSize( true );
+		
 		partComboBox.setMaximumSizeClampedToPreferredSize( true );
 		partComboBox.scaleFont( FONT_SCALAR );
 		partComboBox.setMaximumRowCount( 20 );
@@ -421,7 +423,6 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //			}
 //		} );
 		
-		//edu.cmu.cs.dennisc.croquet.BorderPanel instancePanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		edu.cmu.cs.dennisc.croquet.LineAxisPanel instancePanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
 		instancePanel.addComponent( instanceLabel );
 		instancePanel.addComponent( comboBox );
