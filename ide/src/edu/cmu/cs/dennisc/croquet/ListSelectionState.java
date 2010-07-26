@@ -518,7 +518,7 @@ public class ListSelectionState<E> extends Model implements Iterable<E> {
 						comboBoxModel.setSelectedItem(item);
 					}
 				};
-				action.putValue(javax.swing.Action.NAME, item.toString());
+				action.putValue(javax.swing.Action.NAME, getMenuText( (E)item ) );
 				javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem(action);
 				buttonGroup.add(jMenuItem);
 				jMenuItem.setSelected(comboBoxModel.getSelectedItem() == item);
@@ -527,6 +527,15 @@ public class ListSelectionState<E> extends Model implements Iterable<E> {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ListSelectionMenuModel handleMenuSelected" );
 		}
 	}
+	
+	protected String getMenuText( E item ) {
+		if( item != null ) {
+			return item.toString();
+		} else {
+			return null;
+		}
+	}
+	
 	private ListSelectionMenuModel menuModel = null;
 	public synchronized MenuModel getMenuModel() {
 		if( this.menuModel != null ) {
