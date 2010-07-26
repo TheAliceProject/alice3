@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class AbstractDialogOperationContext<M extends AbstractDialogOperation> extends OperationContext<M> {
+public class AbstractDialogOperationContext<M extends AbstractDialogOperation<?>> extends OperationContext<M> {
 	public static abstract class WindowEvent extends ModelEvent< AbstractDialogOperationContext > {
 		private java.awt.event.WindowEvent windowEvent;
 		public WindowEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
