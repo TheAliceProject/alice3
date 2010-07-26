@@ -55,4 +55,20 @@ public class JavaFormatter extends Formatter {
 	private JavaFormatter() {
 		super( new java.util.Locale( "en", "US", "java" ), "Java" );
 	}
+	@Override
+	protected String getTextForCls(java.lang.Class<?> cls) {
+		return cls.getSimpleName();
+	}
+	@Override
+	public String getTextForNull() {
+		return "null";
+	}
+	@Override
+	protected String getTextForMthd(java.lang.reflect.Method mthd) {
+		return mthd.getName();
+	}
+	@Override
+	public boolean isTypeExpressionDesired() {
+		return true;
+	}
 }

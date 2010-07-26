@@ -52,7 +52,55 @@ public class AliceFormatter extends Formatter {
 	public static AliceFormatter getInstance() {
 		return SingletonHolder.instance;
 	}
+	private java.util.Map<String, String> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	
 	private AliceFormatter() {
-		super( new java.util.Locale( "en", "US" ), "Alice" );
+		super( new java.util.Locale( "en", "US", "alice" ), "Alice" );
+		String[] bundleNames = { "MainBundle", "java_lang_PackageBundle", "org_alice_integer_PackageBundle", "org_alice_random_PackageBundle", "org_alice_apis_moveandturn_PackageBundle", "edu_wustl_cse_lookingglass_apis_walkandtouch_PackageBundle" };
+		for( String bundleName : bundleNames ) {
+			try {
+				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "org.alice.ide.formatter." + bundleName, new java.util.Locale( "en" ) );
+				for( java.util.Enumeration<String> e=resourceBundle.getKeys(); e.hasMoreElements();  ) {
+					String key = e.nextElement();
+					map.put( key, resourceBundle.getString( key ) );
+				}
+			} catch( java.util.MissingResourceException mre ) {
+				//pass
+			}
+		}
+	}
+	
+	private String getLocalizedText( String text, String rvIfNull ) {
+		String rv = this.map.get( text );
+		if( rv != null ) {
+			return rv;
+		} else {
+			return rvIfNull;
+		}
+	}
+	private String getLocalizedText( String text ) {
+		return getLocalizedText( text, text );
+	}
+	@Override
+	public String getTextForNull() {
+		return this.getLocalizedText( "null" );
+	}
+	@Override
+	protected String getTextForCls( Class<?> cls ) {
+		if( cls != null ) {
+			return this.getLocalizedText( cls.getName(), cls.getSimpleName() );
+		} else {
+			return this.getTextForNull();
+		}
+	}
+	
+	@Override
+	protected String getTextForMthd(java.lang.reflect.Method mthd) {
+		return this.getLocalizedText( mthd.getName() );
+	}
+	
+	@Override
+	public boolean isTypeExpressionDesired() {
+		return false;
 	}
 }

@@ -309,7 +309,7 @@ public abstract class Factory {
 //			}
 		} else {
 			//rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "todo: handle null" );
-			rv = new edu.cmu.cs.dennisc.croquet.Label( org.alice.ide.IDE.getSingleton().getTextForNull() );
+			rv = new edu.cmu.cs.dennisc.croquet.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForNull() );
 		}
 		return rv;
 	}
@@ -420,7 +420,11 @@ public abstract class Factory {
 			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
 				rv = this.createFieldAccessPane( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
 			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
-				rv = TypeComponent.createInstance( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
+				if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().isTypeExpressionDesired() ) {
+					rv = TypeComponent.createInstance( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
+				} else {
+					rv = new edu.cmu.cs.dennisc.croquet.Label();
+				}
 			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation ) {
 				rv = this.createInstanceCreationPane( (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)expression );
 //			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AbstractLiteral ) {

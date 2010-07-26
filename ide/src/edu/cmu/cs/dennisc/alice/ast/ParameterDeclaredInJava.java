@@ -75,10 +75,12 @@ public abstract class ParameterDeclaredInJava extends AbstractParameter {
 	}
 	@Override
 	public AbstractType<?,?,?> getDesiredValueType() {
-		for( java.lang.annotation.Annotation annotation : m_annotations ) {
-			if( annotation instanceof edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate ) {
-				edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate parameterTemplate = (edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate)annotation;
-				return TypeDeclaredInJava.get( parameterTemplate.preferredArgumentClass() );
+		if( m_annotations != null ) {
+			for( java.lang.annotation.Annotation annotation : m_annotations ) {
+				if( annotation instanceof edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate ) {
+					edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate parameterTemplate = (edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate)annotation;
+					return TypeDeclaredInJava.get( parameterTemplate.preferredArgumentClass() );
+				}
 			}
 		}
 		return getValueType();

@@ -56,6 +56,36 @@ public abstract class Formatter {
 	public java.util.Locale getLocale() {
 		return this.locale;
 	}
+	
+	
+	protected abstract String getTextForMthd( java.lang.reflect.Method mthd );
+	public String getNameForDeclaration( edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration declaration ) {
+		if (declaration instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava) {
+			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava methodInJava = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava) declaration;
+			java.lang.reflect.Method mthd = methodInJava.getMethodReflectionProxy().getReification();
+			return this.getTextForMthd( mthd );
+		} else {
+			return declaration.getName();
+		}
+	}
+	
+	public abstract boolean isTypeExpressionDesired();
+
+	public abstract String getTextForNull();
+	protected abstract String getTextForCls( Class<?> cls );
+	public String getTextForType(edu.cmu.cs.dennisc.alice.ast.AbstractType<?, ?, ?> type) {
+		if( type != null ) {
+			if (type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava) {
+				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava) type;
+				Class<?> cls = typeInJava.getClassReflectionProxy().getReification();
+				return this.getTextForCls( cls );
+			} else {
+				return type.getName();
+			}
+		} else {
+			return this.getTextForNull();
+		}
+	}
 	@Override
 	public String toString() {
 		return this.repr;

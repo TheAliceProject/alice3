@@ -565,15 +565,16 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public boolean isJava() {
-		return this.getFrame().getAwtComponent().getLocale().getVariant().equals( "java" );
+		//return this.getFrame().getAwtComponent().getLocale().getVariant().equals( "java" );
+		return org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem() == org.alice.ide.formatter.JavaFormatter.getInstance();
 	}
-	public String getTextForNull() {
-		if( isJava() ) {
-			return "null";
-		} else {
-			return "<unset>";
-		}
-	}
+//	public String getTextForNull() {
+//		if( isJava() ) {
+//			return "null";
+//		} else {
+//			return "<unset>";
+//		}
+//	}
 
 	private java.io.File applicationDirectory = null;
 

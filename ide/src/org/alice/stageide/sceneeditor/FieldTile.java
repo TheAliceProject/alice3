@@ -205,7 +205,7 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 			this.setBackgroundColor( this.calculateColor() );
 		} else {
 			this.setBackgroundColor( java.awt.Color.RED );
-			nextText = org.alice.ide.IDE.getSingleton().getTextForNull();
+			nextText = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForNull();
 		}
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( prevText, nextText ) ) {
 			//pass

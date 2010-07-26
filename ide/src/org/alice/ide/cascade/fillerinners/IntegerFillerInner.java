@@ -46,7 +46,7 @@ package org.alice.ide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public class IntegerFillerInner extends AbstractNumberFillerInner {
-	private static final edu.cmu.cs.dennisc.alice.ast.TypeExpression INTEGER_UTILITIES_TYPE_EXPRESSION = org.alice.ide.ast.NodeUtilities.createTypeExpression( org.alice.virtualmachine.IntegerUtilities.class );
+	private static final edu.cmu.cs.dennisc.alice.ast.TypeExpression INTEGER_UTILITIES_TYPE_EXPRESSION = org.alice.ide.ast.NodeUtilities.createTypeExpression( org.alice.integer.IntegerUtilities.class );
 	public IntegerFillerInner() {
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, edu.cmu.cs.dennisc.alice.ast.IntegerLiteral.class );
 	}
