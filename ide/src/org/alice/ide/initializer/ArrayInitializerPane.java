@@ -458,6 +458,9 @@ abstract class FauxItem extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swi
 			@Override
 			protected void paintComponent(java.awt.Graphics g) {
 				//super.paintComponent(g);
+				g.setColor( this.getBackground() );
+				g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
+				//g.clearRect( 0, 0, this.getWidth(), this.getHeight() );
 				if( this.isSelected() ) {
 					java.awt.Color color;
 //					if( this.getModel().isRollover() ) {
@@ -480,6 +483,8 @@ abstract class FauxItem extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swi
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder(4, 14, 4, 4) );
 		rv.setLayout( new java.awt.BorderLayout() );
 		rv.setRolloverEnabled( true );
+//		rv.setOpaque( false );
+//		rv.setBackground( null );
 
 		org.alice.ide.common.AbstractDropDownListItemExpressionPane dropDownListItemExpressionPane = new org.alice.ide.common.AbstractDropDownListItemExpressionPane( this.index, this.expressionListProperty ) {
 			@Override
@@ -673,7 +678,7 @@ class MutableList extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 				} else {
 					i = dropIndex - 1;
 				}
-				this.expressionListProperty.swap( this.originalIndex, i );
+				this.expressionListProperty.slide( this.originalIndex, i );
 				
 				FauxItem fauxItem = (FauxItem)this.getComponent( i );
 				fauxItem.getAwtComponent().setSelected( true );
@@ -734,6 +739,8 @@ class MutableList extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
     			super.handleRemovedFrom(parent);
     		}
     	};
+		fauxItem.setBackgroundColor( this.getBackgroundColor() );
+    	
     	fauxItem.addCloseButton( new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent e) {
 				int index = fauxItem.getIndex();

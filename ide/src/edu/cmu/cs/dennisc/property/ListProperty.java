@@ -302,14 +302,16 @@ public class ListProperty<E> extends InstanceProperty< java.util.ArrayList< E > 
 	
 	public void slide( int prevIndex, int nextIndex ) {
 		if( prevIndex != nextIndex ) {
+			
+			final int ONE_TO_EXCLUDE = 1;
 			//todo: test
 			E element = this.getValue().get( prevIndex );
 			if( prevIndex < nextIndex ) {
-				java.util.List< E > subList = this.subList( prevIndex+1, nextIndex+1 );
+				java.util.List< E > subList = this.subListCopy( prevIndex+1, nextIndex+ONE_TO_EXCLUDE );
 				subList.add( element );
 				this.set( prevIndex, subList );
 			} else {
-				java.util.List< E > subList = this.subList( prevIndex, nextIndex );
+				java.util.List< E > subList = this.subListCopy( nextIndex, prevIndex-1+ONE_TO_EXCLUDE );
 				subList.add( 0, element );
 				this.set( nextIndex, subList );
 			}
