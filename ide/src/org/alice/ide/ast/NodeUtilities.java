@@ -186,6 +186,16 @@ public class NodeUtilities {
 		rv.field.setValue( field );
 		return rv;
 	}
+	public static edu.cmu.cs.dennisc.alice.ast.FieldAccess createStaticFieldAccess( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		assert field.isStatic();
+		return createFieldAccess( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( field.getDeclaringType() ), field );
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.FieldAccess createStaticFieldAccess( Class<?> cls, String fieldName ) {
+		java.lang.reflect.Field fld = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredField( cls, fieldName );
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField field = edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField.get( fld );
+		return createStaticFieldAccess( field );
+	}
+	
 	public static edu.cmu.cs.dennisc.alice.ast.FieldAccess createIncompleteFieldAccess( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		return NodeUtilities.createFieldAccess( new SelectedFieldExpression( field.getDeclaringType() ), field );
 	}
