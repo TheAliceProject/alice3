@@ -44,14 +44,21 @@ package org.alice.stageide.sceneeditor.viewmanager;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
+
+import javax.swing.JPanel;
 
 
 import org.alice.apis.moveandturn.CameraMarker;
 import org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState;
 import org.alice.ide.swing.FieldListCellRenderer;
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+import edu.cmu.cs.dennisc.croquet.AxisPanel;
 import edu.cmu.cs.dennisc.croquet.GridBagPanel;
+import edu.cmu.cs.dennisc.croquet.LineAxisPanel;
+import edu.cmu.cs.dennisc.croquet.PageAxisPanel;
+import edu.cmu.cs.dennisc.croquet.Panel;
 import edu.cmu.cs.dennisc.croquet.ScrollPane;
 
 /**
@@ -63,28 +70,25 @@ public class SceneViewManagerPanel extends GridBagPanel{
 	private CreateCameraMarkerActionOperation createCameraMarkerAction = null;
 	private org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor sceneEditor;
 	
+	private AxisPanel markerPanel;
+	
 	public SceneViewManagerPanel(org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor sceneEditor)
 	{
 		super();
 //		this.setOpaque( false );
 		this.sceneEditor = sceneEditor;
-		this.createCameraMarkerAction = new CreateCameraMarkerActionOperation(this.sceneEditor);	
+		this.createCameraMarkerAction = new CreateCameraMarkerActionOperation(this.sceneEditor);
 		this.markerFieldList = this.sceneEditor.getSceneMarkerFieldList().createList();
-		this.markerFieldList.setCellRenderer(new FieldListCellRenderer(){
-			@Override
-			protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractField value, int index, boolean isSelected, boolean cellHasFocus) {
-				if( value == null ) 
-				{
-					rv.setText( FormatterSelectionState.getInstance().getSelectedItem().getTextForNull() );
-					
-				} else {
-					rv.setText( value.getName() );
-				}
-				return rv;
-			}
-		});
 		
-		ScrollPane markerScrollPane = new ScrollPane(this.markerFieldList, ScrollPane.VerticalScrollbarPolicy.AS_NEEDED, ScrollPane.HorizontalScrollbarPolicy.AS_NEEDED);
+		this.markerPanel = new PageAxisPanel(){
+			@Override
+			protected int getBoxLayoutPad() 
+			{
+				return 4;
+			}
+		};
+		
+		ScrollPane markerScrollPane = new ScrollPane(this.markerPanel, ScrollPane.VerticalScrollbarPolicy.AS_NEEDED, ScrollPane.HorizontalScrollbarPolicy.AS_NEEDED);
 		markerScrollPane.setBorder(null);
 		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "Camera Markers:", 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), new GridBagConstraints( 
 				0, //gridX
@@ -125,11 +129,22 @@ public class SceneViewManagerPanel extends GridBagPanel{
 				0, //ipadX
 				0 ) //ipadY
 		);
+		this.rebuildMarkerComponents();
+	}
+	
+	private void rebuildMarkerComponents()
+	{
+		this.markerPanel.removeAllComponents();
+		for (FieldDeclaredInAlice field : this.sceneEditor.getSceneMarkerFieldList())
+		{
+			this.markerPanel.addComponent(new CameraMarkerFieldTile(field, this.sceneEditor));
+		}
 	}
 	
 	public void updateMarkerList()
 	{
-		this.markerFieldList.revalidateAndRepaint();
+		this.rebuildMarkerComponents();
+//		this.markerFieldList.revalidateAndRepaint();
 	}
 
 }
