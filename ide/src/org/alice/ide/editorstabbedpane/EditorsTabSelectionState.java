@@ -265,6 +265,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 		org.alice.ide.IDE.getSingleton().addProjectObserver( this.projectObserver );
 //		org.alice.ide.IDE.getSingleton().addCodeInFocusObserver( this.codeInFocusObserver );
 	}
+	private static final boolean IS_RUN_BUTTON_DESIRED = false;
 	private class EditorTabCreator implements TabCreator< edu.cmu.cs.dennisc.alice.ast.AbstractCode > {
 		public java.util.UUID getId( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 			return code.getUUID();
@@ -287,7 +288,6 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 			button.getAwtComponent().setIcon( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( code.getDeclaringType() ) );
 			button.scaleFont( 1.5f );
 			
-			final boolean IS_RUN_BUTTON_DESIRED = false;
 			if( IS_RUN_BUTTON_DESIRED ) {
 				if( isEntryPoint(code) ) {
 					edu.cmu.cs.dennisc.croquet.DialogOperation runOperation = org.alice.ide.IDE.getSingleton().getRunOperation();
@@ -310,6 +310,66 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 	private edu.cmu.cs.dennisc.croquet.FolderTabbedPane<edu.cmu.cs.dennisc.alice.ast.AbstractCode> singleton;
 //	private DeclarationsDropDown declarationsDropDown = new DeclarationsDropDown();
 
+	@Override
+	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShapeFor(edu.cmu.cs.dennisc.alice.ast.AbstractCode item) {
+		final edu.cmu.cs.dennisc.croquet.TrackableShape rv = super.getTrackableShapeFor(item);
+		if( IS_RUN_BUTTON_DESIRED ) {
+			if( rv instanceof edu.cmu.cs.dennisc.croquet.JComponent<?> ) {
+				edu.cmu.cs.dennisc.croquet.JComponent<?> component = (edu.cmu.cs.dennisc.croquet.JComponent<?>)rv;
+				if( "run".equals( item.getName() ) ) {
+					edu.cmu.cs.dennisc.croquet.Button button = null;
+					for( edu.cmu.cs.dennisc.croquet.Component<?> child : component.getComponents() ) {
+						if( child instanceof edu.cmu.cs.dennisc.croquet.Button ) {
+							button = (edu.cmu.cs.dennisc.croquet.Button)child;
+							break;
+						}
+					}
+					if( button != null ) {
+						final edu.cmu.cs.dennisc.croquet.Button accessibleButton = button;
+						return new edu.cmu.cs.dennisc.croquet.TrackableShape() {
+							public void addComponentListener(java.awt.event.ComponentListener listener) {
+								rv.addComponentListener(listener);
+							}
+							public void addHierarchyBoundsListener(java.awt.event.HierarchyBoundsListener listener) {
+								rv.addHierarchyBoundsListener(listener);
+							}
+							public void removeComponentListener(java.awt.event.ComponentListener listener) {
+								rv.removeComponentListener(listener);
+							}
+							public void removeHierarchyBoundsListener(java.awt.event.HierarchyBoundsListener listener) {
+								rv.addHierarchyBoundsListener(listener);
+							}
+							public edu.cmu.cs.dennisc.croquet.ScrollPane getScrollPaneAncestor() {
+								return rv.getScrollPaneAncestor();
+							}
+							public java.awt.Shape getShape(edu.cmu.cs.dennisc.croquet.ScreenElement asSeenBy, java.awt.Insets insets) {
+								java.awt.Rectangle rvRect = (java.awt.Rectangle)rv.getShape(asSeenBy, insets);
+								java.awt.Rectangle buttonRect = (java.awt.Rectangle)accessibleButton.getShape(asSeenBy, null);
+								rvRect.width = buttonRect.x-rvRect.x;
+								if( insets != null ) {
+									rvRect.width += insets.right;
+								}
+								return rvRect;
+							}
+							public java.awt.Shape getVisibleShape(edu.cmu.cs.dennisc.croquet.ScreenElement asSeenBy, java.awt.Insets insets) {
+								java.awt.Rectangle rvRect = (java.awt.Rectangle)rv.getVisibleShape(asSeenBy, insets);
+								java.awt.Rectangle buttonRect = (java.awt.Rectangle)accessibleButton.getShape(asSeenBy, null);
+								rvRect.width = buttonRect.x-rvRect.x;
+								if( insets != null ) {
+									rvRect.width += insets.right;
+								}
+								return rvRect;
+							}
+							public boolean isInView() {
+								return rv.isInView();
+							}
+						};
+					}
+				}
+			}
+		}
+		return rv;
+	}
 	private static final int UI_ROUND = 3;
 	private static class AttentionGrabbingBorder implements javax.swing.border.Border {
 		private java.awt.Insets insets;

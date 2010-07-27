@@ -126,7 +126,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	
 	@Override
 	protected void complete() {
-		TutorialStencil.complete( this.completor.createEdit( this.getModel() ) );
+		TutorialStencil.complete( this.completor.createEdit( this.getModel(), null ) );
 	}
 	@Override
 	public void reset() {

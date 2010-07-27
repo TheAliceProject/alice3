@@ -42,6 +42,8 @@
  */
 package org.alice.stageide.tutorial;
 
+import edu.cmu.cs.dennisc.tutorial.Validator.Result;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,16 +58,39 @@ public class StressTestTutorial {
 				"Title", 
 				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
 		);
+		
+		tutorial.addSelectTabStep(   
+				"Select Run", 
+				"Select run tab.", 
+				ide.getEditorsTabSelectionState(),
+				tutorial.createCodeResolver( "scene", "run" )
+		);
+
+		final int count = 2;
 		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag Count Loop",
 				"Drag <b>Count Loop</b>.",
 				tutorial.createCountLoopTemplateResolver(),
 				"Drop <b>here</b>.",
 				tutorial.createBeginingOfCurrentMethodBodyStatementListResolver(),
-				"Select <b>2</b>.",
-				tutorial.createToDoCompletorValidator()
+				"Select <b>" + count + "</b>.",
+				new edu.cmu.cs.dennisc.tutorial.DragAndDropOperationCompletorValidator() {
+					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit edit ) {
+						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+					}
+					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
+						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice runMethod = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)org.alice.ide.IDE.getSingleton().getCodeEditorInFocus().getCode();
+						edu.cmu.cs.dennisc.alice.ast.Statement statement = org.alice.ide.ast.NodeUtilities.createCountLoop( new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( count ) ); 
+						return new org.alice.ide.codeeditor.InsertStatementEdit(
+								runMethod.body.getValue().statements,
+								0,
+								statement
+						);
+					}
+				}
 		);
 		
+
 		tutorial.addSpotlightStepForModel( 
 				"Note Count Loop", 
 				"note count loop", 
@@ -93,7 +118,7 @@ public class StressTestTutorial {
 					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit edit ) {
 						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 					}
-					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation ) {
+					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
 						return tutorial.createToDoEdit();
 					}
 					private boolean isAccessOfFieldNamed( edu.cmu.cs.dennisc.alice.ast.Expression expression, String name ) {
