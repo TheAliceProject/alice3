@@ -229,6 +229,7 @@ public class ListSelectionState<E> extends Model implements Iterable<E> {
 		}
 
 		public void setSelectedItem(Object item) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( item, this.getSelectedItem() );
 			if (item != this.getSelectedItem()) {
 				final int N = this.getSize();
 				int selectedIndex = -1;
@@ -475,6 +476,10 @@ public class ListSelectionState<E> extends Model implements Iterable<E> {
 
 	public DefaultRadioButtons<E> createDefaultRadioButtons() {
 		return register(new DefaultRadioButtons<E>( this ));
+	}
+	
+	public MutableList<E> createMutableList( MutableList.Factory<E> factory ) {
+		return register( new MutableList<E>( this, factory ) );
 	}
 
 	public interface TabCreator<E> {

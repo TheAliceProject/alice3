@@ -51,6 +51,7 @@ import org.alice.apis.moveandturn.CameraMarker;
 import org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState;
 import org.alice.ide.swing.FieldListCellRenderer;
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+import edu.cmu.cs.dennisc.croquet.BorderPanel;
 import edu.cmu.cs.dennisc.croquet.GridBagPanel;
 import edu.cmu.cs.dennisc.croquet.ScrollPane;
 
@@ -59,7 +60,7 @@ import edu.cmu.cs.dennisc.croquet.ScrollPane;
  */
 public class SceneViewManagerPanel extends GridBagPanel{
 	
-	private edu.cmu.cs.dennisc.croquet.List<FieldDeclaredInAlice> markerFieldList;
+	private edu.cmu.cs.dennisc.croquet.ItemSelectable<?,FieldDeclaredInAlice> markerFieldList;
 	private CreateCameraMarkerActionOperation createCameraMarkerAction = null;
 	private org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor sceneEditor;
 	
@@ -69,20 +70,41 @@ public class SceneViewManagerPanel extends GridBagPanel{
 //		this.setOpaque( false );
 		this.sceneEditor = sceneEditor;
 		this.createCameraMarkerAction = new CreateCameraMarkerActionOperation(this.sceneEditor);	
-		this.markerFieldList = this.sceneEditor.getSceneMarkerFieldList().createList();
-		this.markerFieldList.setCellRenderer(new FieldListCellRenderer(){
-			@Override
-			protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractField value, int index, boolean isSelected, boolean cellHasFocus) {
-				if( value == null ) 
-				{
-					rv.setText( FormatterSelectionState.getInstance().getSelectedItem().getTextForNull() );
-					
-				} else {
-					rv.setText( value.getName() );
-				}
-				return rv;
+
+		edu.cmu.cs.dennisc.croquet.MutableList.Factory<FieldDeclaredInAlice> factory = new edu.cmu.cs.dennisc.croquet.MutableList.Factory<FieldDeclaredInAlice>() {
+			public edu.cmu.cs.dennisc.croquet.Component<?> createLeadingComponent() {
+				return null;
 			}
-		});
+			public edu.cmu.cs.dennisc.croquet.Component<?> createMainComponent() {
+				return new edu.cmu.cs.dennisc.croquet.Label();
+			}
+			public edu.cmu.cs.dennisc.croquet.Component<?> createTrailingComponent() {
+				return null;
+			}
+			public void update(edu.cmu.cs.dennisc.croquet.Component<?> leadingComponent, edu.cmu.cs.dennisc.croquet.Component<?> mainComponent, edu.cmu.cs.dennisc.croquet.Component<?> trailingComponent, int index, FieldDeclaredInAlice item) {
+				((edu.cmu.cs.dennisc.croquet.Label)mainComponent).setText( item.getName() );
+			}
+			public edu.cmu.cs.dennisc.croquet.Operation<?> getAddItemOperation() {
+				return createCameraMarkerAction;
+			}
+		};
+		
+		this.markerFieldList = this.sceneEditor.getSceneMarkerFieldList().createMutableList( factory );
+		
+//		this.markerFieldList = this.sceneEditor.getSceneMarkerFieldList().createList();
+//		this.markerFieldList.setCellRenderer(new FieldListCellRenderer(){
+//			@Override
+//			protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractField value, int index, boolean isSelected, boolean cellHasFocus) {
+//				if( value == null ) 
+//				{
+//					rv.setText( FormatterSelectionState.getInstance().getSelectedItem().getTextForNull() );
+//					
+//				} else {
+//					rv.setText( value.getName() );
+//				}
+//				return rv;
+//			}
+//		});
 		
 		ScrollPane markerScrollPane = new ScrollPane(this.markerFieldList, ScrollPane.VerticalScrollbarPolicy.AS_NEEDED, ScrollPane.HorizontalScrollbarPolicy.AS_NEEDED);
 		markerScrollPane.setBorder(null);
@@ -99,7 +121,7 @@ public class SceneViewManagerPanel extends GridBagPanel{
 				0, //ipadX
 				0 ) //ipadY
 		);
-		this.addComponent( createCameraMarkerAction.createButton(), new GridBagConstraints( 
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label()/*createCameraMarkerAction.createButton()*/, new GridBagConstraints( 
 				1, //gridX
 				0, //gridY
 				1, //gridWidth

@@ -1,0 +1,165 @@
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without 
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice, 
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice, 
+ *    this list of conditions and the following disclaimer in the documentation 
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. Products derived from the software may not be called "Alice", nor may 
+ *    "Alice" appear in their name, without prior written permission of 
+ *    Carnegie Mellon University.
+ *
+ * 4. All advertising materials mentioning features or use of this software must
+ *    display the following acknowledgement: "This product includes software 
+ *    developed by Carnegie Mellon University"
+ *
+ * 5. The gallery of art assets and animations provided with this software is 
+ *    contributed by Electronic Arts Inc. and may be used for personal, 
+ *    non-commercial, and academic use only. Redistributions of any program 
+ *    source code that utilizes The Sims 2 Assets must also retain the copyright
+ *    notice, list of conditions and the disclaimer contained in 
+ *    The Alice 3.0 Art Gallery License.
+ * 
+ * DISCLAIMER:
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+package edu.cmu.cs.dennisc.croquet;
+
+/**
+ * @author Dennis Cosgrove
+ */
+public final class MutableList< E > extends ItemSelectablePanel< E, ItemSelectablePanel.ItemDetails > {
+	public static interface Factory< E > {
+		public Component<?> createLeadingComponent();
+		public Component<?> createMainComponent();
+		public Component<?> createTrailingComponent();
+		public void update( Component<?> leadingComponent, Component<?> mainComponent, Component<?> trailingComponent, int index, E item );
+		public Operation<?> getAddItemOperation();
+	}
+	
+	private static class ItemComponent<E> extends BooleanStateButton<javax.swing.AbstractButton> {
+		private static java.awt.Color SELECTION_BACKGROUND = new java.awt.Color( 57, 105, 138 );
+		private E item;
+		private Component<?> leadingComponent;
+		private Component<?> mainComponent;
+		private Component<?> trailingComponent;
+		public ItemComponent(  BooleanState booleanState, E item, Component<?> leadingComponent, Component<?> mainComponent, Component<?> trailingComponent ) {
+			super( booleanState );
+			this.item = item;
+			this.leadingComponent = leadingComponent;
+			this.mainComponent = mainComponent;
+			this.trailingComponent = trailingComponent;
+			
+			if( this.leadingComponent != null ) {
+				this.internalAddComponent( this.leadingComponent, java.awt.BorderLayout.LINE_START );
+			}
+			if( this.mainComponent != null ) {
+				this.internalAddComponent( this.mainComponent, java.awt.BorderLayout.CENTER );
+			}
+			if( this.trailingComponent != null ) {
+				this.internalAddComponent( this.trailingComponent, java.awt.BorderLayout.LINE_END );
+			}
+		}
+		@Override
+		protected javax.swing.AbstractButton createAwtComponent() {
+			javax.swing.JToggleButton rv = new javax.swing.JToggleButton() {
+				@Override
+				public java.awt.Dimension getMaximumSize() {
+					java.awt.Dimension rv = super.getPreferredSize();
+					rv.width = Short.MAX_VALUE;
+					return rv;
+				}
+				@Override
+				public synchronized void setSelected(boolean b) {
+					super.setSelected(b);
+					this.requestFocus();
+				}
+				@Override
+				protected void paintComponent(java.awt.Graphics g) {
+					//super.paintComponent(g);
+					g.setColor( this.getBackground() );
+					g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
+					//g.clearRect( 0, 0, this.getWidth(), this.getHeight() );
+					if( this.isSelected() ) {
+						java.awt.Color color;
+//						if( this.getModel().isRollover() ) {
+//							color = SELECTION_ROLLOVER_BACKGROUND;
+//						} else {
+							color = SELECTION_BACKGROUND;
+//						}
+						g.setColor( color );
+						g.fillRoundRect( 0, 0, this.getWidth(), this.getHeight(), 4, 4 );
+						if( this.getModel().isRollover() ) {
+							color = java.awt.Color.LIGHT_GRAY;
+						} else {
+							color = java.awt.Color.GRAY;
+						}
+						g.setColor( color );
+						edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g, 2, 2, 6, this.getHeight()-5 );
+					}
+				}
+			};
+			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder(4, 14, 4, 4) );
+			rv.setLayout( new java.awt.BorderLayout() );
+			rv.setRolloverEnabled( true );
+			return rv;
+		}
+	}
+	private Factory<E> factory;
+	private PageAxisPanel pageAxisPanel = new PageAxisPanel();
+	/*package-private*/ MutableList( ListSelectionState<E> model, Factory<E> factory ) {
+		super( model );
+		this.factory = factory;
+		this.internalAddComponent( pageAxisPanel, java.awt.BorderLayout.CENTER );
+		Operation<?> operation = this.factory.getAddItemOperation();
+		if( operation != null ) {
+			this.internalAddComponent( operation.createButton(), java.awt.BorderLayout.PAGE_END );
+		}
+	}
+	@Override
+	protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
+		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
+	}
+	@Override
+	protected void removeAllDetails() {
+	}
+	@Override
+	protected void addPrologue(int count) {
+		this.pageAxisPanel.internalRemoveAllComponents();
+	}
+	@Override
+	protected void addItem(edu.cmu.cs.dennisc.croquet.ItemSelectablePanel.ItemDetails itemDetails) {
+		ItemComponent<E> itemComponent = (ItemComponent<E>)itemDetails.getButton();
+		factory.update(itemComponent.leadingComponent, itemComponent.mainComponent, itemComponent.trailingComponent, 0, itemComponent.item );
+		this.pageAxisPanel.internalAddComponent( itemComponent );
+	}
+	@Override
+	protected void addEpilogue() {
+	}
+	
+	@Override
+	protected final ItemDetails createItemDetails( E item ) {
+		BooleanState booleanState = new BooleanState( Application.UI_STATE_GROUP, java.util.UUID.fromString( "637720ae-b885-49b5-896d-c697ce21a021" ), false );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MUTABLE_LIST_BOOLEAN_STATE" );
+		ItemComponent<E> itemComponent = new ItemComponent<E>(booleanState, item, factory.createLeadingComponent(), factory.createMainComponent(), factory.createTrailingComponent());
+		return new ItemDetails( item, itemComponent );
+	};
+}

@@ -53,8 +53,12 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 		private AbstractButton<?,?> button;
 		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 			public void itemStateChanged(java.awt.event.ItemEvent e) {
-				ItemSelectablePanel.this.model.setSelectedItem( ItemDetails.this.item );
-				ItemSelectablePanel.this.fireItemStateChanged( e );
+				if( ItemSelectablePanel.this.swingModel.getSelectedItem() != ItemDetails.this.item ) {
+					if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
+						ItemSelectablePanel.this.swingModel.setSelectedItem( ItemDetails.this.item );
+					}
+					ItemSelectablePanel.this.fireItemStateChanged( e );
+				}
 			}
 		};
 		public ItemDetails( E item, AbstractButton<?,?> button ) {
@@ -99,7 +103,7 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 	
 	private java.util.Map<E, D > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-	private javax.swing.ComboBoxModel model;
+	private javax.swing.ComboBoxModel swingModel;
 	private javax.swing.ListSelectionModel listSelectionModel;
 	private javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
 		public void intervalAdded(javax.swing.event.ListDataEvent e) {
@@ -147,14 +151,14 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 	private java.util.ArrayList<E> prevItems = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 	
 	private void handleListDataChanged() {
-		synchronized( this.model ) {
-			final int N = this.model.getSize();
+		synchronized( this.swingModel ) {
+			final int N = this.swingModel.getSize();
 			
 			boolean isActuallyChanged;
 			if( N == prevItems.size() ) {
 				isActuallyChanged = false;
 				for( int i=0; i<N; i++ ) {
-					E item = (E)this.model.getElementAt( i );
+					E item = (E)this.swingModel.getElementAt( i );
 					if( item == prevItems.get( i ) ) {
 						//pass
 					} else {
@@ -172,7 +176,7 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 				this.prevItems.ensureCapacity( N );
 				this.addPrologue( N );
 				for( int i=0; i<N; i++ ) {
-					E item = (E)this.model.getElementAt( i );
+					E item = (E)this.swingModel.getElementAt( i );
 					D itemDetails = this.map.get( item );
 					if( itemDetails != null ) {
 						//pass
@@ -211,7 +215,7 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 		}
 	}
 	private void handleListSelectionChanged() {
-		this.handleItemSelected( (E)this.model.getSelectedItem() );
+		this.handleItemSelected( (E)this.swingModel.getSelectedItem() );
 	}
 
 	@Override
@@ -226,16 +230,16 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 	
 	private java.util.List<java.awt.event.ItemListener> itemListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList(); 
 	/*package-private*/ void setSwingComboBoxModel( javax.swing.ComboBoxModel model ) {
-		if( this.model != null ) {
-			synchronized( this.model ) {
-				this.model.removeListDataListener( this.listDataListener );
+		if( this.swingModel != null ) {
+			synchronized( this.swingModel ) {
+				this.swingModel.removeListDataListener( this.listDataListener );
 			}
 		}
-		this.model = model;
+		this.swingModel = model;
 		this.handleListDataChanged();
-		if( this.model != null ) {
-			synchronized( this.model ) {
-				this.model.addListDataListener( this.listDataListener );
+		if( this.swingModel != null ) {
+			synchronized( this.swingModel ) {
+				this.swingModel.addListDataListener( this.listDataListener );
 			}
 		}
 	}
