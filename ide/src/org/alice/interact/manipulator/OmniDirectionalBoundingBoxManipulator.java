@@ -56,11 +56,15 @@ import org.alice.interact.handle.HandleSet;
 import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
 import edu.cmu.cs.dennisc.croquet.DragComponent;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.math.property.AffineMatrix4x4Property;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -118,57 +122,73 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 	@Override
 	public boolean doStartManipulator( InputState startInput )
 	{
-		this.sgBoundingBoxTransformable.setParent(this.camera.getRoot());
-		this.sgBoundingBoxTransformable.setTranslationOnly(new Point3(0,0,0), AsSeenBy.SCENE);
-		this.sgBoundingBoxDecorator.isShowing.setValue(true);
-		this.manipulatedTransformable = this.sgBoundingBoxTransformable;
-		this.hidCursor = false;
-		this.initializeEventMessages();
-		this.hasMoved = false;
-		this.orthographicOffsetToOrigin = new Point3(0,0,0);
-		this.offsetFromOrigin = new Point3(0,0,0);			
-		this.mousePlaneOffset = new Point(0,0);
-		this.originalPosition = new Point3(0,0,0);
-		//We don't need special planes for the orthographic camera
-		if (!(this.getCamera() instanceof OrthographicCamera))
+		if (this.manipulatedTransformable != null)
 		{
-			setUpPlanes(new Point3(0,0,0), startInput.getMouseLocation());
+			this.sgBoundingBoxTransformable.setParent(this.camera.getRoot());
+			this.sgBoundingBoxTransformable.setTranslationOnly(new Point3(0,0,0), AsSeenBy.SCENE);
+			this.sgBoundingBoxDecorator.isShowing.setValue(true);
+			this.manipulatedTransformable = this.sgBoundingBoxTransformable;
+			this.hidCursor = false;
+			this.initializeEventMessages();
+			this.hasMoved = false;
+			this.orthographicOffsetToOrigin = new Point3(0,0,0);
+			this.offsetFromOrigin = new Point3(0,0,0);			
+			this.mousePlaneOffset = new Point(0,0);
+			this.originalPosition = new Point3(0,0,0);
+			//We don't need special planes for the orthographic camera
+			if (!(this.getCamera() instanceof OrthographicCamera))
+			{
+				setUpPlanes(new Point3(0,0,0), startInput.getMouseLocation());
+				Vector3 cameraBackward = this.camera.getAbsoluteTransformation().orientation.backward;
+				cameraBackward.y = 0.0;
+				cameraBackward.normalize();
+				if (cameraBackward.isNaN())
+				{
+					cameraBackward = this.camera.getAbsoluteTransformation().orientation.up;
+					cameraBackward.multiply(-1);
+					cameraBackward.y = 0.0;
+					cameraBackward.normalize();
+				}
+				OrthogonalMatrix3x3 facingCameraOrientation = new OrthogonalMatrix3x3(new ForwardAndUpGuide(cameraBackward, Vector3.accessPositiveYAxis()));
+				this.sgBoundingBoxTransformable.setAxesOnly(facingCameraOrientation, AsSeenBy.SCENE);
+			}
+			this.sgBoundingBoxTransformable.setTranslationOnly(this.getPerspectivePositionBasedOnInput(startInput), AsSeenBy.SCENE);
+			this.originalPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation;
+			AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation();
+			Vector3 toOrigin = Vector3.createSubtraction(this.originalPosition, cameraTransform.translation);
+			toOrigin.normalize();
+			Vector3 cameraFacingNormal = Vector3.createMultiplication(cameraTransform.orientation.backward, -1);
+			this.orthographicPickPlane = new Plane( this.originalPosition, cameraFacingNormal );
+			addPlaneTransitionPointSphereToScene();
+			
+			DragComponent dragSource = startInput.getDragAndDropContext().getDragSource();
+			dragSource.hideDragProxy();
+			org.alice.stageide.gallerybrowser.GalleryDragComponent galleryDragComponent = (org.alice.stageide.gallerybrowser.GalleryDragComponent)dragSource;
+			edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode = galleryDragComponent.getTreeNode();
+			edu.cmu.cs.dennisc.math.AxisAlignedBox box = org.alice.stageide.gallerybrowser.ResourceManager.getAxisAlignedBox(treeNode);
+			
+			
+			AffineMatrix4x4 offsetTransform = AffineMatrix4x4.createIdentity();
+			if (this.sgAxes != null)
+			{
+				this.sgAxes.setParent(null);
+			}
+			if (box.isNaN())
+			{
+				this.sgBoundingBoxDecorator.isShowing.setValue(false);
+				this.sgAxes = new ModestAxes(1.0);
+			}
+			else
+			{
+				offsetTransform.translation.y += -box.getMinimum().y;
+				this.sgBoundingBoxDecorator.setBox(box);
+				this.sgAxes = new ModestAxes(box.getWidth()*.5);
+			}
+			this.sgBoundingBoxOffsetTransformable.setLocalTransformation(offsetTransform);
+			this.sgAxes.setParent(this.sgDecoratorOffsetTransformable);
+			return true;
 		}
-		this.sgBoundingBoxTransformable.setTranslationOnly(this.getPerspectivePositionBasedOnInput(startInput), AsSeenBy.SCENE);
-		this.originalPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation;
-		AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation();
-		Vector3 toOrigin = Vector3.createSubtraction(this.originalPosition, cameraTransform.translation);
-		toOrigin.normalize();
-		Vector3 cameraFacingNormal = Vector3.createMultiplication(cameraTransform.orientation.backward, -1);
-		this.orthographicPickPlane = new Plane( this.originalPosition, cameraFacingNormal );
-		addPlaneTransitionPointSphereToScene();
-		
-		DragComponent dragSource = startInput.getDragAndDropContext().getDragSource();
-		dragSource.hideDragProxy();
-		org.alice.stageide.gallerybrowser.GalleryDragComponent galleryDragComponent = (org.alice.stageide.gallerybrowser.GalleryDragComponent)dragSource;
-		edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode = galleryDragComponent.getTreeNode();
-		edu.cmu.cs.dennisc.math.AxisAlignedBox box = org.alice.stageide.gallerybrowser.ResourceManager.getAxisAlignedBox(treeNode);
-		
-		
-		AffineMatrix4x4 offsetTransform = AffineMatrix4x4.createIdentity();
-		if (this.sgAxes != null)
-		{
-			this.sgAxes.setParent(null);
-		}
-		if (box.isNaN())
-		{
-			this.sgBoundingBoxDecorator.isShowing.setValue(false);
-			this.sgAxes = new ModestAxes(1.0);
-		}
-		else
-		{
-			offsetTransform.translation.y += -box.getMinimum().y;
-			this.sgBoundingBoxDecorator.setBox(box);
-			this.sgAxes = new ModestAxes(box.getWidth()*.5);
-		}
-		this.sgBoundingBoxOffsetTransformable.setLocalTransformation(offsetTransform);
-		this.sgAxes.setParent(this.sgDecoratorOffsetTransformable);
-		return true;
+		return false;
 	}
 	
 

@@ -42,10 +42,13 @@
  */
 package org.alice.stageide.sceneeditor.viewmanager;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 
+import org.alice.apis.moveandturn.CameraMarker;
+import org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState;
 import org.alice.ide.swing.FieldListCellRenderer;
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.croquet.GridBagPanel;
@@ -67,7 +70,19 @@ public class SceneViewManagerPanel extends GridBagPanel{
 		this.sceneEditor = sceneEditor;
 		this.createCameraMarkerAction = new CreateCameraMarkerActionOperation(this.sceneEditor);	
 		this.markerFieldList = this.sceneEditor.getSceneMarkerFieldList().createList();
-		this.markerFieldList.setCellRenderer(new FieldListCellRenderer() {});
+		this.markerFieldList.setCellRenderer(new FieldListCellRenderer(){
+			@Override
+			protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractField value, int index, boolean isSelected, boolean cellHasFocus) {
+				if( value == null ) 
+				{
+					rv.setText( FormatterSelectionState.getInstance().getSelectedItem().getTextForNull() );
+					
+				} else {
+					rv.setText( value.getName() );
+				}
+				return rv;
+			}
+		});
 		
 		ScrollPane markerScrollPane = new ScrollPane(this.markerFieldList, ScrollPane.VerticalScrollbarPolicy.AS_NEEDED, ScrollPane.HorizontalScrollbarPolicy.AS_NEEDED);
 		markerScrollPane.setBorder(null);
@@ -110,6 +125,11 @@ public class SceneViewManagerPanel extends GridBagPanel{
 				0, //ipadX
 				0 ) //ipadY
 		);
+	}
+	
+	public void updateMarkerList()
+	{
+		this.markerFieldList.revalidateAndRepaint();
 	}
 
 }
