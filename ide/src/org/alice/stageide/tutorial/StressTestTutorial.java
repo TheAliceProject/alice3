@@ -56,6 +56,21 @@ public class StressTestTutorial {
 				"Title", 
 				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
 		);
+		tutorial.addDragAndDropToPopupMenuStep( 
+				"Drag Count Loop",
+				"Drag <b>Count Loop</b>.",
+				tutorial.createCountLoopTemplateResolver(),
+				"Drop <b>here</b>.",
+				tutorial.createBeginingOfCurrentMethodBodyStatementListResolver(),
+				"Select <b>2</b>.",
+				tutorial.createToDoCompletorValidator()
+		);
+		
+		tutorial.addSpotlightStepForModel( 
+				"Note Count Loop Count", 
+				"note count is 2", 
+				tutorial.createFirstCountLoopCountResolver() 
+		);
 
 		//formerly known as EPIC_HACK_addForEachInArrayLoopDragAndDropToPopupMenuToInputDialogStep
 		final String requiredTypeName = "PolygonalModel";
@@ -385,15 +400,6 @@ public class StressTestTutorial {
 				tutorial.createCodeResolver( "scene", "run" )
 		);
 
-//		tutorial.addDragAndDropStep( 
-//				"Drag Count Loop",
-//				"Drag <b>Count Loop</b>.",
-//				tutorial.createCountLoopTemplateResolver(),
-//				"Drop <b>here</b>.",
-//				tutorial.createBeginingOfCurrentMethodBodyStatementListResolver(),
-//				"Select <b>2</b>.",
-//				tutorial.createToDoCompletorValidator()
-//		);
 		tutorial.addDragAndDropStep( 
 				"Drag Do Together",
 				"Drag <b>Do Together</b>.",

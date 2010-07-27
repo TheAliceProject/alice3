@@ -378,6 +378,16 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return this.createWhileLoopConditionResolver(Short.MAX_VALUE);
 	}
 
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createCountLoopCountResolver( int index ) {
+		return new CountLoopCountResolver( index );
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createFirstCountLoopCountResolver() {
+		return this.createCountLoopCountResolver(0);
+	}
+	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createLastCountLoopCountResolver() {
+		return this.createCountLoopCountResolver(Short.MAX_VALUE);
+	}
+
 	public Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createForEachInArrayLoopVariableResolver( int index ) {
 		return new ForEachInArrayLoopVariableResolver( index );
 	}
