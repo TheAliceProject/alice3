@@ -50,7 +50,7 @@ public class InsertStatementEdit extends org.alice.ide.ToDoEdit {
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 	public InsertStatementEdit( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		this.statementListProperty = statementListProperty;
-		this.specifiedIndex = specifiedIndex;
+		this.specifiedIndex = index;
 		this.statement = statement;
 	}
 	@Override
