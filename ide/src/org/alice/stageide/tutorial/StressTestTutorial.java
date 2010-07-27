@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.tutorial.Validator.Result;
  */
 public class StressTestTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
-		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 1 );
+		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 3 );
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 //		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = ide.getSceneField();
 		ide.getEmphasizingClassesState().setValue( false );
@@ -79,11 +79,11 @@ public class StressTestTutorial {
 						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 					}
 					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
-						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice runMethod = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)org.alice.ide.IDE.getSingleton().getCodeEditorInFocus().getCode();
+						org.alice.ide.codeeditor.CodeEditor.StatementListIndexTrackableShape statementListIndexTrackableShape = (org.alice.ide.codeeditor.CodeEditor.StatementListIndexTrackableShape)dropShape;
 						edu.cmu.cs.dennisc.alice.ast.Statement statement = org.alice.ide.ast.NodeUtilities.createCountLoop( new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( count ) ); 
 						return new org.alice.ide.codeeditor.InsertStatementEdit(
-								runMethod.body.getValue().statements,
-								0,
+								statementListIndexTrackableShape.getStatementListProperty(),
+								statementListIndexTrackableShape.getIndex(),
 								statement
 						);
 					}

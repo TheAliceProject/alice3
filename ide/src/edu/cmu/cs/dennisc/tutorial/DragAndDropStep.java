@@ -126,7 +126,18 @@ package edu.cmu.cs.dennisc.tutorial;
 	
 	@Override
 	protected void complete() {
-		TutorialStencil.complete( this.completor.createEdit( this.getModel(), null ) );
+		Note dropNote = this.getNoteAt( 1 );
+		java.util.List< Feature > features = dropNote.getFeatures();
+		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape;
+		if( features.size() > 0 ) {
+			Feature feature0 = features.get( 0 );
+			feature0.bind();
+			trackableShape = feature0.getTrackableShape();
+			feature0.unbind();
+		} else {
+			trackableShape = null;
+		}
+		TutorialStencil.complete( this.completor.createEdit( this.getModel(), trackableShape ) );
 	}
 	@Override
 	public void reset() {
