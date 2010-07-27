@@ -120,55 +120,10 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		handleControlPanel.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "Handle Style", 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), BorderPanel.Constraint.NORTH );
 		handleControlPanel.addComponent(sceneEditor.getDragAdapter().getInteractionSelectionStateList().createDefaultRadioButtons(), BorderPanel.Constraint.CENTER);
 		handleControlPanel.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		
-		GridBagPanel startingCameraViewManager = new GridBagPanel();
-//		startingCameraViewManager.setOpaque(false);
-		startingCameraViewManager.addComponent(new edu.cmu.cs.dennisc.croquet.Label( "Starting View:", 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), new GridBagConstraints( 
-				0, //gridX
-				0, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.EAST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(0,0,0,0), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		ComboBox startingViewComboBox = sceneEditor.getStartingViewMarkerFieldList().createComboBox();
-		startingViewComboBox.setRenderer(new FieldListCellRenderer() {});
-		startingCameraViewManager.addComponent(startingViewComboBox, new GridBagConstraints( 
-				1, //gridX
-				0, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(0,0,0,0), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		
-		this.mainPanel.addComponent(startingCameraViewManager, new GridBagConstraints(
-				0, // gridX
-				0, // gridY
-				1, // gridWidth
-				1, // gridHeight
-				1.0, // weightX
-				0.0, // weightY
-				GridBagConstraints.NORTH, // anchor
-				GridBagConstraints.HORIZONTAL, // fill
-				new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
-				0, // ipadX
-				0) // ipadY
-				);
-		
+
 		this.mainPanel.addComponent(this.viewManagerPanel, new GridBagConstraints(
 				0, // gridX
-				1, // gridY
+				0, // gridY
 				1, // gridWidth
 				1, // gridHeight
 				1.0, // weightX
@@ -182,7 +137,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 
 		this.mainPanel.addComponent(handleControlPanel, new GridBagConstraints(
 				0, // gridX
-				2, // gridY
+				1, // gridY
 				1, // gridWidth
 				1, // gridHeight
 				1.0, // weightX
@@ -195,7 +150,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				);
 		this.mainPanel.addComponent(this.snapControlPanel, new GridBagConstraints(
 				0, // gridX
-				3, // gridY
+				2, // gridY
 				1, // gridWidth
 				1, // gridHeight
 				1.0, // weightX
@@ -213,7 +168,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		{
 			this.mainPanel.addComponent(this.showSceneGraphActionOperation.createButton(), new GridBagConstraints(
 					0, // gridX
-					4, // gridY
+					3, // gridY
 					1, // gridWidth
 					1, // gridHeight
 					1.0, // weightX

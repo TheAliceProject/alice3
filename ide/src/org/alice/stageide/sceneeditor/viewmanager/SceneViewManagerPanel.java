@@ -73,25 +73,12 @@ public class SceneViewManagerPanel extends GridBagPanel{
 		this.markerFieldList.setCellRenderer(new FieldListCellRenderer(){
 			@Override
 			protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractField value, int index, boolean isSelected, boolean cellHasFocus) {
-				if( value == null ) {
-					;
+				if( value == null ) 
+				{
 					rv.setText( FormatterSelectionState.getInstance().getSelectedItem().getTextForNull() );
 					
 				} else {
 					rv.setText( value.getName() );
-//					if (SceneViewManagerPanel.this.isFieldActive(value))
-//					{
-//						rv.setForeground(Color.GREEN);
-//					}
-//					else
-//					{
-//						rv.setForeground(Color.BLACK);
-//					}
-//					if (SceneViewManagerPanel.this.isFieldStartingField(value))
-//					{
-//						rv.setBackground(Color.YELLOW);
-//					}
-					
 				}
 				return rv;
 			}
@@ -143,17 +130,6 @@ public class SceneViewManagerPanel extends GridBagPanel{
 	public void updateMarkerList()
 	{
 		this.markerFieldList.revalidateAndRepaint();
-	}
-	
-	protected boolean isFieldStartingField(edu.cmu.cs.dennisc.alice.ast.AbstractField field)
-	{
-		return (this.sceneEditor.getStartingViewMarkerFieldList().getSelectedItem() == field); 
-	}
-
-	protected boolean isFieldActive(edu.cmu.cs.dennisc.alice.ast.AbstractField field)
-	{
-		CameraMarker activeMarker = this.sceneEditor.getCameraMarkerForField( (FieldDeclaredInAlice)field );
-		return (activeMarker == this.sceneEditor.getMainCameraMarkerList().getSelectedItem() );
 	}
 
 }
