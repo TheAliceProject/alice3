@@ -67,6 +67,12 @@ public class StressTestTutorial {
 		);
 		
 		tutorial.addSpotlightStepForModel( 
+				"Note Count Loop", 
+				"note count loop", 
+				tutorial.createFirstStatementAssignableToResolver( edu.cmu.cs.dennisc.alice.ast.CountLoop.class ) 
+		);
+
+		tutorial.addSpotlightStepForModel( 
 				"Note Count Loop Count", 
 				"note count is 2", 
 				tutorial.createFirstCountLoopCountResolver() 
