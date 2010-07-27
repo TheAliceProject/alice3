@@ -42,6 +42,8 @@
  */
 package org.alice.stageide.tutorial;
 
+import edu.cmu.cs.dennisc.tutorial.Validator.Result;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -79,11 +81,11 @@ public class ExerciseRoutineTutorial {
 				"Drop it <b>here</b>.",
 				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
 				"Select <b>Other String...</b> from the menu.",
-				new edu.cmu.cs.dennisc.tutorial.CompletorValidator() {
-					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.Edit edit ) {
+				new edu.cmu.cs.dennisc.tutorial.DragAndDropOperationCompletorValidator() {
+					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit edit ) {
 						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 					}
-					public edu.cmu.cs.dennisc.croquet.Edit getEdit() {
+					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation ) {
 						return new org.alice.ide.codeeditor.InsertStatementEdit(
 								runMethod.body.getValue().statements,
 								org.alice.ide.codeeditor.InsertStatementEdit.AT_END, 

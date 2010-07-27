@@ -73,7 +73,7 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression> 
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createMainComponent() {
 		return this.chooser.createMainComponent();
 	}
-	/*package-protected*/org.alice.ide.choosers.ValueChooser< E > getValueChooser() {
+	public org.alice.ide.choosers.ValueChooser< E > getValueChooser() {
 		return this.chooser;
 	}
 	

@@ -46,9 +46,9 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class PopupMenuStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation> {
-	private Completor completor;
-	private Validator validator;
-	public PopupMenuStep( String title, String popupText, final edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation> popupMenuOperationResolver, String commitText, Completor completor, Validator validator ) {
+	private PopupMenuOperationCompletor completor;
+	private PopupMenuOperationValidator validator;
+	public PopupMenuStep( String title, String popupText, final edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation> popupMenuOperationResolver, String commitText, PopupMenuOperationCompletor completor, PopupMenuOperationValidator validator ) {
 		super( title, popupText, new Hole( new FirstComponentResolver( popupMenuOperationResolver ), Feature.ConnectionPreference.EAST_WEST ), popupMenuOperationResolver );
 		this.completor = completor;
 		this.validator = validator;
@@ -67,7 +67,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	@Override
 	protected void complete() {
-		TutorialStencil.complete( this.completor.getEdit() );
+		TutorialStencil.complete( this.completor.createEdit( this.getModel() ) );
 	}
 
 	@Override
@@ -120,7 +120,7 @@ package edu.cmu.cs.dennisc.tutorial;
 						} else {
 							edit = null;
 						}
-						rv = this.validator.checkValidity( edit ).isProcedeApprorpiate();
+						rv = this.validator.checkValidity( this.getModel(), edit ).isProcedeApprorpiate();
 						if( rv ) {
 							SoundCache.SUCCESS.startIfNotAlreadyActive();
 						} else {

@@ -55,12 +55,14 @@ package edu.cmu.cs.dennisc.tutorial;
 	
 	private boolean isPopupMenuNotePresent;
 	private boolean isInputDialogNotePresent;
-	private Completor completor;
-	private Validator validator;
-	public DragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > dropShapeResolver, String popupMenuText, String inputDialogText, Completor completor, Validator validator ) {
+	private DragAndDropOperationCompletor completor;
+	private DragAndDropOperationValidator validator;
+	private edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler<?> externalOkButtonDisabler;
+	public DragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > dropShapeResolver, String popupMenuText, String inputDialogText, DragAndDropOperationCompletor completor, DragAndDropOperationValidator validator, edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler<?> externalOkButtonDisabler ) {
 		super( title, text, new Hole( new FirstComponentResolver( dragResolver ), Feature.ConnectionPreference.EAST_WEST ), dragResolver );
 		this.completor = completor;
 		this.validator = validator;
+		this.externalOkButtonDisabler = externalOkButtonDisabler;
 		Note dropNote = new Note( dropText );
 		dropNote.addFeature( new Hole( dropShapeResolver, Feature.ConnectionPreference.NORTH_SOUTH ) );
 		this.addNote( dropNote );
@@ -124,7 +126,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	
 	@Override
 	protected void complete() {
-		TutorialStencil.complete( this.completor.getEdit() );
+		TutorialStencil.complete( this.completor.createEdit( this.getModel() ) );
 	}
 	@Override
 	public void reset() {
@@ -198,7 +200,7 @@ package edu.cmu.cs.dennisc.tutorial;
 						edu.cmu.cs.dennisc.croquet.ModelContext<?> model = windowOpenedEvent.getParent();
 						if( model instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> ) {
 							edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?>)model;
-							edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> inputDialogOperation = inputDialogOperationContext.getModel();
+							edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation = inputDialogOperationContext.getModel();
 							if( inputDialogOperation != null ) {
 								edu.cmu.cs.dennisc.croquet.Dialog dialog = inputDialogOperation.getActiveDialog();
 								if( dialog != null ) {
@@ -209,6 +211,9 @@ package edu.cmu.cs.dennisc.tutorial;
 										note3.setLocation( dialog.getWidth()+100, dialog.getHeight()/2, dialog );
 									}
 								}
+								
+								inputDialogOperation.setExternalOkButtonDisabler( this.externalOkButtonDisabler );
+								
 							}
 						}
 					}
@@ -222,7 +227,8 @@ package edu.cmu.cs.dennisc.tutorial;
 							edit = null;
 						}
 						if( this.validator != null ) {
-							rv = this.validator.checkValidity( edit ).isProcedeApprorpiate();
+							edu.cmu.cs.dennisc.tutorial.Validator.Result result = this.validator.checkValidity( this.getModel(), edit );
+							rv = result.isProcedeApprorpiate();
 						} else {
 							rv = true;
 						}
@@ -230,6 +236,23 @@ package edu.cmu.cs.dennisc.tutorial;
 				}
 				break;
 			case WAITING_ON_INPUT_DIALOG_COMMIT:
+				if( this.isPopupMenuNotePresent ) {
+					//pass
+				} else {
+					if( this.isInputDialogNotePresent ) {
+						if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent ) {
+							edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent)child;
+							edu.cmu.cs.dennisc.croquet.ModelContext<?> model = windowOpenedEvent.getParent();
+							if( model instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> ) {
+								edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?>)model;
+								edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation = inputDialogOperationContext.getModel();
+								if( inputDialogOperation != null ) {
+									inputDialogOperation.setExternalOkButtonDisabler( this.externalOkButtonDisabler );
+								}
+							}
+						}
+					}
+				}
 				if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent ) {
 					edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent windowClosedEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent)child;
 					edu.cmu.cs.dennisc.croquet.ModelContext<?> c = windowClosedEvent.getParent();
@@ -243,54 +266,11 @@ package edu.cmu.cs.dennisc.tutorial;
 				}
 				break;
 			}
+// todo
+//			if( rv ) {
+//				inputDialogOperation.setExternalOkButtonDisabler( null );
+//			}
 			return rv;
 		}
-//		if( child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
-//			edu.cmu.cs.dennisc.croquet.DragAndDropContext context = (edu.cmu.cs.dennisc.croquet.DragAndDropContext)child;
-//			Note noteB = this.getNoteAt( 1 );
-//			Feature featureB = noteB.getFeatures().get( 0 );
-//			java.awt.Dimension size = context.getDragSource().getDropProxySize();
-//			featureB.setHeightConstraint( size.height * 2 );
-//			this.setActiveNote( 1 );
-//			return false;
-//		} else if( child instanceof edu.cmu.cs.dennisc.croquet.CancelEvent ) {
-//			SoundCache.FAILURE.startIfNotAlreadyActive();
-//			this.reset();
-//			return false;
-//		} else if( child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent ) {
-//			//edu.cmu.cs.dennisc.croquet.ModelContext< ? > parent = child.getParent(); 
-//			//return parent.getModel() == this.getModel();
-//			final int N = this.getNoteCount();
-//			if( N == 3 ) {
-//				this.setActiveNote( 2 );
-//				return false;
-//			} else {
-//				return true;
-//			}
-//		} else if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
-//			final int N = this.getNoteCount();
-//			if( N == 3 ) {
-//				if( this.getNoteAt( 2 ).isActive() ) {
-//					edu.cmu.cs.dennisc.croquet.Edit edit;
-//					if (child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent) {
-//						edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent) child;
-//						edit = commitEvent.getEdit();
-//					} else {
-//						edit = null;
-//					}
-//					if( this.validator != null ) {
-//						return this.validator.checkValidity( edit ).isProcedeApprorpiate();
-//					} else {
-//						return true;
-//					}
-//				} else {
-//					return false;
-//				}
-//			} else {
-//				return false;
-//			}
-//		} else {
-//			return false;
-//		}
 	}
 }

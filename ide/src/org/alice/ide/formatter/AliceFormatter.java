@@ -59,7 +59,7 @@ public class AliceFormatter extends Formatter {
 		String[] bundleNames = { "MainBundle", "java_lang_PackageBundle", "org_alice_integer_PackageBundle", "org_alice_random_PackageBundle", "org_alice_apis_moveandturn_PackageBundle", "edu_wustl_cse_lookingglass_apis_walkandtouch_PackageBundle" };
 		for( String bundleName : bundleNames ) {
 			try {
-				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "org.alice.ide.formatter." + bundleName, new java.util.Locale( "en" ) );
+				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "org.alice.ide.formatter." + bundleName, java.util.Locale.getDefault() );
 				for( java.util.Enumeration<String> e=resourceBundle.getKeys(); e.hasMoreElements();  ) {
 					String key = e.nextElement();
 					map.put( key, resourceBundle.getString( key ) );

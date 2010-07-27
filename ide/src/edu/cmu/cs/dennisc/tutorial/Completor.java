@@ -45,7 +45,5 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-
 public interface Completor {
-	public edu.cmu.cs.dennisc.croquet.Edit<?> getEdit();
 }

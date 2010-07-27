@@ -42,29 +42,8 @@
  */
 package edu.cmu.cs.dennisc.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.Operation;
-
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class OperationStep<M extends edu.cmu.cs.dennisc.croquet.Operation<?> > extends WaitingOnCompleteStep<M> {
-	private Completor completor;
-	private Validator validator;
-	public OperationStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver< M > operationResolver, Completor completor, Validator validator ) {
-		super( title, text, new FirstComponentResolver(operationResolver), Feature.ConnectionPreference.EAST_WEST, operationResolver );
-		this.completor = completor;
-		this.validator = validator;
-	}
-	@Override
-	protected boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
-		return this.validator.checkValidity( edit ).isProcedeApprorpiate();
-	}
-	@Override
-	protected boolean isAlreadyInTheDesiredState() {
-		return false;
-	}
-	@Override
-	protected void complete() {
-		TutorialStencil.complete( this.completor.getEdit() );
-	}
+public interface ActionOperationCompletorValidator extends ActionOperationCompletor, ActionOperationValidator {
 }

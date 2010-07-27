@@ -47,15 +47,157 @@ package org.alice.stageide.tutorial;
  */
 public class StressTestTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
-		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 2 );
+		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 1 );
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = ide.getSceneField();
+//		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = ide.getSceneField();
 		ide.getEmphasizingClassesState().setValue( false );
 //		membersEditor.getTabbedPaneSelectionState().setValue( tutorial.getFunctionsTab().getResolved() );
 		tutorial.addMessageStep( 
 				"Title", 
 				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
 		);
+
+		//formerly known as EPIC_HACK_addForEachInArrayLoopDragAndDropToPopupMenuToInputDialogStep
+		final String requiredTypeName = "PolygonalModel";
+		final String[] desiredFieldNames = { "grassyGround", "grassyGround" };
+		tutorial.addDragAndDropToPopupMenuToInputDialogStep( 
+				"Drag For Each In Order",
+				"Drag <strong>For Each In Order</strong>.",
+				tutorial.createForEachInArrayLoopTemplateResolver(),
+				"Drop <strong>here</strong>.",
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+				"Select <strong>Other Array...</strong>",
+				"Select <strong>" + requiredTypeName + "</strong>, add <strong>" + desiredFieldNames[ 0 ] + "</strong> and <strong>" + desiredFieldNames[ 1 ] + "</strong>, and press <strong>OK</strong>",
+				new edu.cmu.cs.dennisc.tutorial.DragAndDropOperationCompletorValidatorOkButtonDisabler<org.alice.ide.cascade.customfillin.CustomInputPane<?>>() {
+					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit edit ) {
+						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+					}
+					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation ) {
+						return tutorial.createToDoEdit();
+					}
+					private boolean isAccessOfFieldNamed( edu.cmu.cs.dennisc.alice.ast.Expression expression, String name ) {
+						if (expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess) {
+							edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess) expression;
+							edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
+							if( field != null ) {
+								return name.equals( field.getName() );
+							}
+						}
+						return false;
+					}
+					private String getExplanationIfOkButtonShouldBeDisabled(org.alice.ide.choosers.ValueChooser<?> valueChooser) {
+						final String COMPLETE_INSTRUCTIONS = "<html>Select value type <strong>" + requiredTypeName + "</strong> and add <strong>" + desiredFieldNames[ 0 ] + "</strong> and <strong>" + desiredFieldNames[ 1 ] + "</strong>.</html>";
+						if (valueChooser instanceof org.alice.ide.choosers.ArrayChooser) {
+							org.alice.ide.choosers.ArrayChooser arrayChooser = (org.alice.ide.choosers.ArrayChooser) valueChooser;
+							edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation = arrayChooser.getValue();
+							if( arrayInstanceCreation != null ) {
+								edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> componentType = arrayChooser.EPIC_HACK_getArrayComponentType();
+								if( componentType != null ) {
+									boolean isComponentTypeCorrect = requiredTypeName.equals( componentType.getName() );
+									boolean areExpressionsCorrect = false;
+									java.util.ArrayList< edu.cmu.cs.dennisc.alice.ast.Expression > expressions = arrayInstanceCreation.expressions.getValue();
+									if( expressions != null ) {
+										if( expressions.size() == desiredFieldNames.length ) {
+											final int N = desiredFieldNames.length;
+											areExpressionsCorrect = true;
+											for( int i=0; i<N; i++ ) {
+												if( isAccessOfFieldNamed( expressions.get( i ), desiredFieldNames[ i ] ) ) {
+													//pass
+												} else {
+													areExpressionsCorrect = false;
+												}
+											}
+										}
+									}
+									if( isComponentTypeCorrect ) {
+										if( areExpressionsCorrect ) {
+											return null;
+										} else {
+											return "<html>Add <strong>"+ desiredFieldNames[ 0 ] + "</strong> and <strong>" + desiredFieldNames[ 1 ] + "</strong>.</html>";
+										}
+									} else {
+										if( areExpressionsCorrect ) {
+											return "<html>Select value type <strong>Model</strong>.</html>";
+										}
+									}
+								}
+							}
+							return COMPLETE_INSTRUCTIONS;
+						} else {
+							return "this should not happen.  you have found a bug.  ask for help.";
+						}
+					}
+					public String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.cascade.customfillin.CustomInputPane<?>> context) {
+						org.alice.ide.cascade.customfillin.CustomInputPane<?> customInputPane = context.getMainPanel();
+						return this.getExplanationIfOkButtonShouldBeDisabled( customInputPane.getValueChooser() );
+					}
+				}
+		);
+
+		//formerly known as EPIC_HACK_addDeclareProcedureDialogOpenAndCommitStep
+		final String requiredProcedureName = "skate";
+		tutorial.addInputDialogOpenAndCommitStep( 
+				"Declare Procedure", 
+				"Declare procedure...", 
+				"Type <b>" + requiredProcedureName + "</b> and press <i>Ok</i>",
+				tutorial.createDeclareProcedureOperationResolver(), 
+				new edu.cmu.cs.dennisc.tutorial.InputDialogOperationCompletorValidatorOkButtonDisabler<org.alice.ide.declarationpanes.CreateProcedurePane>() {
+					public Result checkValidity(edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation, edu.cmu.cs.dennisc.croquet.Edit edit) {
+						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+					}
+					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation) {
+						return tutorial.createToDoEdit();
+					}
+					private String getExplanationIfOkButtonShouldBeDisabled( String name ) {
+						if( requiredProcedureName.equalsIgnoreCase( name ) ) {
+							return null;
+						} else {
+							return "<html>Please enter in the name <b>" + requiredProcedureName + "</b> and press <b>Ok</b> button.</html>";
+						}
+					}
+					public String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateProcedurePane> context) {
+						org.alice.ide.declarationpanes.CreateProcedurePane createProcedurePane = context.getMainPanel();
+						return this.getExplanationIfOkButtonShouldBeDisabled( createProcedurePane.getDeclarationName() );
+					}
+				}
+		);
+
+		//formerly known as EPIC_HACK_addDeclareMethodParameterDialogOpenAndCommitStep
+		final String requiredParameterName = "howHigh";
+		tutorial.addInputDialogOpenAndCommitStep( 
+				"Declare Parameter", 
+				"Declare parameter...", 
+				"1) Select <i>value type:</i> <b>Double</b><p>2) Enter <i>name:</i> <b>" + requiredParameterName + "</b><p>and press the <b>OK</b> button.",
+				tutorial.createDeclareMethodParameterOperationResolver(),
+				new edu.cmu.cs.dennisc.tutorial.InputDialogOperationCompletorValidatorOkButtonDisabler<org.alice.ide.declarationpanes.CreateMethodParameterPane>() {
+					public Result checkValidity(edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation, edu.cmu.cs.dennisc.croquet.Edit edit) {
+						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+					}
+					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation) {
+						return tutorial.createToDoEdit();
+					}
+					private String getExplanationIfOkButtonShouldBeDisabled( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > valueType ) {
+						if( requiredParameterName.equalsIgnoreCase( name ) ) {
+							if( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE == valueType ) {
+								return null;
+							} else {
+								return "<html>Please select <b>RealNumber</b> value type, and press <b>Ok</b>.</html>";
+							}
+						} else {
+							if( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE == valueType ) {
+								return "<html>Please enter in name <b>" + requiredParameterName + "</b>, and press <b>Ok</b>.</html>";
+							} else {
+								return "<html>Please select <b>RealNumber</b> value type, enter in name <b>" + requiredParameterName + "</b>, and press <b>OK</b>.</html>";
+							}
+						}
+					}
+					public String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context) {
+						org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = context.getMainPanel();
+						return this.getExplanationIfOkButtonShouldBeDisabled( createMethodParameterPane.getDeclarationName(), createMethodParameterPane.getValueType() );
+					}
+				}
+		);
+		
 
 		tutorial.addSpotlightStepForModel( 
 				"Note Delay",
@@ -73,21 +215,29 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
-		tutorial.EPIC_HACK_addDeclareProcedureDialogOpenAndCommitStep( 
-				"Declare Procedure Foo", 
-				"Declare procedure...", 
-				"Type <b>foo</b> and press <i>Ok</i>",
-				tutorial.createToDoCompletorValidator(),
-				new org.alice.ide.operations.ast.DeclareProcedureOperation.EPIC_HACK_Validator() {
-					public String getExplanationIfOkButtonShouldBeDisabled( String name ) {
-						if( "foo".equalsIgnoreCase( name ) ) {
-							return null;
-						} else {
-							return "<html>Please enter in the name <b>foo</b> and press <b>Ok</b> button.</html>";
-						}
-					}
-				}
-		);
+//		tutorial.addDeclareProcedureDialogOpenAndCommitStep( 
+//				"Declare Procedure Foo", 
+//				"Declare procedure...", 
+//				"Type <b>foo</b> and press <i>Ok</i>",
+//				new edu.cmu.cs.dennisc.tutorial.InputDialogOperationCompletorValidatorOkButtonDisabler() {
+//					public Result checkValidity(edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation, edu.cmu.cs.dennisc.croquet.Edit edit) {
+//						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+//					}
+//					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation) {
+//						return tutorial.createToDoEdit();
+//					}
+//					private String getExplanationIfOkButtonShouldBeDisabled( String name ) {
+//						if( "foo".equalsIgnoreCase( name ) ) {
+//							return null;
+//						} else {
+//							return "<html>Please enter in the name <b>foo</b> and press <b>Ok</b> button.</html>";
+//						}
+//					}
+//					public String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext context) {
+//						return null;
+//					}
+//				}
+//		);
 
 		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag Move Procedure",
@@ -205,122 +355,6 @@ public class StressTestTutorial {
 			);
 			step.setLayoutHint( layoutHint );
 		}
-
-		tutorial.EPIC_HACK_addForEachInArrayLoopDragAndDropToPopupMenuToInputDialogStep(  
-				"Drag For Each In Order",
-				"Drag <strong>For Each In Order</strong>.",
-				"Drop <strong>here</strong>.",
-				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
-				"Select <strong>Other Array...</strong>",
-				"Select <strong>Model</strong>, add <strong>grassyGround</strong> and <strong>grassyGround</strong>, and press <strong>OK</strong>",
-				tutorial.createToDoCompletorValidator(),
-				new org.alice.ide.cascade.customfillin.CustomInputDialogOperation.EPIC_HACK_Validator() {
-					private boolean isAccessOfFieldNamed( edu.cmu.cs.dennisc.alice.ast.Expression expression, String name ) {
-						if (expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess) {
-							edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess) expression;
-							edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
-							if( field != null ) {
-								return name.equals( field.getName() );
-							}
-						}
-						return false;
-					}
-					public String getExplanationIfOkButtonShouldBeDisabled(org.alice.ide.choosers.ValueChooser<?> valueChooser) {
-						final String[] desiredFieldNames = { "grassyGround", "grassyGround" };
-						final String COMPLETE_INSTRUCTIONS = "<html>Select value type <strong>Model</strong> and add <strong>" + desiredFieldNames[ 0 ] + "</strong> and <strong>" + desiredFieldNames[ 1 ] + "</strong>.</html>";
-						if (valueChooser instanceof org.alice.ide.choosers.ArrayChooser) {
-							org.alice.ide.choosers.ArrayChooser arrayChooser = (org.alice.ide.choosers.ArrayChooser) valueChooser;
-							edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation = arrayChooser.getValue();
-							if( arrayInstanceCreation != null ) {
-//								boolean isComponentTypeCorrect = false;
-//								edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> arrayType = arrayInstanceCreation.arrayType.getValue();
-//								if( arrayType != null ) {
-//									if( arrayType.isArray() ) {
-//										edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> componentType = arrayType.getComponentType();
-//										edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredComponentType = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Model.class );
-//										isComponentTypeCorrect = componentType == desiredComponentType;
-//									}
-//								}
-								edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> componentType = arrayChooser.EPIC_HACK_getArrayComponentType();
-								edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredComponentType = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Model.class );
-								boolean isComponentTypeCorrect = componentType == desiredComponentType;
-								boolean areExpressionsCorrect = false;
-								java.util.ArrayList< edu.cmu.cs.dennisc.alice.ast.Expression > expressions = arrayInstanceCreation.expressions.getValue();
-								if( expressions != null ) {
-									if( expressions.size() == desiredFieldNames.length ) {
-										final int N = desiredFieldNames.length;
-										areExpressionsCorrect = true;
-										for( int i=0; i<N; i++ ) {
-											if( isAccessOfFieldNamed( expressions.get( i ), desiredFieldNames[ i ] ) ) {
-												//pass
-											} else {
-												areExpressionsCorrect = false;
-											}
-										}
-									}
-								}
-								if( isComponentTypeCorrect ) {
-									if( areExpressionsCorrect ) {
-										return null;
-									} else {
-										return "<html>Add <strong>"+ desiredFieldNames[ 0 ] + "</strong> and <strong>" + desiredFieldNames[ 1 ] + "</strong>.</html>";
-									}
-								} else {
-									if( areExpressionsCorrect ) {
-										return "<html>Select value type <strong>Model</strong>.</html>";
-									} else {
-										return COMPLETE_INSTRUCTIONS;
-									}
-								}
-							}
-							return COMPLETE_INSTRUCTIONS;
-						} else {
-							return "this should not happen.  you have found a bug.  ask for help.";
-						}
-					}
-				} 
-		);
-
-		tutorial.EPIC_HACK_addDeclareProcedureDialogOpenAndCommitStep( 
-				"Declare Procedure Foo", 
-				"Declare procedure...", 
-				"Type <b>foo</b> and press <i>Ok</i>",
-				tutorial.createToDoCompletorValidator(),
-				new org.alice.ide.operations.ast.DeclareProcedureOperation.EPIC_HACK_Validator() {
-					public String getExplanationIfOkButtonShouldBeDisabled( String name ) {
-						if( "foo".equalsIgnoreCase( name ) ) {
-							return null;
-						} else {
-							return "<html>Please enter in the name <b>foo</b> and press <b>Ok</b> button.</html>";
-						}
-					}
-				}
-		);
-
-		tutorial.EPIC_HACK_addDeclareMethodParameterDialogOpenAndCommitStep( 
-				"Declare Parameter HowHigh", 
-				"Declare parameter...", 
-				"1) Select <i>value type:</i> <b>Double</b><p>2) Enter <i>name:</i> <b>howHigh</b><p>and press the <b>OK</b> button.",
-				tutorial.createToDoCompletorValidator(),				
-				new org.alice.ide.operations.ast.DeclareMethodParameterOperation.EPIC_HACK_Validator() {
-					public String getExplanationIfOkButtonShouldBeDisabled( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > valueType ) {
-						if( "howHigh".equalsIgnoreCase( name ) ) {
-							if( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE == valueType ) {
-								return null;
-							} else {
-								return "<html>Please select <b>Double</b> value type, and press <b>Ok</b>.</html>";
-							}
-						} else {
-							if( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE == valueType ) {
-								return "<html>Please enter in name <b>howHigh</b>, and press <b>Ok</b>.</html>";
-							} else {
-								return "<html>Please select <b>Double</b> value type, enter in name <b>howHigh</b>, and press <b>OK</b>.</html>";
-							}
-						}
-					}
-				}
-		);
-
 
 		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag If/Else",
@@ -518,13 +552,13 @@ public class StressTestTutorial {
 		);
 
 
-		tutorial.addInputDialogOpenAndCommitStep( 
-				"Declare Procedure Foo", 
-				"Declare a procedure...", 
-				"Type <b>foo</b> and press <i>Ok</i>",
-				tutorial.createDeclareProcedureOperationResolver(),
-				tutorial.createToDoCompletorValidator()
-		);
+//		tutorial.addInputDialogOpenAndCommitStep( 
+//				"Declare Procedure Foo", 
+//				"Declare a procedure...", 
+//				"Type <b>foo</b> and press <i>Ok</i>",
+//				tutorial.createDeclareProcedureOperationResolver(),
+//				tutorial.createToDoCompletorValidator()
+//		);
 //
 //		tutorial.addSpotlightTabTitleStep(  
 //				"Note Foo Tab", 
@@ -533,13 +567,13 @@ public class StressTestTutorial {
 //				tutorial.createCurrentCodeResolver()
 //		);
 //
-		tutorial.addInputDialogOpenAndCommitStep( 
-				"Declare Parameter How High", 
-				"Declare parameter....", 
-				"Type <b>howHigh</b> and select <b>Double</b> and press <i>Ok</i>",
-				tutorial.createDeclareMethodParameterOperationResolver(),
-				tutorial.createToDoCompletorValidator()				
-		);
+//		tutorial.addInputDialogOpenAndCommitStep( 
+//				"Declare Parameter How High", 
+//				"Declare parameter....", 
+//				"Type <b>howHigh</b> and select <b>Double</b> and press <i>Ok</i>",
+//				tutorial.createDeclareMethodParameterOperationResolver(),
+//				tutorial.createToDoCompletorValidator()				
+//		);
 		
 		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag Roll Procedure",
@@ -698,12 +732,12 @@ public class StressTestTutorial {
 				tutorial.getProceduresTab()
 		);
 
-		tutorial.addActionStep( 
-				"Declare Procedure Hop", 
-				"Declare a procedure named <b>hop</b>.", 
-				tutorial.createDeclareProcedureOperationResolver(),
-				tutorial.createToDoCompletorValidator()
-		);
+//		tutorial.addActionStep( 
+//				"Declare Procedure Hop", 
+//				"Declare a procedure named <b>hop</b>.", 
+//				tutorial.createDeclareProcedureOperationResolver(),
+//				tutorial.createToDoCompletorValidator()
+//		);
 
 		tutorial.addSpotlightTabTitleStep(  
 				"Note Hop Tab", 

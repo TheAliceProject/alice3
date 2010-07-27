@@ -46,13 +46,14 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class InputDialogOpenAndCommitStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> {
-	private Completor completor;
-	private Validator validator;
-	public InputDialogOpenAndCommitStep( String title, String openText, String commitText, final edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> inputDialogOperationResolver, Completor completor, Validator validator ) {
+	private InputDialogOperationCompletor completor;
+	private InputDialogOperationValidator validator;
+	private edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler externalOkButtonDisabler;
+	public InputDialogOpenAndCommitStep( String title, String openText, String commitText, final edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> inputDialogOperationResolver, InputDialogOperationCompletor completor, InputDialogOperationValidator validator, edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler externalOkButtonDisabler ) {
 		super( title, openText, new Hole( new FirstComponentResolver( inputDialogOperationResolver ), Feature.ConnectionPreference.EAST_WEST ), inputDialogOperationResolver );
 		this.completor = completor;
 		this.validator = validator;
-
+		this.externalOkButtonDisabler = externalOkButtonDisabler;
 		Note commitNote = new Note( commitText );
 		commitNote.addFeature( new InputDialogCommitFeature( new edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
 			public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
@@ -83,7 +84,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	@Override
 	protected void complete() {
-		TutorialStencil.complete( this.completor.getEdit() );
+		TutorialStencil.complete( this.completor.createEdit( this.getModel() ) );
 	}
 
 	@Override
@@ -106,6 +107,15 @@ package edu.cmu.cs.dennisc.tutorial;
 			return null;
 		}
 	}
+	
+	@Override
+	protected void setActiveNote(int activeIndex) {
+		super.setActiveNote(activeIndex);
+		if( activeIndex == 1 ) {
+			this.getModel().setExternalOkButtonDisabler( this.externalOkButtonDisabler );
+		}
+	}
+	
 	
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
@@ -149,12 +159,14 @@ package edu.cmu.cs.dennisc.tutorial;
 						} else {
 							edit = null;
 						}
-						rv = this.validator.checkValidity( edit ).isProcedeApprorpiate();
+						rv = this.validator.checkValidity( this.getModel(), edit ).isProcedeApprorpiate();
 						if( rv ) {
 							SoundCache.SUCCESS.startIfNotAlreadyActive();
 						} else {
 							SoundCache.FAILURE.startIfNotAlreadyActive();
 						}
+						//todo?
+						this.getModel().setExternalOkButtonDisabler( null );
 					}
 				}
 				break;

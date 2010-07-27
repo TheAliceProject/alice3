@@ -46,11 +46,11 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class DeclareProcedureOperation extends DeclareMethodOperation {
-	@Deprecated
-	public interface EPIC_HACK_Validator {
-		public String getExplanationIfOkButtonShouldBeDisabled( String name );
-	}
-	private EPIC_HACK_Validator validator = null;
+//	@Deprecated
+//	public interface EPIC_HACK_Validator {
+//		public String getExplanationIfOkButtonShouldBeDisabled( String name );
+//	}
+//	private EPIC_HACK_Validator validator = null;
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >, DeclareProcedureOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static DeclareProcedureOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
 		DeclareProcedureOperation rv = map.get( type );
@@ -71,21 +71,21 @@ public class DeclareProcedureOperation extends DeclareMethodOperation {
 		return new org.alice.ide.declarationpanes.CreateProcedurePane( type );
 	}
 	
-	public EPIC_HACK_Validator getValidator() {
-		return this.validator;
-	}
-	public void setValidator( EPIC_HACK_Validator validator ) {
-		this.validator = validator;
-	}
-	@Override
-	protected String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> context) {
-		String rv = super.getExplanationIfOkButtonShouldBeDisabled(context);
-		if( this.validator != null ) {
-			String explanation = this.validator.getExplanationIfOkButtonShouldBeDisabled( this.getDeclarationName( context ) );
-			if( explanation != null ) {
-				rv = explanation;
-			}
-		}
-		return rv;
-	}
+//	public EPIC_HACK_Validator getValidator() {
+//		return this.validator;
+//	}
+//	public void setValidator( EPIC_HACK_Validator validator ) {
+//		this.validator = validator;
+//	}
+//	@Override
+//	protected String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> context) {
+//		String rv = super.getExplanationIfOkButtonShouldBeDisabled(context);
+//		if( this.validator != null ) {
+//			String explanation = this.validator.getExplanationIfOkButtonShouldBeDisabled( this.getDeclarationName( context ) );
+//			if( explanation != null ) {
+//				rv = explanation;
+//			}
+//		}
+//		return rv;
+//	}
 }

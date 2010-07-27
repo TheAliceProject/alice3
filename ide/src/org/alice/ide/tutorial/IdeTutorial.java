@@ -358,13 +358,13 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		};
 	}
 	
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createIfElseStatementConditionResolver( int index ) {
+	public Resolver< edu.cmu.cs.dennisc.croquet.ActionOperation > createIfElseStatementConditionResolver( int index ) {
 		return new IfElseStatementConditionResolver( index );
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createFirstIfElseStatementConditionResolver() {
+	public Resolver< edu.cmu.cs.dennisc.croquet.ActionOperation > createFirstIfElseStatementConditionResolver() {
 		return this.createIfElseStatementConditionResolver(0);
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createLastIfElseStatementConditionResolver() {
+	public Resolver< edu.cmu.cs.dennisc.croquet.ActionOperation > createLastIfElseStatementConditionResolver() {
 		return this.createIfElseStatementConditionResolver(Short.MAX_VALUE);
 	}
 
@@ -466,26 +466,26 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 //	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createLastInvocationInstanceResolver( Resolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > methodResolver ) {
 //		return this.createInvocationInstanceResolver( methodResolver, Short.MAX_VALUE );
 //	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createInvocationArgumentResolver( String methodName, int invocationIndex, int argumentIndex ) {
+	public Resolver< edu.cmu.cs.dennisc.croquet.ActionOperation > createInvocationArgumentResolver( String methodName, int invocationIndex, int argumentIndex ) {
 		return new InvocationArgumentResolver( this.createCurrentCodeMethodResolver(methodName), invocationIndex, argumentIndex );
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createInvocationInstanceResolver( String methodName, int invocationIndex ) {
+	public Resolver< edu.cmu.cs.dennisc.croquet.ActionOperation > createInvocationInstanceResolver( String methodName, int invocationIndex ) {
 		return new InvocationInstanceResolver( this.createCurrentCodeMethodResolver(methodName), invocationIndex );
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createFirstInvocationInstanceResolver( String methodName ) {
+	public Resolver< edu.cmu.cs.dennisc.croquet.ActionOperation > createFirstInvocationInstanceResolver( String methodName ) {
 		return this.createInvocationInstanceResolver( methodName, 0 );
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createLastInvocationInstanceResolver(String methodName ) {
+	public Resolver< edu.cmu.cs.dennisc.croquet.ActionOperation > createLastInvocationInstanceResolver(String methodName ) {
 		return this.createInvocationInstanceResolver( methodName, Short.MAX_VALUE );
 	}
 
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createInvocationMoreResolver( String methodName, int invocationIndex ) {
+	public Resolver< edu.cmu.cs.dennisc.croquet.ActionOperation > createInvocationMoreResolver( String methodName, int invocationIndex ) {
 		return new InvocationMoreResolver( this.createCurrentCodeMethodResolver(methodName), invocationIndex );
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createFirstInvocationMoreResolver( String methodName ) {
+	public Resolver< edu.cmu.cs.dennisc.croquet.ActionOperation > createFirstInvocationMoreResolver( String methodName ) {
 		return this.createInvocationMoreResolver( methodName, 0 );
 	}
-	public Resolver< edu.cmu.cs.dennisc.croquet.Operation<?> > createLastInvocationMoreResolver(String methodName ) {
+	public Resolver< edu.cmu.cs.dennisc.croquet.ActionOperation > createLastInvocationMoreResolver(String methodName ) {
 		return this.createInvocationMoreResolver( methodName, Short.MAX_VALUE );
 	}
 	
@@ -517,25 +517,25 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 //	}
 
 	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> > createDeclareProcedureOperationResolver() {
-		return new DeclareMemberResolver() {
+		return new DeclareMemberResolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>>() {
 			@Override
-			protected edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+			protected org.alice.ide.operations.ast.DeclareProcedureOperation getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
 				return org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance( type );
 			}
 		};
 	}
 	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> > createDeclareFunctionOperationResolver() {
-		return new DeclareMemberResolver() {
+		return new DeclareMemberResolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> >() {
 			@Override
-			protected edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+			protected org.alice.ide.operations.ast.DeclareFunctionOperation getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
 				return org.alice.ide.operations.ast.DeclareFunctionOperation.getInstance( type );
 			}
 		};
 	}
 	public Resolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> > createDeclareFieldOperationResolver() {
-		return new DeclareMemberResolver() {
+		return new DeclareMemberResolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> >() {
 			@Override
-			protected edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+			protected org.alice.ide.operations.ast.DeclareFieldOperation getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
 				return org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( type );
 			}
 		};
@@ -598,25 +598,99 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.CommentTemplate.class );
 	}
 
+//	@Deprecated
+//	public edu.cmu.cs.dennisc.tutorial.Step addDeclareProcedureDialogOpenAndCommitStep( String title, String openText, String commitText, edu.cmu.cs.dennisc.tutorial.InputDialogOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
+//		return this.addInputDialogOpenAndCommitStep( title, openText, commitText, this.createDeclareProcedureOperationResolver(), completorValidatorOkButtonDisabler );
+//	}
 	@Deprecated
-	public edu.cmu.cs.dennisc.tutorial.CompletorValidator createToDoCompletorValidator() {
-		return new edu.cmu.cs.dennisc.tutorial.CompletorValidator() {
-			public Result checkValidity(edu.cmu.cs.dennisc.croquet.Edit edit) {
+	public edu.cmu.cs.dennisc.tutorial.Step addDeclareMethodParameterDialogOpenAndCommitStep( String title, String openText, String commitText, edu.cmu.cs.dennisc.tutorial.InputDialogOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
+		return this.addInputDialogOpenAndCommitStep( title, openText, commitText, this.createDeclareMethodParameterOperationResolver(), completorValidatorOkButtonDisabler );
+	}
+//	@Deprecated
+//	public edu.cmu.cs.dennisc.tutorial.Step addForEachInArrayLoopDragAndDropToPopupMenuToInputDialogStep( String title, String text, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, String inputDialogText, edu.cmu.cs.dennisc.tutorial.DragAndDropOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
+//		return this.addDragAndDropToPopupMenuToInputDialogStep( title, text, this.createForEachInArrayLoopTemplateResolver(), dropText, dropShapeResolver, popupMenuText, inputDialogText, completorValidatorOkButtonDisabler );
+//	}
+//	@Deprecated
+//	public edu.cmu.cs.dennisc.tutorial.Step EPIC_HACK_addDeclareMethodParameterDialogOpenAndCommitStep( String title, String openText, String commitText, InputDialogOperationCompletorValidator completorValidator, final org.alice.ide.operations.ast.DeclareMethodParameterOperation.EPIC_HACK_Validator validator ) {
+//		edu.cmu.cs.dennisc.tutorial.Step step = new InputDialogOpenAndCommitStep( title, openText, commitText, ((org.alice.ide.tutorial.IdeTutorial)this).createDeclareMethodParameterOperationResolver(), completorValidator, completorValidator ) {
+//			@Override
+//			protected void setActiveNote(int activeIndex) {
+//				super.setActiveNote(activeIndex);
+//				if( activeIndex == 1 ) {
+//					org.alice.ide.operations.ast.DeclareMethodParameterOperation declareParameterOperation = (org.alice.ide.operations.ast.DeclareMethodParameterOperation)this.getModel();
+//					declareParameterOperation.setValidator( validator );
+//				}
+//			}
+//		};
+//		return this.addStep( step );
+//	}
+//
+//	
+//	@Deprecated
+//	public Step EPIC_HACK_addForEachInArrayLoopDragAndDropToPopupMenuToInputDialogStep( String title, String text, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, String inputDialogText, DragAndDropOperationCompletorValidator completorValidator, final org.alice.ide.cascade.customfillin.CustomInputDialogOperation.EPIC_HACK_Validator validator ) {
+//		edu.cmu.cs.dennisc.tutorial.Step step = new DragAndDropStep( title, text, ((org.alice.ide.tutorial.IdeTutorial)this).createForEachInArrayLoopTemplateResolver(), dropText, dropShapeResolver, popupMenuText, inputDialogText, completorValidator, completorValidator ) {
+//			@Override
+//			public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+//				boolean rv = super.isWhatWeveBeenWaitingFor( child );
+//				if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext<?> ) {
+//					edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext<?> context = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext<?>)child;
+//					edu.cmu.cs.dennisc.croquet.Model model = context.getModel();
+//					if (model instanceof org.alice.ide.cascade.customfillin.CustomInputDialogOperation ) {
+//						org.alice.ide.cascade.customfillin.CustomInputDialogOperation customInputDialogOperation = (org.alice.ide.cascade.customfillin.CustomInputDialogOperation) model;
+//						customInputDialogOperation.setValidator( validator );
+//					}
+//				}
+//				return rv;
+//			}
+//		};
+//		return this.addStep( step );
+//	}
+	
+	public edu.cmu.cs.dennisc.croquet.Edit createToDoEdit() {
+		return new org.alice.ide.ToDoEdit() {
+			@Override
+			public void doOrRedo( boolean isDo ) {
+			}
+			@Override
+			public void undo() {
+			}
+			@Override
+			protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+				return rv;
+			}
+		};
+	}
+	public static interface TodoCompletorValidator extends edu.cmu.cs.dennisc.tutorial.ActionOperationCompletorValidator, edu.cmu.cs.dennisc.tutorial.InputDialogOperationCompletorValidatorOkButtonDisabler, edu.cmu.cs.dennisc.tutorial.DragAndDropOperationCompletorValidatorOkButtonDisabler, edu.cmu.cs.dennisc.tutorial.PopupMenuOperationCompletorValidator {
+	}
+	@Deprecated
+	public TodoCompletorValidator createToDoCompletorValidator() {
+		return new TodoCompletorValidator() {
+			public String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext context) {
+				return null;
+			}
+			public Result checkValidity(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
 				return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 			}
-			public edu.cmu.cs.dennisc.croquet.Edit getEdit() {
-				return new org.alice.ide.ToDoEdit() {
-					@Override
-					public void doOrRedo( boolean isDo ) {
-					}
-					@Override
-					public void undo() {
-					}
-					@Override
-					protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
-						return rv;
-					}
-				};
+			public Result checkValidity(edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation, edu.cmu.cs.dennisc.croquet.Edit edit) {
+				return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+			}
+			public Result checkValidity(edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation popupMenuOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
+				return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+			}
+			public Result checkValidity(edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
+				return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+			}
+			public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation) {
+				return createToDoEdit();
+			}
+			public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation) {
+				return createToDoEdit();
+			}
+			public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation popupMenuOperation) {
+				return createToDoEdit();
+			}
+			public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation) {
+				return createToDoEdit();
 			}
 		};
 	}

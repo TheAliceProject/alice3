@@ -136,7 +136,7 @@ public abstract class Operation< C extends OperationContext<?>> extends Model {
 	}
 
 
-	/*package-private*/ void addButton(OperationButton<?> button) {
+	/*package-private*/ void addButton(OperationButton<?,?> button) {
 		button.setAction( Operation.this.action );
 //			rv.setModel( this.buttonModel );
 		assert Operation.this.mapButtonToListener.containsKey( button ) == false;
@@ -145,7 +145,7 @@ public abstract class Operation< C extends OperationContext<?>> extends Model {
 		button.getAwtComponent().addActionListener( buttonActionListener );
 		this.addComponent(button);
 	}
-	/*package-private*/ void removeButton(OperationButton<?> button) {
+	/*package-private*/ void removeButton(OperationButton<?,?> button) {
 		this.removeComponent(button);
 		ButtonActionListener buttonActionListener = Operation.this.mapButtonToListener.get( button );
 		assert buttonActionListener != null;

@@ -40,24 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.tutorial;
+package edu.cmu.cs.dennisc.tutorial;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class IfElseStatementConditionResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.ActionOperation> {
-	private int index;
-	public IfElseStatementConditionResolver(int index) {
-		this.index = index;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.ActionOperation getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
-		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) codeEditor.getCode();
-		edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement = IdeTutorial.getNodeAt(code, edu.cmu.cs.dennisc.alice.ast.ConditionalStatement.class, this.index);
-		if (conditionalStatement != null) {
-			return codeEditor.getOperation(conditionalStatement.booleanExpressionBodyPairs.get(0).expression);
-		} else {
-			return null;
-		}
-	}
+public interface PopupMenuOperationCompletor extends Completor {
+	public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit( edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation popupMenuOperation );
 }

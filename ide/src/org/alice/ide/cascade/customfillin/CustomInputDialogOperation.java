@@ -46,34 +46,34 @@ package org.alice.ide.cascade.customfillin;
  * @author Dennis Cosgrove
  */
 public class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends org.alice.ide.operations.InputDialogWithPreviewOperation<CustomInputPane< E >> {
-	@Deprecated
-	public interface EPIC_HACK_Validator {
-		public String getExplanationIfOkButtonShouldBeDisabled( org.alice.ide.choosers.ValueChooser< ? > valueChooser );
-	}
-	private EPIC_HACK_Validator validator = null;
+//	@Deprecated
+//	public interface EPIC_HACK_Validator {
+//		public String getExplanationIfOkButtonShouldBeDisabled( org.alice.ide.choosers.ValueChooser< ? > valueChooser );
+//	}
+//	private EPIC_HACK_Validator validator = null;
 
 	private CustomInputPane< E > customInputPane;
 	public CustomInputDialogOperation( CustomInputPane< E > customInputPane ) {
 		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "0e69d792-3e5b-4a17-b670-465885ade615" ) );
 		this.customInputPane = customInputPane;
 	}
-	public EPIC_HACK_Validator getValidator() {
-		return this.validator;
-	}
-	public void setValidator( EPIC_HACK_Validator validator ) {
-		this.validator = validator;
-	}
-	@Override
-	protected String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context) {
-		String rv = super.getExplanationIfOkButtonShouldBeDisabled( context );
-		if( this.validator != null ) {
-			String explanation = this.validator.getExplanationIfOkButtonShouldBeDisabled( this.customInputPane.getValueChooser() );
-			if( explanation != null ) {
-				rv = explanation;
-			}
-		}
-		return rv;
-	}
+//	public EPIC_HACK_Validator getValidator() {
+//		return this.validator;
+//	}
+//	public void setValidator( EPIC_HACK_Validator validator ) {
+//		this.validator = validator;
+//	}
+//	@Override
+//	protected String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context) {
+//		String rv = super.getExplanationIfOkButtonShouldBeDisabled( context );
+//		if( this.validator != null ) {
+//			String explanation = this.validator.getExplanationIfOkButtonShouldBeDisabled( this.customInputPane.getValueChooser() );
+//			if( explanation != null ) {
+//				rv = explanation;
+//			}
+//		}
+//		return rv;
+//	}
 	
 	@Override
 	protected CustomInputPane< E > prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context) {

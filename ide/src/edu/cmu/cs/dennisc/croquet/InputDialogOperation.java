@@ -113,6 +113,16 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 	}
 
 
+	public static interface ExternalOkButtonDisabler<J extends Component<?>> {
+		public String getExplanationIfOkButtonShouldBeDisabled( InputDialogOperationContext<J> context );
+	}
+	private ExternalOkButtonDisabler<J> externalOkButtonDisabler;
+	public ExternalOkButtonDisabler<J> getExternalOkButtonDisabler() {
+		return this.externalOkButtonDisabler;
+	}
+	public void setExternalOkButtonDisabler( ExternalOkButtonDisabler<J> externalOkButtonDisabler ) {
+		this.externalOkButtonDisabler = externalOkButtonDisabler;
+	}
 	protected String getExplanationIfOkButtonShouldBeDisabled( InputDialogOperationContext<J> context ) {
 		return null;
 	}
@@ -122,6 +132,12 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 	protected void updateOkOperationAndExplanation( InputDialogOperationContext<J> context ) {
 		if( context != null ) {
 			String explanation = this.getExplanationIfOkButtonShouldBeDisabled( context );
+			if( this.externalOkButtonDisabler != null ) {
+				String externalExplanation = this.externalOkButtonDisabler.getExplanationIfOkButtonShouldBeDisabled( context );
+				if( externalExplanation != null ) {
+					explanation = externalExplanation;
+				}
+			}
 			this.okOperation.setEnabled( explanation == null );
 			if( explanation != null ) {
 				this.explanationLabel.setText( explanation );
@@ -229,4 +245,5 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 			context.cancel();
 		}
 	}
+
 }

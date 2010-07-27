@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class Hyperlink extends OperationButton< javax.swing.JButton > {
+public class Hyperlink extends OperationButton< javax.swing.JButton, Operation<?> > {
 	/*package-private*/ Hyperlink( Operation<?> model ) {
 		super( model );
 	}
