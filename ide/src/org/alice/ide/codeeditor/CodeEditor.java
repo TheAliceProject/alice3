@@ -942,14 +942,10 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 		edu.cmu.cs.dennisc.croquet.Component<?> component0 = this.getComponent( 0 );
 		
 		int width = Math.max( component0.getAwtComponent().getPreferredSize().width, this.scrollPane.getViewportView().getAwtComponent().getPreferredSize().width );
-		double imageableWidth = pageFormat.getImageableWidth();
-		double xScale = width/imageableWidth;
 
 		int height = this.scrollPane.getY() + this.scrollPane.getViewportView().getAwtComponent().getPreferredSize().height;
-		double imageableHeight = pageFormat.getImageableHeight();
-		double yScale = height/imageableHeight;
-		
-		double scale = Math.max( xScale, yScale );
+
+		double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale(pageFormat, width, height);
 
 		g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
 		if( scale > 1.0 ) {
