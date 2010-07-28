@@ -91,6 +91,47 @@ public class StressTestTutorial {
 					}
 				}
 		);
+		final double desiredDuration = 0.5;
+		tutorial.addActionStep( 
+				"More (Duration)",
+				"Click <b>more...</b> and select 0.5",
+				tutorial.createFirstInvocationMoreResolver( "move" ),
+				new edu.cmu.cs.dennisc.tutorial.ActionOperationCompletorValidator() {
+					public Result checkValidity(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
+						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+					}
+					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation) {
+						org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation = (org.alice.ide.operations.ast.FillInMoreOperation)actionOperation;
+						org.alice.ide.croquet.edits.ast.FillInMoreEdit rv = new org.alice.ide.croquet.edits.ast.FillInMoreEdit( new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( desiredDuration ) );
+						rv.EPIC_HACK_setModel( fillInMoreOperation );
+						return rv;
+					}
+				}
+		);
+		
+		final String fieldName = "grassyGround";
+		tutorial.addActionStep( 
+				"More (As Seen By)",
+				"Click <b>more...</b> and select <b>" + fieldName + "</b>",
+				tutorial.createFirstInvocationMoreResolver( "move" ),
+				new edu.cmu.cs.dennisc.tutorial.ActionOperationCompletorValidator() {
+					public Result checkValidity(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
+						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+					}
+					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation) {
+						org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation = (org.alice.ide.operations.ast.FillInMoreOperation)actionOperation;
+						
+						edu.cmu.cs.dennisc.alice.ast.AbstractField field = ide.getSceneType().getDeclaredField( fieldName );
+						edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess(
+								new edu.cmu.cs.dennisc.alice.ast.ThisExpression(),
+								field
+						);
+						org.alice.ide.croquet.edits.ast.FillInMoreEdit rv = new org.alice.ide.croquet.edits.ast.FillInMoreEdit( fieldAccess );
+						rv.EPIC_HACK_setModel( fillInMoreOperation );
+						return rv;
+					}
+				}
+		);
 
 		//formerly known as EPIC_HACK_addDeclareProcedureDialogOpenAndCommitStep
 		final String requiredProcedureName = "skate";
@@ -188,41 +229,6 @@ public class StressTestTutorial {
 								statementListIndexTrackableShape.getIndex(),
 								statement
 						);
-					}
-				}
-		);
-
-		final double desiredDuration = 0.5;
-		tutorial.addActionStep( 
-				"More",
-				"Click <b>more...</b>",
-				tutorial.createFirstInvocationMoreResolver( "move" ),
-				new edu.cmu.cs.dennisc.tutorial.ActionOperationCompletorValidator() {
-					public Result checkValidity(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
-						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
-					}
-					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation) {
-						org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation = (org.alice.ide.operations.ast.FillInMoreOperation)actionOperation;
-						org.alice.ide.croquet.edits.ast.FillInMoreEdit rv = new org.alice.ide.croquet.edits.ast.FillInMoreEdit( new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( desiredDuration ) );
-						rv.EPIC_HACK_setModel( fillInMoreOperation );
-						return rv;
-					}
-				}
-		);
-
-		tutorial.addActionStep( 
-				"More",
-				"Click <b>more...</b>",
-				tutorial.createFirstInvocationMoreResolver( "move" ),
-				new edu.cmu.cs.dennisc.tutorial.ActionOperationCompletorValidator() {
-					public Result checkValidity(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
-						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
-					}
-					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation) {
-						org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation = (org.alice.ide.operations.ast.FillInMoreOperation)actionOperation;
-						org.alice.ide.croquet.edits.ast.FillInMoreEdit rv = new org.alice.ide.croquet.edits.ast.FillInMoreEdit( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() );
-						rv.EPIC_HACK_setModel( fillInMoreOperation );
-						return rv;
 					}
 				}
 		);
