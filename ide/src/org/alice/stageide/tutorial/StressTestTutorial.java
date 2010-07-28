@@ -57,6 +57,41 @@ public class StressTestTutorial {
 				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
 		);
 		
+		tutorial.addDragAndDropToPopupMenuStep( 
+				"Drag move action",
+				"Click and drag <strong>move</strong> action.",
+				tutorial.createProcedureInvocationTemplateResolver( "move" ),
+				"Drop <strong>here</strong>.",
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+				"Select <strong>UP</strong> from the menu, and then 1.0.",
+				new edu.cmu.cs.dennisc.tutorial.DragAndDropOperationCompletorValidator() {
+					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit ) {
+						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+					}
+					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
+						org.alice.ide.codeeditor.CodeEditor.StatementListIndexTrackableShape statementListIndexTrackableShape = (org.alice.ide.codeeditor.CodeEditor.StatementListIndexTrackableShape)dropShape;
+						edu.cmu.cs.dennisc.croquet.DragComponent dragComponent = (edu.cmu.cs.dennisc.croquet.DragComponent)dragAndDropOperation.getFirstComponent();
+						
+						
+						org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate = (org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate)dragComponent;
+
+						edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression = org.alice.ide.IDE.getSingleton().createInstanceExpression();
+						edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = procedureInvocationTemplate.getMethod();
+						edu.cmu.cs.dennisc.alice.ast.Statement statement = org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement(
+								instanceExpression, 
+								method,
+								org.alice.ide.ast.NodeUtilities.createStaticFieldAccess( org.alice.apis.moveandturn.MoveDirection.class, "UP" ),
+								new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 1.0 )
+						);
+						return new org.alice.ide.codeeditor.InsertStatementEdit(
+								statementListIndexTrackableShape.getStatementListProperty(),
+								statementListIndexTrackableShape.getIndex(),
+								statement
+						);
+					}
+				}
+		);
+
 		//formerly known as EPIC_HACK_addDeclareProcedureDialogOpenAndCommitStep
 		final String requiredProcedureName = "skate";
 		tutorial.addInputDialogOpenAndCommitStep( 
@@ -111,7 +146,7 @@ public class StressTestTutorial {
 					}
 				}
 		);
-		
+
 		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag move action",
 				"Click and drag <strong>move</strong> action.",
@@ -134,12 +169,20 @@ public class StressTestTutorial {
 
 						edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression = org.alice.ide.IDE.getSingleton().createInstanceExpression();
 						edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = procedureInvocationTemplate.getMethod();
-						edu.cmu.cs.dennisc.alice.ast.Statement statement = org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement(
+						edu.cmu.cs.dennisc.alice.ast.ExpressionStatement statement = org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement(
 								instanceExpression, 
 								method,
 								org.alice.ide.ast.NodeUtilities.createStaticFieldAccess( org.alice.apis.moveandturn.MoveDirection.class, "UP" ),
 								new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 1.0 )
 						);
+						
+						assert statement.expression.getValue() instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation;
+						edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)statement.expression.getValue();
+						if( methodInvocation.isValid() ) {
+							//pass
+						} else {
+							edu.cmu.cs.dennisc.print.PrintUtilities.println( "createEdit", methodInvocation );
+						}
 						return new org.alice.ide.codeeditor.InsertStatementEdit(
 								statementListIndexTrackableShape.getStatementListProperty(),
 								statementListIndexTrackableShape.getIndex(),
@@ -149,6 +192,7 @@ public class StressTestTutorial {
 				}
 		);
 
+		final double desiredDuration = 0.5;
 		tutorial.addActionStep( 
 				"More",
 				"Click <b>more...</b>",
@@ -159,11 +203,13 @@ public class StressTestTutorial {
 					}
 					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation) {
 						org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation = (org.alice.ide.operations.ast.FillInMoreOperation)actionOperation;
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "createEdit", actionOperation );
-						return tutorial.createToDoEdit();
+						org.alice.ide.croquet.edits.ast.FillInMoreEdit rv = new org.alice.ide.croquet.edits.ast.FillInMoreEdit( new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( desiredDuration ) );
+						rv.EPIC_HACK_setModel( fillInMoreOperation );
+						return rv;
 					}
 				}
 		);
+		
 
 		tutorial.addSpotlightStepForModel( 
 				"Note Count Loop", 

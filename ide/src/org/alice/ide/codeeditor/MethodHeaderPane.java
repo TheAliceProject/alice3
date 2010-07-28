@@ -46,7 +46,7 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 public class MethodHeaderPane extends AbstractCodeHeaderPane {
-	public MethodHeaderPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice, ParametersPane parametersPane, boolean isPreview ) {
+	public MethodHeaderPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice, ParametersPane parametersPane, boolean isPreview, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType ) {
 		super( methodDeclaredInAlice, parametersPane, isPreview );
 //		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
@@ -107,5 +107,21 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			);
 		}
 		this.addParametersPaneAndInstanceLineIfDesired();
+		if( declaringType != null ) {
+			//pass
+		} else {
+			declaringType = methodDeclaredInAlice.getDeclaringType();
+		}
+		if( declaringType != null ) {
+			if( declaringType instanceof edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice ) {
+				//pass
+			} else {
+				this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " on class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+				this.addComponent( org.alice.ide.common.TypeComponent.createInstance( declaringType ) );
+			}
+		}
+	}
+	public MethodHeaderPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice, ParametersPane parametersPane, boolean isPreview ) {
+		this( methodDeclaredInAlice, parametersPane, isPreview, null );
 	}
 }

@@ -46,8 +46,10 @@ package org.alice.ide.declarationpanes;
  * @author Dennis Cosgrove
  */
 public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTypePane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType;
 	public CreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
 		super( new org.alice.ide.name.validators.MethodNameValidator( declaringType ) );
+		this.declaringType = declaringType;
 	}
 	@Override
 	protected String getDeclarationText() {
@@ -68,7 +70,7 @@ public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTyp
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent() {
-		return new org.alice.ide.codeeditor.MethodHeaderPane( this.getActualInputValue(), null, true );
+		return new org.alice.ide.codeeditor.MethodHeaderPane( this.getActualInputValue(), null, true, this.declaringType );
 	}
 	
 	@Override

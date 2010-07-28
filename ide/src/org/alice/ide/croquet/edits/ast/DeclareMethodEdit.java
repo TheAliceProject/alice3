@@ -74,7 +74,7 @@ public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice
 	
 	@Override
 	public void doOrRedo( boolean isDo ) {
-		type.methods.add( method );
+		this.type.methods.add( this.method );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		this.prevFocusedCode = ide.getFocusedCode();
 		ide.setFocusedCode( method );

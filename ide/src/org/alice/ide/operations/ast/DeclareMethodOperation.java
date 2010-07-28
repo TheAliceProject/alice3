@@ -62,15 +62,42 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.In
 	protected abstract org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType );
 	@Override
 	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > > context) {
+		assert this.declaringType != null;
 		return this.createCreateMethodPane( this.declaringType );
 	}
 	@Override
 	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> context, boolean isOk) {
 		if( isOk ) {
 			org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = context.getMainPanel();
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.getActualInputValue();
+			final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.getActualInputValue();
 			if( method != null ) {
-				context.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareMethodEdit(declaringType, method));
+				final org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+				final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = ide.getFocusedCode();
+				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+					@Override
+					public void doOrRedo( boolean isDo ) {
+						declaringType.methods.add( method );
+//						assert method.getDeclaringType() == method.body.getValue().getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractType.class );
+						ide.setFocusedCode( method );
+					}
+					@Override
+					public void undo() {
+						int index = declaringType.methods.indexOf( method );
+						if( index != -1 ) {
+							declaringType.methods.remove( index );
+							ide.setFocusedCode( prevCode );
+						} else {
+							throw new javax.swing.undo.CannotUndoException();
+						}
+					}
+					@Override
+					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+						rv.append( "declare:" );
+						edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, method, locale);
+						return rv;
+					}
+				} );
+//				context.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareMethodEdit(declaringType, method));
 			} else {
 				context.cancel();
 			}

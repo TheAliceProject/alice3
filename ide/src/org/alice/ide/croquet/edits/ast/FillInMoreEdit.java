@@ -56,35 +56,77 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice.id
 		this.argumentExpression = argumentExpression;
 	}
 	
+	private org.alice.ide.operations.ast.FillInMoreOperation EPIC_HACK_fillInMoreOperation;
+	public void EPIC_HACK_setModel( org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation ) {
+		this.EPIC_HACK_fillInMoreOperation = fillInMoreOperation;
+	}
+	
 	@Override
 	public void doOrRedo( boolean isDo ) {
 		assert this.argumentExpression != null;
-		org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation = this.getModel();
+		org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation;
+		if( EPIC_HACK_fillInMoreOperation != null ) {
+			fillInMoreOperation = EPIC_HACK_fillInMoreOperation;
+		} else {
+			fillInMoreOperation = this.getModel();
+		}
 		assert fillInMoreOperation != null;
 		
+		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = fillInMoreOperation.getPrevMethodInvocation();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = fillInMoreOperation.getNextMethodInvocation();
-		final int N = nextMethodInvocation.arguments.size(); 
-		edu.cmu.cs.dennisc.alice.ast.Argument argument = nextMethodInvocation.arguments.get( N-1 );
-		argument.expression.setValue( this.argumentExpression );
+
+		edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression = prevMethodInvocation.expression.getValue();
+		//prevMethodInvocation.expression.setValue( null );
+		nextMethodInvocation.expression.setValue( instanceExpression );
+		final int N = prevMethodInvocation.arguments.size();
+		for( int i=0; i<N; i++ ) {
+			edu.cmu.cs.dennisc.alice.ast.Expression expressionI =  prevMethodInvocation.arguments.get( i ).expression.getValue();
+			//prevMethodInvocation.arguments.get( i ).expression.setValue( null );
+			nextMethodInvocation.arguments.get( i ).expression.setValue( expressionI );
+		}
+		nextMethodInvocation.arguments.get( N ).expression.setValue( this.argumentExpression );
+		
 		fillInMoreOperation.getExpressionStatement().expression.setValue( nextMethodInvocation );
 //		this.getModel().updateToolTipText();
 	}
 	@Override
 	public void undo() {
-		org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation = this.getModel();
+		org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation;
+		if( EPIC_HACK_fillInMoreOperation != null ) {
+			fillInMoreOperation = EPIC_HACK_fillInMoreOperation;
+		} else {
+			fillInMoreOperation = this.getModel();
+		}
+		assert fillInMoreOperation != null;
 
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = fillInMoreOperation.getPrevMethodInvocation();
+		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = fillInMoreOperation.getNextMethodInvocation();
+		
+		edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression = nextMethodInvocation.expression.getValue();
+		nextMethodInvocation.expression.setValue( null );
+		prevMethodInvocation.expression.setValue( instanceExpression );
+		final int N = prevMethodInvocation.arguments.size();
+		for( int i=0; i<N; i++ ) {
+			edu.cmu.cs.dennisc.alice.ast.Expression expressionI =  nextMethodInvocation.arguments.get( i ).expression.getValue();
+			//nextMethodInvocation.arguments.get( i ).expression.setValue( null );
+			prevMethodInvocation.arguments.get( i ).expression.setValue( expressionI );
+		}
+		//nextMethodInvocation.arguments.get( N ).expression.setValue( null );
+
 		fillInMoreOperation.getExpressionStatement().expression.setValue( prevMethodInvocation );
 		
-		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = fillInMoreOperation.getNextMethodInvocation();
-		edu.cmu.cs.dennisc.alice.ast.Argument argument = nextMethodInvocation.arguments.get( nextMethodInvocation.arguments.size()-1 );
-		argument.expression.setValue( null );
 
 //		this.getModel().updateToolTipText();
 	}
 	@Override
 	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
-		org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation = this.getModel();
+		org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation;
+		if( EPIC_HACK_fillInMoreOperation != null ) {
+			fillInMoreOperation = EPIC_HACK_fillInMoreOperation;
+		} else {
+			fillInMoreOperation = this.getModel();
+		}
+		assert fillInMoreOperation != null;
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = fillInMoreOperation.getNextMethodInvocation();
 		if( nextMethodInvocation != null ) {
 			rv.append( "more: " );

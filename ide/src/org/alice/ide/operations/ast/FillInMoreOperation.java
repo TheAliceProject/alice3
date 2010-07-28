@@ -42,6 +42,8 @@
  */
 package org.alice.ide.operations.ast;
 
+import org.alice.ide.ast.EmptyExpression;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -67,13 +69,15 @@ public class FillInMoreOperation extends org.alice.ide.operations.ActionOperatio
 		assert methodInvocation != null;
 		this.methodInvocation = methodInvocation;
 		this.expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)this.methodInvocation.getParent();
-		
+
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.methodInvocation.method.getValue();
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();
-		
-		edu.cmu.cs.dennisc.alice.ast.Expression TO_BE_FILLED_IN_EXPRESSION = null;
-		this.nextMethodInvocation = org.alice.ide.ast.NodeUtilities.createNextMethodInvocation( this.methodInvocation, TO_BE_FILLED_IN_EXPRESSION, nextMethod );
-
+		this.nextMethodInvocation = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation();
+		this.nextMethodInvocation.method.setValue( nextMethod );
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : nextMethod.getParameters() ) {
+			edu.cmu.cs.dennisc.alice.ast.Argument argument = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter, null );
+			this.nextMethodInvocation.arguments.add( argument );
+		}
 		this.setName( "more..." );
 //		this.updateToolTipText();
 	}
