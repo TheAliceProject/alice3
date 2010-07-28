@@ -42,14 +42,12 @@
  */
 package org.alice.stageide.tutorial;
 
-import edu.cmu.cs.dennisc.tutorial.Validator.Result;
-
 /**
  * @author Dennis Cosgrove
  */
 public class StressTestTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
-		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 3 );
+		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 1 );
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 //		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = ide.getSceneField();
 		ide.getEmphasizingClassesState().setValue( false );
@@ -59,11 +57,35 @@ public class StressTestTutorial {
 				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
 		);
 		
-		tutorial.addSelectTabStep(   
-				"Select Run", 
-				"Select run tab.", 
-				ide.getEditorsTabSelectionState(),
-				tutorial.createCodeResolver( "scene", "run" )
+		//formerly known as EPIC_HACK_addDeclareProcedureDialogOpenAndCommitStep
+		final String requiredProcedureName = "skate";
+		tutorial.addInputDialogOpenAndCommitStep( 
+				"Declare Procedure", 
+				"Declare procedure...", 
+				"Type <b>" + requiredProcedureName + "</b> and press <i>Ok</i>",
+				tutorial.createDeclareProcedureOperationResolver(), 
+				new edu.cmu.cs.dennisc.tutorial.InputDialogOperationCompletorValidatorOkButtonDisabler<org.alice.ide.declarationpanes.CreateProcedurePane>() {
+					public Result checkValidity(edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation, edu.cmu.cs.dennisc.croquet.Edit edit) {
+						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+					}
+					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation) {
+						org.alice.ide.operations.ast.DeclareProcedureOperation declareProcedureOperation = (org.alice.ide.operations.ast.DeclareProcedureOperation)inputDialogOperation;
+						edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType = declareProcedureOperation.getDeclaringType();
+						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = org.alice.ide.ast.NodeUtilities.createProcedure( requiredProcedureName );
+						return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit(declaringType, method);
+					}
+					private String getExplanationIfOkButtonShouldBeDisabled( String name ) {
+						if( requiredProcedureName.equalsIgnoreCase( name ) ) {
+							return null;
+						} else {
+							return "<html>Please enter in the name <b>" + requiredProcedureName + "</b> and press <b>Ok</b> button.</html>";
+						}
+					}
+					public String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateProcedurePane> context) {
+						org.alice.ide.declarationpanes.CreateProcedurePane createProcedurePane = context.getMainPanel();
+						return this.getExplanationIfOkButtonShouldBeDisabled( createProcedurePane.getDeclarationName() );
+					}
+				}
 		);
 
 		final int count = 2;
@@ -180,34 +202,6 @@ public class StressTestTutorial {
 				}
 		);
 
-		//formerly known as EPIC_HACK_addDeclareProcedureDialogOpenAndCommitStep
-		final String requiredProcedureName = "skate";
-		tutorial.addInputDialogOpenAndCommitStep( 
-				"Declare Procedure", 
-				"Declare procedure...", 
-				"Type <b>" + requiredProcedureName + "</b> and press <i>Ok</i>",
-				tutorial.createDeclareProcedureOperationResolver(), 
-				new edu.cmu.cs.dennisc.tutorial.InputDialogOperationCompletorValidatorOkButtonDisabler<org.alice.ide.declarationpanes.CreateProcedurePane>() {
-					public Result checkValidity(edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation, edu.cmu.cs.dennisc.croquet.Edit edit) {
-						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
-					}
-					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation) {
-						return tutorial.createToDoEdit();
-					}
-					private String getExplanationIfOkButtonShouldBeDisabled( String name ) {
-						if( requiredProcedureName.equalsIgnoreCase( name ) ) {
-							return null;
-						} else {
-							return "<html>Please enter in the name <b>" + requiredProcedureName + "</b> and press <b>Ok</b> button.</html>";
-						}
-					}
-					public String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateProcedurePane> context) {
-						org.alice.ide.declarationpanes.CreateProcedurePane createProcedurePane = context.getMainPanel();
-						return this.getExplanationIfOkButtonShouldBeDisabled( createProcedurePane.getDeclarationName() );
-					}
-				}
-		);
-
 		//formerly known as EPIC_HACK_addDeclareMethodParameterDialogOpenAndCommitStep
 		final String requiredParameterName = "howHigh";
 		tutorial.addInputDialogOpenAndCommitStep( 
@@ -244,6 +238,13 @@ public class StressTestTutorial {
 				}
 		);
 		
+
+		tutorial.addSelectTabStep( 
+				"Select Run", 
+				"Select run tab.", 
+				ide.getEditorsTabSelectionState(),
+				tutorial.createCodeResolver( "scene", "run" )
+		);
 
 		tutorial.addSpotlightStepForModel( 
 				"Note Delay",
