@@ -890,12 +890,13 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 	}
 	public edu.cmu.cs.dennisc.croquet.ActionOperation getMoreOperation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
 		if( methodInvocation != null ) {
-			java.util.List< org.alice.ide.common.ExpressionStatementPane > statementPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.ExpressionStatementPane.class );
-			for( org.alice.ide.common.ExpressionStatementPane statementPane : statementPanes ) {
-				if( statementPane.getStatement() == methodInvocation.getParent() ) {
-					return statementPane.getMoreOperation();
-				}
-			}
+			return org.alice.ide.operations.ast.FillInMoreOperation.getInstance( methodInvocation );
+//			java.util.List< org.alice.ide.common.ExpressionStatementPane > statementPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.ExpressionStatementPane.class );
+//			for( org.alice.ide.common.ExpressionStatementPane statementPane : statementPanes ) {
+//				if( statementPane.getStatement() == methodInvocation.getParent() ) {
+//					return statementPane.getMoreOperation();
+//				}
+//			}
 		}
 		return null;
 	}

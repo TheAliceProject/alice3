@@ -84,13 +84,8 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 		super.handleRemovedFrom( parent );
 	}
 
-	private edu.cmu.cs.dennisc.croquet.ActionOperation moreOperation = null;
-	public edu.cmu.cs.dennisc.croquet.ActionOperation getMoreOperation() {
-		return this.moreOperation;
-	}
 	private void refresh() {
 		this.forgetAndRemoveAllComponents();
-		this.moreOperation = null;
 		final edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)getStatement();
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {
@@ -112,10 +107,8 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 				if( this.getFactory() instanceof org.alice.ide.codeeditor.Factory ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractMember nextLonger = method.getNextLongerInChain();
 					if( nextLonger != null ) {
-						final edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)nextLonger;
 						this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
-						this.moreOperation = org.alice.ide.operations.ast.FillInMoreOperation.getInstance( methodInvocation );
-						edu.cmu.cs.dennisc.croquet.AbstractButton< ?, ? > button = new org.alice.ide.croquet.PopupMenuButton( this.moreOperation );
+						edu.cmu.cs.dennisc.croquet.AbstractButton< ?, ? > button = new org.alice.ide.croquet.PopupMenuButton( org.alice.ide.operations.ast.FillInMoreOperation.getInstance( methodInvocation ) );
 						button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
 						button.setVerticalAlignment( edu.cmu.cs.dennisc.croquet.VerticalAlignment.CENTER );
 						button.setAlignmentY( 0.5f );
@@ -152,18 +145,18 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
 		this.revalidateAndRepaint();
 	}
-	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getMethodDeclaredInAlice() {
-		edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = this.getExpressionStatement();
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
-		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
-			edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
-			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
-			if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-				return (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
-			}
-		}
-		return null;
-	}
+//	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getMethodDeclaredInAlice() {
+//		edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = this.getExpressionStatement();
+//		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
+//		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
+//			edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
+//			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
+//			if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+//				return (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
+//			}
+//		}
+//		return null;
+//	}
 	
 //	@Override
 //	protected void handleControlClick( java.awt.event.MouseEvent e) {
