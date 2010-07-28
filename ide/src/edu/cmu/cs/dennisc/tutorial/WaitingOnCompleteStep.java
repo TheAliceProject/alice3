@@ -46,16 +46,29 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/ abstract class WaitingOnCompleteStep<M extends edu.cmu.cs.dennisc.croquet.Model> extends WaitingStep<M> {
-	public WaitingOnCompleteStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, Feature.ConnectionPreference connectionPreference, edu.cmu.cs.dennisc.croquet.Resolver< M > modelResolver ) {
+	private boolean isExactMatchRequired;
+	public WaitingOnCompleteStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, Feature.ConnectionPreference connectionPreference, edu.cmu.cs.dennisc.croquet.Resolver< M > modelResolver, boolean isDiscriminatingAboutComplete ) {
 		super( title, text, new Hole( trackableShapeResolver, connectionPreference ), modelResolver );
+		this.isExactMatchRequired = isDiscriminatingAboutComplete;
 	}
 	protected abstract boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Edit<?> edit);
+	private boolean isAcceptable( edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent completeEvent ) {
+		edu.cmu.cs.dennisc.croquet.Model eventModel = completeEvent.getParent().getModel();
+		if( this.isExactMatchRequired ) {
+			return this.getModel() == eventModel;
+		} else {
+			if( this.getModel() != null ) {
+				return this.getModel().getGroup() == eventModel.getGroup();
+			} else {
+				return false;
+			}
+		}
+	}
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
 		if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
 			edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent completeEvent = (edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent)child;
-			edu.cmu.cs.dennisc.croquet.Model eventModel = completeEvent.getParent().getModel();
-			if( this.getModel() == eventModel ) {
+			if( this.isAcceptable( completeEvent ) ) {
 				edu.cmu.cs.dennisc.croquet.Edit<?> edit;
 				if (child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent) {
 					edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent) child;

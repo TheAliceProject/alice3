@@ -47,7 +47,7 @@ package org.alice.stageide.tutorial;
  */
 public class StressTestTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
-		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 1 );
+		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 5 );
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 //		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = ide.getSceneField();
 		ide.getEmphasizingClassesState().setValue( false );
@@ -204,6 +204,23 @@ public class StressTestTutorial {
 					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation) {
 						org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation = (org.alice.ide.operations.ast.FillInMoreOperation)actionOperation;
 						org.alice.ide.croquet.edits.ast.FillInMoreEdit rv = new org.alice.ide.croquet.edits.ast.FillInMoreEdit( new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( desiredDuration ) );
+						rv.EPIC_HACK_setModel( fillInMoreOperation );
+						return rv;
+					}
+				}
+		);
+
+		tutorial.addActionStep( 
+				"More",
+				"Click <b>more...</b>",
+				tutorial.createFirstInvocationMoreResolver( "move" ),
+				new edu.cmu.cs.dennisc.tutorial.ActionOperationCompletorValidator() {
+					public Result checkValidity(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
+						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+					}
+					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation) {
+						org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation = (org.alice.ide.operations.ast.FillInMoreOperation)actionOperation;
+						org.alice.ide.croquet.edits.ast.FillInMoreEdit rv = new org.alice.ide.croquet.edits.ast.FillInMoreEdit( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() );
 						rv.EPIC_HACK_setModel( fillInMoreOperation );
 						return rv;
 					}

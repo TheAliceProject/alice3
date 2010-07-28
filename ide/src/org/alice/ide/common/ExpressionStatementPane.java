@@ -50,7 +50,11 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}
 		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-			ExpressionStatementPane.this.refresh();
+			javax.swing.SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					ExpressionStatementPane.this.refresh();
+				}
+			} );
 		}
 	};
 	public ExpressionStatementPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
@@ -95,6 +99,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 			this.addComponent( expressionPane );
 			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) { 
 				final edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
+				assert methodInvocation.getParent() == expressionStatement;
 				
 				if( methodInvocation.isValid() ) {
 					//pass

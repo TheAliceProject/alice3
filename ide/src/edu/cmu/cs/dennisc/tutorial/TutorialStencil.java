@@ -73,6 +73,8 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	};
 	
+	//private edu.cmu.cs.dennisc.croquet.ListSelectionState<Step> stepSelectionState = new edu.cmu.cs.dennisc.croquet.ListSelectionState<Step>( TUTORIAL_GROUP );
+	
 	private static final boolean IS_FORWARD_ENABLED = true;
 	private StepsComboBoxModel stepsComboBoxModel = new StepsComboBoxModel( IS_FORWARD_ENABLED );
 	private PreviousStepOperation previousStepOperation = new PreviousStepOperation( this.stepsComboBoxModel );

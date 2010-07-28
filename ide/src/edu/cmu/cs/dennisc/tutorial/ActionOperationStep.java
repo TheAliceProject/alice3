@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	private ActionOperationCompletor completor;
 	private ActionOperationValidator validator;
 	public ActionOperationStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.ActionOperation > operationResolver, ActionOperationCompletor completor, ActionOperationValidator validator ) {
-		super( title, text, new FirstComponentResolver(operationResolver), Feature.ConnectionPreference.EAST_WEST, operationResolver );
+		super( title, text, new FirstComponentResolver(operationResolver), Feature.ConnectionPreference.EAST_WEST, operationResolver, false );
 		this.completor = completor;
 		this.validator = validator;
 	}

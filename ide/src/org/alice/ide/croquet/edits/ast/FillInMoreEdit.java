@@ -85,7 +85,6 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice.id
 			nextMethodInvocation.arguments.get( i ).expression.setValue( expressionI );
 		}
 		nextMethodInvocation.arguments.get( N ).expression.setValue( this.argumentExpression );
-		
 		fillInMoreOperation.getExpressionStatement().expression.setValue( nextMethodInvocation );
 //		this.getModel().updateToolTipText();
 	}

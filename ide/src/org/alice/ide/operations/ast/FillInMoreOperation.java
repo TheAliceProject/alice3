@@ -69,7 +69,8 @@ public class FillInMoreOperation extends org.alice.ide.operations.ActionOperatio
 		assert methodInvocation != null;
 		this.methodInvocation = methodInvocation;
 		this.expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)this.methodInvocation.getParent();
-
+		assert this.expressionStatement != null : ((edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava)this.methodInvocation.method.getValue()).getMethodReflectionProxy().getReification();
+		
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.methodInvocation.method.getValue();
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();
 		this.nextMethodInvocation = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation();
