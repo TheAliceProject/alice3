@@ -70,7 +70,6 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private boolean isExpanded = false;
 	private SceneViewManagerPanel viewManagerPanel = null;
 	private SnapControlPanel snapControlPanel = null;
-	private MoveAndTurnSceneEditor sceneEditor = null;
 	private GridBagPanel mainPanel = null;
 	
 	private SceneGraphViewerPanel sceneGraphViewer = null;
@@ -91,7 +90,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			{
 				if (SidePane.this.sceneGraphViewer == null)
 				{
-					Component root = SidePane.this.sceneEditor.getScene().getSGComposite();
+					Component root = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getScene().getSGComposite();
 					SidePane.this.sceneGraphViewer = new SceneGraphViewerPanel();
 					SidePane.this.sceneGraphViewer.setRoot(root);
 				}
@@ -108,7 +107,6 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	}
 	
 	public SidePane(MoveAndTurnSceneEditor sceneEditor) {
-		this.sceneEditor = sceneEditor;
 		this.mainPanel = new GridBagPanel();
 		this.viewManagerPanel = new SceneViewManagerPanel(sceneEditor);
 		this.snapControlPanel = new SnapControlPanel(sceneEditor.getSnapState(), sceneEditor);

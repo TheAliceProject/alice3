@@ -41,24 +41,49 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.apis.moveandturn;
+package org.alice.stageide.sceneeditor.viewmanager;
 
+import java.awt.Color;
 
-/**
- * @author Dennis Cosgrove
- */
-public class CameraMarker extends Marker 
+import javax.swing.BorderFactory;
+
+import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
+
+import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+import edu.cmu.cs.dennisc.croquet.Label;
+import edu.cmu.cs.dennisc.croquet.LineAxisPanel;
+
+public class CameraMarkerFieldTile extends LineAxisPanel
 {
+	private FieldDeclaredInAlice field;
 	
-	public CameraMarker()
+	public CameraMarkerFieldTile()
 	{
 		super();
+		this.setBackgroundColor(Color.lightGray);
+		this.setBorder(BorderFactory.createEmptyBorder());
 	}
 	
-	@Override
-	protected void createVisuals()
+	public CameraMarkerFieldTile( FieldDeclaredInAlice field )
 	{
-		super.createVisuals();
+		this();
+		setField(field);
 	}
 	
+	public void setField( FieldDeclaredInAlice field )
+	{
+		this.removeAllComponents();
+		this.field = field;
+		
+		Label iconLabel = new Label(new javax.swing.ImageIcon(CameraMarkerFieldTile.class.getResource("images/markerIcon.png")));
+		this.addComponent(iconLabel);
+		
+		Label textLabel = new Label(this.field.getName(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.REGULAR, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD);
+		textLabel.scaleFont(1.4f);
+		textLabel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+		this.addComponent(textLabel);
+		
+		this.addComponent(MoveActiveCameraToMarkerActionOperation.getInstanceForField(this.field).createButton());
+		this.addComponent(MoveMarkerToActiveCameraActionOperation.getInstanceForField(this.field).createButton());
+	}
 }

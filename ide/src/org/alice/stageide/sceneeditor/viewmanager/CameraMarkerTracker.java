@@ -43,21 +43,17 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import java.util.LinkedList;
-import java.util.List;
 
 import org.alice.apis.moveandturn.AsSeenBy;
 import org.alice.apis.moveandturn.CameraMarker;
 import org.alice.apis.moveandturn.OrthographicCameraMarker;
 import org.alice.apis.moveandturn.PerspectiveCameraMarker;
-import org.alice.interact.QuaternionAndTranslationTargetBasedAnimation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.ClippedZPlane;
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
@@ -70,7 +66,6 @@ public class CameraMarkerTracker implements PropertyListener, edu.cmu.cs.dennisc
 	private SymmetricPerspectiveCamera perspectiveCamera = null;
 	private OrthographicCamera orthographicCamera = null;
 	private Animator animator;
-	private QuaternionAndTranslationTargetBasedAnimation cameraAnimation = null;
 	private PointOfViewAnimation pointOfViewAnimation = null;
 	private CameraMarker markerToUpdate = null;
 	private boolean shouldAnimate = true;
@@ -114,32 +109,6 @@ public class CameraMarkerTracker implements PropertyListener, edu.cmu.cs.dennisc
 	{
 		this.shouldAnimate = shouldAnimate;
 	}
-	
-//	private synchronized boolean isAnimatingCamera()
-//	{
-//		return (this.cameraAnimation != null && !this.cameraAnimation.isDone());
-//	}
-//	
-//	private void printMatrix(AffineMatrix4x4 matrix)
-//	{
-//		System.out.println("[["+matrix.orientation.right.x+", "+matrix.orientation.right.y+", "+matrix.orientation.right.z+"]");
-//		System.out.println("["+matrix.orientation.up.x+", "+matrix.orientation.up.y+", "+matrix.orientation.up.z+"]");
-//		System.out.println("["+matrix.orientation.backward.x+", "+matrix.orientation.backward.y+", "+matrix.orientation.backward.z+"]]");
-//		System.out.println("<"+matrix.translation.x+", "+matrix.translation.y+", "+matrix.translation.z+">");
-//	}
-//	
-//	private void printMatrixDistance(AffineMatrix4x4 oldMatrix, AffineMatrix4x4 newMatrix)
-//	{
-//		double rightDistance =  Point3.calculateDistanceBetween(new Point3(oldMatrix.orientation.right), new Point3(newMatrix.orientation.right));
-//		double upDistance =  Point3.calculateDistanceBetween(new Point3(oldMatrix.orientation.up), new Point3(newMatrix.orientation.up));
-//		double backwardDistance =  Point3.calculateDistanceBetween(new Point3(oldMatrix.orientation.backward), new Point3(newMatrix.orientation.backward));
-//		double translationDistance = Point3.calculateDistanceBetween(oldMatrix.translation, newMatrix.translation);
-//		
-//		double totalDistance = rightDistance + upDistance + backwardDistance + translationDistance;
-//		
-//		System.out.println("Distance: ["+rightDistance+", "+upDistance+", "+backwardDistance+"], "+translationDistance+" = "+totalDistance);
-//		
-//	}
 	
 	private boolean doEpilogue = true;
 	
