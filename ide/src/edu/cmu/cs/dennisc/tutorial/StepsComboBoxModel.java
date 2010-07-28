@@ -46,17 +46,29 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class StepsComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
+	public static interface SelectionObserver {
+		public void selectionChanging( StepsComboBoxModel source, int fromIndex, int toIndex );
+		public void selectionChanged( StepsComboBoxModel source, int fromIndex, int toIndex );
+	}
 	private int selectedIndex = -1;
 	private java.util.List<Step> steps = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private boolean isForwardEnabled;
+	
+	private java.util.List< SelectionObserver > selectionObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	public StepsComboBoxModel( boolean isForwardEnabled ) {
 		this.isForwardEnabled = isForwardEnabled;
 	}
 	
+	public void addSelectionObserver( SelectionObserver selectionObserver ) {
+		this.selectionObservers.add( selectionObserver );
+	}
+	public void removeSelectionObserver( SelectionObserver selectionObserver ) {
+		this.selectionObservers.add( selectionObserver );
+	}
 	public boolean isForwardEnabled() {
 		return this.isForwardEnabled;
 	}
-	public Object getElementAt(int index) {
+	public Step getElementAt(int index) {
 		return this.steps.get(index);
 	}
 
@@ -64,7 +76,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		return this.steps.size();
 	}
 
-	public Object getSelectedItem() {
+	public Step getSelectedItem() {
 		if (this.selectedIndex >= 0) {
 			return this.getElementAt(this.selectedIndex);
 		} else {
@@ -76,9 +88,18 @@ package edu.cmu.cs.dennisc.tutorial;
 		return this.selectedIndex;
 	}
 
-	/*package-private*/ void setSelectedIndex(int selectedIndex) {
-		this.selectedIndex = selectedIndex;
-		this.fireContentsChanged(this, -1, -1);
+	/*package-private*/ void setSelectedIndex(int nextSelectedIndex) {
+		int prevSelectedIndex = this.selectedIndex;
+		if( this.selectedIndex != nextSelectedIndex ) {
+			for( SelectionObserver selectionObserver : this.selectionObservers ) {
+				selectionObserver.selectionChanging( this, prevSelectedIndex, nextSelectedIndex );
+			}
+			this.selectedIndex = nextSelectedIndex;
+			for( SelectionObserver selectionObserver : this.selectionObservers ) {
+				selectionObserver.selectionChanged( this, prevSelectedIndex, nextSelectedIndex );
+			}
+			this.fireContentsChanged(this, -1, -1);
+		}
 	}
 
 	/*package-private*/ void decrementSelectedIndex() {
@@ -100,7 +121,7 @@ package edu.cmu.cs.dennisc.tutorial;
 			}
 		}
 		if( this.isForwardEnabled || nextSelectedIndex < prevSelectedIndex ) {
-			this.selectedIndex = nextSelectedIndex;
+			this.setSelectedIndex( nextSelectedIndex );
 		}
 	}
 
