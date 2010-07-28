@@ -50,34 +50,40 @@ import javax.swing.BorderFactory;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.croquet.Button;
 import edu.cmu.cs.dennisc.croquet.Label;
 import edu.cmu.cs.dennisc.croquet.LineAxisPanel;
 
 public class CameraMarkerFieldTile extends LineAxisPanel
 {
-
-	private MoveAndTurnSceneEditor sceneEditor;
 	private FieldDeclaredInAlice field;
-	private MoveActiveCameraToMarkerActionOperation moveCameraOperation;
-	private MoveMarkerToActiveCameraActionOperation moveMarkerOperation;
 	
-	public CameraMarkerFieldTile( FieldDeclaredInAlice field, MoveAndTurnSceneEditor sceneEditor )
+	public CameraMarkerFieldTile()
 	{
 		super();
+		this.setBackgroundColor(Color.lightGray);
+		this.setBorder(BorderFactory.createEmptyBorder());
+	}
+	
+	public CameraMarkerFieldTile( FieldDeclaredInAlice field )
+	{
+		this();
+		setField(field);
+	}
+	
+	public void setField( FieldDeclaredInAlice field )
+	{
+		this.removeAllComponents();
 		this.field = field;
-		this.sceneEditor = sceneEditor;
+		
+		Label iconLabel = new Label(new javax.swing.ImageIcon(CameraMarkerFieldTile.class.getResource("images/markerIcon.png")));
+		this.addComponent(iconLabel);
+		
 		Label textLabel = new Label(this.field.getName(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.REGULAR, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD);
 		textLabel.scaleFont(1.4f);
 		textLabel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 		this.addComponent(textLabel);
-		this.setBackgroundColor(Color.lightGray);
-		this.setBorder(BorderFactory.createEmptyBorder());
 		
-		this.moveCameraOperation = new MoveActiveCameraToMarkerActionOperation(this.sceneEditor, this.field);
-		this.addComponent(this.moveCameraOperation.createButton());
-		
-		this.moveMarkerOperation = new MoveMarkerToActiveCameraActionOperation(this.sceneEditor, this.field);
-		this.addComponent(this.moveMarkerOperation.createButton());
+		this.addComponent(MoveActiveCameraToMarkerActionOperation.getInstanceForField(this.field).createButton());
+		this.addComponent(MoveMarkerToActiveCameraActionOperation.getInstanceForField(this.field).createButton());
 	}
 }

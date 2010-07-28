@@ -92,7 +92,13 @@ class RunIcon implements javax.swing.Icon {
  * @author Dennis Cosgrove
  */
 public class RunOperation extends edu.cmu.cs.dennisc.croquet.DialogOperation {
-	public RunOperation() {
+	private static class SingletonHolder {
+		private static RunOperation instance = new RunOperation();
+	}
+	public static RunOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private RunOperation() {
 		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "985b3795-e1c7-4114-9819-fae4dcfe5676" ) );
 		this.setSmallIcon( new RunIcon() );
 	}

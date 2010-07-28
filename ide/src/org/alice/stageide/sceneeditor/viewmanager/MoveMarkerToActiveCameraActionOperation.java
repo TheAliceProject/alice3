@@ -43,8 +43,11 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
+import java.util.HashMap;
+
 import org.alice.apis.moveandturn.CameraMarker;
 import org.alice.apis.moveandturn.Element;
+import org.alice.ide.IDE;
 import org.alice.ide.operations.ActionOperation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
@@ -54,28 +57,45 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 public class MoveMarkerToActiveCameraActionOperation extends ActionOperation {
 
-	private MoveAndTurnSceneEditor sceneEditor;
+	private static class SingletonHolder {
+		private static HashMap<FieldDeclaredInAlice, MoveMarkerToActiveCameraActionOperation> fieldToOperationMap = new HashMap<FieldDeclaredInAlice, MoveMarkerToActiveCameraActionOperation>();
+	}
+	
+	public static MoveMarkerToActiveCameraActionOperation getInstanceForField(FieldDeclaredInAlice markerField) 
+	{
+		if ( SingletonHolder.fieldToOperationMap.containsKey(markerField) )
+		{
+			return SingletonHolder.fieldToOperationMap.get(markerField);
+		}
+		else
+		{
+			MoveMarkerToActiveCameraActionOperation operation = new MoveMarkerToActiveCameraActionOperation(markerField);
+			SingletonHolder.fieldToOperationMap.put(markerField, operation);
+			return operation;
+		}
+	}
+	
 	private FieldDeclaredInAlice markerField;
 
-	public MoveMarkerToActiveCameraActionOperation(MoveAndTurnSceneEditor sceneEditor, FieldDeclaredInAlice markerField) {
+	public MoveMarkerToActiveCameraActionOperation(FieldDeclaredInAlice markerField) {
 		super(edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "a95908d8-0161-4a03-8a38-61eebea0c58c" ));
-		this.sceneEditor = sceneEditor;
 		this.markerField = markerField;
-		this.setName( "Move Marker to Camera" );
+		this.setToolTipText("Move this marker to the camera's location.");
+		this.setSmallIcon(new javax.swing.ImageIcon(MoveMarkerToActiveCameraActionOperation.class.getResource("images/trackerToCameraIcon.png")));
 	}
 
 	@Override
 	protected void perform(ActionOperationContext context) 
 	{
-		
-		this.sceneEditor.moveActiveCameraToMarker(this.markerField);
-		
 		final CameraMarker cameraMarker;
 		final org.alice.apis.moveandturn.AbstractCamera camera;
 		final org.alice.apis.moveandturn.PointOfView prevPOV;
 		final org.alice.apis.moveandturn.PointOfView nextPOV;
-		cameraMarker = this.sceneEditor.getInstanceInJavaForField(this.markerField, org.alice.apis.moveandturn.CameraMarker.class);
-		AbstractCamera sgCamera = this.sceneEditor.getSGPerspectiveCamera();
+		
+		MoveAndTurnSceneEditor sceneEditor = (MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor());
+		
+		cameraMarker = sceneEditor.getInstanceInJavaForField(this.markerField, org.alice.apis.moveandturn.CameraMarker.class);
+		AbstractCamera sgCamera = sceneEditor.getSGPerspectiveCamera();
 		camera = (org.alice.apis.moveandturn.AbstractCamera)Element.getElement(sgCamera);
 		if( cameraMarker != null ) {
 			prevPOV = cameraMarker.getPointOfView( org.alice.apis.moveandturn.AsSeenBy.SCENE );

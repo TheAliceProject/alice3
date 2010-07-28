@@ -43,22 +43,22 @@
 
 package org.alice.apis.moveandturn;
 
+import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
 
-/**
- * @author Dennis Cosgrove
- */
-public class CameraMarker extends Marker 
-{
-	
-	public CameraMarker()
+public class BookmarkCameraMarker extends PerspectiveCameraMarker {
+
+	public BookmarkCameraMarker()
 	{
 		super();
+		this.setShowing(false);
 	}
 	
 	@Override
-	protected void createVisuals()
+	protected float getDefaultMarkerOpacity() 
 	{
-		super.createVisuals();
+		return .5f;
 	}
-	
 }

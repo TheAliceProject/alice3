@@ -441,8 +441,8 @@ public class StageIDE extends org.alice.ide.IDE {
 //		rtProgram.showInAWTContainer( container.getAwtComponent(), args );
 //	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.DialogOperation createRunOperation() {
-		return new org.alice.stageide.croquet.models.run.RunOperation();
+	public edu.cmu.cs.dennisc.croquet.DialogOperation getRunOperation() {
+		return org.alice.stageide.croquet.models.run.RunOperation.getInstance();
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Operation<?> createRestartOperation() {

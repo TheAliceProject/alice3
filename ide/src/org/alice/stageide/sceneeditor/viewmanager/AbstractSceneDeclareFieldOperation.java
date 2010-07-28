@@ -50,12 +50,9 @@ import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
  */
 public abstract class AbstractSceneDeclareFieldOperation extends AbstractDeclareFieldActionOperation {
 
-	protected MoveAndTurnSceneEditor sceneEditor;
-	
-	public AbstractSceneDeclareFieldOperation( java.util.UUID individualId, MoveAndTurnSceneEditor sceneEditor )
+	public AbstractSceneDeclareFieldOperation( java.util.UUID individualId)
 	{
 		super( individualId );
-		this.sceneEditor = sceneEditor;
 	}
 	
 	@Override

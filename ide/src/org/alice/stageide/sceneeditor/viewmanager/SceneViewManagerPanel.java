@@ -41,24 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.alice.stageide.sceneeditor.viewmanager;
-
-import java.awt.Color;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.JPanel;
-
-
-import org.alice.apis.moveandturn.CameraMarker;
-import org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState;
-import org.alice.ide.swing.FieldListCellRenderer;
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.croquet.AxisPanel;
 import edu.cmu.cs.dennisc.croquet.GridBagPanel;
-import edu.cmu.cs.dennisc.croquet.LineAxisPanel;
-import edu.cmu.cs.dennisc.croquet.PageAxisPanel;
-import edu.cmu.cs.dennisc.croquet.Panel;
 import edu.cmu.cs.dennisc.croquet.ScrollPane;
 
 /**
@@ -66,29 +53,27 @@ import edu.cmu.cs.dennisc.croquet.ScrollPane;
  */
 public class SceneViewManagerPanel extends GridBagPanel{
 	
-	private edu.cmu.cs.dennisc.croquet.List<FieldDeclaredInAlice> markerFieldList;
-	private CreateCameraMarkerActionOperation createCameraMarkerAction = null;
-	private org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor sceneEditor;
-	
-	private AxisPanel markerPanel;
-	
 	public SceneViewManagerPanel(org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor sceneEditor)
 	{
 		super();
-//		this.setOpaque( false );
-		this.sceneEditor = sceneEditor;
-		this.createCameraMarkerAction = new CreateCameraMarkerActionOperation(this.sceneEditor);
-		this.markerFieldList = this.sceneEditor.getSceneMarkerFieldList().createList();
-		
-		this.markerPanel = new PageAxisPanel(){
-			@Override
-			protected int getBoxLayoutPad() 
-			{
-				return 4;
+		edu.cmu.cs.dennisc.croquet.MutableList.Factory<FieldDeclaredInAlice> factory = new edu.cmu.cs.dennisc.croquet.MutableList.Factory<FieldDeclaredInAlice>() {
+			public edu.cmu.cs.dennisc.croquet.Component<?> createLeadingComponent() {
+				return null;
+			}
+			public edu.cmu.cs.dennisc.croquet.Component<?> createMainComponent() {
+				return new CameraMarkerFieldTile();
+			}
+			public edu.cmu.cs.dennisc.croquet.Component<?> createTrailingComponent() {
+				return null;
+			}
+			public void update(edu.cmu.cs.dennisc.croquet.Component<?> leadingComponent, edu.cmu.cs.dennisc.croquet.Component<?> mainComponent, edu.cmu.cs.dennisc.croquet.Component<?> trailingComponent, int index, FieldDeclaredInAlice item) {
+				((CameraMarkerFieldTile)mainComponent).setField(item);
+			}
+			public edu.cmu.cs.dennisc.croquet.Operation<?> getAddItemOperation() {
+				return CreateCameraMarkerActionOperation.getInstance();
 			}
 		};
-		
-		ScrollPane markerScrollPane = new ScrollPane(this.markerPanel, ScrollPane.VerticalScrollbarPolicy.AS_NEEDED, ScrollPane.HorizontalScrollbarPolicy.AS_NEEDED);
+		ScrollPane markerScrollPane = new ScrollPane(sceneEditor.getSceneMarkerFieldList().createMutableList( factory ), ScrollPane.VerticalScrollbarPolicy.AS_NEEDED, ScrollPane.HorizontalScrollbarPolicy.AS_NEEDED);
 		markerScrollPane.setBorder(null);
 		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "Camera Markers:", 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), new GridBagConstraints( 
 				0, //gridX
@@ -103,7 +88,7 @@ public class SceneViewManagerPanel extends GridBagPanel{
 				0, //ipadX
 				0 ) //ipadY
 		);
-		this.addComponent( createCameraMarkerAction.createButton(), new GridBagConstraints( 
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label()/*createCameraMarkerAction.createButton()*/, new GridBagConstraints( 
 				1, //gridX
 				0, //gridY
 				1, //gridWidth
@@ -129,22 +114,6 @@ public class SceneViewManagerPanel extends GridBagPanel{
 				0, //ipadX
 				0 ) //ipadY
 		);
-		this.rebuildMarkerComponents();
-	}
-	
-	private void rebuildMarkerComponents()
-	{
-		this.markerPanel.removeAllComponents();
-		for (FieldDeclaredInAlice field : this.sceneEditor.getSceneMarkerFieldList())
-		{
-			this.markerPanel.addComponent(new CameraMarkerFieldTile(field, this.sceneEditor));
-		}
-	}
-	
-	public void updateMarkerList()
-	{
-		this.rebuildMarkerComponents();
-//		this.markerFieldList.revalidateAndRepaint();
 	}
 
 }
