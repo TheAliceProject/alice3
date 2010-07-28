@@ -153,11 +153,12 @@ public class ZipUtilities {
 	
 
 	//todo: support recursion
-	public static void zipContentsOfDirectory( String zipPath, String directoryPath ) throws java.io.IOException {
-		java.io.FileOutputStream fos = new java.io.FileOutputStream( zipPath );
+	public static void zip( String srcDirectoryPath, String dstZipPath ) throws java.io.IOException {
+		java.io.FileOutputStream fos = new java.io.FileOutputStream( dstZipPath );
 		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( fos );
 		
-		java.io.File directory = new java.io.File( directoryPath );
+		java.io.File directory = new java.io.File( srcDirectoryPath );
+		assert directory.isDirectory();
 		
 		byte[] buffer = new byte[ 1024 ];
 		java.io.File[] files = directory.listFiles();
@@ -183,4 +184,29 @@ public class ZipUtilities {
 		zos.close();
 	}
 	
+	public static void unzip( java.io.File srcFile, java.io.File dstDirectory ) throws java.io.IOException {
+		java.util.zip.ZipInputStream zis = new java.util.zip.ZipInputStream( new java.io.FileInputStream( srcFile ) );
+		java.util.zip.ZipEntry zipEntry;
+		while ((zipEntry = zis.getNextEntry()) != null) {
+			if( zipEntry.isDirectory() ) {
+				// pass
+			} else {
+				java.io.File outFile = new java.io.File( dstDirectory, zipEntry.getName() );
+				edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( outFile );
+				java.io.FileOutputStream fos = new java.io.FileOutputStream( outFile );
+				byte[] data = extractBytes(zis, zipEntry);
+				fos.write( data, 0, data.length );
+				fos.close();
+			}
+		}
+	}
+
+	public static void unzip( String srcZipPath, String dstDirectoryPath ) throws java.io.IOException {
+		unzip( new java.io.File( srcZipPath ), new java.io.File( dstDirectoryPath ) );
+	}
+	
+//	public static void main(String[] args) throws Exception {
+//		String dirPath = System.getProperty( "user.home" ) + "/Documents/";
+//		unzip( dirPath + "Alice3-es.zip", dirPath + "spanish/" );
+//	}
 }
