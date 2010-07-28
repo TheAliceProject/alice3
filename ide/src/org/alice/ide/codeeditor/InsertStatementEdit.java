@@ -50,20 +50,20 @@ public class InsertStatementEdit extends org.alice.ide.ToDoEdit {
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 	public InsertStatementEdit( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		this.statementListProperty = statementListProperty;
-		this.specifiedIndex = specifiedIndex;
+		this.specifiedIndex = index;
 		this.statement = statement;
 	}
 	@Override
 	public void doOrRedo( boolean isDo ) {
 		this.actualIndex = Math.min( this.specifiedIndex, this.statementListProperty.size() );
-		this.statementListProperty.add( this.actualIndex, statement );
+		this.statementListProperty.add( this.actualIndex, this.statement );
 //		CodeEditor.this.refresh();
 //		CodeEditor.this.resetScrollPane( viewPosition );
 	}
 
 	@Override
 	public void undo() {
-		if( this.statementListProperty.get( this.actualIndex ) == statement ) {
+		if( this.statementListProperty.get( this.actualIndex ) == this.statement ) {
 			this.statementListProperty.remove( this.actualIndex );
 //			CodeEditor.this.refresh();
 //			CodeEditor.this.resetScrollPane( viewPosition );

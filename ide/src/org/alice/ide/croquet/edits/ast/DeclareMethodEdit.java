@@ -40,29 +40,61 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.croquet.edits.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareProcedureOperation extends DeclareMethodOperation {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >, DeclareProcedureOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static DeclareProcedureOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
-		DeclareProcedureOperation rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new DeclareProcedureOperation( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
-	private DeclareProcedureOperation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
-		super( java.util.UUID.fromString( "dcaee920-08ea-4b03-85d1-f2df5f73bfb4" ), type );
-		this.setName( "Declare Procedure..." );
+public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice.ide.operations.ast.DeclareMethodOperation> {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type;
+	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
+	
+	private edu.cmu.cs.dennisc.alice.ast.AbstractCode prevFocusedCode;
+	
+	public DeclareMethodEdit( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		this.type = type;
+		this.method = method;
 	}
 	@Override
-	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
-		return new org.alice.ide.declarationpanes.CreateProcedurePane( type );
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		throw new RuntimeException( "todo" );
 	}
+	@Override
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		throw new RuntimeException( "todo" );
+	}
+	@Override
+	public boolean canRedo() {
+		return true;
+	}
+	@Override
+	public boolean canUndo() {
+		return true;
+	}
+	
+	@Override
+	public void doOrRedo( boolean isDo ) {
+		this.type.methods.add( this.method );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		this.prevFocusedCode = ide.getFocusedCode();
+		ide.setFocusedCode( method );
+	}
+	@Override
+	public void undo() {
+		int index = type.methods.indexOf( method );
+		if( index != -1 ) {
+			type.methods.remove( index );
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			ide.setFocusedCode( this.prevFocusedCode );
+		} else {
+			throw new javax.swing.undo.CannotUndoException();
+		}
+	}
+	@Override
+	protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+		rv.append( "declare:" );
+		edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, method, locale);
+		return rv;
+	}
+	
 }

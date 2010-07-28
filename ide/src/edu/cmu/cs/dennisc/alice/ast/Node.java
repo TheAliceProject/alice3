@@ -115,7 +115,6 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 	}
 	@Override
 	public void firePropertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-		super.firePropertyChanged( e );
 		edu.cmu.cs.dennisc.property.Property< ? > property = e.getTypedSource();
 		if( property instanceof NodeProperty< ? > ) {
 			NodeProperty< ? > nodeProperty = (NodeProperty< ? >)property;
@@ -134,6 +133,7 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 				}
 			}
 		}
+		super.firePropertyChanged( e );
 	}
 	@Override
 	public void fireClearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent e ) {
@@ -176,20 +176,32 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 	}
 	@Override
 	public void fireSet( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
-		super.fireSet( e );
 		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
 		if( listProperty instanceof NodeListProperty< ? > ) {
 			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
 			for( Object o : e.getElements() ) {
 				if( o instanceof Node ) {
 					((Node)o).setParent( this );
+				}
+			}
+		}
+		super.fireSet( e );
+	}
+	@Override
+	public void fireAdding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
+		super.fireAdding( e );
+		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
+		if( listProperty instanceof NodeListProperty< ? > ) {
+			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
+			for( Object o : e.getElements() ) {
+				if( o instanceof Node ) {
+					((Node)o).setParent( null );
 				}
 			}
 		}
 	}
 	@Override
 	public void fireAdded( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
-		super.fireAdded( e );
 		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
 		if( listProperty instanceof NodeListProperty< ? > ) {
 			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
@@ -199,6 +211,7 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 				}
 			}
 		}
+		super.fireAdded( e );
 	}
 	
 	@Override

@@ -85,7 +85,7 @@ public class ExerciseRoutineTutorial {
 					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit edit ) {
 						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 					}
-					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation ) {
+					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
 						return new org.alice.ide.codeeditor.InsertStatementEdit(
 								runMethod.body.getValue().statements,
 								org.alice.ide.codeeditor.InsertStatementEdit.AT_END, 

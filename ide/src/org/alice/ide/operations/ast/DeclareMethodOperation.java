@@ -46,10 +46,10 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public abstract class DeclareMethodOperation extends org.alice.ide.operations.InputDialogWithPreviewOperation<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type;
-	public DeclareMethodOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType;
+	public DeclareMethodOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
-		this.type = type;
+		this.declaringType = declaringType;
 	}
 	protected String getDeclarationName(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> context) {
 		org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = context.getMainPanel();
@@ -59,10 +59,11 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.In
 			return null;
 		}
 	}
-	protected abstract org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type );
+	protected abstract org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType );
 	@Override
 	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > > context) {
-		return this.createCreateMethodPane( this.type );
+		assert this.declaringType != null;
+		return this.createCreateMethodPane( this.declaringType );
 	}
 	@Override
 	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> context, boolean isOk) {
@@ -75,14 +76,15 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.In
 				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
 					public void doOrRedo( boolean isDo ) {
-						type.methods.add( method );
+						declaringType.methods.add( method );
+//						assert method.getDeclaringType() == method.body.getValue().getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractType.class );
 						ide.setFocusedCode( method );
 					}
 					@Override
 					public void undo() {
-						int index = type.methods.indexOf( method );
+						int index = declaringType.methods.indexOf( method );
 						if( index != -1 ) {
-							type.methods.remove( index );
+							declaringType.methods.remove( index );
 							ide.setFocusedCode( prevCode );
 						} else {
 							throw new javax.swing.undo.CannotUndoException();
@@ -95,6 +97,7 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.In
 						return rv;
 					}
 				} );
+//				context.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareMethodEdit(declaringType, method));
 			} else {
 				context.cancel();
 			}
@@ -102,13 +105,16 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.In
 			context.cancel();
 		}
 	}
+	public edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> getDeclaringType() {
+		return this.declaringType;
+	}
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( this.getClass().getName() );
 		sb.append( "[" );
-		if( this.type != null ) {
-			sb.append( this.type.getName() );
+		if( this.declaringType != null ) {
+			sb.append( this.declaringType.getName() );
 		}
 		sb.append( "]" );
 		return sb.toString();

@@ -345,4 +345,9 @@ package edu.cmu.cs.dennisc.tutorial;
 		this.removeMouseListener( this.mouseInputListener );
 		super.handleRemovedFrom( parent );
 	}
+	
+	public void reset() {
+		unbind();
+		bind();
+	}
 }

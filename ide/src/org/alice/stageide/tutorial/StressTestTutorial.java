@@ -47,7 +47,7 @@ package org.alice.stageide.tutorial;
  */
 public class StressTestTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
-		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 1 );
+		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 0 );
 		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
 //		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = ide.getSceneField();
 		ide.getEmphasizingClassesState().setValue( false );
@@ -56,16 +56,184 @@ public class StressTestTutorial {
 				"Title", 
 				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
 		);
+		
+		tutorial.addDragAndDropToPopupMenuStep( 
+				"Drag move action",
+				"Click and drag <strong>move</strong> action.",
+				tutorial.createProcedureInvocationTemplateResolver( "move" ),
+				"Drop <strong>here</strong>.",
+				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
+				"Select <strong>UP</strong> from the menu, and then 1.0.",
+				new edu.cmu.cs.dennisc.tutorial.DragAndDropOperationCompletorValidator() {
+					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit ) {
+						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+					}
+					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
+						org.alice.ide.codeeditor.CodeEditor.StatementListIndexTrackableShape statementListIndexTrackableShape = (org.alice.ide.codeeditor.CodeEditor.StatementListIndexTrackableShape)dropShape;
+						edu.cmu.cs.dennisc.croquet.DragComponent dragComponent = (edu.cmu.cs.dennisc.croquet.DragComponent)dragAndDropOperation.getFirstComponent();
+						
+						
+						org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate = (org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate)dragComponent;
+
+						edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression = org.alice.ide.IDE.getSingleton().createInstanceExpression();
+						edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = procedureInvocationTemplate.getMethod();
+						edu.cmu.cs.dennisc.alice.ast.Statement statement = org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement(
+								instanceExpression, 
+								method,
+								org.alice.ide.ast.NodeUtilities.createStaticFieldAccess( org.alice.apis.moveandturn.MoveDirection.class, "UP" ),
+								new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 1.0 )
+						);
+						return new org.alice.ide.codeeditor.InsertStatementEdit(
+								statementListIndexTrackableShape.getStatementListProperty(),
+								statementListIndexTrackableShape.getIndex(),
+								statement
+						);
+					}
+				}
+		);
+		final double desiredDuration = 0.5;
+		tutorial.addActionStep( 
+				"More (Duration)",
+				"Click <b>more...</b> and select 0.5",
+				tutorial.createFirstInvocationMoreResolver( "move" ),
+				new edu.cmu.cs.dennisc.tutorial.ActionOperationCompletorValidator() {
+					public Result checkValidity(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
+						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+					}
+					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation) {
+						org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation = (org.alice.ide.operations.ast.FillInMoreOperation)actionOperation;
+						org.alice.ide.croquet.edits.ast.FillInMoreEdit rv = new org.alice.ide.croquet.edits.ast.FillInMoreEdit( new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( desiredDuration ) );
+						rv.EPIC_HACK_setModel( fillInMoreOperation );
+						return rv;
+					}
+				}
+		);
+		
+		final String fieldName = "grassyGround";
+		tutorial.addActionStep( 
+				"More (As Seen By)",
+				"Click <b>more...</b> and select <b>" + fieldName + "</b>",
+				tutorial.createFirstInvocationMoreResolver( "move" ),
+				new edu.cmu.cs.dennisc.tutorial.ActionOperationCompletorValidator() {
+					public Result checkValidity(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
+						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+					}
+					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation) {
+						org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation = (org.alice.ide.operations.ast.FillInMoreOperation)actionOperation;
+						
+						edu.cmu.cs.dennisc.alice.ast.AbstractField field = ide.getSceneType().getDeclaredField( fieldName );
+						edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess(
+								new edu.cmu.cs.dennisc.alice.ast.ThisExpression(),
+								field
+						);
+						org.alice.ide.croquet.edits.ast.FillInMoreEdit rv = new org.alice.ide.croquet.edits.ast.FillInMoreEdit( fieldAccess );
+						rv.EPIC_HACK_setModel( fillInMoreOperation );
+						return rv;
+					}
+				}
+		);
+
+		//formerly known as EPIC_HACK_addDeclareProcedureDialogOpenAndCommitStep
+		final String requiredProcedureName = "skate";
+		tutorial.addInputDialogOpenAndCommitStep( 
+				"Declare Procedure", 
+				"Declare procedure...", 
+				"Type <b>" + requiredProcedureName + "</b> and press <i>Ok</i>",
+				tutorial.createDeclareProcedureOperationResolver(), 
+				new edu.cmu.cs.dennisc.tutorial.InputDialogOperationCompletorValidatorOkButtonDisabler<org.alice.ide.declarationpanes.CreateProcedurePane>() {
+					public Result checkValidity(edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation, edu.cmu.cs.dennisc.croquet.Edit edit) {
+						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+					}
+					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation) {
+						org.alice.ide.operations.ast.DeclareProcedureOperation declareProcedureOperation = (org.alice.ide.operations.ast.DeclareProcedureOperation)inputDialogOperation;
+						edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType = declareProcedureOperation.getDeclaringType();
+						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = org.alice.ide.ast.NodeUtilities.createProcedure( requiredProcedureName );
+						return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit(declaringType, method);
+					}
+					private String getExplanationIfOkButtonShouldBeDisabled( String name ) {
+						if( requiredProcedureName.equalsIgnoreCase( name ) ) {
+							return null;
+						} else {
+							return "<html>Please enter in the name <b>" + requiredProcedureName + "</b> and press <b>Ok</b> button.</html>";
+						}
+					}
+					public String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateProcedurePane> context) {
+						org.alice.ide.declarationpanes.CreateProcedurePane createProcedurePane = context.getMainPanel();
+						return this.getExplanationIfOkButtonShouldBeDisabled( createProcedurePane.getDeclarationName() );
+					}
+				}
+		);
+
+		final int count = 2;
 		tutorial.addDragAndDropToPopupMenuStep( 
 				"Drag Count Loop",
 				"Drag <b>Count Loop</b>.",
 				tutorial.createCountLoopTemplateResolver(),
 				"Drop <b>here</b>.",
 				tutorial.createBeginingOfCurrentMethodBodyStatementListResolver(),
-				"Select <b>2</b>.",
-				tutorial.createToDoCompletorValidator()
+				"Select <b>" + count + "</b>.",
+				new edu.cmu.cs.dennisc.tutorial.DragAndDropOperationCompletorValidator() {
+					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit edit ) {
+						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+					}
+					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
+						org.alice.ide.codeeditor.CodeEditor.StatementListIndexTrackableShape statementListIndexTrackableShape = (org.alice.ide.codeeditor.CodeEditor.StatementListIndexTrackableShape)dropShape;
+						edu.cmu.cs.dennisc.alice.ast.Statement statement = org.alice.ide.ast.NodeUtilities.createCountLoop( new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( count ) ); 
+						return new org.alice.ide.codeeditor.InsertStatementEdit(
+								statementListIndexTrackableShape.getStatementListProperty(),
+								statementListIndexTrackableShape.getIndex(),
+								statement
+						);
+					}
+				}
+		);
+
+		tutorial.addDragAndDropToPopupMenuStep( 
+				"Drag move action",
+				"Click and drag <strong>move</strong> action.",
+				tutorial.createProcedureInvocationTemplateResolver( "move" ),
+				"Drop <strong>here</strong>.",
+				tutorial.createEndOfStatementListResolver( 
+						tutorial.createFirstStatementListPropertyResolver( edu.cmu.cs.dennisc.alice.ast.CountLoop.class ) 
+				),
+				"Select <strong>UP</strong> from the menu, and then 1.0.",
+				new edu.cmu.cs.dennisc.tutorial.DragAndDropOperationCompletorValidator() {
+					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit ) {
+						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
+					}
+					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
+						org.alice.ide.codeeditor.CodeEditor.StatementListIndexTrackableShape statementListIndexTrackableShape = (org.alice.ide.codeeditor.CodeEditor.StatementListIndexTrackableShape)dropShape;
+						edu.cmu.cs.dennisc.croquet.DragComponent dragComponent = (edu.cmu.cs.dennisc.croquet.DragComponent)dragAndDropOperation.getFirstComponent();
+						
+						
+						org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate = (org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate)dragComponent;
+
+						edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression = org.alice.ide.IDE.getSingleton().createInstanceExpression();
+						edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = procedureInvocationTemplate.getMethod();
+						edu.cmu.cs.dennisc.alice.ast.ExpressionStatement statement = org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement(
+								instanceExpression, 
+								method,
+								org.alice.ide.ast.NodeUtilities.createStaticFieldAccess( org.alice.apis.moveandturn.MoveDirection.class, "UP" ),
+								new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 1.0 )
+						);
+						
+						assert statement.expression.getValue() instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation;
+						edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)statement.expression.getValue();
+						if( methodInvocation.isValid() ) {
+							//pass
+						} else {
+							edu.cmu.cs.dennisc.print.PrintUtilities.println( "createEdit", methodInvocation );
+						}
+						return new org.alice.ide.codeeditor.InsertStatementEdit(
+								statementListIndexTrackableShape.getStatementListProperty(),
+								statementListIndexTrackableShape.getIndex(),
+								statement
+						);
+					}
+				}
 		);
 		
+
 		tutorial.addSpotlightStepForModel( 
 				"Note Count Loop", 
 				"note count loop", 
@@ -93,7 +261,7 @@ public class StressTestTutorial {
 					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit edit ) {
 						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 					}
-					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation ) {
+					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
 						return tutorial.createToDoEdit();
 					}
 					private boolean isAccessOfFieldNamed( edu.cmu.cs.dennisc.alice.ast.Expression expression, String name ) {
@@ -155,34 +323,6 @@ public class StressTestTutorial {
 				}
 		);
 
-		//formerly known as EPIC_HACK_addDeclareProcedureDialogOpenAndCommitStep
-		final String requiredProcedureName = "skate";
-		tutorial.addInputDialogOpenAndCommitStep( 
-				"Declare Procedure", 
-				"Declare procedure...", 
-				"Type <b>" + requiredProcedureName + "</b> and press <i>Ok</i>",
-				tutorial.createDeclareProcedureOperationResolver(), 
-				new edu.cmu.cs.dennisc.tutorial.InputDialogOperationCompletorValidatorOkButtonDisabler<org.alice.ide.declarationpanes.CreateProcedurePane>() {
-					public Result checkValidity(edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation, edu.cmu.cs.dennisc.croquet.Edit edit) {
-						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
-					}
-					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation) {
-						return tutorial.createToDoEdit();
-					}
-					private String getExplanationIfOkButtonShouldBeDisabled( String name ) {
-						if( requiredProcedureName.equalsIgnoreCase( name ) ) {
-							return null;
-						} else {
-							return "<html>Please enter in the name <b>" + requiredProcedureName + "</b> and press <b>Ok</b> button.</html>";
-						}
-					}
-					public String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateProcedurePane> context) {
-						org.alice.ide.declarationpanes.CreateProcedurePane createProcedurePane = context.getMainPanel();
-						return this.getExplanationIfOkButtonShouldBeDisabled( createProcedurePane.getDeclarationName() );
-					}
-				}
-		);
-
 		//formerly known as EPIC_HACK_addDeclareMethodParameterDialogOpenAndCommitStep
 		final String requiredParameterName = "howHigh";
 		tutorial.addInputDialogOpenAndCommitStep( 
@@ -219,6 +359,13 @@ public class StressTestTutorial {
 				}
 		);
 		
+
+		tutorial.addSelectTabStep( 
+				"Select Run", 
+				"Select run tab.", 
+				ide.getEditorsTabSelectionState(),
+				tutorial.createCodeResolver( "scene", "run" )
+		);
 
 		tutorial.addSpotlightStepForModel( 
 				"Note Delay",

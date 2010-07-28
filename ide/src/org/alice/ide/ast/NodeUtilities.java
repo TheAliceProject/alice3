@@ -46,6 +46,13 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public class NodeUtilities {
+	private static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice createFunction( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> returnType ) {
+		return new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( name, returnType, new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {}, new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice createProcedure( String name ) {
+		return createFunction( name, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE );
+	}
+	
 	public static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice createType( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> superType ) {
 		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor = new edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice();
 		constructor.body.setValue( new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
@@ -186,6 +193,16 @@ public class NodeUtilities {
 		rv.field.setValue( field );
 		return rv;
 	}
+	public static edu.cmu.cs.dennisc.alice.ast.FieldAccess createStaticFieldAccess( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		assert field.isStatic();
+		return createFieldAccess( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( field.getDeclaringType() ), field );
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.FieldAccess createStaticFieldAccess( Class<?> cls, String fieldName ) {
+		java.lang.reflect.Field fld = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredField( cls, fieldName );
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField field = edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField.get( fld );
+		return createStaticFieldAccess( field );
+	}
+	
 	public static edu.cmu.cs.dennisc.alice.ast.FieldAccess createIncompleteFieldAccess( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		return NodeUtilities.createFieldAccess( new SelectedFieldExpression( field.getDeclaringType() ), field );
 	}

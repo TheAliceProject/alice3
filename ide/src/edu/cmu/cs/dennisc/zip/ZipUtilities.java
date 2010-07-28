@@ -153,20 +153,29 @@ public class ZipUtilities {
 	
 
 	//todo: support recursion
-	public static void zipContentsOfDirectory( String zipPath, String directoryPath ) throws java.io.IOException {
-		java.io.FileOutputStream fos = new java.io.FileOutputStream( zipPath );
+	public static void zip( java.io.File srcDirectory, java.io.File dstZip ) throws java.io.IOException {
+		
+		assert srcDirectory.isDirectory();
+		
+		java.io.FileOutputStream fos = new java.io.FileOutputStream( dstZip );
 		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( fos );
-		
-		java.io.File directory = new java.io.File( directoryPath );
-		
+
+		String rootPath = srcDirectory.getAbsolutePath();
 		byte[] buffer = new byte[ 1024 ];
-		java.io.File[] files = directory.listFiles();
+		java.io.FileFilter filter = null;
+		java.io.File[] files = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants( srcDirectory, filter );
 		for( java.io.File file : files ) {
 			if( file.isDirectory() ) {
 				//pass
 			} else {
+				String path = file.getAbsolutePath();
+				assert path.startsWith( rootPath );
+				String subPath = path.substring( rootPath.length()+1 );
+				subPath = subPath.replace( '\\', '/' );
+				
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( subPath );
 				java.io.FileInputStream fis = new java.io.FileInputStream( file );
-				java.util.zip.ZipEntry zipEntry = new java.util.zip.ZipEntry( file.getName() );
+				java.util.zip.ZipEntry zipEntry = new java.util.zip.ZipEntry( subPath );
 				zos.putNextEntry( zipEntry );
 				while( true ) {
 					int bytesRead = fis.read( buffer );
@@ -176,11 +185,41 @@ public class ZipUtilities {
 						break;
 					}
 				}
+				zos.closeEntry();
 				fis.close();
 			}
 		}
 		zos.flush();
 		zos.close();
 	}
+	public static void zip( String srcDirectoryPath, String dstZipPath ) throws java.io.IOException {
+		zip( new java.io.File( srcDirectoryPath ), new java.io.File( dstZipPath ) );
+	}
 	
+	public static void unzip( java.io.File srcFile, java.io.File dstDirectory ) throws java.io.IOException {
+		java.util.zip.ZipInputStream zis = new java.util.zip.ZipInputStream( new java.io.FileInputStream( srcFile ) );
+		java.util.zip.ZipEntry zipEntry;
+		while ((zipEntry = zis.getNextEntry()) != null) {
+			if( zipEntry.isDirectory() ) {
+				// pass
+			} else {
+				java.io.File outFile = new java.io.File( dstDirectory, zipEntry.getName() );
+				edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( outFile );
+				java.io.FileOutputStream fos = new java.io.FileOutputStream( outFile );
+				byte[] data = extractBytes(zis, zipEntry);
+				fos.write( data, 0, data.length );
+				fos.close();
+			}
+		}
+	}
+
+	public static void unzip( String srcZipPath, String dstDirectoryPath ) throws java.io.IOException {
+		unzip( new java.io.File( srcZipPath ), new java.io.File( dstDirectoryPath ) );
+	}
+	
+//	public static void main(String[] args) throws Exception {
+//		String dirPath = System.getProperty( "user.home" ) + "/Documents/";
+//		zip( dirPath + "spanish/", dirPath + "out.zip" );
+//		unzip( dirPath + "Alice3-es.zip", dirPath + "spanish/" );
+//	}
 }

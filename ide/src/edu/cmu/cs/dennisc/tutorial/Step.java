@@ -282,6 +282,9 @@ public abstract class Step {
 	}
 
 	public void reset() {
+		for( Note note : this.notes ) {
+			note.reset();
+		}
 	}
 	
 	@Override

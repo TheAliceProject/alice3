@@ -73,8 +73,18 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	};
 	
-	private static final boolean IS_FORWARD_ENABLED = false;
+//	private edu.cmu.cs.dennisc.croquet.ListSelectionState<Step> stepSelectionState = new edu.cmu.cs.dennisc.croquet.ListSelectionState<Step>( TUTORIAL_GROUP, java.util.UUID.fromString( "ad05a285-8b5e-416f-98aa-1c4e6910fa5d" ), new edu.cmu.cs.dennisc.croquet.Codec<Step>() {
+//		public edu.cmu.cs.dennisc.tutorial.Step decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+//			throw new RuntimeException( "todo" );
+//		}
+//		public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.tutorial.Step t) {
+//			throw new RuntimeException( "todo" );
+//		}
+//	} );
+	
+	private static final boolean IS_FORWARD_ENABLED = true;
 	private StepsComboBoxModel stepsComboBoxModel = new StepsComboBoxModel( IS_FORWARD_ENABLED );
+	
 	private PreviousStepOperation previousStepOperation = new PreviousStepOperation( this.stepsComboBoxModel );
 	private NextStepOperation nextStepOperation = new NextStepOperation( this.stepsComboBoxModel );
 	//private ExitOperation exitOperation = new ExitOperation();
@@ -98,14 +108,11 @@ package edu.cmu.cs.dennisc.tutorial;
 
 	private edu.cmu.cs.dennisc.croquet.BorderPanel controlsPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 	private edu.cmu.cs.dennisc.croquet.CardPanel cardPanel = new edu.cmu.cs.dennisc.croquet.CardPanel();
-	private StepsComboBox comboBox = new StepsComboBox();
-	private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
-		public void itemStateChanged(java.awt.event.ItemEvent e) {
-			if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-				TutorialStencil.this.handleStepChanged((Step) e.getItem());
-			} else {
-				// pass
-			}
+	private StepsComboBoxModel.SelectionObserver selectionObserver = new StepsComboBoxModel.SelectionObserver() {
+		public void selectionChanging( StepsComboBoxModel source, int fromIndex, int toIndex ) {
+		}
+		public void selectionChanged( StepsComboBoxModel source, int fromIndex, int toIndex ) {
+			TutorialStencil.this.handleStepChanged( source.getElementAt( toIndex ) );
 		}
 	};
 	
@@ -158,7 +165,7 @@ package edu.cmu.cs.dennisc.tutorial;
 
 		edu.cmu.cs.dennisc.croquet.FlowPanel controlPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.CENTER, 2, 0);
 		controlPanel.addComponent(this.previousStepOperation.createButton());
-		controlPanel.addComponent(comboBox);
+		controlPanel.addComponent(new StepsComboBox());
 		controlPanel.addComponent(this.nextStepOperation.createButton());
 
 		this.controlsPanel.addComponent(controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
@@ -235,7 +242,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	private void completeOrUndoIfNecessary() {
 		SoundCache.pushIgnoreStartRequests();
 		try {
-			int nextSelectedIndex = this.comboBox.getAwtComponent().getSelectedIndex();
+			int nextSelectedIndex = this.stepsComboBoxModel.getSelectedIndex();
 			int undoIndex = Math.max( nextSelectedIndex, 0 );
 			if( undoIndex < this.prevSelectedIndex ) {
 				this.restoreHistoryIndices( undoIndex );
@@ -265,6 +272,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	}
 	private void handleStepChanged(Step step) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleStepChanged" );
 		this.completeOrUndoIfNecessary();
 		if( step != null ) {
 			step.reset();
@@ -325,7 +333,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo(parent);
-		this.comboBox.getAwtComponent().addItemListener(this.itemListener);
+		this.stepsComboBoxModel.addSelectionObserver(this.selectionObserver);
 		this.handleStepChanged((Step) stepsComboBoxModel.getSelectedItem());
 		this.addKeyListener( this.keyListener );
 	}
@@ -333,7 +341,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		this.removeKeyListener( this.keyListener );
-		this.comboBox.getAwtComponent().addItemListener(this.itemListener);
+		this.stepsComboBoxModel.removeSelectionObserver(this.selectionObserver);
 		super.handleRemovedFrom(parent);
 	}
 	
