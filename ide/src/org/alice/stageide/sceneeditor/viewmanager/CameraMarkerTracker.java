@@ -83,11 +83,13 @@ public class CameraMarkerTracker implements PropertyListener, edu.cmu.cs.dennisc
 		if (perspectiveCamera == null && this.markerToUpdate instanceof PerspectiveCameraMarker)
 		{
 			this.stopTrackingCamera();
+			this.activeMarker = null;
 		}
 		this.perspectiveCamera = perspectiveCamera;
 		if (orthographicCamera == null && this.markerToUpdate instanceof OrthographicCameraMarker)
 		{
 			this.stopTrackingCamera();
+			this.activeMarker = null;
 		}
 		if (this.orthographicCamera != null)
 		{
