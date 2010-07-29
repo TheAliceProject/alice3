@@ -47,6 +47,7 @@ import java.util.HashMap;
 
 import org.alice.apis.moveandturn.CameraMarker;
 import org.alice.apis.moveandturn.Element;
+import org.alice.apis.moveandturn.OrthographicCameraMarker;
 import org.alice.ide.IDE;
 import org.alice.ide.operations.ActionOperation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
@@ -58,30 +59,71 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 public class MoveMarkerToActiveCameraActionOperation extends ActionOperation {
 
 	private static class SingletonHolder {
-		private static HashMap<FieldDeclaredInAlice, MoveMarkerToActiveCameraActionOperation> fieldToOperationMap = new HashMap<FieldDeclaredInAlice, MoveMarkerToActiveCameraActionOperation>();
+		private static MoveMarkerToActiveCameraActionOperation instance = new MoveMarkerToActiveCameraActionOperation();
 	}
 	
-	public static MoveMarkerToActiveCameraActionOperation getInstanceForField(FieldDeclaredInAlice markerField) 
-	{
-		if ( SingletonHolder.fieldToOperationMap.containsKey(markerField) )
-		{
-			return SingletonHolder.fieldToOperationMap.get(markerField);
-		}
-		else
-		{
-			MoveMarkerToActiveCameraActionOperation operation = new MoveMarkerToActiveCameraActionOperation(markerField);
-			SingletonHolder.fieldToOperationMap.put(markerField, operation);
-			return operation;
-		}
+	public static MoveMarkerToActiveCameraActionOperation getInstance() {
+		return SingletonHolder.instance;
 	}
 	
 	private FieldDeclaredInAlice markerField;
+	private CameraMarker cameraMarker;
+	private MoveToImageIcon imageIcon;
 
-	public MoveMarkerToActiveCameraActionOperation(FieldDeclaredInAlice markerField) {
+	private MoveMarkerToActiveCameraActionOperation() {
 		super(edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "a95908d8-0161-4a03-8a38-61eebea0c58c" ));
+		this.markerField = null;
+		this.cameraMarker = null;
+		this.setToolTipText("Move the camera to this marker.");
+		this.imageIcon = new MoveToImageIcon();
+		this.setSmallIcon(imageIcon);
+		this.updateBasedOnSettings();
+	}
+
+	private void updateBasedOnSettings()
+	{
+		if (this.markerField != null && this.cameraMarker != null)
+		{
+			this.setToolTipText("Move "+this.markerField.getName()+" to the point of view of "+this.cameraMarker.getName());
+			if (this.cameraMarker instanceof OrthographicCameraMarker)
+			{
+				this.setEnabled(false);
+			}
+			else
+			{
+				this.setEnabled(true);
+			}
+		}
+		else
+		{
+			this.setEnabled(false);
+		}
+		this.setSmallIcon(null);
+		this.setSmallIcon(this.imageIcon);
+	}
+	
+	public void setMarkerField(FieldDeclaredInAlice markerField)
+	{
 		this.markerField = markerField;
-		this.setToolTipText("Move this marker to the camera's location.");
-		this.setSmallIcon(new javax.swing.ImageIcon(MoveMarkerToActiveCameraActionOperation.class.getResource("images/trackerToCameraIcon.png")));
+		if (this.markerField != null)
+		{
+			CameraMarker marker = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getCameraMarkerForField(this.markerField);
+			if (marker != null)
+			{
+				this.imageIcon.setLeftImage(marker.getIcon());				
+			}
+		}
+		this.updateBasedOnSettings();
+	}
+	
+	public void setCameraMarker(CameraMarker cameraMarker)
+	{
+		this.cameraMarker = cameraMarker;
+		if (this.cameraMarker != null)
+		{
+			this.imageIcon.setRightImage(this.cameraMarker.getIcon());
+		}
+		this.updateBasedOnSettings();
 	}
 
 	@Override

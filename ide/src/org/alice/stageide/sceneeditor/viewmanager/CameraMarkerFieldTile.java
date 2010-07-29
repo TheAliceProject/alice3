@@ -102,34 +102,24 @@ public class CameraMarkerFieldTile extends LineAxisPanel
 		
 		this.textLabel.setText( this.field.getName() );
 		
-		String iconString = MoveAndTurnSceneEditor.getIconNameForMarkerName(this.field.getName());
-		if (iconString == null)
-		{
-			iconString = "images/markerIcon_White.png";
-		}
-		else
-		{
-			iconString = "images/"+iconString;
-		}
-		this.iconLabel.setIcon(new javax.swing.ImageIcon(CameraMarkerFieldTile.class.getResource(iconString)));
-		
 		CameraMarker marker = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getCameraMarkerForField(field);
 		if (marker != null)
 		{
 			Color4f color = marker.getMarkerColor();
 			this.textLabel.setForegroundColor(color.getAsAWTColor());
+			this.iconLabel.setIcon(marker.getIcon());
 		}
-		javax.swing.border.Border border = BorderFactory.createEmptyBorder( 4,6,4,6 );
-		buttonCameraToMarker = MoveActiveCameraToMarkerActionOperation.getInstanceForField(this.field).createButton();
-		buttonCameraToMarker.setBorder( border );
-
-		buttonMarkerToCamera = MoveMarkerToActiveCameraActionOperation.getInstanceForField(this.field).createButton();
-		buttonMarkerToCamera.setBorder( border );
+//		javax.swing.border.Border border = BorderFactory.createEmptyBorder( 4,6,4,6 );
+//		buttonCameraToMarker = MoveActiveCameraToMarkerActionOperation.getInstanceForField(this.field).createButton();
+//		buttonCameraToMarker.setBorder( border );
+//
+//		buttonMarkerToCamera = MoveMarkerToActiveCameraActionOperation.getInstanceForField(this.field).createButton();
+//		buttonMarkerToCamera.setBorder( border );
 
 		this.addComponent( iconLabel );
 		this.addComponent( this.textLabel );
 		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ) );
-		this.addComponent( buttonCameraToMarker );
-		this.addComponent( buttonMarkerToCamera );
+//		this.addComponent( buttonCameraToMarker );
+//		this.addComponent( buttonMarkerToCamera );
 	}
 }

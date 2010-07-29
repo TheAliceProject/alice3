@@ -91,7 +91,7 @@ public class SceneViewManagerPanel extends GridBagPanel{
 				0, //ipadX
 				0 ) //ipadY
 		);
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label()/*createCameraMarkerAction.createButton()*/, new GridBagConstraints( 
+		this.addComponent( MoveActiveCameraToMarkerActionOperation.getInstance().createButton(), new GridBagConstraints( 
 				1, //gridX
 				0, //gridY
 				1, //gridWidth
@@ -104,10 +104,36 @@ public class SceneViewManagerPanel extends GridBagPanel{
 				0, //ipadX
 				0 ) //ipadY
 		);
+		this.addComponent( MoveMarkerToActiveCameraActionOperation.getInstance().createButton(), new GridBagConstraints( 
+				2, //gridX
+				0, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				1.0, //weightX
+				0.0, //weightY
+				GridBagConstraints.CENTER, //anchor 
+				GridBagConstraints.NONE, //fill
+				new Insets(2,2,2,2), //insets
+				0, //ipadX
+				0 ) //ipadY
+		);
+//		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label()/*createCameraMarkerAction.createButton()*/, new GridBagConstraints( 
+//				1, //gridX
+//				0, //gridY
+//				1, //gridWidth
+//				1, //gridHeight
+//				1.0, //weightX
+//				0.0, //weightY
+//				GridBagConstraints.CENTER, //anchor 
+//				GridBagConstraints.NONE, //fill
+//				new Insets(2,2,2,2), //insets
+//				0, //ipadX
+//				0 ) //ipadY
+//		);
 		this.addComponent(markerScrollPane, new GridBagConstraints( 
 				0, //gridX
 				1, //gridY
-				2, //gridWidth
+				3, //gridWidth
 				1, //gridHeight
 				1.0, //weightX
 				1.0, //weightY

@@ -41,50 +41,69 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.apis.moveandturn;
+package org.alice.stageide.sceneeditor.viewmanager;
+
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
-import org.alice.ide.IDE;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
+public class MoveToImageIcon extends ImageIcon {
+	private Icon leftImage;
+	private Icon rightImage;
+	
+	private int rightOffsetX;
+	private int rightOffsetY;
+	
+	public MoveToImageIcon()
+	{
+		super(MoveAndTurnSceneEditor.class.getResource("images/moveToTemplateIcon.png"));
+	}
+	
+	public MoveToImageIcon(Icon leftImage, Icon rightImage)
+	{
+		this();
+		this.setLeftImage(leftImage);
+		this.setRightImage(rightImage);
+		
+	}
 
-/**
- * @author Dennis Cosgrove
- */
-public class CameraMarker extends Marker 
-{
-	
-	private Icon icon;
-	
-	public CameraMarker()
+	public void setLeftImage(Icon leftImage)
 	{
-		super();
+		this.leftImage = leftImage;
 	}
 	
-	@Override
-	protected void createVisuals()
+	public void setRightImage(Icon rightImage)
 	{
-		super.createVisuals();
-	}
-	
-	public Icon getIcon()
-	{
-		return this.icon;
-	}
-	
-	public void setIcon(Icon icon)
-	{
-		this.icon = icon;
-	}
-	
-	@Override
-	public void setName(String name) 
-	{
-		super.setName(name);
-		if (this.getIcon() == null)
+		this.rightImage = rightImage;
+		if (this.rightImage != null)
 		{
-			this.setIcon( MoveAndTurnSceneEditor.getIconForMarkerName(name) );
+			int thisWidth = this.getIconWidth();
+			int imageWidth = this.rightImage.getIconWidth();
+			this.rightOffsetX = thisWidth - imageWidth;
+			this.rightOffsetY = 0;
+		}
+	}
+	
+	@Override
+	public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
+		// TODO Auto-generated method stub
+		super.paintIcon(c, g, x, y);
+		if (this.leftImage != null)
+		{
+			this.leftImage.paintIcon(c, g, x, y);
+		}
+		if (this.rightImage != null)
+		{
+			this.rightImage.paintIcon(c, g, x+this.rightOffsetX, y+this.rightOffsetY);
 		}
 	}
 	

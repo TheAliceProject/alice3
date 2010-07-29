@@ -43,14 +43,17 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
+import java.awt.Toolkit;
 import java.util.HashMap;
 import java.util.UUID;
 
+import javax.swing.ImageIcon;
+
 import org.alice.apis.moveandturn.CameraMarker;
 import org.alice.apis.moveandturn.Element;
+import org.alice.apis.moveandturn.OrthographicCameraMarker;
 import org.alice.ide.IDE;
 import org.alice.ide.operations.ActionOperation;
-import org.alice.stageide.gallerybrowser.GalleryBrowser;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
@@ -59,34 +62,92 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 	
+//	private static class SingletonHolder {
+//		private static HashMap<FieldDeclaredInAlice, MoveActiveCameraToMarkerActionOperation> fieldToOperationMap = new HashMap<FieldDeclaredInAlice, MoveActiveCameraToMarkerActionOperation>();
+//	}
+//	
+//	public static MoveActiveCameraToMarkerActionOperation getInstanceForField(FieldDeclaredInAlice markerField) 
+//	{
+//		if ( SingletonHolder.fieldToOperationMap.containsKey(markerField) )
+//		{
+//			return SingletonHolder.fieldToOperationMap.get(markerField);
+//		}
+//		else
+//		{
+//			MoveActiveCameraToMarkerActionOperation operation = new MoveActiveCameraToMarkerActionOperation(markerField);
+//			SingletonHolder.fieldToOperationMap.put(markerField, operation);
+//			return operation;
+//		}
+//	}
+	
 	private static class SingletonHolder {
-		private static HashMap<FieldDeclaredInAlice, MoveActiveCameraToMarkerActionOperation> fieldToOperationMap = new HashMap<FieldDeclaredInAlice, MoveActiveCameraToMarkerActionOperation>();
+		private static MoveActiveCameraToMarkerActionOperation instance = new MoveActiveCameraToMarkerActionOperation();
 	}
 	
-	public static MoveActiveCameraToMarkerActionOperation getInstanceForField(FieldDeclaredInAlice markerField) 
-	{
-		if ( SingletonHolder.fieldToOperationMap.containsKey(markerField) )
-		{
-			return SingletonHolder.fieldToOperationMap.get(markerField);
-		}
-		else
-		{
-			MoveActiveCameraToMarkerActionOperation operation = new MoveActiveCameraToMarkerActionOperation(markerField);
-			SingletonHolder.fieldToOperationMap.put(markerField, operation);
-			return operation;
-		}
+	public static MoveActiveCameraToMarkerActionOperation getInstance() {
+		return SingletonHolder.instance;
 	}
 	
 	private FieldDeclaredInAlice markerField;
+	private CameraMarker cameraMarker;
+	private MoveToImageIcon imageIcon;
 
-	private MoveActiveCameraToMarkerActionOperation(FieldDeclaredInAlice markerField) {
+	private MoveActiveCameraToMarkerActionOperation() {
 		super(edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "8d1cbb1e-3f58-4f48-99ed-350f2decb203" ));
-		this.markerField = markerField;
+		this.markerField = null;
+		this.cameraMarker = null;
 		this.setToolTipText("Move the camera to this marker.");
-		this.setSmallIcon(new javax.swing.ImageIcon(MoveActiveCameraToMarkerActionOperation.class.getResource("images/cameraToTrackerIcon.png")));
-		
+		this.imageIcon = new MoveToImageIcon();
+		this.setSmallIcon(imageIcon);
+		this.updateBasedOnSettings();
 	}
 
+	private void updateBasedOnSettings()
+	{
+		if (this.markerField != null && this.cameraMarker != null)
+		{
+			this.setToolTipText("Move "+this.cameraMarker.getName()+" to the point of view of "+this.markerField.getName());
+			if (this.cameraMarker instanceof OrthographicCameraMarker)
+			{
+				this.setEnabled(false);
+			}
+			else
+			{
+				this.setEnabled(true);
+			}
+		}
+		else
+		{
+			this.setEnabled(false);
+		}
+		this.setSmallIcon(null);
+		this.setSmallIcon(this.imageIcon);
+	}
+	
+	public void setMarkerField(FieldDeclaredInAlice markerField)
+	{
+		this.markerField = markerField;
+		if (this.markerField != null)
+		{
+			CameraMarker marker = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getCameraMarkerForField(this.markerField);
+			if (marker != null)
+			{
+				this.imageIcon.setRightImage(marker.getIcon());
+			}
+		}
+		this.updateBasedOnSettings();
+	}
+	
+	public void setCameraMarker(CameraMarker cameraMarker)
+	{
+		this.cameraMarker = cameraMarker;
+		if (this.cameraMarker != null)
+		{
+			this.imageIcon.setLeftImage(this.cameraMarker.getIcon());
+		}
+		this.updateBasedOnSettings();
+	}
+	
 	@Override
 	protected void perform(ActionOperationContext context) 
 	{
