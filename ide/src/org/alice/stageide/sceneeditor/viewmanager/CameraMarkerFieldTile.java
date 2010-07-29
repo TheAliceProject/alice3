@@ -86,8 +86,8 @@ public class CameraMarkerFieldTile extends LineAxisPanel
 			foregroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( foregroundColor, 1.0, 0.5, 0.5 );
 		}
 		this.textLabel.setForegroundColor( foregroundColor );
-		//this.buttonCameraToMarker.setVisible( isSelected );
-		//this.buttonMarkerToCamera.setVisible( isSelected );
+		this.buttonCameraToMarker.setVisible( isSelected );
+		this.buttonMarkerToCamera.setVisible( isSelected );
 	}
 	public void setField( FieldDeclaredInAlice field )
 	{
