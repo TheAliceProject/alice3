@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ui.window;
+package org.alice.ide.croquet.models.ui.frames;
 
 class HistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel< edu.cmu.cs.dennisc.croquet.HistoryNode > {
 	private edu.cmu.cs.dennisc.croquet.HistoryNode root;
@@ -108,7 +108,7 @@ public class IsHistoryTreeShowingState extends IsFrameShowingState {
 		return SingletonHolder.instance;
 	}
 	private IsHistoryTreeShowingState() {
-		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "3fb1e733-1736-476d-b40c-7729c82f0b21" ), false, "Show History Tree?" );
+		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "3fb1e733-1736-476d-b40c-7729c82f0b21" ), false );
 	}
 	@Override
 	protected String getTitle() {

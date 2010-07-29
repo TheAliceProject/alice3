@@ -127,7 +127,12 @@ public abstract class AbstractManipulator {
 	
 	public boolean startManipulator( InputState startInput )
 	{
-		this.hasStarted = doStartManipulator( startInput );
+		try {
+			this.hasStarted = doStartManipulator( startInput );
+		} catch( Throwable t ) {
+			t.printStackTrace();
+			this.hasStarted = false;
+		}
 		setHasUpdated(false);
 		if (this.hasStarted)
 		{

@@ -40,64 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ui.window;
+package org.alice.ide.croquet.models.ui.frames;
 
-public abstract class IsFrameShowingState extends edu.cmu.cs.dennisc.croquet.BooleanState {
-	private javax.swing.JFrame frame;
-	public IsFrameShowingState( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, boolean initialValue, String trueAndFalseText ) {
-		super( group, individualId, initialValue, trueAndFalseText );
-		
-		this.addValueObserver( new ValueObserver() {
-			public void changing(boolean nextValue) {
-			}
-			public void changed(boolean nextValue) {
-				IsFrameShowingState.this.handleChanged( nextValue );
-			}
-		} );
-		//todo
-		if( initialValue ) {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-				public void run() {
-					handleChanged( true );
-				}
-			} );
+class MemoryUsagePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+	private javax.swing.Timer timer = new javax.swing.Timer( 50, new java.awt.event.ActionListener() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
 		}
+	} );
+	@Override
+	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		super.handleAddedTo( parent );
+		this.timer.start();
 	}
-	private javax.swing.JFrame getFrame() {
-		if( this.frame != null ) {
-			//pass
-		} else {
-			this.frame = new javax.swing.JFrame();
-			this.frame.setTitle( this.getTitle() );
-			this.frame.getContentPane().add( this.createPane() );
-			this.frame.setDefaultCloseOperation( javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE );
-			this.frame.addWindowListener( new java.awt.event.WindowListener() {
-				public void windowOpened(java.awt.event.WindowEvent e) {
-				} 
-				public void windowActivated(java.awt.event.WindowEvent e) {
-				}
-				public void windowDeiconified(java.awt.event.WindowEvent e) {
-				}
-				public void windowIconified(java.awt.event.WindowEvent e) {
-				}
-				public void windowDeactivated(java.awt.event.WindowEvent e) {
-				}
-				public void windowClosing(java.awt.event.WindowEvent e) {
-					IsFrameShowingState.this.setValue( false );
-				}
-				public void windowClosed(java.awt.event.WindowEvent e) {
-				}
-			} );
-			this.frame.pack();
-		}
-		return this.frame;
+	@Override
+	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		this.timer.stop();
+		super.handleRemovedFrom( parent );
 	}
+}
 
-	protected abstract java.awt.Component createPane();
-	protected abstract String getTitle();
-
-	protected void handleChanged(boolean value) {
-		javax.swing.JFrame frame = this.getFrame();
-		frame.setVisible( value );
+public class IsMemoryUsageShowingState extends IsFrameShowingState {
+	private static class SingletonHolder {
+		private static IsMemoryUsageShowingState instance = new IsMemoryUsageShowingState();
+	}
+	public static IsMemoryUsageShowingState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private IsMemoryUsageShowingState() {
+		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "e460dca7-e707-4075-883a-ff47367c21fd" ), false );
+	}
+	@Override
+	protected String getTitle() {
+		return "Memory Usage";
+	}
+	@Override
+	protected java.awt.Component createPane() {
+		return new edu.cmu.cs.dennisc.memory.MemoryUsagePanel().getAwtComponent();
 	}
 }
