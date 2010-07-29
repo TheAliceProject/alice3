@@ -42,8 +42,6 @@
  */
 package org.alice.ide.editorstabbedpane;
 
-import org.alice.ide.codeeditor.CodeEditor;
-
 class Cycle< E > {
 	private java.util.LinkedList< E > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private int index = -1;
@@ -274,7 +272,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 			return null;
 		}
 		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-			return new CodeEditor( code );
+			return new org.alice.ide.codeeditor.CodeEditor( code );
 		}
 		
 		private boolean isEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
@@ -523,12 +521,76 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 //			return null;
 //		}
 //	}
+//	private class TypeListener  {
+//		private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type;
+//		public TypeListener( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type ) {
+//			this.type = type;
+//		}
+//	}
+	private void removeDeadCode() {
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractCode code : this.toArray( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class ) ) {
+			if( code.getDeclaringType() != null ) {
+				//pass
+			} else {
+				this.removeItem( code );
+			}
+		}
+	}
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> typeMembersListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice>() {
+		public void adding(edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> e) {
+		}
+		public void added(edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> e) {
+		}
+		public void clearing(edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> e) {
+		}
+		public void cleared(edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> e) {
+			EditorsTabSelectionState.this.removeDeadCode();
+		}
+		public void removing(edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> e) {
+		}
+		public void removed(edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> e) {
+			EditorsTabSelectionState.this.removeDeadCode();
+		}
+		public void setting(edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> e) {
+		}
+		public void set(edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> e) {
+			EditorsTabSelectionState.this.removeDeadCode();
+		}
+	};
+	private java.util.Set<edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>> typeSet = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+	private void startListeningTo( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type ) {
+		if( this.typeSet.contains( type ) ) {
+			//pass
+		} else {
+			this.typeSet.add( type );
+			type.methods.addListPropertyListener( this.typeMembersListener );
+		}
+	}
+
+	@Override
+	public void clear() {
+		super.clear();
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type : this.typeSet ) {
+			type.methods.removeListPropertyListener( this.typeMembersListener );
+		}
+		this.typeSet.clear();
+		
+	}
 	@Deprecated
 	public void edit( final edu.cmu.cs.dennisc.alice.ast.AbstractCode code, boolean isOriginatedByPreviousCodeOperation ) {
 		if( this.containsItem( code ) ) {
 			//pass
 		} else {
-			this.addItem( code );
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> declaringType = code.getDeclaringType();
+			if( declaringType != null ) {
+				this.addItem( code );
+				if (declaringType instanceof edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>) {
+					edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> typeInAlice = (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>) declaringType;
+					this.startListeningTo( typeInAlice );
+				}
+			} else {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "investigate: declaringType==null" );
+			}
 		}
 		this.setSelectedItem( code );
 //		for( edu.cmu.cs.dennisc.croquet.TabStateOperation tabIsSelectedOperation : this.getTabStateOperations() ) {
@@ -621,10 +683,10 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 		public void projectOpened( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
 		}
 	};
-	public CodeEditor getCodeEditorInFocus() {
+	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getSelectedItem();
 		if( code != null ) {
-			return (CodeEditor)this.getMainComponentFor( code );
+			return (org.alice.ide.codeeditor.CodeEditor)this.getMainComponentFor( code );
 		} else {
 			return null;
 		}

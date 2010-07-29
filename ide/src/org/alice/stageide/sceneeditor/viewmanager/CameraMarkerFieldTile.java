@@ -81,16 +81,18 @@ public class CameraMarkerFieldTile extends LineAxisPanel
 	
 	public void setSelected( boolean isSelected ) {
 		CameraMarker marker = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getCameraMarkerForField(field);
-		java.awt.Color foregroundColor = marker.getMarkerColor().getAsAWTColor();
-		if( isSelected ) {
-			//pass
-		} else {
-			foregroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( foregroundColor, 1.0, 0.5, 0.5 );
+		java.awt.Color foregroundColor = java.awt.Color.BLACK;
+		if( marker != null ) {
+			foregroundColor = marker.getMarkerColor().getAsAWTColor();
+			if( isSelected ) {
+				//pass
+			} else {
+				foregroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( foregroundColor, 1.0, 0.5, 0.5 );
+			}
 		}
 		this.textLabel.setForegroundColor( foregroundColor );
-//		this.iconLabel.setForegroundColor( foregroundColor );
-		//this.buttonCameraToMarker.setVisible( isSelected );
-		//this.buttonMarkerToCamera.setVisible( isSelected );
+//		this.buttonCameraToMarker.setVisible( isSelected );
+//		this.buttonMarkerToCamera.setVisible( isSelected );
 	}
 	
 	public void setField( FieldDeclaredInAlice field )

@@ -445,7 +445,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	 * Field Added/Removed Handling
 	 */
 	
-	private void handleFieldAdded(FieldDeclaredInAlice addedField)
+	private void handleFieldAdded(final FieldDeclaredInAlice addedField)
 	{
 		Object instance = this.getInstanceInJavaForField( addedField );
 		if( instance instanceof org.alice.apis.moveandturn.Transformable ) {
@@ -468,6 +468,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 						{
 							MoveAndTurnSceneEditor.this.getGoodLookAtShowInstanceAndReturnCamera( camera, (org.alice.apis.moveandturn.BookmarkCameraMarker)transformable );
 							CreateCameraMarkerActionOperation.getInstance().setEnabled(true);
+						}
+						ListSelectionState<Accessible> accessibleListSelectionState = IDE.getSingleton().getAccessibleListState();
+						if( accessibleListSelectionState.containsItem( addedField ) ) {
+							accessibleListSelectionState.setSelectedItem( addedField );
 						}
 					}
 				}.start();

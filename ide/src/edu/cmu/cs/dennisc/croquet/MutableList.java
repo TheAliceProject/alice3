@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public final class MutableList< E > extends ItemSelectablePanel< E, MutableList.MutableListItemDetails > {
-	class MutableListItemDetails extends ItemDetails {
+	class MutableListItemDetails extends ItemSelectablePanel.ItemDetails {
 		private Component<?> leadingComponent;
 		private Component<?> mainComponent;
 		private Component<?> trailingComponent;

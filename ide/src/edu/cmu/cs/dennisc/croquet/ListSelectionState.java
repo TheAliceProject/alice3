@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class ListSelectionState<E> extends Model implements Iterable<E> {
+public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.util.List<E>*/ {
 	public static interface ValueObserver<E> {
 		public void changed(E nextValue);
 	};
@@ -354,6 +354,14 @@ public class ListSelectionState<E> extends Model implements Iterable<E> {
 		return this.comboBoxModel.getSize();
 	}
 
+	public E[] toArray( Class<E> componentType ) {
+		//todo: make thread safe
+		E[] rv = (E[])java.lang.reflect.Array.newInstance(componentType, this.getItemCount() );
+		for( int i=0; i<rv.length; i++ ) {
+			rv[ i ] = this.getItemAt( i );
+		}
+		return rv;
+	}
 	public void setRandomSelectedValue() {
 		final int N = this.comboBoxModel.getSize();
 		int i;

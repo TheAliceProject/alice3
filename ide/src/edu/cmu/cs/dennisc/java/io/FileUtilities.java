@@ -159,6 +159,16 @@ public class FileUtilities {
 			} else {
 				basename = filename;
 			}
+			
+			index = basename.lastIndexOf( '/' );
+			if( index != -1 ) {
+				basename = basename.substring( index+1 );
+			}
+			index = basename.lastIndexOf( '\\' );
+			if( index != -1 ) {
+				basename = basename.substring( index+1 );
+			}
+			
 		}
 		return basename;
 	}
@@ -429,5 +439,4 @@ public class FileUtilities {
 //			return null;
 //		}
 //	}
-
 }
