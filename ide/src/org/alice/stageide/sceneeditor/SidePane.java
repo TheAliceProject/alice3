@@ -183,6 +183,13 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		
 //		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.addComponent( mainPanel, Constraint.CENTER);
+		
+		edu.cmu.cs.dennisc.croquet.LineAxisPanel undoRedoPanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel(
+				org.alice.ide.croquet.models.history.UndoOperation.getInstance().createButton(), 
+				org.alice.ide.croquet.models.history.RedoOperation.getInstance().createButton(),
+				edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue()
+		);
+		this.addComponent( undoRedoPanel, Constraint.PAGE_START );
 	}
 
 	public ActionOperation getShowSceneGraphViewerActionOperation()
