@@ -192,6 +192,12 @@ public class ZipUtilities {
 		zos.flush();
 		zos.close();
 	}
+	public static void zip( java.io.File srcDirectory, String dstZipPath ) throws java.io.IOException {
+		zip( srcDirectory, new java.io.File( dstZipPath ) );
+	}
+	public static void zip( String srcDirectoryPath, java.io.File dstZip ) throws java.io.IOException {
+		zip( new java.io.File( srcDirectoryPath ), dstZip );
+	}
 	public static void zip( String srcDirectoryPath, String dstZipPath ) throws java.io.IOException {
 		zip( new java.io.File( srcDirectoryPath ), new java.io.File( dstZipPath ) );
 	}
@@ -213,6 +219,12 @@ public class ZipUtilities {
 		}
 	}
 
+	public static void unzip( java.io.File srcZip, String dstDirectoryPath ) throws java.io.IOException {
+		unzip( srcZip, new java.io.File( dstDirectoryPath ) );
+	}
+	public static void unzip( String srcZipPath, java.io.File dstDirectory ) throws java.io.IOException {
+		unzip( new java.io.File( srcZipPath ), dstDirectory );
+	}
 	public static void unzip( String srcZipPath, String dstDirectoryPath ) throws java.io.IOException {
 		unzip( new java.io.File( srcZipPath ), new java.io.File( dstDirectoryPath ) );
 	}
