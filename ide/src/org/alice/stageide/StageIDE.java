@@ -313,10 +313,10 @@ public class StageIDE extends org.alice.ide.IDE {
 			}
 			@Override
 			protected String getNameText() {
-				if( StageIDE.this.getOmissionOfThisForFieldAccessesDesiredState().getValue() ) {
-					return super.getNameText();
-				} else {
+				if( org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().getValue() ) {
 					return "this." + super.getNameText();
+				} else {
+					return super.getNameText();
 				}
 			}
 		}

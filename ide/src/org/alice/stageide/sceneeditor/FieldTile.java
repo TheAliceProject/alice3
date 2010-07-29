@@ -99,7 +99,7 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo(parent);
-		org.alice.ide.IDE.getSingleton().getOmissionOfThisForFieldAccessesDesiredState().addAndInvokeValueObserver( this.valueObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().addAndInvokeValueObserver( this.valueObserver );
 		StringProperty nameProperty = accessible.getNamePropertyIfItExists();
 		if (nameProperty != null)
 		{
@@ -108,7 +108,7 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		org.alice.ide.IDE.getSingleton().getOmissionOfThisForFieldAccessesDesiredState().removeValueObserver( this.valueObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().removeValueObserver( this.valueObserver );
 		StringProperty nameProperty = accessible.getNamePropertyIfItExists();
 		if (nameProperty != null)
 		{

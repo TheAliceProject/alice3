@@ -40,58 +40,64 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor;
+package org.alice.ide.croquet.models;
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class AbstractTypeMethodsPane extends AbstractTypeMembersPane {
-	public AbstractTypeMethodsPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		super( type );
+public abstract class IsFrameShowingState extends edu.cmu.cs.dennisc.croquet.BooleanState {
+	private javax.swing.JFrame frame;
+	public IsFrameShowingState( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, boolean initialValue ) {
+		super( group, individualId, initialValue );
+		
+		this.addValueObserver( new ValueObserver() {
+			public void changing(boolean nextValue) {
+			}
+			public void changed(boolean nextValue) {
+				IsFrameShowingState.this.handleChanged( nextValue );
+			}
+		} );
+		//todo
+		if( initialValue ) {
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					handleChanged( true );
+				}
+			} );
+		}
 	}
-	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createProcedureTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method );
-	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createFunctionTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method );
+	private javax.swing.JFrame getFrame() {
+		if( this.frame != null ) {
+			//pass
+		} else {
+			this.frame = new javax.swing.JFrame();
+			this.frame.setTitle( this.getTitle() );
+			this.frame.getContentPane().add( this.createPane() );
+			this.frame.setDefaultCloseOperation( javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE );
+			this.frame.addWindowListener( new java.awt.event.WindowListener() {
+				public void windowOpened(java.awt.event.WindowEvent e) {
+				} 
+				public void windowActivated(java.awt.event.WindowEvent e) {
+				}
+				public void windowDeiconified(java.awt.event.WindowEvent e) {
+				}
+				public void windowIconified(java.awt.event.WindowEvent e) {
+				}
+				public void windowDeactivated(java.awt.event.WindowEvent e) {
+				}
+				public void windowClosing(java.awt.event.WindowEvent e) {
+					IsFrameShowingState.this.setValue( false );
+				}
+				public void windowClosed(java.awt.event.WindowEvent e) {
+				}
+			} );
+			this.frame.pack();
+		}
+		return this.frame;
+	}
 
-	@Override
-	protected Iterable< edu.cmu.cs.dennisc.croquet.Component< ? > > createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
-		edu.cmu.cs.dennisc.croquet.Component< ? > component;
-		if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractMethod ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)member;
-			if( method.getNextShorterInChain() != null ) {
-				component = null;
-			} else {
-				if( method.isProcedure() ) {
-					component = createProcedureTemplate( method );
-				} else if( method.isFunction() ) {
-					component = createFunctionTemplate( method );
-				} else {
-					component = null;
-				}
-			}
-		} else {
-			component = null;
-		}
-		java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? > > rv;
-		if( component != null ) {
-			//line.add( javax.swing.Box.createHorizontalStrut( INDENT ) );
-			//if( member.isDeclaredInAlice() ) {
-			if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-				//pass
-			} else {
-				if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractCode ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractCode code = (edu.cmu.cs.dennisc.alice.ast.AbstractCode)member;
-					if( code.isDeclaredInAlice() ) {
-						edu.cmu.cs.dennisc.croquet.LineAxisPanel line = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
-						line.addComponent( org.alice.ide.operations.ast.FocusCodeOperation.getInstance( code ).createButton() );
-						line.addComponent( component );
-						component = line;
-					}
-				}
-			}
-			rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new edu.cmu.cs.dennisc.croquet.Component< ? >[] { component } );
-		} else {
-			rv = null;
-		}
-		return rv;
+	protected abstract java.awt.Component createPane();
+	protected abstract String getTitle();
+
+	protected void handleChanged(boolean value) {
+		javax.swing.JFrame frame = this.getFrame();
+		frame.setVisible( value );
 	}
 }

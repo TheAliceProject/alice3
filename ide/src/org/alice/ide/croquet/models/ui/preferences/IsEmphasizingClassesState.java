@@ -40,24 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ui.frames;
+package org.alice.ide.croquet.models.ui.preferences;
 
-public class IsProjectHistoryShowingState extends IsFrameShowingState {
+/**
+ * @author Dennis Cosgrove
+ */
+public class IsEmphasizingClassesState extends edu.cmu.cs.dennisc.croquet.BooleanState {
 	private static class SingletonHolder {
-		private static IsProjectHistoryShowingState instance = new IsProjectHistoryShowingState();
+		private static IsEmphasizingClassesState instance = new IsEmphasizingClassesState();
 	}
-	public static IsProjectHistoryShowingState getInstance() {
+	public static IsEmphasizingClassesState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private IsProjectHistoryShowingState() {
-		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "cf08f7ac-16b2-4121-9f36-9aca59db4cf7" ), false );
-	}
-	@Override
-	protected String getTitle() {
-		return "History";
-	}
-	@Override
-	protected java.awt.Component createPane() {
-		return new edu.cmu.cs.dennisc.history.HistoryPane( edu.cmu.cs.dennisc.alice.Project.GROUP );
+	private IsEmphasizingClassesState() {
+		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "c6d27bf1-f8c0-470d-b9ef-3c9fa7e6f4b0" ), true );
+		org.alice.ide.IDE.getSingleton().registerAndInitializePreference( this );
 	}
 }

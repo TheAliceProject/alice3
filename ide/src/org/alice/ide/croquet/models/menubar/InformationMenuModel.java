@@ -42,9 +42,6 @@
  */
 package org.alice.ide.croquet.models.menubar;
 
-import org.alice.ide.croquet.models.ui.frames.IsHistoryTreeShowingState;
-import org.alice.ide.croquet.models.ui.frames.IsMemoryUsageShowingState;
-import org.alice.ide.croquet.models.ui.frames.IsProjectHistoryShowingState;
 
 /**
  * @author Dennis Cosgrove
@@ -58,8 +55,10 @@ public class InformationMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenu
 	}
 	private InformationMenuModel() {
 		super( java.util.UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
-				IsHistoryTreeShowingState.getInstance(),
-				IsMemoryUsageShowingState.getInstance()
+				org.alice.ide.croquet.models.ui.info.IsMemoryUsageShowingState.getInstance(),
+				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
+				org.alice.ide.croquet.models.ui.info.IsInteractionTreeShowingState.getInstance(),
+				org.alice.ide.croquet.models.ui.info.IsAbstractSyntaxTreeShowingState.getInstance()
 		);
 	}
 }

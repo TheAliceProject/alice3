@@ -103,6 +103,20 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	private java.util.List< edu.cmu.cs.dennisc.croquet.BooleanState > booleanStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	public void registerAndInitializePreference( edu.cmu.cs.dennisc.croquet.BooleanState booleanState ) {
+		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( this.getClass() );
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
+			try {
+				userPreferences.clear();
+			} catch( java.util.prefs.BackingStoreException bse ) {
+				throw new RuntimeException( bse );
+			}
+		}
+		java.util.UUID id = booleanState.getIndividualUUID();
+		boolean value = userPreferences.getBoolean( id.toString(), booleanState.getValue() );
+		booleanState.setValue( value );
+		booleanStatePreferences.add( booleanState );
+	}
 	private edu.cmu.cs.dennisc.croquet.BooleanState createBooleanStatePreference( java.util.UUID id, boolean defaultInitialValue, String name ) {
 		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( this.getClass() );
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
@@ -127,12 +141,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		createBooleanStatePreference( java.util.UUID.fromString( "e80adbfe-9e1a-408f-8067-ddbd30d0ffb9" ), true, "Is Type Feedback Desired" );
 	private edu.cmu.cs.dennisc.croquet.BooleanState isInactiveFeedbackState =
 		createBooleanStatePreference( java.util.UUID.fromString( "2645a33c-3a37-41c1-83fe-521ed8dd0382" ), true, "Is Inactive Feedback Desired" );
-	private edu.cmu.cs.dennisc.croquet.BooleanState isOmissionOfThisForFieldAccessesDesiredState =
-		createBooleanStatePreference( java.util.UUID.fromString( "bcf1ce48-f54a-4e80-8b9e-42c2cc302b01" ), false, "Is Omission Of This For Field Accesses Desired" );
-	private edu.cmu.cs.dennisc.croquet.BooleanState isEmphasizingClassesState =
-		createBooleanStatePreference( java.util.UUID.fromString( "c6d27bf1-f8c0-470d-b9ef-3c9fa7e6f4b0" ), true, "Is Emphasizing Classes" );
-	private edu.cmu.cs.dennisc.croquet.BooleanState isDefaultFieldNameGenerationDesiredState =
-		createBooleanStatePreference( java.util.UUID.fromString( "3e551420-bb50-4e33-9175-9f29738998f0" ), false, "Is Default Field Name Generation Desired" );
+//	private edu.cmu.cs.dennisc.croquet.BooleanState isOmissionOfThisForFieldAccessesDesiredState =
+//		createBooleanStatePreference( java.util.UUID.fromString( "bcf1ce48-f54a-4e80-8b9e-42c2cc302b01" ), false, "Is Omission Of This For Field Accesses Desired" );
+//	private edu.cmu.cs.dennisc.croquet.BooleanState isEmphasizingClassesState =
+//		createBooleanStatePreference( java.util.UUID.fromString( "c6d27bf1-f8c0-470d-b9ef-3c9fa7e6f4b0" ), true, "Is Emphasizing Classes" );
+//	private edu.cmu.cs.dennisc.croquet.BooleanState isDefaultFieldNameGenerationDesiredState =
+//		createBooleanStatePreference( java.util.UUID.fromString( "3e551420-bb50-4e33-9175-9f29738998f0" ), false, "Is Default Field Name Generation Desired" );
 	
 //	@Deprecated
 //	public edu.cmu.cs.dennisc.croquet.BooleanState getIsSceneEditorExpandedState() {
@@ -144,22 +158,22 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public edu.cmu.cs.dennisc.croquet.BooleanState getExpressionTypeFeedbackDesiredState() {
 		return this.isExpressionTypeFeedbackDesiredState;
 	}
-	public edu.cmu.cs.dennisc.croquet.BooleanState getEmphasizingClassesState() {
-		return this.isEmphasizingClassesState;
-	}
+//	public edu.cmu.cs.dennisc.croquet.BooleanState getEmphasizingClassesState() {
+//		return this.isEmphasizingClassesState;
+//	}
 	public boolean isInactiveFeedbackDesired() {
 		return this.isInactiveFeedbackState.getValue();
 	}
-	@Deprecated
-	public boolean isEmphasizingClasses() {
-		return this.isEmphasizingClassesState.getValue();
-	}
-	public edu.cmu.cs.dennisc.croquet.BooleanState getOmissionOfThisForFieldAccessesDesiredState() {
-		return this.isOmissionOfThisForFieldAccessesDesiredState;
-	}
-	public boolean isDefaultFieldNameGenerationDesired() {
-		return this.isDefaultFieldNameGenerationDesiredState.getValue();
-	}
+//	@Deprecated
+//	public boolean isEmphasizingClasses() {
+//		return this.isEmphasizingClassesState.getValue();
+//	}
+//	public edu.cmu.cs.dennisc.croquet.BooleanState getOmissionOfThisForFieldAccessesDesiredState() {
+//		return this.isOmissionOfThisForFieldAccessesDesiredState;
+//	}
+//	public boolean isDefaultFieldNameGenerationDesired() {
+//		return this.isDefaultFieldNameGenerationDesiredState.getValue();
+//	}
 
 	private int rootDividerLocation = 340;
 	private int leftDividerLocation = 240;
@@ -1609,9 +1623,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 					if( field.getValueType() == scopeType ) {
 						text = "this";
 					} else if( field.getDeclaringType() == scopeType ) {
-						if( this.isOmissionOfThisForFieldAccessesDesiredState.getValue() ) {
-							//pass
-						} else {
+						if( org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().getValue() ) {
 							text = "this." + text;
 						}
 					}
@@ -1928,41 +1940,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	//			i += 1
 	//		return rv
 
-	private static String getAvailableFieldName( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, String baseName ) {
-		org.alice.ide.name.validators.FieldNameValidator validator = new org.alice.ide.name.validators.FieldNameValidator( declaringType );
-
-		if( validator.isNameValid( baseName ) ) {
-			//pass
-		} else {
-			baseName = "unnamed";
-			assert validator.isNameValid( baseName );
-		}
-
-		int i = 2;
-		String rv = baseName;
-		while( validator.getExplanationIfOkButtonShouldBeDisabled( rv ) != null ) {
-			rv = baseName + i;
-			i++;
-		}
-		return rv;
-	}
-	public String getPotentialInstanceNameFor( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
-		if( valueType != null ) {
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
-			if( typeInJava != null ) {
-				if( this.isDefaultFieldNameGenerationDesired() ) {
-					String typeName = typeInJava.getName();
-					if( typeName != null && typeName.length() > 0 ) {
-						StringBuffer sb = new StringBuffer();
-						sb.append( Character.toLowerCase( typeName.charAt( 0 ) ) );
-						sb.append( typeName.substring( 1 ) );
-						return IDE.getAvailableFieldName( declaringType, sb.toString() );
-					}
-				}
-			}
-		}
-		return "";
-	}
 
 	public abstract boolean isInstanceCreationAllowableFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice );
 	public abstract edu.cmu.cs.dennisc.animation.Program createRuntimeProgram( edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType, int frameRate );

@@ -40,58 +40,47 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor;
+package org.alice.ide.croquet.models.ui.info;
+
+import org.alice.ide.croquet.models.IsFrameShowingState;
+
+class MemoryUsagePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+	private javax.swing.Timer timer = new javax.swing.Timer( 50, new java.awt.event.ActionListener() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
+		}
+	} );
+	@Override
+	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		super.handleAddedTo( parent );
+		this.timer.start();
+	}
+	@Override
+	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		this.timer.stop();
+		super.handleRemovedFrom( parent );
+	}
+}
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTypeMethodsPane extends AbstractTypeMembersPane {
-	public AbstractTypeMethodsPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		super( type );
+public class IsMemoryUsageShowingState extends IsFrameShowingState {
+	private static class SingletonHolder {
+		private static IsMemoryUsageShowingState instance = new IsMemoryUsageShowingState();
 	}
-	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createProcedureTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method );
-	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createFunctionTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method );
-
+	public static IsMemoryUsageShowingState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private IsMemoryUsageShowingState() {
+		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "e460dca7-e707-4075-883a-ff47367c21fd" ), false );
+	}
 	@Override
-	protected Iterable< edu.cmu.cs.dennisc.croquet.Component< ? > > createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
-		edu.cmu.cs.dennisc.croquet.Component< ? > component;
-		if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractMethod ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)member;
-			if( method.getNextShorterInChain() != null ) {
-				component = null;
-			} else {
-				if( method.isProcedure() ) {
-					component = createProcedureTemplate( method );
-				} else if( method.isFunction() ) {
-					component = createFunctionTemplate( method );
-				} else {
-					component = null;
-				}
-			}
-		} else {
-			component = null;
-		}
-		java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? > > rv;
-		if( component != null ) {
-			//line.add( javax.swing.Box.createHorizontalStrut( INDENT ) );
-			//if( member.isDeclaredInAlice() ) {
-			if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-				//pass
-			} else {
-				if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractCode ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractCode code = (edu.cmu.cs.dennisc.alice.ast.AbstractCode)member;
-					if( code.isDeclaredInAlice() ) {
-						edu.cmu.cs.dennisc.croquet.LineAxisPanel line = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
-						line.addComponent( org.alice.ide.operations.ast.FocusCodeOperation.getInstance( code ).createButton() );
-						line.addComponent( component );
-						component = line;
-					}
-				}
-			}
-			rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new edu.cmu.cs.dennisc.croquet.Component< ? >[] { component } );
-		} else {
-			rv = null;
-		}
-		return rv;
+	protected String getTitle() {
+		return "Memory Usage";
+	}
+	@Override
+	protected java.awt.Component createPane() {
+		return new edu.cmu.cs.dennisc.memory.MemoryUsagePanel().getAwtComponent();
 	}
 }

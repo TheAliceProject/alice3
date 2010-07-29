@@ -84,11 +84,11 @@ public abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
-		org.alice.ide.IDE.getSingleton().getEmphasizingClassesState().addAndInvokeValueObserver( this.isEmphasizingClassesObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addAndInvokeValueObserver( this.isEmphasizingClassesObserver );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		org.alice.ide.IDE.getSingleton().getEmphasizingClassesState().removeValueObserver( this.isEmphasizingClassesObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().removeValueObserver( this.isEmphasizingClassesObserver );
 		super.handleRemovedFrom( parent );
 	}
 	public AbstractTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
@@ -153,7 +153,7 @@ public abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet
 				}
 			}
 		}
-		if( getIDE().isEmphasizingClasses() == false && this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
+		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() == false && this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
 			edu.cmu.cs.dennisc.croquet.Button createAndAddMemberButton = this.createDeclareMemberButton( typeInAlice );
 			edu.cmu.cs.dennisc.croquet.Button editConstructorButton = this.createEditConstructorButton( typeInAlice );
