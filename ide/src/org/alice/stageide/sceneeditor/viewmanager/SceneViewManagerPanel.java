@@ -69,6 +69,9 @@ public class SceneViewManagerPanel extends GridBagPanel{
 			public void update(edu.cmu.cs.dennisc.croquet.Component<?> leadingComponent, edu.cmu.cs.dennisc.croquet.Component<?> mainComponent, edu.cmu.cs.dennisc.croquet.Component<?> trailingComponent, int index, FieldDeclaredInAlice item) {
 				((CameraMarkerFieldTile)mainComponent).setField(item);
 			}
+			public void updateSelection(edu.cmu.cs.dennisc.croquet.Component<?> leadingComponent, edu.cmu.cs.dennisc.croquet.Component<?> mainComponent, edu.cmu.cs.dennisc.croquet.Component<?> trailingComponent, boolean isSelected) {
+				((CameraMarkerFieldTile)mainComponent).setSelected( isSelected );
+			}
 			public edu.cmu.cs.dennisc.croquet.Operation<?> getAddItemOperation() {
 				return CreateCameraMarkerActionOperation.getInstance();
 			}

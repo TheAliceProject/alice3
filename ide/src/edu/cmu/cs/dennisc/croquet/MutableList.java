@@ -52,11 +52,12 @@ public final class MutableList< E > extends ItemSelectablePanel< E, ItemSelectab
 		public Component<?> createMainComponent();
 		public Component<?> createTrailingComponent();
 		public void update( Component<?> leadingComponent, Component<?> mainComponent, Component<?> trailingComponent, int index, E item );
+		public void updateSelection( Component<?> leadingComponent, Component<?> mainComponent, Component<?> trailingComponent, boolean isSelected );
 		public Operation<?> getAddItemOperation();
 	}
 	
-	private static class ItemComponent<E> extends BooleanStateButton<javax.swing.AbstractButton> {
-		private static java.awt.Color SELECTION_BACKGROUND = new java.awt.Color( 57, 105, 138 );
+	private static java.awt.Color SELECTION_BACKGROUND = new java.awt.Color( 57, 105, 138 );
+	private class ItemComponent<E> extends BooleanStateButton<javax.swing.AbstractButton> {
 		private E item;
 		private Component<?> leadingComponent;
 		private Component<?> mainComponent;
@@ -88,11 +89,6 @@ public final class MutableList< E > extends ItemSelectablePanel< E, ItemSelectab
 					return rv;
 				}
 				@Override
-				public synchronized void setSelected(boolean b) {
-					super.setSelected(b);
-					this.requestFocus();
-				}
-				@Override
 				protected void paintComponent(java.awt.Graphics g) {
 					//super.paintComponent(g);
 					g.setColor( this.getBackground() );
@@ -121,6 +117,27 @@ public final class MutableList< E > extends ItemSelectablePanel< E, ItemSelectab
 			rv.setLayout( new java.awt.BorderLayout() );
 			rv.setRolloverEnabled( true );
 			return rv;
+		}
+		
+		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
+			public void itemStateChanged(java.awt.event.ItemEvent e) {
+				boolean isSelected = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( isSelected, mainComponent.hashCode() );
+				MutableList.this.factory.updateSelection(leadingComponent, mainComponent, trailingComponent, isSelected );
+				if( isSelected ) {
+					requestFocus();
+				}
+			}
+		};
+		@Override
+		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+			super.handleAddedTo( parent );
+			this.getAwtComponent().addItemListener( this.itemListener );
+		}
+		@Override
+		protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+			this.getAwtComponent().removeItemListener( this.itemListener );
+			super.handleRemovedFrom( parent );
 		}
 	}
 	private Factory<E> factory;

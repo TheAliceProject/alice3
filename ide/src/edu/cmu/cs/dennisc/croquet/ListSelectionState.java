@@ -229,7 +229,6 @@ public class ListSelectionState<E> extends Model implements Iterable<E> {
 		}
 
 		public void setSelectedItem(Object item) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( item, this.getSelectedItem() );
 			if (item != this.getSelectedItem()) {
 				final int N = this.getSize();
 				int selectedIndex = -1;

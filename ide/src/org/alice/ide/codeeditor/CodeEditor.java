@@ -937,24 +937,20 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 	public int print(java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex) throws java.awt.print.PrinterException {
 		if( pageIndex > 0 ) {
 			return NO_SUCH_PAGE;
+		} else {
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			edu.cmu.cs.dennisc.croquet.Component<?> component0 = this.getComponent( 0 );
+			int width = Math.max( component0.getAwtComponent().getPreferredSize().width, this.scrollPane.getViewportView().getAwtComponent().getPreferredSize().width );
+			int height = this.scrollPane.getY() + this.scrollPane.getViewportView().getAwtComponent().getPreferredSize().height;
+			double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale(pageFormat, width, height);
+			g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
+			if( scale > 1.0 ) {
+				g2.scale( 1.0/scale, 1.0/scale );
+			}
+			component0.getAwtComponent().printAll( g2 );
+			g2.translate( this.scrollPane.getX(), this.scrollPane.getY() );
+			this.scrollPane.getViewportView().getAwtComponent().printAll( g2 );
+			return PAGE_EXISTS;
 		}
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		edu.cmu.cs.dennisc.croquet.Component<?> component0 = this.getComponent( 0 );
-		
-		int width = Math.max( component0.getAwtComponent().getPreferredSize().width, this.scrollPane.getViewportView().getAwtComponent().getPreferredSize().width );
-
-		int height = this.scrollPane.getY() + this.scrollPane.getViewportView().getAwtComponent().getPreferredSize().height;
-
-		double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale(pageFormat, width, height);
-
-		g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
-		if( scale > 1.0 ) {
-			g2.scale( 1.0/scale, 1.0/scale );
-		}
-		component0.getAwtComponent().printAll( g2 );
-		g2.translate( this.scrollPane.getX(), this.scrollPane.getY() );
-		this.scrollPane.getViewportView().getAwtComponent().printAll( g2 );
-		
-		return PAGE_EXISTS;
 	}
 }

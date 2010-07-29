@@ -43,12 +43,7 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import java.awt.Color;
-
 import javax.swing.BorderFactory;
-
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
-
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.croquet.Label;
 import edu.cmu.cs.dennisc.croquet.LineAxisPanel;
@@ -56,12 +51,17 @@ import edu.cmu.cs.dennisc.croquet.LineAxisPanel;
 public class CameraMarkerFieldTile extends LineAxisPanel
 {
 	private FieldDeclaredInAlice field;
+	private Label textLabel = new Label();
 	
 	public CameraMarkerFieldTile()
 	{
 		super();
-		this.setBackgroundColor(Color.lightGray);
+		this.setBackgroundColor(null);
 		this.setBorder(BorderFactory.createEmptyBorder());
+
+		this.textLabel.changeFont(edu.cmu.cs.dennisc.java.awt.font.TextPosture.REGULAR, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD);
+		this.textLabel.scaleFont(1.4f);
+		this.textLabel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 	}
 	
 	public CameraMarkerFieldTile( FieldDeclaredInAlice field )
@@ -70,6 +70,16 @@ public class CameraMarkerFieldTile extends LineAxisPanel
 		setField(field);
 	}
 	
+	public void setSelected( boolean isSelected ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "isSelected", isSelected, this );
+		java.awt.Color foregroundColor;
+		if( isSelected ) {
+			foregroundColor = java.awt.Color.WHITE;
+		} else {
+			foregroundColor = java.awt.Color.BLACK;
+		}
+		this.textLabel.setForegroundColor( foregroundColor );
+	}
 	public void setField( FieldDeclaredInAlice field )
 	{
 		this.removeAllComponents();
@@ -78,10 +88,8 @@ public class CameraMarkerFieldTile extends LineAxisPanel
 		Label iconLabel = new Label(new javax.swing.ImageIcon(CameraMarkerFieldTile.class.getResource("images/markerIcon.png")));
 		this.addComponent(iconLabel);
 		
-		Label textLabel = new Label(this.field.getName(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.REGULAR, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD);
-		textLabel.scaleFont(1.4f);
-		textLabel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-		this.addComponent(textLabel);
+		this.textLabel.setText( this.field.getName() );
+		this.addComponent(this.textLabel);
 		
 		this.addComponent(MoveActiveCameraToMarkerActionOperation.getInstanceForField(this.field).createButton());
 		this.addComponent(MoveMarkerToActiveCameraActionOperation.getInstanceForField(this.field).createButton());
