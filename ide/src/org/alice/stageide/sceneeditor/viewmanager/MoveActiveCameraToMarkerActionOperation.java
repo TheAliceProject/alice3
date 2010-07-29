@@ -106,7 +106,7 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 	{
 		if (this.markerField != null && this.cameraMarker != null)
 		{
-			this.setToolTipText("Move "+this.cameraMarker.getName()+" to the point of view of "+this.markerField.getName());
+			this.setToolTipText("Move the current camera to the point of view of "+this.markerField.getName()+".");
 			if (this.cameraMarker instanceof OrthographicCameraMarker)
 			{
 				this.setEnabled(false);
