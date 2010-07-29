@@ -44,6 +44,8 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+
 import org.alice.apis.moveandturn.CameraMarker;
 import org.alice.ide.IDE;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
@@ -55,7 +57,7 @@ import edu.cmu.cs.dennisc.croquet.LineAxisPanel;
 public class CameraMarkerFieldTile extends LineAxisPanel
 {
 	private FieldDeclaredInAlice field;
-	private Label iconLabel = new Label(new javax.swing.ImageIcon(CameraMarkerFieldTile.class.getResource("images/markerIcon.png")));
+	private Label iconLabel = new Label();
 	private Label textLabel = new Label();
 	private edu.cmu.cs.dennisc.croquet.Button buttonCameraToMarker;
 	private edu.cmu.cs.dennisc.croquet.Button buttonMarkerToCamera;
@@ -86,9 +88,11 @@ public class CameraMarkerFieldTile extends LineAxisPanel
 			foregroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( foregroundColor, 1.0, 0.5, 0.5 );
 		}
 		this.textLabel.setForegroundColor( foregroundColor );
+//		this.iconLabel.setForegroundColor( foregroundColor );
 		//this.buttonCameraToMarker.setVisible( isSelected );
 		//this.buttonMarkerToCamera.setVisible( isSelected );
 	}
+	
 	public void setField( FieldDeclaredInAlice field )
 	{
 		this.removeAllComponents();
@@ -96,11 +100,22 @@ public class CameraMarkerFieldTile extends LineAxisPanel
 		
 		this.textLabel.setText( this.field.getName() );
 		
+		String iconString = MoveAndTurnSceneEditor.getIconNameForMarkerName(this.field.getName());
+		if (iconString == null)
+		{
+			iconString = "images/markerIcon_White.png";
+		}
+		else
+		{
+			iconString = "images/"+iconString;
+		}
+		this.iconLabel.setIcon(new javax.swing.ImageIcon(CameraMarkerFieldTile.class.getResource(iconString)));
+		
 		CameraMarker marker = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getCameraMarkerForField(field);
 		if (marker != null)
 		{
 			Color4f color = marker.getMarkerColor();
-			textLabel.setForegroundColor(color.getAsAWTColor());
+			this.textLabel.setForegroundColor(color.getAsAWTColor());
 		}
 		javax.swing.border.Border border = BorderFactory.createEmptyBorder( 4,6,4,6 );
 		buttonCameraToMarker = MoveActiveCameraToMarkerActionOperation.getInstanceForField(this.field).createButton();

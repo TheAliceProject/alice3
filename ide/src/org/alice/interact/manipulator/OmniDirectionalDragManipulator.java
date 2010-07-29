@@ -62,12 +62,14 @@ import org.alice.interact.handle.HandleSet;
 import edu.cmu.cs.dennisc.java.awt.CursorUtilities;
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Tuple3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
@@ -87,7 +89,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	protected Point3 offsetFromOrigin = null;
 	protected Point mousePlaneOffset;
 	protected boolean hidCursor = false;
-	
+	protected double movementScale = 1.0;
 	protected AbstractCamera camera = null;
 	protected OnscreenLookingGlass onscreenLookingGlass = null;
 	
@@ -295,6 +297,16 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	
 	private Point3 getPerspectiveMovementVector(InputState currentInput, InputState previousInput)
 	{
+		if (this.pickPlane == null && this.backPlane == null)
+		{
+			int mouseDifX = (currentInput.getMouseLocation().x - previousInput.getMouseLocation().x);
+			double sidewaysMovement = mouseDifX * this.movementScale;
+			Point3 movementVector = Point3.createMultiplication(this.camera.getAbsoluteTransformation().orientation.right, sidewaysMovement);
+			int mouseDifY = (currentInput.getMouseLocation().y - previousInput.getMouseLocation().y);
+			double forwardMovement = mouseDifY * this.movementScale;
+			movementVector.add(Point3.createMultiplication(this.camera.getAbsoluteTransformation().orientation.backward, forwardMovement));
+			return movementVector;
+		}
 		Point3 pointToUse = getPerspectivePositionBasedOnInput( currentInput );
 		if (pointToUse != null)
 		{
@@ -310,7 +322,8 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	
 	
 	@Override
-	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
+	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) 
+	{
 		if ( !currentInput.getMouseLocation().equals( previousInput.getMouseLocation() ) && this.manipulatedTransformable != null)
 		{
 			if (!this.hasMoved)
@@ -327,6 +340,10 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 			
 			//Send manipulation events
 			Vector3 movementDif = Vector3.createSubtraction( newPosition, this.manipulatedTransformable.getAbsoluteTransformation().translation);
+			if (movementDif.x > .1)
+			{
+				movementVector = getMovementVectorBasedOnCamera( currentInput, previousInput );
+			}
 			movementDif.normalize();
 			for (ManipulationEvent event : this.manipulationEvents)
 			{
@@ -344,11 +361,11 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 			{	
 				this.manipulatedTransformable.setTranslationOnly( newPosition, AsSeenBy.SCENE );
 				planeTransitionPointDebugSphere.setLocalTranslation(newPosition);
-				Point awtPoint = getMouseCursorPositionInLookingGlass();
-				if (!isPointInsideLookingGlass(awtPoint))
-				{
-					moveCursorToPointInLookingGlass(awtPoint);
-				}
+//				Point awtPoint = getMouseCursorPositionInLookingGlass();
+//				if (!isPointInsideLookingGlass(awtPoint))
+//				{
+//					moveCursorToPointInLookingGlass(awtPoint);
+//				}
 			}
 		}
 	}
@@ -422,7 +439,24 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		Plane horizontalPlane = new Plane(planePosition, Vector3.accessPositiveYAxis());
 		AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation();
 		boolean isAbove = cameraTransform.translation.y > planePosition.y;
-
+		
+		Point3 pointInCameraSidewaysPlane = PlaneUtilities.projectPointIntoPlane(new Plane(cameraTransform.translation, cameraTransform.orientation.right), planePosition);
+		Vector3 toCamera = Vector3.createSubtraction(cameraTransform.translation, pointInCameraSidewaysPlane);
+		toCamera.normalize();
+		double dot = Vector3.calculateDotProduct(toCamera, cameraTransform.orientation.backward);
+		double dotLevel = Vector3.calculateDotProduct(Vector3.accessPositiveYAxis(), cameraTransform.orientation.up);
+//		AngleInRadians angle = VectorUtilities.getAngleBetweenVectors(toCamera, cameraTransform.orientation.backward);
+//		AngleInRadians angleUp = VectorUtilities.getAngleBetweenVectors(cameraTransform.orientation.up, Vector3.accessPositiveYAxis());
+//		PrintUtilities.println("object dot: "+dot+", leveDot: "+dotLevel+", angle: "+angle.getAsDegrees()+", angle up: "+angleUp.getAsDegrees());
+		if (Math.abs(dot) > .98 && Math.abs(dotLevel) > .98)
+		{
+			this.pickPlane = null;
+			this.backPlane = null;
+			double distanceToObject = Point3.calculateDistanceBetween(planePosition, cameraTransform.translation);
+			this.movementScale = distanceToObject*.001;
+			return;
+		}
+		
 		Vector3 worstCasePlaneNormal = new Vector3(cameraTransform.orientation.backward);
 		worstCasePlaneNormal.y = 0;
 		worstCasePlaneNormal.normalize();
@@ -482,7 +516,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		}
 		else
 		{
-			this.pickPlane = null;
+			this.pickPlane = backPlane;
 		}
 		this.backPlane = backPlane;
 	}
