@@ -47,6 +47,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.alice.interact.PickHint;
+import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.Visibility;
@@ -119,6 +120,18 @@ public class Marker extends Transformable
 	@Override
 	protected void handleVehicleChange(Composite vehicle) {
 		super.handleVehicleChange(vehicle);
+	}
+	
+	@Override
+	public void setName(String name) 
+	{
+		super.setName(name);
+		Color color = MoveAndTurnSceneEditor.getColorForMarkerName(name);
+		if (color != null)
+		{
+			this.setMarkerColor(color.getInternal());
+		}
+		
 	}
 	
 	protected void createVisuals()

@@ -197,7 +197,10 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 	{
 		super.doEndManipulator(endInput, previousInput);
 		this.sgBoundingBoxDecorator.isShowing.setValue(false);
-		this.sgAxes.isShowing.setValue(false);
+		if (this.sgAxes != null)
+		{
+			this.sgAxes.isShowing.setValue(false);
+		}
 //		this.sgBoundingBoxTransformable.setParent(null);
 //		System.out.println("End drag position = "+this.sgBoundingBoxTransformable.localTransformation.getValue().translation);
 		DragComponent dragSource = endInput.getDragAndDropContext().getDragSource();

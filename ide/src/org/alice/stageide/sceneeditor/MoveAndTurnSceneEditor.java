@@ -1228,13 +1228,76 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		org.alice.apis.moveandturn.Color.PURPLE
 	};
 	
+	private static final String[] COLOR_NAMES = { 
+		"Red",
+		"Green",
+		"Blue",
+		"Magenta",
+		"Yellow",
+		"Cyan",
+		"Orange",
+		"Pink",
+		"Purple"
+	};
+	
+	private static int getColorIndexForName(String name)
+	{
+		for (int i=0; i<COLOR_NAMES.length; i++)
+		{
+			if (name.contains(COLOR_NAMES[i]))
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	public static String getIconNameForMarkerName(String markerName)
+	{
+		int colorIndex = getColorIndexForName(markerName);
+		if (colorIndex != -1)
+		{
+			return "markerIcon_"+COLOR_NAMES[colorIndex]+".png"; 
+		}
+		else return "markerIcon_White.png";
+	}
+	
+	public static org.alice.apis.moveandturn.Color getColorForMarkerName(String markerName)
+	{
+		int colorIndex = getColorIndexForName(markerName);
+		if (colorIndex != -1)
+		{
+			return COLORS[colorIndex]; 
+		}
+		else 
+		{	
+			return null;
+		}
+	}
+	
+	private static String makeMarkerName(int colorIndex, int addOnNumber)
+	{
+		String markerName = DEFAULT_CAMERA_MARKER_NAME + "_" + COLOR_NAMES[colorIndex];
+		if (addOnNumber > 0)
+		{
+			markerName += "_"+ Integer.toString( addOnNumber );
+		}
+		return markerName;
+	}
+	
 	private String getNameForCameraMarker( TypeDeclaredInAlice ownerType ) {
 		FieldNameValidator nameValidator = new FieldNameValidator( ownerType );
-		int count = 1;
-		String markerName = DEFAULT_CAMERA_MARKER_NAME + "_" + Integer.toString( count );
+		int colorIndex = 0;
+		int addOnNumber = 0;
+		String markerName = makeMarkerName(colorIndex, addOnNumber);
 		while( nameValidator.getExplanationIfOkButtonShouldBeDisabled( markerName ) != null ) {
-			count++;
-			markerName = DEFAULT_CAMERA_MARKER_NAME + "_" + Integer.toString( count );
+			colorIndex++;
+			if (colorIndex >= COLOR_NAMES.length)
+			{
+				colorIndex = 0;
+				addOnNumber++;
+			}
+			markerName = makeMarkerName(colorIndex, addOnNumber);
 		}
 		return markerName;
 	}
@@ -1375,7 +1438,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 		org.alice.apis.moveandturn.BookmarkCameraMarker cameraMarker = new org.alice.apis.moveandturn.BookmarkCameraMarker();
 		cameraMarker.setName( markerName );
-		cameraMarker.setMarkerColor( getColorForMarker().getInternal() );
+//		cameraMarker.setMarkerColor( getColorForMarker().getInternal() );
 		cameraMarker.setShowing(true);
 		org.alice.apis.moveandturn.ReferenceFrame asSeenBy = AsSeenBy.SCENE;
 		cameraMarker.setLocalTransformation( getSGCameraForCreatingMarker().getTransformation( asSeenBy.getSGReferenceFrame() ) );
