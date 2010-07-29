@@ -329,7 +329,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		
 		public FieldTile getFieldTileForField(FieldDeclaredInAlice field)
 		{
-			for (ItemDetails item : this.getAllItemDetails())
+			for (edu.cmu.cs.dennisc.croquet.ItemSelectablePanel.ItemDetails item : this.getAllItemDetails())
 			{
 				FieldTile fieldTile = (FieldTile)item.getButton();
 				Accessible itemField = fieldTile.getAccessible();

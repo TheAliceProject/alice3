@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemDetails> extends ItemSelectablePanel<E, D> {
-	protected class TabItemDetails extends ItemDetails {
+	class TabItemDetails extends ItemDetails {
 		private java.util.UUID id;
 		private JComponent<?> mainComponent;
 		private ScrollPane scrollPane;
@@ -79,6 +79,7 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 			}
 		}
 	}
+
 	private ListSelectionState.TabCreator< E > tabCreator;
 	@Override
 	public void setFont(java.awt.Font font) {

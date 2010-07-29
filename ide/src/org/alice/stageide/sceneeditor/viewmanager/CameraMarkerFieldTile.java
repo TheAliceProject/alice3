@@ -55,7 +55,10 @@ import edu.cmu.cs.dennisc.croquet.LineAxisPanel;
 public class CameraMarkerFieldTile extends LineAxisPanel
 {
 	private FieldDeclaredInAlice field;
+	private Label iconLabel = new Label(new javax.swing.ImageIcon(CameraMarkerFieldTile.class.getResource("images/markerIcon.png")));
 	private Label textLabel = new Label();
+	private edu.cmu.cs.dennisc.croquet.Button buttonCameraToMarker;
+	private edu.cmu.cs.dennisc.croquet.Button buttonMarkerToCamera;
 	
 	public CameraMarkerFieldTile()
 	{
@@ -75,26 +78,23 @@ public class CameraMarkerFieldTile extends LineAxisPanel
 	}
 	
 	public void setSelected( boolean isSelected ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "isSelected", isSelected, this );
 		CameraMarker marker = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getCameraMarkerForField(field);
-		java.awt.Color foregroundColor;
+		java.awt.Color foregroundColor = marker.getMarkerColor().getAsAWTColor();
 		if( isSelected ) {
-			foregroundColor = java.awt.Color.WHITE;
+			//pass
 		} else {
-			foregroundColor = marker.getMarkerColor().getAsAWTColor();
+			foregroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( foregroundColor, 1.0, 0.5, 0.5 );
 		}
 		this.textLabel.setForegroundColor( foregroundColor );
+		//this.buttonCameraToMarker.setVisible( isSelected );
+		//this.buttonMarkerToCamera.setVisible( isSelected );
 	}
 	public void setField( FieldDeclaredInAlice field )
 	{
 		this.removeAllComponents();
 		this.field = field;
 		
-		Label iconLabel = new Label(new javax.swing.ImageIcon(CameraMarkerFieldTile.class.getResource("images/markerIcon.png")));
-		this.addComponent(iconLabel);
-		
 		this.textLabel.setText( this.field.getName() );
-		this.addComponent(this.textLabel);
 		
 		CameraMarker marker = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getCameraMarkerForField(field);
 		if (marker != null)
@@ -103,13 +103,16 @@ public class CameraMarkerFieldTile extends LineAxisPanel
 			textLabel.setForegroundColor(color.getAsAWTColor());
 		}
 		javax.swing.border.Border border = BorderFactory.createEmptyBorder( 4,6,4,6 );
-		
-		edu.cmu.cs.dennisc.croquet.Button buttonCameraToMarker = MoveActiveCameraToMarkerActionOperation.getInstanceForField(this.field).createButton();
+		buttonCameraToMarker = MoveActiveCameraToMarkerActionOperation.getInstanceForField(this.field).createButton();
 		buttonCameraToMarker.setBorder( border );
-		this.addComponent( buttonCameraToMarker );
 
-		edu.cmu.cs.dennisc.croquet.Button buttonMarkerToCamera = MoveMarkerToActiveCameraActionOperation.getInstanceForField(this.field).createButton();
+		buttonMarkerToCamera = MoveMarkerToActiveCameraActionOperation.getInstanceForField(this.field).createButton();
 		buttonMarkerToCamera.setBorder( border );
+
+		this.addComponent( iconLabel );
+		this.addComponent( this.textLabel );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ) );
+		this.addComponent( buttonCameraToMarker );
 		this.addComponent( buttonMarkerToCamera );
 	}
 }

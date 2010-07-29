@@ -46,7 +46,47 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class MutableList< E > extends ItemSelectablePanel< E, ItemSelectablePanel.ItemDetails > {
+public final class MutableList< E > extends ItemSelectablePanel< E, MutableList.MutableListItemDetails > {
+	class MutableListItemDetails extends ItemDetails {
+		private Component<?> leadingComponent;
+		private Component<?> mainComponent;
+		private Component<?> trailingComponent;
+		public MutableListItemDetails( E item, AbstractButton<?, BooleanState> button, Component<?> leadingComponent, Component<?> mainComponent, Component<?> trailingComponent, java.awt.event.ActionListener actionListener ) {
+			super( item, button );
+			this.leadingComponent = leadingComponent;
+			this.mainComponent = mainComponent;
+			this.trailingComponent = trailingComponent;
+			
+			if( this.leadingComponent != null ) {
+				button.internalAddComponent( this.leadingComponent, java.awt.BorderLayout.LINE_START );
+			}
+			if( this.mainComponent != null ) {
+				button.internalAddComponent( this.mainComponent, java.awt.BorderLayout.CENTER );
+			}
+			if( actionListener != null ) {
+				//todo
+				assert this.trailingComponent == null;
+				edu.cmu.cs.dennisc.javax.swing.components.JCloseButton jCloseButton = new edu.cmu.cs.dennisc.javax.swing.components.JCloseButton(true);
+				jCloseButton.addActionListener( actionListener );
+				button.getAwtComponent().add( jCloseButton, java.awt.BorderLayout.LINE_END );
+			} else {
+				if( this.trailingComponent != null ) {
+					button.internalAddComponent( this.trailingComponent, java.awt.BorderLayout.LINE_END );
+				}
+			}
+
+		}
+		public Component<?> getLeadingComponent() {
+			return this.leadingComponent;
+		}
+		public Component<?> getMainComponent() {
+			return this.mainComponent;
+		}
+		public Component<?> getTrailingComponent() {
+			return this.trailingComponent;
+		}
+	}
+
 	public static interface Factory< E > {
 		public Component<?> createLeadingComponent();
 		public Component<?> createMainComponent();
@@ -57,27 +97,9 @@ public final class MutableList< E > extends ItemSelectablePanel< E, ItemSelectab
 	}
 	
 	private static java.awt.Color SELECTION_BACKGROUND = new java.awt.Color( 57, 105, 138 );
-	private class ItemComponent<E> extends BooleanStateButton<javax.swing.AbstractButton> {
-		private E item;
-		private Component<?> leadingComponent;
-		private Component<?> mainComponent;
-		private Component<?> trailingComponent;
-		public ItemComponent(  BooleanState booleanState, E item, Component<?> leadingComponent, Component<?> mainComponent, Component<?> trailingComponent ) {
+	private static class MutableListButton extends BooleanStateButton< javax.swing.AbstractButton > {
+		public MutableListButton( BooleanState booleanState ) {
 			super( booleanState );
-			this.item = item;
-			this.leadingComponent = leadingComponent;
-			this.mainComponent = mainComponent;
-			this.trailingComponent = trailingComponent;
-			
-			if( this.leadingComponent != null ) {
-				this.internalAddComponent( this.leadingComponent, java.awt.BorderLayout.LINE_START );
-			}
-			if( this.mainComponent != null ) {
-				this.internalAddComponent( this.mainComponent, java.awt.BorderLayout.CENTER );
-			}
-			if( this.trailingComponent != null ) {
-				this.internalAddComponent( this.trailingComponent, java.awt.BorderLayout.LINE_END );
-			}
 		}
 		@Override
 		protected javax.swing.AbstractButton createAwtComponent() {
@@ -118,27 +140,26 @@ public final class MutableList< E > extends ItemSelectablePanel< E, ItemSelectab
 			rv.setRolloverEnabled( true );
 			return rv;
 		}
-		
-		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
-			public void itemStateChanged(java.awt.event.ItemEvent e) {
-				boolean isSelected = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( isSelected, mainComponent.hashCode() );
-				MutableList.this.factory.updateSelection(leadingComponent, mainComponent, trailingComponent, isSelected );
-				if( isSelected ) {
-					requestFocus();
-				}
-			}
-		};
-		@Override
-		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-			super.handleAddedTo( parent );
-			this.getAwtComponent().addItemListener( this.itemListener );
-		}
-		@Override
-		protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-			this.getAwtComponent().removeItemListener( this.itemListener );
-			super.handleRemovedFrom( parent );
-		}
+//		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
+//			public void itemStateChanged(java.awt.event.ItemEvent e) {
+//				boolean isSelected = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( isSelected, mainComponent.hashCode() );
+//				MutableList.this.factory.updateSelection(leadingComponent, mainComponent, trailingComponent, isSelected );
+//				if( isSelected ) {
+//					requestFocus();
+//				}
+//			}
+//		};
+//		@Override
+//		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+//			super.handleAddedTo( parent );
+//			this.getAwtComponent().addItemListener( this.itemListener );
+//		}
+//		@Override
+//		protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+//			this.getAwtComponent().removeItemListener( this.itemListener );
+//			super.handleRemovedFrom( parent );
+//		}
 	}
 	private Factory<E> factory;
 	private PageAxisPanel pageAxisPanel = new PageAxisPanel();
@@ -157,26 +178,52 @@ public final class MutableList< E > extends ItemSelectablePanel< E, ItemSelectab
 	}
 	@Override
 	protected void removeAllDetails() {
+		for( MutableListItemDetails details : this.getAllItemDetails() ) {
+			details.getButton().setVisible( false );
+		}
 	}
+	private int index;
 	@Override
 	protected void addPrologue(int count) {
-		this.pageAxisPanel.internalRemoveAllComponents();
+		//this.pageAxisPanel.internalRemoveAllComponents();
+		this.index = 0;
+		for( MutableListItemDetails details : this.getAllItemDetails() ) {
+			details.getButton().setVisible( false );
+		}
 	}
 	@Override
-	protected void addItem(edu.cmu.cs.dennisc.croquet.ItemSelectablePanel.ItemDetails itemDetails) {
-		ItemComponent<E> itemComponent = (ItemComponent<E>)itemDetails.getButton();
-		factory.update(itemComponent.leadingComponent, itemComponent.mainComponent, itemComponent.trailingComponent, 0, itemComponent.item );
-		this.pageAxisPanel.internalAddComponent( itemComponent );
+	protected void addItem(MutableList.MutableListItemDetails itemDetails) {
+		factory.update(itemDetails.getLeadingComponent(), itemDetails.getMainComponent(), itemDetails.getTrailingComponent(), this.index, (E)itemDetails.getItem() );
+		this.index++;
+		//this.pageAxisPanel.internalAddComponent( itemDetails.getButton() );
+		itemDetails.getButton().setVisible( true );
 	}
 	@Override
 	protected void addEpilogue() {
 	}
-	
+
 	@Override
-	protected final ItemDetails createItemDetails( E item ) {
+	protected void handleItemSelected( E item ) {
+		super.handleItemSelected( item );
+		for( MutableListItemDetails details : this.getAllItemDetails() ) {
+			this.factory.updateSelection( details.getLeadingComponent(), details.getMainComponent(), details.getTrailingComponent(), details.getItem() == item );
+		}
+	}
+	@Override
+	protected final MutableList.MutableListItemDetails createItemDetails( final E item ) {
+		java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				MutableList.this.getModel().removeItem( item );
+			}
+		};
+
 		BooleanState booleanState = new BooleanState( Application.UI_STATE_GROUP, java.util.UUID.fromString( "637720ae-b885-49b5-896d-c697ce21a021" ), false );
+		MutableListButton mutableListButton = new MutableListButton( booleanState );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MUTABLE_LIST_BOOLEAN_STATE" );
-		ItemComponent<E> itemComponent = new ItemComponent<E>(booleanState, item, factory.createLeadingComponent(), factory.createMainComponent(), factory.createTrailingComponent());
-		return new ItemDetails( item, itemComponent );
+		MutableListItemDetails rv = new MutableListItemDetails( item, mutableListButton, factory.createLeadingComponent(), factory.createMainComponent(), factory.createTrailingComponent(), actionListener );
+		AbstractButton<?, ?> button = rv.getButton();
+		button.setVisible( false );
+		this.pageAxisPanel.addComponent( button );
+		return rv;
 	};
 }

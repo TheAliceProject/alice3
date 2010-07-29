@@ -48,9 +48,9 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.ItemDetails > extends ItemSelectable<javax.swing.JPanel, E> {
 	//todo: better name
-	protected class ItemDetails {
+	public class ItemDetails {
 		private E item;
-		private AbstractButton<?,?> button;
+		private AbstractButton<?,BooleanState> button;
 		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 			public void itemStateChanged(java.awt.event.ItemEvent e) {
 				if( ItemSelectablePanel.this.swingModel.getSelectedItem() != ItemDetails.this.item ) {
@@ -61,22 +61,28 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 				}
 			}
 		};
-		public ItemDetails( E item, AbstractButton<?,?> button ) {
+		public ItemDetails( E item, AbstractButton<?,BooleanState> button ) {
 			this.item = item;
 			this.button = button;
+		}
+		public E getItem() {
+			return this.item;
 		}
 		public AbstractButton<?,?> getButton() {
 			return this.button;
 		}
-		public void add() {
+		public void add( javax.swing.ButtonGroup buttonGroup ) {
 			this.button.getAwtComponent().addItemListener( this.itemListener );
-			ItemSelectablePanel.this.buttonGroup.add( this.button.getAwtComponent() );
+			buttonGroup.add( this.button.getAwtComponent() );
 		}
-		public void remove() {
+		
+		
+		// note: does not seem to be called
+		public void remove( javax.swing.ButtonGroup buttonGroup ) {
 			//note: should already be removed by removeAllComponents()
 			assert this.button.getParent() == null;
 			this.button.getAwtComponent().removeItemListener( this.itemListener );
-			ItemSelectablePanel.this.buttonGroup.remove( this.button.getAwtComponent() );
+			buttonGroup.remove( this.button.getAwtComponent() );
 		}
 		public void setSelected( boolean isSelected ) {
 			if( this.button.getAwtComponent().isSelected() != isSelected ) {
@@ -84,6 +90,7 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 			}
 		}
 	}
+
 	/*package-private*/ ItemSelectablePanel( ListSelectionState<E> model ) {
 		super( model );
 	}
@@ -184,7 +191,7 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 						itemDetails = this.createItemDetails( item );
 						this.map.put( item, itemDetails );
 					}
-					itemDetails.add();
+					itemDetails.add( this.buttonGroup );
 					this.addItem( itemDetails );
 					this.prevItems.add( item );
 				}
