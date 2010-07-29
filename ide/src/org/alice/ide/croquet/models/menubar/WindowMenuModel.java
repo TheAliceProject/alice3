@@ -42,7 +42,7 @@
  */
 package org.alice.ide.croquet.models.menubar;
 
-import org.alice.ide.croquet.models.ui.frames.IsProjectHistoryShowingState;
+import org.alice.ide.croquet.models.history.IsProjectHistoryShowingState;
 
 /**
  * @author Dennis Cosgrove

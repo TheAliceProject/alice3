@@ -178,7 +178,7 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 	//		}
 	//		return rv;
 	//	}
-	public Iterable< Property< ? > > getProperties() {
+	public java.util.List< Property< ? > > getProperties() {
 		Class< ? extends edu.cmu.cs.dennisc.property.PropertyOwner > cls = getClass();
 		if( isComposedOfGetterAndSetterProperties() ) {
 			java.util.List< Property< ? > > rv = s_classToPropertiesMap.get( cls );
