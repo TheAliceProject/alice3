@@ -70,7 +70,7 @@ public class Marker extends Transformable
 	public Marker()
 	{
 		super();
-		sgFrontFacingAppearance.diffuseColor.setValue( this.getMarkerColor() );
+		sgFrontFacingAppearance.diffuseColor.setValue( this.getDefaultMarkerColor() );
 		sgFrontFacingAppearance.opacity.setValue( new Float(this.getDefaultMarkerOpacity()) );
 		createVisuals();
 		this.getSGTransformable().putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.MARKERS );
@@ -125,7 +125,17 @@ public class Marker extends Transformable
 	{
 	}
 	
-	protected Color4f getMarkerColor()
+	public Color4f getMarkerColor()
+	{
+		return sgFrontFacingAppearance.diffuseColor.getValue();
+	}
+	
+	public void setMarkerColor( Color4f color )
+	{
+		sgFrontFacingAppearance.diffuseColor.setValue( color );
+	}
+	
+	protected Color4f getDefaultMarkerColor()
 	{
 		return Color4f.CYAN;
 	}

@@ -44,7 +44,11 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import javax.swing.BorderFactory;
+import org.alice.apis.moveandturn.CameraMarker;
+import org.alice.ide.IDE;
+import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.croquet.Label;
 import edu.cmu.cs.dennisc.croquet.LineAxisPanel;
 
@@ -72,11 +76,12 @@ public class CameraMarkerFieldTile extends LineAxisPanel
 	
 	public void setSelected( boolean isSelected ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "isSelected", isSelected, this );
+		CameraMarker marker = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getCameraMarkerForField(field);
 		java.awt.Color foregroundColor;
 		if( isSelected ) {
 			foregroundColor = java.awt.Color.WHITE;
 		} else {
-			foregroundColor = java.awt.Color.BLACK;
+			foregroundColor = marker.getMarkerColor().getAsAWTColor();
 		}
 		this.textLabel.setForegroundColor( foregroundColor );
 	}
@@ -91,7 +96,20 @@ public class CameraMarkerFieldTile extends LineAxisPanel
 		this.textLabel.setText( this.field.getName() );
 		this.addComponent(this.textLabel);
 		
-		this.addComponent(MoveActiveCameraToMarkerActionOperation.getInstanceForField(this.field).createButton());
-		this.addComponent(MoveMarkerToActiveCameraActionOperation.getInstanceForField(this.field).createButton());
+		CameraMarker marker = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getCameraMarkerForField(field);
+		if (marker != null)
+		{
+			Color4f color = marker.getMarkerColor();
+			textLabel.setForegroundColor(color.getAsAWTColor());
+		}
+		javax.swing.border.Border border = BorderFactory.createEmptyBorder( 4,6,4,6 );
+		
+		edu.cmu.cs.dennisc.croquet.Button buttonCameraToMarker = MoveActiveCameraToMarkerActionOperation.getInstanceForField(this.field).createButton();
+		buttonCameraToMarker.setBorder( border );
+		this.addComponent( buttonCameraToMarker );
+
+		edu.cmu.cs.dennisc.croquet.Button buttonMarkerToCamera = MoveMarkerToActiveCameraActionOperation.getInstanceForField(this.field).createButton();
+		buttonMarkerToCamera.setBorder( border );
+		this.addComponent( buttonMarkerToCamera );
 	}
 }
