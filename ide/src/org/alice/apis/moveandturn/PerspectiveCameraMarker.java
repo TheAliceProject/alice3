@@ -107,7 +107,7 @@ public class PerspectiveCameraMarker extends CameraMarker
 	}
 	
 	@Override
-	protected Color4f getMarkerColor()
+	protected Color4f getDefaultMarkerColor()
 	{
 		return Color4f.GRAY;
 	}

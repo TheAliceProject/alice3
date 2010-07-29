@@ -47,9 +47,12 @@ import java.awt.Color;
 
 import javax.swing.BorderFactory;
 
+import org.alice.apis.moveandturn.CameraMarker;
+import org.alice.ide.IDE;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.croquet.Label;
 import edu.cmu.cs.dennisc.croquet.LineAxisPanel;
 
@@ -83,6 +86,12 @@ public class CameraMarkerFieldTile extends LineAxisPanel
 		textLabel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 		this.addComponent(textLabel);
 		
+		CameraMarker marker = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getCameraMarkerForField(field);
+		if (marker != null)
+		{
+			Color4f color = marker.getMarkerColor();
+			textLabel.setForegroundColor(color.getAsAWTColor());
+		}
 		this.addComponent(MoveActiveCameraToMarkerActionOperation.getInstanceForField(this.field).createButton());
 		this.addComponent(MoveMarkerToActiveCameraActionOperation.getInstanceForField(this.field).createButton());
 	}
