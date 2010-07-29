@@ -161,7 +161,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return this.isDefaultFieldNameGenerationDesiredState.getValue();
 	}
 
-	private int rootDividerLocation = 460;//340;
+	private int rootDividerLocation = 340;
 	private int leftDividerLocation = 240;
 
 	private edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin concealedBin = new edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin();

@@ -301,7 +301,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 						if( focusedCode != null ) {
 							edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> scopeType = focusedCode.getDeclaringType();
 							if( field.getValueType() == scopeType ) {
-								sb.append( " <em>(currently: this)</em>" );
+								sb.append( " <em>(this)</em>" );
 							} else if( field.getDeclaringType() == scopeType ) {
 								//pass
 							} else {
@@ -371,13 +371,13 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 					value = null;
 				}
 				StringBuilder sb = new StringBuilder();
-				sb.append( "<html>" );
+				sb.append( "<html><nobr>" );
 				if( index == -1 ) {
 					if( list.getModel().getSize() > 0 ) {
-						sb.append( "part:" );
+						sb.append( "part: " );
 					} else {
 						sb.append( "<font color=\"gray\">" );
-						sb.append( "no_parts" );
+						sb.append( "no parts" );
 						sb.append( "</font>" );
 					}
 				}
@@ -396,7 +396,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 						sb.append( "</font>" );
 					}
 				}
-				sb.append( "</html>" );
+				sb.append( "</nobr></html>" );
 				rv.setText( sb.toString() );
 				return rv;
 			}
