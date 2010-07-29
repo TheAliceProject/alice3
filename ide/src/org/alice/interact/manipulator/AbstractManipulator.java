@@ -190,21 +190,28 @@ public abstract class AbstractManipulator {
 	
 	public void endManipulator(InputState endInput, InputState previousInput  )
 	{
-		doEndManipulator( endInput, previousInput );
-		if (isUndoable())
+		try
 		{
-			undoRedoEndManipulation();
+			doEndManipulator( endInput, previousInput );
 		}
-		else if (this.getManipulatedTransformable() != null)
+		catch (Throwable t)
 		{
-			AffineMatrix4x4 newTransformation = this.getManipulatedTransformable().getLocalTransformation();
-			if (!newTransformation.equals( originalTransformation ) && originalTransformation != null)
-			{
-				PrintUtilities.println("Skipping undoable action for a manipulation that actually changed the transformation.");
-			}
+			t.printStackTrace();
 		}
 		if (this.hasStarted)
 		{
+			if (isUndoable())
+			{
+				undoRedoEndManipulation();
+			}
+			else if (this.getManipulatedTransformable() != null)
+			{
+				AffineMatrix4x4 newTransformation = this.getManipulatedTransformable().getLocalTransformation();
+				if (!newTransformation.equals( originalTransformation ) && originalTransformation != null)
+				{
+					PrintUtilities.println("Skipping undoable action for a manipulation that actually changed the transformation.");
+				}
+			}
 			this.hasStarted = false;
 			HandleSet setToShow = this.getHandleSetToEnable();
 			if (setToShow != null && this.dragAdapter != null)

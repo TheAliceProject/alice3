@@ -43,12 +43,16 @@
 
 package org.alice.apis.moveandturn;
 
+import javax.swing.Icon;
+
 
 /**
  * @author Dennis Cosgrove
  */
 public class CameraMarker extends Marker 
 {
+	
+	private Icon icon;
 	
 	public CameraMarker()
 	{
@@ -59,6 +63,16 @@ public class CameraMarker extends Marker
 	protected void createVisuals()
 	{
 		super.createVisuals();
+	}
+	
+	public Icon getIcon()
+	{
+		return this.icon;
+	}
+	
+	public void setIcon(Icon icon)
+	{
+		this.icon = icon;
 	}
 	
 }
