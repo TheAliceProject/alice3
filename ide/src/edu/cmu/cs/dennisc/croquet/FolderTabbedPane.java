@@ -261,7 +261,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	private TitlesPanel titlesPanel = new TitlesPanel();
 	private BorderPanel headerPanel = new BorderPanel();
 
-	/*package-private*/ class FolderTabItemDetails extends TabItemDetails {
+	/*package-private*/ class FolderTabItemDetails extends AbstractTabbedPane.TabItemDetails {
 		private CardPanel.Key cardPanelKey;
 		public FolderTabItemDetails( E item, AbstractButton< ?,BooleanState > button, java.util.UUID id, ScrollPane scrollPane, JComponent<?> mainComponent ) {
 			super( item, button, id, scrollPane, mainComponent );
