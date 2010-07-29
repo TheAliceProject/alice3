@@ -190,9 +190,16 @@ public abstract class AbstractManipulator {
 	
 	public void endManipulator(InputState endInput, InputState previousInput  )
 	{
-		if (this.hasStarted)
+		try
 		{
 			doEndManipulator( endInput, previousInput );
+		}
+		catch (Throwable t)
+		{
+			t.printStackTrace();
+		}
+		if (this.hasStarted)
+		{
 			if (isUndoable())
 			{
 				undoRedoEndManipulation();

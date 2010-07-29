@@ -300,11 +300,24 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		if (this.pickPlane == null && this.backPlane == null)
 		{
 			int mouseDifX = (currentInput.getMouseLocation().x - previousInput.getMouseLocation().x);
-			double sidewaysMovement = mouseDifX * this.movementScale;
-			Point3 movementVector = Point3.createMultiplication(this.camera.getAbsoluteTransformation().orientation.right, sidewaysMovement);
+			double rightMovement = mouseDifX * this.movementScale;
+			Vector3 rightVector = new Vector3(this.camera.getAbsoluteTransformation().orientation.right);
+			rightVector.y = 0;
+			rightVector.normalize();
+			Point3 movementVector = Point3.createMultiplication(rightVector, rightMovement);
 			int mouseDifY = (currentInput.getMouseLocation().y - previousInput.getMouseLocation().y);
 			double forwardMovement = mouseDifY * this.movementScale;
-			movementVector.add(Point3.createMultiplication(this.camera.getAbsoluteTransformation().orientation.backward, forwardMovement));
+			Vector3 backwardVector = new Vector3(this.camera.getAbsoluteTransformation().orientation.backward);
+			backwardVector.y = 0;
+			backwardVector.normalize();
+			if (backwardVector.isNaN())
+			{
+				backwardVector = new Vector3(this.camera.getAbsoluteTransformation().orientation.up);
+				backwardVector.y = 0;
+				backwardVector.multiply(-1);
+				backwardVector.normalize();
+			}
+			movementVector.add(Point3.createMultiplication(backwardVector, forwardMovement));
 			return movementVector;
 		}
 		Point3 pointToUse = getPerspectivePositionBasedOnInput( currentInput );
@@ -443,13 +456,19 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		Point3 pointInCameraSidewaysPlane = PlaneUtilities.projectPointIntoPlane(new Plane(cameraTransform.translation, cameraTransform.orientation.right), planePosition);
 		Vector3 toCamera = Vector3.createSubtraction(cameraTransform.translation, pointInCameraSidewaysPlane);
 		toCamera.normalize();
+		double verticalDistance = Math.abs(cameraTransform.translation.y - planePosition.y);
+		double distance = Point3.calculateDistanceBetween(planePosition, cameraTransform.translation);
 		double dot = Vector3.calculateDotProduct(toCamera, cameraTransform.orientation.backward);
 		double dotLevel = Vector3.calculateDotProduct(Vector3.accessPositiveYAxis(), cameraTransform.orientation.up);
-//		AngleInRadians angle = VectorUtilities.getAngleBetweenVectors(toCamera, cameraTransform.orientation.backward);
-//		AngleInRadians angleUp = VectorUtilities.getAngleBetweenVectors(cameraTransform.orientation.up, Vector3.accessPositiveYAxis());
-//		PrintUtilities.println("object dot: "+dot+", leveDot: "+dotLevel+", angle: "+angle.getAsDegrees()+", angle up: "+angleUp.getAsDegrees());
-		if (Math.abs(dot) > .98 && Math.abs(dotLevel) > .98)
+		AngleInRadians angle = VectorUtilities.getAngleBetweenVectors(toCamera, cameraTransform.orientation.backward);
+		AngleInRadians angleUp = VectorUtilities.getAngleBetweenVectors(cameraTransform.orientation.up, Vector3.accessPositiveYAxis());
+		
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x, mousePoint.y );
+		double pickDotHorizontal = Vector3.calculateDotProduct(pickRay.accessDirection(), Vector3.accessPositiveYAxis());
+//		PrintUtilities.println("pick: "+pickDotHorizontal+", object dot: "+dot+", leveDot: "+dotLevel+", angle: "+angle.getAsDegrees()+", angle up: "+angleUp.getAsDegrees());
+		if (Math.abs(pickDotHorizontal) < .001)
 		{
+//			PrintUtilities.println("Special!");
 			this.pickPlane = null;
 			this.backPlane = null;
 			double distanceToObject = Point3.calculateDistanceBetween(planePosition, cameraTransform.translation);
