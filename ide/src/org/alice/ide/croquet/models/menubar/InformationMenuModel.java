@@ -40,24 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ui.window;
+package org.alice.ide.croquet.models.menubar;
 
-public class IsProjectHistoryShowingState extends IsFrameShowingState {
+import org.alice.ide.croquet.models.ui.frames.IsHistoryTreeShowingState;
+import org.alice.ide.croquet.models.ui.frames.IsMemoryUsageShowingState;
+import org.alice.ide.croquet.models.ui.frames.IsProjectHistoryShowingState;
+
+/**
+ * @author Dennis Cosgrove
+ */
+public class InformationMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
 	private static class SingletonHolder {
-		private static IsProjectHistoryShowingState instance = new IsProjectHistoryShowingState();
+		private static InformationMenuModel instance = new InformationMenuModel();
 	}
-	public static IsProjectHistoryShowingState getInstance() {
+	public static InformationMenuModel getInstance() {
 		return SingletonHolder.instance;
 	}
-	private IsProjectHistoryShowingState() {
-		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "cf08f7ac-16b2-4121-9f36-9aca59db4cf7" ), false, "Show Project History?" );
-	}
-	@Override
-	protected String getTitle() {
-		return "History";
-	}
-	@Override
-	protected java.awt.Component createPane() {
-		return new edu.cmu.cs.dennisc.history.HistoryPane( edu.cmu.cs.dennisc.alice.Project.GROUP );
+	private InformationMenuModel() {
+		super( java.util.UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
+				IsHistoryTreeShowingState.getInstance(),
+				IsMemoryUsageShowingState.getInstance()
+		);
 	}
 }
