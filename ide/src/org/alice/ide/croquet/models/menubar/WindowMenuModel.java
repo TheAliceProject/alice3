@@ -61,7 +61,9 @@ public class WindowMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
 				IsProjectHistoryShowingState.getInstance(),
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.menubar.InformationMenuModel.getInstance()
+				PreferencesMenuModel.getInstance(),
+				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
+				InformationMenuModel.getInstance()
 		);
 	}
 }

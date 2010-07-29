@@ -42,6 +42,8 @@
  */
 package org.alice.ide.declarationpanes;
 
+import org.alice.ide.IDE;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -66,9 +68,46 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 		return getIDE().getTypeDeclaredInAliceFor( typeDeclaredInJava );
 	}
 
+	private static String getAvailableFieldName( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, String baseName ) {
+		org.alice.ide.name.validators.FieldNameValidator validator = new org.alice.ide.name.validators.FieldNameValidator( declaringType );
+
+		if( validator.isNameValid( baseName ) ) {
+			//pass
+		} else {
+			baseName = "unnamed";
+			assert validator.isNameValid( baseName );
+		}
+
+		int i = 2;
+		String rv = baseName;
+		while( validator.getExplanationIfOkButtonShouldBeDisabled( rv ) != null ) {
+			rv = baseName + i;
+			i++;
+		}
+		return rv;
+	}
+
+	private String getPotentialInstanceNameFor( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
+		if( valueType != null ) {
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
+			if( typeInJava != null ) {
+				if( org.alice.ide.croquet.models.ui.preferences.IsGeneratingDefaultFieldNamesState.getInstance().getValue() ) {
+					String typeName = typeInJava.getName();
+					if( typeName != null && typeName.length() > 0 ) {
+						StringBuffer sb = new StringBuffer();
+						sb.append( Character.toLowerCase( typeName.charAt( 0 ) ) );
+						sb.append( typeName.substring( 1 ) );
+						return getAvailableFieldName( declaringType, sb.toString() );
+					}
+				}
+			}
+		}
+		return "";
+	}
+	
 	@Override
 	protected String getDefaultNameText() {
-		return this.getIDE().getPotentialInstanceNameFor( this.getDeclaringType(), this.valueType );
+		return this.getPotentialInstanceNameFor( this.getDeclaringType(), this.valueType );
 	}
 
 	@Override

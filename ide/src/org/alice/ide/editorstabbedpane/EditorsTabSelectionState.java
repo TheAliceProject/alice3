@@ -450,11 +450,11 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 			super.handleAddedTo( parent );
 			org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeValueObserver( this.selectionObserver );
-			org.alice.ide.IDE.getSingleton().getEmphasizingClassesState().addAndInvokeValueObserver( this.isEmphasizingClassesObserver );
+			org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addAndInvokeValueObserver( this.isEmphasizingClassesObserver );
 		}
 		@Override
 		protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-			org.alice.ide.IDE.getSingleton().getEmphasizingClassesState().removeValueObserver( this.isEmphasizingClassesObserver );
+			org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().removeValueObserver( this.isEmphasizingClassesObserver );
 			org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeValueObserver( this.selectionObserver );
 			super.handleRemovedFrom( parent );
 		}

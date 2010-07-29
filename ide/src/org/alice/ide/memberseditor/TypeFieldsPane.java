@@ -69,7 +69,7 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 		if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
 			rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)member;
-			if( getIDE().isEmphasizingClasses() ) {
+			if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 				//pass
 			} else {
 				if( field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
@@ -118,7 +118,7 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 				);
 			}
 			
-			if( getIDE().isEmphasizingClasses() ) {
+			if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 				//pass
 			} else {
 				rv.add( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 16 ) );

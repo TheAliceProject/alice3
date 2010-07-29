@@ -136,7 +136,7 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
-		org.alice.ide.IDE.getSingleton().getOmissionOfThisForFieldAccessesDesiredState().addAndInvokeValueObserver( this.valueObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().addAndInvokeValueObserver( this.valueObserver );
 		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeValueObserver( this.codeSelectionObserver );
 		org.alice.ide.IDE.getSingleton().getAccessibleListState().addAndInvokeValueObserver( this.accessibleSelectionObserver );
 		org.alice.ide.croquet.models.members.PartSelectionState.getInstance().addValueObserver( this.partSelectionObserver );
@@ -146,7 +146,7 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 		org.alice.ide.croquet.models.members.PartSelectionState.getInstance().removeValueObserver( this.partSelectionObserver );
 		org.alice.ide.IDE.getSingleton().getAccessibleListState().removeValueObserver( this.accessibleSelectionObserver );
 		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeValueObserver( this.codeSelectionObserver );
-		org.alice.ide.IDE.getSingleton().getOmissionOfThisForFieldAccessesDesiredState().removeValueObserver( this.valueObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().removeValueObserver( this.valueObserver );
 		super.handleRemovedFrom( parent );
 	}
 }

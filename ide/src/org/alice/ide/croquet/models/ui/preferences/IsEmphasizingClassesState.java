@@ -40,58 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor;
+package org.alice.ide.croquet.models.ui.preferences;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTypeMethodsPane extends AbstractTypeMembersPane {
-	public AbstractTypeMethodsPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		super( type );
+public class IsEmphasizingClassesState extends edu.cmu.cs.dennisc.croquet.BooleanState {
+	private static class SingletonHolder {
+		private static IsEmphasizingClassesState instance = new IsEmphasizingClassesState();
 	}
-	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createProcedureTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method );
-	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createFunctionTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method );
-
-	@Override
-	protected Iterable< edu.cmu.cs.dennisc.croquet.Component< ? > > createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
-		edu.cmu.cs.dennisc.croquet.Component< ? > component;
-		if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractMethod ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)member;
-			if( method.getNextShorterInChain() != null ) {
-				component = null;
-			} else {
-				if( method.isProcedure() ) {
-					component = createProcedureTemplate( method );
-				} else if( method.isFunction() ) {
-					component = createFunctionTemplate( method );
-				} else {
-					component = null;
-				}
-			}
-		} else {
-			component = null;
-		}
-		java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? > > rv;
-		if( component != null ) {
-			//line.add( javax.swing.Box.createHorizontalStrut( INDENT ) );
-			//if( member.isDeclaredInAlice() ) {
-			if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-				//pass
-			} else {
-				if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractCode ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractCode code = (edu.cmu.cs.dennisc.alice.ast.AbstractCode)member;
-					if( code.isDeclaredInAlice() ) {
-						edu.cmu.cs.dennisc.croquet.LineAxisPanel line = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
-						line.addComponent( org.alice.ide.operations.ast.FocusCodeOperation.getInstance( code ).createButton() );
-						line.addComponent( component );
-						component = line;
-					}
-				}
-			}
-			rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new edu.cmu.cs.dennisc.croquet.Component< ? >[] { component } );
-		} else {
-			rv = null;
-		}
-		return rv;
+	public static IsEmphasizingClassesState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private IsEmphasizingClassesState() {
+		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "c6d27bf1-f8c0-470d-b9ef-3c9fa7e6f4b0" ), true );
+		org.alice.ide.IDE.getSingleton().registerAndInitializePreference( this );
 	}
 }
