@@ -47,20 +47,6 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public abstract class Factory {
-	//todo: remove
-//	static java.util.Map< Object, String > operatorMap = new java.util.HashMap< Object, String >();
-//	static {
-//		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.PLUS, "+" );
-//		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.MINUS, "-" );
-//		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.TIMES, "\u00D7" );
-//		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.REAL_DIVIDE, "\u00F7" );
-//		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.LESS, "<" );
-//		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.LESS_EQUALS, "\u2264" );
-//		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.GREATER, ">" );
-//		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.GREATER_EQUALS, "\u2265" );
-//	}
-
-	
 	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createGetsComponent( boolean isTowardLeading ) { 
 		return new org.alice.ide.common.GetsPane( isTowardLeading );
 	}
@@ -393,6 +379,8 @@ public abstract class Factory {
 					if( child instanceof javax.swing.JLabel ) {
 						javax.swing.JLabel label = (javax.swing.JLabel)child;
 						String text = label.getText();
+						//todo: remove this terrible hack
+						boolean isScaleDesired = false;
 						if( text.length() == 3 ) {
 							char c0 = text.charAt( 0 );
 							char c1 = text.charAt( 1 );
@@ -401,11 +389,16 @@ public abstract class Factory {
 								if( Character.isLetterOrDigit( c1 ) ) {
 									//pass
 								} else {
-									edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( label, 1.75f );
+									isScaleDesired = true;
 								}
 							}
+						} else if( text.length() == 4 ) {
+							isScaleDesired = " >= ".equals( text ) || " <= ".equals( text ) || " == ".equals( text );
 						}
 						edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( label, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+						if( isScaleDesired ) {
+							edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( label, 1.75f );
+						}
 						//label.setVerticalAlignment( javax.swing.SwingConstants.CENTER );
 					}
 				}
