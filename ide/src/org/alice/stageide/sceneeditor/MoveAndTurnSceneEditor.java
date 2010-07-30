@@ -620,6 +620,17 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.removeSceneEditorFieldObserver(this.sceneEditorFieldObserver);
 	}
 	
+	private javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
+		public void contentsChanged(javax.swing.event.ListDataEvent e) {
+			PrintUtilities.println( "contentsChanged", e );
+		}
+		public void intervalAdded(javax.swing.event.ListDataEvent e) {
+			PrintUtilities.println( "intervalAdded", e );
+		}
+		public void intervalRemoved(javax.swing.event.ListDataEvent e) {
+			PrintUtilities.println( "intervalRemoved", e );
+		}
+	};
 	
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
@@ -631,10 +642,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.splitPane.setLeftComponent( this.lookingGlassPanel );
 		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeValueObserver( this.codeSelectionObserver );
 		org.alice.ide.IDE.getSingleton().getAccessibleListState().addAndInvokeValueObserver( this.fieldSelectionObserver );
+		this.sceneMarkerFieldList.addListDataListener( this.listDataListener );
 	}
 
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		this.sceneMarkerFieldList.removeListDataListener( this.listDataListener );
 		this.splitPane.setLeftComponent( null );
 		this.removeFieldListening();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().removeAutomaticDisplayListener( this.automaticDisplayListener );

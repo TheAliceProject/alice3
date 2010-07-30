@@ -854,7 +854,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	
 	public void refreshAccessibles() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of refreshAccessibles" );
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of refreshAccessibles" );
 	
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getFocusedCode();
 		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = this.accessibleListState.getSelectedItem();
