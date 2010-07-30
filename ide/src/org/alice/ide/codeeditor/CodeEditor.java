@@ -438,7 +438,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 			
 			if( source instanceof org.alice.ide.templates.StatementTemplate ) {
 				final org.alice.ide.templates.StatementTemplate statementTemplate = (org.alice.ide.templates.StatementTemplate)source;
-				if( org.alice.ide.croquet.models.ui.recursion.IsRecursionAllowedState.getInstance().getValue() ) {
+				if( org.alice.ide.croquet.models.recursion.IsRecursionAllowedState.getInstance().getValue() ) {
 					//pass
 				} else {
 					edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;

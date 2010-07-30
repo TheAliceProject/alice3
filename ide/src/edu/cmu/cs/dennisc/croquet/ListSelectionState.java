@@ -329,11 +329,16 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 	public ListSelectionState(Group group, java.util.UUID individualUUID, Codec< E > codec) {
 		this(group, individualUUID, codec, -1);
 	}
-
-	protected final E decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+	public void addListDataListener( javax.swing.event.ListDataListener listener ) {
+		this.comboBoxModel.addListDataListener( listener );
+	}
+	public void removeListDataListener( javax.swing.event.ListDataListener listener ) {
+		this.comboBoxModel.removeListDataListener( listener );
+	}
+	/*package-private*/ final E decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 		return this.codec.decode( binaryDecoder );
 	}
-	protected final void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, E value ) {
+	/*package-private*/ final void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, E value ) {
 		this.codec.encode( binaryEncoder, value );
 	}
 	public E getSelectedItem() {

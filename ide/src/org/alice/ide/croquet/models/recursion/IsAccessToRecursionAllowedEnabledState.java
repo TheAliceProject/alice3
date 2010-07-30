@@ -40,20 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ui.recursion;
+package org.alice.ide.croquet.models.recursion;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IsRecursionAllowedState extends edu.cmu.cs.dennisc.croquet.BooleanState {
+public class IsAccessToRecursionAllowedEnabledState extends edu.cmu.cs.dennisc.croquet.BooleanState {
 	private static class SingletonHolder {
-		private static IsRecursionAllowedState instance = new IsRecursionAllowedState();
+		private static IsAccessToRecursionAllowedEnabledState instance = new IsAccessToRecursionAllowedEnabledState();
 	}
-	public static IsRecursionAllowedState getInstance() {
+	public static IsAccessToRecursionAllowedEnabledState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private IsRecursionAllowedState() {
-		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "a5e1ded2-18c7-4ae5-8676-e6deca5650fe" ), false );
+	private IsAccessToRecursionAllowedEnabledState() {
+		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "feb28c71-be9f-46a4-84db-57e9205bc220" ), false );
 		org.alice.ide.IDE.getSingleton().registerAndInitializePreference( this );
 	}
 }

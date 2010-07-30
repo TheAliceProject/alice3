@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ui.recursion;
+package org.alice.ide.croquet.models.recursion;
 
 class RecursionPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private static final int SPACING = 16;
