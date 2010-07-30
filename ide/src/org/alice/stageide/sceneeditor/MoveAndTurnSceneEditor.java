@@ -659,9 +659,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		if( this.globalDragAdapter != null ) {
 			//pass
 		} else {
-			createOrthographicCamera();
-			createOrthographicCameraMarkers();
-			
 			this.openingSceneMarker = new PerspectiveCameraMarker();
 			this.openingSceneMarker.setName("Opening Scene Camera");
 			this.openingSceneMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/mainCameraIcon.png")));
@@ -670,6 +667,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.sceneViewMarker.setName("Scene Editor Camera");
 			this.sceneViewMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sceneEditorCameraIcon.png")));
 			
+			createOrthographicCamera();
+			createOrthographicCameraMarkers();
 			
 			List<CameraMarker> cameraMarkerFieldsAndOrthoOptions =  edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			cameraMarkerFieldsAndOrthoOptions.add(this.openingSceneMarker);
@@ -715,6 +714,14 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, CameraMarker value, int index, boolean isSelected, boolean cellHasFocus) {
 					rv.setText(value.getName());
 					rv.setIcon(value.getIcon());
+//					if( value == openingSceneMarker ) {
+//						//pass
+//					} else {
+//						final float SATURATION_SCALE_FACTOR = 0.85f;
+//						final float BRIGHTNESS_SCALE_FACTOR = 0.85f;
+//						rv.setForeground( edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( rv.getForeground(), 1.0f, SATURATION_SCALE_FACTOR, BRIGHTNESS_SCALE_FACTOR ) );
+//						rv.setBackground( edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( rv.getBackground(), 1.0f, SATURATION_SCALE_FACTOR, BRIGHTNESS_SCALE_FACTOR ) );
+//					}
 					return rv;
 				}
 			});
@@ -1449,6 +1456,13 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		picturePlane.setHeight(4);
 		frontMarker.setPicturePlane(picturePlane);
 		orthographicCameraMarkers.add(frontMarker);
+		
+		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( MoveAndTurnSceneEditor.class.getPackage().getName() + ".ViewBundle" );
+		this.openingSceneMarker.setName( resourceBundle.getString( "sceneCameraView" ) );
+		this.sceneViewMarker.setName( resourceBundle.getString( "layoutPerspectiveView" ) );
+		topMarker.setName( resourceBundle.getString( "topOrthographicView" ) );
+		sideMarker.setName( resourceBundle.getString( "leftOrthographicView" ) );
+		frontMarker.setName( resourceBundle.getString( "frontOrthographicView" ) );
 	}
 	
 	public void addCameraMarkersToScene(Scene sceneToAddTo)
