@@ -46,9 +46,6 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public abstract class IDE extends org.alice.ide.ProjectApplication {
-	@Deprecated
-	public static final edu.cmu.cs.dennisc.croquet.Group PREFERENCES_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "c090cda0-4a77-4e2c-a839-faf28c98c10c" ), "PREFERENCES_GROUP" );
-	
 	public static final edu.cmu.cs.dennisc.croquet.Group RUN_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "f7a87645-567c-42c6-bf5f-ab218d93a226" ), "RUN_GROUP" );
 
 	public static final String DEBUG_PROPERTY_KEY = "org.alice.ide.DebugMode";
@@ -117,32 +114,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		booleanState.setValue( value );
 		booleanStatePreferences.add( booleanState );
 	}
-	private edu.cmu.cs.dennisc.croquet.BooleanState createBooleanStatePreference( java.util.UUID id, boolean defaultInitialValue, String name ) {
-		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( this.getClass() );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
-			try {
-				userPreferences.clear();
-			} catch( java.util.prefs.BackingStoreException bse ) {
-				throw new RuntimeException( bse );
-			}
-		}
-		Boolean initialValue = userPreferences.getBoolean( id.toString(), defaultInitialValue );
-		edu.cmu.cs.dennisc.croquet.BooleanState rv = new edu.cmu.cs.dennisc.croquet.BooleanState( PREFERENCES_GROUP, id, initialValue, name );
-		booleanStatePreferences.add( rv );
-		return rv;
-	}
 	private void preservePreferences() {
 		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( this.getClass() );
 		for( edu.cmu.cs.dennisc.croquet.BooleanState booleanState : booleanStatePreferences ) {
 			userPreferences.putBoolean( booleanState.getIndividualUUID().toString(), booleanState.getValue() );
 		}
 	}
-	private edu.cmu.cs.dennisc.croquet.BooleanState isInactiveFeedbackState =
-		createBooleanStatePreference( java.util.UUID.fromString( "2645a33c-3a37-41c1-83fe-521ed8dd0382" ), true, "Is Inactive Feedback Desired" );
-	public boolean isInactiveFeedbackDesired() {
-		return this.isInactiveFeedbackState.getValue();
-	}
-
 	private int rootDividerLocation = 340;
 	private int leftDividerLocation = 240;
 

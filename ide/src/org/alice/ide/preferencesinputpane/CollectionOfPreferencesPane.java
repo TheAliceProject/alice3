@@ -59,7 +59,7 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.croquet.Bord
 	class RestoreDefaultsActionOperation extends org.alice.ide.operations.ActionOperation {
 		private boolean isAll;
 		public RestoreDefaultsActionOperation() {
-			super( org.alice.ide.IDE.PREFERENCES_GROUP, java.util.UUID.fromString( "47826a1a-383e-4628-acc9-d07dcc2e55ac" ) );
+			super( org.alice.ide.operations.preferences.PreferencesOperation.PREFERENCES_GROUP, java.util.UUID.fromString( "47826a1a-383e-4628-acc9-d07dcc2e55ac" ) );
 			this.setName( "Restore Defaults" );
 		}
 		@Override
@@ -89,7 +89,7 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.croquet.Bord
 
 	class ApplyActionOperation extends org.alice.ide.operations.ActionOperation {
 		public ApplyActionOperation() {
-			super( org.alice.ide.IDE.PREFERENCES_GROUP, java.util.UUID.fromString( "e83b1957-5d47-492a-ab7b-8bfeaef148af" ) );
+			super( org.alice.ide.operations.preferences.PreferencesOperation.PREFERENCES_GROUP, java.util.UUID.fromString( "e83b1957-5d47-492a-ab7b-8bfeaef148af" ) );
 			this.setName( "Apply" );
 		}
 		@Override

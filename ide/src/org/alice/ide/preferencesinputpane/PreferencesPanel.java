@@ -83,7 +83,7 @@ public class PreferencesPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		
 		class ClearRecentProjectsOperation extends org.alice.ide.operations.ActionOperation {
 			public ClearRecentProjectsOperation() {
-				super( org.alice.ide.IDE.PREFERENCES_GROUP, java.util.UUID.fromString( "f8b4c080-88cf-41e5-ac7d-afc2bd340083" ) );
+				super( org.alice.ide.operations.preferences.PreferencesOperation.PREFERENCES_GROUP, java.util.UUID.fromString( "f8b4c080-88cf-41e5-ac7d-afc2bd340083" ) );
 				this.setName( "Clear Recent Projects" );
 			}
 			@Override

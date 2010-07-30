@@ -51,7 +51,7 @@ public class BooleanPreferenceCheckBoxProxy extends PreferenceProxy<Boolean> {
 	public BooleanPreferenceCheckBoxProxy( edu.cmu.cs.dennisc.preference.Preference<Boolean> preference ) {
 		super( preference );
 		this.operation = new edu.cmu.cs.dennisc.croquet.BooleanState( 
-				org.alice.ide.IDE.PREFERENCES_GROUP, 
+				org.alice.ide.operations.preferences.PreferencesOperation.PREFERENCES_GROUP, 
 				java.util.UUID.fromString( "033f4377-4b05-42d3-8e4d-167b4704be7e" ), 
 				this.getPreference().getValue(), 
 				this.getPreference().getKey() 

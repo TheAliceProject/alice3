@@ -117,7 +117,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 	
 	abstract class PreferencesActionOperation extends org.alice.ide.operations.ActionOperation {
 		public PreferencesActionOperation( java.util.UUID individualId ) {
-			super( org.alice.ide.IDE.PREFERENCES_GROUP, individualId );
+			super( org.alice.ide.operations.preferences.PreferencesOperation.PREFERENCES_GROUP, individualId );
 		}
 	}
 	class EditVariantOperation extends PreferencesActionOperation {
