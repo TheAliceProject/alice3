@@ -1245,10 +1245,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private static final org.alice.apis.moveandturn.Color[] COLORS = { 
 		org.alice.apis.moveandturn.Color.RED,
 		org.alice.apis.moveandturn.Color.GREEN,
-		org.alice.apis.moveandturn.Color.BLUE,
+//		org.alice.apis.moveandturn.Color.BLUE,
 		org.alice.apis.moveandturn.Color.MAGENTA,
 		org.alice.apis.moveandturn.Color.YELLOW,
-		org.alice.apis.moveandturn.Color.CYAN,
+//		org.alice.apis.moveandturn.Color.CYAN,
 		org.alice.apis.moveandturn.Color.ORANGE,
 		org.alice.apis.moveandturn.Color.PINK,
 		org.alice.apis.moveandturn.Color.PURPLE
@@ -1257,10 +1257,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private static final String[] COLOR_NAMES = { 
 		"Red",
 		"Green",
-		"Blue",
+//		"Blue",
 		"Magenta",
 		"Yellow",
-		"Cyan",
+//		"Cyan",
 		"Orange",
 		"Pink",
 		"Purple"
