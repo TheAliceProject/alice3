@@ -52,42 +52,86 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 	}
 	@Override
 	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+		final edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().createCopyOfPreviousExpression();
+		final boolean isTop = blank.getParentFillIn() == null;
+		if( isTop ) {
+			if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression ) {
+				edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression previousArithmeticInfixExpression = (edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression)previousExpression;
+				edu.cmu.cs.dennisc.alice.ast.Expression leftOperand = previousArithmeticInfixExpression.leftOperand.getValue();
+				edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator prevOperator = previousArithmeticInfixExpression.operator.getValue();
+				edu.cmu.cs.dennisc.alice.ast.Expression rightOperand = previousArithmeticInfixExpression.rightOperand.getValue();
+				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType = previousArithmeticInfixExpression.expressionType.getValue();
+				for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
+					if( operator != prevOperator ) {
+						blank.addFillIn( new org.alice.ide.cascade.LabeledExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression( leftOperand, operator, rightOperand, expressionType ), "(replace operator)" ) );
+					}
+				}
+				blank.addSeparator();
+				blank.addFillIn( new org.alice.ide.cascade.LabeledExpressionFillIn( leftOperand, "(reduce to left operand only)" ) );
+				blank.addFillIn( new org.alice.ide.cascade.LabeledExpressionFillIn( rightOperand, "(reduce to right operand only)" ) );
+				blank.addSeparator();
+			}
+		}
+		
 		for( int i=0; i<4; i++ ) {
 			this.addExpressionFillIn( blank, i );
 		}
 		blank.addSeparator();
-		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomIntegerFillIn() );
-		blank.addSeparator();
-		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Random" ) {
-			@Override
-			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
-				//addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFrom0ToNExclusive", Integer.class );
-				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFromAToBExclusive", Integer.class, Integer.class );
-				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFromAToBInclusive", Integer.class, Integer.class );
-			}
-		} );
-		blank.addSeparator();
-		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Real Number" ) {
-			@Override
-			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
-				addNodeChildForMethod( blank, INTEGER_UTILITIES_TYPE_EXPRESSION, "toFlooredInteger", Double.class );
-				addNodeChildForMethod( blank, INTEGER_UTILITIES_TYPE_EXPRESSION, "toRoundedInteger", Double.class );
-				addNodeChildForMethod( blank, INTEGER_UTILITIES_TYPE_EXPRESSION, "toCeilingedInteger", Double.class );
-			}
-		} );
-		blank.addSeparator();
-		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Math" ) {
-			@Override
-			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
-				for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.values() ) {
-					blank.addFillIn( new org.alice.ide.cascade.IncompleteArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) );
+		if( isTop ) {
+			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Random" ) {
+				@Override
+				protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
+					addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFrom0ToNExclusive", Integer.class );
+					addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFromAToBExclusive", Integer.class, Integer.class );
+					addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFromAToBInclusive", Integer.class, Integer.class );
 				}
-				blank.addSeparator();
-				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "abs", Integer.TYPE );
-				blank.addSeparator();
-				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "min", Integer.TYPE, Integer.TYPE );
-				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "max", Integer.TYPE, Integer.TYPE );
-			}
-		} );
+			} );
+			blank.addSeparator();
+			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Real Number" ) {
+				@Override
+				protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
+					addNodeChildForMethod( blank, INTEGER_UTILITIES_TYPE_EXPRESSION, "toFlooredInteger", Double.class );
+					addNodeChildForMethod( blank, INTEGER_UTILITIES_TYPE_EXPRESSION, "toRoundedInteger", Double.class );
+					addNodeChildForMethod( blank, INTEGER_UTILITIES_TYPE_EXPRESSION, "toCeilingedInteger", Double.class );
+				}
+			} );
+			blank.addSeparator();
+			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Math" ) {
+				@Override
+				protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
+					if( previousExpression != null ) {
+						for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
+							blank.addFillIn( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Integer.class, Integer.class ) );
+						}
+						blank.addSeparator();
+					}
+					for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
+						blank.addFillIn( new org.alice.ide.cascade.IncompleteArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) );
+					}
+					blank.addSeparator();
+					blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "divide, remainder" ) {
+						@Override
+						protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+							if( previousExpression != null ) {
+								for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
+									blank.addFillIn( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Integer.class, Integer.class ) );
+								}
+								blank.addSeparator();
+							}
+							for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
+								blank.addFillIn( new org.alice.ide.cascade.IncompleteArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) );
+							}
+						}
+					} );
+					blank.addSeparator();
+					addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "abs", Integer.TYPE );
+					blank.addSeparator();
+					addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "min", Integer.TYPE, Integer.TYPE );
+					addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "max", Integer.TYPE, Integer.TYPE );
+				}
+			} );
+		}
+		blank.addSeparator();
+		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomIntegerFillIn() );
 	}
 }
