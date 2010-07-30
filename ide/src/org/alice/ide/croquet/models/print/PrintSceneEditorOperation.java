@@ -62,14 +62,26 @@ public class PrintSceneEditorOperation extends PrintOperation {
 				if( pageIndex > 0 ) {
 					return NO_SUCH_PAGE;
 				}
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
-				org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-				org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = ide.getSceneEditor();
-				if( sceneEditor != null ) {
-					sceneEditor.getAwtComponent().paintAll( g2 );
+				if( pageIndex > 0 ) {
+					return NO_SUCH_PAGE;
+				} else {
+					org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+					org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = ide.getSceneEditor();
+					if( sceneEditor != null ) {
+						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+						int width = sceneEditor.getWidth();
+						int height = sceneEditor.getHeight();
+						double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale(pageFormat, width, height);
+						g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
+						if( scale > 1.0 ) {
+							g2.scale( 1.0/scale, 1.0/scale );
+						}
+						sceneEditor.getAwtComponent().paintAll( g2 );
+						return PAGE_EXISTS;
+					} else {
+						return NO_SUCH_PAGE;
+					}
 				}
-				return PAGE_EXISTS;
 			}
 		};
 	}
