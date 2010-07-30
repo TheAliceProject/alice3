@@ -160,10 +160,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			return rv;
 		}
 	}
-	
-	private static String DEFAULT_CAMERA_VIEW_DEFAULT_NAME = "defaultCameraView";
-	private static String SCENE_EDITOR_CAMERA_VIEW_DEFAULT_NAME = "sceneEditorCameraView";
-	
+
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
 	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane();
@@ -622,15 +619,29 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	
 	private javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
 		public void contentsChanged(javax.swing.event.ListDataEvent e) {
-			PrintUtilities.println( "contentsChanged", e );
 		}
 		public void intervalAdded(javax.swing.event.ListDataEvent e) {
-			PrintUtilities.println( "intervalAdded", e );
 		}
 		public void intervalRemoved(javax.swing.event.ListDataEvent e) {
-			PrintUtilities.println( "intervalRemoved", e );
+			MoveAndTurnSceneEditor.this.EPIC_HACK_handleMarkerRemoved( e );
 		}
 	};
+	
+	private void EPIC_HACK_handleMarkerRemoved( javax.swing.event.ListDataEvent e ) {
+		PrintUtilities.println( "todo: remove epic hack to handle camera marker removal" );
+		List<FieldDeclaredInAlice> declaredFields = this.getDeclaredFields();
+		for( FieldDeclaredInAlice field : declaredFields) {
+			if (field.getValueType().isAssignableTo( org.alice.apis.moveandturn.CameraMarker.class )) {
+				if( this.sceneMarkerFieldList.containsItem( field ) ) {
+					//pass
+				} else {
+					int index = org.alice.ide.IDE.getSingleton().getSceneType().fields.indexOf( field );
+					assert index != -1;
+					org.alice.ide.IDE.getSingleton().getSceneType().fields.remove( index );
+				}
+			}
+		}
+	}
 	
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
@@ -673,11 +684,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			//pass
 		} else {
 			this.openingSceneMarker = new PerspectiveCameraMarker();
-			this.openingSceneMarker.setName("Opening Scene Camera");
 			this.openingSceneMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/mainCameraIcon.png")));
 			this.sceneViewMarker = new PerspectiveCameraMarker();
 			this.sceneViewMarker.setDisplayVisuals(false);
-			this.sceneViewMarker.setName("Scene Editor Camera");
 			this.sceneViewMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sceneEditorCameraIcon.png")));
 			
 			createOrthographicCamera();
@@ -1430,7 +1439,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	{
 		this.orthographicCameraMarkers.clear();
 		org.alice.apis.moveandturn.OrthographicCameraMarker topMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
-		topMarker.setName( "TOP" );
 		topMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/topIcon.png")));
 		AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
 		topTransform.translation.y = 10;
@@ -1447,7 +1455,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		orthographicCameraMarkers.add(topMarker);
 
 		org.alice.apis.moveandturn.OrthographicCameraMarker sideMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
-		sideMarker.setName( "SIDE" );
 		sideMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sideIcon.png")));
 		AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
 		sideTransform.translation.x = 10;
@@ -1459,7 +1466,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		orthographicCameraMarkers.add(sideMarker);
 
 		org.alice.apis.moveandturn.OrthographicCameraMarker frontMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
-		frontMarker.setName( "FRONT" );
 		frontMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/frontIcon.png")));
 		AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
 		frontTransform.translation.z = -10;

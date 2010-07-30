@@ -331,7 +331,6 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 	}
 	public void addListDataListener( javax.swing.event.ListDataListener listener ) {
 		this.comboBoxModel.addListDataListener( listener );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "addListDataListener", this.comboBoxModel.hashCode(), this.comboBoxModel.getListDataListeners().length );
 	}
 	public void removeListDataListener( javax.swing.event.ListDataListener listener ) {
 		this.comboBoxModel.removeListDataListener( listener );
@@ -416,7 +415,6 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 			if( this.comboBoxModel.getSize() > 0 ) {
 				this.comboBoxModel.setSelectedItem( this.comboBoxModel.getElementAt( 0 ) );
 			}
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "removeItem", this.comboBoxModel.hashCode(), this.comboBoxModel.getListDataListeners().length );
 		}
 	}
 
