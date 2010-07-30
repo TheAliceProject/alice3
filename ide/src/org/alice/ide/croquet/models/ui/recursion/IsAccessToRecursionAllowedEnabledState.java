@@ -40,25 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
-
+package org.alice.ide.croquet.models.ui.recursion;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InformationMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
+public class IsAccessToRecursionAllowedEnabledState extends edu.cmu.cs.dennisc.croquet.BooleanState {
 	private static class SingletonHolder {
-		private static InformationMenuModel instance = new InformationMenuModel();
+		private static IsAccessToRecursionAllowedEnabledState instance = new IsAccessToRecursionAllowedEnabledState();
 	}
-	public static InformationMenuModel getInstance() {
+	public static IsAccessToRecursionAllowedEnabledState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private InformationMenuModel() {
-		super( java.util.UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
-				org.alice.ide.croquet.models.ui.info.IsMemoryUsageShowingState.getInstance(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.ui.info.IsInteractionTreeShowingState.getInstance(),
-				org.alice.ide.croquet.models.ui.info.IsAbstractSyntaxTreeShowingState.getInstance()
-		);
+	private IsAccessToRecursionAllowedEnabledState() {
+		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "feb28c71-be9f-46a4-84db-57e9205bc220" ), false );
 	}
 }

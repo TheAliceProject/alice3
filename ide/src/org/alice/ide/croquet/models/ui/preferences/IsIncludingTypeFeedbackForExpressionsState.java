@@ -40,29 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package org.alice.ide.croquet.models.ui.preferences;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThrowBogusExceptionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+public class IsIncludingTypeFeedbackForExpressionsState extends edu.cmu.cs.dennisc.croquet.BooleanState {
 	private static class SingletonHolder {
-		private static ThrowBogusExceptionOperation instance = new ThrowBogusExceptionOperation();
+		private static IsIncludingTypeFeedbackForExpressionsState instance = new IsIncludingTypeFeedbackForExpressionsState();
 	}
-	public static ThrowBogusExceptionOperation getInstance() {
+	public static IsIncludingTypeFeedbackForExpressionsState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private ThrowBogusExceptionOperation() {
-		super( java.util.UUID.fromString( "8c417baa-8be7-42e9-818c-b6ed4ecd8758" ) );
-		this.setName( "Throw Bogus Exception..." );
-	}
-	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		new Thread() {
-			@Override
-			public void run() {
-				throw new RuntimeException( "DELETE THIS BOGUS EXCEPTION" );
-			}			
-		}.start();
+	private IsIncludingTypeFeedbackForExpressionsState() {
+		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "e80adbfe-9e1a-408f-8067-ddbd30d0ffb9" ), true );
+		org.alice.ide.IDE.getSingleton().registerAndInitializePreference( this );
 	}
 }

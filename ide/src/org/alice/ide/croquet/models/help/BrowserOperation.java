@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.help;
 /**
  * @author Dennis Cosgrove
  */
-class BrowserOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+public class BrowserOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	private String url;
 	public BrowserOperation( java.util.UUID id, String url ) {
 		super( id );

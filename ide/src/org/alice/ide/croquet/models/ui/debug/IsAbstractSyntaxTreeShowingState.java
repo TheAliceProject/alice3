@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ui.info;
+package org.alice.ide.croquet.models.ui.debug;
 
 import org.alice.ide.croquet.models.IsFrameShowingState;
 
@@ -147,10 +147,7 @@ public class IsAbstractSyntaxTreeShowingState extends IsFrameShowingState {
 
 	private IsAbstractSyntaxTreeShowingState() {
 		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "3fb1e733-1736-476d-b40c-7729c82f0b21" ), false );
-	}
-	@Override
-	protected String getTitle() {
-		return "AST";
+		this.setTextForBothTrueAndFalse( "Abstract Syntax Tree" );
 	}
 	@Override
 	protected java.awt.Component createPane() {

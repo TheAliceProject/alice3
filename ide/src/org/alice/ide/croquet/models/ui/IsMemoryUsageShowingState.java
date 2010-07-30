@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ui.info;
+package org.alice.ide.croquet.models.ui;
 
 import org.alice.ide.croquet.models.IsFrameShowingState;
 
@@ -74,10 +74,6 @@ public class IsMemoryUsageShowingState extends IsFrameShowingState {
 	}
 	private IsMemoryUsageShowingState() {
 		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "e460dca7-e707-4075-883a-ff47367c21fd" ), false );
-	}
-	@Override
-	protected String getTitle() {
-		return "Memory Usage";
 	}
 	@Override
 	protected java.awt.Component createPane() {

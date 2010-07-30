@@ -56,11 +56,6 @@ public class HelpMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
 		super( java.util.UUID.fromString( "435770a7-fb94-49ee-8c4d-b55a80618a09" ), 
 				org.alice.ide.croquet.models.help.HelpOperation.getInstance(),
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				//			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isBogusExceptionGenerationDesired" ) ) {
-				//				helpOperations.add( new org.alice.ide.operations.help.ThrowBogusExceptionOperation() );
-				//				helpOperations.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
-				//			}
-				//new org.alice.ide.operations.help.ThrowBogusExceptionOperation(),
 				org.alice.ide.croquet.models.help.ReportBugOperation.getInstance(), 
 				org.alice.ide.croquet.models.help.SuggestImprovementOperation.getInstance(), 
 				org.alice.ide.croquet.models.help.RequestNewFeatureOperation.getInstance(), 

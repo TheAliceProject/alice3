@@ -40,66 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models;
+package org.alice.ide.croquet.models.ui.recursion;
 
-public abstract class IsFrameShowingState extends edu.cmu.cs.dennisc.croquet.BooleanState {
-	private javax.swing.JFrame frame;
-	public IsFrameShowingState( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, boolean initialValue ) {
-		super( group, individualId, initialValue );
-		
-		this.addValueObserver( new ValueObserver() {
-			public void changing(boolean nextValue) {
-			}
-			public void changed(boolean nextValue) {
-				IsFrameShowingState.this.handleChanged( nextValue );
-			}
-		} );
-		//todo
-		if( initialValue ) {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-				public void run() {
-					handleChanged( true );
-				}
-			} );
-		}
+/**
+ * @author Dennis Cosgrove
+ */
+public class IsRecursionAllowedState extends edu.cmu.cs.dennisc.croquet.BooleanState {
+	private static class SingletonHolder {
+		private static IsRecursionAllowedState instance = new IsRecursionAllowedState();
 	}
-	private javax.swing.JFrame getFrame() {
-		if( this.frame != null ) {
-			//pass
-		} else {
-			this.frame = new javax.swing.JFrame();
-			this.frame.setTitle( this.getTitle() );
-			this.frame.getContentPane().add( this.createPane() );
-			this.frame.setDefaultCloseOperation( javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE );
-			this.frame.addWindowListener( new java.awt.event.WindowListener() {
-				public void windowOpened(java.awt.event.WindowEvent e) {
-				} 
-				public void windowActivated(java.awt.event.WindowEvent e) {
-				}
-				public void windowDeiconified(java.awt.event.WindowEvent e) {
-				}
-				public void windowIconified(java.awt.event.WindowEvent e) {
-				}
-				public void windowDeactivated(java.awt.event.WindowEvent e) {
-				}
-				public void windowClosing(java.awt.event.WindowEvent e) {
-					IsFrameShowingState.this.setValue( false );
-				}
-				public void windowClosed(java.awt.event.WindowEvent e) {
-				}
-			} );
-			this.frame.pack();
-		}
-		return this.frame;
+	public static IsRecursionAllowedState getInstance() {
+		return SingletonHolder.instance;
 	}
-
-	protected abstract java.awt.Component createPane();
-	protected final String getTitle() {
-		return this.getTrueText();
-	}
-
-	protected void handleChanged(boolean value) {
-		javax.swing.JFrame frame = this.getFrame();
-		frame.setVisible( value );
+	private IsRecursionAllowedState() {
+		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "a5e1ded2-18c7-4ae5-8676-e6deca5650fe" ), false );
+		org.alice.ide.IDE.getSingleton().registerAndInitializePreference( this );
 	}
 }

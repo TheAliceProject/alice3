@@ -137,43 +137,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			userPreferences.putBoolean( booleanState.getIndividualUUID().toString(), booleanState.getValue() );
 		}
 	}
-	private edu.cmu.cs.dennisc.croquet.BooleanState isExpressionTypeFeedbackDesiredState =
-		createBooleanStatePreference( java.util.UUID.fromString( "e80adbfe-9e1a-408f-8067-ddbd30d0ffb9" ), true, "Is Type Feedback Desired" );
 	private edu.cmu.cs.dennisc.croquet.BooleanState isInactiveFeedbackState =
 		createBooleanStatePreference( java.util.UUID.fromString( "2645a33c-3a37-41c1-83fe-521ed8dd0382" ), true, "Is Inactive Feedback Desired" );
-//	private edu.cmu.cs.dennisc.croquet.BooleanState isOmissionOfThisForFieldAccessesDesiredState =
-//		createBooleanStatePreference( java.util.UUID.fromString( "bcf1ce48-f54a-4e80-8b9e-42c2cc302b01" ), false, "Is Omission Of This For Field Accesses Desired" );
-//	private edu.cmu.cs.dennisc.croquet.BooleanState isEmphasizingClassesState =
-//		createBooleanStatePreference( java.util.UUID.fromString( "c6d27bf1-f8c0-470d-b9ef-3c9fa7e6f4b0" ), true, "Is Emphasizing Classes" );
-//	private edu.cmu.cs.dennisc.croquet.BooleanState isDefaultFieldNameGenerationDesiredState =
-//		createBooleanStatePreference( java.util.UUID.fromString( "3e551420-bb50-4e33-9175-9f29738998f0" ), false, "Is Default Field Name Generation Desired" );
-	
-//	@Deprecated
-//	public edu.cmu.cs.dennisc.croquet.BooleanState getIsSceneEditorExpandedState() {
-//		return org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance();
-//	}
-	private edu.cmu.cs.dennisc.croquet.BooleanState isRecursionEnabledState =
-		createBooleanStatePreference( java.util.UUID.fromString( "a5e1ded2-18c7-4ae5-8676-e6deca5650fe" ), false, "Is Recursion Enabled" );
-	
-	public edu.cmu.cs.dennisc.croquet.BooleanState getExpressionTypeFeedbackDesiredState() {
-		return this.isExpressionTypeFeedbackDesiredState;
-	}
-//	public edu.cmu.cs.dennisc.croquet.BooleanState getEmphasizingClassesState() {
-//		return this.isEmphasizingClassesState;
-//	}
 	public boolean isInactiveFeedbackDesired() {
 		return this.isInactiveFeedbackState.getValue();
 	}
-//	@Deprecated
-//	public boolean isEmphasizingClasses() {
-//		return this.isEmphasizingClassesState.getValue();
-//	}
-//	public edu.cmu.cs.dennisc.croquet.BooleanState getOmissionOfThisForFieldAccessesDesiredState() {
-//		return this.isOmissionOfThisForFieldAccessesDesiredState;
-//	}
-//	public boolean isDefaultFieldNameGenerationDesired() {
-//		return this.isDefaultFieldNameGenerationDesiredState.getValue();
-//	}
 
 	private int rootDividerLocation = 340;
 	private int leftDividerLocation = 240;
@@ -204,9 +172,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 	
-	public boolean isRecursionEnabled() {
-		return this.isRecursionEnabledState.getValue();
-	}
 	private void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
 		this.refreshAccessibles();
 		if( isSceneEditorExpanded ) {

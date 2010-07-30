@@ -42,8 +42,6 @@
  */
 package org.alice.ide.croquet.models.menubar;
 
-import org.alice.ide.croquet.models.history.IsProjectHistoryShowingState;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -59,11 +57,12 @@ public class WindowMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel
 				org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance(),
 				org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance(),
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				IsProjectHistoryShowingState.getInstance(),
+				org.alice.ide.croquet.models.history.IsProjectHistoryShowingState.getInstance(),
+				org.alice.ide.croquet.models.ui.IsMemoryUsageShowingState.getInstance(),
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
 				PreferencesMenuModel.getInstance(),
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				InformationMenuModel.getInstance()
+				InternalTestingMenuModel.getInstance()
 		);
 	}
 }

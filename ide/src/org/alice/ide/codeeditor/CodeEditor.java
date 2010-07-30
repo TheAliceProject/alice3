@@ -157,11 +157,11 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo(parent);
 		edu.cmu.cs.dennisc.croquet.Application.getSingleton().addLocaleObserver( this.localeObserver );
-		org.alice.ide.IDE.getSingleton().getExpressionTypeFeedbackDesiredState().addAndInvokeValueObserver( this.typeFeedbackObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().addAndInvokeValueObserver( this.typeFeedbackObserver );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		org.alice.ide.IDE.getSingleton().getExpressionTypeFeedbackDesiredState().removeValueObserver( this.typeFeedbackObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().removeValueObserver( this.typeFeedbackObserver );
 		edu.cmu.cs.dennisc.croquet.Application.getSingleton().removeLocaleObserver( this.localeObserver );
 		super.handleRemovedFrom( parent );
 	}
@@ -438,7 +438,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 			
 			if( source instanceof org.alice.ide.templates.StatementTemplate ) {
 				final org.alice.ide.templates.StatementTemplate statementTemplate = (org.alice.ide.templates.StatementTemplate)source;
-				if( org.alice.ide.IDE.getSingleton().isRecursionEnabled() ) {
+				if( org.alice.ide.croquet.models.ui.recursion.IsRecursionAllowedState.getInstance().getValue() ) {
 					//pass
 				} else {
 					edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
