@@ -168,7 +168,7 @@ public class RecursionDialogOperation extends edu.cmu.cs.dennisc.croquet.DialogO
 	@Override
 	protected RecursionPanel createContentPane(edu.cmu.cs.dennisc.croquet.DialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog) {
 		String explanationA = "<html>Recursion is disabled by default because otherwise many users unwittingly and mistakenly invoke recursive calls.<p><p>Recursion is a powerful tool in computer science.  It is not to be feared.  It simply needs to be understood.<p><p>For more information on recursion, please see:</html>";
-		String explanationB = "aside: hopefully this button makes sense to you:  ";
+		String explanationB = "Hopefully, this button makes sense to you:  ";
 		return new RecursionPanel( explanationA, explanationB );
 	}
 	@Override
