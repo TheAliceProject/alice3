@@ -585,7 +585,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 				this.renameResourceOperation.createButton(), 
 				this.replaceResourceOperation.createButton() 
 		);
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.PageAxisPanel( pane, edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.EAST );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.PageAxisPanel( pane, edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END );
 		this.handleSelection();
 	}
 

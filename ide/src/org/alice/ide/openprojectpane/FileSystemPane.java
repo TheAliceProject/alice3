@@ -43,6 +43,8 @@
 
 package org.alice.ide.openprojectpane;
 
+import edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -85,11 +87,11 @@ class FileSystemPane extends TabContentPanel {
 
 		BrowseOperation browseOperation = new BrowseOperation();
 		edu.cmu.cs.dennisc.croquet.BorderPanel pane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		pane.addComponent(new edu.cmu.cs.dennisc.croquet.Label("file:"), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.WEST);
-		pane.addComponent(this.textState.createTextField(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
-		pane.addComponent(browseOperation.createButton(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.EAST);
+		pane.addComponent( new edu.cmu.cs.dennisc.croquet.Label("file:"), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_START );
+		pane.addComponent( this.textState.createTextField(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		pane.addComponent( browseOperation.createButton(), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END );
 
-		this.addComponent(pane, Constraint.NORTH);
+		this.addComponent(pane, Constraint.PAGE_START);
 	}
 
 	@Override

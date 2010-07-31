@@ -246,7 +246,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		edu.cmu.cs.dennisc.croquet.BorderPanel southPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		edu.cmu.cs.dennisc.croquet.Hyperlink hyperlink = getTutorialStencil().getNextOperation().createHyperlink();
 		hyperlink.scaleFont( 1.4f );
-		southPanel.addComponent( hyperlink, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.EAST );
+		southPanel.addComponent( hyperlink, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END );
 		rv.add( southPanel.getAwtComponent(), java.awt.BorderLayout.SOUTH );
 		final int X_BORDER_PAD = 16;
 		final int Y_BORDER_PAD = 12;

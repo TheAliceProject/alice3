@@ -430,7 +430,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		//instancePanel.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() );
 
 		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = IS_FOLDER_TABBED_PANE_DESIRED ? this.tabbedPaneSelectionState.createDefaultFolderTabbedPane() : this.tabbedPaneSelectionState.createDefaultToolPaletteTabbedPane();
-		this.addComponent( instancePanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
+		this.addComponent( instancePanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
 		this.addComponent( tabbedPane, Constraint.CENTER );
 		tabbedPane.scaleFont( 1.5f );
 		if( tabbedPane instanceof edu.cmu.cs.dennisc.croquet.ToolPaletteTabbedPane ) {

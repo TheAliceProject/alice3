@@ -322,13 +322,13 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		pageAxisPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,14,0,0 ) );
 
 		edu.cmu.cs.dennisc.croquet.BorderPanel borderPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		borderPanel.addComponent( pageAxisPanel, Constraint.NORTH );
+		borderPanel.addComponent( pageAxisPanel, Constraint.PAGE_START );
 		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( borderPanel );
 		scrollPane.setBorder( null );
 		scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
 		
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
-		this.addComponent( new Title( type ), Constraint.NORTH );
+		this.addComponent( new Title( type ), Constraint.PAGE_START );
 		this.addComponent( scrollPane, Constraint.CENTER );
 
 		//java.awt.Font font = edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont( this.getFont(), 2.0f );
@@ -357,7 +357,7 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		edu.cmu.cs.dennisc.croquet.Frame frame = new edu.cmu.cs.dennisc.croquet.Frame();
 		
 		
-		frame.getContentPanel().addComponent( editTypePanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
+		frame.getContentPanel().addComponent( editTypePanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
 		
 		frame.pack();
 		frame.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Frame.DefaultCloseOperation.EXIT );

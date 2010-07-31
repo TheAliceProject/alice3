@@ -193,11 +193,16 @@ public abstract class Application {
 			for( java.util.Set< Model > set : sets ) {
 				for( Model model : set ) {
 					model.localize();
-					for( JComponent<?> component : model.getComponents() ) {
-						component.revalidateAndRepaint();
-					}
+//					for( JComponent<?> component : model.getComponents() ) {
+//					}
 				}
 			}
+		}
+		for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this.frame.getAwtComponent(), javax.swing.JComponent.class ) ) {
+			component.setLocale( locale );
+			component.setComponentOrientation( java.awt.ComponentOrientation.getOrientation( locale ) );
+			component.revalidate();
+			component.repaint();
 		}
 	}
 

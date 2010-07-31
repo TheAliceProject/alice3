@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
+import edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,7 +54,7 @@ public class ToolPalette extends BorderPanel {
 	/*package-private*/ ToolPalette( AbstractButton<?,BooleanState> title, Component<?> mainComponent ) {
 		this.title = title;
 		this.mainComponent = mainComponent;
-		this.addComponent( this.title, Constraint.NORTH );
+		this.addComponent( this.title, Constraint.PAGE_START );
 		this.addComponent( this.mainComponent, Constraint.CENTER );
 	}
 	private BooleanState.ValueObserver valueObserver = new BooleanState.ValueObserver() {

@@ -66,7 +66,7 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression> 
 			expression = new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
 		}
 		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		rv.addComponent( org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( expression ), Constraint.WEST );
+		rv.addComponent( org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( expression ), Constraint.LINE_START );
 		return rv;
 	}
 	@Override

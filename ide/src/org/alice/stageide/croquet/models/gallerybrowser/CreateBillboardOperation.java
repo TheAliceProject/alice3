@@ -42,6 +42,8 @@
  */
 package org.alice.stageide.croquet.models.gallerybrowser;
 
+import edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,7 +53,7 @@ class CreateFieldFromBillboardPane extends org.alice.ide.declarationpanes.Create
 	public CreateFieldFromBillboardPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		super( declaringType, org.alice.apis.moveandturn.Billboard.class, null );
 		this.imageView.setBorder( javax.swing.BorderFactory.createEmptyBorder(0,0,0,8) );
-		this.addComponent( this.imageView, Constraint.EAST );
+		this.addComponent( this.imageView, Constraint.LINE_END );
 	}
 	public org.alice.apis.moveandturn.Billboard getBillboard() {
 		return this.billboard;

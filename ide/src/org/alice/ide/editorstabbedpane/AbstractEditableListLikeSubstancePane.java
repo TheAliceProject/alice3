@@ -228,7 +228,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		gbc.weighty = 1.0;
 		buttonPane.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue(), gbc );
 
-		this.addComponent( buttonPane, Constraint.EAST );
+		this.addComponent( buttonPane, Constraint.LINE_END );
 
 		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.listLikeSubstance ) );
 		scrollPane.setBorder( null );

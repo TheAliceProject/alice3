@@ -48,6 +48,8 @@ import org.alice.stageide.croquet.models.gallerybrowser.CreateMyInstanceOperatio
 import org.alice.stageide.croquet.models.gallerybrowser.CreateTextbookInstanceOperation;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryFileOperation;
 
+import edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -246,8 +248,8 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		bonusPane.addComponent(Create3dTextOperation.getInstance().createButton());
 
 		edu.cmu.cs.dennisc.croquet.BorderPanel buttonPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		buttonPane.addComponent(fromFilePane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH);
-		buttonPane.addComponent(bonusPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.SOUTH);
+		buttonPane.addComponent(fromFilePane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START);
+		buttonPane.addComponent(bonusPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_END);
 
 		
 		this.setBackgroundColor(new java.awt.Color(220, 220, 255));
@@ -267,10 +269,10 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		edu.cmu.cs.dennisc.croquet.BorderPanel borderPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel( 0, GAP );
 		borderPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
 		borderPanel.setBackgroundColor( null );
-		borderPanel.addComponent( pathControlPanel, Constraint.NORTH );
+		borderPanel.addComponent( pathControlPanel, Constraint.PAGE_START );
 
 		edu.cmu.cs.dennisc.croquet.BorderPanel clampSizePanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		clampSizePanel.addComponent( directoryView, Constraint.WEST );
+		clampSizePanel.addComponent( directoryView, Constraint.LINE_START );
 		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( clampSizePanel );
 		scrollPane.getAwtComponent().getHorizontalScrollBar().setUnitIncrement( 16 );
 		scrollPane.setBorder( null );
@@ -278,8 +280,8 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		borderPanel.addComponent( scrollPane, Constraint.CENTER );
 		
 		this.setBackgroundColor( null );
-		this.addComponent( createPersonButton, Constraint.WEST);
-		this.addComponent( buttonPane, Constraint.EAST);
+		this.addComponent( createPersonButton, Constraint.LINE_START);
+		this.addComponent( buttonPane, Constraint.LINE_END);
 		this.addComponent( borderPanel, Constraint.CENTER );
 	}
 

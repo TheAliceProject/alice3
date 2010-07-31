@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.memory;
 
+import edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint;
+
 class MemoryUsageGraph extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JComponent > {
 	private static final long K = 1024;
 	//private static final long M = K*K;
@@ -138,7 +140,7 @@ public class MemoryUsagePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	
 	public MemoryUsagePanel() {
 		this.addComponent( this.memoryUsageGraph, Constraint.CENTER );
-		this.addComponent( this.garbageCollectAction.createButton(), Constraint.EAST );
+		this.addComponent( this.garbageCollectAction.createButton(), Constraint.LINE_END );
 	}
 
 	public static void main(String[] args) {

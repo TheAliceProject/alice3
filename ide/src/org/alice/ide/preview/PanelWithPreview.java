@@ -42,6 +42,8 @@
  */
 package org.alice.ide.preview;
 
+import edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -106,7 +108,7 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 					new edu.cmu.cs.dennisc.croquet.HorizontalSeparator(),
 					edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 )
 			);
-			this.addComponent( northPanel, Constraint.NORTH );
+			this.addComponent( northPanel, Constraint.PAGE_START );
 		}
 	}
 

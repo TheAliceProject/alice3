@@ -492,7 +492,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.right.getAwtComponent().setMinimumSize( new java.awt.Dimension( MINIMUM_SIZE, MINIMUM_SIZE ) );
 		this.left.getAwtComponent().setMinimumSize( new java.awt.Dimension( MINIMUM_SIZE, MINIMUM_SIZE ) );
 
-		this.right.addComponent( this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
+		this.right.addComponent( this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
 		this.right.addComponent( tabbedPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 		//this.right.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "hello" ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 
@@ -541,7 +541,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		rv.addMouseWheelListener( new edu.cmu.cs.dennisc.javax.swing.plaf.metal.FontMouseWheelAdapter() );
 		rv.addComponent( this.root, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
-		rv.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.concealedBin ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.EAST );
+		rv.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.concealedBin ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END );
 
 		this.setSceneEditorExpanded( false );
 		return rv;

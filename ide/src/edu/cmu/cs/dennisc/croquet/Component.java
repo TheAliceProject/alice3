@@ -211,6 +211,9 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 			this.awtComponent.addHierarchyListener( this.hierarchyListener );
 			//this.jComponent.addContainerListener( this.containerListener );
 			this.awtComponent.setName( this.getClass().getName() );
+			if( this.awtComponent instanceof javax.swing.JComponent ) {
+				((javax.swing.JComponent)this.awtComponent).setComponentOrientation(  java.awt.ComponentOrientation.getOrientation( javax.swing.JComponent.getDefaultLocale() ) );
+			}
 			Component.map.put( this.awtComponent, this );
 		}
 		return this.awtComponent;

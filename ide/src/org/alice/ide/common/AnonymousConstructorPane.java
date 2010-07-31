@@ -45,9 +45,9 @@ package org.alice.ide.common;
 class MethodPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	public MethodPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		org.alice.ide.codeeditor.ParametersPane parametersPane = new org.alice.ide.codeeditor.ParametersPane( factory, method );
-		this.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( method, parametersPane, false ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 12 ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.WEST );
-		this.addComponent( new BodyPane( factory.createComponent( method.body.getValue() ) ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		this.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( method, parametersPane, false ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 12 ), Constraint.LINE_START );
+		this.addComponent( new BodyPane( factory.createComponent( method.body.getValue() ) ), Constraint.CENTER );
 		this.setAlignmentX( 0.0f );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getProcedureColor() );

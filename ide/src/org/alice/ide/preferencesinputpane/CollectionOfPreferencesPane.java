@@ -121,9 +121,9 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.croquet.Bord
 		);
 
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		this.addComponent( new TitlePane( this.title ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
+		this.addComponent( new TitlePane( this.title ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
 		this.addComponent( wrapInScrollPane( centerComponent ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
-		this.addComponent( buttonsPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.SOUTH );
+		this.addComponent( buttonsPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_END );
 	}
 	public String getTitle() {
 		return this.title;

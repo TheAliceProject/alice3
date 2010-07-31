@@ -42,6 +42,8 @@
  */
 package org.alice.ide.choosers;
 
+import edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint;
+
 abstract class NumberModel extends edu.cmu.cs.dennisc.croquet.StringState {
 	@Deprecated
 	protected final static edu.cmu.cs.dennisc.croquet.Group CALCULATOR_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "afe9fee0-e91f-4344-9b80-6fa84f3458d3" ), "CALCULATOR_GROUP" );
@@ -278,7 +280,7 @@ abstract class AbstractNumberChooser extends ValueChooser< edu.cmu.cs.dennisc.al
 		);
 
 		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		rv.addComponent( lineAxisPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.NORTH );
+		rv.addComponent( lineAxisPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
 		rv.addComponent( gridBagPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 
 		java.awt.Font font = edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont( gridBagPanel.getFont(), 3.0f );

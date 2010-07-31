@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
+import edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint;
+
 /*package-private*/ class SelectChildDirectoryPopupMenuOperation extends AbstractPopupMenuOperation {
 	public static SelectChildDirectoryPopupMenuOperation getInstance( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: SelectChildDirectoryPopupMenuOperation.getInstance()" );
@@ -117,7 +119,7 @@ package edu.cmu.cs.dennisc.croquet;
 			selectChildButton.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.GRAY ) );
 		}
 		this.addComponent( SelectDirectoryActionOperation.getInstance( treeSelectionState, treeNode, initializer ).createButton(), Constraint.CENTER );
-		this.addComponent( selectChildButton, Constraint.EAST );
+		this.addComponent( selectChildButton, Constraint.LINE_END );
 	}
 
 	@Override

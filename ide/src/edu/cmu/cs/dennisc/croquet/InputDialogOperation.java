@@ -209,7 +209,7 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 			BorderPanel borderPanel = dialog.getContentPanel();
 			borderPanel.setBackgroundColor( backgroundColor );
 			borderPanel.addComponent( mainPane, BorderPanel.Constraint.CENTER );
-			borderPanel.addComponent( southPanel, BorderPanel.Constraint.SOUTH );
+			borderPanel.addComponent( southPanel, BorderPanel.Constraint.PAGE_END );
 			
 			dialog.setDefaultButton( okCancelPanel.getOkButton() );
 

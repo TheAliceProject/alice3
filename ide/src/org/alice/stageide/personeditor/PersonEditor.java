@@ -42,6 +42,8 @@
  */
 package org.alice.stageide.personeditor;
 
+import edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -114,13 +116,13 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			slider.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 			
 			edu.cmu.cs.dennisc.croquet.BorderPanel fitnessLevelPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-			fitnessLevelPane.addComponent( softOperation.createButton(), Constraint.WEST );
+			fitnessLevelPane.addComponent( softOperation.createButton(), Constraint.LINE_START );
 			fitnessLevelPane.addComponent( slider, Constraint.CENTER );
-			fitnessLevelPane.addComponent( cutOperation.createButton(), Constraint.EAST );
+			fitnessLevelPane.addComponent( cutOperation.createButton(), Constraint.LINE_END );
 
 			edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel( 8, 8 );
 			rv.addComponent( scrollPane, Constraint.CENTER );
-			rv.addComponent( fitnessLevelPane, Constraint.SOUTH );
+			rv.addComponent( fitnessLevelPane, Constraint.PAGE_END );
 			rv.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 			rv.getAwtComponent().setOpaque( true );
 			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
@@ -219,7 +221,7 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		
 
 		edu.cmu.cs.dennisc.croquet.BorderPanel northPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		northPane.addComponent(  this.randomPersonActionOperation.createButton(), Constraint.NORTH );
+		northPane.addComponent(  this.randomPersonActionOperation.createButton(), Constraint.PAGE_START );
 		edu.cmu.cs.dennisc.croquet.RowsSpringPanel ubiquitousPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 8 ) {
 			@Override
 			protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
@@ -233,7 +235,7 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		northPane.addComponent( ubiquitousPane, Constraint.CENTER );
 
 		edu.cmu.cs.dennisc.croquet.BorderPanel ingredientsPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
-		ingredientsPanel.addComponent( northPane, Constraint.NORTH );
+		ingredientsPanel.addComponent( northPane, Constraint.PAGE_START );
 		ingredientsPanel.addComponent( tabbedPane, Constraint.CENTER );
 		ingredientsPanel.setBackgroundColor( edu.cmu.cs.dennisc.croquet.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 
