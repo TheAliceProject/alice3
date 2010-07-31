@@ -53,15 +53,12 @@ public class FormatterSelectionState extends edu.cmu.cs.dennisc.croquet.ListSele
 		return SingletonHolder.instance;
 	}
 	private FormatterSelectionState() {
-		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ), 
-				new edu.cmu.cs.dennisc.croquet.Codec< org.alice.ide.formatter.Formatter >() {
-					public org.alice.ide.formatter.Formatter decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-						throw new RuntimeException( "todo" );
-					}
-					public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.formatter.Formatter t) {
-						throw new RuntimeException( "todo" );
-					}
-				}, 
-				0, org.alice.ide.formatter.AliceFormatter.getInstance(), org.alice.ide.formatter.JavaFormatter.getInstance() );
+		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "bae5a8d1-29ad-4205-9445-578a54c8d1e3" ), 
+				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.alice.ide.formatter.Formatter.class ), 
+				0, 
+				org.alice.ide.formatter.AliceFormatter.getInstance(), 
+				org.alice.ide.formatter.JavaFormatter.getInstance() 
+		);
+		org.alice.ide.IDE.getSingleton().registerAndInitializePreference( this );
 	}
 }

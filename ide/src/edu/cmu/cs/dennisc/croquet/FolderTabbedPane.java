@@ -273,7 +273,6 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		@Override
 		public void setSelected(boolean isSelected) {
 			super.setSelected(isSelected);
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "setSelected", this, isSelected ); 
 			if( isSelected ) {
 				cardPanel.show( this.cardPanelKey );
 				cardPanel.revalidateAndRepaint();

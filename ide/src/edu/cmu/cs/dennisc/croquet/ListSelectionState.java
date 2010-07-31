@@ -230,12 +230,14 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 		
 		public void setSelectedItem(Object item) {
 			if (item != this.getSelectedItem()) {
-				final int N = this.getSize();
 				int selectedIndex = -1;
-				for (int i = 0; i < N; i++) {
-					if (this.items.get( i ) == item) {
-						selectedIndex = i;
-						break;
+				if( item != null ) {
+					final int N = this.getSize();
+					for (int i = 0; i < N; i++) {
+						if( item.equals( this.items.get( i ) ) ) {
+							selectedIndex = i;
+							break;
+						}
 					}
 				}
 				ListSelectionState.this.listSelectionModel.setSelectedIndex(selectedIndex, true);
@@ -340,6 +342,9 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 	}
 	/*package-private*/ final void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, E value ) {
 		this.codec.encode( binaryEncoder, value );
+	}
+	public Codec<E> getCodec() {
+		return this.codec;
 	}
 	public E getSelectedItem() {
 		return (E) this.comboBoxModel.getSelectedItem();

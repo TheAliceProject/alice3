@@ -53,7 +53,6 @@ public class SelectDirectoryActionOperation extends ActionOperation {
 		} else {
 			rv = new SelectDirectoryActionOperation(treeSelectionState, treeNode, initializer);
 			mapToMap.put( treeNode, initializer, rv );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "SelectDirectoryActionOperation", initializer );
 		}
 		return rv;
 	}

@@ -56,10 +56,25 @@ public class LocaleSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelecti
 		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ), 
 				new edu.cmu.cs.dennisc.croquet.Codec< java.util.Locale >() {
 					public java.util.Locale decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-						throw new RuntimeException( "todo" );
+						boolean isNotNull = binaryDecoder.decodeBoolean();
+						if( isNotNull ) {
+							String language = binaryDecoder.decodeString();
+							String country = binaryDecoder.decodeString();
+							String variant = binaryDecoder.decodeString();
+							return new java.util.Locale( language, country, variant );
+						} else {
+							return null;
+						}
 					}
-					public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.util.Locale t) {
-						throw new RuntimeException( "todo" );
+					public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.util.Locale value) {
+						if( value != null ) {
+							binaryEncoder.encode( true );
+							binaryEncoder.encode( value.getLanguage() );
+							binaryEncoder.encode( value.getCountry() );
+							binaryEncoder.encode( value.getVariant() );
+						} else {
+							binaryEncoder.encode( false );
+						}
 					}
 				}, 
 				0, 
@@ -85,6 +100,7 @@ public class LocaleSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelecti
 				new java.util.Locale( "zh" ),
 				new java.util.Locale( "ko" )
 		);
+		org.alice.ide.IDE.getSingleton().registerAndInitializePreference( this );
 	}
 	@Override
 	protected String getMenuText(java.util.Locale item) {

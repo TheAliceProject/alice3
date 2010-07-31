@@ -100,9 +100,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return this.aboutOperation;
 	}
 
-	private java.util.List< edu.cmu.cs.dennisc.croquet.BooleanState > booleanStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	public void registerAndInitializePreference( edu.cmu.cs.dennisc.croquet.BooleanState booleanState ) {
-		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( this.getClass() );
+	private static void clearAllPreferencesIfRequested( java.util.prefs.Preferences userPreferences ) {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
 			try {
 				userPreferences.clear();
@@ -110,15 +108,75 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 				throw new RuntimeException( bse );
 			}
 		}
+	}
+	
+	private static String getKey( edu.cmu.cs.dennisc.croquet.Model model ) {
+		return model.getIndividualUUID().toString();
+	}
+	private static <T> T decode( byte[] data, edu.cmu.cs.dennisc.croquet.Codec<T> codec ) {
+		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( data );
+		edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder(bais);
+		return codec.decode( decoder );
+	}
+	private static <T> byte[] encode( T value, edu.cmu.cs.dennisc.croquet.Codec<T> codec ) throws java.io.IOException {
+		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+		edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder(baos);
+		codec.encode(encoder, value);
+		encoder.flush();
+		return baos.toByteArray();
+	}
+	private static <E> edu.cmu.cs.dennisc.croquet.ListSelectionState<E> decode( edu.cmu.cs.dennisc.croquet.ListSelectionState<E> rv, java.util.prefs.Preferences userPreferences ) throws java.io.IOException {
+		edu.cmu.cs.dennisc.croquet.Codec< E > codec = rv.getCodec();
+		E defaultValue = rv.getSelectedItem();
+		byte[] defaultEncoding = encode( defaultValue, codec );  
+		String key = getKey( rv );
+		byte[] encoding = userPreferences.getByteArray( key, defaultEncoding );
+		if( java.util.Arrays.equals( defaultEncoding, encoding ) ) {
+			//pass
+		} else {
+			E value = decode( encoding, codec );
+			rv.setSelectedItem( value );
+		}
+		return rv;
+	}
+	private static <E> void encode( edu.cmu.cs.dennisc.croquet.ListSelectionState<E> listSelectionState, java.util.prefs.Preferences userPreferences ) throws java.io.IOException {
+		edu.cmu.cs.dennisc.croquet.Codec< E > codec = listSelectionState.getCodec();
+		E value = listSelectionState.getSelectedItem();
+		byte[] encoding = encode( value, codec );
+		String key = getKey( listSelectionState );
+		userPreferences.putByteArray( key, encoding );
+	}
+	private java.util.List< edu.cmu.cs.dennisc.croquet.BooleanState > booleanStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private java.util.List< edu.cmu.cs.dennisc.croquet.ListSelectionState<?> > listSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	public void registerAndInitializePreference( edu.cmu.cs.dennisc.croquet.BooleanState booleanState ) {
+		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( this.getClass() );
+		clearAllPreferencesIfRequested(userPreferences);
 		java.util.UUID id = booleanState.getIndividualUUID();
 		boolean value = userPreferences.getBoolean( id.toString(), booleanState.getValue() );
 		booleanState.setValue( value );
 		booleanStatePreferences.add( booleanState );
 	}
+	public void registerAndInitializePreference( edu.cmu.cs.dennisc.croquet.ListSelectionState<?> listSelectionState ) {
+		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( this.getClass() );
+		clearAllPreferencesIfRequested(userPreferences);
+		try {
+			decode( listSelectionState, userPreferences );
+		} catch( Throwable t ) {
+			t.printStackTrace();
+		}
+		listSelectionStatePreferences.add( listSelectionState );
+	}
 	private void preservePreferences() {
 		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( this.getClass() );
 		for( edu.cmu.cs.dennisc.croquet.BooleanState booleanState : booleanStatePreferences ) {
 			userPreferences.putBoolean( booleanState.getIndividualUUID().toString(), booleanState.getValue() );
+		}
+		for( edu.cmu.cs.dennisc.croquet.ListSelectionState<?> listSelectionState : listSelectionStatePreferences ) {
+			try {
+				encode( listSelectionState, userPreferences );
+			} catch( Throwable t ) {
+				t.printStackTrace();
+			}
 		}
 	}
 	private int rootDividerLocation = 340;
