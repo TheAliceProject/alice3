@@ -82,6 +82,11 @@ public abstract class TreeSelectionState<E> extends Model {
 				fireValueChanged( getSelection() );
 			}
 		} );
+		this.localize();
+	}
+
+	@Override
+	/*package-private*/ void localize() {
 	}
 	protected abstract E decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder);
 	protected abstract void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, E value);

@@ -528,6 +528,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 				refreshAccessibles();
 			}
 		} );
+		
+		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<java.util.Locale> () {
+			public void changed(java.util.Locale nextValue) {
+				edu.cmu.cs.dennisc.croquet.Application.getSingleton().setLocale( nextValue );
+			}
+		} );
 	}
 
 	@Override

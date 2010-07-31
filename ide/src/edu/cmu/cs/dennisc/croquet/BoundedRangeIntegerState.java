@@ -84,6 +84,11 @@ public final class BoundedRangeIntegerState extends Model {
 		this.boundedRangeModel.setValue( value );
 		this.previousValue = this.boundedRangeModel.getValue();
 		this.boundedRangeModel.addChangeListener( this.changeListener );
+		this.localize();
+	}
+
+	@Override
+	/*package-private*/ void localize() {
 	}
 	
 	private java.util.List< ValueObserver > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();

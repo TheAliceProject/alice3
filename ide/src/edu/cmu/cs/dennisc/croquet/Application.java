@@ -51,11 +51,6 @@ public abstract class Application {
 	public static final Group INFORMATION_GROUP = new Group( java.util.UUID.fromString( "c883259e-3346-49d0-a63f-52eeb3d9d805" ), "INFORMATION_GROUP" );
 	public static final Group INHERIT_GROUP = new Group( java.util.UUID.fromString( "488f8cf9-30cd-49fc-ab72-7fd6a3e13c3f" ), "INHERIT_GROUP" );
 
-	public static interface LocaleObserver {
-		public void localeChanging( java.util.Locale previousLocale, java.util.Locale nextLocale );
-		public void localeChanged( java.util.Locale previousLocale, java.util.Locale nextLocale );
-	}
-
 	private static Application singleton;
 
 	public static Application getSingleton() {
@@ -63,7 +58,7 @@ public abstract class Application {
 	}
 
 	private ModelContext<Model> rootContext = new ModelContext<Model>( null, null, null, null ) {};
-	private java.util.Map< java.util.UUID, java.util.Set< Model > > mapUUIDToModels = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map< java.util.UUID, java.util.Set< Model > > mapIdToModels = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public Application() {
 		assert Application.singleton == null;
@@ -86,7 +81,9 @@ public abstract class Application {
 	}
 
 	private java.util.Set< Model > lookupModels( java.util.UUID id ) {
-		return this.mapUUIDToModels.get( id );
+		synchronized ( this.mapIdToModels ) {
+			return this.mapIdToModels.get( id );
+		}
 	}
 	@Deprecated
 	public Model findFirstAppropriateModel( java.util.UUID id ) {
@@ -164,27 +161,46 @@ public abstract class Application {
 		//this.frame.pack();
 	}
 
-	private java.util.List< LocaleObserver > localeObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-
-	public void addLocaleObserver( LocaleObserver localeObserver ) {
-		this.localeObservers.add( localeObserver );
-	}
-	public void removeLocaleObserver( LocaleObserver localeObserver ) {
-		this.localeObservers.remove( localeObserver );
-	}
+//	public static interface LocaleObserver {
+//		public void localeChanging( java.util.Locale previousLocale, java.util.Locale nextLocale );
+//		public void localeChanged( java.util.Locale previousLocale, java.util.Locale nextLocale );
+//	}
+//	private java.util.List< LocaleObserver > localeObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+//	public void addLocaleObserver( LocaleObserver localeObserver ) {
+//		this.localeObservers.add( localeObserver );
+//	}
+//	public void removeLocaleObserver( LocaleObserver localeObserver ) {
+//		this.localeObservers.remove( localeObserver );
+//	}
+//	public void setLocale( java.util.Locale locale ) {
+//		java.util.Locale previousLocale = this.frame.getAwtComponent().getLocale();
+//
+//		for( LocaleObserver localeObserver : this.localeObservers ) {
+//			localeObserver.localeChanging( previousLocale, locale );
+//		}
+//		this.frame.getAwtComponent().setLocale( locale );
+//		//todo: remove
+//		javax.swing.JComponent.setDefaultLocale( locale );
+//		for( LocaleObserver localeObserver : this.localeObservers ) {
+//			localeObserver.localeChanged( previousLocale, locale );
+//		}
+//	}
 	public void setLocale( java.util.Locale locale ) {
-		java.util.Locale previousLocale = this.frame.getAwtComponent().getLocale();
-
-		for( LocaleObserver localeObserver : this.localeObservers ) {
-			localeObserver.localeChanging( previousLocale, locale );
-		}
-		this.frame.getAwtComponent().setLocale( locale );
-		//todo: remove
+		java.util.Locale.setDefault( locale );
 		javax.swing.JComponent.setDefaultLocale( locale );
-		for( LocaleObserver localeObserver : this.localeObservers ) {
-			localeObserver.localeChanged( previousLocale, locale );
+		synchronized ( this.mapIdToModels ) {
+			java.util.Collection< java.util.Set< Model > > sets = this.mapIdToModels.values();
+			for( java.util.Set< Model > set : sets ) {
+				for( Model model : set ) {
+					model.localize();
+					for( JComponent<?> component : model.getComponents() ) {
+						component.revalidateAndRepaint();
+					}
+				}
+			}
 		}
 	}
+
 
 	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
 	protected abstract void handleAbout( java.util.EventObject e );
@@ -193,28 +209,32 @@ public abstract class Application {
 
 	/*package-private*/ void registerModel( Model model ) {
 		java.util.UUID id = model.getIndividualUUID();
-		java.util.Set< Model > set = this.mapUUIDToModels.get( id );
-		if( set != null ) {
-			//pass
-		} else {
-			set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
-			this.mapUUIDToModels.put( id, set );
+		synchronized ( this.mapIdToModels ) {
+			java.util.Set< Model > set = this.mapIdToModels.get( id );
+			if( set != null ) {
+				//pass
+			} else {
+				set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+				this.mapIdToModels.put( id, set );
+			}
+			set.add( model );
 		}
-		set.add( model );
 	}
 	/*package-private*/ void unregisterModel( Model model ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "unregister:", model );
 		java.util.UUID id = model.getIndividualUUID();
-		java.util.Set< Model > set = this.mapUUIDToModels.get( id );
-		if( set != null ) {
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "pre set size:", set.size() );
-			set.remove( model );
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "post set size:", set.size() );
-			if( set.size() == 0 ) {
-				this.mapUUIDToModels.remove( id );
+		synchronized ( this.mapIdToModels ) {
+			java.util.Set< Model > set = this.mapIdToModels.get( id );
+			if( set != null ) {
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "pre set size:", set.size() );
+				set.remove( model );
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "post set size:", set.size() );
+				if( set.size() == 0 ) {
+					this.mapIdToModels.remove( id );
+				}
+			} else {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate unregister" );
 			}
-		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate unregister" );
 		}
 	}
 

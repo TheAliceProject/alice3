@@ -88,7 +88,16 @@ public /*final*/ class BooleanState extends Model {
 		this.value = initialState;
 		this.buttonModel.setSelected(initialState);
 		this.buttonModel.addItemListener(this.itemListener);
-		
+		this.localize();
+	}
+	@Deprecated
+	public BooleanState(Group group, java.util.UUID individualUUID, boolean initialState, String name ) {
+		this(group, individualUUID, initialState );
+		this.setTextForBothTrueAndFalse( name );
+	}
+	
+	@Override
+	/*package-private*/ void localize() {
 		String text = this.getDefaultLocalizedText();
 		if( text != null ) {
 			this.setTextForBothTrueAndFalse( text );
@@ -103,12 +112,6 @@ public /*final*/ class BooleanState extends Model {
 				}
 			}
 		}
-	}
-
-	@Deprecated
-	public BooleanState(Group group, java.util.UUID individualUUID, boolean initialState, String name ) {
-		this(group, individualUUID, initialState );
-		this.setTextForBothTrueAndFalse( name );
 	}
 
 	/*package-private*/ javax.swing.ButtonModel getButtonModel() {

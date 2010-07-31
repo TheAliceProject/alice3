@@ -48,6 +48,10 @@ package edu.cmu.cs.dennisc.croquet;
 public abstract class DragAndDropOperation extends Model {
 	public DragAndDropOperation( Group group, java.util.UUID inividualUUID ) {
 		super( group, inividualUUID );
+		this.localize();
+	}
+	@Override
+	/*package-private*/ void localize() {
 	}
 	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( DragComponent dragSource );
 	public abstract void handleDragStarted( DragAndDropContext dragAndDropContext );

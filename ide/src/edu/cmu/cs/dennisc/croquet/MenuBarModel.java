@@ -65,6 +65,11 @@ public class MenuBarModel extends Model {
 	private java.util.concurrent.CopyOnWriteArrayList< MenuModel > menuModels = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	public MenuBarModel( Group group, java.util.UUID individualUUID ) {
 		super( group, individualUUID );
+		this.localize();
+	}
+
+	@Override
+	/*package-private*/ void localize() {
 	}
 
 	public void addMenuModel( MenuModel menuModel ) {

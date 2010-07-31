@@ -63,6 +63,7 @@ public abstract class MenuModel extends Model {
 			MenuModel.this.handleMenuCanceled( e, this.menu );
 		}
 	};
+	private Class<?> clsForI18N;
 	private java.util.Map< Menu<MenuModel>, MenuListener > mapMenuToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -70,20 +71,25 @@ public abstract class MenuModel extends Model {
 	};
 	public MenuModel( java.util.UUID individualId, Class<?> clsForI18N ) {
 		super( MENU_GROUP, individualId );
-		
+		this.clsForI18N = clsForI18N;
+		this.localize();
+	}
+	public MenuModel( java.util.UUID individualId ) {
+		this( individualId, null );
+	}
+	
+	@Override
+	/*package-private*/ void localize() {
 		if( clsForI18N != null ) {
 			//pass
 		} else {
 			clsForI18N = this.getClass();
 		}
-		
 		this.action.putValue( javax.swing.Action.NAME, getDefaultLocalizedText( clsForI18N ) );
 		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, getLocalizedMnemonicKey( clsForI18N ) );
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, getLocalizedAcceleratorKeyStroke( clsForI18N ) );
 	}
-	public MenuModel( java.util.UUID individualId ) {
-		this( individualId, null );
-	}
+	
 	protected void handleMenuSelected( javax.swing.event.MenuEvent e, Menu<MenuModel> menu ) {
 		Component< ? > parent = menu.getParent();
 		ModelContext< ? > parentContext;

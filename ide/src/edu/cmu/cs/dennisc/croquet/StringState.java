@@ -104,6 +104,11 @@ public class StringState extends Model {
 			throw new RuntimeException( ble );
 		}
 		this.document.addDocumentListener( this.documentListener );
+		this.localize();
+	}
+
+	@Override
+	/*package-private*/ void localize() {
 	}
 
 	public String getValue() {

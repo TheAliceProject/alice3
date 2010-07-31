@@ -85,6 +85,11 @@ public abstract class Operation< C extends OperationContext<?>> extends Model {
 	};
 	public Operation( Group group, java.util.UUID individualUUID ) {
 		super( group, individualUUID );
+		this.localize();
+	}
+	
+	@Override
+	/*package-private*/ void localize() {
 		this.setName( this.getDefaultLocalizedText() );
 		this.setMnemonicKey( this.getLocalizedMnemonicKey() );
 		this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );

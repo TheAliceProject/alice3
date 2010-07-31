@@ -65,6 +65,8 @@ public abstract class Model implements Resolver< Model > {
 		return (Model)this;
 	}
 
+	/*package-private*/ abstract void localize();
+	
 	protected static String getLocalizedText( Class<?> cls, String subKey ) {
 		String bundleName = cls.getPackage().getName() + ".CroquetBundle";
 		try {

@@ -84,14 +84,14 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 	private StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
 	private edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane;
 
-	private edu.cmu.cs.dennisc.croquet.Application.LocaleObserver localeObserver = new edu.cmu.cs.dennisc.croquet.Application.LocaleObserver() {
-		public void localeChanging( java.util.Locale previousLocale, java.util.Locale nextLocale ) {
-		}
-		public void localeChanged( java.util.Locale previousLocale, java.util.Locale nextLocale ) {
-			CodeEditor.this.refresh();
-			CodeEditor.this.repaint();
-		}
-	};
+//	private edu.cmu.cs.dennisc.croquet.Application.LocaleObserver localeObserver = new edu.cmu.cs.dennisc.croquet.Application.LocaleObserver() {
+//		public void localeChanging( java.util.Locale previousLocale, java.util.Locale nextLocale ) {
+//		}
+//		public void localeChanged( java.util.Locale previousLocale, java.util.Locale nextLocale ) {
+//			CodeEditor.this.refresh();
+//			CodeEditor.this.repaint();
+//		}
+//	};
 	
 	public CodeEditor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		this.code = code;
@@ -153,16 +153,21 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 			CodeEditor.this.refresh();
 		}
 	};
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver formatterSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.formatter.Formatter >() {
+		public void changed(org.alice.ide.formatter.Formatter nextValue) {
+			CodeEditor.this.refresh();
+		}
+	};
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo(parent);
-		edu.cmu.cs.dennisc.croquet.Application.getSingleton().addLocaleObserver( this.localeObserver );
+		org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().addValueObserver( formatterSelectionObserver );
 		org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().addAndInvokeValueObserver( this.typeFeedbackObserver );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().removeValueObserver( this.typeFeedbackObserver );
-		edu.cmu.cs.dennisc.croquet.Application.getSingleton().removeLocaleObserver( this.localeObserver );
+		org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().addValueObserver( formatterSelectionObserver );
 		super.handleRemovedFrom( parent );
 	}
 
