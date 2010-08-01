@@ -305,6 +305,64 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 			}
 		}
 	}
+	
+//	//todo: PopupOperation
+//	private class PopupOperation extends ActionOperation {
+//		public PopupOperation() {
+//			super( Application.UI_STATE_GROUP, java.util.UUID.fromString( "7923b4c8-6a9f-4c8b-99b5-909ae6c0889a" ) );
+//		}
+//		@Override
+//		/*package-private*/ void localize() {
+//			super.localize();
+//			this.setName( ">>" );
+//		}
+//		@Override
+//		protected void perform(ActionOperationContext context) {
+//			PopupMenu popupMenu = new PopupMenu( new AbstractPopupMenuOperation( java.util.UUID.fromString( "0a1052fe-cfc2-492e-beab-969905246ecf" ) ) {
+//				@Override
+//				public Model[] getModels() {
+//					return new Model[] { FolderTabbedPane.this.getModel().getMenuModel() };
+//				}
+//			} );
+//			popupMenu.showBelow( context.getViewController() );
+//		}
+//	}
+//	
+//	private static class PopupButton extends Button {
+//		public PopupButton( Operation<?> operation ) {
+//			super( operation );
+//		}
+//		@Override
+//		protected javax.swing.JButton createAwtComponent() {
+//			javax.swing.JButton rv = new javax.swing.JButton() {
+//				private boolean isNecessary() {
+//					java.awt.Container parent = this.getParent();
+//					if( parent != null ) {
+//						int width = parent.getWidth();
+//						int preferredWidth = parent.getPreferredSize().width;
+//						return true;
+//						//return width < preferredWidth;
+//					} else {
+//						return false;
+//					}
+//				}
+//				@Override
+//				public void paint(java.awt.Graphics g) {
+//					if( isNecessary() ) {
+//						super.paint(g);
+//					}
+//				}
+////				@Override
+////				public void update(java.awt.Graphics g) {
+////					if( isNecessary() ) {
+////						super.update(g);
+////					}
+////				}
+//			};
+//			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2,4,2,4 ) );
+//			return rv;
+//		}
+//	}
 
 	public FolderTabbedPane( ListSelectionState<E> model, ListSelectionState.TabCreator< E > tabCreator ) {
 		super( model, tabCreator );
@@ -346,6 +404,9 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		} );
 		this.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
 		this.getAwtComponent().setOpaque( true );
+
+//		PopupOperation popupOperation = new PopupOperation();
+//		this.setHeaderTrailingComponent( new PopupButton( popupOperation ) );
 	}
 
 	public void setHeaderLeadingComponent( JComponent< ? > component ) {
@@ -358,7 +419,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		this.headerPanel.addComponent( component, BorderPanel.Constraint.LINE_START );
 		this.headerPanel.revalidateAndRepaint();
 	}
-	public void setHeaderTrailingComponent( JComponent< ? > component ) {
+	private void setHeaderTrailingComponent( JComponent< ? > component ) {
 		if( component.isOpaque() ) {
 			//pass
 		} else {
