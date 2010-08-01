@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabbedPane.FolderTabItemDetails > {
-	private static final int EAST_TAB_PAD = 32;
+	private static final int TRAILING_TAB_PAD = 32;
 	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 );
 	private static class FolderTabTitleUI extends javax.swing.plaf.basic.BasicButtonUI {
 		@Override
@@ -114,7 +114,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		public void repaint() {
 			java.awt.Container parent = this.getParent();
 			if( parent != null ) {
-				parent.repaint( this.getX(), this.getY(), this.getWidth() + EAST_TAB_PAD, this.getHeight() );
+				parent.repaint( this.getX(), this.getY(), this.getWidth() + TRAILING_TAB_PAD, this.getHeight() );
 			} else {
 				super.repaint();
 			}
@@ -128,12 +128,24 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 				javax.swing.AbstractButton awtButton = this.getAwtComponent();
 				javax.swing.JButton closeButton = new edu.cmu.cs.dennisc.javax.swing.components.JCloseButton( true );
 				closeButton.addActionListener( closeButtonActionListener );
-				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( awtButton, closeButton, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 4 );
+				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal horizontal;
+				if( this.getAwtComponent().getComponentOrientation() == java.awt.ComponentOrientation.LEFT_TO_RIGHT ) {
+					horizontal = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST;
+				} else {
+					horizontal = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.WEST;
+				}
+				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( awtButton, closeButton, horizontal, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 4 );
 			}
 		}
 		@Override
 		protected javax.swing.AbstractButton createAwtComponent() {
-			final JFolderTabTitle rv = new JFolderTabTitle();
+			final JFolderTabTitle rv = new JFolderTabTitle() {
+				@Override
+				public void setComponentOrientation(java.awt.ComponentOrientation o) {
+					super.setComponentOrientation(o);
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: adjust spring" );
+				}
+			};
 			return rv;
 		}
 	}
@@ -153,30 +165,44 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 			javax.swing.JPanel rv = new javax.swing.JPanel() {
 				private java.awt.geom.GeneralPath addToPath( java.awt.geom.GeneralPath rv, float x, float y, float width, float height, boolean isContinuation ) {
 					float a = height * 0.25f;
-					float x0 = x + width - EAST_TAB_PAD / 2;
-					float x1 = x + width + EAST_TAB_PAD;
-					// x0 += EAST_TAB_PAD;
-					float cx0 = x0 + EAST_TAB_PAD * 0.75f;
-					float cx1 = x0;
 
+					float xStart;
+					float xEnd;
+					float xA;
+					float tabPad;
+					if( this.getComponentOrientation() == java.awt.ComponentOrientation.LEFT_TO_RIGHT ) {
+						xStart = x;
+						xEnd = x + width - 1;
+						tabPad = TRAILING_TAB_PAD;
+						xA = xStart + a;
+					} else {
+						xStart = x + width - 1;
+						xEnd = x;
+						tabPad = -TRAILING_TAB_PAD;
+						xA = xStart - a;
+					}
+					float xCurve0 = xEnd - tabPad / 2;
+					float xCurve1 = xEnd + tabPad;
+					float cx0 = xCurve0 + tabPad * 0.75f;
+					float cx1 = xCurve0;
+					
 					float y0 = y + NORTH_AREA_PAD;
 					float y1 = y + height;// + this.contentBorderInsets.top;
 					float cy0 = y0;
 					float cy1 = y1;
 
-					float xA = x + a;
 					float yA = y + a;
 
 					if( isContinuation ) {
-						rv.lineTo( x1, y1 );
+						rv.lineTo( xCurve1, y1 );
 					} else {
-						rv.moveTo( x1, y1 );
+						rv.moveTo( xCurve1, y1 );
 					}
-					rv.lineTo( x1, y1-1 );
-					rv.curveTo( cx1, cy1, cx0, cy0, x0, y0 );
+					rv.lineTo( xCurve1, y1-1 );
+					rv.curveTo( cx1, cy1, cx0, cy0, xCurve0, y0 );
 					rv.lineTo( xA, y0 );
-					rv.quadTo( x, y0, x, yA );
-					rv.lineTo( x, y1 );
+					rv.quadTo( xStart, y0, xStart, yA );
+					rv.lineTo( xStart, y1 );
 
 					return rv;
 				}
@@ -299,14 +325,19 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 					g.setColor( SELECTED_BORDER_COLOR );
 					g.fillRect( x, y, width, 1 );
 					g.fillRect( x, y, 1, height );
-					
 					for( Component< ? > component : titlesPanel.getComponents() ) {
 						if( component instanceof AbstractButton< ?, ? > ) {
 							AbstractButton< ?, ? > button = (AbstractButton< ?, ? >)component;
 							if( button.getAwtComponent().getModel().isSelected() ) {
 								java.awt.Rectangle bounds = button.getBounds( headerPanel );
 								g.setColor( button.getBackgroundColor() );
-								g.fillRect( bounds.x, y, bounds.width + EAST_TAB_PAD, 1 );
+								int x0;
+								if( c.getComponentOrientation() == java.awt.ComponentOrientation.LEFT_TO_RIGHT ) {
+									x0 = bounds.x;
+								} else {
+									x0 = bounds.x - TRAILING_TAB_PAD;
+								}
+								g.fillRect( x0, y, bounds.width - 1 + TRAILING_TAB_PAD, 1 );
 							}
 						}
 					}
