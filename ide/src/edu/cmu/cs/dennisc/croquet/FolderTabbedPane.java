@@ -306,63 +306,70 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		}
 	}
 	
-//	//todo: PopupOperation
-//	private class PopupOperation extends ActionOperation {
-//		public PopupOperation() {
-//			super( Application.UI_STATE_GROUP, java.util.UUID.fromString( "7923b4c8-6a9f-4c8b-99b5-909ae6c0889a" ) );
-//		}
-//		@Override
-//		/*package-private*/ void localize() {
-//			super.localize();
-//			this.setName( ">>" );
-//		}
-//		@Override
-//		protected void perform(ActionOperationContext context) {
-//			PopupMenu popupMenu = new PopupMenu( new AbstractPopupMenuOperation( java.util.UUID.fromString( "0a1052fe-cfc2-492e-beab-969905246ecf" ) ) {
+	private java.util.Map<E, javax.swing.Action> mapItemToAction = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private javax.swing.Action getActionFor( final E item ) {
+		return new javax.swing.AbstractAction( item.toString() ) {
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+			}
+		};
+	}
+	
+	//todo: PopupOperation
+	private class PopupOperation extends ActionOperation {
+		public PopupOperation() {
+			super( Application.UI_STATE_GROUP, java.util.UUID.fromString( "7923b4c8-6a9f-4c8b-99b5-909ae6c0889a" ) );
+		}
+		@Override
+		/*package-private*/ void localize() {
+			super.localize();
+			this.setName( ">>" );
+		}
+		@Override
+		protected void perform(ActionOperationContext context) {
+			javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
+			for( E item : FolderTabbedPane.this.getModel() ) {
+				popupMenu.add( getActionFor( item ) );
+			}
+			ViewController<?,?> viewController = context.getViewController();
+			popupMenu.show( viewController.getAwtComponent(), viewController.getX(), viewController.getY() + viewController.getHeight() );
+		}
+	}
+	
+	private static class PopupButton extends Button {
+		public PopupButton( Operation<?> operation ) {
+			super( operation );
+		}
+		@Override
+		protected javax.swing.JButton createAwtComponent() {
+			javax.swing.JButton rv = new javax.swing.JButton() {
+				private boolean isNecessary() {
+					java.awt.Container parent = this.getParent();
+					if( parent != null ) {
+						int width = parent.getWidth();
+						int preferredWidth = parent.getPreferredSize().width;
+						return true;
+						//return width < preferredWidth;
+					} else {
+						return false;
+					}
+				}
+				@Override
+				public void paint(java.awt.Graphics g) {
+					if( isNecessary() ) {
+						super.paint(g);
+					}
+				}
 //				@Override
-//				public Model[] getModels() {
-//					return new Model[] { FolderTabbedPane.this.getModel().getMenuModel() };
-//				}
-//			} );
-//			popupMenu.showBelow( context.getViewController() );
-//		}
-//	}
-//	
-//	private static class PopupButton extends Button {
-//		public PopupButton( Operation<?> operation ) {
-//			super( operation );
-//		}
-//		@Override
-//		protected javax.swing.JButton createAwtComponent() {
-//			javax.swing.JButton rv = new javax.swing.JButton() {
-//				private boolean isNecessary() {
-//					java.awt.Container parent = this.getParent();
-//					if( parent != null ) {
-//						int width = parent.getWidth();
-//						int preferredWidth = parent.getPreferredSize().width;
-//						return true;
-//						//return width < preferredWidth;
-//					} else {
-//						return false;
-//					}
-//				}
-//				@Override
-//				public void paint(java.awt.Graphics g) {
+//				public void update(java.awt.Graphics g) {
 //					if( isNecessary() ) {
-//						super.paint(g);
+//						super.update(g);
 //					}
 //				}
-////				@Override
-////				public void update(java.awt.Graphics g) {
-////					if( isNecessary() ) {
-////						super.update(g);
-////					}
-////				}
-//			};
-//			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2,4,2,4 ) );
-//			return rv;
-//		}
-//	}
+			};
+			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2,4,2,4 ) );
+			return rv;
+		}
+	}
 
 	public FolderTabbedPane( ListSelectionState<E> model, ListSelectionState.TabCreator< E > tabCreator ) {
 		super( model, tabCreator );

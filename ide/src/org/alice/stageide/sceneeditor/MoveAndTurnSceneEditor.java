@@ -1493,7 +1493,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		frontMarker.setPicturePlane(picturePlane);
 		orthographicCameraMarkers.add(frontMarker);
 		
-		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( MoveAndTurnSceneEditor.class.getPackage().getName() + ".ViewBundle" );
+		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( MoveAndTurnSceneEditor.class.getPackage().getName() + ".view" );
 		this.openingSceneMarker.setName( resourceBundle.getString( "sceneCameraView" ) );
 		this.sceneViewMarker.setName( resourceBundle.getString( "layoutPerspectiveView" ) );
 		topMarker.setName( resourceBundle.getString( "topOrthographicView" ) );
