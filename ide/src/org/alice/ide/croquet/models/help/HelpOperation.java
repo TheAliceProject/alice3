@@ -70,7 +70,7 @@ public class HelpOperation extends org.alice.ide.operations.InconsequentialActio
 					hyperlink,
 					edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalGlue()
 			);
-			pageAxisPanel.setAlignmentY( 0.5f );
+			pageAxisPanel.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 			this.addComponent( iconLabel, Constraint.LINE_START );
 			this.addComponent( pageAxisPanel, Constraint.LINE_END );
 		}

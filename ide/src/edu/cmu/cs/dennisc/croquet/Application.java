@@ -186,23 +186,38 @@ public abstract class Application {
 //		}
 //	}
 	public void setLocale( java.util.Locale locale ) {
-		java.util.Locale.setDefault( locale );
-		javax.swing.JComponent.setDefaultLocale( locale );
-		synchronized ( this.mapIdToModels ) {
-			java.util.Collection< java.util.Set< Model > > sets = this.mapIdToModels.values();
-			for( java.util.Set< Model > set : sets ) {
-				for( Model model : set ) {
-					model.localize();
-//					for( JComponent<?> component : model.getComponents() ) {
-//					}
+		if( locale != null ) {
+			if( locale.equals( java.util.Locale.getDefault() ) && locale.equals( javax.swing.JComponent.getDefaultLocale() ) ) {
+				//pass
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "skipping locale", locale );
+			} else {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "setLocale", locale );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "java.util.Locale.getDefault()", java.util.Locale.getDefault() );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "javax.swing.JComponent.getDefaultLocale()", javax.swing.JComponent.getDefaultLocale() );
+				java.util.Locale.setDefault( locale );
+				javax.swing.JComponent.setDefaultLocale( locale );
+				synchronized ( this.mapIdToModels ) {
+					java.util.Collection< java.util.Set< Model > > sets = this.mapIdToModels.values();
+					for( java.util.Set< Model > set : sets ) {
+						for( Model model : set ) {
+							model.localize();
+//							for( JComponent<?> component : model.getComponents() ) {
+//							}
+						}
+					}
+				}
+				//todo?
+				//javax.swing.UIManager.getLookAndFeel().uninitialize();
+				//javax.swing.UIManager.getLookAndFeel().initialize();
+				for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this.frame.getAwtComponent(), javax.swing.JComponent.class ) ) {
+					component.setLocale( locale );
+					component.setComponentOrientation( java.awt.ComponentOrientation.getOrientation( locale ) );
+					component.revalidate();
+					component.repaint();
 				}
 			}
-		}
-		for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this.frame.getAwtComponent(), javax.swing.JComponent.class ) ) {
-			component.setLocale( locale );
-			component.setComponentOrientation( java.awt.ComponentOrientation.getOrientation( locale ) );
-			component.revalidate();
-			component.repaint();
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: locale==null" );
 		}
 	}
 

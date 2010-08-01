@@ -78,7 +78,7 @@ public class LocaleSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelecti
 					}
 				}, 
 				0, 
-				new java.util.Locale( "en" ),
+				new java.util.Locale( "en", "US" ),
 				new java.util.Locale( "pt" ),
 				new java.util.Locale( "pt", "BR" ),
 				new java.util.Locale( "es" ),

@@ -43,6 +43,9 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
+
+//todo: leading and trailing to support right to left languages
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,8 +53,10 @@ public class HorizontalSplitPane extends SplitPane {
 	public HorizontalSplitPane() {
 		super( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	}
-	public HorizontalSplitPane( Component<?> topComponent, Component<?> bottomComponent ) {
-		super( javax.swing.JSplitPane.HORIZONTAL_SPLIT, topComponent, bottomComponent );
+	public HorizontalSplitPane( Component<?> leftComponent, Component<?> rightComponent ) {
+		super( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
+		this.setLeftComponent( leftComponent );
+		this.setRightComponent( rightComponent );
 	}
 	public void setLeftComponent( Component<?> component ) {
 		this.setTopOrLeftComponent( component );

@@ -60,8 +60,8 @@ public class WarningPane extends edu.cmu.cs.dennisc.javax.swing.components.JPage
 		editorPane.setEditable( false );
 		editorPane.setBackground( null );
 		
-		label.setAlignmentX( 0.0f );
-		editorPane.setAlignmentX( 0.0f );
+		label.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
+		editorPane.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		this.add( label );
 		this.add( editorPane );
 		this.add( javax.swing.Box.createVerticalStrut( 8 ) );

@@ -169,7 +169,7 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		@Override
 		protected javax.swing.JList createAwtComponent() {
 			final javax.swing.JList rv = new javax.swing.JList();
-			rv.setAlignmentX( 0.0f );
+			rv.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 			rv.setDragEnabled( true );
 
 			try {

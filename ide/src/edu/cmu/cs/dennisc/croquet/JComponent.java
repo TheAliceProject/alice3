@@ -57,14 +57,13 @@ public abstract class JComponent<J extends javax.swing.JComponent> extends Conta
 //		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: opaque" );
 //		this.getAwtComponent().setOpaque(color!=null);
 //	}
-	
 	public void setAlignmentX(float alignmentX) {
 		this.getAwtComponent().setAlignmentX(alignmentX);
 	}
 	public void setAlignmentY(float alignmentY) {
 		this.getAwtComponent().setAlignmentY(alignmentY);
 	}
-
+	
 	@Override
 	public java.awt.Rectangle getVisibleRectangle() {
 		return this.getAwtComponent().getVisibleRect();

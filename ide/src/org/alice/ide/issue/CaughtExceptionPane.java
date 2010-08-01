@@ -87,8 +87,8 @@ public class CaughtExceptionPane extends edu.cmu.cs.dennisc.toolkit.issue.Abstra
 		javax.swing.JLabel meanQueen = new javax.swing.JLabel( icon );
 		
 		
-//		message.setAlignmentY( 0.5f );
-//		label.setAlignmentY( 0.5f );
+//		message.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
+//		label.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 		
 		edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( meanQueen, javax.swing.Box.createHorizontalStrut( 16 ), message );
 		pane.setBackground( message.getBackground() );

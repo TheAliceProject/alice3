@@ -163,7 +163,7 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 								edu.cmu.cs.dennisc.croquet.Button button = operation.createButton();
 								button.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
 								button.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.CENTER );
-								button.setAlignmentY( 0.0f );
+								button.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
 								this.addComponent( button );
 							}
 						}

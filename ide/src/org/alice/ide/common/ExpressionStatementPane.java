@@ -116,7 +116,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 						edu.cmu.cs.dennisc.croquet.AbstractButton< ?, ? > button = new org.alice.ide.croquet.PopupMenuButton( org.alice.ide.operations.ast.FillInMoreOperation.getInstance( methodInvocation ) );
 						button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
 						button.setVerticalAlignment( edu.cmu.cs.dennisc.croquet.VerticalAlignment.CENTER );
-						button.setAlignmentY( 0.5f );
+						button.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 						this.addComponent( button );
 					}
 				}

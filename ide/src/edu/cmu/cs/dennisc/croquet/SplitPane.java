@@ -58,20 +58,37 @@ public abstract class SplitPane extends JComponent< javax.swing.JSplitPane > {
 	@Override
 	protected javax.swing.JSplitPane createAwtComponent() {
 		return new javax.swing.JSplitPane();
+//			@Override
+//			public void setDividerLocation(double proportionalLocation) {
+//				proportionalLocation = 1.0 - proportionalLocation;
+//				super.setDividerLocation(proportionalLocation);
+//				
+//			}
+//			@Override
+//			public void setDividerLocation(int location) {
+////				location = -location;
+//				super.setDividerLocation(location);
+//			}
+//			@Override
+//			public void setComponentOrientation(java.awt.ComponentOrientation o) {
+//				super.setComponentOrientation(o);
+//				
+//			}
+//		};
 	}
 	
 	protected void setTopOrLeftComponent( Component<?> component ) {
 		if( component != null ) {
-			this.getAwtComponent().setTopComponent( component.getAwtComponent() );
+			this.getAwtComponent().setLeftComponent( component.getAwtComponent() );
 		} else {
-			this.getAwtComponent().setTopComponent( null );
+			this.getAwtComponent().setLeftComponent( null );
 		}
 	}
 	protected void setBottomOrRightComponent( Component<?> component ) {
 		if( component != null ) {
-			this.getAwtComponent().setBottomComponent( component.getAwtComponent() );
+			this.getAwtComponent().setRightComponent( component.getAwtComponent() );
 		} else {
-			this.getAwtComponent().setBottomComponent( null );
+			this.getAwtComponent().setRightComponent( null );
 		}
 	}
 	

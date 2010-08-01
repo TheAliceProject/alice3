@@ -93,7 +93,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		public JFolderTabTitle() {
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 8 ) );
 			this.setOpaque( false );
-			this.setAlignmentY( 1.0f );
+			this.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
 			this.setLayout( new javax.swing.SpringLayout() );
 		}
 		@Override
@@ -323,7 +323,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		} else {
 			component.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
 		}
-		component.setAlignmentY( 1.0f );
+		component.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
 		this.headerPanel.addComponent( component, BorderPanel.Constraint.LINE_START );
 		this.headerPanel.revalidateAndRepaint();
 	}
@@ -333,7 +333,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		} else {
 			component.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
 		}
-		component.setAlignmentY( 1.0f );
+		component.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
 		this.headerPanel.addComponent( component, BorderPanel.Constraint.LINE_END );
 		this.headerPanel.revalidateAndRepaint();
 	}

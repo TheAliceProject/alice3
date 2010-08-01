@@ -120,7 +120,7 @@ public final class JCloseButton extends javax.swing.JButton {
 	public JCloseButton( boolean isVisibleOnlyWhenParentIsSelected ) {
 		this.isVisibleOnlyWhenParentIsSelected = isVisibleOnlyWhenParentIsSelected;
 		this.setOpaque( false );
-		this.setAlignmentY( 0.5f );
+		this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 		this.setBorder( null );
 		this.setRolloverEnabled( true );
 	}

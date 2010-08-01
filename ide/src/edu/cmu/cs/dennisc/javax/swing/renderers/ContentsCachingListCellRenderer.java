@@ -54,7 +54,7 @@ public abstract class ContentsCachingListCellRenderer< E > extends edu.cmu.cs.de
 
 	public ContentsCachingListCellRenderer() {
 		this.setBackground( selectionBackground );
-		this.setAlignmentX( 0.0f );
+		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 	}
 	private java.awt.Component getComponent( E e ) {
 		java.awt.Component rv = this.map.get( e );

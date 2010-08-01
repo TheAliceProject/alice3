@@ -48,7 +48,7 @@ class MethodPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		this.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( method, parametersPane, false ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
 		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 12 ), Constraint.LINE_START );
 		this.addComponent( new BodyPane( factory.createComponent( method.body.getValue() ) ), Constraint.CENTER );
-		this.setAlignmentX( 0.0f );
+		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getProcedureColor() );
 	}
@@ -77,7 +77,7 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 					TypeComponent.createInstance( anonymousConstructor.getDeclaringType().getSuperType() ),
 					new edu.cmu.cs.dennisc.croquet.Label( "() {" ) 
 			);
-			header.setAlignmentX( 0.0f );
+			header.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 			this.addComponent( header );
 		}
 		
