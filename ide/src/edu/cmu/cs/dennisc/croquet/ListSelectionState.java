@@ -552,6 +552,17 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 			return null;
 		}
 	}
+	
+	/*package-private*/ javax.swing.Action createAction( final E item ) {
+		javax.swing.Action action = new javax.swing.AbstractAction() {
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				comboBoxModel.setSelectedItem(item);
+			}
+		};
+		action.putValue(javax.swing.Action.NAME, getMenuText( (E)item ) );
+		action.putValue(javax.swing.Action.SMALL_ICON, getMenuSmallIcon( (E)item ) ); 
+		return action;
+	}
 
 	private class ListSelectionMenuModel extends MenuModel {
 		public ListSelectionMenuModel() {
@@ -563,12 +574,7 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 			menu.getAwtComponent().removeAll();
 			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 			for (final Object item : ListSelectionState.this.comboBoxModel.items) {
-				javax.swing.Action action = new javax.swing.AbstractAction() {
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						comboBoxModel.setSelectedItem(item);
-					}
-				};
-				action.putValue(javax.swing.Action.NAME, getMenuText( (E)item ) );
+				javax.swing.Action action = createAction( (E)item );
 				javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem(action);
 				buttonGroup.add(jMenuItem);
 				jMenuItem.setSelected(comboBoxModel.getSelectedItem() == item);
@@ -584,6 +590,9 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 		} else {
 			return null;
 		}
+	}
+	protected javax.swing.Icon getMenuSmallIcon( E item ) {
+		return null;
 	}
 	
 	private ListSelectionMenuModel menuModel = null;

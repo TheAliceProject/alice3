@@ -282,8 +282,8 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 			return false;
 		}
 		public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-			booleanState.setTextForBothTrueAndFalse( code.getName() );
-			button.getAwtComponent().setIcon( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( code.getDeclaringType() ) );
+			booleanState.setTextForBothTrueAndFalse( getMenuText( code ) );
+			button.getAwtComponent().setIcon( getMenuSmallIcon( code ) );
 			button.scaleFont( 1.5f );
 			
 			if( IS_RUN_BUTTON_DESIRED ) {
@@ -308,6 +308,24 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 	private edu.cmu.cs.dennisc.croquet.FolderTabbedPane<edu.cmu.cs.dennisc.alice.ast.AbstractCode> singleton;
 //	private DeclarationsDropDown declarationsDropDown = new DeclarationsDropDown();
 
+	@Override
+	protected String getMenuText(edu.cmu.cs.dennisc.alice.ast.AbstractCode code) {
+		if( code != null ) {
+			return code.getName();
+		} else {
+			return null;
+		}
+	}
+	
+	@Override
+	protected javax.swing.Icon getMenuSmallIcon(edu.cmu.cs.dennisc.alice.ast.AbstractCode code) {
+		if( code != null ) {
+			return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( code.getDeclaringType() );
+		} else {
+			return null; 
+		}
+	}
+	
 	@Override
 	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShapeFor(edu.cmu.cs.dennisc.alice.ast.AbstractCode item) {
 		final edu.cmu.cs.dennisc.croquet.TrackableShape rv = super.getTrackableShapeFor(item);

@@ -307,11 +307,8 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 	}
 	
 	private java.util.Map<E, javax.swing.Action> mapItemToAction = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private javax.swing.Action getActionFor( final E item ) {
-		return new javax.swing.AbstractAction( item.toString() ) {
-			public void actionPerformed(java.awt.event.ActionEvent e) {
-			}
-		};
+	private javax.swing.Action getActionFor( E item ) {
+		return FolderTabbedPane.this.getModel().createAction( item );
 	}
 	
 	//todo: PopupOperation
@@ -327,11 +324,15 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		@Override
 		protected void perform(ActionOperationContext context) {
 			javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
+			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 			for( E item : FolderTabbedPane.this.getModel() ) {
-				popupMenu.add( getActionFor( item ) );
+				javax.swing.JCheckBoxMenuItem checkBox = new javax.swing.JCheckBoxMenuItem( getActionFor( item ) );
+				checkBox.setSelected( FolderTabbedPane.this.getModel().getSelectedItem() == item );
+				popupMenu.add( checkBox );
+				buttonGroup.add( checkBox );
 			}
 			ViewController<?,?> viewController = context.getViewController();
-			popupMenu.show( viewController.getAwtComponent(), viewController.getX(), viewController.getY() + viewController.getHeight() );
+			popupMenu.show( viewController.getAwtComponent(), 0, viewController.getHeight() );
 		}
 	}
 	
@@ -347,8 +348,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 					if( parent != null ) {
 						int width = parent.getWidth();
 						int preferredWidth = parent.getPreferredSize().width;
-						return true;
-						//return width < preferredWidth;
+						return width < preferredWidth;
 					} else {
 						return false;
 					}
@@ -359,12 +359,14 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 						super.paint(g);
 					}
 				}
-//				@Override
-//				public void update(java.awt.Graphics g) {
-//					if( isNecessary() ) {
-//						super.update(g);
-//					}
-//				}
+				@Override
+				public boolean contains(int x, int y) {
+					if( isNecessary() ) {
+						return super.contains(x, y);
+					} else {
+						return false;
+					}
+				}
 			};
 			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2,4,2,4 ) );
 			return rv;
@@ -412,8 +414,8 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		this.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
 		this.getAwtComponent().setOpaque( true );
 
-//		PopupOperation popupOperation = new PopupOperation();
-//		this.setHeaderTrailingComponent( new PopupButton( popupOperation ) );
+		PopupOperation popupOperation = new PopupOperation();
+		this.setHeaderTrailingComponent( new PopupButton( popupOperation ) );
 	}
 
 	public void setHeaderLeadingComponent( JComponent< ? > component ) {
