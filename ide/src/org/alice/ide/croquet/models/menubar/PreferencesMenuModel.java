@@ -55,6 +55,9 @@ public class PreferencesMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenu
 	}
 	private PreferencesMenuModel() {
 		super( java.util.UUID.fromString( "e8f8a5b3-83be-4519-8956-3ef2b9546e23" ),
+				org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance(),
+				org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance(),
+				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
 				org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance(),
 				org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance(),
 				org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance(),

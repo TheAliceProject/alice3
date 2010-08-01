@@ -167,9 +167,29 @@ public class RecursionDialogOperation extends edu.cmu.cs.dennisc.croquet.DialogO
 	}
 	@Override
 	protected RecursionPanel createContentPane(edu.cmu.cs.dennisc.croquet.DialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog) {
-		String explanationA = "<html>Recursion is disabled by default because otherwise many users unwittingly and mistakenly invoke recursive calls.<p><p>Recursion is a powerful tool in computer science.  It is not to be feared.  It simply needs to be understood.<p><p>For more information on recursion, please see:</html>";
+		String explanationA = "<html>Recursion is disabled by default because otherwise many users unwittingly and mistakenly make recursive calls.<p><p>Recursion is a powerful tool in computer science.  It is not to be feared.  It simply needs to be understood.<p><p>For more information on recursion, please see:</html>";
 		String explanationB = "Hopefully, this button makes sense to you:  ";
 		return new RecursionPanel( explanationA, explanationB );
+	}
+	
+	private static int getDepth( edu.cmu.cs.dennisc.croquet.HistoryNode node, int depth ) {
+		edu.cmu.cs.dennisc.croquet.HistoryNode parent = node.getParent();
+		if( parent != null ) {
+			return getDepth( parent, depth+1 );
+		} else {
+			return depth;
+		}
+	}
+	
+	@Override
+	protected void tweakDialog(edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.DialogOperationContext context ) {
+		super.tweakDialog(dialog, context);
+		int depth = getDepth( context, 1 );
+		int offset = (depth-5)*24;
+		java.awt.Point p = dialog.getLocation();
+		p.x += offset;
+		p.y += offset;
+		dialog.setLocation( p );
 	}
 	@Override
 	protected void releaseContentPane(edu.cmu.cs.dennisc.croquet.DialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container<?> contentPane) {

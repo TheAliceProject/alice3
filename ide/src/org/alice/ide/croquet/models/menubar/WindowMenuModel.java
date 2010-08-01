@@ -54,15 +54,12 @@ public class WindowMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel
 	}
 	private WindowMenuModel() {
 		super( java.util.UUID.fromString( "58a7297b-a5f8-499a-abd1-db6fca4083c8" ),
-				org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance(),
-				org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.history.IsProjectHistoryShowingState.getInstance(),
-				org.alice.ide.croquet.models.ui.IsMemoryUsageShowingState.getInstance(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
 				PreferencesMenuModel.getInstance(),
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				InternalTestingMenuModel.getInstance()
+				org.alice.ide.croquet.models.history.IsProjectHistoryShowingState.getInstance(),
+				org.alice.ide.croquet.models.ui.IsMemoryUsageShowingState.getInstance()//,
+//				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
+//				InternalTestingMenuModel.getInstance()
 		);
 	}
 }

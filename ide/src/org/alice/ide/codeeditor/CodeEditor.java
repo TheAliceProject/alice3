@@ -455,7 +455,15 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 					}
 					if( method != null ) {
 						if( method == this.getCode() ) {
-							org.alice.ide.IDE.getSingleton().showMessageDialog( "The code you have just dropped would create a \"recursive method call\".  Recursion is disabled.", "Recursion is disabled.", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
+							StringBuilder sb = new StringBuilder();
+							sb.append( "<html>" );
+							sb.append( "The code you have just dropped would create a <strong><em>recursive</em></strong> method call.<p><p>Recursion is disabled by default because otherwise many users unwittingly and mistakenly make recursive calls." );
+							final boolean IS_POINTING_USER_TO_RECURSION_PREFERENCE_DESIRED = true;
+							if( IS_POINTING_USER_TO_RECURSION_PREFERENCE_DESIRED ) {
+								sb.append( "<p><p>For more information on recursion see the Window -> Preferences menu." );
+							}
+							sb.append( "</html>" );
+							org.alice.ide.IDE.getSingleton().showMessageDialog( sb.toString(), "Recursion is disabled.", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
 							source.hideDropProxyIfNecessary();
 							return null;
 						}

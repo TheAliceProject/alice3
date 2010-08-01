@@ -55,6 +55,8 @@ public abstract class AbstractDialogOperation< C extends AbstractDialogOperation
 	protected java.awt.Dimension getDesiredDialogSize( Dialog dialog ) {
 		return null;
 	}
+	protected void tweakDialog( Dialog dialog, C context ) {
+	}
 	
 	private Dialog activeDialog;
 	public Dialog getActiveDialog() {
@@ -77,6 +79,8 @@ public abstract class AbstractDialogOperation< C extends AbstractDialogOperation
 		}
 		return rv;
 	}
+	
+	
 	@Override
 	protected final void perform( final C context ) {
 		ViewController<?,?> viewController = context.getViewController();
@@ -128,6 +132,7 @@ public abstract class AbstractDialogOperation< C extends AbstractDialogOperation
 				} else {
 					edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog.getAwtComponent(), Application.getSingleton().getFrame().getAwtComponent() ); 
 				}
+				this.tweakDialog( dialog, context );
 				
 				dialog.setTitle( this.getDialogTitle(context) );
 				this.activeDialog = dialog;
