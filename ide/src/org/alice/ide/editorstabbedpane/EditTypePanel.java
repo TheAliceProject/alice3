@@ -173,15 +173,20 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			rv.setDragEnabled( true );
 
 			try {
-				Class<Enum<?>> dropModeClass = (Class<Enum<?>>)Class.forName( "javax.swing.DropMode" );
-				java.lang.reflect.Method setDropModeMethod = javax.swing.JList.class.getMethod( "setDropMode", dropModeClass );
-				java.lang.reflect.Field insertField = dropModeClass.getField( "INSERT" );
-				Object insertConstant = insertField.get( null );
-				setDropModeMethod.invoke(rv, insertConstant );
-				//1.6
-				//rv.setDropMode( javax.swing.DropMode.INSERT );
+				String[] versionTexts = System.getProperty( "java.version" ).split( "\\." );
+				if( versionTexts.length > 1 ) { 
+					int majorVersion = Integer.parseInt( versionTexts[ 0 ] );
+					int minorVersion = Integer.parseInt( versionTexts[ 1 ] );
+					if( majorVersion > 1 || ( majorVersion == 1 && minorVersion > 5 ) ) {
+						//rv.setDropMode( javax.swing.DropMode.INSERT );
+						Class<Enum<?>> dropModeClass = (Class<Enum<?>>)Class.forName( "javax.swing.DropMode" );
+						java.lang.reflect.Method setDropModeMethod = javax.swing.JList.class.getMethod( "setDropMode", dropModeClass );
+						java.lang.reflect.Field insertField = dropModeClass.getField( "INSERT" );
+						Object insertConstant = insertField.get( null );
+						setDropModeMethod.invoke(rv, insertConstant );
+					}
+				}
 			} catch( Exception e ) {
-				//pass
 				e.printStackTrace();
 			}
 			final java.awt.dnd.DragSource dragSource = new java.awt.dnd.DragSource();
@@ -270,7 +275,9 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		return rv;
 	}
 
-	public EditTypePanel( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	private int historyIndex;
+	public EditTypePanel( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, int historyIndex ) {
+		this.historyIndex = historyIndex;
 		javax.swing.ListCellRenderer nodeListCellRenderer = new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.Node >() {
 			@Override
 			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.Node value, int index, boolean isSelected, boolean cellHasFocus ) {
@@ -337,6 +344,10 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToScaledFont( component, 1.5f );
 		}
 	}
+
+	public int getHistoryIndex() {
+		return this.historyIndex;
+	}
 	
 	public static void main( String[] args ) {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
@@ -352,7 +363,7 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		ide.initialize( args );
 		ide.loadProjectFrom( args[ 0 ] );
 		
-		EditTypePanel editTypePanel = new EditTypePanel( ide.getSceneType() );
+		EditTypePanel editTypePanel = new EditTypePanel( ide.getSceneType(), 0 );
 		
 		edu.cmu.cs.dennisc.croquet.Frame frame = new edu.cmu.cs.dennisc.croquet.Frame();
 		
