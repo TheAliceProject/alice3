@@ -414,7 +414,12 @@ public abstract class Factory {
 				rv = this.createFieldAccessPane( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
 			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
 				if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().isTypeExpressionDesired() ) {
-					rv = TypeComponent.createInstance( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
+					
+					rv = new edu.cmu.cs.dennisc.croquet.LineAxisPanel(
+							new DeclarationNameLabel( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() ),
+							new edu.cmu.cs.dennisc.croquet.Label( "." )
+					);
+					//rv = TypeComponent.createInstance( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
 				} else {
 					rv = new edu.cmu.cs.dennisc.croquet.Label();
 				}

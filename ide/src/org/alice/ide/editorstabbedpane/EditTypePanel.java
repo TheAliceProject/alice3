@@ -171,7 +171,6 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			final javax.swing.JList rv = new javax.swing.JList();
 			rv.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 			rv.setDragEnabled( true );
-
 			try {
 				String[] versionTexts = System.getProperty( "java.version" ).split( "\\." );
 				if( versionTexts.length > 1 ) { 
