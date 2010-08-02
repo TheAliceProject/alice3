@@ -52,15 +52,21 @@ public class WindowMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel
 	public static WindowMenuModel getInstance() {
 		return SingletonHolder.instance;
 	}
+	
+	private static java.util.List<edu.cmu.cs.dennisc.croquet.Model> getModels() {
+		java.util.List<edu.cmu.cs.dennisc.croquet.Model> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		rv.add( PreferencesMenuModel.getInstance() );
+		rv.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
+		rv.add( org.alice.ide.croquet.models.history.IsProjectHistoryShowingState.getInstance() );
+		rv.add( org.alice.ide.croquet.models.ui.IsMemoryUsageShowingState.getInstance() );
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( org.alice.ide.IDE.DEBUG_PROPERTY_KEY ) ) {
+			rv.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
+			rv.add( InternalTestingMenuModel.getInstance() );
+		}
+		return rv;
+	}
 	private WindowMenuModel() {
-		super( java.util.UUID.fromString( "58a7297b-a5f8-499a-abd1-db6fca4083c8" ),
-				PreferencesMenuModel.getInstance(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.history.IsProjectHistoryShowingState.getInstance(),
-				org.alice.ide.croquet.models.ui.IsMemoryUsageShowingState.getInstance()//,
-//				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-//				InternalTestingMenuModel.getInstance()
-		);
+		super( java.util.UUID.fromString( "58a7297b-a5f8-499a-abd1-db6fca4083c8" ), getModels() );
 	}
 }
 //	private java.util.List< edu.cmu.cs.dennisc.croquet.BooleanState > booleanStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
