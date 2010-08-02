@@ -397,7 +397,7 @@ public abstract class Factory {
 						}
 						edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( label, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 						if( isScaleDesired ) {
-							edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( label, 1.75f );
+							edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( label, 1.5f );
 						}
 						//label.setVerticalAlignment( javax.swing.SwingConstants.CENTER );
 					}
