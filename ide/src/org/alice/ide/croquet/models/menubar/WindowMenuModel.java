@@ -55,14 +55,14 @@ public class WindowMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel
 	
 	private static java.util.List<edu.cmu.cs.dennisc.croquet.Model> getModels() {
 		java.util.List<edu.cmu.cs.dennisc.croquet.Model> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		rv.add( PreferencesMenuModel.getInstance() );
-		rv.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 		rv.add( org.alice.ide.croquet.models.history.IsProjectHistoryShowingState.getInstance() );
 		rv.add( org.alice.ide.croquet.models.ui.IsMemoryUsageShowingState.getInstance() );
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( org.alice.ide.IDE.DEBUG_PROPERTY_KEY ) ) {
 			rv.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 			rv.add( InternalTestingMenuModel.getInstance() );
 		}
+		rv.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
+		rv.add( PreferencesMenuModel.getInstance() );
 		return rv;
 	}
 	private WindowMenuModel() {
