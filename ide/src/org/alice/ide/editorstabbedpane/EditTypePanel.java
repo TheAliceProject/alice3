@@ -57,23 +57,62 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	
 	class TypeMembersListModel< M extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice > extends edu.cmu.cs.dennisc.javax.swing.models.AbstractReorderableListModel< M > { //javax.swing.DefaultListModel { //javax.swing.AbstractListModel implements javax.swing.MutableComboBoxModel {
 		private java.util.List< M > list = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+		private edu.cmu.cs.dennisc.property.event.ListPropertyListener listPropertyListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener() {
+			public void adding(edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e) {
+			}
+			public void added(edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e) {
+				refresh();
+			}
+			public void clearing(edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent e) {
+			}
+			public void cleared(edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent e) {
+				refresh();
+			}
+			public void removing(edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent e) {
+			}
+			public void removed(edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent e) {
+				refresh();
+			}
+			public void setting(edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e) {
+			}
+			public void set(edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e) {
+				refresh();
+			}
+		};
+		private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
+		private MemberFilter<M> memberFilter;
+		private Class<M> cls;
 		public TypeMembersListModel( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, MemberFilter<M> memberFilter, Class<M> cls ) {
-			 if( cls.isAssignableFrom( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class ) ) {
-				 for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : type.methods ) {
-					 M m = cls.cast( method );
-					 if( memberFilter.isAcceptable( m ) ) {
-						 this.list.add( m );
-					 }
-				 }
-			 }
-			 if( cls.isAssignableFrom( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice.class ) ) {
-				 for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : type.fields ) {
-					 M m = cls.cast( field );
-					 if( memberFilter.isAcceptable( m ) ) {
-						 this.list.add( m );
-					 }
-				 }
-			 }
+			this.type = type;
+			this.memberFilter = memberFilter;
+			this.cls = cls;
+			if (this.cls.isAssignableFrom(edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class)) {
+				this.type.methods.addListPropertyListener(this.listPropertyListener);
+			}
+			if (this.cls.isAssignableFrom(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice.class)) {
+				this.type.fields.addListPropertyListener(this.listPropertyListener);
+			}
+			this.refresh();
+		}
+		private void refresh() {
+			this.list.clear();
+			if (cls.isAssignableFrom(edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class)) {
+				for (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.type.methods) {
+					M m = cls.cast(method);
+					if (memberFilter.isAcceptable(m)) {
+						this.list.add(m);
+					}
+				}
+			}
+			if (cls.isAssignableFrom(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice.class)) {
+				for (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : this.type.fields) {
+					M m = cls.cast(field);
+					if (memberFilter.isAcceptable(m)) {
+						this.list.add(m);
+					}
+				}
+			}
+			this.fireContentsChanged( this, 0, this.list.size() );
 		}
 		public void swap( int indexA, int indexB ) {
 			M memberA = this.list.get( indexA );
@@ -255,6 +294,98 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	}
 	
+	static abstract class EditableList<E> extends ReorderableList {
+		protected abstract edu.cmu.cs.dennisc.croquet.Operation<?> getDoubleClickOperation( E item );
+		protected abstract edu.cmu.cs.dennisc.croquet.Operation<?> getPopupTriggerOperation( E item );
+		
+		private edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter lenientMouseClickAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
+			private E getItem( java.awt.event.MouseEvent e ) {
+				javax.swing.JList jList = EditableList.this.getAwtComponent();
+				int index = jList.locationToIndex( e.getPoint() );
+				if( index != -1 ) {
+					javax.swing.ListModel listModel = jList.getModel();
+					if( index < listModel.getSize() ) {
+						return (E)listModel.getElementAt( index );
+					} else {
+						return null;
+					}
+				} else {
+					return null;
+				}
+			}
+			@Override
+			protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote) {
+				if( e.isPopupTrigger() ) {
+					if( quoteClickCountUnquote == 1 ) {
+						E item = this.getItem( e );
+						if( item != null ) {
+							edu.cmu.cs.dennisc.croquet.Operation<?> operation = getPopupTriggerOperation( item );
+							if( operation != null ) {
+								operation.fire( e );
+							}
+						}
+					}
+				} else {
+					if( quoteClickCountUnquote == 2 ) {
+						E item = this.getItem( e );
+						if( item != null ) {
+							edu.cmu.cs.dennisc.croquet.Operation<?> operation = getDoubleClickOperation( item );
+							if( operation != null ) {
+								operation.fire( e );
+							}
+						}
+					}
+				}
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( e, quoteClickCountUnquote );
+			}
+		};
+		@Override
+		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+			super.handleAddedTo(parent);
+			this.addMouseListener( this.lenientMouseClickAdapter );
+			this.addMouseMotionListener( this.lenientMouseClickAdapter );
+		}
+		@Override
+		protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+			this.removeMouseMotionListener( this.lenientMouseClickAdapter );
+			this.removeMouseListener( this.lenientMouseClickAdapter );
+			super.handleRemovedFrom(parent);
+		}
+	}
+	
+	static class MethodList extends EditableList< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
+		@Override
+		protected edu.cmu.cs.dennisc.croquet.Operation<?> getDoubleClickOperation(edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice item) {
+			if( item.isSignatureLocked.getValue() ) {
+				edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( item.getName() + " is locked and therefore cannot be renamed." );
+				return null;
+			} else {
+				return new org.alice.ide.operations.ast.RenameMethodOperation( item );
+			}
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.croquet.Operation<?> getPopupTriggerOperation(edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice item) {
+			return null;
+		}
+	}
+	static class FieldList extends EditableList< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
+		@Override
+		protected edu.cmu.cs.dennisc.croquet.Operation<?> getDoubleClickOperation(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice item) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = item.getValueType();
+			if( valueType.isAssignableTo( org.alice.apis.moveandturn.CameraMarker.class ) ) {
+				edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "Currently, camera markers cannot be renamed." );
+				return null;
+			} else {
+				return new org.alice.ide.operations.ast.RenameFieldOperation( item );
+			}
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.croquet.Operation<?> getPopupTriggerOperation(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice item) {
+			return null;
+		}
+	}
+	
+	
 	class Title extends edu.cmu.cs.dennisc.croquet.FlowPanel {
 		public Title( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 			super( Alignment.LEADING );
@@ -286,9 +417,9 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		};
 		
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		ReorderableList proceduresList = new ReorderableList();
-		ReorderableList functionsList = new ReorderableList();
-		ReorderableList fieldsList = new ReorderableList();
+		MethodList proceduresList = new MethodList();
+		MethodList functionsList = new MethodList();
+		FieldList fieldsList = new FieldList();
 
 		proceduresList.getAwtComponent().setModel( new TypeMethodsListModel( type, ALL_PROCEDURES_FILTER ) );
 		functionsList.getAwtComponent().setModel( new TypeMethodsListModel( type, ALL_FUNCTIONS_FILTER ) );
