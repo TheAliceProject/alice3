@@ -65,8 +65,12 @@ public abstract class AbstractDeclareFieldInputDialogOperation<J extends org.ali
 				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
 				if( field != null ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType = this.getOwnerType();
-					int index = ownerType.fields.size();
-					context.commitAndInvokeDo( new DeclareFieldEdit( ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
+					if( ownerType != null ) {
+						int index = ownerType.fields.size();
+						context.commitAndInvokeDo( new DeclareFieldEdit( ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
+					} else {
+						context.cancel();
+					}
 				} else {
 					context.cancel();
 				}

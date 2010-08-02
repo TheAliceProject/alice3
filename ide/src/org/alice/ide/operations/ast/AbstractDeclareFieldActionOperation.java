@@ -55,12 +55,16 @@ public abstract class AbstractDeclareFieldActionOperation extends org.alice.ide.
 	@Override
 	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = this.getOwnerType();
-		final edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> tuple = this.createFieldAndInstance( context, ownerType );
-		if( tuple != null ) {
-			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
-			if( field != null ) {
-				int index = ownerType.fields.size();
-				context.commitAndInvokeDo( new DeclareFieldEdit( ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
+		if( ownerType != null ) {
+			final edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> tuple = this.createFieldAndInstance( context, ownerType );
+			if( tuple != null ) {
+				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
+				if( field != null ) {
+					int index = ownerType.fields.size();
+					context.commitAndInvokeDo( new DeclareFieldEdit( ownerType, field, index, tuple.getB(), this.isInstanceValid() ) );
+				} else {
+					context.cancel();
+				}
 			} else {
 				context.cancel();
 			}
