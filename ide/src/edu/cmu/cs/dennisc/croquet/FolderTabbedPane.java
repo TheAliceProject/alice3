@@ -357,6 +357,9 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 				public void paint(java.awt.Graphics g) {
 					if( isNecessary() ) {
 						super.paint(g);
+					} else {
+						g.setColor( DEFAULT_BACKGROUND_COLOR );
+						g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 					}
 				}
 				@Override
