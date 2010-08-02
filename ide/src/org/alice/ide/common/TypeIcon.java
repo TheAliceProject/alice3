@@ -51,13 +51,20 @@ public class TypeIcon implements javax.swing.Icon {
 	public static TypeIcon getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		return new TypeIcon( type );
 	}
-	/*package-private*/ TypeIcon( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	public TypeIcon( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		this.type = type;
 		this.border = TypeBorder.getSingletonFor( type );
 	}
 
 	protected java.awt.Font getFont() {
 		return javax.swing.UIManager.getFont( "defaultFont" );
+	}
+	protected java.awt.Color getTextColor( java.awt.Component c ) {
+		if( c.isEnabled() ) {
+			return java.awt.Color.BLACK;
+		} else {
+			return java.awt.Color.GRAY;
+		}
 	}
 	private String getText() {
 		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
@@ -99,13 +106,7 @@ public class TypeIcon implements javax.swing.Icon {
 		int w = this.getBorderWidth();
 		int h = this.getBorderHeight();
 		this.border.paintBorder( c, g, x, y, w, h );
-		if( c.isEnabled() ) {
-			g.setColor( java.awt.Color.BLACK );
-//			g.setColor( c.getForeground() );
-		} else {
-			g.setColor( java.awt.Color.GRAY );
-//			g.setColor( java.awt.Color.RED );
-		}
+		g.setColor( this.getTextColor( c ) );
 		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, this.getText(), x, y, w, h );
 	}
 }

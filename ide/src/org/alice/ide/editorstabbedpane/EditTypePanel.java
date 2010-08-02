@@ -376,7 +376,7 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "Currently, camera markers cannot be renamed." );
 				return null;
 			} else {
-				return new org.alice.ide.operations.ast.RenameFieldOperation( item );
+				return new org.alice.ide.operations.ast.EditFieldOperation( item );
 			}
 		}
 		@Override

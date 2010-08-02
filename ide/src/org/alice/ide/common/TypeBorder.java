@@ -80,26 +80,30 @@ class TypeBorder implements javax.swing.border.Border {
 	private int yPrevious = -1;
 	private int heightPrevious = -1;
 	private java.awt.Paint paintPrevious = null;
-	private java.awt.Paint getFillPaint( int x, int y, int width, int height ) {
-		if( y==this.yPrevious && height==this.heightPrevious ) {
-			//pass
-		} else {
-			this.yPrevious = y;
-			this.heightPrevious = height;
-			if( isDeclaredInAlice != null ) {
-				if( isDeclaredInAlice ) {
-					this.paintPrevious = new java.awt.GradientPaint( 0, y, FILL_COLOR, 0, y + height, FILL_BRIGHTER_COLOR );
-				} else {
-					this.paintPrevious = new java.awt.GradientPaint( 0, y, FILL_COLOR, 0, y + height, FILL_DARKER_COLOR );
-				}
+	private java.awt.Paint getFillPaint( java.awt.Component c, int x, int y, int width, int height ) {
+		if( c.isEnabled() ) {
+			if( y==this.yPrevious && height==this.heightPrevious ) {
+				//pass
 			} else {
-				//this.paintPrevious = new java.awt.GradientPaint( 0, y, NULL_COLOR, 0, y + height, NULL_DARKER_COLOR );;
-				//this.paintPrevious = java.awt.Color.GRAY;
-				//this.paintPrevious = java.awt.Color.RED.darker();
-				this.paintPrevious = java.awt.Color.RED;
+				this.yPrevious = y;
+				this.heightPrevious = height;
+				if( isDeclaredInAlice != null ) {
+					if( isDeclaredInAlice ) {
+						this.paintPrevious = new java.awt.GradientPaint( 0, y, FILL_COLOR, 0, y + height, FILL_BRIGHTER_COLOR );
+					} else {
+						this.paintPrevious = new java.awt.GradientPaint( 0, y, FILL_COLOR, 0, y + height, FILL_DARKER_COLOR );
+					}
+				} else {
+					//this.paintPrevious = new java.awt.GradientPaint( 0, y, NULL_COLOR, 0, y + height, NULL_DARKER_COLOR );;
+					//this.paintPrevious = java.awt.Color.GRAY;
+					//this.paintPrevious = java.awt.Color.RED.darker();
+					this.paintPrevious = java.awt.Color.RED;
+				}
 			}
+			return this.paintPrevious;
+		} else {
+			return java.awt.Color.RED;
 		}
-		return this.paintPrevious;
 	}
 
 	public java.awt.Insets getBorderInsets( java.awt.Component c ) {
@@ -131,7 +135,7 @@ class TypeBorder implements javax.swing.border.Border {
 	public void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height ) {
 		java.awt.Shape shape = TypeBorder.createShape( x, y, width, height );
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		g2.setPaint( getFillPaint( x, y, width, height ) );
+		g2.setPaint( getFillPaint( c, x, y, width, height ) );
 		g2.fill( shape );
 		g2.setPaint( OUTLINE_COLOR );
 		g2.draw( shape );

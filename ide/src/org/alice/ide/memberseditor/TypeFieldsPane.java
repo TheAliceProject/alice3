@@ -73,20 +73,21 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 				//pass
 			} else {
 				if( field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-					edu.cmu.cs.dennisc.croquet.Component<?> declarationPane = new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field);
+					edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field;
+					edu.cmu.cs.dennisc.croquet.Component<?> declarationPane = new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), fieldInAlice);
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: add popup menu to field declaration pane" );
-					class EditFieldDeclarationOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation { 
-						public EditFieldDeclarationOperation() {
-							super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "cb8936e6-a011-427a-bc64-0a4e646dc869" ) );
-							this.setName( "Edit..." );
-						}
-						@Override
-						protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-							edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "todo" );
-						}
-					}
+//					class EditFieldDeclarationOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation { 
+//						public EditFieldDeclarationOperation() {
+//							super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "cb8936e6-a011-427a-bc64-0a4e646dc869" ) );
+//							this.setName( "Edit..." );
+//						}
+//						@Override
+//						protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+//							edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "todo" );
+//						}
+//					}
 					rv.add( new edu.cmu.cs.dennisc.croquet.LineAxisPanel(
-								new EditFieldDeclarationOperation().createButton(),
+								new org.alice.ide.operations.ast.EditFieldOperation( fieldInAlice ).createButton(),
 								edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ),
 								declarationPane
 							) 

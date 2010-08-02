@@ -202,7 +202,12 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 		
 		private void refresh() {
-			this.label.setIcon( org.alice.ide.common.TypeIcon.getInstance( typeProperty.getValue() ) );
+			this.label.setIcon( new org.alice.ide.common.TypeIcon( typeProperty.getValue() ) {
+				@Override
+				protected java.awt.Color getTextColor(java.awt.Component c) {
+					return super.getTextColor( TypeDropDownPane.this.getAwtComponent() );
+				}
+			} );
 		}
 		@Override
 		protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
@@ -243,9 +248,11 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 //		}
 
 		final TypeDropDownPane typeDropDownPane = new TypeDropDownPane();
-//		this.typeSelectionState.setEnabled( isTypeComboBoxEnabled );
+		typeDropDownPane.getAwtComponent().setEnabled( isTypeComboBoxEnabled );
 //		this.typeSelectionState.setSelectedItem( componentType );
-		typeDropDownPane.setLeftButtonPressOperation( popupMenuOperation );
+		if( isTypeComboBoxEnabled ) {
+			typeDropDownPane.setLeftButtonPressOperation( popupMenuOperation );
+		}
 		typeDropDownPane.refresh();
 		
 		this.typeProperty.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
