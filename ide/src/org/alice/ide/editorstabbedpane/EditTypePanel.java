@@ -408,10 +408,26 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private int historyIndex;
 	public EditTypePanel( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, int historyIndex ) {
 		this.historyIndex = historyIndex;
-		javax.swing.ListCellRenderer nodeListCellRenderer = new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.Node >() {
+		javax.swing.ListCellRenderer procedureListCellRenderer = new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >() {
 			@Override
-			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.Node value, int index, boolean isSelected, boolean cellHasFocus ) {
+			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice value, int index, boolean isSelected, boolean cellHasFocus ) {
 				rv.setText( value.getName() );
+				return rv;
+			}
+		};
+		javax.swing.ListCellRenderer functionListCellRenderer = new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >() {
+			@Override
+			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice value, int index, boolean isSelected, boolean cellHasFocus ) {
+				rv.setText( value.getName() );
+				rv.setIcon( org.alice.ide.common.TypeIcon.getInstance( value.getReturnType() ) );
+				return rv;
+			}
+		};
+		javax.swing.ListCellRenderer fieldListCellRenderer = new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
+			@Override
+			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice value, int index, boolean isSelected, boolean cellHasFocus ) {
+				rv.setText( value.getName() );
+				rv.setIcon( org.alice.ide.common.TypeIcon.getInstance( value.getValueType() ) );
 				return rv;
 			}
 		};
@@ -425,9 +441,9 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		functionsList.getAwtComponent().setModel( new TypeMethodsListModel( type, ALL_FUNCTIONS_FILTER ) );
 		fieldsList.getAwtComponent().setModel( new TypeFieldsListModel( type, ALL_FIELDS_FILTER ) );
 
-		proceduresList.getAwtComponent().setCellRenderer( nodeListCellRenderer );
-		functionsList.getAwtComponent().setCellRenderer( nodeListCellRenderer );
-		fieldsList.getAwtComponent().setCellRenderer( nodeListCellRenderer );
+		proceduresList.getAwtComponent().setCellRenderer( procedureListCellRenderer );
+		functionsList.getAwtComponent().setCellRenderer( functionListCellRenderer );
+		fieldsList.getAwtComponent().setCellRenderer( fieldListCellRenderer );
 
 		proceduresList.setBackgroundColor( null );
 		functionsList.setBackgroundColor( null );
@@ -469,9 +485,9 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		this.addComponent( title, Constraint.PAGE_START );
 		this.addComponent( scrollPane, Constraint.CENTER );
 
-		for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this.getAwtComponent(), edu.cmu.cs.dennisc.pattern.HowMuch.DESCENDANTS_ONLY, javax.swing.JComponent.class ) ) {
-			edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToScaledFont( component, 1.5f );
-		}
+//		for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this.getAwtComponent(), edu.cmu.cs.dennisc.pattern.HowMuch.DESCENDANTS_ONLY, javax.swing.JComponent.class ) ) {
+//			edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToScaledFont( component, 1.5f );
+//		}
 		for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( title.getAwtComponent(), edu.cmu.cs.dennisc.pattern.HowMuch.DESCENDANTS_ONLY, javax.swing.JComponent.class ) ) {
 			edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToScaledFont( component, 1.2f );
 		}
