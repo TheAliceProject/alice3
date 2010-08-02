@@ -361,9 +361,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public String getTextFor( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		return null;
 	}
-	public javax.swing.Icon getIconFor( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		return org.alice.ide.common.TypeIcon.getInstance( type );
-	}
 
 	protected java.util.List< ? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > addPrimeTimeJavaTypes( java.util.List< ? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > rv ) {
 		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE );

@@ -333,14 +333,16 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		scrollPane.setBorder( null );
 		scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
 		
+		Title title = new Title( type );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
-		this.addComponent( new Title( type ), Constraint.PAGE_START );
+		this.addComponent( title, Constraint.PAGE_START );
 		this.addComponent( scrollPane, Constraint.CENTER );
 
-		//java.awt.Font font = edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont( this.getFont(), 2.0f );
 		for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this.getAwtComponent(), edu.cmu.cs.dennisc.pattern.HowMuch.DESCENDANTS_ONLY, javax.swing.JComponent.class ) ) {
-			//component.setFont( font );
 			edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToScaledFont( component, 1.5f );
+		}
+		for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( title.getAwtComponent(), edu.cmu.cs.dennisc.pattern.HowMuch.DESCENDANTS_ONLY, javax.swing.JComponent.class ) ) {
+			edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToScaledFont( component, 1.2f );
 		}
 	}
 

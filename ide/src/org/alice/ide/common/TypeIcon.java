@@ -48,15 +48,17 @@ package org.alice.ide.common;
 public class TypeIcon implements javax.swing.Icon {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
 	private TypeBorder border;
-	
 	public static TypeIcon getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		return new TypeIcon( type );
 	}
-	protected TypeIcon( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	/*package-private*/ TypeIcon( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		this.type = type;
 		this.border = TypeBorder.getSingletonFor( type );
 	}
 
+	protected java.awt.Font getFont() {
+		return javax.swing.UIManager.getFont( "defaultFont" );
+	}
 	private String getText() {
 		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
 		return formatter.getTextForType( this.type );
@@ -71,7 +73,7 @@ public class TypeIcon implements javax.swing.Icon {
 		String text = this.getText();
 		if( text != null ) {
 			java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
-			java.awt.Font font = javax.swing.UIManager.getFont( "defaultFont" );
+			java.awt.Font font = this.getFont();
 			java.awt.FontMetrics fm;
 			if( font != null ) {
 				fm = g.getFontMetrics( font );

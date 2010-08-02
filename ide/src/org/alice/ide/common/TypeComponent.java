@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeComponent extends edu.cmu.cs.dennisc.croquet.Label {
+public class TypeComponent extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JLabel > {
 	public static TypeComponent createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		TypeComponent rv = new TypeComponent(type);
 		return rv;
@@ -53,7 +53,17 @@ public class TypeComponent extends edu.cmu.cs.dennisc.croquet.Label {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
 	private TypeComponent( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		this.type = type;
-		//this.setBorder( TypeBorder.getSingletonFor( type ) );
-		this.setIcon( TypeIcon.getInstance( type ) );
+	}
+	@Override
+	protected javax.swing.JLabel createAwtComponent() {
+		final javax.swing.JLabel rv = new javax.swing.JLabel();
+		final TypeIcon typeIcon = new TypeIcon( type ) {
+			@Override
+			protected java.awt.Font getFont() {
+				return rv.getFont();
+			}
+		};
+		rv.setIcon( typeIcon );
+		return rv;
 	}
 }
