@@ -157,6 +157,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		@Override
 		protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 			typeProperty.setValue( this.type );
+			context.finish();
 		}
 	}
 	
