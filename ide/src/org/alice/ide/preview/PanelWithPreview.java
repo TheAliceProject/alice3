@@ -42,8 +42,6 @@
  */
 package org.alice.ide.preview;
 
-import edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -84,6 +82,10 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 
 	private PreviewPane previewPane;
 	
+	protected boolean isPreviewDesired() {
+		return true;
+	}
+	
 	public PanelWithPreview() {
 		final int PAD = 16;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, 0, PAD ) );
@@ -96,19 +98,21 @@ public abstract class PanelWithPreview extends edu.cmu.cs.dennisc.croquet.Border
 		} else {
 			this.addComponent( this.createMainComponent(), Constraint.CENTER );
 
-			this.previewPane = new PreviewPane();
-			edu.cmu.cs.dennisc.croquet.PageAxisPanel northPanel = new edu.cmu.cs.dennisc.croquet.PageAxisPanel(
-					new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
-							edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ),
-							new edu.cmu.cs.dennisc.croquet.Label( "preview:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ),
-							edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ),
-							this.previewPane
-					),
-					edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 ),
-					new edu.cmu.cs.dennisc.croquet.HorizontalSeparator(),
-					edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 )
-			);
-			this.addComponent( northPanel, Constraint.PAGE_START );
+			if( this.isPreviewDesired() ) {
+				this.previewPane = new PreviewPane();
+				edu.cmu.cs.dennisc.croquet.PageAxisPanel northPanel = new edu.cmu.cs.dennisc.croquet.PageAxisPanel(
+						new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
+								edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ),
+								new edu.cmu.cs.dennisc.croquet.Label( "preview:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ),
+								edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ),
+								this.previewPane
+						),
+						edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 ),
+						new edu.cmu.cs.dennisc.croquet.HorizontalSeparator(),
+						edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 8 )
+				);
+				this.addComponent( northPanel, Constraint.PAGE_START );
+			}
 		}
 	}
 

@@ -42,8 +42,6 @@
  */
 package org.alice.ide.declarationpanes;
 
-import org.alice.ide.IDE;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -66,6 +64,11 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	
 	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava ) {
 		return getIDE().getTypeDeclaredInAliceFor( typeDeclaredInJava );
+	}
+	
+	@Override
+	protected boolean isPreviewDesired() {
+		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState.getInstance().getValue();
 	}
 
 	private static String getAvailableFieldName( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, String baseName ) {
@@ -91,7 +94,7 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 		if( valueType != null ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
 			if( typeInJava != null ) {
-				if( org.alice.ide.croquet.models.ui.preferences.IsGeneratingDefaultFieldNamesState.getInstance().getValue() ) {
+				if( org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getValue() ) {
 					String typeName = typeInJava.getName();
 					if( typeName != null && typeName.length() > 0 ) {
 						StringBuffer sb = new StringBuffer();
@@ -145,7 +148,7 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	protected boolean getIsReassignableInitialState() {
 		return false;
 	}
-	
+		
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createValueTypeComponent() {
 		edu.cmu.cs.dennisc.croquet.LineAxisPanel valueTypeLine = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
@@ -160,5 +163,14 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createInitializerComponent() {
 		return new edu.cmu.cs.dennisc.croquet.LineAxisPanel( getIDE().getPreviewFactory().createExpressionPane( this.getInitializer() ) );
+	}
+	
+	@Override
+	protected boolean isValueTypeRowIncluded() {
+		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getValue();
+	}
+	@Override
+	protected boolean isInitializerRowIncluded() {
+		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getValue();
 	}
 }

@@ -40,20 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ui.preferences;
+package org.alice.stageide.croquet.models.gallerybrowser.preferences;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IsGeneratingDefaultFieldNamesState extends edu.cmu.cs.dennisc.croquet.BooleanState {
+public class IsPromptIncludingPreviewState extends edu.cmu.cs.dennisc.croquet.BooleanState {
 	private static class SingletonHolder {
-		private static IsGeneratingDefaultFieldNamesState instance = new IsGeneratingDefaultFieldNamesState();
+		private static IsPromptIncludingPreviewState instance = new IsPromptIncludingPreviewState();
 	}
-	public static IsGeneratingDefaultFieldNamesState getInstance() {
+	public static IsPromptIncludingPreviewState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private IsGeneratingDefaultFieldNamesState() {
-		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "3e551420-bb50-4e33-9175-9f29738998f0" ), true );
+	private IsPromptIncludingPreviewState() {
+		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "292ccba4-7de7-4385-9b93-2723c2ddb745" ), true );
 		org.alice.ide.IDE.getSingleton().registerAndInitializePreference( this );
 	}
 }

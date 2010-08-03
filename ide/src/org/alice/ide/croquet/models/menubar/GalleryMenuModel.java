@@ -46,26 +46,21 @@ package org.alice.ide.croquet.models.menubar;
 /**
  * @author Dennis Cosgrove
  */
-public class PreferencesMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
+public class GalleryMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
 	private static class SingletonHolder {
-		private static PreferencesMenuModel instance = new PreferencesMenuModel();
+		private static GalleryMenuModel instance = new GalleryMenuModel();
 	}
-	public static PreferencesMenuModel getInstance() {
+	public static GalleryMenuModel getInstance() {
 		return SingletonHolder.instance;
 	}
-	private PreferencesMenuModel() {
-		super( java.util.UUID.fromString( "e8f8a5b3-83be-4519-8956-3ef2b9546e23" ),
-				org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance(),
-				org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance(),
-				org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.recursion.RecursionDialogOperation.getInstance(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				GalleryMenuModel.getInstance()
+	private GalleryMenuModel() {
+		super( java.util.UUID.fromString( "502915e7-f12b-47b6-a5d0-5fa49d378eca" ),
+//todo:
+//				org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptingUserForFieldNamesState.getInstance(),
+//				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
+				org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance(),
+				org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance(),
+				org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState.getInstance()
 		);
 	}
 }

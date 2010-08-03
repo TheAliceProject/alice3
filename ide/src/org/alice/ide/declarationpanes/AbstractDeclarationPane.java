@@ -191,11 +191,19 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	protected String getValueTypeText() {
 		return "value type:";
 	}
-
+	
+	protected boolean isValueTypeRowIncluded() {
+		return true;
+	}
+	
 	protected final edu.cmu.cs.dennisc.croquet.Component< ? >[] createValueTypeRow() {
 		edu.cmu.cs.dennisc.croquet.Component< ? > component = this.createValueTypeComponent();
 		if( component != null ) {
-			return edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( this.getValueTypeText() ), component );
+			if( this.isValueTypeRowIncluded() ) {
+				return edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( this.getValueTypeText() ), component );
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}
@@ -203,6 +211,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 
 	protected final edu.cmu.cs.dennisc.croquet.Component< ? >[] createNameRow() {
 		this.declarationNameTextField = this.declarationNameState.createTextField();
+		this.declarationNameTextField.setMinimumPreferredWidth( 240 );
 		//this.declarationNameTextField.setFontSize( 24.0f );
 		this.declarationNameTextField.scaleFont( 1.5f );
 		return edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
@@ -220,10 +229,17 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		}
 		return this.initializerPane;
 	}
+	protected boolean isInitializerRowIncluded() {
+		return true;
+	}
 	protected final edu.cmu.cs.dennisc.croquet.Component< ? >[] createInitializerRow() {
 		edu.cmu.cs.dennisc.croquet.Component< ? > component = this.createInitializerComponent();
 		if( component != null ) {
-			return edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "initializer:" ), component );
+			if( this.isInitializerRowIncluded() ) {
+				return edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "initializer:" ), component );
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}

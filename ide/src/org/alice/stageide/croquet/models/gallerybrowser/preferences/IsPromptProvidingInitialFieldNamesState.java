@@ -40,32 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
-
+package org.alice.stageide.croquet.models.gallerybrowser.preferences;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PreferencesMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
+public class IsPromptProvidingInitialFieldNamesState extends edu.cmu.cs.dennisc.croquet.BooleanState {
 	private static class SingletonHolder {
-		private static PreferencesMenuModel instance = new PreferencesMenuModel();
+		private static IsPromptProvidingInitialFieldNamesState instance = new IsPromptProvidingInitialFieldNamesState();
 	}
-	public static PreferencesMenuModel getInstance() {
+	public static IsPromptProvidingInitialFieldNamesState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private PreferencesMenuModel() {
-		super( java.util.UUID.fromString( "e8f8a5b3-83be-4519-8956-3ef2b9546e23" ),
-				org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance(),
-				org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance(),
-				org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.recursion.RecursionDialogOperation.getInstance(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				GalleryMenuModel.getInstance()
-		);
+	private IsPromptProvidingInitialFieldNamesState() {
+		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "3e551420-bb50-4e33-9175-9f29738998f0" ), true );
+		org.alice.ide.IDE.getSingleton().registerAndInitializePreference( this );
 	}
 }

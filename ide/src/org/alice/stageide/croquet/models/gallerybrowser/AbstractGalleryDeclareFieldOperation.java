@@ -53,6 +53,7 @@ public abstract class AbstractGalleryDeclareFieldOperation<J extends org.alice.i
 	protected final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
 		return this.getIDE().getSceneType();
 	}
+	
 	@Override
 	protected boolean isInstanceValid() {
 		return true;
