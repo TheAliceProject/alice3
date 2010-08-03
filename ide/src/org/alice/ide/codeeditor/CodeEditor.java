@@ -658,8 +658,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 										}
 										@Override
 										protected void undoInternal() {
-											prevOwner.add( prevIndex, statement );
 											nextOwner.remove( nextIndex );
+											prevOwner.add( prevIndex, statement );
 										}
 										@Override
 										protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {

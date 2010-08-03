@@ -88,8 +88,8 @@ public class MoveStatementEdit extends org.alice.ide.ToDoEdit {
 			if( this.prevOwner == this.nextOwner ) {
 				this.prevOwner.slide( this.nextActualIndex, this.prevActualIndex );
 			} else {
-				this.prevOwner.add(this.prevActualIndex, this.statement);
 				this.nextOwner.remove(this.nextActualIndex);
+				this.prevOwner.add(this.prevActualIndex, this.statement);
 			}
 		} else {
 			throw new javax.swing.undo.CannotUndoException();
