@@ -92,52 +92,6 @@ package edu.cmu.cs.dennisc.tutorial;
 	private edu.cmu.cs.dennisc.croquet.BooleanState isInterceptingEvents = new edu.cmu.cs.dennisc.croquet.BooleanState( TUTORIAL_GROUP, java.util.UUID.fromString( "c3a009d6-976e-439e-8f99-3c8ff8a0324a" ), true, "intercept events" );
 	private edu.cmu.cs.dennisc.croquet.BooleanState isPaintingStencil = new edu.cmu.cs.dennisc.croquet.BooleanState( TUTORIAL_GROUP, java.util.UUID.fromString( "b1c1b125-cfe3-485f-9453-1e57e5b02cb1" ), true, "paint stencil" );
 	private edu.cmu.cs.dennisc.croquet.BooleanState isPlayingSounds = new edu.cmu.cs.dennisc.croquet.BooleanState( TUTORIAL_GROUP, java.util.UUID.fromString( "4d8ac630-0679-415a-882f-780c7cb014ef" ), true, "play sounds" );
-
-	private class StepsComboBox extends edu.cmu.cs.dennisc.croquet.JComponent<javax.swing.JComboBox> {
-		@Override
-		protected javax.swing.JComboBox createAwtComponent() {
-			javax.swing.JComboBox rv = new javax.swing.JComboBox(stepsComboBoxModel);
-//			{
-//				@Override
-//				public java.awt.Dimension getPreferredSize() {
-//					return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMaximumWidth( super.getPreferredSize(), 32 );
-//				}
-//			};
-			
-			//todo: find a better way
-			//warning monumentally brittle code below
-			rv.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
-				public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
-					javax.swing.JComboBox box = (javax.swing.JComboBox)e.getSource();
-					javax.accessibility.Accessible accessible = box.getUI().getAccessibleChild( box, 0 );
-					if( accessible instanceof javax.swing.JPopupMenu ) {
-						javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)accessible;
-						java.awt.Component component = jPopupMenu.getComponent( 0 );
-						if( component instanceof javax.swing.JScrollPane ) {
-							javax.swing.JScrollPane scrollPane = (javax.swing.JScrollPane)component;
-							java.awt.Dimension size = scrollPane.getPreferredSize();
-
-							javax.swing.JViewport viewport = scrollPane.getViewport();
-							java.awt.Component view = viewport.getView();
-							java.awt.Dimension viewportSize = view.getPreferredSize();
-							size.width = viewportSize.width;
-							scrollPane.setPreferredSize( size );
-							scrollPane.setMaximumSize( size );
-						}
-					}
-				}
-				public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
-				}
-				public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-				}
-			} );
-			
-			StepCellRenderer stepCellRenderer = new StepCellRenderer( TutorialStencil.this.stepsComboBoxModel, CONTROL_COLOR );
-			rv.setRenderer(stepCellRenderer);
-			rv.setBackground(CONTROL_COLOR);
-			return rv;
-		}
-	};
 	
 	private edu.cmu.cs.dennisc.history.HistoryManager[] historyManagers;
 
@@ -200,7 +154,7 @@ package edu.cmu.cs.dennisc.tutorial;
 
 		edu.cmu.cs.dennisc.croquet.FlowPanel controlPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.CENTER, 2, 0);
 		controlPanel.addComponent(this.previousStepOperation.createButton());
-		controlPanel.addComponent(new StepsComboBox());
+		controlPanel.addComponent(new StepsComboBox( this.stepsComboBoxModel ) );
 		controlPanel.addComponent(this.nextStepOperation.createButton());
 
 		this.controlsPanel.addComponent(controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
