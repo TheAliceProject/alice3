@@ -62,7 +62,7 @@ public abstract class CreateParameterPane extends CreateDeclarationPane<edu.cmu.
 		return false;
 	}
 	@Override
-	protected boolean isIsReassignableComponentDesired() {
+	protected boolean isIsReassignableStateDesired() {
 		return false;
 	}
 	@Override

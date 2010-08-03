@@ -61,6 +61,7 @@ public class PreferencesMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenu
 				org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance(),
 				org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance(),
 				org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance(),
+				org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance(),
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
 				org.alice.ide.croquet.models.recursion.RecursionDialogOperation.getInstance(),
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,

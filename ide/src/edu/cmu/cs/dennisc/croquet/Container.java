@@ -130,8 +130,12 @@ public abstract class Container<J extends java.awt.Container> extends Component<
 	private final void internalRemoveAllComponents( boolean isReleaseDesired ) {
 		java.awt.Component[] awtComponents = this.getAwtComponent().getComponents();
 		for( java.awt.Component awtComponent : awtComponents ) {
-			Component< ? > component = lookup( awtComponent );
-			this.internalRemoveComponent( component, isReleaseDesired );
+			if( awtComponent != null ) {
+				Component< ? > component = lookup( awtComponent );
+				this.internalRemoveComponent( component, isReleaseDesired );
+			} else {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: encountered null component." );
+			}
 		}
 	}
 

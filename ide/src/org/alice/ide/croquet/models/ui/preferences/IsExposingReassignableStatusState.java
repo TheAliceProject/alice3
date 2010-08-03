@@ -40,41 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationpanes;
+package org.alice.ide.croquet.models.ui.preferences;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTypePane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType;
-	public CreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
-		super( new org.alice.ide.name.validators.MethodNameValidator( declaringType ) );
-		this.declaringType = declaringType;
+public class IsExposingReassignableStatusState extends edu.cmu.cs.dennisc.croquet.BooleanState {
+	private static class SingletonHolder {
+		private static IsExposingReassignableStatusState instance = new IsExposingReassignableStatusState();
 	}
-	@Override
-	protected String getDeclarationText() {
-		return "Procedure";
+	public static IsExposingReassignableStatusState getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createInitializerComponent() {
-		return null;
-	}
-	@Override
-	protected boolean isIsReassignableStateDesired() {
-		return false;
-	}
-	
-	@Override
-	protected boolean isEditableInitializerComponentDesired() {
-		return false;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent() {
-		return new org.alice.ide.codeeditor.MethodHeaderPane( this.getActualInputValue(), null, true, this.declaringType );
-	}
-	
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getActualInputValue() {
-		return new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( this.getDeclarationName(), this.getValueType(), new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {}, new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
+	private IsExposingReassignableStatusState() {
+		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "81c41ccf-657e-4e95-ae96-67c90b7075b5" ), false );
+		org.alice.ide.IDE.getSingleton().registerAndInitializePreference( this );
 	}
 }

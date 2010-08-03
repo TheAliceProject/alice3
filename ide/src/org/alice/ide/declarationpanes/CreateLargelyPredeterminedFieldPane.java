@@ -130,7 +130,7 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	}
 	
 	@Override
-	protected boolean isIsReassignableComponentDesired() {
+	protected boolean isIsReassignableStateDesired() {
 		return false;
 	}
 	@Override

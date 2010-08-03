@@ -135,7 +135,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		}
 	}
 
-	protected abstract boolean isIsReassignableComponentDesired();
+	protected abstract boolean isIsReassignableStateDesired();
 	protected boolean isIsReassignableComponentEnabled() {
 		return true;
 	}
@@ -144,13 +144,17 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	}
 	protected final edu.cmu.cs.dennisc.croquet.Component< ? > createIsReassignableComponent() {
 		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv;
-		if( isIsReassignableComponentDesired() ) {
+		if( isIsReassignableStateDesired() ) {
 			this.isReassignableStateOperation = new edu.cmu.cs.dennisc.croquet.BooleanState( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "c95e177e-8fea-4916-a401-1b865594b135" ), this.getIsReassignableInitialState() );
 			 //"(is constant)", "(is variable)"
 			this.isReassignableStateOperation.setTextForTrueAndTextForFalse( "yes", "no" );
 			this.isReassignableStateOperation.setEnabled( this.isIsReassignableComponentEnabled() );
-			rv = this.isReassignableStateOperation.createCheckBox();
-			rv.setBackgroundColor( null );
+			if( org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance().getValue() ) {
+				rv = this.isReassignableStateOperation.createCheckBox();
+				rv.setBackgroundColor( null );
+			} else {
+				rv = null;
+			}
 		} else {
 			rv = null;
 		}

@@ -58,7 +58,7 @@ public class CreateFieldPane extends AbstractCreateFieldPane {
 		return true;
 	}
 	@Override
-	protected boolean isIsReassignableComponentDesired() {
+	protected boolean isIsReassignableStateDesired() {
 		return true;
 	}
 }
