@@ -68,6 +68,7 @@ public class ComboBox< E > extends ItemSelectable<javax.swing.JComboBox, E> {
 				return rv;
 			}
 		};
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "comboBoxUI:", rv.getUI() );
 		return rv;
 	}
 	public javax.swing.ListCellRenderer getRenderer() {
