@@ -42,9 +42,7 @@
  */
 package org.alice.ide.editorstabbedpane;
 
-import edu.cmu.cs.dennisc.croquet.Operation;
-
-class TypeFillIn extends edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.dennisc.zoot.ActionOperation > {
+class TypeFillIn extends edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.dennisc.croquet.ActionOperation > {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
 
 	public TypeFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {

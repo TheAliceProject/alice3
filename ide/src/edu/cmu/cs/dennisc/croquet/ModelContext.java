@@ -350,10 +350,10 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		}
 		new PendTaskObserver(this, resolver);
 	}
-	@Deprecated
-	public void todo() {
-		throw new RuntimeException("todo");
-	}
+//	@Deprecated
+//	public void todo() {
+//		throw new RuntimeException("todo");
+//	}
 
 	@Override
 	protected void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {

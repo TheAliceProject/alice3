@@ -63,7 +63,6 @@ import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
-import edu.cmu.cs.dennisc.zoot.ZManager;
 
 public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulator
 {
@@ -175,7 +174,7 @@ public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulat
 				animator = null;
 			}
 			PredeterminedSetOrthographicPicturePlaneActionOperation undoOperation = new PredeterminedSetOrthographicPicturePlaneActionOperation(Project.GROUP.getId(), false, animator, (OrthographicCamera)this.camera, this.originalZoomValue, newZoom, getUndoRedoDescription());
-			ZManager.performIfAppropriate( undoOperation, null, false );
+			edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( undoOperation, null, false );
 		}
 	}
 	

@@ -40,49 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.editorstabbedpane;
+package edu.cmu.cs.dennisc.toolkit.croquet.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractEditableListPane< E > extends AbstractEditableListLikeSubstancePane< E > {
-	public AbstractEditableListPane( edu.cmu.cs.dennisc.croquet.Group group, javax.swing.JList list ) {
-		super( group, list );
-	}
-	public javax.swing.JList getList() {
-		return (javax.swing.JList)this.getListLikeSubstance();
-	}
-	@Override
-	protected int getSelectedIndex() {
-		return this.getList().getSelectionModel().getMinSelectionIndex();
-	}
-	@Override
-	protected void setSelectedIndex( int index ) {
-		this.getList().getSelectionModel().setSelectionInterval( index, index );
-	}
-	@Override
-	protected E getItemAt( int index ) {
-		return (E)this.getList().getModel().getElementAt( index );
-	}
-	@Override
-	protected int getListSize() {
-		return this.getList().getModel().getSize();
-	}
-	
-	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
-		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-			updateOperationsEnabledStates();
-		}
-	};
-	
-	@Override
-	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		super.handleAddedTo( parent );
-		this.getList().getSelectionModel().addListSelectionListener( this.listSelectionListener );
-	}
-	@Override
-	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		this.getList().getSelectionModel().removeListSelectionListener( this.listSelectionListener );
-		super.handleRemovedFrom( parent );
+public class EnumConstantSelectionState< T extends Enum< T > > extends edu.cmu.cs.dennisc.croquet.ListSelectionState< T > {
+	public EnumConstantSelectionState( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id, Class<T> cls ) {
+		super( group, id, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( cls ) );
 	}
 }

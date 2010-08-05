@@ -79,7 +79,7 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.croquet.Bord
 			case javax.swing.JOptionPane.YES_OPTION:
 			case javax.swing.JOptionPane.NO_OPTION:
 				this.isAll = result == javax.swing.JOptionPane.NO_OPTION;
-				context.todo();
+				//context.todo();
 				break;
 			default:
 				context.cancel();

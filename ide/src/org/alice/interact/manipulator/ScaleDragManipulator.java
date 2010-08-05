@@ -57,7 +57,6 @@ import edu.cmu.cs.dennisc.pattern.Criterion;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities;
-import edu.cmu.cs.dennisc.zoot.ZManager;
 
 /**
  * @author David Culyba

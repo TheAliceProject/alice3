@@ -40,12 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.codecs;
+package edu.cmu.cs.dennisc.toolkit.croquet.codecs;
 
 /**
  * @author Dennis Cosgrove
  */
 public class EnumCodec< T extends Enum< T > > implements edu.cmu.cs.dennisc.croquet.Codec< T > {
+	//todo?
+	//private static java.util.Map< Class<?>, EnumCodec<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized < T extends Enum< T > > EnumCodec< T > getInstance( Class< T > cls ) {
+		return new EnumCodec< T >( cls );
+	}
+	private Class<T> cls;
+	private EnumCodec( Class<T> cls ) {
+		this.cls = cls;
+	}
 	public final T decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
