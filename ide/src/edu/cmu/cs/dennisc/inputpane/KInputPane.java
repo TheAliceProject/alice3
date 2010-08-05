@@ -43,8 +43,6 @@
 
 package edu.cmu.cs.dennisc.inputpane;
 
-import edu.cmu.cs.dennisc.zoot.InputValidator;
-
 /**
  * @author Dennis Cosgrove
  */

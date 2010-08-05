@@ -56,7 +56,6 @@ import org.alice.interact.operations.PredeterminedSetLocalTransformationActionOp
 import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
-import edu.cmu.cs.dennisc.zoot.ZManager;
 
 
 //adding comment for testing tags

@@ -125,7 +125,7 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 		if( this.statement.isEnabled.getValue() ) {
 			//pass
 		} else {
-			g2.setPaint( edu.cmu.cs.dennisc.zoot.PaintUtilities.getDisabledTexturePaint() );
+			g2.setPaint( edu.cmu.cs.dennisc.croquet.PaintUtilities.getDisabledTexturePaint() );
 			this.fillBounds( g2 );
 		}
 	}

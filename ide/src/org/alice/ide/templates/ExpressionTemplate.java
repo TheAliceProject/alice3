@@ -110,7 +110,7 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 		if( this.isInScope() ) {
 			//pass
 		} else {
-			g2.setPaint( edu.cmu.cs.dennisc.zoot.PaintUtilities.getDisabledTexturePaint() );
+			g2.setPaint( edu.cmu.cs.dennisc.croquet.PaintUtilities.getDisabledTexturePaint() );
 			this.fillBounds( g2 );
 		}
 	}

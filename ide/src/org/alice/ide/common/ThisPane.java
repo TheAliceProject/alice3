@@ -95,7 +95,7 @@ public class ThisPane extends AccessiblePane {
 	protected void paintEpilogue(java.awt.Graphics2D g2, int x, int y, int width, int height) {
 		super.paintEpilogue(g2, x, y, width, height);
 		if( this.type == TYPE_FOR_NULL ) {
-			g2.setPaint( edu.cmu.cs.dennisc.zoot.PaintUtilities.getDisabledTexturePaint() );
+			g2.setPaint( edu.cmu.cs.dennisc.croquet.PaintUtilities.getDisabledTexturePaint() );
 			this.fillBounds( g2 );
 		}
 	}
