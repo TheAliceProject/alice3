@@ -162,9 +162,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	}
 	
 	private edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation popupMenuOperation = new edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation( java.util.UUID.fromString( "b59ec150-56cd-4270-8b5a-80dcb5cd7bd9" ) ) {
-		@Override
-		public edu.cmu.cs.dennisc.croquet.Model[] getModels() {
-			
+		protected void handlePopupMenuCreation(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu) {
 			java.util.List< edu.cmu.cs.dennisc.croquet.Model > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
 			java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > javaTypes = org.alice.ide.IDE.getSingleton().getPrimeTimeSelectableTypesDeclaredInJava();
@@ -191,7 +189,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				models.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 				models.add( new org.alice.ide.croquet.models.ast.OtherTypesMenuModel( otherTypeModels ) );
 			}
-			return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( models, edu.cmu.cs.dennisc.croquet.Model.class );
+			edu.cmu.cs.dennisc.croquet.Application.addMenuElements( popupMenu, models );
 		}
 	};
 	

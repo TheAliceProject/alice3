@@ -42,12 +42,6 @@
  */
 package org.alice.stageide.sceneeditor;
 
-import edu.cmu.cs.dennisc.croquet.Application;
-import edu.cmu.cs.dennisc.croquet.BooleanState;
-import edu.cmu.cs.dennisc.property.StringProperty;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -64,32 +58,32 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 //		return state.register( new FieldTile( accessible ) );
 //	}
 	public FieldTile( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
-		super( new BooleanState( Application.UI_STATE_GROUP, java.util.UUID.fromString( "d3e50396-64c2-4a7d-b255-067aa212bca7" ), false ) );
+		super( new edu.cmu.cs.dennisc.croquet.BooleanState( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "d3e50396-64c2-4a7d-b255-067aa212bca7" ), false ) );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: FIELD_TILE_BOOLEAN_STATE" );
 		assert accessible != null;
 		this.accessible = accessible;
 		//this.setOpaque( false );
 		
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,4 ) );
-		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation(
-				java.util.UUID.fromString( "8e3989b2-34d6-44cf-998c-dda26662b3a0" ) ) {
+		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation( java.util.UUID.fromString( "8e3989b2-34d6-44cf-998c-dda26662b3a0" ) ) {
 			@Override
-			public edu.cmu.cs.dennisc.croquet.Model[] getModels() {
-				return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( FieldTile.this.createPopupOperations(), edu.cmu.cs.dennisc.croquet.Model.class );
+			protected void handlePopupMenuCreation( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
+				super.handlePopupMenuCreation( popupMenu );
+				edu.cmu.cs.dennisc.croquet.Application.addMenuElements( popupMenu, FieldTile.this.createPopupOperations() );
 			}
 		});
 		this.updateLabel();
 	}
 
-	private PropertyListener namePropertyListener = new PropertyListener(){
-		public void propertyChanged(PropertyEvent e) {
+	private edu.cmu.cs.dennisc.property.event.PropertyListener namePropertyListener = new edu.cmu.cs.dennisc.property.event.PropertyListener(){
+		public void propertyChanged(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
 			FieldTile.this.updateLabel();
 		}
-		public void propertyChanging(PropertyEvent e) {
+		public void propertyChanging(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
 		}
 	};
 	
-	private BooleanState.ValueObserver valueObserver = new BooleanState.ValueObserver() {
+	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver valueObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
 		public void changing(boolean nextValue) {
 		}
 		public void changed(boolean nextValue) {
@@ -100,7 +94,7 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo(parent);
 		org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().addAndInvokeValueObserver( this.valueObserver );
-		StringProperty nameProperty = accessible.getNamePropertyIfItExists();
+		edu.cmu.cs.dennisc.property.StringProperty nameProperty = accessible.getNamePropertyIfItExists();
 		if (nameProperty != null)
 		{
 			nameProperty.addPropertyListener(this.namePropertyListener);
@@ -109,7 +103,7 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().removeValueObserver( this.valueObserver );
-		StringProperty nameProperty = accessible.getNamePropertyIfItExists();
+		edu.cmu.cs.dennisc.property.StringProperty nameProperty = accessible.getNamePropertyIfItExists();
 		if (nameProperty != null)
 		{
 			nameProperty.removePropertyListener(this.namePropertyListener);

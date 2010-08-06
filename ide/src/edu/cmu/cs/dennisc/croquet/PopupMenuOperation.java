@@ -52,10 +52,11 @@ public class PopupMenuOperation extends AbstractPopupMenuOperation {
 		this.models = models;
 	}
 	public PopupMenuOperation( java.util.UUID individualId, java.util.Collection< Model > models ) {
-		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(models, Model.class ) );
+		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( models, Model.class ) );
 	}
 	@Override
-	public Model[] getModels() {
-		return this.models;
+	protected void handlePopupMenuCreation( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
+		super.handlePopupMenuCreation( popupMenu );
+		Application.addMenuElements( popupMenu, this.models );
 	}
 }

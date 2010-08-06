@@ -51,18 +51,31 @@ public abstract class AbstractPopupMenuOperation extends Operation<PopupMenuOper
 	public AbstractPopupMenuOperation( java.util.UUID individualUUID ) {
 		super( POPUP_MENU_GROUP, individualUUID );
 	}
-	public abstract Model[] getModels();
 	@Override
 	protected PopupMenuOperationContext createContext( ModelContext< ? > parent, java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return parent.createPopupMenuOperationContext( this, e, viewController );
 	}
+	
+	protected void handlePopupMenuCreation( PopupMenu popupMenu ) {
+	}
+	protected void handlePopupMenuWillBecomeVisible( PopupMenu popupMenu, javax.swing.event.PopupMenuEvent e ) {
+		this.addComponent( popupMenu );
+	}
+	protected void handlePopupMenuWillBecomeInvisible( PopupMenu popupMenu, javax.swing.event.PopupMenuEvent e ) {
+		this.removeComponent( popupMenu );
+	}
+//	protected void handlePopupMenuCanceled( PopupMenu popupMenu, javax.swing.event.PopupMenuEvent e ) {
+//	}
  	@Override
 	protected final void perform(final PopupMenuOperationContext context) {
-		PopupMenu popupMenu = this.createPopupMenu();
+		final PopupMenu popupMenu = new PopupMenu( this );
+		this.handlePopupMenuCreation( popupMenu );
 		popupMenu.getAwtComponent().addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
 			public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
+				AbstractPopupMenuOperation.this.handlePopupMenuWillBecomeVisible( popupMenu, e );
 			}
 			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
+				AbstractPopupMenuOperation.this.handlePopupMenuWillBecomeInvisible( popupMenu, e );
 			}
 			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
 				context.cancel();
@@ -84,33 +97,7 @@ public abstract class AbstractPopupMenuOperation extends Operation<PopupMenuOper
 		}
 	}
 
-	private void addPopupMenu( PopupMenu popupMenu ) {
-		this.addComponent( popupMenu );
-	}
-	private void removePopupMenu( PopupMenu popupMenu ) {
-		this.removeComponent( popupMenu );
-	}
-
-	private PopupMenu createPopupMenu() {
-//		PopupMenu rv = new PopupMenu( this ) {
-//			@Override
-//			protected void handleAddedTo(Component<?> parent) {
-//				super.handleAddedTo( parent );
-//				AbstractPopupMenuOperation.this.addPopupMenu(this);
-//			}
-//
-//			@Override
-//			protected void handleRemovedFrom(Component<?> parent) {
-//				AbstractPopupMenuOperation.this.removePopupMenu(this);
-//				super.handleRemovedFrom( parent );
-//			}
-//		};
-		PopupMenu rv = new PopupMenu( this );
-		Application.addMenuElements( rv, this.getModels() );
-		return rv;
-	}
-	
-	private static class ArrowIcon extends AbstractArrowIcon {
+ 	private static class ArrowIcon extends AbstractArrowIcon {
 		public ArrowIcon( int size ) {
 			super( size );
 		}

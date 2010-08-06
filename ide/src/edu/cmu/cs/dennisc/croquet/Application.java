@@ -258,29 +258,39 @@ public abstract class Application {
 		}
 	}
 
+	private static AbstractMenu< ?,? > addMenuElement( AbstractMenu< ?,? > rv, Model model ) {
+		if( model != null ) {
+			if( model instanceof MenuModel ) {
+				MenuModel menuOperation = (MenuModel)model;
+				rv.addMenu( menuOperation.createMenu() );
+			} else if( model instanceof ListSelectionState< ? > ) {
+				ListSelectionState< ? > itemSelectionOperation = (ListSelectionState< ? >)model;
+				rv.addMenu( itemSelectionOperation.getMenuModel().createMenu() );
+			} else {
+				if( model instanceof Operation<?> ) {
+					Operation<?> operation = (Operation<?>)model;
+					rv.addMenuItem( operation.createMenuItem() );
+				} else if( model instanceof BooleanState ) {
+					BooleanState booleanState = (BooleanState)model;
+					rv.addCheckBoxMenuItem( booleanState.createCheckBoxMenuItem() );
+				} else {
+					throw new RuntimeException();
+				}
+			}
+		} else {
+			rv.addSeparator();
+		}
+		return rv;
+	}
+	public static AbstractMenu< ?,? > addMenuElements( AbstractMenu< ?,? > rv, java.util.List<Model> models ) {
+		for( Model model : models ) {
+			addMenuElement( rv, model );
+		}
+		return rv;
+	}
 	public static AbstractMenu< ?,? > addMenuElements( AbstractMenu< ?,? > rv, Model[] models ) {
 		for( Model model : models ) {
-			if( model != null ) {
-				if( model instanceof MenuModel ) {
-					MenuModel menuOperation = (MenuModel)model;
-					rv.addMenu( menuOperation.createMenu() );
-				} else if( model instanceof ListSelectionState< ? > ) {
-					ListSelectionState< ? > itemSelectionOperation = (ListSelectionState< ? >)model;
-					rv.addMenu( itemSelectionOperation.getMenuModel().createMenu() );
-				} else {
-					if( model instanceof Operation<?> ) {
-						Operation<?> operation = (Operation<?>)model;
-						rv.addMenuItem( operation.createMenuItem() );
-					} else if( model instanceof BooleanState ) {
-						BooleanState booleanState = (BooleanState)model;
-						rv.addCheckBoxMenuItem( booleanState.createCheckBoxMenuItem() );
-					} else {
-						throw new RuntimeException();
-					}
-				}
-			} else {
-				rv.addSeparator();
-			}
+			addMenuElement( rv, model );
 		}
 		return rv;
 	}

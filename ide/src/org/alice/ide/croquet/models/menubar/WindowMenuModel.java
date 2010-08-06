@@ -53,7 +53,8 @@ public class WindowMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel
 		return SingletonHolder.instance;
 	}
 	
-	private static java.util.List<edu.cmu.cs.dennisc.croquet.Model> getModels() {
+	
+	private static java.util.List<edu.cmu.cs.dennisc.croquet.Model> createModels() {
 		java.util.List<edu.cmu.cs.dennisc.croquet.Model> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		rv.add( org.alice.ide.croquet.models.history.IsProjectHistoryShowingState.getInstance() );
 		rv.add( org.alice.ide.croquet.models.ui.IsMemoryUsageShowingState.getInstance() );
@@ -66,7 +67,7 @@ public class WindowMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel
 		return rv;
 	}
 	private WindowMenuModel() {
-		super( java.util.UUID.fromString( "58a7297b-a5f8-499a-abd1-db6fca4083c8" ), getModels() );
+		super( java.util.UUID.fromString( "58a7297b-a5f8-499a-abd1-db6fca4083c8" ), createModels() );
 	}
 }
 //	private java.util.List< edu.cmu.cs.dennisc.croquet.BooleanState > booleanStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
