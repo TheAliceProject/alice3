@@ -258,7 +258,7 @@ public abstract class Application {
 		}
 	}
 
-	private static AbstractMenu< ?,? > addMenuElement( AbstractMenu< ?,? > rv, Model model ) {
+	private static MenuItemContainer addMenuElement( MenuItemContainer rv, Model model ) {
 		if( model != null ) {
 			if( model instanceof MenuModel ) {
 				MenuModel menuOperation = (MenuModel)model;
@@ -282,13 +282,13 @@ public abstract class Application {
 		}
 		return rv;
 	}
-	public static AbstractMenu< ?,? > addMenuElements( AbstractMenu< ?,? > rv, java.util.List<Model> models ) {
+	public static MenuItemContainer addMenuElements( MenuItemContainer rv, java.util.List<Model> models ) {
 		for( Model model : models ) {
 			addMenuElement( rv, model );
 		}
 		return rv;
 	}
-	public static AbstractMenu< ?,? > addMenuElements( AbstractMenu< ?,? > rv, Model[] models ) {
+	public static MenuItemContainer addMenuElements( MenuItemContainer rv, Model[] models ) {
 		for( Model model : models ) {
 			addMenuElement( rv, model );
 		}

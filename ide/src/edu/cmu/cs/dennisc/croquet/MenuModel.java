@@ -85,9 +85,16 @@ public abstract class MenuModel extends Model {
 		} else {
 			clsForI18N = this.getClass();
 		}
-		this.action.putValue( javax.swing.Action.NAME, getDefaultLocalizedText( clsForI18N ) );
+		this.setName( getDefaultLocalizedText( clsForI18N ) );
 		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, getLocalizedMnemonicKey( clsForI18N ) );
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, getLocalizedAcceleratorKeyStroke( clsForI18N ) );
+	}
+	
+	public void setName( String name ) {
+		this.action.putValue( javax.swing.Action.NAME, name );
+	}
+	public void setSmallIcon( javax.swing.Icon icon ) {
+		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
 	}
 	
 	protected void handleMenuSelected( javax.swing.event.MenuEvent e, Menu<MenuModel> menu ) {

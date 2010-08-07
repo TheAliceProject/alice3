@@ -45,11 +45,11 @@ package edu.cmu.cs.dennisc.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Node implements javax.swing.event.MenuListener/*, java.awt.event.ActionListener*/ {
+public abstract class Node {
 	public Node parent = null;
 	private Node nextSibling = null;
 	private java.util.List<Node> children = null;
-	private javax.swing.JMenuItem menuItem = null;
+	private edu.cmu.cs.dennisc.croquet.Model model = null;
 	private javax.swing.JComponent menuProxy = null;
 	private boolean wasLast = false; 
 	
@@ -103,13 +103,6 @@ public abstract class Node implements javax.swing.event.MenuListener/*, java.awt
 		 return this.children;
 	}
 	
-//	protected javax.swing.Icon getMenuItemIcon() {
-//		return null;
-//	}
-//	protected String getMenuItemText() {
-//		return this.toString();
-//	}
-	
 	protected Node getNextSibling() {
 		return this.nextSibling;
 	}
@@ -129,6 +122,51 @@ public abstract class Node implements javax.swing.event.MenuListener/*, java.awt
 			return (Blank)this;
 		}
 	}
+
+	private class MenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+		public MenuModel() {
+			super( java.util.UUID.fromString( "6f3f3350-dc15-4dca-a650-f88ea484da14" ) );
+		}
+		@Override
+		protected void handleMenuSelected( javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu< edu.cmu.cs.dennisc.croquet.MenuModel > menu ) {
+			super.handleMenuSelected( e, menu );
+			Node.this.handleMenuSelected( e, menu );
+		}
+		@Override
+		protected void handleMenuDeselected( javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu< edu.cmu.cs.dennisc.croquet.MenuModel > menu ) {
+			Node.this.handleMenuDeselected( e, menu );
+			super.handleMenuDeselected( e, menu );
+		}
+//		@Override
+//		protected void handleMenuCanceled( javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu< edu.cmu.cs.dennisc.croquet.MenuModel > menu ) {
+//			super.handleMenuCanceled( e, menu );
+//		}
+	}
+	
+	private class ActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+		public ActionOperation() {
+			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "71f47373-d2b4-474d-b131-307c53443c9d" ) );
+		}
+		@Override
+		protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+			Node.this.handleActionOperationPerformed();
+			context.finish();
+		}
+	}
+	
+//	private ActionOperation actionOperation = new ActionOperation();
+//	private MenuModel menuModel = new MenuModel();
+//	protected edu.cmu.cs.dennisc.croquet.Model createModel( boolean isLast ) {
+//		if( isLast ) {
+//			this.menuItem = new javax.swing.JMenuItem();
+//			this.menuItem.addActionListener( this.actionListener );
+//		} else {
+//			javax.swing.JMenu menu = new javax.swing.JMenu();
+//			menu.addMenuListener( this  );
+//			this.menuItem = menu;
+//		}
+//	}
+
 	protected javax.swing.JComponent createMenuProxy() {
 		return new javax.swing.JLabel( "todo: override getMenuProxy" );
 	}
@@ -143,39 +181,52 @@ public abstract class Node implements javax.swing.event.MenuListener/*, java.awt
 		
 	}
 	
-	private java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
-		public void actionPerformed(java.awt.event.ActionEvent e) {
-			Node.this.handleActionOperationPerformed();
+	private static void setText( edu.cmu.cs.dennisc.croquet.Model model, String text ) {
+		if( model instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
+			edu.cmu.cs.dennisc.croquet.MenuModel menuModel = (edu.cmu.cs.dennisc.croquet.MenuModel)model;
+			menuModel.setName( text );
+		} else if( model instanceof edu.cmu.cs.dennisc.croquet.Operation< ? > ) {
+			edu.cmu.cs.dennisc.croquet.Operation< ? > operation = (edu.cmu.cs.dennisc.croquet.Operation< ? >)model;
+			operation.setName( text );
 		}
-	};
-	protected javax.swing.JComponent getMenuItem() {
+	}
+	private static void setIcon( edu.cmu.cs.dennisc.croquet.Model model, javax.swing.Icon icon ) {
+		if( model instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
+			edu.cmu.cs.dennisc.croquet.MenuModel menuModel = (edu.cmu.cs.dennisc.croquet.MenuModel)model;
+			menuModel.setSmallIcon( icon );
+		} else if( model instanceof edu.cmu.cs.dennisc.croquet.Operation< ? > ) {
+			edu.cmu.cs.dennisc.croquet.Operation< ? > operation = (edu.cmu.cs.dennisc.croquet.Operation< ? >)model;
+			operation.setSmallIcon( icon );
+		}
+	}
+	private edu.cmu.cs.dennisc.croquet.Model createCroquetModel( boolean isLast ) {
+		if( isLast ) {
+			return new ActionOperation();
+		} else {
+			return new MenuModel();
+		}
+	}
+	protected edu.cmu.cs.dennisc.croquet.Model getCroquetModel() {
 		boolean isLast = this.isLast();
-		if( this.menuItem != null ) {
+		if( this.model != null ) {
 			if( this.wasLast == isLast ) {
 				//pass
 			} else {
-				if( this.menuItem instanceof javax.swing.JMenu ) {
-					javax.swing.JMenu menu = (javax.swing.JMenu)this.menuItem;
-					menu.removeMenuListener( this );
-				} else {
-					this.menuItem.removeActionListener( this.actionListener );
-				}
-				this.menuItem = null;
+//				if( this.menuItem instanceof MenuModel ) {
+//					MenuModel menuModel = (MenuModel)this.menuItem;
+//					menuModel.removeMenuListener( this );
+//				} else {
+//					this.menuItem.removeActionListener( this.actionListener );
+//				}
+				this.model = null;
 			}
 		} else {
 			//pass
 		}
-		if( this.menuItem != null ) {
+		if( this.model != null ) {
 			//pass
 		} else {
-			if( isLast ) {
-				this.menuItem = new javax.swing.JMenuItem();
-				this.menuItem.addActionListener( this.actionListener );
-			} else {
-				javax.swing.JMenu menu = new javax.swing.JMenu();
-				menu.addMenuListener( this  );
-				this.menuItem = menu;
-			}
+			this.model = this.createCroquetModel( isLast );
 			//this.menuItem.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 			this.isMenuItemIconUpToDate = false;
 		}
@@ -195,21 +246,21 @@ public abstract class Node implements javax.swing.event.MenuListener/*, java.awt
 					java.awt.Dimension size = component.getPreferredSize();
 					if( size.width > 0 && size.height > 0 ) {
 						javax.swing.Icon icon = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.createIcon( component );
-						this.menuItem.setIcon( icon );
-						this.menuItem.setText( null );
+						setIcon( this.model, icon );
+						setText( this.model, null );
 					} else {
-						this.menuItem.setIcon( null );
-						this.menuItem.setText( "unknown" );
+						setIcon( this.model, null );
+						setText( this.model, "unknown" );
 					}
 //				}
 			} else {
-				this.menuItem.setIcon( null );
-				this.menuItem.setText( "unknown" );
+				setIcon( this.model, null );
+				setText( this.model, "unknown" );
 			}
 			//component.doLayout();
 			setMenuItemIconUpToDate( true );
 		}
-		return this.menuItem;
+		return this.model;
 	}
 	private boolean isMenuItemIconUpToDate = false;
 	protected boolean isMenuItemIconUpToDate() {
@@ -218,44 +269,55 @@ public abstract class Node implements javax.swing.event.MenuListener/*, java.awt
 	protected void setMenuItemIconUpToDate( boolean isMenuItemIconUpToDate ) {
 		this.isMenuItemIconUpToDate = isMenuItemIconUpToDate;
 	}
-	protected javax.swing.JMenu getMenu() {
-		return (javax.swing.JMenu)getMenuItem();
+//	protected edu.cmu.cs.dennisc.croquet.Menu< ? > getMenu() {
+//		return (edu.cmu.cs.dennisc.croquet.Menu< ? >)getMenuItem();
+//	}
+
+	protected void handleMenuSelected( javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu< edu.cmu.cs.dennisc.croquet.MenuModel > menu ) {
+		edu.cmu.cs.dennisc.croquet.Application.addMenuElements( menu, Node.this.getModels() );
+//		Node.this.addNextNodeMenuItems( Node.this.model, menu );
+////		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+////			public void run() {
+////				Node.this.menuItem.revalidate();
+////				Node.this.menuItem.repaint();
+////			}
+////		} );
+	}
+	protected void handleMenuDeselected( javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu< edu.cmu.cs.dennisc.croquet.MenuModel > menu ) {
+		menu.getAwtComponent().removeAll();
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo handleMenuDeselected" );
 	}
 
-	protected void addNextNodeMenuItems( javax.swing.JComponent parent ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.Model > getModels() {
+		java.util.List< edu.cmu.cs.dennisc.croquet.Model > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		for( Node child : this.getNextNode().getChildren() ) {
 			if( child instanceof Blank ) {
 				child = child.getChildren().get( 0 );
 			}
-			javax.swing.JComponent menuItem = child.getMenuItem();
-			if( menuItem != null ) {
-				parent.add( menuItem );
-			} else {
-				if( parent instanceof javax.swing.JMenu ) {
-					javax.swing.JMenu menu = (javax.swing.JMenu)parent;
-					menu.addSeparator();
-				} else if( parent instanceof javax.swing.JPopupMenu ) {
-					javax.swing.JPopupMenu popupMenu = (javax.swing.JPopupMenu)parent;
-					popupMenu.addSeparator();
-				}
-			}
-		}
+			rv.add( child.getCroquetModel() );
+		}	
+		return rv;
 	}
-	public void menuSelected( javax.swing.event.MenuEvent e ) {
-		this.addNextNodeMenuItems( this.menuItem );
-//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//			public void run() {
-//				Node.this.menuItem.revalidate();
-//				Node.this.menuItem.repaint();
+//	protected void addNextNodeMenuItems( javax.swing.JComponent parent ) {
+//		for( Node child : this.getNextNode().getChildren() ) {
+//			if( child instanceof Blank ) {
+//				child = child.getChildren().get( 0 );
 //			}
-//		} );
-	}
-	public void menuDeselected( javax.swing.event.MenuEvent e ) {
-		this.getMenu().removeAll();
-	}
-	public void menuCanceled( javax.swing.event.MenuEvent e ) {
-	}
-
+//			javax.swing.JComponent menuItem = child.getMenuItem();
+//			if( menuItem != null ) {
+//				parent.add( menuItem );
+//			} else {
+//				if( parent instanceof javax.swing.JMenu ) {
+//					javax.swing.JMenu menu = (javax.swing.JMenu)parent;
+//					menu.addSeparator();
+//				} else if( parent instanceof javax.swing.JPopupMenu ) {
+//					javax.swing.JPopupMenu popupMenu = (javax.swing.JPopupMenu)parent;
+//					popupMenu.addSeparator();
+//				}
+//			}
+//		}
+//	}
+	
 	
 	protected void handleActionOperationPerformed() {
 		this.getRootBlank().handleActionPerformed();

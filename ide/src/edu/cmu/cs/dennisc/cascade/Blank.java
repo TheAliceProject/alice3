@@ -99,11 +99,14 @@ public abstract class Blank extends Node {
 	}
 
 	public void addSeparator() {
-		this.addSeparator( null );
+		this.addFillIn( new SeparatorFillIn() );
 	}
-	public void addSeparator( String text ) {
-		this.addFillIn( new SeparatorFillIn( text ) );
-	}
+//	public void addSeparator() {
+//		this.addSeparator( null );
+//	}
+//	public void addSeparator( String text ) {
+//		this.addFillIn( new SeparatorFillIn( text ) );
+//	}
 	public void showPopupMenu( java.awt.Component invoker, int x, int y, edu.cmu.cs.dennisc.task.TaskObserver taskObserver ) {
 		this.taskObserver = taskObserver;
 		
@@ -111,20 +114,22 @@ public abstract class Blank extends Node {
 		if( fillIn != null ) {
 			taskObserver.handleCompletion( fillIn.getValue() );
 		} else {
-			final javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
+			//final javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
+			final edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu = new edu.cmu.cs.dennisc.croquet.PopupMenu( null );
 			//popupMenu.setLightWeightPopupEnabled( false );
-			popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
+			popupMenu.getAwtComponent().addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
 				public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
-					Blank.this.addNextNodeMenuItems( popupMenu );
+					edu.cmu.cs.dennisc.croquet.Application.addMenuElements( popupMenu, Blank.this.getModels() );
+					//Blank.this.addNextNodeMenuItems( popupMenu );
 				}
 				public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
-					popupMenu.removeAll();
+					popupMenu.getAwtComponent().removeAll();
 				}
 				public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
 					Blank.this.handleCancel( e );
 				}
 			} );
-			edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu, invoker, x, y );
+			edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), invoker, x, y );
 		}
 	}
 

@@ -46,24 +46,23 @@ package edu.cmu.cs.dennisc.cascade;
  * @author Dennis Cosgrove
  */
 public class SeparatorFillIn extends FillIn< Object > {
-	private edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane pane;
-	public SeparatorFillIn() {
-		this( null );
-	}
-	public SeparatorFillIn( String text ) {
-		if( text != null ) {
-			javax.swing.JLabel label = new javax.swing.JLabel( text );
-			label.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
-			this.pane = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane();
-			this.pane.add( label );
-		} else {
-			this.pane = null;
-		}
-	}
-	
+//	private edu.cmu.cs.dennisc.croquet.LineAxisPanel panel;
+//	public SeparatorFillIn() {
+//		this( null );
+//	}
+//	public SeparatorFillIn( String text ) {
+//		if( text != null ) {
+//			edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label( text );
+//			label.setHorizontalAlignment( edu.cmu.cs.dennisc.croquet.HorizontalAlignment.LEADING );
+//			this.panel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( label );
+//		} else {
+//			this.panel = null;
+//		}
+//	}
+
 	@Override
-	protected javax.swing.JComponent getMenuItem() {
-		return this.pane;
+	protected edu.cmu.cs.dennisc.croquet.Model getCroquetModel() {
+		return null;
 	}
 	@Override
 	protected void addChildren() {

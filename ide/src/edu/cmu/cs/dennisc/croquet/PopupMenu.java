@@ -46,8 +46,9 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class PopupMenu extends AbstractMenu< javax.swing.JPopupMenu, AbstractPopupMenuOperation > {
-	/*package-private*/ PopupMenu( AbstractPopupMenuOperation model ) {
+public class PopupMenu extends ViewController< javax.swing.JPopupMenu, AbstractPopupMenuOperation > implements MenuItemContainer {
+//	/*package-private*/ PopupMenu( AbstractPopupMenuOperation model ) {
+	public PopupMenu( AbstractPopupMenuOperation model ) {
 		super( model );
 	}
 	
@@ -56,19 +57,15 @@ public class PopupMenu extends AbstractMenu< javax.swing.JPopupMenu, AbstractPop
 		return new javax.swing.JPopupMenu();
 	}
 
-	@Override
 	public void addMenu( Menu menu ) {
 		this.getAwtComponent().add( menu.getAwtComponent() );
 	}
-	@Override
 	public void addMenuItem( MenuItem menuItem ) {
 		this.getAwtComponent().add( menuItem.getAwtComponent() );
 	}
-	@Override
 	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {
 		this.getAwtComponent().add( checkBoxMenuItem.getAwtComponent() );
 	}
-	@Override
 	public void addSeparator() {
 		this.getAwtComponent().addSeparator();
 	}

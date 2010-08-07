@@ -40,87 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.cascade;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FillIn< E > extends Node {
-	public void addBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-		super.addChild( blank );
-	}
-
-	@Override
-	protected boolean isLast() {
-		return this.getNextNode() == null;
-	}
-	
-	public Blank getBlankAt( int index ) {
-		return (Blank)getChildren().get( index );
-	}
-	public Blank getParentBlank() {
-		return (Blank)getParent();
-	}
-	
-	@Override
-	protected Node getNextNode() {
-		java.util.List< Node > children = this.getChildren();
-		if( children.size() > 0 ) {
-			return children.get( 0 );
-		} else {
-			return this.getNextBlank();
-		}
-	}
-	public void select() {
-		getNearestBlank().setSelectedFillIn( this );
-	}
-	public void deselect() {
-		//todo?
-		//getNearestBlank().setSelectedFillIn( null );
-	}
-	
-	@Override
-	protected void handleMenuSelected( javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu< edu.cmu.cs.dennisc.croquet.MenuModel > menu ) {
-		this.select();
-		super.handleMenuSelected( e, menu );
-	}
-
-	@Override
-	protected void handleMenuDeselected( javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu< edu.cmu.cs.dennisc.croquet.MenuModel > menu ) {
-		this.deselect();
-		super.handleMenuDeselected( e, menu );
-	}
-	
-	@Override
-	protected void handleActionOperationPerformed() {
-		this.select();
-		super.handleActionOperationPerformed();
-	}
-
-	public abstract E getTransientValue();
-	public abstract E getValue();
-	public void showPopupMenu( java.awt.Component invoker, int x, int y, edu.cmu.cs.dennisc.task.TaskObserver< ? extends Object > taskObserver ) {
-		class DefaultRootBlank extends Blank {
-			@Override
-			protected void addChildren() {
-				this.addFillIn( FillIn.this );
-			}
-			
-			@Override
-			protected java.util.List< edu.cmu.cs.dennisc.croquet.Model > getModels() {
-				FillIn.this.setParent( this );
-				return FillIn.this.getChildren().get( 0 ).getModels();
-			}
-//			@Override
-//			protected void addNextNodeMenuItems( javax.swing.JComponent component ) {
-//				FillIn.this.setParent( this );
-//				FillIn.this.getChildren().get( 0 ).addNextNodeMenuItems( component );
-//			}
-		}
-		if( this.getChildren().size() > 0 ) {
-			new DefaultRootBlank().showPopupMenu( invoker, x, y, taskObserver );
-		} else {
-			throw new RuntimeException();
-		}
+public abstract class AbstractMenuItem< J extends javax.swing.AbstractButton, M extends Model > extends AbstractButton< J, M > {
+	public AbstractMenuItem( M model ) {
+		super( model );
 	}
 }

@@ -46,12 +46,9 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractMenu< C extends javax.swing.JComponent, M extends Model > extends ViewController< C, M > {
-	/*package-private*/ AbstractMenu( M model ) {
-		super( model );
-	}
-	public abstract void addMenu( Menu<?> menu );
-	public abstract void addMenuItem( MenuItem menuItem );
-	public abstract void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem );
-	public abstract void addSeparator();
+public interface MenuItemContainer {
+	public void addMenu( Menu<?> menu );
+	public void addMenuItem( MenuItem menuItem );
+	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem );
+	public void addSeparator();
 }
