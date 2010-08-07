@@ -85,6 +85,11 @@ public class MethodDeclaredInAlice extends AbstractMethod implements CodeDeclare
 	}
 	
 	@Override
+	public boolean isValid() {
+		return true;
+	}
+	
+	@Override
 	public String getName() {
 		return this.name.getValue();
 	}

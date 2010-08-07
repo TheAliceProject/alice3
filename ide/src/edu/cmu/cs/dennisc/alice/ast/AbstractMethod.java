@@ -48,6 +48,7 @@ package edu.cmu.cs.dennisc.alice.ast;
  */
 public abstract class AbstractMethod extends AbstractCode {
 	//public ObjectProperty< Boolean > isEntryPoint = new ObjectProperty< Boolean >( this );
+	public abstract boolean isValid();
 	
 	public abstract boolean isStatic();
 	public abstract boolean isAbstract();

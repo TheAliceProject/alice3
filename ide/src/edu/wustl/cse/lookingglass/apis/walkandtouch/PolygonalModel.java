@@ -89,18 +89,35 @@ public class PolygonalModel extends org.alice.apis.moveandturn.PolygonalModel {
 	
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void moveTo(PolygonalModel target, SpatialRelation spatialRelation, Number offset, Number duration) {
-		perform( new edu.wustl.cse.lookingglass.apis.walkandtouch.animation.BetterPlaceAnimation(this, target, spatialRelation, offset.doubleValue(), duration.doubleValue()));
+		placeRelativeTo(target, spatialRelation, offset, duration);
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED)
 	public void moveTo(PolygonalModel target, SpatialRelation spatialRelation, Number offset) {
-		moveTo(target, spatialRelation, offset, 1.0);
+		placeRelativeTo(target, spatialRelation, offset);
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED)
 	public void moveTo(PolygonalModel target, SpatialRelation spatialRelation) {
+		placeRelativeTo(target, spatialRelation);
+	}
+//	@MethodTemplate( visibility=Visibility.CHAINED)
+//	public void moveTo(PolygonalModel target) {
+//		placeRelativeTo(target);
+//	}
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void placeRelativeTo(PolygonalModel target, SpatialRelation spatialRelation, Number offset, Number duration) {
+		perform( new edu.wustl.cse.lookingglass.apis.walkandtouch.animation.BetterPlaceAnimation(this, target, spatialRelation, offset.doubleValue(), duration.doubleValue()));
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED)
+	public void placeRelativeTo(PolygonalModel target, SpatialRelation spatialRelation, Number offset) {
+		moveTo(target, spatialRelation, offset, 1.0);
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED)
+	public void placeRelativeTo(PolygonalModel target, SpatialRelation spatialRelation) {
 		moveTo(target, spatialRelation, 1.0);
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED)
-	public void moveTo(PolygonalModel target) {
+	public void placeRelativeTo(PolygonalModel target) {
 		moveTo(target, SpatialRelation.IN_FRONT_OF);
 	}
 //	

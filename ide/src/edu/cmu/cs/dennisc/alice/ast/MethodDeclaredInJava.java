@@ -89,6 +89,10 @@ public class MethodDeclaredInJava extends AbstractMethod {
 	}
 
 	@Override
+	public boolean isValid() {
+		return this.methodReflectionProxy.getReification() != null;
+	}
+	@Override
 	public String getName() {
 		return this.methodReflectionProxy.getName();
 	}

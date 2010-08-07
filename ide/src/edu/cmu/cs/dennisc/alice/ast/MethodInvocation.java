@@ -85,22 +85,26 @@ public class MethodInvocation extends Expression {
 		Expression e = expression.getValue();
 		AbstractMethod m = method.getValue();
 		if( e != null && m != null ) {
-			if( m.isStatic() ) {
-				//todo
-				rv = true;
-			} else {
-				AbstractType<?,?,?> declaringType = m.getDeclaringType();
-				AbstractType<?,?,?> expressionType = e.getType();
-				if( expressionType instanceof AnonymousInnerTypeDeclaredInAlice ) {
+			if( m.isValid() ) {
+				if( m.isStatic() ) {
 					//todo
 					rv = true;
 				} else {
-					if( declaringType != null && expressionType != null ) {
-						rv = declaringType.isAssignableFrom( expressionType );
+					AbstractType<?,?,?> declaringType = m.getDeclaringType();
+					AbstractType<?,?,?> expressionType = e.getType();
+					if( expressionType instanceof AnonymousInnerTypeDeclaredInAlice ) {
+						//todo
+						rv = true;
 					} else {
-						rv = false;
+						if( declaringType != null && expressionType != null ) {
+							rv = declaringType.isAssignableFrom( expressionType );
+						} else {
+							rv = false;
+						}
 					}
 				}
+			} else {
+				rv = false;
 			}
 		} else {
 			rv = false;
