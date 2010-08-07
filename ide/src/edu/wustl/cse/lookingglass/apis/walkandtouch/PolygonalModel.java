@@ -87,7 +87,7 @@ public class PolygonalModel extends org.alice.apis.moveandturn.PolygonalModel {
 		straightenUp(1.0);
 	}
 	
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void moveTo(PolygonalModel target, SpatialRelation spatialRelation, Number offset, Number duration) {
 		placeRelativeTo(target, spatialRelation, offset, duration);
 	}

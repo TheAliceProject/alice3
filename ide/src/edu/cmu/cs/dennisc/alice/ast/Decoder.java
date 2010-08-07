@@ -52,8 +52,8 @@ public class Decoder {
 	public static void addMethodFilter( Class<?> prevCls, String name, Class<?> nextCls ) {
 //		Decoder.mapToMapCls.put( prevCls, name, nextCls );
 	}
-	public static void addMethodFilter( Class<?> cls, String prevName, String nextName ) {
-		Decoder.mapToMapName.put( new ClassReflectionProxy( cls ), prevName, nextName );
+	public static void addMethodFilter( ClassReflectionProxy classReflectionProxy, String prevName, String nextName ) {
+		Decoder.mapToMapName.put( classReflectionProxy, prevName, nextName );
 	}
 //	private static Class<?> filterClsIfNecessary( Class<?> cls, String name ) {
 //		Class<?> rv = Decoder.mapToMapCls.get( cls, name );
