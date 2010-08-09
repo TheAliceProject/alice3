@@ -95,8 +95,8 @@ public class AliceFormatter extends Formatter {
 	}
 	
 	@Override
-	protected String getTextForMthd(java.lang.reflect.Method mthd) {
-		return this.getLocalizedText( mthd.getName() );
+	protected String getTextForMethodReflectionProxy( edu.cmu.cs.dennisc.alice.ast.MethodReflectionProxy methodReflectionProxy ) {
+		return this.getLocalizedText( methodReflectionProxy.getName() );
 	}
 	
 	@Override

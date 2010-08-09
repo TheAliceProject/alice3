@@ -64,8 +64,8 @@ public class JavaFormatter extends Formatter {
 		return "null";
 	}
 	@Override
-	protected String getTextForMthd(java.lang.reflect.Method mthd) {
-		return mthd.getName();
+	protected String getTextForMethodReflectionProxy( edu.cmu.cs.dennisc.alice.ast.MethodReflectionProxy methodReflectionProxy ) {
+		return methodReflectionProxy.getName();
 	}
 	@Override
 	public boolean isTypeExpressionDesired() {
