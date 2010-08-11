@@ -57,6 +57,7 @@ import org.alice.ide.operations.ActionOperation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+import edu.cmu.cs.dennisc.alice.ast.ThisExpression;
 import edu.cmu.cs.dennisc.croquet.ActionOperationContext;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 

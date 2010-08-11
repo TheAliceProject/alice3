@@ -45,6 +45,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+import edu.cmu.cs.dennisc.croquet.Button;
 import edu.cmu.cs.dennisc.croquet.GridBagPanel;
 import edu.cmu.cs.dennisc.croquet.ScrollPane;
 
@@ -52,6 +53,9 @@ import edu.cmu.cs.dennisc.croquet.ScrollPane;
  * @author David Culyba
  */
 public class SceneViewManagerPanel extends GridBagPanel{
+	
+	protected Button moveCameraToMarkerButton;
+	protected Button moveMarkerToCameraButton;
 	
 	public SceneViewManagerPanel(org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor sceneEditor)
 	{
@@ -91,7 +95,8 @@ public class SceneViewManagerPanel extends GridBagPanel{
 				0, //ipadX
 				0 ) //ipadY
 		);
-		this.addComponent( MoveActiveCameraToMarkerActionOperation.getInstance().createButton(), new GridBagConstraints( 
+		this.moveCameraToMarkerButton = MoveActiveCameraToMarkerActionOperation.getInstance().createButton();
+		this.addComponent( this.moveCameraToMarkerButton, new GridBagConstraints( 
 				1, //gridX
 				0, //gridY
 				1, //gridWidth
@@ -104,7 +109,8 @@ public class SceneViewManagerPanel extends GridBagPanel{
 				0, //ipadX
 				0 ) //ipadY
 		);
-		this.addComponent( MoveMarkerToActiveCameraActionOperation.getInstance().createButton(), new GridBagConstraints( 
+		this.moveMarkerToCameraButton = MoveMarkerToActiveCameraActionOperation.getInstance().createButton();
+		this.addComponent( this.moveMarkerToCameraButton, new GridBagConstraints( 
 				2, //gridX
 				0, //gridY
 				1, //gridWidth
@@ -143,6 +149,12 @@ public class SceneViewManagerPanel extends GridBagPanel{
 				0, //ipadX
 				0 ) //ipadY
 		);
+	}
+	
+	public void updateButtons()
+	{
+		this.moveCameraToMarkerButton.setVisible(MoveActiveCameraToMarkerActionOperation.getInstance().isEnabled());
+		this.moveMarkerToCameraButton.setVisible(MoveMarkerToActiveCameraActionOperation.getInstance().isEnabled());
 	}
 
 }

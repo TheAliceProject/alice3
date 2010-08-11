@@ -407,6 +407,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		
 		MoveActiveCameraToMarkerActionOperation.getInstance().setMarkerField(cameraMarkerField);
 		MoveMarkerToActiveCameraActionOperation.getInstance().setMarkerField(cameraMarkerField);
+		this.sidePane.getViewManager().updateButtons();
 		
 	}
 	
@@ -571,6 +572,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		{
 			if (field.getValueType().isAssignableTo( org.alice.apis.moveandturn.CameraMarker.class ))
 			{
+				PrintUtilities.println("Camera marker: "+field.getName());
 				cameraMarkerFields.add(field);
 			}
 		}
@@ -1206,9 +1208,15 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		//Make the markers visible
 		setCameraMarkerVisibility(true);
 		this.mainCameraMarkerList.setSelectedItem(selectedCameraMarker);
-		sidePane.getShowSceneGraphViewerActionOperation().fire();
 		//Turn animation back on
 		this.mainCameraViewTracker.setShouldAnimate(true);
+		
+		if (this.sidePane != null)
+		{
+			this.sidePane.setSceneGraphRoot();
+			this.sidePane.setLookingglassRoot();
+		}
+		
 		return rv;
 	}
 	
