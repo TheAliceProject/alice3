@@ -119,7 +119,10 @@ public class SceneAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegrap
 		synchronized( m_visualAdapters ) {
 			for( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter : m_visualAdapters ) {
 				if( visualAdapter.isAlphaBlended() ) {
-					visualAdapter.renderAlphaBlended( rc );
+					//todo: adapters should be removed 
+					if( visualAdapter.m_element != null && visualAdapter.m_element.getRoot() instanceof edu.cmu.cs.dennisc.scenegraph.Scene ) {
+						visualAdapter.renderAlphaBlended( rc );
+					}
 				}
 			}
 		}
