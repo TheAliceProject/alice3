@@ -10,6 +10,7 @@ import org.alice.interact.handle.ManipulationHandle3D;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Matrix3x3;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
@@ -31,7 +32,8 @@ public class SceneGraphTreeNode extends BasicTreeNode
 	public Matrix3x3 scale;
 	public boolean isShowing;
 	
-	public int hashCode;
+	public int parentHash;
+	public String parentName;
 	
 	public static SceneGraphTreeNode createSceneGraphTreeStructure( Component sgComponent )
 	{
@@ -94,6 +96,25 @@ public class SceneGraphTreeNode extends BasicTreeNode
 		{
 			this.stackTrace = null;
 		}
+		if (element.getName() != null)
+		{
+			this.name = element.getName()+":"+this.hashCode;
+		}
+		if (element instanceof Component)
+		{
+			Composite parent = ((Component)element).getParent();
+			if (parent != null)
+			{
+				this.parentHash = parent.hashCode();
+				this.parentName = parent.getName()+":"+this.parentHash;
+			}
+			else
+			{
+				this.parentName = "NO PARENT";
+				this.parentHash = -1;
+			}
+			this.hasExtras = true;
+		}
 	}
 
 	public SceneGraphTreeNode( Element element)
@@ -122,8 +143,8 @@ public class SceneGraphTreeNode extends BasicTreeNode
 				}
 				this.scale = new Matrix3x3(visual.scale.getValue());
 				this.isShowing = visual.isShowing.getValue();
-				this.hasExtras = true;
 			}
+			this.hasExtras = true;
 		}
 	}
 
@@ -163,7 +184,7 @@ public class SceneGraphTreeNode extends BasicTreeNode
 			{
 				return true;
 			}
-			if (!other.color.equals(this.color))
+			if (other.color != null && !other.color.equals(this.color))
 			{
 				return true;
 			}

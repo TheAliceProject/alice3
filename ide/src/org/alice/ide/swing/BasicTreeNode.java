@@ -119,6 +119,10 @@ public class BasicTreeNode extends DefaultMutableTreeNode implements Comparable{
 	
 	public Color getAWTColor()
 	{
+		if (this.color == null )
+		{
+			return null;
+		}
 		return new Color((int)(this.color.red*255), (int)(this.color.green*255), (int)(this.color.blue*255));
 	}
 	

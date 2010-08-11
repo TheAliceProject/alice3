@@ -82,6 +82,23 @@ public class LookingglassTreeNode extends BasicTreeNode{
 				}
 				parentNode.add( new LookingglassTreeNode(va) );
 			}
+			for (VisualAdapter va : ((SceneAdapter) lgComposite).m_visualAdapters)
+			{
+				BasicTreeNode parentNode = node;
+				if (va.m_element instanceof Component)
+				{
+					Component e = (Component)va.m_element;
+					if (e.getParent() != null)
+					{
+						BasicTreeNode newParent = node.getMatchingNode(e.getParent().hashCode());
+						if (newParent != null)
+						{
+							parentNode = newParent;
+						}
+					}
+				}
+				parentNode.add( new LookingglassTreeNode(va) );
+			}
 		}
 		return node;
 	}

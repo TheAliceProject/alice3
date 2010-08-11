@@ -102,6 +102,11 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener
 	protected JButton goToVirtualParentButton;
 	protected int virtualParentHashCode = -1;
 	
+	protected JPanel parentInfoPanel;
+	protected JButton goToParentButton;
+	protected JLabel parentNameLabel;
+	protected int parentHashCode = -1;
+	
 	protected JLabel opacityLabel;
 	protected JLabel isShowingLabel;
 	protected JLabel scaleLabel;
@@ -130,6 +135,26 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener
 		this.classLabel.setBorder(createTitledBorder("Class"));
 		this.transformLabel = new JLabel("");
 		this.transformLabel.setBorder(createTitledBorder("Absolute Transform"));
+		
+		this.parentNameLabel = new JLabel("");
+		this.parentInfoPanel = new JPanel();
+		this.parentInfoPanel.setLayout( new BoxLayout(this.parentInfoPanel, BoxLayout.X_AXIS));
+		this.parentInfoPanel.setBorder(createTitledBorder("Parent"));
+		this.goToParentButton = new JButton("Go to parent");
+		this.goToParentButton.addActionListener( new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				if (parentHashCode != -1)
+				{
+					setSelectedNode(parentHashCode, true);
+				}
+				
+			}
+		});
+		
+		this.parentInfoPanel.add(this.parentNameLabel);
+		this.parentInfoPanel.add(this.goToParentButton);
 		
 		this.infoPanel.add(this.nameLabel, new GridBagConstraints(
 				0, // gridX
@@ -262,11 +287,19 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener
 					0, // ipadX
 					0) // ipadY
 					);
-			String colorString = String.format("%.2f, %.2f, %.2f, %.2f", node.color.red, node.color.green, node.color.blue, node.color.alpha);
+			String colorString = "NO COLOR";
+			if (node.color != null)
+			{
+				colorString = String.format("%.2f, %.2f, %.2f, %.2f", node.color.red, node.color.green, node.color.blue, node.color.alpha);
+				Color backgroundColor = new Color((int)(node.color.red*255), (int)(node.color.green*255), (int)(node.color.blue*255));
+				this.colorLabel.setBackground(backgroundColor);
+				this.colorLabel.setOpaque(true);
+			}
+			else
+			{
+				this.colorLabel.setOpaque(false);
+			}
 			this.colorLabel.setText(colorString);
-			Color backgroundColor = new Color((int)(node.color.red*255), (int)(node.color.green*255), (int)(node.color.blue*255));
-			this.colorLabel.setBackground(backgroundColor);
-			this.colorLabel.setOpaque(true);
 			this.colorLabel.revalidate();
 		}
 		else if (this.extrasPanel.getParent() != null)
@@ -311,10 +344,12 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener
 					verticalScrollBar.setValue(verticalScrollBar.getMinimum());
 				}
 			}
+			this.parentNameLabel.setText(sgNode.parentName);
+			this.parentHashCode = sgNode.parentHash;
+			this.goToParentButton.setEnabled((this.parentHashCode != -1));
 			this.virtualParentHashCode = sgNode.virtualParentHashCode;
 			if (sgNode.virtualParentHashCode != -1)
 			{
-				
 				this.virtualParentNameLabel.setText(sgNode.virtualParentName);
 				this.infoPanel.add(this.virtualParentPanel, new GridBagConstraints(
 						0, // gridX
@@ -394,7 +429,20 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener
 			this.extrasPanel.add(this.scaleLabel, new GridBagConstraints(
 					0, // gridX
 					2, // gridY
-					2, // gridWidth
+					1, // gridWidth
+					1, // gridHeight
+					1.0, // weightX
+					1.0, // weightY
+					GridBagConstraints.NORTHEAST, // anchor
+					GridBagConstraints.HORIZONTAL, // fill
+					new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+					0, // ipadX
+					0) // ipadY
+					);
+			this.extrasPanel.add(this.parentInfoPanel, new GridBagConstraints(
+					1, // gridX
+					2, // gridY
+					1, // gridWidth
 					1, // gridHeight
 					1.0, // weightX
 					1.0, // weightY
