@@ -176,12 +176,13 @@ package edu.cmu.cs.dennisc.tutorial;
 		this.controlsPanel.addComponent(eastPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END);
 		this.controlsPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 0, 4));
 
-		for( edu.cmu.cs.dennisc.croquet.Component< ? > component : controlPanel.getComponents() ) {
-			component.setCursor( java.awt.Cursor.getDefaultCursor() );
+		for( java.awt.Component component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this.controlsPanel.getAwtComponent() ) ) {
+			if( component instanceof javax.swing.JPanel ) {
+				//pass
+			} else {
+				component.setCursor( java.awt.Cursor.getDefaultCursor() );
+			}
 		}
-		isPlayingSoundsCheckBox.setCursor( java.awt.Cursor.getDefaultCursor() );
-		isPaintingStencilCheckBox.setCursor( java.awt.Cursor.getDefaultCursor() );
-		//isInterceptingEventsCheckBox.setCursor( java.awt.Cursor.getDefaultCursor() );
 
 		this.internalAddComponent(this.controlsPanel, java.awt.BorderLayout.NORTH);
 		this.internalAddComponent(this.cardPanel, java.awt.BorderLayout.CENTER);
