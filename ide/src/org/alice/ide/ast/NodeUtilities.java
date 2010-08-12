@@ -46,7 +46,14 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public class NodeUtilities {
-	public static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice createType( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType superType ) {
+	private static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice createFunction( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> returnType ) {
+		return new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( name, returnType, new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {}, new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice createProcedure( String name ) {
+		return createFunction( name, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE );
+	}
+	
+	public static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice createType( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> superType ) {
 		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor = new edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice();
 		constructor.body.setValue( new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice rv = new edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice();
@@ -67,13 +74,13 @@ public class NodeUtilities {
 	public static edu.cmu.cs.dennisc.alice.ast.Comment createComment() {
 		return new edu.cmu.cs.dennisc.alice.ast.Comment();
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType, edu.cmu.cs.dennisc.alice.ast.AbstractType expressionType ) {
+	public static edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType ) {
 		return new edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression( leftOperand, operator, new org.alice.ide.ast.EmptyExpression( rightOperandType ), expressionType );
 	}
 	public static edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls, Class<?> expressionCls ) {
 		return createIncompleteArithmeticInfixExpression( leftOperand, operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( rightOperandCls ), edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( expressionCls ) );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType leftOperandType, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType, edu.cmu.cs.dennisc.alice.ast.AbstractType expressionType ) {
+	public static edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> leftOperandType, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType ) {
 		return createIncompleteArithmeticInfixExpression( new org.alice.ide.ast.EmptyExpression( rightOperandType ), operator, rightOperandType, expressionType );
 	}
 	public static edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( Class<?> leftOperandCls, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls, Class<?> expressionCls ) {
@@ -86,7 +93,7 @@ public class NodeUtilities {
 		return createIncompleteConditionalInfixExpression( new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ), operator );
 	}
 	
-	public static edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression createIncompleteRelationalInfixExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType leftOperandType, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType ) {
+	public static edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression createIncompleteRelationalInfixExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> leftOperandType, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType ) {
 		return new edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression( new org.alice.ide.ast.EmptyExpression( rightOperandType ), operator, new org.alice.ide.ast.EmptyExpression( rightOperandType ), leftOperandType, rightOperandType );
 	}
 	public static edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression createIncompleteRelationalInfixExpression( Class<?> leftOperandCls, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator, Class<?> rightOperandCls ) {
@@ -104,7 +111,7 @@ public class NodeUtilities {
 		);
 	}
 	public static edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement createIncompleteVariableDeclarationStatement() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE;
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE;
 		return createVariableDeclarationStatement( new edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice( "???", type ), new org.alice.ide.ast.EmptyExpression( type ) );
 	}
 
@@ -186,12 +193,22 @@ public class NodeUtilities {
 		rv.field.setValue( field );
 		return rv;
 	}
+	public static edu.cmu.cs.dennisc.alice.ast.FieldAccess createStaticFieldAccess( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		assert field.isStatic();
+		return createFieldAccess( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( field.getDeclaringType() ), field );
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.FieldAccess createStaticFieldAccess( Class<?> cls, String fieldName ) {
+		java.lang.reflect.Field fld = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredField( cls, fieldName );
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField field = edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField.get( fld );
+		return createStaticFieldAccess( field );
+	}
+	
 	public static edu.cmu.cs.dennisc.alice.ast.FieldAccess createIncompleteFieldAccess( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		return NodeUtilities.createFieldAccess( new SelectedFieldExpression( field.getDeclaringType() ), field );
 	}
 	private static edu.cmu.cs.dennisc.alice.ast.AssignmentExpression createIncompleteAssignmentExpression( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = NodeUtilities.createFieldAccess( expression, field );
-		edu.cmu.cs.dennisc.alice.ast.AbstractType valueType = field.getValueType();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = field.getValueType();
 		return new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression( valueType, fieldAccess, edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN, new EmptyExpression( valueType ) );
 	}
 	public static edu.cmu.cs.dennisc.alice.ast.AssignmentExpression createIncompleteAssignmentExpression( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
@@ -212,9 +229,9 @@ public class NodeUtilities {
 	}
 
 	//todo: remove
-	public static edu.cmu.cs.dennisc.alice.ast.AbstractType[] getDesiredParameterValueTypes( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	public static edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getDesiredParameterValueTypes( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = method.getParameters();
-		edu.cmu.cs.dennisc.alice.ast.AbstractType[] rv = new edu.cmu.cs.dennisc.alice.ast.AbstractType[ parameters.size() ];
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] rv = new edu.cmu.cs.dennisc.alice.ast.AbstractType[ parameters.size() ];
 		int i = 0;
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : parameters ) {
 			rv[ i ] = parameter.getDesiredValueType();
@@ -222,7 +239,7 @@ public class NodeUtilities {
 		}
 		return rv;
 	}
-	public static java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > getDesiredParameterValueTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	public static java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > getDesiredParameterValueTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > rv, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = method.getParameters();
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : parameters ) {
 			rv.add( parameter.getDesiredValueType() );
@@ -257,7 +274,7 @@ public class NodeUtilities {
 	public static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createMethodInvocationStatement( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
 		return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( createMethodInvocation( instanceExpression, method, argumentExpressions ) );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.TypeExpression createTypeExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public static edu.cmu.cs.dennisc.alice.ast.TypeExpression createTypeExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		return new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type );
 	}
 	public static edu.cmu.cs.dennisc.alice.ast.TypeExpression createTypeExpression( Class<?> cls ) {
@@ -274,7 +291,7 @@ public class NodeUtilities {
 		}
 		return rv;
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.InstanceCreation createInstanceCreation( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public static edu.cmu.cs.dennisc.alice.ast.InstanceCreation createInstanceCreation( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		return createInstanceCreation( type.getDeclaredConstructor() );
 	}
 	public static edu.cmu.cs.dennisc.alice.ast.InstanceCreation createInstanceCreation( Class<?> cls, Class<?>[] parameterClses, edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
@@ -284,14 +301,14 @@ public class NodeUtilities {
 		return createInstanceCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
 	}
 	
-	public static edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation createArrayInstanceCreation( edu.cmu.cs.dennisc.alice.ast.AbstractType arrayType, edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+	public static edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation createArrayInstanceCreation( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> arrayType, edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
 		Integer[] lengths = { expressions.length };
 		return new edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation( arrayType, lengths, expressions );
 	}
 	public static edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation createArrayInstanceCreation( Class<?> arrayCls, edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
 		return createArrayInstanceCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( arrayCls ), expressions );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation createArrayInstanceCreation( edu.cmu.cs.dennisc.alice.ast.AbstractType arrayType, java.util.Collection< edu.cmu.cs.dennisc.alice.ast.Expression > expressions ) {
+	public static edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation createArrayInstanceCreation( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> arrayType, java.util.Collection< edu.cmu.cs.dennisc.alice.ast.Expression > expressions ) {
 		return createArrayInstanceCreation( arrayType, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( expressions, edu.cmu.cs.dennisc.alice.ast.Expression.class ) );
 	}
 	public static edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation createArrayInstanceCreation( Class<?> arrayCls, java.util.Collection< edu.cmu.cs.dennisc.alice.ast.Expression > expressions ) {
@@ -303,10 +320,10 @@ public class NodeUtilities {
 	}
 
 	
-	public static edu.cmu.cs.dennisc.alice.ast.ReturnStatement createIncompleteReturnStatement( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public static edu.cmu.cs.dennisc.alice.ast.ReturnStatement createIncompleteReturnStatement( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		return createReturnStatement( type, new EmptyExpression( type ) );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ReturnStatement createReturnStatement( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+	public static edu.cmu.cs.dennisc.alice.ast.ReturnStatement createReturnStatement( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		return new edu.cmu.cs.dennisc.alice.ast.ReturnStatement( type, expression );
 	}
 	

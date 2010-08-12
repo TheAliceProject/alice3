@@ -76,7 +76,7 @@ public class AnonymousConstructor extends AbstractConstructor {
 		return null;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getDeclaringType() {
+	public AnonymousInnerTypeDeclaredInAlice getDeclaringType() {
 		return this.type;
 	}
 	@Override

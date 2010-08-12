@@ -45,17 +45,17 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InfixExpression< E extends Enum > extends Expression {
+public abstract class InfixExpression< E extends Enum<E> > extends Expression {
 	public ExpressionProperty leftOperand = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			return InfixExpression.this.getLeftOperandType();
 		}
 	};
 	public edu.cmu.cs.dennisc.property.EnumProperty< E > operator = new edu.cmu.cs.dennisc.property.EnumProperty< E >( this, null );
 	public ExpressionProperty rightOperand = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			return InfixExpression.this.getRightOperandType();
 		}
 	};
@@ -66,6 +66,6 @@ public abstract class InfixExpression< E extends Enum > extends Expression {
 		this.operator.setValue( operator );
 		this.rightOperand.setValue( rightOperand );
 	}
-	protected abstract AbstractType getLeftOperandType();
-	protected abstract AbstractType getRightOperandType();
+	protected abstract AbstractType<?,?,?> getLeftOperandType();
+	protected abstract AbstractType<?,?,?> getRightOperandType();
 }

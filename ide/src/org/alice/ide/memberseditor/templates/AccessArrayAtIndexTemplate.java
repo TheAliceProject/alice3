@@ -45,13 +45,13 @@ package org.alice.ide.memberseditor.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class AccessArrayAtIndexTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
+/*package-private*/ class AccessArrayAtIndexTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	public AccessArrayAtIndexTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		this.field = field;
 		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
-			this.setPopupOperation( new FieldPopupOperation( fieldInAlice ) );
+			this.setPopupMenuOperation( new FieldPopupOperation( fieldInAlice ) );
 		}
 	}
 	@Override
@@ -63,11 +63,11 @@ public class AccessArrayAtIndexTemplate extends org.alice.ide.templates.Cascadin
 		);
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
 		return field.getValueType().getComponentType();
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
+	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > rv ) {
 		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE );
 		return rv;
 	}

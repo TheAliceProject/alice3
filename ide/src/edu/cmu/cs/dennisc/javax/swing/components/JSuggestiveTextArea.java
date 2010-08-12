@@ -49,9 +49,8 @@ public class JSuggestiveTextArea extends javax.swing.JTextArea {
 	private String textForBlankCondition;
 
 	public JSuggestiveTextArea( String text, String textForBlankCondition ) {
-		super( text );
-		this.setBorder( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ) );
-		this.textForBlankCondition = textForBlankCondition;
+		this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
+		//this.setBorder( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ) );
 		//this.setToolTipText( this.textForBlankCondition );
 		this.addFocusListener( new SuggestiveTextFocusAdapter( this ) );
 		this.addKeyListener( new java.awt.event.KeyListener() {
@@ -70,6 +69,25 @@ public class JSuggestiveTextArea extends javax.swing.JTextArea {
 			public void keyTyped( java.awt.event.KeyEvent e ) {
 			}
 		} );
+		if( text != null ) {
+			this.setText( text );
+		}
+		if( textForBlankCondition != null ) {
+			this.setTextForBlankCondition( textForBlankCondition );
+		}
+	}
+	public JSuggestiveTextArea( String text ) {
+		this( text, null );
+	}
+	public JSuggestiveTextArea() {
+		this( null, null );
+	}
+	
+	public String getTextForBlankCondition() {
+		return this.textForBlankCondition;
+	}
+	public void setTextForBlankCondition(String textForBlankCondition) {
+		this.textForBlankCondition = textForBlankCondition;
 	}
 	@Override
 	public boolean isManagingFocus() {
@@ -77,14 +95,14 @@ public class JSuggestiveTextArea extends javax.swing.JTextArea {
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
-		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), 64 );
+		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), 64 );
 	}
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );
 		int xDelta = this.getInsets().left;
 		g.translate( xDelta, 0 );
-		SuggestiveTextUtilties.drawBlankTextIfNecessary( this, g, this.textForBlankCondition );
+		SuggestiveTextUtilities.drawBlankTextIfNecessary( this, g, this.textForBlankCondition );
 		g.translate( -xDelta, 0 );
 	}
 }

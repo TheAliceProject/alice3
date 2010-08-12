@@ -56,31 +56,37 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 			ProcedureInvocationTemplate.this.refresh();
 		}
 	};
-	public ProcedureInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	/*package-private*/ ProcedureInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		this.method = method;
-		java.util.List< edu.cmu.cs.dennisc.zoot.Operation > operations = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >();
-		operations.add( new org.alice.ide.operations.run.PreviewMethodOperation( this ) );
+		java.util.List< edu.cmu.cs.dennisc.croquet.Model > operations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		//operations.add( org.alice.ide.IDE.getSingleton().createPreviewOperation( this ) );
 		if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
 			operations.add( new org.alice.ide.operations.ast.RenameMethodOperation( methodInAlice ) );
+			operations.add( org.alice.ide.operations.ast.FocusCodeOperation.getInstance( methodInAlice ) );
+			operations.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 			operations.add( new org.alice.ide.operations.ast.DeleteMethodOperation( methodInAlice ) );
-			operations.add( new org.alice.ide.operations.ast.FocusCodeOperation( methodInAlice ) );
 		}
-		this.setPopupOperation( new edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation( operations ) );
+		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation( java.util.UUID.fromString( "96831579-1fb6-4c15-a509-ccdcc51458a8" ), operations) );
 	}
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		if( this.method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			((edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.method).parameters.addListPropertyListener( this.parameterAdapter );
+			this.refresh();
 		}
 	}
 	@Override
-	public void removeNotify() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		if( this.method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			((edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.method).parameters.removeListPropertyListener( this.parameterAdapter );
 		}
-		super.removeNotify();
+		super.handleRemovedFrom( parent );
+	}
+	
+	public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getMethod() {
+		return this.method;
 	}
 	
 	@Override

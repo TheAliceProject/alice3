@@ -84,23 +84,40 @@ public class LaunchUtilities {
 		}
 		return null;
 	}
-	public static void launch( final Class<? extends IDE> cls, final java.awt.Window splashScreen, final String[] args ) {
-		if( splashScreen != null ) {
+	private static Runnable preLaunchAndCreateRunnable( final Class<? extends IDE> cls, final java.awt.Window splashScreen, final String[] args, final boolean isVisible ) {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+//			javax.swing.LookAndFeel laf = javax.swing.UIManager.getLookAndFeel();
 			try {
-				javax.swing.SwingUtilities.invokeAndWait( new Runnable() {
-					public void run() {
-						splashScreen.setVisible( true );
-						splashScreen.toBack();
-						splashScreen.repaint();
-					}
-				} );
-			} catch( InterruptedException ie ) {
-				ie.printStackTrace();
-			} catch( java.lang.reflect.InvocationTargetException ite ) {
-				ite.printStackTrace();
+				edu.cmu.cs.dennisc.javax.swing.plaf.nimbus.NimbusUtilities.installModifiedNimbus( lookAndFeelInfo );
+			} catch( Throwable t ) {
+				t.printStackTrace();
 			}
 		}
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		
+		//java.awt.Font defaultFont = new java.awt.Font( null, java.awt.Font.BOLD, 14 );
+		//javax.swing.UIManager.getLookAndFeelDefaults().put( "defaultFont", defaultFont );
+
+		if( splashScreen != null ) {
+			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.LaunchUtilities.isSupressionOfSplashScreenDesired" ) ) {
+				//pass
+			} else {
+				try {
+					javax.swing.SwingUtilities.invokeAndWait( new Runnable() {
+						public void run() {
+							splashScreen.setVisible( true );
+							splashScreen.toBack();
+							splashScreen.repaint();
+						}
+					} );
+				} catch( InterruptedException ie ) {
+					ie.printStackTrace();
+				} catch( java.lang.reflect.InvocationTargetException ite ) {
+					ite.printStackTrace();
+				}
+			}
+		}
+		return new Runnable() {
 			public void run() {
 				java.io.File installDir = getInstallDirectory();
 				if( installDir != null ) {
@@ -167,17 +184,30 @@ public class LaunchUtilities {
 						}
 					}
 				}
-				ide.setLocation( xLocation, yLocation );
-				ide.setSize( width, height );
+				ide.getFrame().setLocation( xLocation, yLocation );
+				ide.getFrame().setSize( width, height );
 				
 				if( isMaximizationDesired ) {
-					ide.maximize();
+					ide.getFrame().maximize();
 				}
 				ide.setSplashScreen( splashScreen );
-				ide.setVisible( true );
+				ide.initialize( args );
+				ide.getFrame().setVisible( isVisible );
+				
+				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isSceneEditorExpanded" ) ) {
+					org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().setValue( true );
+				}
 			}
-		} );
-		
+		};
+	}
+	
+	public static void launch( final Class<? extends IDE> cls, final java.awt.Window splashScreen, final String[] args ) {
+		javax.swing.SwingUtilities.invokeLater( preLaunchAndCreateRunnable( cls, splashScreen, args, true ) );	
+	}
+	public static <I extends IDE> I launchAndWait( final Class<I> cls, final java.awt.Window splashScreen, final String[] args, boolean isVisible ) throws InterruptedException, java.lang.reflect.InvocationTargetException {
+		Runnable runnable = preLaunchAndCreateRunnable( cls, splashScreen, args, isVisible );
+		javax.swing.SwingUtilities.invokeAndWait( runnable );
+		return cls.cast( IDE.getSingleton() );
 	}
 	
 }

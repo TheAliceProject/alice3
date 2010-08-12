@@ -47,12 +47,14 @@ package org.alice.stageide.modelviewer;
  * @author Dennis Cosgrove
  */
 //abstract class AbstractViewer extends org.alice.apis.moveandturn.Program {
-abstract class AbstractViewer extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
+abstract class AbstractViewer extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+	//todo: should this be heavyweight?
 	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createHeavyweightOnscreenLookingGlass();
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private org.alice.apis.moveandturn.Scene scene = new org.alice.apis.moveandturn.Scene();
 	private org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera = new org.alice.apis.moveandturn.SymmetricPerspectiveCamera();
 	private org.alice.apis.moveandturn.DirectionalLight sunLight = new org.alice.apis.moveandturn.DirectionalLight();
+	private edu.cmu.cs.dennisc.croquet.Component<?> adapter;
 
 	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
 		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
@@ -67,6 +69,13 @@ abstract class AbstractViewer extends edu.cmu.cs.dennisc.javax.swing.components.
 	private boolean isInitialized = false;
 	protected void initialize() {
 		this.onscreenLookingGlass.addCamera( camera.getSGCamera() );
+		
+		this.adapter = new edu.cmu.cs.dennisc.croquet.Component<java.awt.Component>() {
+			@Override
+			protected java.awt.Component createAwtComponent() {
+				return AbstractViewer.this.onscreenLookingGlass.getAWTComponent();
+			}
+		};
 	}
 	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
 		return this.onscreenLookingGlass;
@@ -81,24 +90,24 @@ abstract class AbstractViewer extends edu.cmu.cs.dennisc.javax.swing.components.
 		return this.sunLight;
 	}
 	@Override
-	public void addNotify() {
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		if( this.isInitialized ) {
 			//pass
 		} else {
 			this.initialize();
 			this.isInitialized = true;
 		}
-		this.add( onscreenLookingGlass.getAWTComponent(), java.awt.BorderLayout.CENTER );
+		this.addComponent( this.adapter, Constraint.CENTER );
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
-		super.addNotify();
 	}
 	@Override
-	public void removeNotify() {
-		super.removeNotify();
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().removeAutomaticDisplayListener( this.automaticDisplayListener );
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
-		this.remove( onscreenLookingGlass.getAWTComponent() );
+		this.removeComponent( this.adapter );
+		super.handleRemovedFrom( parent );
 	}
 	protected edu.cmu.cs.dennisc.animation.Animator getAnimator() {
 		return this.animator;

@@ -62,20 +62,20 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 	}
 
 	@Override
-	protected java.awt.Component createComponent( Object parameter ) {
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createComponent( Object parameter ) {
 		return new TypedParameterPane( getProperty(), (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)parameter );
 	}
 	@Override
 	protected void addPrefixComponents() {
 		//super.addPrefixComponents();
 		if( getIDE().isJava() ) {
-			this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "( " ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "( " ) );
 		} else {
 			int n = this.getProperty().size();
 			String text;
 			switch( n ) {
 			case 0:
-				text = " ";
+				text = null;
 				break;
 			case 1:
 				text = " with parameter: ";
@@ -83,17 +83,17 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 			default:
 				text = " with parameters: ";
 			}
-			javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-			this.add( label );
-			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
+			if( text != null ) {
+				this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
+			}
 		}
 	}
 	@Override
-	protected java.awt.Component createInterstitial( int i, int N ) {
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createInterstitial( int i, int N ) {
 		if( i<N-1 ) {
-			return edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( ", " );
+			return new edu.cmu.cs.dennisc.croquet.Label( ", " );
 		} else {
-			return javax.swing.Box.createHorizontalStrut( 8 );
+			return edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 4 );
 		}
 	}
 	@Override
@@ -106,11 +106,18 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 			if( method.isSignatureLocked.getValue() ) {
 				//pass
 			} else {
-				this.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( new org.alice.ide.operations.ast.DeclareMethodParameterOperation( method ) ) );
+				this.addComponent( org.alice.ide.operations.ast.DeclareMethodParameterOperation.getInstance( method ).createButton() );
 			}
 		}
 		if( getIDE().isJava() ) {
-			this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( " )" ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " )" ) );
 		}
+		//this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ) );
+	}
+	
+	@Override
+	protected void refresh() {
+		super.refresh();
+		org.alice.ide.IDE.getSingleton().refreshAccessibles();
 	}
 }

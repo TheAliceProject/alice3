@@ -47,14 +47,14 @@ package org.alice.ide.operations.ast;
  */
 public class DeleteFieldOperation extends AbstractDeleteNodeOperation< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
 	private static edu.cmu.cs.dennisc.alice.ast.NodeListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.Node > getFieldsProperty( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = field.getDeclaringType();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = field.getDeclaringType();
 		assert type != null;
 		assert type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 		return ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type).fields;
 		
 	}
 	public DeleteFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		super( field, DeleteFieldOperation.getFieldsProperty( field ) );
+		super( java.util.UUID.fromString( "5a07b4dc-0bd9-4393-93d2-1cc1a9b48262" ), field, DeleteFieldOperation.getFieldsProperty( field ) );
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class DeleteFieldOperation extends AbstractDeleteNodeOperation< edu.cmu.c
 			sb.append( " if you want to delete \"" );
 			sb.append( field.name.getValue() );
 			sb.append( "\" ." );
-			javax.swing.JOptionPane.showMessageDialog( this.getIDE(), sb.toString() );
+			this.getIDE().showMessageDialog( sb.toString() );
 			return false;
 		} else {
 			return true;

@@ -92,7 +92,7 @@ public class MultilineText {
 				java.awt.font.LineBreakMeasurer lineBreakMeasurer = new java.awt.font.LineBreakMeasurer( aci, frc );
 				while( lineBreakMeasurer.getPosition() < paragraph.length() ) {
 					int start = lineBreakMeasurer.getPosition();
-					java.awt.font.TextLayout textLayout = lineBreakMeasurer.nextLayout( (float)wrapWidth );
+					java.awt.font.TextLayout textLayout = lineBreakMeasurer.nextLayout( wrapWidth );
 					int end = lineBreakMeasurer.getPosition();
 					this.lines.add( new Line( paragraph, textLayout, start, end ) );
 				}

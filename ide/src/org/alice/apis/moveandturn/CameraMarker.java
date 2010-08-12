@@ -43,12 +43,19 @@
 
 package org.alice.apis.moveandturn;
 
+import javax.swing.Icon;
+
+import org.alice.ide.IDE;
+import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
+
 
 /**
  * @author Dennis Cosgrove
  */
 public class CameraMarker extends Marker 
 {
+	
+	private Icon icon;
 	
 	public CameraMarker()
 	{
@@ -60,4 +67,25 @@ public class CameraMarker extends Marker
 	{
 		super.createVisuals();
 	}
+	
+	public Icon getIcon()
+	{
+		return this.icon;
+	}
+	
+	public void setIcon(Icon icon)
+	{
+		this.icon = icon;
+	}
+	
+	@Override
+	public void setName(String name) 
+	{
+		super.setName(name);
+		if (this.getIcon() == null)
+		{
+			this.setIcon( MoveAndTurnSceneEditor.getIconForMarkerName(name) );
+		}
+	}
+	
 }

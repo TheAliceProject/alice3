@@ -42,21 +42,25 @@
  */
 package org.alice.ide.common;
 
-class MethodPane extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
+class MethodPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	public MethodPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-//		javax.swing.Box header = javax.swing.Box.createHorizontalBox();
-//		header.add( zoot.ZLabel.acquire( "declare procedure " ) );
-//		header.add( zoot.ZLabel.acquire( method.getName() ) );
-//		header.setAlignmentX( 0.0f );
 		org.alice.ide.codeeditor.ParametersPane parametersPane = new org.alice.ide.codeeditor.ParametersPane( factory, method );
-		this.add( new org.alice.ide.codeeditor.MethodHeaderPane( method, parametersPane ), java.awt.BorderLayout.NORTH );
-		this.add( javax.swing.Box.createHorizontalStrut( 12 ), java.awt.BorderLayout.WEST );
-		this.add( new BodyPane( factory.createComponent( method.body.getValue() ) ), java.awt.BorderLayout.CENTER );
-		this.setAlignmentX( 0.0f );
-		this.setOpaque( true );
+		this.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( method, parametersPane, false ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 12 ), Constraint.LINE_START );
+		this.addComponent( new BodyPane( factory.createComponent( method.body.getValue() ) ), Constraint.CENTER );
+		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		this.setBackground( org.alice.ide.IDE.getSingleton().getProcedureColor() );
-		this.enableEvents( java.awt.AWTEvent.MOUSE_EVENT_MASK | java.awt.AWTEvent.MOUSE_MOTION_EVENT_MASK );
+		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getProcedureColor() );
+	}
+	@Override
+	protected javax.swing.JPanel createJPanel() {
+		class MouseEventEnabledPanel extends DefaultJPanel {
+			public MouseEventEnabledPanel() {
+				this.enableEvents( java.awt.AWTEvent.MOUSE_EVENT_MASK | java.awt.AWTEvent.MOUSE_MOTION_EVENT_MASK );
+			}
+		}
+		MouseEventEnabledPanel rv = new MouseEventEnabledPanel();
+		return rv;
 	}
 }
 
@@ -67,37 +71,39 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 	private edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor anonymousConstructor;
 	public AnonymousConstructorPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor anonymousConstructor ) {
 		this.anonymousConstructor = anonymousConstructor;
-		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
-		
 		if( getIDE().isJava() ) {
-			javax.swing.Box header = javax.swing.Box.createHorizontalBox();
-			header.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "new " ) );
-			header.add( new TypeComponent( anonymousConstructor.getDeclaringType().getSuperType() ) );
-			header.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "() {" ) );
-			header.setAlignmentX( 0.0f );
-			this.add( header );
+			edu.cmu.cs.dennisc.croquet.LineAxisPanel header = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
+					new edu.cmu.cs.dennisc.croquet.Label( "new " ),
+					TypeComponent.createInstance( anonymousConstructor.getDeclaringType().getSuperType() ),
+					new edu.cmu.cs.dennisc.croquet.Label( "() {" ) 
+			);
+			header.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
+			this.addComponent( header );
 		}
 		
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.anonymousConstructor.getDeclaringType();
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method : type.getDeclaredMethods() ) {
-			edu.cmu.cs.dennisc.javax.swing.components.JPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JPane();
-			pane.setLayout( new java.awt.GridLayout( 1, 1 ) );
+		edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice type = this.anonymousConstructor.getDeclaringType();
+		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : type.getDeclaredMethods() ) {
+			edu.cmu.cs.dennisc.croquet.GridPanel pane = edu.cmu.cs.dennisc.croquet.GridPanel.createGridPane( 1, 1 );
 			int inset = 4;
 			int left = 4;
 			if( getIDE().isJava() ) {
 				left += 12;
 			}
 			pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( inset, left, inset, inset ) );
-			pane.add( new MethodPane( factory, (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method ) );
-			this.add( pane );
+			pane.addComponent( new MethodPane( factory, method ) );
+			this.addComponent( pane );
 		}
 		if( getIDE().isJava() ) {
-			this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "}" ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "}" ) );
 		}
-		this.setBackground( org.alice.ide.IDE.getSingleton().getColorFor( edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class ) );
+		this.setEnabledBackgroundPaint( org.alice.ide.IDE.getSingleton().getColorFor( edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class ) );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
 		return this.anonymousConstructor.getDeclaringType();
 	}
 	@Override

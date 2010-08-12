@@ -47,7 +47,7 @@ package org.alice.ide.common;
  */
 public class ResourcePropertyPane extends AbstractPropertyPane<edu.cmu.cs.dennisc.alice.ast.ResourceProperty> {
 	private static java.text.NumberFormat durationFormat = new java.text.DecimalFormat( "0.00" );
-	private javax.swing.JLabel label;
+	private edu.cmu.cs.dennisc.croquet.Label label;
 	private org.alice.virtualmachine.Resource prevResource;
 	private edu.cmu.cs.dennisc.pattern.event.NameListener nameListener;
 	public ResourcePropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ResourceProperty property ) {
@@ -73,24 +73,25 @@ public class ResourcePropertyPane extends AbstractPropertyPane<edu.cmu.cs.dennis
 		return this.nameListener;
 	}
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
+		//refresh takes care of name listener
 	}
 	@Override
-	public void removeNotify() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		if( this.prevResource != null ) {
 			this.prevResource.removeNameListener( this.getNameListener() );
 		}
-		super.removeNotify();
+		super.handleRemovedFrom( parent );
 	}
-	
+
 	@Override
 	protected void refresh() {
 		if( this.label != null ) {
 			//pass
 		} else {
-			this.label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel();
-			this.add( this.label );
+			this.label = new edu.cmu.cs.dennisc.croquet.Label();
+			this.addComponent( this.label );
 		}
 		if( this.prevResource != null ) {
 			this.prevResource.removeNameListener( this.getNameListener() );
@@ -128,7 +129,7 @@ public class ResourcePropertyPane extends AbstractPropertyPane<edu.cmu.cs.dennis
 			}
 			sb.append( "</html>" );
 		} else {
-			sb.append( org.alice.ide.IDE.getSingleton().getTextForNull() );
+			sb.append( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForNull() );
 		}
 		this.label.setText( sb.toString() );
 		if( nextResource != null ) {

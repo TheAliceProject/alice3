@@ -127,12 +127,12 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
 
 	private static final String NAME_SUGGESTIVE_TEXT = "please fill in your name (optional)";
 	private javax.swing.JLabel labelName = createLabelForSingleLine( "reported by:" );
-	private SuggestiveTextField textReporterName = new SuggestiveTextField( "", NAME_SUGGESTIVE_TEXT );
+	private edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField textReporterName = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", NAME_SUGGESTIVE_TEXT );
 	private java.awt.Component[] rowName = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelName, textReporterName );
 
 	private static final String EMAIL_SUGGESTIVE_TEXT = "please fill in your e-mail address (optional)";
 	private javax.swing.JLabel labelAddress = createLabelForSingleLine( "e-mail address:" );
-	private SuggestiveTextField textReporterEMailAddress = new SuggestiveTextField( "", EMAIL_SUGGESTIVE_TEXT );
+	private edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField textReporterEMailAddress = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", EMAIL_SUGGESTIVE_TEXT );
 	private java.awt.Component[] rowAddress = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelAddress, textReporterEMailAddress );
 
 	class MyExpandPane extends edu.cmu.cs.dennisc.javax.swing.components.JExpandPane {

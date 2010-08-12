@@ -49,6 +49,9 @@ public class SystemUtilities {
 	public static boolean isPropertyTrue( String propertyName ) {
 		return "true".equals( System.getProperty( propertyName ) );
 	}
+	public static boolean isPropertyFalse( String propertyName ) {
+		return "false".equals( System.getProperty( propertyName ) );
+	}
 	
 	
 	private static java.io.ByteArrayOutputStream getPropertiesAsXMLByteArrayOutputStream() {

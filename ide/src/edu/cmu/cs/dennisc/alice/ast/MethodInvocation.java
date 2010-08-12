@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class MethodInvocation extends Expression {
 	public ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			return method.getValue().getDeclaringType();
 		}
 	};
@@ -62,9 +62,9 @@ public class MethodInvocation extends Expression {
 		if( expression instanceof NullLiteral ) {
 			//pass
 		} else {
-			AbstractType expressionType = expression.getType();
+			AbstractType<?,?,?> expressionType = expression.getType();
 			if( expressionType != null ) {
-				AbstractType declaringType = method.getDeclaringType();
+				AbstractType<?,?,?> declaringType = method.getDeclaringType();
 				if( declaringType != null ) {
 					//todo
 					//assert declaringType.isAssignableFrom( expressionType );
@@ -76,7 +76,7 @@ public class MethodInvocation extends Expression {
 		this.arguments.add( arguments );
 	}
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		return method.getValue().getReturnType();
 	}
 	
@@ -85,22 +85,26 @@ public class MethodInvocation extends Expression {
 		Expression e = expression.getValue();
 		AbstractMethod m = method.getValue();
 		if( e != null && m != null ) {
-			if( m.isStatic() ) {
-				//todo
-				rv = true;
-			} else {
-				AbstractType declaringType = m.getDeclaringType();
-				AbstractType expressionType = e.getType();
-				if( expressionType instanceof AnonymousInnerTypeDeclaredInAlice ) {
+			if( m.isValid() ) {
+				if( m.isStatic() ) {
 					//todo
 					rv = true;
 				} else {
-					if( declaringType != null && expressionType != null ) {
-						rv = declaringType.isAssignableFrom( expressionType );
+					AbstractType<?,?,?> declaringType = m.getDeclaringType();
+					AbstractType<?,?,?> expressionType = e.getType();
+					if( expressionType instanceof AnonymousInnerTypeDeclaredInAlice ) {
+						//todo
+						rv = true;
 					} else {
-						rv = false;
+						if( declaringType != null && expressionType != null ) {
+							rv = declaringType.isAssignableFrom( expressionType );
+						} else {
+							rv = false;
+						}
 					}
 				}
+			} else {
+				rv = false;
 			}
 		} else {
 			rv = false;

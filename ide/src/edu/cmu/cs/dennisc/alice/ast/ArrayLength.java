@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class ArrayLength extends Expression {
 	public ExpressionProperty array = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			return TypeDeclaredInJava.OBJECT_TYPE.getArrayType();
 		}
 	};
@@ -60,7 +60,7 @@ public class ArrayLength extends Expression {
 		this.array.setValue( array );
 	}
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		//todo: 
 		//return TypeDeclaredInJava.INTEGER_PRIMITIVE_TYPE;
 		return TypeDeclaredInJava.INTEGER_OBJECT_TYPE;

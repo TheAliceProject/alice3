@@ -51,7 +51,7 @@ public abstract class CreateDeclarationWithDeclaringTypePane<E> extends CreateDe
 	}
 	protected abstract String getDeclarationText();
 	@Override
-	protected String getTitleDefault() {
+	public String getDialogTitle() {
 		return "Declare " + this.getDeclarationText();
 	}
 }

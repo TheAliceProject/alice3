@@ -43,65 +43,63 @@
 package edu.cmu.cs.dennisc.history;
 
 public class HistoryManager {
-	private static edu.cmu.cs.dennisc.zoot.event.ManagerListener managerListener = new edu.cmu.cs.dennisc.zoot.event.ManagerListener() {
-		public void operationCancelling( edu.cmu.cs.dennisc.zoot.event.CancelEvent e ) {
+	private static edu.cmu.cs.dennisc.croquet.ModelContext.CommitObserver commitObserver = new edu.cmu.cs.dennisc.croquet.ModelContext.CommitObserver() {
+		public void committing(edu.cmu.cs.dennisc.croquet.Edit edit) {
 		}
-		public void operationCancelled( edu.cmu.cs.dennisc.zoot.event.CancelEvent e ) {
-		}
-		public void operationCommitting( edu.cmu.cs.dennisc.zoot.event.CommitEvent e ) {
-		}
-		public void operationCommitted( edu.cmu.cs.dennisc.zoot.event.CommitEvent e ) {
-			HistoryManager.handleOperationPerformed( e );
+		public void committed(edu.cmu.cs.dennisc.croquet.Edit edit) {
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "HistoryManager:", edit, edit.getGroup() );
+			HistoryManager.handleOperationPerformed( edit );
 		}
 	};
 	static {
-		edu.cmu.cs.dennisc.zoot.ZManager.addManagerListener( HistoryManager.managerListener );
+		edu.cmu.cs.dennisc.croquet.Application.getSingleton().getRootContext().addCommitObserver( HistoryManager.commitObserver );
 	}
 
-	private static java.util.Map< java.util.UUID, HistoryManager > map = new java.util.HashMap< java.util.UUID, HistoryManager >();
+	private static java.util.Map< edu.cmu.cs.dennisc.croquet.Group, HistoryManager > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public static HistoryManager getInstance( java.util.UUID uuid ) {
-		HistoryManager rv = HistoryManager.map.get( uuid );
-		if( rv != null ) {
-			//pass
+	public static HistoryManager getInstance( edu.cmu.cs.dennisc.croquet.Group group ) {
+		HistoryManager rv;
+		if( group != null ) {
+			rv = HistoryManager.map.get( group );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new HistoryManager( group );
+				HistoryManager.map.put( group, rv );
+			}
 		} else {
-			rv = new HistoryManager( uuid );
-			HistoryManager.map.put( uuid, rv );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "HistoryManager.getInstance group==null" );
+			rv = null;
 		}
 		return rv;
 	}
-	private static void handleOperationPerformed( edu.cmu.cs.dennisc.zoot.event.CommitEvent commitEvent ) {
-		edu.cmu.cs.dennisc.zoot.Edit edit = commitEvent.getEdit();
-		if( edit != null ) {
-			edu.cmu.cs.dennisc.zoot.Operation operation = commitEvent.getTypedSource();
-			HistoryManager historyManager = HistoryManager.getInstance( operation.getGroupUUID() );
-			historyManager.push( commitEvent );
-		} else {
-			//todo?
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "no edit to undo for", commitEvent );
+	private static void handleOperationPerformed( edu.cmu.cs.dennisc.croquet.Edit edit ) {
+		assert edit != null;
+		HistoryManager historyManager = HistoryManager.getInstance( edit.getGroup() );
+		if( historyManager != null ) {
+			historyManager.push( edit );
 		}
 	}
 
-	private java.util.Stack< edu.cmu.cs.dennisc.zoot.event.CommitEvent > stack = new java.util.Stack< edu.cmu.cs.dennisc.zoot.event.CommitEvent >();
+	private java.util.Stack< edu.cmu.cs.dennisc.croquet.Edit > stack = new java.util.Stack< edu.cmu.cs.dennisc.croquet.Edit >();
 	private int insertionIndex = 0;
-	private java.util.UUID uuid;
+	private edu.cmu.cs.dennisc.croquet.Group group;
 
-	private HistoryManager( java.util.UUID uuid ) {
-		this.uuid = uuid;
+	private HistoryManager( edu.cmu.cs.dennisc.croquet.Group group ) {
+		this.group = group;
 	}
-	public java.util.UUID getUuid() {
-		return this.uuid;
+	public edu.cmu.cs.dennisc.croquet.Group getGroup() {
+		return this.group;
 	}
-	public java.util.Stack< edu.cmu.cs.dennisc.zoot.event.CommitEvent > getStack() {
+	public java.util.Stack< edu.cmu.cs.dennisc.croquet.Edit > getStack() {
 		return this.stack;
 	}
-	private void push( edu.cmu.cs.dennisc.zoot.event.CommitEvent commitEvent ) {
-		edu.cmu.cs.dennisc.zoot.Operation operation = commitEvent.getTypedSource();
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( operation.getGroupUUID(), this.uuid ) ) {
-			edu.cmu.cs.dennisc.history.event.HistoryPushEvent historyPushEvent = new edu.cmu.cs.dennisc.history.event.HistoryPushEvent( this, commitEvent.getEdit() );
+	private void push( edu.cmu.cs.dennisc.croquet.Edit edit ) {
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( edit.getGroup(), this.group ) ) {
+			edu.cmu.cs.dennisc.history.event.HistoryPushEvent historyPushEvent = new edu.cmu.cs.dennisc.history.event.HistoryPushEvent( this, edit );
 			this.fireOperationPushing( historyPushEvent );
 			this.stack.setSize( this.insertionIndex );
-			this.stack.push( commitEvent );
+			this.stack.push( edit );
 			this.setInsertionIndex( this.stack.size(), false );
 			this.fireOperationPushed( historyPushEvent );
 		}
@@ -112,17 +110,12 @@ public class HistoryManager {
 	}
 	private void undo() {
 		if( this.insertionIndex > 0 ) {
-			edu.cmu.cs.dennisc.zoot.event.CommitEvent commitEvent = this.stack.get( this.insertionIndex - 1 );
-			if( commitEvent != null ) {
-				edu.cmu.cs.dennisc.zoot.Edit edit = commitEvent.getEdit();
-				if( edit.canUndo() ) {
-					edit.undo();
-					this.insertionIndex--;
-				} else {
-					//javax.swing.JOptionPane.showMessageDialog( null, "cannot undo " + edit.getPresentation( null ) );
-					beep();
-				}
+			edu.cmu.cs.dennisc.croquet.Edit edit = this.stack.get( this.insertionIndex - 1 );
+			if( edit.canUndo() ) {
+				edit.undo();
+				this.insertionIndex--;
 			} else {
+				//javax.swing.JOptionPane.showMessageDialog( null, "cannot undo " + edit.getPresentation( null ) );
 				beep();
 			}
 		} else {
@@ -131,18 +124,13 @@ public class HistoryManager {
 	}
 	private void redo() {
 		if( this.insertionIndex < this.stack.size() ) {
-			edu.cmu.cs.dennisc.zoot.event.CommitEvent commitEvent = this.stack.get( this.insertionIndex );
-			if( commitEvent != null ) {
-				edu.cmu.cs.dennisc.zoot.Edit edit = commitEvent.getEdit();
-				if( edit != null ) {
-					if( edit.canRedo() ) {
-						edit.doOrRedo( false );
-						this.insertionIndex++;
-					} else {
-						//javax.swing.JOptionPane.showMessageDialog( null, "cannot redo " + edit.getPresentation( null ) );
-						beep();
-					}
+			edu.cmu.cs.dennisc.croquet.Edit edit = this.stack.get( this.insertionIndex );
+			if( edit != null ) {
+				if( edit.canRedo() ) {
+					edit.doOrRedo( false );
+					this.insertionIndex++;
 				} else {
+					//javax.swing.JOptionPane.showMessageDialog( null, "cannot redo " + edit.getPresentation( null ) );
 					beep();
 				}
 			} else {
@@ -263,18 +251,29 @@ public class HistoryManager {
 			}
 		}
 	}
-	public edu.cmu.cs.dennisc.zoot.CompositeEdit createDoIgnoringCompositeEdit( String presentation ) {
-		synchronized( this.stack ) {
-			final int N = this.insertionIndex;
-			if( N > 0 ) {
-				edu.cmu.cs.dennisc.zoot.Edit[] edits = new edu.cmu.cs.dennisc.zoot.Edit[ N ];
-				for( int i=0; i<N; i++ ) {
-					edits[ i ] = this.stack.get( i ).getEdit();
-				}
-				return new edu.cmu.cs.dennisc.zoot.CompositeEdit( edits, true, presentation );
-			} else {
-				return null;
-			}
-		}
+	public edu.cmu.cs.dennisc.croquet.Edit createDoIgnoringCompositeEdit( String presentation ) {
+//		synchronized( this.stack ) {
+//			final int N = this.insertionIndex;
+//			if( N > 0 ) {
+//				edu.cmu.cs.dennisc.croquet.Edit[] edits = new edu.cmu.cs.dennisc.croquet.Edit[ N ];
+//				for( int i=0; i<N; i++ ) {
+//					edits[ i ] = this.stack.get( i );
+//				}
+//				return new edu.cmu.cs.dennisc.croquet.CompositeEdit( edits, true, presentation );
+//			} else {
+//				return null;
+//			}
+//		}
+		throw new RuntimeException( "todo" );
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( "[" );
+		sb.append( this.getGroup() );
+		sb.append( "]" );
+		return sb.toString();
 	}
 }

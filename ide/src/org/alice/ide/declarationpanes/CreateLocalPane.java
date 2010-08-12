@@ -52,18 +52,18 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 		return true;
 	}
 	@Override
-	protected boolean isIsReassignableComponentDesired() {
+	protected boolean isIsReassignableStateDesired() {
 		return true;
 	}
 
 	public CreateLocalPane( edu.cmu.cs.dennisc.alice.ast.BlockStatement block ) {
 		super( new org.alice.ide.name.validators.LocalNameValidator( block ) );
 		assert block != null;
-		this.setBackground( getIDE().getLocalColor() );
+		this.setBackgroundColor( getIDE().getLocalColor() );
 	}
 
 	@Override
-	protected java.awt.Component createPreviewSubComponent() {
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent() {
 		edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement localDeclarationStatement = this.getActualInputValue();
 		org.alice.ide.common.AbstractStatementPane pane = org.alice.ide.IDE.getSingleton().getPreviewFactory().createStatementPane( localDeclarationStatement );
 //		pane.setLeftButtonPressOperation( null );
@@ -77,9 +77,14 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement getActualInputValue() {
+	public String getDialogTitle() {
+		return "Declare Local";
+	}
+	
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement getActualInputValue() {
 		String name = this.getDeclarationName();
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getValueType();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = this.getValueType();
 		boolean isFinal = this.isReassignable() == false;
 		edu.cmu.cs.dennisc.alice.ast.Expression initializer = this.getInitializer();
 		edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement rv;

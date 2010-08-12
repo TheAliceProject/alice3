@@ -53,6 +53,6 @@ public abstract class PreferenceProxy< E > {
 	protected edu.cmu.cs.dennisc.preference.Preference<E> getPreference() {
 		return this.preference;
 	}
-	public abstract java.awt.Component getAWTComponent();
+	public abstract edu.cmu.cs.dennisc.croquet.Component< ? > getComponent();
 	public abstract void setAndCommitValue();
 }

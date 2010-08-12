@@ -50,7 +50,7 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 	public DeclareLocalTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement.class );
 		this.implementor = new UbiquitousStatementImplementor( org.alice.ide.ast.NodeUtilities.createIncompleteVariableDeclarationStatement() );
-		this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( this.getLabelText() ) );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( this.getLabelText() ) );
 		this.setToolTipText( "" );
 	}
 	
@@ -58,32 +58,38 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 		return this.implementor.getLabelText();
 	}
 	@Override
-	public java.awt.Component getSubject() {
+	public edu.cmu.cs.dennisc.croquet.Component< ? > getSubject() {
 		return this.implementor.getIncompleteStatementPane();
 	}
 	@Override
-	public javax.swing.JToolTip createToolTip() {
+	protected javax.swing.JToolTip createToolTip(javax.swing.JToolTip jToolTip) {
 		return this.implementor.getToolTip();
-	}
-	@Override
-	public void addNotify() {
-		this.getIDE().addToConcealedBin( this.implementor.getIncompleteStatementPane() );
-		super.addNotify();
 	}
 	
 	@Override
-	public java.awt.Dimension getMinimumSize() {
-		return this.implementor.adjustMinimumSize( super.getMinimumSize() );
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
+		this.getIDE().addToConcealedBin( this.implementor.getIncompleteStatementPane() );
 	}
 
 	@Override
-	public final void createStatement( final edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent e, final edu.cmu.cs.dennisc.alice.ast.BlockStatement block, final edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver ) {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		this.getIDE().removeFromConcealedBin( this.implementor.getIncompleteStatementPane() );
+		super.handleRemovedFrom( parent );
+	}
+//	@Override
+//	public java.awt.Dimension getMinimumSize() {
+//		return this.implementor.adjustMinimumSize( super.getMinimumSize() );
+//	}
+
+	@Override
+	public final void createStatement( final java.awt.event.MouseEvent e, final edu.cmu.cs.dennisc.alice.ast.BlockStatement block, final int index, final edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver ) {
 		class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement, Void > {
 			@Override
 			protected edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement doInBackground() throws java.lang.Exception {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: CreateLocalPane context ", e.getDropReceptor() );
-				org.alice.ide.declarationpanes.CreateLocalPane createLocalPane = new org.alice.ide.declarationpanes.CreateLocalPane( block );
-				return createLocalPane.showInJDialog( getIDE() );
+				org.alice.ide.operations.ast.DeclareLocalOperation declareLocalOperation = new org.alice.ide.operations.ast.DeclareLocalOperation(block);
+				declareLocalOperation.fire(e);
+				return declareLocalOperation.getLocalDeclarationStatement();
 			}
 			@Override
 			protected void done() {

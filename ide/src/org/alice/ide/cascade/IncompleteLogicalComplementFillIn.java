@@ -52,7 +52,7 @@ public class IncompleteLogicalComplementFillIn extends IncompleteUnaryExpression
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getOperandType() {
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getOperandType() {
 		return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE;
 	}
 	@Override

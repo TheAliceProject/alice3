@@ -57,6 +57,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.alice.apis.moveandturn.PerspectiveCameraMarker;
+import org.alice.ide.ProjectApplication;
 import org.alice.interact.condition.InputCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.event.ManipulationEvent;
@@ -68,6 +69,7 @@ import org.alice.interact.handle.HandleManager;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle;
 import org.alice.interact.manipulator.AbstractManipulator;
+import org.alice.interact.manipulator.AnimatorDependentManipulator;
 import org.alice.interact.manipulator.Camera2DDragManipulator;
 import org.alice.interact.manipulator.CameraInformedManipulator;
 import org.alice.interact.manipulator.CameraOrbitDragManipulator;
@@ -76,9 +78,15 @@ import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.interact.manipulator.OnScreenLookingGlassInformedManipulator;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
+import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
+import edu.cmu.cs.dennisc.croquet.DragComponent;
+import edu.cmu.cs.dennisc.croquet.ListSelectionState;
 
+import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.history.HistoryManager;
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
@@ -130,8 +138,20 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
+	public ListSelectionState.ValueObserver<InteractionGroup> handleStateValueObserver = new ListSelectionState.ValueObserver<InteractionGroup>() {
+		public void changed(InteractionGroup nextValue) {
+			AbstractDragAdapter.this.setInteractionState(nextValue);
+		}
+		
+	};
 	
-	private MoveAndTurnSceneEditor sceneEditor;
+	private static double MOUSE_WHEEL_TIMEOUT_TIME = 1.0;
+	private static double CANCEL_MOUSE_WHEEL_DISTANCE = 3;
+	
+	protected double mouseWheelTimeoutTime = 0;
+	protected Point mouseWheelStartLocation = null;
+	
+	protected MoveAndTurnSceneEditor sceneEditor;
 	
 	private Map<CameraView, CameraPair> cameraMap = new HashMap<CameraView, CameraPair>();
 	
@@ -152,12 +172,21 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	
 	
 	protected HandleManager handleManager = new HandleManager();
+	protected InteractionGroup currentInteractionState = null;
 	protected ManipulationEventManager manipulationEventManager = new ManipulationEventManager();
 	
 	protected SnapState snapState = null;
 	
 	private Transformable selectedObject = null;
 	
+	protected ListSelectionState<InteractionGroup> interactionSelectionState = new ListSelectionState< InteractionGroup >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "639f27a5-896d-454b-af00-8527cbdf551c" ), new edu.cmu.cs.dennisc.croquet.Codec< InteractionGroup >() {
+		public org.alice.interact.InteractionGroup decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			throw new RuntimeException( "todo" );
+		}
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.interact.InteractionGroup interactionGroup ) {
+			throw new RuntimeException( "todo" );
+		}
+	} );
 	private List< SelectionListener > selectionListeners = new java.util.LinkedList< SelectionListener >(); 
 	public void addPropertyListener( SelectionListener selectionListener ) {
 		synchronized( this.selectionListeners ) {
@@ -196,10 +225,50 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	public AbstractDragAdapter( MoveAndTurnSceneEditor sceneEditor )
 	{
 		this.sceneEditor = sceneEditor;
+		
+//		HistoryManager.getInstance(Project.GROUP).addHistoryListener( new edu.cmu.cs.dennisc.history.event.HistoryListener() {
+//			public void operationPushing( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) 
+//			{
+//				PrintUtilities.println("Pushing");
+//			}
+//			public void operationPushed( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) 
+//			{
+//				PrintUtilities.println("Pushed");
+//			}
+//			public void insertionIndexChanging( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) 
+//			{
+//				//AbstractDragAdapter.this.preUndo();
+//				PrintUtilities.println("Index Changing from "+e.getPrevIndex()+" to "+ e.getNextIndex());
+//			}
+//			public void insertionIndexChanged( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) 
+//			{
+//				PrintUtilities.println("Index Changed from "+e.getPrevIndex()+" to "+ e.getNextIndex());
+//			}
+//			public void clearing( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) 
+//			{
+//				PrintUtilities.println("Clearing");
+//			}
+//			public void cleared( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) 
+//			{
+//				PrintUtilities.println("Cleared");
+//			}
+//		} );
+		
 		this.setUpControls();
 	}	
 	
+	protected void preUndo()
+	{
+		stopMouseWheel();
+		handleStateChange();
+	}
+	
 	protected abstract void setUpControls();
+	
+	public ListSelectionState<InteractionGroup> getInteractionSelectionStateList()
+	{
+		return this.interactionSelectionState;
+	}
 	
 	public void triggerManipulationEvent( ManipulationEvent event, boolean isActivate )
 	{
@@ -213,6 +282,11 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		} else {
 			return null;
 		}
+	}
+	
+	public AffineMatrix4x4 getDropTargetTransformation()
+	{
+		return null;
 	}
 	
 	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
@@ -249,6 +323,11 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
+	public void clearCameraViews()
+	{
+		this.cameraMap.clear();
+	}
+	
 	public void addCameraView(CameraView viewType, SymmetricPerspectiveCamera perspectiveCamera, OrthographicCamera orthographicCamera)
 	{
 		addCameraView(viewType, new CameraPair(perspectiveCamera, orthographicCamera));
@@ -263,6 +342,13 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	{
 		this.animator = animator;
 		this.handleManager.setAnimator(animator);
+		for (ManipulatorConditionSet manipulatorSet : this.manipulators)
+		{
+			if (manipulatorSet.getManipulator() instanceof AnimatorDependentManipulator)
+			{
+				((AnimatorDependentManipulator)manipulatorSet.getManipulator()).setAnimator(this.animator);
+			}
+		}
 	}
 	
 	public Animator getAnimator()
@@ -333,9 +419,15 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
-	public void setHandleSet( HandleSet handleSet )
+	public void setInteractionState( InteractionGroup interactionState )
 	{
-		this.handleManager.setHandleSet( handleSet );
+		if (this.currentInteractionState != null)
+		{
+			this.currentInteractionState.enabledManipulators(false);
+		}
+		this.currentInteractionState = interactionState;
+		this.handleManager.setHandleSet( interactionState.getHandleSet() );
+		this.currentInteractionState.enabledManipulators(true);
 	}
 	
 	public void pushHandleSet( HandleSet handleSet )
@@ -360,6 +452,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 		
 	}
+	
 	
 	public void setLookingGlassOnManipulator( OnScreenLookingGlassInformedManipulator manipulator )
 	{
@@ -396,41 +489,49 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		java.util.Vector< AbstractManipulator > toEnd = new java.util.Vector< AbstractManipulator >();
 		java.util.Vector< AbstractManipulator > toUpdate = new java.util.Vector< AbstractManipulator >();
 		java.util.Vector< AbstractManipulator > toClick = new java.util.Vector< AbstractManipulator >();
-		java.util.Vector< AbstractManipulator > toDoubleClick = new java.util.Vector< AbstractManipulator >();
 		for (int i=0; i<this.manipulators.size(); i++)
 		{
 			ManipulatorConditionSet currentManipulatorSet = this.manipulators.get( i );
 			
 			currentManipulatorSet.update(this.currentInputState, this.previousInputState );
-			
-			if (currentManipulatorSet.stateChanged( this.currentInputState, this.previousInputState))
+			if (currentManipulatorSet.isEnabled())
 			{
-				if ( currentManipulatorSet.shouldContinue( this.currentInputState, this.previousInputState ))
+				if (currentManipulatorSet.stateChanged( this.currentInputState, this.previousInputState))
 				{
-					toUpdate.add( currentManipulatorSet.getManipulator() );
+					if ( currentManipulatorSet.shouldContinue( this.currentInputState, this.previousInputState ))
+					{
+						toUpdate.add( currentManipulatorSet.getManipulator() );
+					}
+					else if ( currentManipulatorSet.justStarted( this.currentInputState, this.previousInputState ) )
+					{
+						toStart.add( currentManipulatorSet.getManipulator() );
+					}
+					else if ( currentManipulatorSet.justEnded( this.currentInputState, this.previousInputState ) )
+					{
+						toEnd.add( currentManipulatorSet.getManipulator() );
+					}
+					else if ( currentManipulatorSet.clicked( this.currentInputState, this.previousInputState ) )
+					{
+	//					System.out.println("Adding "+currentManipulatorSet.getManipulator()+" to click array");
+	////					if (currentManipulatorSet.getName().equals("Mouse Translate"))
+	//					{
+	//						boolean started = currentManipulatorSet.clicked( this.currentInputState, this.previousInputState );
+	//						System.out.println("Tested it again and it's "+started);
+	//					}
+						toClick.add( currentManipulatorSet.getManipulator() );
+					}
 				}
-				else if ( currentManipulatorSet.justStarted( this.currentInputState, this.previousInputState ) )
+				else
 				{
-					toStart.add( currentManipulatorSet.getManipulator() );
+					boolean whyFailed = currentManipulatorSet.stateChanged( this.currentInputState, this.previousInputState);
 				}
-				else if ( currentManipulatorSet.justEnded( this.currentInputState, this.previousInputState ) )
+			}
+			else //Manipulator is not enabled
+			{
+				if (currentManipulatorSet.getManipulator().hasStarted())
 				{
 					toEnd.add( currentManipulatorSet.getManipulator() );
 				}
-				else if ( currentManipulatorSet.clicked( this.currentInputState, this.previousInputState ) )
-				{
-//					System.out.println("Adding "+currentManipulatorSet.getManipulator()+" to click array");
-////					if (currentManipulatorSet.getName().equals("Mouse Translate"))
-//					{
-//						boolean started = currentManipulatorSet.clicked( this.currentInputState, this.previousInputState );
-//						System.out.println("Tested it again and it's "+started);
-//					}
-					toClick.add( currentManipulatorSet.getManipulator() );
-				}
-			}
-			else
-			{
-				boolean whyFailed = currentManipulatorSet.stateChanged( this.currentInputState, this.previousInputState);
 			}
 		}
 		//End manipulators first
@@ -484,8 +585,42 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		this.previousInputState.copyState(this.currentInputState);
 	}
 	
+	protected boolean isMouseWheelActive()
+	{
+		return (this.mouseWheelTimeoutTime > 0);
+	}
+	
+	protected void stopMouseWheel()
+	{
+		this.mouseWheelTimeoutTime = 0;
+		this.currentInputState.setMouseWheelState(0);
+		this.mouseWheelStartLocation = null;
+	}
+	
+	protected boolean shouldStopMouseWheel(Point currentMouse)
+	{
+		if (this.mouseWheelStartLocation != null)
+		{
+			double distance = currentMouse.distance(this.mouseWheelStartLocation);
+			if (distance > CANCEL_MOUSE_WHEEL_DISTANCE)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	protected void update( double timeDelta )
 	{
+		if (isMouseWheelActive())
+		{
+			mouseWheelTimeoutTime -= timeDelta;
+			if (!isMouseWheelActive())
+			{
+				stopMouseWheel();
+				handleStateChange();
+			}
+		}
 		for (int i=0; i<this.manipulators.size(); i++)
 		{
 			ManipulatorConditionSet currentManipulatorSet = this.manipulators.get( i );
@@ -515,8 +650,9 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		CameraPair activeCameraPair = this.cameraMap.get( CameraView.MAIN );
 		if (activeCameraPair == null || activeCameraPair.getActiveCamera() == null)
 		{
-			return null;
+			PrintUtilities.println("MAIN camera view not set.");
 		}
+		assert( activeCameraPair != null && activeCameraPair.getActiveCamera() != null );
 		return activeCameraPair.getActiveCamera();
 	}
 	
@@ -712,6 +848,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			this.currentInputState.setClickHandle( this.getHandleForComponent( e.getComponent() ) );
 		}
 		this.currentInputState.setTimeCaptured();
+		this.stopMouseWheel();
 		this.handleStateChange();
 	}
 	
@@ -755,22 +892,64 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	}
 	
 	public void mouseMoved( java.awt.event.MouseEvent e ) {
-		this.currentInputState.setMouseLocation( e.getPoint() );
-		if (e.getComponent() == this.lookingGlassComponent)
+		if (!this.currentInputState.getIsDragEvent()) //If we haven't already handled it through dragAndDrop
 		{
-			//Don't pick into the scene if a mouse button is already down 
-			if (!this.currentInputState.isAnyMouseButtonDown())
-			{			
-				this.currentInputState.setRolloverPickResult( pickIntoScene( e.getPoint() ) );
+			this.currentInputState.setMouseLocation( e.getPoint() );
+			if (e.getComponent() == this.lookingGlassComponent)
+			{
+				//Don't pick into the scene if a mouse button is already down 
+				if (!this.currentInputState.isAnyMouseButtonDown())
+				{			
+					this.currentInputState.setRolloverPickResult( pickIntoScene( e.getPoint() ) );
+				}
 			}
+			else
+			{
+				this.currentInputState.setRolloverHandle( this.getHandleForComponent( e.getComponent() ));
+			}
+			this.currentInputState.setTimeCaptured();
+			this.currentInputState.setInputEvent(e);
+			if (shouldStopMouseWheel(e.getPoint()))
+			{
+				this.stopMouseWheel();
+			}
+			this.handleStateChange();
 		}
-		else
-		{
-			this.currentInputState.setRolloverHandle( this.getHandleForComponent( e.getComponent() ));
-		}
+	}
+	
+	private Point getDragAndDropPoint(DragAndDropContext dragAndDropContext)
+	{
+		java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
+		java.awt.Point pointInLookingGlass = javax.swing.SwingUtilities.convertPoint( eSource.getComponent(), eSource.getPoint(), this.getAWTComponent() );
+		return pointInLookingGlass;
+	}
+	
+	public void dragUpdated(DragAndDropContext dragAndDropContext) {
+		this.currentInputState.setDragAndDropContext(dragAndDropContext);
+		this.currentInputState.setIsDragEvent(true);
+		this.currentInputState.setMouseLocation( getDragAndDropPoint(dragAndDropContext) );
 		this.currentInputState.setTimeCaptured();
-		this.currentInputState.setInputEvent(e);
-		this.handleStateChange();
+		this.currentInputState.setInputEvent(dragAndDropContext.getLatestMouseEvent());
+		handleStateChange();
+	}
+	
+	public void dragEntered(DragAndDropContext dragAndDropContext) {
+		this.currentInputState.setDragAndDropContext(dragAndDropContext);
+		this.currentInputState.setIsDragEvent(true);
+		this.currentInputState.setMouseLocation( getDragAndDropPoint(dragAndDropContext) );
+		this.currentInputState.setTimeCaptured();
+		this.currentInputState.setInputEvent(dragAndDropContext.getLatestMouseEvent());
+		handleStateChange();
+	}
+	
+	public void dragExited(DragAndDropContext dragAndDropContext) {		
+		this.currentInputState.setDragAndDropContext(dragAndDropContext); //We need a valid dragAndDropContext when we handle the update
+		this.currentInputState.setIsDragEvent(false);
+		this.currentInputState.setMouseLocation( getDragAndDropPoint(dragAndDropContext) );
+		this.currentInputState.setTimeCaptured();
+		this.currentInputState.setInputEvent(dragAndDropContext.getLatestMouseEvent());
+		handleStateChange();
+		this.currentInputState.setDragAndDropContext(null);
 	}
 	
 	public void mouseWheelMoved( MouseWheelEvent e ) {
@@ -778,8 +957,12 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_WHEEL );
 		this.currentInputState.setTimeCaptured();
 		this.currentInputState.setInputEvent(e);
+		if (this.mouseWheelStartLocation == null)
+		{
+			this.mouseWheelStartLocation = new Point(e.getPoint());
+		}
+		this.mouseWheelTimeoutTime = MOUSE_WHEEL_TIMEOUT_TIME;
 		this.handleStateChange();
-		this.currentInputState.setMouseWheelState( 0 );
 	}
 	
 	public void keyPressed( java.awt.event.KeyEvent e ) {

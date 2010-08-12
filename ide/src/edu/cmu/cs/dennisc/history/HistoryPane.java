@@ -65,18 +65,16 @@ class HistoryStackModel extends javax.swing.AbstractListModel {
 	}
 };
 
-class HistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.zoot.event.CommitEvent > {
+class HistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.croquet.Edit > {
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.zoot.event.CommitEvent value, int index, boolean isSelected, boolean cellHasFocus ) {
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.croquet.Edit value, int index, boolean isSelected, boolean cellHasFocus ) {
 		if( index == 0 ) {
 			rv.setText( "---open project---" );
 		} else {
-			edu.cmu.cs.dennisc.zoot.Edit edit = value.getEdit();
-			
 			//todo
 			java.util.Locale locale = javax.swing.JComponent.getDefaultLocale();
 			
-			String text = edit.getPresentation( locale );
+			String text = value.getPresentation( locale );
 //			text = "edit: " + text;
 			rv.setText( text );
 			
@@ -114,8 +112,8 @@ public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBord
 
 	private javax.swing.JList list = new javax.swing.JList();
 	private HistoryStackModel historyStackModel;
-	public HistoryPane( java.util.UUID uuid ) {
-		final HistoryManager historyManager = HistoryManager.getInstance( uuid );
+	public HistoryPane( edu.cmu.cs.dennisc.croquet.Group group ) {
+		final HistoryManager historyManager = HistoryManager.getInstance( group );
 		this.historyStackModel = new HistoryStackModel( historyManager );
 		this.list.setModel( this.historyStackModel );
 		this.list.setCellRenderer( new HistoryCellRenderer() );

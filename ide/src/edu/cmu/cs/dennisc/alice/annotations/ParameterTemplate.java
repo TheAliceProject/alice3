@@ -48,5 +48,5 @@ package edu.cmu.cs.dennisc.alice.annotations;
 @java.lang.annotation.Documented
 @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
 public @interface ParameterTemplate {
-	Class preferredArgumentClass();
+	Class<?> preferredArgumentClass();
 }

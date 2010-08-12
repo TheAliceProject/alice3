@@ -54,7 +54,7 @@ public class ConstantAccess extends Expression {
 		this.constant.setValue( constant );
 	}
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		return constant.getValue().valueType.getValue();
 	}
 }

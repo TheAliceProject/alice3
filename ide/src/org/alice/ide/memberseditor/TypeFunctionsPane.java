@@ -45,28 +45,28 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-class TypeFunctionsPane extends AbstractTypeMethodsPane {
-	public TypeFunctionsPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+public class TypeFunctionsPane extends AbstractTypeMethodsPane {
+	public TypeFunctionsPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		super( type );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.property.ListProperty< ? >[] getListPropertiesToListenTo( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected edu.cmu.cs.dennisc.property.ListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice >[] getListPropertiesToListenTo( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.methods, type.constructors };
 	}
 	@Override
-	protected javax.swing.JButton createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		return edu.cmu.cs.dennisc.zoot.ZManager.createButton( new org.alice.ide.operations.ast.DeclareFunctionOperation( type ) );
+	protected edu.cmu.cs.dennisc.croquet.Button createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		return org.alice.ide.operations.ast.DeclareFunctionOperation.getInstance( type ).createButton();
 	}
 	@Override
-	protected javax.swing.JButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		return edu.cmu.cs.dennisc.zoot.ZManager.createButton( new org.alice.ide.operations.ast.FocusCodeOperation( type.getDeclaredConstructor() ) );
+	protected edu.cmu.cs.dennisc.croquet.Button createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		return org.alice.ide.operations.ast.FocusCodeOperation.getInstance( type.getDeclaredConstructor() ).createButton();
 	}
 	@Override
-	protected javax.swing.JComponent createFunctionTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		return new org.alice.ide.memberseditor.templates.FunctionInvocationTemplate( method );
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createFunctionTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		return org.alice.ide.memberseditor.templates.TemplateFactory.getFunctionInvocationTemplate( method );
 	}
 	@Override
-	protected javax.swing.JComponent createProcedureTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createProcedureTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		return null;
 	}
 }

@@ -59,6 +59,10 @@ public class ManipulationEventManager {
 			{
 				this.manipulationListeners.add( listener );
 			}
+			else
+			{
+				System.out.println("REJECTED!");
+			}
 		}
 	}
 	

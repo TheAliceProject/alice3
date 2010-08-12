@@ -51,9 +51,10 @@ public class ConstructorDeclaredInAlice extends AbstractConstructor implements C
 	public NodeListProperty< ParameterDeclaredInAlice > parameters = new NodeListProperty< ParameterDeclaredInAlice >( this );
 	public NodeProperty< BlockStatement > body = new NodeProperty< BlockStatement >( this );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isSignatureLocked = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	private AbstractType m_declaringType;
-	private edu.cmu.cs.dennisc.alice.annotations.Visibility m_visibility = edu.cmu.cs.dennisc.alice.annotations.Visibility.PRIME_TIME; 
 	public edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+
+	private edu.cmu.cs.dennisc.alice.annotations.Visibility m_visibility = edu.cmu.cs.dennisc.alice.annotations.Visibility.PRIME_TIME; 
+	private AbstractTypeDeclaredInAlice<?> m_declaringType;
 
 	public ConstructorDeclaredInAlice() {
 	}
@@ -70,10 +71,10 @@ public class ConstructorDeclaredInAlice extends AbstractConstructor implements C
 		return this.parameters;
 	}
 	@Override
-	public AbstractType getDeclaringType() {
+	public AbstractTypeDeclaredInAlice<?> getDeclaringType() {
 		return m_declaringType;
 	}
-	public void setDeclaringType( AbstractType declaringType ) {
+	public void setDeclaringType( AbstractTypeDeclaredInAlice<?> declaringType ) {
 		m_declaringType = declaringType;
 	}
 	@Override

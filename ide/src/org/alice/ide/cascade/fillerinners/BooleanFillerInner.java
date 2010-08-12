@@ -57,7 +57,7 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 		};
 		//todo: relational
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = ide.getPreviousExpression();
+		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = ide.createCopyOfPreviousExpression();
 		final boolean isTop = blank.getParentFillIn() == null;
 		if( isTop ) {
 			if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression ) {

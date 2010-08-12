@@ -45,19 +45,21 @@ package edu.cmu.cs.dennisc.javax.swing.components;
 /**
  * @author Dennis Cosgrove
  */
-class SuggestiveTextUtilties {
+class SuggestiveTextUtilities {
 	public static void drawBlankTextIfNecessary( javax.swing.text.JTextComponent textComponent, java.awt.Graphics g, String textForBlankCondition ) {
 		if( textComponent.isEditable() && textComponent.isEnabled() ) {
 			String text = textComponent.getText();
-			if( text.length() > 0 ) {
+			if( text.length() > 0 || textForBlankCondition == null ) {
 				//pass
 			} else {
-				java.awt.Font font = textComponent.getFont().deriveFont( java.awt.Font.ITALIC );
+				java.awt.Font font = edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont(textComponent.getFont(), edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 				g.setFont( font );
-				g.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 127 ) );
+				g.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 ) );
 				java.awt.FontMetrics fm = g.getFontMetrics();
 				//java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( text, g );
-				g.drawString( textForBlankCondition, 0, textComponent.getHeight()-textComponent.getInsets().bottom-fm.getDescent() );
+				//int y = textComponent.getHeight()-textComponent.getInsets().bottom-fm.getDescent();
+				int y = textComponent.getInsets().top + fm.getAscent();
+				g.drawString( textForBlankCondition, textComponent.getInsets().left, y );
 			}
 		}
 	}

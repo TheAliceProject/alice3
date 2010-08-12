@@ -139,5 +139,4 @@ public class DragComponent extends javax.swing.JComponent {
 			m_layeredPane.repaint( getBounds() );
 		}
 	}
-	
 }

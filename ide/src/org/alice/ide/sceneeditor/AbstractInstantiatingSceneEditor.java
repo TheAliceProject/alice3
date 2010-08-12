@@ -42,6 +42,8 @@
  */
 package org.alice.ide.sceneeditor;
 
+import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,6 +56,21 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 		this.mapInstanceInJavaToField.put( instanceInJava, field );
 	}
 
+	protected void removeField( edu.cmu.cs.dennisc.alice.ast.AbstractField field )
+	{
+		Object instance = this.mapFieldToInstance.get(field);
+		Object javaInstance = this.mapInstanceInJavaToField.get(field);
+		this.mapFieldToInstance.remove(field);
+		if (instance != null)
+		{
+			this.mapInstanceToField.remove(instance);
+		}
+		if (javaInstance != null)
+		{
+			this.mapInstanceInJavaToField.remove(javaInstance);
+		}
+	}
+	
 	protected void putInstanceForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance ) {
 		this.mapFieldToInstance.put( field, instance );
 		this.mapInstanceToField.put( instance, field );
@@ -78,9 +95,15 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 	protected Object getInstanceForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		return this.mapFieldToInstance.get( field );
 	}
+	@Override
+	public void putInstanceForInitializingPendingField(FieldDeclaredInAlice field, Object instance) 
+	{
+		this.putInstanceForField(field, instance);
+	}
+	
 	protected Object getInstanceInJavaForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		Object rv;
-		Object instance = this.mapFieldToInstance.get( field );
+		Object instance = this.getInstanceForField( field );
 		if( instance instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
 			edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
 			rv = instanceInAlice.getInstanceInJava();
@@ -103,7 +126,7 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 	protected Object createScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
 		getVM().setConstructorBodyExecutionDesired( false );
 		try {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType = sceneField.getValueType();
 			assert sceneType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 			Object rv = getVM().createInstanceEntryPoint( sceneType );
 			putInstanceForField( sceneField, rv );

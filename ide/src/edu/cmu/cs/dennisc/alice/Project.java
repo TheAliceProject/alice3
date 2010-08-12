@@ -48,7 +48,7 @@ import org.alice.virtualmachine.Resource;
  * @author Dennis Cosgrove
  */
 public class Project {
-	public static final java.util.UUID GROUP_UUID = java.util.UUID.fromString( "a89d2513-6d9a-4378-a08b-4d773618244d" );
+	public static final edu.cmu.cs.dennisc.croquet.Group GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "a89d2513-6d9a-4378-a08b-4d773618244d" ), "Project.GROUP" );
 
 	private static int readInt( java.io.BufferedInputStream bis ) throws java.io.IOException {
 		byte[] lengthArray = new byte[ 4 ];
@@ -199,21 +199,21 @@ public class Project {
 	}
 	
 	private java.util.Set< Resource > resources = java.util.Collections.synchronizedSet( new java.util.HashSet< Resource >() );
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType programType = null;
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = null;
 	private Properties properties = new Properties();
-	public Project( edu.cmu.cs.dennisc.alice.ast.AbstractType programType, java.util.Set< Resource > resources ) {
+	public Project( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType, java.util.Set< Resource > resources ) {
 		this( programType );
 		synchronized( this.resources ) {
 			this.resources.addAll( resources );
 		}
 	}
-	public Project( edu.cmu.cs.dennisc.alice.ast.AbstractType programType ) {
+	public Project( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType ) {
 		setProgramType( programType );
 	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getProgramType() {
+	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getProgramType() {
 		return this.programType;
 	}
-	/*public*/private void setProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType programType ) {
+	/*public*/private void setProgramType( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType ) {
 		this.programType = programType;
 	}
 	public Properties getProperties() {

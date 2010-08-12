@@ -45,9 +45,16 @@ package edu.cmu.cs.dennisc.javax.swing.components;
 public class JImageView extends javax.swing.JComponent {
 	private java.awt.image.BufferedImage bufferedImage;
 	private int desiredSize;
-	public JImageView( java.awt.image.BufferedImage bufferedImage, int desiredSize ) {
-		this.bufferedImage = bufferedImage;
+	public JImageView( int desiredSize ) {
 		this.desiredSize = desiredSize;
+	}
+	
+	public java.awt.image.BufferedImage getBufferedImage() {
+		return this.bufferedImage;
+	}
+	public void setBufferedImage(java.awt.image.BufferedImage bufferedImage) {
+		this.bufferedImage = bufferedImage;
+		this.repaint();
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {

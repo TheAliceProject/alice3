@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.alice.virtualmachine;
 
-import edu.cmu.cs.dennisc.alice.ProgramClosedException;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -53,7 +51,7 @@ public abstract class VirtualMachine {
 		return get( field, instance );
 	}
 	@Deprecated
-	public Object createInstanceForSceneEditor( edu.cmu.cs.dennisc.alice.ast.AbstractType entryPointType ) {
+	public Object createInstanceForSceneEditor( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> entryPointType ) {
 		pushCurrentThread( null );
 		try {
 			return this.createInstance( this.entryPointType.getDeclaredConstructor() );
@@ -82,28 +80,7 @@ public abstract class VirtualMachine {
 	
 	protected abstract void pushCurrentThread( Frame frame );
 	protected abstract void popCurrentThread();
-	
-//	public Object createInstanceEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor, Object... arguments ) {
-//		pushCurrentThread( null );
-//		try {
-//			return this.createInstance( constructor, arguments );
-//		} finally {
-//			popCurrentThread();
-//		}
-//	}
 
-	
-//	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.Resource, edu.cmu.cs.dennisc.alice.resource.Resource > resourceMap;
-//	public void setResourceMap( java.util.Map< edu.cmu.cs.dennisc.alice.ast.Resource, edu.cmu.cs.dennisc.alice.resource.Resource > resourceMap ) {
-//		this.resourceMap = resourceMap;
-//	}
-//	protected edu.cmu.cs.dennisc.alice.resource.Resource getResource( edu.cmu.cs.dennisc.alice.ast.Resource resource ) {
-//		if( this.resourceMap != null ) {
-//			return this.resourceMap.get( resource );
-//		} else {
-//			return null;
-//		}
-//	}
 	public void invokeEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, Object instance, Object... arguments ) {
 		pushCurrentThread( null );
 		try {
@@ -113,8 +90,8 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType entryPointType;
-	public Object createInstanceEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractType entryPointType ) {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> entryPointType;
+	public Object createInstanceEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> entryPointType ) {
 		assert entryPointType != null;
 		this.setEntryPointType( entryPointType );
 		pushCurrentThread( null );
@@ -125,7 +102,7 @@ public abstract class VirtualMachine {
 		}
 	}
 	
-	public void setEntryPointType( edu.cmu.cs.dennisc.alice.ast.AbstractType entryPointType ) {
+	public void setEntryPointType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> entryPointType ) {
 		this.entryPointType = entryPointType;
 	}
 		
@@ -138,7 +115,7 @@ public abstract class VirtualMachine {
 		this.isConstructorBodyExecutionDesired = isConstructorBodyExecutionDesired;
 	}
 	
-	protected Object createInstanceFromConstructorDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor, Object[] arguments ) {
+	private Object createInstanceFromConstructorDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor, Object[] arguments ) {
 		InstanceInAlice instanceInAlice = new InstanceInAlice();
 		java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractParameter,Object> map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, Object >();
 		for( int i=0; i<arguments.length; i++ ) {
@@ -159,7 +136,7 @@ public abstract class VirtualMachine {
 		}
 		return instanceInAlice;
 	}
-	protected Object createInstanceFromConstructorDeclaredInJava( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor, Object[] arguments ) {
+	private Object createInstanceFromConstructorDeclaredInJava( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor, Object[] arguments ) {
 		//todo
 		for( int i=0; i<arguments.length; i++ ) {
 			Object value = arguments[ i ];
@@ -177,10 +154,10 @@ public abstract class VirtualMachine {
 	}
 	
 	protected Object createInstanceFromAnonymousConstructor( edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor constructor, Object[] arguments ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = constructor.getDeclaringType();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = constructor.getDeclaringType();
 		if( type instanceof edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice anonymousType = (edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice)type;
-			edu.cmu.cs.dennisc.alice.ast.AbstractType superType = anonymousType.getSuperType();
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> superType = anonymousType.getSuperType();
 			if( superType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava ) {
 				Class< ? > anonymousCls = ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava)superType).getClassReflectionProxy().getReification();
 				Class< ? > adapterCls = this.mapAnonymousClsToAdapterCls.get( anonymousCls );
@@ -224,36 +201,30 @@ public abstract class VirtualMachine {
 //		return this.invokeMthd( mthd, constructor, arguments );
 	}
 
-	protected Object createArrayInstanceFromTypeDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.ArrayTypeDeclaredInAlice type, int[] lengths, Object[] arguments ) {
-		//todo
-		//Object rv = java.lang.reflect.Array.newInstance( type.getLeafType().getFirstClassEncounteredDeclaredInJava(), lengths );
-		Object rv = java.lang.reflect.Array.newInstance( Object.class, lengths );
-		for( int i=0; i<arguments.length; i++ ) {
-			java.lang.reflect.Array.set( rv, i, arguments[ i ] );
-		}
-		return rv;
+	private Object createArrayInstanceFromTypeDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.ArrayTypeDeclaredInAlice type, int[] lengths, Object[] values ) {
+		return new ArrayInstanceInAlice( type, lengths, values );
 	}
-	protected Object createArrayInstanceFromTypeDeclaredInJava( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava type, int[] lengths, Object[] arguments ) {
+	private Object createArrayInstanceFromTypeDeclaredInJava( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava type, int[] lengths, Object[] values ) {
 		Class<?> cls = type.getClassReflectionProxy().getReification();
 		assert cls != null;
 		Class<?> componentCls = cls.getComponentType();
 		assert componentCls != null;
 		Object rv = java.lang.reflect.Array.newInstance( componentCls, lengths );
-		for( int i=0; i<arguments.length; i++ ) {
-			if( arguments[ i ] instanceof InstanceInAlice ) {
-				InstanceInAlice valueInAlice = (InstanceInAlice)arguments[ i ];
-				arguments[ i ] = valueInAlice.getInstanceInJava();
+		for( int i=0; i<values.length; i++ ) {
+			if( values[ i ] instanceof InstanceInAlice ) {
+				InstanceInAlice valueInAlice = (InstanceInAlice)values[ i ];
+				values[ i ] = valueInAlice.getInstanceInJava();
 			}
-			java.lang.reflect.Array.set( rv, i, arguments[ i ] );
+			java.lang.reflect.Array.set( rv, i, values[ i ] );
 		}
 		return rv;
 	}
-	protected Object createArrayInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType type, int[] lengths, Object... arguments ) {
+	protected Object createArrayInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, int[] lengths, Object... values ) {
 		assert type != null;
 		if( type instanceof edu.cmu.cs.dennisc.alice.ast.ArrayTypeDeclaredInAlice ) {
-			return this.createArrayInstanceFromTypeDeclaredInAlice( (edu.cmu.cs.dennisc.alice.ast.ArrayTypeDeclaredInAlice)type, lengths, arguments );
+			return this.createArrayInstanceFromTypeDeclaredInAlice( (edu.cmu.cs.dennisc.alice.ast.ArrayTypeDeclaredInAlice)type, lengths, values );
 		} else if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava ) {
-			return this.createArrayInstanceFromTypeDeclaredInJava( (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava)type, lengths, arguments );
+			return this.createArrayInstanceFromTypeDeclaredInJava( (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava)type, lengths, values );
 		} else {
 			throw new RuntimeException();
 		}
@@ -297,6 +268,10 @@ public abstract class VirtualMachine {
 	
 	protected Integer getArrayLength( Object array ) {
 		if( array != null ) {
+			if (array instanceof ArrayInstanceInAlice) {
+				ArrayInstanceInAlice arrayInstanceInAlice = (ArrayInstanceInAlice) array;
+				return arrayInstanceInAlice.getLength();
+			}
 			return java.lang.reflect.Array.getLength( array );
 		} else {
 			throw new NullPointerException();
@@ -383,15 +358,30 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	protected Object getItemAtIndex( edu.cmu.cs.dennisc.alice.ast.AbstractType arrayType, Object array, Integer index ) {
+	protected Object getItemAtIndex( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> arrayType, Object array, Integer index ) {
 		assert arrayType != null;
 		assert arrayType.isArray();
-		return java.lang.reflect.Array.get( array, index );
+		if( array instanceof ArrayInstanceInAlice ) {
+			ArrayInstanceInAlice arrayInstanceInAlice = (ArrayInstanceInAlice)array;
+			return arrayInstanceInAlice.get( index );
+		} else {
+			return java.lang.reflect.Array.get( array, index );
+		}
 	}
-	protected void setItemAtIndex( edu.cmu.cs.dennisc.alice.ast.AbstractType arrayType, Object array, Integer index, Object value ) {
+	protected void setItemAtIndex( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> arrayType, Object array, Integer index, Object value ) {
+		if( value instanceof InstanceInAlice ) {
+			InstanceInAlice valueInAlice = (InstanceInAlice)value;
+			value = valueInAlice.getInstanceInJava();
+		}
+
 		assert arrayType != null;
 		assert arrayType.isArray();
-		java.lang.reflect.Array.set( array, index, value );
+		if( array instanceof ArrayInstanceInAlice ) {
+			ArrayInstanceInAlice arrayInstanceInAlice = (ArrayInstanceInAlice)array;
+			arrayInstanceInAlice.set( index, value );
+		} else {
+			java.lang.reflect.Array.set( array, index, value );
+		}
 	}
 	protected Object invokeMethodDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, Object instance, Object... arguments ) {
 		assert instance instanceof InstanceInAlice;
@@ -671,16 +661,21 @@ public abstract class VirtualMachine {
 		}
 	}
 	protected final <E extends Object> E evaluate( edu.cmu.cs.dennisc.alice.ast.Expression expression, Class< E > cls ) {
-		//todo: for python
-//		Object result = this.evaluate( booleanExpressionBodyPair.expression.getValue() );
-//		Boolean condition;
-//		if( result instanceof Integer ) {
-//			condition = ((Integer)result) != 0;
-//		} else {
-//			condition = (Boolean)result;
-//		}
-//		if( condition ) {
-		return (E)this.evaluate( expression );
+		//in order to support python...
+		//if( result instanceof Integer ) {
+		//	condition = ((Integer)result) != 0;
+		//} else {
+		//	condition = (Boolean)result;
+		//}
+		Object value = this.evaluate( expression );
+		if( cls.isArray() ) {
+			if( value instanceof ArrayInstanceInAlice ) {
+				ArrayInstanceInAlice arrayInstanceInAlice = (ArrayInstanceInAlice)value;
+				//todo
+				value = arrayInstanceInAlice.getValues();
+			}
+		}
+		return cls.cast( value );
 	}
 
 
@@ -783,6 +778,7 @@ public abstract class VirtualMachine {
 		}
 	}
 	protected void executeExpressionStatement( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement ) {
+		@SuppressWarnings("unused")
 		Object unused = this.evaluate( expressionStatement.expression.getValue() );
 	}
 	private void excecuteForEachLoop( edu.cmu.cs.dennisc.alice.ast.AbstractForEachLoop forEachInLoop, Object[] array ) throws ReturnException {
@@ -850,7 +846,7 @@ public abstract class VirtualMachine {
 		excecuteForEachTogether( eachInArrayTogether, array );
 	}
 	protected void executeEachInIterableTogether( edu.cmu.cs.dennisc.alice.ast.EachInIterableTogether eachInIterableTogether ) throws ReturnException {
-		Iterable iterable = this.evaluate( eachInIterableTogether.iterable.getValue(), Iterable.class );
+		Iterable<?> iterable = this.evaluate( eachInIterableTogether.iterable.getValue(), Iterable.class );
 		excecuteForEachTogether( eachInIterableTogether, edu.cmu.cs.dennisc.java.lang.IterableUtilities.toArray( iterable ) );
 	}
 	protected void executeReturnStatement( edu.cmu.cs.dennisc.alice.ast.ReturnStatement returnStatement ) throws ReturnException {

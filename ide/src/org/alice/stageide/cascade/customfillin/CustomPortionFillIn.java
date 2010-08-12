@@ -45,23 +45,13 @@ package org.alice.stageide.cascade.customfillin;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomPortionFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< edu.cmu.cs.dennisc.alice.ast.Expression, org.alice.apis.moveandturn.Portion > {
+public class CustomPortionFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	@Override
-	protected String getMenuProxyText() {
-		return "Other Portion...";
+	protected String getTypeDescription() {
+		return "Portion";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser createCustomPane() {
+	protected org.alice.ide.choosers.ValueChooser< edu.cmu.cs.dennisc.alice.ast.Expression > createValueChooser() {
 		return new org.alice.stageide.choosers.PortionChooser();
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.apis.moveandturn.Portion value ) {
-		edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value.doubleValue() );
-		final boolean IS_LITERAL_DESIRED = true;
-		if( IS_LITERAL_DESIRED ) {
-			return doubleLiteral;
-		} else {
-			return org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.Portion.class, new Class<?>[] { Number.class }, doubleLiteral );
-		}
 	}
 }

@@ -47,7 +47,7 @@ package org.alice.ide;
  */
 public class FauxIDE extends IDE {
 	@Override
-	protected edu.cmu.cs.dennisc.zoot.ActionOperation createAboutOperation() {
+	protected edu.cmu.cs.dennisc.croquet.Operation createAboutOperation() {
 		return null;
 	}
 	@Override
@@ -58,24 +58,44 @@ public class FauxIDE extends IDE {
 		return new org.alice.ide.sceneeditor.FauxSceneEditor();
 	}
 	@Override
-	public java.io.File getGalleryRootDirectory() {
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getGalleryRoot() {
 		return null;
 	}
 	@Override
-	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser( java.io.File galleryRootDirectory ) {
-		return new org.alice.ide.gallerybrowser.FauxGalleryBrowser( galleryRootDirectory );
+	protected edu.cmu.cs.dennisc.croquet.JComponent<?> createGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> root ) {
+		return null;
 	}
 	@Override
-	public void handleRun( edu.cmu.cs.dennisc.zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
-		javax.swing.JOptionPane.showMessageDialog( this, "imagine the program running here..." );
+	public edu.cmu.cs.dennisc.croquet.DialogOperation getRunOperation() {
+		return new edu.cmu.cs.dennisc.croquet.DialogOperation( null, java.util.UUID.fromString( "158967ad-956c-4870-8f3c-fb1f790523a6" ) ) {
+			@Override
+			protected edu.cmu.cs.dennisc.croquet.Container< ? > createContentPane( edu.cmu.cs.dennisc.croquet.DialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+				return null;
+			}
+			@Override
+			protected void releaseContentPane( edu.cmu.cs.dennisc.croquet.DialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog, edu.cmu.cs.dennisc.croquet.Container< ? > contentPane ) {
+			}
+		};
 	}
 	@Override
-	public void handleRestart( edu.cmu.cs.dennisc.zoot.ActionContext context ) {
+	protected edu.cmu.cs.dennisc.croquet.Operation createRestartOperation() {
+		return null;
 	}
 	@Override
-	public void handlePreviewMethod( edu.cmu.cs.dennisc.zoot.ActionContext actionContext, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
-		javax.swing.JOptionPane.showMessageDialog( this, "imagine testing method here..." );
+	public edu.cmu.cs.dennisc.croquet.Operation createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
+		return null;
 	}
+//	@Override
+//	public void handleRun( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
+//		this.showMessageDialog( "imagine the program running here..." );
+//	}
+//	@Override
+//	public void handleRestart( edu.cmu.cs.dennisc.croquet.ModelContext context ) {
+//	}
+//	@Override
+//	public void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
+//		this.showMessageDialog( "imagine testing method here..." );
+//	}
 	@Override
 	public boolean isInstanceCreationAllowableFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice ) {
 		return true;
@@ -89,7 +109,7 @@ public class FauxIDE extends IDE {
 		return null;
 	}
 	@Override
-	protected org.alice.ide.openprojectpane.TabContentPane createTemplatesPane() {
+	protected org.alice.ide.openprojectpane.TabContentPanel createTemplatesTabContentPane() {
 		return null;
 	}
 	public static void main( String[] args ) {

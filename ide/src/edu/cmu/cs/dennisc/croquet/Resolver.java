@@ -40,15 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-//todo: rename
-public interface Resolver< E extends Edit, F > {
-	public E createEdit();
-	public E initialize( E rv, Context<? extends Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<F> taskObserver );
-	public E handleCompletion( E rv, F e );
-	public void handleCancelation();
+public interface Resolver<T> {
+	public T getResolved();
 }

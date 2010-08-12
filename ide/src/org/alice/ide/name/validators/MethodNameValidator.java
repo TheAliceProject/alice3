@@ -45,9 +45,9 @@ package org.alice.ide.name.validators;
 
 public class MethodNameValidator extends MemberNameValidator {
 	public MethodNameValidator( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		super( method, (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice)method.getDeclaringType() );
+		super( method, method.getDeclaringType() );
 	}
-	public MethodNameValidator( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice type ) {
+	public MethodNameValidator( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type ) {
 		super( null, type );
 	}
 	@Override

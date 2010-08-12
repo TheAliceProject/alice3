@@ -80,49 +80,48 @@ public abstract class AbstractListPropertyPane< E extends edu.cmu.cs.dennisc.pro
 	public AbstractListPropertyPane( Factory factory, int axis, E property ) {
 		super( factory, axis, property );
 	}
-	protected abstract java.awt.Component createComponent( Object instance );
+	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createComponent( Object instance );
 	protected void addPrefixComponents() {
 	}
 	protected void addPostfixComponents() {
 	}
 	
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		this.getProperty().addListPropertyListener( this.listPropertyAdapter );
 	}
 	@Override
-	public void removeNotify() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		this.getProperty().removeListPropertyListener( this.listPropertyAdapter );
-		super.removeNotify();
+		super.handleRemovedFrom( parent );
 	}
-	protected java.awt.Component createInterstitial( int i, final int N ) {
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createInterstitial( int i, final int N ) {
 		return null;
 	}
 	
 	@Override
 	protected void refresh() {
-		this.removeAll();
+		this.removeAllComponents();
 		this.addPrefixComponents();
 		final int N = getProperty().size();
 		int i = 0;
 		for( Object o : getProperty() ) {
-			java.awt.Component component;
+			edu.cmu.cs.dennisc.croquet.Component< ? > component;
 			if( o != null ) {
 				component = this.createComponent( o );
 			} else {
-				component = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "null" );
+				component = new edu.cmu.cs.dennisc.croquet.Label( "null" );
 			}
-			this.add( component );
-			java.awt.Component interstitial = this.createInterstitial( i, N );
+			this.addComponent( component );
+			edu.cmu.cs.dennisc.croquet.Component< ? > interstitial = this.createInterstitial( i, N );
 			if( interstitial != null ) {
-				this.add( interstitial );
+				this.addComponent( interstitial );
 			}
 			i++;
 		}
 		this.addPostfixComponents();
-		this.revalidate();
-		this.repaint();
+		this.revalidateAndRepaint();
 	}
 }
 

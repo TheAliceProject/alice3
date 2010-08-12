@@ -45,12 +45,13 @@ package org.alice.ide.memberseditor.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodPopupOperation extends edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation {
+/*package-private*/ class MethodPopupOperation extends edu.cmu.cs.dennisc.croquet.PopupMenuOperation {
 	public MethodPopupOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice ) {
 		super( 
+			java.util.UUID.fromString( "5b1b6ac7-b2f9-453e-9fd9-ab06b621c473" ),
 			new org.alice.ide.operations.ast.RenameMethodOperation( methodInAlice ),
 			new org.alice.ide.operations.ast.DeleteMethodOperation( methodInAlice ),
-			new org.alice.ide.operations.ast.FocusCodeOperation( methodInAlice )
+			org.alice.ide.operations.ast.FocusCodeOperation.getInstance( methodInAlice )
 		);
 	}
 }

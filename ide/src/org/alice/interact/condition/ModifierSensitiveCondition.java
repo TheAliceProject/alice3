@@ -64,6 +64,10 @@ public class ModifierSensitiveCondition extends InputCondition {
 	
 	@Override
 	protected boolean testState( InputState state ) {
+		if (state.getIsDragEvent())
+		{
+			return false;
+		}
 		if (this.modifierMask != null)
 		{
 			return this.modifierMask.test( state );

@@ -47,6 +47,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.alice.interact.PickHint;
+import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.Visibility;
@@ -65,14 +66,16 @@ public class Marker extends Transformable
 	protected List<Visual> sgVisuals = new LinkedList<Visual>();
 	protected boolean isShowing = true;
 	
+	protected boolean displayVisuals = true;
+	
 	public Marker()
 	{
 		super();
-		sgFrontFacingAppearance.diffuseColor.setValue( this.getMarkerColor() );
-		sgFrontFacingAppearance.opacity.setValue( new Float(this.getMarkerOpacity()) );
+		sgFrontFacingAppearance.diffuseColor.setValue( this.getDefaultMarkerColor() );
+		sgFrontFacingAppearance.opacity.setValue( new Float(this.getDefaultMarkerOpacity()) );
 		createVisuals();
 		this.getSGTransformable().putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.MARKERS );
-		this.setShowing(true);
+		this.setShowing(this.getDisplayVisuals());
 	}
 	
 	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
@@ -86,31 +89,114 @@ public class Marker extends Transformable
 		{
 			this.isShowing = isShowing;
 //			System.out.println("Setting visibility of "+this+":"+this.hashCode());
+			if (this.getDisplayVisuals())
+			{
+				for (Visual v : this.sgVisuals)
+				{
+	//				System.out.println("  Setting "+v+":"+v.hashCode()+"->"+v.getParent()+"->"+v.getParent().getRoot()+", showing to "+this.isShowing);
+					v.isShowing.setValue(this.isShowing);
+				}
+			}
+		}
+	}
+	
+	public boolean getDisplayVisuals()
+	{
+		return this.displayVisuals;
+	}
+	
+	public void setDisplayVisuals(boolean useDisplay)
+	{
+		this.displayVisuals = useDisplay;
+		if (!this.displayVisuals)
+		{
 			for (Visual v : this.sgVisuals)
 			{
-//				System.out.println("  Setting "+v+":"+v.hashCode()+"->"+v.getParent()+"->"+v.getParent().getRoot()+", showing to "+this.isShowing);
-				v.isShowing.setValue(this.isShowing);
+				v.isShowing.setValue(false);
 			}
 		}
 	}
 	
 	@Override
-	protected void handleVehicleChange(Composite vehicle) {
-		super.handleVehicleChange(vehicle);
+	public void setName(String name) 
+	{
+		super.setName(name);
+		Color color = MoveAndTurnSceneEditor.getColorForMarkerName(name);
+		if (color != null)
+		{
+			this.setMarkerColor(color.getInternal());
+		}
+		
 	}
 	
 	protected void createVisuals()
 	{
 	}
 	
-	protected Color4f getMarkerColor()
+	public Color4f getMarkerColor()
+	{
+		return sgFrontFacingAppearance.diffuseColor.getValue();
+	}
+	
+	public void setMarkerColor( Color4f color )
+	{
+		sgFrontFacingAppearance.diffuseColor.setValue( color );
+	}
+	
+	protected Color4f getDefaultMarkerColor()
 	{
 		return Color4f.CYAN;
 	}
 	
-	protected float getMarkerOpacity()
+	protected float getDefaultMarkerOpacity()
 	{
 		return 1;
+	}
+	
+	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
+	public Double getOpacity() {
+		float actualValue = sgFrontFacingAppearance.opacity.getValue();
+		double scaledValue = actualValue / this.getDefaultMarkerOpacity();
+		return scaledValue;
+	}
+
+	protected void setModelOpacity(float opacity)
+	{
+		float scaledValue = opacity * this.getDefaultMarkerOpacity();
+		sgFrontFacingAppearance.opacity.setValue(scaledValue);
+	}
+	
+	public void setOpacity( 
+			@edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=Portion.class )
+			final Number opacity,
+			Number duration, 
+			final Style style
+		) {
+		final double actualDuration = adjustDurationIfNecessary( duration );
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( actualDuration, RIGHT_NOW ) ) {
+			Marker.this.setModelOpacity( opacity.floatValue() );
+		} else {
+			perform( new edu.cmu.cs.dennisc.animation.interpolation.FloatAnimation( actualDuration, style, getOpacity().floatValue(), opacity.floatValue() ) {
+				@Override
+				protected void updateValue( Float opacity ) {
+					Marker.this.setModelOpacity( opacity );
+				}
+			} );
+		}
+	}
+	
+	public void setOpacity( 
+			@edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=Portion.class )
+			Number opacity,
+			Number duration 
+		) {
+		setOpacity( opacity, duration, DEFAULT_STYLE );
+	}
+	public void setOpacity( 
+			@edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=Portion.class )
+			Number opacity
+		) {
+		setOpacity( opacity, DEFAULT_DURATION );
 	}
 	
 }

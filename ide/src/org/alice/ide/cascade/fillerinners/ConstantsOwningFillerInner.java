@@ -46,7 +46,7 @@ package org.alice.ide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public class ConstantsOwningFillerInner extends ExpressionFillerInner {
-	public ConstantsOwningFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public ConstantsOwningFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		super( type, edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
 	}
 	public ConstantsOwningFillerInner( Class<?> cls ) {
@@ -54,7 +54,7 @@ public class ConstantsOwningFillerInner extends ExpressionFillerInner {
 	}
 	@Override
 	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getType();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = this.getType();
  		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
  			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
  	 			this.addExpressionFillIn( blank, new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), field );

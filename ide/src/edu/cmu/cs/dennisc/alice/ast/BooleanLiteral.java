@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class BooleanLiteral extends AbstractValueLiteral {
 	public edu.cmu.cs.dennisc.property.BooleanProperty value = new edu.cmu.cs.dennisc.property.BooleanProperty( this, null );
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		return TypeDeclaredInJava.get( Boolean.class );
 	}
 	public BooleanLiteral() {
@@ -60,5 +60,9 @@ public class BooleanLiteral extends AbstractValueLiteral {
 	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
 		rv.append( this.value.getValue() );
 		return rv;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.property.InstanceProperty<?> getValueProperty() {
+		return this.value;
 	}
 }

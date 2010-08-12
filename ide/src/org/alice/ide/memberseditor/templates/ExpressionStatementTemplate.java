@@ -45,27 +45,34 @@ package org.alice.ide.memberseditor.templates;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionStatementTemplate extends org.alice.ide.templates.CascadingExpressionsStatementTemplate {
+/*package-private*/ abstract class ExpressionStatementTemplate extends org.alice.ide.templates.CascadingExpressionsStatementTemplate {
 	public ExpressionStatementTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression();
+	
+	private boolean isInitialized = false;
 	@Override
-	public void addNotify() {
-		super.addNotify();
-		this.refresh();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
+		if( this.isInitialized ) {
+			//pass
+		} else {
+			this.refresh();
+			this.isInitialized = true;
+		}
 	}
 	@Override
-	public void removeNotify() {
-		this.removeAll();
-		super.removeNotify();
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		//this.removeAllComponents();
+		super.handleRemovedFrom( parent );
 	}
 	protected void refresh() {
-		this.removeAll();
+		this.removeAllComponents();
 		edu.cmu.cs.dennisc.alice.ast.Expression incompleteExpression = this.createIncompleteExpression();
-		this.setBackground( getIDE().getColorFor( incompleteExpression ) );
-		this.add( getIDE().getTemplatesFactory().createExpressionPane( incompleteExpression ) );
+		this.setBackgroundColor( getIDE().getColorFor( incompleteExpression ) );
+		this.addComponent( getIDE().getTemplatesFactory().createExpressionPane( incompleteExpression ) );
 	}
 
 	@Override

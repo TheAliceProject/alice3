@@ -47,7 +47,7 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public class UbiquitousStatementImplementor { //todo: needs a better name
 	private edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement;
-	private javax.swing.JComponent incompleteStatementPane;
+	private edu.cmu.cs.dennisc.croquet.Component< ? > incompleteStatementPane;
 	private String labelText;
 	private javax.swing.JToolTip toolTip;
 
@@ -57,7 +57,7 @@ public class UbiquitousStatementImplementor { //todo: needs a better name
 	public edu.cmu.cs.dennisc.alice.ast.Statement getIncompleteStatement() {
 		return this.incompleteStatement;
 	}
-	public javax.swing.JComponent getIncompleteStatementPane() {
+	public edu.cmu.cs.dennisc.croquet.Component< ? > getIncompleteStatementPane() {
 		if( this.incompleteStatementPane != null ) {
 			//pass
 		} else {
@@ -71,7 +71,7 @@ public class UbiquitousStatementImplementor { //todo: needs a better name
 			//pass
 		} else {
 			Class<?> cls = incompleteStatement.getClass();
-			this.labelText = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.ubiquitouspane.Templates" );
+			this.labelText = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.ubiquitouspane.Templates", org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getLocale() );
 		}
 		return this.labelText;
 	}
@@ -79,7 +79,7 @@ public class UbiquitousStatementImplementor { //todo: needs a better name
 		if( this.toolTip != null ) {
 			//pass
 		} else {
-			this.toolTip = new edu.cmu.cs.dennisc.javax.swing.tooltips.JToolTip( this.getIncompleteStatementPane() );
+			this.toolTip = new edu.cmu.cs.dennisc.javax.swing.tooltips.JToolTip( this.getIncompleteStatementPane().getAwtComponent() );
 		}
 		return this.toolTip;
 	}

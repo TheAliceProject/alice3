@@ -89,7 +89,7 @@ public class ConstructorDeclaredInJava extends AbstractConstructor {
 	}
 	
 	@Override
-	public AbstractType getDeclaringType() {
+	public TypeDeclaredInJava getDeclaringType() {
 		return TypeDeclaredInJava.get( this.constructorReflectionProxy.getDeclaringClassReflectionProxy() );
 	}
 	@Override

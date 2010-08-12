@@ -44,7 +44,7 @@ package org.alice.ide.warningpane;
 
 public class WarningPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
 	public WarningPane( boolean isSolicited ) {
-		javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel(  new javax.swing.ImageIcon( this.getClass().getResource( "images/toxic.png" ) ) );
+		javax.swing.JLabel label = new javax.swing.JLabel(  new javax.swing.ImageIcon( this.getClass().getResource( "images/toxic.png" ) ) );
 
 		StringBuffer sb = new StringBuffer();
 		sb.append( "<html><body>" );
@@ -58,10 +58,10 @@ public class WarningPane extends edu.cmu.cs.dennisc.javax.swing.components.JPage
 		
 		javax.swing.JEditorPane editorPane = new javax.swing.JEditorPane( "text/html", sb.toString() );
 		editorPane.setEditable( false );
-		editorPane.setOpaque( false );
+		editorPane.setBackground( null );
 		
-		label.setAlignmentX( 0.0f );
-		editorPane.setAlignmentX( 0.0f );
+		label.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
+		editorPane.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		this.add( label );
 		this.add( editorPane );
 		this.add( javax.swing.Box.createVerticalStrut( 8 ) );
@@ -72,7 +72,7 @@ public class WarningPane extends edu.cmu.cs.dennisc.javax.swing.components.JPage
 				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
 			}
 			private java.awt.Component createLabel( String text ) {
-				javax.swing.JLabel rv = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( text );
+				javax.swing.JLabel rv = new javax.swing.JLabel( text );
 				rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 				return rv;
 			}

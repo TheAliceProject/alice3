@@ -71,13 +71,18 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 	private javax.swing.JScrollPane scrollEnvironment = new javax.swing.JScrollPane( this.textEnvironment ){
 		@Override
 		public java.awt.Dimension getPreferredSize() {
-			return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), 80 );
+			return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), 80 );
 		}
 	};
 	private java.awt.Component[] rowEnvironment = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelEnvironment, scrollEnvironment );
 
 
 	private javax.swing.JPanel centerPane = new javax.swing.JPanel();
+	private static class TextComponentBorder extends javax.swing.border.CompoundBorder {
+		public TextComponentBorder() {
+			super( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ), javax.swing.BorderFactory.createEmptyBorder( 1, 3, 1, 3 ) );
+		}
+	}
 
 	public AbstractPostIssuePane() {
 		this.textEnvironment.setBorder( new TextComponentBorder() );

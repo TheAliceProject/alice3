@@ -82,6 +82,14 @@ public class Line {
 			if( sub.startsWith( "_gets_toward_" ) ) {
 				boolean isTowardLeading = sub.equals( "_gets_toward_leading_" );
 				chunks.add( new GetsChunk( isTowardLeading ) );
+			} else if( sub.startsWith( "_not_final_" ) ) {
+				if( org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance().getValue() ) {
+					chunks.add( new TextChunk( "initialize " ) );
+				}
+			} else if( sub.startsWith( "_final_" ) ) {
+				if( org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance().getValue() ) {
+					chunks.add( new TextChunk( "permanently set " ) );
+				}
 			} else {
 				if( sub.endsWith( "()" ) ) {
 					chunks.add( new MethodInvocationChunk( sub ) );

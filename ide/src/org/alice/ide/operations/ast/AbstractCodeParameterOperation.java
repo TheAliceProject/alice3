@@ -48,10 +48,11 @@ import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCodeParameterOperation extends AbstractCodeOperation {
+public abstract class AbstractCodeParameterOperation extends AbstractCodeActionOperation {
 	private ParameterDeclaredInAlice parameter;
 	private NodeListProperty< ParameterDeclaredInAlice > parametersProperty;
-	public AbstractCodeParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, ParameterDeclaredInAlice parameter ) {
+	public AbstractCodeParameterOperation( java.util.UUID individualId, NodeListProperty< ParameterDeclaredInAlice > parametersProperty, ParameterDeclaredInAlice parameter ) {
+		super( individualId );
 		this.parametersProperty = parametersProperty;
 		this.parameter = parameter;
 	}

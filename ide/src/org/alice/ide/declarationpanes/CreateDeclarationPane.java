@@ -42,8 +42,6 @@
  */
 package org.alice.ide.declarationpanes;
 
-import org.alice.ide.initializer.InitializerPane;
-
 /**
  * @author Dennis Cosgrove
  */

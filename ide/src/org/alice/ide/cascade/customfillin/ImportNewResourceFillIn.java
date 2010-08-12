@@ -57,7 +57,7 @@ public abstract class ImportNewResourceFillIn< E extends org.alice.virtualmachin
 	public edu.cmu.cs.dennisc.alice.ast.ResourceExpression getValue() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		try {
-			E resource = getResourcePrompter().promptUserForResource( ide );
+			E resource = getResourcePrompter().promptUserForResource( ide.getFrame() );
 			if( resource != null ) {
 				edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 				if( project != null ) {

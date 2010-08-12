@@ -49,5 +49,5 @@ public abstract class ExpressionProperty extends NodeProperty<Expression> {
 	public ExpressionProperty( Node owner ) {
 		super( owner );
 	}
-	public abstract AbstractType getExpressionType();
+	public abstract AbstractType<?,?,?> getExpressionType();
 }

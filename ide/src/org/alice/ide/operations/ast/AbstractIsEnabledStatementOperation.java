@@ -42,21 +42,24 @@
  */
 package org.alice.ide.operations.ast;
 
+import edu.cmu.cs.dennisc.croquet.Component;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractIsEnabledStatementOperation extends org.alice.ide.operations.AbstractActionOperation {
+public abstract class AbstractIsEnabledStatementOperation extends org.alice.ide.operations.ActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 
 	public AbstractIsEnabledStatementOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "340f585a-80de-4930-9b53-6c71a5f5c2be" ) );
 		this.statement = statement;
 	}
 	protected abstract boolean getDesiredValue();
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	@Override
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		final boolean nextValue = this.getDesiredValue();
 		final boolean prevValue = this.statement.isEnabled.getValue();
-		actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			public void doOrRedo( boolean isDo ) {
 				statement.isEnabled.setValue( nextValue );

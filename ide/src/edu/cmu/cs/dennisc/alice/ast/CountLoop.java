@@ -61,7 +61,7 @@ public class CountLoop extends AbstractLoop {
 	};
 	public ExpressionProperty count = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			return TypeDeclaredInJava.get( Integer.class );
 		}
 	};

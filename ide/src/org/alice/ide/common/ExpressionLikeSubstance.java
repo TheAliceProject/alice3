@@ -47,18 +47,18 @@ package org.alice.ide.common;
  */
 public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	private static final int INSET = 2;
-	private static final int DOCKING_BAY_INSET_LEFT = 5;
+	public static final int DOCKING_BAY_INSET_LEFT = 5;
 
-	public ExpressionLikeSubstance() {
-		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
 	}
-	
 	private boolean isVoid() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = getExpressionType();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = getExpressionType();
 		return type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
 	}
 	protected boolean isExpressionTypeFeedbackDesired() {
-		return this.getIDE().isExpressionTypeFeedbackDesired() || isKnurlDesired();
+		return org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue() || isKnurlDesired();
 	}
 	@Override
 	protected int getInsetTop() {
@@ -82,7 +82,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 		if( this.isVoid() ) {
 			return 0;
 		} else {
-			return 2;
+			return 1;
 		}
 	}
 	
@@ -104,19 +104,28 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	}
 
 	protected edu.cmu.cs.dennisc.java.awt.BeveledShape createBoundsShape( int x, int y, int width, int height ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getExpressionType();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = this.getExpressionType();
 		if( type != null ) {
 //			assert type != edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
 		} else {
 			type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE;
 		}
 //		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( INSET + ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, INSET, (float)width - 2 * INSET - ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, (float)height - 2 * INSET, 8, 8 );
-		int left = this.getInsetLeft();
+		int left = this.getDockInsetLeft();
 		int top = this.getInsetTop();
 		int right = this.getInsetRight();
 		int bottom = this.getInsetBottom();
-		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( left-INSET, top, width-left-right+INSET+INSET-1, height-top-bottom, 8, 8 );
-		return BeveledShapeForType.createBeveledShapeFor( type, shape, ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, Math.min( height * 0.5f, 12.0f ) );
+		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( left, top, width-left-right, height-top-bottom, 8, 8 );
+		return BeveledShapeForType.createBeveledShapeFor( type, shape, left, Math.min( height * 0.5f, 12.0f ) );
+	}
+	
+	@Override
+	protected java.awt.Shape createShape(int x, int y, int width, int height) {
+		if( this.isVoid() || this.isExpressionTypeFeedbackDesired() == false ) {
+			return null;
+		} else {
+			return this.createBoundsShape(x, y, width, height).getBaseShape();
+		}
 	}
 	@Override
 	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
@@ -125,6 +134,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 			beveledShape.fill( g2 );
 		}
 	}
+
 	@Override
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		if( this.isVoid() || this.isExpressionTypeFeedbackDesired() == false ) {
@@ -133,6 +143,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 			//edu.cmu.cs.dennisc.awt.BevelState bevelState = this.getBevelState();
 			edu.cmu.cs.dennisc.java.awt.BevelState bevelState = edu.cmu.cs.dennisc.java.awt.BevelState.FLUSH;
 			edu.cmu.cs.dennisc.java.awt.BeveledShape beveledShape = createBoundsShape( x, y, width, height );
+			g2.setPaint( this.getBackgroundPaint( x, y, width, height ) );
 			beveledShape.paint( g2, bevelState, 3.0f, 1.0f, 1.0f );
 		}
 	}
@@ -142,7 +153,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 		return false;
 	}
 
-	public abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType();
+	public abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType();	
 	//	@Override
 	//	protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape() {
 	//		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( INSET+DOCKING_BAY_INSET_LEFT, INSET, (float)getWidth()-2*INSET-DOCKING_BAY_INSET_LEFT, (float)getHeight()-2*INSET, 8, 8 );

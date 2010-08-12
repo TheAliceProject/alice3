@@ -42,23 +42,36 @@
  */
 package org.alice.ide.choosers;
 
+class FloatModel extends NumberModel {
+	public FloatModel() {
+		 super( CALCULATOR_GROUP, java.util.UUID.fromString( "f34ce6db-6de0-48cb-ba43-98e89f55b59b" )  );
+	}
+	@Override
+	protected boolean isDecimalPointSupported() {
+		return true;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression valueOf( String s ) {
+		float f = Float.parseFloat( s );
+		if( Float.isNaN( f ) ) {
+			return null;
+		} else {
+			return new edu.cmu.cs.dennisc.alice.ast.FloatLiteral( f );
+		}
+	}
+}
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class FloatChooser extends AbstractNumberChooser< Float > {
+public class FloatChooser extends AbstractNumberChooser {
 	public FloatChooser() {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.FloatLiteral ) {
-			edu.cmu.cs.dennisc.alice.ast.FloatLiteral floatLiteral = (edu.cmu.cs.dennisc.alice.ast.FloatLiteral)previousExpression;
-			this.setAndSelectText( Float.toString( floatLiteral.value.getValue() ) );
-		}
-	}
-	public String getTitleDefault() {
-		return "Enter Custom Float";
-	}
-	@Override
-	protected Float valueOf( String text ) {
-		return Float.valueOf( text );
+		super( new FloatModel() ); 
+//		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
+//		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.FloatLiteral ) {
+//			edu.cmu.cs.dennisc.alice.ast.FloatLiteral floatLiteral = (edu.cmu.cs.dennisc.alice.ast.FloatLiteral)previousExpression;
+//			this.setAndSelectText( Float.toString( floatLiteral.value.getValue() ) );
+//		}
 	}
 }

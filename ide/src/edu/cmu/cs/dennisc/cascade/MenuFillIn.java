@@ -75,7 +75,7 @@ public abstract class MenuFillIn< E > extends FillIn< E > {
 	}
 	
 	private FillIn< E > getSelectedFillInOfChild0() {
-		return getBlankAt( 0 ).getSelectedFillIn();
+		return (FillIn<E>)getBlankAt( 0 ).getSelectedFillIn();
 	}
 	@Override
 	final public E getValue() {

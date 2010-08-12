@@ -42,12 +42,13 @@
  */
 package org.alice.ide.codeeditor;
 
+import org.alice.ide.common.DefaultStatementPane;
 import org.alice.ide.common.StatementListPropertyPane;
 
 /**
  * @author Dennis Cosgrove
  */
-class StatementListPropertyPaneInfo {
+class StatementListPropertyPaneInfo /* implements edu.cmu.cs.dennisc.croquet.TrackableShape */ {
 	private StatementListPropertyPane statementListPropertyPane;
 	private java.awt.Rectangle bounds;
 
@@ -75,193 +76,161 @@ class StatementListPropertyPaneInfo {
 /**
  * @author Dennis Cosgrove
  */
-public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane implements org.alice.ide.event.IDEListener, edu.cmu.cs.dennisc.zoot.DropReceptor {
-	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
-	}
-	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
-	}
-	public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-	}
-	public void focusedCodeChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-	}
-	public void localeChanged( org.alice.ide.event.LocaleEvent e ) {
-		this.refresh();
-		this.repaint();
-	}
-	public void localeChanging( org.alice.ide.event.LocaleEvent e ) {
-	}
-	public void projectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
-	}
-	public void projectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
-	}
-	public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
-	}
-	public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
-	}
+public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implements edu.cmu.cs.dennisc.croquet.DropReceptor, java.awt.print.Printable {
+	private StatementListPropertyPane EPIC_HACK_desiredStatementListPropertyPane = null;
+	private int EPIC_HACK_desiredIndex = -1;
 
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
 	private StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
-	private StatementListPropertyPane currentUnder;
-	private javax.swing.JScrollPane scrollPane;
+	private edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane;
 
+//	private edu.cmu.cs.dennisc.croquet.Application.LocaleObserver localeObserver = new edu.cmu.cs.dennisc.croquet.Application.LocaleObserver() {
+//		public void localeChanging( java.util.Locale previousLocale, java.util.Locale nextLocale ) {
+//		}
+//		public void localeChanged( java.util.Locale previousLocale, java.util.Locale nextLocale ) {
+//			CodeEditor.this.refresh();
+//			CodeEditor.this.repaint();
+//		}
+//	};
+	
 	public CodeEditor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-		this.getIDE().addIDEListener( this );
 		this.code = code;
-		this.setOpaque( true );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		this.setBackground( getIDE().getCodeDeclaredInAliceColor( this.code ) );
-		this.setDoubleBuffered( true );
-		this.refresh();
-		//		this.addMouseListener( new java.awt.event.MouseListener() {
-		//			public void mouseClicked( final java.awt.event.MouseEvent e ) {
-		//				final alice.ide.IDE ide = alice.ide.IDE.getSingleton();
-		//				if( ide != null ) {
-		//					final StatementListPropertyPane statementListPropertyPane = getStatementListPropertyPaneUnder( e, createStatementListPropertyPaneInfos( null ) );
-		//					if( statementListPropertyPane != null ) {
-		//						ide.promptUserForStatement( e, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement >() {
-		//							public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		//								java.awt.Point p = javax.swing.SwingUtilities.convertPoint( e.getComponent(), e.getPoint(), statementListPropertyPane );
-		//								statementListPropertyPane.getProperty().add( statementListPropertyPane.calculateIndex( p ), statement );
-		//								ide.markChanged( "statement" );
-		//							}
-		//							public void handleCancelation() {
-		//							}
-		//						} );
-		//					}
-		//				}
-		//			}
-		//			public void mouseEntered( java.awt.event.MouseEvent e ) {
-		//			}
-		//			public void mouseExited( java.awt.event.MouseEvent e ) {
-		//			}
-		//			public void mousePressed( java.awt.event.MouseEvent e ) {
-		//			}
-		//			public void mouseReleased( java.awt.event.MouseEvent e ) {
-		//			}
-		//		} );
-
-		//		this.addHierarchyListener( new java.awt.event.HierarchyListener() {
-		//			public void hierarchyChanged( java.awt.event.HierarchyEvent e ) {
-		//				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "hierarchyChanged", getIDE().isAncestorOf( CodeEditor.this ), CodeEditor.this.isShowing(), CodeEditor.this.getCode() );
-		//				if( getIDE().isAncestorOf( CodeEditor.this ) && CodeEditor.this.isShowing() ) {
-		//					getIDE().addDropReceptorIfNecessary( CodeEditor.this );
-		//				} else {
-		//					getIDE().removeDropReceptorIfNecessary( CodeEditor.this );
-		//				}
-		//			}
-		//		} );
+		java.awt.Color color = getIDE().getCodeDeclaredInAliceColor( this.code );
+		color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0f, 1.1f, 1.1f );
+		this.setBackgroundColor( color );
 	}
 
 	@Override
-	public String getName() {
-		if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.code;
-			return method.getName();
-		} else if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {
-			//edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor = (edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice)this.code;
-			return "constructor";
+	protected javax.swing.JPanel createJPanel() {
+		final boolean IS_FEEDBACK_DESIRED = false;
+		javax.swing.JPanel rv;
+		if( IS_FEEDBACK_DESIRED ) {
+			rv = new javax.swing.JPanel() {
+				@Override
+				public void paint( java.awt.Graphics g ) {
+					super.paint( g );
+					if( CodeEditor.this.statementListPropertyPaneInfos != null ) {
+						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+						int i = 0;
+						for( StatementListPropertyPaneInfo statementListPropertyPaneInfo : CodeEditor.this.statementListPropertyPaneInfos ) {
+							if( statementListPropertyPaneInfo != null ) {
+								java.awt.Color color;
+								if( CodeEditor.this.currentUnder == statementListPropertyPaneInfo.getStatementListPropertyPane() ) {
+									color = new java.awt.Color( 0, 0, 0, 127 );
+								} else {
+									color = null;
+									//color = new java.awt.Color( 255, 0, 0, 31 );
+								}
+								java.awt.Rectangle bounds = statementListPropertyPaneInfo.getBounds();
+								bounds = javax.swing.SwingUtilities.convertRectangle( CodeEditor.this.getAsSeenBy().getAwtComponent(), bounds, this );
+								if( color != null ) {
+									g2.setColor( color );
+									g2.fill( bounds );
+									g2.setColor( new java.awt.Color( 255, 255, 0, 255 ) );
+									g2.draw( bounds );
+								}
+								g2.setColor( java.awt.Color.BLACK );
+								edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g2, Integer.toString( i ), bounds.x, bounds.y, 32, bounds.height );
+							}
+							i++;
+						}
+					}
+				}
+			};
 		} else {
-			return super.getName();
+			rv = new javax.swing.JPanel();
 		}
+//		rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.PAGE_AXIS ) );
+		rv.setLayout( new java.awt.BorderLayout() );
+		
+		return rv;
+	}
+	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver typeFeedbackObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
+		public void changing(boolean nextValue) {
+		}
+		public void changed(boolean nextValue) {
+			CodeEditor.this.refresh();
+		}
+	};
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver formatterSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.formatter.Formatter >() {
+		public void changed(org.alice.ide.formatter.Formatter nextValue) {
+			CodeEditor.this.refresh();
+		}
+	};
+	@Override
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo(parent);
+		org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().addValueObserver( formatterSelectionObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().addAndInvokeValueObserver( this.typeFeedbackObserver );
+	}
+	@Override
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().removeValueObserver( this.typeFeedbackObserver );
+		org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().addValueObserver( formatterSelectionObserver );
+		super.handleRemovedFrom( parent );
 	}
 
-	protected javax.swing.JComponent createParametersPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
-		return new ParametersPane( this.getIDE().getCodeFactory(), code );
-	}
+	//todo: croquet switch
+//	@Override
+//	public String getName() {
+//		if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+//			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.code;
+//			return method.getName();
+//		} else if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {
+//			//edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor = (edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice)this.code;
+//			return "constructor";
+//		} else {
+//			return super.getName();
+//		}
+//	}
 
 	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
 		return this.code;
 	}
-	public java.awt.Component getAWTComponent() {
+	public edu.cmu.cs.dennisc.croquet.JComponent<?> getViewController() {
 		return this;
 	}
-	public void refresh() {
-		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this );
+	private void refresh() {
+		this.forgetAndRemoveAllComponents();
 		if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ) {
 			final edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code;
-			javax.swing.JComponent parametersPane = createParametersPane( codeDeclaredInAlice );
-			javax.swing.JComponent header;
+			ParametersPane parametersPane = new ParametersPane( this.getIDE().getCodeFactory(), codeDeclaredInAlice );
+			AbstractCodeHeaderPane header;
 			if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
-				header = new MethodHeaderPane( methodDeclaredInAlice, parametersPane );
+				header = new MethodHeaderPane( methodDeclaredInAlice, parametersPane, false );
 			} else if( code instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {
 				edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructorDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice)code;
-				header = new ConstructorHeaderPane( constructorDeclaredInAlice, parametersPane );
+				header = new ConstructorHeaderPane( constructorDeclaredInAlice, parametersPane, false );
 			} else {
 				throw new RuntimeException();
 			}
-
 			class RootStatementListPropertyPane extends StatementListPropertyPane {
 				public RootStatementListPropertyPane() {
 					super( getIDE().getCodeFactory(), codeDeclaredInAlice.getBodyProperty().getValue().statements );
+					this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 48, 0 ) );
 				}
-				@Override
-				protected boolean isMaximumSizeClampedToPreferredSize() {
-					return false;
-				}
-				//				@Override
-				//				protected void paintComponent( java.awt.Graphics g ) {
-				//					super.paintComponent( g );
-				//					int x = 0;
-				//					int y = 0;
-				//					int width = this.getWidth() -1;
-				//					int height = this.getHeight() -1;
-				//					int arcWidth = 8;
-				//					int arcHeight = 8;
-				//					g.setColor( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class ) );
-				//					g.fillRoundRect( x, y, width, height, arcWidth, arcHeight );
-				//					g.setColor( java.awt.Color.GRAY );
-				//					g.drawRoundRect( x, y, width, height, arcWidth, arcHeight );
-				//
-				////					if( getIDE().isJava() ) {
-				////						//pass
-				////					} else {
-				////						java.awt.FontMetrics fm = g.getFontMetrics();
-				////					    int ascent = fm.getMaxAscent ();
-				////					    int descent= fm.getMaxDescent ();
-				////					    
-				////						g.setColor( java.awt.Color.BLACK );
-				////					    x = 4;
-				////					    y = 4;
-				////						g.drawString( "do in order", x, y + ascent-descent );
-				////					}
-				//				}
 			}
-			//			RootStatementListPropertyPane bodyPane = new RootStatementListPropertyPane();
-			//bodyPane.setFont( bodyPane.getFont().deriveFont( java.awt.Font.BOLD ) );
-			//bodyPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( bodyPane.getFont().getSize() + 8, 16, 4, 4 ) );
-
 			org.alice.ide.common.BodyPane bodyPane = new org.alice.ide.common.BodyPane( new RootStatementListPropertyPane() );
-
-			//			javax.swing.JPanel panel = new javax.swing.JPanel();
-			//			panel.setLayout( new java.awt.GridLayout() );
-			//			panel.add( bodyPane );
-
-			this.scrollPane = new javax.swing.JScrollPane( bodyPane );
-			this.scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
+			this.scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( bodyPane );
+			this.scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
 			this.scrollPane.setBorder( null );
-			this.scrollPane.setOpaque( false );
-			this.scrollPane.getViewport().setOpaque( false );
-			//this.scrollPane.setBackground( java.awt.Color.RED );
+			this.scrollPane.setBackgroundColor( null );
+			this.scrollPane.getAwtComponent().getViewport().setOpaque( false );
 			this.scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
-			this.add( header );
-			if( this.getIDE().isEmphasizingClasses() || this.getIDE().isInstanceLineDesired() == false ) {
-				//pass
-			} else {
-				header.add( new InstanceLine( this.code ) );
-			}
-			//			this.add( javax.swing.Box.createVerticalStrut( 8 ) );
-			this.add( scrollPane );
+			this.internalAddComponent( header, java.awt.BorderLayout.NORTH );
+			this.internalAddComponent( scrollPane, java.awt.BorderLayout.CENTER );
 		}
-		this.revalidate();
+		this.revalidateAndRepaint();
 	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
-	public java.util.List< ? extends ExpressionPropertyDropDownPane > createListOfPotentialDropReceptors( final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		return edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
+	public java.util.List< ? extends ExpressionPropertyDropDownPane > createListOfPotentialDropReceptors( final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		return edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
 			public boolean accept( ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
+				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
 				if( expressionType.isAssignableFrom( type ) ) {
 					return true;
 				} else {
@@ -269,7 +238,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 						if( expressionType.isAssignableFrom( type.getComponentType() ) ) {
 							return true;
 						} else {
-							for( edu.cmu.cs.dennisc.alice.ast.AbstractType integerType : edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_TYPES ) {
+							for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava integerType : edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_TYPES ) {
 								if( expressionType == integerType ) {
 									return true;
 								}
@@ -281,26 +250,41 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 			}
 		} );
 	}
-	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.zoot.ZDragComponent source ) {
+	public final boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.croquet.DragComponent source ) {
 		if( source instanceof org.alice.ide.templates.StatementTemplate ) {
 			return getIDE().getFocusedCode() == this.code;
 		} else {
 			return false;
 		}
 	}
-	public void dragStarted( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+	
+	private StatementListPropertyPane currentUnder;
+	
+	private void setCurrentUnder( StatementListPropertyPane nextUnder, java.awt.Dimension dropSize ) {
+		if( this.currentUnder != nextUnder ) {
+			if( this.currentUnder != null ) {
+				this.currentUnder.setIsCurrentUnder( false );
+			}
+			this.currentUnder = nextUnder;
+			if( this.currentUnder != null ) {
+				this.currentUnder.setIsCurrentUnder( true );
+				this.currentUnder.setDropSize( dropSize );
+			}
+		}
+	}
+	public final void dragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 	}
 
-	public void dragEntered( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
-		edu.cmu.cs.dennisc.zoot.ZDragComponent source = dragAndDropContext.getDragSource();
+	public final void dragEntered( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
 		this.statementListPropertyPaneInfos = createStatementListPropertyPaneInfos( source );
 		this.repaint();
 	}
-	private java.awt.Component getAsSeenBy() {
-		return this.scrollPane.getViewport().getView();
+	private edu.cmu.cs.dennisc.croquet.Component< ? > getAsSeenBy() {
+		return this.scrollPane.getViewportView();
 	}
-	private StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( edu.cmu.cs.dennisc.zoot.ZDragComponent source ) {
-		java.util.List< StatementListPropertyPane > statementListPropertyPanes = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this, StatementListPropertyPane.class );
+	private StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( edu.cmu.cs.dennisc.croquet.Container<?> source ) {
+		java.util.List< StatementListPropertyPane > statementListPropertyPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, StatementListPropertyPane.class );
 		StatementListPropertyPaneInfo[] rv = new StatementListPropertyPaneInfo[ statementListPropertyPanes.size() ];
 		int i = 0;
 		for( StatementListPropertyPane statementListPropertyPane : statementListPropertyPanes ) {
@@ -308,10 +292,17 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 				continue;
 			}
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( statementListPropertyPane );
-			java.awt.Rectangle bounds = javax.swing.SwingUtilities.convertRectangle( statementListPropertyPane, statementListPropertyPane.getDropBounds(), this.getAsSeenBy() );
+			DefaultStatementPane statementAncestor = statementListPropertyPane.getFirstAncestorAssignableTo( DefaultStatementPane.class );
+			java.awt.Rectangle bounds;
+			if( statementAncestor != null ) {
+				bounds = statementAncestor.convertRectangle( statementListPropertyPane.getDropBounds( statementAncestor ), this.getAsSeenBy() );
+			} else {
+				bounds = statementListPropertyPane.getParent().getBounds( this.getAsSeenBy() );
+			}
 			bounds.x = 0;
 			bounds.width = this.getAsSeenBy().getWidth() - bounds.x;
 			rv[ i ] = new StatementListPropertyPaneInfo( statementListPropertyPane, bounds );
+			
 			i++;
 		}
 		return rv;
@@ -319,7 +310,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 	}
 	private StatementListPropertyPane getStatementListPropertyPaneUnder( java.awt.event.MouseEvent e, StatementListPropertyPaneInfo[] statementListPropertyPaneInfos ) {
 		StatementListPropertyPane rv = null;
-		for( StatementListPropertyPaneInfo statementListPropertyPaneInfo : statementListPropertyPaneInfos ) {
+		for( StatementListPropertyPaneInfo statementListPropertyPaneInfo : this.statementListPropertyPaneInfos ) {
 			if( statementListPropertyPaneInfo != null ) {
 				if( statementListPropertyPaneInfo.contains( e ) ) {
 					StatementListPropertyPane slpp = statementListPropertyPaneInfo.getStatementListPropertyPane();
@@ -337,19 +328,19 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 		}
 		return rv;
 	}
-	public void dragUpdated( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
-		edu.cmu.cs.dennisc.zoot.ZDragComponent source = dragAndDropContext.getDragSource();
+	public final void dragUpdated( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
 		if( source != null ) {
-			java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
-			java.awt.event.MouseEvent eAsSeenBy = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent( source, eSource, this.getAsSeenBy() );
+			java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
+			java.awt.event.MouseEvent eAsSeenBy = source.convertMouseEvent( eSource, this.getAsSeenBy() );
 			StatementListPropertyPane nextUnder = getStatementListPropertyPaneUnder( eAsSeenBy, this.statementListPropertyPaneInfos );
-			this.currentUnder = nextUnder;
+			this.setCurrentUnder( nextUnder, source.getDropProxySize() );
 			if( this.currentUnder != null ) {
 				boolean isDropProxyAlreadyUpdated = false;
 				if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
 					//pass
 				} else {
-					java.awt.Component subject = source.getSubject();
+					edu.cmu.cs.dennisc.croquet.Component< ? > subject = source.getSubject();
 					if( subject instanceof org.alice.ide.common.AbstractStatementPane ) {
 						org.alice.ide.common.AbstractStatementPane abstractStatementPane = (org.alice.ide.common.AbstractStatementPane)subject;
 						if( source instanceof org.alice.ide.templates.StatementTemplate ) {
@@ -360,25 +351,30 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 							edu.cmu.cs.dennisc.alice.ast.StatementListProperty nextOwner = this.currentUnder.getProperty();
 
 							int prevIndex = prevOwner.indexOf( statement );
-							int nextIndex = this.currentUnder.calculateIndex( javax.swing.SwingUtilities.convertPoint( source, eSource.getPoint(), this.currentUnder ) );
-
+							int nextIndex = this.currentUnder.calculateIndex( source.convertPoint( eSource.getPoint(), this.currentUnder ) );
+							int currentPotentialDropIndex = nextIndex;
 							if( prevOwner == nextOwner ) {
 								if( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) {
-									source.setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), source, null );
+									source.setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), source, null, -1 );
 									isDropProxyAlreadyUpdated = true;
+									currentPotentialDropIndex = -1;
 								}
 							}
+							this.currentUnder.setCurrentPotentialDropIndex( currentPotentialDropIndex );
 						}
 					}
 				}
 				if( isDropProxyAlreadyUpdated ) {
 					//pass
 				} else {
-					java.awt.event.MouseEvent eUnder = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent( this.getAsSeenBy(), eAsSeenBy, this.currentUnder );
+					java.awt.event.MouseEvent eUnder = this.getAsSeenBy().convertMouseEvent( eAsSeenBy, this.currentUnder );
 					Integer height = 0;
-					java.awt.Insets insets = this.currentUnder.getBorder().getBorderInsets( this.currentUnder );
+					java.awt.Insets insets = this.currentUnder.getBorder().getBorderInsets( this.currentUnder.getAwtComponent() );
 					int x = insets.left;
 					java.awt.Point p = new java.awt.Point( x, 0 );
+					
+					int availableHeight = this.currentUnder.getAvailableDropProxyHeight();
+					
 					if( this.currentUnder.isFigurativelyEmpty() ) {
 						height = null;
 						p.y = insets.top;
@@ -386,22 +382,32 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 						int n = this.currentUnder.getComponentCount();
 						if( n > 0 ) {
 							int index = this.currentUnder.calculateIndex( eUnder.getPoint() );
+							this.currentUnder.setCurrentPotentialDropIndex( index );
+							final boolean IS_SQUISHING_DESIRED = false;
 							if( index == 0 ) {
 								//java.awt.Component firstComponent = this.currentUnder.getComponent( 0 );
 								p.y = 0;
-							} else if( index < n ) {
-								p.y = this.currentUnder.getComponent( index ).getY();
-							} else {
-								java.awt.Component lastComponent = this.currentUnder.getComponent( n - 1 );
-								p.y = lastComponent.getY() + lastComponent.getHeight();
-								p.y += StatementListPropertyPane.INTRASTICIAL_PAD;
-								if( this.currentUnder.getProperty() == ((edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code).getBodyProperty().getValue().statements ) {
+								if( IS_SQUISHING_DESIRED ) {
 									height = null;
+								}
+							} else if( index < n ) {
+								p.y = this.currentUnder.getAwtComponent().getComponent( index ).getY();
+							} else {
+								java.awt.Component lastComponent = this.currentUnder.getAwtComponent().getComponent( n - 1 );
+								p.y = lastComponent.getY() + lastComponent.getHeight();
+								if( IS_SQUISHING_DESIRED ) {
+									p.y -= availableHeight;
+									height = null;
+								} else {
+									p.y += StatementListPropertyPane.INTRASTICIAL_PAD;
+									if( this.currentUnder.getProperty() == ((edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code).getBodyProperty().getValue().statements ) {
+										height = null;
+									}
 								}
 							}
 						}
 					}
-					source.setDropProxyLocationAndShowIfNecessary( p, this.currentUnder, height );
+					source.setDropProxyLocationAndShowIfNecessary( p, this.currentUnder, height, availableHeight );
 				}
 			} else {
 				source.hideDropProxyIfNecessary();
@@ -410,25 +416,68 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 		this.repaint();
 
 	}
-	public void dragDropped( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
-		final java.awt.Point viewPosition = this.scrollPane.getViewport().getViewPosition();
-		final edu.cmu.cs.dennisc.zoot.ZDragComponent source = dragAndDropContext.getDragSource();
-		final java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
+	public final edu.cmu.cs.dennisc.croquet.Operation<?> dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+		edu.cmu.cs.dennisc.croquet.Operation<?> rv = null;
+		final java.awt.Point viewPosition = this.scrollPane.getAwtComponent().getViewport().getViewPosition();
+		final edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
+		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
 		final StatementListPropertyPane statementListPropertyPane = CodeEditor.this.currentUnder;
 		if( statementListPropertyPane != null ) {
-			final int index = statementListPropertyPane.calculateIndex( javax.swing.SwingUtilities.convertPoint( source, eSource.getPoint(), statementListPropertyPane ) );
+			final int index = statementListPropertyPane.calculateIndex( source.convertPoint( eSource.getPoint(), statementListPropertyPane ) );
+
+			if( EPIC_HACK_desiredStatementListPropertyPane != null && EPIC_HACK_desiredIndex != -1 ) {
+				int desiredIndex;
+				if( EPIC_HACK_desiredIndex == Short.MAX_VALUE ) {
+					desiredIndex = statementListPropertyPane.getProperty().size();
+				} else {
+					desiredIndex = EPIC_HACK_desiredIndex;
+				}
+				if( EPIC_HACK_desiredStatementListPropertyPane != statementListPropertyPane || desiredIndex != index ) {
+//					EPIC_HACK_desiredStatementListPropertyPane = null;
+//					EPIC_HACK_desiredIndex = -1;
+					source.hideDropProxyIfNecessary();
+					context.cancel();
+					return null;
+				}
+			}
+			
 			if( source instanceof org.alice.ide.templates.StatementTemplate ) {
 				final org.alice.ide.templates.StatementTemplate statementTemplate = (org.alice.ide.templates.StatementTemplate)source;
-				if( this.currentUnder != null ) {
-					final edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( source, CodeEditor.this, eSource );
-					class DropOperation extends org.alice.ide.operations.AbstractActionOperation {
-
-
-						public DropOperation() {
-							super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+				if( org.alice.ide.croquet.models.recursion.IsRecursionAllowedState.getInstance().getValue() ) {
+					//pass
+				} else {
+					edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
+					if( statementTemplate instanceof org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate ) {
+						org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate = (org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate)statementTemplate;
+						method = procedureInvocationTemplate.getMethod();
+					} else {
+						method = null;
+					}
+					if( method != null ) {
+						if( method == this.getCode() ) {
+							StringBuilder sb = new StringBuilder();
+							sb.append( "<html>" );
+							sb.append( "The code you have just dropped would create a <strong><em>recursive</em></strong> method call.<p><p>Recursion is disabled by default because otherwise many users unwittingly and mistakenly make recursive calls." );
+							final boolean IS_POINTING_USER_TO_RECURSION_PREFERENCE_DESIRED = true;
+							if( IS_POINTING_USER_TO_RECURSION_PREFERENCE_DESIRED ) {
+								sb.append( "<p><p>For more information on recursion see the Window -> Preferences menu." );
+							}
+							sb.append( "</html>" );
+							org.alice.ide.IDE.getSingleton().showMessageDialog( sb.toString(), "Recursion is disabled.", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
+							source.hideDropProxyIfNecessary();
+							return null;
 						}
-						public void perform( final edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-							class DropEdit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
+					}
+				}
+				if( this.currentUnder != null ) {
+					class DropOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+						public DropOperation() {
+							super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "ad0e5d93-8bc2-4ad8-8dd5-37768eaa5319" ) );
+						}
+						@Override
+						protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+							final java.awt.event.MouseEvent mouseEvent = context.getMouseEvent();
+							class DropEdit extends org.alice.ide.ToDoEdit {
 								private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 								@Override
 								public void doOrRedo( boolean isDo ) {
@@ -456,15 +505,15 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 									return rv;
 								}
 							}
-							actionContext.pend( new edu.cmu.cs.dennisc.zoot.Resolver< DropEdit, edu.cmu.cs.dennisc.alice.ast.Statement >() {
+							context.pend( new edu.cmu.cs.dennisc.croquet.PendResolver< DropEdit, edu.cmu.cs.dennisc.alice.ast.Statement >() {
 								public DropEdit createEdit() {
 									return new DropEdit();
 								}
-								public DropEdit initialize(DropEdit rv, edu.cmu.cs.dennisc.zoot.Context<? extends edu.cmu.cs.dennisc.zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement> taskObserver) {
+								public DropEdit initialize(DropEdit rv, edu.cmu.cs.dennisc.croquet.ModelContext context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement> taskObserver) {
 									edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
 									if( propertyOwner instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
 										edu.cmu.cs.dennisc.alice.ast.BlockStatement block = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)propertyOwner;
-										statementTemplate.createStatement( dragAndDropEvent, block, taskObserver );
+										statementTemplate.createStatement( mouseEvent, block, index, taskObserver );
 									}
 									return rv;
 								}
@@ -480,23 +529,22 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 							} );
 						}
 					}
-					dragAndDropContext.perform( new DropOperation(), dragAndDropEvent, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
+					rv = new DropOperation();
 				} else {
 					source.hideDropProxyIfNecessary();
 				}
 			} else if( source != null && source.getSubject() instanceof org.alice.ide.common.AbstractStatementPane ) {
 				source.hideDropProxyIfNecessary();
 				if( this.currentUnder != null ) {
-					final edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( source, CodeEditor.this, eSource );
 					org.alice.ide.common.AbstractStatementPane abstractStatementPane = (org.alice.ide.common.AbstractStatementPane)source.getSubject();
 					final edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
 					final edu.cmu.cs.dennisc.alice.ast.StatementListProperty prevOwner = abstractStatementPane.getOwner();
 					final edu.cmu.cs.dennisc.alice.ast.StatementListProperty nextOwner = this.currentUnder.getProperty();
 					final int prevIndex = prevOwner.indexOf( statement );
-					final int nextIndex = this.currentUnder.calculateIndex( javax.swing.SwingUtilities.convertPoint( source, eSource.getPoint(), this.currentUnder ) );
+					final int nextIndex = this.currentUnder.calculateIndex( source.convertPoint( eSource.getPoint(), this.currentUnder ) );
 
 					
-					abstract class CodeEdit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
+					abstract class CodeEdit extends org.alice.ide.ToDoEdit {
 						protected abstract void redoInternal();
 						protected abstract void undoInternal();
 
@@ -516,13 +564,13 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 						}
 					}
 					
-					edu.cmu.cs.dennisc.zoot.ActionOperation operation;
 					if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
-						class CopyOperation extends org.alice.ide.operations.AbstractActionOperation {
+						class CopyOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 							public CopyOperation() {
-								super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+								super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "ef6143be-5de3-4a55-aed3-f61d8ebbbef2" ) );
 							}
-							public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+							@Override
+							protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 								final edu.cmu.cs.dennisc.alice.ast.Statement copy = (edu.cmu.cs.dennisc.alice.ast.Statement)getIDE().createCopy( statement );
 								class CopyEdit extends CodeEdit {
 									@Override
@@ -544,20 +592,21 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 									}
 									
 								}
-								actionContext.commitAndInvokeDo( new CopyEdit() );
+								context.commitAndInvokeDo( new CopyEdit() );
 							}
 						}
-						operation = new CopyOperation();
+						rv = new CopyOperation();
 					} else {
 						if( prevOwner == nextOwner ) {
 							if( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) {
-								operation = null;
+								rv = null;
 							} else {
-								class ReorderOperation extends org.alice.ide.operations.AbstractActionOperation {
+								class ReorderOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 									public ReorderOperation() {
-										super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+										super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "e2cffe11-be24-4b5c-9ca4-ac0d71ecd16c" ) );
 									}
-									public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+									@Override
+									protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 										class ReorderEdit extends CodeEdit {
 											private edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner;
 											private int aIndex;
@@ -589,17 +638,18 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 												return rv;
 											}
 										}
-										actionContext.commitAndInvokeDo( new ReorderEdit() );
+										context.commitAndInvokeDo( new ReorderEdit() );
 									}
 								}
-								operation = new ReorderOperation();
+								rv = new ReorderOperation();
 							}
 						} else {
-							class ReparentOperation extends org.alice.ide.operations.AbstractActionOperation {
+							class ReparentOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 								public ReparentOperation() {
-									super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+									super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "6049a378-2972-4672-a211-1f3fcda45025" ) );
 								}
-								public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+								@Override
+								protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 									class ReparentEdit extends CodeEdit {
 										@Override
 										protected void redoInternal() {
@@ -608,8 +658,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 										}
 										@Override
 										protected void undoInternal() {
-											prevOwner.add( prevIndex, statement );
 											nextOwner.remove( nextIndex );
+											prevOwner.add( prevIndex, statement );
 										}
 										@Override
 										protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
@@ -617,66 +667,303 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 											return rv;
 										}
 									}
-									actionContext.commitAndInvokeDo( new ReparentEdit() );
+									context.commitAndInvokeDo( new ReparentEdit() );
 								}
 							}
-							operation = new ReparentOperation();
+							rv = new ReparentOperation();
 						}
-					}
-					if( operation != null ) {
-						dragAndDropContext.perform( operation, dragAndDropEvent, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
 					}
 				}
 			}
 		}
+		return rv;
 	}
 	private void resetScrollPane( final java.awt.Point viewPosition ) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				CodeEditor.this.scrollPane.getViewport().setViewPosition( viewPosition );
+				CodeEditor.this.scrollPane.getAwtComponent().getViewport().setViewPosition( viewPosition );
 				CodeEditor.this.repaint();
 			}
 		} );
 	}
-	public void dragExited( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext, boolean isDropRecipient ) {
+	public final void dragExited( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, boolean isDropRecipient ) {
 		this.statementListPropertyPaneInfos = null;
-		this.currentUnder = null;
+		this.setCurrentUnder( null, null );
 		this.repaint();
 		if( isDropRecipient ) {
 			//pass
 		} else {
-			final edu.cmu.cs.dennisc.zoot.ZDragComponent source = dragAndDropContext.getDragSource();
+			edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
 			if( source != null ) {
 				source.hideDropProxyIfNecessary();
 			}
 		}
 	}
-	public void dragStopped( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+	public final void dragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+		EPIC_HACK_desiredStatementListPropertyPane = null;
+		EPIC_HACK_desiredIndex = -1;
 	}
-	//	@Override
-	//	public void paint( java.awt.Graphics g ) {
-	//		super.paint( g );
-	//		if( CodeEditor.this.statementListPropertyPaneInfos != null ) {
-	//			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-	//			for( StatementListPropertyPaneInfo statementListPropertyPaneInfo : this.statementListPropertyPaneInfos ) {
-	//				if( statementListPropertyPaneInfo != null ) {
-	//					java.awt.Color color;
-	//					if( this.currentUnder == statementListPropertyPaneInfo.getStatementListPropertyPane() ) {
-	//						color = new java.awt.Color( 0, 0, 0, 127 );
-	//					} else {
-	//						color = null;
-	//						//color = new java.awt.Color( 255, 0, 0, 31 );
-	//					}
-	//					if( color != null ) {
-	//						java.awt.Rectangle bounds = statementListPropertyPaneInfo.getBounds();
-	//						bounds = javax.swing.SwingUtilities.convertRectangle( this.getAsSeenBy(), bounds, this );
-	//						g2.setColor( color );
-	//						g2.fill( bounds );
-	//						g2.setColor( new java.awt.Color( 255, 255, 0, 255 ) );
-	//						g2.draw( bounds );
-	//					}
-	//				}
-	//			}
-	//		}
-	//	}
+
+	private static int convertY( edu.cmu.cs.dennisc.croquet.Component<?> from, int y, edu.cmu.cs.dennisc.croquet.Component<?> to ) {
+		java.awt.Point pt = from.convertPoint( new java.awt.Point( 0, y ), to);
+		return pt.y;
+	}
+	private static int capMinimum( int yPotentialMinimumBound, int y, StatementListPropertyPaneInfo[] statementListPropertyPaneInfos, int index ) {
+		int rv = yPotentialMinimumBound;
+		final int N = statementListPropertyPaneInfos.length;
+		for( int i=0; i<N; i++ ) {
+			if( i == index ) {
+				//pass
+			} else {
+				java.awt.Rectangle boundsI = statementListPropertyPaneInfos[ i ].getBounds();
+				int yI = boundsI.y + boundsI.height;
+				if( yI < y ) {
+					rv = Math.max( rv, yI );
+				}
+			}
+		}
+		return rv;
+	}
+	private static int capMaximum( int yMaximum, int yPlusHeight, StatementListPropertyPaneInfo[] statementListPropertyPaneInfos, int index ) {
+		int rv = yMaximum;
+		final int N = statementListPropertyPaneInfos.length;
+		for( int i=0; i<N; i++ ) {
+			if( i == index ) {
+				//pass
+			} else {
+				java.awt.Rectangle boundsI = statementListPropertyPaneInfos[ i ].getBounds();
+				int yI = boundsI.y;
+				if( yI > yPlusHeight ) {
+					rv = Math.min( rv, yI );
+				}
+			}
+		}
+		return rv;
+	}
+	
+	private static boolean isWarningAlreadyPrinted = false;
+	
+	public class StatementListIndexTrackableShape implements edu.cmu.cs.dennisc.croquet.TrackableShape {
+		private edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty;
+		private int index;
+		private StatementListPropertyPane statementListPropertyPane;
+		private java.awt.Rectangle boundsAtIndex;
+		private StatementListIndexTrackableShape( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, int index, StatementListPropertyPane statementListPropertyPane, java.awt.Rectangle boundsAtIndex ) {
+			this.statementListProperty = statementListProperty;
+			this.index = index;
+			this.statementListPropertyPane = statementListPropertyPane;
+			this.boundsAtIndex = boundsAtIndex;
+		}
+		
+		public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getStatementListProperty() {
+			return this.statementListProperty;
+		}
+		public int getIndex() {
+			return this.index;
+		}
+		
+		public java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.ScreenElement asSeenBy, java.awt.Insets insets ) {
+			java.awt.Rectangle rv = CodeEditor.this.getAsSeenBy().convertRectangle( this.boundsAtIndex, asSeenBy );
+			//note: ignore insets
+			return rv;
+		}
+		public java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.ScreenElement asSeenBy, java.awt.Insets insets ) {
+			edu.cmu.cs.dennisc.croquet.Component<?> src = CodeEditor.this.getAsSeenBy();
+			if( src != null ) {
+				java.awt.Rectangle bounds = src.convertRectangle( this.boundsAtIndex, asSeenBy );
+				//note: ignore insets
+//					java.awt.Rectangle visibleBounds = statementListPropertyPane.getVisibleRectangle( asSeenBy );
+//					return bounds.intersection( visibleBounds );
+				return bounds;
+			} else {
+				return null;
+			}
+		}
+		public boolean isInView() {
+			if( isWarningAlreadyPrinted ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getTrackableShapeAtIndexOf isInView" );
+				isWarningAlreadyPrinted = true;
+			}
+			return true;
+		}
+		public edu.cmu.cs.dennisc.croquet.ScrollPane getScrollPaneAncestor() {
+			return this.statementListPropertyPane.getScrollPaneAncestor();
+		}
+		public void addComponentListener(java.awt.event.ComponentListener listener) {
+			this.statementListPropertyPane.addComponentListener(listener);
+		}
+		public void removeComponentListener(java.awt.event.ComponentListener listener) {
+			this.statementListPropertyPane.removeComponentListener(listener);
+		}
+		public void addHierarchyBoundsListener(java.awt.event.HierarchyBoundsListener listener) {
+			this.statementListPropertyPane.addHierarchyBoundsListener(listener);
+		}
+		public void removeHierarchyBoundsListener(java.awt.event.HierarchyBoundsListener listener) {
+			this.statementListPropertyPane.removeHierarchyBoundsListener(listener);
+		}
+	}
+	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShapeAtIndexOf( edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty, int index, boolean EPIC_HACK_isDropConstraintDesired ) {
+		if( statementListProperty != null ) {
+			//choose any non-ancestor
+			
+			edu.cmu.cs.dennisc.croquet.Container< ? > arbitrarilyChosenSource = org.alice.ide.IDE.getSingleton().getSceneEditor();
+			StatementListPropertyPaneInfo[] statementListPropertyPaneInfos = this.createStatementListPropertyPaneInfos( arbitrarilyChosenSource );
+			final int N = statementListPropertyPaneInfos.length;
+			for( int i=0; i<N; i++ ) {
+				StatementListPropertyPaneInfo statementListPropertyPaneInfo = statementListPropertyPaneInfos[ i ];
+				StatementListPropertyPane statementListPropertyPane = statementListPropertyPaneInfo.getStatementListPropertyPane();
+				if( statementListPropertyPane.getProperty() == statementListProperty ) {
+					StatementListPropertyPane.BoundInformation yBounds = statementListPropertyPane.calculateYBounds( index );
+					java.awt.Rectangle bounds = statementListPropertyPaneInfo.getBounds();
+					
+					int yMinimum;
+					if( yBounds.yMinimum != null ) {
+						yMinimum = convertY( statementListPropertyPane, yBounds.yMinimum, CodeEditor.this.getAsSeenBy() );
+						int y = convertY( statementListPropertyPane, yBounds.y, CodeEditor.this.getAsSeenBy() );
+						yMinimum = capMinimum( yMinimum, y, statementListPropertyPaneInfos, index );
+					} else {
+						yMinimum = bounds.y;
+					}
+					int yMaximum;
+					if( yBounds.yMaximum != null ) {
+						yMaximum = convertY( statementListPropertyPane, yBounds.yMaximum, CodeEditor.this.getAsSeenBy() );
+						int yPlusHeight = convertY( statementListPropertyPane, yBounds.yPlusHeight, CodeEditor.this.getAsSeenBy() );
+						yMaximum = capMaximum( yMaximum, yPlusHeight, statementListPropertyPaneInfos, index );
+					} else {
+						yMaximum = bounds.y + bounds.height - 1;
+					}
+					
+					java.awt.Rectangle boundsAtIndex = new java.awt.Rectangle( bounds.x, yMinimum, bounds.width, yMaximum - yMinimum + 1 );
+
+					if( EPIC_HACK_isDropConstraintDesired ) {
+						CodeEditor.this.EPIC_HACK_desiredStatementListPropertyPane = statementListPropertyPane;
+						CodeEditor.this.EPIC_HACK_desiredIndex = index;
+					}
+					
+					return new StatementListIndexTrackableShape(statementListProperty, index, statementListPropertyPane, boundsAtIndex);
+//					return new edu.cmu.cs.dennisc.croquet.TrackableShape() {
+//						public java.awt.Shape getShape( edu.cmu.cs.dennisc.croquet.ScreenElement asSeenBy, java.awt.Insets insets ) {
+//							java.awt.Rectangle rv = CodeEditor.this.getAsSeenBy().convertRectangle( boundsAtIndex, asSeenBy );
+//							//note: ignore insets
+//							return rv;
+//						}
+//						public java.awt.Shape getVisibleShape( edu.cmu.cs.dennisc.croquet.ScreenElement asSeenBy, java.awt.Insets insets ) {
+//							edu.cmu.cs.dennisc.croquet.Component<?> src = CodeEditor.this.getAsSeenBy();
+//							if( src != null ) {
+//								java.awt.Rectangle bounds = src.convertRectangle( boundsAtIndex, asSeenBy );
+//								//note: ignore insets
+////									java.awt.Rectangle visibleBounds = statementListPropertyPane.getVisibleRectangle( asSeenBy );
+////									return bounds.intersection( visibleBounds );
+//								return bounds;
+//							} else {
+//								return null;
+//							}
+//						}
+//						public boolean isInView() {
+//							if( isWarningAlreadyPrinted ) {
+//								//pass
+//							} else {
+//								edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getTrackableShapeAtIndexOf isInView" );
+//								isWarningAlreadyPrinted = true;
+//							}
+//							return true;
+//						}
+//						public edu.cmu.cs.dennisc.croquet.ScrollPane getScrollPaneAncestor() {
+//							return statementListPropertyPane.getScrollPaneAncestor();
+//						}
+//						public void addComponentListener(java.awt.event.ComponentListener listener) {
+//							statementListPropertyPane.addComponentListener(listener);
+//						}
+//						public void removeComponentListener(java.awt.event.ComponentListener listener) {
+//							statementListPropertyPane.removeComponentListener(listener);
+//						}
+//						public void addHierarchyBoundsListener(java.awt.event.HierarchyBoundsListener listener) {
+//							statementListPropertyPane.addHierarchyBoundsListener(listener);
+//						}
+//						public void removeHierarchyBoundsListener(java.awt.event.HierarchyBoundsListener listener) {
+//							statementListPropertyPane.removeHierarchyBoundsListener(listener);
+//						}
+//					};
+				}
+			}
+		}
+		return null;
+	}
+	
+	public edu.cmu.cs.dennisc.croquet.ActionOperation getOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		java.util.List< ExpressionPropertyDropDownPane > expressionPropertyDropDownPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class );
+		for( final ExpressionPropertyDropDownPane expressionPropertyDropDownPane : expressionPropertyDropDownPanes ) {
+			if( expressionPropertyDropDownPane.getExpressionProperty() == expressionProperty ) {
+				return expressionPropertyDropDownPane.getModel();
+			}
+		}
+		return null;
+	}
+	public edu.cmu.cs.dennisc.croquet.ActionOperation getMoreOperation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+		if( methodInvocation != null ) {
+			return org.alice.ide.operations.ast.FillInMoreOperation.getInstance( methodInvocation );
+//			java.util.List< org.alice.ide.common.ExpressionStatementPane > statementPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.ExpressionStatementPane.class );
+//			for( org.alice.ide.common.ExpressionStatementPane statementPane : statementPanes ) {
+//				if( statementPane.getStatement() == methodInvocation.getParent() ) {
+//					return statementPane.getMoreOperation();
+//				}
+//			}
+		}
+		return null;
+	}
+	public edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation getPopupMenuOperationForStatement( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		if( statement != null ) {
+			java.util.List< org.alice.ide.common.AbstractStatementPane > statementPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.AbstractStatementPane.class );
+			for( org.alice.ide.common.AbstractStatementPane statementPane : statementPanes ) {
+				if( statementPane.getStatement() == statement ) {
+					return statementPane.getPopupMenuOperation();
+				}
+			}
+		}
+		return null;
+	}
+	public edu.cmu.cs.dennisc.croquet.DragAndDropOperation getDragAndDropOperationForStatement( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		if( statement != null ) {
+			java.util.List< org.alice.ide.common.AbstractStatementPane > statementPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.AbstractStatementPane.class );
+			for( org.alice.ide.common.AbstractStatementPane statementPane : statementPanes ) {
+				if( statementPane.getStatement() == statement ) {
+					return statementPane.getDragAndDropOperation();
+				}
+			}
+		}
+		return null;
+	}
+	public edu.cmu.cs.dennisc.croquet.DragAndDropOperation getDragAndDropOperationForTransient( edu.cmu.cs.dennisc.alice.ast.AbstractTransient trans ) {
+		if( trans != null ) {
+			java.util.List< org.alice.ide.common.TransientPane > transientPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.TransientPane.class );
+			for( org.alice.ide.common.TransientPane transientPane : transientPanes ) {
+				if( transientPane.getTransient() == trans ) {
+					return transientPane.getDragAndDropOperation();
+				}
+			}
+		}
+		return null;
+	}
+	
+	public int print(java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex) throws java.awt.print.PrinterException {
+		if( pageIndex > 0 ) {
+			return NO_SUCH_PAGE;
+		} else {
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			edu.cmu.cs.dennisc.croquet.Component<?> component0 = this.getComponent( 0 );
+			int width = Math.max( component0.getAwtComponent().getPreferredSize().width, this.scrollPane.getViewportView().getAwtComponent().getPreferredSize().width );
+			int height = this.scrollPane.getY() + this.scrollPane.getViewportView().getAwtComponent().getPreferredSize().height;
+			double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale(pageFormat, width, height);
+			g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
+			if( scale > 1.0 ) {
+				g2.scale( 1.0/scale, 1.0/scale );
+			}
+			component0.getAwtComponent().printAll( g2 );
+			g2.translate( this.scrollPane.getX(), this.scrollPane.getY() );
+			this.scrollPane.getViewportView().getAwtComponent().printAll( g2 );
+			return PAGE_EXISTS;
+		}
+	}
 }

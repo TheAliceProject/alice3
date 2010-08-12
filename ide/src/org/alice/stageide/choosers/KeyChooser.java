@@ -45,7 +45,7 @@ package org.alice.stageide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public class KeyChooser extends org.alice.ide.choosers.AbstractChooser< org.alice.apis.moveandturn.Key > {
+public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.FieldAccess > {
 	//	private javax.swing.JLabel keyReceiver = zoot.ZLabel.acquire( "<press any key>", zoot.font.ZTextWeight.LIGHT );
 	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
 		public void keyPressed( java.awt.event.KeyEvent e ) {
@@ -72,7 +72,7 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractChooser< org.alic
 			super.removeNotify();
 		}
 	};
-	private java.awt.Component[] components = { this.keyReceiver };
+	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components = { new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.keyReceiver ) };
 	private org.alice.apis.moveandturn.Key key = null;
 
 	public KeyChooser() {
@@ -81,7 +81,7 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractChooser< org.alic
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)previousExpression;
-			edu.cmu.cs.dennisc.alice.ast.AbstractType type = fieldAccess.getType();
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = fieldAccess.getType();
 			if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Key.class ) ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
 				if( field != null ) {
@@ -98,21 +98,33 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractChooser< org.alic
 		} else {
 			this.keyReceiver.setText( NULL_TEXT );
 		}
-		edu.cmu.cs.dennisc.inputpane.KInputPane< ? > inputPane = this.getInputPane();
-		if( inputPane != null ) {
-			inputPane.updateOKButton();
+		throw new RuntimeException( "todo" );
+//		edu.cmu.cs.dennisc.croquet.InputPanel< ? > inputPanel = this.getInputPanel();
+//		if( inputPanel != null ) {
+//			inputPanel.updateOKButton();
+//		}
+	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
+		return this.components;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.FieldAccess getValue() {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Key.class );
+		edu.cmu.cs.dennisc.alice.ast.AbstractField field = type.getDeclaredField( type, this.key.name() );
+		assert field.isPublicAccess() && field.isStatic() && field.isFinal();
+		return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), field );
+	}
+	
+	@Override
+	public String getExplanationIfOkButtonShouldBeDisabled() {
+		if( this.getValue() != null ) {
+			return null;
+		} else {
+			return "value not set";
 		}
 	}
 	@Override
-	public java.awt.Component[] getComponents() {
-		return this.components;
-	}
-	public org.alice.apis.moveandturn.Key getValue() {
-		return this.key;
-	}
-	public boolean isInputValid() {
-		return getValue() != null;
-	}
 	public String getTitleDefault() {
 		return "Press Key on Keyboard To Enter Custom Key";
 	}

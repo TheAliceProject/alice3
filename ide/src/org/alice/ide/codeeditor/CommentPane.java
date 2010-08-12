@@ -49,7 +49,8 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 //class CommentLine extends javax.swing.JTextArea {
 	private edu.cmu.cs.dennisc.alice.ast.Comment comment;
 	public CommentLine( edu.cmu.cs.dennisc.alice.ast.Comment comment ) {
-		super( comment.text.getValue(), "enter your comment here" );
+		this.setText( comment.text.getValue() );
+		this.setTextForBlankCondition( "enter your comment here" );
 		//super( comment.text.getValue() );
 		this.comment = comment;
 		this.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
@@ -125,8 +126,15 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 	@Override
 	public java.awt.Dimension getPreferredSize() {
 		java.awt.Dimension rv = super.getPreferredSize();
-		rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( rv, 256 );
-		rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMaximumHeight( rv, this.getMinimumSize().height );
+		rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( rv, 256 );
+		rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMaximumHeight( rv, this.getMinimumSize().height );
+		return rv;
+	}
+	@Override
+	public java.awt.Dimension getMaximumSize() {
+		java.awt.Dimension rv = super.getMaximumSize();
+		java.awt.Dimension preferredSize = this.getPreferredSize();
+		rv.height = preferredSize.height;
 		return rv;
 	}
 	@Override
@@ -150,6 +158,6 @@ public class CommentPane extends org.alice.ide.common.AbstractStatementPane {
 	public CommentPane( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Comment comment, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
 		super( factory, comment, owner );
 		CommentLine commentLine = new CommentLine( comment );
-		this.add( commentLine );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( commentLine ) );
 	}
 }

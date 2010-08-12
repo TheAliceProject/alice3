@@ -42,74 +42,85 @@
  */
 package org.alice.ide.templates;
 
+//public abstract class StatementTemplate extends edu.cmu.cs.dennisc.croquet.DragControl {
+//	public StatementTemplate(Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls) {
+//	}
+//
+//	protected final org.alice.ide.IDE getIDE() {
+//		return org.alice.ide.IDE.getSingleton();
+//	}
+//	@Override
+//	protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
+//		return new javax.swing.BoxLayout(jPanel, javax.swing.BoxLayout.LINE_AXIS);
+//	}
+//}
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class StatementTemplate extends org.alice.ide.common.StatementLikeSubstance {
-	public StatementTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
-		super( cls, javax.swing.BoxLayout.LINE_AXIS );
+	public StatementTemplate(Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls) {
+		super(cls, javax.swing.BoxLayout.LINE_AXIS);
+		this.setDragAndDropOperation(new org.alice.ide.operations.DefaultDragOperation( edu.cmu.cs.dennisc.alice.Project.GROUP ));
 	}
+	public abstract void createStatement(java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.alice.ast.BlockStatement block, final int index, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement> taskObserver);
+	private edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation;
+	// @Override
+	// protected boolean isFauxDragDesired() {
+	// return true;
+	// }
 
-	public abstract void createStatement( edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent e, edu.cmu.cs.dennisc.alice.ast.BlockStatement block, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver );
-	private edu.cmu.cs.dennisc.zoot.DragAndDropOperation dragAndDropOperation;
-
-//	@Override
-//	protected boolean isFauxDragDesired() {
-//		return true;
-//	}
-	
 	@Override
 	protected boolean isPressed() {
 		return false;
 	}
-	//	protected zoot.ActionOperation createPopupOperation() {
-	//		return new zoot.AbstractActionOperation() {
-	//			public void perform( zoot.ActionContext actionContext ) {
-	//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle popupOperation" );
-	//			}
-	//		};
-	//	}
-	protected edu.cmu.cs.dennisc.zoot.DragAndDropOperation createDragAndDropOperation() {
-		return new org.alice.ide.operations.DefaultDragAndDropOperation();
-	}
+
+	// protected zoot.ActionOperation createPopupOperation() {
+	// return new zoot.AbstractActionOperation() {
+	// public void perform( zoot.ActionContext actionContext ) {
+	// edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: handle popupOperation"
+	// );
+	// }
+	// };
+	// }
+//	@Override
+//	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+//		super.handleAddedTo(parent);
+//		if (this.dragOperation != null) {
+//			// pass
+//		} else {
+//			this.dragOperation = this.createDragOperation();
+//		}
+//		this.setDragAndDropOperation(this.dragOperation);
+//	}
+//
+//	@Override
+//	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+//		this.setDragAndDropOperation(null);
+//		super.handleRemovedFrom(parent);
+//	}
 	@Override
-	public void addNotify() {
-		if( this.dragAndDropOperation != null ) {
-			//pass
-		} else {
-			this.dragAndDropOperation = this.createDragAndDropOperation();
-		}
-		this.setDragAndDropOperation( this.dragAndDropOperation );
-		super.addNotify();
+	protected boolean isInScope() {
+		return getIDE().isSelectedAccessibleInScope();
 	}
+
 	@Override
-	public void removeNotify() {
-		super.removeNotify();
-		this.setPopupOperation( null );
-	}
-	
-	protected boolean isFieldInScope()
-	{
-		return getIDE().isSelectedFieldInScope();
-	}
-	
-	@Override
-	public boolean contains( int x, int y ) {
-		if( this.isFieldInScope() ) {
-			return super.contains( x, y );
+	protected boolean contains(int x, int y, boolean jContains) {
+		if( this.isInScope() ) {
+			return super.contains(x, y, jContains);
 		} else {
 			return false;
 		}
 	}
+
 	@Override
-	public void paint( java.awt.Graphics g ) {
-		super.paint( g );
-		if( this.isFieldInScope() ) {
+	protected void paintEpilogue(java.awt.Graphics2D g2, int x, int y, int width, int height) {
+		super.paintEpilogue(g2, x, y, width, height);
+		if( this.isInScope() ) {
 			//pass
 		} else {
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			g2.setPaint( edu.cmu.cs.dennisc.zoot.PaintUtilities.getDisabledTexturePaint() );
-			this.fillBounds( g2 );
+			g2.setPaint(edu.cmu.cs.dennisc.zoot.PaintUtilities.getDisabledTexturePaint());
+			this.fillBounds(g2);
 		}
 	}
 }

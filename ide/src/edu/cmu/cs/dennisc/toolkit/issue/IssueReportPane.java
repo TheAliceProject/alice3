@@ -106,25 +106,25 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 	}
 
 	private javax.swing.JLabel labelSummary = createLabelForSingleLine( "summary:" );
-	private SuggestiveTextField textSummary = new SuggestiveTextField( "", this.getSummarySuggestiveText() );
+	private edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField textSummary = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", this.getSummarySuggestiveText() );
 	protected java.awt.Component[] rowSummary = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelSummary, textSummary );
 
 	private javax.swing.JLabel labelDescription = createLabelForMultiLine( "description:" );
-	private SuggestiveTextArea textDescription = new SuggestiveTextArea( "", DESCRIPTION_SUGGESTIVE_TEXT );
+	private edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea textDescription = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea( "", DESCRIPTION_SUGGESTIVE_TEXT );
 	private javax.swing.JScrollPane scrollDescription = new javax.swing.JScrollPane( this.textDescription, javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ) {
 		@Override
 		public java.awt.Dimension getPreferredSize() {
-			return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), IssueReportPane.this.getPreferredDescriptionHeight() );
+			return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), IssueReportPane.this.getPreferredDescriptionHeight() );
 		}
 	};
 	protected java.awt.Component[] rowDescription = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelDescription, scrollDescription );
 
 	private javax.swing.JLabel labelSteps = createLabelForMultiLine( "steps:" );
-	private SuggestiveTextArea textSteps = new SuggestiveTextArea( "", STEPS_SUGGESTIVE_TEXT );
+	private edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea textSteps = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea( "", STEPS_SUGGESTIVE_TEXT );
 	private javax.swing.JScrollPane scrollSteps = new javax.swing.JScrollPane( this.textSteps, javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ) {
 		@Override
 		public java.awt.Dimension getPreferredSize() {
-			return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), IssueReportPane.this.getPreferredStepsHeight() );
+			return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), IssueReportPane.this.getPreferredStepsHeight() );
 		}
 	};
 	protected java.awt.Component[] rowSteps = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelSteps, scrollSteps );
@@ -134,9 +134,9 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		this.submitButton.setFont( font.deriveFont( font.getSize2D() * 1.5f ) );
 		this.submitButton.setAlignmentX( java.awt.Component.CENTER_ALIGNMENT );
 
-		this.labelSummary.setToolTipText( textSummary.getSuggestiveText() );
-		this.labelDescription.setToolTipText( textDescription.getSuggestiveText() );
-		this.labelSteps.setToolTipText( textSteps.getSuggestiveText() );
+		this.labelSummary.setToolTipText( textSummary.getTextForBlankCondition() );
+		this.labelDescription.setToolTipText( textDescription.getTextForBlankCondition() );
+		this.labelSteps.setToolTipText( textSteps.getTextForBlankCondition() );
 		
 		this.scrollDescription.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		this.scrollSteps.setBorder( javax.swing.BorderFactory.createEmptyBorder() );

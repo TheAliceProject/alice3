@@ -78,7 +78,7 @@ public class FieldDeclaredInJavaWithField extends FieldDeclaredInJava {
 		return this.fieldReflectionProxy;
 	}
 	@Override
-	public AbstractType getDeclaringType() {
+	public TypeDeclaredInJava getDeclaringType() {
 		return TypeDeclaredInJava.get( this.fieldReflectionProxy.getDeclaringClassReflectionProxy() );
 	}
 	@Override
@@ -101,13 +101,13 @@ public class FieldDeclaredInJavaWithField extends FieldDeclaredInJava {
 		return this.fieldReflectionProxy.getName();
 	}
 	@Override
-	public AbstractType getValueType() {
+	public TypeDeclaredInJava getValueType() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
 		assert fld != null;
 		return TypeDeclaredInJava.get( fld.getType() );
 	}
 	@Override
-	public AbstractType getDesiredValueType() {
+	public TypeDeclaredInJava getDesiredValueType() {
 		return getValueType();
 	}
 	

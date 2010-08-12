@@ -45,27 +45,46 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareFieldOfPredeterminedTypeOperation extends AbstractNonGalleryDeclareFieldOperation {
+public class DeclareFieldOfPredeterminedTypeOperation extends AbstractNonGalleryDeclareFieldOperation<org.alice.ide.declarationpanes.CreateFieldFromGalleryPane> {
+	private org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldPane;
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType;
+	
 	public DeclareFieldOfPredeterminedTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType ) {
+		super( java.util.UUID.fromString( "f3aeb501-8138-47dc-a839-83961ee1f26d" ) );
 		this.ownerType = ownerType;
 		this.valueType = valueType;
-		this.setSmallIcon( new org.alice.ide.common.TypeIcon( this.valueType ) );
-		this.setName( "Declare New Instance..." );
+		//this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( this.valueType ) );
+		this.setName( "<html>Declare New Instance...</html>" );
+		
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
-		return this.ownerType;
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> getOwnerType() {
+		return this.createFieldPane.getDeclaringType();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType) {
-		if( this.getIDE().isDeclareFieldOfPredeterminedTypeSupported( ownerType ) ) {
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
-			org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane( ownerType, typeInJava.getClassReflectionProxy().getReification() );
-			return createFieldPane.showInJDialog( this.getIDE(), "Create New Instance", true );
-		} else {
-			return null;
+	protected org.alice.ide.declarationpanes.CreateFieldFromGalleryPane prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateFieldFromGalleryPane> context) {
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = this.valueType.getFirstTypeEncounteredDeclaredInJava();
+		this.createFieldPane = new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane( ownerType, typeInJava.getClassReflectionProxy().getReification() );
+		return this.createFieldPane;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateFieldFromGalleryPane> context ) {
+		//dialog title: "Create New Instance"
+		return this.createFieldPane.getActualInputValue();
+	}
+	@Override
+	protected boolean isInstanceValid() {
+		return true;
+	}
+	@Override
+	protected Object createInstance() {
+		try {
+			return this.valueType.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification().newInstance();
+		} catch( InstantiationException ie ) {
+			throw new RuntimeException( ie );
+		} catch( IllegalAccessException iae ) {
+			throw new RuntimeException( iae );
 		}
 	}
 }

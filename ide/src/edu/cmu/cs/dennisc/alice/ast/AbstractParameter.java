@@ -47,7 +47,9 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractParameter extends AbstractTransient {
-	public abstract AbstractType getValueType();
-	public abstract AbstractType getDesiredValueType();
+	public abstract AbstractType<?,?,?> getDesiredValueType();
 	public abstract boolean isVariableLength();
+	public String getValidName( Node context ) {
+		return this.getName();
+	}
 }

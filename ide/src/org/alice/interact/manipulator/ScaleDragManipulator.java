@@ -46,6 +46,7 @@ import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.LinearScaleHandle;
+import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.interact.operations.PredeterminedScaleActionOperation;
 import org.alice.interact.operations.PredeterminedSetLocalTransformationActionOperation;
 
@@ -63,28 +64,11 @@ import edu.cmu.cs.dennisc.zoot.ZManager;
  */
 public class ScaleDragManipulator extends LinearDragManipulator {
 
-	private static final double MIN_HANDLE_PULL = .1d;
+	public static final double MIN_HANDLE_PULL = .1d;
 
 	private Vector3 accumulatedScaleVector = new Vector3(1.0, 1.0, 1.0);
 
-
-	private Criterion< Component > handleCriterion = new Criterion< Component >() {
-		protected boolean isHandle( Component c ) {
-			if( c == null )
-				return false;
-			Object bonusData = c.getBonusDataFor( PickHint.PICK_HINT_KEY );
-			if( bonusData instanceof PickHint && ((PickHint)bonusData).intersects( PickHint.THREE_D_HANDLES ) )
-				return true;
-			else
-				return isHandle( c.getParent() );
-		}
-
-		public boolean accept( Component c ) {
-			return !isHandle( c );
-		}
-	};
-
-	private Vector3 getInvertedScaleVector( Vector3 scaleVector )
+	protected static Vector3 getInvertedScaleVector( Vector3 scaleVector )
 	{
 		Vector3 invertedScale = new Vector3();
 		if (scaleVector.x != 0)
@@ -139,10 +123,10 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 		
 		//First remove the old scale
 		Vector3 inverseScale = getInvertedScaleVector(accumulatedScaleVector);
-		ScaleUtilities.applyScale( this.manipulatedTransformable, inverseScale, handleCriterion );
+		ScaleUtilities.applyScale( this.manipulatedTransformable, inverseScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION );
 		//Now apply the new scale
 		accumulatedScaleVector.set( scaleVector );
-		ScaleUtilities.applyScale( this.manipulatedTransformable, scaleVector, handleCriterion );
+		ScaleUtilities.applyScale( this.manipulatedTransformable, scaleVector, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION );
 
 	}
 
@@ -161,8 +145,8 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 			} else {
 				animator = null;
 			}
-			PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation( Project.GROUP_UUID, false, animator, this.getManipulatedTransformable(), accumulatedScaleVector, handleCriterion, getUndoRedoDescription() );
-			ZManager.performIfAppropriate( undoOperation, null, false );
+			PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation( Project.GROUP, false, animator, this.getManipulatedTransformable(), accumulatedScaleVector, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION, getUndoRedoDescription() );
+			undoOperation.fire();
 		}
 	}
 

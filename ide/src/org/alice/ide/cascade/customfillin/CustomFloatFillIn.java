@@ -45,17 +45,13 @@ package org.alice.ide.cascade.customfillin;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomFloatFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.ast.FloatLiteral, Float > {
+public class CustomFloatFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	@Override
-	protected String getMenuProxyText() {
-		return "Other (Single Precision) Real Number...";
+	protected String getTypeDescription() {
+		return "(Single Precision) Real Number";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser createCustomPane() {
+	protected org.alice.ide.choosers.ValueChooser< edu.cmu.cs.dennisc.alice.ast.Expression > createValueChooser() {
 		return new org.alice.ide.choosers.FloatChooser();
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.FloatLiteral createExpression( Float value ) {
-		return new edu.cmu.cs.dennisc.alice.ast.FloatLiteral( value );
 	}
 }

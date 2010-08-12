@@ -83,7 +83,7 @@ public class EditFieldPane extends AbstractDeclarationPane< edu.cmu.cs.dennisc.a
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getValueType() {
 		if( this.isDropDownForFieldInitializerDesired ) {
 			return super.getValueType();
 		} else {
@@ -101,11 +101,17 @@ public class EditFieldPane extends AbstractDeclarationPane< edu.cmu.cs.dennisc.a
 	}
 	
 	@Override
-	protected java.awt.Component createPreviewSubComponent() {
+	public String getDialogTitle() {
+		return "Edit Field";
+	}
+	
+	
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent() {
 		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getPreviewFactory(), this.getActualInputValue() );
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getActualInputValue() {
+	public final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getActualInputValue() {
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rv = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( this.getDeclarationName(), this.getValueType(), this.getInitializer() );
 		edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither value;
 		if( this.isReassignable() ) {
@@ -118,7 +124,7 @@ public class EditFieldPane extends AbstractDeclarationPane< edu.cmu.cs.dennisc.a
 		return rv;
 	}
 	@Override
-	protected boolean isIsReassignableComponentDesired() {
+	protected boolean isIsReassignableStateDesired() {
 		return this.isDropDownForFieldInitializerDesired;
 	}
 	@Override

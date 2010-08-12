@@ -68,10 +68,10 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 			g.fillRect( 0, 0, size.width, size.height );
 			String text = "rendering disabled for performance considerations";
 			g.setColor( java.awt.Color.BLACK );
-			edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g, text, size );
+			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, text, size );
 			g.setColor( java.awt.Color.YELLOW );
 			g.translate( -1, -1 );
-			edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g, text, size );
+			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, text, size );
 			g.translate( 1, 1 );
 			g.dispose();
 		}
@@ -81,7 +81,6 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 				super.paint( g );
 			} else {
 				this.paintRenderingDisabledMessage( g );
-//				Thread.dumpStack();
 			}
 		}
 		@Override
@@ -95,8 +94,8 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 						g.setColor( java.awt.Color.RED );
 						g.fillRect( 0, 0, getWidth(), getHeight() );
 						g.setColor( java.awt.Color.BLACK );
-						edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g, "error in attempting to render scene", this.getSize() );
-						//edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, t.getClass().getSimpleName() + " in attempting to render scene", this.getSize() );
+						edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, "error in attempting to render scene", this.getSize() );
+						//edu.cmu.cs.dennisc.awt.GraphicsUtilities.drawCenteredText( g, t.getClass().getSimpleName() + " in attempting to render scene", this.getSize() );
 						if( this.prevThrowable != null ) {
 							//pass
 						} else {
@@ -108,7 +107,6 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 					g.setColor( java.awt.Color.DARK_GRAY );
 					g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 				}
-			} else {
 //				edu.cmu.cs.dennisc.print.PrintUtilities.println( "paintComponent" );
 ////					java.awt.image.BufferedImage offscreenImage = this.getOffscreenImage();
 ////					if( offscreenImage != null ) {

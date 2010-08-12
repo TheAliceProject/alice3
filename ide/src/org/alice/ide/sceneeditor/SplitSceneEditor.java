@@ -74,15 +74,6 @@ class TreeModel implements javax.swing.tree.TreeModel {
 	}
 }
 
-//class TreeCellRenderer extends javax.swing.JLabel implements javax.swing.tree.TreeCellRenderer {
-//	public java.awt.Component getTreeCellRendererComponent( javax.swing.JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-//		if( value instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
-//			edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)value;
-//			this.setText( field.getName() );
-//		}
-//		return this;
-//	}
-//}
 class TreeCellRenderer extends javax.swing.tree.DefaultTreeCellRenderer {
 	@Override
 	public java.awt.Component getTreeCellRendererComponent( javax.swing.JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
@@ -95,67 +86,64 @@ class TreeCellRenderer extends javax.swing.tree.DefaultTreeCellRenderer {
 	}
 }
 
-class Tree extends edu.cmu.cs.dennisc.zoot.ZTree {
-	private TreeModel model = new TreeModel( null ); 
-	public Tree() {
-		super( new org.alice.ide.operations.ast.FieldItemSelectionOperation( new javax.swing.DefaultComboBoxModel() ) );
-		this.setModel( this.model );
-		this.setCellRenderer( new TreeCellRenderer() );
-	}
-}
-
-class LookingGlass extends edu.cmu.cs.dennisc.javax.swing.components.JCornerSpringPane {
-	private javax.swing.JCheckBoxMenuItem isSceneEditorExpandedCheckBox; 
+class LookingGlass extends edu.cmu.cs.dennisc.croquet.CornerSpringPanel {
 	public LookingGlass() {
-		this.setBackground( java.awt.Color.RED );
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		this.isSceneEditorExpandedCheckBox = edu.cmu.cs.dennisc.zoot.ZManager.createCheckBoxMenuItem( ide.getIsSceneEditorExpandedOperation() );
-		this.setSouthEastComponent( this.isSceneEditorExpandedCheckBox );
+		this.setBackgroundColor( java.awt.Color.RED );
+		this.setSouthEastComponent( org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().createCheckBox() );
 	}
 }
 
+class FieldTreeSelectionState extends edu.cmu.cs.dennisc.croquet.TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<edu.cmu.cs.dennisc.alice.ast.AbstractField>> {
+	public FieldTreeSelectionState() {
+		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "89223cff-76d3-4cb7-baf3-3a5e990bcaff" ), null, null );
+		throw new RuntimeException( "todo" );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.javax.swing.models.TreeNode<edu.cmu.cs.dennisc.alice.ast.AbstractField> decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+		throw new RuntimeException( "todo" );
+	}
+	@Override
+	protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<edu.cmu.cs.dennisc.alice.ast.AbstractField> value) {
+		throw new RuntimeException( "todo" );
+	}
+	@Deprecated
+	public void setSwingTreeModel( javax.swing.tree.TreeModel swingTreeModel ) {
+		throw new RuntimeException( "todo" );
+	}
+}
 //todo
 /**
  * @author Dennis Cosgrove
  */
-public class SplitSceneEditor extends org.alice.ide.Editor<edu.cmu.cs.dennisc.alice.ast.AbstractType> implements org.alice.ide.event.IDEListener {
-	private javax.swing.JSplitPane root = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
-	private Tree tree = new Tree();
+public class SplitSceneEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane root = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane();
+	private FieldTreeSelectionState treeSelectionState = new FieldTreeSelectionState();
 	private LookingGlass lookingGlass = new LookingGlass();
+	private org.alice.ide.ProjectApplication.ProjectObserver projectObserver = new org.alice.ide.ProjectApplication.ProjectObserver() { 
+		public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
+		}
+		public void projectOpened( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = nextProject.getProgramType();
+			edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = programType.getDeclaredFields().get( 0 );
+			treeSelectionState.setSwingTreeModel( new TreeModel( sceneField ) );
+		}
+	};
+
 	public SplitSceneEditor() {
-		this.root.setLeftComponent( new javax.swing.JScrollPane( this.tree ) );
+		edu.cmu.cs.dennisc.croquet.Tree< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< edu.cmu.cs.dennisc.alice.ast.AbstractField > > tree = this.treeSelectionState.createTree();
+		tree.setCellRenderer( new TreeCellRenderer() );
+		this.root.setLeftComponent( new edu.cmu.cs.dennisc.croquet.ScrollPane( tree ) );
 		this.root.setRightComponent( this.lookingGlass );
-		this.setLayout( new edu.cmu.cs.dennisc.java.awt.ExpandAllToBoundsLayoutManager() );
-		this.add( this.root );
+		this.addComponent( this.root, Constraint.CENTER );
 	}
-	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
+	@Override
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
+		org.alice.ide.ProjectApplication.getSingleton().addProjectObserver( this.projectObserver );
 	}
-	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
-	}
-
-	public void localeChanging( org.alice.ide.event.LocaleEvent e ) {
-	}
-	public void localeChanged( org.alice.ide.event.LocaleEvent e ) {
-	}
-
-
-	public void focusedCodeChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-	}
-	public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-	}
-
-
-	public void projectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
-	}
-	public void projectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType programType = this.getIDE().getProject().getProgramType();
-		edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = programType.getDeclaredFields().get( 0 );
-		tree.setModel( new TreeModel( sceneField ) );
-	}
-
-
-	public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
-	}
-	public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
+	@Override
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		org.alice.ide.ProjectApplication.getSingleton().removeProjectObserver( this.projectObserver );
+		super.handleRemovedFrom( parent );
 	}
 }

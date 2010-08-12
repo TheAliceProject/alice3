@@ -47,25 +47,46 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractEditFieldOperation extends org.alice.ide.operations.AbstractActionOperation {
-	public AbstractEditFieldOperation( java.util.UUID groupUUID, String name ) {
-		super( groupUUID );
+public abstract class AbstractEditFieldOperation extends org.alice.ide.operations.InputDialogWithPreviewOperation<org.alice.ide.declarationpanes.EditFieldPane> {
+	private FieldDeclaredInAlice field;
+
+	private edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither prevFinalVolatileOrNeither;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> prevValueType;
+	private String prevName;
+	private edu.cmu.cs.dennisc.alice.ast.Expression prevInitializer;
+	
+	public AbstractEditFieldOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, String name, FieldDeclaredInAlice field ) {
+		super( group, individualId );
 		this.setName( name );
+		this.field = field;
+		
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: AbstractEditFieldOperation" );
 	}
-	protected final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext, final FieldDeclaredInAlice field, java.util.Set< FieldDeclaredInAlice > referencedFields, java.util.Set< FieldDeclaredInAlice > reassignedFields ) {
-		if( field != null ) {
-			final edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither prevFinalVolatileOrNeither = field.finalVolatileOrNeither.getValue();
-			final edu.cmu.cs.dennisc.alice.ast.AbstractType prevValueType = field.valueType.getValue();
-			final String prevName = field.getName();
-			final edu.cmu.cs.dennisc.alice.ast.Expression prevInitializer = field.initializer.getValue();
-			org.alice.ide.declarationpanes.EditFieldPane editFieldPane = new org.alice.ide.declarationpanes.EditFieldPane( field, referencedFields.contains( field ), reassignedFields.contains( field ) );
-			FieldDeclaredInAlice tempField = editFieldPane.showInJDialog( this.getIDE() );
+	protected FieldDeclaredInAlice getField() {
+		return this.field;
+	}
+	protected org.alice.ide.declarationpanes.EditFieldPane prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.EditFieldPane > context, java.util.Set< FieldDeclaredInAlice > referencedFields, java.util.Set< FieldDeclaredInAlice > reassignedFields ) {
+		if( this.field != null ) {
+			this.prevFinalVolatileOrNeither = field.finalVolatileOrNeither.getValue();
+			this.prevValueType = field.valueType.getValue();
+			this.prevName = this.field.getName();
+			this.prevInitializer = field.initializer.getValue();
+			return new org.alice.ide.declarationpanes.EditFieldPane( field, referencedFields.contains( field ), reassignedFields.contains( field ) );
+		} else {
+			return null;
+		}
+	}
+	@Override
+	protected void epilogue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.EditFieldPane > context, boolean isOk ) {
+		if( isOk ) {
+			org.alice.ide.declarationpanes.EditFieldPane editFieldPane = context.getMainPanel();
+			FieldDeclaredInAlice tempField = editFieldPane.getActualInputValue();
 			if( tempField != null ) {
 				final edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither nextFinalVolatileOrNeither = tempField.finalVolatileOrNeither.getValue();
-				final edu.cmu.cs.dennisc.alice.ast.AbstractType nextValueType = tempField.valueType.getValue();
+				final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> nextValueType = tempField.valueType.getValue();
 				final String nextName = tempField.getName();
 				final edu.cmu.cs.dennisc.alice.ast.Expression nextInitializer = tempField.initializer.getValue();
-				actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
 					public void doOrRedo( boolean isDo ) {
 						field.finalVolatileOrNeither.setValue( nextFinalVolatileOrNeither );
@@ -88,10 +109,10 @@ public abstract class AbstractEditFieldOperation extends org.alice.ide.operation
 					}
 				} );
 			} else {
-				actionContext.cancel();
+				context.cancel();
 			}
 		} else {
-			actionContext.cancel();
+			context.cancel();
 		}
 	}
 }

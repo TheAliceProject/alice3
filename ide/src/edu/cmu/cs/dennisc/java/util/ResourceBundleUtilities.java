@@ -68,7 +68,7 @@ public abstract class ResourceBundleUtilities {
 		} while( true );
 		return resourceBundle.getString( key );
 	}
-	public static String getStringFromSimpleNames( Class<?> cls, String baseName ) {
-		return getStringFromSimpleNames( cls, baseName, javax.swing.JComponent.getDefaultLocale() );
-	}
+//	public static String getStringFromSimpleNames( Class<?> cls, String baseName ) {
+//		return getStringFromSimpleNames( cls, baseName, javax.swing.JComponent.getDefaultLocale() );
+//	}
 }

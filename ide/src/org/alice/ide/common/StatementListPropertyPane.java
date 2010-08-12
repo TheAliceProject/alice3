@@ -42,24 +42,17 @@
  */
 package org.alice.ide.common;
 
-import org.alice.ide.codeeditor.EmptyStatementListAfforance;
-
 /**
  * @author Dennis Cosgrove
  */
 public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > {
-	public static final int INTRASTICIAL_PAD = 4;
+	private static final int INDENT = 8;
+	private static final int INTRASTICIAL_MIDDLE = 1;
+	public static final int INTRASTICIAL_PAD = INTRASTICIAL_MIDDLE*2+1;
+	
+//	private static final int INTRASTICIAL_PAD = 0;
 	public StatementListPropertyPane( Factory factory, final edu.cmu.cs.dennisc.alice.ast.StatementListProperty property ) {
 		super( factory, javax.swing.BoxLayout.PAGE_AXIS, property );
-		
-		int pad;
-		if( property.getOwner() instanceof edu.cmu.cs.dennisc.alice.ast.DoTogether ) {
-			pad = 0;
-		} else {
-			pad = INTRASTICIAL_PAD;
-		}
-		this.setLayout( new edu.cmu.cs.dennisc.javax.swing.layouts.PaddedBoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS, pad ) );
-		
 //		this.addMouseListener( new java.awt.event.MouseListener() {
 //			public void mouseClicked( final java.awt.event.MouseEvent e ) {
 //				final alice.ide.IDE ide = alice.ide.IDE.getSingleton();
@@ -91,17 +84,184 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 //		} );
 	}
 	
-	public java.awt.Rectangle getDropBounds() {
-		java.awt.Rectangle rv = javax.swing.SwingUtilities.getLocalBounds( this );
-		final int DELTA = this.getFont().getSize() + 4;
-		rv.y -= DELTA;
-		rv.height += DELTA;
+	@Override
+	protected int getBoxLayoutPad() {
+		int rv;
+		if( this.getProperty().getOwner() instanceof edu.cmu.cs.dennisc.alice.ast.DoTogether ) {
+			rv = 0;
+		} else {
+			rv = INTRASTICIAL_PAD;
+		}
+		return rv;
+	}
+
+	@Override
+	protected javax.swing.JPanel createJPanel() {
+		final java.awt.Color FEEDBACK_COLOR = java.awt.Color.GREEN.darker().darker();
+		class FeedbackJPanel extends DefaultJPanel {
+			@Override
+			public void paint(java.awt.Graphics g) {
+				super.paint(g);
+				int i = StatementListPropertyPane.this.currentPotentialDropIndex;
+				final int N = StatementListPropertyPane.this.getProperty().size();
+				if( N == this.getComponentCount() && i >= 0 && i < N ) {
+					if( i != -1 && N > 0 ) {
+						int y;
+						if( i == N ) {
+							java.awt.Component lastComponent = this.getComponent( N-1 );
+							y = lastComponent.getY();
+							y += lastComponent.getHeight();
+						} else {
+							java.awt.Component iComponent = this.getComponent( i );
+							y = iComponent.getY();
+							y -= INTRASTICIAL_PAD;
+						}
+						int x0 = 0;
+						int x1 = INDENT;
+						int yC = Math.max( y + INTRASTICIAL_MIDDLE, 1 );
+						int y0 = yC-INDENT;
+						int y1 = yC+INDENT;
+						
+						int w = this.getWidth();
+						int[] xPoints = new int[] { x1, x0, x0 };
+						int[] yPoints = new int[] { yC, y1, y0 };
+						g.setColor( FEEDBACK_COLOR );
+						g.fillRect( 0, y, w, INTRASTICIAL_PAD );
+						g.fillPolygon( xPoints, yPoints, 3 );
+						//g.setColor( java.awt.Color.YELLOW );
+						//g.fillRect( 1, yC, w-2, 1 );
+					}
+				}
+			}
+			@Override
+			public java.awt.Dimension getMaximumSize() {
+				return this.getPreferredSize();
+			}
+		}
+		FeedbackJPanel rv = new FeedbackJPanel();
+		rv.setLayout( this.createLayoutManager( rv ) );
+		return rv;
+	}
+	public int getAvailableDropProxyHeight() {
+//		int heightAvailable = this.getHeight();
+//		if( this.isFigurativelyEmpty() ) {
+//			return heightAvailable;
+//		} else {
+//			return Math.min( dropSize.height, heightAvailable/2 );
+//		}
+		return -1;
+	}
+//	@Override
+//	protected javax.swing.JPanel createJPanel() {
+//		class StatementListJPanel extends edu.cmu.cs.dennisc.croquet.Panel.DefaultJPanel {
+//			@Override
+//			protected void paintChildren( java.awt.Graphics g ) {
+//				if( StatementListPropertyPane.this.currentPotentialDropIndex != -1 ) {
+//					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+//					final int N = this.getComponentCount();
+//					int heightAvailable = this.getHeight();
+//					int heightAllocatedToDrop = StatementListPropertyPane.this.getAvailableDropProxyHeight();
+//					int heightAllocatedToThis = heightAvailable - heightAllocatedToDrop;
+//					double yScale = heightAllocatedToThis/(double)heightAvailable;
+//					java.awt.geom.AffineTransform m = g2.getTransform();
+//					try {
+//						int i = StatementListPropertyPane.this.currentPotentialDropIndex;
+//						if( i == 0 || i == N ) {
+//							if( i == 0 ) {
+//								g2.translate( 0, heightAllocatedToDrop );
+//							}
+//							g2.scale( 1.0, yScale );
+//							super.paintChildren( g );
+//						} else {
+//							super.paintChildren( g );
+//						}
+//					} finally {
+//						g2.setTransform( m );
+//					}
+//				} else {
+//					super.paintChildren( g );
+//				}
+//			}
+//		}
+//		return new StatementListJPanel();
+//	}
+	private java.awt.Dimension dropSize = new java.awt.Dimension( 0,0 );
+	private int currentPotentialDropIndex = -1;
+	public void setIsCurrentUnder( boolean isCurrentUnder ) {
+		if( isCurrentUnder ) {
+			//pass
+		} else {
+			this.setCurrentPotentialDropIndex( -1 );
+		}
+		if( this.getComponentCount() > 0 ) {
+			edu.cmu.cs.dennisc.croquet.Component<?> component0 = this.getComponent( 0 );
+			if( component0 instanceof org.alice.ide.codeeditor.EmptyStatementListAffordance ) {
+				org.alice.ide.codeeditor.EmptyStatementListAffordance emptyStatementListAfforance = (org.alice.ide.codeeditor.EmptyStatementListAffordance)component0;
+				emptyStatementListAfforance.setDrawingDesired( isCurrentUnder == false );
+			}
+		}
+	}
+	public void setCurrentPotentialDropIndex( int currentPotentialDropIndex ) {
+		if( this.currentPotentialDropIndex != currentPotentialDropIndex ) {
+			this.currentPotentialDropIndex = currentPotentialDropIndex;
+			this.repaint();
+		}
+	}
+	public void setDropSize( java.awt.Dimension dropSize ) {
+		if( dropSize != null ) {
+			this.dropSize.setSize( dropSize );
+		}
+	}
+	
+	private edu.cmu.cs.dennisc.alice.ast.Node getOwningBlockStatementOwningNode() {
+		edu.cmu.cs.dennisc.property.PropertyOwner owner = this.getProperty().getOwner();
+		if( owner instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
+			edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)owner;
+			return blockStatement.getParent();
+		} else {
+			return null;
+		}
+	}
+	private static boolean isOwnedByIf( edu.cmu.cs.dennisc.alice.ast.Node owningNode ) {
+		return owningNode instanceof edu.cmu.cs.dennisc.alice.ast.BooleanExpressionBodyPair;
+	}
+	private static boolean isOwnedByElse( edu.cmu.cs.dennisc.alice.ast.Node owningNode ) {
+		return owningNode instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalStatement;
+	}
+	public java.awt.Rectangle getDropBounds( DefaultStatementPane statementAncestor ) {
+		edu.cmu.cs.dennisc.alice.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
+		boolean isIf = isOwnedByIf( owningNode );
+		boolean isElse = isOwnedByElse( owningNode );
+		java.awt.Rectangle rv = this.getBounds( statementAncestor );
+		
+		if( isIf || isElse ) {
+			final int IF_ELSE_PAD = this.getFont().getSize()/2;
+			if( isIf ) {
+				rv.height += rv.y;
+				rv.y = 0;
+				rv.height += IF_ELSE_PAD;
+				statementAncestor.setMaxYForIfBlock( rv.y + rv.height );
+				rv.y += IF_ELSE_PAD;
+			} else {
+				rv.y = statementAncestor.getMaxYForIfBlock();
+				rv.height = statementAncestor.getHeight() - rv.y;
+			}
+			rv.height -= IF_ELSE_PAD;
+
+		} else {
+			int spaceOnTop = rv.y;
+			int spaceOnBottom = statementAncestor.getHeight()-(rv.y+rv.height);
+			int spaceOnTopToLeave = spaceOnTop/2;
+			int spaceOnBottomToLeave = spaceOnBottom/2;
+			rv.y = spaceOnTopToLeave;
+			rv.height = statementAncestor.getHeight() - spaceOnTopToLeave - spaceOnBottomToLeave;
+		}
 		return rv;
 	}
 
 	
 	@Override
-	protected java.awt.Component createComponent( Object instance ) {
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createComponent( Object instance ) {
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)instance;
 		return this.getFactory().createStatementPane( statement, getProperty() );
 	}
@@ -111,21 +271,45 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		super.refresh();
 		int bottom;
 		if( this.getComponentCount() == 0 ) {
-			this.add( new EmptyStatementListAfforance() );
+			edu.cmu.cs.dennisc.alice.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
+			edu.cmu.cs.dennisc.alice.ast.StatementListProperty alternateListProperty;
+			if( owningNode instanceof edu.cmu.cs.dennisc.alice.ast.BooleanExpressionBodyPair ) {
+				edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement = (edu.cmu.cs.dennisc.alice.ast.ConditionalStatement)owningNode.getParent();
+				alternateListProperty = conditionalStatement.elseBody.getValue().statements;
+			} else if ( owningNode instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalStatement ) {
+				edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement = (edu.cmu.cs.dennisc.alice.ast.ConditionalStatement)owningNode;
+				alternateListProperty = conditionalStatement.booleanExpressionBodyPairs.get( 0 ).body.getValue().statements;
+			} else {
+				alternateListProperty = null;
+			}
+			this.addComponent( new org.alice.ide.codeeditor.EmptyStatementListAffordance( this.getProperty(), alternateListProperty ) );
 			bottom = 0;
 		} else {
-			bottom = 4;
+			edu.cmu.cs.dennisc.alice.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
+			//boolean isIf = isOwnedByIf( owningNode );
+			boolean isElse = isOwnedByElse( owningNode );
+			boolean isDoInOrder = owningNode instanceof edu.cmu.cs.dennisc.alice.ast.DoInOrder;
+			boolean isDoTogether = owningNode instanceof edu.cmu.cs.dennisc.alice.ast.DoTogether;
+			if( /*isIf ||*/ isElse || isDoInOrder || isDoTogether ) {
+				bottom = 8;
+			} else {
+				bottom = 0;
+			}
 		}
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, bottom, 16 ) );
-		repaint();
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INTRASTICIAL_PAD, INDENT, bottom, 16 ) );
+		this.revalidateAndRepaint();
 	}
 	public boolean isFigurativelyEmpty() {
-		return this.getComponentCount() == 0 || this.getComponent( 0 ) instanceof EmptyStatementListAfforance;
+		return this.getComponentCount() == 0 || this.getComponent( 0 ) instanceof org.alice.ide.codeeditor.EmptyStatementListAffordance;
 	}
 
-	private int getCenterYOfComponentAt( int i ) {
-		java.awt.Component componentI = this.getComponent( i );
-		return componentI.getY() + componentI.getHeight() / 2;
+	private Integer getCenterYOfComponentAt( int i ) {
+		if( i>=0 && i<this.getComponentCount() ) {
+			java.awt.Component componentI = this.getAwtComponent().getComponent( i );
+			return componentI.getY() + componentI.getHeight() / 2;
+		} else {
+			return null;
+		}
 	}
 	public int calculateIndex( java.awt.Point p ) {
 		if( isFigurativelyEmpty() ) {
@@ -139,6 +323,79 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 			}
 			return this.getComponentCount();
 		}
+	}
+//	public java.awt.Rectangle updateYBounds( java.awt.Rectangle rv, int index ) {
+//		if( isFigurativelyEmpty() ) {
+//			//pass
+//		} else {
+//			int yMinimum;
+//			int yMaximum;
+//			final int N = this.getComponentCount();
+//			if( index == Short.MAX_VALUE ) {
+//				index = N;
+//			}
+//			if( index == 0 ) {
+//				yMinimum = rv.y;
+//			} else {
+//				yMinimum = rv.y + this.getCenterYOfComponentAt( index-1 );
+//			}
+//			if( index == N ) {
+//				yMaximum = rv.y + rv.height;
+//			} else {
+//				yMaximum = rv.y + this.getCenterYOfComponentAt( index );
+//			}
+//			rv.y = yMinimum;
+//			rv.height = yMaximum-yMinimum-1;
+//		}
+//		return rv;
+//	}
+	public static class BoundInformation {
+		public Integer yMinimum;
+		public Integer yMaximum;
+		public Integer y;
+		public Integer yPlusHeight;
+	}
+	public BoundInformation calculateYBounds( int index ) {
+		final int N;
+		if( isFigurativelyEmpty() ) {
+			N = 0;
+		} else {
+			N = this.getComponentCount();
+		}
+		if( index == Short.MAX_VALUE ) {
+			index = N;
+		}
+		BoundInformation rv = new BoundInformation();
+		if( index == 0 ) {
+			rv.yMinimum = null;
+		} else {
+			rv.yMinimum = this.getCenterYOfComponentAt( index-1 );
+		}
+		if( index == N ) {
+			rv.yMaximum = null;
+		} else {
+			rv.yMaximum = this.getCenterYOfComponentAt( index );
+		}
+		
+
+		if( N == 0 ) {
+			rv.y = null;
+			rv.yPlusHeight = null;
+		} else {
+			if( index == 0 ) {
+				rv.y = null;
+				rv.yPlusHeight = 0;
+			} else if( index == N ) {
+				edu.cmu.cs.dennisc.croquet.Component< ? > lastComponent = this.getComponent( N-1 );
+				rv.y = lastComponent.getY() + lastComponent.getHeight();
+				rv.yPlusHeight = null;
+			} else {
+				edu.cmu.cs.dennisc.croquet.Component< ? > component = this.getComponent( index );
+				rv.y = component.getY();
+				rv.yPlusHeight = rv.y + component.getHeight();
+			}
+		}
+		return rv;
 	}
 
 }

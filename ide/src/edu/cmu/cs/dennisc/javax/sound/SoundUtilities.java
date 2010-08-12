@@ -46,18 +46,25 @@ package edu.cmu.cs.dennisc.javax.sound;
  * @author Dennis Cosgrove
  */
 public class SoundUtilities {
-	public static javax.sound.sampled.Clip newClip( java.io.File file ) {
-		try {
-			javax.sound.sampled.Clip clip = javax.sound.sampled.AudioSystem.getClip();
-			javax.sound.sampled.AudioInputStream audioInputStream = javax.sound.sampled.AudioSystem.getAudioInputStream( file );
-			clip.open( audioInputStream );
-			return clip;
-		} catch( Exception e ) {
-			throw new RuntimeException( e );
-		}
+	public static javax.sound.sampled.Clip createOpenedClip( java.io.InputStream inputStream ) throws javax.sound.sampled.LineUnavailableException, javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException {
+		javax.sound.sampled.Clip clip = javax.sound.sampled.AudioSystem.getClip();
+		javax.sound.sampled.AudioInputStream audioInputStream = javax.sound.sampled.AudioSystem.getAudioInputStream( inputStream );
+		clip.open( audioInputStream );
+		return clip;
 	}
-	public static javax.sound.sampled.Clip newClip( String path ) {
-		return newClip( new java.io.File( path ) );
+	public static javax.sound.sampled.Clip createOpenedClip( byte[] array ) throws javax.sound.sampled.LineUnavailableException, javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException {
+		return createOpenedClip( new java.io.ByteArrayInputStream( array ) );
+	}
+	public static javax.sound.sampled.Clip createOpenedClip( Class< ? > cls, String resourceName ) throws javax.sound.sampled.LineUnavailableException, javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException {
+		java.io.InputStream is = cls.getResourceAsStream( resourceName );
+		byte[] buffer = edu.cmu.cs.dennisc.java.io.InputStreamUtilities.getBytes( is );
+		return createOpenedClip( buffer );
+	}
+	public static javax.sound.sampled.Clip createOpenedClip( java.io.File file )  throws javax.sound.sampled.LineUnavailableException, javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException {
+		return createOpenedClip( new java.io.FileInputStream( file ) );
+	}
+	public static javax.sound.sampled.Clip createOpenedClip( String path )  throws javax.sound.sampled.LineUnavailableException, javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException {
+		return createOpenedClip( new java.io.File( path ) );
 	}
 	
 	public static void playAndDrainClip( javax.sound.sampled.Clip clip ) {

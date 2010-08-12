@@ -42,6 +42,12 @@
  */
 package org.alice.ide.sceneeditor;
 
+import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
+import edu.cmu.cs.dennisc.croquet.DragComponent;
+import edu.cmu.cs.dennisc.croquet.Operation;
+import edu.cmu.cs.dennisc.croquet.ViewController;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,12 +56,9 @@ public class FauxSceneEditor extends AbstractSceneEditor {
 	public void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty ) {
 		throw new RuntimeException();
 	}
-	@Override
-	public void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance, boolean isAnimationDesired ) {
-	}
-	@Override
-	public void handleExpandContractChange( boolean isExpanded ) {
-	}
+//	@Override
+//	public void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance, boolean isAnimationDesired ) {
+//	}
 	@Override
 	public void enableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
 	}
@@ -69,4 +72,30 @@ public class FauxSceneEditor extends AbstractSceneEditor {
 	public Object getInstanceInJavaForUndo( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		return null;
 	}
+	@Override
+	public void putInstanceForInitializingPendingField(
+			FieldDeclaredInAlice field, Object instance) {
+		// TODO Auto-generated method stub
+		
+	}
+	public Operation<?> dragDropped(DragAndDropContext dragAndDropContext) {
+		return null;
+	}
+	public void dragEntered(DragAndDropContext dragAndDropContext) {
+	}
+	public void dragExited(DragAndDropContext dragAndDropContext, boolean isDropRecipient) {
+	}
+	public void dragStarted(DragAndDropContext dragAndDropContext) {
+	}
+	public void dragStopped(DragAndDropContext dragAndDropContext) {
+	}
+	public void dragUpdated(DragAndDropContext dragAndDropContext) {
+	}
+	public ViewController<?, ?> getViewController() {
+		return null;
+	}
+	public boolean isPotentiallyAcceptingOf(DragComponent source) {
+		return false;
+	}
+	
 }

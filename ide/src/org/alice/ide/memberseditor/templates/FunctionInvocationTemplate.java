@@ -45,7 +45,7 @@ package org.alice.ide.memberseditor.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class FunctionInvocationTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
+/*package-private*/ class FunctionInvocationTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice > parameterAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice >() {
 		@Override
@@ -60,7 +60,7 @@ public class FunctionInvocationTemplate extends org.alice.ide.templates.Cascadin
 		this.method = method;
 		if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
-			this.setPopupOperation( new MethodPopupOperation( methodInAlice ) );
+			this.setPopupMenuOperation( new MethodPopupOperation( methodInAlice ) );
 		}
 	}
 	@Override
@@ -68,25 +68,27 @@ public class FunctionInvocationTemplate extends org.alice.ide.templates.Cascadin
 		return org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( this.method );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
 		return this.method.getReturnType();
 	}
+	
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		if( this.method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+			this.refresh();
 			((edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.method).parameters.addListPropertyListener( this.parameterAdapter );
 		}
 	}
 	@Override
-	public void removeNotify() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		if( this.method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			((edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.method).parameters.removeListPropertyListener( this.parameterAdapter );
 		}
-		super.removeNotify();
+		super.handleRemovedFrom( parent );
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
+	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > rv ) {
 		return org.alice.ide.ast.NodeUtilities.getDesiredParameterValueTypes( rv, this.method );
 	}
 	@Override

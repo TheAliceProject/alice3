@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.java.util;
 
-import java.util.LinkedList;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -78,12 +76,12 @@ public abstract class CollectionUtilities {
 	}
 	public static <E extends Object> void set( java.util.Collection< E > collection, E... array ) {
 		collection.clear();
-		if( collection instanceof java.util.ArrayList ) {
-			java.util.ArrayList< E > arrayList = (java.util.ArrayList< E >)collection;
+		if( collection instanceof java.util.ArrayList< ? > ) {
+			java.util.ArrayList< ? > arrayList = (java.util.ArrayList< ? >)collection;
 			arrayList.ensureCapacity( array.length );
 		}
-		if( collection instanceof java.util.Vector ) {
-			java.util.Vector< E > vector = (java.util.Vector< E >)collection;
+		if( collection instanceof java.util.Vector< ? > ) {
+			java.util.Vector< ? > vector = (java.util.Vector< ? >)collection;
 			vector.ensureCapacity( array.length );
 		}
 		for( E e : array ) {

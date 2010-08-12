@@ -50,7 +50,7 @@ public class DoInOrderTemplate extends CascadingUbiquitousStatementTemplate {
 		super( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class, org.alice.ide.ast.NodeUtilities.createDoInOrder() );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
 		return null;
 	}
 	@Override

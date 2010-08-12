@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.alice.ast;
  */
 public class NullLiteral extends AbstractLiteral {
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		//todo
 		return TypeDeclaredInJava.OBJECT_TYPE;
 	}

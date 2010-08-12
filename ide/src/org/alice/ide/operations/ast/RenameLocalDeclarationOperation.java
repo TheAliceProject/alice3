@@ -47,6 +47,6 @@ package org.alice.ide.operations.ast;
  */
 public class RenameLocalDeclarationOperation extends RenameNodeOperation {
 	public RenameLocalDeclarationOperation( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice ) {
-		super( localDeclaredInAlice.name, new org.alice.ide.name.validators.LocalNameValidator( localDeclaredInAlice ) );
+		super( java.util.UUID.fromString( "b2998aa4-dcfc-4977-9070-449b0d587130" ), localDeclaredInAlice.name, new org.alice.ide.name.validators.LocalNameValidator( localDeclaredInAlice ) );
 	}
 }

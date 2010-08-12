@@ -45,17 +45,13 @@ package org.alice.ide.cascade.customfillin;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomStringFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.ast.StringLiteral, String > {
+public class CustomStringFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.ast.StringLiteral > {
 	@Override
-	protected String getMenuProxyText() {
-		return "Other String...";
+	protected String getTypeDescription() {
+		return "String";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser createCustomPane() {
+	protected org.alice.ide.choosers.ValueChooser< edu.cmu.cs.dennisc.alice.ast.StringLiteral > createValueChooser() {
 		return new org.alice.ide.choosers.StringChooser();
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.StringLiteral createExpression( String value ) {
-		return new edu.cmu.cs.dennisc.alice.ast.StringLiteral( value );
 	}
 }

@@ -42,8 +42,6 @@
  */
 package org.alice.apis.stage;
 
-import org.alice.apis.stage.FemaleAdultFullBodyOutfit;
-
 /**
  * @author Dennis Cosgrove
  */

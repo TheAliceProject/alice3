@@ -42,21 +42,22 @@
  */
 package org.alice.ide.codeeditor;
 
-abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.operations.ActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody original;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody replacement;
-	public ConvertStatementWithBodyActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody original, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody replacement ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+	public ConvertStatementWithBodyActionOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody original, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody replacement ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 		this.property = property;
 		this.original = original;
 		this.replacement = replacement;
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	@Override
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		final int index = this.property.indexOf( this.original );
 		final edu.cmu.cs.dennisc.alice.ast.BlockStatement body = this.original.body.getValue();
 		if( index >= 0 ) {
-			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					property.remove( index );
@@ -91,27 +92,28 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 }
 class ConvertDoInOrderToDoTogetherActionOperation extends ConvertStatementWithBodyActionOperation {
 	public ConvertDoInOrderToDoTogetherActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.DoInOrder doInOrder ) {
-		super( property, doInOrder, new edu.cmu.cs.dennisc.alice.ast.DoTogether() );
+		super( java.util.UUID.fromString( "d3abb3c6-f016-4687-be00-f0921de7cb39" ), property, doInOrder, new edu.cmu.cs.dennisc.alice.ast.DoTogether() );
 		this.setName( "Convert To DoTogether" );
 	}
 }
 class ConvertDoTogetherToDoInOrderActionOperation extends ConvertStatementWithBodyActionOperation {
 	public ConvertDoTogetherToDoInOrderActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.DoTogether doTogether ) {
-		super( property, doTogether, new edu.cmu.cs.dennisc.alice.ast.DoInOrder() );
+		super( java.util.UUID.fromString( "14aec49f-ae07-4a4c-9c0b-73c5533d514f" ), property, doTogether, new edu.cmu.cs.dennisc.alice.ast.DoInOrder() );
 		this.setName( "Convert To DoInOrder" );
 	}
 }
 
-class DissolveStatementActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody;
 	public DissolveStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "b48d1d87-9dbf-4fc5-bb07-daa56ae6bd7d" ) );
 		this.setName( "Dissolve " + abstractStatementWithBody.getClass().getSimpleName() );
 		this.property = property;
 		this.abstractStatementWithBody = abstractStatementWithBody;
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	@Override
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		final int index = this.property.indexOf( this.abstractStatementWithBody );
 		if( index >= 0 ) {
 			final int N = this.abstractStatementWithBody.body.getValue().statements.size();
@@ -119,7 +121,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.Abstract
 			final edu.cmu.cs.dennisc.alice.ast.Statement[] statements = new edu.cmu.cs.dennisc.alice.ast.Statement[ N ];
 			this.abstractStatementWithBody.body.getValue().statements.toArray( statements );
 			
-			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					property.remove( index );
@@ -149,12 +151,12 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.Abstract
 	}
 }
 
-class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 
 	public DeleteStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "c2b2810b-68ad-4935-b47f-458fe90f877b" ) );
 		StringBuffer sb = new StringBuffer();
 		sb.append( "Delete " );
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
@@ -168,10 +170,11 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractAc
 		this.property = property;
 		this.statement = statement;
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+@Override
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		final int index = this.property.indexOf( this.statement );
 		if( index >= 0 ) {
-			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					property.remove( index );
@@ -197,12 +200,19 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractAc
 	}
 }
 
-class StatementEnabledStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
+class StatementEnabledStateOperation extends edu.cmu.cs.dennisc.croquet.BooleanState {
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 
 	public StatementEnabledStateOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, statement.isEnabled.getValue(), "Is Enabled" );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue(), "IsEnabled" );
 		this.statement = statement;
+		this.addValueObserver( new ValueObserver() {
+			public void changing( boolean nextValue ) {
+			}
+			public void changed( boolean nextValue ) {
+				StatementEnabledStateOperation.this.statement.isEnabled.setValue( nextValue );
+			}
+		} );
 		//update();
 	}
 	//	private void update() {
@@ -214,11 +224,6 @@ class StatementEnabledStateOperation extends org.alice.ide.operations.AbstractBo
 	//		}
 	//		this.putValue( javax.swing.Action.NAME, text );
 	//	}
-	@Override
-	protected void handleStateChange( boolean value ) {
-		this.statement.isEnabled.setValue( value );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: undo/redo support for", this );
-	}
 }
 
 /**
@@ -226,26 +231,34 @@ class StatementEnabledStateOperation extends org.alice.ide.operations.AbstractBo
  */
 public class Factory extends org.alice.ide.common.Factory {
 	@Override
-	protected java.awt.Component createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
+	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
 		return new ArgumentListPropertyPane( this, argumentListProperty );
 	}
-	@Override
-	public java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, java.awt.Component prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType ) {
+	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType, edu.cmu.cs.dennisc.croquet.Group group ) {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionProperty.getValue();
-		java.awt.Component rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
+		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
 		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expression ) ) {
-			rv = new ExpressionPropertyDropDownPane( prefixPane, rv, expressionProperty, desiredValueType );
+			org.alice.ide.operations.ast.FillInExpressionPropertyActionOperation model = org.alice.ide.operations.ast.FillInExpressionPropertyActionOperation.getInstance( group, expressionProperty, desiredValueType );
+			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model, prefixPane, rv, expressionProperty, desiredValueType );
+			rv = expressionPropertyDropDownPane;
 		}
 		return rv;
 	}
 	@Override
+	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType ) {
+		return this.createExpressionPropertyPane( expressionProperty, prefixPane, desiredValueType, edu.cmu.cs.dennisc.alice.Project.GROUP );
+	}
+	@Override
 	public org.alice.ide.common.AbstractStatementPane createStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
 		org.alice.ide.common.AbstractStatementPane abstractStatementPane = super.createStatementPane( statement, statementListProperty );
-		abstractStatementPane.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragAndDropOperation() );
-		abstractStatementPane.setPopupOperation( new edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation( this.createPopupOperations( abstractStatementPane ) ) );
+		abstractStatementPane.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragOperation( edu.cmu.cs.dennisc.alice.Project.GROUP ) );
+		abstractStatementPane.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation(
+				java.util.UUID.fromString( "6190553d-309e-453f-b9eb-ded8aaf7ce63" ),
+				this.createPopupOperations( abstractStatementPane ) 
+		) );
 		return abstractStatementPane;
 	}
-	protected java.util.List< edu.cmu.cs.dennisc.zoot.Operation > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.zoot.Operation > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.Model > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.croquet.Model > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
 		edu.cmu.cs.dennisc.alice.ast.StatementListProperty property = abstractStatementPane.getOwner();
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.Comment ) {
@@ -260,11 +273,11 @@ public class Factory extends org.alice.ide.common.Factory {
 				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
 				edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
 				if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-					rv.add( new org.alice.ide.operations.ast.FocusCodeOperation( method ) );
+					rv.add( org.alice.ide.operations.ast.FocusCodeOperation.getInstance( method ) );
 				}
 			}
 		}
-		rv.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+		rv.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 		rv.add( new DeleteStatementActionOperation( property, statement ) );
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody = (edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)statement;
@@ -282,8 +295,8 @@ public class Factory extends org.alice.ide.common.Factory {
 		}
 		return rv;
 	}
-	private java.util.List< edu.cmu.cs.dennisc.zoot.Operation > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
-		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >(), abstractStatementPane );
+	private java.util.List< edu.cmu.cs.dennisc.croquet.Model > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
+		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.Model >(), abstractStatementPane );
 	}
 
 }

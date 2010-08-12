@@ -46,13 +46,13 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 @Deprecated
-public class CodeTitlePane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
+public class CodeTitlePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
 	public CodeTitlePane( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		this.code = code;
-		this.add( new org.alice.ide.common.TypeComponent( this.code.getDeclaringType() ) );
-		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-		this.add( new org.alice.ide.common.DeclarationNameLabel( this.code ) );
+		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( this.code.getDeclaringType() ) );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
+		this.addComponent( new org.alice.ide.common.DeclarationNameLabel( this.code ) );
 	}
 	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
 		return this.code;

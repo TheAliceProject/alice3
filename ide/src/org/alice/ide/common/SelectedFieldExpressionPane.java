@@ -42,51 +42,25 @@
  */
 package org.alice.ide.common;
 
-import org.alice.ide.event.FieldSelectionEvent;
-import org.alice.ide.event.FocusedCodeChangeEvent;
-import org.alice.ide.event.LocaleEvent;
-import org.alice.ide.event.ProjectOpenEvent;
-import org.alice.ide.event.TransientSelectionEvent;
-
 /**
  * @author Dennis Cosgrove
  */
 public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
-	private org.alice.ide.event.IDEListener ideAdapter = new org.alice.ide.event.IDEListener() {
-
-		public void fieldSelectionChanging( FieldSelectionEvent e ) {
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
+		public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractCode nextValue) {
+			SelectedFieldExpressionPane.this.handleCodeChanged( nextValue );
 		}
-		public void fieldSelectionChanged( FieldSelectionEvent e ) {
-			SelectedFieldExpressionPane.this.handleFieldChanged( e.getNextValue() );
-		}
-
-
-		public void focusedCodeChanging( FocusedCodeChangeEvent e ) {
-		}
-		public void focusedCodeChanged( FocusedCodeChangeEvent e ) {
-			SelectedFieldExpressionPane.this.handleCodeChanged( e.getNextValue() );
-		}
-
-
-		public void localeChanging( LocaleEvent e ) {
-		}
-		public void localeChanged( LocaleEvent e ) {
-		}
-
-
-		public void projectOpening( ProjectOpenEvent e ) {
-		}
-		public void projectOpened( ProjectOpenEvent e ) {
-		}
-
-
-		public void transientSelectionChanging( TransientSelectionEvent e ) {
-		}
-		public void transientSelectionChanged( TransientSelectionEvent e ) {
-		}
-		
 	};
-	
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibleSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Accessible >() {
+		public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) {
+			SelectedFieldExpressionPane.this.handleAccessibleChanged( nextValue );
+		}
+	};
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField > partSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField >() {
+		public void changed(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField nextValue) {
+			SelectedFieldExpressionPane.this.handlePartChanged( nextValue );
+		}
+	};
 	private edu.cmu.cs.dennisc.property.event.PropertyListener namePropertyAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}
@@ -94,36 +68,46 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 			SelectedFieldExpressionPane.this.updateLabel();
 		}
 	};
+	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver valueObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
+		public void changing(boolean nextValue) {
+		}
+		public void changed(boolean nextValue) {
+			SelectedFieldExpressionPane.this.updateLabel();
+		}
+	};
 	
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField field = null;
-	private javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel();
+	private edu.cmu.cs.dennisc.alice.ast.Accessible accessible = null;
+	private edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label();
 	public SelectedFieldExpressionPane( org.alice.ide.ast.SelectedFieldExpression selectedFieldExpression ) {
-		this.add( this.label );
-		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
+		this.addComponent( this.label );
+		this.setEnabledBackgroundPaint( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractField field = getIDE().getFieldSelection();
-		if( field != null ) {
-			return field.getValueType();
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
+		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = getIDE().getAccessibleListState().getSelectedItem();
+		if( accessible != null ) {
+			return accessible.getValueType();
 		} else {
 			return null;
 		}
 	}
-	private void handleFieldChanged( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		if( this.field != null ) {
-			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.field.getNamePropertyIfItExists();
+	private void handleAccessibleChanged( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
+		if( this.accessible != null ) {
+			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.accessible.getNamePropertyIfItExists();
 			if( nameProperty != null ) {
 				nameProperty.removePropertyListener( this.namePropertyAdapter );
 			}
 		}
-		this.field = field;
-		if( this.field != null ) {
-			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.field.getNamePropertyIfItExists();
+		this.accessible = accessible;
+		if( this.accessible != null ) {
+			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.accessible.getNamePropertyIfItExists();
 			if( nameProperty != null ) {
 				nameProperty.addPropertyListener( this.namePropertyAdapter );
 			}
 		}
+		this.updateLabel();
+	}
+	private void handlePartChanged( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField field ) {
 		this.updateLabel();
 	}
 	private void handleCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
@@ -131,21 +115,38 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	}
 	
 	private void updateLabel() {
-		this.label.setText( getIDE().getInstanceTextForField( this.field, true ) );
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
+		sb.append( getIDE().getInstanceTextForAccessible( this.accessible ) );
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField field = org.alice.ide.croquet.models.members.PartSelectionState.getInstance().getSelectedItem();
+		if( field != null ) {
+			//sb.append( ".getPart(" );
+			sb.append( "'s " );
+			sb.append( "<em>" );
+			sb.append( field.getName() );
+			sb.append( "</em>" );
+		}
+		sb.append( "</html>" );
+		this.label.setText( sb.toString() );
 	}
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {
 		return true;
 	}
 	@Override
-	public void addNotify() {
-		super.addNotify();
-		getIDE().addIDEListener( this.ideAdapter );
-		this.handleFieldChanged( getIDE().getFieldSelection() );
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
+		org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().addAndInvokeValueObserver( this.valueObserver );
+		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeValueObserver( this.codeSelectionObserver );
+		org.alice.ide.IDE.getSingleton().getAccessibleListState().addAndInvokeValueObserver( this.accessibleSelectionObserver );
+		org.alice.ide.croquet.models.members.PartSelectionState.getInstance().addValueObserver( this.partSelectionObserver );
 	}
 	@Override
-	public void removeNotify() {
-		getIDE().removeIDEListener( this.ideAdapter );
-		super.removeNotify();
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		org.alice.ide.croquet.models.members.PartSelectionState.getInstance().removeValueObserver( this.partSelectionObserver );
+		org.alice.ide.IDE.getSingleton().getAccessibleListState().removeValueObserver( this.accessibleSelectionObserver );
+		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeValueObserver( this.codeSelectionObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().removeValueObserver( this.valueObserver );
+		super.handleRemovedFrom( parent );
 	}
 }

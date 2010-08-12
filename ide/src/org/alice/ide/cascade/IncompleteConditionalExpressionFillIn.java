@@ -50,11 +50,11 @@ public class IncompleteConditionalExpressionFillIn extends IncompleteInfixExpres
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE, operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression createIncomplete( edu.cmu.cs.dennisc.alice.ast.AbstractType leftOperandType, edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType ) {
+	protected edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression createIncomplete( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> leftOperandType, edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType ) {
 		return org.alice.ide.ast.NodeUtilities.createIncompleteConditionalInfixExpression( operator );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression left, edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.Expression right, edu.cmu.cs.dennisc.alice.ast.AbstractType leftOperandType, edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType ) {
+	protected edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression left, edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.Expression right, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> leftOperandType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType ) {
 		return new edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression( left, operator, right );
 	}
 	

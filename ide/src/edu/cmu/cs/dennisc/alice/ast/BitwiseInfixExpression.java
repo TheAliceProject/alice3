@@ -106,23 +106,23 @@ public class BitwiseInfixExpression extends Expression {
 		};
 		public abstract Object operate( Object leftOperand, Object rightOperand );
 	}
-	public DeclarationProperty<AbstractType> expressionType = new DeclarationProperty<AbstractType>( this );
+	public DeclarationProperty<AbstractType<?,?,?>> expressionType = new DeclarationProperty<AbstractType<?,?,?>>( this );
 	public ExpressionProperty leftOperand = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			return BitwiseInfixExpression.this.expressionType.getValue();
 		}
 	};
 	public edu.cmu.cs.dennisc.property.InstanceProperty< Operator > operator = new edu.cmu.cs.dennisc.property.InstanceProperty< Operator >( this, null );
 	public ExpressionProperty rightOperand = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			return BitwiseInfixExpression.this.expressionType.getValue();
 		}
 	};
 	public BitwiseInfixExpression() {
 	}
-	public BitwiseInfixExpression( AbstractType expressionType, Expression leftOperand, Operator operator, Expression rightOperand ) {
+	public BitwiseInfixExpression( AbstractType<?,?,?> expressionType, Expression leftOperand, Operator operator, Expression rightOperand ) {
 		assert 
 			TypeDeclaredInJava.get( Long.class ).isAssignableFrom( expressionType ) || 
 			TypeDeclaredInJava.get( Integer.class ).isAssignableFrom( expressionType ) || 
@@ -136,7 +136,7 @@ public class BitwiseInfixExpression extends Expression {
 		this.rightOperand.setValue( rightOperand );
 	}
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		return this.expressionType.getValue();
 	}
 }

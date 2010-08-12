@@ -46,74 +46,82 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 public class MethodHeaderPane extends AbstractCodeHeaderPane {
-	private javax.swing.JLabel nameLabel;
-	private edu.cmu.cs.dennisc.zoot.ActionOperation popupOperation;
-	private java.awt.event.MouseListener mouseAdapter = new java.awt.event.MouseListener() {
-		public void mouseEntered( java.awt.event.MouseEvent e ) {
-		}
-		public void mouseExited( java.awt.event.MouseEvent e ) {
-		}
-		public void mousePressed( java.awt.event.MouseEvent e ) {
-			if( javax.swing.SwingUtilities.isRightMouseButton( e ) ) {
-				edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( MethodHeaderPane.this.popupOperation, e, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
-			}
-		}
-		public void mouseReleased( java.awt.event.MouseEvent e ) {
-		}
-		public void mouseClicked( java.awt.event.MouseEvent e ) {
-		}
-	};
-
-	public MethodHeaderPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice, javax.swing.JComponent parametersPane ) {
-		super( methodDeclaredInAlice );
+	public MethodHeaderPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice, ParametersPane parametersPane, boolean isPreview, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType ) {
+		super( methodDeclaredInAlice, parametersPane, isPreview );
+//		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
-			this.add( new org.alice.ide.common.TypeComponent( methodDeclaredInAlice.getReturnType() ) );
-			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-			//this.add( zoot.ZLabel.acquire( " {" ) );
+			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( methodDeclaredInAlice.getReturnType() ) );
+//			this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
 		} else {
-			this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 			StringBuffer sb = new StringBuffer();
 			if( methodDeclaredInAlice.isProcedure() ) {
-				sb.append( " procedure " );
+				sb.append( "procedure " );
 			} else {
-				this.add( new org.alice.ide.common.TypeComponent( methodDeclaredInAlice.getReturnType() ) );
+				this.addComponent( org.alice.ide.common.TypeComponent.createInstance( methodDeclaredInAlice.getReturnType() ) );
 				sb.append( " function " );
 			}
-			this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( sb.toString(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( sb.toString(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 		}
 		
 		
-		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-		this.nameLabel = new org.alice.ide.common.DeclarationNameLabel( methodDeclaredInAlice );
-		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( this.nameLabel, 2.0f );
+//		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
+		org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( methodDeclaredInAlice );
+		nameLabel.scaleFont( NAME_SCALE );
+		nameLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,4,0,4 ) );
 
 		if( methodDeclaredInAlice.isSignatureLocked.getValue() ) {
-			//pass
+			this.addComponent( nameLabel );
 		} else {
-			this.popupOperation = new edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation(
-				new org.alice.ide.operations.ast.RenameMethodOperation( methodDeclaredInAlice ) 
+			class PopupPanel extends edu.cmu.cs.dennisc.croquet.ViewController<javax.swing.JPanel, edu.cmu.cs.dennisc.croquet.Model> {
+				private edu.cmu.cs.dennisc.croquet.Component<?> centerComponent;
+				public PopupPanel( edu.cmu.cs.dennisc.croquet.Component<?> centerComponent, edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation popupMenuOperation ) {
+					super( null );
+					this.centerComponent = centerComponent;
+					this.setPopupMenuOperation( popupMenuOperation );
+				}
+				@Override
+				protected javax.swing.JPanel createAwtComponent() {
+					javax.swing.JPanel rv = new javax.swing.JPanel() {
+						@Override
+						public java.awt.Dimension getMaximumSize() {
+							return this.getPreferredSize();
+						}
+					};
+					rv.setBackground( null );
+					rv.setOpaque( false );
+					rv.setLayout( new java.awt.BorderLayout() );
+					rv.add( centerComponent.getAwtComponent(), java.awt.BorderLayout.CENTER );
+					return rv;
+				}
+			}
+			this.addComponent( 
+					new PopupPanel( 
+							nameLabel, 
+							new edu.cmu.cs.dennisc.croquet.PopupMenuOperation(
+									java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ),
+									new org.alice.ide.operations.ast.RenameMethodOperation( methodDeclaredInAlice ) 
+			
+							) 
+					) 
 			);
 		}
-
-		
-		this.add( this.nameLabel );
-		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-		if( parametersPane != null ) {
-			this.add( parametersPane );
+		this.addParametersPaneAndInstanceLineIfDesired();
+		if( declaringType != null ) {
+			//pass
+		} else {
+			declaringType = methodDeclaredInAlice.getDeclaringType();
+		}
+		if( declaringType != null ) {
+			if( declaringType instanceof edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice ) {
+				//pass
+			} else {
+				this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " on class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+				this.addComponent( org.alice.ide.common.TypeComponent.createInstance( declaringType ) );
+			}
 		}
 	}
-	@Override
-	public void addNotify() {
-		super.addNotify();
-		if( this.popupOperation != null ) {
-			this.nameLabel.addMouseListener( this.mouseAdapter );
-		}
-	}
-	@Override
-	public void removeNotify() {
-		if( this.popupOperation != null ) {
-			this.nameLabel.removeMouseListener( this.mouseAdapter );
-		}
-		super.removeNotify();
+	public MethodHeaderPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice, ParametersPane parametersPane, boolean isPreview ) {
+		this( methodDeclaredInAlice, parametersPane, isPreview, null );
 	}
 }

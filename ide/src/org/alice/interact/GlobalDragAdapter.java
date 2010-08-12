@@ -50,10 +50,12 @@ import org.alice.interact.ModifierMask.ModifierKey;
 import org.alice.interact.condition.AndInputCondition;
 import org.alice.interact.condition.ClickedObjectCondition;
 import org.alice.interact.condition.DoubleClickedObjectCondition;
+import org.alice.interact.condition.DragAndDropCondition;
 import org.alice.interact.condition.KeyPressCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MousePressCondition;
 import org.alice.interact.condition.MouseDragCondition;
+import org.alice.interact.condition.MouseWheelCondition;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.condition.SelectedObjectCondition;
@@ -73,6 +75,7 @@ import org.alice.interact.manipulator.CameraPanDragManipulator;
 import org.alice.interact.manipulator.CameraRotateKeyManipulator;
 import org.alice.interact.manipulator.CameraTiltDragManipulator;
 import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
+import org.alice.interact.manipulator.CameraZoomMouseWheelManipulator;
 import org.alice.interact.manipulator.GetAGoodLookAtManipulator;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
 import org.alice.interact.manipulator.LinearDragManipulator;
@@ -82,22 +85,33 @@ import org.alice.interact.manipulator.ObjectRotateDragManipulator;
 import org.alice.interact.manipulator.ObjectTranslateDragManipulator;
 import org.alice.interact.manipulator.ObjectTranslateKeyManipulator;
 import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
+import org.alice.interact.manipulator.OmniDirectionalBoundingBoxManipulator;
 import org.alice.interact.manipulator.OmniDirectionalDragManipulator;
+import org.alice.interact.manipulator.ResizeDragManipulator;
 import org.alice.interact.manipulator.ScaleDragManipulator;
 import org.alice.interact.manipulator.SelectObjectDragManipulator;
+import org.alice.interact.manipulator.TargetManipulator;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
+import edu.cmu.cs.dennisc.croquet.DragComponent;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.pattern.Tuple2;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.util.BoundingBoxDecorator;
 
 /**
  * @author David Culyba
  */
 public class GlobalDragAdapter extends AbstractDragAdapter {
+	
+	TargetManipulator dropTargetManipulator;
+	
 	
 	public GlobalDragAdapter( MoveAndTurnSceneEditor sceneEditor )
 	{
@@ -217,11 +231,30 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		cameraMousePan.addCondition(leftAndShift);
 		this.manipulators.add(cameraMousePan);
 		
-		ManipulatorConditionSet mouseTranslateObject = new ManipulatorConditionSet( new OmniDirectionalDragManipulator(), "Mouse Translate" );
-//		ManipulatorConditionSet mouseTranslateObject = new ManipulatorConditionSet( new MouseRelativeObjectDragManipulator(), "Mouse Translate" );
-		MouseDragCondition moveableObject = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
-		mouseTranslateObject.addCondition( moveableObject );
-		this.manipulators.add( mouseTranslateObject );
+		
+		//Object Manipulation
+		OmniDirectionalBoundingBoxManipulator boundingBoxManipulator = new OmniDirectionalBoundingBoxManipulator();
+		this.dropTargetManipulator = boundingBoxManipulator;
+		ManipulatorConditionSet dragFromGallery = new ManipulatorConditionSet( boundingBoxManipulator, "Bounding Box Translate" );
+		dragFromGallery.addCondition( new DragAndDropCondition() );
+		this.manipulators.add( dragFromGallery );
+		
+		ManipulatorConditionSet leftClickMouseTranslateObject = new ManipulatorConditionSet( new OmniDirectionalDragManipulator(), "Mouse Translate" );
+		MouseDragCondition leftClickMoveableObjects = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
+		leftClickMouseTranslateObject.addCondition( leftClickMoveableObjects );
+		this.manipulators.add( leftClickMouseTranslateObject );
+		
+		ManipulatorConditionSet leftClickMouseRotateObjectLeftRight = new ManipulatorConditionSet( new HandlelessObjectRotateDragManipulator(MovementDirection.UP) );
+		leftClickMouseRotateObjectLeftRight.addCondition( leftClickMoveableObjects );
+		//This manipulation is used only when the "rotation" interaction group is selected. Disabled by default.
+		leftClickMouseRotateObjectLeftRight.setEnabled(false);
+		this.manipulators.add( leftClickMouseRotateObjectLeftRight );
+		
+		ManipulatorConditionSet leftClickMouseResizeObject = new ManipulatorConditionSet( new ResizeDragManipulator() );
+		leftClickMouseResizeObject.addCondition( leftClickMoveableObjects );
+		//This manipulation is used only when the "rotation" interaction group is selected. Disabled by default.
+		leftClickMouseResizeObject.setEnabled(false);
+		this.manipulators.add( leftClickMouseResizeObject );
 		
 		ManipulatorConditionSet mouseUpDownTranslateObject = new ManipulatorConditionSet( new ObjectUpDownDragManipulator() );
 		MouseDragCondition moveableObjectWithShift = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS), new ModifierMask( ModifierKey.SHIFT ));
@@ -251,6 +284,15 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		ManipulatorConditionSet getAGoodLookAtObject = new ManipulatorConditionSet( new GetAGoodLookAtManipulator());
 		getAGoodLookAtObject.addCondition( new DoubleClickedObjectCondition(java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS)) );
 		this.manipulators.add( getAGoodLookAtObject );
+		
+		ManipulatorConditionSet mouseWheelCameraZoom = new ManipulatorConditionSet( new CameraZoomMouseWheelManipulator() );
+		MouseWheelCondition mouseWheelCondition = new MouseWheelCondition(new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
+		mouseWheelCameraZoom.addCondition( mouseWheelCondition );
+		this.manipulators.add( mouseWheelCameraZoom );
+		
+		
+		
+		
 		
 		for (int i=0; i<this.manipulators.size(); i++)
 		{
@@ -396,8 +438,29 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		scaleAxisZ.addToSet( HandleSet.RESIZE_INTERACTION );
 		scaleAxisZ.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION );
 		scaleAxisZ.setDragAdapter( this );
+
+		InteractionGroup defaultInteraction = new InteractionGroup(HandleSet.DEFAULT_INTERACTION, leftClickMouseTranslateObject);
+		InteractionGroup rotationInteraction = new InteractionGroup(HandleSet.ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight);
+		InteractionGroup translationInteraction = new InteractionGroup(HandleSet.TRANSLATION_INTERACTION, leftClickMouseTranslateObject);
+		InteractionGroup resizeInteraction = new InteractionGroup(HandleSet.RESIZE_INTERACTION, leftClickMouseResizeObject);
 		
-		this.setHandleSet( HandleSet.DEFAULT_INTERACTION );
+		this.interactionSelectionState.addItem(defaultInteraction);
+		this.interactionSelectionState.addItem(rotationInteraction);
+		this.interactionSelectionState.addItem(translationInteraction);
+		this.interactionSelectionState.addItem(resizeInteraction);
+		
+		this.interactionSelectionState.setSelectedItem(defaultInteraction);
+		
+		this.interactionSelectionState.addAndInvokeValueObserver(this.handleStateValueObserver);
 	}
+	
+	@Override
+	public AffineMatrix4x4 getDropTargetTransformation() 
+	{
+		return this.dropTargetManipulator.getTargetTransformation();
+	}
+	
+	
+	
 	
 }

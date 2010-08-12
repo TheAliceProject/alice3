@@ -47,7 +47,7 @@ package org.alice.ide.common;
  */
 public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls;
-	
+	private int axis;
 	protected static Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getClassFor( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		if( statement != null ) {
 			return statement.getClass();
@@ -57,13 +57,17 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 	}
 	public StatementLikeSubstance( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls, int axis ) {
 		this.statementCls = statementCls;
-		this.setLayout( new javax.swing.BoxLayout( this, axis ) );
+		this.axis = axis;
+	}
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new javax.swing.BoxLayout( jPanel, this.axis );
 	}
 	
 	public Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getStatementCls() {
 		return this.statementCls;
 	}
-	private static final int INSET = 2;
+	private static final int INSET = 1;
 	@Override
 	protected int getInsetTop() {
 		return StatementLikeSubstance.INSET;
@@ -71,11 +75,11 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 	
 	@Override
 	protected int getDockInsetLeft() {
-		return 2;
+		return 1;
 	}
 	@Override
 	protected int getInternalInsetLeft() {
-		return StatementLikeSubstance.INSET;
+		return StatementLikeSubstance.INSET + 2;
 	}
 	
 	
@@ -88,38 +92,24 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 		return StatementLikeSubstance.INSET + 4;
 	}
 	@Override
-	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
+	protected java.awt.Paint getEnabledBackgroundPaint( int x, int y, int width, int height ) {
 		return getIDE().getPaintFor( this.statementCls, x, y, width, height );
 	}
 
 	@Override
+	protected java.awt.geom.RoundRectangle2D.Float createShape( int x, int y, int width, int height ) {
+		return new java.awt.geom.RoundRectangle2D.Float( x, y, width-1, height-1, 8, 8 );
+	}
+	@Override
 	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		g2.fillRoundRect( x, y, width - 1, height - 1, 8, 8 );
+		g2.fill( this.createShape(x, y, width, height) );
 	}
 	
 	@Override
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		java.awt.geom.RoundRectangle2D rr = new java.awt.geom.RoundRectangle2D.Float( x+1, y+1, width-3, height-3, 8, 8 );
-		g2.fill( rr );
+		this.fillBounds( g2, x, y, width, height );
 	}
-	
-	protected void paintOutline( java.awt.Graphics2D g2, java.awt.geom.RoundRectangle2D.Float rr ) {
-		java.awt.Stroke prevStroke = g2.getStroke();
-		if( this.isActive() ) {
-			g2.setPaint( java.awt.Color.BLUE );
-			g2.setStroke( new java.awt.BasicStroke( 3.0f ) );
-		} else {
-			g2.setPaint( java.awt.Color.GRAY );
-		}
-		g2.draw( rr );
-		g2.setStroke( prevStroke );
-	}
-	@Override
-	protected final void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		super.paintEpilogue( g2, x, y, width, height );
-		this.paintOutline( g2, new java.awt.geom.RoundRectangle2D.Float( x+1, y+1, width-3, height-3, 8, 8 ) );
-	}
-	
+		
 //	@Override
 //	protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape() {
 //		return new edu.cmu.cs.dennisc.awt.BeveledRoundRectangle( new java.awt.geom.RoundRectangle2D.Float( 1.5f, 1.5f, (float)getWidth()-3, (float)getHeight()-3, 8.0f, 8.0f ) );

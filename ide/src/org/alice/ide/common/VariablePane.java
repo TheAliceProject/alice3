@@ -45,19 +45,17 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class VariablePane extends LocalPane {
-	private edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
+public class VariablePane extends LocalPane<edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice> {
 	public VariablePane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
 		super( variable );
-		this.variable = variable;
-		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.VariableAccess.class ) );
+		this.setEnabledBackgroundPaint( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.VariableAccess.class ) );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		return this.variable.valueType.getValue();
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
+		return this.getTransient().valueType.getValue();
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable );
+		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.getTransient() );
 	}
 }

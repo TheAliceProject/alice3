@@ -53,7 +53,7 @@ public class StringLiteral extends AbstractValueLiteral {
 		this.value.setValue( value );
 	}
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		return TypeDeclaredInJava.get( String.class );
 	}
 	@Override
@@ -62,5 +62,9 @@ public class StringLiteral extends AbstractValueLiteral {
 		rv.append( this.value.getValue() );
 		rv.append( "\"" );
 		return rv;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.property.InstanceProperty< ? > getValueProperty() {
+		return this.value;
 	}
 }

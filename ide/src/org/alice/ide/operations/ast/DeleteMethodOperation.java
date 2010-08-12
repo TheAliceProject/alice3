@@ -47,7 +47,7 @@ package org.alice.ide.operations.ast;
  */
 public class DeleteMethodOperation extends AbstractDeleteNodeOperation< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
 	public DeleteMethodOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		super( method, ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)method.getDeclaringType()).methods );
+		super( java.util.UUID.fromString( "5a07b4dc-0bd9-4393-93d2-1cc1a9b48262" ), method, ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)method.getDeclaringType()).methods );
 	}
 	@Override
 	protected boolean isClearToDelete( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
@@ -80,7 +80,7 @@ public class DeleteMethodOperation extends AbstractDeleteNodeOperation< edu.cmu.
 			sb.append( method.name.getValue() );
 			sb.append( "\" ." );
 
-			javax.swing.JOptionPane.showMessageDialog( this.getIDE(), sb.toString() );
+			this.getIDE().showMessageDialog( sb.toString() );
 			return false;
 		} else {
 			return true;

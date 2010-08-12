@@ -47,15 +47,15 @@ package org.alice.ide.templates;
  */
 public abstract class ExpressionTemplate extends org.alice.ide.common.ExpressionCreatorPane {
 	public ExpressionTemplate() {
-		this.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragAndDropOperation() );
-		
-		//todo
-		this.setPopupOperation( new org.alice.ide.operations.InconsequentialActionOperation() {
-			@Override
-			protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-				actionContext.cancel();
-			}
-		} );
+		this.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragOperation( edu.cmu.cs.dennisc.alice.Project.GROUP ) );
+//		
+//		//todo
+//		this.setPopupOperation( new org.alice.ide.operations.InconsequentialActionOperation( java.util.UUID.fromString( "20e0121d-2166-4479-af43-d45e6ae425e6" ) ) {
+//			@Override
+//			protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
+//				context.cancel();
+//			}
+//		} );
 	}
 //	@Override
 //	protected boolean isFauxDragDesired() {
@@ -63,47 +63,53 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 //	}
 	
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression();
+	private boolean isInitialized = false;
 	@Override
-	public void addNotify() {
-		super.addNotify();
-		this.refresh();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
+		if( this.isInitialized ) {
+			//pass
+		} else {
+			this.refresh();
+			this.isInitialized = true;
+		}
 	}
 	@Override
-	public void removeNotify() {
-		this.removeAll();
-		super.removeNotify();
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		//this.removeAllComponents();
+		super.handleRemovedFrom( parent );
 	}
 	protected void refresh() {
-		this.removeAll();
+		this.removeAllComponents();
 		edu.cmu.cs.dennisc.alice.ast.Expression incompleteExpression = this.createIncompleteExpression();
-		this.setBackground( getIDE().getColorFor( incompleteExpression ) );
-		this.add( getIDE().getTemplatesFactory().createComponent( incompleteExpression ) );
+		this.setEnabledBackgroundPaint( getIDE().getColorFor( incompleteExpression ) );
+		this.addComponent( getIDE().getTemplatesFactory().createComponent( incompleteExpression ) );
 	}
 	@Override
 	protected boolean isPressed() {
 		return false;
 	}
 	
-	protected boolean isFieldInScope()
-	{
-		return getIDE().isSelectedFieldInScope();
+	@Override
+	protected boolean isInScope() {
+		return getIDE().isSelectedAccessibleInScope();
 	}
 	
 	@Override
-	public boolean contains( int x, int y ) {
-		if( this.isFieldInScope() ) {
-			return super.contains( x, y );
+	protected boolean contains( int x, int y, boolean jContains ) {
+		if( this.isInScope() ) {
+			return super.contains( x, y, jContains );
 		} else {
 			return false;
 		}
 	}
+		
 	@Override
-	public void paint( java.awt.Graphics g ) {
-		super.paint( g );
-		if( this.isFieldInScope() ) {
+	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		super.paintEpilogue( g2, x, y, width, height );
+		if( this.isInScope() ) {
 			//pass
 		} else {
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 			g2.setPaint( edu.cmu.cs.dennisc.zoot.PaintUtilities.getDisabledTexturePaint() );
 			this.fillBounds( g2 );
 		}

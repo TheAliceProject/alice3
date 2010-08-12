@@ -46,8 +46,15 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class DefaultStatementPane extends AbstractStatementPane {
+	private int maxYForIfBlock = -1;
 	public DefaultStatementPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
 		super( factory, statement, owner );
-		this.add( factory.createComponent( statement ) );
+		this.addComponent( factory.createComponent( statement ) );
+	}
+	public int getMaxYForIfBlock() {
+		return this.maxYForIfBlock;
+	}
+	public void setMaxYForIfBlock(int maxYForIfBlock) {
+		this.maxYForIfBlock = maxYForIfBlock;
 	}
 }

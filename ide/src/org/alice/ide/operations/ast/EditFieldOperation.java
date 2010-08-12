@@ -42,25 +42,23 @@
  */
 package org.alice.ide.operations.ast;
 
-import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-
 /**
  * @author Dennis Cosgrove
  */
 public class EditFieldOperation extends AbstractEditFieldOperation {
-	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
 	public EditFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, "Edit " + field.getName() + "..." );
-		this.field = field;
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "66bf123b-f047-4cba-86ea-04d3a0a1f689" ), "<html>Edit <strong>" + field.getName() + "</strong>...</html>", field );
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		final java.util.Set< FieldDeclaredInAlice > referencedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
-		final java.util.Set< FieldDeclaredInAlice > reassignedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+	@Override
+	protected org.alice.ide.declarationpanes.EditFieldPane prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.EditFieldPane > context ) {
+		final java.util.Set< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > referencedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+		final java.util.Set< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > reassignedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 		if( project != null ) {
+			final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = this.getField();
 			ide.ensureProjectCodeUpToDate();
-			edu.cmu.cs.dennisc.alice.ast.AbstractType programType = project.getProgramType();
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = project.getProgramType();
 			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess >( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) {
 				@Override
 				protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
@@ -70,21 +68,21 @@ public class EditFieldOperation extends AbstractEditFieldOperation {
 			programType.crawl( crawler, true );
 			java.util.List< edu.cmu.cs.dennisc.alice.ast.FieldAccess > fieldAccesses = crawler.getList();
 			if( fieldAccesses.size() > 0 ) {
-				referencedFields.add( this.field );
+				referencedFields.add( field );
 				for( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess : fieldAccesses ) {
 					edu.cmu.cs.dennisc.alice.ast.Node parent = fieldAccess.getParent();
 					if( parent instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {
 						edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression = (edu.cmu.cs.dennisc.alice.ast.AssignmentExpression)parent;
 						if( assignmentExpression.leftHandSide.getValue() == fieldAccess ) {
-							reassignedFields.add( this.field );
+							reassignedFields.add( field );
 							break;
 						}
 					}
 				}
 			}
-			this.perform( actionContext, field, referencedFields, reassignedFields );
+			return super.prologue( context, referencedFields, reassignedFields );
 		} else {
-			actionContext.cancel();
+			return null;
 		}
 	}
 }

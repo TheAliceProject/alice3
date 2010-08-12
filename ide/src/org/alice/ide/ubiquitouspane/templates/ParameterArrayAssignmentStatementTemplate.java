@@ -56,7 +56,7 @@ public class ParameterArrayAssignmentStatementTemplate extends ArrayAssignmentSt
 		return this.parameter.getName();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getTransientComponentType() {
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getTransientComponentType() {
 		return this.parameter.valueType.getValue().getComponentType();
 	}
 	

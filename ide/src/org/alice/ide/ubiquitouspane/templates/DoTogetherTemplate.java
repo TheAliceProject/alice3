@@ -50,7 +50,7 @@ public class DoTogetherTemplate extends CascadingUbiquitousStatementTemplate {
 		super( edu.cmu.cs.dennisc.alice.ast.DoTogether.class, org.alice.ide.ast.NodeUtilities.createDoTogether() );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
 		return null;
 	}
 	@Override

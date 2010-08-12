@@ -274,9 +274,20 @@ public class RenderContext extends Context {
 	}
 
 	private float m_globalBrightness = 1.0f;
-
+	
+	public float getGlobalBrightness() {
+		return m_globalBrightness;
+	}
 	public void setGlobalBrightness( float globalBrightness ) {
 		m_globalBrightness = globalBrightness;
+	}
+	
+	public float[] getAmbient( float[] rv ) {
+		rv[ 0 ] = m_ambient[ 0 ];
+		rv[ 1 ] = m_ambient[ 1 ];
+		rv[ 2 ] = m_ambient[ 2 ];
+		rv[ 3 ] = m_ambient[ 3 ];
+		return rv;
 	}
 
 	private static float[] s_color = new float[ 4 ];

@@ -45,41 +45,99 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareMethodParameterOperation extends AbstractCodeOperation {
+public class DeclareMethodParameterOperation extends org.alice.ide.operations.InputDialogWithPreviewOperation<org.alice.ide.declarationpanes.CreateMethodParameterPane> {
+	@Deprecated
+//	public interface EPIC_HACK_Validator {
+//		public String getExplanationIfOkButtonShouldBeDisabled( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > valueType );
+//	}
+//	private EPIC_HACK_Validator validator = null;
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice, DeclareMethodParameterOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static DeclareMethodParameterOperation getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		DeclareMethodParameterOperation rv = map.get( method );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new DeclareMethodParameterOperation( method );
+			map.put( method, rv );
+		}
+		return rv;
+	}
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
-
-	public DeclareMethodParameterOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+	private DeclareMethodParameterOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "aa3d337d-b409-46ae-816f-54f139b32d86" ) );
 		this.method = method;
 		this.setName( "Add Parameter..." );
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {
-		return this.method;
-	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = new org.alice.ide.declarationpanes.CreateMethodParameterPane( method, this.getIDE().getMethodInvocations( method ) );
-		final edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = createMethodParameterPane.showInJDialog( getIDE() );
-		if( parameter != null ) {
-			final int index = method.parameters.size();
-			final java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument >();
-			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
-				@Override
-				public void doOrRedo( boolean isDo ) {
-					org.alice.ide.ast.NodeUtilities.addParameter( map, method, parameter, index, getIDE().getMethodInvocations( method ) );
-				}
-				@Override
-				public void undo() {
-					org.alice.ide.ast.NodeUtilities.removeParameter( map, method, parameter, index, getIDE().getMethodInvocations( method ) );
-				}
-				@Override
-				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-					rv.append( "declare:" );
-					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, parameter, locale);
-					return rv;
-				}
-			} );
+//	public EPIC_HACK_Validator getValidator() {
+//		return this.validator;
+//	}
+//	public void setValidator( EPIC_HACK_Validator validator ) {
+//		this.validator = validator;
+//	}
+//	@Override
+//	protected String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context) {
+//		String rv = super.getExplanationIfOkButtonShouldBeDisabled( context );
+//		if( this.validator != null ) {
+//			String explanation = this.validator.getExplanationIfOkButtonShouldBeDisabled( this.getDeclarationName( context ), this.getValueType( context ) );
+//			if( explanation != null ) {
+//				rv = explanation;
+//			}
+//		}
+//		return rv;
+//	}
+
+	private String getDeclarationName(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context) {
+		org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = context.getMainPanel();
+		if( createMethodParameterPane != null ) {
+			return createMethodParameterPane.getDeclarationName();
 		} else {
-			actionContext.cancel();
+			return null;
+		}
+	}
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > getValueType(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context) {
+		org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = context.getMainPanel();
+		if( createMethodParameterPane != null ) {
+			return createMethodParameterPane.getValueType();
+		} else {
+			return null;
+		}
+	}
+
+	
+	@Override
+	protected org.alice.ide.declarationpanes.CreateMethodParameterPane prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context) {
+		//todo: create before hand and refresh at this point
+		return new org.alice.ide.declarationpanes.CreateMethodParameterPane( method, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
+	}
+	@Override
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context, boolean isOk) {
+		if( isOk ) {
+			org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = context.getMainPanel();
+			final edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = createMethodParameterPane.getActualInputValue();
+			if( parameter != null ) {
+				final int index = method.parameters.size();
+				final java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument >();
+				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+					@Override
+					public void doOrRedo( boolean isDo ) {
+						org.alice.ide.ast.NodeUtilities.addParameter( map, method, parameter, index, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
+					}
+					@Override
+					public void undo() {
+						org.alice.ide.ast.NodeUtilities.removeParameter( map, method, parameter, index, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
+					}
+					@Override
+					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+						rv.append( "declare:" );
+						edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, parameter, locale);
+						return rv;
+					}
+				} );
+			} else {
+				context.cancel();
+			}
+		} else {
+			context.cancel();
 		}
 	}
 }

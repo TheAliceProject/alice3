@@ -50,10 +50,11 @@ import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
  */
 public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 	public DeleteParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
-		super( parametersProperty, parameter );
+		super( java.util.UUID.fromString( "853fb6a3-ea7b-4575-93d6-547f687a7033" ), parametersProperty, parameter );
 		this.setName( "Delete" );
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	@Override
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		final java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument >();
 		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getCode(), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
 		final int index = method.parameters.indexOf( this.getParameter() );
@@ -86,9 +87,9 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 				} else {
 					sb.append( "accesses" );
 				}
-				sb.append( " before you may delete the parameter.<br>Cancelling.</body></html>" );
-				javax.swing.JOptionPane.showMessageDialog( this.getIDE(), sb.toString() );
-				actionContext.cancel();
+				sb.append( " before you may delete the parameter.<br>Canceling.</body></html>" );
+				this.getIDE().showMessageDialog( sb.toString() );
+				context.cancel();
 			} else {
 				if( N_INVOCATIONS > 0 ) {
 					String codeText;
@@ -115,18 +116,18 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 						sb.append( "invocations" );
 					}
 					sb.append( "<br>Would you like to continue with the deletion?</body></html>" );
-					int result = javax.swing.JOptionPane.showConfirmDialog(this.getIDE(), sb.toString(), "Delete Parameter", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION );
-					if( result == javax.swing.JOptionPane.YES_OPTION ){
+					edu.cmu.cs.dennisc.croquet.YesNoCancelOption result = this.getIDE().showYesNoCancelConfirmDialog(sb.toString(), "Delete Parameter");
+					if( result == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.YES ){
 						//pass
 					} else {
-						actionContext.cancel();
+						context.cancel();
 					}
 				}
 			}
-			if( actionContext.isCancelled() ) {
+			if( context.isCanceled() ) {
 				//pass
 			} else {
-				actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
 					public void doOrRedo( boolean isDo ) {
 						org.alice.ide.ast.NodeUtilities.removeParameter( map, method, getParameter(), index, getIDE().getMethodInvocations( method ) );
@@ -145,7 +146,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 			}
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: DeleteParameterOperation" );
-			actionContext.cancel();
+			context.cancel();
 		}
 	}
 }

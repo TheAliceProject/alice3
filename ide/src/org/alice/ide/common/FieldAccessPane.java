@@ -53,23 +53,42 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 		this.fieldAccess = fieldAccess;
 		boolean isExpressionDesired;
 		if( this.fieldAccess.expression.getValue() instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
-			isExpressionDesired = getIDE().isJava();
+			isExpressionDesired = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().isTypeExpressionDesired();
 		} else {
 			isExpressionDesired = true;
 		}
 		if( isExpressionDesired ) {
-			this.add( factory.createExpressionPropertyPane( this.fieldAccess.expression, null ) );
-//			if( getIDE().isJava() ) {
-//				//pass
-//			} else {
-				this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "." ) );
-//			}
+			this.addComponent( factory.createExpressionPropertyPane( this.fieldAccess.expression, null ) );
+			if( getIDE().isJava() ) {
+				//pass
+			} else {
+				this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "." ) );
+			}
 		}
-		org.alice.ide.common.DeclarationNameLabel nodeNameLabel = new org.alice.ide.common.DeclarationNameLabel( this.fieldAccess.field.getValue() );
-		//nodeNameLabel.setFontToScaledFont( 1.2f );
-		//nodeNameLabel.setFontToDerivedFont( zoot.font.ZTextWeight.BOLD );
-		this.add( nodeNameLabel );
-		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
+		Class< ? extends edu.cmu.cs.dennisc.alice.ast.Expression > cls = edu.cmu.cs.dennisc.alice.ast.FieldAccess.class;
+		this.setEnabledBackgroundPaint( getIDE().getColorFor( cls ) );
+		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.fieldAccess.field.getValue();
+		org.alice.ide.common.DeclarationNameLabel nodeNameLabel = new org.alice.ide.common.DeclarationNameLabel( field );
+		//nodeNameLabel.scaleFont( 1.2f );
+		//nodeNameLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		org.alice.ide.IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = org.alice.ide.IDE.getSingleton().getAccessorAndMutatorDisplayStyle( field );
+		boolean isGetter = accessorAndMutatorDisplayStyle == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
+		if( isExpressionDesired ) {
+			if( isGetter ) {
+				edu.cmu.cs.dennisc.croquet.Label getLabel = new edu.cmu.cs.dennisc.croquet.Label( "get" );
+				//getLabel.scaleFont( 1.2f );
+				//getLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+				this.addComponent( getLabel );
+			}
+		}
+		this.addComponent( nodeNameLabel );
+		if( isExpressionDesired ) {
+			if( isGetter ) {
+				if( org.alice.ide.IDE.getSingleton().isJava() ) {
+					this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "()" ) );
+				}
+			}
+		}
 	}
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {
@@ -80,7 +99,7 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
 		if( this.fieldAccess != null ) {
 			return this.fieldAccess.field.getValue().getValueType();
 		} else {

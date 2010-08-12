@@ -48,8 +48,14 @@ package edu.cmu.cs.dennisc.alice.ast;
  */
 public class ThisExpression extends Expression {
 	@Override
-	public AbstractType getType() {
-		return this.getFirstAncestorAssignableTo( AbstractType.class );
+	public AbstractType<?,?,?> getType() {
+		AbstractType<?,?,?> rv = this.getFirstAncestorAssignableTo( AbstractType.class );
+		if( rv != null ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "ThisExpression cannot find type" );
+		}
+		return rv;
 //		//todo
 //		return TypeDeclaredInJava.OBJECT_TYPE;
 	}

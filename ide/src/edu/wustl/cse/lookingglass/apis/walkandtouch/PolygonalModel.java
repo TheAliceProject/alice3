@@ -87,20 +87,37 @@ public class PolygonalModel extends org.alice.apis.moveandturn.PolygonalModel {
 		straightenUp(1.0);
 	}
 	
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void moveTo(PolygonalModel target, SpatialRelation spatialRelation, Number offset, Number duration) {
-		perform( new edu.wustl.cse.lookingglass.apis.walkandtouch.animation.BetterPlaceAnimation(this, target, spatialRelation, offset.doubleValue(), duration.doubleValue()));
+		placeRelativeTo(target, spatialRelation, offset, duration);
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED)
 	public void moveTo(PolygonalModel target, SpatialRelation spatialRelation, Number offset) {
-		moveTo(target, spatialRelation, offset, 1.0);
+		placeRelativeTo(target, spatialRelation, offset);
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED)
 	public void moveTo(PolygonalModel target, SpatialRelation spatialRelation) {
+		placeRelativeTo(target, spatialRelation);
+	}
+//	@MethodTemplate( visibility=Visibility.CHAINED)
+//	public void moveTo(PolygonalModel target) {
+//		placeRelativeTo(target);
+//	}
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void placeRelativeTo(PolygonalModel target, SpatialRelation spatialRelation, Number offset, Number duration) {
+		perform( new edu.wustl.cse.lookingglass.apis.walkandtouch.animation.BetterPlaceAnimation(this, target, spatialRelation, offset.doubleValue(), duration.doubleValue()));
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED)
+	public void placeRelativeTo(PolygonalModel target, SpatialRelation spatialRelation, Number offset) {
+		moveTo(target, spatialRelation, offset, 1.0);
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED)
+	public void placeRelativeTo(PolygonalModel target, SpatialRelation spatialRelation) {
 		moveTo(target, spatialRelation, 1.0);
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED)
-	public void moveTo(PolygonalModel target) {
+	public void placeRelativeTo(PolygonalModel target) {
 		moveTo(target, SpatialRelation.IN_FRONT_OF);
 	}
 //	
@@ -291,6 +308,7 @@ public class PolygonalModel extends org.alice.apis.moveandturn.PolygonalModel {
 		moveRightNow( direction, amount, AsSeenBy.SELF );
 	}
 
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void setPositionRightNow( edu.cmu.cs.dennisc.math.Point3 offset, org.alice.apis.moveandturn.ReferenceFrame asSeenBy ) {
 		org.alice.apis.moveandturn.StandIn standIn = acquireStandIn( asSeenBy, offset );
 		try {
@@ -299,6 +317,7 @@ public class PolygonalModel extends org.alice.apis.moveandturn.PolygonalModel {
 			releaseStandIn( standIn );
 		}
 	}
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void setPositionRightNow( double x, double y, double z, org.alice.apis.moveandturn.ReferenceFrame asSeenBy ) {
 		setPositionRightNow( new edu.cmu.cs.dennisc.math.Point3( x, y, z ), asSeenBy );
 	}

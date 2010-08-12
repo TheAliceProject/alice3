@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationNameLabel extends javax.swing.JLabel {
+public class DeclarationNameLabel extends edu.cmu.cs.dennisc.croquet.Label {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration declaration;
 
 	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
@@ -61,11 +61,15 @@ public class DeclarationNameLabel extends javax.swing.JLabel {
 	public DeclarationNameLabel( edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration declaration ) {
 		this.declaration = declaration;
 		this.updateText();
-		this.setForeground( java.awt.Color.BLACK );
+		this.setForegroundColor( java.awt.Color.BLACK );
+	}
+	public DeclarationNameLabel( edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration declaration, float fontScaleFactor ) {
+		this( declaration );
+		this.scaleFont( fontScaleFactor );
 	}
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		if( this.declaration != null ) {
 			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.declaration.getNamePropertyIfItExists();
 			if( nameProperty != null ) {
@@ -73,26 +77,28 @@ public class DeclarationNameLabel extends javax.swing.JLabel {
 			}
 		}
 	}
+	
 	@Override
-	public void removeNotify() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		if( this.declaration != null ) {
 			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.declaration.getNamePropertyIfItExists();
 			if( nameProperty != null ) {
 				nameProperty.removePropertyListener( this.namePropertyAdapter );
 			}
 		}
-		super.removeNotify();
+		super.handleRemovedFrom( parent );
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration getDeclaration() {
 		return this.declaration;
 	}
 	
 	protected String getNameText() {
-		return this.declaration.getName();
+		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
+		return formatter.getNameForDeclaration( this.declaration );
 	}
 	
 	protected String getTextForNullName() {
-		return org.alice.ide.IDE.getSingleton().getTextForNull();
+		return org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForNull();
 	}
 	protected final String getTextForBlankName() {
 		return "<unset>";
