@@ -81,7 +81,7 @@ public class StepsComboBox extends edu.cmu.cs.dennisc.croquet.JComponent< javax.
 			}
 		} );
 
-		StepCellRenderer stepCellRenderer = new StepCellRenderer( this.stepsComboBoxModel, TutorialStencil.CONTROL_COLOR );
+		StepCellRenderer stepCellRenderer = new StepCellRenderer( this.stepsComboBoxModel.getStepsModel(), TutorialStencil.CONTROL_COLOR );
 		rv.setRenderer( stepCellRenderer );
 		return rv;
 	}
