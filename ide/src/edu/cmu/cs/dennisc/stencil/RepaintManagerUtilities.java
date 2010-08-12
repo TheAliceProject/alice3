@@ -40,15 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.tutorial;
+package edu.cmu.cs.dennisc.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class RepaintManagerUtilities {
+public class RepaintManagerUtilities {
 	private static javax.swing.RepaintManager originalRepaintManager;
 	private static java.util.Stack< javax.swing.JComponent > stencils = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	
+	private RepaintManagerUtilities() {
+		throw new AssertionError();
+	}
 	public static void pushStencil( javax.swing.JComponent jStencil ) {
 		if( stencils.size() > 0 ) {
 			//pass
@@ -58,21 +61,19 @@ package edu.cmu.cs.dennisc.tutorial;
 				@Override
 				public void addDirtyRegion(javax.swing.JComponent c, int x, int y, int w, int h) {
 					super.addDirtyRegion(c, x, y, w, h);
-					//edu.cmu.cs.dennisc.print.PrintUtilities.println( "addDirtyRegion", c, x, y, w, h );
-					for( final javax.swing.JComponent jStencil : stencils ) {
-						if( jStencil == c || jStencil.isAncestorOf( c ) ) {
-							//pass
-						} else {
-							java.awt.Rectangle rect = new java.awt.Rectangle(x,y,w,h);
-							java.awt.Rectangle visibleRect = rect.intersection( c.getVisibleRect() );
-							final java.awt.Rectangle rectAsSeenByStencil = javax.swing.SwingUtilities.convertRectangle( c, visibleRect, jStencil );
-							javax.swing.SwingUtilities.invokeLater(new Runnable() {
-								public void run() {
-									jStencil.repaint( rectAsSeenByStencil.x, rectAsSeenByStencil.y, rectAsSeenByStencil.width, rectAsSeenByStencil.height );
-									//StencilRepaintManager.super.addDirtyRegion( jStencil, rect.x, rect.y, rect.width, rect.height);
-								}
-							} );
-						}
+					final javax.swing.JComponent jStencil = stencils.peek();
+					if( jStencil == c || jStencil.isAncestorOf( c ) ) {
+						//pass
+					} else {
+						java.awt.Rectangle rect = new java.awt.Rectangle(x,y,w,h);
+						java.awt.Rectangle visibleRect = rect.intersection( c.getVisibleRect() );
+						final java.awt.Rectangle rectAsSeenByStencil = javax.swing.SwingUtilities.convertRectangle( c, visibleRect, jStencil );
+						javax.swing.SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								jStencil.repaint( rectAsSeenByStencil.x, rectAsSeenByStencil.y, rectAsSeenByStencil.width, rectAsSeenByStencil.height );
+								//StencilRepaintManager.super.addDirtyRegion( jStencil, rect.x, rect.y, rect.width, rect.height);
+							}
+						} );
 					}
 				}				
 			} );

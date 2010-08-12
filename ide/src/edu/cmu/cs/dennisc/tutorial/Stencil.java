@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.tutorial;
 
+import edu.cmu.cs.dennisc.stencil.RepaintManagerUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
