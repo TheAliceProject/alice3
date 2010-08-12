@@ -57,6 +57,45 @@ public class ComponentUtilities {
 		component.setBackground( java.awt.Color.GREEN );
 	}
 	
+	private static java.awt.Point getLocation( java.awt.Point rv, java.awt.Component c, java.awt.Component ancestor ) {
+		assert c != null;
+		if( c == ancestor ) {
+			return rv;
+		} else {
+			rv.x += c.getX();
+			rv.y += c.getY();
+			return getLocation( rv, c.getParent(), ancestor );
+		}
+	}
+	private static java.awt.Point getLocation( java.awt.Component c, java.awt.Component ancestor ) {
+		return getLocation( new java.awt.Point(), c, ancestor );
+	}
+
+	public static java.awt.Point convertPoint( java.awt.Component src, int srcX, int srcY, java.awt.Component dst ) {
+		java.awt.Component srcRoot = javax.swing.SwingUtilities.getRoot( src );
+		java.awt.Component dstRoot = javax.swing.SwingUtilities.getRoot( dst );
+		//avoid tree lock, if possible
+		if( srcRoot == dstRoot ) {
+			java.awt.Point srcPt = getLocation( src, srcRoot );
+			java.awt.Point dstPt = getLocation( dst, dstRoot );
+			java.awt.Point rv = srcPt;
+			rv.x -= dstPt.x;
+			rv.y -= dstPt.y;
+			rv.x += srcX;
+			rv.y += srcY;
+			return rv;
+		} else {
+			return javax.swing.SwingUtilities.convertPoint( src, srcX, srcY, dst );
+		}
+	}
+	public static java.awt.Point convertPoint( java.awt.Component src, java.awt.Point srcPt, java.awt.Component dst ) {
+		return convertPoint( src, srcPt.x, srcPt.y, dst );
+	}
+
+	public static java.awt.Rectangle convertRectangle( java.awt.Component src, java.awt.Rectangle srcRect, java.awt.Component dst ) {
+		java.awt.Point pt = convertPoint( src, srcRect.x, srcRect.y, dst );
+		return new java.awt.Rectangle( pt.x, pt.y, srcRect.width, srcRect.height );
+	}
 	
 	public static final edu.cmu.cs.dennisc.pattern.HowMuch DEFAULT_HOW_MUCH = edu.cmu.cs.dennisc.pattern.HowMuch.COMPONENT_AND_DESCENDANTS;
 	private static <E extends java.awt.Component> E getFirstToAccept( boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, java.awt.Component component, Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
