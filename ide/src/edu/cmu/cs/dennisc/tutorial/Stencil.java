@@ -430,6 +430,8 @@ import edu.cmu.cs.dennisc.stencil.RepaintManagerUtilities;
 		final JStencil rv = new JStencil();
 		rv.setLayout(new java.awt.BorderLayout());
 		rv.setOpaque(false);
+		rv.setCursor( java.awt.dnd.DragSource.DefaultMoveNoDrop );
+		
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		return rv;
 	}

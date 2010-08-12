@@ -60,7 +60,7 @@ public class RepaintManagerUtilities {
 				java.awt.Component srcRoot = javax.swing.SwingUtilities.getRoot( c );
 				java.awt.Component dstRoot = javax.swing.SwingUtilities.getRoot( jStencil );
 
-				if( srcRoot == dstRoot ) {
+				if( srcRoot != null && srcRoot == dstRoot ) {
 					java.awt.Rectangle rect = new java.awt.Rectangle(x,y,w,h);
 					java.awt.Rectangle visibleRect = rect.intersection( c.getVisibleRect() );
 					if( visibleRect.width != 0 && visibleRect.height != 0 ) {

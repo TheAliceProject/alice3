@@ -75,7 +75,7 @@ public class ComponentUtilities {
 		java.awt.Component srcRoot = javax.swing.SwingUtilities.getRoot( src );
 		java.awt.Component dstRoot = javax.swing.SwingUtilities.getRoot( dst );
 		//avoid tree lock, if possible
-		if( srcRoot == dstRoot ) {
+		if( srcRoot != null && srcRoot == dstRoot ) {
 			java.awt.Point srcPt = getLocation( src, srcRoot );
 			java.awt.Point dstPt = getLocation( dst, dstRoot );
 			java.awt.Point rv = srcPt;

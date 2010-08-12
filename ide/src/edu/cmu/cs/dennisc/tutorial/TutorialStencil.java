@@ -156,9 +156,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		controlPanel.addComponent(this.previousStepOperation.createButton());
 		controlPanel.addComponent(new StepsComboBox( this.stepsComboBoxModel ) );
 		controlPanel.addComponent(this.nextStepOperation.createButton());
-
 		this.controlsPanel.addComponent(controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
-		
 		this.isPaintingStencil.setTextForTrueAndTextForFalse( "", "WARNING: stencil is disabled.  Click here to turn re-enable." );
 		
 		edu.cmu.cs.dennisc.croquet.CheckBox isPlayingSoundsCheckBox = this.isPlayingSounds.createCheckBox();
@@ -177,6 +175,13 @@ package edu.cmu.cs.dennisc.tutorial;
 		eastPanel.addComponent( isPaintingStencilCheckBox );
 		this.controlsPanel.addComponent(eastPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END);
 		this.controlsPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 0, 4));
+
+		for( edu.cmu.cs.dennisc.croquet.Component< ? > component : controlPanel.getComponents() ) {
+			component.setCursor( java.awt.Cursor.getDefaultCursor() );
+		}
+		isPlayingSoundsCheckBox.setCursor( java.awt.Cursor.getDefaultCursor() );
+		isPaintingStencilCheckBox.setCursor( java.awt.Cursor.getDefaultCursor() );
+		//isInterceptingEventsCheckBox.setCursor( java.awt.Cursor.getDefaultCursor() );
 
 		this.internalAddComponent(this.controlsPanel, java.awt.BorderLayout.NORTH);
 		this.internalAddComponent(this.cardPanel, java.awt.BorderLayout.CENTER);

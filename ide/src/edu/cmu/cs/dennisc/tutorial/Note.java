@@ -242,6 +242,8 @@ package edu.cmu.cs.dennisc.tutorial;
 		};
 		rv.setLayout( new java.awt.BorderLayout() );
 		rv.add( textComponent, java.awt.BorderLayout.NORTH );
+		rv.setCursor( java.awt.Cursor.getDefaultCursor() );
+		
 		//rv.setBackground( BASE_COLOR );
 		edu.cmu.cs.dennisc.croquet.BorderPanel southPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		edu.cmu.cs.dennisc.croquet.Hyperlink hyperlink = getTutorialStencil().getNextOperation().createHyperlink();
