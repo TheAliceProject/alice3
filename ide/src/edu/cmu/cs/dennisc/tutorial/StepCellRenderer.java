@@ -46,13 +46,13 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/class StepCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< Step > {
-	private StepsComboBoxModel stepsComboBoxModel;
+	private StepsModel stepsModel;
 	private java.awt.Color background;
 	private java.awt.Color disabledBackground;
 	private java.awt.Color disabledForeground;
 
-	public StepCellRenderer( StepsComboBoxModel stepsComboBoxModel, java.awt.Color background ) {
-		this.stepsComboBoxModel = stepsComboBoxModel;
+	public StepCellRenderer( StepsModel stepsModel, java.awt.Color background ) {
+		this.stepsModel = stepsModel;
 		this.background = background;
 		this.disabledBackground = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.background, 1.0, 0.5, 1.25 );
 		this.disabledForeground = java.awt.Color.LIGHT_GRAY;
@@ -66,10 +66,10 @@ package edu.cmu.cs.dennisc.tutorial;
 			if (index >= 0) {
 				i = index;
 			} else {
-				i = stepsComboBoxModel.getSelectedIndex();
+				i = stepsModel.getSelectedIndex();
 				// if( i >= 0 ) {
-				// assert value == stepsComboBoxModel.getElementAt( i ) :
-				// stepsComboBoxModel.getElementAt( i );
+				// assert value == stepsModel.getElementAt( i ) :
+				// stepsModel.getElementAt( i );
 				// }
 			}
 			sb.append("Step ");
@@ -79,7 +79,7 @@ package edu.cmu.cs.dennisc.tutorial;
 			rv.setText(sb.toString());
 		}
 		
-		if( stepsComboBoxModel.isForwardEnabled() || index <= stepsComboBoxModel.getSelectedIndex() ) {
+		if( stepsModel.isForwardEnabled() || index <= stepsModel.getSelectedIndex() ) {
 			if( isSelected || cellHasFocus ) {
 				//pass
 			} else {

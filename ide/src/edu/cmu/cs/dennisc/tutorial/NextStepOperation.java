@@ -46,20 +46,20 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/class NextStepOperation extends TutorialOperation {
-	private StepsComboBoxModel stepsComboBoxModel;
+	private StepsModel stepsModel;
 
-	public NextStepOperation( StepsComboBoxModel stepsComboBoxModel ) {
+	public NextStepOperation( StepsModel stepsModel ) {
 		super( java.util.UUID.fromString( "114060ef-1231-433b-9084-48faa024d1ba" ), "Next \u2192" );
-		this.stepsComboBoxModel = stepsComboBoxModel;
+		this.stepsModel = stepsModel;
 		// this.setName( "Next \u21E8" );
 	}
 
 	@Override
 	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		if( this.stepsComboBoxModel.getSelectedIndex() < this.stepsComboBoxModel.getSize() - 1 ) {
+		if( this.stepsModel.getSelectedIndex() < this.stepsModel.getSize() - 1 ) {
 			try {
 				TutorialStencil.isResultOfNextOperation = true;
-				this.stepsComboBoxModel.incrementSelectedIndex();
+				this.stepsModel.incrementSelectedIndex();
 			} finally {
 				TutorialStencil.isResultOfNextOperation = false;
 			}

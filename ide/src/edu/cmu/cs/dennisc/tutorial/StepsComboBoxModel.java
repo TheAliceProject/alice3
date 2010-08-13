@@ -46,86 +46,24 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class StepsComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
-	public static interface SelectionObserver {
-		public void selectionChanging( StepsComboBoxModel source, int fromIndex, int toIndex );
-		public void selectionChanged( StepsComboBoxModel source, int fromIndex, int toIndex );
+	private StepsModel stepsModel;
+	public StepsComboBoxModel( StepsModel stepsModel ) {
+		this.stepsModel = stepsModel;
 	}
-	private int selectedIndex = -1;
-	private java.util.List<Step> steps = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private boolean isForwardEnabled;
-	
-	private java.util.List< SelectionObserver > selectionObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public StepsComboBoxModel( boolean isForwardEnabled ) {
-		this.isForwardEnabled = isForwardEnabled;
-	}
-	
-	public void addSelectionObserver( SelectionObserver selectionObserver ) {
-		this.selectionObservers.add( selectionObserver );
-	}
-	public void removeSelectionObserver( SelectionObserver selectionObserver ) {
-		this.selectionObservers.add( selectionObserver );
-	}
-	public boolean isForwardEnabled() {
-		return this.isForwardEnabled;
+	public StepsModel getStepsModel() {
+		return this.stepsModel;
 	}
 	public Step getElementAt(int index) {
-		return this.steps.get(index);
+		return this.stepsModel.getStepAt(index);
 	}
-
 	public int getSize() {
-		return this.steps.size();
+		return this.stepsModel.getSize();
 	}
 
 	public Step getSelectedItem() {
-		if (this.selectedIndex >= 0) {
-			return this.getElementAt(this.selectedIndex);
-		} else {
-			return null;
-		}
+		return this.stepsModel.getSelectedStep();
 	}
-
-	/*package-private*/ int getSelectedIndex() {
-		return this.selectedIndex;
-	}
-
-	/*package-private*/ void setSelectedIndex(int nextSelectedIndex) {
-		int prevSelectedIndex = this.selectedIndex;
-		if( this.selectedIndex != nextSelectedIndex ) {
-			for( SelectionObserver selectionObserver : this.selectionObservers ) {
-				selectionObserver.selectionChanging( this, prevSelectedIndex, nextSelectedIndex );
-			}
-			this.selectedIndex = nextSelectedIndex;
-			for( SelectionObserver selectionObserver : this.selectionObservers ) {
-				selectionObserver.selectionChanged( this, prevSelectedIndex, nextSelectedIndex );
-			}
-			this.fireContentsChanged(this, -1, -1);
-		}
-	}
-
-	/*package-private*/ void decrementSelectedIndex() {
-		this.setSelectedIndex(this.selectedIndex - 1);
-	}
-
-	/*package-private*/ void incrementSelectedIndex() {
-		this.setSelectedIndex(this.selectedIndex + 1);
-	}
-
 	public void setSelectedItem(Object item) {
-		int prevSelectedIndex = this.selectedIndex;
-		int nextSelectedIndex = -1;
-		final int N = this.steps.size();
-		for (int i = 0; i < N; i++) {
-			if (this.steps.get(i) == item) {
-				nextSelectedIndex = i;
-				break;
-			}
-		}
-		if( this.isForwardEnabled || nextSelectedIndex < prevSelectedIndex ) {
-			this.setSelectedIndex( nextSelectedIndex );
-		}
-	}
-
-	/*package-private*/ void addStep(Step step) {
-		this.steps.add(step);
+		this.stepsModel.setSelectedStep( (Step)item );
 	}
 }
