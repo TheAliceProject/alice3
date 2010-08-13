@@ -261,13 +261,15 @@ package edu.cmu.cs.dennisc.tutorial;
 													area.subtract( featureArea );
 												}
 											} else {
-												edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
-												if( scrollPane != null ) {
-													javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
-													java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
-													area.subtract( new java.awt.geom.Area( rect ) );
-												} else {
-													System.err.println( "cannot find scroll pane for: " + feature );
+												if( feature.isPotentiallyScrollable() ) {
+													edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
+													if( scrollPane != null ) {
+														javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
+														java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
+														area.subtract( new java.awt.geom.Area( rect ) );
+													} else {
+														System.err.println( "cannot find scroll pane for: " + feature );
+													}
 												}
 											}
 										} else {
@@ -405,13 +407,15 @@ package edu.cmu.cs.dennisc.tutorial;
 											area.subtract( featureArea );
 										}
 									} else {
-										edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
-										if( scrollPane != null ) {
-											javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
-											java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
-											area.subtract( new java.awt.geom.Area( rect ) );
-										} else {
-											System.err.println( "cannot find scroll pane for: " + feature );
+										if( feature.isPotentiallyScrollable() ) {
+											edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
+											if( scrollPane != null ) {
+												javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
+												java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
+												area.subtract( new java.awt.geom.Area( rect ) );
+											} else {
+												System.err.println( "cannot find scroll pane for: " + feature );
+											}
 										}
 									}
 								} else {
