@@ -46,6 +46,8 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /* package-private */abstract class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent<javax.swing.JPanel> {
+	private static final boolean IS_CURSOR_FEEDBACK_ENABLED = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "edu.cmu.cs.dennisc.tutorial.isCursorFeedbackEnabled", true );
+
 	/*package-private*/ static final java.awt.Color STENCIL_BASE_COLOR =  new java.awt.Color( 181, 140, 140, 150 );
 	/*package-private*/ static final java.awt.Color STENCIL_LINE_COLOR =  new java.awt.Color( 92, 48, 24, 63 );
 	private static java.awt.Paint stencilPaint = null;
@@ -100,11 +102,11 @@ package edu.cmu.cs.dennisc.tutorial;
 		java.awt.Toolkit.getDefaultToolkit().addAWTEventListener( this.awtEventListener, java.awt.AWTEvent.MOUSE_MOTION_EVENT_MASK );
 		this.getAwtComponent().setBounds( this.layeredPane.getBounds() );
 		this.layeredPane.addComponentListener( this.componentListener );
-		RepaintManagerUtilities.pushStencil( this.getAwtComponent() );
+		edu.cmu.cs.dennisc.stencil.RepaintManagerUtilities.pushStencil( this.getAwtComponent() );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		assert RepaintManagerUtilities.popStencil() == this.getAwtComponent();
+		assert edu.cmu.cs.dennisc.stencil.RepaintManagerUtilities.popStencil() == this.getAwtComponent();
 		this.layeredPane.removeComponentListener( this.componentListener );
 		java.awt.Toolkit.getDefaultToolkit().removeAWTEventListener( this.awtEventListener );
 		super.handleRemovedFrom(parent);
@@ -428,6 +430,10 @@ package edu.cmu.cs.dennisc.tutorial;
 		final JStencil rv = new JStencil();
 		rv.setLayout(new java.awt.BorderLayout());
 		rv.setOpaque(false);
+		if( IS_CURSOR_FEEDBACK_ENABLED ) {
+			rv.setCursor( java.awt.dnd.DragSource.DefaultMoveNoDrop );
+		}
+		
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		return rv;
 	}

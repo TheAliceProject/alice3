@@ -46,17 +46,17 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/class PreviousStepOperation extends TutorialOperation {
-	private StepsComboBoxModel stepsComboBoxModel;
+	private StepsModel stepsModel;
 
-	public PreviousStepOperation( StepsComboBoxModel stepsComboBoxModel ) {
+	public PreviousStepOperation( StepsModel stepsModel ) {
 		super( java.util.UUID.fromString( "dbb7a622-95b4-48b9-ad86-db9350503aee" ), "\u2190 Previous" );
-		this.stepsComboBoxModel = stepsComboBoxModel;
+		this.stepsModel = stepsModel;
 		// this.setName( "\u21E6 Previous" );
 	}
 
 	@Override
 	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		this.stepsComboBoxModel.decrementSelectedIndex();
+		this.stepsModel.decrementSelectedIndex();
 		context.finish();
 	}
 }

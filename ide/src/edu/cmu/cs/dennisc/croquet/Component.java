@@ -475,6 +475,16 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 	}
 
 	@Deprecated
+	public void addHierarchyListener( java.awt.event.HierarchyListener listener ) {
+		this.getAwtComponent().addHierarchyListener( listener );
+	}
+
+	@Deprecated
+	public void removeHierarchyListener( java.awt.event.HierarchyListener listener ) {
+		this.getAwtComponent().removeHierarchyListener( listener );
+	}
+
+	@Deprecated
 	public void addKeyListener( java.awt.event.KeyListener listener ) {
 		this.getAwtComponent().addKeyListener( listener );
 	}
