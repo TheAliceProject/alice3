@@ -83,6 +83,7 @@ package edu.cmu.cs.dennisc.tutorial;
 //	} );
 	
 	private static final boolean IS_FORWARD_ENABLED = true;
+	
 	private StepsModel stepsModel = new StepsModel( IS_FORWARD_ENABLED );
 	private StepsComboBoxModel stepsComboBoxModel = new StepsComboBoxModel( stepsModel );
 	
