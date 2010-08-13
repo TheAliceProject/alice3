@@ -46,8 +46,6 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /* package-private */abstract class Stencil extends edu.cmu.cs.dennisc.croquet.JComponent<javax.swing.JPanel> {
-	private static final boolean IS_CURSOR_FEEDBACK_ENABLED = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "edu.cmu.cs.dennisc.tutorial.isCursorFeedbackEnabled", true );
-
 	/*package-private*/ static final java.awt.Color STENCIL_BASE_COLOR =  new java.awt.Color( 181, 140, 140, 150 );
 	/*package-private*/ static final java.awt.Color STENCIL_LINE_COLOR =  new java.awt.Color( 92, 48, 24, 63 );
 	private static java.awt.Paint stencilPaint = null;
@@ -250,37 +248,39 @@ package edu.cmu.cs.dennisc.tutorial;
 				Step step = Stencil.this.getCurrentStep();
 				if( Stencil.this.isPaintingStencilEnabled() ) {
 					if( step != null ) {
-						java.awt.geom.Area area = new java.awt.geom.Area(g2.getClip());
-						for( Note note : step.getNotes() ) {
-							if( note.isActive() ) {
-								for( Feature feature : note.getFeatures() ) {
-									edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = feature.getTrackableShape();
-									if( trackableShape != null ) {
-										if( trackableShape.isInView() ) {
-											java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( Stencil.this );
-											if( featureArea != null ) {
-												area.subtract( featureArea );
+						if( step.isStencilRenderingDesired() ) {
+							java.awt.geom.Area area = new java.awt.geom.Area(g2.getClip());
+							for( Note note : step.getNotes() ) {
+								if( note.isActive() ) {
+									for( Feature feature : note.getFeatures() ) {
+										edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = feature.getTrackableShape();
+										if( trackableShape != null ) {
+											if( trackableShape.isInView() ) {
+												java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( Stencil.this );
+												if( featureArea != null ) {
+													area.subtract( featureArea );
+												}
+											} else {
+												edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
+												if( scrollPane != null ) {
+													javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
+													java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
+													area.subtract( new java.awt.geom.Area( rect ) );
+												} else {
+													System.err.println( "cannot find scroll pane for: " + feature );
+												}
 											}
 										} else {
-											edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
-											if( scrollPane != null ) {
-												javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
-												java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
-												area.subtract( new java.awt.geom.Area( rect ) );
-											} else {
-												System.err.println( "cannot find scroll pane for: " + feature );
-											}
+											System.err.println( "cannot find trackable shape for: " + feature );
+											feature.unbind();
+											feature.bind();
 										}
-									} else {
-										System.err.println( "cannot find trackable shape for: " + feature );
-										feature.unbind();
-										feature.bind();
 									}
 								}
 							}
+							g2.setPaint(getStencilPaint());
+							g2.fill(area);
 						}
-						g2.setPaint(getStencilPaint());
-						g2.fill(area);
 					}
 				}
 				super.paintComponent(g);
@@ -430,10 +430,6 @@ package edu.cmu.cs.dennisc.tutorial;
 		final JStencil rv = new JStencil();
 		rv.setLayout(new java.awt.BorderLayout());
 		rv.setOpaque(false);
-		if( IS_CURSOR_FEEDBACK_ENABLED ) {
-			rv.setCursor( java.awt.dnd.DragSource.DefaultMoveNoDrop );
-		}
-		
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		return rv;
 	}

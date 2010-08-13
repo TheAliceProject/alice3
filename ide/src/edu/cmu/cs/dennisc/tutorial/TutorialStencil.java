@@ -103,7 +103,11 @@ package edu.cmu.cs.dennisc.tutorial;
 		public void selectionChanging( StepsModel source, int fromIndex, int toIndex ) {
 		}
 		public void selectionChanged( StepsModel source, int fromIndex, int toIndex ) {
-			TutorialStencil.this.handleStepChanged( source.getStepAt( toIndex ) );
+			Step step = source.getStepAt( toIndex );
+//			if( step != null ) {
+//				step.setStencilRenderingDesired( toIndex%2 == 0 );
+//			}
+			TutorialStencil.this.handleStepChanged( step );
 		}
 	};
 	
@@ -271,6 +275,11 @@ package edu.cmu.cs.dennisc.tutorial;
 	private void handleStepChanged(Step step) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleStepChanged" );
 		this.completeOrUndoIfNecessary();
+		if( step != null && step.isStencilRenderingDesired() ) {
+			this.setCursor( java.awt.dnd.DragSource.DefaultMoveNoDrop );
+		} else {
+			this.setCursor( java.awt.Cursor.getDefaultCursor() );
+		}
 		if( step != null ) {
 			step.reset();
 			java.util.UUID stepId = step.getId();
