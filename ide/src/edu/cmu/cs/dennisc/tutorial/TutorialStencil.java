@@ -83,10 +83,12 @@ package edu.cmu.cs.dennisc.tutorial;
 //	} );
 	
 	private static final boolean IS_FORWARD_ENABLED = true;
-	private StepsComboBoxModel stepsComboBoxModel = new StepsComboBoxModel( IS_FORWARD_ENABLED );
 	
-	private PreviousStepOperation previousStepOperation = new PreviousStepOperation( this.stepsComboBoxModel );
-	private NextStepOperation nextStepOperation = new NextStepOperation( this.stepsComboBoxModel );
+	private StepsModel stepsModel = new StepsModel( IS_FORWARD_ENABLED );
+	private StepsComboBoxModel stepsComboBoxModel = new StepsComboBoxModel( stepsModel );
+	
+	private PreviousStepOperation previousStepOperation = new PreviousStepOperation( this.stepsModel );
+	private NextStepOperation nextStepOperation = new NextStepOperation( this.stepsModel );
 	//private ExitOperation exitOperation = new ExitOperation();
 
 	private edu.cmu.cs.dennisc.croquet.BooleanState isInterceptingEvents = new edu.cmu.cs.dennisc.croquet.BooleanState( TUTORIAL_GROUP, java.util.UUID.fromString( "c3a009d6-976e-439e-8f99-3c8ff8a0324a" ), true, "intercept events" );
@@ -97,11 +99,15 @@ package edu.cmu.cs.dennisc.tutorial;
 
 	private edu.cmu.cs.dennisc.croquet.BorderPanel controlsPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 	private edu.cmu.cs.dennisc.croquet.CardPanel cardPanel = new edu.cmu.cs.dennisc.croquet.CardPanel();
-	private StepsComboBoxModel.SelectionObserver selectionObserver = new StepsComboBoxModel.SelectionObserver() {
-		public void selectionChanging( StepsComboBoxModel source, int fromIndex, int toIndex ) {
+	private StepsModel.SelectionObserver selectionObserver = new StepsModel.SelectionObserver() {
+		public void selectionChanging( StepsModel source, int fromIndex, int toIndex ) {
 		}
-		public void selectionChanged( StepsComboBoxModel source, int fromIndex, int toIndex ) {
-			TutorialStencil.this.handleStepChanged( source.getElementAt( toIndex ) );
+		public void selectionChanged( StepsModel source, int fromIndex, int toIndex ) {
+			Step step = source.getStepAt( toIndex );
+//			if( step != null ) {
+//				step.setStencilRenderingDesired( toIndex%2 == 0 );
+//			}
+			TutorialStencil.this.handleStepChanged( step );
 		}
 	};
 	
@@ -156,9 +162,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		controlPanel.addComponent(this.previousStepOperation.createButton());
 		controlPanel.addComponent(new StepsComboBox( this.stepsComboBoxModel ) );
 		controlPanel.addComponent(this.nextStepOperation.createButton());
-
 		this.controlsPanel.addComponent(controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
-		
 		this.isPaintingStencil.setTextForTrueAndTextForFalse( "", "WARNING: stencil is disabled.  Click here to turn re-enable." );
 		
 		edu.cmu.cs.dennisc.croquet.CheckBox isPlayingSoundsCheckBox = this.isPlayingSounds.createCheckBox();
@@ -177,6 +181,14 @@ package edu.cmu.cs.dennisc.tutorial;
 		eastPanel.addComponent( isPaintingStencilCheckBox );
 		this.controlsPanel.addComponent(eastPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END);
 		this.controlsPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 0, 4));
+
+		for( java.awt.Component component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this.controlsPanel.getAwtComponent() ) ) {
+			if( component instanceof javax.swing.JPanel ) {
+				//pass
+			} else {
+				component.setCursor( java.awt.Cursor.getDefaultCursor() );
+			}
+		}
 
 		this.internalAddComponent(this.controlsPanel, java.awt.BorderLayout.NORTH);
 		this.internalAddComponent(this.cardPanel, java.awt.BorderLayout.CENTER);
@@ -231,7 +243,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	private void completeOrUndoIfNecessary() {
 		SoundCache.pushIgnoreStartRequests();
 		try {
-			int nextSelectedIndex = this.stepsComboBoxModel.getSelectedIndex();
+			int nextSelectedIndex = this.stepsModel.getSelectedIndex();
 			int undoIndex = Math.max( nextSelectedIndex, 0 );
 			if( undoIndex < this.prevSelectedIndex ) {
 				this.restoreHistoryIndices( undoIndex );
@@ -263,6 +275,11 @@ package edu.cmu.cs.dennisc.tutorial;
 	private void handleStepChanged(Step step) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleStepChanged" );
 		this.completeOrUndoIfNecessary();
+		if( step != null && step.isStencilRenderingDesired() ) {
+			this.setCursor( java.awt.dnd.DragSource.DefaultMoveNoDrop );
+		} else {
+			this.setCursor( java.awt.Cursor.getDefaultCursor() );
+		}
 		if( step != null ) {
 			step.reset();
 			java.util.UUID stepId = step.getId();
@@ -276,7 +293,7 @@ package edu.cmu.cs.dennisc.tutorial;
 			this.cardPanel.show(key);
 			this.revalidateAndRepaint();
 
-			int selectedIndex = stepsComboBoxModel.getSelectedIndex();
+			int selectedIndex = stepsModel.getSelectedIndex();
 
 			boolean isWaiting;
 			if (step instanceof WaitingStep<?>) {
@@ -322,7 +339,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo(parent);
-		this.stepsComboBoxModel.addSelectionObserver(this.selectionObserver);
+		this.stepsModel.addSelectionObserver(this.selectionObserver);
 		this.handleStepChanged((Step) stepsComboBoxModel.getSelectedItem());
 		this.addKeyListener( this.keyListener );
 	}
@@ -330,7 +347,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		this.removeKeyListener( this.keyListener );
-		this.stepsComboBoxModel.removeSelectionObserver(this.selectionObserver);
+		this.stepsModel.removeSelectionObserver(this.selectionObserver);
 		super.handleRemovedFrom(parent);
 	}
 	
@@ -339,11 +356,11 @@ package edu.cmu.cs.dennisc.tutorial;
 		return (Step)stepsComboBoxModel.getSelectedItem();
 	}
 	/*package-private*/ void addStep( Step step ) {
-		this.stepsComboBoxModel.addStep( step );
+		this.stepsModel.addStep( step );
 		step.setTutorialStencil( this );
 	}
 	/*package-private*/ void setSelectedIndex( int index ) {
-		this.stepsComboBoxModel.setSelectedIndex( index );
+		this.stepsModel.setSelectedIndex( index );
 	}
 		
 	/*package-private*/ edu.cmu.cs.dennisc.croquet.ActionOperation getNextOperation() {

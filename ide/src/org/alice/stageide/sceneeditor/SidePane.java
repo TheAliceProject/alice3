@@ -52,6 +52,7 @@ import javax.swing.JDialog;
 import org.alice.stageide.sceneeditor.viewmanager.SceneViewManagerPanel;
 import org.alice.stageide.sceneeditor.viewmanager.SnapControlPanel;
 import org.alice.ide.IDE;
+import org.alice.ide.swing.BasicTreeNodeViewerPanel;
 import org.alice.ide.swing.FieldListCellRenderer;
 import org.alice.interact.SnapState;
 
@@ -59,8 +60,9 @@ import edu.cmu.cs.dennisc.croquet.ActionOperation;
 import edu.cmu.cs.dennisc.croquet.ComboBox;
 import edu.cmu.cs.dennisc.croquet.GridBagPanel;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory;
+import edu.cmu.cs.dennisc.lookingglass.opengl.SceneAdapter;
 import edu.cmu.cs.dennisc.scenegraph.Component;
-import edu.cmu.cs.dennisc.toolkit.scenegraph.SceneGraphViewerPanel;
 import edu.cmu.cs.dennisc.croquet.BorderPanel;
 
 /**
@@ -72,12 +74,18 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private SnapControlPanel snapControlPanel = null;
 	private GridBagPanel mainPanel = null;
 	
-	private SceneGraphViewerPanel sceneGraphViewer = null;
-//	private JSplitPane sceneGraphViewSplitPane = null;
+	private BasicTreeNodeViewerPanel sceneGraphViewer = null;
 	private JDialog sceneGraphViewDialog = null;
-	
 	private ActionOperation showSceneGraphActionOperation; 
 	
+	public void setSceneGraphRoot()
+	{
+		if (this.sceneGraphViewer != null)
+		{
+			Component root = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getScene().getSGComposite();
+			SidePane.this.sceneGraphViewer.setRoot(root);
+		}
+	}
 	
 	private class ShowSceneGraphViewerActionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 		public ShowSceneGraphViewerActionOperation() {
@@ -90,9 +98,8 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			{
 				if (SidePane.this.sceneGraphViewer == null)
 				{
-					Component root = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getScene().getSGComposite();
-					SidePane.this.sceneGraphViewer = new SceneGraphViewerPanel();
-					SidePane.this.sceneGraphViewer.setRoot(root);
+					SidePane.this.sceneGraphViewer = new BasicTreeNodeViewerPanel();
+					SidePane.this.setSceneGraphRoot();
 				}
 				if (SidePane.this.sceneGraphViewDialog == null)
 				{
@@ -102,6 +109,45 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 					SidePane.this.sceneGraphViewDialog.setLocation(100, 100);
 				}
 				SidePane.this.sceneGraphViewDialog.setVisible(true);
+			}
+		}
+	}
+	
+	private BasicTreeNodeViewerPanel lookingglassViewer = null;
+	private JDialog lookingglassViewDialog = null;
+	private ActionOperation showLookingglassViewActionOperation; 
+	
+	public void setLookingglassRoot()
+	{
+		if (this.lookingglassViewer != null)
+		{
+			SceneAdapter root = (SceneAdapter)AdapterFactory.getAdapterFor( ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getScene().getSGComposite() );
+			SidePane.this.lookingglassViewer.setRoot(root);
+		}
+	}
+	
+	private class ShowLookingglassViewerActionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+		public ShowLookingglassViewerActionOperation() {
+			super( java.util.UUID.fromString( "7b3b1ae7-9e29-498b-8cfe-624b7d651460" ) );
+			this.setName( "Show Lookingglass Tree" );
+		}
+		@Override
+		protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+			if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
+			{
+				if (SidePane.this.lookingglassViewer == null)
+				{
+					SidePane.this.lookingglassViewer = new BasicTreeNodeViewerPanel();
+					SidePane.this.setLookingglassRoot();
+				}
+				if (SidePane.this.lookingglassViewDialog == null)
+				{
+					SidePane.this.lookingglassViewDialog = new JDialog(edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getRootJFrame(SidePane.this.getAwtComponent()), "Lookingglass Tree Viewer", false);
+					SidePane.this.lookingglassViewDialog.getContentPane().add(SidePane.this.lookingglassViewer);
+					SidePane.this.lookingglassViewDialog.setSize(new Dimension(1024, 768));
+					SidePane.this.lookingglassViewDialog.setLocation(100, 100);
+				}
+				SidePane.this.lookingglassViewDialog.setVisible(true);
 			}
 		}
 	}
@@ -161,12 +207,26 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				);
 		
 		this.showSceneGraphActionOperation = new ShowSceneGraphViewerActionOperation();
+		this.showLookingglassViewActionOperation = new ShowLookingglassViewerActionOperation();
 		
 		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
 		{
 			this.mainPanel.addComponent(this.showSceneGraphActionOperation.createButton(), new GridBagConstraints(
 					0, // gridX
 					3, // gridY
+					1, // gridWidth
+					1, // gridHeight
+					1.0, // weightX
+					0.0, // weightY
+					GridBagConstraints.NORTH, // anchor
+					GridBagConstraints.NONE, // fill
+					new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
+					0, // ipadX
+					0) // ipadY
+					);
+			this.mainPanel.addComponent(this.showLookingglassViewActionOperation.createButton(), new GridBagConstraints(
+					0, // gridX
+					4, // gridY
 					1, // gridWidth
 					1, // gridHeight
 					1.0, // weightX
@@ -191,7 +251,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		);
 		this.addComponent( undoRedoPanel, Constraint.PAGE_START );
 	}
-
+	
 	public ActionOperation getShowSceneGraphViewerActionOperation()
 	{
 		return this.showSceneGraphActionOperation;

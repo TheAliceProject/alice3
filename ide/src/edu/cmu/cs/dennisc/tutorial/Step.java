@@ -46,6 +46,7 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 public abstract class Step {
+	private static final boolean IS_STENCIL_RENDERING_DESIRED_BY_DEFAULT = true;
 	/*package-private*/ static final boolean IS_NOTE_OVERLAPPING_DESIRED = true;
 	private class StepLayoutManager implements java.awt.LayoutManager {
 		private java.util.Set<java.awt.Component> set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet(); 
@@ -224,6 +225,7 @@ public abstract class Step {
 	private java.awt.Point layoutHint = null;
 	
 	private int[] historyIndices = null;
+	private boolean isStencilRenderingDesired = IS_STENCIL_RENDERING_DESIRED_BY_DEFAULT;
 	
 	public Step( String title, String text ) {
 		this.title = title;
@@ -239,6 +241,17 @@ public abstract class Step {
 			note.setTutorialStencil( this.tutorialStencil );
 		}
 	}
+	
+	public void resetStencilRenderingDesiredToDefault() {
+		this.isStencilRenderingDesired = IS_STENCIL_RENDERING_DESIRED_BY_DEFAULT;
+	}
+	public boolean isStencilRenderingDesired() {
+		return this.isStencilRenderingDesired;
+	}
+	public void setStencilRenderingDesired( boolean isStencilRenderingDesired ) {
+		this.isStencilRenderingDesired = isStencilRenderingDesired;
+	}
+	
 	
 	/*package-private*/ int[] getHistoryIndices() {
 		return this.historyIndices;

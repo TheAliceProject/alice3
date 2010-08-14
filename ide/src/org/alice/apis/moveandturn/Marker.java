@@ -118,11 +118,6 @@ public class Marker extends Transformable
 	}
 	
 	@Override
-	protected void handleVehicleChange(Composite vehicle) {
-		super.handleVehicleChange(vehicle);
-	}
-	
-	@Override
 	public void setName(String name) 
 	{
 		super.setName(name);

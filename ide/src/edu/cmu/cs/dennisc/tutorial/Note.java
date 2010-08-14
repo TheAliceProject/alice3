@@ -242,6 +242,8 @@ package edu.cmu.cs.dennisc.tutorial;
 		};
 		rv.setLayout( new java.awt.BorderLayout() );
 		rv.add( textComponent, java.awt.BorderLayout.NORTH );
+		rv.setCursor( java.awt.Cursor.getDefaultCursor() );
+		
 		//rv.setBackground( BASE_COLOR );
 		edu.cmu.cs.dennisc.croquet.BorderPanel southPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		edu.cmu.cs.dennisc.croquet.Hyperlink hyperlink = getTutorialStencil().getNextOperation().createHyperlink();
@@ -331,9 +333,22 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	}
 
+	private java.awt.event.HierarchyListener hierarchyListener = new java.awt.event.HierarchyListener() {
+		public void hierarchyChanged( java.awt.event.HierarchyEvent e ) {
+			if( ( e.getChangeFlags() & java.awt.event.HierarchyEvent.SHOWING_CHANGED ) != 0 ) {
+				Note.this.handleShowingChanged( e.getChanged().isShowing() );
+			}
+		}
+	};
+	
+	private void handleShowingChanged( boolean isShowing ) {
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleShowingChanged", isShowing );
+	}
+	
 	@Override
 	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
 		super.handleAddedTo( parent );
+		this.addHierarchyListener( this.hierarchyListener );
 		this.addMouseListener( this.mouseInputListener );
 		this.addMouseMotionListener( this.mouseInputListener );
 		this.bind();
@@ -343,6 +358,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		this.unbind();
 		this.removeMouseMotionListener( this.mouseInputListener );
 		this.removeMouseListener( this.mouseInputListener );
+		this.removeHierarchyListener( this.hierarchyListener );
 		super.handleRemovedFrom( parent );
 	}
 	

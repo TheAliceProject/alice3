@@ -72,7 +72,7 @@ public class SceneAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegrap
 	public BackgroundAdapter getBackgroundAdapter() {
 		return m_backgroundAdapter;
 	}
-
+	
 	public void addDescendant( ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component > componentAdapter ) {
 		if( componentAdapter instanceof GhostAdapter ) {
 			synchronized( m_ghostAdapters ) {

@@ -158,6 +158,10 @@ package edu.cmu.cs.dennisc.tutorial;
 		return this.trackableShape;
 	}
 	
+	//todo: move this to TrackableShape?
+	public boolean isPotentiallyScrollable() {
+		return true;
+	}
 	
 	public boolean isEntered() {
 		return this.isEntered;

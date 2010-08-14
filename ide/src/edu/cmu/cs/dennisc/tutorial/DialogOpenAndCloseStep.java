@@ -99,6 +99,8 @@ package edu.cmu.cs.dennisc.tutorial;
 			return null;
 		}
 	}
+	
+	private boolean EPIC_HACK_isIgnoreWindowClosedEventDesired = false;
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
 		boolean rv = false;
@@ -119,14 +121,24 @@ package edu.cmu.cs.dennisc.tutorial;
 							note1.setLocation( dialog.getWidth()+100, dialog.getHeight()/2, dialog );
 						}
 					}
-					
 				}
+				this.EPIC_HACK_isIgnoreWindowClosedEventDesired = false;
 			}
 			break;
 		case WAITING_ON_CLOSE:
-			if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent ) {
-				edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent windowClosedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent)child;
-				rv = windowClosedEvent.getParent().getModel() == this.getModel();
+			if( child instanceof edu.cmu.cs.dennisc.croquet.ActionOperationContext ) {
+				edu.cmu.cs.dennisc.croquet.Model model = ((edu.cmu.cs.dennisc.croquet.ActionOperationContext)child).getModel();
+				if( model instanceof org.alice.stageide.croquet.models.run.RestartOperation ) {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "EPIC_HACK IGNORE NEXT CLOSE" );
+					this.EPIC_HACK_isIgnoreWindowClosedEventDesired = true;
+				}
+			} else if( child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent ) {
+				if( EPIC_HACK_isIgnoreWindowClosedEventDesired ) {
+					EPIC_HACK_isIgnoreWindowClosedEventDesired = false;
+				} else {
+					edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent windowClosedEvent = (edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent)child;
+					rv = windowClosedEvent.getParent().getModel() == this.getModel();
+				}
 			}
 			break;
 		}

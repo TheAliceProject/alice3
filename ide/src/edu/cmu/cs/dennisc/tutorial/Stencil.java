@@ -100,11 +100,11 @@ package edu.cmu.cs.dennisc.tutorial;
 		java.awt.Toolkit.getDefaultToolkit().addAWTEventListener( this.awtEventListener, java.awt.AWTEvent.MOUSE_MOTION_EVENT_MASK );
 		this.getAwtComponent().setBounds( this.layeredPane.getBounds() );
 		this.layeredPane.addComponentListener( this.componentListener );
-		RepaintManagerUtilities.pushStencil( this.getAwtComponent() );
+		edu.cmu.cs.dennisc.stencil.RepaintManagerUtilities.pushStencil( this.getAwtComponent() );
 	}
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		assert RepaintManagerUtilities.popStencil() == this.getAwtComponent();
+		assert edu.cmu.cs.dennisc.stencil.RepaintManagerUtilities.popStencil() == this.getAwtComponent();
 		this.layeredPane.removeComponentListener( this.componentListener );
 		java.awt.Toolkit.getDefaultToolkit().removeAWTEventListener( this.awtEventListener );
 		super.handleRemovedFrom(parent);
@@ -248,37 +248,41 @@ package edu.cmu.cs.dennisc.tutorial;
 				Step step = Stencil.this.getCurrentStep();
 				if( Stencil.this.isPaintingStencilEnabled() ) {
 					if( step != null ) {
-						java.awt.geom.Area area = new java.awt.geom.Area(g2.getClip());
-						for( Note note : step.getNotes() ) {
-							if( note.isActive() ) {
-								for( Feature feature : note.getFeatures() ) {
-									edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = feature.getTrackableShape();
-									if( trackableShape != null ) {
-										if( trackableShape.isInView() ) {
-											java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( Stencil.this );
-											if( featureArea != null ) {
-												area.subtract( featureArea );
+						if( step.isStencilRenderingDesired() ) {
+							java.awt.geom.Area area = new java.awt.geom.Area(g2.getClip());
+							for( Note note : step.getNotes() ) {
+								if( note.isActive() ) {
+									for( Feature feature : note.getFeatures() ) {
+										edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = feature.getTrackableShape();
+										if( trackableShape != null ) {
+											if( trackableShape.isInView() ) {
+												java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( Stencil.this );
+												if( featureArea != null ) {
+													area.subtract( featureArea );
+												}
+											} else {
+												if( feature.isPotentiallyScrollable() ) {
+													edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
+													if( scrollPane != null ) {
+														javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
+														java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
+														area.subtract( new java.awt.geom.Area( rect ) );
+													} else {
+														System.err.println( "cannot find scroll pane for: " + feature );
+													}
+												}
 											}
 										} else {
-											edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
-											if( scrollPane != null ) {
-												javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
-												java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
-												area.subtract( new java.awt.geom.Area( rect ) );
-											} else {
-												System.err.println( "cannot find scroll pane for: " + feature );
-											}
+											System.err.println( "cannot find trackable shape for: " + feature );
+											feature.unbind();
+											feature.bind();
 										}
-									} else {
-										System.err.println( "cannot find trackable shape for: " + feature );
-										feature.unbind();
-										feature.bind();
 									}
 								}
 							}
+							g2.setPaint(getStencilPaint());
+							g2.fill(area);
 						}
-						g2.setPaint(getStencilPaint());
-						g2.fill(area);
 					}
 				}
 				super.paintComponent(g);
@@ -403,13 +407,15 @@ package edu.cmu.cs.dennisc.tutorial;
 											area.subtract( featureArea );
 										}
 									} else {
-										edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
-										if( scrollPane != null ) {
-											javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
-											java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
-											area.subtract( new java.awt.geom.Area( rect ) );
-										} else {
-											System.err.println( "cannot find scroll pane for: " + feature );
+										if( feature.isPotentiallyScrollable() ) {
+											edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
+											if( scrollPane != null ) {
+												javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
+												java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
+												area.subtract( new java.awt.geom.Area( rect ) );
+											} else {
+												System.err.println( "cannot find scroll pane for: " + feature );
+											}
 										}
 									}
 								} else {
