@@ -56,7 +56,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		public void addingChild(edu.cmu.cs.dennisc.croquet.HistoryNode child) {
 		}
 		public void addedChild(edu.cmu.cs.dennisc.croquet.HistoryNode child) {
-			Step step = (Step)stepsComboBoxModel.getSelectedItem();
+			Step step = stepsModel.getSelectedStep();
 			if (step instanceof WaitingStep<?>) {
 				WaitingStep<?> waitingStep = (WaitingStep<?>) step;
 				if( waitingStep.isWhatWeveBeenWaitingFor( child ) ) {
@@ -199,7 +199,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		return this.isPaintingStencil.getValue();
 	}
 	private Step getStep( int index ) {
-		return (Step)this.stepsComboBoxModel.getElementAt( index );
+		return this.stepsModel.getStepAt( index );
 	}
 	private void preserveHistoryIndices( int stepIndex ) {
 		Step step = this.getStep( stepIndex );
@@ -303,7 +303,7 @@ package edu.cmu.cs.dennisc.tutorial;
 				isWaiting = false;
 			}
 			
-			this.nextStepOperation.setEnabled(0 <= selectedIndex && selectedIndex < stepsComboBoxModel.getSize() - 1 && isWaiting==false );
+			this.nextStepOperation.setEnabled(0 <= selectedIndex && selectedIndex < this.stepsModel.getSize() - 1 && isWaiting==false );
 			this.previousStepOperation.setEnabled(1 <= selectedIndex);
 //			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 //				public void run() {
@@ -340,7 +340,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo(parent);
 		this.stepsModel.addSelectionObserver(this.selectionObserver);
-		this.handleStepChanged((Step) stepsComboBoxModel.getSelectedItem());
+		this.handleStepChanged( this.stepsModel.getSelectedStep() );
 		this.addKeyListener( this.keyListener );
 	}
 
@@ -353,7 +353,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	
 	@Override
 	protected Step getCurrentStep() {
-		return (Step)stepsComboBoxModel.getSelectedItem();
+		return this.stepsModel.getSelectedStep();
 	}
 	/*package-private*/ void addStep( Step step ) {
 		this.stepsModel.addStep( step );
