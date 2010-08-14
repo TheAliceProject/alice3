@@ -94,8 +94,8 @@ public final class BooleanStateEdit extends Edit<BooleanState> {
 
 	@Override
 	protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-		rv.append("boolean: ");
-		rv.append(this.nextValue);
+		rv.append( "boolean: " );
+		rv.append( this.nextValue );
 		return rv;
 	}
 }

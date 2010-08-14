@@ -113,7 +113,7 @@ public final class BoundedRangeIntegerStateEdit extends Edit<BoundedRangeInteger
 
 	@Override
 	protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-		rv.append("boolean: ");
+		rv.append("integer: ");
 		rv.append(this.nextValue);
 		return rv;
 	}

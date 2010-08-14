@@ -40,47 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.croquet.models.history;
 
-package edu.cmu.cs.dennisc.croquet;
-
-/**
- * @author Dennis Cosgrove
- */
-public class DefaultRadioButtons< E > extends AbstractRadioButtons< E > {
-	private static final java.awt.GridBagConstraints GBC;
-	static {
-		GBC = new java.awt.GridBagConstraints();
-		GBC.fill = java.awt.GridBagConstraints.BOTH;
-		GBC.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		GBC.weightx = 1.0f;
-		GBC.weighty = 0.0f;
+public class IsUIHistoryShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
+	private static class SingletonHolder {
+		private static IsUIHistoryShowingState instance = new IsUIHistoryShowingState();
 	}
-	/*package-private*/ DefaultRadioButtons( ListSelectionState<E> model ) {
-		super( model );
+	public static IsUIHistoryShowingState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private IsUIHistoryShowingState() {
+		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "6d294f89-9ddc-4cbf-9020-370e383d4ff3" ), false );
+		this.setTextForBothTrueAndFalse( "UI History" );
 	}
 	@Override
-	protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
-		return new java.awt.GridBagLayout();
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.BooleanStateButton<?> createBooleanStateButton(E item) {
-		BooleanState booleanState = new BooleanState( Application.INHERIT_GROUP, java.util.UUID.fromString( "721f3d0f-6b39-440c-b9ac-d0ae170e15a0" ), false );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: RADIO_BUTTON_BOOLEAN_STATE" );
-		booleanState.setTextForBothTrueAndFalse( item.toString() );
-		return booleanState.createRadioButton(); 
-	}
-	@Override
-	protected void removeAllDetails() {
-		this.internalRemoveAllComponents();
-	}
-	@Override
-	protected void addPrologue(int count) {
-	}
-	@Override
-	protected void addItem(ItemSelectablePanel.ItemDetails itemDetails) {
-		this.internalAddComponent( itemDetails.getButton(), GBC );
-	}
-	@Override
-	protected void addEpilogue() {
+	protected java.awt.Component createPane() {
+		return new edu.cmu.cs.dennisc.history.HistoryPane( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP );
 	}
 }

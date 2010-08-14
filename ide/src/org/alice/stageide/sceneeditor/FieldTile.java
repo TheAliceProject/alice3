@@ -64,7 +64,7 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 //		return state.register( new FieldTile( accessible ) );
 //	}
 	public FieldTile( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
-		super( new BooleanState( Application.UI_STATE_GROUP, java.util.UUID.fromString( "d3e50396-64c2-4a7d-b255-067aa212bca7" ), false ) );
+		super( new BooleanState( Application.INHERIT_GROUP, java.util.UUID.fromString( "d3e50396-64c2-4a7d-b255-067aa212bca7" ), false ) );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: FIELD_TILE_BOOLEAN_STATE" );
 		assert accessible != null;
 		this.accessible = accessible;
