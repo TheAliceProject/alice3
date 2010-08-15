@@ -335,6 +335,25 @@ package edu.cmu.cs.dennisc.tutorial;
 		public void keyTyped(java.awt.event.KeyEvent e) {
 		}
 	};
+	private java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+		private java.awt.Cursor prevCursor = null;
+		public void mouseEntered(java.awt.event.MouseEvent e) {
+		}
+		public void mouseExited(java.awt.event.MouseEvent e) {
+		}
+		public void mousePressed(java.awt.event.MouseEvent e) {
+			java.awt.Component component = e.getComponent();
+			this.prevCursor = component.getCursor();
+			component.setCursor( java.awt.dnd.DragSource.DefaultMoveNoDrop );
+		}
+		public void mouseReleased(java.awt.event.MouseEvent e) {
+			java.awt.Component component = e.getComponent();
+			component.setCursor( this.prevCursor );
+			this.prevCursor = null;
+		}
+		public void mouseClicked(java.awt.event.MouseEvent e) {
+		}
+	};
 	
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
@@ -342,10 +361,12 @@ package edu.cmu.cs.dennisc.tutorial;
 		this.stepsModel.addSelectionObserver(this.selectionObserver);
 		this.handleStepChanged( this.stepsModel.getSelectedStep() );
 		this.addKeyListener( this.keyListener );
+		this.addMouseListener( this.mouseListener );
 	}
 
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		this.removeMouseListener( this.mouseListener );
 		this.removeKeyListener( this.keyListener );
 		this.stepsModel.removeSelectionObserver(this.selectionObserver);
 		super.handleRemovedFrom(parent);
