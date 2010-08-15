@@ -378,4 +378,15 @@ public abstract class Application {
 	public void setDragInProgress( boolean isDragInProgress ) {
 		this.isDragInProgress = isDragInProgress;
 	}
+	
+	private int isUndoOrRedoCount = 0;
+	public boolean isInTheMidstOfUndoOrRedo() {
+		return isUndoOrRedoCount > 0;
+	}
+	public void pushUndoOrRedo() {
+		this.isUndoOrRedoCount ++;
+	}
+	public void popUndoOrRedo() {
+		this.isUndoOrRedoCount --;
+	}
 }
