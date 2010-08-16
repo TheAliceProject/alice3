@@ -42,9 +42,7 @@
  */
 package org.alice.ide.croquet.models.history;
 
-import org.alice.ide.croquet.models.IsFrameShowingState;
-
-public class IsProjectHistoryShowingState extends IsFrameShowingState {
+public class IsProjectHistoryShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
 	private static class SingletonHolder {
 		private static IsProjectHistoryShowingState instance = new IsProjectHistoryShowingState();
 	}
@@ -54,10 +52,6 @@ public class IsProjectHistoryShowingState extends IsFrameShowingState {
 	private IsProjectHistoryShowingState() {
 		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "cf08f7ac-16b2-4121-9f36-9aca59db4cf7" ), false );
 	}
-//	@Override
-//	protected String getTitle() {
-//		return "History";
-//	}
 	@Override
 	protected java.awt.Component createPane() {
 		return new edu.cmu.cs.dennisc.history.HistoryPane( edu.cmu.cs.dennisc.alice.Project.GROUP );

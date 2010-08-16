@@ -84,18 +84,28 @@ public final class BooleanStateEdit extends Edit<BooleanState> {
 
 	@Override
 	public void doOrRedo(boolean isDo) {
-		this.getModel().setValue(this.nextValue);
+		Application.getSingleton().pushUndoOrRedo();
+		try {
+			this.getModel().setValue(this.nextValue);
+		} finally {
+			Application.getSingleton().popUndoOrRedo();
+		}
 	}
 
 	@Override
 	public void undo() {
-		this.getModel().setValue(this.previousValue);
+		Application.getSingleton().pushUndoOrRedo();
+		try {
+			this.getModel().setValue(this.previousValue);
+		} finally {
+			Application.getSingleton().popUndoOrRedo();
+		}
 	}
 
 	@Override
 	protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-		rv.append("boolean: ");
-		rv.append(this.nextValue);
+		rv.append( "boolean: " );
+		rv.append( this.nextValue );
 		return rv;
 	}
 }

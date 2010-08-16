@@ -42,16 +42,15 @@
  */
 package edu.cmu.cs.dennisc.media.animation;
 
-import edu.cmu.cs.dennisc.media.Player;
-
 /**
  * @author Dennis Cosgrove
  */
 public class MediaPlayerAnimation implements edu.cmu.cs.dennisc.animation.Animation {
-	private Player player;
+	private static final double CLOSE_ENOUGH_TO_ZERO = 0.0001;
+	private edu.cmu.cs.dennisc.media.Player player;
 	private boolean isStarted = false;
 
-	public MediaPlayerAnimation( Player player ) {
+	public MediaPlayerAnimation( edu.cmu.cs.dennisc.media.Player player ) {
 		this.player = player;
 		this.isStarted = false;
 	}
@@ -66,7 +65,11 @@ public class MediaPlayerAnimation implements edu.cmu.cs.dennisc.animation.Animat
 			this.player.start();
 			this.isStarted = true;
 		}
-		return this.player.getTimeRemaining();
+		double timeRemaining = this.player.getTimeRemaining();
+		if( timeRemaining < CLOSE_ENOUGH_TO_ZERO ) {
+			timeRemaining = 0.0;
+		}
+		return timeRemaining;
 	}
 	public void complete( edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
 		this.player.stop();

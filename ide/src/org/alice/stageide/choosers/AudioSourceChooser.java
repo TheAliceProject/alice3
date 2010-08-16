@@ -118,7 +118,8 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 			super.firePropertyChanged( e );
 			AudioSourceChooser.this.startTimeSlider.setTime( 0.0 );
 			AudioSourceChooser.this.stopTimeSlider.setTime( Double.NaN );
-			throw new RuntimeException( "todo" );
+			
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: update OK button?" );
 //			edu.cmu.cs.dennisc.croquet.InputPanel< ? > inputPanel = AudioSourceChooser.this.getInputPanel();
 //			if( inputPanel != null ) {
 //				inputPanel.updateOKButton();
@@ -215,19 +216,16 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 			}
 		}
 
-		this.volumeLevelControl.addChangeListener( new javax.swing.event.ChangeListener() {
-			public void stateChanged( javax.swing.event.ChangeEvent e ) {
-				throw new RuntimeException( "todo" );
-//				AudioSourceChooser.this.getInputPanel().updateOKButton();
-			}
-		} );
+//		this.volumeLevelControl.addChangeListener( new javax.swing.event.ChangeListener() {
+//			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+////				AudioSourceChooser.this.getInputPanel().updateOKButton();
+//			}
+//		} );
 		this.startTimeSlider.addChangeListener( new javax.swing.event.ChangeListener() {
 			public void stateChanged( javax.swing.event.ChangeEvent e ) {
 				if( startTimeSlider.getValue() > stopTimeSlider.getValue() ) {
 					stopTimeSlider.setValue( startTimeSlider.getValue() );
 				}
-				throw new RuntimeException( "todo" );
-//				AudioSourceChooser.this.getInputPanel().updateOKButton();
 			}
 		} );
 		this.stopTimeSlider.addChangeListener( new javax.swing.event.ChangeListener() {
@@ -235,8 +233,6 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 				if( startTimeSlider.getValue() > stopTimeSlider.getValue() ) {
 					startTimeSlider.setValue( stopTimeSlider.getValue() );
 				}
-				throw new RuntimeException( "todo" );
-//				AudioSourceChooser.this.getInputPanel().updateOKButton();
 			}
 		} );
 	}
