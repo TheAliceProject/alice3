@@ -62,7 +62,7 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice.id
 	}
 	
 	@Override
-	public void doOrRedo( boolean isDo ) {
+	protected final void doOrRedoInternal( boolean isDo ) {
 		assert this.argumentExpression != null;
 		org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation;
 		if( EPIC_HACK_fillInMoreOperation != null ) {
@@ -89,7 +89,7 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice.id
 //		this.getModel().updateToolTipText();
 	}
 	@Override
-	public void undo() {
+	protected final void undoInternal() {
 		org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation;
 		if( EPIC_HACK_fillInMoreOperation != null ) {
 			fillInMoreOperation = EPIC_HACK_fillInMoreOperation;

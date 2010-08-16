@@ -96,8 +96,40 @@ public abstract class Edit<M extends Model> implements edu.cmu.cs.dennisc.codec.
 	}
 	public abstract boolean canRedo();
 	public abstract boolean canUndo();
-	public abstract void doOrRedo( boolean isDo );
-	public abstract void undo();
+	
+	protected abstract void doOrRedoInternal( boolean isDo );
+	protected abstract void undoInternal();
+	
+	public final void doOrRedo( boolean isDo ) {
+		if( isDo ) {
+			//pass
+		} else {
+			if( canRedo() ) {
+				//pass
+			} else {
+				throw new javax.swing.undo.CannotRedoException();
+			}
+		}
+		Application.getSingleton().pushUndoOrRedo();
+		try {
+			this.doOrRedoInternal( isDo );
+		} finally {
+			Application.getSingleton().popUndoOrRedo();
+		}
+	}
+	public final void undo() {
+		if( canUndo() ) {
+			//pass
+		} else {
+			throw new javax.swing.undo.CannotRedoException();
+		}
+		Application.getSingleton().pushUndoOrRedo();
+		try {
+			this.undoInternal();
+		} finally {
+			Application.getSingleton().popUndoOrRedo();
+		}
+	}
 
 	protected abstract StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale );
 	public final String getPresentation( java.util.Locale locale ) {

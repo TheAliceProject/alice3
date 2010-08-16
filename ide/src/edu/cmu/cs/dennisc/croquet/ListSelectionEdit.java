@@ -76,22 +76,12 @@ public final class ListSelectionEdit<E> extends Edit<ListSelectionState<E>> {
 	}
 
 	@Override
-	public void doOrRedo( boolean isDo ) {
-		Application.getSingleton().pushUndoOrRedo();
-		try {
-			this.getModel().setSelectedItem( this.nextValue );
-		} finally {
-			Application.getSingleton().popUndoOrRedo();
-		}
+	protected final void doOrRedoInternal( boolean isDo ) {
+		this.getModel().setSelectedItem( this.nextValue );
 	}
 	@Override
-	public void undo() {
-		Application.getSingleton().pushUndoOrRedo();
-		try {
-			this.getModel().setSelectedItem( this.prevValue );
-		} finally {
-			Application.getSingleton().popUndoOrRedo();
-		}
+	protected final void undoInternal() {
+		this.getModel().setSelectedItem( this.prevValue );
 	}
 	@Override
 	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {

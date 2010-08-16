@@ -62,11 +62,11 @@ public abstract class FillInExpressionListPropertyItemOperation extends org.alic
 			private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 			private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 			@Override
-			public void doOrRedo( boolean isDo ) {
+			protected final void doOrRedoInternal( boolean isDo ) {
 				expressionListProperty.set( index, this.nextExpression );
 			}
 			@Override
-			public void undo() {
+			protected final void undoInternal() {
 				expressionListProperty.set( index, this.prevExpression );
 			}
 			@Override

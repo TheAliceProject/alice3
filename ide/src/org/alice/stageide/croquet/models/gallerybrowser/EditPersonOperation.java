@@ -82,12 +82,12 @@ public class EditPersonOperation extends PersonOperation {
 		final org.alice.stageide.personeditor.PersonInfo nextPersonInfo = personEditor.getPersonInfo();
 		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
-			public void doOrRedo( boolean isDo ) {
+			protected final void doOrRedoInternal( boolean isDo ) {
 				nextPersonInfo.update( person );
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: repaint" );
 			}
 			@Override
-			public void undo() {
+			protected final void undoInternal() {
 				prevPersonInfo.update( person );
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: repaint" );
 			}

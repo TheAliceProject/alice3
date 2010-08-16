@@ -54,7 +54,7 @@ public class InsertStatementEdit extends org.alice.ide.ToDoEdit {
 		this.statement = statement;
 	}
 	@Override
-	public void doOrRedo( boolean isDo ) {
+	protected final void doOrRedoInternal( boolean isDo ) {
 		this.actualIndex = Math.min( this.specifiedIndex, this.statementListProperty.size() );
 		this.statementListProperty.add( this.actualIndex, this.statement );
 //		CodeEditor.this.refresh();
@@ -62,7 +62,7 @@ public class InsertStatementEdit extends org.alice.ide.ToDoEdit {
 	}
 
 	@Override
-	public void undo() {
+	protected final void undoInternal() {
 		if( this.statementListProperty.get( this.actualIndex ) == this.statement ) {
 			this.statementListProperty.remove( this.actualIndex );
 //			CodeEditor.this.refresh();

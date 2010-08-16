@@ -65,11 +65,11 @@ public abstract class ShiftParameterOperation extends AbstractCodeParameterOpera
 		if( method != null ) {
 			context.commitAndInvokeDo(new org.alice.ide.ToDoEdit() {
 				@Override
-				public void doOrRedo( boolean isDo ) {
+				protected final void doOrRedoInternal( boolean isDo ) {
 					swap( method, aIndex, bIndex );
 				}
 				@Override
-				public void undo() {
+				protected final void undoInternal() {
 					swap( method, bIndex, aIndex );
 				}
 				@Override

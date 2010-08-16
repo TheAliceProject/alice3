@@ -61,11 +61,11 @@ public abstract class AbstractIsEnabledStatementOperation extends org.alice.ide.
 		final boolean prevValue = this.statement.isEnabled.getValue();
 		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
-			public void doOrRedo( boolean isDo ) {
+			protected final void doOrRedoInternal( boolean isDo ) {
 				statement.isEnabled.setValue( nextValue );
 			}
 			@Override
-			public void undo() {
+			protected final void undoInternal() {
 				statement.isEnabled.setValue( prevValue );
 			}
 			

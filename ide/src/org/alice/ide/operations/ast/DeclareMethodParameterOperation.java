@@ -119,11 +119,11 @@ public class DeclareMethodParameterOperation extends org.alice.ide.operations.In
 				final java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument >();
 				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
-					public void doOrRedo( boolean isDo ) {
+					protected final void doOrRedoInternal( boolean isDo ) {
 						org.alice.ide.ast.NodeUtilities.addParameter( map, method, parameter, index, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
 					}
 					@Override
-					public void undo() {
+					protected final void undoInternal() {
 						org.alice.ide.ast.NodeUtilities.removeParameter( map, method, parameter, index, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
 					}
 					@Override

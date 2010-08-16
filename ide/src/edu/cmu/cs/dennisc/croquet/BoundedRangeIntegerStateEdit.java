@@ -100,14 +100,14 @@ public final class BoundedRangeIntegerStateEdit extends Edit<BoundedRangeInteger
 	}
 
 	@Override
-	public void doOrRedo(boolean isDo) {
+	protected final void doOrRedoInternal( boolean isDo ) {
 		if( isDo==false || this.isDoDesired ) {
 			this.getModel().setValue(this.nextValue);
 		}
 	}
 
 	@Override
-	public void undo() {
+	protected final void undoInternal() {
 		this.getModel().setValue(this.previousValue);
 	}
 

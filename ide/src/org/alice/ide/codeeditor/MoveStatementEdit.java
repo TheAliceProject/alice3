@@ -68,7 +68,7 @@ public class MoveStatementEdit extends org.alice.ide.ToDoEdit {
 	}
 
 	@Override
-	public void doOrRedo(boolean isDo) {
+	protected final void doOrRedoInternal( boolean isDo ) {
 		this.nextActualIndex = Math.min(this.nextSpecifiedIndex, this.nextOwner.size());
 		if (this.prevOwner.get(this.prevActualIndex) == this.statement) {
 			if( this.prevOwner == this.nextOwner ) {
@@ -83,7 +83,7 @@ public class MoveStatementEdit extends org.alice.ide.ToDoEdit {
 	}
 
 	@Override
-	public void undo() {
+	protected final void undoInternal() {
 		if (this.nextOwner.get(this.nextActualIndex) == this.statement) {
 			if( this.prevOwner == this.nextOwner ) {
 				this.prevOwner.slide( this.nextActualIndex, this.prevActualIndex );

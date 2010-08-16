@@ -88,14 +88,14 @@ public abstract class AbstractEditFieldOperation extends org.alice.ide.operation
 				final edu.cmu.cs.dennisc.alice.ast.Expression nextInitializer = tempField.initializer.getValue();
 				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
-					public void doOrRedo( boolean isDo ) {
+					protected final void doOrRedoInternal( boolean isDo ) {
 						field.finalVolatileOrNeither.setValue( nextFinalVolatileOrNeither );
 						field.valueType.setValue( nextValueType );
 						field.name.setValue( nextName );
 						field.initializer.setValue( nextInitializer );
 					}
 					@Override
-					public void undo() {
+					protected final void undoInternal() {
 						field.finalVolatileOrNeither.setValue( prevFinalVolatileOrNeither );
 						field.valueType.setValue( prevValueType );
 						field.name.setValue( prevName );

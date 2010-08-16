@@ -82,7 +82,7 @@ public abstract class AbstractSetLocalTransformationActionOperation extends edu.
 		assert nextLT.isNaN() == false;
 		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
-			public void doOrRedo( boolean isDo ) {
+			protected final void doOrRedoInternal( boolean isDo ) {
 				if( isDo && ( isDoRequired == false ) ) {
 					//pass
 				} else {
@@ -90,7 +90,7 @@ public abstract class AbstractSetLocalTransformationActionOperation extends edu.
 				}
 			}
 			@Override
-			public void undo() {
+			protected final void undoInternal() {
 				setLocalTransformation( prevLT );
 			}
 			@Override

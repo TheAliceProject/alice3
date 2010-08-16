@@ -83,17 +83,12 @@ public final class BooleanStateEdit extends Edit<BooleanState> {
 	}
 
 	@Override
-	public void doOrRedo(boolean isDo) {
-		Application.getSingleton().pushUndoOrRedo();
-		try {
-			this.getModel().setValue(this.nextValue);
-		} finally {
-			Application.getSingleton().popUndoOrRedo();
-		}
+	protected final void doOrRedoInternal( boolean isDo ) {
+		this.getModel().setValue(this.nextValue);
 	}
 
 	@Override
-	public void undo() {
+	protected final void undoInternal() {
 		Application.getSingleton().pushUndoOrRedo();
 		try {
 			this.getModel().setValue(this.previousValue);

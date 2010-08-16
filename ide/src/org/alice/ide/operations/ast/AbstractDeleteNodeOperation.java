@@ -72,11 +72,11 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 			}
 			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
-				public void doOrRedo( boolean isDo ) {
+				protected final void doOrRedoInternal( boolean isDo ) {
 					owner.remove( index );
 				}
 				@Override
-				public void undo() {
+				protected final void undoInternal() {
 					if( instance != null ) {
 						getIDE().getSceneEditor().putInstanceForInitializingPendingField( field, instance );
 					}

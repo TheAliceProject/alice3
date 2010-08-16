@@ -659,10 +659,10 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	public edu.cmu.cs.dennisc.croquet.Edit createToDoEdit() {
 		return new org.alice.ide.ToDoEdit() {
 			@Override
-			public void doOrRedo( boolean isDo ) {
+			protected final void doOrRedoInternal( boolean isDo ) {
 			}
 			@Override
-			public void undo() {
+			protected final void undoInternal() {
 			}
 			@Override
 			protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {

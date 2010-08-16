@@ -58,11 +58,11 @@ class RandomPersonActionOperation extends org.alice.ide.operations.ActionOperati
 		final PersonInfo nextState = PersonInfo.createRandom();
 		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
-			public void doOrRedo( boolean isDo ) {
+			protected final void doOrRedoInternal( boolean isDo ) {
 				RandomPersonActionOperation.this.personEditor.setPersonInfo( nextState );
 			}
 			@Override
-			public void undo() {
+			protected final void undoInternal() {
 				RandomPersonActionOperation.this.personEditor.setPersonInfo( prevState );
 			}
 			@Override

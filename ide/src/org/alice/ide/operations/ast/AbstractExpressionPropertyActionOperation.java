@@ -65,11 +65,11 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 			private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 
 			@Override
-			public void doOrRedo( boolean isDo ) {
+			protected final void doOrRedoInternal( boolean isDo ) {
 				expressionProperty.setValue( this.nextExpression );
 			}
 			@Override
-			public void undo() {
+			protected final void undoInternal() {
 				expressionProperty.setValue( this.prevExpression );
 			}
 

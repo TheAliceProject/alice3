@@ -73,14 +73,14 @@ public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice
 	}
 	
 	@Override
-	public void doOrRedo( boolean isDo ) {
+	protected final void doOrRedoInternal( boolean isDo ) {
 		this.type.methods.add( this.method );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		this.prevFocusedCode = ide.getFocusedCode();
 		ide.setFocusedCode( method );
 	}
 	@Override
-	public void undo() {
+	protected final void undoInternal() {
 		int index = type.methods.indexOf( method );
 		if( index != -1 ) {
 			type.methods.remove( index );

@@ -480,14 +480,14 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 							class DropEdit extends org.alice.ide.ToDoEdit {
 								private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 								@Override
-								public void doOrRedo( boolean isDo ) {
+								protected final void doOrRedoInternal( boolean isDo ) {
 									statementListPropertyPane.getProperty().add( index, statement );
 									CodeEditor.this.refresh();
 									CodeEditor.this.resetScrollPane( viewPosition );
 								}
 
 								@Override
-								public void undo() {
+								protected final void undoInternal() {
 									if( statementListPropertyPane.getProperty().get( index ) == statement ) {
 										statementListPropertyPane.getProperty().remove( index );
 										CodeEditor.this.refresh();
@@ -546,20 +546,20 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 					
 					abstract class CodeEdit extends org.alice.ide.ToDoEdit {
 						protected abstract void redoInternal();
-						protected abstract void undoInternal();
+						protected abstract void undoInternal2();
 
 						protected void refreshAndResetScrollPane() {
 							CodeEditor.this.refresh();
 							CodeEditor.this.resetScrollPane( viewPosition );
 						}
 						@Override
-						public final void doOrRedo( boolean isFirstTime ) {
+						protected final void doOrRedoInternal( boolean isDo ) {
 							this.redoInternal();
 							this.refreshAndResetScrollPane();
 						}
 						@Override
-						public final void undo() {
-							this.undoInternal();
+						protected final void undoInternal() {
+							this.undoInternal2();
 							this.refreshAndResetScrollPane();
 						}
 					}
@@ -578,7 +578,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 										nextOwner.add( nextIndex, copy );
 									}
 									@Override
-									protected void undoInternal() {
+									protected void undoInternal2() {
 										if( nextOwner.get( nextIndex ) == copy ) {
 											nextOwner.remove( nextIndex );
 										} else {
@@ -628,7 +628,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 												this.owner.add( this.bIndex, statement );
 											}
 											@Override
-											protected void undoInternal() {
+											protected void undoInternal2() {
 												this.owner.remove( this.bIndex );
 												this.owner.add( this.aIndex, statement );
 											}
@@ -657,7 +657,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 											nextOwner.add( nextIndex, statement );
 										}
 										@Override
-										protected void undoInternal() {
+										protected void undoInternal2() {
 											nextOwner.remove( nextIndex );
 											prevOwner.add( prevIndex, statement );
 										}

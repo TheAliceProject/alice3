@@ -62,7 +62,7 @@ public class DeclareFieldEdit extends org.alice.ide.ToDoEdit {
 	}
 
 	@Override
-	public void doOrRedo(boolean isDo) {
+	protected final void doOrRedoInternal( boolean isDo ) {
 		if (this.isInstanceValid) {
 			org.alice.ide.IDE.getSingleton().getSceneEditor().putInstanceForInitializingPendingField( this.field, this.instance );
 		}
@@ -73,7 +73,7 @@ public class DeclareFieldEdit extends org.alice.ide.ToDoEdit {
 	}
 
 	@Override
-	public void undo() {
+	protected final void undoInternal() {
 		if (this.ownerType.fields.get(this.index) == this.field) {
 			this.ownerType.fields.remove(this.index);
 		} else {

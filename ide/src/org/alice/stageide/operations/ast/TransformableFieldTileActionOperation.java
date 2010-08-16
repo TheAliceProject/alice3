@@ -65,11 +65,11 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 			} else {
 				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
-					public void doOrRedo( boolean isDo ) {
+					protected final void doOrRedoInternal( boolean isDo ) {
 						setAbsolutePOV( transformable, nextPOV );
 					}
 					@Override
-					public void undo() {
+					protected final void undoInternal() {
 						setAbsolutePOV( transformable, prevPOV );
 					}
 					@Override

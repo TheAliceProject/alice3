@@ -418,12 +418,12 @@ class AddExpressionOperation extends edu.cmu.cs.dennisc.croquet.FauxPopupMenuOpe
 			private edu.cmu.cs.dennisc.alice.ast.Expression expression;
 			private int index;
 			@Override
-			public void doOrRedo( boolean isDo ) {
+			protected final void doOrRedoInternal( boolean isDo ) {
 				this.index = expressionListProperty.size();
 				expressionListProperty.add( this.expression );
 			}
 			@Override
-			public void undo() {
+			protected final void undoInternal() {
 				//expressionListProperty.indexOf( this.expression )
 				expressionListProperty.remove( this.index );
 			}

@@ -64,11 +64,11 @@ public abstract class AbstractRenameNodeOperation extends edu.cmu.cs.dennisc.cro
 			final String prevValue = nameProperty.getValue();
 			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
-				public void doOrRedo( boolean isDo ) {
+				protected final void doOrRedoInternal( boolean isDo ) {
 					nameProperty.setValue( nextValue );
 				}
 				@Override
-				public void undo() {
+				protected final void undoInternal() {
 					nameProperty.setValue( prevValue );
 				}
 				@Override

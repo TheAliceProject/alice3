@@ -75,13 +75,13 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.In
 				final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = ide.getFocusedCode();
 				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
-					public void doOrRedo( boolean isDo ) {
+					protected final void doOrRedoInternal( boolean isDo ) {
 						declaringType.methods.add( method );
 //						assert method.getDeclaringType() == method.body.getValue().getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractType.class );
 						ide.setFocusedCode( method );
 					}
 					@Override
-					public void undo() {
+					protected final void undoInternal() {
 						int index = declaringType.methods.indexOf( method );
 						if( index != -1 ) {
 							declaringType.methods.remove( index );

@@ -59,7 +59,7 @@ public class CompositeEdit extends Edit {
 	}
 	
 	@Override
-	public void doOrRedo( boolean isDo ) {
+	protected final void doOrRedoInternal( boolean isDo ) {
 		if( isDo && this.isDoToBeIgnored ) {
 			//pass
 		} else {
@@ -69,7 +69,7 @@ public class CompositeEdit extends Edit {
 		}
 	}
 	@Override
-	public void undo() {
+	protected final void undoInternal() {
 		final int N = this.edits.length;
 		for( int i=0; i<N; i++ ) {
 			this.edits[ N-1-i ].undo();

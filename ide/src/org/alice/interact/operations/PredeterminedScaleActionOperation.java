@@ -99,7 +99,7 @@ public class PredeterminedScaleActionOperation extends edu.cmu.cs.dennisc.croque
 	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
-			public void doOrRedo( boolean isDo ) {
+			protected final void doOrRedoInternal( boolean isDo ) {
 				if( isDo && ( isDoRequired == false ) ) {
 					//pass
 				} else {
@@ -107,7 +107,7 @@ public class PredeterminedScaleActionOperation extends edu.cmu.cs.dennisc.croque
 				}
 			}
 			@Override
-			public void undo() {
+			protected final void undoInternal() {
 				scale( undoVector );
 			}
 			@Override

@@ -59,7 +59,7 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 		if( index >= 0 ) {
 			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
-				public void doOrRedo( boolean isDo ) {
+				protected final void doOrRedoInternal( boolean isDo ) {
 					property.remove( index );
 					original.body.setValue( null );
 					replacement.body.setValue( body );
@@ -68,7 +68,7 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 					getIDE().refreshUbiquitousPane();
 				}
 				@Override
-				public void undo() {
+				protected final void undoInternal() {
 					property.remove( index );
 					replacement.body.setValue( null );
 					original.body.setValue( body );
@@ -123,14 +123,14 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOp
 			
 			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
-				public void doOrRedo( boolean isDo ) {
+				protected final void doOrRedoInternal( boolean isDo ) {
 					property.remove( index );
 					property.add( index, statements );
 					//todo: remove
 					getIDE().refreshUbiquitousPane();
 				}
 				@Override
-				public void undo() {
+				protected final void undoInternal() {
 					for( int i=0; i<N; i++ ) {
 						property.remove( index );
 					}
@@ -176,13 +176,13 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOper
 		if( index >= 0 ) {
 			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
-				public void doOrRedo( boolean isDo ) {
+				protected final void doOrRedoInternal( boolean isDo ) {
 					property.remove( index );
 					//todo: remove
 					getIDE().refreshUbiquitousPane();
 				}
 				@Override
-				public void undo() {
+				protected final void undoInternal() {
 					property.add( index, statement );
 					//todo: remove
 					getIDE().refreshUbiquitousPane();

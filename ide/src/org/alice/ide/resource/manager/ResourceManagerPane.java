@@ -239,11 +239,11 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		public edu.cmu.cs.dennisc.croquet.Edit createEdit( final org.alice.virtualmachine.Resource resource ) {
 			return new AddOrRemoveResourceEdit() {
 				@Override
-				public void doOrRedo( boolean isDo ) {
+				protected final void doOrRedoInternal( boolean isDo ) {
 					this.addResource( resource );
 				}
 				@Override
-				public void undo() {
+				protected final void undoInternal() {
 					this.removeResource( resource );
 				}
 				@Override
@@ -269,11 +269,11 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 		public edu.cmu.cs.dennisc.croquet.Edit createEdit( final org.alice.virtualmachine.Resource resource ) {
 			return new AddOrRemoveResourceEdit() {
 				@Override
-				public void doOrRedo( boolean isDo ) {
+				protected final void doOrRedoInternal( boolean isDo ) {
 					this.removeResource( resource );
 				}
 				@Override
-				public void undo() {
+				protected final void undoInternal() {
 					this.addResource( resource );
 				}
 				@Override
@@ -390,12 +390,12 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 					final String prevName = this.resource.getName();
 					context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 						@Override
-						public void doOrRedo( boolean isDo ) {
+						protected final void doOrRedoInternal( boolean isDo ) {
 							resource.setName( nextName );
 							ResourceManagerPane.this.table.repaint();
 						}
 						@Override
-						public void undo() {
+						protected final void undoInternal() {
 							resource.setName( prevName );
 							ResourceManagerPane.this.table.repaint();
 						}
@@ -517,11 +517,11 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 				if( prevCapsule != null && nextCapsule != null ) {
 					context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 						@Override
-						public void doOrRedo( boolean isDo ) {
+						protected final void doOrRedoInternal( boolean isDo ) {
 							nextCapsule.update( resource );
 						}
 						@Override
-						public void undo() {
+						protected final void undoInternal() {
 							prevCapsule.update( resource );
 						}
 						@Override

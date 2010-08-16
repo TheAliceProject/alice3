@@ -172,11 +172,11 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 			} else {
 				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
-					public void doOrRedo( boolean isDo ) {
+					protected final void doOrRedoInternal( boolean isDo ) {
 						setAbsolutePOV( camera, nextPOV );
 					}
 					@Override
-					public void undo() {
+					protected final void undoInternal() {
 						setAbsolutePOV( camera, prevPOV );
 					}
 					@Override

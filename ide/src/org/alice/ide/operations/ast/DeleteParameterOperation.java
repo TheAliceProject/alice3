@@ -129,11 +129,11 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 			} else {
 				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
-					public void doOrRedo( boolean isDo ) {
+					protected final void doOrRedoInternal( boolean isDo ) {
 						org.alice.ide.ast.NodeUtilities.removeParameter( map, method, getParameter(), index, getIDE().getMethodInvocations( method ) );
 					}
 					@Override
-					public void undo() {
+					protected final void undoInternal() {
 						org.alice.ide.ast.NodeUtilities.addParameter( map, method, getParameter(), index, getIDE().getMethodInvocations( method ) );
 					}
 					@Override
