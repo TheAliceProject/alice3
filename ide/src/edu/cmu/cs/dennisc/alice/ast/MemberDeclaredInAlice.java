@@ -47,6 +47,6 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public interface MemberDeclaredInAlice {
-	public AbstractType getDeclaringType();
-	public void setDeclaringType( AbstractType declaringType );
+	public AbstractTypeDeclaredInAlice<?> getDeclaringType();
+	public void setDeclaringType( AbstractTypeDeclaredInAlice<?> declaringType );
 }

@@ -47,6 +47,7 @@ import java.awt.event.InputEvent;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.handle.ManipulationHandle;
 
+import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Component;
@@ -85,6 +86,8 @@ public class InputState {
 	private ManipulationHandle rolloverHandle = null;
 	private long timeCaptured = 0;
 	private InputEvent inputEvent = null;
+	private boolean isDragEvent = false;
+	private DragAndDropContext dragAndDropContext = null;
 	
 	
 	public InputEvent getInputEvent()
@@ -112,6 +115,26 @@ public class InputState {
 			return (AbstractCamera)this.clickPickResult.getSource(); 
 		}
 		return null;
+	}
+	
+	public void setIsDragEvent(boolean isDragEvent)
+	{
+		this.isDragEvent = isDragEvent;
+	}
+	
+	public boolean getIsDragEvent()
+	{
+		return this.isDragEvent;
+	}
+	
+	public void setDragAndDropContext(DragAndDropContext dragAndDropContext)
+	{
+		this.dragAndDropContext = dragAndDropContext;
+	}
+	
+	public DragAndDropContext getDragAndDropContext()
+	{
+		return this.dragAndDropContext;
 	}
 
 	public void setRolloverHandle( ManipulationHandle rolloverHandle ) {
@@ -419,6 +442,8 @@ public class InputState {
 		this.rolloverHandle = sourceState.rolloverHandle;
 		this.clickHandle = sourceState.clickHandle;
 		this.timeCaptured = sourceState.timeCaptured;
+		this.isDragEvent = sourceState.isDragEvent;
+		this.dragAndDropContext = sourceState.dragAndDropContext;
 	}
 	
 	@Override

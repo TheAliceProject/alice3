@@ -61,6 +61,7 @@ public class ManipulatorConditionSet {
 	private String name = "NO NAME";
 	private AbstractManipulator manipulator;
 	private java.util.Vector< InputCondition > inputConditions = new java.util.Vector< InputCondition >();
+	private boolean enabled = true;
 	
 	public ManipulatorConditionSet( AbstractManipulator manipulator, String name )
 	{
@@ -71,6 +72,16 @@ public class ManipulatorConditionSet {
 	public ManipulatorConditionSet( AbstractManipulator manipulator )
 	{
 		this(manipulator, "NO NAME");
+	}
+	
+	public boolean isEnabled()
+	{
+		return this.enabled;
+	}
+	
+	public void setEnabled(boolean enabled)
+	{
+		this.enabled = enabled;
 	}
 	
 	public void addCondition( InputCondition inputCondition )

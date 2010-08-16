@@ -46,7 +46,7 @@ package org.alice.ide.declarationpanes;
  * @author Dennis Cosgrove
  */
 public class CreateFieldPane extends AbstractCreateFieldPane {
-	public CreateFieldPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+	public CreateFieldPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
 		super( declaringType );
 	}
 	@Override
@@ -58,7 +58,7 @@ public class CreateFieldPane extends AbstractCreateFieldPane {
 		return true;
 	}
 	@Override
-	protected boolean isIsReassignableComponentDesired() {
+	protected boolean isIsReassignableStateDesired() {
 		return true;
 	}
 }

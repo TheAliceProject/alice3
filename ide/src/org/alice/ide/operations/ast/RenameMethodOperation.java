@@ -47,6 +47,6 @@ package org.alice.ide.operations.ast;
  */
 public class RenameMethodOperation extends RenameNodeOperation{
 	public RenameMethodOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		super( method.name, new org.alice.ide.name.validators.MethodNameValidator( method ) );
+		super( java.util.UUID.fromString( "98b443d0-c7d3-4ff8-ba1b-b16d2695c618" ), method.name, new org.alice.ide.name.validators.MethodNameValidator( method ) );
 	}
 }

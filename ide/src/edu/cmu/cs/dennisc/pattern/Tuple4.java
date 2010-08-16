@@ -90,7 +90,7 @@ public class Tuple4<A, B, C, D> {
 		if( super.equals( other ) ) {
 			return true;
 		} else {
-			if( other instanceof Tuple4 ) {
+			if( other instanceof Tuple4<?,?,?,?> ) {
 				Tuple4<?,?,?,?> otherT = (Tuple4<?,?,?,?>)other;
 				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_a, otherT.m_a ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_b, otherT.m_b ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_c, otherT.m_c ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_d, otherT.m_d );
 			} else {

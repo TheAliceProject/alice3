@@ -45,19 +45,43 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperation {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
-	public DeclareFieldOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
-		this.ownerType = ownerType;
+public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperation<org.alice.ide.declarationpanes.CreateFieldPane> {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >, DeclareFieldOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static DeclareFieldOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > ownerType ) {
+		DeclareFieldOperation rv = map.get( ownerType );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new DeclareFieldOperation( ownerType );
+			map.put( ownerType, rv );
+		}
+		return rv;
+	}
+	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > ownerType;
+	private DeclareFieldOperation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > ownerType ) {
+		super( java.util.UUID.fromString( "e935b0ea-e927-49ff-b33b-2c8eaf5c8b57" ) );
 		this.setName( "Declare Property..." );
+		this.ownerType = ownerType;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getOwnerType() {
 		return this.ownerType;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
-		org.alice.ide.declarationpanes.CreateFieldPane createFieldPane = new org.alice.ide.declarationpanes.CreateFieldPane( ownerType );
-		return createFieldPane.showInJDialog( getIDE() );
+	protected org.alice.ide.declarationpanes.CreateFieldPane prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateFieldPane> context) {
+		return new org.alice.ide.declarationpanes.CreateFieldPane( this.ownerType );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.CreateFieldPane > context ) {
+		org.alice.ide.declarationpanes.CreateFieldPane createFieldPane = context.getMainPanel();
+		return createFieldPane.getActualInputValue();
+	}
+	@Override
+	protected boolean isInstanceValid() {
+		return false;
+	}
+	@Override
+	protected java.lang.Object createInstance() {
+		return null;
 	}
 }

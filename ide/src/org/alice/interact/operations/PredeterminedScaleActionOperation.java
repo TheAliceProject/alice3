@@ -42,10 +42,12 @@
  */
 package org.alice.interact.operations;
 
+import edu.cmu.cs.dennisc.croquet.Group;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PredeterminedScaleActionOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
+public class PredeterminedScaleActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 	private boolean isDoRequired;
 	private edu.cmu.cs.dennisc.animation.Animator animator;
 	private edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable;
@@ -54,8 +56,8 @@ public class PredeterminedScaleActionOperation extends edu.cmu.cs.dennisc.zoot.A
 	private edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > criterion;
 	
 	private String editPresentationKey;
-	public PredeterminedScaleActionOperation( java.util.UUID groupUUID, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable, edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > criterion, String editPresentationKey ) {
-		super( groupUUID );
+	public PredeterminedScaleActionOperation( Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable, edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > criterion, String editPresentationKey ) {
+		super( group, java.util.UUID.fromString( "455cae50-c329-44e3-ba7c-9ef10f69d965" ) );
 		this.isDoRequired = isDoRequired;
 		this.animator = animator;
 		this.sgTransformable = sgTransformable;
@@ -93,8 +95,9 @@ public class PredeterminedScaleActionOperation extends edu.cmu.cs.dennisc.zoot.A
 		}
 		
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+	@Override
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			public void doOrRedo( boolean isDo ) {
 				if( isDo && ( isDoRequired == false ) ) {

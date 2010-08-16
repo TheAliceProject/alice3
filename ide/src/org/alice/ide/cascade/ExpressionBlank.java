@@ -46,12 +46,12 @@ package org.alice.ide.cascade;
  * @author Dennis Cosgrove
  */
 public class ExpressionBlank extends edu.cmu.cs.dennisc.cascade.Blank {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
 	private boolean isArrayLengthDesired;
-	public ExpressionBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public ExpressionBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		this( type, false );
 	}
-	public ExpressionBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType type, boolean isArrayLengthDesired ) {
+	public ExpressionBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, boolean isArrayLengthDesired ) {
 		this.type = type;
 		this.isArrayLengthDesired = isArrayLengthDesired;
 	}

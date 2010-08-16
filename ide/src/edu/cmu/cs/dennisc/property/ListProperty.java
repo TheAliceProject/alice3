@@ -57,7 +57,7 @@ public class ListProperty<E> extends InstanceProperty< java.util.ArrayList< E > 
 		if( m_listPropertyListeners != null ) {
 			//pass
 		} else {
-			m_listPropertyListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.property.event.ListPropertyListener< E > >();
+			m_listPropertyListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 		}
 		synchronized( m_listPropertyListeners ) {
 			m_listPropertyListeners.add( l );
@@ -154,8 +154,14 @@ public class ListProperty<E> extends InstanceProperty< java.util.ArrayList< E > 
 	public int size() {
 		return getValue().size();
 	}
-	public java.util.List< E > subList( int fromIndex, int toIndex ) {
-		return getValue().subList( fromIndex, toIndex );
+	public java.util.List< E > subList( int fromIndex, int upToButExcludingIndex ) {
+		return getValue().subList( fromIndex, upToButExcludingIndex );
+	}
+	public java.util.List< E > subListCopy( int fromIndex, int upToButExcludingIndex ) {
+		java.util.ArrayList< E > rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+		rv.ensureCapacity( upToButExcludingIndex-fromIndex+1-1 );
+		rv.addAll( this.subList(fromIndex, upToButExcludingIndex));
+		return rv;
 	}
 
 	public int indexOf( Object element ) {
@@ -241,18 +247,21 @@ public class ListProperty<E> extends InstanceProperty< java.util.ArrayList< E > 
 		fireCleared( e );
 	}
 
-	public void remove( int fromIndex, int toIndex ) {
+	public void removeExclusive( int fromIndex, int upToButExcludingIndex ) {
 		//assert isLocked() == false;
-		edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e = new edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E >( this, fromIndex, getValue().subList( fromIndex, toIndex ) );
+		edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e = new edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E >( this, fromIndex, this.subListCopy( fromIndex, upToButExcludingIndex ) );
 		fireRemoving( e );
-		for( int i=fromIndex; i<toIndex; i++ ) {
+		for( int i=fromIndex; i<upToButExcludingIndex; i++ ) {
 			getValue().remove( i );
 		}
 		fireRemoved( e );
 	}
+	public void removeInclusive( int fromIndex, int upToAndIncludingIndex ) {
+		this.removeExclusive( fromIndex, upToAndIncludingIndex+1 );
+	}
 	public E remove( int index ) {
 		E rv = get( index );
-		remove( index, index+1 );
+		removeInclusive( index, index );
 		return rv;
 	}
 
@@ -266,6 +275,50 @@ public class ListProperty<E> extends InstanceProperty< java.util.ArrayList< E > 
 		fireSet( e );
 	}
 
+	public void set( int index, java.util.List< E > elements ) {
+		//assert isLocked() == false;
+		edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< E > e = new edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< E >( this, index, elements );
+		fireSetting( e );
+		for( int i=0; i<elements.size(); i++ ) {
+			getValue().set( index+i, elements.get( i ) );
+		}
+		fireSet( e );
+	}
+
+	public void swap( int indexA, int indexB ) {
+		if( indexA != indexB ) {
+			//todo: test
+			int indexMin = Math.min( indexA, indexB );
+			int indexMax = Math.max( indexA, indexB );
+			java.util.List< E > subList = this.subList( indexMin, indexMax+1 );
+			final int N = subList.size();
+			E eMin = subList.get( 0 );
+			E eMax = subList.get( N-1 );
+			subList.set( 0, eMax );
+			subList.set( N-1, eMin );
+			this.set( indexMin, subList );
+		}
+	}
+	
+	public void slide( int prevIndex, int nextIndex ) {
+		if( prevIndex != nextIndex ) {
+			
+			final int ONE_TO_EXCLUDE = 1;
+			//todo: test
+			E element = this.getValue().get( prevIndex );
+			if( prevIndex < nextIndex ) {
+				java.util.List< E > subList = this.subListCopy( prevIndex+1, nextIndex+ONE_TO_EXCLUDE );
+				subList.add( element );
+				this.set( prevIndex, subList );
+			} else {
+				java.util.List< E > subList = this.subListCopy( nextIndex, prevIndex-1+ONE_TO_EXCLUDE );
+				subList.add( 0, element );
+				this.set( nextIndex, subList );
+			}
+		}
+	}
+	
+	
 	@Override
 	public void setValue( PropertyOwner owner, java.util.ArrayList< E > value ) {
 		

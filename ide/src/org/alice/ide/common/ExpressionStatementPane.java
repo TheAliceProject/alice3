@@ -50,7 +50,11 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}
 		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-			ExpressionStatementPane.this.refresh();
+			javax.swing.SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					ExpressionStatementPane.this.refresh();
+				}
+			} );
 		}
 	};
 	public ExpressionStatementPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
@@ -59,7 +63,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 	}
 
 	@Override
-	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
+	protected java.awt.Paint getEnabledBackgroundPaint( int x, int y, int width, int height ) {
 		final edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)getStatement();
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
@@ -70,35 +74,37 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 				return java.awt.Color.RED;
 			}
 		}
-		return super.getBackgroundPaint( x, y, width, height );
+		return super.getEnabledBackgroundPaint( x, y, width, height );
 	}
 	
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		this.getExpressionStatement().expression.addPropertyListener( this.refreshAdapter );
 	}
 	@Override
-	public void removeNotify() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		this.getExpressionStatement().expression.removePropertyListener( this.refreshAdapter );
-		super.removeNotify();
+		super.handleRemovedFrom( parent );
 	}
 
 	private void refresh() {
-		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this );
+		this.forgetAndRemoveAllComponents();
 		final edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)getStatement();
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {
-			this.add( new AssignmentExpressionPane( this.getFactory(), (edu.cmu.cs.dennisc.alice.ast.AssignmentExpression)expression ) );
+			this.addComponent( new AssignmentExpressionPane( this.getFactory(), (edu.cmu.cs.dennisc.alice.ast.AssignmentExpression)expression ) );
 		} else {
-			this.add( this.getFactory().createComponent( expressionStatement.expression.getValue() ) );
+			edu.cmu.cs.dennisc.croquet.JComponent< ? > expressionPane = this.getFactory().createComponent( expressionStatement.expression.getValue() );
+			this.addComponent( expressionPane );
 			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) { 
 				final edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
+				assert methodInvocation.getParent() == expressionStatement;
 				
 				if( methodInvocation.isValid() ) {
 					//pass
 				} else {
-					this.setBackground( java.awt.Color.RED );
+					this.setBackgroundColor( java.awt.Color.RED );
 				}
 				
 				edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
@@ -106,9 +112,12 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 				if( this.getFactory() instanceof org.alice.ide.codeeditor.Factory ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractMember nextLonger = method.getNextLongerInChain();
 					if( nextLonger != null ) {
-						final edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)nextLonger;
-						this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-						this.add( new org.alice.ide.codeeditor.MoreDropDownPane( expressionStatement ) );
+						this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
+						edu.cmu.cs.dennisc.croquet.AbstractButton< ?, ? > button = new org.alice.ide.croquet.PopupMenuButton( org.alice.ide.operations.ast.FillInMoreOperation.getInstance( methodInvocation ) );
+						button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
+						button.setVerticalAlignment( edu.cmu.cs.dennisc.croquet.VerticalAlignment.CENTER );
+						button.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
+						this.addComponent( button );
 					}
 				}
 
@@ -136,24 +145,23 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 			}
 		}
 		if( getIDE().isJava() ) {
-			this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( ";" ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( ";" ) );
 		}
-		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-		ExpressionStatementPane.this.revalidate();
-		ExpressionStatementPane.this.repaint();
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
+		this.revalidateAndRepaint();
 	}
-	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getMethodDeclaredInAlice() {
-		edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = this.getExpressionStatement();
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
-		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
-			edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
-			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
-			if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-				return (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
-			}
-		}
-		return null;
-	}
+//	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getMethodDeclaredInAlice() {
+//		edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = this.getExpressionStatement();
+//		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
+//		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
+//			edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
+//			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
+//			if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+//				return (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
+//			}
+//		}
+//		return null;
+//	}
 	
 //	@Override
 //	protected void handleControlClick( java.awt.event.MouseEvent e) {

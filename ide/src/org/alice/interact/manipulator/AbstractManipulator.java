@@ -71,7 +71,7 @@ public abstract class AbstractManipulator {
 	private boolean hasStarted = false;
 	protected AbstractDragAdapter dragAdapter;
 	protected boolean hasDoneUpdate = false;
-	
+
 	protected List< ManipulationEvent > manipulationEvents = new Vector< ManipulationEvent >();
 	
 	public void setManipulatedTransformable( edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedTransformable)
@@ -127,7 +127,12 @@ public abstract class AbstractManipulator {
 	
 	public boolean startManipulator( InputState startInput )
 	{
-		this.hasStarted = doStartManipulator( startInput );
+		try {
+			this.hasStarted = doStartManipulator( startInput );
+		} catch( Throwable t ) {
+			t.printStackTrace();
+			this.hasStarted = false;
+		}
 		setHasUpdated(false);
 		if (this.hasStarted)
 		{
@@ -185,21 +190,28 @@ public abstract class AbstractManipulator {
 	
 	public void endManipulator(InputState endInput, InputState previousInput  )
 	{
-		doEndManipulator( endInput, previousInput );
-		if (isUndoable())
+		try
 		{
-			undoRedoEndManipulation();
+			doEndManipulator( endInput, previousInput );
 		}
-		else if (this.getManipulatedTransformable() != null)
+		catch (Throwable t)
 		{
-			AffineMatrix4x4 newTransformation = this.getManipulatedTransformable().getLocalTransformation();
-			if (!newTransformation.equals( originalTransformation ) && originalTransformation != null)
-			{
-				PrintUtilities.println("Skipping undoable action for a manipulation that actually changed the transformation.");
-			}
+			t.printStackTrace();
 		}
 		if (this.hasStarted)
 		{
+			if (isUndoable())
+			{
+				undoRedoEndManipulation();
+			}
+			else if (this.getManipulatedTransformable() != null)
+			{
+				AffineMatrix4x4 newTransformation = this.getManipulatedTransformable().getLocalTransformation();
+				if (!newTransformation.equals( originalTransformation ) && originalTransformation != null)
+				{
+					PrintUtilities.println("Skipping undoable action for a manipulation that actually changed the transformation.");
+				}
+			}
 			this.hasStarted = false;
 			HandleSet setToShow = this.getHandleSetToEnable();
 			if (setToShow != null && this.dragAdapter != null)
@@ -248,8 +260,8 @@ public abstract class AbstractManipulator {
 			{
 				System.out.println("boom");
 			}
-			PredeterminedSetLocalTransformationActionOperation undoOperation = new PredeterminedSetLocalTransformationActionOperation(Project.GROUP_UUID, false, animator, this.getManipulatedTransformable(), originalTransformation, newTransformation, getUndoRedoDescription());
-			ZManager.performIfAppropriate( undoOperation, null, false );
+			PredeterminedSetLocalTransformationActionOperation undoOperation = new PredeterminedSetLocalTransformationActionOperation(Project.GROUP, false, animator, this.getManipulatedTransformable(), originalTransformation, newTransformation, getUndoRedoDescription());
+			undoOperation.fire();
 		}
 	}
 	

@@ -51,7 +51,7 @@ public abstract class CreateParameterPane extends CreateDeclarationPane<edu.cmu.
 	public CreateParameterPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
 		super( new org.alice.ide.name.validators.ParameterNameValidator( code ) );
 		this.code = code;
-		this.setBackground( getIDE().getParameterColor() );
+		this.setBackgroundColor( getIDE().getParameterColor() );
 		
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {
@@ -62,7 +62,7 @@ public abstract class CreateParameterPane extends CreateDeclarationPane<edu.cmu.
 		return false;
 	}
 	@Override
-	protected boolean isIsReassignableComponentDesired() {
+	protected boolean isIsReassignableStateDesired() {
 		return false;
 	}
 	@Override
@@ -74,19 +74,19 @@ public abstract class CreateParameterPane extends CreateDeclarationPane<edu.cmu.
 		return "value type:";
 	}
 	@Override
-	protected java.awt.Component createInitializerComponent() {
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createInitializerComponent() {
 		return null;
 	}
 	@Override
-	protected java.awt.Component createPreviewSubComponent() {
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent() {
 		return new org.alice.ide.codeeditor.TypedParameterPane( null, this.getActualInputValue() );
 	}
 	@Override
-	protected String getTitleDefault() {
+	public String getDialogTitle() {
 		return "Declare Parameter";
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice getActualInputValue() {
+	public edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice getActualInputValue() {
 		return new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( this.getDeclarationName(), this.getValueType() );
 	}
 }

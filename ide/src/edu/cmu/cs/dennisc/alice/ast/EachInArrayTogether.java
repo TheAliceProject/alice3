@@ -49,9 +49,9 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class EachInArrayTogether extends AbstractEachInTogether {
 	public ExpressionProperty array = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			VariableDeclaredInAlice variable = EachInArrayTogether.this.variable.getValue();
-			AbstractType type = variable.valueType.getValue();
+			AbstractType<?,?,?> type = variable.valueType.getValue();
 			return type.getArrayType();
 		}
 	};

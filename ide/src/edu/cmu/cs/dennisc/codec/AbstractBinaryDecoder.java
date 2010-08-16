@@ -119,33 +119,39 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		}
 		return rv;
 	}
-	public final <E extends BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray( Class< E > cls ) {
-		E[] rv = (E[])createArray( cls );
+	public final <E extends BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray( Class< E > componentCls ) {
+		E[] rv = (E[])createArray( componentCls );
 		for( int i=0; i<rv.length; i++ ) {
-			rv[ i ] = decodeBinaryEncodableAndDecodable( cls );
+			rv[ i ] = decodeBinaryEncodableAndDecodable( componentCls );
 		}
 		return rv;
 	}
-	public final <E extends ReferenceableBinaryEncodableAndDecodable> E[] decodeReferenceableBinaryEncodableAndDecodableArray( Class< E > cls, java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map ) {
-		E[] rv = (E[])createArray( cls );
+	public final <E extends ReferenceableBinaryEncodableAndDecodable> E[] decodeReferenceableBinaryEncodableAndDecodableArray( Class< E > componentCls, java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map ) {
+		E[] rv = (E[])createArray( componentCls );
 		for( int i=0; i<rv.length; i++ ) {
-			rv[ i ] = decodeReferenceableBinaryEncodableAndDecodable( cls, map );
+			rv[ i ] = decodeReferenceableBinaryEncodableAndDecodable( componentCls, map );
 		}
 		return rv;
 	}
-	public final <E extends Enum< E >> E decodeEnum( Class< E > cls ) {
+	public final <E extends Enum< E >> E decodeEnum() {
 		boolean isNotNull = decodeBoolean();
 		if( isNotNull ) {
 			String clsName = decodeString();
-			assert edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( clsName, cls.getName() );
 			String name = decodeString();
-			return Enum.valueOf( cls, name );
+			Class< E > clsActual = (Class<E>)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
+			return Enum.valueOf( clsActual, name );
 		} else {
 			return null;
 		}
 	}
+	public final <E extends Enum< E >> E decodeEnum( Class< E > cls ) {
+		E rv = decodeEnum();
+		assert cls.isInstance( rv );
+		return rv;
+	}
 
-	public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable( Class< E > cls ) {
+
+	public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable() {
 		String clsName = decodeString();
 		if( clsName.length() > 0 ) {
 			Class clsActual = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
@@ -153,16 +159,22 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 			E rv;
 			try {
 				cnstrctr = clsActual.getConstructor( new Class[] { BinaryDecoder.class } );
-				rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this );
+				rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this );
 			} catch( NoSuchMethodException nsme ) {
 				cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( clsActual );
-				rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
+				rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
 				rv.decode( this );
 			}
 			return rv;
 		} else {
 			return null;
 		}
+	}
+	@Deprecated
+	public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable( Class< E > cls ) {
+		E rv = decodeBinaryEncodableAndDecodable();
+		assert cls.isInstance( rv );
+		return rv;
 	}
 	public final BinaryEncodableAndDecodable decodeBinaryEncodableAndDecodable( BinaryEncodableAndDecodable rv ) {
 		String clsName = decodeString();
@@ -174,7 +186,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		}
 		return rv;
 	}
-	public final <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinaryEncodableAndDecodable( Class< E > cls, java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map ) {
+	public final <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinaryEncodableAndDecodable( java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map ) {
 		String clsName = decodeString();
 		if( clsName.length() > 0 ) {
 			int reference = decodeInt();
@@ -185,11 +197,33 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 				rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( clsName );
 				map.put( reference, rv );
 				rv.decode( this, map );
+				
+				//
+				//
+				//todo?
+				//
+				//
+//				Class clsActual = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
+//				java.lang.reflect.Constructor< E > cnstrctr;
+//				try {
+//					cnstrctr = clsActual.getConstructor( new Class[] { BinaryDecoder.class, java.util.Map.class } );
+//					rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this, map );
+//				} catch( NoSuchMethodException nsme ) {
+//					cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( clsActual );
+//					rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
+//					rv.decode( this, map );
+//				}
 			}
 			return rv;
 		} else {
 			return null;
 		}
+	}
+	@Deprecated
+	public final <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinaryEncodableAndDecodable( Class< E > cls, java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map ) {
+		E rv = decodeReferenceableBinaryEncodableAndDecodable( map );
+		assert cls.isInstance( rv );
+		return rv;
 	}
 
 	public final ReferenceableBinaryEncodableAndDecodable decodeReferenceableBinaryEncodableAndDecodable( ReferenceableBinaryEncodableAndDecodable rv, java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map ) {

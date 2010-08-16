@@ -47,16 +47,29 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class Decoder {
-	private static edu.cmu.cs.dennisc.map.MapToMap< Class<?>, String, Class<?> > mapToMap = new edu.cmu.cs.dennisc.map.MapToMap< Class<?>, String, Class<?> >();
+//	private static edu.cmu.cs.dennisc.map.MapToMap< Class<?>, String, Class<?> > mapToMapCls = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap< ClassReflectionProxy, String, String > mapToMapName = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	public static void addMethodFilter( Class<?> prevCls, String name, Class<?> nextCls ) {
-		Decoder.mapToMap.put( prevCls, name, nextCls );
+//		Decoder.mapToMapCls.put( prevCls, name, nextCls );
 	}
-	private static Class<?> filterClsIfNecessary( Class<?> cls, String name ) {
-		Class<?> rv = Decoder.mapToMap.get( cls, name );
+	public static void addMethodFilter( ClassReflectionProxy classReflectionProxy, String prevName, String nextName ) {
+		Decoder.mapToMapName.put( classReflectionProxy, prevName, nextName );
+	}
+//	private static Class<?> filterClsIfNecessary( Class<?> cls, String name ) {
+//		Class<?> rv = Decoder.mapToMapCls.get( cls, name );
+//		if( rv != null ) {
+//			//pass
+//		} else {
+//			rv = cls;
+//		}
+//		return rv;
+//	}
+	private static String filterNameIfNecessary( ClassReflectionProxy classReflectionProxy, String name ) {
+		String rv = Decoder.mapToMapName.get( classReflectionProxy, name );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = cls;
+			rv = name;
 		}
 		return rv;
 	}
@@ -192,6 +205,7 @@ public class Decoder {
 		org.w3c.dom.Element xmlMethod = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlParent, nodeName );
 		ClassReflectionProxy declaringCls = decodeDeclaringClass( xmlMethod );
 		String name = xmlMethod.getAttribute( "name" );
+		name = filterNameIfNecessary( declaringCls, name );
 		ClassReflectionProxy[] parameterClses = decodeParameters( xmlMethod );
 		return new MethodReflectionProxy( declaringCls, name, parameterClses );
 	}

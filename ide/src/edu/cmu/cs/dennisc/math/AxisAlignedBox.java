@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class AxisAlignedBox {
+public class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	protected Point3 m_minimum = new Point3();
 	protected Point3 m_maximum = new Point3();
 
@@ -64,6 +64,16 @@ public class AxisAlignedBox {
 	public AxisAlignedBox( AxisAlignedBox other ) {
 		set( other );
 	}
+	
+	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+		m_minimum.decode( binaryDecoder );
+		m_maximum.decode( binaryDecoder );
+	}
+	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+		m_minimum.encode( binaryEncoder );
+		m_maximum.encode( binaryEncoder );
+	}
+	
 	@Override
 	public boolean equals( Object o ) {
 		if( o == this )
@@ -74,6 +84,17 @@ public class AxisAlignedBox {
 		} else {
 			return false;
 		}
+	}
+	@Override
+	public int hashCode() {
+		int rv = 17;
+		if( this.m_minimum != null ) {
+			rv = 37*rv + this.m_minimum.hashCode();
+		}
+		if( this.m_maximum != null ) {
+			rv = 37*rv + this.m_maximum.hashCode();
+		}
+		return rv;
 	}
 
 	public void set( AxisAlignedBox other ) {

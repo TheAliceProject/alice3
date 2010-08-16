@@ -47,46 +47,27 @@ package org.alice.ide.common;
  */
 public class ThisPane extends AccessiblePane {
 	private static final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava TYPE_FOR_NULL = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Void.class );
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType type = TYPE_FOR_NULL;
-	private org.alice.ide.event.IDEListener ideAdapter = new org.alice.ide.event.IDEListener() {
-		public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
-		}
-		public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
-		}
-		public void focusedCodeChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-		}
-		public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-			ThisPane.this.updateBasedOnFocusedCode( e.getNextValue() );
-		}
-		public void localeChanging( org.alice.ide.event.LocaleEvent e ) {
-		}
-		public void localeChanged( org.alice.ide.event.LocaleEvent e ) {
-		}
-		public void projectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
-		}
-		public void projectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
-		}
-		public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
-		}
-		public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = TYPE_FOR_NULL;
+	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
+		public void changed(edu.cmu.cs.dennisc.alice.ast.AbstractCode nextValue) {
+			ThisPane.this.updateBasedOnFocusedCode( nextValue );
 		}
 	};
 
 	public ThisPane() {
-		javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( getIDE().getTextForThis() );
-		this.add( label );
-		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class ) );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( getIDE().getTextForThis() ) );
+		this.setEnabledBackgroundPaint( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class ) );
 	}
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		this.updateBasedOnFocusedCode( org.alice.ide.IDE.getSingleton().getFocusedCode() );
-		getIDE().addIDEListener( this.ideAdapter );
+		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeValueObserver( this.codeSelectionObserver );
 	}
 	@Override
-	public void removeNotify() {
-		getIDE().removeIDEListener( this.ideAdapter );
-		super.removeNotify();
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeValueObserver( this.codeSelectionObserver );
+		super.handleRemovedFrom( parent );
 	}
 	private void updateBasedOnFocusedCode( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		if( code != null ) {
@@ -102,7 +83,7 @@ public class ThisPane extends AccessiblePane {
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
 		return this.type;
 	}
 	@Override
@@ -111,9 +92,8 @@ public class ThisPane extends AccessiblePane {
 	}
 
 	@Override
-	public void paint( java.awt.Graphics g ) {
-		super.paint( g );
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+	protected void paintEpilogue(java.awt.Graphics2D g2, int x, int y, int width, int height) {
+		super.paintEpilogue(g2, x, y, width, height);
 		if( this.type == TYPE_FOR_NULL ) {
 			g2.setPaint( edu.cmu.cs.dennisc.zoot.PaintUtilities.getDisabledTexturePaint() );
 			this.fillBounds( g2 );

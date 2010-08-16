@@ -45,49 +45,33 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractChooserWithTextField<E> extends AbstractChooser<E> {
-	private edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField textField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", "" ) {
-		@Override
-		public java.awt.Dimension getPreferredSize() {
-			return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 240 );
-		}
-	};
-	private java.awt.Component[] components = { this.textField };
+public abstract class AbstractChooserWithTextField<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends AbstractRowsPaneChooser<E> {
+	private edu.cmu.cs.dennisc.croquet.StringState stringState = new edu.cmu.cs.dennisc.croquet.StringState( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "6213f5a4-b4b4-4c49-a5e3-2db644edb2cd" ), "" );
+	private edu.cmu.cs.dennisc.croquet.TextField textField = stringState.createTextField();
+	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components = { this.textField };
 
 	@Override
-	public java.awt.Component[] getComponents() {
+	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
 		return this.components;
 	}
 	protected abstract E valueOf( String text );
+	@Override
 	public final E getValue() {
-		return this.valueOf( this.textField.getText() );
+		return this.valueOf( this.stringState.getValue() );
 	}
-	public boolean isInputValid() {
+	
+	@Override
+	public String getExplanationIfOkButtonShouldBeDisabled() {
 		try {
-			this.valueOf( this.textField.getText() );
-			return true;
+			this.valueOf( this.stringState.getValue() );
+			return null;
 		} catch( RuntimeException re ) {
-			return false;
+			return "invalid value";
 		}
 	}
 
 	public void setAndSelectText( String text ) {
-		this.textField.setText( text );
+		this.stringState.setValue( text );
 		this.textField.selectAll();
-	}
-	@Override
-	public void setInputPane( final edu.cmu.cs.dennisc.inputpane.KInputPane< ? > inputPane ) {
-		super.setInputPane( inputPane );
-		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
-			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
-				inputPane.updateOKButton();
-			}
-			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
-				inputPane.updateOKButton();
-			}
-			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
-				inputPane.updateOKButton();
-			}
-		} );
 	}
 }

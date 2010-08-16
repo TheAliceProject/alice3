@@ -46,10 +46,10 @@ package org.alice.ide.cascade;
  * @author Dennis Cosgrove
  */
 public abstract class IncompleteInfixExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression, O > extends IncompleteExpressionFillIn< E > {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType leftOperandType;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> leftOperandType;
 	private O operator;
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType;
-	public IncompleteInfixExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractType leftOperandType, O operator, edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType ) {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType;
+	public IncompleteInfixExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> leftOperandType, O operator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType ) {
 		this.leftOperandType = leftOperandType;
 		this.operator = operator;
 		this.rightOperandType = rightOperandType;
@@ -59,12 +59,12 @@ public abstract class IncompleteInfixExpressionFillIn< E extends edu.cmu.cs.denn
 		this.addChild( new ExpressionBlank( this.leftOperandType ) );
 		this.addChild( new ExpressionBlank( this.rightOperandType ) );
 	}
-	protected abstract E createIncomplete( edu.cmu.cs.dennisc.alice.ast.AbstractType leftOperandType, O operator, edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType );
+	protected abstract E createIncomplete( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> leftOperandType, O operator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType );
 	@Override
 	protected final E createIncomplete() {
 		return this.createIncomplete( this.leftOperandType, this.operator, this.rightOperandType );
 	}
-	protected abstract E createValue( edu.cmu.cs.dennisc.alice.ast.Expression left, O operator, edu.cmu.cs.dennisc.alice.ast.Expression right, edu.cmu.cs.dennisc.alice.ast.AbstractType leftOperandType, edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType );
+	protected abstract E createValue( edu.cmu.cs.dennisc.alice.ast.Expression left, O operator, edu.cmu.cs.dennisc.alice.ast.Expression right, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> leftOperandType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType );
 	@Override
 	public final E getValue() {
 		edu.cmu.cs.dennisc.alice.ast.Expression left = (edu.cmu.cs.dennisc.alice.ast.Expression)this.getBlankAt( 0 ).getSelectedFillIn().getValue();

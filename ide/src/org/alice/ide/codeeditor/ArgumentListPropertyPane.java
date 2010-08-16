@@ -74,16 +74,18 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 		return rv;
 	}
 	@Override
-	protected java.awt.Component createComponent( Object instance ) {
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createComponent( Object instance ) {
 		edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)instance;
-		javax.swing.JComponent prefixPane;
+		edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane;
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
 			prefixPane = null;
 		} else {
 			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = argument.parameter.getValue();
 			boolean isNameDesired = this.isNameDesired( parameter );
 			if( isNameDesired ) {
-				prefixPane = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( javax.swing.Box.createHorizontalStrut( 4 ), new org.alice.ide.common.DeclarationNameLabel( argument.parameter.getValue() ), edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( ": " ) );
+				org.alice.ide.common.DeclarationNameLabel label = new org.alice.ide.common.DeclarationNameLabel( argument.parameter.getValue() );
+				label.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+				prefixPane = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 4 ), label, new edu.cmu.cs.dennisc.croquet.Label( ": ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 			} else {
 				prefixPane = null;
 			}

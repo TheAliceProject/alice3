@@ -67,7 +67,7 @@ class ViewEULAAction extends javax.swing.AbstractAction {
 				scrollPane.getVerticalScrollBar().setValue( 0 );
 			}
 		} );
-		javax.swing.JOptionPane.showMessageDialog( org.alice.ide.IDE.getSingleton(), scrollPane, this.title, javax.swing.JOptionPane.PLAIN_MESSAGE );
+		org.alice.ide.IDE.getSingleton().showMessageDialog( scrollPane, this.title, edu.cmu.cs.dennisc.croquet.MessageType.PLAIN );
 	}
 }
 
@@ -77,7 +77,7 @@ class ViewEULAAction extends javax.swing.AbstractAction {
 class ViewEULAsPane extends edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane {
 	public ViewEULAsPane() {
 		super( 8, 4 );
-		this.setAlignmentX( 0.0f );
+		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 	}
 	@Override
 	public java.awt.Dimension getMaximumSize() {
@@ -135,7 +135,7 @@ public class AboutPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAx
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		rv.setOpaque( false );
 		rv.setEditable( false );
-		rv.setAlignmentX( 0.0f );
+		rv.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		return rv;
 	}
 	private java.awt.Component createViewEULAsPane() {

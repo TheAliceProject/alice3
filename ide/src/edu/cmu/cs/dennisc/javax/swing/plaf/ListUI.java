@@ -42,6 +42,9 @@
  */
 package edu.cmu.cs.dennisc.javax.swing.plaf;
 
+/**
+ * @author Dennis Cosgrove
+ */
 public abstract class ListUI<E> extends javax.swing.plaf.ListUI {
 	private javax.swing.JList list;
 	private javax.swing.ListModel model;

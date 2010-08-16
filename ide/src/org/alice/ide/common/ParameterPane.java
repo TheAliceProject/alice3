@@ -42,53 +42,49 @@
  */
 package org.alice.ide.common;
 
-import edu.cmu.cs.dennisc.alice.ast.NodeListProperty;
-import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
-
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterPane extends AccessiblePane {
-	private NodeListProperty< ParameterDeclaredInAlice > parametersProperty;
-	private ParameterDeclaredInAlice parameter;
+public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice> {
+	private edu.cmu.cs.dennisc.alice.ast.NodeListProperty< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice > parametersProperty;
 
-	public ParameterPane( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, ParameterDeclaredInAlice parameter ) {
+	public ParameterPane( edu.cmu.cs.dennisc.alice.ast.NodeListProperty< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice > parametersProperty, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+		super( parameter );
 		this.parametersProperty = parametersProperty;
-		this.parameter = parameter;
-		this.add( new org.alice.ide.common.DeclarationNameLabel( this.parameter ) );
-		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ParameterAccess.class ) );
-		final org.alice.ide.operations.ast.RenameParameterOperation renameParameterOperation = new org.alice.ide.operations.ast.RenameParameterOperation( this.parameter );
+		this.addComponent( new org.alice.ide.common.DeclarationNameLabel( parameter ) );
+		this.setEnabledBackgroundPaint( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ParameterAccess.class ) );
+		final org.alice.ide.operations.ast.RenameParameterOperation renameParameterOperation = new org.alice.ide.operations.ast.RenameParameterOperation( parameter );
 		
 		if( this.parametersProperty != null ) {
-			final org.alice.ide.operations.ast.DeleteParameterOperation deleteParameterOperation = new org.alice.ide.operations.ast.DeleteParameterOperation( this.parametersProperty, this.parameter );
-			final org.alice.ide.operations.ast.ForwardShiftParameterOperation forwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.ForwardShiftParameterOperation( this.parametersProperty, this.parameter );
-			final org.alice.ide.operations.ast.BackwardShiftParameterOperation backwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.BackwardShiftParameterOperation( this.parametersProperty, this.parameter );
-			this.setPopupOperation( new edu.cmu.cs.dennisc.zoot.AbstractPopupActionOperation() {
+			final org.alice.ide.operations.ast.DeleteParameterOperation deleteParameterOperation = new org.alice.ide.operations.ast.DeleteParameterOperation( this.parametersProperty, parameter );
+			final org.alice.ide.operations.ast.ForwardShiftParameterOperation forwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.ForwardShiftParameterOperation( this.parametersProperty, parameter );
+			final org.alice.ide.operations.ast.BackwardShiftParameterOperation backwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.BackwardShiftParameterOperation( this.parametersProperty, parameter );
+			this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation( java.util.UUID.fromString( "5b9b75d7-ce04-4f3d-8915-b825f357cef2" ) ) {
 				@Override
-				protected java.util.List< edu.cmu.cs.dennisc.zoot.Operation > getOperations() {
-					java.util.List< edu.cmu.cs.dennisc.zoot.Operation > rv = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >();
-					rv.add( renameParameterOperation );
+				public edu.cmu.cs.dennisc.croquet.Model[] getModels() {
+					java.util.List< edu.cmu.cs.dennisc.croquet.Model > operations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					operations.add( renameParameterOperation );
 					if( forwardShiftCodeParameterOperation.isIndexAppropriate() ) {
-						rv.add( forwardShiftCodeParameterOperation );
+						operations.add( forwardShiftCodeParameterOperation );
 					}
 					if( backwardShiftCodeParameterOperation.isIndexAppropriate() ) {
-						rv.add( backwardShiftCodeParameterOperation );
+						operations.add( backwardShiftCodeParameterOperation );
 					}
-					rv.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
-					rv.add( deleteParameterOperation );
-					return rv;
+					operations.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
+					operations.add( deleteParameterOperation );
+					return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(operations, edu.cmu.cs.dennisc.croquet.Model.class);
 				}
 			} );
 		} else {
-			this.setPopupOperation( new edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation( renameParameterOperation ) );
+			this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation( java.util.UUID.fromString( "7a9b90a1-a645-4e13-aeef-9ca631baad55" ), renameParameterOperation ) );
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		return parameter.getValueType();
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
+		return this.getTransient().getValueType();
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( this.parameter );
+		return new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( this.getTransient() );
 	}
 }

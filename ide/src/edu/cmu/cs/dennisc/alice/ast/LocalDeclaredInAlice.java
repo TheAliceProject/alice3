@@ -53,15 +53,20 @@ public abstract class LocalDeclaredInAlice extends AbstractTransient {
 			return true;
 		}
 	};
-	public DeclarationProperty< AbstractType > valueType = new DeclarationProperty< AbstractType >( this );
+	public DeclarationProperty< AbstractType<?,?,?> > valueType = new DeclarationProperty< AbstractType<?,?,?> >( this );
 	public LocalDeclaredInAlice() {
 	}
-	public LocalDeclaredInAlice( String name, AbstractType valueType ) {
+	public LocalDeclaredInAlice( String name, AbstractType<?,?,?> valueType ) {
 		this.name.setValue( name );
 		this.valueType.setValue( valueType );
 	}
 	public LocalDeclaredInAlice( String name, Class<?> valueCls ) {
 		this( name, TypeDeclaredInJava.get( valueCls ) );
+	}
+	
+	@Override
+	public AbstractType<?,?,?> getValueType() {
+		return this.valueType.getValue();
 	}
 	
 	@Override
@@ -85,9 +90,5 @@ public abstract class LocalDeclaredInAlice extends AbstractTransient {
 		} else {
 			return generateName( context );
 		}
-	}
-	@Deprecated
-	public String getValidName() {
-		return getValidName( null );
 	}
 }

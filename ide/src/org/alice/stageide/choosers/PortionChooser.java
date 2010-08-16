@@ -47,39 +47,44 @@ package org.alice.stageide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public class PortionChooser extends org.alice.ide.choosers.AbstractChooser< org.alice.apis.moveandturn.Portion > {
+public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	class PortionOperation extends edu.cmu.cs.dennisc.zoot.AbstractBoundedRangeOperation {
 		public PortionOperation() {
 			super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP );
 		}
 		
 		public void perform( edu.cmu.cs.dennisc.zoot.BoundedRangeContext boundedRangeContext ) {
-			edu.cmu.cs.dennisc.inputpane.KInputPane< ? > inputPane = PortionChooser.this.getInputPane();
-			if( inputPane != null ) {
-				inputPane.updateOKButton();
-			}
+//			edu.cmu.cs.dennisc.croquet.InputPanel< ? > inputPanel = PortionChooser.this.getInputPanel();
+//			if( inputPanel != null ) {
+//				inputPanel.updateOKButton();
+//			}
 			boundedRangeContext.commit();
 		}
 	}
 	private edu.cmu.cs.dennisc.zoot.ZSlider slider = new edu.cmu.cs.dennisc.zoot.ZSlider( new PortionOperation() );
-	private java.awt.Component[] components = {this.slider};
+	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components = { new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.slider ) };
 	public PortionChooser() {
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 		this.slider.getBoundedRangeOperation().getBoundedRangeModel().setValue( 100 );
 	}
 	@Override
-	public java.awt.Component[] getComponents() {
+	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
 		return this.components;
 	}
-	public org.alice.apis.moveandturn.Portion getValue() {
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.Expression getValue() {
 		double value = this.slider.getValue() / 100.0;
-		return new org.alice.apis.moveandturn.Portion( value );
+		edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value );
+		final boolean IS_LITERAL_DESIRED = true;
+		if( IS_LITERAL_DESIRED ) {
+			return doubleLiteral;
+		} else {
+			return org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.Portion.class, new Class<?>[] { Number.class }, doubleLiteral );
+		}
 	}
-	public boolean isInputValid() {
-		return true;
-	}
-	public String getTitleDefault() {
-		return "Enter Custom Portion";
+	@Override
+	public String getExplanationIfOkButtonShouldBeDisabled() {
+		return null;
 	}
 }
 

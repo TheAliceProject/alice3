@@ -46,11 +46,12 @@ package org.alice.stageide.operations.ast;
  * @author Dennis Cosgrove
  */
 public abstract class TransformableFieldTileActionOperation extends AbstractFieldTileActionOperation {
-	public TransformableFieldTileActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( field );
+	public TransformableFieldTileActionOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( individualId, field );
 	}
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.alice.apis.moveandturn.AbstractTransformable transformable );
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	@Override
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		final org.alice.apis.moveandturn.AbstractTransformable transformable;
 		final org.alice.apis.moveandturn.PointOfView prevPOV;
 		final org.alice.apis.moveandturn.PointOfView nextPOV;
@@ -60,9 +61,9 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 			nextPOV = new org.alice.apis.moveandturn.PointOfView( this.calculateNextAbsoluteTransformation( transformable ) );
 			if( nextPOV.getInternal().isNaN() ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: TransformableFieldTileActionOperation isNaN" );
-				actionContext.cancel();
+				context.cancel();
 			} else {
-				actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
 					public void doOrRedo( boolean isDo ) {
 						setAbsolutePOV( transformable, nextPOV );
@@ -81,7 +82,7 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 			}
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: TransformableFieldTileActionOperation" );
-			actionContext.cancel();
+			context.cancel();
 		}
 	}
 	

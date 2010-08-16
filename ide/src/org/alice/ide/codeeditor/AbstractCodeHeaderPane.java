@@ -45,8 +45,35 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-class AbstractCodeHeaderPane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
-	public AbstractCodeHeaderPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclarationInAlice ) {
-		//this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 4, 0, 4 ) );
+class AbstractCodeHeaderPane extends edu.cmu.cs.dennisc.croquet.Panel {
+	protected static final float NAME_SCALE = 1.8f;
+	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclarationInAlice;
+	private ParametersPane parametersPane;
+	private boolean isPreview;
+	public AbstractCodeHeaderPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclarationInAlice, ParametersPane parametersPane, boolean isPreview ) {
+		this.codeDeclarationInAlice = codeDeclarationInAlice;
+		this.parametersPane = parametersPane;
+		this.isPreview = isPreview;
+	}
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		if( this.isPreview ) {
+			return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
+		} else {
+			return new wrap.WrappedFlowLayout( java.awt.FlowLayout.LEADING, 0, 0 );
+		}
+	}
+	protected void addParametersPaneAndInstanceLineIfDesired() {
+		if( this.parametersPane != null ) {
+			this.addComponent( parametersPane );
+		}
+//		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+//		boolean isInstanceLineDesired = ide.isEmphasizingClasses() && ide.isInstanceLineDesired();
+//		if( isInstanceLineDesired ) {
+//			this.addComponent( new InstanceLine( this.codeDeclarationInAlice ) );
+//		}
+	}
+	protected void addComponent( edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
+		this.internalAddComponent( component );
 	}
 }

@@ -42,65 +42,141 @@
  */
 package org.alice.ide.operations.ast;
 
+import org.alice.ide.ast.EmptyExpression;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FillInMoreOperation extends org.alice.ide.operations.AbstractActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement;
-	public FillInMoreOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
-		assert expressionStatement != null;
-		this.expressionStatement = expressionStatement;
-	}
-	
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		class MoreEdit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
-			private edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod;
-			private edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation;
-			private edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation;
-			@Override
-			public void doOrRedo( boolean isDo ) {
-				expressionStatement.expression.setValue( this.nextMethodInvocation );
-			}
-			@Override
-			public void undo() {
-				expressionStatement.expression.setValue( this.prevMethodInvocation );
-			}
-			@Override
-			protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
-				//super.updatePresentation( rv );
-				rv.append( "more: " );
-				edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, nextLongerMethod, locale );
-				rv.append( " " );
-				final int N = this.nextMethodInvocation.arguments.size(); 
-				edu.cmu.cs.dennisc.alice.ast.Argument argument = this.nextMethodInvocation.arguments.get( N-1 );
-				edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, argument, locale );
-				return rv;
-			}
+public class FillInMoreOperation extends org.alice.ide.operations.ActionOperation {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, FillInMoreOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized FillInMoreOperation getInstance( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+		FillInMoreOperation rv = map.get( methodInvocation );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new FillInMoreOperation( methodInvocation );
+			map.put( methodInvocation, rv );
 		}
-		actionContext.pend( new edu.cmu.cs.dennisc.zoot.Resolver< MoreEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
-			public MoreEdit createEdit() {
-				return new MoreEdit();
-			}
-			public MoreEdit initialize( MoreEdit rv, edu.cmu.cs.dennisc.zoot.Context< ? extends edu.cmu.cs.dennisc.zoot.Operation > context, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
-				rv.prevMethodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expressionStatement.expression.getValue();
-				edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = rv.prevMethodInvocation.method.getValue();
-				rv.nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();
-				java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = rv.nextLongerMethod.getParameters();
-				edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
-				getIDE().promptUserForMore( lastParameter, (java.awt.event.MouseEvent)context.getEvent(), taskObserver );
+		return rv;
+	}
 
+	
+	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation;
+	private final edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement;
+	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation;
+	private FillInMoreOperation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "e4cdc25b-d7a0-42b5-adc9-74e34db6b5fc" ) );
+		assert methodInvocation != null;
+		this.methodInvocation = methodInvocation;
+		this.expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)this.methodInvocation.getParent();
+		assert this.expressionStatement != null : ((edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava)this.methodInvocation.method.getValue()).getMethodReflectionProxy().getReification();
+		
+		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.methodInvocation.method.getValue();
+		edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();
+		this.nextMethodInvocation = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation();
+		this.nextMethodInvocation.method.setValue( nextMethod );
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : nextMethod.getParameters() ) {
+			edu.cmu.cs.dennisc.alice.ast.Argument argument = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter, null );
+			this.nextMethodInvocation.arguments.add( argument );
+		}
+		this.setName( "more..." );
+//		this.updateToolTipText();
+	}
+
+	public edu.cmu.cs.dennisc.alice.ast.ExpressionStatement getExpressionStatement() {
+		return this.expressionStatement;
+	}
+	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation getPrevMethodInvocation() {
+		return this.methodInvocation;
+	}
+	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation getNextMethodInvocation() {
+		return this.nextMethodInvocation;
+	}
+//	private void updateToolTipText() {
+////		edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expressionStatement.expression.getValue();
+////		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
+////		final edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();
+////		if( nextLongerMethod != null ) {
+////			java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = nextLongerMethod.getParameters();
+////			edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
+////			String name = lastParameter.getName();
+////			if( name != null ) {
+////				this.setToolTipText( name );
+////			}
+////		}
+//	}
+	@Override
+	protected final void perform(final edu.cmu.cs.dennisc.croquet.ActionOperationContext operationContext) {
+//		class MoreEdit extends org.alice.ide.ToDoEdit {
+//			private edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod;
+//			private edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation;
+//			private edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation;
+//			@Override
+//			public void doOrRedo( boolean isDo ) {
+//				expressionStatement.expression.setValue( this.nextMethodInvocation );
+////				FillInMoreOperation.this.updateToolTipText();
+//			}
+//			@Override
+//			public void undo() {
+//				expressionStatement.expression.setValue( this.prevMethodInvocation );
+////				FillInMoreOperation.this.updateToolTipText();
+//			}
+//			@Override
+//			protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+//				//super.updatePresentation( rv );
+//				rv.append( "more: " );
+//				edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, nextLongerMethod, locale );
+//				rv.append( " " );
+//				final int N = this.nextMethodInvocation.arguments.size(); 
+//				edu.cmu.cs.dennisc.alice.ast.Argument argument = this.nextMethodInvocation.arguments.get( N-1 );
+//				edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, argument, locale );
+//				return rv;
+//			}
+//		}
+//		operationContext.pend( new edu.cmu.cs.dennisc.croquet.PendResolver< MoreEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
+//			public MoreEdit createEdit() {
+//				return new MoreEdit();
+//			}
+////			public MoreEdit initialize(MoreEdit rv, edu.cmu.cs.dennisc.croquet.ModelContext context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver) {
+//				rv.prevMethodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expressionStatement.expression.getValue();
+//				edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = rv.prevMethodInvocation.method.getValue();
+//				rv.nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();
+//				java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = rv.nextLongerMethod.getParameters();
+//				edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
+//				getIDE().promptUserForMore( expressionStatement, lastParameter, operationContext.getViewController(), operationContext.getPoint(), taskObserver );
+//
+//				return rv;
+//			}
+//			public MoreEdit handleCompletion( MoreEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+//				//todo: remove?
+//				getIDE().unsetPreviousExpressionAndDropStatement();
+//				rv.nextMethodInvocation = org.alice.ide.ast.NodeUtilities.createNextMethodInvocation( rv.prevMethodInvocation, expression, rv.nextLongerMethod );
+//				return rv;
+//			}
+//			public void handleCancelation() {
+//				//todo: remove?
+//				getIDE().unsetPreviousExpressionAndDropStatement();
+//			}
+//		} );
+		operationContext.pend( new edu.cmu.cs.dennisc.croquet.PendResolver< org.alice.ide.croquet.edits.ast.FillInMoreEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
+			public org.alice.ide.croquet.edits.ast.FillInMoreEdit createEdit() {
+				return new org.alice.ide.croquet.edits.ast.FillInMoreEdit();
+			}
+			public org.alice.ide.croquet.edits.ast.FillInMoreEdit initialize(org.alice.ide.croquet.edits.ast.FillInMoreEdit rv, edu.cmu.cs.dennisc.croquet.ModelContext context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver) {
+				java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = FillInMoreOperation.this.nextMethodInvocation.method.getValue().getParameters();
+				edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
+				getIDE().promptUserForMore( expressionStatement, lastParameter, operationContext.getViewController(), operationContext.getPoint(), taskObserver );
 				return rv;
 			}
-			public MoreEdit handleCompletion( MoreEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+			public org.alice.ide.croquet.edits.ast.FillInMoreEdit handleCompletion( org.alice.ide.croquet.edits.ast.FillInMoreEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 				//todo: remove?
-				getIDE().unsetPreviousExpression();
-				rv.nextMethodInvocation = org.alice.ide.ast.NodeUtilities.createNextMethodInvocation( rv.prevMethodInvocation, expression, rv.nextLongerMethod );
+				getIDE().unsetPreviousExpressionAndDropStatement();
+				rv.setArgumentExpression( expression );
 				return rv;
 			}
 			public void handleCancelation() {
 				//todo: remove?
-				getIDE().unsetPreviousExpression();
+				getIDE().unsetPreviousExpressionAndDropStatement();
 			}
 		} );
 	}

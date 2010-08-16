@@ -46,18 +46,24 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class AnonymousInnerTypeDeclaredInAlice extends AbstractTypeDeclaredInAlice {
-	private java.util.ArrayList< AbstractConstructor > constructors = new java.util.ArrayList< AbstractConstructor >();
+public class AnonymousInnerTypeDeclaredInAlice extends AbstractTypeDeclaredInAlice<AnonymousConstructor> {
+	private java.util.ArrayList< AnonymousConstructor > constructors;
 	public AnonymousInnerTypeDeclaredInAlice() {
 	}
-	public AnonymousInnerTypeDeclaredInAlice( AbstractType superType, MethodDeclaredInAlice[] methods, FieldDeclaredInAlice[] fields ) {
+	public AnonymousInnerTypeDeclaredInAlice( AbstractType<?,?,?> superType, MethodDeclaredInAlice[] methods, FieldDeclaredInAlice[] fields ) {
 		super( superType, methods, fields );
 	}
 	public AnonymousInnerTypeDeclaredInAlice( Class< ? > superCls, MethodDeclaredInAlice[] methods, FieldDeclaredInAlice[] fields ) {
 		this( TypeDeclaredInJava.get( superCls ), methods, fields );
 	}
 	@Override
-	public java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractConstructor > getDeclaredConstructors() {
+	public java.util.ArrayList< AnonymousConstructor > getDeclaredConstructors() {
+		if( this.constructors != null ) {
+			//pass
+		} else {
+			this.constructors = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+			this.constructors.add( AnonymousConstructor.get( this ) );
+		}
 		return this.constructors;
 	}
 	@Override

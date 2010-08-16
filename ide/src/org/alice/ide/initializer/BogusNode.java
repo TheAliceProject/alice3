@@ -46,9 +46,9 @@ package org.alice.ide.initializer;
  * @author Dennis Cosgrove
  */
 public class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
-	public edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType > componentType = new edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType >( this ) {
+	public edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentType = new edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> >( this ) {
 		@Override
-		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.alice.ast.AbstractType value) {
+		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> value) {
 			assert value == null || value.isArray() == false;
 			super.setValue( owner, value );
 		}
@@ -56,13 +56,13 @@ public class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
 	public edu.cmu.cs.dennisc.property.BooleanProperty isArray = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
 	public edu.cmu.cs.dennisc.alice.ast.ExpressionProperty componentExpression = new edu.cmu.cs.dennisc.alice.ast.ExpressionProperty( this ) {
 		@Override
-		public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+		public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
 			return BogusNode.this.componentType.getValue();
 		}
 	};
 	public edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty arrayExpressions = new edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty( this );
 
-	public BogusNode( edu.cmu.cs.dennisc.alice.ast.AbstractType type, boolean isArrayIfTypeIsNull ) {
+	public BogusNode( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, boolean isArrayIfTypeIsNull ) {
 		this.componentType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			}
@@ -77,7 +77,7 @@ public class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
 				BogusNode.this.handleChanged( e );
 			}
 		} );
-		edu.cmu.cs.dennisc.alice.ast.AbstractType componentType;
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> componentType;
 		boolean isArray;
 		if( type != null ) {
 			if( type.isArray() ) {
@@ -95,7 +95,7 @@ public class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
 		this.isArray.setValue( isArray );
 	}
 	private void handleChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.componentType.getValue();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = this.componentType.getValue();
 		if( type != null ) {
 			this.componentExpression.setValue( ExpressionUtilities.getNextExpression( type, this.componentExpression.getValue() ) );
 			final int N = this.arrayExpressions.size();
@@ -105,8 +105,8 @@ public class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
 		}
 	}
 	
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getType() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType componentType = this.componentType.getValue();
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getType() {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> componentType = this.componentType.getValue();
 		if( componentType != null ) {
 			if( this.isArray.getValue() ) {
 				return componentType.getArrayType();

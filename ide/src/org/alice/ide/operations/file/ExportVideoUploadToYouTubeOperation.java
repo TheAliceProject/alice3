@@ -42,47 +42,42 @@
  */
 package org.alice.ide.operations.file;
 
-import java.io.File;
-
-import org.alice.media.VideoCapturePane;
-
-import edu.cmu.cs.dennisc.alice.Project;
-import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
-import edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine;
-import edu.cmu.cs.dennisc.animation.Program;
+//import org.alice.media.VideoCapturePane;
+//import edu.cmu.cs.dennisc.alice.Project;
 
 /**
  * @author Dennis Cosgrove
  */
 public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public ExportVideoUploadToYouTubeOperation() {
+		super( java.util.UUID.fromString( "fd6ec0d7-add3-4061-a895-f085f45c0667" ) );
 		this.setName( "Export Video / Upload To YouTube\u2122..." );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-		final int frameRate = 24;
-		
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		edu.cmu.cs.dennisc.alice.Project project = this.getIDE().getProject();
-		
-		//this.rtProgram = new RecordableRuntimeProgram( sceneType, vm );
-		VideoCapturePane videoCapturePane = new VideoCapturePane(project, frameRate){
+		if( project != null ) {
+			final int frameRate = 24;
+			//this.rtProgram = new RecordableRuntimeProgram( sceneType, vm );
+			org.alice.media.VideoCapturePane videoCapturePane = new org.alice.media.VideoCapturePane(project, frameRate){
 
-			@Override
-			protected edu.cmu.cs.dennisc.animation.Program createProgram( Project project )
-			{
-				edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = new edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine();
-				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)project.getProgramType().getDeclaredFields().get( 0 ).getValueType();
-				return ExportVideoUploadToYouTubeOperation.this.getIDE().createRuntimeProgram( vm, sceneType, frameRate );
-			}
-			
-			@Override
-			protected void onClose()
-			{
-				javax.swing.SwingUtilities.getRoot( this ).setVisible( false );
-			}
-		};
+				@Override
+				protected edu.cmu.cs.dennisc.animation.Program createProgram( edu.cmu.cs.dennisc.alice.Project project )
+				{
+					edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = new edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine();
+					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)project.getProgramType().getDeclaredFields().get( 0 ).getValueType();
+					return ExportVideoUploadToYouTubeOperation.this.getIDE().createRuntimeProgram( vm, sceneType, frameRate );
+				}
+				
+				@Override
+				protected void onClose()
+				{
+					javax.swing.SwingUtilities.getRoot( this ).setVisible( false );
+				}
+			};
 
-		javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( videoCapturePane, this.getIDE(), "Export Video", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
-		dialog.setVisible( true );
+			javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( videoCapturePane, this.getIDE().getFrame().getAwtComponent(), "Export Video", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+			dialog.setVisible( true );
+		}
 	}
 }

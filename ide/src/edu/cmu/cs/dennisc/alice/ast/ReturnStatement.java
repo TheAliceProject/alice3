@@ -47,17 +47,17 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class ReturnStatement extends Statement {
-	public DeclarationProperty<AbstractType> expressionType = new DeclarationProperty<AbstractType>( this );
+	public DeclarationProperty<AbstractType<?,?,?>> expressionType = new DeclarationProperty<AbstractType<?,?,?>>( this );
 	public ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			return ReturnStatement.this.expressionType.getValue();
 		}
 	};
 
 	public ReturnStatement() {
 	}
-	public ReturnStatement( AbstractType expressionType, Expression expression ) {
+	public ReturnStatement( AbstractType<?,?,?> expressionType, Expression expression ) {
 		this.expressionType.setValue( expressionType );
 		this.expression.setValue( expression );
 	}

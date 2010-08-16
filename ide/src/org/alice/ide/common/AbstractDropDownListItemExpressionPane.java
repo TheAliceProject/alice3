@@ -58,31 +58,35 @@ public abstract class AbstractDropDownListItemExpressionPane extends org.alice.i
 		}
 	};
 	public AbstractDropDownListItemExpressionPane( int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
-		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		this.index = index;
 		this.expressionListProperty = expressionListProperty;
-		this.setLeftButtonPressOperation( new org.alice.ide.operations.ast.FillInExpressionListPropertyItemOperation( this.index, this.expressionListProperty ) {
+		this.setLeftButtonPressOperation( new org.alice.ide.operations.ast.FillInExpressionListPropertyItemOperation( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "dec13fc9-4b3f-4e4e-8b1f-21956e789b32" ), this.index, this.expressionListProperty ) {
 			@Override
-			protected edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType() {
+			protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getFillInType() {
 				return AbstractDropDownListItemExpressionPane.this.getFillInType();
 			}
 		});
 	}
 	@Override
-	public void addNotify() {
-		super.addNotify();
-		this.expressionListProperty.addListPropertyListener( this.listPropertyAdapter );
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new java.awt.GridLayout( 1, 1 );
 	}
 	@Override
-	public void removeNotify() {
-		this.expressionListProperty.removeListPropertyListener( this.listPropertyAdapter );
-		super.removeNotify();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
+		this.expressionListProperty.addListPropertyListener( this.listPropertyAdapter );
+		this.refresh();
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType();
+	@Override
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		this.expressionListProperty.removeListPropertyListener( this.listPropertyAdapter );
+		super.handleRemovedFrom( parent );
+	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getFillInType();
 	public void refresh() {
-		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this );
+		this.forgetAndRemoveAllComponents();
 		if( this.index < this.expressionListProperty.size() ) {
-			this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createExpressionPane( this.expressionListProperty.get( this.index ) ) );
+			this.addComponent( org.alice.ide.IDE.getSingleton().getCodeFactory().createExpressionPane( this.expressionListProperty.get( this.index ) ) );
 		}
 	}
 }

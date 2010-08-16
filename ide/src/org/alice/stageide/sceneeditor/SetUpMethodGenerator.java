@@ -52,7 +52,6 @@ import org.alice.apis.moveandturn.gallery.environments.grounds.SandyGround;
 import org.alice.apis.moveandturn.gallery.environments.grounds.SeaSurface;
 import org.alice.apis.moveandturn.gallery.environments.grounds.SnowyGround;
 import org.alice.interact.AbstractDragAdapter;
-import org.alice.stageide.sceneeditor.viewmanager.ManipulationHandleControlPanel;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
@@ -213,7 +212,7 @@ public class SetUpMethodGenerator {
 							if( person instanceof org.alice.apis.stage.MaleAdult || person instanceof org.alice.apis.stage.FemaleAdult ) {
 								//pass
 							} else {
-								bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setGender", org.alice.apis.stage.Gender.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( (Enum)person.getGender() ) ) );
+								bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setGender", org.alice.apis.stage.Gender.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( person.getGender() ) ) );
 							}
 
 							bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setHair", org.alice.apis.stage.Hair.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( (Enum)person.getHair() ) ) );

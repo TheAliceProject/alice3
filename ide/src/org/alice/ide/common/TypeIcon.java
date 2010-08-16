@@ -46,45 +46,68 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class TypeIcon implements javax.swing.Icon {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
 	private TypeBorder border;
-	public TypeIcon( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public static TypeIcon getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		return new TypeIcon( type );
+	}
+	public TypeIcon( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		this.type = type;
 		this.border = TypeBorder.getSingletonFor( type );
 	}
-	private String getText() {
-		String rv;
-		if( this.type != null ) {
-			rv = this.type.getName();
+
+	protected java.awt.Font getFont() {
+		return javax.swing.UIManager.getFont( "defaultFont" );
+	}
+	protected java.awt.Color getTextColor( java.awt.Component c ) {
+		if( c.isEnabled() ) {
+			return java.awt.Color.BLACK;
 		} else {
-			rv = org.alice.ide.IDE.getSingleton().getTextForNull();
+			return java.awt.Color.GRAY;
 		}
-		return rv;
+	}
+	private String getText() {
+		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
+		return formatter.getTextForType( this.type );
 	}
 	public int getIconWidth() {
-		java.awt.Insets insets = this.border.getBorderInsets( null );
-		java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
-		java.awt.FontMetrics fm = g.getFontMetrics();
-		java.awt.geom.Rectangle2D bounds = fm.getStringBounds( this.getText(), g );
-		return insets.left + insets.right + (int)bounds.getWidth();
+		return this.getBorderWidth();
 	}
 	public int getIconHeight() {
+		return this.getBorderHeight();
+	}
+	private java.awt.geom.Rectangle2D getTextBounds() {
+		String text = this.getText();
+		if( text != null ) {
+			java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
+			java.awt.Font font = this.getFont();
+			java.awt.FontMetrics fm;
+			if( font != null ) {
+				fm = g.getFontMetrics( font );
+			} else {
+				fm = g.getFontMetrics();
+			}
+			return fm.getStringBounds( text, g );
+		} else {
+			return new java.awt.geom.Rectangle2D.Float( 0,0,0,0 );
+		}
+	}
+	private int getBorderWidth() {
 		java.awt.Insets insets = this.border.getBorderInsets( null );
-		java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
-		java.awt.FontMetrics fm = g.getFontMetrics();
-		java.awt.geom.Rectangle2D bounds = fm.getStringBounds( this.getText(), g );
+		java.awt.geom.Rectangle2D bounds = this.getTextBounds();
+		return insets.left + insets.right + (int)bounds.getWidth();
+	}
+	private int getBorderHeight() {
+		java.awt.Insets insets = this.border.getBorderInsets( null );
+		java.awt.geom.Rectangle2D bounds = this.getTextBounds();
 		return insets.top + insets.bottom + (int)bounds.getHeight();
 	}
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		int w = this.getIconWidth();
-		int h = this.getIconHeight();
+		int w = this.getBorderWidth();
+		int h = this.getBorderHeight();
 		this.border.paintBorder( c, g, x, y, w, h );
-//		if( c.isEnabled() ) {
-			g.setColor( c.getForeground() );
-//		} else {
-//			g.setColor( java.awt.Color.RED );
-//		}
-		edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g, this.getText(), x, y, w, h );
+		g.setColor( this.getTextColor( c ) );
+		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, this.getText(), x, y, w, h );
 	}
 }
 

@@ -46,17 +46,17 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class TypeExpression extends Expression {
-	public DeclarationProperty<AbstractType> value = new DeclarationProperty<AbstractType>( this );
+	public DeclarationProperty<AbstractType<?,?,?>> value = new DeclarationProperty<AbstractType<?,?,?>>( this );
 	public TypeExpression() {
 	}
-	public TypeExpression( AbstractType value ) {
+	public TypeExpression( AbstractType<?,?,?> value ) {
 		this.value.setValue( value );
 	}
 	public TypeExpression( Class< ? > cls ) {
 		this( TypeDeclaredInJava.get( cls ) );
 	}
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		//todo
 		return TypeDeclaredInJava.get( Class.class );
 	}

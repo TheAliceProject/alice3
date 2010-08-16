@@ -42,27 +42,22 @@
  */
 package org.alice.ide.cascade.customfillin;
 
-import org.alice.ide.choosers.ValueChooser;
-
 /**
  * @author Dennis Cosgrove
  */
-public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression, F> extends org.alice.ide.preview.PreviewInputPane< E > {
-	private CustomFillIn< E, F > fillIn;
-	private ValueChooser< F > chooser;
-	public CustomInputPane( CustomFillIn< E, F > fillIn, ValueChooser< F > chooser ) {
-		this.fillIn = fillIn;
+public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends org.alice.ide.preview.PanelWithPreview {
+	private org.alice.ide.choosers.ValueChooser< E > chooser;
+	public CustomInputPane( org.alice.ide.choosers.ValueChooser< E > chooser ) {
 		this.chooser = chooser;
-		this.chooser.setInputPane( this );
+	}
+		
+	@Override
+	public String getExplanationIfOkButtonShouldBeDisabled() {
+		return this.chooser.getExplanationIfOkButtonShouldBeDisabled();
 	}
 	
 	@Override
-	protected String getTitleDefault() {
-		return this.chooser.getTitleDefault();
-	}
-	
-	@Override
-	protected java.awt.Component createPreviewSubComponent() {
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent() {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression;
 		try {
 			expression = this.getActualInputValue();
@@ -70,16 +65,23 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression, 
 			//re.printStackTrace();
 			expression = new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
 		}
-		return getIDE().getPreviewFactory().createExpressionPane( expression );
-	}
-	@Override
-	protected java.util.List< java.awt.Component[] > updateRows( java.util.List< java.awt.Component[] > rv ) {
-		this.chooser.updateRows( rv );
+		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		rv.addComponent( org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( expression ), Constraint.LINE_START );
 		return rv;
 	}
 	@Override
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createMainComponent() {
+		return this.chooser.createMainComponent();
+	}
+	public org.alice.ide.choosers.ValueChooser< E > getValueChooser() {
+		return this.chooser;
+	}
+	
+	@Override
+	public final String getDialogTitle() {
+		return this.chooser.getTitleDefault();
+	}
 	protected E getActualInputValue() {
-		F value = this.chooser.getValue();
-		return this.fillIn.createExpression( value );
+		return this.chooser.getValue();
 	}
 }

@@ -46,4 +46,5 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractValueLiteral extends AbstractLiteral {
+	public abstract edu.cmu.cs.dennisc.property.InstanceProperty< ? > getValueProperty();
 }

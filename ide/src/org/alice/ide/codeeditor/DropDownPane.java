@@ -46,20 +46,23 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 public abstract class DropDownPane extends org.alice.ide.common.AbstractDropDownPane {
-	private java.awt.Component mainComponent;
-	public DropDownPane( java.awt.Component prefixPane, java.awt.Component mainComponent, java.awt.Component postfixPane ) {
-		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
+	private edu.cmu.cs.dennisc.croquet.Component< ? > mainComponent;
+	public DropDownPane( edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.croquet.Component< ? > mainComponent, edu.cmu.cs.dennisc.croquet.Component< ? > postfixPane ) {
 		if( prefixPane != null ) {
-			this.add( prefixPane );
+			this.addComponent( prefixPane );
 		}
 		this.mainComponent = mainComponent;
-		this.add( this.mainComponent );
+		this.addComponent( this.mainComponent );
 		if( postfixPane != null ) {
-			this.add( postfixPane );
+			this.addComponent( postfixPane );
 		}
 	}
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
+	}
 	
-	public java.awt.Component getMainComponent() {
+	public edu.cmu.cs.dennisc.croquet.Component< ? > getMainComponent() {
 		return this.mainComponent;
 	}
 	

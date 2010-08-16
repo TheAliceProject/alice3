@@ -56,7 +56,7 @@ public class VariableArrayAssignmentStatementTemplate extends ArrayAssignmentSta
 		return this.variable.getName();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getTransientComponentType() {
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getTransientComponentType() {
 		return this.variable.valueType.getValue().getComponentType();
 	}
 	@Override

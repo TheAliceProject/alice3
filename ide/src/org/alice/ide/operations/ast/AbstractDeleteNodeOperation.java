@@ -42,20 +42,23 @@
  */
 package org.alice.ide.operations.ast;
 
+import edu.cmu.cs.dennisc.croquet.Component;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.alice.ast.Node > extends org.alice.ide.operations.AbstractActionOperation {
+public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.alice.ast.Node > extends org.alice.ide.operations.ActionOperation {
 	private E node;
 	private edu.cmu.cs.dennisc.alice.ast.NodeListProperty owner;
-	public AbstractDeleteNodeOperation( E node, edu.cmu.cs.dennisc.alice.ast.NodeListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.Node > owner ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+	public AbstractDeleteNodeOperation( java.util.UUID individualId, E node, edu.cmu.cs.dennisc.alice.ast.NodeListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.Node > owner ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 		this.node = node;
 		this.owner = owner;
 		this.setName( "Delete" );
 	}
 	protected abstract boolean isClearToDelete( E node );
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	@Override
+	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		if( this.isClearToDelete( this.node ) ) {
 			final int index = this.owner.indexOf( this.node );
 			final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
@@ -67,17 +70,20 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 				field = null;
 				instance = null;
 			}
-			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					owner.remove( index );
 				}
 				@Override
 				public void undo() {
-					owner.add( index, node );
-					if( field != null && instance != null ) {
-						getIDE().getSceneEditor().handleFieldCreation((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)field.getDeclaringType(), field, instance, false );
+					if( instance != null ) {
+						getIDE().getSceneEditor().putInstanceForInitializingPendingField( field, instance );
 					}
+					owner.add( index, node );
+//					if( field != null && instance != null ) {
+//						getIDE().getSceneEditor().handleFieldCreation((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)field.getDeclaringType(), field, instance, false );
+//					}
 				}
 				@Override
 				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
@@ -87,7 +93,7 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 				}
 			} );
 		} else {
-			actionContext.cancel();
+			context.cancel();
 		}
 	}
 }

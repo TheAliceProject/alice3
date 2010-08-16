@@ -45,19 +45,8 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanStateContext extends Context< BooleanStateOperation > {
-	private Boolean previousValue;
-	private Boolean nextValue;
-
-	public BooleanStateContext( BooleanStateOperation operation, java.util.EventObject e, boolean isCancelWorthwhile, Boolean previousValue, Boolean nextValue ) {
-		super( operation, e, isCancelWorthwhile );
-		this.previousValue = previousValue;
-		this.nextValue = nextValue;
-	}
-	public Boolean getPreviousValue() {
-		return this.previousValue;
-	}
-	public Boolean getNextValue() {
-		return this.nextValue;
+public class BooleanStateContext extends ModelContext<BooleanState> {
+	/*package-private*/ BooleanStateContext( ModelContext<?> parent, BooleanState booleanState, java.awt.event.ItemEvent e, ViewController< ?,? > viewController ) {
+		super( parent, booleanState, e, viewController );
 	}
 }

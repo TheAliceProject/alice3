@@ -42,26 +42,48 @@
  */
 package org.alice.ide.sceneeditor;
 
-import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.cs.dennisc.alice.ast.AbstractType> implements org.alice.ide.event.IDEListener, edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
+public abstract class AbstractSceneEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implements edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >, edu.cmu.cs.dennisc.croquet.DropReceptor {
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = null;
-	
+	private org.alice.ide.ProjectApplication.ProjectObserver projectObserver = new org.alice.ide.ProjectApplication.ProjectObserver() { 
+		public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
+		}
+		public void projectOpened( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
+			AbstractSceneEditor.this.setProgramType( nextProject.getProgramType() );
+			AbstractSceneEditor.this.revalidateAndRepaint();
+		}
+	};
 	public abstract void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering );
 	public abstract void enableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering );
-	public abstract void handleExpandContractChange( boolean isExpanded );
 	public abstract void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses );
 	
-	@Deprecated
-	public abstract void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance, boolean isAnimationDesired );
-	public abstract Object getInstanceInJavaForUndo( FieldDeclaredInAlice field );
+//	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object > mapFieldToInstance = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+//	protected Object getAndRemoveInstanceForInitializingPendingField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+//		if( this.mapFieldToInstance.containsKey( field ) ) {
+//			Object rv = this.mapFieldToInstance.get( field );
+//			this.mapFieldToInstance.remove( field );
+//			return rv;
+//		} else {
+//			return null;
+//		}
+//	}
+	public abstract void putInstanceForInitializingPendingField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance );
+//		this.mapFieldToInstance.put( field, instance );
+//	}
+	
+//	@Deprecated
+//	public abstract void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance, boolean isAnimationDesired );
+	public abstract Object getInstanceInJavaForUndo( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field );
 	
 	public abstract void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty );
+	
+	protected org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
+	}
 	protected edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine getVM() {
-		return getIDE().getVirtualMachineForSceneEditor();
+		return this.getIDE().getVirtualMachineForSceneEditor();
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneField() {
 		return this.sceneField;
@@ -75,7 +97,7 @@ public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.c
 			this.sceneField.addListPropertyListener( this );
 		}
 	}
-	protected void setProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType programType ) {
+	protected void setProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType ) {
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice;
 		if( programType != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = programType.getDeclaredFields().get( 0 );
@@ -89,38 +111,7 @@ public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.c
 		}
 		setSceneField( fieldInAlice );
 	}
-	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
-	}
-	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
-	}
 
-	public void localeChanging( org.alice.ide.event.LocaleEvent e ) {
-	}
-	public void localeChanged( org.alice.ide.event.LocaleEvent e ) {
-	}
-
-
-	public void focusedCodeChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-	}
-	public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-	}
-
-
-	public void projectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
-	}
-	public void projectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
-		edu.cmu.cs.dennisc.alice.Project project = e.getNextValue();
-		this.setProgramType( project.getProgramType() );
-		this.revalidate();
-		this.repaint();
-	}
-
-
-	public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
-	}
-	public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
-	}
-	
 	public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
 	}
 	public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
@@ -136,5 +127,20 @@ public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.c
 	public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
 	}
 	public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+	}
+
+	@Override
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
+		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.ProjectApplication.getSingleton().getProject();
+		if( project != null ) {
+			this.projectObserver.projectOpened(null, project);
+		}
+		org.alice.ide.ProjectApplication.getSingleton().addProjectObserver( this.projectObserver );
+	}
+	@Override
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		org.alice.ide.ProjectApplication.getSingleton().removeProjectObserver( this.projectObserver );
+		super.handleRemovedFrom( parent );
 	}
 }

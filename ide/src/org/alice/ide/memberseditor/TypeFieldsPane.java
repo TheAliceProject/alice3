@@ -42,60 +42,88 @@
  */
 package org.alice.ide.memberseditor;
 
+import org.alice.ide.memberseditor.templates.TemplateFactory;
+
 /**
  * @author Dennis Cosgrove
  */
-class TypeFieldsPane extends AbstractTypeMembersPane {
-	public TypeFieldsPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+public class TypeFieldsPane extends AbstractTypeMembersPane {
+	public TypeFieldsPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
 		super( type );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.property.ListProperty< ? >[] getListPropertiesToListenTo( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected edu.cmu.cs.dennisc.property.ListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice >[] getListPropertiesToListenTo( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.fields };
 	}
 	@Override
-	protected javax.swing.JButton createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		return edu.cmu.cs.dennisc.zoot.ZManager.createButton( new org.alice.ide.operations.ast.DeclareFieldOperation( type ) );
+	protected edu.cmu.cs.dennisc.croquet.Button createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		return org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( type ).createButton();
 	}
 	@Override
-	protected javax.swing.JButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected edu.cmu.cs.dennisc.croquet.Button createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		return null;
 	}
 	@Override
-	protected java.awt.Component[] createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
-		java.awt.Component[] rv;
+	protected Iterable< edu.cmu.cs.dennisc.croquet.Component< ? > > createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
+		java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? > > rv;
 		if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
-			java.util.List< java.awt.Component > components = new java.util.LinkedList< java.awt.Component >();
+			rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)member;
-			if( getIDE().isEmphasizingClasses() ) {
+			if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 				//pass
 			} else {
 				if( field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-					components.add( new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field) );
+					edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field;
+					edu.cmu.cs.dennisc.croquet.Component<?> declarationPane = new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), fieldInAlice);
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: add popup menu to field declaration pane" );
+//					class EditFieldDeclarationOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation { 
+//						public EditFieldDeclarationOperation() {
+//							super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "cb8936e6-a011-427a-bc64-0a4e646dc869" ) );
+//							this.setName( "Edit..." );
+//						}
+//						@Override
+//						protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+//							edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "todo" );
+//						}
+//					}
+					rv.add( new edu.cmu.cs.dennisc.croquet.LineAxisPanel(
+								new org.alice.ide.operations.ast.EditFieldOperation( fieldInAlice ).createButton(),
+								edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ),
+								declarationPane
+							) 
+					);
 				}
 			}
-			components.add( new org.alice.ide.memberseditor.templates.GetterTemplate( field ) );
+			rv.add( TemplateFactory.getAccessorTemplate( field ) );
 			if( field.getValueType().isArray() ) {
-				components.add( new org.alice.ide.memberseditor.templates.AccessArrayAtIndexTemplate( field ) );
-				components.add( new org.alice.ide.memberseditor.templates.ArrayLengthTemplate( field ) );
+				rv.add( TemplateFactory.getAccessArrayAtIndexTemplate( field ) );
+				rv.add( TemplateFactory.getArrayLengthTemplate( field ) );
 			}
 			if( field.isFinal() ) {
 				//pass
 			} else {
-				components.add( new org.alice.ide.memberseditor.templates.SetterTemplate( field ) );
+				rv.add( 
+						new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
+								edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( org.alice.ide.common.ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT ),
+								TemplateFactory.getMutatorTemplate( field )
+						)
+				);
 			}
 			
 			if( field.getValueType().isArray() ) {
-				components.add( new org.alice.ide.memberseditor.templates.SetArrayAtIndexTemplate( field ) );
+				rv.add( 
+						new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
+								edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( org.alice.ide.common.ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT ),
+								TemplateFactory.getMutateArrayAtIndexTemplate( field )
+						)
+				);
 			}
 			
-			if( getIDE().isEmphasizingClasses() ) {
+			if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 				//pass
 			} else {
-				components.add( javax.swing.Box.createVerticalStrut( 16 ) );
+				rv.add( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 16 ) );
 			}
-			rv = new java.awt.Component[ components.size() ];
-			components.toArray( rv );
 		} else {
 			rv = null;
 		}

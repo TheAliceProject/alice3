@@ -46,18 +46,17 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 class ConstructorHeaderPane extends AbstractCodeHeaderPane {
-	public ConstructorHeaderPane( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructorDeclaredInAlice, javax.swing.JComponent parametersPane ) {
-		super( constructorDeclaredInAlice );
+	public ConstructorHeaderPane( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructorDeclaredInAlice, ParametersPane parametersPane, boolean isPreview ) {
+		super( constructorDeclaredInAlice, parametersPane, isPreview );
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
-			this.add( new org.alice.ide.common.TypeComponent( constructorDeclaredInAlice.getDeclaringType() ) );
-			this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "()" ) );
+			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( constructorDeclaredInAlice.getDeclaringType() ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "()" ) );
 		} else {
-			this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "declare " ) );
-			javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabelWithScaledFont( "constructor", 1.5f );
-			this.add( label );
-			this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( " on class " ) );
-			this.add( new org.alice.ide.common.TypeComponent( constructorDeclaredInAlice.getDeclaringType() ) );
-			this.add( parametersPane );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "constructor", NAME_SCALE ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " on class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( constructorDeclaredInAlice.getDeclaringType() ) );
+			this.addParametersPaneAndInstanceLineIfDesired();
 		}
 	}
 }

@@ -48,6 +48,7 @@ package edu.cmu.cs.dennisc.alice.ast;
  */
 public abstract class AbstractMethod extends AbstractCode {
 	//public ObjectProperty< Boolean > isEntryPoint = new ObjectProperty< Boolean >( this );
+	public abstract boolean isValid();
 	
 	public abstract boolean isStatic();
 	public abstract boolean isAbstract();
@@ -55,12 +56,12 @@ public abstract class AbstractMethod extends AbstractCode {
 	public abstract boolean isNative();
 	public abstract boolean isSynchronized();
 	public abstract boolean isStrictFloatingPoint();
-	public abstract AbstractType getReturnType();
+	public abstract AbstractType<?,?,?> getReturnType();
 	
 	public boolean isOverride() {
 		java.util.ArrayList< ? extends AbstractParameter > parameters = this.getParameters();
 		final int N = parameters.size();
-		AbstractType[] parameterTypes = new AbstractType[ N ];
+		AbstractType<?,?,?>[] parameterTypes = new AbstractType[ N ];
 		for( int i=0; i<N; i++ ) {
 			parameterTypes[ i ] = parameters.get( i ).getValueType();
 		}

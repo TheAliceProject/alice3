@@ -45,15 +45,60 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Edit {
+public abstract class Edit<M extends Model> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	private ModelContext<M> context;
+	private java.util.UUID contextId;
+	
+	public Edit() {
+	}
+	public Edit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.decode( binaryDecoder );
+	}
+	
+	public ModelContext<M> getContext() {
+		if( this.context != null ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: resolve", this.contextId );
+		}
+		return this.context;
+	}
+	public M getModel() {
+		ModelContext<M> context = this.getContext();
+		if( context != null ) {
+			return context.getModel();
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getModel() context==null" );
+			return null;
+		}
+	}
+	public Group getGroup() {
+		M model = this.getModel();
+		if( model != null ) {
+			return model.getGroup();
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getGroup() model==null" );
+			return null;
+		}
+	}
+	/*package-private*/ void setContext( ModelContext<M> context ) {
+		this.context = context;
+		if( this.context != null ) {
+			this.contextId = context.getId();
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: context == null" );
+			this.contextId = null;
+		}
+	}
+	
+	protected java.util.UUID getContextId() {
+		return this.contextId;
+	}
+	public abstract boolean canRedo();
+	public abstract boolean canUndo();
 	public abstract void doOrRedo( boolean isDo );
 	public abstract void undo();
-	public boolean canRedo() {
-		return true;
-	}
-	public boolean canUndo() {
-		return true;
-	}
+
 	protected abstract StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale );
 	public final String getPresentation( java.util.Locale locale ) {
 		StringBuffer sb = new StringBuffer();
@@ -79,4 +124,16 @@ public abstract class Edit {
 		this.updatePresentation( sb, locale );
 		return sb.toString();
 	}
+	
+	protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
+	protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
+	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.contextId = edu.cmu.cs.dennisc.java.util.UuidUtilities.decodeUuid( binaryDecoder );
+		this.decodeInternal(binaryDecoder);
+	}
+	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		edu.cmu.cs.dennisc.java.util.UuidUtilities.encodeUuid( binaryEncoder, this.contextId );
+		this.encodeInternal(binaryEncoder);
+	}
+	
 }

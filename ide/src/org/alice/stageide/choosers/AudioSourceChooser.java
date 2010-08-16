@@ -105,11 +105,11 @@ class TimeSlider extends javax.swing.JSlider {
 /**
  * @author Dennis Cosgrove
  */
-public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< org.alice.apis.moveandturn.AudioSource > {
+public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.InstanceCreation > {
 	class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
 		private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty bogusProperty = new edu.cmu.cs.dennisc.alice.ast.ExpressionProperty( this ) {
 			@Override
-			public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+			public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
 				return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.virtualmachine.resources.AudioResource.class );
 			}
 		};
@@ -118,30 +118,33 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 			super.firePropertyChanged( e );
 			AudioSourceChooser.this.startTimeSlider.setTime( 0.0 );
 			AudioSourceChooser.this.stopTimeSlider.setTime( Double.NaN );
-			edu.cmu.cs.dennisc.inputpane.KInputPane< ? > inputPane = AudioSourceChooser.this.getInputPane();
-			if( inputPane != null ) {
-				inputPane.updateOKButton();
-			}
+			
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: update OK button?" );
+//			edu.cmu.cs.dennisc.croquet.InputPanel< ? > inputPanel = AudioSourceChooser.this.getInputPanel();
+//			if( inputPanel != null ) {
+//				inputPanel.updateOKButton();
+//			}
 		}
 	}
 	
 	private BogusNode bogusNode = new BogusNode();
-	private java.awt.Component dropDown;
+	private edu.cmu.cs.dennisc.croquet.Component< ? > dropDown;
 	
 	private org.alice.stageide.controls.VolumeLevelControl volumeLevelControl = new org.alice.stageide.controls.VolumeLevelControl();
 	private TimeSlider startTimeSlider = new TimeSlider();
 	private TimeSlider stopTimeSlider = new TimeSlider();
 	
-	class TestOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
+	class TestOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 		public TestOperation() {
+			super( java.util.UUID.fromString( "6d1c60d4-bf5d-43ff-9b65-797eebf21a90" ) );
 			this.setName( "test" );
 		}
 		@Override
-		protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-			org.alice.apis.moveandturn.AudioSource audioSource = getValue();
+		protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+			org.alice.apis.moveandturn.AudioSource audioSource = getAudioSource();
 			edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
 			edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( audioSource.getAudioResource(), audioSource.getVolume(), audioSource.getStartTime(), audioSource.getStopTime() );
-			player.test( AudioSourceChooser.this.getInputPane() );
+			player.test( context.getViewController().getAwtComponent() );
 		}
 	};
 	private TestOperation testOperation = new TestOperation();
@@ -213,17 +216,16 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 			}
 		}
 
-		this.volumeLevelControl.addChangeListener( new javax.swing.event.ChangeListener() {
-			public void stateChanged( javax.swing.event.ChangeEvent e ) {
-				AudioSourceChooser.this.getInputPane().updateOKButton();
-			}
-		} );
+//		this.volumeLevelControl.addChangeListener( new javax.swing.event.ChangeListener() {
+//			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+////				AudioSourceChooser.this.getInputPanel().updateOKButton();
+//			}
+//		} );
 		this.startTimeSlider.addChangeListener( new javax.swing.event.ChangeListener() {
 			public void stateChanged( javax.swing.event.ChangeEvent e ) {
 				if( startTimeSlider.getValue() > stopTimeSlider.getValue() ) {
 					stopTimeSlider.setValue( startTimeSlider.getValue() );
 				}
-				AudioSourceChooser.this.getInputPane().updateOKButton();
 			}
 		} );
 		this.stopTimeSlider.addChangeListener( new javax.swing.event.ChangeListener() {
@@ -231,19 +233,20 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 				if( startTimeSlider.getValue() > stopTimeSlider.getValue() ) {
 					startTimeSlider.setValue( stopTimeSlider.getValue() );
 				}
-				AudioSourceChooser.this.getInputPane().updateOKButton();
 			}
 		} );
 	}
-	public String getTitleDefault() {
-		return "Enter Custom Audio Source";
-	}
-	public boolean isInputValid() {
+	@Override
+	public String getExplanationIfOkButtonShouldBeDisabled() {
 		edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = (edu.cmu.cs.dennisc.alice.ast.ResourceExpression)bogusNode.bogusProperty.getValue();
 		if( resourceExpression != null ) {
-			return resourceExpression.resource.getValue() instanceof org.alice.virtualmachine.resources.AudioResource;
+			if( resourceExpression.resource.getValue() instanceof org.alice.virtualmachine.resources.AudioResource ) {
+				return null;
+			} else {
+				return "resource is not audio";
+			}
 		} else {
-			return false;
+			return "resource is not set";
 		}
 	}
 	@Override
@@ -256,23 +259,94 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 				"stop marker:" };
 	}
 	@Override
-	public java.awt.Component[] getComponents() {
-		return new java.awt.Component[] { 
+	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
+		return new edu.cmu.cs.dennisc.croquet.Component< ? >[] { 
 				this.dropDown, 
-				new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( this.volumeLevelControl, javax.swing.Box.createHorizontalGlue() ), 
-				javax.swing.Box.createVerticalStrut( 16 ), 
-				this.startTimeSlider, 
-				this.stopTimeSlider };
+				new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
+						new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.volumeLevelControl ), 
+						edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() 
+				), 
+				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 16 ), 
+				new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.startTimeSlider ), 
+				new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.stopTimeSlider ) };
 	}
 	@Override
-	public java.util.List< java.awt.Component[] > updateRows( java.util.List< java.awt.Component[] > rv ) {
+	public java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
 		super.updateRows( rv );
-		rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 32 ) ), null ) );
-		rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.zoot.ZManager.createButton( testOperation ), null ) );
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 32 ), null ) );
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( testOperation.createButton(), null ) );
 		return rv;
 	}
-		
-	public org.alice.apis.moveandturn.AudioSource getValue() {
+
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation getValue() {
+		org.alice.apis.moveandturn.AudioSource audioSource = this.getAudioSource();
+		if( audioSource != null ) {
+			org.alice.virtualmachine.resources.AudioResource audioResource = audioSource.getAudioResource();
+
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+			if( project != null ) {
+				project.addResource( audioResource );
+			}
+
+			edu.cmu.cs.dennisc.alice.ast.Expression arg0Expression;
+			if( audioResource != null ) {
+				arg0Expression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( org.alice.virtualmachine.resources.AudioResource.class, audioResource );				
+			} else {
+				arg0Expression = new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
+			}
+
+			double volume = audioSource.getVolume();
+			double startTime = audioSource.getStartTime();
+			double stopTime = audioSource.getStopTime();
+
+			// apologies for the negative logic
+			boolean isNotDefaultVolume = org.alice.apis.moveandturn.AudioSource.isWithinReasonableEpsilonOfDefaultVolume( volume ) == false;
+			boolean isNotDefaultStartTime = org.alice.apis.moveandturn.AudioSource.isWithinReasonableEpsilonOfDefaultStartTime( startTime ) == false;
+			boolean isNotDefaultStopTime = org.alice.apis.moveandturn.AudioSource.isDefaultStopTime_aka_NaN( stopTime ) == false;
+
+			if( isNotDefaultVolume || isNotDefaultStartTime || isNotDefaultStopTime ) {
+				edu.cmu.cs.dennisc.alice.ast.DoubleLiteral volumeLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( volume );
+				if( isNotDefaultStartTime || isNotDefaultStopTime ) {
+					edu.cmu.cs.dennisc.alice.ast.DoubleLiteral startTimeLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( startTime );
+					if( isNotDefaultStopTime ) {
+						edu.cmu.cs.dennisc.alice.ast.DoubleLiteral stopTimeLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( stopTime );
+
+						edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
+								org.alice.apis.moveandturn.AudioSource.class, 
+								org.alice.virtualmachine.resources.AudioResource.class,
+								Number.class, 
+								Number.class, 
+								Number.class );
+						return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral, startTimeLiteral, stopTimeLiteral );
+					} else {
+						edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
+								org.alice.apis.moveandturn.AudioSource.class, 
+								org.alice.virtualmachine.resources.AudioResource.class,
+								Number.class, 
+								Number.class );
+						return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral, startTimeLiteral );
+					}
+				} else {
+					edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
+							org.alice.apis.moveandturn.AudioSource.class, 
+							org.alice.virtualmachine.resources.AudioResource.class,
+							Number.class );
+					return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral );
+				}
+			} else {
+				edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
+						org.alice.apis.moveandturn.AudioSource.class, 
+						org.alice.virtualmachine.resources.AudioResource.class );
+				return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression );
+			}
+		} else {
+			return null;
+		}
+	}
+	
+	private org.alice.apis.moveandturn.AudioSource getAudioSource() {
 		org.alice.virtualmachine.resources.AudioResource audioResource;
 		double volume = this.volumeLevelControl.getVolumeLevel();
 		double start;
@@ -310,15 +384,4 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 		}
 		return new org.alice.apis.moveandturn.AudioSource( audioResource, volume, start, stop );
 	}
-	public static void main( String[] args ) {
-		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
-		try {
-			org.alice.stageide.cascade.customfillin.CustomizeAudioSourceFillIn fillIn = new org.alice.stageide.cascade.customfillin.CustomizeAudioSourceFillIn();
-			if( fillIn != null ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( fillIn.getValue() );
-			}
-		} catch( edu.cmu.cs.dennisc.cascade.CancelException ce ) {
-		}
-	}
-	
 }

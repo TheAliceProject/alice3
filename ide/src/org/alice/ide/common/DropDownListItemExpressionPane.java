@@ -46,13 +46,13 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class DropDownListItemExpressionPane extends AbstractDropDownListItemExpressionPane {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType componentType;
-	public DropDownListItemExpressionPane( int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType componentType ) {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> componentType;
+	public DropDownListItemExpressionPane( int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> componentType ) {
 		super( index, expressionListProperty );
 		this.componentType = componentType;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType() {
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getFillInType() {
 		return this.componentType;
 	}
 }

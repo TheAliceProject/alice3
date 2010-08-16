@@ -42,22 +42,25 @@
  */
 package org.alice.ide.operations.ast;
 
+import edu.cmu.cs.dennisc.croquet.Component;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractExpressionPropertyActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+public abstract class AbstractExpressionPropertyActionOperation extends org.alice.ide.operations.ActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
 
-	public AbstractExpressionPropertyActionOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+	public AbstractExpressionPropertyActionOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		super( group, individualId );
 		this.expressionProperty = expressionProperty;
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
 		return this.expressionProperty;
 	}
 
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		class ExpressionPropertyEdit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
+	@Override
+	protected final void perform(final edu.cmu.cs.dennisc.croquet.ActionOperationContext operationContext) {
+		class ExpressionPropertyEdit extends org.alice.ide.ToDoEdit {
 			private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 			private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 
@@ -80,29 +83,29 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 				return rv;
 			}
 		}
-		actionContext.pend( new edu.cmu.cs.dennisc.zoot.Resolver< ExpressionPropertyEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
+		final edu.cmu.cs.dennisc.croquet.ViewController<?, ?> viewController = operationContext.getViewController();
+		final java.awt.Point p = operationContext.getPoint();
+		operationContext.pend( new edu.cmu.cs.dennisc.croquet.PendResolver< ExpressionPropertyEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
 			public ExpressionPropertyEdit createEdit() {
 				return new ExpressionPropertyEdit();
 			}
-			public ExpressionPropertyEdit initialize( ExpressionPropertyEdit rv, edu.cmu.cs.dennisc.zoot.Context< ? extends edu.cmu.cs.dennisc.zoot.Operation > context,
-					edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
+			public ExpressionPropertyEdit initialize(ExpressionPropertyEdit rv, edu.cmu.cs.dennisc.croquet.ModelContext context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver) {
 				rv.prevExpression = AbstractExpressionPropertyActionOperation.this.expressionProperty.getValue();
-				AbstractExpressionPropertyActionOperation.this.initializeInternal( context, taskObserver, rv.prevExpression );
+				AbstractExpressionPropertyActionOperation.this.initializeInternal( context, id, viewController, p, taskObserver, rv.prevExpression );
 				return rv;
 			}
 			public ExpressionPropertyEdit handleCompletion( ExpressionPropertyEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 				//todo: remove?
-				getIDE().unsetPreviousExpression();
+				getIDE().unsetPreviousExpressionAndDropStatement();
 				rv.nextExpression = expression;
 				return rv;
 			}
 			public void handleCancelation() {
 				//todo: remove?
-				getIDE().unsetPreviousExpression();
+				getIDE().unsetPreviousExpressionAndDropStatement();
 			}
 		} );
 	}
-	protected abstract void initializeInternal( edu.cmu.cs.dennisc.zoot.Context< ? extends edu.cmu.cs.dennisc.zoot.Operation > context, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver,
-			edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
+	protected abstract void initializeInternal( edu.cmu.cs.dennisc.croquet.ModelContext<?> context, java.util.UUID id, edu.cmu.cs.dennisc.croquet.ViewController<?, ?> viewController, java.awt.Point p, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
 
 }

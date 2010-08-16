@@ -49,9 +49,9 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class ForEachInArrayLoop extends AbstractForEachLoop {
 	public ExpressionProperty array = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			VariableDeclaredInAlice variable = ForEachInArrayLoop.this.variable.getValue();
-			AbstractType type = variable.valueType.getValue();
+			AbstractType<?,?,?> type = variable.valueType.getValue();
 			return type.getArrayType();
 		}
 	};

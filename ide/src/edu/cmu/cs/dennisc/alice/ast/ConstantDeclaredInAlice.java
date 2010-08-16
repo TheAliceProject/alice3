@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class ConstantDeclaredInAlice extends LocalDeclaredInAlice {
 	public ConstantDeclaredInAlice() {
 	}
-	public ConstantDeclaredInAlice( String name, AbstractType valueType ) {
+	public ConstantDeclaredInAlice( String name, AbstractType<?,?,?> valueType ) {
 		super( name, valueType );
 	}
 	public ConstantDeclaredInAlice( String name, Class<?> valueCls ) {

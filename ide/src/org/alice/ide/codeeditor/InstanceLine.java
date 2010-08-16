@@ -45,8 +45,8 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-class InstanceLine extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
-	public InstanceLine( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+class InstanceLine extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
+	public InstanceLine( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
 //		zoot.ZLabel a = zoot.ZLabel.acquire( "current instance of " );
 //		a.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
 //		this.add( a );
@@ -55,12 +55,9 @@ class InstanceLine extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPa
 //		b.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
 //		this.add( b );
 		
-		this.add( javax.swing.Box.createHorizontalStrut( 16 ) );
-		javax.swing.JLabel a = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "current instance: " );
-//		a.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
-		this.add( a );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "current instance: ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 		org.alice.ide.common.ThisPane thisPane = new org.alice.ide.common.ThisPane();
 //		thisPane.setToolTipText( "the current instance of " + code.getDeclaringType().getName() + " is referred to as this"  );
-		this.add( thisPane );
+		this.addComponent( thisPane );
 	}
 }

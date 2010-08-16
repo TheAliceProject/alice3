@@ -58,6 +58,6 @@ public class KeyListenerFillerInner extends org.alice.ide.cascade.fillerinners.E
 		type.superType.setValue( this.getType() );
 		type.methods.add( method );
 		edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor constructor = edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor.get( type );
-		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor ) ) );
+		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.AutoCompleteFillIn( new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor ) ) );
 	}
 }

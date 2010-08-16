@@ -42,66 +42,72 @@
  */
 package org.alice.ide.name;
 
-import org.alice.ide.declarationpanes.RowsInputPane;
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NameInputPane<E> extends RowsInputPane< E > {
-	private javax.swing.JTextField textField = new javax.swing.JTextField( 10 );
+public abstract class NameInputPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
+	private edu.cmu.cs.dennisc.croquet.StringState nameState = new edu.cmu.cs.dennisc.croquet.StringState(
+			edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP,
+			java.util.UUID.fromString( "482c237a-c2b3-48dc-a8e2-380edfdfffe3" ),
+			""
+	);
+	private edu.cmu.cs.dennisc.croquet.TextField textField;
+//	private javax.swing.JTextField textField = new javax.swing.JTextField( 10 );
 
 	public void setAndSelectNameText( String text ) {
 		if( text != null ) {
-			assert this.textField != null;
-			this.textField.setText( text );
-			this.textField.selectAll();
+			this.nameState.setValue( text );
+			this.getTextField().selectAll();
 		}
 	}
 
-	protected abstract boolean isNameAcceptable( String name );
+	protected abstract String getExplanationIfOkButtonShouldBeDisabled( String name );
 
+	private edu.cmu.cs.dennisc.croquet.TextField getTextField() {
+		if( this.textField != null ) {
+			//pass
+		} else {
+			this.textField = this.nameState.createTextField();
+		}
+		return this.textField;
+	}
 	public String getNameText() {
-		return this.textField.getText();
+		return this.nameState.getValue();
 	}
+//	@Override
+//	public boolean isOKButtonValid() {
+//		return super.isOKButtonValid() && this.isNameAcceptable( this.textField.getText() );
+//	}
 	@Override
-	public boolean isOKButtonValid() {
-		return super.isOKButtonValid() && this.isNameAcceptable( this.textField.getText() );
-	}
-	protected void handleNameTextChange( String nameText ) {
-		updateOKButton();
-	}
+	protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv) {
+//		assert this.textField != null;
+//		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
+//			private void handleUpdate( javax.swing.event.DocumentEvent e ) {
+//				javax.swing.text.Document document = e.getDocument();
+//				try {
+//					handleNameTextChange( document.getText( 0, document.getLength() ) );
+//				} catch( javax.swing.text.BadLocationException ble ) {
+//					throw new RuntimeException( ble );
+//				}
+//			}
+//			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
+//				this.handleUpdate( e );
+//			}
+//			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
+//				this.handleUpdate( e );
+//			}
+//			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
+//				this.handleUpdate( e );
+//			}
+//		} );
 
-	@Override
-	protected java.util.List< java.awt.Component[] > createComponentRows() {
-		java.util.List< java.awt.Component[] > rv = super.createComponentRows();
-		javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel();
-		label.setText( "name:" );
-		assert this.textField != null;
-		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
-			private void handleUpdate( javax.swing.event.DocumentEvent e ) {
-				javax.swing.text.Document document = e.getDocument();
-				try {
-					handleNameTextChange( document.getText( 0, document.getLength() ) );
-				} catch( javax.swing.text.BadLocationException ble ) {
-					throw new RuntimeException( ble );
-				}
-			}
-			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
-				this.handleUpdate( e );
-			}
-			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
-				this.handleUpdate( e );
-			}
-			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
-				this.handleUpdate( e );
-			}
-		} );
-//		javax.swing.text.Keymap keymap = this.textField.getKeymap();
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( keymap );
-//		javax.swing.KeyStroke enterKeyStroke = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_ENTER, 0, false );
-//		keymap.removeKeyStrokeBinding( enterKeyStroke );
-//		this.textField.setKeymap( keymap );
-		rv.add( new java.awt.Component[] { label, this.textField } );
+		rv.add( 
+				edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
+						edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "name:" ),
+						this.getTextField()
+				) 
+		);
 		return rv;
-	}
+	}	
+
 }

@@ -60,7 +60,7 @@ abstract class AbstractNotAvailableIcon implements javax.swing.Icon {
 		g.setColor( java.awt.Color.DARK_GRAY );
 		g.fillRect( x, y, width, height );
 		g.setColor( java.awt.Color.LIGHT_GRAY );
-		edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g, this.getText(), x, y, width, height );
+		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, this.getText(), x, y, width, height );
 	}
 }
 

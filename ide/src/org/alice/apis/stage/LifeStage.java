@@ -46,15 +46,42 @@ package org.alice.apis.stage;
  * @author Dennis Cosgrove
  */
 public enum LifeStage {
-	TODDLER, 
-	CHILD, 
-	TEEN, 
-	ADULT, 
-	ELDER;
+	TODDLER() {
+		@Override
+		public org.alice.apis.stage.Person createInstance() {
+			return new Toddler();
+		}
+	}, 
+	CHILD() {
+		@Override
+		public org.alice.apis.stage.Person createInstance() {
+			return new Child();
+		}
+	}, 
+	TEEN() {
+		@Override
+		public org.alice.apis.stage.Person createInstance() {
+			return new Teen();
+		}
+	}, 
+	ADULT() {
+		@Override
+		public org.alice.apis.stage.Person createInstance() {
+			return new Adult();
+		}
+	}, 
+	ELDER() {
+		@Override
+		public org.alice.apis.stage.Person createInstance() {
+			return new Elder();
+		}
+	};
+	
 	public static LifeStage getRandom() {
 		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( LifeStage.class );
 	}
 	
+	public abstract Person createInstance();
 	private static java.util.Map< LifeStage, Class<? extends FullBodyOutfit> > s_mapLifeStageUnisexFullBodyOutfit;
 	private static java.util.Map< LifeStage, Class<? extends Hair> > s_mapLifeStageUnisexHair;
 	private static edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Class<? extends FullBodyOutfit> > s_mapLifeStageGenderFullBodyOutfit;

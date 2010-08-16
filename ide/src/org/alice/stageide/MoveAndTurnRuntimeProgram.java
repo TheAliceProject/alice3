@@ -44,10 +44,10 @@ package org.alice.stageide;
 
 public class MoveAndTurnRuntimeProgram extends org.alice.apis.moveandturn.Program {
 	private static java.awt.Dimension preferredSize = new java.awt.Dimension( 400, 300 );
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType;
 	private edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice sceneInstance;
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm;
-	public MoveAndTurnRuntimeProgram( edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType, edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm ) {
+	public MoveAndTurnRuntimeProgram( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType, edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm ) {
 		this.sceneType = sceneType;
 		this.vm = vm;
 		this.addComponentListener( new java.awt.event.ComponentListener() {
@@ -82,7 +82,7 @@ public class MoveAndTurnRuntimeProgram extends org.alice.apis.moveandturn.Progra
 		this.vm.invokeEntryPoint( this.sceneType.getDeclaredMethod( "run" ), this.sceneInstance );
 	}
 	
-	private edu.cmu.cs.dennisc.zoot.ActionOperation getRestartOperation() {
+	private edu.cmu.cs.dennisc.croquet.Operation getRestartOperation() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		if( ide != null ) {
 			return ide.getRestartOperation();
@@ -98,7 +98,7 @@ public class MoveAndTurnRuntimeProgram extends org.alice.apis.moveandturn.Progra
 	protected void restart( java.util.EventObject e ) {
 		super.restart( e );
 		javax.swing.SwingUtilities.getRoot( this ).setVisible( false );
-		edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( this.getRestartOperation(), null, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
+		this.getRestartOperation().fire( e );
 	}
 	
 	@Override

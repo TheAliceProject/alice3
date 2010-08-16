@@ -45,13 +45,22 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NodeLikeSubstance extends org.alice.ide.AbstractDragComponent {
+public abstract class NodeLikeSubstance extends org.alice.ide.Component {
 	protected static final int KNURL_WIDTH = 8;
+	private java.awt.Paint enabledBackgroundPaint;
 	public NodeLikeSubstance() {
-		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
 		if( this.isKnurlDesired() ) {
 			this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.HAND_CURSOR ) );
 		}
+		this.setEnabledBackgroundPaint( null );
+	}
+	protected void setEnabledBackgroundPaint( java.awt.Paint enabledBackgroundPaint ) {
+		this.enabledBackgroundPaint = enabledBackgroundPaint;
+	}
+
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
 	}
 
 	protected edu.cmu.cs.dennisc.java.awt.BevelState getBevelState() {
@@ -67,15 +76,20 @@ public abstract class NodeLikeSubstance extends org.alice.ide.AbstractDragCompon
 	}
 
 	protected abstract int getDockInsetLeft();
+	protected final int getKnurlInsetLeft() {
+		if( this.isKnurlDesired() ) {
+			return KNURL_WIDTH;
+		} else {
+			return 0;
+		}
+	}
 	protected abstract int getInternalInsetLeft();
 	@Override
 	protected final int getInsetLeft() {
 		int rv = 0;
-		rv += getDockInsetLeft();
-		if( this.isKnurlDesired() ) {
-			rv += KNURL_WIDTH;
-		}
-		rv += getInternalInsetLeft();
+		rv += this.getDockInsetLeft();
+		rv += this.getKnurlInsetLeft();
+		rv += this.getInternalInsetLeft();
 		return rv;
 	}
 	
@@ -95,18 +109,54 @@ public abstract class NodeLikeSubstance extends org.alice.ide.AbstractDragCompon
 //			return super.contains( x, y );
 //		}
 //	}
+	protected java.awt.Paint getEnabledBackgroundPaint(int x, int y, int width, int height) {
+		return this.enabledBackgroundPaint;
+	}
+	protected boolean isInScope() {
+		return true;
+	}
+	@Override
+	protected final java.awt.Paint getBackgroundPaint(int x, int y, int width, int height) {
+		if( this.isInScope() ) {
+			return this.getEnabledBackgroundPaint(x, y, width, height);
+		} else {
+			return java.awt.Color.WHITE;
+		}
+	}
 
+	private static final java.awt.Stroke ACTIVE_STROKE = new java.awt.BasicStroke( 3.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
+	private static final java.awt.Stroke PASSIVE_STROKE = new java.awt.BasicStroke( 1.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
+	private static final java.awt.Color HIGHLIGHT_COLOR = new java.awt.Color( 255, 255, 255 );
+	private static final java.awt.Color SHADOW_COLOR = new java.awt.Color( 0, 0, 0 );
+	protected void paintOutline( java.awt.Graphics2D g2, java.awt.Shape shape ) {
+		if( shape != null ) {
+			java.awt.Stroke prevStroke = g2.getStroke();
+			if( this.isActive() ) {
+//				g2.setPaint( SHADOW_COLOR );
+//				g2.setStroke( ACTIVE_STROKE );
+//				g2.draw( shape );
+				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.draw3DishShape(g2, shape, HIGHLIGHT_COLOR, SHADOW_COLOR, ACTIVE_STROKE );
+			} else {
+				g2.setPaint( java.awt.Color.GRAY );
+				g2.setStroke( PASSIVE_STROKE );
+				g2.draw( shape );
+			}
+			g2.setStroke( prevStroke );
+		}
+	}
+	protected abstract java.awt.Shape createShape( int x, int y, int width, int height );
 	@Override
 	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		this.paintOutline( g2, this.createShape(x, y, width, height) );
 		if( isKnurlDesired() ) {
 			int grayscale;
 			if( this.isActive() ) {
 				grayscale = 0;
 			} else {
-				grayscale = 60;
+				grayscale = 127;
 			}
 			g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( grayscale ) );
-			edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g2, x + getDockInsetLeft(), y + 2, KNURL_WIDTH, height - 5 );
+			edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g2, x+this.getDockInsetLeft(), y + 2, KNURL_WIDTH, height - 5 );
 		}
 	}
 }

@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class EachInIterableTogether extends AbstractEachInTogether {
 	public ExpressionProperty iterable = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType getExpressionType() {
+		public AbstractType<?,?,?> getExpressionType() {
 			throw new RuntimeException( "todo" );
 		}
 	};

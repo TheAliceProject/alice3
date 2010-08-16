@@ -47,6 +47,6 @@ package org.alice.ide.operations.ast;
  */
 public class RenameFieldOperation extends RenameNodeOperation{
 	public RenameFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		super( field.name, new org.alice.ide.name.validators.FieldNameValidator( field ) );
+		super( java.util.UUID.fromString( "acdff8cd-51f0-4708-92b7-c05827409ac8" ), field.name, new org.alice.ide.name.validators.FieldNameValidator( field ) );
 	}
 }

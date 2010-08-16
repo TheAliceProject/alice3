@@ -212,8 +212,8 @@ public abstract class AdapterFactory {
 	public static LayerAdapter getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Layer sgLayer ) {
 		return (LayerAdapter)getAdapterForElement( sgLayer );
 	}
-	public static GraphicAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Graphic > getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Graphic sgGraphic ) {
-		return (GraphicAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Graphic >)getAdapterForElement( sgGraphic );
+	public static GraphicAdapter< ? > getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Graphic sgGraphic ) {
+		return (GraphicAdapter< ? >)getAdapterForElement( sgGraphic );
 	}
 	
 	public static <E extends AbstractElementAdapter> E[] getAdaptersFor( edu.cmu.cs.dennisc.pattern.AbstractElement[] sgElements, Class< ? extends E > componentType ) {

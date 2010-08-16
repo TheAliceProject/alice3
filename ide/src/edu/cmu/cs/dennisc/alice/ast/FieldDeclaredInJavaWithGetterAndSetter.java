@@ -106,7 +106,7 @@ public class FieldDeclaredInJavaWithGetterAndSetter extends FieldDeclaredInJava 
 	//	}
 
 	@Override
-	public AbstractType getDeclaringType() {
+	public TypeDeclaredInJava getDeclaringType() {
 		return TypeDeclaredInJava.get( this.setterReflectionProxy.getDeclaringClassReflectionProxy() );
 	}
 
@@ -149,13 +149,13 @@ public class FieldDeclaredInJavaWithGetterAndSetter extends FieldDeclaredInJava 
 		}
 	}
 	@Override
-	public AbstractType getValueType() {
+	public TypeDeclaredInJava getValueType() {
 		java.lang.reflect.Method gttr = this.getterReflectionProxy.getReification();
 		assert gttr != null;
 		return TypeDeclaredInJava.get( gttr.getReturnType() );
 	}
 	@Override
-	public AbstractType getDesiredValueType() {
+	public TypeDeclaredInJava getDesiredValueType() {
 		if( this.parameterAnnotations0 != null ) {
 			for( java.lang.annotation.Annotation annotation : parameterAnnotations0 ) {
 					if( annotation instanceof edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate ) {

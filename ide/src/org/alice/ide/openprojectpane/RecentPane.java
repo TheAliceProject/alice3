@@ -43,11 +43,7 @@
 
 package org.alice.ide.openprojectpane;
 
-class RecentPane extends ListPane {
-	@Override
-	public String getTabTitleText() {
-		return "Recent";
-	}
+class RecentPane extends ListContentPanel {
 	@Override
 	protected String getTextForZeroProjects() {
 		return "there are no recent projects";

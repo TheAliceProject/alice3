@@ -75,6 +75,10 @@ public class SelectedObjectCondition extends InputCondition {
 	@Override
 	protected boolean testState( InputState state )
 	{
+		if (state.getIsDragEvent())
+		{
+			return false;
+		}
 		boolean isValid = this.acceptableType.intersects( PickCondition.getPickType( state.getCurrentlySelectedObject() ) );
 		if (isNot)
 		{

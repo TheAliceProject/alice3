@@ -55,7 +55,7 @@ public class ControlPanel extends javax.swing.JPanel {
 		@Override
 		public java.awt.Dimension getMaximumSize() {
 			java.awt.Dimension rv = super.getMaximumSize();
-			edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMaximumWidth( rv, 400 );
+			edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMaximumWidth( rv, 400 );
 			return rv;
 		}
 	};

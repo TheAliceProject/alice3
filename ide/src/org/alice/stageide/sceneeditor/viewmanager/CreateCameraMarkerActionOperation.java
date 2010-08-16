@@ -42,6 +42,7 @@
  */
 package org.alice.stageide.sceneeditor.viewmanager;
 
+import org.alice.ide.IDE;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
@@ -53,15 +54,22 @@ import edu.cmu.cs.dennisc.pattern.Tuple2;
  */
 public class CreateCameraMarkerActionOperation extends AbstractSceneDeclareFieldOperation {
 
-	public CreateCameraMarkerActionOperation(MoveAndTurnSceneEditor sceneEditor) {
-		super(sceneEditor);
-		this.setName( "Create Camera Marker..." );
+	private static class SingletonHolder {
+		private static CreateCameraMarkerActionOperation instance = new CreateCameraMarkerActionOperation();
+	}
+	public static CreateCameraMarkerActionOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private CreateCameraMarkerActionOperation() {
+		super( java.util.UUID.fromString( "88fdc53c-596f-4878-ab39-22381982e079" ));
+		this.setName( "Create camera marker here..." );
 	}
 	
 	@Override
-	protected Tuple2< FieldDeclaredInAlice, Object > createFieldAndInstance( TypeDeclaredInAlice ownerType ) 
+	protected Tuple2< FieldDeclaredInAlice, Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.ActionOperationContext context, TypeDeclaredInAlice ownerType ) 
 	{
-		return sceneEditor.createCameraMarkerField( ownerType );
+		return ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).createCameraMarkerField( ownerType );
 	}
 
 }

@@ -46,10 +46,10 @@ package org.alice.ide.declarationpanes;
  * @author Dennis Cosgrove
  */
 public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.declarationpanes.AbstractCreateFieldPane {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType valueType;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType;
 	private edu.cmu.cs.dennisc.alice.ast.Expression initializer;
 
-	public CreateLargelyPredeterminedFieldPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class< ? > cls, edu.cmu.cs.dennisc.alice.ast.AbstractType valueType ) {
+	public CreateLargelyPredeterminedFieldPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class< ? > cls, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
 		super( declaringType );
 		if( cls != null ) {
 			assert valueType == null;
@@ -65,14 +65,56 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava ) {
 		return getIDE().getTypeDeclaredInAliceFor( typeDeclaredInJava );
 	}
+	
+	@Override
+	protected boolean isPreviewDesired() {
+		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState.getInstance().getValue();
+	}
 
+	private static String getAvailableFieldName( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, String baseName ) {
+		org.alice.ide.name.validators.FieldNameValidator validator = new org.alice.ide.name.validators.FieldNameValidator( declaringType );
+
+		if( validator.isNameValid( baseName ) ) {
+			//pass
+		} else {
+			baseName = "unnamed";
+			assert validator.isNameValid( baseName );
+		}
+
+		int i = 2;
+		String rv = baseName;
+		while( validator.getExplanationIfOkButtonShouldBeDisabled( rv ) != null ) {
+			rv = baseName + i;
+			i++;
+		}
+		return rv;
+	}
+
+	private String getPotentialInstanceNameFor( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
+		if( valueType != null ) {
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
+			if( typeInJava != null ) {
+				if( org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getValue() ) {
+					String typeName = typeInJava.getName();
+					if( typeName != null && typeName.length() > 0 ) {
+						StringBuffer sb = new StringBuffer();
+						sb.append( Character.toLowerCase( typeName.charAt( 0 ) ) );
+						sb.append( typeName.substring( 1 ) );
+						return getAvailableFieldName( declaringType, sb.toString() );
+					}
+				}
+			}
+		}
+		return "";
+	}
+	
 	@Override
 	protected String getDefaultNameText() {
-		return this.getIDE().getPotentialInstanceNameFor( this.getDeclaringType(), this.valueType );
+		return this.getPotentialInstanceNameFor( this.getDeclaringType(), this.valueType );
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getValueType() {
 		return this.valueType;
 	}
 	@Override
@@ -91,7 +133,7 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	}
 	
 	@Override
-	protected boolean isIsReassignableComponentDesired() {
+	protected boolean isIsReassignableStateDesired() {
 		return false;
 	}
 	@Override
@@ -106,20 +148,29 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	protected boolean getIsReassignableInitialState() {
 		return false;
 	}
-	
+		
 	@Override
-	protected java.awt.Component createValueTypeComponent() {
-		edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane valueTypeLine = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane();
-		valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateLargelyPredeterminedFieldPane.this.valueType ) );
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createValueTypeComponent() {
+		edu.cmu.cs.dennisc.croquet.LineAxisPanel valueTypeLine = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
+		valueTypeLine.addComponent( org.alice.ide.common.TypeComponent.createInstance( CreateLargelyPredeterminedFieldPane.this.valueType ) );
 		if( CreateLargelyPredeterminedFieldPane.this.valueType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-			valueTypeLine.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( " which extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
-			valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateLargelyPredeterminedFieldPane.this.valueType.getSuperType() ) );
+			valueTypeLine.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " which extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
+			valueTypeLine.addComponent( org.alice.ide.common.TypeComponent.createInstance( CreateLargelyPredeterminedFieldPane.this.valueType.getSuperType() ) );
 //			valueTypeLine.add( zoot.ZLabel.acquire( " ) ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );
 		}
 		return valueTypeLine;
 	}
 	@Override
-	protected java.awt.Component createInitializerComponent() {
-		return new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( getIDE().getPreviewFactory().createExpressionPane( this.getInitializer() ) );
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createInitializerComponent() {
+		return new edu.cmu.cs.dennisc.croquet.LineAxisPanel( getIDE().getPreviewFactory().createExpressionPane( this.getInitializer() ) );
+	}
+	
+	@Override
+	protected boolean isValueTypeRowIncluded() {
+		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getValue();
+	}
+	@Override
+	protected boolean isInitializerRowIncluded() {
+		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getValue();
 	}
 }

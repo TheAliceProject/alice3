@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeDeclaredInAlice extends AbstractTypeDeclaredInAlice {
+public class TypeDeclaredInAlice extends AbstractTypeDeclaredInAlice<ConstructorDeclaredInAlice> {
 	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
 	public DeclarationProperty< PackageDeclaredInAlice > _package = new DeclarationProperty< PackageDeclaredInAlice >( this );
 	public NodeListProperty< ConstructorDeclaredInAlice > constructors = new NodeListProperty< ConstructorDeclaredInAlice >( this );
@@ -57,7 +57,7 @@ public class TypeDeclaredInAlice extends AbstractTypeDeclaredInAlice {
 	public TypeDeclaredInAlice() {
 		this.addListenerForConstructors();
 	}
-	public TypeDeclaredInAlice( String name, PackageDeclaredInAlice _package, AbstractType superType, ConstructorDeclaredInAlice[] constructors, MethodDeclaredInAlice[] methods, FieldDeclaredInAlice[] fields ) {
+	public TypeDeclaredInAlice( String name, PackageDeclaredInAlice _package, AbstractType<?,?,?> superType, ConstructorDeclaredInAlice[] constructors, MethodDeclaredInAlice[] methods, FieldDeclaredInAlice[] fields ) {
 		super( superType, methods, fields );
 		this.addListenerForConstructors();
 		this.name.setValue( name );
@@ -108,7 +108,7 @@ public class TypeDeclaredInAlice extends AbstractTypeDeclaredInAlice {
 		return _package.getValue();
 	}
 	@Override
-	public java.util.ArrayList< ? extends AbstractConstructor > getDeclaredConstructors() {
+	public java.util.ArrayList< ConstructorDeclaredInAlice > getDeclaredConstructors() {
 		return constructors.getValue();
 	}
 	

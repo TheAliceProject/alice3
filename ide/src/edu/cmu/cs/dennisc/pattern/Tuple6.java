@@ -106,7 +106,7 @@ public class Tuple6<A, B, C, D, E, F> {
 		if( super.equals( other ) ) {
 			return true;
 		} else {
-			if( other instanceof Tuple6 ) {
+			if( other instanceof Tuple6<?,?,?,?,?,?> ) {
 				Tuple6<?,?,?,?,?,?> otherT = (Tuple6<?,?,?,?,?,?>)other;
 				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_a, otherT.m_a ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_b, otherT.m_b ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_c, otherT.m_c ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_d, otherT.m_d ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_e, otherT.m_e ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_f, otherT.m_f );
 			} else {

@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeDeclaredInJava extends AbstractType {
+public class TypeDeclaredInJava extends AbstractType<ConstructorDeclaredInJava, MethodDeclaredInJava, FieldDeclaredInJava> {
 	private static java.util.Map< ClassReflectionProxy, TypeDeclaredInJava > s_mapReflectionProxyToJava = new java.util.HashMap< ClassReflectionProxy, TypeDeclaredInJava >();
 	public static final TypeDeclaredInJava VOID_TYPE = get( Void.TYPE );
 
@@ -141,9 +141,9 @@ public class TypeDeclaredInJava extends AbstractType {
 	private static boolean isMask( int modifiers, int required ) {
 		return (modifiers & required) != 0;
 	}
-	private static boolean isNotMask( int modifiers, int prohibited ) {
-		return (modifiers & prohibited) == 0;
-	}
+//	private static boolean isNotMask( int modifiers, int prohibited ) {
+//		return (modifiers & prohibited) == 0;
+//	}
 
 	private ClassReflectionProxy classReflectionProxy;
 	private java.util.ArrayList< ConstructorDeclaredInJava > constructors = new java.util.ArrayList< ConstructorDeclaredInJava >();
@@ -196,7 +196,7 @@ public class TypeDeclaredInJava extends AbstractType {
 		return PackageDeclaredInJava.get( this.classReflectionProxy.getPackageReflectionProxy() );
 	}
 	@Override
-	public AbstractType getSuperType() {
+	public AbstractType<?,?,?> getSuperType() {
 		Class< ? > cls = this.classReflectionProxy.getReification();
 		if( cls != null ) {
 			return TypeDeclaredInJava.get( cls.getSuperclass() );
@@ -205,15 +205,15 @@ public class TypeDeclaredInJava extends AbstractType {
 		}
 	}
 	@Override
-	public java.util.ArrayList< ? extends AbstractConstructor > getDeclaredConstructors() {
+	public java.util.ArrayList< ConstructorDeclaredInJava > getDeclaredConstructors() {
 		return this.constructors;
 	}
 	@Override
-	public java.util.ArrayList< ? extends AbstractMethod > getDeclaredMethods() {
+	public java.util.ArrayList< MethodDeclaredInJava > getDeclaredMethods() {
 		return this.methods;
 	}
 	@Override
-	public java.util.ArrayList< ? extends AbstractField > getDeclaredFields() {
+	public java.util.ArrayList< FieldDeclaredInJava > getDeclaredFields() {
 		return this.fields;
 	}
 
@@ -230,13 +230,13 @@ public class TypeDeclaredInJava extends AbstractType {
 		if( srcParameterClses.length > 0 ) {
 			Class< ? >[] dstParameterClses = trimLast( srcParameterClses );
 			try {
-				rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( src.getDeclaringClass(), name, dstParameterClses );
+				rv = src.getDeclaringClass().getMethod( name, dstParameterClses );
 				if( rv.getReturnType() == srcReturnCls ) {
 					//pass
 				} else {
 					rv = null;
 				}
-			} catch( RuntimeException re ) {
+			} catch( NoSuchMethodException nsme ) {
 				rv = null;
 			}
 		} else {
@@ -346,12 +346,12 @@ public class TypeDeclaredInJava extends AbstractType {
 		return this.classReflectionProxy.isArray();
 	}
 	@Override
-	public AbstractType getComponentType() {
+	public AbstractType<?,?,?> getComponentType() {
 		return TypeDeclaredInJava.get( this.classReflectionProxy.getComponentClassReflectionProxy() );
 	}
 
 	@Override
-	public AbstractType getArrayType() {
+	public AbstractType<?,?,?> getArrayType() {
 		Class< ? > cls = this.classReflectionProxy.getReification();
 		assert cls != null;
 		return TypeDeclaredInJava.get( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getArrayClass( cls ) );

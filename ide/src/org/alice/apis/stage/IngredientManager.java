@@ -43,7 +43,7 @@
 package org.alice.apis.stage;
 
 public abstract class IngredientManager<E extends Ingredient> {
-	private java.util.Map<Class<? extends E>, Class<? extends E>[]> mapInterfaceClsToImplementingClses = new java.util.HashMap<Class<? extends E>, Class<? extends E>[]>();
+	private java.util.Map<Class<? extends E>, Class<? extends E>[]> mapInterfaceClsToImplementingClses = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	protected void add( Class<? extends E> interfaceCls, Class<? extends E>... implementingClses ) {
 		this.mapInterfaceClsToImplementingClses.put( interfaceCls, implementingClses );

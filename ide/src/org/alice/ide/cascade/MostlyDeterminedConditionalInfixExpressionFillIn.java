@@ -50,7 +50,7 @@ public class MostlyDeterminedConditionalInfixExpressionFillIn extends MostlyDete
 		super( leftExpression, operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression createIncompleteExpression( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand, edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType ) {
+	protected edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression createIncompleteExpression( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand, edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType ) {
 		return org.alice.ide.ast.NodeUtilities.createIncompleteConditionalInfixExpression( leftOperand, operator );
 	}
 	@Override

@@ -46,19 +46,21 @@ package org.alice.ide.declarationpanes;
  * @author Dennis Cosgrove
  */
 public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTypePane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
-	public CreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType;
+	public CreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
 		super( new org.alice.ide.name.validators.MethodNameValidator( declaringType ) );
+		this.declaringType = declaringType;
 	}
 	@Override
 	protected String getDeclarationText() {
 		return "Procedure";
 	}
 	@Override
-	protected java.awt.Component createInitializerComponent() {
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createInitializerComponent() {
 		return null;
 	}
 	@Override
-	protected boolean isIsReassignableComponentDesired() {
+	protected boolean isIsReassignableStateDesired() {
 		return false;
 	}
 	
@@ -67,12 +69,12 @@ public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTyp
 		return false;
 	}
 	@Override
-	protected java.awt.Component createPreviewSubComponent() {
-		return new org.alice.ide.codeeditor.MethodHeaderPane( this.getActualInputValue(), null );
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent() {
+		return new org.alice.ide.codeeditor.MethodHeaderPane( this.getActualInputValue(), null, true, this.declaringType );
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getActualInputValue() {
+	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getActualInputValue() {
 		return new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( this.getDeclarationName(), this.getValueType(), new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {}, new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
 	}
 }

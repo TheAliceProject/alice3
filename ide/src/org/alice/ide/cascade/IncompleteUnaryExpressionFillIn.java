@@ -46,7 +46,7 @@ package org.alice.ide.cascade;
  * @author Dennis Cosgrove
  */
 public abstract class IncompleteUnaryExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends IncompleteExpressionFillIn< E > {
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getOperandType();
+	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getOperandType();
 	@Override
 	protected void addChildren() {
 		this.addChild( new ExpressionBlank( getOperandType() ) );

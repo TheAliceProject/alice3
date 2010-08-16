@@ -47,12 +47,12 @@ package edu.cmu.cs.dennisc.java.awt;
  * @author Dennis Cosgrove
  */
 public final class KnurlUtilities {
-	private static void paintPoint( java.awt.Graphics2D g2, int x, int y ) {
-		g2.drawLine( x, y, x, y );
-	}
 	private KnurlUtilities() {
 	}
-	public static void paintKnurl3( java.awt.Graphics2D g2, float x, float y, float width, float height ) {
+	private static void paintPoint( java.awt.Graphics g2, int x, int y ) {
+		g2.fillRect( x, y, 1, 1 );
+	}
+	public static void paintKnurl3( java.awt.Graphics g2, float x, float y, float width, float height ) {
 		int xPixel0 = (int)x;
 		int xPixelA = (int)(x+width*0.5f);
 		int xPixel1 = (int)(x+width);
@@ -70,7 +70,7 @@ public final class KnurlUtilities {
 			paintPoint( g2, xPixelA, yPixel + 2 );
 		}
 	}
-	public static void paintKnurl5( java.awt.Graphics2D g2, float x, float y, float width, float height ) {
+	public static void paintKnurl5( java.awt.Graphics g2, float x, float y, float width, float height ) {
 		int xPixel0 = (int)x;
 		int xPixelA = (int)(x+width*0.25f);
 		int xPixelB = (int)(x+width*0.5f);

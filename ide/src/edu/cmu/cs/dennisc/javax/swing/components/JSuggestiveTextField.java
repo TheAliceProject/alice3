@@ -47,13 +47,29 @@ package edu.cmu.cs.dennisc.javax.swing.components;
  */
 public class JSuggestiveTextField extends javax.swing.JTextField {
 	private String textForBlankCondition;
-
 	public JSuggestiveTextField( String text, String textForBlankCondition ) {
-		super( text );
-		this.setBorder( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ) );
-		this.textForBlankCondition = textForBlankCondition;
+		this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
 		this.addFocusListener( new SuggestiveTextFocusAdapter( this ) );
+		if( text != null ) {
+			this.setText( text );
+		}
+		if( textForBlankCondition != null ) {
+			this.setTextForBlankCondition( textForBlankCondition );
+		}
+		//this.setBorder( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ) );
 		//setToolTipText( this.textForBlankCondition );
+	}
+	public JSuggestiveTextField( String text ) {
+		this( text, null );
+	}
+	public JSuggestiveTextField() {
+		this( null, null );
+	}
+	public String getTextForBlankCondition() {
+		return this.textForBlankCondition;
+	}
+	public void setTextForBlankCondition(String textForBlankCondition) {
+		this.textForBlankCondition = textForBlankCondition;
 	}
 	@Override
 	public java.awt.Dimension getMaximumSize() {
@@ -65,6 +81,6 @@ public class JSuggestiveTextField extends javax.swing.JTextField {
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );
-		SuggestiveTextUtilties.drawBlankTextIfNecessary( this, g, this.textForBlankCondition );
+		SuggestiveTextUtilities.drawBlankTextIfNecessary( this, g, this.textForBlankCondition );
 	}
 }

@@ -46,8 +46,23 @@ package edu.cmu.cs.dennisc.java.lang;
  * @author Dennis Cosgrove
  */
 public class SystemUtilities {
+	private SystemUtilities() {
+		throw new AssertionError();
+	}
 	public static boolean isPropertyTrue( String propertyName ) {
 		return "true".equals( System.getProperty( propertyName ) );
+	}
+	public static boolean isPropertyFalse( String propertyName ) {
+		return "false".equals( System.getProperty( propertyName ) );
+	}
+	
+	public static boolean getBooleanProperty( String propertyName, boolean defaultValue ) {
+		String textValue = System.getProperty( propertyName );
+		if( textValue != null ) {
+			return Boolean.parseBoolean( textValue );
+		} else {
+			return defaultValue;
+		}
 	}
 	
 	

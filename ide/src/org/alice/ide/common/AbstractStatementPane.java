@@ -68,16 +68,16 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 	}
 
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo( parent );
 		this.factory.getStatementMap().put( this.statement, this );
 		this.statement.isEnabled.addPropertyListener( this.isEnabledListener );
 	}
 	@Override
-	public void removeNotify() {
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		this.statement.isEnabled.removePropertyListener( this.isEnabledListener );
 		this.factory.getStatementMap().remove( this.statement );
-		super.removeNotify();
+		super.handleRemovedFrom( parent );
 	}
 	public edu.cmu.cs.dennisc.alice.ast.Statement getStatement() {
 		return this.statement;
@@ -118,11 +118,10 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 ////			popupMenu.show( this, e.getX(), e.getY() );
 //		}
 //	}
-
+	
 	@Override
-	public void paint( java.awt.Graphics g ) {
-		super.paint( g );
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+	protected void paintEpilogue(java.awt.Graphics2D g2, int x, int y, int width, int height) {
+		super.paintEpilogue(g2, x, y, width, height);
 		if( this.statement.isEnabled.getValue() ) {
 			//pass
 		} else {

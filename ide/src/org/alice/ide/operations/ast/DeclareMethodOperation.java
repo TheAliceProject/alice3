@@ -45,43 +45,79 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclareMethodOperation extends org.alice.ide.operations.AbstractActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
-	public DeclareMethodOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
-		this.type = type;
+public abstract class DeclareMethodOperation extends org.alice.ide.operations.InputDialogWithPreviewOperation<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType;
+	public DeclareMethodOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
+		this.declaringType = declaringType;
 	}
-	protected abstract org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = this.createCreateMethodPane( this.type );
-		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.showInJDialog( getIDE() );
-		if( method != null ) {
-			final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = getIDE().getFocusedCode();
-			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
-				@Override
-				public void doOrRedo( boolean isDo ) {
-					type.methods.add( method );
-					getIDE().setFocusedCode( method );
-				}
-				@Override
-				public void undo() {
-					int index = type.methods.indexOf( method );
-					if( index != -1 ) {
-						type.methods.remove( index );
-						getIDE().setFocusedCode( prevCode );
-					} else {
-						throw new javax.swing.undo.CannotUndoException();
-					}
-				}
-				@Override
-				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-					rv.append( "declare:" );
-					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, method, locale);
-					return rv;
-				}
-			} );
+	protected String getDeclarationName(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> context) {
+		org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = context.getMainPanel();
+		if( createMethodPane != null ) {
+			return createMethodPane.getDeclarationName();
 		} else {
-			actionContext.cancel();
+			return null;
 		}
 	}
+	protected abstract org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType );
+	@Override
+	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > > context) {
+		assert this.declaringType != null;
+		return this.createCreateMethodPane( this.declaringType );
+	}
+	@Override
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> context, boolean isOk) {
+		if( isOk ) {
+			org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = context.getMainPanel();
+			final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.getActualInputValue();
+			if( method != null ) {
+				final org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+				final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = ide.getFocusedCode();
+				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+					@Override
+					public void doOrRedo( boolean isDo ) {
+						declaringType.methods.add( method );
+//						assert method.getDeclaringType() == method.body.getValue().getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractType.class );
+						ide.setFocusedCode( method );
+					}
+					@Override
+					public void undo() {
+						int index = declaringType.methods.indexOf( method );
+						if( index != -1 ) {
+							declaringType.methods.remove( index );
+							ide.setFocusedCode( prevCode );
+						} else {
+							throw new javax.swing.undo.CannotUndoException();
+						}
+					}
+					@Override
+					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+						rv.append( "declare:" );
+						edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, method, locale);
+						return rv;
+					}
+				} );
+//				context.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareMethodEdit(declaringType, method));
+			} else {
+				context.cancel();
+			}
+		} else {
+			context.cancel();
+		}
+	}
+	public edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> getDeclaringType() {
+		return this.declaringType;
+	}
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( "[" );
+		if( this.declaringType != null ) {
+			sb.append( this.declaringType.getName() );
+		}
+		sb.append( "]" );
+		return sb.toString();
+	}
+	
 }

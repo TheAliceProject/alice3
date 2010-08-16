@@ -46,8 +46,9 @@ package edu.cmu.cs.dennisc.java.awt;
  * @author Dennis Cosgrove
  */
 public class FileDialogUtilities {
-	private static edu.cmu.cs.dennisc.map.MapToMap<java.awt.Component, String, java.awt.FileDialog> mapPathToFileDialog = new edu.cmu.cs.dennisc.map.MapToMap<java.awt.Component, String, java.awt.FileDialog>();
-	private static java.util.Map<String, String> mapSecondaryKeyToPath = new java.util.HashMap<String, String>();
+	private static edu.cmu.cs.dennisc.map.MapToMap<java.awt.Component, String, java.awt.FileDialog> mapPathToLoadFileDialog = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<java.awt.Component, String, java.awt.FileDialog> mapPathToSaveFileDialog = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static java.util.Map<String, String> mapSecondaryKeyToPath = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
 	private static java.io.File showFileDialog( java.awt.Component component, String title, int mode, String directoryPath, String filename, String extension, boolean isSharingDesired ) {
 		java.awt.FileDialog fileDialog;
@@ -58,8 +59,14 @@ public class FileDialogUtilities {
 		} else {
 			secondaryKey = "null";
 		}
+		edu.cmu.cs.dennisc.map.MapToMap<java.awt.Component, String, java.awt.FileDialog> mapPathToFileDialog;
+		if( mode == java.awt.FileDialog.LOAD ) {
+			mapPathToFileDialog = FileDialogUtilities.mapPathToLoadFileDialog;
+		} else {
+			mapPathToFileDialog = FileDialogUtilities.mapPathToSaveFileDialog;
+		}
 		if( isSharingDesired ) {
-			fileDialog = FileDialogUtilities.mapPathToFileDialog.get( component, secondaryKey );
+			fileDialog = mapPathToFileDialog.get( component, secondaryKey );
 		} else {
 			fileDialog = null;
 		}
@@ -74,7 +81,7 @@ public class FileDialogUtilities {
 				fileDialog = new java.awt.FileDialog( (java.awt.Dialog)null, title, mode );
 			}
 			if( isSharingDesired ) {
-				FileDialogUtilities.mapPathToFileDialog.put( component, secondaryKey, fileDialog );
+				mapPathToFileDialog.put( component, secondaryKey, fileDialog );
 			}
 		}
 		if( filename != null ) {

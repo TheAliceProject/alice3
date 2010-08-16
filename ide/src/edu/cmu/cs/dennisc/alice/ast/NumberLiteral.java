@@ -53,12 +53,16 @@ public class NumberLiteral extends AbstractValueLiteral {
 		this.value.setValue( value );
 	}
 	@Override
-	public AbstractType getType() {
+	public AbstractType<?,?,?> getType() {
 		return TypeDeclaredInJava.get( Number.class );
 	}
 	@Override
 	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
 		rv.append( this.value.getValue() );
 		return rv;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.property.InstanceProperty<?> getValueProperty() {
+		return this.value;
 	}
 }

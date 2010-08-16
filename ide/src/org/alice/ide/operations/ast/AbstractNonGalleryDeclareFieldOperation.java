@@ -47,15 +47,14 @@ package org.alice.ide.operations.ast;
  */
 //todo: remove
 @Deprecated
-abstract class AbstractNonGalleryDeclareFieldOperation extends org.alice.ide.operations.ast.AbstractDeclareFieldOperation {
-	@Override
-	protected boolean isInstanceValid() {
-		return false;
+abstract class AbstractNonGalleryDeclareFieldOperation<J extends org.alice.ide.preview.PanelWithPreview> extends org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation<J> {
+	public AbstractNonGalleryDeclareFieldOperation( java.util.UUID individualId ) {
+		super( individualId );
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType );
-	
+	protected abstract edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< J > context );
+	protected abstract Object createInstance();
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object > createFieldAndInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
-		return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object >( this.createField( ownerType ), null );
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< J > context ) {
+		return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object >( this.createField( context ), this.createInstance() );
 	}
 }

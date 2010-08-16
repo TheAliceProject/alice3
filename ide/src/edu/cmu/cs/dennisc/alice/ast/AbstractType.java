@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractType extends AbstractAccessibleDeclaration {
+public abstract class AbstractType<C extends AbstractConstructor, M extends AbstractMethod, F extends AbstractField> extends AbstractAccessibleDeclaration {
 	private static java.util.Map< Class<?>, Class<?>> s_mapPrimitiveToWrapper;
 	static {
 		s_mapPrimitiveToWrapper = new java.util.HashMap< Class<?>, Class<?>>();
@@ -72,7 +72,7 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 	}
 	
 	public TypeDeclaredInJava getFirstTypeEncounteredDeclaredInJava() {
-		AbstractType type = this; 
+		AbstractType<?,?,?> type = this; 
 		while( type instanceof TypeDeclaredInJava == false ) {
 			type = type.getSuperType();
 		}
@@ -81,7 +81,7 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 //	public Class<?> getFirstClassEncounteredDeclaredInJava() {
 //		return getFirstTypeEncounteredDeclaredInJava().getCls();
 //	}
-	public boolean isAssignableFrom( AbstractType other ) {
+	public boolean isAssignableFrom( AbstractType<?,?,?> other ) {
 		if( other != null ) {
 			TypeDeclaredInJava thisTypeDeclaredInJava = this.getFirstTypeEncounteredDeclaredInJava();
 			TypeDeclaredInJava otherTypeDeclaredInJava = other.getFirstTypeEncounteredDeclaredInJava();
@@ -94,7 +94,7 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 	public boolean isAssignableFrom( Class<?> other ) {
 		return isAssignableFrom( TypeDeclaredInJava.get( other ) );
 	}
-	public boolean isAssignableTo( AbstractType other ) {
+	public boolean isAssignableTo( AbstractType<?,?,?> other ) {
 		return other.isAssignableFrom( this );
 	}
 	public boolean isAssignableTo( Class<?> other ) {
@@ -104,10 +104,10 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 	public abstract boolean isFollowToSuperClassDesired();
 	public abstract boolean isConsumptionBySubClassDesired();
 	public abstract AbstractPackage getPackage();
-	public abstract AbstractType getSuperType();
-	public abstract java.util.ArrayList< ? extends AbstractConstructor > getDeclaredConstructors();
-	public abstract java.util.ArrayList< ? extends AbstractMethod > getDeclaredMethods();
-	public abstract java.util.ArrayList< ? extends AbstractField > getDeclaredFields();
+	public abstract AbstractType<?,?,?> getSuperType();
+	public abstract java.util.ArrayList< C > getDeclaredConstructors();
+	public abstract java.util.ArrayList< M > getDeclaredMethods();
+	public abstract java.util.ArrayList< F > getDeclaredFields();
 
 	public abstract boolean isInterface();
 	public abstract boolean isStatic();
@@ -117,18 +117,15 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 	public abstract boolean isStrictFloatingPoint();
 	
 	public abstract boolean isArray();
-	public abstract AbstractType getComponentType();
+	public abstract AbstractType<?,?,?> getComponentType();
 	
-	public AbstractConstructor getDeclaredConstructor() {
-		return getDeclaredConstructor( new AbstractType[] {} );
-	}
-	public AbstractConstructor getDeclaredConstructor( AbstractType... parameterTypes ) {
-		AbstractConstructor rv = null;
-		for( AbstractConstructor constructor : getDeclaredConstructors() ) {
+	public C getDeclaredConstructor( AbstractType<?,?,?>... parameterTypes ) {
+		C rv = null;
+		for( C constructor : getDeclaredConstructors() ) {
 			rv = constructor;
 			java.util.ArrayList< ? extends AbstractParameter > parameters = constructor.getParameters();
 			for( int i=0; i<parameterTypes.length; i++ ) {
-				AbstractType parameterType = parameterTypes[ i ];
+				AbstractType<?,?,?> parameterType = parameterTypes[ i ];
 				if( parameterType.equals( parameters.get( i ).getValueType() ) ) {
 					//pass
 				} else {
@@ -142,21 +139,21 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 		}
 		return rv;
 	}
-	public AbstractConstructor getDeclaredConstructor( Class<?>... parameterClses ) {
+	public C getDeclaredConstructor( Class<?>... parameterClses ) {
 		return getDeclaredConstructor( TypeDeclaredInJava.get( parameterClses ) );
 	}
-	public AbstractMethod getDeclaredMethod( String name ) {
-		return getDeclaredMethod( name, new AbstractType[] {} );
+	public C getDeclaredConstructor() {
+		return getDeclaredConstructor( new AbstractType[] {} );
 	}
-	public AbstractMethod getDeclaredMethod( String name, AbstractType... parameterTypes ) {
-		AbstractMethod rv = null;
-		for( AbstractMethod method : getDeclaredMethods() ) {
+	public M getDeclaredMethod( String name, AbstractType<?,?,?>... parameterTypes ) {
+		M rv = null;
+		for( M method : getDeclaredMethods() ) {
 			if( method.getName().equals( name ) ) {
 				java.util.ArrayList< ? extends AbstractParameter > parameters = method.getParameters();
 				if( parameters.size() == parameterTypes.length ) {
 					rv = method;
 					for( int i=0; i<parameterTypes.length; i++ ) {
-						AbstractType parameterType = parameterTypes[ i ];
+						AbstractType<?,?,?> parameterType = parameterTypes[ i ];
 						if( parameterType.equals( parameters.get( i ).getValueType() ) ) {
 							//pass
 						} else {
@@ -174,14 +171,17 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 		}
 		return rv;
 	}
-	public AbstractMethod getDeclaredMethod( String name, Class<?>... parameterClses ) {
+	public M getDeclaredMethod( String name, Class<?>... parameterClses ) {
 		return getDeclaredMethod( name, TypeDeclaredInJava.get( parameterClses ) );
 	}
+	public M getDeclaredMethod( String name ) {
+		return getDeclaredMethod( name, new AbstractType[] {} );
+	}
 
-	public AbstractField getDeclaredField( AbstractType valueType, String name ) {
-		AbstractField rv = null;
-		for( AbstractField field : getDeclaredFields() ) {
-			if( field.getName().equals( name ) && field.getValueType().equals( valueType ) ) {
+	public F getDeclaredField( AbstractType<?,?,?> valueType, String name ) {
+		F rv = null;
+		for( F field : getDeclaredFields() ) {
+			if( field.getName().equals( name ) && ( valueType == null || field.getValueType().equals( valueType ) ) ) {
 				rv = field;
 				break;
 			} else {
@@ -190,15 +190,18 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 		}
 		return rv;
 	}
-	public AbstractField getDeclaredField( Class<?> valueCls, String name ) {
+	public F getDeclaredField( Class<?> valueCls, String name ) {
 		return getDeclaredField( TypeDeclaredInJava.get( valueCls ), name );
 	}
+	public F getDeclaredField( String name ) {
+		return getDeclaredField( (AbstractType<?,?,?>)null, name );
+	}
 	
-	public abstract AbstractType getArrayType();
+	public abstract AbstractType<?,?,?> getArrayType();
 	
-	public AbstractMethod findMethod( String name, AbstractType... parameterTypes ) {
+	public AbstractMethod findMethod( String name, AbstractType<?,?,?>... parameterTypes ) {
 		AbstractMethod rv = null;
-		AbstractType type = this;
+		AbstractType<?,?,?> type = this;
 		while( type != null ) {
 			AbstractMethod method = type.getDeclaredMethod( name, parameterTypes );
 			if( method != null ) {

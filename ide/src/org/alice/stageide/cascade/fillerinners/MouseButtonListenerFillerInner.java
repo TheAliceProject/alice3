@@ -58,6 +58,6 @@ public class MouseButtonListenerFillerInner extends org.alice.ide.cascade.filler
 		type.superType.setValue( this.getType() );
 		type.methods.add( method );
 		edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor constructor = edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor.get( type );
-		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor ) ) );
+		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.AutoCompleteFillIn< edu.cmu.cs.dennisc.alice.ast.Expression >( new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor ) ) );
 	}
 }

@@ -50,11 +50,12 @@ class EditConstructorOperation extends org.alice.ide.operations.InconsequentialA
 	private edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor;
 
 	public EditConstructorOperation( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor ) {
+		super( java.util.UUID.fromString( "4dce50a6-c637-490c-b1ff-3cd3028dd8ac" ) );
 		this.constructor = constructor;
-		this.setName( "Edit Constructor" );
+		this.setName( "<html>Edit <strong>constructor</strong></html>" );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		this.getIDE().setFocusedCode( this.constructor );
 	}
 }

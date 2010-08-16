@@ -45,13 +45,17 @@ package org.alice.ide.editorstabbedpane;
 /**
 * @author Dennis Cosgrove
 */
-public class OperatorFillIn extends edu.cmu.cs.dennisc.cascade.SimpleFillIn< edu.cmu.cs.dennisc.zoot.ActionOperation > {
-	public OperatorFillIn( edu.cmu.cs.dennisc.zoot.ActionOperation actionOperation ) {
+public class OperatorFillIn extends edu.cmu.cs.dennisc.cascade.SimpleFillIn<  edu.cmu.cs.dennisc.croquet.Operation > {
+	public OperatorFillIn( edu.cmu.cs.dennisc.croquet.Operation actionOperation ) {
 		super( actionOperation );
 	}
 	@Override
 	protected String getMenuProxyText() {
 		return this.getModel().getName();
+	}
+	@Override
+	protected javax.swing.Icon getMenuProxyIcon() {
+		return this.getModel().getSmallIcon();
 	}
 }
 

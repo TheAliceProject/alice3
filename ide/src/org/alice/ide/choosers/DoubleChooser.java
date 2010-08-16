@@ -42,24 +42,31 @@
  */
 package org.alice.ide.choosers;
 
+class DoubleModel extends NumberModel {
+	public DoubleModel() {
+		 super( CALCULATOR_GROUP, java.util.UUID.fromString( "034bda41-f608-4c03-8090-f7c8b8e0bf1a" ) );
+	}
+	@Override
+	protected boolean isDecimalPointSupported() {
+		return true;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression valueOf( String s ) {
+		double d = Double.parseDouble( s );
+		if( Double.isNaN( d ) ) {
+			return null;
+		} else {
+			return new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( d );
+		}
+	}
+}
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleChooser extends AbstractNumberChooser< Double > {
+public class DoubleChooser extends AbstractNumberChooser {
 	public DoubleChooser() {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		//todo: handle other numbers
-		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
-			edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)previousExpression;
-			this.setAndSelectText( Double.toString( doubleLiteral.value.getValue() ) );
-		}
-	}
-	public String getTitleDefault() {
-		return "Enter Custom Double";
-	}
-	@Override
-	protected Double valueOf( String text ) {
-		return Double.valueOf( text );
+		super( new DoubleModel() );
 	}
 }

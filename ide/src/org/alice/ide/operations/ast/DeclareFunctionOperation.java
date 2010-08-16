@@ -46,12 +46,23 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class DeclareFunctionOperation extends DeclareMethodOperation {
-	public DeclareFunctionOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		super( type );
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >, DeclareFunctionOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static DeclareFunctionOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+		DeclareFunctionOperation rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new DeclareFunctionOperation( type );
+			map.put( type, rv );
+		}
+		return rv;
+	}
+	private DeclareFunctionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+		super( java.util.UUID.fromString( "171164e5-8159-4641-9528-a230ef4d2600" ), type );
 		this.setName( "Declare Function..." );
 	}
 	@Override
-	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
 		return new org.alice.ide.declarationpanes.CreateFunctionPane( type );
 	}
 }

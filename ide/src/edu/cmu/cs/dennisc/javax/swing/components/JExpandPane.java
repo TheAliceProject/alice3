@@ -75,7 +75,7 @@ public abstract class JExpandPane extends javax.swing.AbstractButton {
 			} else {
 				text = JExpandPane.this.getCollapsedButtonText();
 			}
-			edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g, text, this.getSize() );
+			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, text, this.getSize() );
 		}
 	}
 	private javax.swing.JLabel label = this.createLabel();

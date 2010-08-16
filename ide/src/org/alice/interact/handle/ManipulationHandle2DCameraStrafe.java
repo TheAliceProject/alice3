@@ -44,6 +44,8 @@ package org.alice.interact.handle;
 
 import javax.swing.ImageIcon;
 
+import org.alice.interact.MovementDirection;
+import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;
@@ -85,10 +87,23 @@ public class ManipulationHandle2DCameraStrafe extends ImageBasedManipulationHand
 		}
 	}
 	
+	private MovementDirection handleUp = MovementDirection.UP;
+	private MovementDirection handleDown = MovementDirection.DOWN;
+	private MovementDirection handleRight = MovementDirection.RIGHT;
+	private MovementDirection handleLeft = MovementDirection.LEFT;
+	
 	private boolean movingLeft = false;
 	private boolean movingRight = false;
 	private boolean movingUp = false;
 	private boolean movingDown = false;
+	
+	public void remapDirections(MovementDirection up, MovementDirection down, MovementDirection left, MovementDirection right)
+	{
+		this.handleUp = up;
+		this.handleDown = down;
+		this.handleLeft = left;
+		this.handleRight = right;
+	}
 	
 	@Override
 	protected void setImageMask() {
@@ -145,12 +160,21 @@ public class ManipulationHandle2DCameraStrafe extends ImageBasedManipulationHand
 	@Override
 	protected void setManipulationState(ManipulationEvent event, boolean isActive)
 	{
-		switch (event.getMovementDescription().direction)
+		if (event.getMovementDescription().direction == handleUp)
 		{
-		case UP : this.movingUp = isActive; break;
-		case DOWN : this.movingDown = isActive; break;
-		case LEFT : this.movingLeft = isActive; break;
-		case RIGHT : this.movingRight = isActive; break;
+			this.movingUp = isActive;
+		}
+		else if (event.getMovementDescription().direction == handleDown)
+		{
+			this.movingDown = isActive;
+		}
+		else if (event.getMovementDescription().direction == handleRight)
+		{
+			this.movingRight = isActive;
+		}
+		else if (event.getMovementDescription().direction == handleLeft)
+		{
+			this.movingLeft = isActive;
 		}
 	}
 

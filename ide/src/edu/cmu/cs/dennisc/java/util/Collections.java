@@ -42,12 +42,12 @@
  */
 package edu.cmu.cs.dennisc.java.util;
 
+/**
+ * @author Dennis Cosgrove
+ */
 public class Collections {
 	private Collections() {
 		throw new AssertionError();
-	}
-	public static <E> java.util.Stack< E > newStack() {
-		return new java.util.Stack< E >();
 	}
 	public static <E> java.util.LinkedList< E > newLinkedList() {
 		return new java.util.LinkedList< E >();
@@ -56,6 +56,9 @@ public class Collections {
 		java.util.LinkedList<E> rv = new java.util.LinkedList< E >();
 		rv.addAll( other );
 		return rv;
+	}
+	public static <E> java.util.ArrayList<E> newArrayList() {
+		return new java.util.ArrayList< E >();
 	}
 	public static <E> java.util.ArrayList<E> newArrayList( E... array ) {
 		java.util.ArrayList<E> rv = new java.util.ArrayList< E >();
@@ -67,6 +70,10 @@ public class Collections {
 		rv.addAll( other );
 		return rv;
 	}
+
+	public static <E> java.util.Vector<E> newVector() {
+		return new java.util.Vector< E >();
+	}
 	public static <E> java.util.Vector<E> newVector( E... array ) {
 		java.util.Vector<E> rv = new java.util.Vector< E >();
 		CollectionUtilities.set( rv, array );
@@ -77,6 +84,21 @@ public class Collections {
 		rv.addAll( other );
 		return rv;
 	}
+	
+	public static <E> java.util.Stack<E> newStack() {
+		return new java.util.Stack< E >();
+	}
+	public static <E> java.util.Stack<E> newStack( E... array ) {
+		java.util.Stack<E> rv = new java.util.Stack< E >();
+		CollectionUtilities.set( rv, array );
+		return rv;
+	}
+	public static <E> java.util.Stack< E > newStack( java.util.Collection< E > other ) {
+		java.util.Stack<E> rv = new java.util.Stack< E >();
+		rv.addAll( other );
+		return rv;
+	}
+
 	public static <E> java.util.HashSet< E > newHashSet() {
 		return new java.util.HashSet< E >();
 	}

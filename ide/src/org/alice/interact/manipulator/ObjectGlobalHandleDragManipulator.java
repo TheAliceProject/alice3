@@ -240,6 +240,13 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 	}
 	
 	@Override
+	public void endManipulator(InputState endInput, InputState previousInput)
+	{
+		super.endManipulator(endInput, previousInput);
+		this.activeManipulator = null;
+	}
+	
+	@Override
 	public boolean doStartManipulator( InputState startInput ) {
 		this.activeHandle = startInput.getClickHandle();
 		if (this.activeHandle != null)

@@ -45,14 +45,15 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDropDownPane extends org.alice.ide.AbstractControl {
+public abstract class AbstractDropDownPane extends edu.cmu.cs.dennisc.croquet.Control {
+//public abstract class AbstractDropDownPane extends edu.cmu.cs.dennisc.croquet.AbstractButton< javax.swing.AbstractButton, edu.cmu.cs.dennisc.croquet.Operation< ? > > {
+
 //	private zoot.event.ControlAdapter controlAdapter = new zoot.event.ControlAdapter( this );
 	public AbstractDropDownPane() {
-		this.setBackground( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 230 ) );
-		this.setForeground( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 ) );
+		this.setBackgroundColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 230 ) );
+		this.setForegroundColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 ) );
 		this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.DEFAULT_CURSOR ) );
 	}
-	
 //	@Override
 //	public void addNotify() {
 //		super.addNotify();
@@ -128,7 +129,7 @@ public abstract class AbstractDropDownPane extends org.alice.ide.AbstractControl
 			triangleFill = java.awt.Color.YELLOW;
 			triangleOutline = java.awt.Color.BLACK;
 		} else {
-			triangleFill = this.getForeground();
+			triangleFill = this.getForegroundColor();
 			triangleOutline = null;
 		}
 
@@ -154,7 +155,7 @@ public abstract class AbstractDropDownPane extends org.alice.ide.AbstractControl
 		}
 	}
 	@Override
-	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+	protected final void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		if( this.isActive() ) {
 			g2.setStroke( new java.awt.BasicStroke( 3.0f ) );
 			g2.setColor( java.awt.Color.BLUE );

@@ -45,103 +45,91 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class GetsPane extends edu.cmu.cs.dennisc.javax.swing.components.JPane {
-	private boolean isTowardLeadingEdge;
-	private int length;
-
-	private GetsPane( boolean isTowardLeadingEdge, int length ) {
-		this.isTowardLeadingEdge = isTowardLeadingEdge;
-		this.length = length;
-		this.setBackground( java.awt.Color.YELLOW );
-		this.setForeground( java.awt.Color.GRAY );
-	}
-	public GetsPane( boolean isTowardLeadingEdge ) {
-		this( isTowardLeadingEdge, 2 );
-	}
-	private float getArrowHeight() {
-		return getFont().getSize2D() * 1.4f;
-	}
-	@Override
-	public java.awt.Dimension getPreferredSize() {
-		int height = (int)getArrowHeight();
-		int width = height * this.length + 1;
-		return new java.awt.Dimension( width, height );
-	}
-
-	private boolean isReversalDesired() {
-		java.awt.ComponentOrientation componentOrientation = java.awt.ComponentOrientation.getOrientation( this.getLocale() );
-		if( componentOrientation.isLeftToRight() ) {
-			return isTowardLeadingEdge == false;
-		} else {
-			return isTowardLeadingEdge;
-		}
-	}
-	private java.awt.Paint createGradientPaint( int width ) {
-		java.awt.Color colorStart = org.alice.ide.IDE.getSingleton().getColorFor( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
-		//java.awt.Color colorStart = java.awt.Color.ORANGE;
+public class GetsPane extends edu.cmu.cs.dennisc.croquet.Label {
+	private static java.awt.Paint createGradientPaint(int width, boolean isReversalDesired) {
+		java.awt.Color colorStart = org.alice.ide.IDE.getSingleton().getColorFor(edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class);
 		java.awt.Color colorEnd = colorStart.darker();
 		java.awt.Color color0;
 		java.awt.Color color1;
-		if( this.isReversalDesired() ) {
+		if (isReversalDesired) {
 			color0 = colorEnd;
 			color1 = colorStart;
 		} else {
 			color0 = colorStart;
 			color1 = colorEnd;
 		}
-		java.awt.Paint rv = new java.awt.GradientPaint( 0.0f, 0.0f, color0, width, 0.0f, color1 );
-		return rv;
+		return new java.awt.GradientPaint(0.0f, 0.0f, color0, width, 0.0f, color1);
 	}
-	private int prevWidth = -1; 
-	private java.awt.Paint gradientPaint = null;
-	private java.awt.Paint getGradientPaint() {
-		int width = this.getWidth();
-		if( width != this.prevWidth ) {
-			this.gradientPaint = this.createGradientPaint( width );
-			this.prevWidth = width;
-		}
-		return this.gradientPaint;
-	}
-	
-	@Override
-	protected void paintComponent( java.awt.Graphics g ) {
-		super.paintComponent( g );
-		int halfLineSize = getHeight() / 5;
-		int yTop = 0;
-		int yBottom = getHeight() - 1;
-		int yCenter = (yTop + yBottom) / 2;
-		int yTopLine = yCenter - halfLineSize;
-		int yBottomLine = yCenter + halfLineSize;
 
-		final int INSET = 2;
-		int xLeft = INSET;
-		int xHeadRight = yBottom;
-		int xHeadRightInABit = xHeadRight * 4 / 5;
-		int xRight = getWidth() - 1 - INSET * 2;
+	private boolean isTowardLeadingEdge;
+	private int length;
 
-		int[] xPoints = { xLeft, xHeadRight, xHeadRightInABit, xRight, xRight, xHeadRightInABit, xHeadRight };
-		int[] yPoints = { yCenter, yTop, yTopLine, yTopLine, yBottomLine, yBottomLine, yBottom };
-
-		if( this.isReversalDesired() ) {
-			for( int i = 0; i < xPoints.length; i++ ) {
-				xPoints[ i ] = getWidth() - xPoints[ i ];
+	private GetsPane(boolean isTowardLeadingEdge, int length) {
+		this.isTowardLeadingEdge = isTowardLeadingEdge;
+		this.length = length;
+		this.setIcon(new javax.swing.Icon() {
+			public int getIconWidth() {
+				return this.getIconHeight() * GetsPane.this.length + 1;
 			}
+			public int getIconHeight() {
+				return (int) (GetsPane.this.getFont().getSize2D() * 1.4f);
+			}
+			public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+				int width = this.getIconWidth();
+				int height = this.getIconHeight();
+
+				int halfLineSize = height / 5;
+				int yTop = 0;
+				int yBottom = getHeight() - 1;
+				int yCenter = (yTop + yBottom) / 2;
+				int yTopLine = yCenter - halfLineSize;
+				int yBottomLine = yCenter + halfLineSize;
+
+				final int INSET = 2;
+				int xLeft = INSET;
+				int xHeadRight = yBottom;
+				int xHeadRightInABit = xHeadRight * 4 / 5;
+				int xRight = getWidth() - 1 - INSET * 2;
+
+				int[] xPoints = { xLeft, xHeadRight, xHeadRightInABit, xRight, xRight, xHeadRightInABit, xHeadRight };
+				int[] yPoints = { yCenter, yTop, yTopLine, yTopLine, yBottomLine, yBottomLine, yBottom };
+
+				boolean isReversalDesired = GetsPane.this.isReversalDesired();
+				if (isReversalDesired) {
+					for (int i = 0; i < xPoints.length; i++) {
+						xPoints[i] = getWidth() - xPoints[i];
+					}
+				}
+
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setRenderingHint(g2, java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+
+				g2.setPaint(GetsPane.createGradientPaint(width, isReversalDesired));
+				g2.fillPolygon(xPoints, yPoints, xPoints.length);
+				g2.setColor(java.awt.Color.GRAY);
+				g2.drawPolygon(xPoints, yPoints, xPoints.length);
+			}
+		});
+	}
+
+	public GetsPane(boolean isTowardLeadingEdge) {
+		this(isTowardLeadingEdge, 2);
+	}
+
+	private boolean isReversalDesired() {
+		java.awt.ComponentOrientation componentOrientation = java.awt.ComponentOrientation.getOrientation(this.getLocale());
+		if (componentOrientation.isLeftToRight()) {
+			return isTowardLeadingEdge == false;
+		} else {
+			return isTowardLeadingEdge;
 		}
-		edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.setRenderingHint( g, java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		g2.setPaint( this.getGradientPaint() );
-
-		g.fillPolygon( xPoints, yPoints, xPoints.length );
-		g.setColor( this.getForeground() );
-		g.drawPolygon( xPoints, yPoints, xPoints.length );
 	}
-	public static void main( String[] args ) {
-		javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "ar" ) );
-		javax.swing.JFrame frame = new javax.swing.JFrame();
-		frame.getContentPane().add( new GetsPane( false ) );
-		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
-		frame.setSize( 640, 480 );
-		frame.setVisible( true );
-	}
+	// public static void main( String[] args ) {
+	// javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "ar" ) );
+	// javax.swing.JFrame frame = new javax.swing.JFrame();
+	// frame.getContentPane().add( new GetsPane( false ) );
+	// frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
+	// frame.setSize( 640, 480 );
+	// frame.setVisible( true );
+	// }
 }

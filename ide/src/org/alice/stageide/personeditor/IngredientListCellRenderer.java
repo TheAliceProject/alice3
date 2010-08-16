@@ -48,19 +48,31 @@ package org.alice.stageide.personeditor;
 abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< E > {
 	private javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 );
 	protected abstract String getSubPath();
-	private String getIngredientPath( org.alice.apis.stage.SkinTone skinTone, String clsName, String enumConstantName ) {
-		java.io.File ROOT = org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory();
-		String rv = ROOT.getAbsolutePath();
-		rv += "/personbuilder/";
-		rv += this.getSubPath();
-		rv += "/";
-		rv += skinTone;
-		rv += "/";
-		rv += clsName;
-		rv += ".";
-		rv += enumConstantName;
-		rv += ".png";
+	private java.net.URL getIngredientResourceName( org.alice.apis.stage.SkinTone skinTone, String clsName, String enumConstantName ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "images/" );
+		sb.append( this.getSubPath() );
+		sb.append( "/" );
+		sb.append( skinTone );
+		sb.append( "/" );
+		sb.append( clsName );
+		sb.append( "." );
+		sb.append( enumConstantName );
+		sb.append( ".png" );
+		java.net.URL rv = IngredientListCellRenderer.class.getResource( sb.toString() );
+		assert rv != null : sb;
 		return rv;
+	}
+
+	private org.alice.apis.stage.BaseSkinTone getBaseSkinTone() {
+		org.alice.apis.stage.Person person = PersonViewer.getSingleton().getPerson();
+		if( person != null ) {
+			org.alice.apis.stage.SkinTone skinTone = person.getSkinTone();
+			if( skinTone instanceof org.alice.apis.stage.BaseSkinTone ) {
+				return (org.alice.apis.stage.BaseSkinTone)skinTone;
+			}
+		}
+		return org.alice.apis.stage.BaseSkinTone.DARK;
 	}
 
 	@Override
@@ -69,16 +81,19 @@ abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.
 		if( value != null ) {
 			String clsName = value.getClass().getSimpleName();
 			String enumConstantName = value.toString();
-			String pathForIcon = this.getIngredientPath( org.alice.apis.stage.BaseSkinTone.DARK, clsName, enumConstantName );
+			
+			org.alice.apis.stage.SkinTone baseSkinTone = this.getBaseSkinTone();
+
+			java.net.URL urlForIcon = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
 			rv.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
 			rv.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
 
 			rv.setOpaque( isSelected );
 			if( isSelected ) {
-				rv.setBackground( IngredientsPane.SELECTED_COLOR );
+				rv.setBackground( PersonEditor.SELECTED_COLOR );
 			}
 			
-			javax.swing.Icon icon = new javax.swing.ImageIcon( pathForIcon );
+			javax.swing.Icon icon = new javax.swing.ImageIcon( urlForIcon );
 			if( icon != null ) {
 				rv.setIcon( icon );
 				rv.setText( "" );

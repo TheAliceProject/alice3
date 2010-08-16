@@ -45,39 +45,37 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation > {
+public class ArrayChooser extends AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation > {
 	private org.alice.ide.initializer.BogusNode bogusNode = new org.alice.ide.initializer.BogusNode( null, false );
 	private org.alice.ide.declarationpanes.TypePane typePane;
 	private org.alice.ide.initializer.ArrayInitializerPane arrayInitializerPane;
 	private static final String[] LABEL_TEXTS = { "type:", "value:" };
-	private java.awt.Component[] components;
+	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components;
 	
 	public ArrayChooser() {
 		bogusNode.isArray.setValue( true );
 		this.typePane = new org.alice.ide.declarationpanes.TypePane( bogusNode.componentType, bogusNode.isArray, true, false );
-		this.arrayInitializerPane = new org.alice.ide.initializer.ArrayInitializerPane( bogusNode.arrayExpressions );
-		this.components = new java.awt.Component[] { this.typePane, this.arrayInitializerPane };
-		bogusNode.componentType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-			}
-			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-				ArrayChooser.this.arrayInitializerPane.handleTypeChange( bogusNode.getType() );
-				ArrayChooser.this.handleChanged();
-			}
-		} );
-		bogusNode.arrayExpressions.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.Expression >() {
-			@Override
-			protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
-			}
-			@Override
-			protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
-				ArrayChooser.this.handleChanged();
-			}
-		} );
+		this.arrayInitializerPane = new org.alice.ide.initializer.ArrayInitializerPane( bogusNode.componentType, bogusNode.arrayExpressions );
+		this.components = new edu.cmu.cs.dennisc.croquet.Component< ? >[] { this.typePane, this.arrayInitializerPane };
+//		bogusNode.componentType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+//			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+//			}
+//			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+//				ArrayChooser.this.arrayInitializerPane.handleTypeChange( bogusNode.getType() );
+//			}
+//		} );
+//		bogusNode.arrayExpressions.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.Expression >() {
+//			@Override
+//			protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
+//			}
+//			@Override
+//			protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
+//			}
+//		} );
 		edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getPreviousExpression(), edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation.class );
 		if( arrayInstanceCreation != null ) {
 			//typePane.setAndLockType( arrayInstanceCreation.arrayType.getValue() );
-			edu.cmu.cs.dennisc.alice.ast.AbstractType type = arrayInstanceCreation.arrayType.getValue().getComponentType();
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = arrayInstanceCreation.arrayType.getValue().getComponentType();
 			bogusNode.componentType.setValue( type );
 			for( edu.cmu.cs.dennisc.alice.ast.Expression expression : arrayInstanceCreation.expressions ) {
 				bogusNode.arrayExpressions.add( expression );
@@ -86,37 +84,49 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 		}
 	}
 	
-	private void handleChanged() {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				ArrayChooser.this.getInputPane().updateOKButton();
-			}
-		} );
-		
-	}
-	public String getTitleDefault() {
-		return "Enter Custom Array";
+	//todo
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createLabel( String text ) {
+		if( LABEL_TEXTS[ 1 ].equals( text ) ) {
+			return edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( text );
+		} else {
+			return super.createLabel( text );
+		}
 	}
 	
-	public boolean isInputValid() {
-		return this.typePane.getValueType() != null;
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> EPIC_HACK_getArrayComponentType() {
+		if( this.typePane != null ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> arrayType = this.typePane.getValueType();
+			if( arrayType != null ) {
+				return arrayType.getComponentType();
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
+	
+	@Override
+	public String getExplanationIfOkButtonShouldBeDisabled() {
+		if( this.typePane.getValueType() != null ) {
+			return null;
+		} else {
+			return "type is not set";
+		}
+	}
+	
 	@Override
 	public String[] getLabelTexts() {
 		return LABEL_TEXTS;
 	}
 	@Override
-	public java.awt.Component[] getComponents() {
+	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
 		return this.components;
 	}
+	@Override
 	public edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation getValue() {
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.Expression > expressions = this.bogusNode.arrayExpressions.getValue();
 		return org.alice.ide.ast.NodeUtilities.createArrayInstanceCreation( this.bogusNode.getType(), expressions );
-	}
-	
-	public static void main( String[] args ) {
-		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
-		org.alice.ide.cascade.customfillin.CustomArrayFillIn customArrayFillIn = new org.alice.ide.cascade.customfillin.CustomArrayFillIn();
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( customArrayFillIn.getValue() );
 	}
 }

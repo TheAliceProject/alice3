@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class VariableDeclaredInAlice extends LocalDeclaredInAlice {
 	public VariableDeclaredInAlice() {
 	}
-	public VariableDeclaredInAlice( String name, AbstractType valueType ) {
+	public VariableDeclaredInAlice( String name, AbstractType<?,?,?> valueType ) {
 		super( name, valueType );
 	}
 	public VariableDeclaredInAlice( String name, Class<?> valueCls ) {
@@ -61,7 +61,7 @@ public class VariableDeclaredInAlice extends LocalDeclaredInAlice {
 	}
 	@Override
 	protected String generateName( Node context ) {
-		AbstractType type = this.valueType.getValue();
+		AbstractType<?,?,?> type = this.valueType.getValue();
 		String name = type.getName();
 		if( name != null && name.length() > 0 ) {
 			return Character.toString( Character.toLowerCase( name.charAt( 0 ) ) );

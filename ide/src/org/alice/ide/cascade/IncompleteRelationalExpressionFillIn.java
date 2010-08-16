@@ -46,18 +46,18 @@ package org.alice.ide.cascade;
  * @author Dennis Cosgrove
  */
 public class IncompleteRelationalExpressionFillIn extends IncompleteInfixExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator > {
-	public IncompleteRelationalExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractType operandType, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
+	public IncompleteRelationalExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> operandType, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
 		super( operandType, operator, operandType );
 	}
 	public IncompleteRelationalExpressionFillIn( Class<?> operandCls, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator ) {
 		this( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( operandCls ), operator );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression createIncomplete( edu.cmu.cs.dennisc.alice.ast.AbstractType leftOperandType, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType ) {
+	protected edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression createIncomplete( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> leftOperandType, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType ) {
 		return org.alice.ide.ast.NodeUtilities.createIncompleteRelationalInfixExpression( leftOperandType, operator, rightOperandType );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression left, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.Expression right, edu.cmu.cs.dennisc.alice.ast.AbstractType leftOperandType, edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType ) {
+	protected edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression left, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.Expression right, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> leftOperandType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType ) {
 		return new edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression( left, operator, right, leftOperandType, rightOperandType );
 	}
 	

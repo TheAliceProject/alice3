@@ -70,6 +70,38 @@ public class PaddedBoxLayout extends javax.swing.BoxLayout {
 		return rv;
 	}
 	@Override
+	public java.awt.Dimension minimumLayoutSize( java.awt.Container target ) {
+		java.awt.Dimension rv = super.minimumLayoutSize( target );
+		final int N = target.getComponentCount();
+		switch( this.axis ) {
+		case Y_AXIS:
+		case PAGE_AXIS:
+			rv.height += N*this.pad;
+			break;
+		case X_AXIS:
+		case LINE_AXIS:
+			rv.width += N*this.pad;
+			break;
+		}
+		return rv;
+	}
+	@Override
+	public java.awt.Dimension maximumLayoutSize( java.awt.Container target ) {
+		java.awt.Dimension rv = super.maximumLayoutSize( target );
+		final int N = target.getComponentCount();
+		switch( this.axis ) {
+		case Y_AXIS:
+		case PAGE_AXIS:
+			rv.height += N*this.pad;
+			break;
+		case X_AXIS:
+		case LINE_AXIS:
+			rv.width += N*this.pad;
+			break;
+		}
+		return rv;
+	}
+	@Override
 	public void layoutContainer( java.awt.Container target ) {
 		super.layoutContainer( target );
 		final int N = target.getComponentCount();

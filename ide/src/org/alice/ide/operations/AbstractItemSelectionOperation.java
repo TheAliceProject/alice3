@@ -45,11 +45,14 @@ package org.alice.ide.operations;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractItemSelectionOperation<E> extends edu.cmu.cs.dennisc.zoot.AbstractItemSelectionOperation<E> {
-	public AbstractItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
-		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, comboBoxModel );
+public abstract class AbstractItemSelectionOperation<E> extends edu.cmu.cs.dennisc.croquet.ListSelectionState<E> {
+	public AbstractItemSelectionOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.croquet.Codec< E > codec, int selectedIndex, E... items ) {
+		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, individualId, codec );
+		this.setListData(selectedIndex, items);
 	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
+	@Deprecated
+	protected abstract void handleSelectionChange(E value);
 }

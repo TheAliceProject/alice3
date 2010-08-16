@@ -48,12 +48,18 @@ package org.alice.ide.operations.ast;
 public abstract class RenameNodeOperation extends AbstractRenameNodeOperation {
 	private edu.cmu.cs.dennisc.property.StringProperty nameProperty;
 	private org.alice.ide.name.validators.NodeNameValidator nodeNameValidator;
-	public RenameNodeOperation( edu.cmu.cs.dennisc.property.StringProperty nameProperty, org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, "Rename..." );
+	public RenameNodeOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.property.StringProperty nameProperty, org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
+		this.setName( "<html>Rename <strong>" + nameProperty.getValue() + "</strong>...</html>" );
 		this.nameProperty = nameProperty;
 		this.nodeNameValidator = nodeNameValidator;
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		this.perform( actionContext, this.nameProperty, this.nodeNameValidator );
+	@Override
+	protected edu.cmu.cs.dennisc.property.StringProperty getNameProperty() {
+		return this.nameProperty;
+	}
+	@Override
+	protected org.alice.ide.name.validators.NodeNameValidator getNodeNameValidator() {
+		return this.nodeNameValidator;
 	}
 }

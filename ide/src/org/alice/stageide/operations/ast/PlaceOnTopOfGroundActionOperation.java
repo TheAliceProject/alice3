@@ -47,7 +47,7 @@ package org.alice.stageide.operations.ast;
  */
 public class PlaceOnTopOfGroundActionOperation extends TransformableFieldTileActionOperation {
 	public PlaceOnTopOfGroundActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( field );
+		super( java.util.UUID.fromString( "eddd0645-6ab2-438e-8f44-6e9ca782ab8b" ), field );
 		this.setName( "Place on top of Ground" );
 	}
 	@Override
