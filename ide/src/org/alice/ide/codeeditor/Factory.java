@@ -42,6 +42,8 @@
  */
 package org.alice.ide.codeeditor;
 
+import org.alice.ide.croquet.models.ast.DefaultFillInExpressionPropertyPopupMenuOperation;
+
 abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.operations.ActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody original;
@@ -238,8 +240,8 @@ public class Factory extends org.alice.ide.common.Factory {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionProperty.getValue();
 		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
 		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expression ) ) {
-			org.alice.ide.croquet.models.ast.FillInExpressionPropertyPopupMenuOperation model = org.alice.ide.croquet.models.ast.FillInExpressionPropertyPopupMenuOperation.getInstance( group, expressionProperty, desiredValueType );
-			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model, prefixPane, rv, expressionProperty, desiredValueType );
+			org.alice.ide.croquet.models.ast.DefaultFillInExpressionPropertyPopupMenuOperation model = org.alice.ide.croquet.models.ast.DefaultFillInExpressionPropertyPopupMenuOperation.getInstance( group, expressionProperty, desiredValueType );
+			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model, prefixPane, rv, expressionProperty );
 			rv = expressionPropertyDropDownPane;
 		}
 		return rv;

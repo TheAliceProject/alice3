@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.croquet.PopupMenu;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractFillInExpressionOrExpressionsPopupMenuOperation extends org.alice.ide.croquet.models.CascadingPopupMenuOperation {
+public abstract class AbstractFillInExpressionOrExpressionsPopupMenuOperation extends edu.cmu.cs.dennisc.cascade.CascadingPopupMenuOperation {
 	public AbstractFillInExpressionOrExpressionsPopupMenuOperation( java.util.UUID id ) {
 		super( id );
 	}
@@ -63,16 +63,16 @@ public abstract class AbstractFillInExpressionOrExpressionsPopupMenuOperation ex
 
 	
 	
-	private edu.cmu.cs.dennisc.cascade.Node node;
-	protected abstract edu.cmu.cs.dennisc.cascade.Node createCascadeNode();
+	private edu.cmu.cs.dennisc.cascade.Blank blank;
+	protected abstract edu.cmu.cs.dennisc.cascade.Blank createCascadeBlank();
 	@Override
-	protected final edu.cmu.cs.dennisc.cascade.Node getCascadeNode() {
-		if( this.node != null ) {
+	protected final edu.cmu.cs.dennisc.cascade.Blank getCascadeBlank() {
+		if( this.blank != null ) {
 			//pass
 		} else {
-			this.node = this.createCascadeNode();
+			this.blank = this.createCascadeBlank();
 		}
-		return this.node;
+		return this.blank;
 	}
 	
 

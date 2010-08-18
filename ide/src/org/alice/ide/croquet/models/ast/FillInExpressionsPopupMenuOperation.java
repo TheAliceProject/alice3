@@ -51,7 +51,7 @@ public abstract class FillInExpressionsPopupMenuOperation extends AbstractFillIn
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getDesiredValueTypes();
 	@Override
-	protected edu.cmu.cs.dennisc.cascade.Node createCascadeNode() {
+	protected edu.cmu.cs.dennisc.cascade.Blank createCascadeBlank() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] desiredValueTypes = this.getDesiredValueTypes();
 		throw new RuntimeException( "todo" );
 	}

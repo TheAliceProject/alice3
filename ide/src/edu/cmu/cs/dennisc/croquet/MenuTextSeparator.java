@@ -40,73 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.cascade;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Node {
-	private Node parent = null;
-	private Node nextSibling = null;
-	protected java.util.List<Node> children = null;
-	
-	protected void addChild( Node node ) {
-		if( this.children.size() > 0 ) {
-			Node prevLast = this.children.get( this.children.size()-1 );
-			prevLast.nextSibling = node;
-		}
-		node.parent = this;
-		node.nextSibling = null;
-		this.children.add( node );
+public class MenuTextSeparator extends JComponent< javax.swing.JMenuItem > {
+	private MenuSeparatorModel menuSeparatorModel;
+	public MenuTextSeparator( MenuSeparatorModel menuSeparatorModel ) {
+		this.menuSeparatorModel = menuSeparatorModel;
 	}
-
-	protected abstract void cleanUp();
-	protected abstract void addChildren();
-	public java.util.List<Node> getChildren() {
-		 if( this.children != null ) {
-			 //pass
-		 } else {
-			 this.children = new java.util.LinkedList< Node >();
-			 this.addChildren();
-			 this.cleanUp();
-		 }
-		 return this.children;
+	@Override
+	protected javax.swing.JMenuItem createAwtComponent() {
+		javax.swing.JMenuItem rv = new javax.swing.JMenuItem();
+		rv.setEnabled( false );
+		return rv;
 	}
 	
-	protected Node getNextSibling() {
-		return this.nextSibling;
+	@Override
+	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		this.getAwtComponent().setText( menuSeparatorModel.getName() );
+		this.getAwtComponent().setIcon( menuSeparatorModel.getIcon() );
+		this.getAwtComponent().setDisabledIcon( menuSeparatorModel.getIcon() );
+		super.handleAddedTo( parent );
 	}
-	protected Node getParent() {
-		return this.parent;
+	@Override
+	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		super.handleRemovedFrom( parent );
 	}
-	protected void setParent( Node parent ) {
-		this.parent = parent;
-	}
-	protected boolean isLast() {
-		return false;
-	}
-	protected Blank getRootBlank() {
-		if( this.parent != null ) {
-			return this.parent.getRootBlank();
-		} else {
-			return (Blank)this;
-		}
-	}	
-	protected Blank getNearestBlank() {
-		return this.parent.getNearestBlank();
-	}
-	
-	protected Blank getNextBlank() {
-		Blank blank = this.getNearestBlank();
-		if( blank.getNextSibling() != null ) {
-			return (Blank)blank.getNextSibling();
-		} else {
-			if( this.parent != null ) {
-				return this.parent.getNextBlank();
-			} else {
-				return null;
-			}
-		}
-	}
-	protected abstract Node getNextNode();
 }

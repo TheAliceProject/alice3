@@ -59,11 +59,64 @@ public class SeparatorFillIn extends FillIn< Object > {
 //			this.panel = null;
 //		}
 //	}
-
-	@Override
-	public edu.cmu.cs.dennisc.croquet.Model getCroquetModel() {
+	
+	private javax.swing.Icon icon;
+	public SeparatorFillIn( final String text ) {
+		
+		if( text != null ) {
+			final java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
+			final java.awt.Font font = edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont( g.getFont(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+			this.icon = new javax.swing.Icon() {
+				public int getIconWidth() {
+					java.awt.FontMetrics fm = g.getFontMetrics( font );
+					return fm.stringWidth( text );
+				}
+				public int getIconHeight() {
+					java.awt.FontMetrics fm = g.getFontMetrics( font );
+					return fm.getMaxAscent() +  fm.getMaxDescent();
+				}
+				public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+					g.setFont( font );
+					java.awt.FontMetrics fm = g.getFontMetrics( font );
+				    int ascent = fm.getMaxAscent();
+				    g.setColor( java.awt.Color.GRAY );
+					g.drawString( text, x, y+ascent );
+				}
+			};
+		}
+	}
+	public SeparatorFillIn() {
+		this( null );
+	}
+	/*package-private*/ String getName() {
 		return null;
 	}
+	/*package-private*/ javax.swing.Icon getIcon() {
+		return this.icon;
+	}
+	
+//	private edu.cmu.cs.dennisc.croquet.MenuSeparatorModel menuSeparatorModel;
+//	public SeparatorFillIn( String name ) {
+//		if( name != null ) {
+//			this.menuSeparatorModel = new edu.cmu.cs.dennisc.croquet.MenuSeparatorModel( name );
+//		} else {
+//			this.menuSeparatorModel = null;
+//		}
+//	}
+//	public SeparatorFillIn() {
+//		this( null );
+//	}
+//	@Override
+//	public edu.cmu.cs.dennisc.croquet.MenuSeparatorModel getCroquetModel() {
+//		return this.menuSeparatorModel;
+//	}
+//	/*package-private*/ String getName() {
+//		if( this.menuSeparatorModel != null ) {
+//			return this.menuSeparatorModel.getName();
+//		} else {
+//			return null;
+//		}
+//	}
 	@Override
 	protected void addChildren() {
 	}

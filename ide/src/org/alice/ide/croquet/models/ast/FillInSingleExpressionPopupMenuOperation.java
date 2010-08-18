@@ -53,9 +53,22 @@ public abstract class FillInSingleExpressionPopupMenuOperation extends AbstractF
 	protected edu.cmu.cs.dennisc.cascade.Blank createExpressionBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType ) {
 		return new org.alice.ide.cascade.ExpressionBlank( desiredValueType );
 	}
+	
+	protected abstract String getTitle();
 	@Override
-	protected edu.cmu.cs.dennisc.cascade.Node createCascadeNode() {
+	protected edu.cmu.cs.dennisc.cascade.Blank createCascadeBlank() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType = this.getDesiredValueType();
-		return new org.alice.ide.cascade.ExpressionBlank( desiredValueType );
+		edu.cmu.cs.dennisc.cascade.Blank rv = new org.alice.ide.cascade.ExpressionBlank( desiredValueType ) {
+			@Override
+			protected void addChildren() {
+				String title = FillInSingleExpressionPopupMenuOperation.this.getTitle();
+				if( title != null ) {
+					this.addFillIn( new edu.cmu.cs.dennisc.cascade.SeparatorFillIn( title ) );
+					this.addSeparator();
+				}
+				super.addChildren();
+			}
+		};
+		return rv;
 	}
 }

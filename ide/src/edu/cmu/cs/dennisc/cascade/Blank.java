@@ -46,9 +46,16 @@ package edu.cmu.cs.dennisc.cascade;
  * @author Dennis Cosgrove
  */
 public abstract class Blank extends Node {
-	private edu.cmu.cs.dennisc.task.TaskObserver taskObserver;
+	private CascadingPopupMenuOperation cascadingPopupMenuOperation;
 	private FillIn<?> selectedFillIn;
 
+	public CascadingPopupMenuOperation getCascadingPopupMenuOperation() {
+		return this.cascadingPopupMenuOperation;
+	}
+	public void setCascadingPopupMenuOperation( CascadingPopupMenuOperation cascadingPopupMenuOperation ) {
+		this.cascadingPopupMenuOperation = cascadingPopupMenuOperation;
+	}
+	
 	public FillIn<?> getFillInAt( int index ) {
 		return (FillIn<?>)getChildren().get( index );
 	}
@@ -97,16 +104,93 @@ public abstract class Blank extends Node {
 			parentFillIn.select();
 		}
 	}
+	
+	private static boolean isEmptySeparator( Node node ) {
+		 if( node instanceof SeparatorFillIn ) {
+			 SeparatorFillIn separatorFillIn = (SeparatorFillIn)node;
+			 return separatorFillIn.getName() == null && separatorFillIn.getIcon() == null;
+		 } else {
+			 return false;
+		 }
+	}
+	@Override
+	protected void cleanUp() {
+		 java.util.ListIterator< Node > listIterator = this.children.listIterator();
+		 boolean isSeparatorAcceptable = false;
+		 while( listIterator.hasNext() ) {
+			 Node node = listIterator.next();
+			 if( isEmptySeparator( node ) ) {
+				 if( isSeparatorAcceptable ) {
+					//pass 
+				 } else {
+					 listIterator.remove();
+				 }
+				 isSeparatorAcceptable = false;
+			 } else {
+				 isSeparatorAcceptable = true;
+			 }
+		 }
+		 
+		 //remove separators at the end (should be a maximum of only 1)
+		 final int N = this.children.size();
+		 for( int i=0; i<N; i++ ) {
+			 int index = N-i-1;
+			 if( isEmptySeparator( this.children.get( index ) ) ) {
+				 this.children.remove( index );
+			 } else {
+				 break;
+			 }
+		 }
+	}
 
 	public void addSeparator() {
 		this.addFillIn( new SeparatorFillIn() );
 	}
+	
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.Model > getModels() {
+		java.util.List< edu.cmu.cs.dennisc.croquet.Model > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		for( Node child : this.getNextNode().getChildren() ) {
+//			if( child instanceof Blank ) {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "blank", child );
+//				child = child.getChildren().get( 0 );
+//			}
+			
+			rv.add( ((FillIn)child).getCroquetModel() );
+		}	
+		return rv;
+	}
+	
 //	public void addSeparator() {
 //		this.addSeparator( null );
 //	}
 //	public void addSeparator( String text ) {
 //		this.addFillIn( new SeparatorFillIn( text ) );
 //	}
+
+	public int getNonSeparatorFillInCount() {
+		int rv = 0;
+		for( Node child : this.getChildren() ) {
+			if( child instanceof SeparatorFillIn ) {
+				//pass
+			} else {
+				rv += 1;
+			}
+		}
+		return rv;
+	}
+	public FillIn<?> getFirstNonSeparatorFillIn() {
+		for( Node child : this.getChildren() ) {
+			if( child instanceof SeparatorFillIn ) {
+				//pass
+			} else {
+				return (FillIn<?>)child;
+			}
+		}
+		return null;
+	}
+
+	
+	private edu.cmu.cs.dennisc.task.TaskObserver taskObserver;
 	public void showPopupMenu( java.awt.Component invoker, int x, int y, edu.cmu.cs.dennisc.task.TaskObserver taskObserver ) {
 		this.taskObserver = taskObserver;
 		
@@ -155,27 +239,5 @@ public abstract class Blank extends Node {
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleCancelation (no taskObserver)" );
 		}
-	}
-
-	public int getNonSeparatorFillInCount() {
-		int rv = 0;
-		for( Node child : this.getChildren() ) {
-			if( child instanceof SeparatorFillIn ) {
-				//pass
-			} else {
-				rv += 1;
-			}
-		}
-		return rv;
-	}
-	public FillIn<?> getFirstNonSeparatorFillIn() {
-		for( Node child : this.getChildren() ) {
-			if( child instanceof SeparatorFillIn ) {
-				//pass
-			} else {
-				return (FillIn<?>)child;
-			}
-		}
-		return null;
 	}
 }

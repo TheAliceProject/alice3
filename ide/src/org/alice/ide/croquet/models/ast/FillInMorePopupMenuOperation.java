@@ -97,11 +97,23 @@ public class FillInMorePopupMenuOperation extends FillInSingleExpressionPopupMen
 	protected edu.cmu.cs.dennisc.alice.ast.Statement getStatement() {
 		return this.expressionStatement;
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
+	
+	private edu.cmu.cs.dennisc.alice.ast.AbstractParameter getLastParameter() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.nextMethodInvocation.method.getValue();
 		java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = method.getParameters();
-		edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
+		return parameters.get( parameters.size()-1 );
+	}
+
+	@Override
+	protected String getTitle() {
+		edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = this.getLastParameter();
+		return lastParameter.getName();
+	}
+	
+	
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
+		edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = this.getLastParameter();
 		return lastParameter.getDesiredValueType();
 	}
 }

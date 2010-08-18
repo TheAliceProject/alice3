@@ -67,7 +67,14 @@ public class PopupMenu extends ViewController< javax.swing.JPopupMenu, PopupMenu
 		this.getAwtComponent().add( checkBoxMenuItem.getAwtComponent() );
 	}
 	public void addSeparator() {
-		this.getAwtComponent().addSeparator();
+		this.addSeparator( null );
+	}
+	public void addSeparator( MenuTextSeparator menuTextSeparator ) {
+		if( menuTextSeparator != null ) {
+			this.getAwtComponent().add( menuTextSeparator.getAwtComponent() );
+		} else {
+			this.getAwtComponent().addSeparator();
+		}
 	}
 	
 	

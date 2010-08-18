@@ -55,8 +55,8 @@ public class GraphicsUtilities {
 		if( s != null ) {
 			java.awt.FontMetrics fm = g.getFontMetrics();
 			int messageWidth = fm.stringWidth( s );
-		    int ascent = fm.getMaxAscent ();
-		    int descent= fm.getMaxDescent ();
+		    int ascent = fm.getMaxAscent();
+		    int descent = fm.getMaxDescent();
 			g.drawString( s, x+width/2-messageWidth/2, y+height/2+ascent/2-descent/2 );
 		}
 	}

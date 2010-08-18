@@ -40,16 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.codeeditor;
-
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ArgumentExpressionPropertyDropDownPane extends ExpressionPropertyDropDownPane {
-	private edu.cmu.cs.dennisc.alice.ast.Argument argument;
-	public ArgumentExpressionPropertyDropDownPane( edu.cmu.cs.dennisc.croquet.PopupMenuOperation model, edu.cmu.cs.dennisc.croquet.Component< ? > component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.Argument argument ) {
-		super( model, prefixPane, component, expressionProperty, argument.parameter.getValue().getDesiredValueType() );
+public class FillInArgumentPopupMenuOperation extends FillInExpressionPropertyPopupMenuOperation {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.Argument, FillInArgumentPopupMenuOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized FillInArgumentPopupMenuOperation getInstance( edu.cmu.cs.dennisc.alice.ast.Argument argument ) {
+		FillInArgumentPopupMenuOperation rv = map.get( argument );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new FillInArgumentPopupMenuOperation( argument );
+			map.put( argument, rv );
+		}
+		return rv;
+	}
+	private final edu.cmu.cs.dennisc.alice.ast.Argument argument;
+	private FillInArgumentPopupMenuOperation( edu.cmu.cs.dennisc.alice.ast.Argument argument ) {
+		super( java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ) );
 		this.argument = argument;
+	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
+		return this.argument.expression;
+	}
+	@Override
+	protected String getTitle() {
+		return this.argument.parameter.getValue().getName();
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
+		return this.argument.parameter.getValue().getDesiredValueType();
 	}
 }

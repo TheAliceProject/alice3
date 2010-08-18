@@ -40,23 +40,51 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingPopupMenuOperation extends edu.cmu.cs.dennisc.croquet.PopupMenuOperation {
-	public CascadingPopupMenuOperation( java.util.UUID id ) {
-		super( id );
+public class DefaultFillInExpressionPropertyPopupMenuOperation extends FillInExpressionPropertyPopupMenuOperation {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, DefaultFillInExpressionPropertyPopupMenuOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized DefaultFillInExpressionPropertyPopupMenuOperation getInstance( edu.cmu.cs.dennisc.croquet.Group operationGroup, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
+		DefaultFillInExpressionPropertyPopupMenuOperation rv = map.get( expressionProperty );
+		if( rv != null ) {
+			assert rv.operationGroup == operationGroup;
+			assert rv.desiredType == desiredType;
+			//pass
+		} else {
+			rv = new DefaultFillInExpressionPropertyPopupMenuOperation( operationGroup, expressionProperty, desiredType );
+			map.put( expressionProperty, rv );
+		}
+		return rv;
 	}
-	protected abstract edu.cmu.cs.dennisc.cascade.Node getCascadeNode();
+	private final edu.cmu.cs.dennisc.croquet.Group operationGroup;
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType;
+	private final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
+	private DefaultFillInExpressionPropertyPopupMenuOperation( edu.cmu.cs.dennisc.croquet.Group operationGroup, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
+		super( java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ) );
+		assert expressionProperty != null;
+		this.operationGroup = operationGroup;
+		this.expressionProperty = expressionProperty;
+		this.desiredType = desiredType;
+	}
 	@Override
-	protected void handlePopupMenuCreation( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
-		super.handlePopupMenuCreation( popupMenu );
-		edu.cmu.cs.dennisc.cascade.Node cascadeNode = this.getCascadeNode();
-		java.util.List< edu.cmu.cs.dennisc.cascade.Node > children = cascadeNode.getChildren();
-		for( edu.cmu.cs.dennisc.cascade.Node child : children ) {
-			edu.cmu.cs.dennisc.croquet.Application.addMenuElement( popupMenu, child.getCroquetModel() );
+	protected String getTitle() {
+		//return this.expressionProperty.getName();
+		return null;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
+		return this.expressionProperty;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
+		if( this.desiredType != null ) {
+			return this.desiredType;
+		} else {
+			return super.getDesiredValueType();
 		}
 	}
 }

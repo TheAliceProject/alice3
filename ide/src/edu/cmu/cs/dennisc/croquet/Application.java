@@ -266,16 +266,17 @@ public abstract class Application {
 			} else if( model instanceof ListSelectionState< ? > ) {
 				ListSelectionState< ? > itemSelectionOperation = (ListSelectionState< ? >)model;
 				rv.addMenu( itemSelectionOperation.getMenuModel().createMenu() );
+			} else if( model instanceof MenuSeparatorModel ) {
+				MenuSeparatorModel menuSeparatorModel = (MenuSeparatorModel)model;
+				rv.addSeparator( menuSeparatorModel.createMenuTextSeparator() );
+			} else if( model instanceof Operation<?> ) {
+				Operation<?> operation = (Operation<?>)model;
+				rv.addMenuItem( operation.createMenuItem() );
+			} else if( model instanceof BooleanState ) {
+				BooleanState booleanState = (BooleanState)model;
+				rv.addCheckBoxMenuItem( booleanState.createCheckBoxMenuItem() );
 			} else {
-				if( model instanceof Operation<?> ) {
-					Operation<?> operation = (Operation<?>)model;
-					rv.addMenuItem( operation.createMenuItem() );
-				} else if( model instanceof BooleanState ) {
-					BooleanState booleanState = (BooleanState)model;
-					rv.addCheckBoxMenuItem( booleanState.createCheckBoxMenuItem() );
-				} else {
-					throw new RuntimeException();
-				}
+				throw new RuntimeException();
 			}
 		} else {
 			rv.addSeparator();

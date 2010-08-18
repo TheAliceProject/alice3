@@ -42,6 +42,8 @@
  */
 package org.alice.ide.common;
 
+import org.alice.ide.codeeditor.ExpressionPropertyDropDownPane;
+
 
 /**
  * @author Dennis Cosgrove
@@ -52,6 +54,17 @@ public abstract class Factory {
 	}
 	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createTextComponent( String text ) { 
 		return new edu.cmu.cs.dennisc.croquet.Label( text );
+	}
+	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createArgumentPane( edu.cmu.cs.dennisc.alice.ast.Argument argument, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane ) {
+		edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty = argument.expression;
+		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionProperty.getValue();
+		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
+		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expression ) ) {
+			org.alice.ide.croquet.models.ast.FillInArgumentPopupMenuOperation model = org.alice.ide.croquet.models.ast.FillInArgumentPopupMenuOperation.getInstance( argument );
+			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model, prefixPane, rv, expressionProperty );
+			rv = expressionPropertyDropDownPane;
+		}
+		return rv;
 	}
 	public abstract edu.cmu.cs.dennisc.croquet.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType );
 	public edu.cmu.cs.dennisc.croquet.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane ) {

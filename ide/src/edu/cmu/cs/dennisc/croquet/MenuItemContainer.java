@@ -51,4 +51,5 @@ public interface MenuItemContainer {
 	public void addMenuItem( MenuItem menuItem );
 	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem );
 	public void addSeparator();
+	public void addSeparator( MenuTextSeparator menuTextSeparator );
 }
