@@ -97,16 +97,17 @@ public class StressTestTutorial {
 				}
 		);
 		final double desiredDuration = 0.5;
-		tutorial.addActionStep( 
+		tutorial.addPopupMenuStep( 
 				"More (Duration)",
 				"Click <b>more...</b> and select 0.5",
 				tutorial.createFirstInvocationMoreResolver( "move" ),
-				new edu.cmu.cs.dennisc.tutorial.ActionOperationCompletorValidator() {
-					public Result checkValidity(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
+				"text",
+				new edu.cmu.cs.dennisc.tutorial.PopupMenuOperationCompletorValidator() {
+					public Result checkValidity(edu.cmu.cs.dennisc.croquet.PopupMenuOperation operation, edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
 						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 					}
-					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation) {
-						org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation = (org.alice.ide.operations.ast.FillInMoreOperation)actionOperation;
+					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.PopupMenuOperation operation) {
+						org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation fillInMoreOperation = (org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation)operation;
 						org.alice.ide.croquet.edits.ast.FillInMoreEdit rv = new org.alice.ide.croquet.edits.ast.FillInMoreEdit( new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( desiredDuration ) );
 						rv.EPIC_HACK_setModel( fillInMoreOperation );
 						return rv;
@@ -115,16 +116,17 @@ public class StressTestTutorial {
 		);
 		
 		final String fieldName = "grassyGround";
-		tutorial.addActionStep( 
+		tutorial.addPopupMenuStep( 
 				"More (As Seen By)",
 				"Click <b>more...</b> and select <b>" + fieldName + "</b>",
 				tutorial.createFirstInvocationMoreResolver( "move" ),
-				new edu.cmu.cs.dennisc.tutorial.ActionOperationCompletorValidator() {
-					public Result checkValidity(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
+				"text",
+				new edu.cmu.cs.dennisc.tutorial.PopupMenuOperationCompletorValidator() {
+					public Result checkValidity(edu.cmu.cs.dennisc.croquet.PopupMenuOperation operation, edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
 						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 					}
-					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation) {
-						org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation = (org.alice.ide.operations.ast.FillInMoreOperation)actionOperation;
+					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.PopupMenuOperation operation) {
+						org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation fillInMoreOperation = (org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation)operation;
 						
 						edu.cmu.cs.dennisc.alice.ast.AbstractField field = ide.getSceneType().getDeclaredField( fieldName );
 						edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess(
@@ -493,16 +495,18 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
-		tutorial.addActionStep( 
+		tutorial.addPopupMenuStep( 
 				"More",
 				"Click <b>more...</b>",
 				tutorial.createFirstInvocationMoreResolver( "move" ),
+				"text",
 				tutorial.createToDoCompletorValidator()
 		);
-		tutorial.addActionStep( 
+		tutorial.addPopupMenuStep( 
 				"More",
 				"Click <b>more...</b>",
 				tutorial.createLastInvocationMoreResolver( "move" ),
+				"text",
 				tutorial.createToDoCompletorValidator()
 		);
 
@@ -579,10 +583,11 @@ public class StressTestTutorial {
 				"Select <b>FORWARD</b> and <b>1.0</b> from the menus.",
 				tutorial.createToDoCompletorValidator()
 		);
-		tutorial.addActionStep( 
+		tutorial.addPopupMenuStep( 
 				"More",
 				"Click <b>more...</b>",
 				tutorial.createLastInvocationMoreResolver( "move" ),
+				"text",
 				tutorial.createToDoCompletorValidator()
 		);
 //		tutorial.addDragAndDropStep( 
@@ -794,18 +799,20 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
-		tutorial.addActionStep(
+		tutorial.addPopupMenuStep(
 				"Change Instance", 
 				"change instance to <b>sunLight</b>",
 				tutorial.createFirstInvocationInstanceResolver( "move" ),
+				"text",
 				tutorial.createToDoCompletorValidator()
 		);
 		
 
-		tutorial.addActionStep(
+		tutorial.addPopupMenuStep(
 				"Change If Condition", 
 				"change if condition to <b>false</b>",
 				tutorial.createFirstIfElseStatementConditionResolver(),
+				"select <b>false</b>",
 				tutorial.createToDoCompletorValidator()
 		);
 
@@ -835,10 +842,11 @@ public class StressTestTutorial {
 				tutorial.createToDoCompletorValidator()
 		);
 
-		tutorial.addActionStep(
+		tutorial.addPopupMenuStep(
 				"Change Argument", 
 				"change threshold argument to <b>1.0</b>",
 				tutorial.createInvocationArgumentResolver( "isWithinThresholdOf", 0, 0 ),
+				"text",
 				tutorial.createToDoCompletorValidator()
 		);
 

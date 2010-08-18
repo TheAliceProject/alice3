@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
-/*package-private*/ class SelectChildDirectoryPopupMenuOperation extends edu.cmu.cs.dennisc.croquet.PopupMenuOperation {
+/*package-private*/ class SelectChildDirectoryPopupMenuOperation extends edu.cmu.cs.dennisc.croquet.DefaultPopupMenuOperation {
 	public static SelectChildDirectoryPopupMenuOperation getInstance( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: SelectChildDirectoryPopupMenuOperation.getInstance()" );
 		return new SelectChildDirectoryPopupMenuOperation(treeSelectionState, treeNode, initializer);

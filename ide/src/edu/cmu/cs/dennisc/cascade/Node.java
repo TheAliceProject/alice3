@@ -206,7 +206,7 @@ public abstract class Node {
 			return new MenuModel();
 		}
 	}
-	protected edu.cmu.cs.dennisc.croquet.Model getCroquetModel() {
+	public edu.cmu.cs.dennisc.croquet.Model getCroquetModel() {
 		boolean isLast = this.isLast();
 		if( this.model != null ) {
 			if( this.wasLast == isLast ) {

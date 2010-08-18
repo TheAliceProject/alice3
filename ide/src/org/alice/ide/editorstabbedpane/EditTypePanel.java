@@ -496,31 +496,4 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	public int getHistoryIndex() {
 		return this.historyIndex;
 	}
-	
-	public static void main( String[] args ) {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			try {
-				edu.cmu.cs.dennisc.javax.swing.plaf.nimbus.NimbusUtilities.installModifiedNimbus( lookAndFeelInfo );
-			} catch( Throwable t ) {
-				t.printStackTrace();
-			}
-		}
-
-		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
-		ide.initialize( args );
-		ide.loadProjectFrom( args[ 0 ] );
-		
-		EditTypePanel editTypePanel = new EditTypePanel( ide.getSceneType(), 0 );
-		
-		edu.cmu.cs.dennisc.croquet.Frame frame = new edu.cmu.cs.dennisc.croquet.Frame();
-		
-		
-		frame.getContentPanel().addComponent( editTypePanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
-		
-		frame.pack();
-		frame.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Frame.DefaultCloseOperation.EXIT );
-		frame.setVisible( true );
-		
-	}
 }

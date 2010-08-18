@@ -40,18 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package org.alice.ide.croquet.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LocalPane< N extends edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > extends TransientPane< N > {
-	public LocalPane( N local ) {
-		super( local );
-		this.addComponent( new org.alice.ide.common.LocalNameLabel( this.getTransient() ) );
-		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.DefaultPopupMenuOperation(
-				java.util.UUID.fromString( "b225cc92-f2c6-4a47-9818-1bbd0319091b" ),
-				new org.alice.ide.operations.ast.RenameLocalDeclarationOperation( local ) 
-		) );
+public abstract class CascadingPopupMenuOperation extends edu.cmu.cs.dennisc.croquet.PopupMenuOperation {
+	public CascadingPopupMenuOperation( java.util.UUID id ) {
+		super( id );
+	}
+	protected abstract edu.cmu.cs.dennisc.cascade.Node getCascadeNode();
+	@Override
+	protected void handlePopupMenuCreation( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
+		super.handlePopupMenuCreation( popupMenu );
+		edu.cmu.cs.dennisc.cascade.Node cascadeNode = this.getCascadeNode();
+		java.util.List< edu.cmu.cs.dennisc.cascade.Node > children = cascadeNode.getChildren();
+		for( edu.cmu.cs.dennisc.cascade.Node child : children ) {
+			edu.cmu.cs.dennisc.croquet.Application.addMenuElement( popupMenu, child.getCroquetModel() );
+		}
 	}
 }

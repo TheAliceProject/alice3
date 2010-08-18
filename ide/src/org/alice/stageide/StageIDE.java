@@ -43,6 +43,7 @@
 package org.alice.stageide;
 
 public class StageIDE extends org.alice.ide.IDE {
+	private org.alice.ide.cascade.CascadeManager cascadeManager = new org.alice.stageide.cascade.CascadeManager();
 	public StageIDE() {
 		//a very short window...
 //		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "resize", org.alice.apis.moveandturn.Transformable.class );
@@ -144,6 +145,12 @@ public class StageIDE extends org.alice.ide.IDE {
 //			}
 //		} );
 	}
+	
+	@Override
+	public org.alice.ide.cascade.CascadeManager getCascadeManager() {
+		return this.cascadeManager;
+	}
+	
 	@Override
 	protected void promptForLicenseAgreements() {
 		final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
@@ -213,68 +220,6 @@ public class StageIDE extends org.alice.ide.IDE {
 			return rv;
 		}
 		return null;
-	}
-	@Override
-	protected boolean areEnumConstantsDesired( edu.cmu.cs.dennisc.alice.ast.AbstractType enumType ) {
-		if( enumType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Key.class ) ) {
-			return false;
-		} else {
-			return super.areEnumConstantsDesired( enumType );
-		}
-	}
-	@Override
-	protected void addCustomFillIns( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		super.addCustomFillIns( blank, type );
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		if( previousExpression != null ) {
-			if( type.isAssignableFrom( org.alice.apis.moveandturn.Model.class ) ) {
-				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice enclosingMethod = previousExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
-				if( enclosingMethod != null ) {
-					for( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter : enclosingMethod.parameters ) {
-						edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeMouseButtonEvent = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.MouseButtonEvent.class );
-						if( parameter.getValueType() == typeMouseButtonEvent ) {
-							String[] methodNames = new String[] { "getModelAtMouseLocation", "getPartAtMouseLocation" };
-							for( String methodName : methodNames ) {
-								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeMouseButtonEvent.getDeclaredMethod( methodName );
-								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
-								edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation( expression, method );
-								blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( methodInvocation ) );
-							}
-						}
-					}
-				}
-			} else if( type.isAssignableFrom( Boolean.class ) ) {
-				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice enclosingMethod = previousExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
-				if( enclosingMethod != null ) {
-					for( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter : enclosingMethod.parameters ) {
-						edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeKeyEvent = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.KeyEvent.class );
-						if( parameter.getValueType() == typeKeyEvent ) {
-							//							String[] methodNames = new String[] { "isKey", "isLetter", "isDigit" };
-							//							Class<?>[][] parameterClses = new Class<?>[][] { new Class<?>[]{ org.alice.apis.moveandturn.Key.class }, new Class<?>[]{}, new Class<?>[]{} };
-							//							for( int i=0; i<methodNames.length; i++ ) {
-							//								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeKeyEvent.getDeclaredMethod( methodNames[ i ], parameterClses[ i ] );
-							//								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
-							//								edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation( expression, method );
-							//								blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( methodInvocation ) );
-							//							}
-
-							{
-								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeKeyEvent.getDeclaredMethod( "isKey", org.alice.apis.moveandturn.Key.class );
-								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
-								blank.addFillIn( new org.alice.ide.cascade.IncompleteMethodInvocationFillIn( expression, method ) );
-							}
-							String[] methodNames = new String[] { "isLetter", "isDigit" };
-							for( String methodName : methodNames ) {
-								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeKeyEvent.getDeclaredMethod( methodName );
-								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
-								edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation( expression, method );
-								blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( methodInvocation ) );
-							}
-						}
-					}
-				}
-			}
-		}
 	}
 	
 //	@Override
@@ -659,29 +604,6 @@ public class StageIDE extends org.alice.ide.IDE {
 		return rv;
 	}
 	@Override
-	protected void addFillInAndPossiblyPartFills( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.AbstractType type2 ) {
-		super.addFillInAndPossiblyPartFills( blank, expression, type, type2 );
-		if( type.isAssignableTo( org.alice.apis.moveandturn.PolygonalModel.class ) ) {
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = null;
-			Class< ? > paramCls = null;
-			if( type2.isAssignableFrom( org.alice.apis.moveandturn.Model.class ) ) {
-				typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
-				Class< ? > cls = typeInJava.getClassReflectionProxy().getReification();
-				for( Class innerCls : cls.getDeclaredClasses() ) {
-					if( innerCls.getSimpleName().equals( "Part" ) ) {
-						paramCls = innerCls;
-					}
-				}
-			}
-			if( paramCls != null ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractMethod getPartMethod = typeInJava.getDeclaredMethod( "getPart", paramCls );
-				if( getPartMethod != null ) {
-					blank.addFillIn( new org.alice.ide.cascade.IncompleteMethodInvocationFillIn( expression, getPartMethod ) );
-				}
-			}
-		}
-	}
-	@Override
 	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getGalleryRoot() {
 		try {
 			String jarPath = org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory() + "/mtwtGalleryLargeIcons.jar";
@@ -740,59 +662,6 @@ public class StageIDE extends org.alice.ide.IDE {
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.JComponent<?> createGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> root ) {
 		return new org.alice.stageide.gallerybrowser.GalleryBrowser( root );
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getEnumTypeForInterfaceType( edu.cmu.cs.dennisc.alice.ast.AbstractType interfaceType ) {
-		if( interfaceType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Style.class ) ) {
-			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.TraditionalStyle.class );
-		} else if( interfaceType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.EyeColor.class ) ) {
-			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.BaseEyeColor.class );
-		} else if( interfaceType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.SkinTone.class ) ) {
-			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.BaseSkinTone.class );
-		} else {
-			return super.getEnumTypeForInterfaceType( interfaceType );
-		}
-	}
-
-	//	@Override
-	//	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getTypeFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-	//		if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.EyeColor.class ) ) {
-	//			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.BaseEyeColor.class );
-	//		} else if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.SkinTone.class ) ) {
-	//			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.BaseSkinTone.class );
-	//		} else {
-	//			return super.getTypeFor( type );
-	//		}
-	//	}
-
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getActualTypeForDesiredParameterType( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		if( type.isAssignableTo( org.alice.apis.moveandturn.Angle.class ) ) {
-			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE;
-		} else if( type.isAssignableTo( org.alice.apis.moveandturn.Portion.class ) ) {
-			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE;
-		} else if( type.isAssignableTo( org.alice.apis.moveandturn.VolumeLevel.class ) ) {
-			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE;
-		} else {
-			return super.getActualTypeForDesiredParameterType( type );
-		}
-	}
-
-	@Override
-	protected java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > addExpressionFillerInners( java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > rv ) {
-		super.addExpressionFillerInners( rv );
-		rv.add( new org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner( org.alice.apis.moveandturn.Color.class ) );
-		rv.add( new org.alice.stageide.cascade.fillerinners.KeyFillerInner() );
-		rv.add( new org.alice.stageide.cascade.fillerinners.AngleFillerInner() );
-		rv.add( new org.alice.stageide.cascade.fillerinners.PortionFillerInner() );
-		rv.add( new org.alice.stageide.cascade.fillerinners.AudioSourceFillerInner() );
-		rv.add( new org.alice.stageide.cascade.fillerinners.VolumeLevelFillerInner() );
-		rv.add( new org.alice.stageide.cascade.fillerinners.ImageSourceFillerInner() );
-		rv.add( new org.alice.stageide.cascade.fillerinners.MouseButtonListenerFillerInner() );
-		rv.add( new org.alice.stageide.cascade.fillerinners.KeyListenerFillerInner() );
-		rv.add( new org.alice.stageide.cascade.fillerinners.OutfitFillerInner() );
-		rv.add( new org.alice.stageide.cascade.fillerinners.HairFillerInner() );
-		return rv;
 	}
 
 //	@Override

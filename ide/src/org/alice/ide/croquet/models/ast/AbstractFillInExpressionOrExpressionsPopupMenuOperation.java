@@ -40,18 +40,51 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package org.alice.ide.croquet.models.ast;
+
+import edu.cmu.cs.dennisc.croquet.PopupMenu;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LocalPane< N extends edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > extends TransientPane< N > {
-	public LocalPane( N local ) {
-		super( local );
-		this.addComponent( new org.alice.ide.common.LocalNameLabel( this.getTransient() ) );
-		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.DefaultPopupMenuOperation(
-				java.util.UUID.fromString( "b225cc92-f2c6-4a47-9818-1bbd0319091b" ),
-				new org.alice.ide.operations.ast.RenameLocalDeclarationOperation( local ) 
-		) );
+public abstract class AbstractFillInExpressionOrExpressionsPopupMenuOperation extends org.alice.ide.croquet.models.CascadingPopupMenuOperation {
+	public AbstractFillInExpressionOrExpressionsPopupMenuOperation( java.util.UUID id ) {
+		super( id );
+	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression();
+	protected edu.cmu.cs.dennisc.alice.ast.Statement getStatement() {
+		edu.cmu.cs.dennisc.alice.ast.Expression prevExpression = this.getPreviousExpression();
+		if( prevExpression != null ) {
+			return prevExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.Statement.class );
+		} else {
+			return null;
+		}
+	}
+
+	
+	
+	private edu.cmu.cs.dennisc.cascade.Node node;
+	protected abstract edu.cmu.cs.dennisc.cascade.Node createCascadeNode();
+	@Override
+	protected final edu.cmu.cs.dennisc.cascade.Node getCascadeNode() {
+		if( this.node != null ) {
+			//pass
+		} else {
+			this.node = this.createCascadeNode();
+		}
+		return this.node;
+	}
+	
+
+	@Override
+	protected void handlePopupMenuWillBecomeVisible( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, javax.swing.event.PopupMenuEvent e ) {
+		org.alice.ide.IDE.getSingleton().getCascadeManager().pushContext( this.getPreviousExpression(), this.getStatement() );
+		super.handlePopupMenuWillBecomeVisible( popupMenu, e );
+	}
+	
+	@Override
+	protected void handlePopupMenuWillBecomeInvisible( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, javax.swing.event.PopupMenuEvent e ) {
+		super.handlePopupMenuWillBecomeInvisible( popupMenu, e );
+		org.alice.ide.IDE.getSingleton().getCascadeManager().popContext();
 	}
 }

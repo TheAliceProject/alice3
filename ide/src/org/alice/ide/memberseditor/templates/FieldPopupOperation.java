@@ -45,7 +45,7 @@ package org.alice.ide.memberseditor.templates;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class FieldPopupOperation extends edu.cmu.cs.dennisc.croquet.PopupMenuOperation {
+/*package-private*/ class FieldPopupOperation extends edu.cmu.cs.dennisc.croquet.DefaultPopupMenuOperation {
 	public FieldPopupOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice methodInAlice ) {
 		super( 
 			java.util.UUID.fromString( "525cb5c8-1490-4468-8eca-cee0affff602" ),

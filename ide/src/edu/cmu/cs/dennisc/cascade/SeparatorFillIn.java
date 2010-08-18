@@ -61,7 +61,7 @@ public class SeparatorFillIn extends FillIn< Object > {
 //	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Model getCroquetModel() {
+	public edu.cmu.cs.dennisc.croquet.Model getCroquetModel() {
 		return null;
 	}
 	@Override

@@ -45,7 +45,7 @@ package org.alice.ide.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class PopupMenuButton extends edu.cmu.cs.dennisc.croquet.OperationButton<javax.swing.AbstractButton,edu.cmu.cs.dennisc.croquet./*AbstractPopupMenu*/ActionOperation> {
+public class PopupMenuButton extends edu.cmu.cs.dennisc.croquet.OperationButton<javax.swing.AbstractButton,edu.cmu.cs.dennisc.croquet.PopupMenuOperation> {
 	private static final int AFFORDANCE_WIDTH = 6;
 	private static final int AFFORDANCE_HALF_HEIGHT = 5;
 	private static final java.awt.Color ARROW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray(191);
@@ -136,13 +136,13 @@ public class PopupMenuButton extends edu.cmu.cs.dennisc.croquet.OperationButton<
 	private edu.cmu.cs.dennisc.croquet.Component<?> prefixComponent;
 	private edu.cmu.cs.dennisc.croquet.Component<?> mainComponent;
 	private edu.cmu.cs.dennisc.croquet.Component<?> postfixComponent;
-	public PopupMenuButton(edu.cmu.cs.dennisc.croquet./*AbstractPopupMenu*/ActionOperation model, edu.cmu.cs.dennisc.croquet.Component<?> prefixComponent, edu.cmu.cs.dennisc.croquet.Component<?> mainComponent, edu.cmu.cs.dennisc.croquet.Component<?> postfixComponent) {
+	public PopupMenuButton(edu.cmu.cs.dennisc.croquet.PopupMenuOperation model, edu.cmu.cs.dennisc.croquet.Component<?> prefixComponent, edu.cmu.cs.dennisc.croquet.Component<?> mainComponent, edu.cmu.cs.dennisc.croquet.Component<?> postfixComponent) {
 		super(model);
 		this.prefixComponent = prefixComponent;
 		this.mainComponent = mainComponent;
 		this.postfixComponent = postfixComponent;
 	}
-	public PopupMenuButton(edu.cmu.cs.dennisc.croquet./*AbstractPopupMenu*/ActionOperation model) {
+	public PopupMenuButton(edu.cmu.cs.dennisc.croquet.PopupMenuOperation model) {
 		this(model, null, null, null);
 	}
 	public edu.cmu.cs.dennisc.croquet.Component<?> getMainComponent() {

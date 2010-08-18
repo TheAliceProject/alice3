@@ -40,18 +40,47 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LocalPane< N extends edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > extends TransientPane< N > {
-	public LocalPane( N local ) {
-		super( local );
-		this.addComponent( new org.alice.ide.common.LocalNameLabel( this.getTransient() ) );
-		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.DefaultPopupMenuOperation(
-				java.util.UUID.fromString( "b225cc92-f2c6-4a47-9818-1bbd0319091b" ),
-				new org.alice.ide.operations.ast.RenameLocalDeclarationOperation( local ) 
-		) );
+public class FillInExpressionPropertyPopupMenuOperation extends FillInSingleExpressionPopupMenuOperation {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, FillInExpressionPropertyPopupMenuOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized FillInExpressionPropertyPopupMenuOperation getInstance( edu.cmu.cs.dennisc.croquet.Group operationGroup, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
+		FillInExpressionPropertyPopupMenuOperation rv = map.get( expressionProperty );
+		if( rv != null ) {
+			assert rv.operationGroup == operationGroup;
+			assert rv.desiredType == desiredType;
+			//pass
+		} else {
+			rv = new FillInExpressionPropertyPopupMenuOperation( operationGroup, expressionProperty, desiredType );
+			map.put( expressionProperty, rv );
+		}
+		return rv;
+	}
+	private final edu.cmu.cs.dennisc.croquet.Group operationGroup;
+	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType;
+	private final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
+	private FillInExpressionPropertyPopupMenuOperation( edu.cmu.cs.dennisc.croquet.Group operationGroup, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
+		super( java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ) );
+		assert expressionProperty != null;
+		this.operationGroup = operationGroup;
+		this.expressionProperty = expressionProperty;
+		this.desiredType = desiredType;
+	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+		return this.expressionProperty.getValue();
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
+		if( this.desiredType != null ) {
+			return this.desiredType;
+		} else {
+			return this.expressionProperty.getExpressionType();
+		}
 	}
 }

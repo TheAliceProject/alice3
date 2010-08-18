@@ -367,18 +367,4 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		this.hairColorSelection.setSelectedItem( hair.toString() );
 		this.fitnessState.setValue( (int)(personInfo.getFitnessLevel()*100) );
 	}
-	public static void main( String[] args ) {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			try {
-				edu.cmu.cs.dennisc.javax.swing.plaf.nimbus.NimbusUtilities.installModifiedNimbus( lookAndFeelInfo );
-			} catch( Throwable t ) {
-				t.printStackTrace();
-			}
-		}
-
-		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
-		ide.initialize( args );
-		org.alice.stageide.croquet.models.gallerybrowser.CreatePersonFieldOperation.getInstance().fire();
-	}
 }

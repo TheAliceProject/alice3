@@ -104,7 +104,7 @@ import edu.cmu.cs.dennisc.alice.ast.Statement;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.croquet.AbstractButton;
-import edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation;
+import edu.cmu.cs.dennisc.croquet.PopupMenuOperation;
 import edu.cmu.cs.dennisc.croquet.Application;
 import edu.cmu.cs.dennisc.croquet.BooleanState;
 import edu.cmu.cs.dennisc.croquet.ComboBox;
@@ -888,7 +888,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		FieldTile fieldTile = this.getFieldTileForClick(clickState);
 		if (fieldTile != null)
 		{
-			AbstractPopupMenuOperation popUp = fieldTile.getPopupMenuOperation();
+			PopupMenuOperation popUp = fieldTile.getPopupMenuOperation();
 			if (popUp != null)
 			{
 				if( fieldTile.getAwtComponent().isShowing() ) {

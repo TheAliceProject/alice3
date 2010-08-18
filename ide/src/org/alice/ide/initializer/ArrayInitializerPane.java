@@ -442,18 +442,18 @@ class AddExpressionOperation extends edu.cmu.cs.dennisc.croquet.FauxPopupMenuOpe
 			}
 			public AddExpressionEdit initialize(AddExpressionEdit rv, edu.cmu.cs.dennisc.croquet.ModelContext context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = componentTypeProperty.getValue();
-				org.alice.ide.IDE.getSingleton().promptUserForExpression( type, rv.expression, viewController, p, taskObserver );
+				org.alice.ide.IDE.getSingleton().getCascadeManager().promptUserForExpression( type, rv.expression, viewController, p, taskObserver );
 				return rv;
 			}
 			public AddExpressionEdit handleCompletion( AddExpressionEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 				//todo: remove?
-				org.alice.ide.IDE.getSingleton().unsetPreviousExpressionAndDropStatement();
+				org.alice.ide.IDE.getSingleton().getCascadeManager().unsetPreviousExpressionAndDropStatement();
 				rv.expression = expression;
 				return rv;
 			}
 			public void handleCancelation() {
 				//todo: remove?
-				org.alice.ide.IDE.getSingleton().unsetPreviousExpressionAndDropStatement();
+				org.alice.ide.IDE.getSingleton().getCascadeManager().unsetPreviousExpressionAndDropStatement();
 			}
 		} );
 	}

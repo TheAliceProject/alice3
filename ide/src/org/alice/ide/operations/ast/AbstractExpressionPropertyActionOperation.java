@@ -42,8 +42,6 @@
  */
 package org.alice.ide.operations.ast;
 
-import edu.cmu.cs.dennisc.croquet.Component;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -96,13 +94,13 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 			}
 			public ExpressionPropertyEdit handleCompletion( ExpressionPropertyEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 				//todo: remove?
-				getIDE().unsetPreviousExpressionAndDropStatement();
+				getIDE().getCascadeManager().unsetPreviousExpressionAndDropStatement();
 				rv.nextExpression = expression;
 				return rv;
 			}
 			public void handleCancelation() {
 				//todo: remove?
-				getIDE().unsetPreviousExpressionAndDropStatement();
+				getIDE().getCascadeManager().unsetPreviousExpressionAndDropStatement();
 			}
 		} );
 	}

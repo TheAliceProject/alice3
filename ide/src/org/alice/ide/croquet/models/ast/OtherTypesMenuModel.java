@@ -42,6 +42,9 @@
  */
 package org.alice.ide.croquet.models.ast;
 
+/**
+ * @author Dennis Cosgrove
+ */
 public class OtherTypesMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
 	public OtherTypesMenuModel( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
 		super( java.util.UUID.fromString( "909d8fb3-f1a0-4f21-9bbf-a871ea04d1a0" ), models );

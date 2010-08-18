@@ -40,18 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LocalPane< N extends edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > extends TransientPane< N > {
-	public LocalPane( N local ) {
-		super( local );
-		this.addComponent( new org.alice.ide.common.LocalNameLabel( this.getTransient() ) );
-		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.DefaultPopupMenuOperation(
-				java.util.UUID.fromString( "b225cc92-f2c6-4a47-9818-1bbd0319091b" ),
-				new org.alice.ide.operations.ast.RenameLocalDeclarationOperation( local ) 
-		) );
+public class DefaultPopupMenuOperation extends PopupMenuOperation {
+	private Model[] models;
+	public DefaultPopupMenuOperation( java.util.UUID individualId, Model... models ) {
+		super( individualId );
+		this.models = models;
+	}
+	public DefaultPopupMenuOperation( java.util.UUID individualId, java.util.Collection< Model > models ) {
+		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( models, Model.class ) );
+	}
+	@Override
+	protected void handlePopupMenuCreation( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
+		super.handlePopupMenuCreation( popupMenu );
+		Application.addMenuElements( popupMenu, this.models );
 	}
 }

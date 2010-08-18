@@ -69,7 +69,7 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 				}
 			}
 			ExpressionsTaskObserver expressionsTaskObserver = new ExpressionsTaskObserver();
-			getIDE().promptUserForExpressions( block, index, types, false, e, expressionsTaskObserver );
+			getIDE().getCascadeManager().promptUserForExpressions( block, index, types, false, e, expressionsTaskObserver );
 //			class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.Expression[], Void > {
 //				@Override
 //				protected edu.cmu.cs.dennisc.alice.ast.Expression[] doInBackground() throws java.lang.Exception {

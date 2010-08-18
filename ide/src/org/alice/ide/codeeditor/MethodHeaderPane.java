@@ -75,7 +75,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		} else {
 			class PopupPanel extends edu.cmu.cs.dennisc.croquet.ViewController<javax.swing.JPanel, edu.cmu.cs.dennisc.croquet.Model> {
 				private edu.cmu.cs.dennisc.croquet.Component<?> centerComponent;
-				public PopupPanel( edu.cmu.cs.dennisc.croquet.Component<?> centerComponent, edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation popupMenuOperation ) {
+				public PopupPanel( edu.cmu.cs.dennisc.croquet.Component<?> centerComponent, edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenuOperation ) {
 					super( null );
 					this.centerComponent = centerComponent;
 					this.setPopupMenuOperation( popupMenuOperation );
@@ -98,7 +98,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			this.addComponent( 
 					new PopupPanel( 
 							nameLabel, 
-							new edu.cmu.cs.dennisc.croquet.PopupMenuOperation(
+							new edu.cmu.cs.dennisc.croquet.DefaultPopupMenuOperation(
 									java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ),
 									new org.alice.ide.operations.ast.RenameMethodOperation( methodDeclaredInAlice ) 
 			

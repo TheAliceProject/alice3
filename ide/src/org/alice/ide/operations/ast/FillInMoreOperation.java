@@ -165,18 +165,18 @@ public class FillInMoreOperation extends org.alice.ide.operations.ActionOperatio
 			public org.alice.ide.croquet.edits.ast.FillInMoreEdit initialize(org.alice.ide.croquet.edits.ast.FillInMoreEdit rv, edu.cmu.cs.dennisc.croquet.ModelContext context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver) {
 				java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = FillInMoreOperation.this.nextMethodInvocation.method.getValue().getParameters();
 				edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
-				getIDE().promptUserForMore( expressionStatement, lastParameter, operationContext.getViewController(), operationContext.getPoint(), taskObserver );
+				getIDE().getCascadeManager().promptUserForMore( expressionStatement, lastParameter, operationContext.getViewController(), operationContext.getPoint(), taskObserver );
 				return rv;
 			}
 			public org.alice.ide.croquet.edits.ast.FillInMoreEdit handleCompletion( org.alice.ide.croquet.edits.ast.FillInMoreEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 				//todo: remove?
-				getIDE().unsetPreviousExpressionAndDropStatement();
+				getIDE().getCascadeManager().unsetPreviousExpressionAndDropStatement();
 				rv.setArgumentExpression( expression );
 				return rv;
 			}
 			public void handleCancelation() {
 				//todo: remove?
-				getIDE().unsetPreviousExpressionAndDropStatement();
+				getIDE().getCascadeManager().unsetPreviousExpressionAndDropStatement();
 			}
 		} );
 	}

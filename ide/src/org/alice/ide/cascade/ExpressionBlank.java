@@ -77,6 +77,6 @@ public class ExpressionBlank extends edu.cmu.cs.dennisc.cascade.Blank {
 			} );
 			this.addSeparator();
 		}
-		org.alice.ide.IDE.getSingleton().addFillIns( this, this.type );
+		org.alice.ide.IDE.getSingleton().getCascadeManager().addFillIns( this, this.type );
 	}
 }

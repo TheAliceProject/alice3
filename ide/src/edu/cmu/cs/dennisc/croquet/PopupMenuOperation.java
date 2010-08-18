@@ -45,18 +45,91 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class PopupMenuOperation extends AbstractPopupMenuOperation {
-	private Model[] models;
-	public PopupMenuOperation( java.util.UUID individualId, Model... models ) {
-		super( individualId );
-		this.models = models;
-	}
-	public PopupMenuOperation( java.util.UUID individualId, java.util.Collection< Model > models ) {
-		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( models, Model.class ) );
+public abstract class PopupMenuOperation extends Operation<PopupMenuOperationContext> {
+	public static final Group POPUP_MENU_GROUP = new Group( java.util.UUID.fromString( "4fe7cbeb-627f-4965-a2d3-f4bf42796c59" ), "POPUP_MENU_GROUP" );
+
+	public PopupMenuOperation( java.util.UUID individualUUID ) {
+		super( POPUP_MENU_GROUP, individualUUID );
 	}
 	@Override
-	protected void handlePopupMenuCreation( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
-		super.handlePopupMenuCreation( popupMenu );
-		Application.addMenuElements( popupMenu, this.models );
+	protected PopupMenuOperationContext createContext( ModelContext< ? > parent, java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		return parent.createPopupMenuOperationContext( this, e, viewController );
+	}
+	
+	protected void handlePopupMenuCreation( PopupMenu popupMenu ) {
+	}
+	protected void handlePopupMenuWillBecomeVisible( PopupMenu popupMenu, javax.swing.event.PopupMenuEvent e ) {
+		this.addComponent( popupMenu );
+	}
+	protected void handlePopupMenuWillBecomeInvisible( PopupMenu popupMenu, javax.swing.event.PopupMenuEvent e ) {
+		this.removeComponent( popupMenu );
+	}
+//	protected void handlePopupMenuCanceled( PopupMenu popupMenu, javax.swing.event.PopupMenuEvent e ) {
+//	}
+ 	@Override
+	protected final void perform(final PopupMenuOperationContext context) {
+		final PopupMenu popupMenu = new PopupMenu( this );
+		this.handlePopupMenuCreation( popupMenu );
+		popupMenu.getAwtComponent().addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
+			public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
+				PopupMenuOperation.this.handlePopupMenuWillBecomeVisible( popupMenu, e );
+			}
+			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
+				PopupMenuOperation.this.handlePopupMenuWillBecomeInvisible( popupMenu, e );
+			}
+			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
+				context.cancel();
+			}
+		} );
+
+		ViewController<?,?> viewController = context.getViewController();
+		java.awt.Point pt = context.getPoint();
+		if( viewController != null ) {
+			if (pt != null) {
+				popupMenu.showAtLocation( viewController, pt.x, pt.y );
+			} else {
+				popupMenu.showBelow( viewController );
+			}
+		} else {
+			java.awt.Component awtComponent = context.getMouseEvent().getComponent();
+			Component<?> component = Component.lookup( awtComponent );
+			popupMenu.showAtLocation( component, pt.x, pt.y );
+		}
+	}
+
+ 	private static class ArrowIcon extends AbstractArrowIcon {
+		public ArrowIcon( int size ) {
+			super( size );
+		}
+		public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+			java.awt.geom.GeneralPath path = this.createPath(x, y, Heading.SOUTH);
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			java.awt.Paint fillPaint;
+			if( button.getModel().isPressed() ) {
+				fillPaint = java.awt.Color.BLACK;
+			} else {
+				if( button.getModel().isRollover() ) {
+					fillPaint = java.awt.Color.GRAY;
+				} else {
+					fillPaint = java.awt.Color.DARK_GRAY;
+				}
+			}
+			g2.setPaint( fillPaint );
+			g2.fill( path );
+		}
+	}
+	private static final ArrowIcon ARROW_ICON = new ArrowIcon( 14 ); 
+	
+	@Override
+	public edu.cmu.cs.dennisc.croquet.Button createButton() {
+		if( this.getSmallIcon() != null ) {
+			//pass
+		} else {
+			this.setSmallIcon( ARROW_ICON );
+		}
+		edu.cmu.cs.dennisc.croquet.Button rv = super.createButton();
+		rv.getAwtComponent().setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
+		return rv;
 	}
 }

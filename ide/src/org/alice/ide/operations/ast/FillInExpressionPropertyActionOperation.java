@@ -72,6 +72,6 @@ public class FillInExpressionPropertyActionOperation extends AbstractExpressionP
 		} else {
 			type = this.getExpressionProperty().getExpressionType();
 		}
-		getIDE().promptUserForExpression( type, prevExpression, viewController, p, taskObserver );
+		getIDE().getCascadeManager().promptUserForExpression( type, prevExpression, viewController, p, taskObserver );
 	}
 }

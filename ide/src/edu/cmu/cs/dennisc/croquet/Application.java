@@ -258,7 +258,7 @@ public abstract class Application {
 		}
 	}
 
-	private static MenuItemContainer addMenuElement( MenuItemContainer rv, Model model ) {
+	public static MenuItemContainer addMenuElement( MenuItemContainer rv, Model model ) {
 		if( model != null ) {
 			if( model instanceof MenuModel ) {
 				MenuModel menuOperation = (MenuModel)model;

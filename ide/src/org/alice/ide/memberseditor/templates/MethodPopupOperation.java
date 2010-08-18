@@ -45,7 +45,7 @@ package org.alice.ide.memberseditor.templates;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class MethodPopupOperation extends edu.cmu.cs.dennisc.croquet.PopupMenuOperation {
+/*package-private*/ class MethodPopupOperation extends edu.cmu.cs.dennisc.croquet.DefaultPopupMenuOperation {
 	public MethodPopupOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice ) {
 		super( 
 			java.util.UUID.fromString( "5b1b6ac7-b2f9-453e-9fd9-ab06b621c473" ),

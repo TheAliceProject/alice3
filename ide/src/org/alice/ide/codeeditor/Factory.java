@@ -238,7 +238,7 @@ public class Factory extends org.alice.ide.common.Factory {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionProperty.getValue();
 		edu.cmu.cs.dennisc.croquet.JComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
 		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expression ) ) {
-			org.alice.ide.operations.ast.FillInExpressionPropertyActionOperation model = org.alice.ide.operations.ast.FillInExpressionPropertyActionOperation.getInstance( group, expressionProperty, desiredValueType );
+			org.alice.ide.croquet.models.ast.FillInExpressionPropertyPopupMenuOperation model = org.alice.ide.croquet.models.ast.FillInExpressionPropertyPopupMenuOperation.getInstance( group, expressionProperty, desiredValueType );
 			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model, prefixPane, rv, expressionProperty, desiredValueType );
 			rv = expressionPropertyDropDownPane;
 		}
@@ -252,7 +252,7 @@ public class Factory extends org.alice.ide.common.Factory {
 	public org.alice.ide.common.AbstractStatementPane createStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
 		org.alice.ide.common.AbstractStatementPane abstractStatementPane = super.createStatementPane( statement, statementListProperty );
 		abstractStatementPane.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragOperation( edu.cmu.cs.dennisc.alice.Project.GROUP ) );
-		abstractStatementPane.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation(
+		abstractStatementPane.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.DefaultPopupMenuOperation(
 				java.util.UUID.fromString( "6190553d-309e-453f-b9eb-ded8aaf7ce63" ),
 				this.createPopupOperations( abstractStatementPane ) 
 		) );

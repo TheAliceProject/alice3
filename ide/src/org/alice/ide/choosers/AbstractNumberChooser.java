@@ -50,7 +50,7 @@ abstract class NumberModel extends edu.cmu.cs.dennisc.croquet.StringState {
 	private static String getInitialText() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		if( ide != null ) {
-			edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = ide.createCopyOfPreviousExpression();
+			edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = ide.getCascadeManager().createCopyOfPreviousExpression();
 			if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle previous expression; replace selected text later." );
 //				edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral valueLiteral = (edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral)previousExpression;

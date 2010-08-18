@@ -108,11 +108,11 @@ public class Tutorial {
 		return this.addStep( new InputDialogOpenAndCommitStep( title, openText, commitText, new SelfResolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>>( inputDialogOperation ), completorValidatorOkButtonDisabler, completorValidatorOkButtonDisabler, completorValidatorOkButtonDisabler ) );
 	}
 	
-	public Step addPopupMenuStep( String title, String popupText, Resolver<edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation> popupMenuResolver, String commitText, PopupMenuOperationCompletorValidator completorValidator ) {
+	public Step addPopupMenuStep( String title, String popupText, Resolver<edu.cmu.cs.dennisc.croquet.PopupMenuOperation> popupMenuResolver, String commitText, PopupMenuOperationCompletorValidator completorValidator ) {
 		return this.addStep( new PopupMenuStep( title, popupText, popupMenuResolver, commitText, completorValidator, completorValidator ) );
 	}
-	public Step addPopupMenuStep( String title, String popupText, edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation popupMenu, String commitText, PopupMenuOperationCompletorValidator completorValidator ) {
-		return this.addStep( new PopupMenuStep( title, popupText, new SelfResolver<edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation>( popupMenu ), commitText, completorValidator, completorValidator ) );
+	public Step addPopupMenuStep( String title, String popupText, edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenu, String commitText, PopupMenuOperationCompletorValidator completorValidator ) {
+		return this.addStep( new PopupMenuStep( title, popupText, new SelfResolver<edu.cmu.cs.dennisc.croquet.PopupMenuOperation>( popupMenu ), commitText, completorValidator, completorValidator ) );
 	}
 	
 	public <E> Step addListSelectionStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {

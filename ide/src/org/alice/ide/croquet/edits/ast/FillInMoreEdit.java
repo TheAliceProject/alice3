@@ -45,7 +45,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice.ide.operations.ast.FillInMoreOperation> {
+public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation> {
 	private edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression;
 	public FillInMoreEdit() {
 	}
@@ -56,15 +56,15 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice.id
 		this.argumentExpression = argumentExpression;
 	}
 	
-	private org.alice.ide.operations.ast.FillInMoreOperation EPIC_HACK_fillInMoreOperation;
-	public void EPIC_HACK_setModel( org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation ) {
+	private org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation EPIC_HACK_fillInMoreOperation;
+	public void EPIC_HACK_setModel( org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation fillInMoreOperation ) {
 		this.EPIC_HACK_fillInMoreOperation = fillInMoreOperation;
 	}
 	
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		assert this.argumentExpression != null;
-		org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation;
+		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation fillInMoreOperation;
 		if( EPIC_HACK_fillInMoreOperation != null ) {
 			fillInMoreOperation = EPIC_HACK_fillInMoreOperation;
 		} else {
@@ -90,7 +90,7 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice.id
 	}
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation;
+		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation fillInMoreOperation;
 		if( EPIC_HACK_fillInMoreOperation != null ) {
 			fillInMoreOperation = EPIC_HACK_fillInMoreOperation;
 		} else {
@@ -119,7 +119,7 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice.id
 	}
 	@Override
 	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
-		org.alice.ide.operations.ast.FillInMoreOperation fillInMoreOperation;
+		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation fillInMoreOperation;
 		if( EPIC_HACK_fillInMoreOperation != null ) {
 			fillInMoreOperation = EPIC_HACK_fillInMoreOperation;
 		} else {

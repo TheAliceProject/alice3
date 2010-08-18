@@ -40,18 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LocalPane< N extends edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > extends TransientPane< N > {
-	public LocalPane( N local ) {
-		super( local );
-		this.addComponent( new org.alice.ide.common.LocalNameLabel( this.getTransient() ) );
-		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.DefaultPopupMenuOperation(
-				java.util.UUID.fromString( "b225cc92-f2c6-4a47-9818-1bbd0319091b" ),
-				new org.alice.ide.operations.ast.RenameLocalDeclarationOperation( local ) 
-		) );
+public abstract class FillInSingleExpressionPopupMenuOperation extends AbstractFillInExpressionOrExpressionsPopupMenuOperation {
+	public FillInSingleExpressionPopupMenuOperation( java.util.UUID id ) {
+		super( id );
+	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getDesiredValueType();
+	protected edu.cmu.cs.dennisc.cascade.Blank createExpressionBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType ) {
+		return new org.alice.ide.cascade.ExpressionBlank( desiredValueType );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.cascade.Node createCascadeNode() {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType = this.getDesiredValueType();
+		return new org.alice.ide.cascade.ExpressionBlank( desiredValueType );
 	}
 }

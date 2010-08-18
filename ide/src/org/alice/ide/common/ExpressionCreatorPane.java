@@ -113,7 +113,7 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate parentStatement" );
 			edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? >[] array = new edu.cmu.cs.dennisc.alice.ast.AbstractType[ types.size() ];
 			types.toArray( array );
-			getIDE().promptUserForExpressions( parentStatement, -1, array, accessible[ 1 ], (java.awt.event.MouseEvent)context.getAwtEvent(), expressionsTaskObserver );
+			getIDE().getCascadeManager().promptUserForExpressions( parentStatement, -1, array, accessible[ 1 ], (java.awt.event.MouseEvent)context.getAwtEvent(), expressionsTaskObserver );
 			
 //			class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.Expression[], Void > {
 //				@Override
