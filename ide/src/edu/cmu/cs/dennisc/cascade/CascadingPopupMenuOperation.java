@@ -66,24 +66,11 @@ public abstract class CascadingPopupMenuOperation extends edu.cmu.cs.dennisc.cro
 			this.fillIn.handleMenuDeselected( e, menu );
 			super.handleMenuDeselected( e, menu );
 		}
-//		@Override
-//		protected void handleMenuCanceled( javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu< edu.cmu.cs.dennisc.croquet.MenuModel > menu ) {
-//			super.handleMenuCanceled( e, menu );
-//		}
 	}
-	
-	private static class ActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-		private FillIn<?> fillIn;
-		public ActionOperation( FillIn<?> fillIn ) {
-			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "71f47373-d2b4-474d-b131-307c53443c9d" ) );
-			this.fillIn = fillIn;
-		}
-		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-			this.fillIn.handleActionOperationPerformed();
-			context.finish();
-		}
+	private MenuModel createMenuModel( FillIn< ? > fillIn ) {
+		return new MenuModel( fillIn );
 	}
+	protected abstract edu.cmu.cs.dennisc.croquet.ActionOperation createActionOperation( FillIn< ? > fillIn );
 
 	public edu.cmu.cs.dennisc.croquet.Model createCroquetModel( FillIn< ? > fillIn, boolean isLast ) {
 		if( fillIn instanceof SeparatorFillIn ) {
@@ -97,12 +84,14 @@ public abstract class CascadingPopupMenuOperation extends edu.cmu.cs.dennisc.cro
 			}
 		} else {
 			if( isLast ) {
-				return new ActionOperation( fillIn );
+				return this.createActionOperation( fillIn );
 			} else {
-				return new MenuModel( fillIn );
+				return this.createMenuModel( fillIn );
 			}
 		}
 	}
+	
+	public abstract edu.cmu.cs.dennisc.croquet.Edit<  ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context );
 	
 	
 	protected abstract edu.cmu.cs.dennisc.cascade.Blank getCascadeBlank();

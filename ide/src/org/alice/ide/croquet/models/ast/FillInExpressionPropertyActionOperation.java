@@ -45,34 +45,13 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInArgumentPopupMenuOperation extends FillInExpressionPropertyPopupMenuOperation {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.Argument, FillInArgumentPopupMenuOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized FillInArgumentPopupMenuOperation getInstance( edu.cmu.cs.dennisc.alice.ast.Argument argument ) {
-		FillInArgumentPopupMenuOperation rv = map.get( argument );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FillInArgumentPopupMenuOperation( argument );
-			map.put( argument, rv );
-		}
-		return rv;
+public class FillInExpressionPropertyActionOperation extends edu.cmu.cs.dennisc.cascade.CascadingActionOperation {
+	private FillInExpressionPropertyPopupMenuOperation popupMenuOperation;
+	public FillInExpressionPropertyActionOperation( FillInExpressionPropertyPopupMenuOperation popupMenuOperation, edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "7eded20f-5550-45de-af53-5e08fd5e4ed8" ), fillIn );
+		this.popupMenuOperation = popupMenuOperation;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.Argument argument;
-	private FillInArgumentPopupMenuOperation( edu.cmu.cs.dennisc.alice.ast.Argument argument ) {
-		super( java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ) );
-		this.argument = argument;
-	}
-	
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
-		return this.argument.expression;
-	}
-	@Override
-	protected String getTitle() {
-		return this.argument.parameter.getValue().getName();
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
-		return this.argument.parameter.getValue().getDesiredValueType();
+	public FillInExpressionPropertyPopupMenuOperation getFillInExpressionPropertyPopupMenuOperation() {
+		return this.popupMenuOperation;
 	}
 }

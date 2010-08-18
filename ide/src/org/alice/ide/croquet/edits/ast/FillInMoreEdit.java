@@ -45,7 +45,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation> {
+public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.FillInMoreActionOperation > {
 	private edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression;
 	public FillInMoreEdit() {
 	}
@@ -56,24 +56,26 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice.id
 		this.argumentExpression = argumentExpression;
 	}
 	
-	private org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation EPIC_HACK_fillInMoreOperation;
-	public void EPIC_HACK_setModel( org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation fillInMoreOperation ) {
-		this.EPIC_HACK_fillInMoreOperation = fillInMoreOperation;
+	private org.alice.ide.croquet.models.ast.FillInMoreActionOperation EPIC_HACK_actionOperation;
+	public void EPIC_HACK_setModel( org.alice.ide.croquet.models.ast.FillInMoreActionOperation actionOperation ) {
+		this.EPIC_HACK_actionOperation = actionOperation;
 	}
 	
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		assert this.argumentExpression != null;
-		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation fillInMoreOperation;
-		if( EPIC_HACK_fillInMoreOperation != null ) {
-			fillInMoreOperation = EPIC_HACK_fillInMoreOperation;
+		org.alice.ide.croquet.models.ast.FillInMoreActionOperation actionOperation;
+		if( EPIC_HACK_actionOperation != null ) {
+			actionOperation = EPIC_HACK_actionOperation;
 		} else {
-			fillInMoreOperation = this.getModel();
+			actionOperation = this.getModel();
 		}
-		assert fillInMoreOperation != null;
+		assert actionOperation != null;
 		
-		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = fillInMoreOperation.getPrevMethodInvocation();
-		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = fillInMoreOperation.getNextMethodInvocation();
+		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation popupMenuOperation = actionOperation.getFillInMorePopupMenuOperation();
+		
+		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = popupMenuOperation.getPrevMethodInvocation();
+		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = popupMenuOperation.getNextMethodInvocation();
 
 		edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression = prevMethodInvocation.expression.getValue();
 		//prevMethodInvocation.expression.setValue( null );
@@ -85,21 +87,22 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice.id
 			nextMethodInvocation.arguments.get( i ).expression.setValue( expressionI );
 		}
 		nextMethodInvocation.arguments.get( N ).expression.setValue( this.argumentExpression );
-		fillInMoreOperation.getExpressionStatement().expression.setValue( nextMethodInvocation );
+		popupMenuOperation.getExpressionStatement().expression.setValue( nextMethodInvocation );
 //		this.getModel().updateToolTipText();
 	}
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation fillInMoreOperation;
-		if( EPIC_HACK_fillInMoreOperation != null ) {
-			fillInMoreOperation = EPIC_HACK_fillInMoreOperation;
+		org.alice.ide.croquet.models.ast.FillInMoreActionOperation actionOperation;
+		if( EPIC_HACK_actionOperation != null ) {
+			actionOperation = EPIC_HACK_actionOperation;
 		} else {
-			fillInMoreOperation = this.getModel();
+			actionOperation = this.getModel();
 		}
-		assert fillInMoreOperation != null;
+		assert actionOperation != null;
+		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation popupMenuOperation = actionOperation.getFillInMorePopupMenuOperation();
 
-		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = fillInMoreOperation.getPrevMethodInvocation();
-		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = fillInMoreOperation.getNextMethodInvocation();
+		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = popupMenuOperation.getPrevMethodInvocation();
+		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = popupMenuOperation.getNextMethodInvocation();
 		
 		edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression = nextMethodInvocation.expression.getValue();
 		nextMethodInvocation.expression.setValue( null );
@@ -112,21 +115,22 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice.id
 		}
 		//nextMethodInvocation.arguments.get( N ).expression.setValue( null );
 
-		fillInMoreOperation.getExpressionStatement().expression.setValue( prevMethodInvocation );
+		popupMenuOperation.getExpressionStatement().expression.setValue( prevMethodInvocation );
 		
 
 //		this.getModel().updateToolTipText();
 	}
 	@Override
 	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
-		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation fillInMoreOperation;
-		if( EPIC_HACK_fillInMoreOperation != null ) {
-			fillInMoreOperation = EPIC_HACK_fillInMoreOperation;
+		org.alice.ide.croquet.models.ast.FillInMoreActionOperation actionOperation;
+		if( EPIC_HACK_actionOperation != null ) {
+			actionOperation = EPIC_HACK_actionOperation;
 		} else {
-			fillInMoreOperation = this.getModel();
+			actionOperation = this.getModel();
 		}
-		assert fillInMoreOperation != null;
-		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = fillInMoreOperation.getNextMethodInvocation();
+		assert actionOperation != null;
+		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation popupMenuOperation = actionOperation.getFillInMorePopupMenuOperation();
+		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = popupMenuOperation.getNextMethodInvocation();
 		if( nextMethodInvocation != null ) {
 			rv.append( "more: " );
 			edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, nextMethodInvocation.method.getValue(), locale );

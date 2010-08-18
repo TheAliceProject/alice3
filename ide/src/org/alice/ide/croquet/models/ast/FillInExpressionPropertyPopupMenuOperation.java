@@ -46,53 +46,12 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public abstract class FillInExpressionPropertyPopupMenuOperation extends FillInSingleExpressionPopupMenuOperation {
-//	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, FillInExpressionPropertyPopupMenuOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-//	public static synchronized FillInExpressionPropertyPopupMenuOperation getInstance( edu.cmu.cs.dennisc.croquet.Group operationGroup, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
-//		FillInExpressionPropertyPopupMenuOperation rv = map.get( expressionProperty );
-//		if( rv != null ) {
-//			assert rv.operationGroup == operationGroup;
-//			assert rv.desiredType == desiredType;
-//			//pass
-//		} else {
-//			rv = new FillInExpressionPropertyPopupMenuOperation( operationGroup, expressionProperty, desiredType );
-//			map.put( expressionProperty, rv );
-//		}
-//		return rv;
-//	}
-//	private final edu.cmu.cs.dennisc.croquet.Group operationGroup;
-//	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType;
-//	private final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
-//	private FillInExpressionPropertyPopupMenuOperation( edu.cmu.cs.dennisc.croquet.Group operationGroup, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
-//		super( java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ) );
-//		assert expressionProperty != null;
-//		this.operationGroup = operationGroup;
-//		this.expressionProperty = expressionProperty;
-//		this.desiredType = desiredType;
-//	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
-//		return this.expressionProperty.getValue();
-//	}
-//	@Override
-//	protected String getTitle() {
-//		return this.expressionProperty.getName();
-//	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
-//		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
-//		if( this.desiredType != null ) {
-//			return this.desiredType;
-//		} else {
-//			return this.expressionProperty.getExpressionType();
-//		}
-//	}
 	public FillInExpressionPropertyPopupMenuOperation( java.util.UUID id ) {
 		super( id );
 	}
-
-	protected abstract edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty();
+	public abstract edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty();
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+	public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
 		edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty = this.getExpressionProperty();
 		return expressionProperty.getValue();
 	}
@@ -101,5 +60,13 @@ public abstract class FillInExpressionPropertyPopupMenuOperation extends FillInS
 		edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty = this.getExpressionProperty();
 		return expressionProperty.getExpressionType();
 	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		return new org.alice.ide.croquet.edits.ast.FillInExpressionPropertyEdit( (edu.cmu.cs.dennisc.alice.ast.Expression)value );
+	}
 	
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.ActionOperation createActionOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
+		return new FillInExpressionPropertyActionOperation( this, fillIn );
+	}
 }

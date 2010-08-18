@@ -182,9 +182,9 @@ public abstract class FillIn< E > extends Node {
 		menu.getAwtComponent().removeAll();
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo handleMenuDeselected" );
 	}
-	protected void handleActionOperationPerformed() {
+	protected void handleActionOperationPerformed(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		this.select();
-		this.getRootBlank().handleActionPerformed();
+		this.getRootBlank().handleActionPerformed( context );
 	}
 //	@Override
 //	protected void handleMenuSelected( javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu< edu.cmu.cs.dennisc.croquet.MenuModel > menu ) {

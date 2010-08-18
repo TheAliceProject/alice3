@@ -75,12 +75,11 @@ public class DefaultFillInExpressionPropertyPopupMenuOperation extends FillInExp
 		return null;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
+	public edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
 		return this.expressionProperty;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
 		if( this.desiredType != null ) {
 			return this.desiredType;
 		} else {

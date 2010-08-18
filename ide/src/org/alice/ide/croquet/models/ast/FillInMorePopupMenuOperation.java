@@ -75,7 +75,7 @@ public class FillInMorePopupMenuOperation extends FillInSingleExpressionPopupMen
 			edu.cmu.cs.dennisc.alice.ast.Argument argument = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter, null );
 			this.nextMethodInvocation.arguments.add( argument );
 		}
-		this.setName( "more..." );
+//		this.setName( "more..." );
 //		this.updateToolTipText();
 	}
 
@@ -115,5 +115,14 @@ public class FillInMorePopupMenuOperation extends FillInSingleExpressionPopupMen
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = this.getLastParameter();
 		return lastParameter.getDesiredValueType();
+	}
+
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.ActionOperation createActionOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
+		return new FillInMoreActionOperation( this, fillIn );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > createEdit( java.lang.Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		return new org.alice.ide.croquet.edits.ast.FillInMoreEdit( (edu.cmu.cs.dennisc.alice.ast.Expression)value );
 	}
 }

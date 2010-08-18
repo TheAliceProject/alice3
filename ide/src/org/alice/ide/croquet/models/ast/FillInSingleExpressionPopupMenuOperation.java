@@ -63,7 +63,7 @@ public abstract class FillInSingleExpressionPopupMenuOperation extends AbstractF
 			protected void addChildren() {
 				String title = FillInSingleExpressionPopupMenuOperation.this.getTitle();
 				if( title != null ) {
-					this.addFillIn( new edu.cmu.cs.dennisc.cascade.SeparatorFillIn( title ) );
+					this.addFillIn( new edu.cmu.cs.dennisc.cascade.SeparatorFillIn( title + ":" ) );
 					this.addSeparator();
 				}
 				super.addChildren();

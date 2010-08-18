@@ -217,19 +217,20 @@ public abstract class Blank extends Node {
 		}
 	}
 
-	protected void handleActionPerformed() {
+	protected void handleActionPerformed( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		try {
 			Object value = this.getSelectedFillIn().getValue();
 			if( this.taskObserver != null ) {
 				this.taskObserver.handleCompletion( value );
 			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleCompleted (no taskObserver):", this.getSelectedFillIn().getValue() );
+				edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > edit = this.cascadingPopupMenuOperation.createEdit( value, context );
+				context.commitAndInvokeDo( edit );
 			}
 		} catch( CancelException ce ) {
 			if( this.taskObserver != null ) {
 				this.taskObserver.handleCancelation();
 			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleCancelation (no taskObserver)" );
+				context.cancel();
 			}
 		}
 	}
