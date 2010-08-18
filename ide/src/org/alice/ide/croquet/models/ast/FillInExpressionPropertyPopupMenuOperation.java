@@ -65,8 +65,9 @@ public abstract class FillInExpressionPropertyPopupMenuOperation extends FillInS
 		return new org.alice.ide.croquet.edits.ast.FillInExpressionPropertyEdit( (edu.cmu.cs.dennisc.alice.ast.Expression)value );
 	}
 	
+	protected abstract edu.cmu.cs.dennisc.croquet.Group getActionGroup();
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.ActionOperation createActionOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
-		return new FillInExpressionPropertyActionOperation( this, fillIn );
+		return new FillInExpressionPropertyActionOperation( this.getActionGroup(), this, fillIn );
 	}
 }

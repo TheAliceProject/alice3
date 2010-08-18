@@ -45,11 +45,16 @@ package edu.cmu.cs.dennisc.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+public abstract class CascadingActionOperation< M extends CascadingPopupMenuOperation > extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+	private M popupMenuOperation;
 	private FillIn< ? > fillIn;
-	public CascadingActionOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id, FillIn< ? > fillIn ) {
+	public CascadingActionOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id, M popupMenuOperation, FillIn< ? > fillIn ) {
 		super( group, id );
+		this.popupMenuOperation = popupMenuOperation;
 		this.fillIn = fillIn;
+	}
+	public M getPopupMenuOperation() {
+		return this.popupMenuOperation;
 	}
 	@Override
 	protected final void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {

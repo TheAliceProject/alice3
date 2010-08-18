@@ -40,38 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.croquet.models.initializer;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FillInExpressionPropertyActionOperation extends AbstractExpressionPropertyActionOperation {
-	private static java.util.Map<edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, FillInExpressionPropertyActionOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static FillInExpressionPropertyActionOperation getInstance( edu.cmu.cs.dennisc.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
-		FillInExpressionPropertyActionOperation rv = map.get( expressionProperty );
-		if( rv != null ) {
-			assert rv.getGroup() == group;
-			assert rv.desiredType == desiredType;
-			//pass
-		} else {
-			rv = new FillInExpressionPropertyActionOperation( group, expressionProperty, desiredType);
-			map.put( expressionProperty, rv );
-		}
-		return rv;
-	}
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType;
-	private FillInExpressionPropertyActionOperation( edu.cmu.cs.dennisc.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
-		super( group, java.util.UUID.fromString( "6ec3825b-459d-4c3c-a4fe-ca57525c77df" ), expressionProperty );
-		this.desiredType = desiredType;
-	}
-	@Override
-	protected void initializeInternal( edu.cmu.cs.dennisc.croquet.ModelContext<?> context, java.util.UUID id, edu.cmu.cs.dennisc.croquet.ViewController<?, ?> viewController, java.awt.Point p, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
-		if( this.desiredType != null ) {
-			type = this.desiredType;
-		} else {
-			type = this.getExpressionProperty().getExpressionType();
-		}
-		getIDE().getCascadeManager().promptUserForExpression( type, prevExpression, viewController, p, taskObserver );
+public class AddExpressionActionOperation extends edu.cmu.cs.dennisc.cascade.CascadingActionOperation< AddExpressionPopupMenuOperation > {
+	public AddExpressionActionOperation( AddExpressionPopupMenuOperation popupMenuOperation, edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
+		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "7eded20f-5550-45de-af53-5e08fd5e4ed8" ), popupMenuOperation, fillIn );
 	}
 }

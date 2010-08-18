@@ -40,54 +40,56 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.croquet.edits.initializer;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultFillInExpressionPropertyPopupMenuOperation extends FillInExpressionPropertyPopupMenuOperation {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, DefaultFillInExpressionPropertyPopupMenuOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized DefaultFillInExpressionPropertyPopupMenuOperation getInstance( edu.cmu.cs.dennisc.croquet.Group actionGroup, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
-		DefaultFillInExpressionPropertyPopupMenuOperation rv = map.get( expressionProperty );
-		if( rv != null ) {
-			assert rv.actionGroup == actionGroup;
-			assert rv.desiredType == desiredType;
-			//pass
-		} else {
-			rv = new DefaultFillInExpressionPropertyPopupMenuOperation( actionGroup, expressionProperty, desiredType );
-			map.put( expressionProperty, rv );
-		}
+public class AddExpressionEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.initializer.AddExpressionActionOperation > {
+	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
+	private int index;
+	public AddExpressionEdit() {
+	}
+	public AddExpressionEdit( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+		this.expression = expression;
+	}
+	@Override
+	protected final void doOrRedoInternal( boolean isDo ) {
+		org.alice.ide.croquet.models.initializer.AddExpressionActionOperation actionOperation = this.getModel();
+		org.alice.ide.croquet.models.initializer.AddExpressionPopupMenuOperation popupMenuOperation = actionOperation.getPopupMenuOperation();
+		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = popupMenuOperation.getExpressionListProperty();
+		this.index = expressionListProperty.size();
+		expressionListProperty.add( this.expression );
+	}
+	@Override
+	protected final void undoInternal() {
+		org.alice.ide.croquet.models.initializer.AddExpressionActionOperation actionOperation = this.getModel();
+		org.alice.ide.croquet.models.initializer.AddExpressionPopupMenuOperation popupMenuOperation = actionOperation.getPopupMenuOperation();
+		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = popupMenuOperation.getExpressionListProperty();
+		expressionListProperty.remove( this.index );
+	}
+	@Override
+	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+		rv.append( "add: " );
+		edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, this.expression, locale );
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.croquet.Group actionGroup;
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType;
-	private final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
-	private DefaultFillInExpressionPropertyPopupMenuOperation( edu.cmu.cs.dennisc.croquet.Group actionGroup, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
-		super( java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ) );
-		assert expressionProperty != null;
-		this.actionGroup = actionGroup;
-		this.expressionProperty = expressionProperty;
-		this.desiredType = desiredType;
-	}
+
 	
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Group getActionGroup() {
-		return this.actionGroup;
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		throw new RuntimeException( "todo" );
 	}
 	@Override
-	protected String getTitle() {
-		return null;
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		throw new RuntimeException( "todo" );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
-		return this.expressionProperty;
+	public boolean canRedo() {
+		return true;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
-		if( this.desiredType != null ) {
-			return this.desiredType;
-		} else {
-			return super.getDesiredValueType();
-		}
+	public boolean canUndo() {
+		return true;
 	}
 }

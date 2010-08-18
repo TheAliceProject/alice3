@@ -416,34 +416,34 @@ public abstract class CascadeManager {
 		}
 		blank.showPopupMenu( viewController.getAwtComponent(), p.x, p.y, taskObserver );
 	}
-	@Deprecated
-	public void promptUserForMore( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement statement, final edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter, edu.cmu.cs.dennisc.croquet.ViewController< ?,? > viewController, java.awt.Point p, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
-		this.setDropParentAndIndex( statement );
-		final String parameterName = parameter.getName();
-		edu.cmu.cs.dennisc.cascade.Blank blank;
-		if( parameterName != null ) {
-			blank = new edu.cmu.cs.dennisc.cascade.Blank() {
-				@Override
-				protected void addChildren() {
-					edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > menuFillIn = new edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression >( parameterName ) {
-						@Override
-						protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-							CascadeManager.this.addFillIns( blank, parameter.getDesiredValueType() );
-						}
-					};
-					this.addFillIn( menuFillIn );
-				}
-			};
-		} else {
-			blank = createExpressionBlank( parameter.getValueType(), null );
-		}
-		if( p != null ) {
-			//pass
-		} else {
-			p = new java.awt.Point( 0, viewController.getHeight() );
-		}
-		blank.showPopupMenu( viewController.getAwtComponent(), p.x, p.y, taskObserver );
-	}
+//	@Deprecated
+//	public void promptUserForMore( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement statement, final edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter, edu.cmu.cs.dennisc.croquet.ViewController< ?,? > viewController, java.awt.Point p, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
+//		this.setDropParentAndIndex( statement );
+//		final String parameterName = parameter.getName();
+//		edu.cmu.cs.dennisc.cascade.Blank blank;
+//		if( parameterName != null ) {
+//			blank = new edu.cmu.cs.dennisc.cascade.Blank() {
+//				@Override
+//				protected void addChildren() {
+//					edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > menuFillIn = new edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression >( parameterName ) {
+//						@Override
+//						protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+//							CascadeManager.this.addFillIns( blank, parameter.getDesiredValueType() );
+//						}
+//					};
+//					this.addFillIn( menuFillIn );
+//				}
+//			};
+//		} else {
+//			blank = createExpressionBlank( parameter.getValueType(), null );
+//		}
+//		if( p != null ) {
+//			//pass
+//		} else {
+//			p = new java.awt.Point( 0, viewController.getHeight() );
+//		}
+//		blank.showPopupMenu( viewController.getAwtComponent(), p.x, p.y, taskObserver );
+//	}
 	@Deprecated
 	public void unsetPreviousExpressionAndDropStatement() {
 		this.previousExpression = null;

@@ -72,7 +72,7 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.i
 		}
 		assert actionOperation != null;
 		
-		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation popupMenuOperation = actionOperation.getFillInMorePopupMenuOperation();
+		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation popupMenuOperation = actionOperation.getPopupMenuOperation();
 		
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = popupMenuOperation.getPrevMethodInvocation();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = popupMenuOperation.getNextMethodInvocation();
@@ -99,7 +99,7 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.i
 			actionOperation = this.getModel();
 		}
 		assert actionOperation != null;
-		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation popupMenuOperation = actionOperation.getFillInMorePopupMenuOperation();
+		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation popupMenuOperation = actionOperation.getPopupMenuOperation();
 
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = popupMenuOperation.getPrevMethodInvocation();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = popupMenuOperation.getNextMethodInvocation();
@@ -129,7 +129,7 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.i
 			actionOperation = this.getModel();
 		}
 		assert actionOperation != null;
-		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation popupMenuOperation = actionOperation.getFillInMorePopupMenuOperation();
+		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation popupMenuOperation = actionOperation.getPopupMenuOperation();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = popupMenuOperation.getNextMethodInvocation();
 		if( nextMethodInvocation != null ) {
 			rv.append( "more: " );

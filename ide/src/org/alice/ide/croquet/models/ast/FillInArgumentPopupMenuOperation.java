@@ -64,6 +64,10 @@ public class FillInArgumentPopupMenuOperation extends FillInExpressionPropertyPo
 	}
 	
 	@Override
+	protected edu.cmu.cs.dennisc.croquet.Group getActionGroup() {
+		return edu.cmu.cs.dennisc.alice.Project.GROUP;
+	}
+	@Override
 	public edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
 		return this.argument.expression;
 	}

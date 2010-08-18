@@ -403,65 +403,9 @@ class MutableList extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 //	}
 }
 
-class AddExpressionOperation extends edu.cmu.cs.dennisc.croquet.FauxPopupMenuOperation {
-	private edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty;
-	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
-	public AddExpressionOperation( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
-        super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "2511b7a7-0920-43de-9f73-977e9ac73686" ) );
-        this.componentTypeProperty = componentTypeProperty;
-        this.expressionListProperty = expressionListProperty;
-        this.setName( "Add..." );
-    }
-	@Override
-	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-		class AddExpressionEdit extends org.alice.ide.ToDoEdit {
-			private edu.cmu.cs.dennisc.alice.ast.Expression expression;
-			private int index;
-			@Override
-			protected final void doOrRedoInternal( boolean isDo ) {
-				this.index = expressionListProperty.size();
-				expressionListProperty.add( this.expression );
-			}
-			@Override
-			protected final void undoInternal() {
-				//expressionListProperty.indexOf( this.expression )
-				expressionListProperty.remove( this.index );
-			}
-			@Override
-			protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-				rv.append( "add: " );
-				edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, this.expression, locale);
-				return rv;
-			}
-		}
-		final edu.cmu.cs.dennisc.croquet.ViewController<?, ?> viewController = context.getViewController();
-		final java.awt.Point p = context.getPoint();
-		context.pend( new edu.cmu.cs.dennisc.croquet.PendResolver< AddExpressionEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
-			public AddExpressionEdit createEdit() {
-				return new AddExpressionEdit();
-			}
-			public AddExpressionEdit initialize(AddExpressionEdit rv, edu.cmu.cs.dennisc.croquet.ModelContext context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = componentTypeProperty.getValue();
-				org.alice.ide.IDE.getSingleton().getCascadeManager().promptUserForExpression( type, rv.expression, viewController, p, taskObserver );
-				return rv;
-			}
-			public AddExpressionEdit handleCompletion( AddExpressionEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-				//todo: remove?
-				org.alice.ide.IDE.getSingleton().getCascadeManager().unsetPreviousExpressionAndDropStatement();
-				rv.expression = expression;
-				return rv;
-			}
-			public void handleCancelation() {
-				//todo: remove?
-				org.alice.ide.IDE.getSingleton().getCascadeManager().unsetPreviousExpressionAndDropStatement();
-			}
-		} );
-	}
-}
-
 public class ArrayInitializerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
     public ArrayInitializerPane( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty arrayExpressions ) {
-        AddExpressionOperation addExpressionOperation = new AddExpressionOperation( componentTypeProperty, arrayExpressions );
+        org.alice.ide.croquet.models.initializer.AddExpressionPopupMenuOperation addExpressionOperation = new org.alice.ide.croquet.models.initializer.AddExpressionPopupMenuOperation( componentTypeProperty, arrayExpressions );
         edu.cmu.cs.dennisc.croquet.Button button = addExpressionOperation.createButton();
 
         MutableList mutableList = new MutableList( componentTypeProperty, arrayExpressions, button );

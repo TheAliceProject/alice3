@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 @Deprecated
-public abstract class FauxPopupMenuOperation extends ActionOperation {
+/*public*/ abstract class FauxPopupMenuOperation extends ActionOperation {
 	public FauxPopupMenuOperation( Group group, java.util.UUID individualUUID ) {
 		super( group, individualUUID );
 	}

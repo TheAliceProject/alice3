@@ -45,13 +45,8 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInExpressionPropertyActionOperation extends edu.cmu.cs.dennisc.cascade.CascadingActionOperation {
-	private FillInExpressionPropertyPopupMenuOperation popupMenuOperation;
-	public FillInExpressionPropertyActionOperation( FillInExpressionPropertyPopupMenuOperation popupMenuOperation, edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "7eded20f-5550-45de-af53-5e08fd5e4ed8" ), fillIn );
-		this.popupMenuOperation = popupMenuOperation;
-	}
-	public FillInExpressionPropertyPopupMenuOperation getFillInExpressionPropertyPopupMenuOperation() {
-		return this.popupMenuOperation;
+public class FillInExpressionPropertyActionOperation extends edu.cmu.cs.dennisc.cascade.CascadingActionOperation<FillInExpressionPropertyPopupMenuOperation> {
+	public FillInExpressionPropertyActionOperation( edu.cmu.cs.dennisc.croquet.Group group, FillInExpressionPropertyPopupMenuOperation popupMenuOperation, edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
+		super( group, java.util.UUID.fromString( "7eded20f-5550-45de-af53-5e08fd5e4ed8" ), popupMenuOperation, fillIn );
 	}
 }

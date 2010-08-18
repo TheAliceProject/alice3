@@ -69,7 +69,7 @@ public class FillInExpressionPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edi
 		}
 		assert actionOperation != null;
 		
-		org.alice.ide.croquet.models.ast.FillInExpressionPropertyPopupMenuOperation popupMenuOperation = actionOperation.getFillInExpressionPropertyPopupMenuOperation();
+		org.alice.ide.croquet.models.ast.FillInExpressionPropertyPopupMenuOperation popupMenuOperation = actionOperation.getPopupMenuOperation();
 
 		edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty = popupMenuOperation.getExpressionProperty();
 		if( isDo ) {
@@ -87,7 +87,7 @@ public class FillInExpressionPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edi
 		}
 		assert actionOperation != null;
 		
-		org.alice.ide.croquet.models.ast.FillInExpressionPropertyPopupMenuOperation popupMenuOperation = actionOperation.getFillInExpressionPropertyPopupMenuOperation();
+		org.alice.ide.croquet.models.ast.FillInExpressionPropertyPopupMenuOperation popupMenuOperation = actionOperation.getPopupMenuOperation();
 		edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty = popupMenuOperation.getExpressionProperty();
 		expressionProperty.setValue( this.prevExpression );
 	}
