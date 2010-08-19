@@ -220,7 +220,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		}
 	}
 	
-	private Point3 getOthographicMovementVector(InputState currentInput, InputState previousInput)
+	protected Point3 getOthographicMovementVector(InputState currentInput, InputState previousInput)
 	{
 		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y );
 		Point3 pickPoint = PlaneUtilities.getPointInPlane( this.orthographicPickPlane, pickRay );
@@ -387,7 +387,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	public void doClickManipulator(InputState clickInput, InputState previousInput) {
 		//Do nothing
 	}
-
+	
 	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput  ) 
 	{
@@ -547,12 +547,6 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		return new Point(awtPoint.x - mousePosition.x, awtPoint.y - mousePosition.y);
 	}
 	
-	protected void hideCursor()
-	{
-		CursorUtilities.pushAndSet( this.getOnscreenLookingGlass().getAWTComponent(), CursorUtilities.NULL_CURSOR );
-		this.hidCursor = true;
-	}
-	
 	protected boolean isPointInsideLookingGlass(Point awtPoint)
 	{
 		return this.getOnscreenLookingGlass().getAWTComponent().contains(awtPoint);
@@ -580,6 +574,12 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	{
 		Point awtPoint = getMouseCursorPositionInLookingGlass();
 		moveCursorToPointInLookingGlass(awtPoint);
+	}
+	
+	protected void hideCursor()
+	{
+		CursorUtilities.pushAndSet( this.getOnscreenLookingGlass().getAWTComponent(), CursorUtilities.NULL_CURSOR );
+		this.hidCursor = true;
 	}
 	
 	protected void showCursor()

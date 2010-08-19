@@ -42,6 +42,11 @@
  */
 package org.alice.stageide.croquet.models.gallerybrowser;
 
+import org.alice.ide.IDE;
+import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
+
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -90,6 +95,11 @@ public class GalleryFileOperation extends AbstractGalleryDeclareFieldOperation<o
 //					PrintUtilities.println("setting drop item "+ ((org.alice.apis.moveandturn.Transformable)fieldObject).getSGTransformable().hashCode()+" to "+this.desiredTransformation.translation);
 					((org.alice.apis.moveandturn.Transformable)fieldObject).setLocalTransformation(new edu.cmu.cs.dennisc.math.AffineMatrix4x4(this.desiredTransformation));
 //					((org.alice.apis.moveandturn.Transformable)fieldObject).getSGTransformable().localTransformation.setValue();
+				}
+				else
+				{
+					AffineMatrix4x4 goodOrientation = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getGoodPointOfViewInSceneForObject();
+					((org.alice.apis.moveandturn.Transformable)fieldObject).setLocalTransformation(goodOrientation);
 				}
 			}
 			return new edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object>( field, fieldObject );
