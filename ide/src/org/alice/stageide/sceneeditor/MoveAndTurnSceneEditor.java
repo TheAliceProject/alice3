@@ -820,18 +820,19 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.mainCameraViewSelector = this.mainCameraMarkerList.createComboBox();
 			this.mainCameraViewSelector.setFontSize(15);
 			
-			final Color BLUE_PRINT_COLOR = new Color(149,166,216);
+//			final Color BLUE_PRINT_COLOR = new Color(149,166,216);
 			this.mainCameraViewSelector.setRenderer(new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< CameraMarker >() {
-				private final javax.swing.border.Border separatorBelowBorder = new javax.swing.border.EmptyBorder( 0,0,7,0) {
-					@Override
-					public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-						g.setColor( Color.BLACK );
-						g.fillRect( x, y+height-6, width, 3 );
-						g.setColor( BLUE_PRINT_COLOR );
-						g.fillRect( x, y+height-3, width, 3 );
-					}
-				};
-				private final javax.swing.border.Border emptyBorder = javax.swing.BorderFactory.createEmptyBorder();
+//				private final javax.swing.border.Border separatorBelowBorder = new javax.swing.border.EmptyBorder( 0,0,7,0) {
+//					@Override
+//					public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+//						g.setColor( Color.BLACK );
+//						g.fillRect( x, y+height-6, width, 3 );
+//						g.setColor( BLUE_PRINT_COLOR );
+//						g.fillRect( x, y+height-3, width, 3 );
+//					}
+//				};
+				private final javax.swing.border.Border separatorBelowBorder = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 8, 0 );
+				private final javax.swing.border.Border emptyBorder = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 0 );
 				@Override
 				protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, CameraMarker value, int index, boolean isSelected, boolean cellHasFocus) {
 					rv.setText(value.getName());
