@@ -55,7 +55,8 @@ import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 public class CameraMarker extends Marker 
 {
 	
-	private Icon icon;
+	private Icon icon = null;
+	private Icon iconHighlighted = null;
 	
 	public CameraMarker()
 	{
@@ -76,6 +77,16 @@ public class CameraMarker extends Marker
 	public void setIcon(Icon icon)
 	{
 		this.icon = icon;
+	}
+	
+	public Icon getHighlightedIcon()
+	{
+		return this.iconHighlighted;
+	}
+	
+	public void setHighlightedIcon(Icon icon)
+	{
+		this.iconHighlighted = icon;
 	}
 	
 	@Override

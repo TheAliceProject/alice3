@@ -61,6 +61,7 @@ import org.alice.apis.moveandturn.CameraMarker;
 import org.alice.apis.moveandturn.Element;
 import org.alice.apis.moveandturn.HowMuch;
 import org.alice.apis.moveandturn.Model;
+import org.alice.apis.moveandturn.OrthographicCameraMarker;
 import org.alice.apis.moveandturn.PerspectiveCameraMarker;
 import org.alice.apis.moveandturn.ReferenceFrame;
 import org.alice.apis.moveandturn.Scene;
@@ -74,6 +75,7 @@ import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.InteractionGroup;
 import org.alice.interact.PickHint;
+import org.alice.interact.PlaneUtilities;
 import org.alice.interact.SnapGrid;
 import org.alice.interact.SnapState;
 import org.alice.interact.AbstractDragAdapter.CameraView;
@@ -177,6 +179,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgPerspectiveCamera = null;
 	
 	private FieldRadioButtons fieldRadioButtons;
+	private OrthographicCameraMarker topOrthoMarker = null;
+	private OrthographicCameraMarker frontOrthoMarker = null;
+	private OrthographicCameraMarker sideOrthoMarker = null;
 	private List<CameraMarker> orthographicCameraMarkers = new LinkedList<CameraMarker>();
 	private PerspectiveCameraMarker openingSceneMarker;
 	private PerspectiveCameraMarker sceneViewMarker;
@@ -462,12 +467,91 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	/**
 	 * Field Added/Removed Handling
 	 */
+
+	public AffineMatrix4x4 getGoodPointOfViewInSceneForObject()
+	{
+		AffineMatrix4x4 goodPointOfView = new AffineMatrix4x4();
+		CameraMarker selectedCameraMarker = getActiveCameraMarker();
+		if (selectedCameraMarker instanceof PerspectiveCameraMarker)
+		{
+			AbstractCamera selectedCamera = this.getSGPerspectiveCamera();
+			Vector3 cameraBackward = selectedCamera.getAbsoluteTransformation().orientation.backward;
+			cameraBackward.y = 0.0;
+			cameraBackward.normalize();
+			if (cameraBackward.isNaN())
+			{
+				cameraBackward = selectedCamera.getAbsoluteTransformation().orientation.up;
+				cameraBackward.multiply(-1);
+				cameraBackward.y = 0.0;
+				cameraBackward.normalize();
+			}
+			Vector3 cameraForward = Vector3.createMultiplication(cameraBackward, -1);
+			
+			double dotWithVertical = Math.abs(Vector3.calculateDotProduct(cameraForward, Vector3.accessPositiveYAxis()));
+			if (dotWithVertical < .5)
+			{
+				double downwardShiftFactor = ((.5 - dotWithVertical)/.5) * -.2;
+				cameraForward.add(new Vector3(0, downwardShiftFactor, 0));
+				cameraForward.normalize();
+			}
+			Point3 pickPoint = PlaneUtilities.getPointInPlane( PlaneUtilities.GROUND_PLANE, new edu.cmu.cs.dennisc.math.Ray(selectedCamera.getAbsoluteTransformation().translation, cameraForward));
+			if (pickPoint == null)
+			{
+				//Create a pick ray that picks mostly down (well, in the direction of the ground) in the direction the camera is facing
+				Point3 pickOrigin = selectedCamera.getAbsoluteTransformation().translation;
+				Vector3 pickDirection = new Vector3(cameraForward);
+				pickDirection.y = 0;
+				pickDirection.normalize();
+				if (pickOrigin.y < 0)
+				{
+					pickDirection.y = .7;
+				}
+				else
+				{
+					pickDirection.y = -.7;
+				}
+				pickDirection.normalize();
+				pickPoint = PlaneUtilities.getPointInPlane( PlaneUtilities.GROUND_PLANE, new edu.cmu.cs.dennisc.math.Ray(pickOrigin, pickDirection));
+				//TODO: handle out of view
+			}
+			assert pickPoint != null;
+			if ( pickPoint != null)
+			{
+				OrthogonalMatrix3x3 facingCameraOrientation = new OrthogonalMatrix3x3(new ForwardAndUpGuide(cameraBackward, Vector3.accessPositiveYAxis()));
+				goodPointOfView.translation.set(pickPoint);
+				goodPointOfView.orientation.setValue(facingCameraOrientation);
+			}
+		}
+		else
+		{
+			AffineMatrix4x4 cameraTransform = selectedCameraMarker.getSGTransformable().getAbsoluteTransformation();
+			Point3 cameraPosition = cameraTransform.translation;
+			Vector3 goodBackward = cameraTransform.orientation.backward;
+			if (selectedCameraMarker == this.topOrthoMarker)
+			{
+				goodBackward = cameraTransform.orientation.up;
+				goodPointOfView.translation.set(cameraPosition.x, 0, cameraPosition.z);
+			}
+			else if (selectedCameraMarker == this.sideOrthoMarker)
+			{
+				goodPointOfView.translation.set(0, 0, cameraPosition.z);
+			}
+			else if (selectedCameraMarker == this.frontOrthoMarker)
+			{
+				goodPointOfView.translation.set(cameraPosition.x, 0, 0);
+			}
+			OrthogonalMatrix3x3 facingCameraOrientation = new OrthogonalMatrix3x3(new ForwardAndUpGuide(goodBackward, Vector3.accessPositiveYAxis()));
+			goodPointOfView.orientation.setValue(facingCameraOrientation);
+		}
+		return goodPointOfView;
+	}
 	
 	private void handleFieldAdded(final FieldDeclaredInAlice addedField)
 	{
 		Object instance = this.getInstanceInJavaForField( addedField );
 		if( instance instanceof org.alice.apis.moveandturn.Transformable ) {
 			final org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instance;
+
 			this.putInstanceForField( addedField, transformable );
 			final org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera = this.scene.findFirstMatch( org.alice.apis.moveandturn.SymmetricPerspectiveCamera.class );
 			boolean isAnimationDesired = true;
@@ -687,9 +771,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		} else {
 			this.openingSceneMarker = new PerspectiveCameraMarker();
 			this.openingSceneMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/mainCameraIcon.png")));
+			this.openingSceneMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/mainCameraIcon_highlighted.png")));
 			this.sceneViewMarker = new PerspectiveCameraMarker();
 			this.sceneViewMarker.setDisplayVisuals(false);
 			this.sceneViewMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sceneEditorCameraIcon.png")));
+			this.sceneViewMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sceneEditorCameraIcon_highlighted.png")));
 			
 			createOrthographicCamera();
 			createOrthographicCameraMarkers();
@@ -749,12 +835,32 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				@Override
 				protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, CameraMarker value, int index, boolean isSelected, boolean cellHasFocus) {
 					rv.setText(value.getName());
-					rv.setIcon(value.getIcon());
+					
 					if( index == 0 ) {
 						rv.setBorder( separatorBelowBorder );
 					} else {
 						rv.setBorder( emptyBorder );
 					}
+					if (isSelected)
+					{
+						rv.setOpaque(true);
+						rv.setBackground(new Color(57, 105, 138));
+						rv.setForeground(Color.WHITE);
+					}
+					else
+					{
+						rv.setOpaque(false);
+						rv.setForeground(Color.BLACK);
+					}
+					if (isSelected && value.getHighlightedIcon() != null)
+					{
+						rv.setIcon(value.getHighlightedIcon());
+					}
+					else
+					{
+						rv.setIcon(value.getIcon());
+					}
+					
 //					if( value == openingSceneMarker ) {
 //						//pass
 //					} else {
@@ -1356,6 +1462,20 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource(iconName));
 	}
 	
+	public static Icon getHighlightIconForMarkerName(String markerName)
+	{
+		String iconName = getIconNameForMarkerName(markerName);
+		if (iconName == null)
+		{
+			iconName = "images/markerIcon_White.png";
+		}
+		else
+		{
+			iconName = "images/"+iconName;
+		}
+		return new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource(iconName));
+	}
+	
 	public static org.alice.apis.moveandturn.Color getColorForMarkerName(String markerName)
 	{
 		int colorIndex = getColorIndexForName(markerName);
@@ -1455,6 +1575,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.mainCameraNavigatorWidget.setToPerspectiveMode();
 	}
 	
+	public CameraMarker getActiveCameraMarker()
+	{
+		return this.mainCameraMarkerList.getSelectedItem();
+	}
+	
 	public List<CameraMarker> getOrthographicCameraMarkers()
 	{
 		return this.orthographicCameraMarkers;
@@ -1463,8 +1588,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private void createOrthographicCameraMarkers()
 	{
 		this.orthographicCameraMarkers.clear();
-		org.alice.apis.moveandturn.OrthographicCameraMarker topMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
-		topMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/topIcon.png")));
+		this.topOrthoMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
+		this.topOrthoMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/topIcon.png")));
+		this.topOrthoMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/topIcon_highlighted.png")));
 		AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
 		topTransform.translation.y = 10;
 		topTransform.translation.z = -10;
@@ -1472,41 +1598,43 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		topTransform.orientation.right.set( -1, 0, 0 );
 		topTransform.orientation.backward.set( 0, 1, 0 );
 		assert topTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
-		topMarker.setLocalTransformation( topTransform );
+		this.topOrthoMarker.setLocalTransformation( topTransform );
 		ClippedZPlane picturePlane = new ClippedZPlane();
 		picturePlane.setCenter(0, 0);
 		picturePlane.setHeight(16);
-		topMarker.setPicturePlane(picturePlane);
-		orthographicCameraMarkers.add(topMarker);
+		this.topOrthoMarker.setPicturePlane(picturePlane);
+		orthographicCameraMarkers.add(this.topOrthoMarker);
 
-		org.alice.apis.moveandturn.OrthographicCameraMarker sideMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
-		sideMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sideIcon.png")));
+		this.sideOrthoMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
+		this.sideOrthoMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sideIcon.png")));
+		this.sideOrthoMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sideIcon_highlighted.png")));
 		AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
 		sideTransform.translation.x = 10;
 		sideTransform.orientation.setValue( new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()) );
 		assert sideTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
-		sideMarker.setLocalTransformation( sideTransform );
+		this.sideOrthoMarker.setLocalTransformation( sideTransform );
 		picturePlane.setHeight(4);
-		sideMarker.setPicturePlane(picturePlane);
-		orthographicCameraMarkers.add(sideMarker);
+		this.sideOrthoMarker.setPicturePlane(picturePlane);
+		orthographicCameraMarkers.add(this.sideOrthoMarker);
 
-		org.alice.apis.moveandturn.OrthographicCameraMarker frontMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
-		frontMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/frontIcon.png")));
+		this.frontOrthoMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
+		this.frontOrthoMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/frontIcon.png")));
+		this.frontOrthoMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/frontIcon_highlighted.png")));
 		AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
 		frontTransform.translation.z = -10;
 		frontTransform.orientation.setValue( new ForwardAndUpGuide(Vector3.accessPositiveZAxis(), Vector3.accessPositiveYAxis()) );
 		assert frontTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
-		frontMarker.setLocalTransformation( frontTransform );
+		this.frontOrthoMarker.setLocalTransformation( frontTransform );
 		picturePlane.setHeight(4);
-		frontMarker.setPicturePlane(picturePlane);
-		orthographicCameraMarkers.add(frontMarker);
+		this.frontOrthoMarker.setPicturePlane(picturePlane);
+		orthographicCameraMarkers.add(this.frontOrthoMarker);
 		
 		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( MoveAndTurnSceneEditor.class.getPackage().getName() + ".view" );
 		this.openingSceneMarker.setName( resourceBundle.getString( "sceneCameraView" ) );
 		this.sceneViewMarker.setName( resourceBundle.getString( "layoutPerspectiveView" ) );
-		topMarker.setName( resourceBundle.getString( "topOrthographicView" ) );
-		sideMarker.setName( resourceBundle.getString( "leftOrthographicView" ) );
-		frontMarker.setName( resourceBundle.getString( "frontOrthographicView" ) );
+		this.topOrthoMarker.setName( resourceBundle.getString( "topOrthographicView" ) );
+		this.sideOrthoMarker.setName( resourceBundle.getString( "leftOrthographicView" ) );
+		this.frontOrthoMarker.setName( resourceBundle.getString( "frontOrthographicView" ) );
 	}
 	
 	public void addCameraMarkersToScene(Scene sceneToAddTo)
