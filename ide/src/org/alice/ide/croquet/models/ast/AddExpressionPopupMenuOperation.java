@@ -59,7 +59,7 @@ public class AddExpressionPopupMenuOperation extends org.alice.ide.croquet.model
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.ActionOperation createActionOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
+	protected edu.cmu.cs.dennisc.croquet.Operation<?> createItemOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
 		return new AddExpressionActionOperation( this, fillIn );
 	}
 	@Override

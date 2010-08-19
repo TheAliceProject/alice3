@@ -118,7 +118,7 @@ public class FillInMorePopupMenuOperation extends FillInSingleExpressionPopupMen
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.ActionOperation createActionOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
+	protected edu.cmu.cs.dennisc.croquet.Operation<?> createItemOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
 		return new FillInMoreActionOperation( this, fillIn );
 	}
 	@Override

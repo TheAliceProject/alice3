@@ -40,22 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package edu.cmu.cs.dennisc.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FillInExpressionsPopupMenuOperation extends AbstractFillInExpressionOrExpressionsPopupMenuOperation {
-	public FillInExpressionsPopupMenuOperation( java.util.UUID id ) {
-		super( id );
+public class ForwardingBlank extends Blank {
+	private FillIn<?> fillIn;
+	public ForwardingBlank( FillIn<?> fillIn ) {
+		this.fillIn = fillIn;
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getDesiredValueTypes();
-	protected abstract String getTitleAt( int index );
 	@Override
-	protected edu.cmu.cs.dennisc.cascade.Blank createCascadeBlank() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] desiredValueTypes = this.getDesiredValueTypes();
-		final edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn = org.alice.ide.IDE.getSingleton().getCascadeManager().createExpressionsFillIn( desiredValueTypes, false );
-		edu.cmu.cs.dennisc.cascade.Blank rv = new edu.cmu.cs.dennisc.cascade.ForwardingBlank( fillIn );
-		return rv;
+	protected void addChildren() {
+		this.addFillIn( this.fillIn );
+	}
+	
+	@Override
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.Model > getModels() {
+		this.fillIn.setParent( this );
+		Blank blank0 = (Blank)this.fillIn.getChildren().get( 0 );
+		return blank0.getModels();
 	}
 }

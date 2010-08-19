@@ -50,6 +50,10 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 		super( cls );
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes();
+	protected String getTitleAt( int index ) {
+		return null;
+	}
+	
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
 	
 	private static edu.cmu.cs.dennisc.alice.ast.Expression[] createPredeterminedExpressions( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types) {
@@ -57,8 +61,12 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 			return new edu.cmu.cs.dennisc.alice.ast.Expression[]{};
 		} else {
 			if( types.length == 1 ) {
-				//todo
-				return null;
+				edu.cmu.cs.dennisc.alice.ast.Expression predeterminedExpression = org.alice.ide.IDE.getSingleton().createPredeterminedExpressionIfAppropriate( types[ 0 ] );
+				if( predeterminedExpression != null ) {
+					return new edu.cmu.cs.dennisc.alice.ast.Expression[]{ predeterminedExpression };
+				} else {
+					return null;
+				}
 			} else {
 				return null;
 			}
@@ -75,7 +83,7 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 			if( types.length == 1 ) {
 				return new org.alice.ide.croquet.models.ast.FillInSingleExpressionPopupMenuOperation( java.util.UUID.fromString( "9a67ff7b-df1f-492e-b128-721f58ea2ad1" ) ) {
 					@Override
-					protected edu.cmu.cs.dennisc.croquet.ActionOperation createActionOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
+					protected edu.cmu.cs.dennisc.croquet.Operation<?> createItemOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
 						return new edu.cmu.cs.dennisc.cascade.CascadingActionOperation< edu.cmu.cs.dennisc.cascade.CascadingPopupMenuOperation >( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "62505e7a-e585-4e5e-9c5e-37a580b98b97" ), this, fillIn ) {
 							
 						};
@@ -98,12 +106,39 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 						return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( blockStatement, index );
 					}
 					@Override
-					protected java.lang.String getTitle() {
-						return null;
+					protected String getTitle() {
+						return getTitleAt( 0 );
 					}
 				};
 			} else {
-				return null;
+				return new org.alice.ide.croquet.models.ast.FillInExpressionsPopupMenuOperation( java.util.UUID.fromString( "8fc93b84-f8f6-4280-ba3b-00541a8212f2" ) ) {
+					@Override
+					protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] getDesiredValueTypes() {
+						return types;
+					}
+					@Override
+					protected edu.cmu.cs.dennisc.croquet.Operation<?> createItemOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
+						return new edu.cmu.cs.dennisc.cascade.CascadingActionOperation< edu.cmu.cs.dennisc.cascade.CascadingPopupMenuOperation >( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "499cb6e7-bb6d-45f0-b429-81693a1ca78c" ), this, fillIn ) {
+						};
+					}
+					@Override
+					public edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+						edu.cmu.cs.dennisc.alice.ast.Statement statement = CascadingExpressionsStatementTemplate.this.createStatement( (edu.cmu.cs.dennisc.alice.ast.Expression[])value ); 
+						return new org.alice.ide.codeeditor.InsertStatementEdit( blockStatement.statements, index, statement );
+					}
+					@Override
+					public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+						return null;
+					}
+					@Override
+					protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.BlockStatement, java.lang.Integer > getBlockStatementAndIndex() {
+						return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( blockStatement, index );
+					}
+					@Override
+					protected String getTitleAt( int index ) {
+						return CascadingExpressionsStatementTemplate.this.getTitleAt( index );
+					}
+				};
 			}
 		}
 	}

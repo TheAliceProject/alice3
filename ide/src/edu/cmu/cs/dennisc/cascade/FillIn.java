@@ -268,30 +268,30 @@ public abstract class FillIn< E > extends Node {
 	
 	
 	
-	@Deprecated
-	public void showPopupMenu( java.awt.Component invoker, int x, int y, edu.cmu.cs.dennisc.task.TaskObserver< ? extends Object > taskObserver ) {
-		class DefaultRootBlank extends Blank {
-			@Override
-			protected void addChildren() {
-				this.addFillIn( FillIn.this );
-			}
-			
-			@Override
-			protected java.util.List< edu.cmu.cs.dennisc.croquet.Model > getModels() {
-				FillIn.this.setParent( this );
-				Blank blank0 = (Blank)FillIn.this.getChildren().get( 0 );
-				return blank0.getModels();
-			}
+//	@Deprecated
+//	public void showPopupMenu( java.awt.Component invoker, int x, int y, edu.cmu.cs.dennisc.task.TaskObserver< ? extends Object > taskObserver ) {
+//		class DefaultRootBlank extends Blank {
 //			@Override
-//			protected void addNextNodeMenuItems( javax.swing.JComponent component ) {
-//				FillIn.this.setParent( this );
-//				FillIn.this.getChildren().get( 0 ).addNextNodeMenuItems( component );
+//			protected void addChildren() {
+//				this.addFillIn( FillIn.this );
 //			}
-		}
-		if( this.getChildren().size() > 0 ) {
-			new DefaultRootBlank().showPopupMenu( invoker, x, y, taskObserver );
-		} else {
-			throw new RuntimeException();
-		}
-	}
+//			
+//			@Override
+//			protected java.util.List< edu.cmu.cs.dennisc.croquet.Model > getModels() {
+//				FillIn.this.setParent( this );
+//				Blank blank0 = (Blank)FillIn.this.getChildren().get( 0 );
+//				return blank0.getModels();
+//			}
+////			@Override
+////			protected void addNextNodeMenuItems( javax.swing.JComponent component ) {
+////				FillIn.this.setParent( this );
+////				FillIn.this.getChildren().get( 0 ).addNextNodeMenuItems( component );
+////			}
+//		}
+//		if( this.getChildren().size() > 0 ) {
+//			new DefaultRootBlank().showPopupMenu( invoker, x, y, taskObserver );
+//		} else {
+//			throw new RuntimeException();
+//		}
+//	}
 }

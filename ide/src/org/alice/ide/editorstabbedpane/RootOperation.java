@@ -56,34 +56,34 @@ class TypeFillIn extends edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.denni
 	@Override
 	protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		if( this.type != null ) {
-			blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.EditTypeOperation( this.type ) ) );
-			blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.RenameTypeOperation( this.type ) ) );
+			blank.addFillIn( new OperationFillIn( new org.alice.ide.operations.ast.EditTypeOperation( this.type ) ) );
+			blank.addFillIn( new OperationFillIn( new org.alice.ide.operations.ast.RenameTypeOperation( this.type ) ) );
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 			if( ide.isInstanceCreationAllowableFor( this.type ) ) {
 				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = ide.getSceneType();
-				blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.DeclareFieldOfPredeterminedTypeOperation( ownerType, this.type ) ) );
+				blank.addFillIn( new OperationFillIn( new org.alice.ide.operations.ast.DeclareFieldOfPredeterminedTypeOperation( ownerType, this.type ) ) );
 			}
-			blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.file.SaveAsTypeOperation( this.type ) ) );
+			blank.addFillIn( new OperationFillIn( new org.alice.ide.operations.file.SaveAsTypeOperation( this.type ) ) );
 			blank.addSeparator();
-			blank.addFillIn( new OperatorFillIn( new EditConstructorOperation( this.type.getDeclaredConstructor() ) ) );
+			blank.addFillIn( new OperationFillIn( new EditConstructorOperation( this.type.getDeclaredConstructor() ) ) );
 			blank.addSeparator();
-			blank.addFillIn( new OperatorFillIn( org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance( this.type ) ) );
+			blank.addFillIn( new OperationFillIn( org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance( this.type ) ) );
 			for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.type.methods ) {
 				if( method.isProcedure() ) {
-					blank.addFillIn( new OperatorFillIn( new EditMethodOperation( method ) ) );
+					blank.addFillIn( new OperationFillIn( new EditMethodOperation( method ) ) );
 				}
 			}
 			blank.addSeparator();
 			for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.type.methods ) {
 				if( method.isFunction() ) {
-					blank.addFillIn( new OperatorFillIn( new EditMethodOperation( method ) ) );
+					blank.addFillIn( new OperationFillIn( new EditMethodOperation( method ) ) );
 				}
 			}
-			blank.addFillIn( new OperatorFillIn( org.alice.ide.operations.ast.DeclareFunctionOperation.getInstance( this.type ) ) );
+			blank.addFillIn( new OperationFillIn( org.alice.ide.operations.ast.DeclareFunctionOperation.getInstance( this.type ) ) );
 			blank.addSeparator();
-			blank.addFillIn( new OperatorFillIn( org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( this.type ) ) );
+			blank.addFillIn( new OperationFillIn( org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( this.type ) ) );
 			for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : this.type.fields ) {
-				blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.EditFieldOperation( field ) ) );
+				blank.addFillIn( new OperationFillIn( new org.alice.ide.operations.ast.EditFieldOperation( field ) ) );
 			}
 		} else {
 			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.CancelFillIn( "type is not set.  canceling." ) );
@@ -116,26 +116,47 @@ class ProjectBlank extends edu.cmu.cs.dennisc.cascade.Blank {
 /**
  * @author Dennis Cosgrove
  */
-public class RootOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+public class RootOperation extends edu.cmu.cs.dennisc.cascade.CascadingPopupMenuOperation {
 	public RootOperation() {
 		super( java.util.UUID.fromString( "259dfcc5-dd20-4890-8104-a34a075734d0" ) );
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		edu.cmu.cs.dennisc.croquet.ViewController<?,?> viewController = context.getViewController();
-		int x = 0;
-		int y = viewController.getHeight();
-		edu.cmu.cs.dennisc.alice.Project project = getIDE().getProject();
-		if( project != null ) {
-			new ProjectBlank( project ).showPopupMenu( viewController.getAwtComponent(), x, y, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.croquet.Operation<?> >() {
-				public void handleCompletion( edu.cmu.cs.dennisc.croquet.Operation<?> operation ) {
-					operation.fire();
-				}
-				public void handleCancelation() {
-				}
-			} );
+	protected edu.cmu.cs.dennisc.croquet.Operation<?> createItemOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
+		if( fillIn instanceof OperationFillIn ) {
+			return ((OperationFillIn)fillIn).getValue();
 		} else {
-			this.getIDE().showMessageDialog( "Open a project first (via the File Menu)", "No Project", edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION );
+			return null;
 		}
 	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > createEdit( java.lang.Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		return null;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.cascade.Blank getCascadeBlank() {
+		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.IDE.getSingleton().getProject();
+		if( project != null ) {
+			return new ProjectBlank( project );
+		} else {
+			return null;
+		}
+	}
+//	@Override
+//	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+//		edu.cmu.cs.dennisc.croquet.ViewController<?,?> viewController = context.getViewController();
+//		int x = 0;
+//		int y = viewController.getHeight();
+//		edu.cmu.cs.dennisc.alice.Project project = getIDE().getProject();
+//		if( project != null ) {
+//			new ProjectBlank( project ).showPopupMenu( viewController.getAwtComponent(), x, y, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.croquet.Operation<?> >() {
+//				public void handleCompletion( edu.cmu.cs.dennisc.croquet.Operation<?> operation ) {
+//					operation.fire();
+//				}
+//				public void handleCancelation() {
+//				}
+//			} );
+//		} else {
+//			this.getIDE().showMessageDialog( "Open a project first (via the File Menu)", "No Project", edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION );
+//		}
+//	}
 }

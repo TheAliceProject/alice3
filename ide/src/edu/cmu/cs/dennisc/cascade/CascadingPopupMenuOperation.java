@@ -70,7 +70,7 @@ public abstract class CascadingPopupMenuOperation extends edu.cmu.cs.dennisc.cro
 	private MenuModel createMenuModel( FillIn< ? > fillIn ) {
 		return new MenuModel( fillIn );
 	}
-	protected abstract edu.cmu.cs.dennisc.croquet.ActionOperation createActionOperation( FillIn< ? > fillIn );
+	protected abstract edu.cmu.cs.dennisc.croquet.Operation<?> createItemOperation( FillIn< ? > fillIn );
 
 	public edu.cmu.cs.dennisc.croquet.Model createCroquetModel( FillIn< ? > fillIn, boolean isLast ) {
 		if( fillIn instanceof SeparatorFillIn ) {
@@ -84,7 +84,7 @@ public abstract class CascadingPopupMenuOperation extends edu.cmu.cs.dennisc.cro
 			}
 		} else {
 			if( isLast ) {
-				return this.createActionOperation( fillIn );
+				return this.createItemOperation( fillIn );
 			} else {
 				return this.createMenuModel( fillIn );
 			}

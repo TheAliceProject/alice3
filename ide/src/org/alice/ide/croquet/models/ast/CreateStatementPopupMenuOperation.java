@@ -66,14 +66,17 @@ public class CreateStatementPopupMenuOperation extends FillInExpressionsPopupMen
 		return this.blockStatementAndIndex;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.ActionOperation createActionOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
+	protected edu.cmu.cs.dennisc.croquet.Operation<?> createItemOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
 		return null;
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > createEdit( java.lang.Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		return null;
 	}
-	
+	@Override
+	protected java.lang.String getTitleAt( int index ) {
+		return null;
+	}
 //	class DropEdit extends org.alice.ide.ToDoEdit {
 //		private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 //		@Override

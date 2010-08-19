@@ -98,7 +98,8 @@ public abstract class CascadeManager {
 	//		return getExpressionFillerInnerFor( clsEnum, clsEnum );
 	//	}
 
-	private edu.cmu.cs.dennisc.cascade.FillIn createExpressionsFillIn( final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types, final boolean isArrayLengthDesired ) {
+	@Deprecated
+	public edu.cmu.cs.dennisc.cascade.FillIn createExpressionsFillIn( final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types, final boolean isArrayLengthDesired ) {
 		edu.cmu.cs.dennisc.cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.Expression[] > rv = new edu.cmu.cs.dennisc.cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.Expression[] >() {
 			@Override
 			protected void addChildren() {
@@ -382,12 +383,13 @@ public abstract class CascadeManager {
 			}
 		}
 		
-		fillIn.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
+		throw new RuntimeException( "todo" );
+		//fillIn.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
 	}
-	@Deprecated
-	public void unsetPreviousExpressionAndDropStatement() {
-		this.previousExpression = null;
-		this.dropParent = null;
-		this.dropIndex = -1;
-	}
+//	@Deprecated
+//	public void unsetPreviousExpressionAndDropStatement() {
+//		this.previousExpression = null;
+//		this.dropParent = null;
+//		this.dropIndex = -1;
+//	}
 }

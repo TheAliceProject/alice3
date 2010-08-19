@@ -67,7 +67,7 @@ public abstract class FillInExpressionPropertyPopupMenuOperation extends FillInS
 	
 	protected abstract edu.cmu.cs.dennisc.croquet.Group getActionGroup();
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.ActionOperation createActionOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
+	protected edu.cmu.cs.dennisc.croquet.Operation<?> createItemOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
 		return new FillInExpressionPropertyActionOperation( this.getActionGroup(), this, fillIn );
 	}
 }

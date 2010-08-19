@@ -146,6 +146,38 @@ public class StageIDE extends org.alice.ide.IDE {
 //		} );
 	}
 	
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava MOUSE_BUTTON_LISTENER_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.MouseButtonListener.class );
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava KEY_LISTENER_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.KeyListener.class );
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.Expression createPredeterminedExpressionIfAppropriate( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > desiredValueType ) {
+		if( desiredValueType == MOUSE_BUTTON_LISTENER_TYPE ) {
+			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] parameters = new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {
+					new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "e", org.alice.apis.moveandturn.event.MouseButtonEvent.class )
+			};
+			edu.cmu.cs.dennisc.alice.ast.BlockStatement body = new edu.cmu.cs.dennisc.alice.ast.BlockStatement();
+			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( "mouseButtonClicked", Void.TYPE, parameters, body );
+			method.isSignatureLocked.setValue( true );
+			edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice type = new edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice();
+			type.superType.setValue( desiredValueType );
+			type.methods.add( method );
+			edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor constructor = edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor.get( type );
+			return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor );
+		} else if( desiredValueType == KEY_LISTENER_TYPE ) {
+			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] parameters = new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {
+					new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "e", org.alice.apis.moveandturn.event.KeyEvent.class )
+			};
+			edu.cmu.cs.dennisc.alice.ast.BlockStatement body = new edu.cmu.cs.dennisc.alice.ast.BlockStatement();
+			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( "keyPressed", Void.TYPE, parameters, body );
+			method.isSignatureLocked.setValue( true );
+			edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice type = new edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice();
+			type.superType.setValue( desiredValueType );
+			type.methods.add( method );
+			edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor constructor = edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor.get( type );
+			return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor );
+		} else {
+			return super.createPredeterminedExpressionIfAppropriate( desiredValueType );
+		}
+	}
 	@Override
 	public org.alice.ide.cascade.CascadeManager getCascadeManager() {
 		return this.cascadeManager;
