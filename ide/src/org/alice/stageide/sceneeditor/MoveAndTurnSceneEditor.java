@@ -771,9 +771,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		} else {
 			this.openingSceneMarker = new PerspectiveCameraMarker();
 			this.openingSceneMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/mainCameraIcon.png")));
+			this.openingSceneMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/mainCameraIcon_highlighted.png")));
 			this.sceneViewMarker = new PerspectiveCameraMarker();
 			this.sceneViewMarker.setDisplayVisuals(false);
 			this.sceneViewMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sceneEditorCameraIcon.png")));
+			this.sceneViewMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sceneEditorCameraIcon_highlighted.png")));
 			
 			createOrthographicCamera();
 			createOrthographicCameraMarkers();
@@ -833,12 +835,32 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				@Override
 				protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, CameraMarker value, int index, boolean isSelected, boolean cellHasFocus) {
 					rv.setText(value.getName());
-					rv.setIcon(value.getIcon());
+					
 					if( index == 0 ) {
 						rv.setBorder( separatorBelowBorder );
 					} else {
 						rv.setBorder( emptyBorder );
 					}
+					if (isSelected)
+					{
+						rv.setOpaque(true);
+						rv.setBackground(new Color(57, 105, 138));
+						rv.setForeground(Color.WHITE);
+					}
+					else
+					{
+						rv.setOpaque(false);
+						rv.setForeground(Color.BLACK);
+					}
+					if (isSelected && value.getHighlightedIcon() != null)
+					{
+						rv.setIcon(value.getHighlightedIcon());
+					}
+					else
+					{
+						rv.setIcon(value.getIcon());
+					}
+					
 //					if( value == openingSceneMarker ) {
 //						//pass
 //					} else {
@@ -1440,6 +1462,20 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource(iconName));
 	}
 	
+	public static Icon getHighlightIconForMarkerName(String markerName)
+	{
+		String iconName = getIconNameForMarkerName(markerName);
+		if (iconName == null)
+		{
+			iconName = "images/markerIcon_White.png";
+		}
+		else
+		{
+			iconName = "images/"+iconName;
+		}
+		return new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource(iconName));
+	}
+	
 	public static org.alice.apis.moveandturn.Color getColorForMarkerName(String markerName)
 	{
 		int colorIndex = getColorIndexForName(markerName);
@@ -1554,6 +1590,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.orthographicCameraMarkers.clear();
 		this.topOrthoMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
 		this.topOrthoMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/topIcon.png")));
+		this.topOrthoMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/topIcon_highlighted.png")));
 		AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
 		topTransform.translation.y = 10;
 		topTransform.translation.z = -10;
@@ -1570,6 +1607,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 		this.sideOrthoMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
 		this.sideOrthoMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sideIcon.png")));
+		this.sideOrthoMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sideIcon_highlighted.png")));
 		AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
 		sideTransform.translation.x = 10;
 		sideTransform.orientation.setValue( new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()) );
@@ -1581,6 +1619,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 		this.frontOrthoMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
 		this.frontOrthoMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/frontIcon.png")));
+		this.frontOrthoMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/frontIcon_highlighted.png")));
 		AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
 		frontTransform.translation.z = -10;
 		frontTransform.orientation.setValue( new ForwardAndUpGuide(Vector3.accessPositiveZAxis(), Vector3.accessPositiveYAxis()) );
