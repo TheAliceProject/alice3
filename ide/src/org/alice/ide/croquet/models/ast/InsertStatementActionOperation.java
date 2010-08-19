@@ -40,42 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.templates;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementTemplate extends org.alice.ide.common.StatementLikeSubstance {
-	public StatementTemplate(Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls) {
-		super(cls, javax.swing.BoxLayout.LINE_AXIS);
-		this.setDragAndDropOperation(new org.alice.ide.operations.DefaultDragOperation( edu.cmu.cs.dennisc.alice.Project.GROUP ));
-	}
-	
-	public abstract edu.cmu.cs.dennisc.croquet.Operation< ? > createDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index );
-	@Override
-	protected boolean isPressed() {
-		return false;
-	}
-	@Override
-	protected boolean isInScope() {
-		return getIDE().isSelectedAccessibleInScope();
+public class InsertStatementActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
+	private int index;
+	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
+	public InsertStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "a6aa2cea-f205-434a-8ec8-c068c9fb3b83" ) );
+		this.statement = statement;
+		this.blockStatement = blockStatement;
+		this.index = index;
 	}
 	@Override
-	protected boolean contains(int x, int y, boolean jContains) {
-		if( this.isInScope() ) {
-			return super.contains(x, y, jContains);
-		} else {
-			return false;
-		}
-	}
-	@Override
-	protected void paintEpilogue(java.awt.Graphics2D g2, int x, int y, int width, int height) {
-		super.paintEpilogue(g2, x, y, width, height);
-		if( this.isInScope() ) {
-			//pass
-		} else {
-			g2.setPaint(edu.cmu.cs.dennisc.croquet.PaintUtilities.getDisabledTexturePaint());
-			this.fillBounds(g2);
-		}
+	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		context.commitAndInvokeDo( new org.alice.ide.codeeditor.InsertStatementEdit( this.blockStatement.statements, this.index, this.statement ) );
 	}
 }

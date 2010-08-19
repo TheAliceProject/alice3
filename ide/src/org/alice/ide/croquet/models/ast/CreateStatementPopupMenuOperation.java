@@ -46,12 +46,24 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class CreateStatementPopupMenuOperation extends FillInExpressionsPopupMenuOperation {
-	public CreateStatementPopupMenuOperation( java.util.UUID id ) {
-		super( id );
+	private org.alice.ide.templates.StatementTemplate statementTemplate;
+	private edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.BlockStatement, Integer > blockStatementAndIndex;
+	public CreateStatementPopupMenuOperation( org.alice.ide.templates.StatementTemplate statementTemplate, edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.BlockStatement, Integer > blockStatementAndIndex ) {
+		super( java.util.UUID.fromString( "67f58f5a-eac4-4ece-8680-9b5a06c3ef78" ) );
+		this.statementTemplate = statementTemplate;
+		this.blockStatementAndIndex = blockStatementAndIndex;
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
 		return null;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] getDesiredValueTypes() {
+		return null;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.BlockStatement, java.lang.Integer > getBlockStatementAndIndex() {
+		return this.blockStatementAndIndex;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.ActionOperation createActionOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
@@ -59,10 +71,6 @@ public class CreateStatementPopupMenuOperation extends FillInExpressionsPopupMen
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > createEdit( java.lang.Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		return null;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] getDesiredValueTypes() {
 		return null;
 	}
 	

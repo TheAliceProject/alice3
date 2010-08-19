@@ -77,41 +77,9 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 		this.getIDE().removeFromConcealedBin( this.implementor.getIncompleteStatementPane() );
 		super.handleRemovedFrom( parent );
 	}
-//	@Override
-//	public java.awt.Dimension getMinimumSize() {
-//		return this.implementor.adjustMinimumSize( super.getMinimumSize() );
-//	}
-
 	@Override
-	public final void createStatement( final java.awt.event.MouseEvent e, final edu.cmu.cs.dennisc.alice.ast.BlockStatement block, final int index, final edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver ) {
-		class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement, Void > {
-			@Override
-			protected edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement doInBackground() throws java.lang.Exception {
-				org.alice.ide.operations.ast.DeclareLocalOperation declareLocalOperation = new org.alice.ide.operations.ast.DeclareLocalOperation(block);
-				declareLocalOperation.fire(e);
-				return declareLocalOperation.getLocalDeclarationStatement();
-			}
-			@Override
-			protected void done() {
-				edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement statement = null;
-				try {
-					statement = this.get();
-				} catch( InterruptedException ie ) {
-					throw new RuntimeException( ie );
-				} catch( java.util.concurrent.ExecutionException ee ) {
-					throw new RuntimeException( ee );
-				} finally {
-					if( statement != null ) {
-						//todo
-						getIDE().refreshUbiquitousPane();
-						taskObserver.handleCompletion( statement );
-					} else {
-						taskObserver.handleCancelation();
-					}
-				}
-			}
-		}
-		Worker worker = new Worker();
-		worker.execute();
+	public edu.cmu.cs.dennisc.croquet.Operation<?> createDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
+		org.alice.ide.operations.ast.DeclareLocalOperation declareLocalOperation = new org.alice.ide.operations.ast.DeclareLocalOperation( blockStatement, index );
+		return declareLocalOperation;
 	}
 }

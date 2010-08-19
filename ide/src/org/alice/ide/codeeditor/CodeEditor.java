@@ -416,7 +416,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 		this.repaint();
 
 	}
-	public final edu.cmu.cs.dennisc.croquet.Operation<?> dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public final edu.cmu.cs.dennisc.croquet.Operation<?> dragDropped( final edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 		edu.cmu.cs.dennisc.croquet.Operation<?> rv = null;
 		final java.awt.Point viewPosition = this.scrollPane.getAwtComponent().getViewport().getViewPosition();
 		final edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
@@ -530,6 +530,25 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 //						}
 //					}
 //					rv = new DropOperation();
+					edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.BlockStatement, Integer > blockStatementAndIndex;
+					edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
+					edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
+					if( propertyOwner instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
+						blockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)propertyOwner;
+					} else {
+						blockStatement = null;
+						//index = -1;
+					}
+					rv = statementTemplate.createDropOperation( context, blockStatement, index );
+					context.addChildrenObserver( new edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver() {
+						public void addingChild( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+						}
+						public void addedChild( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+							if( child instanceof edu.cmu.cs.dennisc.croquet.CancelEvent || child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
+								context.getDragSource().hideDropProxyIfNecessary();
+							}
+						}
+					} );
 				} else {
 					source.hideDropProxyIfNecessary();
 				}
