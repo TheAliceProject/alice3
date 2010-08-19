@@ -472,21 +472,22 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	{
 		AffineMatrix4x4 goodPointOfView = new AffineMatrix4x4();
 		CameraMarker selectedCameraMarker = getActiveCameraMarker();
+		AffineMatrix4x4 cameraTransform = selectedCameraMarker.getSGTransformable().getAbsoluteTransformation();
 		if (selectedCameraMarker instanceof PerspectiveCameraMarker)
 		{
 			AbstractCamera selectedCamera = this.getSGPerspectiveCamera();
-			Vector3 cameraBackward = selectedCamera.getAbsoluteTransformation().orientation.backward;
-			cameraBackward.y = 0.0;
-			cameraBackward.normalize();
-			if (cameraBackward.isNaN())
-			{
-				cameraBackward = selectedCamera.getAbsoluteTransformation().orientation.up;
-				cameraBackward.multiply(-1);
-				cameraBackward.y = 0.0;
-				cameraBackward.normalize();
-			}
+			Vector3 cameraBackward = cameraTransform.orientation.backward;
 			Vector3 cameraForward = Vector3.createMultiplication(cameraBackward, -1);
-			
+			Vector3 objectBackward = cameraTransform.orientation.backward;
+			objectBackward.y = 0.0;
+			objectBackward.normalize();
+			if (objectBackward.isNaN())
+			{
+				objectBackward = cameraTransform.orientation.up;
+				objectBackward.multiply(-1);
+				objectBackward.y = 0.0;
+				objectBackward.normalize();
+			}
 			double dotWithVertical = Math.abs(Vector3.calculateDotProduct(cameraForward, Vector3.accessPositiveYAxis()));
 			if (dotWithVertical < .5)
 			{
@@ -498,7 +499,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			if (pickPoint == null)
 			{
 				//Create a pick ray that picks mostly down (well, in the direction of the ground) in the direction the camera is facing
-				Point3 pickOrigin = selectedCamera.getAbsoluteTransformation().translation;
+				Point3 pickOrigin = cameraTransform.translation;
 				Vector3 pickDirection = new Vector3(cameraForward);
 				pickDirection.y = 0;
 				pickDirection.normalize();
@@ -517,14 +518,13 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			assert pickPoint != null;
 			if ( pickPoint != null)
 			{
-				OrthogonalMatrix3x3 facingCameraOrientation = new OrthogonalMatrix3x3(new ForwardAndUpGuide(cameraBackward, Vector3.accessPositiveYAxis()));
+				OrthogonalMatrix3x3 facingCameraOrientation = new OrthogonalMatrix3x3(new ForwardAndUpGuide(objectBackward, Vector3.accessPositiveYAxis()));
 				goodPointOfView.translation.set(pickPoint);
 				goodPointOfView.orientation.setValue(facingCameraOrientation);
 			}
 		}
 		else
 		{
-			AffineMatrix4x4 cameraTransform = selectedCameraMarker.getSGTransformable().getAbsoluteTransformation();
 			Point3 cameraPosition = cameraTransform.translation;
 			Vector3 goodBackward = cameraTransform.orientation.backward;
 			if (selectedCameraMarker == this.topOrthoMarker)
@@ -1610,6 +1610,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.sideOrthoMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sideIcon_highlighted.png")));
 		AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
 		sideTransform.translation.x = 10;
+		sideTransform.translation.y = 1;
 		sideTransform.orientation.setValue( new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()) );
 		assert sideTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
 		this.sideOrthoMarker.setLocalTransformation( sideTransform );
@@ -1622,6 +1623,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.frontOrthoMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/frontIcon_highlighted.png")));
 		AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
 		frontTransform.translation.z = -10;
+		frontTransform.translation.y = 1;
 		frontTransform.orientation.setValue( new ForwardAndUpGuide(Vector3.accessPositiveZAxis(), Vector3.accessPositiveYAxis()) );
 		assert frontTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
 		this.frontOrthoMarker.setLocalTransformation( frontTransform );
@@ -1702,13 +1704,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return declaredFields;
 	}
 
-	protected void paintHorizonLine(LightweightOnscreenLookingGlass lookingGlass, OrthographicCamera camera)
+	protected void paintHorizonLine(Graphics graphics, LightweightOnscreenLookingGlass lookingGlass, OrthographicCamera camera)
 	{
 		AffineMatrix4x4 cameraTransform = camera.getAbsoluteTransformation();
 		double dotProd = Vector3.calculateDotProduct(cameraTransform.orientation.up, Vector3.accessPositiveYAxis());
 		if (dotProd == 1 || dotProd == -1)
 		{
-			Graphics g = lookingGlass.getJPanel().getGraphics();
 			Dimension lookingGlassSize = lookingGlass.getSize();
 			
 			Point3 cameraPosition = camera.getAbsoluteTransformation().translation;
@@ -1723,8 +1724,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			int horizonLinePixelVal = (int)(yRatio * distanceFromMaxY);
 			if (horizonLinePixelVal >= 0 && horizonLinePixelVal <= lookingGlassHeight)
 			{
-				g.setColor(Color.BLACK);
-				g.drawLine(0, horizonLinePixelVal, lookingGlassSize.width, horizonLinePixelVal);
+				graphics.setColor(Color.BLACK);
+				graphics.drawLine(0, horizonLinePixelVal, lookingGlassSize.width, horizonLinePixelVal);
 			}
 		}
 	}
@@ -1773,7 +1774,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	{	
 		if (this.onscreenLookingGlass.getCameraCount() > 0 && this.onscreenLookingGlass.getCameraAt(0) instanceof OrthographicCamera)
 		{
-			paintHorizonLine(this.onscreenLookingGlass, (OrthographicCamera)this.onscreenLookingGlass.getCameraAt(0));
+			paintHorizonLine(e.getGraphics2D(), this.onscreenLookingGlass, (OrthographicCamera)this.onscreenLookingGlass.getCameraAt(0));
 		}
 	}
 	
