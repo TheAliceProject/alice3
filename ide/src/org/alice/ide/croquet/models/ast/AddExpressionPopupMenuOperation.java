@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.initializer;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
@@ -64,14 +64,14 @@ public class AddExpressionPopupMenuOperation extends org.alice.ide.croquet.model
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		return new org.alice.ide.croquet.edits.initializer.AddExpressionEdit( (edu.cmu.cs.dennisc.alice.ast.Expression)value );
+		return new org.alice.ide.croquet.edits.ast.AddExpressionEdit( (edu.cmu.cs.dennisc.alice.ast.Expression)value );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
 		return componentTypeProperty.getValue();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+	public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
 		return null;
 	}
 	@Override

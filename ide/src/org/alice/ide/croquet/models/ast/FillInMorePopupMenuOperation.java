@@ -90,7 +90,7 @@ public class FillInMorePopupMenuOperation extends FillInSingleExpressionPopupMen
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+	public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
 		return null;
 	}
 	@Override

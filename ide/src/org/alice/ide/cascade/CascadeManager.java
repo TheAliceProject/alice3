@@ -405,17 +405,17 @@ public abstract class CascadeManager {
 		
 		fillIn.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
 	}
-	@Deprecated
-	public void promptUserForExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, edu.cmu.cs.dennisc.croquet.ViewController< ?,? > viewController, java.awt.Point p,
-			edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
-		edu.cmu.cs.dennisc.cascade.Blank blank = createExpressionBlank( type, prevExpression );
-		if( p != null ) {
-			//pass
-		} else {
-			p = new java.awt.Point( 0, viewController.getHeight() );
-		}
-		blank.showPopupMenu( viewController.getAwtComponent(), p.x, p.y, taskObserver );
-	}
+//	@Deprecated
+//	public void promptUserForExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, edu.cmu.cs.dennisc.croquet.ViewController< ?,? > viewController, java.awt.Point p,
+//			edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
+//		edu.cmu.cs.dennisc.cascade.Blank blank = createExpressionBlank( type, prevExpression );
+//		if( p != null ) {
+//			//pass
+//		} else {
+//			p = new java.awt.Point( 0, viewController.getHeight() );
+//		}
+//		blank.showPopupMenu( viewController.getAwtComponent(), p.x, p.y, taskObserver );
+//	}
 //	@Deprecated
 //	public void promptUserForMore( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement statement, final edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter, edu.cmu.cs.dennisc.croquet.ViewController< ?,? > viewController, java.awt.Point p, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
 //		this.setDropParentAndIndex( statement );

@@ -40,51 +40,56 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
-
-import edu.cmu.cs.dennisc.croquet.PopupMenu;
+package org.alice.ide.croquet.edits.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractFillInExpressionOrExpressionsPopupMenuOperation extends edu.cmu.cs.dennisc.cascade.CascadingPopupMenuOperation {
-	public AbstractFillInExpressionOrExpressionsPopupMenuOperation( java.util.UUID id ) {
-		super( id );
+public class AddExpressionEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.AddExpressionActionOperation > {
+	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
+	private int index;
+	public AddExpressionEdit() {
 	}
-	public abstract edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression();
-	protected edu.cmu.cs.dennisc.alice.ast.Statement getStatement() {
-		edu.cmu.cs.dennisc.alice.ast.Expression prevExpression = this.getPreviousExpression();
-		if( prevExpression != null ) {
-			return prevExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.Statement.class );
-		} else {
-			return null;
-		}
+	public AddExpressionEdit( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+		this.expression = expression;
+	}
+	@Override
+	protected final void doOrRedoInternal( boolean isDo ) {
+		org.alice.ide.croquet.models.ast.AddExpressionActionOperation actionOperation = this.getModel();
+		org.alice.ide.croquet.models.ast.AddExpressionPopupMenuOperation popupMenuOperation = actionOperation.getPopupMenuOperation();
+		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = popupMenuOperation.getExpressionListProperty();
+		this.index = expressionListProperty.size();
+		expressionListProperty.add( this.expression );
+	}
+	@Override
+	protected final void undoInternal() {
+		org.alice.ide.croquet.models.ast.AddExpressionActionOperation actionOperation = this.getModel();
+		org.alice.ide.croquet.models.ast.AddExpressionPopupMenuOperation popupMenuOperation = actionOperation.getPopupMenuOperation();
+		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = popupMenuOperation.getExpressionListProperty();
+		expressionListProperty.remove( this.index );
+	}
+	@Override
+	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+		rv.append( "add: " );
+		edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, this.expression, locale );
+		return rv;
 	}
 
 	
-	
-	private edu.cmu.cs.dennisc.cascade.Blank blank;
-	protected abstract edu.cmu.cs.dennisc.cascade.Blank createCascadeBlank();
 	@Override
-	protected final edu.cmu.cs.dennisc.cascade.Blank getCascadeBlank() {
-		if( this.blank != null ) {
-			//pass
-		} else {
-			this.blank = this.createCascadeBlank();
-		}
-		return this.blank;
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		throw new RuntimeException( "todo" );
 	}
-	
-
 	@Override
-	protected void handlePopupMenuWillBecomeVisible( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, javax.swing.event.PopupMenuEvent e ) {
-		org.alice.ide.IDE.getSingleton().getCascadeManager().pushContext( this.getPreviousExpression(), this.getStatement() );
-		super.handlePopupMenuWillBecomeVisible( popupMenu, e );
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		throw new RuntimeException( "todo" );
 	}
-	
 	@Override
-	protected void handlePopupMenuWillBecomeInvisible( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, javax.swing.event.PopupMenuEvent e ) {
-		super.handlePopupMenuWillBecomeInvisible( popupMenu, e );
-		org.alice.ide.IDE.getSingleton().getCascadeManager().popContext();
+	public boolean canRedo() {
+		return true;
+	}
+	@Override
+	public boolean canUndo() {
+		return true;
 	}
 }

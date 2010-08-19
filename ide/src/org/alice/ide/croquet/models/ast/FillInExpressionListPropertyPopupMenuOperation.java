@@ -40,56 +40,50 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.edits.initializer;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AddExpressionEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.initializer.AddExpressionActionOperation > {
-	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
+public class FillInExpressionListPropertyPopupMenuOperation extends FillInSingleExpressionPopupMenuOperation {
 	private int index;
-	public AddExpressionEdit() {
+	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType;
+	private edu.cmu.cs.dennisc.croquet.Group actionGroup;
+	public FillInExpressionListPropertyPopupMenuOperation( java.util.UUID id, int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType, edu.cmu.cs.dennisc.croquet.Group actionGroup ) {
+		super( id );
+		this.index = index;
+		this.expressionListProperty = expressionListProperty;
+		this.desiredType = desiredType;
+		this.actionGroup = actionGroup;
 	}
-	public AddExpressionEdit( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-		this.expression = expression;
+	public edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty getExpressionListProperty() {
+		return this.expressionListProperty;
 	}
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.croquet.models.initializer.AddExpressionActionOperation actionOperation = this.getModel();
-		org.alice.ide.croquet.models.initializer.AddExpressionPopupMenuOperation popupMenuOperation = actionOperation.getPopupMenuOperation();
-		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = popupMenuOperation.getExpressionListProperty();
-		this.index = expressionListProperty.size();
-		expressionListProperty.add( this.expression );
+	public int getIndex() {
+		return this.index;
 	}
-	@Override
-	protected final void undoInternal() {
-		org.alice.ide.croquet.models.initializer.AddExpressionActionOperation actionOperation = this.getModel();
-		org.alice.ide.croquet.models.initializer.AddExpressionPopupMenuOperation popupMenuOperation = actionOperation.getPopupMenuOperation();
-		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = popupMenuOperation.getExpressionListProperty();
-		expressionListProperty.remove( this.index );
-	}
-	@Override
-	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
-		rv.append( "add: " );
-		edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, this.expression, locale );
-		return rv;
-	}
-
-	
-	@Override
-	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		throw new RuntimeException( "todo" );
+	public edu.cmu.cs.dennisc.croquet.Group getActionGroup() {
+		return this.actionGroup;
 	}
 	@Override
-	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
+	protected edu.cmu.cs.dennisc.croquet.ActionOperation createActionOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
+		return new FillInExpressionListPropertyActionOperation( this.getActionGroup(), this, fillIn );
 	}
 	@Override
-	public boolean canRedo() {
-		return true;
+	public edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		return new org.alice.ide.croquet.edits.ast.FillInExpressionListPropertyEdit( (edu.cmu.cs.dennisc.alice.ast.Expression)value );
 	}
 	@Override
-	public boolean canUndo() {
-		return true;
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
+		return this.desiredType;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+		return this.expressionListProperty.get( this.index );
+	}
+	@Override
+	protected String getTitle() {
+		return null;
 	}
 }
