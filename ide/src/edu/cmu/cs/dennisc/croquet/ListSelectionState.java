@@ -169,9 +169,8 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 						ModelContext<?> parentContext = application.getCurrentContext();
 						ListSelectionStateContext< E > childContext = parentContext.createItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController, prevIndex, prevSelection, nextIndex, nextSelection );
 						childContext.commitAndInvokeDo( new ListSelectionEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ) );
-						ListSelectionState.this.fireValueChanged(nextSelection);
 					}
-
+					ListSelectionState.this.fireValueChanged(nextSelection);
 					this.mostRecentEvent = null;
 					this.mostRecentViewController = null;
 				}
