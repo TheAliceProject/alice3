@@ -46,15 +46,18 @@ package edu.cmu.cs.dennisc.pattern;
  * @author Dennis Cosgrove
  */
 public class Tuple6<A, B, C, D, E, F> {
+	public static <A, B, C, D, E, F> Tuple6<A, B, C, D, E, F> createInstance( A a, B b, C c, D d, E e, F f ) {
+		return new Tuple6<A, B, C, D, E, F>( a, b, c, d, e, f );
+	}
 	private A m_a = null;
 	private B m_b = null;
 	private C m_c = null;
 	private D m_d = null;
 	private E m_e = null;
 	private F m_f = null;
-	public Tuple6() {
+	private Tuple6() {
 	}
-	public Tuple6( A a, B b, C c, D d, E e, F f ) {
+	private Tuple6( A a, B b, C c, D d, E e, F f ) {
 		set( a, b, c, d, e, f );
 	}
 	public A getA() {

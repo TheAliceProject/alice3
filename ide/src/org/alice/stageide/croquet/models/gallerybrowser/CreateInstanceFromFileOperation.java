@@ -94,7 +94,7 @@ abstract class CreateInstanceFromFileOperation extends AbstractGalleryDeclareFie
 				if( zipFile != null ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
 					try {
-						edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > tuple = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readType( zipFile );
+						edu.cmu.cs.dennisc.pattern.Tuple2< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > tuple = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readType( zipFile );
 						type = tuple.getA();
 						edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO: add in resources" );
 					} catch( java.io.IOException ioe ) {
@@ -120,7 +120,7 @@ abstract class CreateInstanceFromFileOperation extends AbstractGalleryDeclareFie
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.getActualInputValue();
 		if( field != null ) {
 			Object instanceInJava = createFieldPane.createInstanceInJava();
-			return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object >( field, instanceInJava );
+			return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( field, instanceInJava );
 		} else {
 			return null;
 		}

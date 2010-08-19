@@ -47,7 +47,7 @@ package org.alice.ide.operations.ast;
  */
 public abstract class AbstractDeclareFieldInputDialogOperation<J extends org.alice.ide.preview.PanelWithPreview> extends org.alice.ide.operations.InputDialogWithPreviewOperation<J> {
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> getOwnerType();
-	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> createFieldAndInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<J> context );
+	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ? extends Object> createFieldAndInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<J> context );
 	protected abstract boolean isInstanceValid();
 	
 	public AbstractDeclareFieldInputDialogOperation( java.util.UUID individualId ) {
@@ -60,7 +60,7 @@ public abstract class AbstractDeclareFieldInputDialogOperation<J extends org.ali
 	@Override
 	protected final void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<J> context, boolean isOk) {
 		if( isOk ) {
-			edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> tuple = this.createFieldAndInstance( context );
+			edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ? extends Object> tuple = this.createFieldAndInstance( context );
 			if( tuple != null ) {
 				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
 				if( field != null ) {

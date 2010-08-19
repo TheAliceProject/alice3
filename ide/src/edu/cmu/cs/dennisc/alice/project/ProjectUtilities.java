@@ -220,12 +220,12 @@ public abstract class ProjectUtilities {
 		assert path != null;
 		return readProject( new java.io.File( path ) );
 	}
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource >> readType( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
+	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > readType( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = readType( zipFile, TYPE_ENTRY_NAME );
 		java.util.Set< org.alice.virtualmachine.Resource > resources = readResources( zipFile );
-		return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource >>( type, resources );
+		return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( type, resources );
 	}
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource >> readType( java.io.File file ) {
+	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource >> readType( java.io.File file ) {
 		assert file != null;
 		assert file.exists();
 		try {
@@ -234,7 +234,7 @@ public abstract class ProjectUtilities {
 			throw new RuntimeException( file.getAbsolutePath(), ioe );
 		}
 	}
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource >> readType( String path ) {
+	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource >> readType( String path ) {
 		return readType( new java.io.File( path ) );
 	}
 

@@ -46,6 +46,10 @@ package edu.cmu.cs.dennisc.pattern;
  * @author Dennis Cosgrove
  */
 public class Tuple7<A, B, C, D, E, F, G> {
+	public static <A, B, C, D, E, F, G> Tuple7<A, B, C, D, E, F, G> createInstance( A a, B b, C c, D d, E e, F f, G g ) {
+		return new Tuple7<A, B, C, D, E, F, G>( a, b, c, d, e, f, g );
+	}
+
 	private A m_a = null;
 	private B m_b = null;
 	private C m_c = null;
@@ -53,9 +57,9 @@ public class Tuple7<A, B, C, D, E, F, G> {
 	private E m_e = null;
 	private F m_f = null;
 	private G m_g = null;
-	public Tuple7() {
+	private Tuple7() {
 	}
-	public Tuple7( A a, B b, C c, D d, E e, F f, G g ) {
+	private Tuple7( A a, B b, C c, D d, E e, F f, G g ) {
 		set( a, b, c, d, e, f, g );
 	}
 	public A getA() {

@@ -325,31 +325,31 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		this.addChild(new CancelEvent(this));
 	}
 
-	@Deprecated
-	public void pend(PendResolver<?, ?> resolver) {
-		class PendTaskObserver<E extends Edit, F> implements edu.cmu.cs.dennisc.task.TaskObserver<F> {
-			private ModelContext context;
-			private PendResolver<E, F> resolver;
-			private E edit;
-			public PendTaskObserver(ModelContext context, PendResolver<E, F> resolver) {
-				this.context = context;
-				this.resolver = resolver;
-				this.edit = this.resolver.createEdit();
-				java.util.UUID id = null;
-				edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: pend id");
-				this.edit = this.resolver.initialize(this.edit, this.context, id, this);
-			}
-			public void handleCompletion(F f) {
-				this.edit = this.resolver.handleCompletion(this.edit, f);
-				this.context.commitAndInvokeDo(this.edit);
-			}
-			public void handleCancelation() {
-				this.resolver.handleCancelation();
-				this.context.cancel();
-			}
-		}
-		new PendTaskObserver(this, resolver);
-	}
+//	@Deprecated
+//	public void pend(PendResolver<?, ?> resolver) {
+//		class PendTaskObserver<E extends Edit, F> implements edu.cmu.cs.dennisc.task.TaskObserver<F> {
+//			private ModelContext context;
+//			private PendResolver<E, F> resolver;
+//			private E edit;
+//			public PendTaskObserver(ModelContext context, PendResolver<E, F> resolver) {
+//				this.context = context;
+//				this.resolver = resolver;
+//				this.edit = this.resolver.createEdit();
+//				java.util.UUID id = null;
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: pend id");
+//				this.edit = this.resolver.initialize(this.edit, this.context, id, this);
+//			}
+//			public void handleCompletion(F f) {
+//				this.edit = this.resolver.handleCompletion(this.edit, f);
+//				this.context.commitAndInvokeDo(this.edit);
+//			}
+//			public void handleCancelation() {
+//				this.resolver.handleCancelation();
+//				this.context.cancel();
+//			}
+//		}
+//		new PendTaskObserver(this, resolver);
+//	}
 //	@Deprecated
 //	public void todo() {
 //		throw new RuntimeException("todo");

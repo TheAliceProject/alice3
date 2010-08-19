@@ -92,7 +92,7 @@ public class GalleryFileOperation extends AbstractGalleryDeclareFieldOperation<o
 //					((org.alice.apis.moveandturn.Transformable)fieldObject).getSGTransformable().localTransformation.setValue();
 				}
 			}
-			return new edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object>( field, fieldObject );
+			return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( field, fieldObject );
 		} else {
 			return null;
 		}

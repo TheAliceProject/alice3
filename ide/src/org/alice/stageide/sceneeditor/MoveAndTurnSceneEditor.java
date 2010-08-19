@@ -1534,7 +1534,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 
-	public Tuple2< FieldDeclaredInAlice, Object > createCameraMarkerField( TypeDeclaredInAlice ownerType ) {
+	public Tuple2< FieldDeclaredInAlice, org.alice.apis.moveandturn.BookmarkCameraMarker > createCameraMarkerField( TypeDeclaredInAlice ownerType ) {
 		CreateCameraMarkerActionOperation.getInstance().setEnabled(false);
 		String markerName = getNameForCameraMarker( ownerType );
 
@@ -1553,7 +1553,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		
 //		this.sceneMarkerFieldList.setSelectedItem(cameraMarkerField);
 		
-		return new Tuple2< FieldDeclaredInAlice, Object >( cameraMarkerField, cameraMarker );
+		return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( cameraMarkerField, cameraMarker );
 	}
 
 	public void moveActiveCameraToMarker(FieldDeclaredInAlice markerField)

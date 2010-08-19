@@ -46,12 +46,15 @@ package edu.cmu.cs.dennisc.pattern;
  * @author Dennis Cosgrove
  */
 public class Tuple3<A, B, C> {
+	public static <A, B, C> Tuple3<A, B, C> createInstance( A a, B b, C c ) {
+		return new Tuple3<A, B, C>( a, b, c );
+	}
 	private A m_a = null;
 	private B m_b = null;
 	private C m_c = null;
-	public Tuple3() {
+	private Tuple3() {
 	}
-	public Tuple3( A a, B b, C c ) {
+	private Tuple3( A a, B b, C c ) {
 		set( a, b, c );
 	}
 	public A getA() {

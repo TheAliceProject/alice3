@@ -55,6 +55,6 @@ abstract class AbstractNonGalleryDeclareFieldOperation<J extends org.alice.ide.p
 	protected abstract Object createInstance();
 	@Override
 	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< J > context ) {
-		return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object >( this.createField( context ), this.createInstance() );
+		return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( this.createField( context ), this.createInstance() );
 	}
 }

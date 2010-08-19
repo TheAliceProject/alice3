@@ -54,7 +54,7 @@ public class Timer {
 	}
 	public void mark( Object text ) {
 		long tMark = System.currentTimeMillis();
-		this.marks.add( new edu.cmu.cs.dennisc.pattern.Tuple2<Object, Long>( text, tMark ) );
+		this.marks.add( edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( text, tMark ) );
 	}
 	public void stopAndPrintResults() {
 		long tPrev = this.tStart;

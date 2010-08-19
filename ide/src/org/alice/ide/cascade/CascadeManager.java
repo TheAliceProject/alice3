@@ -62,23 +62,22 @@ public abstract class CascadeManager {
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement dropParent = null;
 	private int dropIndex = -1;
 
-	public void pushContext( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+	public void pushContext( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.BlockStatement, Integer > blockStatementAndIndex ) {
 		this.previousExpression = previousExpression;
-		if( statement != null ) {
-			edu.cmu.cs.dennisc.alice.ast.Node node = statement.getParent();
-			if( node instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
-				edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)node;
-				int index = blockStatement.statements.indexOf( statement );
-				if( index != -1 ) {
-					this.dropParent = blockStatement;
-					this.dropIndex = index;
-				}
-			}
+		if( blockStatementAndIndex != null ) {
+			this.dropParent = blockStatementAndIndex.getA();
+			this.dropIndex = blockStatementAndIndex.getB();
+		} else {
+			this.dropParent = null;
+			this.dropIndex = -1;
 		}
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "pushContext", previousExpression, blockStatementAndIndex );
 	}
 	public void popContext() {
+		this.previousExpression = null;
 		this.dropParent = null;
 		this.dropIndex = -1;
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "popContext" );
 	}
 	
 	protected void addExpressionFillerInner( org.alice.ide.cascade.fillerinners.ExpressionFillerInner expressionFillerInner ) {
@@ -367,26 +366,6 @@ public abstract class CascadeManager {
 
 	}
 	
-	private void setDropParentAndIndex( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		if( statement != null ) {
-			edu.cmu.cs.dennisc.alice.ast.Node node = statement.getParent();
-			if (node instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement) {
-				edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement) node;
-				int index = blockStatement.statements.indexOf( statement );
-				if( index != -1 ) {
-					this.dropParent = blockStatement;
-					this.dropIndex = index;
-				}
-			}
-		}
-	}
-	private edu.cmu.cs.dennisc.cascade.Blank createExpressionBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
-		this.previousExpression = prevExpression;
-		if( this.previousExpression != null ) {
-			this.setDropParentAndIndex( this.previousExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.Statement.class ) );
-		}
-		return new org.alice.ide.cascade.ExpressionBlank( type );
-	}
 	@Deprecated
 	public void promptUserForExpressions( edu.cmu.cs.dennisc.alice.ast.BlockStatement dropParent, int dropIndex, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types, boolean isArrayLengthDesired, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > taskObserver ) {
 		this.dropParent = dropParent;
@@ -405,45 +384,6 @@ public abstract class CascadeManager {
 		
 		fillIn.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
 	}
-//	@Deprecated
-//	public void promptUserForExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, edu.cmu.cs.dennisc.croquet.ViewController< ?,? > viewController, java.awt.Point p,
-//			edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
-//		edu.cmu.cs.dennisc.cascade.Blank blank = createExpressionBlank( type, prevExpression );
-//		if( p != null ) {
-//			//pass
-//		} else {
-//			p = new java.awt.Point( 0, viewController.getHeight() );
-//		}
-//		blank.showPopupMenu( viewController.getAwtComponent(), p.x, p.y, taskObserver );
-//	}
-//	@Deprecated
-//	public void promptUserForMore( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement statement, final edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter, edu.cmu.cs.dennisc.croquet.ViewController< ?,? > viewController, java.awt.Point p, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
-//		this.setDropParentAndIndex( statement );
-//		final String parameterName = parameter.getName();
-//		edu.cmu.cs.dennisc.cascade.Blank blank;
-//		if( parameterName != null ) {
-//			blank = new edu.cmu.cs.dennisc.cascade.Blank() {
-//				@Override
-//				protected void addChildren() {
-//					edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > menuFillIn = new edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression >( parameterName ) {
-//						@Override
-//						protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-//							CascadeManager.this.addFillIns( blank, parameter.getDesiredValueType() );
-//						}
-//					};
-//					this.addFillIn( menuFillIn );
-//				}
-//			};
-//		} else {
-//			blank = createExpressionBlank( parameter.getValueType(), null );
-//		}
-//		if( p != null ) {
-//			//pass
-//		} else {
-//			p = new java.awt.Point( 0, viewController.getHeight() );
-//		}
-//		blank.showPopupMenu( viewController.getAwtComponent(), p.x, p.y, taskObserver );
-//	}
 	@Deprecated
 	public void unsetPreviousExpressionAndDropStatement() {
 		this.previousExpression = null;
