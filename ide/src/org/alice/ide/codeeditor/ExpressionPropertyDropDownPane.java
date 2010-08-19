@@ -91,7 +91,7 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupM
 	public edu.cmu.cs.dennisc.croquet.Operation<?> dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 		edu.cmu.cs.dennisc.croquet.Operation<?> rv;
 		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
-		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
+//		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
 		if( source instanceof org.alice.ide.common.ExpressionCreatorPane ) {
 //			final org.alice.ide.common.ExpressionCreatorPane expressionCreatorPane = (org.alice.ide.common.ExpressionCreatorPane)source;
 //			class DropOperation extends org.alice.ide.operations.ast.AbstractExpressionPropertyActionOperation {
