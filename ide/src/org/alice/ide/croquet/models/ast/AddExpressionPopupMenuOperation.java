@@ -52,6 +52,7 @@ public class AddExpressionPopupMenuOperation extends org.alice.ide.croquet.model
         super( java.util.UUID.fromString( "4f3ccba2-c44f-49b3-b20e-c9e847e90db2" ) );
         this.componentTypeProperty = componentTypeProperty;
         this.expressionListProperty = expressionListProperty;
+        this.getPopupMenuOperation().setName( "Add" );
     }
 	
 	public edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty getExpressionListProperty() {

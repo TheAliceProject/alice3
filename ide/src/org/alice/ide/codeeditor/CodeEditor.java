@@ -922,7 +922,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 	}
 	public edu.cmu.cs.dennisc.croquet.PopupMenuOperation getMoreOperation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
 		if( methodInvocation != null ) {
-			return org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation.getInstance( methodInvocation );
+			return org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation.getInstance( methodInvocation ).getPopupMenuOperation();
 //			java.util.List< org.alice.ide.common.ExpressionStatementPane > statementPanes = edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.ExpressionStatementPane.class );
 //			for( org.alice.ide.common.ExpressionStatementPane statementPane : statementPanes ) {
 //				if( statementPane.getStatement() == methodInvocation.getParent() ) {

@@ -59,10 +59,10 @@ public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.Pa
 			final org.alice.ide.operations.ast.DeleteParameterOperation deleteParameterOperation = new org.alice.ide.operations.ast.DeleteParameterOperation( this.parametersProperty, parameter );
 			final org.alice.ide.operations.ast.ForwardShiftParameterOperation forwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.ForwardShiftParameterOperation( this.parametersProperty, parameter );
 			final org.alice.ide.operations.ast.BackwardShiftParameterOperation backwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.BackwardShiftParameterOperation( this.parametersProperty, parameter );
-			this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation( java.util.UUID.fromString( "5b9b75d7-ce04-4f3d-8915-b825f357cef2" ) ) {
+			this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.MenuModel( java.util.UUID.fromString( "5b9b75d7-ce04-4f3d-8915-b825f357cef2" ) ) {
 				@Override
-				protected void handlePopupMenuCreation( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
-					super.handlePopupMenuCreation( popupMenu );
+				protected void handlePopupMenuPerform(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
+					super.handlePopupMenuPerform( popupMenu, context );
 					java.util.List< edu.cmu.cs.dennisc.croquet.Model > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 					models.add( renameParameterOperation );
 					if( forwardShiftCodeParameterOperation.isIndexAppropriate() ) {
@@ -75,10 +75,9 @@ public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.Pa
 					models.add( deleteParameterOperation );
 					edu.cmu.cs.dennisc.croquet.Application.addMenuElements( popupMenu, models );
 				}
-				
-			} );
+			}.getPopupMenuOperation() );
 		} else {
-			this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.DefaultPopupMenuOperation( java.util.UUID.fromString( "7a9b90a1-a645-4e13-aeef-9ca631baad55" ), renameParameterOperation ) );
+			this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.DefaultMenuModel( java.util.UUID.fromString( "7a9b90a1-a645-4e13-aeef-9ca631baad55" ), renameParameterOperation ).getPopupMenuOperation() );
 		}
 	}
 	@Override

@@ -67,7 +67,7 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 			operations.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 			operations.add( new org.alice.ide.operations.ast.DeleteMethodOperation( methodInAlice ) );
 		}
-		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.DefaultPopupMenuOperation( java.util.UUID.fromString( "96831579-1fb6-4c15-a509-ccdcc51458a8" ), operations) );
+		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.DefaultMenuModel( java.util.UUID.fromString( "96831579-1fb6-4c15-a509-ccdcc51458a8" ), operations).getPopupMenuOperation() );
 	}
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {

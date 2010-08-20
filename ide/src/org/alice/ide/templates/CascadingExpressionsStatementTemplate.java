@@ -92,7 +92,7 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 					protected String getTitle() {
 						return CascadingExpressionsStatementTemplate.this.getTitleAt( 0 );
 					}
-				};
+				}.getPopupMenuOperation();
 			} else {
 				return new org.alice.ide.croquet.models.ast.FillInExpressionsPopupMenuOperation( java.util.UUID.fromString( "8fc93b84-f8f6-4280-ba3b-00541a8212f2" ) ) {
 					@Override
@@ -119,7 +119,7 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 					protected String getTitleAt( int index ) {
 						return CascadingExpressionsStatementTemplate.this.getTitleAt( index );
 					}
-				};
+				}.getPopupMenuOperation();
 			}
 		}
 	}

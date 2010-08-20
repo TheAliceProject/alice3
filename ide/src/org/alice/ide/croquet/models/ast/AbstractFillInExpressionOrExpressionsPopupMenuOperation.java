@@ -87,14 +87,13 @@ public abstract class AbstractFillInExpressionOrExpressionsPopupMenuOperation ex
 	
 
 	@Override
-	protected void handlePopupMenuWillBecomeVisible( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, javax.swing.event.PopupMenuEvent e ) {
+	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, java.util.EventObject e ) {
+		super.handleShowing( menuItemContainer, e );
 		org.alice.ide.IDE.getSingleton().getCascadeManager().pushContext( this.getPreviousExpression(), this.getBlockStatementAndIndex() );
-		super.handlePopupMenuWillBecomeVisible( popupMenu, e );
 	}
-	
 	@Override
-	protected void handlePopupMenuWillBecomeInvisible( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, javax.swing.event.PopupMenuEvent e ) {
-		super.handlePopupMenuWillBecomeInvisible( popupMenu, e );
+	protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, java.util.EventObject e ) {
 		org.alice.ide.IDE.getSingleton().getCascadeManager().popContext();
+		super.handleHiding( menuItemContainer, e );
 	}
 }

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingPopupMenuOperation extends edu.cmu.cs.dennisc.croquet.PopupMenuOperation implements CascadingRoot {
+public abstract class CascadingPopupMenuOperation extends edu.cmu.cs.dennisc.croquet.MenuModel implements CascadingRoot {
 	public CascadingPopupMenuOperation( java.util.UUID id ) {
 		super( id );
 	}
@@ -100,8 +100,8 @@ public abstract class CascadingPopupMenuOperation extends edu.cmu.cs.dennisc.cro
 
 	protected abstract edu.cmu.cs.dennisc.cascade.Blank getCascadeBlank();
 	@Override
-	protected void handlePopupMenuCreation( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
-		super.handlePopupMenuCreation( popupMenu );
+	protected void handlePopupMenuPerform(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
+		super.handlePopupMenuPerform( popupMenu, context );
 		edu.cmu.cs.dennisc.cascade.Blank blank = this.getCascadeBlank();
 		blank.setCascadingRoot( this );
 		java.util.List< edu.cmu.cs.dennisc.cascade.Node > children = blank.getChildren();

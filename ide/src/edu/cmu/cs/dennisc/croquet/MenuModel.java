@@ -54,13 +54,13 @@ public abstract class MenuModel extends Model {
 			this.menu = menu;
 		}
 		public void menuSelected( javax.swing.event.MenuEvent e ) {
-			MenuModel.this.handleMenuSelected( e, this.menu );
+			MenuModel.this.handleShowing( this.menu, e );
 		}
 		public void menuDeselected( javax.swing.event.MenuEvent e ) {
-			MenuModel.this.handleMenuDeselected( e, this.menu );
+			MenuModel.this.handleHiding( this.menu, e );
 		}
 		public void menuCanceled( javax.swing.event.MenuEvent e ) {
-			MenuModel.this.handleMenuCanceled( e, this.menu );
+			MenuModel.this.handleCanceled( this.menu, e );
 		}
 	};
 	private Class<?> clsForI18N;
@@ -97,8 +97,23 @@ public abstract class MenuModel extends Model {
 		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
 	}
 	
-	protected void handleMenuSelected( javax.swing.event.MenuEvent e, Menu<MenuModel> menu ) {
-		Component< ? > parent = menu.getParent();
+	private PopupMenuOperation popupMenuOperation;
+	public synchronized PopupMenuOperation getPopupMenuOperation() {
+		if( this.popupMenuOperation != null ) {
+			//pass
+		} else {
+			this.popupMenuOperation = new PopupMenuOperation( this );
+		}
+		return this.popupMenuOperation;
+	}
+	
+	
+	@Deprecated
+	protected void handlePopupMenuPerform( PopupMenu popupMenu, PopupMenuOperationContext context ) {
+	}
+	
+	protected void handleShowing( MenuItemContainer menuItemContainer, java.util.EventObject e ) {
+		Container< ? > parent = menuItemContainer.getParent();
 		ModelContext< ? > parentContext;
 		if( parent instanceof MenuBar ) {
 			MenuBar menuBar = (MenuBar)parent;
@@ -107,19 +122,20 @@ public abstract class MenuModel extends Model {
 			Application application = Application.getSingleton();
 			parentContext = application.getCurrentContext();
 		}
-		MenuModelContext context = parentContext.createMenuModelContext( MenuModel.this, menu );
+		MenuModelContext context = parentContext.createMenuModelContext( MenuModel.this, menuItemContainer );
 		context.handleMenuSelected( e );
 	}
-	protected void handleMenuDeselected( javax.swing.event.MenuEvent e, Menu<MenuModel> menu ) {
+	protected void handleHiding( MenuItemContainer menuItemContainer, java.util.EventObject e ) {
 		Application application = Application.getSingleton();
 		MenuModelContext context = (MenuModelContext)application.getCurrentContext();
 		context.handleMenuDeselected( e );
 	}
-	protected void handleMenuCanceled( javax.swing.event.MenuEvent e, Menu<MenuModel> menu ) {
+	protected void handleCanceled( MenuItemContainer menuItemContainer, java.util.EventObject e ) {
 		Application application = Application.getSingleton();
 		MenuModelContext context = (MenuModelContext)application.getCurrentContext();
 		context.handleMenuCanceled( e );
-	}
+	}	
+	
 	/*package-private*/ Menu<MenuModel> createMenu() {
 		Menu<MenuModel> rv = new Menu<MenuModel>( this ) {
 			@Override

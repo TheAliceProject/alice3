@@ -75,7 +75,7 @@ public class FillInMorePopupMenuOperation extends FillInSingleExpressionPopupMen
 			edu.cmu.cs.dennisc.alice.ast.Argument argument = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter, null );
 			this.nextMethodInvocation.arguments.add( argument );
 		}
-//		this.setName( "more..." );
+		this.getPopupMenuOperation().setName( "more..." );
 //		this.updateToolTipText();
 	}
 

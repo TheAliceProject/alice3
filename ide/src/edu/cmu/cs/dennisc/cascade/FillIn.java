@@ -165,10 +165,11 @@ public abstract class FillIn< E > extends Node {
 //		return (edu.cmu.cs.dennisc.croquet.Menu< ? >)getMenuItem();
 //	}
 
-	protected void handleMenuSelected( javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu< edu.cmu.cs.dennisc.croquet.MenuModel > menu ) {
+	protected void handleMenuSelected( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, java.util.EventObject e ) {
 		this.select();
 		Blank blank = this.getNextNode();
-		edu.cmu.cs.dennisc.croquet.Application.addMenuElements( menu, blank.getModels() );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo handleMenuSelected" );
+		edu.cmu.cs.dennisc.croquet.Application.addMenuElements( menuItemContainer, blank.getModels() );
 //		Node.this.addNextNodeMenuItems( Node.this.model, menu );
 ////		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 ////			public void run() {
@@ -177,9 +178,9 @@ public abstract class FillIn< E > extends Node {
 ////			}
 ////		} );
 	}
-	protected void handleMenuDeselected( javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu< edu.cmu.cs.dennisc.croquet.MenuModel > menu ) {
+	protected void handleMenuDeselected( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, java.util.EventObject e ) {
 		this.deselect();
-		menu.getAwtComponent().removeAll();
+		menuItemContainer.forgetAndRemoveAllMenuItems();
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo handleMenuDeselected" );
 	}
 	protected void handleActionOperationPerformed( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {

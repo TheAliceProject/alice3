@@ -60,4 +60,9 @@ public class DefaultMenuModel extends MenuModel {
 		Application.addMenuElements( rv, this.models );
 		return rv;
 	}
+	@Override
+	protected void handlePopupMenuPerform( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
+		super.handlePopupMenuPerform( popupMenu, context );
+		Application.addMenuElements( popupMenu, this.models );
+	}
 }

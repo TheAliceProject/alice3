@@ -441,10 +441,10 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 		}
 	};
 	private static class DropDownPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-		private RootOperation rootOperation = new RootOperation();
+		private TypeRootMenuModel rootOperation = new TypeRootMenuModel();
 		private javax.swing.ButtonModel buttonModel;
 		public DropDownPanel() {
-			edu.cmu.cs.dennisc.croquet.Button button = this.rootOperation.createButton();
+			edu.cmu.cs.dennisc.croquet.Button button = this.rootOperation.getPopupMenuOperation().createButton();
 			button.getAwtComponent().setFocusable( false );
 			this.buttonModel = button.getAwtComponent().getModel();
 			button.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.LEADING );

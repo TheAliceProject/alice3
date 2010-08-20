@@ -59,7 +59,7 @@ public class WindowMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel
 		rv.add( org.alice.ide.croquet.models.history.IsProjectHistoryShowingState.getInstance() );
 		//rv.add( org.alice.ide.croquet.models.history.IsUIHistoryShowingState.getInstance() );
 		rv.add( org.alice.ide.croquet.models.ui.IsMemoryUsageShowingState.getInstance() );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( org.alice.ide.IDE.DEBUG_PROPERTY_KEY ) ) {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.internalTesting" ) ) {
 			rv.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 			rv.add( InternalTestingMenuModel.getInstance() );
 		}

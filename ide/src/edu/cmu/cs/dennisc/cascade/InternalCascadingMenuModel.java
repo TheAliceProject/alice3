@@ -52,13 +52,13 @@ package edu.cmu.cs.dennisc.cascade;
 		this.fillIn = fillIn;
 	}
 	@Override
-	protected void handleMenuSelected( javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu< edu.cmu.cs.dennisc.croquet.MenuModel > menu ) {
-		super.handleMenuSelected( e, menu );
-		this.fillIn.handleMenuSelected( e, menu );
+	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, java.util.EventObject e ) {
+		super.handleShowing( menuItemContainer, e );
+		this.fillIn.handleMenuSelected( menuItemContainer, e );
 	}
 	@Override
-	protected void handleMenuDeselected( javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu< edu.cmu.cs.dennisc.croquet.MenuModel > menu ) {
-		this.fillIn.handleMenuDeselected( e, menu );
-		super.handleMenuDeselected( e, menu );
+	protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, java.util.EventObject e ) {
+		this.fillIn.handleMenuDeselected( menuItemContainer, e );
+		super.handleHiding( menuItemContainer, e );
 	}
 }

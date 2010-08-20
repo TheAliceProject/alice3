@@ -65,13 +65,7 @@ package org.alice.stageide.sceneeditor;
 		//this.setOpaque( false );
 		
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,4 ) );
-		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation( java.util.UUID.fromString( "8e3989b2-34d6-44cf-998c-dda26662b3a0" ) ) {
-			@Override
-			protected void handlePopupMenuCreation( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu ) {
-				super.handlePopupMenuCreation( popupMenu );
-				edu.cmu.cs.dennisc.croquet.Application.addMenuElements( popupMenu, FieldTile.this.createPopupOperations() );
-			}
-		});
+		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.DefaultMenuModel( java.util.UUID.fromString( "8e3989b2-34d6-44cf-998c-dda26662b3a0" ), FieldTile.this.createPopupOperations() ).getPopupMenuOperation() );
 		this.updateLabel();
 	}
 

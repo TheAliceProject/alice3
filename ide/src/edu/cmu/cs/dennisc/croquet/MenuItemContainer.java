@@ -47,9 +47,13 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public interface MenuItemContainer {
+	public ViewController< ?, ? > getViewController();
+	public Container< ? > getParent();
 	public void addMenu( Menu<?> menu );
 	public void addMenuItem( MenuItem menuItem );
 	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem );
 	public void addSeparator();
 	public void addSeparator( MenuTextSeparator menuTextSeparator );
+	public void forgetAndRemoveAllMenuItems();
+	public void removeAllMenuItems();
 }

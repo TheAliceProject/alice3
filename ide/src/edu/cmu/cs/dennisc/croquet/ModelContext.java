@@ -299,8 +299,8 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		this.addChild(rv);
 		return rv;
 	}
-	/*package-private*/MenuModelContext createMenuModelContext(MenuModel menuModel, Menu<?> menu) {
-		MenuModelContext rv = new MenuModelContext(this, menuModel, null, menu);
+	/*package-private*/MenuModelContext createMenuModelContext(MenuModel menuModel, MenuItemContainer menuItemContainer) {
+		MenuModelContext rv = new MenuModelContext( this, menuModel, null, menuItemContainer.getViewController() );
 		this.addChild(rv);
 		return rv;
 	}

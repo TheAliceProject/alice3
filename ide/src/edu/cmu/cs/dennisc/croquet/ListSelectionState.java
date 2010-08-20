@@ -572,18 +572,22 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 			super( java.util.UUID.fromString( "e33bc1ff-3790-4715-b88c-3c978aa16947" ), ListSelectionState.this.getClass() );
 		}
 		@Override
-		protected void handleMenuSelected(javax.swing.event.MenuEvent e, Menu<MenuModel> menu) {
-			super.handleMenuSelected(e, menu);
-			menu.getAwtComponent().removeAll();
+		protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, java.util.EventObject e ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ListSelectionMenuModel handleShowing" );
+			super.handleShowing( menuItemContainer, e );
 			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 			for (final Object item : ListSelectionState.this.comboBoxModel.items) {
 				javax.swing.Action action = createAction( (E)item );
 				javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem(action);
 				buttonGroup.add(jMenuItem);
 				jMenuItem.setSelected(comboBoxModel.getSelectedItem() == item);
-				menu.getAwtComponent().add(jMenuItem);
+				menuItemContainer.getViewController().getAwtComponent().add(jMenuItem);
 			}
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ListSelectionMenuModel handleMenuSelected" );
+		}
+		@Override
+		protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, java.util.EventObject e ) {
+			menuItemContainer.forgetAndRemoveAllMenuItems();
+			super.handleHiding( menuItemContainer, e );
 		}
 	}
 	
