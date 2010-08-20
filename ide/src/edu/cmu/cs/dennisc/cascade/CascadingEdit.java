@@ -45,9 +45,9 @@ package edu.cmu.cs.dennisc.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingEdit<M extends CascadingRoot> extends edu.cmu.cs.dennisc.croquet.Edit< InternalCascadingItemOperation< M > > {
+public abstract class CascadingEdit<M extends CascadingRoot> extends edu.cmu.cs.dennisc.croquet.Edit< InternalCascadingItemOperation > {
 	protected M getCascadingRoot() {
-		InternalCascadingItemOperation< M > model = this.getModel();
+		InternalCascadingItemOperation model = this.getModel();
 		FillIn<?> fillIn = model.getFillIn();
 		Blank rootBlank = fillIn.getRootBlank();
 		return (M)rootBlank.getCascadingRoot();

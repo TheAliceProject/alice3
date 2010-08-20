@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.cascade;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class InternalCascadingItemOperation< M extends CascadingRoot > extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+/*package-private*/ class InternalCascadingItemOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 	private FillIn< ? > fillIn;
 	public InternalCascadingItemOperation( edu.cmu.cs.dennisc.croquet.Group group, FillIn< ? > fillIn ) {
 		super( group, java.util.UUID.fromString( "98e30a01-242f-4f3c-852c-d0b0a33d277f" ) );
