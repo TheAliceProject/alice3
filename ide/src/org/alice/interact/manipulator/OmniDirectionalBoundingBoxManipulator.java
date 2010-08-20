@@ -175,6 +175,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 	{
 		if (this.manipulatedTransformable != null)
 		{
+			assert this.camera != null;
 			this.sgBoundingBoxTransformable.setParent(this.camera.getRoot());
 			this.sgBoundingBoxTransformable.setTranslationOnly(new Point3(0,0,0), AsSeenBy.SCENE);
 			this.sgBoundingBoxDecorator.isShowing.setValue(true);
