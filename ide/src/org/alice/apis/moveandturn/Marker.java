@@ -49,6 +49,7 @@ import java.util.List;
 import org.alice.interact.PickHint;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
+import edu.cmu.cs.dennisc.alice.annotations.MethodTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.Visibility;
 import edu.cmu.cs.dennisc.color.Color4f;
@@ -125,8 +126,12 @@ public class Marker extends Transformable
 		if (color != null)
 		{
 			this.setMarkerColor(color.getInternal());
-		}
-		
+		}	
+	}
+	
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	public edu.cmu.cs.dennisc.scenegraph.SingleAppearance getSGSingleAppearance() {
+		return sgFrontFacingAppearance;
 	}
 	
 	protected void createVisuals()

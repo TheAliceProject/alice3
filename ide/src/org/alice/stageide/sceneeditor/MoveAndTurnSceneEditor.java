@@ -382,6 +382,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.fieldObservers.remove(fieldObserver);
 	}
 	
+	@Override
+	protected Object getInstanceForField(AbstractField field)
+	{
+		return super.getInstanceForField(field);
+	}
+	
 	
 	/**
 	 * Selection Handling
@@ -655,6 +661,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.splitPane.setLeftComponent( this.lookingGlassPanel );
 		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeValueObserver( this.codeSelectionObserver );
 		org.alice.ide.IDE.getSingleton().getAccessibleListState().addAndInvokeValueObserver( this.fieldSelectionObserver );
+		org.alice.ide.IDE.getSingleton().getAccessibleListState().addAndInvokeValueObserver( this.sidePane.getPropertyManager() );
 		this.sceneMarkerFieldList.addListDataListener( this.listDataListener );
 	}
 
@@ -667,6 +674,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
 		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeValueObserver( this.codeSelectionObserver );
 		org.alice.ide.IDE.getSingleton().getAccessibleListState().removeValueObserver( this.fieldSelectionObserver );
+		org.alice.ide.IDE.getSingleton().getAccessibleListState().removeValueObserver( this.sidePane.getPropertyManager() );
 		super.handleRemovedFrom( parent );
 	}
 	

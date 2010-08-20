@@ -77,6 +77,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private BasicTreeNodeViewerPanel sceneGraphViewer = null;
 	private JDialog sceneGraphViewDialog = null;
 	private ActionOperation showSceneGraphActionOperation; 
+	private SceneObjectPropertyManager propertyManager;
 	
 	public void setSceneGraphRoot()
 	{
@@ -156,6 +157,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		this.mainPanel = new GridBagPanel();
 		this.viewManagerPanel = new SceneViewManagerPanel(sceneEditor);
 		this.snapControlPanel = new SnapControlPanel(sceneEditor.getSnapState(), sceneEditor);
+		this.propertyManager = new SceneObjectPropertyManager();
 
 		
 		edu.cmu.cs.dennisc.croquet.BorderPanel handleControlPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
@@ -165,9 +167,23 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		handleControlPanel.addComponent(sceneEditor.getDragAdapter().getInteractionSelectionStateList().createDefaultRadioButtons(), BorderPanel.Constraint.CENTER);
 		handleControlPanel.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 
-		this.mainPanel.addComponent(this.viewManagerPanel, new GridBagConstraints(
+		this.mainPanel.addComponent(this.propertyManager, new GridBagConstraints(
 				0, // gridX
 				0, // gridY
+				1, // gridWidth
+				1, // gridHeight
+				1.0, // weightX
+				1.0, // weightY
+				GridBagConstraints.NORTHWEST, // anchor
+				GridBagConstraints.NONE, // fill
+				new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
+				0, // ipadX
+				0) // ipadY
+				);
+		
+		this.mainPanel.addComponent(this.viewManagerPanel, new GridBagConstraints(
+				0, // gridX
+				1, // gridY
 				1, // gridWidth
 				1, // gridHeight
 				1.0, // weightX
@@ -181,7 +197,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 
 		this.mainPanel.addComponent(handleControlPanel, new GridBagConstraints(
 				0, // gridX
-				1, // gridY
+				2, // gridY
 				1, // gridWidth
 				1, // gridHeight
 				1.0, // weightX
@@ -194,7 +210,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				);
 		this.mainPanel.addComponent(this.snapControlPanel, new GridBagConstraints(
 				0, // gridX
-				2, // gridY
+				3, // gridY
 				1, // gridWidth
 				1, // gridHeight
 				1.0, // weightX
@@ -213,7 +229,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		{
 			this.mainPanel.addComponent(this.showSceneGraphActionOperation.createButton(), new GridBagConstraints(
 					0, // gridX
-					3, // gridY
+					4, // gridY
 					1, // gridWidth
 					1, // gridHeight
 					1.0, // weightX
@@ -226,7 +242,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 					);
 			this.mainPanel.addComponent(this.showLookingglassViewActionOperation.createButton(), new GridBagConstraints(
 					0, // gridX
-					4, // gridY
+					5, // gridY
 					1, // gridWidth
 					1, // gridHeight
 					1.0, // weightX
@@ -265,8 +281,11 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		this.isExpanded = isExpanded;
 		this.revalidateAndRepaint();
 	}
-
-
+	
+	public SceneObjectPropertyManager getPropertyManager() {
+		return this.propertyManager;
+	}
+	
 	public SceneViewManagerPanel getViewManager() {
 		return this.viewManagerPanel;
 	}
