@@ -45,7 +45,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.FillInMoreActionOperation > {
+public class FillInMoreEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation > {
 	private edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression;
 	public FillInMoreEdit() {
 	}
@@ -55,25 +55,9 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.i
 	public void setArgumentExpression(edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression) {
 		this.argumentExpression = argumentExpression;
 	}
-	
-	private org.alice.ide.croquet.models.ast.FillInMoreActionOperation EPIC_HACK_actionOperation;
-	public void EPIC_HACK_setModel( org.alice.ide.croquet.models.ast.FillInMoreActionOperation actionOperation ) {
-		this.EPIC_HACK_actionOperation = actionOperation;
-	}
-	
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		assert this.argumentExpression != null;
-		org.alice.ide.croquet.models.ast.FillInMoreActionOperation actionOperation;
-		if( EPIC_HACK_actionOperation != null ) {
-			actionOperation = EPIC_HACK_actionOperation;
-		} else {
-			actionOperation = this.getModel();
-		}
-		assert actionOperation != null;
-		
-		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation popupMenuOperation = actionOperation.getPopupMenuOperation();
-		
+		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation popupMenuOperation = this.getCascadingRoot();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = popupMenuOperation.getPrevMethodInvocation();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = popupMenuOperation.getNextMethodInvocation();
 
@@ -92,14 +76,7 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.i
 	}
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.croquet.models.ast.FillInMoreActionOperation actionOperation;
-		if( EPIC_HACK_actionOperation != null ) {
-			actionOperation = EPIC_HACK_actionOperation;
-		} else {
-			actionOperation = this.getModel();
-		}
-		assert actionOperation != null;
-		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation popupMenuOperation = actionOperation.getPopupMenuOperation();
+		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation popupMenuOperation = this.getCascadingRoot();
 
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = popupMenuOperation.getPrevMethodInvocation();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = popupMenuOperation.getNextMethodInvocation();
@@ -122,14 +99,7 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.i
 	}
 	@Override
 	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
-		org.alice.ide.croquet.models.ast.FillInMoreActionOperation actionOperation;
-		if( EPIC_HACK_actionOperation != null ) {
-			actionOperation = EPIC_HACK_actionOperation;
-		} else {
-			actionOperation = this.getModel();
-		}
-		assert actionOperation != null;
-		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation popupMenuOperation = actionOperation.getPopupMenuOperation();
+		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation popupMenuOperation = this.getCascadingRoot();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = popupMenuOperation.getNextMethodInvocation();
 		if( nextMethodInvocation != null ) {
 			rv.append( "more: " );
@@ -150,13 +120,5 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.i
 	@Override
 	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
-	}
-	@Override
-	public boolean canRedo() {
-		return true;
-	}
-	@Override
-	public boolean canUndo() {
-		return true;
 	}
 }

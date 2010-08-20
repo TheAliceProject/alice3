@@ -45,19 +45,26 @@ package edu.cmu.cs.dennisc.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingActionOperation< M extends CascadingPopupMenuOperation > extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-	private M popupMenuOperation;
+/*package-private*/ class InternalCascadingItemOperation< M extends CascadingRoot > extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 	private FillIn< ? > fillIn;
-	public CascadingActionOperation( edu.cmu.cs.dennisc.croquet.Group group, java.util.UUID id, M popupMenuOperation, FillIn< ? > fillIn ) {
-		super( group, id );
-		this.popupMenuOperation = popupMenuOperation;
+	public InternalCascadingItemOperation( edu.cmu.cs.dennisc.croquet.Group group, FillIn< ? > fillIn ) {
+		super( group, java.util.UUID.fromString( "98e30a01-242f-4f3c-852c-d0b0a33d277f" ) );
 		this.fillIn = fillIn;
 	}
-	public M getPopupMenuOperation() {
-		return this.popupMenuOperation;
+	public FillIn< ? > getFillIn() {
+		return this.fillIn;
 	}
 	@Override
 	protected final void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		this.fillIn.handleActionOperationPerformed( context );
+		Blank rootBlank = this.fillIn.getRootBlank();
+		CascadingRoot cascadingRoot = rootBlank.getCascadingRoot();
+		try {
+			Object value = rootBlank.getSelectedFillIn().getValue();
+			edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > edit = cascadingRoot.createEdit( value, context );
+			context.commitAndInvokeDo( edit );
+		} catch( CancelException ce ) {
+			context.cancel();
+		}
 	}
 }

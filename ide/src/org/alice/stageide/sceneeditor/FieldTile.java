@@ -155,6 +155,34 @@ package org.alice.stageide.sceneeditor;
 			}
 			if( fieldType.isAssignableTo( org.alice.apis.moveandturn.Model.class ) ) {
 				rv.add( new org.alice.stageide.operations.ast.PlaceOnTopOfGroundActionOperation( fieldInAlice ) );
+				
+//				edu.cmu.cs.dennisc.croquet.Operation< ? > placeOperation = new org.alice.ide.croquet.models.ast.FillInExpressionsPopupMenuOperation( java.util.UUID.fromString( "2c49d08c-2baf-40c6-b8d5-74d5f9db567b" ) ) {
+//					public edu.cmu.cs.dennisc.cascade.CascadingEdit< ? > createEdit( java.lang.Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+//						return null;
+//					}
+//					@Override
+//					protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
+//						return edu.cmu.cs.dennisc.alice.Project.GROUP;
+//					}
+//					@Override
+//					protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] getDesiredValueTypes() {
+//						return new edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] {
+//								edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.SpatialRelation.class ),
+//								edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE,	
+//								edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE,	
+//						};
+//					}
+//					@Override
+//					public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+//						return null;
+//					}
+//					@Override
+//					protected String getTitleAt( int index ) {
+//						return null;
+//					}
+//				};
+//				placeOperation.setName( "place" );
+//				rv.add( placeOperation );
 			}
 			if( fieldType.isAssignableTo( org.alice.apis.stage.Person.class ) ) {
 				rv.add( org.alice.stageide.croquet.models.gallerybrowser.EditPersonOperation.getInstance( fieldInAlice ) );

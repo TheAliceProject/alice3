@@ -42,8 +42,6 @@
  */
 package org.alice.ide.codeeditor;
 
-import org.alice.ide.croquet.models.ast.DefaultFillInExpressionPropertyPopupMenuOperation;
-
 abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.operations.ActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody original;

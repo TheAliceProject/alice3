@@ -46,14 +46,14 @@ package edu.cmu.cs.dennisc.cascade;
  * @author Dennis Cosgrove
  */
 public abstract class Blank extends Node {
-	private CascadingPopupMenuOperation cascadingPopupMenuOperation;
+	private CascadingRoot cascadingRoot;
 	private FillIn<?> selectedFillIn;
 
-	public CascadingPopupMenuOperation getCascadingPopupMenuOperation() {
-		return this.cascadingPopupMenuOperation;
+	public CascadingRoot getCascadingRoot() {
+		return this.cascadingRoot;
 	}
-	public void setCascadingPopupMenuOperation( CascadingPopupMenuOperation cascadingPopupMenuOperation ) {
-		this.cascadingPopupMenuOperation = cascadingPopupMenuOperation;
+	public void setCascadingRoot( CascadingRoot cascadingRoot ) {
+		this.cascadingRoot = cascadingRoot;
 	}
 	
 	public FillIn<?> getFillInAt( int index ) {
@@ -217,23 +217,23 @@ public abstract class Blank extends Node {
 //		}
 //	}
 
-	protected void handleActionPerformed( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		try {
-			Object value = this.getSelectedFillIn().getValue();
-//			if( this.taskObserver != null ) {
-//				this.taskObserver.handleCompletion( value );
-//			} else {
-				edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > edit = this.cascadingPopupMenuOperation.createEdit( value, context );
-				context.commitAndInvokeDo( edit );
-//			}
-		} catch( CancelException ce ) {
-//			if( this.taskObserver != null ) {
-//				this.taskObserver.handleCancelation();
-//			} else {
-				context.cancel();
-//			}
-		}
-	}
+//	protected void handleActionPerformed( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+//		try {
+//			Object value = this.getSelectedFillIn().getValue();
+////			if( this.taskObserver != null ) {
+////				this.taskObserver.handleCompletion( value );
+////			} else {
+//				edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > edit = this.cascadingPopupMenuOperation.createEdit( value, context );
+//				context.commitAndInvokeDo( edit );
+////			}
+//		} catch( CancelException ce ) {
+////			if( this.taskObserver != null ) {
+////				this.taskObserver.handleCancelation();
+////			} else {
+//				context.cancel();
+////			}
+//		}
+//	}
 //	protected void handleCancel( javax.swing.event.PopupMenuEvent e ) {
 //		if( this.taskObserver != null ) {
 //			this.taskObserver.handleCancelation();

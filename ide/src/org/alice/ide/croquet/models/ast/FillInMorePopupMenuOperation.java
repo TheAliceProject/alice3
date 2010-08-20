@@ -79,6 +79,11 @@ public class FillInMorePopupMenuOperation extends FillInSingleExpressionPopupMen
 //		this.updateToolTipText();
 	}
 
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
+		return edu.cmu.cs.dennisc.alice.Project.GROUP;
+	}
+
 	public edu.cmu.cs.dennisc.alice.ast.ExpressionStatement getExpressionStatement() {
 		return this.expressionStatement;
 	}
@@ -117,12 +122,7 @@ public class FillInMorePopupMenuOperation extends FillInSingleExpressionPopupMen
 		return lastParameter.getDesiredValueType();
 	}
 
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.Operation<?> createItemOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
-		return new FillInMoreActionOperation( this, fillIn );
-	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > createEdit( java.lang.Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	public org.alice.ide.croquet.edits.ast.FillInMoreEdit createEdit( java.lang.Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		return new org.alice.ide.croquet.edits.ast.FillInMoreEdit( (edu.cmu.cs.dennisc.alice.ast.Expression)value );
 	}
 }

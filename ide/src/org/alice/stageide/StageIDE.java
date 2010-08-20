@@ -149,7 +149,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava MOUSE_BUTTON_LISTENER_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.MouseButtonListener.class );
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava KEY_LISTENER_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.KeyListener.class );
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.Expression createPredeterminedExpressionIfAppropriate( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > desiredValueType ) {
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createPredeterminedExpressionIfAppropriate( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > desiredValueType ) {
 		if( desiredValueType == MOUSE_BUTTON_LISTENER_TYPE ) {
 			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] parameters = new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {
 					new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "e", org.alice.apis.moveandturn.event.MouseButtonEvent.class )

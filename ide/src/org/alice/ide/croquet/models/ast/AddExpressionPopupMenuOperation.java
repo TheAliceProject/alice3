@@ -58,12 +58,7 @@ public class AddExpressionPopupMenuOperation extends org.alice.ide.croquet.model
 		return this.expressionListProperty;
 	}
 	
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.Operation<?> createItemOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
-		return new AddExpressionActionOperation( this, fillIn );
-	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	public org.alice.ide.croquet.edits.ast.AddExpressionEdit createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		return new org.alice.ide.croquet.edits.ast.AddExpressionEdit( (edu.cmu.cs.dennisc.alice.ast.Expression)value );
 	}
 	@Override
@@ -74,6 +69,12 @@ public class AddExpressionPopupMenuOperation extends org.alice.ide.croquet.model
 	public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
 		return null;
 	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
+		return edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP;
+	}
+
 	@Override
 	protected String getTitle() {
 		return null;

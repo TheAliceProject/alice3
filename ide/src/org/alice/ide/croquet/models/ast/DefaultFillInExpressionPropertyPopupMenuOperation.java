@@ -47,32 +47,32 @@ package org.alice.ide.croquet.models.ast;
  */
 public class DefaultFillInExpressionPropertyPopupMenuOperation extends FillInExpressionPropertyPopupMenuOperation {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, DefaultFillInExpressionPropertyPopupMenuOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized DefaultFillInExpressionPropertyPopupMenuOperation getInstance( edu.cmu.cs.dennisc.croquet.Group actionGroup, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
+	public static synchronized DefaultFillInExpressionPropertyPopupMenuOperation getInstance( edu.cmu.cs.dennisc.croquet.Group itemGroup, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
 		DefaultFillInExpressionPropertyPopupMenuOperation rv = map.get( expressionProperty );
 		if( rv != null ) {
-			assert rv.actionGroup == actionGroup;
-			assert rv.desiredType == desiredType;
+			assert rv.itemGroup == itemGroup;
+			assert rv.desiredType == desiredType : " " + rv.desiredType + " " + desiredType;
 			//pass
 		} else {
-			rv = new DefaultFillInExpressionPropertyPopupMenuOperation( actionGroup, expressionProperty, desiredType );
+			rv = new DefaultFillInExpressionPropertyPopupMenuOperation( itemGroup, expressionProperty, desiredType );
 			map.put( expressionProperty, rv );
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.croquet.Group actionGroup;
+	private final edu.cmu.cs.dennisc.croquet.Group itemGroup;
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType;
 	private final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
-	private DefaultFillInExpressionPropertyPopupMenuOperation( edu.cmu.cs.dennisc.croquet.Group actionGroup, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
+	private DefaultFillInExpressionPropertyPopupMenuOperation( edu.cmu.cs.dennisc.croquet.Group itemGroup, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
 		super( java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ) );
 		assert expressionProperty != null;
-		this.actionGroup = actionGroup;
+		this.itemGroup = itemGroup;
 		this.expressionProperty = expressionProperty;
 		this.desiredType = desiredType;
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Group getActionGroup() {
-		return this.actionGroup;
+	protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
+		return this.itemGroup;
 	}
 	@Override
 	protected String getTitle() {

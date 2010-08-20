@@ -40,13 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package edu.cmu.cs.dennisc.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FillInExpressionPropertyActionOperation extends edu.cmu.cs.dennisc.cascade.CascadingActionOperation<FillInExpressionPropertyPopupMenuOperation> {
-	public FillInExpressionPropertyActionOperation( edu.cmu.cs.dennisc.croquet.Group group, FillInExpressionPropertyPopupMenuOperation popupMenuOperation, edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
-		super( group, java.util.UUID.fromString( "7eded20f-5550-45de-af53-5e08fd5e4ed8" ), popupMenuOperation, fillIn );
+public abstract class CascadingMenuModel extends InternalCascadingMenuModel implements CascadingRoot {
+	public CascadingMenuModel( FillIn<?> fillIn ) {
+		super( fillIn );
 	}
 }

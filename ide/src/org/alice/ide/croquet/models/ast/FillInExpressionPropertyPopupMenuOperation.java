@@ -60,14 +60,7 @@ public abstract class FillInExpressionPropertyPopupMenuOperation extends FillInS
 		edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty = this.getExpressionProperty();
 		return expressionProperty.getExpressionType();
 	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	public org.alice.ide.croquet.edits.ast.FillInExpressionPropertyEdit createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		return new org.alice.ide.croquet.edits.ast.FillInExpressionPropertyEdit( (edu.cmu.cs.dennisc.alice.ast.Expression)value );
-	}
-	
-	protected abstract edu.cmu.cs.dennisc.croquet.Group getActionGroup();
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.Operation<?> createItemOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
-		return new FillInExpressionPropertyActionOperation( this.getActionGroup(), this, fillIn );
 	}
 }

@@ -49,13 +49,13 @@ public class FillInExpressionListPropertyPopupMenuOperation extends FillInSingle
 	private int index;
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType;
-	private edu.cmu.cs.dennisc.croquet.Group actionGroup;
-	public FillInExpressionListPropertyPopupMenuOperation( java.util.UUID id, int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType, edu.cmu.cs.dennisc.croquet.Group actionGroup ) {
+	private edu.cmu.cs.dennisc.croquet.Group itemGroup;
+	public FillInExpressionListPropertyPopupMenuOperation( java.util.UUID id, int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType, edu.cmu.cs.dennisc.croquet.Group itemGroup ) {
 		super( id );
 		this.index = index;
 		this.expressionListProperty = expressionListProperty;
 		this.desiredType = desiredType;
-		this.actionGroup = actionGroup;
+		this.itemGroup = itemGroup;
 	}
 	public edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty getExpressionListProperty() {
 		return this.expressionListProperty;
@@ -63,15 +63,11 @@ public class FillInExpressionListPropertyPopupMenuOperation extends FillInSingle
 	public int getIndex() {
 		return this.index;
 	}
-	public edu.cmu.cs.dennisc.croquet.Group getActionGroup() {
-		return this.actionGroup;
-	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Operation<?> createItemOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
-		return new FillInExpressionListPropertyActionOperation( this.getActionGroup(), this, fillIn );
+	public edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
+		return this.itemGroup;
 	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+	public org.alice.ide.croquet.edits.ast.FillInExpressionListPropertyEdit createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		return new org.alice.ide.croquet.edits.ast.FillInExpressionListPropertyEdit( (edu.cmu.cs.dennisc.alice.ast.Expression)value );
 	}
 	@Override

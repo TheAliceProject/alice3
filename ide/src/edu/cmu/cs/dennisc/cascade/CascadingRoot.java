@@ -40,13 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package edu.cmu.cs.dennisc.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FillInMoreActionOperation extends edu.cmu.cs.dennisc.cascade.CascadingActionOperation< FillInMorePopupMenuOperation > {
-	public FillInMoreActionOperation( FillInMorePopupMenuOperation popupMenuOperation, edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "7eded20f-5550-45de-af53-5e08fd5e4ed8" ), popupMenuOperation, fillIn );
-	}
+public interface CascadingRoot {
+	public CascadingEdit< ? > createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context );
+	public edu.cmu.cs.dennisc.croquet.Model createCroquetModel( FillIn< ? > fillIn, boolean isLast );
 }

@@ -40,13 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package edu.cmu.cs.dennisc.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AddExpressionActionOperation extends edu.cmu.cs.dennisc.cascade.CascadingActionOperation< AddExpressionPopupMenuOperation > {
-	public AddExpressionActionOperation( AddExpressionPopupMenuOperation popupMenuOperation, edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
-		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "7eded20f-5550-45de-af53-5e08fd5e4ed8" ), popupMenuOperation, fillIn );
+public abstract class CascadingEdit<M extends CascadingRoot> extends edu.cmu.cs.dennisc.croquet.Edit< InternalCascadingItemOperation< M > > {
+	protected M getCascadingRoot() {
+		InternalCascadingItemOperation< M > model = this.getModel();
+		FillIn<?> fillIn = model.getFillIn();
+		Blank rootBlank = fillIn.getRootBlank();
+		return (M)rootBlank.getCascadingRoot();
+	}
+	@Override
+	public final boolean canRedo() {
+		return true;
+	}
+	@Override
+	public final boolean canUndo() {
+		return true;
 	}
 }

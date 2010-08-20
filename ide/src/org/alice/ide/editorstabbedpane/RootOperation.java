@@ -42,121 +42,85 @@
  */
 package org.alice.ide.editorstabbedpane;
 
-class TypeFillIn extends edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.dennisc.croquet.ActionOperation > {
+class TypeMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
 
-	public TypeFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		super( type.getName() );
+	public TypeMenuModel( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		super( java.util.UUID.fromString( "90a5b2c2-1182-4c05-ac90-a1dc405a7a2f" ) );
 		this.type = type;
+		//this.setName( type.getName() );
+		this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
 	}
+	
 	@Override
-	protected javax.swing.JComponent createMenuProxy() {
-		return org.alice.ide.common.TypeComponent.createInstance( this.type ).getAwtComponent();
-	}
-	@Override
-	protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-		if( this.type != null ) {
-			blank.addFillIn( new OperationFillIn( new org.alice.ide.operations.ast.EditTypeOperation( this.type ) ) );
-			blank.addFillIn( new OperationFillIn( new org.alice.ide.operations.ast.RenameTypeOperation( this.type ) ) );
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-			if( ide.isInstanceCreationAllowableFor( this.type ) ) {
-				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = ide.getSceneType();
-				blank.addFillIn( new OperationFillIn( new org.alice.ide.operations.ast.DeclareFieldOfPredeterminedTypeOperation( ownerType, this.type ) ) );
-			}
-			blank.addFillIn( new OperationFillIn( new org.alice.ide.operations.file.SaveAsTypeOperation( this.type ) ) );
-			blank.addSeparator();
-			blank.addFillIn( new OperationFillIn( new EditConstructorOperation( this.type.getDeclaredConstructor() ) ) );
-			blank.addSeparator();
-			blank.addFillIn( new OperationFillIn( org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance( this.type ) ) );
-			for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.type.methods ) {
-				if( method.isProcedure() ) {
-					blank.addFillIn( new OperationFillIn( new EditMethodOperation( method ) ) );
-				}
-			}
-			blank.addSeparator();
-			for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.type.methods ) {
-				if( method.isFunction() ) {
-					blank.addFillIn( new OperationFillIn( new EditMethodOperation( method ) ) );
-				}
-			}
-			blank.addFillIn( new OperationFillIn( org.alice.ide.operations.ast.DeclareFunctionOperation.getInstance( this.type ) ) );
-			blank.addSeparator();
-			blank.addFillIn( new OperationFillIn( org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( this.type ) ) );
-			for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : this.type.fields ) {
-				blank.addFillIn( new OperationFillIn( new org.alice.ide.operations.ast.EditFieldOperation( field ) ) );
-			}
-		} else {
-			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.CancelFillIn( "type is not set.  canceling." ) );
+	protected void handleMenuSelected( javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu< edu.cmu.cs.dennisc.croquet.MenuModel > menu ) {
+		super.handleMenuSelected( e, menu );
+		
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handleMenuSelected" );
+		
+		edu.cmu.cs.dennisc.croquet.Application.addMenuElement( menu, new org.alice.ide.operations.ast.EditTypeOperation( this.type ) );
+		edu.cmu.cs.dennisc.croquet.Application.addMenuElement( menu, new org.alice.ide.operations.ast.RenameTypeOperation( this.type ) );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		if( ide.isInstanceCreationAllowableFor( this.type ) ) {
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = ide.getSceneType();
+			edu.cmu.cs.dennisc.croquet.Application.addMenuElement( menu, new org.alice.ide.operations.ast.DeclareFieldOfPredeterminedTypeOperation( ownerType, this.type ) );
 		}
-	}
-}
-
-class ProjectBlank extends edu.cmu.cs.dennisc.cascade.Blank {
-	private edu.cmu.cs.dennisc.alice.Project project;
-
-	public ProjectBlank( edu.cmu.cs.dennisc.alice.Project project ) {
-		assert project != null;
-		this.project = project;
-	}
-	@Override
-	protected void addChildren() {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice.class );
-		final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = this.project.getProgramType();
-		programType.crawl( crawler, true );
-		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type : crawler.getList() ) {
-			if( type == programType ) {
-				//pass
-			} else {
-				this.addFillIn( new TypeFillIn( type ) );
+		edu.cmu.cs.dennisc.croquet.Application.addMenuElement( menu, new org.alice.ide.operations.file.SaveAsTypeOperation( this.type ) );
+		menu.addSeparator();
+		edu.cmu.cs.dennisc.croquet.Application.addMenuElement( menu, new EditConstructorOperation( this.type.getDeclaredConstructor() ) );
+		menu.addSeparator();
+		edu.cmu.cs.dennisc.croquet.Application.addMenuElement( menu, org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance( this.type ) );
+		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.type.methods ) {
+			if( method.isProcedure() ) {
+				edu.cmu.cs.dennisc.croquet.Application.addMenuElement( menu, new EditMethodOperation( method ) );
 			}
 		}
+		menu.addSeparator();
+		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.type.methods ) {
+			if( method.isFunction() ) {
+				edu.cmu.cs.dennisc.croquet.Application.addMenuElement( menu, new EditMethodOperation( method ) );
+			}
+		}
+		edu.cmu.cs.dennisc.croquet.Application.addMenuElement( menu, org.alice.ide.operations.ast.DeclareFunctionOperation.getInstance( this.type ) );
+		menu.addSeparator();
+		edu.cmu.cs.dennisc.croquet.Application.addMenuElement( menu, org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( this.type ) );
+		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : this.type.fields ) {
+			edu.cmu.cs.dennisc.croquet.Application.addMenuElement( menu, new org.alice.ide.operations.ast.EditFieldOperation( field ) );
+		}
+	}
+	@Override
+	protected void handleMenuDeselected( javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu< edu.cmu.cs.dennisc.croquet.MenuModel > menu ) {
+		menu.getAwtComponent().removeAll();
+		super.handleMenuDeselected( e, menu );
 	}
 }
 
 /**
  * @author Dennis Cosgrove
  */
-public class RootOperation extends edu.cmu.cs.dennisc.cascade.CascadingPopupMenuOperation {
+public class RootOperation extends edu.cmu.cs.dennisc.croquet.PopupMenuOperation {
 	public RootOperation() {
 		super( java.util.UUID.fromString( "259dfcc5-dd20-4890-8104-a34a075734d0" ) );
 	}
+	
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Operation<?> createItemOperation( edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
-		if( fillIn instanceof OperationFillIn ) {
-			return ((OperationFillIn)fillIn).getValue();
-		} else {
-			return null;
-		}
-	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > createEdit( java.lang.Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		return null;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.cascade.Blank getCascadeBlank() {
+	protected void handlePopupMenuWillBecomeVisible( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, javax.swing.event.PopupMenuEvent e ) {
+		super.handlePopupMenuWillBecomeVisible( popupMenu, e );
 		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.IDE.getSingleton().getProject();
-		if( project != null ) {
-			return new ProjectBlank( project );
-		} else {
-			return null;
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice.class );
+		final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = project.getProgramType();
+		programType.crawl( crawler, true );
+		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type : crawler.getList() ) {
+			if( type == programType ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.croquet.Application.addMenuElement( popupMenu, new TypeMenuModel( type ) );
+			}
 		}
 	}
-//	@Override
-//	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-//		edu.cmu.cs.dennisc.croquet.ViewController<?,?> viewController = context.getViewController();
-//		int x = 0;
-//		int y = viewController.getHeight();
-//		edu.cmu.cs.dennisc.alice.Project project = getIDE().getProject();
-//		if( project != null ) {
-//			new ProjectBlank( project ).showPopupMenu( viewController.getAwtComponent(), x, y, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.croquet.Operation<?> >() {
-//				public void handleCompletion( edu.cmu.cs.dennisc.croquet.Operation<?> operation ) {
-//					operation.fire();
-//				}
-//				public void handleCancelation() {
-//				}
-//			} );
-//		} else {
-//			this.getIDE().showMessageDialog( "Open a project first (via the File Menu)", "No Project", edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION );
-//		}
-//	}
+	@Override
+	protected void handlePopupMenuWillBecomeInvisible( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, javax.swing.event.PopupMenuEvent e ) {
+		popupMenu.getAwtComponent().removeAll();
+		super.handlePopupMenuWillBecomeInvisible( popupMenu, e );
+	}
 }

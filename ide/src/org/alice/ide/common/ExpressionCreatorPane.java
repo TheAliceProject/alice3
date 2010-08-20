@@ -42,6 +42,8 @@
  */
 package org.alice.ide.common;
 
+import org.alice.ide.templates.CascadingExpressionsStatementTemplate;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,119 +62,200 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 	protected boolean isAlphaDesiredWhenOverDropReceptor() {
 		return true;
 	}
-	protected abstract java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > rv );
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
+		return null;
+	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
-//	@Override
-	public final void createExpression( final edu.cmu.cs.dennisc.croquet.ModelContext context, final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, final edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
-		final java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > types = getBlankExpressionTypes( new java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> >() );
-		final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> thisType = this.getExpressionType();
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> propertyType = expressionProperty.getExpressionType();
+	protected String getTitleAt( int index ) {
+		return null;
+	}
+	
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > createDropOperation( final edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		
-		final boolean[] accessible = { false, false };
-		if( propertyType.isAssignableFrom( thisType ) ) {
-			//pass
+		
+		final edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = null;
+		final int index = -1;
+		
+		
+		final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types = this.getBlankExpressionTypes();
+		edu.cmu.cs.dennisc.alice.ast.Expression[] predeterminedExpressions = org.alice.ide.IDE.getSingleton().createPredeterminedExpressionsIfAppropriate( types );
+		if( predeterminedExpressions != null ) {
+			edu.cmu.cs.dennisc.alice.ast.Expression expression = this.createExpression( predeterminedExpressions ); 
+			//return new org.alice.ide.croquet.models.ast.SetExpressionPropertyActionOperation( expressionProperty, expression );
+			return null;
 		} else {
-			if( thisType.isArray() ) {
-				if( propertyType.isAssignableFrom( thisType.getComponentType() ) ) {
-					types.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE );
-					accessible[ 0 ] = true;
-				}
-				for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava integerType : edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_TYPES ) {
-					if( propertyType == integerType ) {
-						accessible[ 1 ] = true;
+			if( types.length == 1 ) {
+				return new org.alice.ide.croquet.models.ast.FillInSingleExpressionPopupMenuOperation( java.util.UUID.fromString( "9a67ff7b-df1f-492e-b128-721f58ea2ad1" ) ) {
+					public edu.cmu.cs.dennisc.cascade.CascadingEdit< ? > createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+						edu.cmu.cs.dennisc.alice.ast.Expression expression = ExpressionCreatorPane.this.createExpression( (edu.cmu.cs.dennisc.alice.ast.Expression)value ); 
+						//return new org.alice.ide.croquet.edits.ast.SetExpressionPropertyEdit( expressionProperty, expression );
+						return null;
 					}
-				}
+					@Override
+					protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
+						return edu.cmu.cs.dennisc.alice.Project.GROUP;
+					}
+					@Override
+					protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
+						return types[ 0 ];
+					}
+					@Override
+					public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+						return null;
+					}
+					@Override
+					protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.BlockStatement, java.lang.Integer > getBlockStatementAndIndex() {
+						return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( blockStatement, index );
+					}
+					@Override
+					protected String getTitle() {
+						return ExpressionCreatorPane.this.getTitleAt( 0 );
+					}
+				};
+			} else {
+				return new org.alice.ide.croquet.models.ast.FillInExpressionsPopupMenuOperation( java.util.UUID.fromString( "8fc93b84-f8f6-4280-ba3b-00541a8212f2" ) ) {
+					@Override
+					protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] getDesiredValueTypes() {
+						return types;
+					}
+					@Override
+					protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
+						return edu.cmu.cs.dennisc.alice.Project.GROUP;
+					}
+					public edu.cmu.cs.dennisc.cascade.CascadingEdit< ? > createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+						edu.cmu.cs.dennisc.alice.ast.Expression expression = ExpressionCreatorPane.this.createExpression( (edu.cmu.cs.dennisc.alice.ast.Expression)value ); 
+						//return new org.alice.ide.croquet.edits.ast.SetExpressionPropertyEdit( expressionProperty, expression );
+						return null;
+					}
+					@Override
+					public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+						return null;
+					}
+					@Override
+					protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.BlockStatement, java.lang.Integer > getBlockStatementAndIndex() {
+						return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( blockStatement, index );
+					}
+					@Override
+					protected String getTitleAt( int index ) {
+						return ExpressionCreatorPane.this.getTitleAt( index );
+					}
+				};
 			}
 		}
-		if( types.size() > 0 ) {
-			class ExpressionsTaskObserver implements edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > {
-				public void handleCompletion(edu.cmu.cs.dennisc.alice.ast.Expression[] expressions) {
-					if( expressions != null ) {
-						edu.cmu.cs.dennisc.alice.ast.Expression expression = createExpression( expressions );
-						if( accessible[ 0 ] ) {
-							edu.cmu.cs.dennisc.alice.ast.Expression lastExpression = expressions[ expressions.length-1 ];
-							if( accessible[ 1 ] && lastExpression == null ) {
-								expression = new edu.cmu.cs.dennisc.alice.ast.ArrayLength( expression );
-							} else {
-								expression = new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( thisType, expression, lastExpression );
-							}
-						} else if( accessible[ 1 ] ) {
-							expression = new edu.cmu.cs.dennisc.alice.ast.ArrayLength( expression );
-						}
-						taskObserver.handleCompletion( expression );
-					} else {
-						taskObserver.handleCancelation();
-					}
-				}
-				public void handleCancelation() {
-					taskObserver.handleCancelation();
-				}
-			}
-			ExpressionsTaskObserver expressionsTaskObserver = new ExpressionsTaskObserver();
-			edu.cmu.cs.dennisc.alice.ast.BlockStatement parentStatement = null;
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate parentStatement" );
-			edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? >[] array = new edu.cmu.cs.dennisc.alice.ast.AbstractType[ types.size() ];
-			types.toArray( array );
-			
-			
-			getIDE().getCascadeManager().promptUserForExpressions( parentStatement, -1, array, accessible[ 1 ], (java.awt.event.MouseEvent)context.getAwtEvent(), expressionsTaskObserver );
-			
-//			class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.Expression[], Void > {
-//				@Override
-//				protected edu.cmu.cs.dennisc.alice.ast.Expression[] doInBackground() throws java.lang.Exception {
-//					edu.cmu.cs.dennisc.task.BlockingTaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > expressionsTaskObserver = new edu.cmu.cs.dennisc.task.BlockingTaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] >() {
-//						@Override
-//						public void run() {
-//							edu.cmu.cs.dennisc.alice.ast.BlockStatement parentStatement = null;
-//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate parentStatement" );
-//							getIDE().promptUserForExpressions( parentStatement, -1, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( types, edu.cmu.cs.dennisc.alice.ast.AbstractType.class ), accessible[ 1 ], (java.awt.event.MouseEvent)context.getAwtEvent(), this );
-//						}
-//					};
-//					return expressionsTaskObserver.getResult();
+	}
+
+	
+////	@Override
+//	public final void createExpression( final edu.cmu.cs.dennisc.croquet.ModelContext context, final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, final edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
+//		final java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > types = getBlankExpressionTypes( new java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> >() );
+//		final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> thisType = this.getExpressionType();
+//		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> propertyType = expressionProperty.getExpressionType();
+//		
+//		final boolean[] accessible = { false, false };
+//		if( propertyType.isAssignableFrom( thisType ) ) {
+//			//pass
+//		} else {
+//			if( thisType.isArray() ) {
+//				if( propertyType.isAssignableFrom( thisType.getComponentType() ) ) {
+//					types.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE );
+//					accessible[ 0 ] = true;
 //				}
-//				@Override
-//				protected void done() {
-//					edu.cmu.cs.dennisc.alice.ast.Expression[] expressions = null;
-//					try {
-//						expressions = this.get();
-//					} catch( InterruptedException ie ) {
-//						throw new RuntimeException( ie );
-//					} catch( java.util.concurrent.ExecutionException ee ) {
-//						throw new RuntimeException( ee );
-//					} finally {
-//						if( expressions != null ) {
-//							edu.cmu.cs.dennisc.alice.ast.Expression expression = createExpression( expressions );
-//							if( accessible[ 0 ] ) {
-//								edu.cmu.cs.dennisc.alice.ast.Expression lastExpression = expressions[ expressions.length-1 ];
-//								if( accessible[ 1 ] && lastExpression == null ) {
-//									expression = new edu.cmu.cs.dennisc.alice.ast.ArrayLength( expression );
-//								} else {
-//									expression = new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( thisType, expression, lastExpression );
-//								}
-//							} else if( accessible[ 1 ] ) {
-//								expression = new edu.cmu.cs.dennisc.alice.ast.ArrayLength( expression );
-//							}
-//							taskObserver.handleCompletion( expression );
-//						} else {
-//							taskObserver.handleCancelation();
-//						}
+//				for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava integerType : edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_TYPES ) {
+//					if( propertyType == integerType ) {
+//						accessible[ 1 ] = true;
 //					}
 //				}
 //			}
-//			Worker worker = new Worker();
-//			worker.execute();
-		} else {
-//			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//				public void run() {
-					edu.cmu.cs.dennisc.alice.ast.Expression expression = createExpression();
-					if( accessible[ 1 ] ) {
-						expression = new edu.cmu.cs.dennisc.alice.ast.ArrayLength( expression );
-					}
-					taskObserver.handleCompletion( expression );
+//		}
+//		if( types.size() > 0 ) {
+//			class ExpressionsTaskObserver implements edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > {
+//				public void handleCompletion(edu.cmu.cs.dennisc.alice.ast.Expression[] expressions) {
+//					if( expressions != null ) {
+//						edu.cmu.cs.dennisc.alice.ast.Expression expression = createExpression( expressions );
+//						if( accessible[ 0 ] ) {
+//							edu.cmu.cs.dennisc.alice.ast.Expression lastExpression = expressions[ expressions.length-1 ];
+//							if( accessible[ 1 ] && lastExpression == null ) {
+//								expression = new edu.cmu.cs.dennisc.alice.ast.ArrayLength( expression );
+//							} else {
+//								expression = new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( thisType, expression, lastExpression );
+//							}
+//						} else if( accessible[ 1 ] ) {
+//							expression = new edu.cmu.cs.dennisc.alice.ast.ArrayLength( expression );
+//						}
+//						taskObserver.handleCompletion( expression );
+//					} else {
+//						taskObserver.handleCancelation();
+//					}
 //				}
-//			} );
-		}
-	}
+//				public void handleCancelation() {
+//					taskObserver.handleCancelation();
+//				}
+//			}
+//			ExpressionsTaskObserver expressionsTaskObserver = new ExpressionsTaskObserver();
+//			edu.cmu.cs.dennisc.alice.ast.BlockStatement parentStatement = null;
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate parentStatement" );
+//			edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? >[] array = new edu.cmu.cs.dennisc.alice.ast.AbstractType[ types.size() ];
+//			types.toArray( array );
+//			
+//			
+//			getIDE().getCascadeManager().promptUserForExpressions( parentStatement, -1, array, accessible[ 1 ], (java.awt.event.MouseEvent)context.getAwtEvent(), expressionsTaskObserver );
+//			
+////			class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.Expression[], Void > {
+////				@Override
+////				protected edu.cmu.cs.dennisc.alice.ast.Expression[] doInBackground() throws java.lang.Exception {
+////					edu.cmu.cs.dennisc.task.BlockingTaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > expressionsTaskObserver = new edu.cmu.cs.dennisc.task.BlockingTaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] >() {
+////						@Override
+////						public void run() {
+////							edu.cmu.cs.dennisc.alice.ast.BlockStatement parentStatement = null;
+////							edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate parentStatement" );
+////							getIDE().promptUserForExpressions( parentStatement, -1, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( types, edu.cmu.cs.dennisc.alice.ast.AbstractType.class ), accessible[ 1 ], (java.awt.event.MouseEvent)context.getAwtEvent(), this );
+////						}
+////					};
+////					return expressionsTaskObserver.getResult();
+////				}
+////				@Override
+////				protected void done() {
+////					edu.cmu.cs.dennisc.alice.ast.Expression[] expressions = null;
+////					try {
+////						expressions = this.get();
+////					} catch( InterruptedException ie ) {
+////						throw new RuntimeException( ie );
+////					} catch( java.util.concurrent.ExecutionException ee ) {
+////						throw new RuntimeException( ee );
+////					} finally {
+////						if( expressions != null ) {
+////							edu.cmu.cs.dennisc.alice.ast.Expression expression = createExpression( expressions );
+////							if( accessible[ 0 ] ) {
+////								edu.cmu.cs.dennisc.alice.ast.Expression lastExpression = expressions[ expressions.length-1 ];
+////								if( accessible[ 1 ] && lastExpression == null ) {
+////									expression = new edu.cmu.cs.dennisc.alice.ast.ArrayLength( expression );
+////								} else {
+////									expression = new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( thisType, expression, lastExpression );
+////								}
+////							} else if( accessible[ 1 ] ) {
+////								expression = new edu.cmu.cs.dennisc.alice.ast.ArrayLength( expression );
+////							}
+////							taskObserver.handleCompletion( expression );
+////						} else {
+////							taskObserver.handleCancelation();
+////						}
+////					}
+////				}
+////			}
+////			Worker worker = new Worker();
+////			worker.execute();
+//		} else {
+////			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+////				public void run() {
+//					edu.cmu.cs.dennisc.alice.ast.Expression expression = createExpression();
+//					if( accessible[ 1 ] ) {
+//						expression = new edu.cmu.cs.dennisc.alice.ast.ArrayLength( expression );
+//					}
+//					taskObserver.handleCompletion( expression );
+////				}
+////			} );
+//		}
+//	}
 	@Override
 	protected boolean isKnurlDesired() {
 		return true;

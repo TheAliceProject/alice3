@@ -42,7 +42,7 @@
  */
 package org.alice.ide.codeeditor;
 
-public class InsertStatementEdit extends org.alice.ide.ToDoEdit {
+public class InsertStatementEdit<M extends edu.cmu.cs.dennisc.cascade.CascadingRoot> extends edu.cmu.cs.dennisc.cascade.CascadingEdit< M > {
 	public static final int AT_END = Short.MAX_VALUE;
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty;
 	private int specifiedIndex;
@@ -78,5 +78,11 @@ public class InsertStatementEdit extends org.alice.ide.ToDoEdit {
 		rv.append( "drop: " );
 		edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, statement, locale );
 		return rv;
+	}
+	@Override
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	}
+	@Override
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
 }

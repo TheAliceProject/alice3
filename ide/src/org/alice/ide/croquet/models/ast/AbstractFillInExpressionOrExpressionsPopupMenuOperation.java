@@ -42,8 +42,6 @@
  */
 package org.alice.ide.croquet.models.ast;
 
-import edu.cmu.cs.dennisc.croquet.PopupMenu;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -75,8 +73,6 @@ public abstract class AbstractFillInExpressionOrExpressionsPopupMenuOperation ex
 		return null;
 	}
 
-	
-	
 	private edu.cmu.cs.dennisc.cascade.Blank blank;
 	protected abstract edu.cmu.cs.dennisc.cascade.Blank createCascadeBlank();
 	@Override

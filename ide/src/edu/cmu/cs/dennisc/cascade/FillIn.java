@@ -71,8 +71,8 @@ public abstract class FillIn< E > extends Node {
 			//pass
 		} else {
 			Blank rootBlank = this.getRootBlank();
-			CascadingPopupMenuOperation cascadingPopupMenuOperation = rootBlank.getCascadingPopupMenuOperation();
-			this.model = cascadingPopupMenuOperation.createCroquetModel( this, isLast );
+			CascadingRoot cascadingRoot = rootBlank.getCascadingRoot();
+			this.model = cascadingRoot.createCroquetModel( this, isLast );
 			//this.menuItem.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 			this.isMenuItemIconUpToDate = false;
 		}
@@ -182,9 +182,9 @@ public abstract class FillIn< E > extends Node {
 		menu.getAwtComponent().removeAll();
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo handleMenuDeselected" );
 	}
-	protected void handleActionOperationPerformed(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected void handleActionOperationPerformed( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		this.select();
-		this.getRootBlank().handleActionPerformed( context );
+//		this.getRootBlank().handleActionPerformed( context );
 	}
 //	@Override
 //	protected void handleMenuSelected( javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu< edu.cmu.cs.dennisc.croquet.MenuModel > menu ) {

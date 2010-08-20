@@ -45,7 +45,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInExpressionListPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.FillInExpressionListPropertyActionOperation > {
+public class FillInExpressionListPropertyEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< org.alice.ide.croquet.models.ast.FillInExpressionListPropertyPopupMenuOperation > {
 	private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 	private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 	public FillInExpressionListPropertyEdit() {
@@ -55,8 +55,7 @@ public class FillInExpressionListPropertyEdit extends edu.cmu.cs.dennisc.croquet
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.croquet.models.ast.FillInExpressionListPropertyActionOperation actionOperation = this.getModel();
-		org.alice.ide.croquet.models.ast.FillInExpressionListPropertyPopupMenuOperation popupMenuOperation = actionOperation.getPopupMenuOperation();
+		org.alice.ide.croquet.models.ast.FillInExpressionListPropertyPopupMenuOperation popupMenuOperation = this.getCascadingRoot();
 		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = popupMenuOperation.getExpressionListProperty();
 		int index = popupMenuOperation.getIndex();
 		if( isDo ) {
@@ -66,8 +65,7 @@ public class FillInExpressionListPropertyEdit extends edu.cmu.cs.dennisc.croquet
 	}
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.croquet.models.ast.FillInExpressionListPropertyActionOperation actionOperation = this.getModel();
-		org.alice.ide.croquet.models.ast.FillInExpressionListPropertyPopupMenuOperation popupMenuOperation = actionOperation.getPopupMenuOperation();
+		org.alice.ide.croquet.models.ast.FillInExpressionListPropertyPopupMenuOperation popupMenuOperation = this.getCascadingRoot();
 		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = popupMenuOperation.getExpressionListProperty();
 		int index = popupMenuOperation.getIndex();
 		expressionListProperty.set( index, this.prevExpression );
@@ -87,13 +85,5 @@ public class FillInExpressionListPropertyEdit extends edu.cmu.cs.dennisc.croquet
 	@Override
 	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
-	}
-	@Override
-	public boolean canRedo() {
-		return true;
-	}
-	@Override
-	public boolean canUndo() {
-		return true;
 	}
 }

@@ -78,9 +78,26 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	
-	public edu.cmu.cs.dennisc.alice.ast.Expression createPredeterminedExpressionIfAppropriate( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createPredeterminedExpressionIfAppropriate( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
 		return null;
 	}
+	public edu.cmu.cs.dennisc.alice.ast.Expression[] createPredeterminedExpressionsIfAppropriate( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types ) {
+		if( types == null || types.length == 0 ) {
+			return new edu.cmu.cs.dennisc.alice.ast.Expression[]{};
+		} else {
+			if( types.length == 1 ) {
+				edu.cmu.cs.dennisc.alice.ast.Expression predeterminedExpression = org.alice.ide.IDE.getSingleton().createPredeterminedExpressionIfAppropriate( types[ 0 ] );
+				if( predeterminedExpression != null ) {
+					return new edu.cmu.cs.dennisc.alice.ast.Expression[]{ predeterminedExpression };
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		}
+	}
+	
 	
 	protected abstract edu.cmu.cs.dennisc.croquet.Operation<?> createRestartOperation();
 	public abstract edu.cmu.cs.dennisc.croquet.Operation<?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate );

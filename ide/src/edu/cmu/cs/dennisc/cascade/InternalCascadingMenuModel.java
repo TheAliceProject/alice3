@@ -40,13 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package edu.cmu.cs.dennisc.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FillInExpressionListPropertyActionOperation extends edu.cmu.cs.dennisc.cascade.CascadingActionOperation<FillInExpressionListPropertyPopupMenuOperation> {
-	public FillInExpressionListPropertyActionOperation( edu.cmu.cs.dennisc.croquet.Group group, FillInExpressionListPropertyPopupMenuOperation popupMenuOperation, edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn ) {
-		super( group, java.util.UUID.fromString( "7eded20f-5550-45de-af53-5e08fd5e4ed8" ), popupMenuOperation, fillIn );
+/*package-private*/ class InternalCascadingMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+	private FillIn<?> fillIn;
+	public InternalCascadingMenuModel( FillIn<?> fillIn ) {
+		super( java.util.UUID.fromString( "69570d24-a52f-40d4-ac7d-15a74333c5fa" ) );
+		this.fillIn = fillIn;
+	}
+	@Override
+	protected void handleMenuSelected( javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu< edu.cmu.cs.dennisc.croquet.MenuModel > menu ) {
+		super.handleMenuSelected( e, menu );
+		this.fillIn.handleMenuSelected( e, menu );
+	}
+	@Override
+	protected void handleMenuDeselected( javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu< edu.cmu.cs.dennisc.croquet.MenuModel > menu ) {
+		this.fillIn.handleMenuDeselected( e, menu );
+		super.handleMenuDeselected( e, menu );
 	}
 }
