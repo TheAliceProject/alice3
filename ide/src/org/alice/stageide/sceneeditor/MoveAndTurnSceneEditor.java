@@ -474,7 +474,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		CameraMarker selectedCameraMarker = getActiveCameraMarker();
 		AffineMatrix4x4 cameraTransform = selectedCameraMarker.getSGTransformable().getAbsoluteTransformation();
 		
-		PrintUtilities.println("Camera marker: "+selectedCameraMarker.getName());
+		//PrintUtilities.println("Camera marker: "+selectedCameraMarker.getName());
 		
 		if (selectedCameraMarker instanceof PerspectiveCameraMarker)
 		{
@@ -659,7 +659,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		{
 			if (field.getValueType().isAssignableTo( org.alice.apis.moveandturn.CameraMarker.class ))
 			{
-				PrintUtilities.println("Camera marker: "+field.getName());
+				//PrintUtilities.println("Camera marker: "+field.getName());
 				cameraMarkerFields.add(field);
 			}
 		}
