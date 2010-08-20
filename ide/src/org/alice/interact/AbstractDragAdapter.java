@@ -442,7 +442,8 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	
 	public void setCameraOnManipulator(CameraInformedManipulator manipulator, InputState startInput)
 	{
-		if (manipulator.getDesiredCameraView() == CameraView.PICK_CAMERA)
+		//The pick camera can be null if we roll over a 2D handle while we're moving
+		if (manipulator.getDesiredCameraView() == CameraView.PICK_CAMERA && this.currentInputState.getPickCamera() != null)
 		{
 			manipulator.setCamera( this.currentInputState.getPickCamera() );
 		}
@@ -450,7 +451,6 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		{
 			manipulator.setCamera( this.getCameraForManipulator(manipulator) );
 		}
-		
 	}
 	
 	
@@ -504,6 +504,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 					}
 					else if ( currentManipulatorSet.justStarted( this.currentInputState, this.previousInputState ) )
 					{
+//						System.out.println("Just starting "+currentManipulatorSet.getManipulator());
 						toStart.add( currentManipulatorSet.getManipulator() );
 					}
 					else if ( currentManipulatorSet.justEnded( this.currentInputState, this.previousInputState ) )
@@ -660,9 +661,8 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	{
 		CameraView cameraView = cameraManipulator.getDesiredCameraView();
 		AbstractCamera cameraToReturn = null;
-		if (cameraView == CameraView.ACTIVE_VIEW)
+		if (cameraView == CameraView.ACTIVE_VIEW || cameraView == CameraView.PICK_CAMERA)
 		{
-			
 			cameraToReturn = getActiveCamera();
 		}
 		else

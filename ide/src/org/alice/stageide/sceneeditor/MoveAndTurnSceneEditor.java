@@ -473,6 +473,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		AffineMatrix4x4 goodPointOfView = new AffineMatrix4x4();
 		CameraMarker selectedCameraMarker = getActiveCameraMarker();
 		AffineMatrix4x4 cameraTransform = selectedCameraMarker.getSGTransformable().getAbsoluteTransformation();
+		
+		PrintUtilities.println("Camera marker: "+selectedCameraMarker.getName());
+		
 		if (selectedCameraMarker instanceof PerspectiveCameraMarker)
 		{
 			AbstractCamera selectedCamera = this.getSGPerspectiveCamera();
@@ -1790,6 +1793,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	public void dragStarted(DragAndDropContext dragAndDropContext) {
 		DragComponent dragSource = dragAndDropContext.getDragSource();
 		dragSource.showDragProxy();
+		Operation<?> operation = dragSource.getLeftButtonClickOperation();
+		if (operation instanceof GalleryFileOperation)
+		{
+			((GalleryFileOperation)operation).setDesiredTransformation(null);
+		}
 	}
 
 	public void dragStopped(DragAndDropContext dragAndDropContext) 

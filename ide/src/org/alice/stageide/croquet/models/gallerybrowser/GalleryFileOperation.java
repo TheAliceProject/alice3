@@ -92,9 +92,9 @@ public class GalleryFileOperation extends AbstractGalleryDeclareFieldOperation<o
 			{
 				if (this.desiredTransformation != null)
 				{
-//					PrintUtilities.println("setting drop item "+ ((org.alice.apis.moveandturn.Transformable)fieldObject).getSGTransformable().hashCode()+" to "+this.desiredTransformation.translation);
 					((org.alice.apis.moveandturn.Transformable)fieldObject).setLocalTransformation(new edu.cmu.cs.dennisc.math.AffineMatrix4x4(this.desiredTransformation));
-//					((org.alice.apis.moveandturn.Transformable)fieldObject).getSGTransformable().localTransformation.setValue();
+					//Reset the desired transform after using it
+					this.desiredTransformation = null;
 				}
 				else
 				{
