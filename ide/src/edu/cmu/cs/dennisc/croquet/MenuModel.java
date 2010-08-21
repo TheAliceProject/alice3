@@ -92,8 +92,9 @@ public abstract class MenuModel extends Model {
 	}
 	
 	
-	@Deprecated
-	protected void handlePopupMenuPerform( PopupMenu popupMenu, PopupMenuOperationContext context ) {
+	protected void handlePopupMenuPrologue( PopupMenu popupMenu, PopupMenuOperationContext context ) {
+	}
+	protected void handlePopupMenuEpilogue( PopupMenu popupMenu, PopupMenuOperationContext context ) {
 	}
 	
 	private javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {

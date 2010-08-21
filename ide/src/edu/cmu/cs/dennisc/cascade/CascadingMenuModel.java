@@ -77,8 +77,8 @@ public abstract class CascadingMenuModel extends edu.cmu.cs.dennisc.croquet.Menu
 
 	protected abstract edu.cmu.cs.dennisc.cascade.Blank getCascadeBlank();
 	@Override
-	protected void handlePopupMenuPerform(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
-		super.handlePopupMenuPerform( popupMenu, context );
+	protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
+		super.handlePopupMenuPrologue( popupMenu, context );
 		edu.cmu.cs.dennisc.cascade.Blank blank = this.getCascadeBlank();
 		blank.setCascadingRoot( this );
 		java.util.List< edu.cmu.cs.dennisc.cascade.Node > children = blank.getChildren();

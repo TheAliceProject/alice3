@@ -85,15 +85,14 @@ public abstract class AbstractFillInExpressionOrExpressionsMenuModel extends edu
 		return this.blank;
 	}
 	
-
 	@Override
-	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-		super.handleShowing( menuItemContainer, e );
+	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
 		org.alice.ide.IDE.getSingleton().getCascadeManager().pushContext( this.getPreviousExpression(), this.getBlockStatementAndIndex() );
+		super.handlePopupMenuPrologue( popupMenu, context );
 	}
 	@Override
-	protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+	protected void handlePopupMenuEpilogue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
+		super.handlePopupMenuEpilogue( popupMenu, context );
 		org.alice.ide.IDE.getSingleton().getCascadeManager().popContext();
-		super.handleHiding( menuItemContainer, e );
 	}
 }
