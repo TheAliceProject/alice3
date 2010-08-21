@@ -102,13 +102,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	protected abstract edu.cmu.cs.dennisc.croquet.Operation<?> createRestartOperation();
 	public abstract edu.cmu.cs.dennisc.croquet.Operation<?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
 
-	private edu.cmu.cs.dennisc.croquet.Operation<?> preferencesOperation = this.createPreferencesOperation();
+//	private edu.cmu.cs.dennisc.croquet.Operation<?> preferencesOperation = this.createPreferencesOperation();
 	private edu.cmu.cs.dennisc.croquet.Operation<?> aboutOperation = this.createAboutOperation();
 	private edu.cmu.cs.dennisc.croquet.Operation<?> restartOperation = this.createRestartOperation();
 
-	protected edu.cmu.cs.dennisc.croquet.Operation<?> createPreferencesOperation() {
-		return new org.alice.ide.operations.preferences.PreferencesOperation();
-	}
+//	protected edu.cmu.cs.dennisc.croquet.Operation<?> createPreferencesOperation() {
+//		return new org.alice.ide.operations.preferences.PreferencesOperation();
+//	}
 	protected abstract edu.cmu.cs.dennisc.croquet.Operation<?> createAboutOperation();
 
 	public abstract edu.cmu.cs.dennisc.croquet.DialogOperation getRunOperation();
@@ -116,7 +116,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return this.restartOperation;
 	}
 	public final edu.cmu.cs.dennisc.croquet.Operation<?> getPreferencesOperation() {
-		return this.preferencesOperation;
+		//return this.preferencesOperation;
+		return null;
 	}
 	public final edu.cmu.cs.dennisc.croquet.Operation<?> getAboutOperation() {
 		return this.aboutOperation;

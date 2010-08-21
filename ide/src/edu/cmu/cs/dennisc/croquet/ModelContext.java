@@ -382,15 +382,15 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		super.appendRepr( rv );
 		State state = this.getState();
 		rv.append( "[" );
-		rv.append( this.getState() );
+		rv.append( state );
 		rv.append( "]" );
 		
-		if( state != null ) {
-			//pass
-		} else {
+//		if( state != null ) {
+//			//pass
+//		} else {
 			rv.append( " " );
 			rv.append( this.getModel() );
-		}
+//		}
 		return rv;
 	}
 }

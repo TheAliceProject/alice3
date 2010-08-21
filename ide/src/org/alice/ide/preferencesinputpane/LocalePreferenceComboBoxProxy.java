@@ -68,6 +68,7 @@ public class LocalePreferenceComboBoxProxy extends PreferenceLabeledPaneProxy< j
 	private LocaleSelectionOperation localeSelectionOperation = new LocaleSelectionOperation();
 	public LocalePreferenceComboBoxProxy( edu.cmu.cs.dennisc.preference.Preference< java.util.Locale > preference ) {
 		super( preference );
+		Thread.dumpStack();
 		edu.cmu.cs.dennisc.croquet.ComboBox< java.util.Locale > comboBox = new LocaleSelectionOperation().createComboBox();
 		comboBox.setRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.LocaleDisplayNameListCellRenderer() );
 		this.createPane( comboBox );

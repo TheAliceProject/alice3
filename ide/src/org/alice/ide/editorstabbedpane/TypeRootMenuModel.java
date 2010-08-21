@@ -101,7 +101,6 @@ public class TypeRootMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 	public TypeRootMenuModel() {
 		super( java.util.UUID.fromString( "259dfcc5-dd20-4890-8104-a34a075734d0" ) );
 	}
-	
 	@Override
 	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		super.handleShowing( menuItemContainer, e );

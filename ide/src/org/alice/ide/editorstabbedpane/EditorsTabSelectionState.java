@@ -441,10 +441,10 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 		}
 	};
 	private static class DropDownPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-		private TypeRootMenuModel rootOperation = new TypeRootMenuModel();
+		private TypeRootMenuModel rootMenu = new TypeRootMenuModel();
 		private javax.swing.ButtonModel buttonModel;
 		public DropDownPanel() {
-			edu.cmu.cs.dennisc.croquet.Button button = this.rootOperation.getPopupMenuOperation().createButton();
+			edu.cmu.cs.dennisc.croquet.Button button = this.rootMenu.getPopupMenuOperation().createButton();
 			button.getAwtComponent().setFocusable( false );
 			this.buttonModel = button.getAwtComponent().getModel();
 			button.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.LEADING );
@@ -483,11 +483,10 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 			} else {
 				type = null;
 			}
-			this.rootOperation.setSmallIcon( new org.alice.ide.common.TypeDropDownIcon( type, this.buttonModel ) );
-			this.rootOperation.setName( "class:" );
+			this.rootMenu.getPopupMenuOperation().setSmallIcon( new org.alice.ide.common.TypeDropDownIcon( type, this.buttonModel ) );
+			this.rootMenu.getPopupMenuOperation().setName( "class:" );
 			this.revalidateAndRepaint();
 		}
-		
 	}
 	private EditorTabCreator editorTabCreator = new EditorTabCreator();
 	private DropDownPanel dropDownPanel = new DropDownPanel();

@@ -120,6 +120,7 @@ public class IsInteractionTreeShowingState extends IsFrameShowingState {
 		edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getRootContext();
 		final HistoryTreeModel treeModel = new HistoryTreeModel( context );
 		final javax.swing.JTree tree = new javax.swing.JTree( treeModel );
+		tree.setRootVisible( false );
 		context.addChildrenObserver( new edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver() {
 			public void addingChild( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
 			}
@@ -127,8 +128,13 @@ public class IsInteractionTreeShowingState extends IsFrameShowingState {
 				javax.swing.SwingUtilities.invokeLater( new Runnable() {
 					public void run() {
 						treeModel.reload();
+						int childCount = treeModel.getChildCount( treeModel.getRoot() );
 						for( int i=0; i<tree.getRowCount(); i++ ) {
-							tree.expandRow( i );
+							if( i<childCount-1 ) {
+								tree.collapseRow( i );
+							} else {
+								tree.expandRow( i );
+							}
 						}
 						tree.scrollRowToVisible( tree.getRowCount()-1 );
 					}
