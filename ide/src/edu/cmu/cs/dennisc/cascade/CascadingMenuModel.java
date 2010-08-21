@@ -45,8 +45,46 @@ package edu.cmu.cs.dennisc.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingMenuModel extends InternalCascadingMenuModel implements CascadingRoot {
-	public CascadingMenuModel( FillIn<?> fillIn ) {
-		super( fillIn );
+public abstract class CascadingMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel implements CascadingRoot {
+	public CascadingMenuModel( java.util.UUID id ) {
+		super( id );
+	}
+	protected abstract edu.cmu.cs.dennisc.croquet.Group getItemGroup();
+	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel( FillIn< ? > fillIn ) {
+		return new InternalCascadingMenuModel( fillIn );
+	}
+	protected edu.cmu.cs.dennisc.croquet.Operation< ? > createItemOperation( FillIn< ? > fillIn ) {
+		return new InternalCascadingItemOperation( this.getItemGroup(), fillIn );
+	}
+	public edu.cmu.cs.dennisc.croquet.Model createCroquetModel( FillIn< ? > fillIn, boolean isLast ) {
+		if( fillIn instanceof SeparatorFillIn ) {
+			SeparatorFillIn separatorFillIn = (SeparatorFillIn)fillIn;
+			String name = separatorFillIn.getName();
+			javax.swing.Icon icon = separatorFillIn.getIcon();
+			if( name != null || icon != null ) {
+				return new edu.cmu.cs.dennisc.croquet.MenuSeparatorModel( name, icon );
+			} else {
+				return null;
+			}
+		} else {
+			if( isLast ) {
+				return this.createItemOperation( fillIn );
+			} else {
+				return this.createMenuModel( fillIn );
+			}
+		}
+	}
+
+	protected abstract edu.cmu.cs.dennisc.cascade.Blank getCascadeBlank();
+	@Override
+	protected void handlePopupMenuPerform(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
+		super.handlePopupMenuPerform( popupMenu, context );
+		edu.cmu.cs.dennisc.cascade.Blank blank = this.getCascadeBlank();
+		blank.setCascadingRoot( this );
+		java.util.List< edu.cmu.cs.dennisc.cascade.Node > children = blank.getChildren();
+		for( edu.cmu.cs.dennisc.cascade.Node child : children ) {
+			edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn = (edu.cmu.cs.dennisc.cascade.FillIn< ? >)child;
+			edu.cmu.cs.dennisc.croquet.Application.addMenuElement( popupMenu, fillIn.getCroquetModel() );
+		}
 	}
 }

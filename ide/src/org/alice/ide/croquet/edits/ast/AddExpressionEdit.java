@@ -45,7 +45,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class AddExpressionEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< org.alice.ide.croquet.models.ast.AddExpressionPopupMenuOperation > {
+public class AddExpressionEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< org.alice.ide.croquet.models.ast.AddExpressionMenuModel > {
 	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
 	private int index;
 	public AddExpressionEdit() {
@@ -55,14 +55,14 @@ public class AddExpressionEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit<
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.croquet.models.ast.AddExpressionPopupMenuOperation popupMenuOperation = this.getCascadingRoot();
+		org.alice.ide.croquet.models.ast.AddExpressionMenuModel popupMenuOperation = this.getCascadingRoot();
 		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = popupMenuOperation.getExpressionListProperty();
 		this.index = expressionListProperty.size();
 		expressionListProperty.add( this.expression );
 	}
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.croquet.models.ast.AddExpressionPopupMenuOperation popupMenuOperation = this.getCascadingRoot();
+		org.alice.ide.croquet.models.ast.AddExpressionMenuModel popupMenuOperation = this.getCascadingRoot();
 		edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty = popupMenuOperation.getExpressionListProperty();
 		expressionListProperty.remove( this.index );
 	}

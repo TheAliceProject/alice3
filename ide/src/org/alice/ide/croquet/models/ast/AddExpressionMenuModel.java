@@ -45,10 +45,10 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class AddExpressionPopupMenuOperation extends org.alice.ide.croquet.models.ast.FillInSingleExpressionPopupMenuOperation {
+public class AddExpressionMenuModel extends org.alice.ide.croquet.models.ast.FillInSingleExpressionMenuModel {
 	private edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty;
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
-	public AddExpressionPopupMenuOperation( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
+	public AddExpressionMenuModel( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
         super( java.util.UUID.fromString( "4f3ccba2-c44f-49b3-b20e-c9e847e90db2" ) );
         this.componentTypeProperty = componentTypeProperty;
         this.expressionListProperty = expressionListProperty;

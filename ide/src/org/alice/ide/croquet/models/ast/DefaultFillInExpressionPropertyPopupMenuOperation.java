@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultFillInExpressionPropertyPopupMenuOperation extends FillInExpressionPropertyPopupMenuOperation {
+public class DefaultFillInExpressionPropertyPopupMenuOperation extends FillInExpressionMenuModel {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, DefaultFillInExpressionPropertyPopupMenuOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized DefaultFillInExpressionPropertyPopupMenuOperation getInstance( edu.cmu.cs.dennisc.croquet.Group itemGroup, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
 		DefaultFillInExpressionPropertyPopupMenuOperation rv = map.get( expressionProperty );

@@ -45,8 +45,8 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FillInSingleExpressionPopupMenuOperation extends AbstractFillInExpressionOrExpressionsPopupMenuOperation {
-	public FillInSingleExpressionPopupMenuOperation( java.util.UUID id ) {
+public abstract class FillInSingleExpressionMenuModel extends AbstractFillInExpressionOrExpressionsMenuModel {
+	public FillInSingleExpressionMenuModel( java.util.UUID id ) {
 		super( id );
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getDesiredValueType();
@@ -61,7 +61,7 @@ public abstract class FillInSingleExpressionPopupMenuOperation extends AbstractF
 		edu.cmu.cs.dennisc.cascade.Blank rv = new org.alice.ide.cascade.ExpressionBlank( desiredValueType ) {
 			@Override
 			protected void addChildren() {
-				String title = FillInSingleExpressionPopupMenuOperation.this.getTitle();
+				String title = FillInSingleExpressionMenuModel.this.getTitle();
 				if( title != null ) {
 					this.addFillIn( new edu.cmu.cs.dennisc.cascade.SeparatorFillIn( title + ":" ) );
 					this.addSeparator();

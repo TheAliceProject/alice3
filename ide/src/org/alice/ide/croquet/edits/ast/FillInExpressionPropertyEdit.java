@@ -45,7 +45,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInExpressionPropertyEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< org.alice.ide.croquet.models.ast.FillInExpressionPropertyPopupMenuOperation > {
+public class FillInExpressionPropertyEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< org.alice.ide.croquet.models.ast.FillInExpressionMenuModel > {
 	private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 	private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 	public FillInExpressionPropertyEdit() {
@@ -55,7 +55,7 @@ public class FillInExpressionPropertyEdit extends edu.cmu.cs.dennisc.cascade.Cas
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.croquet.models.ast.FillInExpressionPropertyPopupMenuOperation popupMenuOperation = this.getCascadingRoot();
+		org.alice.ide.croquet.models.ast.FillInExpressionMenuModel popupMenuOperation = this.getCascadingRoot();
 		edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty = popupMenuOperation.getExpressionProperty();
 		if( isDo ) {
 			this.prevExpression = popupMenuOperation.getPreviousExpression();
@@ -64,7 +64,7 @@ public class FillInExpressionPropertyEdit extends edu.cmu.cs.dennisc.cascade.Cas
 	}
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.croquet.models.ast.FillInExpressionPropertyPopupMenuOperation popupMenuOperation = this.getCascadingRoot();
+		org.alice.ide.croquet.models.ast.FillInExpressionMenuModel popupMenuOperation = this.getCascadingRoot();
 		edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty = popupMenuOperation.getExpressionProperty();
 		expressionProperty.setValue( this.prevExpression );
 	}

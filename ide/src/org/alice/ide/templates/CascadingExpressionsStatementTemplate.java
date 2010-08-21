@@ -67,7 +67,7 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 			return new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( statement, blockStatement, index );
 		} else {
 			if( types.length == 1 ) {
-				return new org.alice.ide.croquet.models.ast.FillInSingleExpressionPopupMenuOperation( java.util.UUID.fromString( "9a67ff7b-df1f-492e-b128-721f58ea2ad1" ) ) {
+				return new org.alice.ide.croquet.models.ast.FillInSingleExpressionMenuModel( java.util.UUID.fromString( "9a67ff7b-df1f-492e-b128-721f58ea2ad1" ) ) {
 					@Override
 					protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
 						return types[ 0 ];
@@ -94,7 +94,7 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 					}
 				}.getPopupMenuOperation();
 			} else {
-				return new org.alice.ide.croquet.models.ast.FillInExpressionsPopupMenuOperation( java.util.UUID.fromString( "8fc93b84-f8f6-4280-ba3b-00541a8212f2" ) ) {
+				return new org.alice.ide.croquet.models.ast.FillInExpressionsMenuModel( java.util.UUID.fromString( "8fc93b84-f8f6-4280-ba3b-00541a8212f2" ) ) {
 					@Override
 					protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] getDesiredValueTypes() {
 						return types;

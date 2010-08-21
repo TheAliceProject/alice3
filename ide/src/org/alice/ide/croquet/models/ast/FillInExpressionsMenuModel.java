@@ -45,22 +45,17 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FillInExpressionPropertyPopupMenuOperation extends FillInSingleExpressionPopupMenuOperation {
-	public FillInExpressionPropertyPopupMenuOperation( java.util.UUID id ) {
+public abstract class FillInExpressionsMenuModel extends AbstractFillInExpressionOrExpressionsMenuModel {
+	public FillInExpressionsMenuModel( java.util.UUID id ) {
 		super( id );
 	}
-	public abstract edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty();
+	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getDesiredValueTypes();
+	protected abstract String getTitleAt( int index );
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
-		edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty = this.getExpressionProperty();
-		return expressionProperty.getValue();
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
-		edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty = this.getExpressionProperty();
-		return expressionProperty.getExpressionType();
-	}
-	public org.alice.ide.croquet.edits.ast.FillInExpressionPropertyEdit createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		return new org.alice.ide.croquet.edits.ast.FillInExpressionPropertyEdit( (edu.cmu.cs.dennisc.alice.ast.Expression)value );
+	protected edu.cmu.cs.dennisc.cascade.Blank createCascadeBlank() {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] desiredValueTypes = this.getDesiredValueTypes();
+		final edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn = org.alice.ide.IDE.getSingleton().getCascadeManager().createExpressionsFillIn( desiredValueTypes, false );
+		edu.cmu.cs.dennisc.cascade.Blank rv = new edu.cmu.cs.dennisc.cascade.ForwardingBlank( fillIn );
+		return rv;
 	}
 }

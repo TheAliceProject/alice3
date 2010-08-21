@@ -45,7 +45,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInMoreEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation > {
+public class FillInMoreEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< org.alice.ide.croquet.models.ast.FillInMoreMenuModel > {
 	private edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression;
 	public FillInMoreEdit() {
 	}
@@ -57,7 +57,7 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< or
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation popupMenuOperation = this.getCascadingRoot();
+		org.alice.ide.croquet.models.ast.FillInMoreMenuModel popupMenuOperation = this.getCascadingRoot();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = popupMenuOperation.getPrevMethodInvocation();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = popupMenuOperation.getNextMethodInvocation();
 
@@ -76,7 +76,7 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< or
 	}
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation popupMenuOperation = this.getCascadingRoot();
+		org.alice.ide.croquet.models.ast.FillInMoreMenuModel popupMenuOperation = this.getCascadingRoot();
 
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation = popupMenuOperation.getPrevMethodInvocation();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = popupMenuOperation.getNextMethodInvocation();
@@ -99,7 +99,7 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< or
 	}
 	@Override
 	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
-		org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation popupMenuOperation = this.getCascadingRoot();
+		org.alice.ide.croquet.models.ast.FillInMoreMenuModel popupMenuOperation = this.getCascadingRoot();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = popupMenuOperation.getNextMethodInvocation();
 		if( nextMethodInvocation != null ) {
 			rv.append( "more: " );

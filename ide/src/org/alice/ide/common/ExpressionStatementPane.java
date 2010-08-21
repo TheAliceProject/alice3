@@ -113,7 +113,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 					edu.cmu.cs.dennisc.alice.ast.AbstractMember nextLonger = method.getNextLongerInChain();
 					if( nextLonger != null ) {
 						this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
-						edu.cmu.cs.dennisc.croquet.AbstractButton< ?, ? > button = new org.alice.ide.croquet.PopupMenuButton( org.alice.ide.croquet.models.ast.FillInMorePopupMenuOperation.getInstance( methodInvocation ).getPopupMenuOperation() );
+						edu.cmu.cs.dennisc.croquet.AbstractButton< ?, ? > button = new org.alice.ide.croquet.PopupMenuButton( org.alice.ide.croquet.models.ast.FillInMoreMenuModel.getInstance( methodInvocation ).getPopupMenuOperation() );
 						button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
 						button.setVerticalAlignment( edu.cmu.cs.dennisc.croquet.VerticalAlignment.CENTER );
 						button.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );

@@ -45,14 +45,14 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInMorePopupMenuOperation extends FillInSingleExpressionPopupMenuOperation {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, FillInMorePopupMenuOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized FillInMorePopupMenuOperation getInstance( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
-		FillInMorePopupMenuOperation rv = map.get( methodInvocation );
+public class FillInMoreMenuModel extends FillInSingleExpressionMenuModel {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, FillInMoreMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized FillInMoreMenuModel getInstance( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+		FillInMoreMenuModel rv = map.get( methodInvocation );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new FillInMorePopupMenuOperation( methodInvocation );
+			rv = new FillInMoreMenuModel( methodInvocation );
 			map.put( methodInvocation, rv );
 		}
 		return rv;
@@ -60,7 +60,7 @@ public class FillInMorePopupMenuOperation extends FillInSingleExpressionPopupMen
 	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation;
 	private final edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement;
 	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation;
-	private FillInMorePopupMenuOperation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+	private FillInMoreMenuModel( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
 		super( java.util.UUID.fromString( "c89cd38a-693a-49c0-a4fd-74df439f54fd" ) );
 		assert methodInvocation != null;
 		this.methodInvocation = methodInvocation;

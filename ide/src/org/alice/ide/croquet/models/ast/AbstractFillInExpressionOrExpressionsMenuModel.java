@@ -45,17 +45,55 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FillInExpressionsPopupMenuOperation extends AbstractFillInExpressionOrExpressionsPopupMenuOperation {
-	public FillInExpressionsPopupMenuOperation( java.util.UUID id ) {
+public abstract class AbstractFillInExpressionOrExpressionsMenuModel extends edu.cmu.cs.dennisc.cascade.CascadingMenuModel {
+	public AbstractFillInExpressionOrExpressionsMenuModel( java.util.UUID id ) {
 		super( id );
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getDesiredValueTypes();
-	protected abstract String getTitleAt( int index );
+	public abstract edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression();
+	protected edu.cmu.cs.dennisc.alice.ast.Statement getStatement() {
+		edu.cmu.cs.dennisc.alice.ast.Expression prevExpression = this.getPreviousExpression();
+		if( prevExpression != null ) {
+			return prevExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.Statement.class );
+		} else {
+			return null;
+		}
+	}
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.BlockStatement, Integer > getBlockStatementAndIndex() {
+		edu.cmu.cs.dennisc.alice.ast.Statement statement = getStatement();
+		if( statement != null ) {
+			edu.cmu.cs.dennisc.alice.ast.Node node = statement.getParent();
+			if( node instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
+				edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)node;
+				int index = blockStatement.statements.indexOf( statement );
+				if( index != -1 ) {
+					return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( blockStatement, index );
+				}
+			}
+		}
+		return null;
+	}
+
+	private edu.cmu.cs.dennisc.cascade.Blank blank;
+	protected abstract edu.cmu.cs.dennisc.cascade.Blank createCascadeBlank();
 	@Override
-	protected edu.cmu.cs.dennisc.cascade.Blank createCascadeBlank() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] desiredValueTypes = this.getDesiredValueTypes();
-		final edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn = org.alice.ide.IDE.getSingleton().getCascadeManager().createExpressionsFillIn( desiredValueTypes, false );
-		edu.cmu.cs.dennisc.cascade.Blank rv = new edu.cmu.cs.dennisc.cascade.ForwardingBlank( fillIn );
-		return rv;
+	protected final edu.cmu.cs.dennisc.cascade.Blank getCascadeBlank() {
+		if( this.blank != null ) {
+			//pass
+		} else {
+			this.blank = this.createCascadeBlank();
+		}
+		return this.blank;
+	}
+	
+
+	@Override
+	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		super.handleShowing( menuItemContainer, e );
+		org.alice.ide.IDE.getSingleton().getCascadeManager().pushContext( this.getPreviousExpression(), this.getBlockStatementAndIndex() );
+	}
+	@Override
+	protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		org.alice.ide.IDE.getSingleton().getCascadeManager().popContext();
+		super.handleHiding( menuItemContainer, e );
 	}
 }

@@ -45,41 +45,22 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInExpressionListPropertyPopupMenuOperation extends FillInSingleExpressionPopupMenuOperation {
-	private int index;
-	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType;
-	private edu.cmu.cs.dennisc.croquet.Group itemGroup;
-	public FillInExpressionListPropertyPopupMenuOperation( java.util.UUID id, int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > desiredType, edu.cmu.cs.dennisc.croquet.Group itemGroup ) {
+public abstract class FillInExpressionMenuModel extends FillInSingleExpressionMenuModel {
+	public FillInExpressionMenuModel( java.util.UUID id ) {
 		super( id );
-		this.index = index;
-		this.expressionListProperty = expressionListProperty;
-		this.desiredType = desiredType;
-		this.itemGroup = itemGroup;
 	}
-	public edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty getExpressionListProperty() {
-		return this.expressionListProperty;
-	}
-	public int getIndex() {
-		return this.index;
-	}
+	public abstract edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty();
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
-		return this.itemGroup;
-	}
-	public org.alice.ide.croquet.edits.ast.FillInExpressionListPropertyEdit createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		return new org.alice.ide.croquet.edits.ast.FillInExpressionListPropertyEdit( (edu.cmu.cs.dennisc.alice.ast.Expression)value );
+	public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+		edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty = this.getExpressionProperty();
+		return expressionProperty.getValue();
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
-		return this.desiredType;
+		edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty = this.getExpressionProperty();
+		return expressionProperty.getExpressionType();
 	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
-		return this.expressionListProperty.get( this.index );
-	}
-	@Override
-	protected String getTitle() {
-		return null;
+	public org.alice.ide.croquet.edits.ast.FillInExpressionPropertyEdit createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		return new org.alice.ide.croquet.edits.ast.FillInExpressionPropertyEdit( (edu.cmu.cs.dennisc.alice.ast.Expression)value );
 	}
 }

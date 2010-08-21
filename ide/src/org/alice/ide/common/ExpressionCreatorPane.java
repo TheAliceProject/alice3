@@ -85,7 +85,7 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 			return null;
 		} else {
 			if( types.length == 1 ) {
-				return new org.alice.ide.croquet.models.ast.FillInSingleExpressionPopupMenuOperation( java.util.UUID.fromString( "9a67ff7b-df1f-492e-b128-721f58ea2ad1" ) ) {
+				return new org.alice.ide.croquet.models.ast.FillInSingleExpressionMenuModel( java.util.UUID.fromString( "9a67ff7b-df1f-492e-b128-721f58ea2ad1" ) ) {
 					public edu.cmu.cs.dennisc.cascade.CascadingEdit< ? > createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 						edu.cmu.cs.dennisc.alice.ast.Expression expression = ExpressionCreatorPane.this.createExpression( (edu.cmu.cs.dennisc.alice.ast.Expression)value ); 
 						//return new org.alice.ide.croquet.edits.ast.SetExpressionPropertyEdit( expressionProperty, expression );
@@ -113,7 +113,7 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 					}
 				}.getPopupMenuOperation();
 			} else {
-				return new org.alice.ide.croquet.models.ast.FillInExpressionsPopupMenuOperation( java.util.UUID.fromString( "8fc93b84-f8f6-4280-ba3b-00541a8212f2" ) ) {
+				return new org.alice.ide.croquet.models.ast.FillInExpressionsMenuModel( java.util.UUID.fromString( "8fc93b84-f8f6-4280-ba3b-00541a8212f2" ) ) {
 					@Override
 					protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] getDesiredValueTypes() {
 						return types;
