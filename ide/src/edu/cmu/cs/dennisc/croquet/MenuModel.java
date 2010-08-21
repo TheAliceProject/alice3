@@ -48,23 +48,7 @@ package edu.cmu.cs.dennisc.croquet;
 public abstract class MenuModel extends Model {
 	private static final Group MENU_GROUP = new Group( java.util.UUID.fromString( "4ed42b1f-b4ea-4f70-99d1-5bb2c3f11081" ), "MENU_GROUP" );
 	public static final Model SEPARATOR = null;
-	private class MenuListener implements javax.swing.event.MenuListener {
-		private Menu<MenuModel> menu;
-		public MenuListener( Menu<MenuModel> menu ) {
-			this.menu = menu;
-		}
-		public void menuSelected( javax.swing.event.MenuEvent e ) {
-			MenuModel.this.handleShowing( this.menu, e );
-		}
-		public void menuDeselected( javax.swing.event.MenuEvent e ) {
-			MenuModel.this.handleHiding( this.menu, e );
-		}
-		public void menuCanceled( javax.swing.event.MenuEvent e ) {
-			MenuModel.this.handleCanceled( this.menu, e );
-		}
-	};
 	private Class<?> clsForI18N;
-	private java.util.Map< Menu<MenuModel>, MenuListener > mapMenuToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed(java.awt.event.ActionEvent e) {
 		}
@@ -112,7 +96,14 @@ public abstract class MenuModel extends Model {
 	protected void handlePopupMenuPerform( PopupMenu popupMenu, PopupMenuOperationContext context ) {
 	}
 	
-	protected void handleShowing( MenuItemContainer menuItemContainer, java.util.EventObject e ) {
+	private javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+		public void stateChanged( javax.swing.event.ChangeEvent e ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "stateChanged", javax.swing.MenuSelectionManager.defaultManager().getSelectedPath() );
+		}
+	};
+	protected void handleShowing( MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		System.err.println( "handleShowing" + " " + e );
+//		//menuItemContainer.addChangeListener( this.changeListener );
 		Container< ? > parent = menuItemContainer.getParent();
 		ModelContext< ? > parentContext;
 		if( parent instanceof MenuBar ) {
@@ -124,39 +115,78 @@ public abstract class MenuModel extends Model {
 		}
 		MenuModelContext context = parentContext.createMenuModelContext( MenuModel.this, menuItemContainer );
 		context.handleMenuSelected( e );
+//		
+//		javax.swing.MenuSelectionManager menuSelectionManager = javax.swing.MenuSelectionManager.defaultManager();
+//		menuSelectionManager.addChangeListener( this.changeListener );
 	}
-	protected void handleHiding( MenuItemContainer menuItemContainer, java.util.EventObject e ) {
+	protected void handleHiding( MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		System.err.println( "handleHiding" + " " + e );
 		Application application = Application.getSingleton();
 		MenuModelContext context = (MenuModelContext)application.getCurrentContext();
 		context.handleMenuDeselected( e );
+		javax.swing.MenuSelectionManager menuSelectionManager = javax.swing.MenuSelectionManager.defaultManager();
+		menuSelectionManager.removeChangeListener( this.changeListener );
 	}
-	protected void handleCanceled( MenuItemContainer menuItemContainer, java.util.EventObject e ) {
-		Application application = Application.getSingleton();
-		MenuModelContext context = (MenuModelContext)application.getCurrentContext();
-		context.handleMenuCanceled( e );
-	}	
+	protected void handleCanceled( MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		System.err.println( "handleCanceled" + " " + e );
+//		Application application = Application.getSingleton();
+//		MenuModelContext context = (MenuModelContext)application.getCurrentContext();
+//		context.handleMenuCanceled( e );
+	}
+	
+	private class PopupMenuListener implements javax.swing.event.PopupMenuListener {
+		private MenuItemContainer menuItemContainer;
+		public PopupMenuListener( MenuItemContainer menuItemContainer ) {
+			this.menuItemContainer = menuItemContainer;
+		}
+		public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
+			MenuModel.this.handleShowing( this.menuItemContainer, e );
+		}
+		public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
+			MenuModel.this.handleHiding( this.menuItemContainer, e );
+		}
+		public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
+			MenuModel.this.handleCanceled( this.menuItemContainer, e );
+		}
+	}
+
+	private PopupMenuListener popupMenuListener;
+	/*package-private*/ final void addPopupMenuListener( MenuItemContainer menuItemContainer ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "addPopupMenuListener", menuItemContainer );
+		assert this.popupMenuListener == null;
+		this.popupMenuListener = new PopupMenuListener( menuItemContainer );
+		menuItemContainer.addPopupMenuListener( this.popupMenuListener );
+	}
+	/*package-private*/ final void removePopupMenuListener( MenuItemContainer menuItemContainer ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "removePopupMenuListener", menuItemContainer );
+		assert this.popupMenuListener != null;
+		menuItemContainer.removePopupMenuListener( this.popupMenuListener );
+		this.popupMenuListener = null;
+	}
 	
 	/*package-private*/ Menu<MenuModel> createMenu() {
 		Menu<MenuModel> rv = new Menu<MenuModel>( this ) {
 			@Override
 			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				this.getAwtComponent().setAction( MenuModel.this.action );
-				assert mapMenuToListener.containsKey( this ) == false;
-				MenuListener menuListener = new MenuListener( this );
-				MenuModel.this.mapMenuToListener.put( this, menuListener );
-				this.getAwtComponent().addMenuListener( menuListener );
 				super.handleAddedTo( parent );
 			}
 
 			@Override
 			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				super.handleRemovedFrom( parent );
-				MenuModel.this.removeComponent( this );
-				MenuListener menuListener = MenuModel.this.mapMenuToListener.get( this );
-				assert menuListener != null;
-				this.getAwtComponent().removeMenuListener( menuListener );
-				MenuModel.this.mapMenuToListener.remove( this );
 				this.getAwtComponent().setAction( null );
+			}
+			@Override
+			protected void handleDisplayabilityChanged( java.awt.event.HierarchyEvent e ) {
+				super.handleDisplayabilityChanged( e );
+				if( this.getAwtComponent().isDisplayable() ) {
+					MenuModel.this.addPopupMenuListener( this );
+					MenuModel.this.addComponent( this );
+				} else {
+					MenuModel.this.removeComponent( this );
+					MenuModel.this.removePopupMenuListener( this );
+				}
 			}
 		};
 		return rv;

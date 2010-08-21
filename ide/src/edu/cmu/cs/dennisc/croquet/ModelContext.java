@@ -197,7 +197,17 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 	public State getState() {
 		final int N = this.children.size();
 		if (N > 0) {
-			return this.children.get(N - 1).getState();
+			State state = this.children.get(N - 1).getState();
+			//todo
+			if( state == State.DESELECTED ) {
+				HistoryNode lastNode = this.children.get(N - 1);
+				if( lastNode instanceof edu.cmu.cs.dennisc.croquet.MenuModelContext.MenuDeselectedEvent ) { 
+					//pass
+				} else {
+					return null;
+				}
+			}
+			return state;
 		} else {
 			return null;
 		}
@@ -209,7 +219,8 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 			HistoryNode lastChild = this.children.get(N - 1);
 			if (lastChild instanceof ModelContext<?>) {
 				ModelContext<?> lastContext = (ModelContext<?>) lastChild;
-				if (lastContext.getState() != null) {
+				State state = lastContext.getState();
+				if( state != null ) {
 					return this;
 				} else {
 					return lastContext.getCurrentContext();

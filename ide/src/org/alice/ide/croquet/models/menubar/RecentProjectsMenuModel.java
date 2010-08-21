@@ -57,7 +57,7 @@ public class RecentProjectsMenuModel extends edu.cmu.cs.dennisc.croquet.MenuMode
 	}
 	
 	@Override
-	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, java.util.EventObject e ) {
+	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		java.util.List<String> paths = org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.getValue();
 		final int N = paths.size();
 		edu.cmu.cs.dennisc.croquet.Model[] models = new edu.cmu.cs.dennisc.croquet.Model[ N ];
@@ -71,7 +71,7 @@ public class RecentProjectsMenuModel extends edu.cmu.cs.dennisc.croquet.MenuMode
 		super.handleShowing( menuItemContainer, e );
 	}
 	@Override
-	protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, java.util.EventObject e ) {
+	protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		menuItemContainer.forgetAndRemoveAllMenuItems();
 		super.handleHiding( menuItemContainer, e );
 	}

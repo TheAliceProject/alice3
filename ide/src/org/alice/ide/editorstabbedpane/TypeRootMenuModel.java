@@ -53,7 +53,7 @@ class TypeMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
 	}
 	
 	@Override
-	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, java.util.EventObject e ) {
+	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		super.handleShowing( menuItemContainer, e );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handleMenuSelected" );
 		
@@ -88,7 +88,7 @@ class TypeMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
 		}
 	}
 	@Override
-	protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, java.util.EventObject e ) {
+	protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		menuItemContainer.forgetAndRemoveAllMenuItems();
 		super.handleHiding( menuItemContainer, e );
 	}
@@ -103,7 +103,7 @@ public class TypeRootMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 	}
 	
 	@Override
-	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, java.util.EventObject e ) {
+	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		super.handleShowing( menuItemContainer, e );
 		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.IDE.getSingleton().getProject();
 		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice.class );
@@ -118,7 +118,7 @@ public class TypeRootMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 		}
 	}
 	@Override
-	protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, java.util.EventObject e ) {
+	protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		menuItemContainer.forgetAndRemoveAllMenuItems();
 		super.handleHiding( menuItemContainer, e );
 	}

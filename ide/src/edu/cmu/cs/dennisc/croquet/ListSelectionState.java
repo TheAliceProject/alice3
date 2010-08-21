@@ -572,7 +572,7 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 			super( java.util.UUID.fromString( "e33bc1ff-3790-4715-b88c-3c978aa16947" ), ListSelectionState.this.getClass() );
 		}
 		@Override
-		protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, java.util.EventObject e ) {
+		protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ListSelectionMenuModel handleShowing" );
 			super.handleShowing( menuItemContainer, e );
 			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
@@ -585,7 +585,7 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 			}
 		}
 		@Override
-		protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, java.util.EventObject e ) {
+		protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 			menuItemContainer.forgetAndRemoveAllMenuItems();
 			super.handleHiding( menuItemContainer, e );
 		}

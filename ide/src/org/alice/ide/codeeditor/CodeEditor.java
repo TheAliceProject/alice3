@@ -155,7 +155,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 	};
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver formatterSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< org.alice.ide.formatter.Formatter >() {
 		public void changed(org.alice.ide.formatter.Formatter nextValue) {
-			CodeEditor.this.refresh();
+			//CodeEditor.this.refresh();
 		}
 	};
 	@Override

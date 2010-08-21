@@ -48,6 +48,14 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public interface MenuItemContainer {
 	public ViewController< ?, ? > getViewController();
+//	public void addChangeListener( javax.swing.event.ChangeListener changeListener );
+//	public void removeChangeListener( javax.swing.event.ChangeListener changeListener );
+//	public void addItemListener( java.awt.event.ItemListener listener );
+//	public void removeItemListener( java.awt.event.ItemListener listener );
+
+	public void addPopupMenuListener( javax.swing.event.PopupMenuListener listener );
+	public void removePopupMenuListener( javax.swing.event.PopupMenuListener listener );
+	
 	public Container< ? > getParent();
 	public void addMenu( Menu<?> menu );
 	public void addMenuItem( MenuItem menuItem );

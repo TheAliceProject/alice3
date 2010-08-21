@@ -53,6 +53,14 @@ public class Menu< M extends Model > extends AbstractMenuItem< javax.swing.JMenu
 	public edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > getViewController() {
 		return this;
 	}
+	
+	public void addPopupMenuListener(javax.swing.event.PopupMenuListener listener) {
+		this.getAwtComponent().getPopupMenu().addPopupMenuListener( listener );
+	}
+	public void removePopupMenuListener(javax.swing.event.PopupMenuListener listener) {
+		this.getAwtComponent().getPopupMenu().removePopupMenuListener( listener );
+	}
+	
 	@Override
 	protected javax.swing.JMenu createAwtComponent() {
 		return new javax.swing.JMenu();

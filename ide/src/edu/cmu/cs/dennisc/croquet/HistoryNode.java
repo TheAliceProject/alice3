@@ -188,10 +188,11 @@ public abstract class HistoryNode implements edu.cmu.cs.dennisc.codec.BinaryEnco
 
 	public enum State {
 		COMMITTED, 
-		FINISHED, 
+		FINISHED,
+		DESELECTED,
 		//SKIPPED, 
 		CANCELED, 
-		PENDING
+		//PENDING
 	}
 	public abstract State getState();
 	

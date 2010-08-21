@@ -54,9 +54,24 @@ public class PopupMenu extends ViewController< javax.swing.JPopupMenu, PopupMenu
 		return this;
 	}
 	
+//	public void addChangeListener( javax.swing.event.ChangeListener changeListener ) {
+//		this.getAwtComponent().getSelectionModel().addChangeListener( changeListener );
+//	}
+//	public void removeChangeListener( javax.swing.event.ChangeListener changeListener ) {
+//		this.getAwtComponent().getSelectionModel().removeChangeListener( changeListener );
+//	}
+	
+	public void addPopupMenuListener(javax.swing.event.PopupMenuListener listener) {
+		this.getAwtComponent().addPopupMenuListener( listener );
+	}
+	public void removePopupMenuListener(javax.swing.event.PopupMenuListener listener) {
+		this.getAwtComponent().removePopupMenuListener( listener );
+	}
+	
 	@Override
 	protected javax.swing.JPopupMenu createAwtComponent() {
-		return new javax.swing.JPopupMenu();
+		javax.swing.JPopupMenu rv = new javax.swing.JPopupMenu();
+		return rv;
 	}
 
 	public void addMenu( Menu menu ) {
@@ -77,6 +92,16 @@ public class PopupMenu extends ViewController< javax.swing.JPopupMenu, PopupMenu
 		} else {
 			this.getAwtComponent().addSeparator();
 		}
+	}
+	
+	@Override
+	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		super.handleAddedTo( parent );
+		this.getAwtComponent().getSelectionModel().addChangeListener( new javax.swing.event.ChangeListener() {
+			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+				System.err.println( e );
+			}
+		} );
 	}
 	
 	public void removeAllMenuItems() {

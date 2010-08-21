@@ -59,41 +59,54 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 	}
 	
 
-	private void handlePopupMenuWillBecomeVisible( PopupMenu popupMenu, javax.swing.event.PopupMenuEvent e ) {
-		this.addComponent( popupMenu );
-		this.menuModel.handleShowing( popupMenu, e );
-		
-	}
-	private void handlePopupMenuWillBecomeInvisible( PopupMenu popupMenu, javax.swing.event.PopupMenuEvent e ) {
-		this.menuModel.handleHiding( popupMenu, e );
-		this.removeComponent( popupMenu );
-	}
-	protected void handlePopupMenuCanceled( PopupMenu popupMenu, javax.swing.event.PopupMenuEvent e ) {
-		this.menuModel.handleCanceled( popupMenu, e );
-	}
+//	private void handlePopupMenuWillBecomeVisible( PopupMenu popupMenu, javax.swing.event.PopupMenuEvent e ) {
+//		this.addComponent( popupMenu );
+//		this.menuModel.handleShowing( popupMenu, e );
+//	}
+//	private void handlePopupMenuWillBecomeInvisible( PopupMenu popupMenu, javax.swing.event.PopupMenuEvent e ) {
+//		this.menuModel.handleHiding( popupMenu, e );
+//		this.removeComponent( popupMenu );
+//	}
+//	protected void handlePopupMenuCanceled( PopupMenu popupMenu, javax.swing.event.PopupMenuEvent e ) {
+//		this.menuModel.handleCanceled( popupMenu, e );
+//	}
  	@Override
 	protected final void perform(final PopupMenuOperationContext context) {
-		final PopupMenu popupMenu = new PopupMenu( this );
-		this.menuModel.handlePopupMenuPerform( popupMenu, context );
-		popupMenu.getAwtComponent().addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
-			private javax.swing.event.PopupMenuEvent cancelEvent = null;
-			public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
-				PopupMenuOperation.this.handlePopupMenuWillBecomeVisible( popupMenu, e );
-				this.cancelEvent = null;
-			}
-			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
-				PopupMenuOperation.this.handlePopupMenuWillBecomeInvisible( popupMenu, e );
-				if( this.cancelEvent != null ) {
-					PopupMenuOperation.this.handlePopupMenuCanceled( popupMenu, cancelEvent );
-					context.cancel();
-					this.cancelEvent = null;
+		final PopupMenu popupMenu = new PopupMenu( this ) {
+			@Override
+			protected void handleDisplayabilityChanged( java.awt.event.HierarchyEvent e ) {
+				super.handleDisplayabilityChanged( e );
+				if( this.getAwtComponent().isDisplayable() ) {
+					PopupMenuOperation.this.addComponent( this );
+				} else {
+					PopupMenuOperation.this.removeComponent( this );
+					PopupMenuOperation.this.menuModel.removePopupMenuListener( this );
 				}
 			}
-			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-				this.cancelEvent = e;
-			}
-		} );
+			
+		};
+		this.menuModel.handlePopupMenuPerform( popupMenu, context );
+		this.menuModel.addPopupMenuListener( popupMenu );
+//		popupMenu.getAwtComponent().addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
+//			private javax.swing.event.PopupMenuEvent cancelEvent = null;
+//			public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
+//				PopupMenuOperation.this.handlePopupMenuWillBecomeVisible( popupMenu, e );
+//				this.cancelEvent = null;
+//			}
+//			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
+//				PopupMenuOperation.this.handlePopupMenuWillBecomeInvisible( popupMenu, e );
+//				if( this.cancelEvent != null ) {
+//					PopupMenuOperation.this.handlePopupMenuCanceled( popupMenu, cancelEvent );
+//					context.cancel();
+//					this.cancelEvent = null;
+//				}
+//			}
+//			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
+//				this.cancelEvent = e;
+//			}
+//		} );
 
+		
 		ViewController<?,?> viewController = context.getViewController();
 		java.awt.Point pt = context.getPoint();
 		if( viewController != null ) {
