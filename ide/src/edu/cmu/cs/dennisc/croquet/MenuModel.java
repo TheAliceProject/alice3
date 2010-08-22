@@ -103,7 +103,6 @@ public abstract class MenuModel extends Model {
 		}
 	};
 	protected void handleShowing( MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-		System.err.println( "handleShowing" + " " + e );
 //		//menuItemContainer.addChangeListener( this.changeListener );
 		Container< ? > parent = menuItemContainer.getParent();
 		ModelContext< ? > parentContext;
@@ -121,7 +120,6 @@ public abstract class MenuModel extends Model {
 //		menuSelectionManager.addChangeListener( this.changeListener );
 	}
 	protected void handleHiding( MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-		System.err.println( "handleHiding" + " " + e );
 		Application application = Application.getSingleton();
 		MenuModelContext context = (MenuModelContext)application.getCurrentContext();
 		context.handleMenuDeselected( e );
@@ -129,10 +127,11 @@ public abstract class MenuModel extends Model {
 		menuSelectionManager.removeChangeListener( this.changeListener );
 	}
 	protected void handleCanceled( MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-		System.err.println( "handleCanceled" + " " + e );
-//		Application application = Application.getSingleton();
-//		MenuModelContext context = (MenuModelContext)application.getCurrentContext();
-//		context.handleMenuCanceled( e );
+		Application application = Application.getSingleton();
+		MenuModelContext context = (MenuModelContext)application.getCurrentContext();
+		context.handleMenuCanceled( e );
+		
+		System.err.println( "todo: cancel" + " " + e );
 	}
 	
 	private class PopupMenuListener implements javax.swing.event.PopupMenuListener {

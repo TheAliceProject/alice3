@@ -101,8 +101,8 @@ public abstract class IsFrameShowingState extends edu.cmu.cs.dennisc.croquet.Boo
 						edu.cmu.cs.dennisc.print.PrintUtilities.println( e.getComponent().getSize() );
 					}
 				} );
-				this.frame.setLocation( -1200, 0 );
-				this.frame.setSize( 1200, 1600 );
+				this.frame.setLocation( -1448, 168 );
+				this.frame.setSize( 1456, 916 );
 			} else {
 				this.frame.pack();
 			}

@@ -63,7 +63,7 @@ public abstract class Application {
 	public Application() {
 		assert Application.singleton == null;
 		Application.singleton = this;
-
+		MenuSelectionManagerUtilities.startListening();
 //		rootContext.addCommitObserver( new ModelContext.CommitObserver() {
 //			public void committing( Edit edit ) {
 //			}
