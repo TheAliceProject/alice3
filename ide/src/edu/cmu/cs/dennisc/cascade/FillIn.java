@@ -108,7 +108,9 @@ public abstract class FillIn< E > extends Node {
 		}
 		return this.model;
 	}
-	
+	@Override
+	protected void addPrefixChildren() {
+	}
 //	private ActionOperation actionOperation = new ActionOperation();
 //	private MenuModel menuModel = new MenuModel();
 //	protected edu.cmu.cs.dennisc.croquet.Model createModel( boolean isLast ) {

@@ -46,9 +46,25 @@ package edu.cmu.cs.dennisc.cascade;
  * @author Dennis Cosgrove
  */
 public abstract class Blank extends Node {
+	private String title;
 	private CascadingRoot cascadingRoot;
 	private FillIn<?> selectedFillIn;
 
+	public String getTitle() {
+		return this.title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
+	@Override
+	protected void addPrefixChildren() {
+		if( this.title != null ) {
+			this.addFillIn( new SeparatorFillIn( this.title ) );
+			this.addFillIn( new SeparatorFillIn() );
+		}
+	}
+	
 	public CascadingRoot getCascadingRoot() {
 		return this.cascadingRoot;
 	}
@@ -66,7 +82,7 @@ public abstract class Blank extends Node {
 	public void addFillIn( FillIn<?> fillIn ) {
 		super.addChild( fillIn );
 	}
-
+	
 	@Override
 	protected Blank getNearestBlank() {
 		return this;

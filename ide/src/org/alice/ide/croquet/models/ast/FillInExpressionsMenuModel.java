@@ -55,6 +55,13 @@ public abstract class FillInExpressionsMenuModel extends AbstractFillInExpressio
 	protected edu.cmu.cs.dennisc.cascade.Blank createCascadeBlank() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] desiredValueTypes = this.getDesiredValueTypes();
 		final edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn = org.alice.ide.IDE.getSingleton().getCascadeManager().createExpressionsFillIn( desiredValueTypes, false );
+		
+		final int N = fillIn.getChildren().size();
+		for( int i=0; i<N; i++ ) {
+			edu.cmu.cs.dennisc.cascade.Blank blank = fillIn.getBlankAt( i );
+			blank.setTitle( this.getTitleAt( i ) );
+		}
+		
 		edu.cmu.cs.dennisc.cascade.Blank rv = new edu.cmu.cs.dennisc.cascade.ForwardingBlank( fillIn );
 		return rv;
 	}

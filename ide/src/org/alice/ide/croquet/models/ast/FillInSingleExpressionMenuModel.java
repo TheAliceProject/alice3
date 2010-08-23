@@ -58,17 +58,8 @@ public abstract class FillInSingleExpressionMenuModel extends AbstractFillInExpr
 	@Override
 	protected edu.cmu.cs.dennisc.cascade.Blank createCascadeBlank() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType = this.getDesiredValueType();
-		edu.cmu.cs.dennisc.cascade.Blank rv = new org.alice.ide.cascade.ExpressionBlank( desiredValueType ) {
-			@Override
-			protected void addChildren() {
-				String title = FillInSingleExpressionMenuModel.this.getTitle();
-				if( title != null ) {
-					this.addFillIn( new edu.cmu.cs.dennisc.cascade.SeparatorFillIn( title + ":" ) );
-					this.addSeparator();
-				}
-				super.addChildren();
-			}
-		};
+		edu.cmu.cs.dennisc.cascade.Blank rv = new org.alice.ide.cascade.ExpressionBlank( desiredValueType );
+		rv.setTitle( this.getTitle() );
 		return rv;
 	}
 }
