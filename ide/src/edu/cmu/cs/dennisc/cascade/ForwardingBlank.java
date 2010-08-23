@@ -49,6 +49,7 @@ public class ForwardingBlank extends Blank {
 	private FillIn<?> fillIn;
 	public ForwardingBlank( FillIn<?> fillIn ) {
 		this.fillIn = fillIn;
+		this.setSelectedFillIn( this.fillIn );
 	}
 	@Override
 	protected void addChildren() {
