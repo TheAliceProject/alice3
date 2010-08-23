@@ -49,6 +49,7 @@ public class ForwardingBlank extends Blank {
 	private FillIn<?> fillIn;
 	public ForwardingBlank( FillIn<?> fillIn ) {
 		this.fillIn = fillIn;
+		this.fillIn.setParent( this );
 		this.setSelectedFillIn( this.fillIn );
 	}
 	@Override
@@ -57,9 +58,8 @@ public class ForwardingBlank extends Blank {
 	}
 	
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.Model > getModels() {
-		this.fillIn.setParent( this );
+	public java.util.List<edu.cmu.cs.dennisc.cascade.Node> getChildren() {
 		Blank blank0 = (Blank)this.fillIn.getChildren().get( 0 );
-		return blank0.getModels();
+		return blank0.getChildren();
 	}
 }
