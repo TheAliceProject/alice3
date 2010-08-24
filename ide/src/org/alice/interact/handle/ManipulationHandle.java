@@ -83,6 +83,8 @@ public interface ManipulationHandle extends Cloneable {
 	
 	public void setHandleVisible(boolean visible);
 	
+	public boolean isHandleVisible();
+	
 	public void setHandleActive(boolean active);
 	
 	public void setHandleShowing(boolean showing);

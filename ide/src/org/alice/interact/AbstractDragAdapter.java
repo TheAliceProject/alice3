@@ -168,6 +168,10 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	private double timePrev = Double.NaN;
 	private boolean hasSetCameraTransformables = false;
 	
+	private boolean isInStageChange = false;
+	private Transformable toBeSelected = null;
+	private boolean hasObjectToBeSelected = false;
+	
 	private Component currentRolloverComponent = null;
 	
 	
@@ -225,35 +229,6 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	public AbstractDragAdapter( MoveAndTurnSceneEditor sceneEditor )
 	{
 		this.sceneEditor = sceneEditor;
-		
-//		HistoryManager.getInstance(Project.GROUP).addHistoryListener( new edu.cmu.cs.dennisc.history.event.HistoryListener() {
-//			public void operationPushing( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) 
-//			{
-//				PrintUtilities.println("Pushing");
-//			}
-//			public void operationPushed( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) 
-//			{
-//				PrintUtilities.println("Pushed");
-//			}
-//			public void insertionIndexChanging( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) 
-//			{
-//				//AbstractDragAdapter.this.preUndo();
-//				PrintUtilities.println("Index Changing from "+e.getPrevIndex()+" to "+ e.getNextIndex());
-//			}
-//			public void insertionIndexChanged( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) 
-//			{
-//				PrintUtilities.println("Index Changed from "+e.getPrevIndex()+" to "+ e.getNextIndex());
-//			}
-//			public void clearing( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) 
-//			{
-//				PrintUtilities.println("Clearing");
-//			}
-//			public void cleared( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) 
-//			{
-//				PrintUtilities.println("Cleared");
-//			}
-//		} );
-		
 		this.setUpControls();
 	}	
 	
@@ -287,6 +262,17 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	public AffineMatrix4x4 getDropTargetTransformation()
 	{
 		return null;
+	}
+	
+	public boolean isInStateChange()
+	{
+		return this.isInStageChange;
+	}
+	
+	public void setToBeSelected(Transformable toBeSelected)
+	{
+		this.toBeSelected = toBeSelected;
+		this.hasObjectToBeSelected = true;
 	}
 	
 	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
@@ -373,6 +359,16 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	{
 		if (this.selectedObject != selected)
 		{
+			if (this.isInStateChange())
+			{
+//				PrintUtilities.println("Deferring");
+				this.setToBeSelected(selected);
+				return;
+			}
+//			PrintUtilities.println("\n################Doing: "+selected);
+//			PrintUtilities.println("At Start: HandleSelected object: "+this.handleManager.getSelectedObject());
+			
+			
 			org.alice.apis.moveandturn.Element newMoveAndTurnObject = org.alice.apis.moveandturn.Element.getElement( selected );
 			boolean isNewSelectedActiveCameraMarker = false;
 			if (newMoveAndTurnObject instanceof PerspectiveCameraMarker && this.sceneEditor != null)
@@ -388,9 +384,20 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			
 			this.fireSelecting( new SelectionEvent(this, selected) );
 			
-			this.handleManager.setSelectedObject( selected );
+//			PrintUtilities.println("###Trying to set selected object to "+selected);
+			if (HandleManager.canHaveHandles(selected))
+			{
+				this.handleManager.setHandlesShowing(!isNewSelectedActiveCameraMarker);
+				this.handleManager.setSelectedObject( selected );
+			}
+			else
+			{
+				this.handleManager.setSelectedObject( null );
+			}
 			//Make the handles visible is we're not selecting the active camera marker
-			this.handleManager.setHandlesShowing(!isNewSelectedActiveCameraMarker);
+			
+			
+			
 			
 			this.currentInputState.setCurrentlySelectedObject( selected );
 			this.currentInputState.setTimeCaptured();
@@ -416,6 +423,12 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			
 			this.fireSelected( new SelectionEvent(this, selected) );
 			this.handleStateChange();
+//			PrintUtilities.println("At End: HandleSelected object: "+this.handleManager.getSelectedObject());
+//			PrintUtilities.println("################Done doing: "+selected+"\n");
+		}
+		else
+		{
+//			PrintUtilities.println("Skipping");
 		}
 	}
 	
@@ -485,6 +498,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	
 	protected void handleStateChange()
 	{
+		this.isInStageChange = true;
 		java.util.Vector< AbstractManipulator > toStart = new java.util.Vector< AbstractManipulator >();
 		java.util.Vector< AbstractManipulator > toEnd = new java.util.Vector< AbstractManipulator >();
 		java.util.Vector< AbstractManipulator > toUpdate = new java.util.Vector< AbstractManipulator >();
@@ -535,6 +549,13 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 				}
 			}
 		}
+		
+//		if (toStart.size() > 0)
+//		{
+//			PrintUtilities.println("STATE CHANGE: ");
+//			Thread.dumpStack();
+//		}
+//		
 		//End manipulators first
 		for (int i=0; i<toEnd.size(); i++)
 		{
@@ -549,7 +570,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 		for (int i=0; i<toStart.size(); i++)
 		{
-//			PrintUtilities.println("Beginning: "+toStart.get(i) + " at "+System.currentTimeMillis());
+//			PrintUtilities.println(i+": Beginning: "+toStart.get(i) + " at "+System.currentTimeMillis());
 			setManipulatorStartState(toStart.get( i ), this.currentInputState);
 			toStart.get( i ).startManipulator( this.currentInputState );
 		}
@@ -578,12 +599,19 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			}
 		}
 		
-		if (this.currentInputState.getCurrentlySelectedObject() != this.previousInputState.getCurrentlySelectedObject())
+		
+		if (!this.hasObjectToBeSelected && this.currentInputState.getCurrentlySelectedObject() != this.previousInputState.getCurrentlySelectedObject())
 		{
 			this.setSelectedObject( this.currentInputState.getCurrentlySelectedObject() );
 		}
 		
 		this.previousInputState.copyState(this.currentInputState);
+		this.isInStageChange = false;
+		if (this.hasObjectToBeSelected)
+		{
+			this.hasObjectToBeSelected = false;
+			this.setSelectedObject( this.toBeSelected );
+		}
 	}
 	
 	protected boolean isMouseWheelActive()

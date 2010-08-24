@@ -230,6 +230,11 @@ public abstract class ManipulationHandle2D extends JLabel implements Manipulatio
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 	}
 
+	public boolean isHandleVisible()
+	{
+		return this.state.isVisible() || this.isAlwaysVisible();
+	}
+	
 	public void setHandleVisible( boolean visible ) {
 		this.state.setVisible(visible);
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
@@ -262,5 +267,11 @@ public abstract class ManipulationHandle2D extends JLabel implements Manipulatio
 
 	public void setAnimator( Animator animator ) {
 		this.animator = animator;
+	}
+	
+	@Override
+	public String toString() 
+	{
+		return this.getClass().getSimpleName()+":"+this.hashCode();
 	}
 }

@@ -49,6 +49,7 @@ import org.alice.interact.condition.PickCondition;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.RotationRingHandle;
 
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
@@ -93,8 +94,9 @@ public class SelectObjectDragManipulator extends AbstractManipulator {
 	
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
+//		PrintUtilities.println("SelectObjectDragManipulator!!!");
 		PickHint clickedObjectType = startInput.getClickPickType();
-		if ( clickedObjectType.intersects( PickHint.MOVEABLE_OBJECTS) )
+		if ( clickedObjectType.intersects( PickHint.MOVEABLE_OBJECTS) || clickedObjectType.intersects(PickHint.GROUND))
 		{
 			this.globalDragAdapter.setSelectedObject( startInput.getClickPickedTransformable(true) );
 		}

@@ -42,6 +42,8 @@
  */
 package org.alice.interact.handle;
 
+import org.alice.apis.moveandturn.AsSeenBy;
+import org.alice.apis.moveandturn.TraditionalStyle;
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.ColorTargetBasedAnimation;
 import org.alice.interact.DoubleTargetBasedAnimation;
@@ -54,9 +56,13 @@ import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;
 import org.alice.interact.manipulator.AbstractManipulator;
+import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerTracker;
 
 import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation;
+import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
 import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.color.animation.Color4fAnimation;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
@@ -81,6 +87,8 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
 	public static final String VIRTUAL_PARENT_KEY = "VIRTUAL_PARENT_KEY";
 	
+	public static final double ANIMATION_DURATION = .25;
+	
 	protected Visual sgVisual = new Visual();
 	protected SingleAppearance sgFrontFacingAppearance = new SingleAppearance();
 	protected Transformable manipulatedObject;
@@ -91,12 +99,17 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	protected HandleManager handleManager = null;
 	protected HandleSet handleSet = new HandleSet();
 	
-	protected DoubleTargetBasedAnimation opacityAnimation;
-	protected ColorTargetBasedAnimation colorAnimation;
+	protected DoubleAnimation opacityAnimation;
+	protected double opacityAnimationTarget;
+	protected boolean doOpacityEpilogue = true;
+	protected Color4fAnimation colorAnimation;
+	protected Color4f colorAnimationTarget;
+	protected boolean doColorEpilogue = true;
 	
 	protected AbstractManipulator manipulation = null;
 	protected AbstractDragAdapter dragAdapter = null;
 	protected boolean isPickable = false; //This is false until a manipulation is set on the handle
+	
 	
 	public static Criterion< Component > NOT_3D_HANDLE_CRITERION = new Criterion< Component >() {
 		protected boolean isHandle( Component c ) {
@@ -146,11 +159,11 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 			if (this.manipulatedObject != null)
 			{
 				this.setParent( this.manipulatedObject );
-				this.setHandleShowing(true);
+//				this.setHandleShowing(true);
 			}
 			else
 			{
-				this.setHandleShowing(false);
+//				this.setHandleShowing(false);
 			}
 			this.setScale( this.getObjectScale() );
 		}
@@ -259,26 +272,6 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	
 	protected void createAnimations()
 	{
-		this.opacityAnimation  = new DoubleTargetBasedAnimation( new Double(sgFrontFacingAppearance.opacity.getValue()) ){
-			@Override
-			protected void updateValue( Double value ) {
-				if (ManipulationHandle3D.this.manipulatedObject != null)
-				{
-					ManipulationHandle3D.this.sgFrontFacingAppearance.opacity.setValue( value.floatValue() );
-				}
-			}
-		};
-		this.colorAnimation  = new ColorTargetBasedAnimation( sgFrontFacingAppearance.diffuseColor.getValue() ){
-			@Override
-			protected void updateValue( Color4f value ) {
-				if (ManipulationHandle3D.this.manipulatedObject != null)
-				{
-					ManipulationHandle3D.this.sgFrontFacingAppearance.diffuseColor.setValue( value );
-				}
-			}
-		};
-		this.animator.addFrameObserver( this.opacityAnimation );
-		this.animator.addFrameObserver( this.colorAnimation );
 	}
 	
 	public void addToSet( HandleSet set )
@@ -332,7 +325,8 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	
 	public Transformable getManipulatedObject()
 	{
-		return (Transformable)this.getParent();
+		return this.manipulatedObject;
+//		return (Transformable)this.getParent();
 	}
 	
 	@Override
@@ -344,7 +338,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	
 	public ReferenceFrame getReferenceFrame()
 	{
-		return this.getManipulatedObject();
+		return this.getParentTransformable();
 	}
 	
 	public abstract ReferenceFrame getSnapReferenceFrame();
@@ -352,16 +346,104 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	abstract public void positionRelativeToObject();
 	abstract public void resizeToObject();
 	
-	protected void updateVisibleState(HandleRenderState renderState)
+	protected void animateToOpacity(double targetOpacity)
 	{
+		double currentOpacity = this.sgFrontFacingAppearance.opacity.getValue();
+		if (currentOpacity == targetOpacity)
+		{
+			return;
+		}
 		if (this.opacityAnimation != null)
-		{		
-			this.opacityAnimation.setTarget( this.getDesiredOpacity(renderState) );
+		{
+			if (this.opacityAnimationTarget == targetOpacity)
+			{
+				return;
+			}
+			else
+			{
+				this.doOpacityEpilogue = false;
+				this.opacityAnimation.complete(null);
+				this.doOpacityEpilogue = true;
+				this.opacityAnimationTarget = -1;
+			}
+		}
+		this.opacityAnimationTarget = targetOpacity;
+		this.opacityAnimation = new DoubleAnimation(ANIMATION_DURATION, TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentOpacity, targetOpacity)
+		{
+			private String name = "OpacityAnimation";
+			@Override
+			protected void updateValue(Double v) 
+			{
+				ManipulationHandle3D.this.sgFrontFacingAppearance.opacity.setValue(v.floatValue());
+			}
+			
+			@Override
+			protected void epilogue() {
+				if (ManipulationHandle3D.this.doOpacityEpilogue)
+				{
+					super.epilogue();
+				}
+			}
+		};
+		this.animator.invokeLater(this.opacityAnimation, null);
+	}
+	
+	protected void animateToColor(Color4f targetColor)
+	{
+		Color4f currentColor = this.sgFrontFacingAppearance.diffuseColor.getValue();
+		if (currentColor.equals(targetColor))
+		{
+			return;
 		}
 		if (this.colorAnimation != null)
 		{
-			this.colorAnimation.setTarget( this.getDesiredColor(renderState) );
+			if (this.colorAnimationTarget != null && this.colorAnimationTarget.equals(targetColor))
+			{
+				return;
+			}
+			else
+			{
+				this.doColorEpilogue = false;
+				this.colorAnimation.complete(null);
+				this.doColorEpilogue = true;
+				this.colorAnimationTarget = null;
+			}
 		}
+		this.colorAnimationTarget = targetColor;
+		this.colorAnimation = new Color4fAnimation(ANIMATION_DURATION, TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentColor, targetColor) 
+		{
+			private String name = "ColorAnimation";
+			@Override
+			protected void updateValue(Color4f v) 
+			{
+				ManipulationHandle3D.this.sgFrontFacingAppearance.diffuseColor.setValue(v);
+				
+			}
+			
+			@Override
+			protected void epilogue() {
+				if (ManipulationHandle3D.this.doColorEpilogue)
+				{
+					super.epilogue();
+				}
+			}
+		};
+		this.animator.invokeLater(this.colorAnimation, null);
+	}
+	
+	protected void updateVisibleState(HandleRenderState renderState)
+	{
+		if (this.animator == null || this.getParentTransformable() == null)
+		{
+//			PrintUtilities.println("Early exit: animator = "+this.animator+", manipulated object = "+this.manipulatedObject);
+			return;
+		}
+		
+		double targetOpacity = this.isRenderable() ? this.getDesiredOpacity(renderState) : 0.0;
+		this.animateToOpacity(targetOpacity);
+		Color4f targetColor = this.getDesiredColor(renderState);
+		this.animateToColor(targetColor);
+		
 	}
 	
 	public boolean matches(ManipulationEvent event)
@@ -472,6 +554,10 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	}
 	
 	public boolean isRenderable() {
+		if (this.manipulatedObject == null)
+		{
+			return false;
+		}
 		if (this.isAlwaysVisible())
 		{
 			return true;
@@ -481,7 +567,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
 	protected double getObjectScale()
 	{
-		if (this.manipulatedObject == null)
+		if (this.getParentTransformable() == null)
 		{
 			return 1.0d;
 		}
@@ -509,12 +595,23 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		
 	}
 	
+	protected Transformable getParentTransformable()
+	{
+		Composite parent = this.getParent();
+		if (parent instanceof Transformable)
+		{
+			return (Transformable)parent;
+		}
+		return null;
+	}
+
 	protected AxisAlignedBox getManipulatedObjectBox()
 	{
 		AxisAlignedBox boundingBox = null;
-		if (this.manipulatedObject != null)
+		Transformable parent = this.getParentTransformable();
+		if (parent != null)
 		{
-			Object bbox = this.manipulatedObject.getBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY );
+			Object bbox = parent.getBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY );
 			if (bbox instanceof edu.cmu.cs.dennisc.math.AxisAlignedBox)
 			{
 				boundingBox = new AxisAlignedBox((edu.cmu.cs.dennisc.math.AxisAlignedBox)bbox);
@@ -530,7 +627,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		}
 		if (boundingBox != null)
 		{
-			boundingBox.scale( this.getTransformableScale( this.manipulatedObject ) );
+			boundingBox.scale( this.getTransformableScale( parent ) );
 		}
 		return boundingBox;
 	}
@@ -561,9 +658,19 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 		
 	}
+	
+	public boolean isHandleVisible()
+	{
+		return this.state.isVisible() || this.isAlwaysVisible();
+	}
 
 	public void setHandleVisible( boolean visible ) 
 	{
+//		PrintUtilities.println(this.hashCode()+":"+this.getClass().getSimpleName()+" setting visible from "+this.state.isVisible()+" to "+visible);
+//		if (this.state.isVisible() && !visible)
+//		{
+//			Thread.dumpStack();
+//		}
 		this.state.setVisible(visible);
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 	}
@@ -577,4 +684,11 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	{
 		return PickCondition.getPickType( this );
 	}
+	
+	@Override
+	public String toString() 
+	{
+		return this.getClass().getSimpleName()+":"+this.hashCode();
+	}
+	
 }

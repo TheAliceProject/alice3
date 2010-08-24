@@ -42,6 +42,7 @@
  */
 package org.alice.interact.handle;
 
+import org.alice.apis.moveandturn.TraditionalStyle;
 import org.alice.interact.DoubleTargetBasedAnimation;
 import org.alice.interact.GlobalDragAdapter;
 import org.alice.interact.MovementDirection;
@@ -49,6 +50,7 @@ import org.alice.interact.MovementType;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.VectorUtilities;
 
+import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
@@ -56,6 +58,7 @@ import edu.cmu.cs.dennisc.math.Matrix3x3;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
@@ -100,7 +103,9 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	
 	protected HandlePosition handlePosition = HandlePosition.ORIGIN;
 	
-	protected DoubleTargetBasedAnimation radiusAnimation;
+	protected DoubleAnimation radiusAnimation;
+	protected double radiusAnimationTarget;
+	protected boolean doRadiusEpilogue = true;
 	
 	public RotationRingHandle( )
 	{
@@ -148,7 +153,7 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	
 	protected void setPositionRelativeToObjectSize( )
 	{
-		if (this.manipulatedObject != null)
+		if (this.getParentTransformable() != null)
 		{
 			AxisAlignedBox bbox = this.getManipulatedObjectBox();
 			
@@ -244,39 +249,81 @@ public class RotationRingHandle extends ManipulationHandle3D{
 		{
 			currentRadius = 0.0d;
 		}
-		this.radiusAnimation = new DoubleTargetBasedAnimation( new Double(currentRadius) ){
+	}
+	
+	protected void animateHandleToRadius(double desiredRadius)
+	{
+		if (this.animator == null || this.getParentTransformable() == null)
+		{
+//			PrintUtilities.println("Early exit: animator = "+this.animator+", manipulated object = "+this.manipulatedObject);
+			return;
+		}
+//		PrintUtilities.println("\n"+this.hashCode()+":"+this+" "+(this.isHandleVisible()? "VISIBLE" : "INVISIBLE")+" Animating to "+desiredRadius+" around "+this.manipulatedObject);
+		
+		double currentRadius = this.getSize();
+		if (currentRadius == desiredRadius)
+		{
+//			PrintUtilities.println("  Not making a radius animation from "+currentRadius+" to "+desiredRadius+" because they're the same.");
+			return;
+		}
+		if (this.radiusAnimation != null)
+		{
+			if (this.radiusAnimationTarget == desiredRadius)
+			{
+//				PrintUtilities.println("  returning because we already have an animation going to that value");
+				return;
+			}
+			else
+			{
+//				PrintUtilities.println("  Stopping previous animation which was targeting "+this.radiusAnimationTarget+", current size is: "+currentRadius);
+				this.doRadiusEpilogue = false;
+				this.radiusAnimation.complete(null);
+				this.doRadiusEpilogue = true;
+				this.radiusAnimationTarget = -1;
+			}
+		}
+		
+//		PrintUtilities.println("  Making radius animation from "+currentRadius+" to "+desiredRadius);
+		this.radiusAnimationTarget = desiredRadius;
+		this.radiusAnimation = new DoubleAnimation(ANIMATION_DURATION, TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentRadius, desiredRadius)
+		{
+			private String name = "RadiusAnimation";
 			@Override
-			protected void updateValue( Double value ) {
-				if (RotationRingHandle.this.manipulatedObject != null)
+			protected void updateValue(Double v) 
+			{
+				if (RotationRingHandle.this.sgTorus != null)
 				{
-					if (RotationRingHandle.this.sgTorus != null)
+					if (v.isNaN())
 					{
-						if (value.isNaN())
-						{
-							value = 0.0d;
-						}
-						if (value < 0.0d)
-						{
-							value = 0.0d;
-						}
-						RotationRingHandle.this.setSize(value);
+						v = 0.0d;
 					}
+					if (v < 0.0d)
+					{
+						v = 0.0d;
+					}
+					RotationRingHandle.this.setSize(v);
+				}
+			}
+			
+			@Override
+			protected void epilogue() {
+				if (RotationRingHandle.this.doRadiusEpilogue)
+				{
+					super.epilogue();
 				}
 			}
 		};
-		this.animator.addFrameObserver( this.radiusAnimation );
+		this.animator.invokeLater(this.radiusAnimation, null);
 	}
 	
 	@Override
 	protected void updateVisibleState(HandleRenderState renderState)
 	{
 		super.updateVisibleState(renderState);
-		if (this.manipulatedObject != null && this.radiusAnimation != null)
-		{
-			double endRadius = this.isRenderable() ? this.getMajorAxisRadius() : 0.0d;
-			this.radiusAnimation.setTarget( endRadius );
-		}
+		double endRadius = this.isRenderable() ? this.getMajorAxisRadius() : 0.0d;
+		animateHandleToRadius(endRadius);
 	}
+	
 	
 	@Override
 	protected Color4f getDesiredColor(HandleRenderState renderState)
@@ -298,9 +345,14 @@ public class RotationRingHandle extends ManipulationHandle3D{
 		this.placeSphere();
 	}
 	
+	private double getSize()
+	{
+		return RotationRingHandle.this.sgTorus.majorRadius.getValue();
+	}
+	
 	private double getMajorAxisRadius( )
 	{
-		if (this.manipulatedObject != null)
+		if (this.getParentTransformable() != null)
 		{
 			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
 			Plane planeOfRotation = new Plane(Point3.createZero(), this.rotationAxis);
@@ -336,14 +388,13 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	@Override
 	public void resizeToObject()
 	{
+		if (this.radiusAnimation != null)
+		{
+			this.radiusAnimation.complete(null);
+		}
 		this.setPositionRelativeToObjectSize( );
 		double radius = this.getMajorAxisRadius( );
 		this.setSize(radius);
-		if (this.radiusAnimation != null)
-		{
-			this.radiusAnimation.setCurrentValue( radius );
-			this.radiusAnimation.setTarget( radius );
-		}
 	}
 	
 	@Override

@@ -46,11 +46,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import org.alice.interact.PickHint;
+import org.alice.interact.condition.PickCondition;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;
 
 import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
@@ -110,7 +113,7 @@ public class HandleManager implements ManipulationListener{
 	public void pushNewHandleSet( HandleSet handleSet )
 	{
 		this.handleSetStack.push( handleSet );
-//		System.out.println("Pushed "+handleSet+":"+handleSet.hashCode()+", and size is now "+this.handleSetStack.size());
+		System.out.println("Pushed "+handleSet+":"+handleSet.hashCode()+", and size is now "+this.handleSetStack.size());
 		this.updateHandlesBasedOnHandleSet();
 	}
 	
@@ -130,16 +133,47 @@ public class HandleManager implements ManipulationListener{
 	
 	public void setSelectedObject(Transformable selectedObject)
 	{
+//		PrintUtilities.println("Setting handle selected object to "+selectedObject);
 		for (ManipulationHandle handle : this.handles)
 		{
 			handle.setSelectedObject( selectedObject );
 		}
 	}
 	
-	public void setHandlesShowing(boolean showing)
+	public static boolean canHaveHandles(Transformable object)
 	{
+		PickHint objectPickHint = PickCondition.getPickType(object);
+		if ( objectPickHint.intersects( PickHint.MOVEABLE_OBJECTS) )
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public Transformable getSelectedObject()
+	{
+		if (this.handles.size() == 0)
+		{
+			return null;
+		}
+		Transformable selected = this.handles.get(0).getManipulatedObject();
 		for (ManipulationHandle handle : this.handles)
 		{
+			if (handle.getManipulatedObject() != selected && !(handle instanceof ManipulationHandle2D))
+			{
+				PrintUtilities.println("Handle "+handle+" selected ("+handle.getManipulatedObject()+", does not equal "+selected);
+			}
+		}
+		return selected;
+		
+	}
+	
+	public void setHandlesShowing(boolean showing)
+	{
+//		PrintUtilities.println("Setting handle showing to: "+showing);
+		for (ManipulationHandle handle : this.handles)
+		{
+//			PrintUtilities.println("Setting handle "+handle+", which is visible? "+handle.isHandleVisible());
 			handle.setHandleShowing(showing);
 		}
 	}
@@ -152,6 +186,14 @@ public class HandleManager implements ManipulationListener{
 		}
 	}
 
+	public void setHandlesVisible(boolean visible)
+	{
+		for (ManipulationHandle handle : this.handles)
+		{
+			handle.setHandleVisible(visible);
+		}
+	}
+	
 	public boolean isHandleVisible(ManipulationHandle handle)
 	{
 		if (handle.isAlwaysVisible())
