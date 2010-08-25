@@ -471,6 +471,14 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
 		assert IDE.singleton == null;
 		IDE.singleton = this;
+
+		//initialize locale
+		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<java.util.Locale> () {
+			public void changed(java.util.Locale nextValue) {
+				edu.cmu.cs.dennisc.croquet.Application.getSingleton().setLocale( nextValue );
+			}
+		} );
+
 		this.promptForLicenseAgreements();
 
 		//org.alice.ide.preferences.GeneralPreferences.getSingleton().desiredRecentProjectCount.setAndCommitValue( 10 );
@@ -525,12 +533,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.editorsTabSelectionState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
 			public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextValue ) {
 				refreshAccessibles();
-			}
-		} );
-		
-		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<java.util.Locale> () {
-			public void changed(java.util.Locale nextValue) {
-				edu.cmu.cs.dennisc.croquet.Application.getSingleton().setLocale( nextValue );
 			}
 		} );
 	}
@@ -1438,7 +1440,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	public void promptUserForMore( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement statement, final edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter, edu.cmu.cs.dennisc.croquet.ViewController< ?,? > viewController, java.awt.Point p, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
 		this.setDropParentAndIndex( statement );
-		final String parameterName = parameter.getName();
+		final String parameterName = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getNameForDeclaration( parameter );
 		edu.cmu.cs.dennisc.cascade.Blank blank;
 		if( parameterName != null ) {
 			blank = new edu.cmu.cs.dennisc.cascade.Blank() {

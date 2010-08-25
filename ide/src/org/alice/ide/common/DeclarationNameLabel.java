@@ -106,7 +106,7 @@ public class DeclarationNameLabel extends edu.cmu.cs.dennisc.croquet.Label {
 	private void updateText() {
 		String text;
 		if( this.declaration != null ) {
-			text = getNameText();
+			text = this.getNameText();
 		} else {
 			text = null;
 		}
