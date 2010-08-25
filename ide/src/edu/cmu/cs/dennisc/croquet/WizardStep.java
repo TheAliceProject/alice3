@@ -46,5 +46,6 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public interface WizardStep {
+	public String getTitle();
 	public Component< ? > getComponent();
 }

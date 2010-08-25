@@ -83,6 +83,12 @@ public class SpringUtilities {
 		System.arraycopy( components, 0, rv, 1, components.length );
 		return createRow( rv );
 	}
+	public static Component< ? >[] createTopLabeledRow( String labelText, Component< ? >... components ) {
+		Component< ? >[] rv = new Component< ? >[ components.length + 1 ];
+		rv[ 0 ] = createTrailingTopLabel( labelText );
+		System.arraycopy( components, 0, rv, 1, components.length );
+		return createRow( rv );
+	}
 	
 	public static SpringPanel springItUpANotch( SpringPanel rv, java.util.List<Component< ? >[]> componentRows, int xPad, int yPad ) {
 		assert componentRows != null;

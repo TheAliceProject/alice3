@@ -131,7 +131,7 @@ abstract class DialogOperationWithControls<C extends AbstractDialogOperationCont
 	protected abstract Component<?> createMainPanel( C context, Dialog dialog, Label explanationLabel );
 	protected abstract Component<?> createControlsPanel( C context, Dialog dialog );
 	protected void updateExplanation( C context ) {
-		this.explanationLabel.setText( "todo" );
+		this.explanationLabel.setText( "enter name and description." );
 //		if( context != null ) {
 //			String explanation = this.getExplanationIfNextButtonShouldBeDisabled( context );
 //			if( this.externalNextButtonDisabler != null ) {
@@ -166,7 +166,6 @@ abstract class DialogOperationWithControls<C extends AbstractDialogOperationCont
 		gbc.weighty = 0.0;
 		rv.addComponent( new HorizontalSeparator(), gbc );
 		rv.addComponent( controlPanel, gbc );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
 		this.updateExplanation( context );
 		return rv;
 	}
@@ -185,7 +184,7 @@ abstract class DialogOperationWithControls<C extends AbstractDialogOperationCont
  */
 public abstract class WizardDialogOperation extends DialogOperationWithControls<WizardDialogOperationContext> {
 	protected static final Group ENCLOSING_WIZARD_DIALOG_GROUP = new Group( java.util.UUID.fromString( "100a8027-cf11-4070-abd5-450f8c5ab1cc" ), "ENCLOSING_WIZARD_DIALOG_GROUP" );
-	private static class NextOperation extends ActionOperation {
+	private class NextOperation extends ActionOperation {
 		public NextOperation() {
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "e1239539-1eb0-411d-b808-947d0b1c1e94" ) );
 		}
@@ -196,11 +195,16 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 		}
 		@Override
 		protected void perform( ActionOperationContext context ) {
+			int index = cardSelectionState.getSelectedIndex();
+			final int N = cardSelectionState.getItemCount();
+			if( index < N-1 ) {
+				cardSelectionState.setSelectedIndex( index+1 );
+			}
 		}
 	}
-	private static class PreviousOperation extends ActionOperation {
+	private class PreviousOperation extends ActionOperation {
 		public PreviousOperation() {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "e1239539-1eb0-411d-b808-947d0b1c1e94" ) );
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "2b1ff0fd-8d8a-4d23-9d95-6203e9abff9c" ) );
 		}
 		@Override
 		void localize() {
@@ -209,11 +213,27 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 		}
 		@Override
 		protected void perform( ActionOperationContext context ) {
+			int index = cardSelectionState.getSelectedIndex();
+			if( index > 0 ) {
+				cardSelectionState.setSelectedIndex( index-1 );
+			}
 		}
 	}
-	private static class FinishOperation extends ActionOperation {
+	private abstract class DialogOperation extends ActionOperation {
+		private Dialog dialog;
+		public DialogOperation( java.util.UUID id ) {
+			super( Application.INHERIT_GROUP, id );
+		}
+		public Dialog getDialog() {
+			return this.dialog;
+		}
+		public void setDialog( Dialog dialog ) {
+			this.dialog = dialog;
+		}
+	}
+	private class FinishOperation extends DialogOperation {
 		public FinishOperation() {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "6acdd95e-849c-4281-9779-994e9807b25b" ) );
+			super( java.util.UUID.fromString( "6acdd95e-849c-4281-9779-994e9807b25b" ) );
 		}
 		@Override
 		void localize() {
@@ -222,11 +242,14 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 		}
 		@Override
 		protected void perform( ActionOperationContext context ) {
+			//todo
+			context.finish();
+			this.getDialog().setVisible( false );
 		}
 	}
-	private static class CancelOperation extends ActionOperation {
+	private class CancelOperation extends DialogOperation {
 		public CancelOperation() {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "3363c6f0-c8a2-48f2-aefc-c53894ec8a99" ) );
+			super( java.util.UUID.fromString( "3363c6f0-c8a2-48f2-aefc-c53894ec8a99" ) );
 		}
 		@Override
 		void localize() {
@@ -235,6 +258,9 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 		}
 		@Override
 		protected void perform( ActionOperationContext context ) {
+			//todo
+			context.cancel();
+			this.getDialog().setVisible( false );
 		}
 	}
 
@@ -242,6 +268,95 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 	private NextOperation nextOperation = new NextOperation();
 	private FinishOperation finishOperation = new FinishOperation();
 	private CancelOperation cancelOperation = new CancelOperation();
+	
+	private Label title = new Label( "Name/Description", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+	private CardPanel cardPanel = new CardPanel();
+	
+	private class Card {
+		private WizardStep step;
+		private CardPanel.Key key;
+		public Card( WizardStep step ) {
+			this.step = step;
+			this.key = cardPanel.createKey( this.step.getComponent(), java.util.UUID.randomUUID() );
+			cardPanel.addComponent( key );
+		}
+		@Override
+		public String toString() {
+			return this.step.getTitle();
+		}
+	};
+	
+	private final ListSelectionState< Card > cardSelectionState = new ListSelectionState< Card >( Application.INFORMATION_GROUP, java.util.UUID.fromString( "2382103d-a67e-4a35-baa2-9a612fd2d8f2" ), new Codec< Card >() {
+		public Card decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			throw new RuntimeException( "todo" );
+		}
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Card card ) {
+			throw new RuntimeException( "todo" );
+		}
+	} );
+	
+	private class StepsProgressPanel extends PageAxisPanel {
+		public StepsProgressPanel() {
+			class ListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< Card > {
+				private final java.awt.Font selectedFont;
+				private final java.awt.Font unselectedFont;
+				public ListCellRenderer() {
+					this.setOpaque( false );
+					java.awt.Font font = this.getFont();
+					this.selectedFont = edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont( font, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+					this.unselectedFont = edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont( font, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
+				}
+				@Override
+				protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, Card value, int index, boolean isSelected, boolean cellHasFocus ) {
+					this.setBorder( null );
+					if( isSelected ) {
+						rv.setForeground( java.awt.Color.BLACK );
+						rv.setFont( this.selectedFont );
+					} else {
+						rv.setForeground( java.awt.Color.GRAY );
+						rv.setFont( this.unselectedFont );
+					}
+					rv.setText( (index+1) + ".    " + value.step.getTitle() );
+					return rv;
+				}
+			}
+			
+			//List< Card > list = cardSelectionState.createList();
+			List< Card > list = new List< Card >( cardSelectionState ) {
+				@Override
+				protected javax.swing.JList createAwtComponent() {
+					return new javax.swing.JList() {
+						@Override
+						public boolean contains( int x, int y ) {
+							return false;
+						}
+					};
+				}
+			};
+			
+			list.setCellRenderer( new ListCellRenderer() );
+			list.setAlignmentX( 0.0f );
+			
+			Label label = new Label( "Steps", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+//			label.setAlignmentX( 0.0f );
+//			label.setHorizontalAlignment( HorizontalAlignment.LEADING );
+			this.addComponent( label );
+			this.addComponent( new HorizontalSeparator() );
+			this.addComponent( BoxUtilities.createVerticalSliver( 8 ) );
+			this.addComponent( list );
+			this.addComponent( BoxUtilities.createVerticalGlue() );
+			this.getAwtComponent().setOpaque( true );
+			this.setBackgroundColor( java.awt.Color.WHITE );
+			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
+			this.setMinimumPreferredWidth( 160 );
+		}
+	}
+	
+	private ListSelectionState.ValueObserver< Card > selectionObserver = new ListSelectionState.ValueObserver< Card >() {
+		public void changed( edu.cmu.cs.dennisc.croquet.WizardDialogOperation.Card nextValue ) {
+			WizardDialogOperation.this.handleCardChange( nextValue );
+		}
+	};
 	public WizardDialogOperation(Group group, java.util.UUID individualId, boolean isCancelDesired) {
 		super(group, individualId);
 	}
@@ -249,10 +364,23 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 		this(group, individualId, true);
 	}
 
+	private void handleCardChange( edu.cmu.cs.dennisc.croquet.WizardDialogOperation.Card nextValue ) {
+		if( nextValue != null ) {
+			this.cardPanel.show( nextValue.key );
+			this.title.setText( nextValue.step.getTitle() );
+		} else {
+			this.cardPanel.show( null );
+			this.title.setText( "" );
+		}
+		int index = this.cardSelectionState.getSelectedIndex();
+		this.prevOperation.setEnabled( index > 0 );
+		this.nextOperation.setEnabled( index < this.cardSelectionState.getItemCount()-1 );
+	}
 	@Override
 	protected WizardDialogOperationContext createContext( ModelContext< ? > parent, java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return parent.createWizardDialogOperationContext( this, e, viewController );
 	}
+
 	protected abstract WizardStep[] prologue( WizardDialogOperationContext context );
 	protected abstract void epilogue( WizardDialogOperationContext context, boolean isOk );
 	
@@ -260,20 +388,50 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 	protected Component< ? > createControlsPanel( WizardDialogOperationContext context, Dialog dialog ) {
 		LineAxisPanel rv = new LineAxisPanel();
 		rv.addComponent( BoxUtilities.createHorizontalGlue() );
-		rv.addComponent( prevOperation.createButton() );
-		rv.addComponent( nextOperation.createButton() );
+		rv.addComponent( this.prevOperation.createButton() );
+		rv.addComponent( this.nextOperation.createButton() );
 		rv.addComponent( BoxUtilities.createHorizontalSliver( 8 ) );
-		rv.addComponent( finishOperation.createButton() );
+		rv.addComponent( this.finishOperation.createButton() );
 		rv.addComponent( BoxUtilities.createHorizontalSliver( 8 ) );
-		rv.addComponent( cancelOperation.createButton() );
+		rv.addComponent( this.cancelOperation.createButton() );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
+		
+		this.finishOperation.setDialog( dialog );
+		this.cancelOperation.setDialog( dialog );
+		
 		return rv;
 	}
 	@Override
 	protected Component< ? > createMainPanel( WizardDialogOperationContext context, Dialog dialog, Label explanationLabel ) {
+		WizardStep[] steps = this.prologue( context );
+
+		java.util.ArrayList< Card > cards = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+		cards.ensureCapacity( steps.length );
+		for( WizardStep step : steps ) {
+			Card card = new Card( step );
+			cards.add( card );
+		}
+		this.cardSelectionState.setListData( 0, cards );
+		this.cardSelectionState.addAndInvokeValueObserver( this.selectionObserver );
+		
 		BorderPanel rv = new BorderPanel();
-		rv.addComponent( new Label( "steps" ), BorderPanel.Constraint.LINE_START );
-		rv.addComponent( new Label( "todo" ), BorderPanel.Constraint.CENTER );
-		rv.addComponent( explanationLabel, BorderPanel.Constraint.PAGE_END );
+		GridBagPanel centerPanel = new GridBagPanel();
+		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+		
+		gbc.fill = java.awt.GridBagConstraints.BOTH;
+		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		gbc.weightx = 1.0;
+		gbc.weighty = 0.0;
+		centerPanel.addComponent( this.title, gbc );
+		centerPanel.addComponent( new HorizontalSeparator(), gbc );
+		gbc.weighty = 1.0;
+		centerPanel.addComponent( this.cardPanel, gbc );
+		gbc.weighty = 0.0;
+		centerPanel.addComponent( explanationLabel, gbc );
+		
+		centerPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
+		rv.addComponent( new StepsProgressPanel(), BorderPanel.Constraint.LINE_START );
+		rv.addComponent( centerPanel, BorderPanel.Constraint.CENTER );
 		return rv;
 	}
 	
@@ -288,13 +446,60 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 		}
 		org.alice.stageide.StageIDE stageIDE = new org.alice.stageide.StageIDE();
 		WizardDialogOperation wizardDialogOperation = new WizardDialogOperation( null, null ) {
+			private StringState name = new StringState( Application.INHERIT_GROUP, java.util.UUID.fromString( "63245276-7fba-4905-8ac1-34629ed258e5" ), "" );
+			private StringState description = new StringState( Application.INHERIT_GROUP, java.util.UUID.fromString( "18c58e94-7155-45c3-b158-82d299a0f5c9" ), "" );
 			@Override
 			protected java.awt.Dimension getDesiredDialogSize( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
 				return new java.awt.Dimension( 640, 480 );
 			}
 			@Override
+			void localize() {
+				super.localize();
+				this.setName( "Action Script" );
+			}
+			@Override
 			protected WizardStep[] prologue( WizardDialogOperationContext context ) {
-				return null;
+				class ReviewPanel extends PageAxisPanel implements WizardStep {
+					public ReviewPanel() {
+						this.addComponent( new Label( "please review your animation" ) );
+					}
+					public String getTitle() {
+						return "Review";
+					}
+					public edu.cmu.cs.dennisc.croquet.Component< ? > getComponent() {
+						return this;
+					}
+				};
+				class NamePanel extends RowsSpringPanel implements WizardStep {
+					public String getTitle() {
+						return "Name/Description";
+					}
+					@Override
+					protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
+						rv.add( SpringUtilities.createLabeledRow( "name:", name.createTextField() ) );
+						rv.add( SpringUtilities.createTopLabeledRow( "description:", description.createTextArea() ) );
+						return rv;
+					}
+					public edu.cmu.cs.dennisc.croquet.Component< ? > getComponent() {
+						return this;
+					}
+				};
+				class CharactersPanel extends BorderPanel implements WizardStep {
+					public CharactersPanel() {
+						this.addComponent( new Label( "todo" ), Constraint.CENTER );
+					}
+					public String getTitle() {
+						return "Characters";
+					}
+					public edu.cmu.cs.dennisc.croquet.Component< ? > getComponent() {
+						return this;
+					}
+				};
+				return new WizardStep[] {
+					new ReviewPanel(),
+					new NamePanel(), 
+					new CharactersPanel()
+				};
 			}
 			@Override
 			protected void epilogue( WizardDialogOperationContext context, boolean isOk ) {
