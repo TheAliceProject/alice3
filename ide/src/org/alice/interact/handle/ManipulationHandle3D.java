@@ -384,12 +384,23 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		double currentOpacity = this.sgFrontFacingAppearance.opacity.getValue();
 		if (currentOpacity == targetOpacity)
 		{
-			return;
+			if (this.opacityAnimationTarget != -1)
+			{
+				if (this.opacityAnimationTarget == targetOpacity)
+				{
+					return;
+				}
+			}
+			else
+			{
+				return;
+			}
 		}
 		if (this.opacityAnimation != null)
 		{
 			if (this.opacityAnimationTarget == targetOpacity)
 			{
+//				PrintUtilities.println(this.getClass().getSimpleName()+":"+this.hashCode()+" skipping making an animation because the target ("+targetOpacity+") is already accounted for: "+this.opacityAnimationTarget);
 				return;
 			}
 			else
@@ -401,6 +412,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 			}
 		}
 		this.opacityAnimationTarget = targetOpacity;
+//		PrintUtilities.println(this.getClass().getSimpleName()+":"+this.hashCode()+" animating opacity from "+currentOpacity+" to "+targetOpacity);
 		this.opacityAnimation = new DoubleAnimation(ANIMATION_DURATION, TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentOpacity, targetOpacity)
 		{
 			private String name = "OpacityAnimation";
@@ -416,6 +428,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 				{
 					super.epilogue();
 				}
+				ManipulationHandle3D.this.opacityAnimationTarget = -1;
 			}
 		};
 		this.animator.invokeLater(this.opacityAnimation, null);
@@ -426,7 +439,17 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		Color4f currentColor = this.sgFrontFacingAppearance.diffuseColor.getValue();
 		if (currentColor.equals(targetColor))
 		{
-			return;
+			if (this.colorAnimationTarget != null)
+			{
+				if (this.colorAnimationTarget.equals(targetColor))
+				{
+					return;
+				}
+			}
+			else
+			{
+				return;
+			}
 		}
 		if (this.colorAnimation != null)
 		{
@@ -459,6 +482,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 				{
 					super.epilogue();
 				}
+				ManipulationHandle3D.this.colorAnimationTarget = null;
 			}
 		};
 		this.animator.invokeLater(this.colorAnimation, null);

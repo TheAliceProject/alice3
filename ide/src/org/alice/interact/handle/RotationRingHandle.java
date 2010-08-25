@@ -261,10 +261,20 @@ public class RotationRingHandle extends ManipulationHandle3D{
 //		PrintUtilities.println("\n"+this.hashCode()+":"+this+" "+(this.isHandleVisible()? "VISIBLE" : "INVISIBLE")+" Animating to "+desiredRadius+" around "+this.manipulatedObject);
 		
 		double currentRadius = this.getSize();
+		
 		if (currentRadius == desiredRadius)
 		{
-//			PrintUtilities.println("  Not making a radius animation from "+currentRadius+" to "+desiredRadius+" because they're the same.");
-			return;
+			if (this.radiusAnimationTarget != -1)
+			{
+				if (this.radiusAnimationTarget == desiredRadius)
+				{
+					return;
+				}
+			}
+			else
+			{
+				return;
+			}
 		}
 		if (this.radiusAnimation != null)
 		{
@@ -311,6 +321,7 @@ public class RotationRingHandle extends ManipulationHandle3D{
 				{
 					super.epilogue();
 				}
+				RotationRingHandle.this.radiusAnimationTarget = -1;
 			}
 		};
 		this.animator.invokeLater(this.radiusAnimation, null);
@@ -321,6 +332,11 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	{
 		super.updateVisibleState(renderState);
 		double endRadius = this.isRenderable() ? this.getMajorAxisRadius() : 0.0d;
+//		if (endRadius == 0 && this.opacityAnimationTarget != 0)
+//		{
+//			double targetOpacity = this.isRenderable() ? this.getDesiredOpacity(renderState) : 0.0;
+//			PrintUtilities.println("Huh?");
+//		}
 		animateHandleToRadius(endRadius);
 	}
 	

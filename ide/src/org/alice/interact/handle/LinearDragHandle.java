@@ -200,6 +200,21 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 		double currentLength = this.getSize();
 		if (currentLength == desiredLength)
 		{
+			if (this.lengthAnimationTarget != -1)
+			{
+				if (this.lengthAnimationTarget == desiredLength)
+				{
+					return;
+				}
+			}
+			else
+			{
+				return;
+			}
+		}
+		
+		if (currentLength == desiredLength)
+		{
 //			PrintUtilities.println("  Not making a length animation from "+currentLength+" to "+desiredLength+" because they're the same.");
 			return;
 		}
@@ -236,6 +251,7 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 				{
 					super.epilogue();
 				}
+				LinearDragHandle.this.lengthAnimationTarget = -1;
 			}
 		};
 		this.animator.invokeLater(this.lengthAnimation, null);
