@@ -64,6 +64,10 @@ public class JavaFormatter extends Formatter {
 		return "null";
 	}
 	@Override
+	protected java.lang.String getTextForParameterDeclaredInJava( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJava parameterInJava ) {
+		return parameterInJava.getName();
+	}
+	@Override
 	protected String getTextForMethodReflectionProxy( edu.cmu.cs.dennisc.alice.ast.MethodReflectionProxy methodReflectionProxy ) {
 		return methodReflectionProxy.getName();
 	}
