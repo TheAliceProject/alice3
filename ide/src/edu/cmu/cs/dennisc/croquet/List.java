@@ -93,6 +93,9 @@ public class List<E> extends ItemSelectable<javax.swing.JList, E > {
 	
 	/*package-private*/ List( ListSelectionState<E> model ) {
 		super( model );
+		this.setSwingListModel(model.getComboBoxModel());
+		this.setSelectionModel(model.getListSelectionModel());
+		
 	}
 
 	@Override
@@ -181,5 +184,19 @@ public class List<E> extends ItemSelectable<javax.swing.JList, E > {
 	}
 	/*package-private*/ void removeListSelectionListener( javax.swing.event.ListSelectionListener listSelectionListener ) {
 		this.getAwtComponent().removeListSelectionListener( listSelectionListener );
+	}
+	@Override
+	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		super.handleAddedTo(parent);
+		this.getModel().addComponent(this);
+		// this.addListSelectionListener( this.listSelectionListener );
+	};
+
+	@Override
+	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		// this.removeListSelectionListener( this.listSelectionListener
+		// );
+		this.getModel().removeComponent(this);
+		super.handleRemovedFrom(parent);
 	}
 }
