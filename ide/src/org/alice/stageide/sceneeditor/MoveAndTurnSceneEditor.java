@@ -431,6 +431,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
 				instance = instanceInAlice.getInstanceInJava();
 			}
+//			PrintUtilities.println("Selected "+instance+":"+instance.getClass().getSimpleName());
 			if( instance instanceof org.alice.apis.moveandturn.Model ) {
 				org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instance;
 				this.globalDragAdapter.setSelectedObject( model.getSGTransformable() );
@@ -445,6 +446,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				{
 					this.globalDragAdapter.setSelectedObject( this.openingSceneMarker.getSGTransformable() );
 				}
+			}
+			else if (instance instanceof Scene)
+			{
+				this.globalDragAdapter.setSelectedObject(null);
 			}
 			this.updateFieldLabels();
 		}

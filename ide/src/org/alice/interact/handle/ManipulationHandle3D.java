@@ -72,13 +72,17 @@ import edu.cmu.cs.dennisc.pattern.Criterion;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 //import org.alice.apis.moveandturn.Model;
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
 /**
  * @author David Culyba
@@ -110,6 +114,8 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	protected AbstractDragAdapter dragAdapter = null;
 	protected boolean isPickable = false; //This is false until a manipulation is set on the handle
 	
+	protected float cameraRelativeOpacity = 1.0f;
+	
 	
 	public static Criterion< Component > NOT_3D_HANDLE_CRITERION = new Criterion< Component >() {
 		protected boolean isHandle( Component c ) {
@@ -140,6 +146,15 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	}
 	
 	protected ScaleChangeListener scaleListener = new ScaleChangeListener();
+	
+	protected AbsoluteTransformationListener absoluteTransformationListener = new AbsoluteTransformationListener() 
+	{
+		public void absoluteTransformationChanged(
+				AbsoluteTransformationEvent absoluteTransformationEvent) 
+		{
+			ManipulationHandle3D.this.updateCameraRelativeOpacity();
+		}
+	};
 	
 	/**
 	 * @param manipulatedObject the manipulatedObject to set
@@ -183,12 +198,28 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	
 	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
 		this.dragAdapter = dragAdapter;	
+	}
+	
+	public void setDragAdapterAndAddHandle( AbstractDragAdapter dragAdapter ) {
+		this.setDragAdapter(dragAdapter);
 		if (this.dragAdapter != null)
 		{
 			this.dragAdapter.addHandle( this );
 		}
 	}
 	
+	public void updateCameraRelativeOpacity()
+	{
+		if (ManipulationHandle3D.this.dragAdapter != null)
+		{
+			AbstractCamera activeCamera = ManipulationHandle3D.this.dragAdapter.getActiveCamera();
+			if (activeCamera instanceof SymmetricPerspectiveCamera)
+			{
+				Point3 cameraLocation = ((SymmetricPerspectiveCamera)activeCamera).getAbsoluteTransformation().translation;
+				ManipulationHandle3D.this.setCameraPosition(cameraLocation);
+			}
+		}
+	}
 	
 	@Override
 	public abstract ManipulationHandle3D clone();
@@ -216,6 +247,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		sgVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
 		sgVisual.setParent( this );
 		this.putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.THREE_D_HANDLES );
+		this.addAbsoluteTransformationListener(this.absoluteTransformationListener);
 	}
 
 	protected void initializeAppearance()
@@ -268,6 +300,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	@Override
 	public void setParent(Composite parent) {
 		super.setParent(parent);
+		this.updateCameraRelativeOpacity();
 	}
 	
 	protected void createAnimations()
@@ -440,6 +473,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		}
 		
 		double targetOpacity = this.isRenderable() ? this.getDesiredOpacity(renderState) : 0.0;
+//		PrintUtilities.println(this.getClass().getSimpleName()+":"+this.hashCode()+" target opacity: "+targetOpacity+", isRenderable? "+this.isRenderable()+", desiredOpacity = "+this.getDesiredOpacity(renderState)+" is showing? "+this.sgVisual.isShowing.getValue());
 		this.animateToOpacity(targetOpacity);
 		Color4f targetColor = this.getDesiredColor(renderState);
 		this.animateToColor(targetColor);
@@ -490,16 +524,48 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		}
 	}
 	
+	public void setCameraPosition(Point3 cameraPosition)
+	{
+		this.setCameraRelativeOpacity(this.calculateCameraRelativeOpacity(cameraPosition));
+	}
+	
+	public float calculateCameraRelativeOpacity(Point3 cameraPosition)
+	{
+		if (this.getParentTransformable() != null)
+		{
+			Point3 handlePosition = this.getParentTransformable().getAbsoluteTransformation().translation;
+			double distance = Point3.calculateDistanceBetween(cameraPosition, handlePosition);
+			if (distance < .2)
+			{
+				return 0.0f;
+			}
+			else if (distance < .5)
+			{
+				return (float)((distance - .2f) /  (.5 - .2));
+			}
+		}
+		return 1;
+	}
+	
+	public void setCameraRelativeOpacity(float cameraRelativeOpacity)
+	{
+		if (this.cameraRelativeOpacity != cameraRelativeOpacity)
+		{
+			this.cameraRelativeOpacity = cameraRelativeOpacity;
+			this.sgFrontFacingAppearance.opacity.setValue((float)this.getDesiredOpacity(HandleRenderState.getStateForHandle( this )));
+		}
+	}
+	
 	protected double getDesiredOpacity(HandleRenderState renderState)
 	{
-		
+//		PrintUtilities.println(this.getClass().getSimpleName()+":"+this.hashCode()+" camera opacity: "+this.cameraRelativeOpacity);
 		switch (renderState)
 		{
 		case NOT_VISIBLE : return 0.0d;
-		case VISIBLE_BUT_SIBLING_IS_ACTIVE : return .5d;
-		case VISIBLE_AND_ACTIVE : return 1.0d;
-		case VISIBLE_AND_ROLLOVER : return .75d;
-		case JUST_VISIBLE : return .6d;
+		case VISIBLE_BUT_SIBLING_IS_ACTIVE : return .5d * this.cameraRelativeOpacity;
+		case VISIBLE_AND_ACTIVE : return 1.0d * this.cameraRelativeOpacity;
+		case VISIBLE_AND_ROLLOVER : return .75d * this.cameraRelativeOpacity;
+		case JUST_VISIBLE : return .6d * this.cameraRelativeOpacity;
 		default : return 0.0d;
 		}
 	}
@@ -677,6 +743,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	
 	public void setHandleShowing(boolean showing)
 	{
+//		PrintUtilities.println(this.hashCode()+" setting is showing to "+showing);
 		this.sgVisual.isShowing.setValue(showing);
 	}
 	

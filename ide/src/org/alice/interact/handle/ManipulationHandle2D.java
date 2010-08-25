@@ -56,6 +56,7 @@ import org.alice.interact.event.ManipulationListener;
 import org.alice.interact.manipulator.AbstractManipulator;
 
 import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector2;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
@@ -113,8 +114,13 @@ public abstract class ManipulationHandle2D extends JLabel implements Manipulatio
 		//Do nothing
 	}
 	
-	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
+	public void setDragAdapter( AbstractDragAdapter dragAdapter ) 
+	{
 		this.dragAdapter = dragAdapter;
+	}
+	
+	public void setDragAdapterAndAddHandle( AbstractDragAdapter dragAdapter ) {
+		this.setDragAdapter(dragAdapter);
 		if (this.dragAdapter != null)
 		{
 			this.dragAdapter.addHandle( this );
@@ -267,6 +273,11 @@ public abstract class ManipulationHandle2D extends JLabel implements Manipulatio
 
 	public void setAnimator( Animator animator ) {
 		this.animator = animator;
+	}
+	
+	public void setCameraPosition(Point3 cameraPosition) 
+	{
+		//Do Nothing
 	}
 	
 	@Override

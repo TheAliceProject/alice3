@@ -92,6 +92,8 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
 /**
  * @author David Culyba
@@ -143,6 +145,18 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			AbstractDragAdapter.this.setInteractionState(nextValue);
 		}
 		
+	};
+	
+	private AbsoluteTransformationListener cameraTransformationListener = new AbsoluteTransformationListener() {
+		
+		public void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) 
+		{
+			if (absoluteTransformationEvent.getSource() instanceof SymmetricPerspectiveCamera)
+			{
+				SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera)absoluteTransformationEvent.getSource();
+				AbstractDragAdapter.this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation);
+			}
+		}
 	};
 	
 	private static double MOUSE_WHEEL_TIMEOUT_TIME = 1.0;
@@ -240,6 +254,11 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	
 	protected abstract void setUpControls();
 	
+	protected void handleCameraMoved()
+	{
+		
+	}
+	
 	public ListSelectionState<InteractionGroup> getInteractionSelectionStateList()
 	{
 		return this.interactionSelectionState;
@@ -311,6 +330,13 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	
 	public void clearCameraViews()
 	{
+		for (CameraPair cameraPair : this.cameraMap.values())
+		{
+			if (cameraPair.perspectiveCamera != null)
+			{
+				cameraPair.perspectiveCamera.removeAbsoluteTransformationListener(this.cameraTransformationListener);
+			}
+		}
 		this.cameraMap.clear();
 	}
 	
@@ -321,6 +347,12 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	
 	protected void addCameraView(CameraView viewType, CameraPair cameras)
 	{
+		
+		if (cameras.perspectiveCamera != null)
+		{
+			cameras.perspectiveCamera.addAbsoluteTransformationListener(this.cameraTransformationListener);
+			AbstractDragAdapter.this.handleManager.updateCameraPosition(cameras.perspectiveCamera.getAbsoluteTransformation().translation);
+		}
 		this.cameraMap.put( viewType, cameras );
 	}
 	
@@ -349,9 +381,17 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	
 	public void setHandleShowingForObject( Transformable object, boolean handlesShowing)
 	{
-		if (this.selectedObject == object)
+//		if (this.selectedObject == object)
+//		{
+//			this.handleManager.setHandlesShowing(handlesShowing);
+//		}
+	}
+	
+	public void triggerSelection(Transformable selected)
+	{	
+		if (this.selectedObject != selected)
 		{
-			this.handleManager.setHandlesShowing(handlesShowing);
+			this.fireSelected( new SelectionEvent(this, selected) );
 		}
 	}
 	
@@ -387,7 +427,8 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 //			PrintUtilities.println("###Trying to set selected object to "+selected);
 			if (HandleManager.canHaveHandles(selected))
 			{
-				this.handleManager.setHandlesShowing(!isNewSelectedActiveCameraMarker);
+//				this.handleManager.setHandlesShowing(!isNewSelectedActiveCameraMarker);
+				this.handleManager.setHandlesShowing(true);
 				this.handleManager.setSelectedObject( selected );
 			}
 			else
@@ -421,7 +462,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 //				currentCameraMarker.setShowing(!isNewSelectedActiveCameraMarker);
 			}
 			
-			this.fireSelected( new SelectionEvent(this, selected) );
+//			this.fireSelected( new SelectionEvent(this, selected) );
 			this.handleStateChange();
 //			PrintUtilities.println("At End: HandleSelected object: "+this.handleManager.getSelectedObject());
 //			PrintUtilities.println("################Done doing: "+selected+"\n");
@@ -602,7 +643,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		
 		if (!this.hasObjectToBeSelected && this.currentInputState.getCurrentlySelectedObject() != this.previousInputState.getCurrentlySelectedObject())
 		{
-			this.setSelectedObject( this.currentInputState.getCurrentlySelectedObject() );
+			this.triggerSelection( this.currentInputState.getCurrentlySelectedObject() );
 		}
 		
 		this.previousInputState.copyState(this.currentInputState);
@@ -671,9 +712,17 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 				activated = true;
 			}
 		}
+		if (camera instanceof SymmetricPerspectiveCamera)
+		{
+			this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation);
+		}
+		else
+		{
+			this.handleManager.updateCameraPosition(null);
+		}
 	}
 
-	protected AbstractCamera getActiveCamera()
+	public AbstractCamera getActiveCamera()
 	{
 		//TODO: introduce a true sense of "active"
 		CameraPair activeCameraPair = this.cameraMap.get( CameraView.MAIN );

@@ -48,6 +48,7 @@ import org.alice.interact.PickHint;
 import org.alice.interact.manipulator.AbstractManipulator;
 
 import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
@@ -103,5 +104,9 @@ public interface ManipulationHandle extends Cloneable {
 	
 	public PickHint getPickHint();
 	
+	public void setDragAdapterAndAddHandle(AbstractDragAdapter dragAdapter);
+	
 	public void setDragAdapter(AbstractDragAdapter dragAdapter);
+	
+	public void setCameraPosition(Point3 cameraPosition);
 }

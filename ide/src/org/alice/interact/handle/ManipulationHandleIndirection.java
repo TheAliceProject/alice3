@@ -52,6 +52,7 @@ import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;
 
 import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
@@ -87,8 +88,22 @@ public class ManipulationHandleIndirection  implements ManipulationListener, Man
 		return newHandle;
 	}
 	
-	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
+	public void setDragAdapter( AbstractDragAdapter dragAdapter )
+	{
 		this.dragAdapter = dragAdapter;	
+		if (this.currentHandle != null)
+		{
+			this.currentHandle.setDragAdapter(dragAdapter);
+		}
+		if (this.nextHandle != null)
+		{
+			this.nextHandle.setDragAdapter(dragAdapter);
+		}
+	}
+	
+	public void setDragAdapterAndAddHandle( AbstractDragAdapter dragAdapter ) 
+	{
+		this.setDragAdapter(dragAdapter);
 		if (this.dragAdapter != null)
 		{
 			this.dragAdapter.addHandle( this );
@@ -263,6 +278,18 @@ public class ManipulationHandleIndirection  implements ManipulationListener, Man
 
 	public PickHint getPickHint() {
 		return this.currentHandle.getPickHint();
+	}
+	
+	public void setCameraPosition(Point3 cameraPosition) 
+	{
+		if (this.currentHandle != null)
+		{
+			this.currentHandle.setCameraPosition(cameraPosition);
+		}
+		if (this.nextHandle != null)
+		{
+			this.nextHandle.setCameraPosition(cameraPosition);
+		}
 	}
 
 	@Override

@@ -53,6 +53,7 @@ import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;
 
 import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
@@ -63,11 +64,14 @@ public class HandleManager implements ManipulationListener{
 	private Stack< HandleSet > handleSetStack = new Stack< HandleSet >();
 	private List< ManipulationHandle > handles = new ArrayList<ManipulationHandle>();
 	
+	private Point3 cameraPosition;
+	
 	
 	public void addHandle( ManipulationHandle handle )
 	{
 		handles.add( handle );
 		handle.setHandleManager( this );
+		handle.setCameraPosition(this.cameraPosition);
 	}
 	
 	public HandleSet getCurrentHandleSet()
@@ -80,6 +84,27 @@ public class HandleManager implements ManipulationListener{
 		{
 			return this.handleSetStack.peek();
 		}
+	}
+	
+	public void updateCameraPosition(Point3 position)
+	{
+		if (position == null)
+		{
+			this.cameraPosition = null;
+		}
+		else if (this.cameraPosition == null)
+		{
+			this.cameraPosition = new Point3(position);
+		}
+		else 
+		{
+			this.cameraPosition.set(position);
+		}
+		for (ManipulationHandle handle : this.handles)
+		{
+			handle.setCameraPosition(this.cameraPosition);
+		}
+		
 	}
 	
 	private void updateHandlesBasedOnHandleSet()

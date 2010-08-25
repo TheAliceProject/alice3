@@ -118,7 +118,7 @@ public class CameraNavigatorWidget extends JPanel {
 		//Set the handle to listen to the relevant events so it can update its appearance as things happen
 		this.dragAdapter.addManipulationListener( this.cameraDriver );
 		//Set the dragAdapter on the handle which sets up listening and adds the handle to the dragAdapter
-		this.cameraDriver.setDragAdapter( this.dragAdapter );
+		this.cameraDriver.setDragAdapterAndAddHandle( this.dragAdapter );
 		
 		//CAMERA ROTATE UP/DOWN
 		//Create the new handle
@@ -139,7 +139,7 @@ public class CameraNavigatorWidget extends JPanel {
 		//Set the handle to listen to the relevant events so it can update its appearance as things happen
 		this.dragAdapter.addManipulationListener( this.cameraControlUpDown );
 		//Set the dragAdapter on the handle which sets up listening and adds the handle to the dragAdapter
-		this.cameraControlUpDown.setDragAdapter( this.dragAdapter );
+		this.cameraControlUpDown.setDragAdapterAndAddHandle( this.dragAdapter );
 		
 		//CAMERA STRAFE
 		//Create the new handle
@@ -160,7 +160,7 @@ public class CameraNavigatorWidget extends JPanel {
 		//Set the handle to listen to the relevant events so it can update its appearance as things happen
 		this.dragAdapter.addManipulationListener( this.cameraControlStrafe );
 		//Set the dragAdapter on the handle which sets up listening and adds the handle to the dragAdapter
-		this.cameraControlStrafe.setDragAdapter( this.dragAdapter );
+		this.cameraControlStrafe.setDragAdapterAndAddHandle( this.dragAdapter );
 		
 		//This is the manipulator used to strafe the camera when holding down shift and using the camera widget
 		//Note that this is the only manipulator directly added to the dragAdapter
@@ -192,7 +192,7 @@ public class CameraNavigatorWidget extends JPanel {
 		//Set the handle to listen to the relevant events so it can update its appearance as things happen
 		this.dragAdapter.addManipulationListener( this.orthographicCameraControlStrafe );
 		//Set the dragAdapter on the handle which sets up listening and adds the handle to the dragAdapter
-		this.orthographicCameraControlStrafe.setDragAdapter( this.dragAdapter );
+		this.orthographicCameraControlStrafe.setDragAdapterAndAddHandle( this.dragAdapter );
 		
 		//ORTHOGRAPHIC ZOOM
 		//Create the new handle
@@ -213,7 +213,7 @@ public class CameraNavigatorWidget extends JPanel {
 		//Set the handle to listen to the relevant events so it can update its appearance as things happen
 		this.dragAdapter.addManipulationListener( this.orthographicCameraControlZoom );
 		//Set the dragAdapter on the handle which sets up listening and adds the handle to the dragAdapter
-		this.orthographicCameraControlZoom.setDragAdapter( this.dragAdapter );
+		this.orthographicCameraControlZoom.setDragAdapterAndAddHandle( this.dragAdapter );
 		
 		this.cameraMode = null;
 		setMode(CameraMode.PERSPECTIVE); //This will set the mode and also put the controls in the panel
