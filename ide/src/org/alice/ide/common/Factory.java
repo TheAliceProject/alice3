@@ -302,7 +302,7 @@ public abstract class Factory {
 //				rv = new TypeComponent( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)owner).value.getValue() );
 //			} else {
 				Class< ? > cls = owner.getClass();
-				String value = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "edu.cmu.cs.dennisc.alice.ast.Templates", org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getLocale() );
+				String value = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.formatter.Templates", org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getLocale() );
 				org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( value );
 				rv = createComponent( page, owner );
 //			}

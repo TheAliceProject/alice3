@@ -121,10 +121,8 @@ class RecursionPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	}
 
 	public RecursionPanel( String explanationA, String explanationB ) {
-		
-		
 		//todo
-		org.alice.ide.croquet.models.help.BrowserOperation browserOperation = new org.alice.ide.croquet.models.help.BrowserOperation( java.util.UUID.fromString( "30e5e6e1-39ca-4c0f-a4a5-17e3f0e8212d" ), "http://help.alice.org/topics/recursion" );
+		org.alice.ide.croquet.models.help.BrowserOperation browserOperation = new org.alice.ide.croquet.models.help.BrowserOperation( java.util.UUID.fromString( "30e5e6e1-39ca-4c0f-a4a5-17e3f0e8212d" ), "http://help.alice.org/recursion" );
 		edu.cmu.cs.dennisc.croquet.Hyperlink hyperlink = browserOperation.createHyperlink();
 		hyperlink.scaleFont( FONT_SCALE_FACTOR );
 		hyperlink.setBorder( javax.swing.BorderFactory.createEmptyBorder( SPACING, INDENT, SPACING, 0 ) );

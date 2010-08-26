@@ -49,12 +49,13 @@ import java.awt.Insets;
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 
+import org.alice.stageide.sceneeditor.snap.SnapControlPanel;
+import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.alice.stageide.sceneeditor.viewmanager.SceneViewManagerPanel;
-import org.alice.stageide.sceneeditor.viewmanager.SnapControlPanel;
 import org.alice.ide.IDE;
 import org.alice.ide.swing.BasicTreeNodeViewerPanel;
 import org.alice.ide.swing.FieldListCellRenderer;
-import org.alice.interact.SnapState;
+import org.alice.interact.handle.HandleSet;
 
 import edu.cmu.cs.dennisc.croquet.ActionOperation;
 import edu.cmu.cs.dennisc.croquet.ComboBox;
@@ -161,7 +162,8 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		edu.cmu.cs.dennisc.croquet.BorderPanel handleControlPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 //		handleControlPanel.setOpaque( false );
 		
-		handleControlPanel.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "Handle Style", 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), BorderPanel.Constraint.PAGE_START );
+		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
+		handleControlPanel.addComponent( new edu.cmu.cs.dennisc.croquet.Label( resourceBundle.getString("handleStyleTitle"), 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), BorderPanel.Constraint.PAGE_START );
 		handleControlPanel.addComponent(sceneEditor.getDragAdapter().getInteractionSelectionStateList().createDefaultRadioButtons(), BorderPanel.Constraint.CENTER);
 		handleControlPanel.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 

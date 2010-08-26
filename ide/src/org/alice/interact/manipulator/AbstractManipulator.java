@@ -139,7 +139,7 @@ public abstract class AbstractManipulator {
 			HandleSet setToShow = this.getHandleSetToEnable();
 			if (setToShow != null && this.dragAdapter != null)
 			{
-				System.out.println("Push on start: "+setToShow);
+//				System.out.println("Push on start: "+setToShow);
 				this.dragAdapter.pushHandleSet( setToShow );
 			}
 		}

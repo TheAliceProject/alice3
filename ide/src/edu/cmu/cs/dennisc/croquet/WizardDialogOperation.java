@@ -44,6 +44,54 @@ package edu.cmu.cs.dennisc.croquet;
 
 abstract class DialogOperationWithControls<C extends AbstractDialogOperationContext<?>> extends AbstractDialogOperation<C> {
 	private static final String NULL_EXPLANATION = "good to go";
+
+	protected abstract class DialogOperation extends ActionOperation {
+		private Dialog dialog;
+		public DialogOperation( java.util.UUID id ) {
+			super( Application.INHERIT_GROUP, id );
+		}
+		public Dialog getDialog() {
+			return this.dialog;
+		}
+		public void setDialog( Dialog dialog ) {
+			this.dialog = dialog;
+		}
+	}
+
+	protected class CompleteOperation extends DialogOperation {
+		public CompleteOperation() {
+			super( java.util.UUID.fromString( "6acdd95e-849c-4281-9779-994e9807b25b" ) );
+		}
+		@Override
+		void localize() {
+			super.localize();
+			this.setName( "Finish" );
+		}
+		@Override
+		protected void perform( ActionOperationContext context ) {
+			isCompleted = true;
+			context.finish();
+			this.getDialog().setVisible( false );
+		}
+	}
+	protected class CancelOperation extends DialogOperation {
+		public CancelOperation() {
+			super( java.util.UUID.fromString( "3363c6f0-c8a2-48f2-aefc-c53894ec8a99" ) );
+		}
+		@Override
+		void localize() {
+			super.localize();
+			this.setName( "Cancel" );
+		}
+		@Override
+		protected void perform( ActionOperationContext context ) {
+			context.cancel();
+			this.getDialog().setVisible( false );
+		}
+	}
+	private CompleteOperation completeOperation = new CompleteOperation();
+	private CancelOperation cancelOperation = new CancelOperation();
+
 	private Label explanationLabel = new Label( NULL_EXPLANATION ) {
 		@Override
 		protected javax.swing.JLabel createAwtComponent() {
@@ -128,8 +176,18 @@ abstract class DialogOperationWithControls<C extends AbstractDialogOperationCont
 		this.explanationLabel.setForegroundColor( java.awt.Color.RED.darker().darker() );
 	}
 
+	private boolean isCompleted;
+	
+	protected CompleteOperation getCompleteOperation() {
+		return this.completeOperation;
+	}
+	protected CancelOperation getCancelOperation() {
+		return this.cancelOperation;
+	}
+	
 	protected abstract Component<?> createMainPanel( C context, Dialog dialog, Label explanationLabel );
 	protected abstract Component<?> createControlsPanel( C context, Dialog dialog );
+	protected abstract void release( C context, Dialog dialog, boolean isCompleted );
 	
 	protected abstract String getExplanation();
 	protected void updateExplanation( C context ) {
@@ -163,14 +221,16 @@ abstract class DialogOperationWithControls<C extends AbstractDialogOperationCont
 		Application.getSingleton().getRootContext().addChildrenObserver( this.childrenObserver );
 		this.updateExplanation( context );
 		
+		this.completeOperation.setDialog( dialog );
+		this.cancelOperation.setDialog( dialog );
+		this.isCompleted = false;
 		return rv;
 	}
 	@Override
 	protected final void releaseContentPane(C context, Dialog dialog, Container<?> contentPane) {
 		if( contentPane != null ) {
 			Application.getSingleton().getRootContext().removeChildrenObserver( this.childrenObserver );
-			
-			//todo
+			this.release( context, dialog, this.isCompleted );
 		} else {
 			context.cancel();
 		}
@@ -217,61 +277,12 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 			}
 		}
 	}
-	private abstract class DialogOperation extends ActionOperation {
-		private Dialog dialog;
-		public DialogOperation( java.util.UUID id ) {
-			super( Application.INHERIT_GROUP, id );
-		}
-		public Dialog getDialog() {
-			return this.dialog;
-		}
-		public void setDialog( Dialog dialog ) {
-			this.dialog = dialog;
-		}
-	}
-	private class FinishOperation extends DialogOperation {
-		public FinishOperation() {
-			super( java.util.UUID.fromString( "6acdd95e-849c-4281-9779-994e9807b25b" ) );
-		}
-		@Override
-		void localize() {
-			super.localize();
-			this.setName( "Finish" );
-		}
-		@Override
-		protected void perform( ActionOperationContext context ) {
-			//todo
-			isCommit = true;
-			context.finish();
-			this.getDialog().setVisible( false );
-		}
-	}
-	private class CancelOperation extends DialogOperation {
-		public CancelOperation() {
-			super( java.util.UUID.fromString( "3363c6f0-c8a2-48f2-aefc-c53894ec8a99" ) );
-		}
-		@Override
-		void localize() {
-			super.localize();
-			this.setName( "Cancel" );
-		}
-		@Override
-		protected void perform( ActionOperationContext context ) {
-			//todo
-			context.cancel();
-			this.getDialog().setVisible( false );
-		}
-	}
 
 	private PreviousOperation prevOperation = new PreviousOperation();
 	private NextOperation nextOperation = new NextOperation();
-	private FinishOperation finishOperation = new FinishOperation();
-	private CancelOperation cancelOperation = new CancelOperation();
 	
 	private Label title = new Label( "Name/Description", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 	private CardPanel cardPanel = new CardPanel();
-	
-	private boolean isCommit;
 	
 	private class Card {
 		private WizardStep step;
@@ -352,7 +363,7 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 	}
 	
 	private ListSelectionState.ValueObserver< Card > selectionObserver = new ListSelectionState.ValueObserver< Card >() {
-		public void changed( edu.cmu.cs.dennisc.croquet.WizardDialogOperation.Card nextValue ) {
+		public void changed( WizardDialogOperation.Card nextValue ) {
 			WizardDialogOperation.this.handleCardChange( nextValue );
 		}
 	};
@@ -374,11 +385,11 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 		}
 	}
 	@Override
-	protected void handleCroquetAddedChild( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+	protected void handleCroquetAddedChild( HistoryNode child ) {
 		super.handleCroquetAddedChild( child );
 		this.handleCardChange( this.cardSelectionState.getSelectedItem() );
 	}
-	private void handleCardChange( edu.cmu.cs.dennisc.croquet.WizardDialogOperation.Card nextValue ) {
+	private void handleCardChange( WizardDialogOperation.Card nextValue ) {
 		if( nextValue != null ) {
 			this.cardPanel.show( nextValue.key );
 			this.title.setText( nextValue.step.getTitle() );
@@ -391,7 +402,7 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 		WizardStep step = nextValue.step;
 		String explanation = step.getExplanationIfProcedeButtonShouldBeDisabled();
 		this.nextOperation.setEnabled( explanation==null && index < this.cardSelectionState.getItemCount()-1 );
-		this.finishOperation.setEnabled( explanation==null && step.isFinishPotentiallyEnabled() );
+		this.getCompleteOperation().setEnabled( explanation==null && step.isFinishPotentiallyEnabled() );
 		
 		//todo
 		this.updateExplanation( null );
@@ -401,8 +412,7 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 		return parent.createWizardDialogOperationContext( this, e, viewController );
 	}
 
-	protected abstract WizardStep[] prologue( WizardDialogOperationContext context );
-	protected abstract void epilogue( WizardDialogOperationContext context, boolean isOk );
+	protected abstract WizardStep[] createSteps( WizardDialogOperationContext context );
 	
 	@Override
 	protected Component< ? > createControlsPanel( WizardDialogOperationContext context, Dialog dialog ) {
@@ -411,19 +421,15 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 		rv.addComponent( this.prevOperation.createButton() );
 		rv.addComponent( this.nextOperation.createButton() );
 		rv.addComponent( BoxUtilities.createHorizontalSliver( 8 ) );
-		rv.addComponent( this.finishOperation.createButton() );
+		rv.addComponent( this.getCompleteOperation().createButton() );
 		rv.addComponent( BoxUtilities.createHorizontalSliver( 8 ) );
-		rv.addComponent( this.cancelOperation.createButton() );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
-		
-		this.finishOperation.setDialog( dialog );
-		this.cancelOperation.setDialog( dialog );
-		
+		rv.addComponent( this.getCancelOperation().createButton() );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );		
 		return rv;
 	}
 	@Override
 	protected Component< ? > createMainPanel( WizardDialogOperationContext context, Dialog dialog, Label explanationLabel ) {
-		WizardStep[] steps = this.prologue( context );
+		WizardStep[] steps = this.createSteps( context );
 
 		java.util.ArrayList< Card > cards = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 		cards.ensureCapacity( steps.length );
@@ -469,7 +475,7 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 			private StringState name = new StringState( Application.INHERIT_GROUP, java.util.UUID.fromString( "63245276-7fba-4905-8ac1-34629ed258e5" ), "" );
 			private StringState description = new StringState( Application.INHERIT_GROUP, java.util.UUID.fromString( "18c58e94-7155-45c3-b158-82d299a0f5c9" ), "" );
 			@Override
-			protected java.awt.Dimension getDesiredDialogSize( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {
+			protected java.awt.Dimension getDesiredDialogSize( Dialog dialog ) {
 				return new java.awt.Dimension( 640, 480 );
 			}
 			@Override
@@ -478,7 +484,7 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 				this.setName( "Action Script" );
 			}
 			@Override
-			protected WizardStep[] prologue( WizardDialogOperationContext context ) {
+			protected WizardStep[] createSteps( WizardDialogOperationContext context ) {
 				class ReviewPanel extends PageAxisPanel implements WizardStep {
 					public ReviewPanel() {
 						this.addComponent( new Label( "please review your animation" ) );
@@ -486,7 +492,7 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 					public String getTitle() {
 						return "Review";
 					}
-					public edu.cmu.cs.dennisc.croquet.Component< ? > getComponent() {
+					public Component< ? > getComponent() {
 						return this;
 					}
 					public String getExplanationIfProcedeButtonShouldBeDisabled() {
@@ -501,12 +507,12 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 						return "Name/Description";
 					}
 					@Override
-					protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
+					protected java.util.List< Component< ? >[] > updateComponentRows( java.util.List< Component< ? >[] > rv ) {
 						rv.add( SpringUtilities.createLabeledRow( "name:", name.createTextField() ) );
 						rv.add( SpringUtilities.createTopLabeledRow( "description:", description.createTextArea() ) );
 						return rv;
 					}
-					public edu.cmu.cs.dennisc.croquet.Component< ? > getComponent() {
+					public Component< ? > getComponent() {
 						return this;
 					}
 					public String getExplanationIfProcedeButtonShouldBeDisabled() {
@@ -537,7 +543,7 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 					public String getTitle() {
 						return "Characters";
 					}
-					public edu.cmu.cs.dennisc.croquet.Component< ? > getComponent() {
+					public Component< ? > getComponent() {
 						return this;
 					}
 					public String getExplanationIfProcedeButtonShouldBeDisabled() {
@@ -554,8 +560,8 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 				};
 			}
 			@Override
-			protected void epilogue( WizardDialogOperationContext context, boolean isOk ) {
-				if( isOk ) {
+			protected void release( edu.cmu.cs.dennisc.croquet.WizardDialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog, boolean isCompleted ) {
+				if( isCompleted ) {
 					context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 						@Override
 						protected void doOrRedoInternal( boolean isDo ) {
