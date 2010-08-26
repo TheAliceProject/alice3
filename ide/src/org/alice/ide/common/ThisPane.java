@@ -55,7 +55,7 @@ public class ThisPane extends AccessiblePane {
 	};
 
 	public ThisPane() {
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( getIDE().getTextForThis() ) );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForThis() ) );
 		this.setEnabledBackgroundPaint( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class ) );
 	}
 	@Override
@@ -76,7 +76,7 @@ public class ThisPane extends AccessiblePane {
 			this.type = null;
 		}
 		if( this.type != null ) {
-			this.setToolTipText( "the current instance of " + this.type.getName() + " is referred to as " + getIDE().getTextForThis() );
+			this.setToolTipText( "the current instance of " + this.type.getName() + " is referred to as " + org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForThis() );
 		} else {
 			this.type = TYPE_FOR_NULL;
 			this.setToolTipText( null );
