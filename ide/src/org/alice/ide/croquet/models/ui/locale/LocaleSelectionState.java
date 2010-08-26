@@ -102,6 +102,11 @@ public class LocaleSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelecti
 				new java.util.Locale( "ko" )
 		);
 		org.alice.ide.IDE.getSingleton().registerAndInitializePreference( this );
+		this.addValueObserver( new ValueObserver< java.util.Locale >() {
+			public void changed( java.util.Locale nextValue ) {
+				org.alice.ide.croquet.models.information.RestartRequiredOperation.getInstance().fire();
+			}
+		} );
 	}
 	@Override
 	protected String getMenuText(java.util.Locale item) {
