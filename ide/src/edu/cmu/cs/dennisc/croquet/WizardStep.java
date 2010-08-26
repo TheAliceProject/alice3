@@ -48,4 +48,6 @@ package edu.cmu.cs.dennisc.croquet;
 public interface WizardStep {
 	public String getTitle();
 	public Component< ? > getComponent();
+	public String getExplanationIfProcedeButtonShouldBeDisabled();
+	public boolean isFinishPotentiallyEnabled();
 }

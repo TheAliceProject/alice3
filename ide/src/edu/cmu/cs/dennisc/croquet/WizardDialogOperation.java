@@ -117,7 +117,7 @@ abstract class DialogOperationWithControls<C extends AbstractDialogOperationCont
 		public void addingChild(HistoryNode child) {
 		}
 		public void addedChild(HistoryNode child) {
-			DialogOperationWithControls.this.updateExplanation( (C)child.findContextFor( DialogOperationWithControls.this ) );
+			DialogOperationWithControls.this.handleCroquetAddedChild( child );
 		}
 	};
 	
@@ -130,28 +130,21 @@ abstract class DialogOperationWithControls<C extends AbstractDialogOperationCont
 
 	protected abstract Component<?> createMainPanel( C context, Dialog dialog, Label explanationLabel );
 	protected abstract Component<?> createControlsPanel( C context, Dialog dialog );
+	
+	protected abstract String getExplanation();
 	protected void updateExplanation( C context ) {
-		this.explanationLabel.setText( "enter name and description." );
-//		if( context != null ) {
-//			String explanation = this.getExplanationIfNextButtonShouldBeDisabled( context );
-//			if( this.externalNextButtonDisabler != null ) {
-//				String externalExplanation = this.externalNextButtonDisabler.getExplanationIfNextButtonShouldBeDisabled( context );
-//				if( externalExplanation != null ) {
-//					explanation = externalExplanation;
-//				}
-//			}
-//			this.okOperation.setEnabled( explanation == null );
-//			if( explanation != null ) {
-//				this.explanationLabel.setText( explanation );
-//			} else {
-//				this.explanationLabel.setText( NULL_EXPLANATION );
-//			}
-//		} else {
-//			this.explanationLabel.setText( "todo: updateOkOperationAndExplanation context==null" );
-//			this.okOperation.setEnabled( true );
-//		}
+		String explanation = this.getExplanation();
+		if( explanation != null ) {
+			//pass
+		} else {
+			explanation = NULL_EXPLANATION;
+		}
+		this.explanationLabel.setText( explanation );
 	}
 	
+	protected void handleCroquetAddedChild(HistoryNode child) {
+		this.updateExplanation( (C)child.findContextFor( DialogOperationWithControls.this ) );
+	}
 	@Override
 	protected final Container<?> createContentPane(C context, Dialog dialog) {
 		Component< ? > mainPanel = this.createMainPanel( context, dialog, this.explanationLabel );
@@ -166,13 +159,18 @@ abstract class DialogOperationWithControls<C extends AbstractDialogOperationCont
 		gbc.weighty = 0.0;
 		rv.addComponent( new HorizontalSeparator(), gbc );
 		rv.addComponent( controlPanel, gbc );
+		
+		Application.getSingleton().getRootContext().addChildrenObserver( this.childrenObserver );
 		this.updateExplanation( context );
+		
 		return rv;
 	}
 	@Override
 	protected final void releaseContentPane(C context, Dialog dialog, Container<?> contentPane) {
 		if( contentPane != null ) {
 			Application.getSingleton().getRootContext().removeChildrenObserver( this.childrenObserver );
+			
+			//todo
 		} else {
 			context.cancel();
 		}
@@ -243,6 +241,7 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 		@Override
 		protected void perform( ActionOperationContext context ) {
 			//todo
+			isCommit = true;
 			context.finish();
 			this.getDialog().setVisible( false );
 		}
@@ -271,6 +270,8 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 	
 	private Label title = new Label( "Name/Description", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 	private CardPanel cardPanel = new CardPanel();
+	
+	private boolean isCommit;
 	
 	private class Card {
 		private WizardStep step;
@@ -338,8 +339,6 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 			list.setAlignmentX( 0.0f );
 			
 			Label label = new Label( "Steps", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-//			label.setAlignmentX( 0.0f );
-//			label.setHorizontalAlignment( HorizontalAlignment.LEADING );
 			this.addComponent( label );
 			this.addComponent( new HorizontalSeparator() );
 			this.addComponent( BoxUtilities.createVerticalSliver( 8 ) );
@@ -364,6 +363,21 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 		this(group, individualId, true);
 	}
 
+	@Override
+	protected String getExplanation() {
+		Card card = this.cardSelectionState.getSelectedItem();
+		if( card != null ) {
+			return card.step.getExplanationIfProcedeButtonShouldBeDisabled();
+		} else {
+			//todo?
+			return null;
+		}
+	}
+	@Override
+	protected void handleCroquetAddedChild( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+		super.handleCroquetAddedChild( child );
+		this.handleCardChange( this.cardSelectionState.getSelectedItem() );
+	}
 	private void handleCardChange( edu.cmu.cs.dennisc.croquet.WizardDialogOperation.Card nextValue ) {
 		if( nextValue != null ) {
 			this.cardPanel.show( nextValue.key );
@@ -374,7 +388,13 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 		}
 		int index = this.cardSelectionState.getSelectedIndex();
 		this.prevOperation.setEnabled( index > 0 );
-		this.nextOperation.setEnabled( index < this.cardSelectionState.getItemCount()-1 );
+		WizardStep step = nextValue.step;
+		String explanation = step.getExplanationIfProcedeButtonShouldBeDisabled();
+		this.nextOperation.setEnabled( explanation==null && index < this.cardSelectionState.getItemCount()-1 );
+		this.finishOperation.setEnabled( explanation==null && step.isFinishPotentiallyEnabled() );
+		
+		//todo
+		this.updateExplanation( null );
 	}
 	@Override
 	protected WizardDialogOperationContext createContext( ModelContext< ? > parent, java.util.EventObject e, ViewController< ?, ? > viewController ) {
@@ -453,7 +473,7 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 				return new java.awt.Dimension( 640, 480 );
 			}
 			@Override
-			void localize() {
+			/*package-private*/ void localize() {
 				super.localize();
 				this.setName( "Action Script" );
 			}
@@ -469,6 +489,12 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 					public edu.cmu.cs.dennisc.croquet.Component< ? > getComponent() {
 						return this;
 					}
+					public String getExplanationIfProcedeButtonShouldBeDisabled() {
+						return null;
+					}
+					public boolean isFinishPotentiallyEnabled() {
+						return false;
+					}
 				};
 				class NamePanel extends RowsSpringPanel implements WizardStep {
 					public String getTitle() {
@@ -483,6 +509,26 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 					public edu.cmu.cs.dennisc.croquet.Component< ? > getComponent() {
 						return this;
 					}
+					public String getExplanationIfProcedeButtonShouldBeDisabled() {
+						boolean isNameAcceptable = name.getValue().length() > 0;
+						boolean isDescriptionAcceptable = description.getValue().length() > 0;
+						if( isNameAcceptable ) {
+							if( isDescriptionAcceptable ) {
+								return null;
+							} else {
+								return "enter description";
+							}
+						} else {
+							if( isDescriptionAcceptable ) {
+								return "enter name";
+							} else {
+								return "enter name and description";
+							}
+						}
+					}
+					public boolean isFinishPotentiallyEnabled() {
+						return true;
+					}
 				};
 				class CharactersPanel extends BorderPanel implements WizardStep {
 					public CharactersPanel() {
@@ -494,6 +540,12 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 					public edu.cmu.cs.dennisc.croquet.Component< ? > getComponent() {
 						return this;
 					}
+					public String getExplanationIfProcedeButtonShouldBeDisabled() {
+						return null;
+					}
+					public boolean isFinishPotentiallyEnabled() {
+						return true;
+					}
 				};
 				return new WizardStep[] {
 					new ReviewPanel(),
@@ -503,8 +555,25 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 			}
 			@Override
 			protected void epilogue( WizardDialogOperationContext context, boolean isOk ) {
-				// TODO Auto-generated method stub
-				
+				if( isOk ) {
+					context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+						@Override
+						public void doOrRedo( boolean isDo ) {
+							edu.cmu.cs.dennisc.print.PrintUtilities.println( "do", name.getValue() );
+						}
+						@Override
+						public void undo() {
+							edu.cmu.cs.dennisc.print.PrintUtilities.println( "undo", name.getValue() );
+						}
+						@Override
+						protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+							rv.append( "todo" );
+							return rv;
+						}
+					} );
+				} else {
+					context.cancel();
+				}
 			}
 		};
 		wizardDialogOperation.fire();
