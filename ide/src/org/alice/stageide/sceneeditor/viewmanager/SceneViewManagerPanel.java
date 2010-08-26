@@ -44,6 +44,8 @@ package org.alice.stageide.sceneeditor.viewmanager;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
+
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.croquet.Button;
 import edu.cmu.cs.dennisc.croquet.GridBagPanel;
@@ -82,7 +84,9 @@ public class SceneViewManagerPanel extends GridBagPanel{
 		};
 		ScrollPane markerScrollPane = new ScrollPane(sceneEditor.getSceneMarkerFieldList().createMutableList( factory ), ScrollPane.VerticalScrollbarPolicy.AS_NEEDED, ScrollPane.HorizontalScrollbarPolicy.AS_NEEDED);
 		markerScrollPane.setBorder(null);
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "Camera Markers:", 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), new GridBagConstraints( 
+		
+		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( SceneViewManagerPanel.class.getPackage().getName() + ".cameraMarkers" );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( resourceBundle.getString( "cameraMarkersTitle" ), 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), new GridBagConstraints( 
 				0, //gridX
 				0, //gridY
 				1, //gridWidth

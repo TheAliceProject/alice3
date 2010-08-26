@@ -77,18 +77,19 @@ import org.alice.interact.InteractionGroup;
 import org.alice.interact.PickHint;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.SnapGrid;
-import org.alice.interact.SnapState;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryFileOperation;
+import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerFieldTile;
 import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerTracker;
 import org.alice.stageide.sceneeditor.viewmanager.CreateCameraMarkerActionOperation;
 import org.alice.stageide.sceneeditor.viewmanager.MoveActiveCameraToMarkerActionOperation;
 import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToActiveCameraActionOperation;
+import org.alice.stageide.sceneeditor.viewmanager.SceneViewManagerPanel;
 import org.apache.axis.utils.ArrayUtil;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
@@ -1428,31 +1429,43 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return this.scene;
 	}
 	
-	private static final String DEFAULT_CAMERA_MARKER_NAME = "cameraMarker";
-
-	private static final org.alice.apis.moveandturn.Color[] COLORS = { 
-		org.alice.apis.moveandturn.Color.RED,
-		org.alice.apis.moveandturn.Color.GREEN,
-//		org.alice.apis.moveandturn.Color.BLUE,
-		org.alice.apis.moveandturn.Color.MAGENTA,
-		org.alice.apis.moveandturn.Color.YELLOW,
-//		org.alice.apis.moveandturn.Color.CYAN,
-		org.alice.apis.moveandturn.Color.ORANGE,
-		org.alice.apis.moveandturn.Color.PINK,
-		org.alice.apis.moveandturn.Color.PURPLE
-	};
+	private static final String DEFAULT_CAMERA_MARKER_NAME;
+	private static final String[] COLOR_NAMES;
+	private static final org.alice.apis.moveandturn.Color[] COLORS;
 	
-	private static final String[] COLOR_NAMES = { 
-		"Red",
-		"Green",
-//		"Blue",
-		"Magenta",
-		"Yellow",
-//		"Cyan",
-		"Orange",
-		"Pink",
-		"Purple"
-	};
+	static
+	{
+		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( SceneViewManagerPanel.class.getPackage().getName() + ".cameraMarkers" );
+		DEFAULT_CAMERA_MARKER_NAME = resourceBundle.getString("defaultMarkerName");
+		
+		String[] colorNames = {
+				resourceBundle.getString("red"),
+				resourceBundle.getString("green"),
+//				resourceBundle.getString("blue"),
+				resourceBundle.getString("magenta"),
+				resourceBundle.getString("yellow"),
+//				resourceBundle.getString("cyan"),
+				resourceBundle.getString("orange"),
+				resourceBundle.getString("pink"),
+				resourceBundle.getString("purple"),
+		};
+		COLOR_NAMES = colorNames;
+		
+		org.alice.apis.moveandturn.Color[] colors = { 
+				org.alice.apis.moveandturn.Color.RED,
+				org.alice.apis.moveandturn.Color.GREEN,
+//				org.alice.apis.moveandturn.Color.BLUE,
+				org.alice.apis.moveandturn.Color.MAGENTA,
+				org.alice.apis.moveandturn.Color.YELLOW,
+//				org.alice.apis.moveandturn.Color.CYAN,
+				org.alice.apis.moveandturn.Color.ORANGE,
+				org.alice.apis.moveandturn.Color.PINK,
+				org.alice.apis.moveandturn.Color.PURPLE
+			};
+		COLORS = colors;
+	}
+	
+	
 	
 	private static int getColorIndexForName(String name)
 	{
@@ -1659,7 +1672,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.frontOrthoMarker.setPicturePlane(picturePlane);
 		orthographicCameraMarkers.add(this.frontOrthoMarker);
 		
-		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( MoveAndTurnSceneEditor.class.getPackage().getName() + ".view" );
+		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( MoveAndTurnSceneEditor.class.getPackage().getName() + ".cameraViews" );
 		this.openingSceneMarker.setName( resourceBundle.getString( "sceneCameraView" ) );
 		this.sceneViewMarker.setName( resourceBundle.getString( "layoutPerspectiveView" ) );
 		this.topOrthoMarker.setName( resourceBundle.getString( "topOrthographicView" ) );

@@ -41,9 +41,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.interact;
+package org.alice.stageide.sceneeditor.snap;
 
-import org.alice.ide.ProjectApplication;
 
 import edu.cmu.cs.dennisc.croquet.BooleanState;
 import edu.cmu.cs.dennisc.math.AngleInDegrees;
@@ -53,15 +52,7 @@ import edu.cmu.cs.dennisc.math.Angle;
 public class SnapState 
 {
 	public static Integer[] ANGLE_SNAP_OPTIONS = {new Integer(15), new Integer(30), new Integer(45), new Integer(60), new Integer(90), new Integer(120), new Integer(180)};
-	
-	
-	
-	private BooleanState isSnapEnabled = new BooleanState( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "c4db1a3d-9d27-4c21-971d-78059b37abed" ), false, "Use snap" );
-	private BooleanState isSnapToGroundEnabled = new BooleanState( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "46b05c1f-b980-45c2-a587-4000400f7add" ), true, "Snap to ground" );
-	private BooleanState isSnapToGridEnabled = new BooleanState( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "60d5a5be-e1ec-4932-be62-f90e9bad22c7" ), true, "Snap to grid" );
-	private BooleanState isRotationSnapEnabled = new BooleanState( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "6933d462-d5c5-4ff6-9918-240511d2c731" ), true, "Snap rotation" );
 	private double gridSpacing = .5d;
-	private BooleanState showSnapGrid = new BooleanState( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "6537de4c-f4e9-475d-86ae-5d1ca873923e" ), true, "Show snap grid" );
 	private Angle rotationSnapAngle = new AngleInDegrees(45); //In degrees
 	
 	
@@ -83,57 +74,57 @@ public class SnapState
 	
 	public BooleanState getIsSnapEnabledState()
 	{
-		return this.isSnapEnabled;
+		return IsSnapEnabledState.getInstance();
 	}
 	
 	public BooleanState getIsSnapToGroundEnabledState()
 	{
-		return this.isSnapToGroundEnabled;
+		return IsSnapToGroundEnabledState.getInstance();
 	}
 	
 	public BooleanState getIsSnapToGridEnabledState()
 	{
-		return this.isSnapToGridEnabled;
+		return IsSnapToGridEnabledState.getInstance();
 	}
 	
 	public BooleanState getIsRotationSnapEnabledState()
 	{
-		return this.isRotationSnapEnabled;
+		return IsRotationSnapEnabledState.getInstance();
 	}
 	
 	public BooleanState getShowSnapGridState()
 	{
-		return this.showSnapGrid;
+		return ShowSnapGridState.getInstance();
 	}
 	
 	public void setShouldSnapToGroundEnabled(boolean shouldSnapToGround)
 	{
-		this.isSnapToGroundEnabled.setValue(shouldSnapToGround);
+		this.getIsSnapToGroundEnabledState().setValue(shouldSnapToGround);
 	}
 	
 	public boolean shouldSnapToGround()
 	{
-		return this.isSnapEnabled.getValue() && this.isSnapToGroundEnabled.getValue();
+		return this.getIsSnapEnabledState().getValue() && this.getIsSnapToGroundEnabledState().getValue();
 	}
 	
 	public boolean isSnapToGroundEnabled()
 	{
-		return this.isSnapToGroundEnabled.getValue();
+		return this.getIsSnapToGroundEnabledState().getValue();
 	}
 	
 	public void setShouldSnapToGridEnabled(boolean shouldSnapToGround)
 	{
-		this.isSnapToGridEnabled.setValue(shouldSnapToGround);
+		this.getIsSnapToGridEnabledState().setValue(shouldSnapToGround);
 	}
 	
 	public boolean shouldSnapToGrid()
 	{
-		return this.isSnapEnabled.getValue() && this.isSnapToGridEnabled.getValue();
+		return this.getIsSnapEnabledState().getValue() && this.getIsSnapToGridEnabledState().getValue();
 	}
 	
 	public boolean isSnapToGridEnabled()
 	{
-		return this.isSnapToGridEnabled.getValue();
+		return this.getIsSnapToGridEnabledState().getValue();
 	}
 	
 	public void setGridSpacing(double gridSpacing)
@@ -148,27 +139,27 @@ public class SnapState
 	
 	public void setSnapEnabled(boolean snapEnabled)
 	{
-		this.isSnapEnabled.setValue(snapEnabled);
+		this.getIsSnapEnabledState().setValue(snapEnabled);
 	}
 	
 	public boolean isSnapEnabled()
 	{
-		return this.isSnapEnabled.getValue();
+		return this.getIsSnapEnabledState().getValue();
 	}
 	
 	public void setRotationSnapEnabled(boolean rotationSnapEnabled)
 	{
-		this.isRotationSnapEnabled.setValue(rotationSnapEnabled);
+		this.getIsRotationSnapEnabledState().setValue(rotationSnapEnabled);
 	}
 	
 	public boolean shouldSnapToRotation()
 	{
-		return this.isSnapEnabled.getValue() && this.isRotationSnapEnabled.getValue();
+		return this.getIsSnapEnabledState().getValue() && this.getIsRotationSnapEnabledState().getValue();
 	}
 	
 	public boolean isRotationSnapEnabled()
 	{
-		return this.isRotationSnapEnabled.getValue();
+		return this.getIsRotationSnapEnabledState().getValue();
 	}
 	
 	public void setRotationSnapAngleInDegrees(double degrees)
@@ -188,17 +179,17 @@ public class SnapState
 	
 	public boolean shouldShowSnapGrid()
 	{
-		return this.isSnapEnabled.getValue() && this.showSnapGrid.getValue();
+		return this.getIsSnapEnabledState().getValue() && this.getShowSnapGridState().getValue();
 	}
 	
 	public boolean isShowSnapGridEnabled()
 	{
-		return this.showSnapGrid.getValue();
+		return this.getShowSnapGridState().getValue();
 	}
 	
 	public void setShowSnapGrid( boolean showSnapGrid )
 	{
-		this.showSnapGrid.setValue(showSnapGrid);
+		this.getShowSnapGridState().setValue(showSnapGrid);
 	}
 	
 }
