@@ -42,11 +42,8 @@
  */
 package org.alice.interact.handle;
 
-import org.alice.apis.moveandturn.AsSeenBy;
 import org.alice.apis.moveandturn.TraditionalStyle;
 import org.alice.interact.AbstractDragAdapter;
-import org.alice.interact.ColorTargetBasedAnimation;
-import org.alice.interact.DoubleTargetBasedAnimation;
 import org.alice.interact.GlobalDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
@@ -56,10 +53,8 @@ import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;
 import org.alice.interact.manipulator.AbstractManipulator;
-import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerTracker;
 
 import edu.cmu.cs.dennisc.animation.Animator;
-import edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation;
 import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.color.animation.Color4fAnimation;
@@ -103,12 +98,8 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	protected HandleManager handleManager = null;
 	protected HandleSet handleSet = new HandleSet();
 	
-	protected DoubleAnimation opacityAnimation;
-	protected double opacityAnimationTarget;
-	protected boolean doOpacityEpilogue = true;
-	protected Color4fAnimation colorAnimation;
-	protected Color4f colorAnimationTarget;
-	protected boolean doColorEpilogue = true;
+	protected DoubleInterruptibleAnimation opacityAnimation;
+	protected Color4fInterruptibleAnimation colorAnimation;
 	
 	protected AbstractManipulator manipulation = null;
 	protected AbstractDragAdapter dragAdapter = null;
@@ -132,6 +123,100 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 			return !isHandle( c );
 		}
 	};
+	
+	protected abstract class Color4fInterruptibleAnimation extends Color4fAnimation
+	{
+		private boolean doEpilogue = true;
+		private boolean isActive = true;
+		private Color4f target;
+		
+		public Color4fInterruptibleAnimation(Number duration, edu.cmu.cs.dennisc.animation.Style style, Color4f d0, Color4f d1)
+		{
+			super(duration, style, d0, d1);
+			this.isActive = true;
+			this.target = d1;
+		}
+		
+		@Override
+		protected void epilogue() 
+		{
+			if (this.doEpilogue)
+			{
+				super.epilogue();
+			}
+			this.isActive = false;
+			this.target = null;
+		}
+		
+		public boolean isActive()
+		{
+			return this.isActive;
+		}
+		
+		public Color4f getTarget()
+		{
+			return this.target;
+		}
+		
+		public boolean matchesTarget(Color4f target)
+		{
+			return (this.target != null && this.target.equals(target));
+		}
+		
+		public void cancel()
+		{
+			this.doEpilogue = false;
+			this.complete(null);
+			this.doEpilogue = true;
+		}
+	}
+	
+	protected abstract class DoubleInterruptibleAnimation extends DoubleAnimation
+	{
+		private boolean doEpilogue = true;
+		private boolean isActive = true;
+		private double target;
+		
+		public DoubleInterruptibleAnimation(Number duration, edu.cmu.cs.dennisc.animation.Style style, Double d0, Double d1)
+		{
+			super(duration, style, d0, d1);
+			this.isActive = true;
+			this.target = d1;
+		}
+		
+		@Override
+		protected void epilogue() 
+		{
+			if (this.doEpilogue)
+			{
+				super.epilogue();
+			}
+			this.isActive = false;
+			this.target = -1;
+		}
+		
+		public boolean isActive()
+		{
+			return this.isActive;
+		}
+		
+		public double getTarget()
+		{
+			return this.target;
+		}
+		
+		public boolean matchesTarget(double target)
+		{
+			return this.target == target;
+		}
+		
+		public void cancel()
+		{
+			this.doEpilogue = false;
+			this.complete(null);
+			this.doEpilogue = true;
+		}
+	}
 	
 	protected class ScaleChangeListener implements PropertyListener
 	{
@@ -303,10 +388,6 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		this.updateCameraRelativeOpacity();
 	}
 	
-	protected void createAnimations()
-	{
-	}
-	
 	public void addToSet( HandleSet set )
 	{
 		this.handleSet.addSet( set );
@@ -346,7 +427,6 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	{
 		assert animator != null;
 		this.animator = animator;
-		this.createAnimations();
 	}
 	
 	public Visual getSGVisual() {
@@ -382,53 +462,28 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	protected void animateToOpacity(double targetOpacity)
 	{
 		double currentOpacity = this.sgFrontFacingAppearance.opacity.getValue();
+		//Check to see if the animation is going to get us to the desired value
+		if (this.opacityAnimation != null && this.opacityAnimation.isActive() && this.opacityAnimation.matchesTarget(targetOpacity))
+		{
+			return;
+		}
+		//The animation is not going to get us to the desired value, so see if we're already there
 		if (currentOpacity == targetOpacity)
 		{
-			if (this.opacityAnimationTarget != -1)
-			{
-				if (this.opacityAnimationTarget == targetOpacity)
-				{
-					return;
-				}
-			}
-			else
-			{
-				return;
-			}
+			return;
 		}
-		if (this.opacityAnimation != null)
+		//Stop any existing animation
+		if (this.opacityAnimation != null && this.opacityAnimation.isActive())
 		{
-			if (this.opacityAnimationTarget == targetOpacity)
-			{
-//				PrintUtilities.println(this.getClass().getSimpleName()+":"+this.hashCode()+" skipping making an animation because the target ("+targetOpacity+") is already accounted for: "+this.opacityAnimationTarget);
-				return;
-			}
-			else
-			{
-				this.doOpacityEpilogue = false;
-				this.opacityAnimation.complete(null);
-				this.doOpacityEpilogue = true;
-				this.opacityAnimationTarget = -1;
-			}
+			this.opacityAnimation.cancel();
 		}
-		this.opacityAnimationTarget = targetOpacity;
-//		PrintUtilities.println(this.getClass().getSimpleName()+":"+this.hashCode()+" animating opacity from "+currentOpacity+" to "+targetOpacity);
-		this.opacityAnimation = new DoubleAnimation(ANIMATION_DURATION, TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentOpacity, targetOpacity)
+		//Make a new animation and launch it
+		this.opacityAnimation = new DoubleInterruptibleAnimation(ANIMATION_DURATION, TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentOpacity, targetOpacity)
 		{
-			private String name = "OpacityAnimation";
 			@Override
 			protected void updateValue(Double v) 
 			{
 				ManipulationHandle3D.this.sgFrontFacingAppearance.opacity.setValue(v.floatValue());
-			}
-			
-			@Override
-			protected void epilogue() {
-				if (ManipulationHandle3D.this.doOpacityEpilogue)
-				{
-					super.epilogue();
-				}
-				ManipulationHandle3D.this.opacityAnimationTarget = -1;
 			}
 		};
 		this.animator.invokeLater(this.opacityAnimation, null);
@@ -437,52 +492,29 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	protected void animateToColor(Color4f targetColor)
 	{
 		Color4f currentColor = this.sgFrontFacingAppearance.diffuseColor.getValue();
+		//Check to see if the animation is going to get us to the desired value
+		if (this.colorAnimation != null && this.colorAnimation.isActive() && this.colorAnimation.matchesTarget(targetColor))
+		{
+			return;
+		}
+		//The animation is not going to get us to the desired value, so see if we're already there
 		if (currentColor.equals(targetColor))
 		{
-			if (this.colorAnimationTarget != null)
-			{
-				if (this.colorAnimationTarget.equals(targetColor))
-				{
-					return;
-				}
-			}
-			else
-			{
-				return;
-			}
+			return;
 		}
-		if (this.colorAnimation != null)
+		//Stop any existing animation
+		if (this.colorAnimation != null && this.colorAnimation.isActive())
 		{
-			if (this.colorAnimationTarget != null && this.colorAnimationTarget.equals(targetColor))
-			{
-				return;
-			}
-			else
-			{
-				this.doColorEpilogue = false;
-				this.colorAnimation.complete(null);
-				this.doColorEpilogue = true;
-				this.colorAnimationTarget = null;
-			}
+			this.colorAnimation.cancel();
 		}
-		this.colorAnimationTarget = targetColor;
-		this.colorAnimation = new Color4fAnimation(ANIMATION_DURATION, TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentColor, targetColor) 
+		//Make a new animation and launch it
+		this.colorAnimation = new Color4fInterruptibleAnimation(ANIMATION_DURATION, TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentColor, targetColor) 
 		{
-			private String name = "ColorAnimation";
 			@Override
 			protected void updateValue(Color4f v) 
 			{
 				ManipulationHandle3D.this.sgFrontFacingAppearance.diffuseColor.setValue(v);
 				
-			}
-			
-			@Override
-			protected void epilogue() {
-				if (ManipulationHandle3D.this.doColorEpilogue)
-				{
-					super.epilogue();
-				}
-				ManipulationHandle3D.this.colorAnimationTarget = null;
 			}
 		};
 		this.animator.invokeLater(this.colorAnimation, null);

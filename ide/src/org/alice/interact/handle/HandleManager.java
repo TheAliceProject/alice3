@@ -138,7 +138,7 @@ public class HandleManager implements ManipulationListener{
 	public void pushNewHandleSet( HandleSet handleSet )
 	{
 		this.handleSetStack.push( handleSet );
-		System.out.println("Pushed "+handleSet+":"+handleSet.hashCode()+", and size is now "+this.handleSetStack.size());
+//		System.out.println("Pushed "+handleSet+":"+handleSet.hashCode()+", and size is now "+this.handleSetStack.size());
 		this.updateHandlesBasedOnHandleSet();
 	}
 	

@@ -103,9 +103,7 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	
 	protected HandlePosition handlePosition = HandlePosition.ORIGIN;
 	
-	protected DoubleAnimation radiusAnimation;
-	protected double radiusAnimationTarget;
-	protected boolean doRadiusEpilogue = true;
+	protected DoubleInterruptibleAnimation radiusAnimation;
 	
 	public RotationRingHandle( )
 	{
@@ -240,17 +238,6 @@ public class RotationRingHandle extends ManipulationHandle3D{
 		this.sphereTransformable.setTranslationOnly( Point3.createMultiplication( this.sphereDirection, this.sgTorus.majorRadius.getValue() ), this );
 	}
 	
-	@Override
-	protected void createAnimations()
-	{
-		super.createAnimations();
-		double currentRadius = this.sgTorus.majorRadius.getValue();
-		if (Double.isNaN( currentRadius ))
-		{
-			currentRadius = 0.0d;
-		}
-	}
-	
 	protected void animateHandleToRadius(double desiredRadius)
 	{
 		if (this.animator == null || this.getParentTransformable() == null)
@@ -259,45 +246,25 @@ public class RotationRingHandle extends ManipulationHandle3D{
 			return;
 		}
 //		PrintUtilities.println("\n"+this.hashCode()+":"+this+" "+(this.isHandleVisible()? "VISIBLE" : "INVISIBLE")+" Animating to "+desiredRadius+" around "+this.manipulatedObject);
-		
 		double currentRadius = this.getSize();
-		
+		//Check to see if the animation is going to get us to the desired value
+		if (this.radiusAnimation != null && this.radiusAnimation.isActive() && this.radiusAnimation.matchesTarget(desiredRadius))
+		{
+			return;
+		}
+		//The animation is not going to get us to the desired value, so see if we're already there
 		if (currentRadius == desiredRadius)
 		{
-			if (this.radiusAnimationTarget != -1)
-			{
-				if (this.radiusAnimationTarget == desiredRadius)
-				{
-					return;
-				}
-			}
-			else
-			{
-				return;
-			}
+			return;
 		}
-		if (this.radiusAnimation != null)
+		//Stop any existing animation
+		if (this.radiusAnimation != null && this.radiusAnimation.isActive())
 		{
-			if (this.radiusAnimationTarget == desiredRadius)
-			{
-//				PrintUtilities.println("  returning because we already have an animation going to that value");
-				return;
-			}
-			else
-			{
-//				PrintUtilities.println("  Stopping previous animation which was targeting "+this.radiusAnimationTarget+", current size is: "+currentRadius);
-				this.doRadiusEpilogue = false;
-				this.radiusAnimation.complete(null);
-				this.doRadiusEpilogue = true;
-				this.radiusAnimationTarget = -1;
-			}
+			this.radiusAnimation.cancel();
 		}
-		
-//		PrintUtilities.println("  Making radius animation from "+currentRadius+" to "+desiredRadius);
-		this.radiusAnimationTarget = desiredRadius;
-		this.radiusAnimation = new DoubleAnimation(ANIMATION_DURATION, TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentRadius, desiredRadius)
+		//Make a new animation and launch it
+		this.radiusAnimation = new DoubleInterruptibleAnimation(ANIMATION_DURATION, TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentRadius, desiredRadius)
 		{
-			private String name = "RadiusAnimation";
 			@Override
 			protected void updateValue(Double v) 
 			{
@@ -313,15 +280,6 @@ public class RotationRingHandle extends ManipulationHandle3D{
 					}
 					RotationRingHandle.this.setSize(v);
 				}
-			}
-			
-			@Override
-			protected void epilogue() {
-				if (RotationRingHandle.this.doRadiusEpilogue)
-				{
-					super.epilogue();
-				}
-				RotationRingHandle.this.radiusAnimationTarget = -1;
 			}
 		};
 		this.animator.invokeLater(this.radiusAnimation, null);

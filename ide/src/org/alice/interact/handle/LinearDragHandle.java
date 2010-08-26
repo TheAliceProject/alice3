@@ -80,9 +80,7 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	protected Transformable standUpReference = new Transformable();
 	protected Transformable snapReference = new Transformable();
 	
-	protected DoubleAnimation lengthAnimation;
-	protected double lengthAnimationTarget;
-	protected boolean doLengthEpilogue;
+	protected DoubleInterruptibleAnimation lengthAnimation;
 	
 	public LinearDragHandle( )
 	{
@@ -123,12 +121,6 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	}
 	
 	protected abstract void createShape();
-	
-	@Override
-	protected void createAnimations()
-	{
-		super.createAnimations();
-	}
 	
 	protected void setSize(double size)
 	{
@@ -198,60 +190,28 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 		}
 //		PrintUtilities.println("\n"+this.hashCode()+":"+this+" "+(this.isHandleVisible()? "VISIBLE" : "INVISIBLE")+" Animating to "+desiredLength+" around "+this.manipulatedObject);
 		double currentLength = this.getSize();
-		if (currentLength == desiredLength)
+		//Check to see if the animation is going to get us to the desired value
+		if (this.lengthAnimation != null && this.lengthAnimation.isActive() && this.lengthAnimation.matchesTarget(desiredLength))
 		{
-			if (this.lengthAnimationTarget != -1)
-			{
-				if (this.lengthAnimationTarget == desiredLength)
-				{
-					return;
-				}
-			}
-			else
-			{
-				return;
-			}
-		}
-		
-		if (currentLength == desiredLength)
-		{
-//			PrintUtilities.println("  Not making a length animation from "+currentLength+" to "+desiredLength+" because they're the same.");
 			return;
 		}
-		if (this.lengthAnimation != null)
+		//The animation is not going to get us to the desired value, so see if we're already there
+		if (currentLength == desiredLength)
 		{
-			if (this.lengthAnimationTarget == desiredLength)
-			{
-//				PrintUtilities.println("  returning because we already have an animation going to that value");
-				return;
-			}
-			else
-			{
-//				PrintUtilities.println("  Stopping previous animation which was targeting "+this.lengthAnimationTarget+", current size is: "+currentLength);
-				this.doLengthEpilogue = false;
-				this.lengthAnimation.complete(null);
-				this.doLengthEpilogue = true;
-				this.lengthAnimationTarget = -1;
-			}
+			return;
 		}
-		this.lengthAnimationTarget = desiredLength;
-//		PrintUtilities.println("  Making length animation from "+currentLength+" to "+desiredLength);
-		this.lengthAnimation = new DoubleAnimation(ANIMATION_DURATION, TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentLength, desiredLength)
+		//Stop any existing animation
+		if (this.lengthAnimation != null && this.lengthAnimation.isActive())
 		{
-			private String name = "LengthAnimation";
+			this.lengthAnimation.cancel();
+		}
+		//Make a new animation and launch it
+		this.lengthAnimation = new DoubleInterruptibleAnimation(ANIMATION_DURATION, TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentLength, desiredLength)
+		{
 			@Override
 			protected void updateValue(Double v) 
 			{
 				LinearDragHandle.this.setSize(v);
-			}
-			
-			@Override
-			protected void epilogue() {
-				if (LinearDragHandle.this.doLengthEpilogue)
-				{
-					super.epilogue();
-				}
-				LinearDragHandle.this.lengthAnimationTarget = -1;
 			}
 		};
 		this.animator.invokeLater(this.lengthAnimation, null);
