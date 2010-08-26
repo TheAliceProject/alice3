@@ -40,14 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.information;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface WizardStep {
-	public String getTitle();
-	public Component< ? > getComponent();
-	public String getExplanationIfProcedeButtonShouldBeDisabled();
-	public boolean isFinishPotentiallyEnabled();
+public class RestartRequiredOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	private static class SingletonHolder {
+		private static RestartRequiredOperation instance = new RestartRequiredOperation();
+	}
+	public static RestartRequiredOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private RestartRequiredOperation() {
+		super( java.util.UUID.fromString( "b3a861cb-1253-429c-b233-66209c1f4f65" ) );
+	}
+
+	@Override
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "Exiting and restarting Alice is required.", "Restart Is Required", edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION, new javax.swing.ImageIcon( RestartRequiredOperation.class.getResource( "images/restartRequired.png" ) ) );
+	}
 }
