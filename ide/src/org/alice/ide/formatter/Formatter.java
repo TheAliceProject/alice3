@@ -59,10 +59,14 @@ public abstract class Formatter {
 	
 	
 	protected abstract String getTextForMethodReflectionProxy( edu.cmu.cs.dennisc.alice.ast.MethodReflectionProxy methodReflectionProxy );
+	protected abstract String getTextForParameterDeclaredInJava( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJava parameterInJava );
 	public String getNameForDeclaration( edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration declaration ) {
 		if (declaration instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava) {
 			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava methodInJava = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava) declaration;
 			return this.getTextForMethodReflectionProxy( methodInJava.getMethodReflectionProxy() );
+		} else if( declaration instanceof edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJava ) {
+			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJava parameterInJava = (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJava)declaration;
+			return this.getTextForParameterDeclaredInJava( parameterInJava );
 		} else {
 			return declaration.getName();
 		}

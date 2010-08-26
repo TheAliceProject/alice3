@@ -52,6 +52,8 @@ import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;
 
 import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
@@ -86,8 +88,22 @@ public class ManipulationHandleIndirection  implements ManipulationListener, Man
 		return newHandle;
 	}
 	
-	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
+	public void setDragAdapter( AbstractDragAdapter dragAdapter )
+	{
 		this.dragAdapter = dragAdapter;	
+		if (this.currentHandle != null)
+		{
+			this.currentHandle.setDragAdapter(dragAdapter);
+		}
+		if (this.nextHandle != null)
+		{
+			this.nextHandle.setDragAdapter(dragAdapter);
+		}
+	}
+	
+	public void setDragAdapterAndAddHandle( AbstractDragAdapter dragAdapter ) 
+	{
+		this.setDragAdapter(dragAdapter);
 		if (this.dragAdapter != null)
 		{
 			this.dragAdapter.addHandle( this );
@@ -98,10 +114,15 @@ public class ManipulationHandleIndirection  implements ManipulationListener, Man
 	{
 		if (this.currentHandle.getManipulatedObject() != manipulatedObject)
 		{
+//			if (this.isHandleVisible())
+//				PrintUtilities.println("setting manipulated object to "+manipulatedObject+" on "+this);
+//			PrintUtilities.println("Current selected = "+this.currentHandle.getManipulatedObject());
+//			PrintUtilities.println("Next selected = "+this.nextHandle.getManipulatedObject());
 			HandleState currentHandleState = this.currentHandle.getHandleStateCopy();
 			this.currentHandle.setHandleVisible( false );
 			this.currentHandle.setHandleActive( false );
 			this.currentHandle.setHandleRollover( false );
+			this.currentHandle.setSelectedObject(null);
 			this.nextHandle.setSelectedObject( manipulatedObject );
 			
 			//If the handle was previously part of the active group (i.e. the state was not GROUP_NOT_VISIBLE)
@@ -112,6 +133,10 @@ public class ManipulationHandleIndirection  implements ManipulationListener, Man
 			this.currentHandle = this.nextHandle;
 			this.nextHandle = tempHandle;
 		}
+//		else
+//		{
+//			PrintUtilities.println("Not setting manipulated object because "+this.currentHandle.getManipulatedObject()+" == "+manipulatedObject);
+//		}
 	}
 	
 	public ManipulationHandle getCurrentHandle()
@@ -236,9 +261,14 @@ public class ManipulationHandleIndirection  implements ManipulationListener, Man
 		this.currentHandle.setHandleRollover( rollover );
 	}
 
-	public void setHandleVisible( boolean visible ) {
+	public boolean isHandleVisible()
+	{
+		return this.currentHandle.isHandleVisible();
+	}
+	
+	public void setHandleVisible( boolean visible ) 
+	{
 		this.currentHandle.setHandleVisible( visible );
-		
 	}
 	
 	public void setHandleShowing(boolean showing)
@@ -249,7 +279,41 @@ public class ManipulationHandleIndirection  implements ManipulationListener, Man
 	public PickHint getPickHint() {
 		return this.currentHandle.getPickHint();
 	}
+	
+	public void setCameraPosition(Point3 cameraPosition) 
+	{
+		if (this.currentHandle != null)
+		{
+			this.currentHandle.setCameraPosition(cameraPosition);
+		}
+		if (this.nextHandle != null)
+		{
+			this.nextHandle.setCameraPosition(cameraPosition);
+		}
+	}
 
+	@Override
+	public String toString() 
+	{
+		String returnString = "";
+		if (this.currentHandle != null)
+		{
+			returnString = "Current: "+this.currentHandle.getClass().getSimpleName()+":"+this.currentHandle.hashCode()+"; ";
+		}
+		else
+		{
+			returnString = "Current: null; ";
+		}
+		if (this.nextHandle != null)
+		{
+			returnString += "Next: "+this.nextHandle.getClass().getSimpleName()+":"+this.nextHandle.hashCode();
+		}
+		else
+		{
+			returnString += "Next: null";
+		}
+		return returnString;
+	}
 	
 	
 }

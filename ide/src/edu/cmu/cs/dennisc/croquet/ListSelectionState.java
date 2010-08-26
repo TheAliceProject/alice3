@@ -339,6 +339,14 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 	/*package-private*/ void localize() {
 	}
 	
+	/*package-private*/ ComboBoxModel getComboBoxModel() {
+		return this.comboBoxModel;
+	}
+	
+	/*package-private*/ SingleListSelectionModel getListSelectionModel() {
+		return this.listSelectionModel;
+	}
+	
 	public void addListDataListener( javax.swing.event.ListDataListener listener ) {
 		this.comboBoxModel.addListDataListener( listener );
 	}
@@ -357,9 +365,14 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 	public E getSelectedItem() {
 		return (E) this.comboBoxModel.getSelectedItem();
 	}
-
 	public void setSelectedItem(E selectedItem) {
 		this.comboBoxModel.setSelectedItem(selectedItem);
+	}
+	public int getSelectedIndex() {
+		return this.listSelectionModel.getMinSelectionIndex();
+	}
+	public void setSelectedIndex( int nextIndex ) {
+		this.listSelectionModel.setSelectedIndex( nextIndex, true );;
 	}
 
 	public java.util.Iterator< E > iterator() {
@@ -456,29 +469,9 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 		rv.setSwingComboBoxModel(this.comboBoxModel);
 		return rv;
 	}
-
+	
 	public List<E> createList() {
-		List<E> rv = new List<E>( this ) {
-			// private ListSelectionListener listSelectionListener = new
-			// ListSelectionListener( this );
-			@Override
-			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				super.handleAddedTo(parent);
-				ListSelectionState.this.addComponent(this);
-				// this.addListSelectionListener( this.listSelectionListener );
-			};
-
-			@Override
-			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				// this.removeListSelectionListener( this.listSelectionListener
-				// );
-				ListSelectionState.this.removeComponent(this);
-				super.handleRemovedFrom(parent);
-			}
-		};
-		rv.setSwingListModel(this.comboBoxModel);
-		rv.setSelectionModel(this.listSelectionModel);
-		return rv;
+		return new List< E >( this );
 	}
 
 	/*package-private*/ <R extends ItemSelectablePanel<E, ?>> R register(final R rv) {

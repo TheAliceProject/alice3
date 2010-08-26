@@ -492,6 +492,14 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
 		assert IDE.singleton == null;
 		IDE.singleton = this;
+
+		//initialize locale
+		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<java.util.Locale> () {
+			public void changed(java.util.Locale nextValue) {
+				edu.cmu.cs.dennisc.croquet.Application.getSingleton().setLocale( nextValue );
+			}
+		} );
+
 		this.promptForLicenseAgreements();
 
 		//org.alice.ide.preferences.GeneralPreferences.getSingleton().desiredRecentProjectCount.setAndCommitValue( 10 );
@@ -545,12 +553,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.editorsTabSelectionState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
 			public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextValue ) {
 				refreshAccessibles();
-			}
-		} );
-		
-		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<java.util.Locale> () {
-			public void changed(java.util.Locale nextValue) {
-				edu.cmu.cs.dennisc.croquet.Application.getSingleton().setLocale( nextValue );
 			}
 		} );
 	}
@@ -1113,7 +1115,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			return null;
 		}
 	}
-
 
 	public edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine createVirtualMachineForRuntimeProgram() {
 		return new edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine();

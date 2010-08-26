@@ -270,8 +270,8 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		this.addChild(rv);
 		return rv;
 	}
-	/*package-private*/InputDialogOperationContext createInputDialogOperationContext(InputDialogOperation inputDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		InputDialogOperationContext rv = new InputDialogOperationContext(this, inputDialogOperation, e, viewController);
+	/*package-private*/ <J extends Component< ? >> InputDialogOperationContext<J> createInputDialogOperationContext(InputDialogOperation<J> inputDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		InputDialogOperationContext<J> rv = new InputDialogOperationContext<J>(this, inputDialogOperation, e, viewController);
 		this.addChild(rv);
 		return rv;
 	}
@@ -280,6 +280,12 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		this.addChild(rv);
 		return rv;
 	}
+	/*package-private*/WizardDialogOperationContext createWizardDialogOperationContext(WizardDialogOperation informationDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		WizardDialogOperationContext rv = new WizardDialogOperationContext(this, informationDialogOperation, e, viewController);
+		this.addChild(rv);
+		return rv;
+	}
+	
 	/*package-private*/PopupMenuOperationContext createPopupMenuOperationContext(PopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		PopupMenuOperationContext rv = new PopupMenuOperationContext(this, popupMenuOperation, e, viewController);
 		this.addChild(rv);

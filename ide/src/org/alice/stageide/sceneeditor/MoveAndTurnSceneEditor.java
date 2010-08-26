@@ -431,6 +431,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
 				instance = instanceInAlice.getInstanceInJava();
 			}
+//			PrintUtilities.println("Selected "+instance+":"+instance.getClass().getSimpleName());
 			if( instance instanceof org.alice.apis.moveandturn.Model ) {
 				org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instance;
 				this.globalDragAdapter.setSelectedObject( model.getSGTransformable() );
@@ -438,6 +439,17 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			else if( instance instanceof org.alice.apis.moveandturn.Marker ) {
 				org.alice.apis.moveandturn.Marker marker = (org.alice.apis.moveandturn.Marker)instance;
 				this.globalDragAdapter.setSelectedObject( marker.getSGTransformable() );
+			} else if (instance instanceof org.alice.apis.moveandturn.SymmetricPerspectiveCamera)
+			{
+				org.alice.apis.moveandturn.SymmetricPerspectiveCamera mtCamera = (org.alice.apis.moveandturn.SymmetricPerspectiveCamera)instance;
+				if (mtCamera.getSGCamera() == this.sgPerspectiveCamera)
+				{
+					this.globalDragAdapter.setSelectedObject( this.openingSceneMarker.getSGTransformable() );
+				}
+			}
+			else if (instance instanceof Scene)
+			{
+				this.globalDragAdapter.setSelectedObject(null);
 			}
 			this.updateFieldLabels();
 		}
@@ -445,10 +457,22 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	
 	private void handleSelectionEvent( org.alice.interact.event.SelectionEvent e ) {
 		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = e.getTransformable();
-		org.alice.apis.moveandturn.Element element = org.alice.apis.moveandturn.Element.getElement( sgTransformable );
-		
-		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldForInstanceInJava( element );
-		if (element instanceof CameraMarker)
+		Object objectInJava = null;
+		if (sgTransformable == null)
+		{
+			objectInJava = this.scene;
+		}
+		else
+		{
+			objectInJava = org.alice.apis.moveandturn.Element.getElement( sgTransformable );
+		}
+		if (objectInJava == this.openingSceneMarker)
+		{
+			objectInJava = org.alice.apis.moveandturn.Element.getElement(this.sgPerspectiveCamera);
+		}
+//		PrintUtilities.println("trying to select "+objectInJava+":"+objectInJava.hashCode());
+		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldForInstanceInJava( objectInJava );
+		if (objectInJava instanceof CameraMarker)
 		{
 			this.sceneMarkerFieldList.setSelectedItem((FieldDeclaredInAlice)field);			
 		}
@@ -473,6 +497,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		AffineMatrix4x4 goodPointOfView = new AffineMatrix4x4();
 		CameraMarker selectedCameraMarker = getActiveCameraMarker();
 		AffineMatrix4x4 cameraTransform = selectedCameraMarker.getSGTransformable().getAbsoluteTransformation();
+		
+		//PrintUtilities.println("Camera marker: "+selectedCameraMarker.getName());
+		
 		if (selectedCameraMarker instanceof PerspectiveCameraMarker)
 		{
 			AbstractCamera selectedCamera = this.getSGPerspectiveCamera();
@@ -656,7 +683,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		{
 			if (field.getValueType().isAssignableTo( org.alice.apis.moveandturn.CameraMarker.class ))
 			{
-				PrintUtilities.println("Camera marker: "+field.getName());
+				//PrintUtilities.println("Camera marker: "+field.getName());
 				cameraMarkerFields.add(field);
 			}
 		}
@@ -1140,7 +1167,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	}
 
 	private void updateFieldLabels() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "update field labels" );
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "update field labels" );
 	}
 	
 	@Override
@@ -1791,6 +1818,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	public void dragStarted(DragAndDropContext dragAndDropContext) {
 		DragComponent dragSource = dragAndDropContext.getDragSource();
 		dragSource.showDragProxy();
+		Operation<?> operation = dragSource.getLeftButtonClickOperation();
+		if (operation instanceof GalleryFileOperation)
+		{
+			((GalleryFileOperation)operation).setDesiredTransformation(null);
+		}
 	}
 
 	public void dragStopped(DragAndDropContext dragAndDropContext) 

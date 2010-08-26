@@ -66,7 +66,7 @@ public abstract class InterpolationAnimation< E > extends edu.cmu.cs.dennisc.ani
 		updateValue( interpolate( m_v, m_v0, m_v1, portion ) );
 	}
 	@Override
-	protected final void epilogue() {
+	protected void epilogue() {
 		updateValue( m_v1 );
 	}
 }
