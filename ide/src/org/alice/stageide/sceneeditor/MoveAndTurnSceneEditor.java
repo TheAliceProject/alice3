@@ -403,6 +403,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		CameraMarker newMarker = this.getCameraMarkerForField(cameraMarkerField);
 		if (newMarker != null)
 		{
+			//Camera markers are not in the same selection state as things in the scene, so null out the field selection state if we're selecting a marker
+			org.alice.ide.IDE.getSingleton().getAccessibleListState().setSelectedItem(null);
 			this.globalDragAdapter.setSelectedObject(newMarker.getSGTransformable());
 		}
 		else
@@ -493,7 +495,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	 * Field Added/Removed Handling
 	 */
 
-	public AffineMatrix4x4 getGoodPointOfViewInSceneForObject()
+	public AffineMatrix4x4 getGoodPointOfViewInSceneForObject(edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox)
 	{
 		AffineMatrix4x4 goodPointOfView = new AffineMatrix4x4();
 		CameraMarker selectedCameraMarker = getActiveCameraMarker();
@@ -570,6 +572,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			}
 			OrthogonalMatrix3x3 facingCameraOrientation = new OrthogonalMatrix3x3(new ForwardAndUpGuide(goodBackward, Vector3.accessPositiveYAxis()));
 			goodPointOfView.orientation.setValue(facingCameraOrientation);
+		}
+		if (boundingBox != null)
+		{
+			goodPointOfView.translation.y -= boundingBox.getYMinimum();
 		}
 		return goodPointOfView;
 	}

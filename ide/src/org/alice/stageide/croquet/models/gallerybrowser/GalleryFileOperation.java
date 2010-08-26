@@ -88,6 +88,7 @@ public class GalleryFileOperation extends AbstractGalleryDeclareFieldOperation<o
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromGalleryPane.getActualInputValue();
 		if (field != null) {
 			Object fieldObject = createFieldFromGalleryPane.createInstanceInJava();
+			
 			if (fieldObject instanceof org.alice.apis.moveandturn.Transformable)
 			{
 				if (this.desiredTransformation != null)
@@ -98,7 +99,8 @@ public class GalleryFileOperation extends AbstractGalleryDeclareFieldOperation<o
 				}
 				else
 				{
-					AffineMatrix4x4 goodOrientation = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getGoodPointOfViewInSceneForObject();
+					edu.cmu.cs.dennisc.math.AxisAlignedBox box = org.alice.stageide.gallerybrowser.ResourceManager.getAxisAlignedBox(this.treeNode);
+					AffineMatrix4x4 goodOrientation = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getGoodPointOfViewInSceneForObject(box);
 					((org.alice.apis.moveandturn.Transformable)fieldObject).setLocalTransformation(goodOrientation);
 				}
 			}
