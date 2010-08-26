@@ -46,14 +46,30 @@ package edu.cmu.cs.dennisc.cascade;
  * @author Dennis Cosgrove
  */
 public abstract class Blank extends Node {
-	private CascadingPopupMenuOperation cascadingPopupMenuOperation;
+	private String title;
+	private CascadingRoot cascadingRoot;
 	private FillIn<?> selectedFillIn;
 
-	public CascadingPopupMenuOperation getCascadingPopupMenuOperation() {
-		return this.cascadingPopupMenuOperation;
+	public String getTitle() {
+		return this.title;
 	}
-	public void setCascadingPopupMenuOperation( CascadingPopupMenuOperation cascadingPopupMenuOperation ) {
-		this.cascadingPopupMenuOperation = cascadingPopupMenuOperation;
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
+	@Override
+	protected void addPrefixChildren() {
+		if( this.title != null ) {
+			this.addFillIn( new SeparatorFillIn( this.title ) );
+			this.addFillIn( new SeparatorFillIn() );
+		}
+	}
+	
+	public CascadingRoot getCascadingRoot() {
+		return this.cascadingRoot;
+	}
+	public void setCascadingRoot( CascadingRoot cascadingRoot ) {
+		this.cascadingRoot = cascadingRoot;
 	}
 	
 	public FillIn<?> getFillInAt( int index ) {
@@ -66,7 +82,7 @@ public abstract class Blank extends Node {
 	public void addFillIn( FillIn<?> fillIn ) {
 		super.addChild( fillIn );
 	}
-
+	
 	@Override
 	protected Blank getNearestBlank() {
 		return this;
@@ -190,55 +206,55 @@ public abstract class Blank extends Node {
 	}
 
 	
-	private edu.cmu.cs.dennisc.task.TaskObserver taskObserver;
-	public void showPopupMenu( java.awt.Component invoker, int x, int y, edu.cmu.cs.dennisc.task.TaskObserver taskObserver ) {
-		this.taskObserver = taskObserver;
-		
-		FillIn< ? > fillIn = this.getSelectedFillIn();
-		if( fillIn != null ) {
-			taskObserver.handleCompletion( fillIn.getValue() );
-		} else {
-			//final javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
-			final edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu = new edu.cmu.cs.dennisc.croquet.PopupMenu( null );
-			//popupMenu.setLightWeightPopupEnabled( false );
-			popupMenu.getAwtComponent().addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
-				public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
-					edu.cmu.cs.dennisc.croquet.Application.addMenuElements( popupMenu, Blank.this.getModels() );
-					//Blank.this.addNextNodeMenuItems( popupMenu );
-				}
-				public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
-					popupMenu.getAwtComponent().removeAll();
-				}
-				public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-					Blank.this.handleCancel( e );
-				}
-			} );
-			edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), invoker, x, y );
-		}
-	}
+//	private edu.cmu.cs.dennisc.task.TaskObserver taskObserver;
+//	public void showPopupMenu( java.awt.Component invoker, int x, int y, edu.cmu.cs.dennisc.task.TaskObserver taskObserver ) {
+//		this.taskObserver = taskObserver;
+//		
+//		FillIn< ? > fillIn = this.getSelectedFillIn();
+//		if( fillIn != null ) {
+//			taskObserver.handleCompletion( fillIn.getValue() );
+//		} else {
+//			//final javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
+//			final edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu = new edu.cmu.cs.dennisc.croquet.PopupMenu( null );
+//			//popupMenu.setLightWeightPopupEnabled( false );
+//			popupMenu.getAwtComponent().addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
+//				public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
+//					edu.cmu.cs.dennisc.croquet.Application.addMenuElements( popupMenu, Blank.this.getModels() );
+//					//Blank.this.addNextNodeMenuItems( popupMenu );
+//				}
+//				public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
+//					popupMenu.getAwtComponent().removeAll();
+//				}
+//				public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
+//					Blank.this.handleCancel( e );
+//				}
+//			} );
+//			edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), invoker, x, y );
+//		}
+//	}
 
-	protected void handleActionPerformed( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		try {
-			Object value = this.getSelectedFillIn().getValue();
-			if( this.taskObserver != null ) {
-				this.taskObserver.handleCompletion( value );
-			} else {
-				edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > edit = this.cascadingPopupMenuOperation.createEdit( value, context );
-				context.commitAndInvokeDo( edit );
-			}
-		} catch( CancelException ce ) {
-			if( this.taskObserver != null ) {
-				this.taskObserver.handleCancelation();
-			} else {
-				context.cancel();
-			}
-		}
-	}
-	protected void handleCancel( javax.swing.event.PopupMenuEvent e ) {
-		if( this.taskObserver != null ) {
-			this.taskObserver.handleCancelation();
-		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleCancelation (no taskObserver)" );
-		}
-	}
+//	protected void handleActionPerformed( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+//		try {
+//			Object value = this.getSelectedFillIn().getValue();
+////			if( this.taskObserver != null ) {
+////				this.taskObserver.handleCompletion( value );
+////			} else {
+//				edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > edit = this.cascadingPopupMenuOperation.createEdit( value, context );
+//				context.commitAndInvokeDo( edit );
+////			}
+//		} catch( CancelException ce ) {
+////			if( this.taskObserver != null ) {
+////				this.taskObserver.handleCancelation();
+////			} else {
+//				context.cancel();
+////			}
+//		}
+//	}
+//	protected void handleCancel( javax.swing.event.PopupMenuEvent e ) {
+//		if( this.taskObserver != null ) {
+//			this.taskObserver.handleCancelation();
+//		} else {
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleCancelation (no taskObserver)" );
+//		}
+//	}
 }

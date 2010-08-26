@@ -60,6 +60,7 @@ public abstract class Node {
 		this.children.add( node );
 	}
 
+	protected abstract void addPrefixChildren();
 	protected abstract void cleanUp();
 	protected abstract void addChildren();
 	public java.util.List<Node> getChildren() {
@@ -67,6 +68,7 @@ public abstract class Node {
 			 //pass
 		 } else {
 			 this.children = new java.util.LinkedList< Node >();
+			 this.addPrefixChildren();
 			 this.addChildren();
 			 this.cleanUp();
 		 }

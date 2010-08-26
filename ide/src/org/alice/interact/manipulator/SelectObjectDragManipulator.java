@@ -49,6 +49,7 @@ import org.alice.interact.condition.PickCondition;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.RotationRingHandle;
 
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
@@ -93,17 +94,18 @@ public class SelectObjectDragManipulator extends AbstractManipulator {
 	
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
+//		PrintUtilities.println("SelectObjectDragManipulator!!!");
 		PickHint clickedObjectType = startInput.getClickPickType();
-		if ( clickedObjectType.intersects( PickHint.MOVEABLE_OBJECTS) )
+		if ( clickedObjectType.intersects( PickHint.MOVEABLE_OBJECTS) || clickedObjectType.intersects(PickHint.GROUND))
 		{
-			this.globalDragAdapter.setSelectedObject( startInput.getClickPickedTransformable(true) );
+			this.globalDragAdapter.triggerSelection( startInput.getClickPickedTransformable(true) );
 		}
 		else if (clickedObjectType.intersects( PickHint.THREE_D_HANDLES) )
 		{
 			Transformable pickedHandle = startInput.getClickPickedTransformable(true);
 			if (pickedHandle instanceof RotationRingHandle)
 			{
-				this.globalDragAdapter.setSelectedObject( ((RotationRingHandle)pickedHandle).getManipulatedObject() );
+				this.globalDragAdapter.triggerSelection( ((RotationRingHandle)pickedHandle).getManipulatedObject() );
 			}
 		}
 		else if (clickedObjectType.intersects( PickHint.TWO_D_HANDLES) )
@@ -112,7 +114,7 @@ public class SelectObjectDragManipulator extends AbstractManipulator {
 		}
 		else
 		{
-			this.globalDragAdapter.setSelectedObject( null );
+			this.globalDragAdapter.triggerSelection( null );
 		}
 		return true;
 

@@ -375,4 +375,13 @@ public abstract class Model implements Resolver< Model > {
 //		C context = this.createContext( parentContext, e, cancelEffectiveness );
 //		parentContext.performAsChild( this, context );
 //	}
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( "[" );
+		sb.append( this.getGroup() );
+		sb.append( "]" );
+		return sb.toString();
+	}
 }

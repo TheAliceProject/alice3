@@ -169,9 +169,8 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 						ModelContext<?> parentContext = application.getCurrentContext();
 						ListSelectionStateContext< E > childContext = parentContext.createItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController, prevIndex, prevSelection, nextIndex, nextSelection );
 						childContext.commitAndInvokeDo( new ListSelectionEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ) );
-						ListSelectionState.this.fireValueChanged(nextSelection);
 					}
-
+					ListSelectionState.this.fireValueChanged(nextSelection);
 					this.mostRecentEvent = null;
 					this.mostRecentViewController = null;
 				}
@@ -340,6 +339,14 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 	/*package-private*/ void localize() {
 	}
 	
+	/*package-private*/ ComboBoxModel getComboBoxModel() {
+		return this.comboBoxModel;
+	}
+	
+	/*package-private*/ SingleListSelectionModel getListSelectionModel() {
+		return this.listSelectionModel;
+	}
+	
 	public void addListDataListener( javax.swing.event.ListDataListener listener ) {
 		this.comboBoxModel.addListDataListener( listener );
 	}
@@ -358,9 +365,14 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 	public E getSelectedItem() {
 		return (E) this.comboBoxModel.getSelectedItem();
 	}
-
 	public void setSelectedItem(E selectedItem) {
 		this.comboBoxModel.setSelectedItem(selectedItem);
+	}
+	public int getSelectedIndex() {
+		return this.listSelectionModel.getMinSelectionIndex();
+	}
+	public void setSelectedIndex( int nextIndex ) {
+		this.listSelectionModel.setSelectedIndex( nextIndex, true );;
 	}
 
 	public java.util.Iterator< E > iterator() {
@@ -457,29 +469,9 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 		rv.setSwingComboBoxModel(this.comboBoxModel);
 		return rv;
 	}
-
+	
 	public List<E> createList() {
-		List<E> rv = new List<E>( this ) {
-			// private ListSelectionListener listSelectionListener = new
-			// ListSelectionListener( this );
-			@Override
-			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				super.handleAddedTo(parent);
-				ListSelectionState.this.addComponent(this);
-				// this.addListSelectionListener( this.listSelectionListener );
-			};
-
-			@Override
-			protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-				// this.removeListSelectionListener( this.listSelectionListener
-				// );
-				ListSelectionState.this.removeComponent(this);
-				super.handleRemovedFrom(parent);
-			}
-		};
-		rv.setSwingListModel(this.comboBoxModel);
-		rv.setSelectionModel(this.listSelectionModel);
-		return rv;
+		return new List< E >( this );
 	}
 
 	/*package-private*/ <R extends ItemSelectablePanel<E, ?>> R register(final R rv) {
@@ -573,18 +565,22 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 			super( java.util.UUID.fromString( "e33bc1ff-3790-4715-b88c-3c978aa16947" ), ListSelectionState.this.getClass() );
 		}
 		@Override
-		protected void handleMenuSelected(javax.swing.event.MenuEvent e, Menu<MenuModel> menu) {
-			super.handleMenuSelected(e, menu);
-			menu.getAwtComponent().removeAll();
+		protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ListSelectionMenuModel handleShowing" );
+			super.handleShowing( menuItemContainer, e );
 			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 			for (final Object item : ListSelectionState.this.comboBoxModel.items) {
 				javax.swing.Action action = createAction( (E)item );
 				javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem(action);
 				buttonGroup.add(jMenuItem);
 				jMenuItem.setSelected(comboBoxModel.getSelectedItem() == item);
-				menu.getAwtComponent().add(jMenuItem);
+				menuItemContainer.getViewController().getAwtComponent().add(jMenuItem);
 			}
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ListSelectionMenuModel handleMenuSelected" );
+		}
+		@Override
+		protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+			menuItemContainer.forgetAndRemoveAllMenuItems();
+			super.handleHiding( menuItemContainer, e );
 		}
 	}
 	

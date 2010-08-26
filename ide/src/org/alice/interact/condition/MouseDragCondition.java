@@ -135,13 +135,13 @@ public class MouseDragCondition extends MousePickBasedCondition{
 	
 	@Override
 	public boolean clicked( InputState currentState, InputState previousState ) {
-		if (!this.hasStarted && !testState(currentState) && testState(previousState))
-		{
-			if (!testMouse(currentState) && testMouse(previousState))
-			{
-				return true;
-			}
-		}
+//		if (!this.hasStarted && !testState(currentState) && testState(previousState))
+//		{
+//			if (!testMouse(currentState) && testMouse(previousState))
+//			{
+//				return true;
+//			}
+//		}
 		return false;
 	}
 	

@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInArgumentPopupMenuOperation extends FillInExpressionPropertyPopupMenuOperation {
+public class FillInArgumentPopupMenuOperation extends FillInExpressionMenuModel {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.Argument, FillInArgumentPopupMenuOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized FillInArgumentPopupMenuOperation getInstance( edu.cmu.cs.dennisc.alice.ast.Argument argument ) {
 		FillInArgumentPopupMenuOperation rv = map.get( argument );
@@ -64,7 +64,7 @@ public class FillInArgumentPopupMenuOperation extends FillInExpressionPropertyPo
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Group getActionGroup() {
+	protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
 		return edu.cmu.cs.dennisc.alice.Project.GROUP;
 	}
 	@Override

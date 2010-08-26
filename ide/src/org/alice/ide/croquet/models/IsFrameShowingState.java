@@ -88,7 +88,24 @@ public abstract class IsFrameShowingState extends edu.cmu.cs.dennisc.croquet.Boo
 				public void windowClosed(java.awt.event.WindowEvent e) {
 				}
 			} );
-			this.frame.pack();
+			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.internalTesting" ) ) {
+				this.frame.addComponentListener( new java.awt.event.ComponentListener() {
+					public void componentShown( java.awt.event.ComponentEvent e ) {
+					}
+					public void componentHidden( java.awt.event.ComponentEvent e ) {
+					}
+					public void componentMoved( java.awt.event.ComponentEvent e ) {
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( e.getComponent().getLocation() );
+					}
+					public void componentResized( java.awt.event.ComponentEvent e ) {
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( e.getComponent().getSize() );
+					}
+				} );
+				this.frame.setLocation( -1448, 168 );
+				this.frame.setSize( 1456, 916 );
+			} else {
+				this.frame.pack();
+			}
 		}
 		return this.frame;
 	}

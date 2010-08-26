@@ -48,15 +48,15 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public class MenuModelContext extends ModelContext<MenuModel> {
 	public static abstract class MenuEvent extends ModelEvent< MenuModelContext > {
-		private javax.swing.event.MenuEvent menuEvent;
+		private java.util.EventObject menuEvent;
 		public MenuEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
-		private MenuEvent( MenuModelContext parent, javax.swing.event.MenuEvent menuEvent ) {
+		private MenuEvent( MenuModelContext parent, java.util.EventObject menuEvent ) {
 			super( parent );
 			this.menuEvent = menuEvent;
 		}
-		public javax.swing.event.MenuEvent getMenuEvent() {
+		public java.util.EventObject getMenuEvent() {
 			return this.menuEvent;
 		}
 		@Override
@@ -69,7 +69,7 @@ public class MenuModelContext extends ModelContext<MenuModel> {
 		public MenuSelectedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
-		private MenuSelectedEvent( MenuModelContext parent, javax.swing.event.MenuEvent e ) {
+		private MenuSelectedEvent( MenuModelContext parent, java.util.EventObject e ) {
 			super( parent, e );
 		}
 	}
@@ -77,32 +77,69 @@ public class MenuModelContext extends ModelContext<MenuModel> {
 		public MenuDeselectedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
-		private MenuDeselectedEvent( MenuModelContext parent, javax.swing.event.MenuEvent e ) {
+		private MenuDeselectedEvent( MenuModelContext parent, java.util.EventObject e ) {
 			super( parent, e );
+		}
+		@Override
+		public State getState() {
+			return State.DESELECTED;
 		}
 	}
 	public static class MenuCanceledEvent extends MenuEvent {
 		public MenuCanceledEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
-		private MenuCanceledEvent( MenuModelContext parent, javax.swing.event.MenuEvent e ) {
+		private MenuCanceledEvent( MenuModelContext parent, java.util.EventObject e ) {
 			super( parent, e );
 		}
+	}
+	public static class MenuItemSelectedEvent extends MenuEvent {
+		public MenuItemSelectedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private MenuItemSelectedEvent( MenuModelContext parent, java.util.EventObject e, Model itemModel ) {
+			super( parent, e );
+		}
+	}
+	public static class MenuItemDeselectedEvent extends MenuEvent {
+		public MenuItemDeselectedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private MenuItemDeselectedEvent( MenuModelContext parent, java.util.EventObject e, Model itemModel ) {
+			super( parent, e );
+		}
+//		@Override
+//		public State getState() {
+//			return State.DESELECTED;
+//		}
 	}
 
 	/*package-private*/ MenuModelContext( ModelContext<?> parent, MenuModel menuModel, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( parent, menuModel, e, viewController );
 	}
 
-	/*package-private*/ void handleMenuSelected( javax.swing.event.MenuEvent e ) {
+	/*package-private*/ void handleMenuSelected( java.util.EventObject e ) {
 		this.addChild( new MenuSelectedEvent( this, e ) );
 	}
-	/*package-private*/ void handleMenuDeselected( javax.swing.event.MenuEvent e ) {
+	/*package-private*/ void handleMenuDeselected( java.util.EventObject e ) {
 		this.addChild( new MenuDeselectedEvent( this, e ) );
 	}
-	/*package-private*/ void handleMenuCanceled( javax.swing.event.MenuEvent e ) {
+	/*package-private*/ void handleMenuCanceled( java.util.EventObject e ) {
 		this.addChild( new MenuCanceledEvent( this, e ) );
 	}
-	
+	/*package-private*/ void handleMenuItemSelected( javax.swing.event.ChangeEvent e, Model itemModel ) {
+		this.addChild( new MenuItemSelectedEvent( this, e, itemModel ) );
+	}
+	/*package-private*/ void handleMenuItemDeselected( javax.swing.event.ChangeEvent e, Model itemModel ) {
+		this.addChild( new MenuItemDeselectedEvent( this, e, itemModel ) );
+	}
 
+//	@Override
+//	public ModelContext< ? > getCurrentContext() {
+//		if( this.getState() == State.DESELECTED ) {
+//			return this;
+//		} else {
+//			return super.getCurrentContext();
+//		}
+//	}
 }

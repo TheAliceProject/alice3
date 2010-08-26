@@ -49,8 +49,4 @@ public abstract class AccessiblePane extends ExpressionCreatorPane {
 	public AccessiblePane() {
 		this.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragOperation( edu.cmu.cs.dennisc.alice.Project.GROUP ) );
 	}
-	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > rv ) {
-		return rv;
-	}
 }

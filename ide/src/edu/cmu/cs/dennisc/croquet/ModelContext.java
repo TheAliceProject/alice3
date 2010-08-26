@@ -197,7 +197,17 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 	public State getState() {
 		final int N = this.children.size();
 		if (N > 0) {
-			return this.children.get(N - 1).getState();
+			State state = this.children.get(N - 1).getState();
+			//todo
+			if( state == State.DESELECTED ) {
+				HistoryNode lastNode = this.children.get(N - 1);
+				if( lastNode instanceof edu.cmu.cs.dennisc.croquet.MenuModelContext.MenuDeselectedEvent ) { 
+					//pass
+				} else {
+					return null;
+				}
+			}
+			return state;
 		} else {
 			return null;
 		}
@@ -209,7 +219,8 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 			HistoryNode lastChild = this.children.get(N - 1);
 			if (lastChild instanceof ModelContext<?>) {
 				ModelContext<?> lastContext = (ModelContext<?>) lastChild;
-				if (lastContext.getState() != null) {
+				State state = lastContext.getState();
+				if( state != null ) {
 					return this;
 				} else {
 					return lastContext.getCurrentContext();
@@ -259,8 +270,8 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		this.addChild(rv);
 		return rv;
 	}
-	/*package-private*/InputDialogOperationContext createInputDialogOperationContext(InputDialogOperation inputDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		InputDialogOperationContext rv = new InputDialogOperationContext(this, inputDialogOperation, e, viewController);
+	/*package-private*/ <J extends Component< ? >> InputDialogOperationContext<J> createInputDialogOperationContext(InputDialogOperation<J> inputDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		InputDialogOperationContext<J> rv = new InputDialogOperationContext<J>(this, inputDialogOperation, e, viewController);
 		this.addChild(rv);
 		return rv;
 	}
@@ -269,6 +280,12 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		this.addChild(rv);
 		return rv;
 	}
+	/*package-private*/WizardDialogOperationContext createWizardDialogOperationContext(WizardDialogOperation informationDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		WizardDialogOperationContext rv = new WizardDialogOperationContext(this, informationDialogOperation, e, viewController);
+		this.addChild(rv);
+		return rv;
+	}
+	
 	/*package-private*/PopupMenuOperationContext createPopupMenuOperationContext(PopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		PopupMenuOperationContext rv = new PopupMenuOperationContext(this, popupMenuOperation, e, viewController);
 		this.addChild(rv);
@@ -299,8 +316,8 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		this.addChild(rv);
 		return rv;
 	}
-	/*package-private*/MenuModelContext createMenuModelContext(MenuModel menuModel, Menu<?> menu) {
-		MenuModelContext rv = new MenuModelContext(this, menuModel, null, menu);
+	/*package-private*/MenuModelContext createMenuModelContext(MenuModel menuModel, MenuItemContainer menuItemContainer) {
+		MenuModelContext rv = new MenuModelContext( this, menuModel, null, menuItemContainer.getViewController() );
 		this.addChild(rv);
 		return rv;
 	}
@@ -371,15 +388,15 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		super.appendRepr( rv );
 		State state = this.getState();
 		rv.append( "[" );
-		rv.append( this.getState() );
+		rv.append( state );
 		rv.append( "]" );
 		
-		if( state != null ) {
-			//pass
-		} else {
+//		if( state != null ) {
+//			//pass
+//		} else {
 			rv.append( " " );
 			rv.append( this.getModel() );
-		}
+//		}
 		return rv;
 	}
 }

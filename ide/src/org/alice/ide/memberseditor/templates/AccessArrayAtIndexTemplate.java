@@ -51,7 +51,7 @@ package org.alice.ide.memberseditor.templates;
 		this.field = field;
 		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
-			this.setPopupMenuOperation( new FieldPopupOperation( fieldInAlice ) );
+			this.setPopupMenuOperation( new FieldPopupOperation( fieldInAlice ).getPopupMenuOperation() );
 		}
 	}
 	@Override
@@ -67,9 +67,8 @@ package org.alice.ide.memberseditor.templates;
 		return field.getValueType().getComponentType();
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > rv ) {
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE );
-		return rv;
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] getBlankExpressionTypes() {
+		return new edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] { edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE };
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {

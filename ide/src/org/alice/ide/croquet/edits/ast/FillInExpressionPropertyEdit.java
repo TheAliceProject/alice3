@@ -45,7 +45,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInExpressionPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.FillInExpressionPropertyActionOperation > {
+public class FillInExpressionPropertyEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< org.alice.ide.croquet.models.ast.FillInExpressionMenuModel > {
 	private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 	private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 	public FillInExpressionPropertyEdit() {
@@ -53,24 +53,9 @@ public class FillInExpressionPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edi
 	public FillInExpressionPropertyEdit( edu.cmu.cs.dennisc.alice.ast.Expression nextExpression ) {
 		this.nextExpression = nextExpression;
 	}
-	
-	private org.alice.ide.croquet.models.ast.FillInExpressionPropertyActionOperation EPIC_HACK_actionOperation;
-	public void EPIC_HACK_setModel( org.alice.ide.croquet.models.ast.FillInExpressionPropertyActionOperation actionOperation ) {
-		this.EPIC_HACK_actionOperation = actionOperation;
-	}
-	
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.croquet.models.ast.FillInExpressionPropertyActionOperation actionOperation;
-		if( EPIC_HACK_actionOperation != null ) {
-			actionOperation = EPIC_HACK_actionOperation;
-		} else {
-			actionOperation = this.getModel();
-		}
-		assert actionOperation != null;
-		
-		org.alice.ide.croquet.models.ast.FillInExpressionPropertyPopupMenuOperation popupMenuOperation = actionOperation.getPopupMenuOperation();
-
+		org.alice.ide.croquet.models.ast.FillInExpressionMenuModel popupMenuOperation = this.getCascadingRoot();
 		edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty = popupMenuOperation.getExpressionProperty();
 		if( isDo ) {
 			this.prevExpression = popupMenuOperation.getPreviousExpression();
@@ -79,15 +64,7 @@ public class FillInExpressionPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edi
 	}
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.croquet.models.ast.FillInExpressionPropertyActionOperation actionOperation;
-		if( EPIC_HACK_actionOperation != null ) {
-			actionOperation = EPIC_HACK_actionOperation;
-		} else {
-			actionOperation = this.getModel();
-		}
-		assert actionOperation != null;
-		
-		org.alice.ide.croquet.models.ast.FillInExpressionPropertyPopupMenuOperation popupMenuOperation = actionOperation.getPopupMenuOperation();
+		org.alice.ide.croquet.models.ast.FillInExpressionMenuModel popupMenuOperation = this.getCascadingRoot();
 		edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty = popupMenuOperation.getExpressionProperty();
 		expressionProperty.setValue( this.prevExpression );
 	}
@@ -108,13 +85,5 @@ public class FillInExpressionPropertyEdit extends edu.cmu.cs.dennisc.croquet.Edi
 	@Override
 	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
-	}
-	@Override
-	public boolean canRedo() {
-		return true;
-	}
-	@Override
-	public boolean canUndo() {
-		return true;
 	}
 }

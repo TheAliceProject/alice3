@@ -47,9 +47,21 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public interface MenuItemContainer {
+	public ViewController< ?, ? > getViewController();
+//	public void addChangeListener( javax.swing.event.ChangeListener changeListener );
+//	public void removeChangeListener( javax.swing.event.ChangeListener changeListener );
+//	public void addItemListener( java.awt.event.ItemListener listener );
+//	public void removeItemListener( java.awt.event.ItemListener listener );
+
+	public void addPopupMenuListener( javax.swing.event.PopupMenuListener listener );
+	public void removePopupMenuListener( javax.swing.event.PopupMenuListener listener );
+	
+	public Container< ? > getParent();
 	public void addMenu( Menu<?> menu );
 	public void addMenuItem( MenuItem menuItem );
 	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem );
 	public void addSeparator();
 	public void addSeparator( MenuTextSeparator menuTextSeparator );
+	public void forgetAndRemoveAllMenuItems();
+	public void removeAllMenuItems();
 }

@@ -67,7 +67,7 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 			operations.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 			operations.add( new org.alice.ide.operations.ast.DeleteMethodOperation( methodInAlice ) );
 		}
-		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.DefaultPopupMenuOperation( java.util.UUID.fromString( "96831579-1fb6-4c15-a509-ccdcc51458a8" ), operations) );
+		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.DefaultMenuModel( java.util.UUID.fromString( "96831579-1fb6-4c15-a509-ccdcc51458a8" ), operations).getPopupMenuOperation() );
 	}
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
@@ -97,6 +97,12 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
 		return org.alice.ide.ast.NodeUtilities.getDesiredParameterValueTypes( this.method );
 	}
+	
+	@Override
+	protected String getTitleAt( int index ) {
+		return this.method.getParameters().get( index ).getName();
+	}
+	
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv = org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( method );

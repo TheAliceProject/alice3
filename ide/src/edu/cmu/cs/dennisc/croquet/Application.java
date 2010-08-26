@@ -63,7 +63,7 @@ public abstract class Application {
 	public Application() {
 		assert Application.singleton == null;
 		Application.singleton = this;
-
+		MenuSelectionManagerUtilities.startListening();
 //		rootContext.addCommitObserver( new ModelContext.CommitObserver() {
 //			public void committing( Edit edit ) {
 //			}
@@ -206,9 +206,14 @@ public abstract class Application {
 						}
 					}
 				}
+				try {
+					javax.swing.UIManager.setLookAndFeel( javax.swing.UIManager.getLookAndFeel() );
+				} catch( javax.swing.UnsupportedLookAndFeelException ulafe ) {
+					ulafe.printStackTrace();
+				}
 				//todo?
-				javax.swing.UIManager.getLookAndFeel().uninitialize();
-				javax.swing.UIManager.getLookAndFeel().initialize();
+				//javax.swing.UIManager.getLookAndFeel().uninitialize();
+				//javax.swing.UIManager.getLookAndFeel().initialize();
 				for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this.frame.getAwtComponent(), javax.swing.JComponent.class ) ) {
 					component.setLocale( locale );
 					component.setComponentOrientation( java.awt.ComponentOrientation.getOrientation( locale ) );

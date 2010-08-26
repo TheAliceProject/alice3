@@ -71,8 +71,8 @@ public abstract class FillIn< E > extends Node {
 			//pass
 		} else {
 			Blank rootBlank = this.getRootBlank();
-			CascadingPopupMenuOperation cascadingPopupMenuOperation = rootBlank.getCascadingPopupMenuOperation();
-			this.model = cascadingPopupMenuOperation.createCroquetModel( this, isLast );
+			CascadingRoot cascadingRoot = rootBlank.getCascadingRoot();
+			this.model = cascadingRoot.createCroquetModel( this, isLast );
 			//this.menuItem.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 			this.isMenuItemIconUpToDate = false;
 		}
@@ -108,7 +108,9 @@ public abstract class FillIn< E > extends Node {
 		}
 		return this.model;
 	}
-	
+	@Override
+	protected void addPrefixChildren() {
+	}
 //	private ActionOperation actionOperation = new ActionOperation();
 //	private MenuModel menuModel = new MenuModel();
 //	protected edu.cmu.cs.dennisc.croquet.Model createModel( boolean isLast ) {
@@ -165,10 +167,11 @@ public abstract class FillIn< E > extends Node {
 //		return (edu.cmu.cs.dennisc.croquet.Menu< ? >)getMenuItem();
 //	}
 
-	protected void handleMenuSelected( javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu< edu.cmu.cs.dennisc.croquet.MenuModel > menu ) {
+	protected void handleMenuSelected( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, java.util.EventObject e ) {
 		this.select();
 		Blank blank = this.getNextNode();
-		edu.cmu.cs.dennisc.croquet.Application.addMenuElements( menu, blank.getModels() );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo handleMenuSelected" );
+		edu.cmu.cs.dennisc.croquet.Application.addMenuElements( menuItemContainer, blank.getModels() );
 //		Node.this.addNextNodeMenuItems( Node.this.model, menu );
 ////		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 ////			public void run() {
@@ -177,14 +180,14 @@ public abstract class FillIn< E > extends Node {
 ////			}
 ////		} );
 	}
-	protected void handleMenuDeselected( javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu< edu.cmu.cs.dennisc.croquet.MenuModel > menu ) {
+	protected void handleMenuDeselected( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, java.util.EventObject e ) {
 		this.deselect();
-		menu.getAwtComponent().removeAll();
+		menuItemContainer.forgetAndRemoveAllMenuItems();
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo handleMenuDeselected" );
 	}
-	protected void handleActionOperationPerformed(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+	protected void handleActionOperationPerformed( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		this.select();
-		this.getRootBlank().handleActionPerformed( context );
+//		this.getRootBlank().handleActionPerformed( context );
 	}
 //	@Override
 //	protected void handleMenuSelected( javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu< edu.cmu.cs.dennisc.croquet.MenuModel > menu ) {
@@ -268,30 +271,30 @@ public abstract class FillIn< E > extends Node {
 	
 	
 	
-	@Deprecated
-	public void showPopupMenu( java.awt.Component invoker, int x, int y, edu.cmu.cs.dennisc.task.TaskObserver< ? extends Object > taskObserver ) {
-		class DefaultRootBlank extends Blank {
-			@Override
-			protected void addChildren() {
-				this.addFillIn( FillIn.this );
-			}
-			
-			@Override
-			protected java.util.List< edu.cmu.cs.dennisc.croquet.Model > getModels() {
-				FillIn.this.setParent( this );
-				Blank blank0 = (Blank)FillIn.this.getChildren().get( 0 );
-				return blank0.getModels();
-			}
+//	@Deprecated
+//	public void showPopupMenu( java.awt.Component invoker, int x, int y, edu.cmu.cs.dennisc.task.TaskObserver< ? extends Object > taskObserver ) {
+//		class DefaultRootBlank extends Blank {
 //			@Override
-//			protected void addNextNodeMenuItems( javax.swing.JComponent component ) {
-//				FillIn.this.setParent( this );
-//				FillIn.this.getChildren().get( 0 ).addNextNodeMenuItems( component );
+//			protected void addChildren() {
+//				this.addFillIn( FillIn.this );
 //			}
-		}
-		if( this.getChildren().size() > 0 ) {
-			new DefaultRootBlank().showPopupMenu( invoker, x, y, taskObserver );
-		} else {
-			throw new RuntimeException();
-		}
-	}
+//			
+//			@Override
+//			protected java.util.List< edu.cmu.cs.dennisc.croquet.Model > getModels() {
+//				FillIn.this.setParent( this );
+//				Blank blank0 = (Blank)FillIn.this.getChildren().get( 0 );
+//				return blank0.getModels();
+//			}
+////			@Override
+////			protected void addNextNodeMenuItems( javax.swing.JComponent component ) {
+////				FillIn.this.setParent( this );
+////				FillIn.this.getChildren().get( 0 ).addNextNodeMenuItems( component );
+////			}
+//		}
+//		if( this.getChildren().size() > 0 ) {
+//			new DefaultRootBlank().showPopupMenu( invoker, x, y, taskObserver );
+//		} else {
+//			throw new RuntimeException();
+//		}
+//	}
 }

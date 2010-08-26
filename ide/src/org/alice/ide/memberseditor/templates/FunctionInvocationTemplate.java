@@ -60,7 +60,7 @@ package org.alice.ide.memberseditor.templates;
 		this.method = method;
 		if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
-			this.setPopupMenuOperation( new MethodPopupOperation( methodInAlice ) );
+			this.setPopupMenuOperation( new MethodPopupOperation( methodInAlice ).getPopupMenuOperation() );
 		}
 	}
 	@Override
@@ -88,8 +88,8 @@ package org.alice.ide.memberseditor.templates;
 		super.handleRemovedFrom( parent );
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > rv ) {
-		return org.alice.ide.ast.NodeUtilities.getDesiredParameterValueTypes( rv, this.method );
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] getBlankExpressionTypes() {
+		return org.alice.ide.ast.NodeUtilities.getDesiredParameterValueTypes( this.method );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {

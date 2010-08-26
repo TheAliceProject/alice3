@@ -77,16 +77,38 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return IDE.singleton;
 	}
 
+	
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createPredeterminedExpressionIfAppropriate( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+		return null;
+	}
+	public edu.cmu.cs.dennisc.alice.ast.Expression[] createPredeterminedExpressionsIfAppropriate( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types ) {
+		if( types == null || types.length == 0 ) {
+			return new edu.cmu.cs.dennisc.alice.ast.Expression[]{};
+		} else {
+			if( types.length == 1 ) {
+				edu.cmu.cs.dennisc.alice.ast.Expression predeterminedExpression = org.alice.ide.IDE.getSingleton().createPredeterminedExpressionIfAppropriate( types[ 0 ] );
+				if( predeterminedExpression != null ) {
+					return new edu.cmu.cs.dennisc.alice.ast.Expression[]{ predeterminedExpression };
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		}
+	}
+	
+	
 	protected abstract edu.cmu.cs.dennisc.croquet.Operation<?> createRestartOperation();
 	public abstract edu.cmu.cs.dennisc.croquet.Operation<?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
 
-	private edu.cmu.cs.dennisc.croquet.Operation<?> preferencesOperation = this.createPreferencesOperation();
+//	private edu.cmu.cs.dennisc.croquet.Operation<?> preferencesOperation = this.createPreferencesOperation();
 	private edu.cmu.cs.dennisc.croquet.Operation<?> aboutOperation = this.createAboutOperation();
 	private edu.cmu.cs.dennisc.croquet.Operation<?> restartOperation = this.createRestartOperation();
 
-	protected edu.cmu.cs.dennisc.croquet.Operation<?> createPreferencesOperation() {
-		return new org.alice.ide.operations.preferences.PreferencesOperation();
-	}
+//	protected edu.cmu.cs.dennisc.croquet.Operation<?> createPreferencesOperation() {
+//		return new org.alice.ide.operations.preferences.PreferencesOperation();
+//	}
 	protected abstract edu.cmu.cs.dennisc.croquet.Operation<?> createAboutOperation();
 
 	public abstract edu.cmu.cs.dennisc.croquet.DialogOperation getRunOperation();
@@ -94,7 +116,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return this.restartOperation;
 	}
 	public final edu.cmu.cs.dennisc.croquet.Operation<?> getPreferencesOperation() {
-		return this.preferencesOperation;
+		//return this.preferencesOperation;
+		return null;
 	}
 	public final edu.cmu.cs.dennisc.croquet.Operation<?> getAboutOperation() {
 		return this.aboutOperation;
@@ -469,6 +492,14 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
 		assert IDE.singleton == null;
 		IDE.singleton = this;
+
+		//initialize locale
+		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<java.util.Locale> () {
+			public void changed(java.util.Locale nextValue) {
+				edu.cmu.cs.dennisc.croquet.Application.getSingleton().setLocale( nextValue );
+			}
+		} );
+
 		this.promptForLicenseAgreements();
 
 		//org.alice.ide.preferences.GeneralPreferences.getSingleton().desiredRecentProjectCount.setAndCommitValue( 10 );
@@ -522,12 +553,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.editorsTabSelectionState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
 			public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextValue ) {
 				refreshAccessibles();
-			}
-		} );
-		
-		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<java.util.Locale> () {
-			public void changed(java.util.Locale nextValue) {
-				edu.cmu.cs.dennisc.croquet.Application.getSingleton().setLocale( nextValue );
 			}
 		} );
 	}
@@ -1090,7 +1115,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			return null;
 		}
 	}
-
 
 	public edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine createVirtualMachineForRuntimeProgram() {
 		return new edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine();

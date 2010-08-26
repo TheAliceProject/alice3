@@ -53,7 +53,7 @@ public class GetterTemplate extends org.alice.ide.templates.CascadingExpressions
 		this.field = field;
 		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
-			this.setPopupMenuOperation( new FieldPopupOperation( fieldInAlice ) );
+			this.setPopupMenuOperation( new FieldPopupOperation( fieldInAlice ).getPopupMenuOperation() );
 		}
 	}
 	@Override
@@ -63,10 +63,6 @@ public class GetterTemplate extends org.alice.ide.templates.CascadingExpressions
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
 		return this.field.getValueType();
-	}
-	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > rv ) {
-		return rv;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {

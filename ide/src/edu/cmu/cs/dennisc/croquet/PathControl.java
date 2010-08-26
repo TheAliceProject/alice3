@@ -43,10 +43,10 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
-/*package-private*/ class SelectChildDirectoryPopupMenuOperation extends edu.cmu.cs.dennisc.croquet.DefaultPopupMenuOperation {
-	public static SelectChildDirectoryPopupMenuOperation getInstance( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
+/*package-private*/ class SelectChildDirectoryMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
+	public static SelectChildDirectoryMenuModel getInstance( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: SelectChildDirectoryPopupMenuOperation.getInstance()" );
-		return new SelectChildDirectoryPopupMenuOperation(treeSelectionState, treeNode, initializer);
+		return new SelectChildDirectoryMenuModel(treeSelectionState, treeNode, initializer);
 	}
 
 	private static final int ARROW_SIZE = 10;
@@ -69,7 +69,7 @@ package edu.cmu.cs.dennisc.croquet;
 		}
 		return list;
 	}
-	private SelectChildDirectoryPopupMenuOperation( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
+	private SelectChildDirectoryMenuModel( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
 		super( java.util.UUID.fromString( "cc6a0de7-91b1-4a2b-86ff-21ca9de14bed" ), createModels( treeSelectionState, treeNode, initializer ) );
 		javax.swing.Icon icon = new javax.swing.Icon() {
 			public int getIconHeight() {
@@ -105,7 +105,7 @@ package edu.cmu.cs.dennisc.croquet;
 	}
 
 	private DirectoryControl( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
-		Button selectChildButton = SelectChildDirectoryPopupMenuOperation.getInstance( treeSelectionState, treeNode, initializer ).createButton();
+		Button selectChildButton = SelectChildDirectoryMenuModel.getInstance( treeSelectionState, treeNode, initializer ).getPopupMenuOperation().createButton();
 		if( javax.swing.UIManager.getLookAndFeel().getName().contains( "Nimbus" ) ) {
 			selectChildButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 2, 0, 2 ) );
 		} else {

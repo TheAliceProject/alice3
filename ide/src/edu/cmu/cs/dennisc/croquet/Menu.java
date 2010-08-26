@@ -50,6 +50,17 @@ public class Menu< M extends Model > extends AbstractMenuItem< javax.swing.JMenu
 	/*package-private*/ Menu( M model ) {
 		super( model );
 	}
+	public edu.cmu.cs.dennisc.croquet.ViewController< ?, ? > getViewController() {
+		return this;
+	}
+	
+	public void addPopupMenuListener(javax.swing.event.PopupMenuListener listener) {
+		this.getAwtComponent().getPopupMenu().addPopupMenuListener( listener );
+	}
+	public void removePopupMenuListener(javax.swing.event.PopupMenuListener listener) {
+		this.getAwtComponent().getPopupMenu().removePopupMenuListener( listener );
+	}
+	
 	@Override
 	protected javax.swing.JMenu createAwtComponent() {
 		return new javax.swing.JMenu();
@@ -83,5 +94,15 @@ public class Menu< M extends Model > extends AbstractMenuItem< javax.swing.JMenu
 		} else {
 			this.getAwtComponent().addSeparator();
 		}
+	}
+	
+	public void removeAllMenuItems() {
+		//this.internalRemoveAllComponents();
+		this.getAwtComponent().removeAll();
+	}
+	public void forgetAndRemoveAllMenuItems() {
+		//this.internalForgetAndRemoveAllComponents();
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "forgetAndRemoveAllMenuItems" );
+		this.getAwtComponent().removeAll();
 	}
 }

@@ -43,6 +43,7 @@
 package org.alice.ide.sceneeditor;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 
 /**
  * @author Dennis Cosgrove

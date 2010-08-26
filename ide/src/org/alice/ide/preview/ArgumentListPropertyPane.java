@@ -55,7 +55,7 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 		edu.cmu.cs.dennisc.croquet.Component< ? > expressionComponent = this.getFactory().createExpressionPane( argument.expression.getValue() );
 		final boolean IS_PARAMETER_NAME_DESIRED = false;
 		if( IS_PARAMETER_NAME_DESIRED ) {
-			String parameterName = argument.parameter.getValue().getName();
+			String parameterName = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getNameForDeclaration( argument.parameter.getValue() );
 			if( parameterName != null && parameterName.length() > 0 ) {
 				edu.cmu.cs.dennisc.croquet.LineAxisPanel rv = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
 				rv.addComponent( new edu.cmu.cs.dennisc.croquet.Label( parameterName + ": " ) );

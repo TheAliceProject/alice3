@@ -56,7 +56,7 @@ package org.alice.ide.memberseditor;
 		rv.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.OutlinedBorder( 1, 4, 1, 4, java.awt.Color.LIGHT_GRAY ) );
 		edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)instance;
 		
-		String parameterName = argument.parameter.getValue().getName();
+		String parameterName = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getNameForDeclaration( argument.parameter.getValue() );
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( parameterName );
 		if( parameterName != null && parameterName.length() > 0 ) {
 			rv.addComponent( new edu.cmu.cs.dennisc.croquet.Label( parameterName + ": ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );

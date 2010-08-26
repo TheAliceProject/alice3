@@ -54,4 +54,31 @@ public class MenuItem extends OperationButton< javax.swing.JMenuItem, Operation<
 	protected javax.swing.JMenuItem createAwtComponent() {
 		return new javax.swing.JMenuItem();
 	}
+
+//	private void handleStateChanged( javax.swing.event.ChangeEvent e ) {
+//		Application application = Application.getSingleton();
+//		MenuModelContext context = (MenuModelContext)application.getCurrentContext();
+//		boolean isArmed = this.getAwtComponent().isArmed();
+//		if( isArmed ) {
+//			context.handleMenuItemSelected( e, this.getModel() );
+//		} else {
+//			context.handleMenuItemDeselected( e, this.getModel() );
+//		}
+//	}
+//	@Override
+//	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+//		super.handleAddedTo( parent );
+////		this.getAwtComponent().addItemListener( new java.awt.event.ItemListener() {
+////			public void itemStateChanged( java.awt.event.ItemEvent e ) {
+////				edu.cmu.cs.dennisc.print.PrintUtilities.println( "itemStateChanged", e );
+////			}
+////		} );
+//		
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: item selection" );
+//		this.getAwtComponent().addChangeListener( new javax.swing.event.ChangeListener() {
+//			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+//				MenuItem.this.handleStateChanged( e );
+//			}
+//		} );
+//	}
 }

@@ -98,11 +98,11 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			this.addComponent( 
 					new PopupPanel( 
 							nameLabel, 
-							new edu.cmu.cs.dennisc.croquet.DefaultPopupMenuOperation(
+							new edu.cmu.cs.dennisc.croquet.DefaultMenuModel(
 									java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ),
 									new org.alice.ide.operations.ast.RenameMethodOperation( methodDeclaredInAlice ) 
 			
-							) 
+							).getPopupMenuOperation()
 					) 
 			);
 		}

@@ -91,9 +91,9 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupM
 	public edu.cmu.cs.dennisc.croquet.Operation<?> dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 		edu.cmu.cs.dennisc.croquet.Operation<?> rv;
 		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
-		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
+//		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
 		if( source instanceof org.alice.ide.common.ExpressionCreatorPane ) {
-//			final org.alice.ide.common.ExpressionCreatorPane expressionCreatorPane = (org.alice.ide.common.ExpressionCreatorPane)source;
+			final org.alice.ide.common.ExpressionCreatorPane expressionCreatorPane = (org.alice.ide.common.ExpressionCreatorPane)source;
 //			class DropOperation extends org.alice.ide.operations.ast.AbstractExpressionPropertyActionOperation {
 //				public DropOperation() {
 //					super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "43bbcede-3da7-4597-a093-9727e5b63f29" ), ExpressionPropertyDropDownPane.this.expressionProperty );
@@ -104,10 +104,16 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupM
 //					expressionCreatorPane.createExpression( context, this.getExpressionProperty(), taskObserver );
 //				}
 //			}
-			rv = org.alice.ide.croquet.models.ast.DefaultFillInExpressionPropertyPopupMenuOperation.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP, this.expressionProperty, this.expressionProperty.getExpressionType() );
+			
+			rv = expressionCreatorPane.createDropOperation( context, this.expressionProperty );
+		} else {
+			rv = null;
+		}
+		if( rv != null ) {
+			//pass
 		} else {
 			source.hideDropProxyIfNecessary();
-			rv = null;
+			context.cancel();
 		}
 		return rv;
 	}

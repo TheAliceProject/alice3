@@ -55,9 +55,9 @@ public class RecentProjectsMenuModel extends edu.cmu.cs.dennisc.croquet.MenuMode
 	private RecentProjectsMenuModel() {
 		super( java.util.UUID.fromString( "f94dda45-71e1-48df-9291-a8681b08f1c0" ) );
 	}
+	
 	@Override
-	protected void handleMenuSelected(javax.swing.event.MenuEvent e, edu.cmu.cs.dennisc.croquet.Menu<edu.cmu.cs.dennisc.croquet.MenuModel> menu) {
-		super.handleMenuSelected(e, menu);
+	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		java.util.List<String> paths = org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.getValue();
 		final int N = paths.size();
 		edu.cmu.cs.dennisc.croquet.Model[] models = new edu.cmu.cs.dennisc.croquet.Model[ N ];
@@ -66,8 +66,13 @@ public class RecentProjectsMenuModel extends edu.cmu.cs.dennisc.croquet.MenuMode
 			java.io.File file = new java.io.File( path );
 			models[ i ] = org.alice.ide.croquet.models.projecturi.OpenRecentProjectOperation.getInstance( file.toURI() );
 		}
-		menu.getAwtComponent().removeAll();
-		edu.cmu.cs.dennisc.croquet.Application.addMenuElements( menu, models );
+		edu.cmu.cs.dennisc.croquet.Application.addMenuElements( menuItemContainer, models );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: RecentProjectsMenuModel handleMenuSelected" );
+		super.handleShowing( menuItemContainer, e );
+	}
+	@Override
+	protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		menuItemContainer.forgetAndRemoveAllMenuItems();
+		super.handleHiding( menuItemContainer, e );
 	}
 }
