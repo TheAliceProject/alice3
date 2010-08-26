@@ -43,6 +43,7 @@
 package org.alice.interact.handle;
 
 
+import org.alice.apis.moveandturn.TraditionalStyle;
 import org.alice.ide.IDE;
 import org.alice.interact.DoubleTargetBasedAnimation;
 import org.alice.interact.GlobalDragAdapter;
@@ -50,11 +51,13 @@ import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
 
+import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
@@ -77,7 +80,7 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	protected Transformable standUpReference = new Transformable();
 	protected Transformable snapReference = new Transformable();
 	
-	protected DoubleTargetBasedAnimation lengthAnimation;
+	protected DoubleInterruptibleAnimation lengthAnimation;
 	
 	public LinearDragHandle( )
 	{
@@ -119,31 +122,20 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	
 	protected abstract void createShape();
 	
-	@Override
-	protected void createAnimations()
-	{
-		super.createAnimations();
-		this.lengthAnimation = new DoubleTargetBasedAnimation( new Double(this.distanceFromOrigin) ){
-			@Override
-			protected void updateValue( Double value ) {
-				if (LinearDragHandle.this.manipulatedObject != null)
-				{
-					LinearDragHandle.this.setSize(value);
-				}
-			}
-		};
-		this.animator.addFrameObserver( this.lengthAnimation );
-	}
-	
 	protected void setSize(double size)
 	{
 		this.distanceFromOrigin = size;
 		this.positionRelativeToObject();
 	}
 	
+	protected double getSize()
+	{
+		return this.distanceFromOrigin;
+	}
+	
 	protected double getHandleLength()
 	{
-		if (this.manipulatedObject != null)
+		if (this.getParentTransformable() != null)
 		{
 			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
 			Vector3 desiredHandleValues = new Vector3(0.0d, 0.0d, 0.0d);
@@ -190,15 +182,47 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 		return this.distanceFromOrigin;
 	}
 	
+	protected void animateHandleToLength(double desiredLength)
+	{
+		if (this.animator == null || this.getParentTransformable() == null)
+		{
+			return;
+		}
+//		PrintUtilities.println("\n"+this.hashCode()+":"+this+" "+(this.isHandleVisible()? "VISIBLE" : "INVISIBLE")+" Animating to "+desiredLength+" around "+this.manipulatedObject);
+		double currentLength = this.getSize();
+		//Check to see if the animation is going to get us to the desired value
+		if (this.lengthAnimation != null && this.lengthAnimation.isActive() && this.lengthAnimation.matchesTarget(desiredLength))
+		{
+			return;
+		}
+		//The animation is not going to get us to the desired value, so see if we're already there
+		if (currentLength == desiredLength)
+		{
+			return;
+		}
+		//Stop any existing animation
+		if (this.lengthAnimation != null && this.lengthAnimation.isActive())
+		{
+			this.lengthAnimation.cancel();
+		}
+		//Make a new animation and launch it
+		this.lengthAnimation = new DoubleInterruptibleAnimation(ANIMATION_DURATION, TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentLength, desiredLength)
+		{
+			@Override
+			protected void updateValue(Double v) 
+			{
+				LinearDragHandle.this.setSize(v);
+			}
+		};
+		this.animator.invokeLater(this.lengthAnimation, null);
+	}
+	
 	@Override
 	protected void updateVisibleState(HandleRenderState renderState)
 	{
 		super.updateVisibleState(renderState);
-		if (this.manipulatedObject != null && this.lengthAnimation != null)
-		{
-			double endHandleLength = this.isRenderable() ? this.getHandleLength() : 0.0d;
-			this.lengthAnimation.setTarget( endHandleLength );
-		}
+		double desiredLength = this.isRenderable() ? this.getHandleLength() : 0.0d;
+		animateHandleToLength(desiredLength);
 	}
 	
 	public Vector3 getDragAxis()
@@ -209,20 +233,20 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	@Override
 	public ReferenceFrame getReferenceFrame()
 	{
-		if (this.manipulatedObject != null)
+		if (this.getParentTransformable() != null)
 		{
 			if (this.dragDescription.type == MovementType.STOOD_UP)
 			{
-				this.standUpReference.setParent( this.manipulatedObject );
+				this.standUpReference.setParent( this.getParentTransformable() );
 				this.standUpReference.localTransformation.setValue( AffineMatrix4x4.createIdentity() );
 				this.standUpReference.setAxesOnlyToStandUp();
 				return this.standUpReference;
 			}
 			else if (this.dragDescription.type == MovementType.ABSOLUTE)
 			{
-				this.standUpReference.setParent( this.manipulatedObject.getRoot() );
+				this.standUpReference.setParent( this.getParentTransformable().getRoot() );
 				AffineMatrix4x4 location = AffineMatrix4x4.createIdentity();
-				location.translation.set( this.manipulatedObject.getTranslation( AsSeenBy.SCENE ) );
+				location.translation.set( this.getParentTransformable().getTranslation( AsSeenBy.SCENE ) );
 				this.standUpReference.localTransformation.setValue( location );
 				return this.standUpReference;
 			}
@@ -237,27 +261,27 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	@Override
 	public ReferenceFrame getSnapReferenceFrame()
 	{
-		if (this.manipulatedObject != null)
+		if (this.getParentTransformable() != null)
 		{
 			if (this.dragDescription.type == MovementType.STOOD_UP)
 			{
-				this.snapReference.setParent( this.manipulatedObject.getRoot() );
-				this.snapReference.setTransformation(this.manipulatedObject.getAbsoluteTransformation(), AsSeenBy.SCENE);
+				this.snapReference.setParent( this.getParentTransformable().getRoot() );
+				this.snapReference.setTransformation(this.getParentTransformable().getAbsoluteTransformation(), AsSeenBy.SCENE);
 				this.snapReference.setAxesOnlyToStandUp();
 				this.snapReference.setTranslationOnly(0, 0, 0, AsSeenBy.SCENE);
 				return this.snapReference;
 			}
 			else if (this.dragDescription.type == MovementType.ABSOLUTE)
 			{
-				this.snapReference.setParent( this.manipulatedObject.getRoot() );
+				this.snapReference.setParent( this.getParentTransformable().getRoot() );
 				AffineMatrix4x4 location = AffineMatrix4x4.createIdentity();
 				this.snapReference.localTransformation.setValue( location );
 				return this.snapReference;
 			}
 			else
 			{
-				this.snapReference.setParent( this.manipulatedObject.getRoot() );
-				this.snapReference.setTransformation(this.manipulatedObject.getAbsoluteTransformation(), AsSeenBy.SCENE);
+				this.snapReference.setParent( this.getParentTransformable().getRoot() );
+				this.snapReference.setTransformation(this.getParentTransformable().getAbsoluteTransformation(), AsSeenBy.SCENE);
 				this.snapReference.setTranslationOnly(0, 0, 0, AsSeenBy.SCENE);
 				return this.snapReference;
 			}
@@ -268,7 +292,7 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	@Override
 	public void positionRelativeToObject()
 	{
-		if (this.manipulatedObject != null)
+		if (this.getParentTransformable() != null)
 		{
 			Vector3 translation = Vector3.createMultiplication( this.dragAxis, this.distanceFromOrigin + this.offsetPadding );
 			this.setTransformation( this.getTransformationForAxis( this.dragAxis ), this.getReferenceFrame() );
@@ -279,15 +303,14 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	@Override
 	 public void resizeToObject()
 	{
-		if (this.manipulatedObject != null)
+		if (this.getParentTransformable() != null)
 		{
-			double handleLength = this.getHandleLength();
-			this.setSize( handleLength );
 			if (this.lengthAnimation != null)
 			{
-				this.lengthAnimation.setCurrentValue( this.distanceFromOrigin );
-				this.lengthAnimation.setTarget( this.distanceFromOrigin );
+				this.lengthAnimation.complete(null);
 			}
+			double handleLength = this.getHandleLength();
+			this.setSize( handleLength );
 		}
 	}
 	
