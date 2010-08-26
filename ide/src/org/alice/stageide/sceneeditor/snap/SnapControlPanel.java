@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.sceneeditor.viewmanager;
+package org.alice.stageide.sceneeditor.snap;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -55,7 +55,6 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.alice.interact.SnapState;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.croquet.BooleanState;
@@ -117,17 +116,19 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 		this.snapAngleSpinner.setMinimumSize(spinnerSize);
 		this.snapAngleSpinner.setMaximumSize(spinnerSize);
 		
+		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( SnapControlPanel.class.getPackage().getName() + ".snap" );
+		
 		LineAxisPanel snapToGridPanel = new LineAxisPanel();
 		snapToGridPanel.setBorder(null);
 		snapToGridPanel.addComponent(this.snapState.getShowSnapGridState().createCheckBox());
-		this.gridSizeLabel = new Label("   Grid Spacing: ");
+		this.gridSizeLabel = new Label("   "+resourceBundle.getString("gridSpacing")+" ");
 		snapToGridPanel.addComponent(this.gridSizeLabel);
 		snapToGridPanel.addComponent(new SwingAdapter(this.gridSizeSpinner));
 		
 		LineAxisPanel rotationSnapPanel = new LineAxisPanel();
 		rotationSnapPanel.setBorder(null);
 		rotationSnapPanel.addComponent(this.snapState.getIsRotationSnapEnabledState().createCheckBox());
-		this.snapAngleLabel = new Label("   Angle Snap:  ");
+		this.snapAngleLabel = new Label("   "+resourceBundle.getString("angleSnap")+"  ");
 		rotationSnapPanel.addComponent(this.snapAngleLabel);
 		rotationSnapPanel.addComponent(new SwingAdapter(this.snapAngleSpinner));
 

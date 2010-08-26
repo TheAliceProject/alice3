@@ -74,6 +74,7 @@ public abstract class Formatter {
 	
 	public abstract boolean isTypeExpressionDesired();
 
+	public abstract String getTextForThis();
 	public abstract String getTextForNull();
 	protected abstract String getTextForCls( Class<?> cls );
 	public String getTextForType(edu.cmu.cs.dennisc.alice.ast.AbstractType<?, ?, ?> type) {

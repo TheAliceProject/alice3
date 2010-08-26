@@ -40,43 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.formatter;
 
-/**
- * @author Dennis Cosgrove
- */
-public class JavaFormatter extends Formatter {
+package org.alice.stageide.sceneeditor.snap;
+
+import edu.cmu.cs.dennisc.croquet.BooleanState;
+
+public class IsSnapToGridEnabledState extends BooleanState {
 	private static class SingletonHolder {
-		private static JavaFormatter instance = new JavaFormatter();
+		private static IsSnapToGridEnabledState instance = new IsSnapToGridEnabledState();
 	}
-	public static JavaFormatter getInstance() {
+	public static IsSnapToGridEnabledState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private JavaFormatter() {
-		super( new java.util.Locale( "en", "US", "java" ), "Java" );
-	}
-	@Override
-	protected String getTextForCls(java.lang.Class<?> cls) {
-		return cls.getSimpleName();
-	}
-	@Override
-	public String getTextForNull() {
-		return "null";
-	}
-	@Override
-	public String getTextForThis() {
-		return "this";
-	}
-	@Override
-	protected java.lang.String getTextForParameterDeclaredInJava( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJava parameterInJava ) {
-		return parameterInJava.getName();
-	}
-	@Override
-	protected String getTextForMethodReflectionProxy( edu.cmu.cs.dennisc.alice.ast.MethodReflectionProxy methodReflectionProxy ) {
-		return methodReflectionProxy.getName();
-	}
-	@Override
-	public boolean isTypeExpressionDesired() {
-		return true;
+	private IsSnapToGridEnabledState() {
+		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "60d5a5be-e1ec-4932-be62-f90e9bad22c7" ), true );
 	}
 }

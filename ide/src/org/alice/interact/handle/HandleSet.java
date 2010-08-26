@@ -44,6 +44,8 @@ package org.alice.interact.handle;
 
 import java.util.BitSet;
 
+import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
+
 /**
  * @author David Culyba
  */
@@ -129,23 +131,28 @@ public class HandleSet extends BitSet
 	{
 		if (set == RESIZE_INTERACTION)
 		{
-			return "Resize";
+			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
+			return resourceBundle.getString("resize");
 		}
 		else if (set == ROTATION_INTERACTION)
 		{
-			return "Rotation";
+			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
+			return resourceBundle.getString("rotation");
 		}
 		else if (set == TRANSLATION_INTERACTION)
 		{
-			return "Move";
+			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
+			return resourceBundle.getString("translation");
 		}
 		else if (set == DEFAULT_INTERACTION)
 		{
-			return "Default";
+			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
+			return resourceBundle.getString("default");
 		}
 		else if (set == GROUND_TRANSLATION_VISUALIZATION)
 		{
-			return "Ground Translation";
+			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
+			return resourceBundle.getString("groundTranslation");
 		}
 		else
 		{
