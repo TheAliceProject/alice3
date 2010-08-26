@@ -40,38 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package org.alice.stageide.croquet.models.sceneditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FillInFieldValueMenuModel extends FillInSingleExpressionMenuModel {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, FillInFieldValueMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized FillInFieldValueMenuModel getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		FillInFieldValueMenuModel rv = map.get( field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FillInFieldValueMenuModel( field );
-			map.put( field, rv );
-		}
-		return rv;
-	}
+public abstract class FillInFieldValueMenuModel extends org.alice.ide.croquet.models.ast.FillInSingleExpressionMenuModel {
 	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	private FillInFieldValueMenuModel( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	public FillInFieldValueMenuModel( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( java.util.UUID.fromString( "62ad42ef-01c8-450c-8560-7ba28c35c6e8" ) );
 		assert field != null;
 		this.field = field;
-	}
-
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
-		return edu.cmu.cs.dennisc.alice.Project.GROUP;
-	}
-
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
-		return null;
 	}
 	@Override
 	protected String getTitle() {
@@ -80,9 +59,5 @@ public class FillInFieldValueMenuModel extends FillInSingleExpressionMenuModel {
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
 		return this.field.getDesiredValueType();
-	}
-
-	public org.alice.ide.croquet.edits.ast.FillInMoreEdit createEdit( java.lang.Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		return new org.alice.ide.croquet.edits.ast.FillInMoreEdit( (edu.cmu.cs.dennisc.alice.ast.Expression)value );
 	}
 }
