@@ -52,7 +52,10 @@ import org.alice.apis.moveandturn.Marker;
 import org.alice.apis.moveandturn.Model;
 import org.alice.apis.moveandturn.Transformable;
 import org.alice.ide.IDE;
+import org.alice.ide.properties.PropertyAdapterUIController;
 import org.alice.ide.sceneeditor.AbstractInstantiatingSceneEditor;
+import org.alice.stageide.properties.MarkerColorAdapter;
+import org.alice.stageide.properties.ModelColorAdapter;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 import edu.cmu.cs.dennisc.croquet.GridBagPanel;
@@ -71,7 +74,7 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 	private Transformable selectedObject;
 	
 	private Label nameLabel;
-	private Label colorLabel;
+	private PropertyAdapterUIController colorController;
 	private Label opacityLabel;
 	private Label positionLabel;
 	private Label classLabel;
@@ -102,16 +105,6 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 				AbsoluteTransformationEvent absoluteTransformationEvent) 
 		{
 			updateTransformationInformation();
-		}
-	};
-	
-	private PropertyListener colorListener = new PropertyListener() 
-	{
-		public void propertyChanging(PropertyEvent e) {}
-		
-		public void propertyChanged(PropertyEvent e)
-		{
-			updateColorInformation();
 		}
 	};
 	
@@ -187,10 +180,12 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 		);
 		rowCount++;
 		
-		this.addComponent(new Label("Color:"), new GridBagConstraints( 
+		this.colorController = new PropertyAdapterUIController(null);
+		
+		this.addComponent(this.colorController, new GridBagConstraints( 
 				0, //gridX
 				rowCount, //gridY
-				1, //gridWidth
+				2, //gridWidth
 				1, //gridHeight
 				0.0, //weightX
 				0.0, //weightY
@@ -200,20 +195,7 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 				0, //ipadX
 				0 ) //ipadY
 		);
-		this.colorLabel = new Label("NO COLOR");
-		this.addComponent( this.colorLabel, new GridBagConstraints( 
-				1, //gridX
-				rowCount, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
+		
 		rowCount++;
 		
 		this.addComponent(new Label("Opacity:"), new GridBagConstraints( 
@@ -287,12 +269,10 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 			this.selectedObject.getSGTransformable().removeAbsoluteTransformationListener(this.transformationListener);
 			if (this.selectedObject instanceof Model)
 			{
-				((Model)this.selectedObject).getSGSingleAppearance().diffuseColor.removePropertyListener(this.colorListener);
 				((Model)this.selectedObject).getSGSingleAppearance().opacity.removePropertyListener(this.opacityListener);
 			}
 			else if (this.selectedObject instanceof Marker)
 			{
-				((Marker)this.selectedObject).getSGSingleAppearance().diffuseColor.removePropertyListener(this.colorListener);
 				((Marker)this.selectedObject).getSGSingleAppearance().opacity.removePropertyListener(this.opacityListener);
 			}
 		}
@@ -312,18 +292,26 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 			}
 			if( instance instanceof org.alice.apis.moveandturn.Model ) {
 				this.selectedObject = (org.alice.apis.moveandturn.Model)instance;
-				((Model)this.selectedObject).getSGSingleAppearance().diffuseColor.addPropertyListener(this.colorListener);
+				this.colorController.setPropertyAdapter(new ModelColorAdapter((Model)this.selectedObject));
 				((Model)this.selectedObject).getSGSingleAppearance().opacity.addPropertyListener(this.opacityListener);
 			}
 			else if( instance instanceof org.alice.apis.moveandturn.Marker ) {
 				this.selectedObject = (org.alice.apis.moveandturn.Marker)instance;
-				((Marker)this.selectedObject).getSGSingleAppearance().diffuseColor.addPropertyListener(this.colorListener);
+				this.colorController.setPropertyAdapter(new MarkerColorAdapter((Marker)this.selectedObject));
 				((Marker)this.selectedObject).getSGSingleAppearance().opacity.addPropertyListener(this.opacityListener);
+			}
+			else
+			{
+				this.colorController.setPropertyAdapter(null);
 			}
 			if (this.selectedObject != null)
 			{
 				this.selectedObject.getSGTransformable().addAbsoluteTransformationListener(this.transformationListener);
 			}
+		}
+		else
+		{
+			this.colorController.setPropertyAdapter(null);
 		}
 		setUIFromObject();
 	}
@@ -341,22 +329,22 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 		this.positionLabel.setText("("+format.format(position.x)+", "+format.format(position.y)+","+format.format(position.z)+")");
 	}
 	
-	private void updateColorInformation()
-	{
-		this.colorLabel.getAwtComponent().setOpaque(true);
-		if( selectedObject instanceof org.alice.apis.moveandturn.Marker ) 
-		{
-			org.alice.apis.moveandturn.Marker marker = (org.alice.apis.moveandturn.Marker)selectedObject;
-			this.colorLabel.setText("                  ");
-			this.colorLabel.setBackgroundColor(marker.getMarkerColor().getAsAWTColor());
-		}
-		else if( selectedObject instanceof org.alice.apis.moveandturn.Model ) 
-		{
-			org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)selectedObject; 
-			this.colorLabel.setText("                  ");
-			this.colorLabel.setBackgroundColor(model.getColor().getInternal().getAsAWTColor());
-		}
-	}
+//	private void updateColorInformation()
+//	{
+//		this.colorLabel.getAwtComponent().setOpaque(true);
+//		if( selectedObject instanceof org.alice.apis.moveandturn.Marker ) 
+//		{
+//			org.alice.apis.moveandturn.Marker marker = (org.alice.apis.moveandturn.Marker)selectedObject;
+//			this.colorLabel.setText("                  ");
+//			this.colorLabel.setBackgroundColor(marker.getMarkerColor().getAsAWTColor());
+//		}
+//		else if( selectedObject instanceof org.alice.apis.moveandturn.Model ) 
+//		{
+//			org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)selectedObject; 
+//			this.colorLabel.setText("                  ");
+//			this.colorLabel.setBackgroundColor(model.getColor().getInternal().getAsAWTColor());
+//		}
+//	}
 	
 	private void updateOpacityInformation()
 	{
@@ -387,13 +375,10 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 		if (this.selectedObject != null)
 		{
 			updateTransformationInformation();
-			updateColorInformation();
 			updateOpacityInformation();
 		}
 		else
 		{
-			this.colorLabel.setText("NO OBJECT, NO COLOR");
-			this.colorLabel.getAwtComponent().setOpaque(false);
 			this.positionLabel.setText("NO OBJECT, NO POSITION");
 			this.opacityLabel.setText("NO OBJECT, NO OPACITY");
 		}

@@ -41,8 +41,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.sceneeditor.propertiesmanager;
+package org.alice.ide.properties;
 
-public class SceneObjectPropertyManager {
+public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, O> {
+	
+	public AbstractColorPropertyAdapter(O instance)
+	{
+		super("Color", instance);
+	}
+	
+	public Class<edu.cmu.cs.dennisc.color.Color4f> getPropertyType()
+	{
+		return edu.cmu.cs.dennisc.color.Color4f.class;
+	}
 
 }
