@@ -40,22 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VariablePane extends LocalPane<edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice> {
-	public VariablePane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
-		super( variable );
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.VariableAccess.class ) );
+public class ContextManager {
+	private ContextManager() {
+		throw new AssertionError();
 	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
-		return this.getTransient().valueType.getValue();
+	
+	public static ModelContext< ? > getRootContext() {
+		return null;
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.getTransient() );
+	
+	public static <A extends Application> A createAndShowApplication( Class<A> cls, String[] args ) throws IllegalAccessException, InstantiationException {
+		A application = cls.newInstance();
+		//application.initialize( args );
+		//application.getFrame().setVisible( true );
+		return application;
 	}
 }

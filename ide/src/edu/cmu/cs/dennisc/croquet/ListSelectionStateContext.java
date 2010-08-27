@@ -57,4 +57,12 @@ public class ListSelectionStateContext< T > extends ModelContext<ListSelectionSt
 		this.nextIndex = nextIndex;
 		this.nextItem = nextItem;
 	}
+	@Override
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		super.appendRepr( rv );
+		rv.append( " [" );
+		rv.append( this.getModel().getSelectedItem() );
+		rv.append( "]" );
+		return rv;
+	}
 }

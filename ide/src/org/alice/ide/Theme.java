@@ -40,22 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package org.alice.ide;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VariablePane extends LocalPane<edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice> {
-	public VariablePane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
-		super( variable );
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.VariableAccess.class ) );
-	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
-		return this.getTransient().valueType.getValue();
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.getTransient() );
-	}
+public interface Theme {
+	public java.awt.Color getProcedureColor();
+	public java.awt.Color getFunctionColor();
+	public java.awt.Color getConstructorColor();
+	public java.awt.Color getFieldColor();
+	public java.awt.Color getLocalColor();
+	public java.awt.Color getParameterColor();
+	public java.awt.Paint getPaintFor( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int x, int y, int width, int height );
+	public java.awt.Color getColorFor( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls );
+	public java.awt.Color getColorFor( edu.cmu.cs.dennisc.alice.ast.Node node );
+	public java.awt.Color getCommentForegroundColor();
+	public java.awt.Color getCodeDeclaredInAliceColor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code );
 }

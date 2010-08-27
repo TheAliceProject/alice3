@@ -105,7 +105,7 @@ abstract class MethodsContentPanel extends OrganizedByTypeMembersContentPanel {
 
 class ProceduresContentPanel extends MethodsContentPanel {
 	public ProceduresContentPanel() {
-		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getProcedureColor() );
+		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getTheme().getProcedureColor() );
 	}
 	@Override
 	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
@@ -115,7 +115,7 @@ class ProceduresContentPanel extends MethodsContentPanel {
 
 class FunctionsContentPanel extends MethodsContentPanel {
 	public FunctionsContentPanel() {
-		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getFunctionColor() );
+		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getTheme().getFunctionColor() );
 	}
 	@Override
 	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
@@ -125,7 +125,7 @@ class FunctionsContentPanel extends MethodsContentPanel {
 
 class FieldsContentPanel extends OrganizedByTypeMembersContentPanel {
 	public FieldsContentPanel() {
-		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getFieldColor() );
+		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getTheme().getFieldColor() );
 	}
 	@Override
 	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {

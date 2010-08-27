@@ -93,7 +93,7 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 	}
 	@Override
 	protected java.awt.Paint getEnabledBackgroundPaint( int x, int y, int width, int height ) {
-		return getIDE().getPaintFor( this.statementCls, x, y, width, height );
+		return getIDE().getTheme().getPaintFor( this.statementCls, x, y, width, height );
 	}
 
 	@Override

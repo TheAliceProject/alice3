@@ -161,30 +161,6 @@ public abstract class Application {
 		//this.frame.pack();
 	}
 
-//	public static interface LocaleObserver {
-//		public void localeChanging( java.util.Locale previousLocale, java.util.Locale nextLocale );
-//		public void localeChanged( java.util.Locale previousLocale, java.util.Locale nextLocale );
-//	}
-//	private java.util.List< LocaleObserver > localeObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-//	public void addLocaleObserver( LocaleObserver localeObserver ) {
-//		this.localeObservers.add( localeObserver );
-//	}
-//	public void removeLocaleObserver( LocaleObserver localeObserver ) {
-//		this.localeObservers.remove( localeObserver );
-//	}
-//	public void setLocale( java.util.Locale locale ) {
-//		java.util.Locale previousLocale = this.frame.getAwtComponent().getLocale();
-//
-//		for( LocaleObserver localeObserver : this.localeObservers ) {
-//			localeObserver.localeChanging( previousLocale, locale );
-//		}
-//		this.frame.getAwtComponent().setLocale( locale );
-//		//todo: remove
-//		javax.swing.JComponent.setDefaultLocale( locale );
-//		for( LocaleObserver localeObserver : this.localeObservers ) {
-//			localeObserver.localeChanged( previousLocale, locale );
-//		}
-//	}
 	public void setLocale( java.util.Locale locale ) {
 		if( locale != null ) {
 			if( locale.equals( java.util.Locale.getDefault() ) && locale.equals( javax.swing.JComponent.getDefaultLocale() ) ) {
@@ -225,7 +201,6 @@ public abstract class Application {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: locale==null" );
 		}
 	}
-
 
 	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
 	protected abstract void handleAbout( java.util.EventObject e );

@@ -68,8 +68,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 		performSceneEditorGeneratedSetUpMethodNameSet.add( SCENE_EDITOR_GENERATED_SET_UP_METHOD_NAME );
 		performSceneEditorGeneratedSetUpMethodNameSet.add( EDITOR_GENERATED_SET_UP_METHOD_NAME );
-//		performSceneEditorGeneratedSetUpMethodNameSet.add( "performSceneEditorGeneratedSetUp" );
-//		performSceneEditorGeneratedSetUpMethodNameSet.add( "performEditorGeneratedSetUp" );
 		performSceneEditorGeneratedSetUpMethodNameSet.add( GENERATED_SET_UP_METHOD_NAME );
 	}
 
@@ -77,7 +75,101 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return IDE.singleton;
 	}
 
+	public IDE() {
+		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
+		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
+		assert IDE.singleton == null;
+		IDE.singleton = this;
+
+		//initialize locale
+		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<java.util.Locale> () {
+			public void changed(java.util.Locale nextValue) {
+				edu.cmu.cs.dennisc.croquet.Application.getSingleton().setLocale( nextValue );
+			}
+		} );
+
+		this.promptForLicenseAgreements();
+
+		//org.alice.ide.preferences.GeneralPreferences.getSingleton().desiredRecentProjectCount.setAndCommitValue( 10 );
+		//org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.clear();
+
+		this.getRunOperation().setEnabled( false );
+
+		this.sceneEditor = this.createSceneEditor();
+		this.galleryBrowser = this.createGalleryBrowser( this.getGalleryRoot() );
+		this.membersEditor = this.createClassMembersEditor();
+		this.editorsTabSelectionState = this.createEditorsTabSelectionState();
+		this.ubiquitousPane = this.createUbiquitousPane();
+
+		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.editorsTabSelectionState.createEditorsFolderTabbedPane();
+		tabbedPane.scaleFont( 2.0f );
+
+		final int MINIMUM_SIZE = 24;
+		this.right.getAwtComponent().setMinimumSize( new java.awt.Dimension( MINIMUM_SIZE, MINIMUM_SIZE ) );
+		this.left.getAwtComponent().setMinimumSize( new java.awt.Dimension( MINIMUM_SIZE, MINIMUM_SIZE ) );
+
+		this.right.addComponent( this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
+		this.right.addComponent( tabbedPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+		//this.right.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "hello" ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
+
+		//edu.cmu.cs.dennisc.swing.InputPane.setDefaultOwnerFrame( this );
+		this.vmForRuntimeProgram = createVirtualMachineForRuntimeProgram();
+		this.vmForSceneEditor = createVirtualMachineForSceneEditor();
+
+		//this.setLocale( new java.util.Locale( "en", "US", "java" ) );
+		//javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "en", "US", "java" ) );
+
+		this.accessibleListState.addAndInvokeValueObserver( this.accessibleSelectionObserver );
+		
+
+		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
+			public void changing( boolean nextValue ) {
+			}
+			public void changed( boolean nextValue ) {
+				setSceneEditorExpanded( nextValue );
+			}
+		} );
+
+		this.addProjectObserver( new ProjectObserver() {
+			public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
+			}
+			public void projectOpened( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
+				getRunOperation().setEnabled( nextProject != null );
+			}
+		} );
+		
+		this.editorsTabSelectionState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
+			public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextValue ) {
+				refreshAccessibles();
+			}
+		} );
+	}
+
+	private Theme theme;
+	protected Theme createTheme() {
+		return new DefaultTheme();
+	}
+	public Theme getTheme() {
+		if( this.theme != null ) {
+			//pass
+		} else {
+			this.theme = this.createTheme();
+		}
+		return this.theme;
+	}
+
 	
+	
+	@Override
+	public void loadProjectFrom( java.net.URI uri ) {
+		super.loadProjectFrom( uri );
+		edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = getSceneField();
+		if( sceneField != null ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractMethod runMethod = sceneField.getValueType().getDeclaredMethod( "run" );
+			setFocusedCode( runMethod );
+		}
+	}
+
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createPredeterminedExpressionIfAppropriate( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
 		return null;
 	}
@@ -100,15 +192,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	
 	
 	protected abstract edu.cmu.cs.dennisc.croquet.Operation<?> createRestartOperation();
-	public abstract edu.cmu.cs.dennisc.croquet.Operation<?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
-
-//	private edu.cmu.cs.dennisc.croquet.Operation<?> preferencesOperation = this.createPreferencesOperation();
 	private edu.cmu.cs.dennisc.croquet.Operation<?> aboutOperation = this.createAboutOperation();
 	private edu.cmu.cs.dennisc.croquet.Operation<?> restartOperation = this.createRestartOperation();
 
-//	protected edu.cmu.cs.dennisc.croquet.Operation<?> createPreferencesOperation() {
-//		return new org.alice.ide.operations.preferences.PreferencesOperation();
-//	}
+	public abstract edu.cmu.cs.dennisc.croquet.Operation<?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
+
+
 	protected abstract edu.cmu.cs.dennisc.croquet.Operation<?> createAboutOperation();
 
 	public abstract edu.cmu.cs.dennisc.croquet.DialogOperation getRunOperation();
@@ -487,75 +576,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	};
 	
-	public IDE() {
-		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
-		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
-		assert IDE.singleton == null;
-		IDE.singleton = this;
-
-		//initialize locale
-		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<java.util.Locale> () {
-			public void changed(java.util.Locale nextValue) {
-				edu.cmu.cs.dennisc.croquet.Application.getSingleton().setLocale( nextValue );
-			}
-		} );
-
-		this.promptForLicenseAgreements();
-
-		//org.alice.ide.preferences.GeneralPreferences.getSingleton().desiredRecentProjectCount.setAndCommitValue( 10 );
-		//org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.clear();
-
-		this.getRunOperation().setEnabled( false );
-
-		this.sceneEditor = this.createSceneEditor();
-		this.galleryBrowser = this.createGalleryBrowser( this.getGalleryRoot() );
-		this.membersEditor = this.createClassMembersEditor();
-		this.editorsTabSelectionState = this.createEditorsTabSelectionState();
-		this.ubiquitousPane = this.createUbiquitousPane();
-
-		edu.cmu.cs.dennisc.croquet.AbstractTabbedPane tabbedPane = this.editorsTabSelectionState.createEditorsFolderTabbedPane();
-		tabbedPane.scaleFont( 2.0f );
-
-		final int MINIMUM_SIZE = 24;
-		this.right.getAwtComponent().setMinimumSize( new java.awt.Dimension( MINIMUM_SIZE, MINIMUM_SIZE ) );
-		this.left.getAwtComponent().setMinimumSize( new java.awt.Dimension( MINIMUM_SIZE, MINIMUM_SIZE ) );
-
-		this.right.addComponent( this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START );
-		this.right.addComponent( tabbedPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
-		//this.right.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "hello" ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
-
-		//edu.cmu.cs.dennisc.swing.InputPane.setDefaultOwnerFrame( this );
-		this.vmForRuntimeProgram = createVirtualMachineForRuntimeProgram();
-		this.vmForSceneEditor = createVirtualMachineForSceneEditor();
-
-		//this.setLocale( new java.util.Locale( "en", "US", "java" ) );
-		//javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "en", "US", "java" ) );
-
-		this.accessibleListState.addAndInvokeValueObserver( this.accessibleSelectionObserver );
-		
-
-		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
-			public void changing( boolean nextValue ) {
-			}
-			public void changed( boolean nextValue ) {
-				setSceneEditorExpanded( nextValue );
-			}
-		} );
-
-		this.addProjectObserver( new ProjectObserver() {
-			public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
-			}
-			public void projectOpened( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
-				getRunOperation().setEnabled( nextProject != null );
-			}
-		} );
-		
-		this.editorsTabSelectionState.addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
-			public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextValue ) {
-				refreshAccessibles();
-			}
-		} );
-	}
 
 	
 	public abstract org.alice.ide.cascade.CascadeManager getCascadeManager();
@@ -581,16 +601,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public boolean isJava() {
-		//return this.getFrame().getAwtComponent().getLocale().getVariant().equals( "java" );
 		return org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem() == org.alice.ide.formatter.JavaFormatter.getInstance();
 	}
-//	public String getTextForNull() {
-//		if( isJava() ) {
-//			return "null";
-//		} else {
-//			return "<unset>";
-//		}
-//	}
 
 	private java.io.File applicationDirectory = null;
 
@@ -661,8 +673,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private edu.cmu.cs.dennisc.croquet.Component< ? > currentDropReceptorComponent;
 
 	protected boolean isFauxStencilDesired() {
-		return this.isDragInProgress;
-		//return true;
+		return this.isDragInProgress();
 	}
 
 	private static java.awt.Stroke THIN_STROKE = new java.awt.BasicStroke( 1.0f );
@@ -1006,8 +1017,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	//	public abstract void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation );
 	//	public abstract void handleRestart( edu.cmu.cs.dennisc.croquet.ModelContext context );
 
-	private boolean isDragInProgress = false;
-
 	private edu.cmu.cs.dennisc.alice.ast.Comment commentThatWantsFocus = null;
 
 	public edu.cmu.cs.dennisc.alice.ast.Comment getCommentThatWantsFocus() {
@@ -1020,14 +1029,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	protected abstract void promptForLicenseAgreements();
 
 	private java.awt.Window splashScreen;
-
 	public java.awt.Window getSplashScreen() {
 		return this.splashScreen;
 	}
 	public void setSplashScreen( java.awt.Window splashScreen ) {
 		this.splashScreen = splashScreen;
 	}
-
 	@Override
 	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
 		if( this.splashScreen != null ) {
@@ -1050,15 +1057,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	protected void handleQuit( java.util.EventObject e ) {
 		this.preservePreferences();
-//		preservePreference( this.isEmphasizingClassesOperation );
-//		preservePreference( this.isExpressionTypeFeedbackDesiredOperation );
-//		preservePreference( this.isOmissionOfThisForFieldAccessesDesiredState );
-//		preservePreference( this.isDefaultFieldNameGenerationDesiredOperation );
-
 		org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().fire( e );
-		//this.performIfAppropriate( this.getExitOperation(), e, true );
 	}
-	//	protected abstract void handleWindowClosing();
 
 	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.DragComponent source ) {
 		if( source instanceof org.alice.stageide.gallerybrowser.GalleryDragComponent ) {
@@ -1131,75 +1131,16 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return this.vmForSceneEditor;
 	}
 
-	public void revert() {
-		java.io.File file = this.getFile();
-		if( file != null ) {
-			this.loadProjectFrom( file );
-		} else {
-			this.showMessageDialog( "You must have a project open in order to revert.", "Revert", edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION );
-		}
-	}
-
 	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getFocusedCode() {
 		if( org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().getValue() ) {
 			return this.getPerformEditorGeneratedSetUpMethod();
 		} else {
 			return this.getEditorsTabSelectionState().getSelectedItem();
 		}
-		//		org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)this.getEditorsTabSelectionState().getCurrentTabStateOperation().getSingletonView();
-		//		if( codeEditor != null ) {
-		//			return codeEditor.getCode();
-		//		} else {
-		//			return null;
-		//		}
 	}
 	public void setFocusedCode( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextFocusedCode ) {
 		this.getEditorsTabSelectionState().edit( nextFocusedCode, false );
 	}
-	//
-	//	public void setFocusedCode( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextFocusedCode ) {
-	//		if( nextFocusedCode == this.focusedCode ) {
-	//			//pass
-	//		} else {
-	//			edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode = this.focusedCode;
-	//			for( CodeInFocusObserver codeInFocusObserver : this.codeInFocusObservers ) {
-	//				codeInFocusObserver.focusedCodeChanging( previousCode, nextFocusedCode );
-	//			}
-	//			this.focusedCode = nextFocusedCode;
-	//			for( CodeInFocusObserver codeInFocusObserver : this.codeInFocusObservers ) {
-	//				codeInFocusObserver.focusedCodeChanged( previousCode, nextFocusedCode );
-	//			}
-	//
-	//		}
-	//	}
-
-	//	@Deprecated
-	//	public edu.cmu.cs.dennisc.alice.ast.AbstractField getFieldSelection() {
-	//		return this.fieldSelectionState.getValue();
-	//	}
-	//
-	//	@Deprecated
-	//	public void setFieldSelection( edu.cmu.cs.dennisc.alice.ast.AbstractField fieldSelection ) {
-	////		edu.cmu.cs.dennisc.alice.ast.AbstractField previousField = this.getFieldSelection();
-	////		for( FieldSelectionObserver fieldSelectionObserver : this.fieldSelectionObservers ) {
-	////			fieldSelectionObserver.fieldSelectionChanging( previousField, fieldSelection );
-	////		}
-	//		this.fieldSelectionState.setValue( fieldSelection );
-	////		for( FieldSelectionObserver fieldSelectionObserver : this.fieldSelectionObservers ) {
-	////			fieldSelectionObserver.fieldSelectionChanged( previousField, fieldSelection );
-	////		}
-	//	}
-
-	//	public edu.cmu.cs.dennisc.alice.ast.AbstractTransient getTransientSelection() {
-	//		return this.transientSelection;
-	//	}
-	//
-	//	public void setTransientSelection( edu.cmu.cs.dennisc.alice.ast.AbstractTransient transientSelection ) {
-	//		org.alice.ide.event.TransientSelectionEvent e = new org.alice.ide.event.TransientSelectionEvent( this, this.transientSelection, transientSelection );
-	//		fireTransientSelectionChanging( e );
-	//		this.transientSelection = transientSelection;
-	//		fireTransientSelectionChanged( e );
-	//	}
 
 	@Override
 	public void ensureProjectCodeUpToDate() {
@@ -1372,117 +1313,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.currentDropReceptorComponent = null;
 	}
 
-	private java.util.Map< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node > mapUUIDToNode = new java.util.HashMap< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node >();
-
-	private static final java.awt.Color DEFAULT_PROCEDURE_COLOR = new java.awt.Color( 0xb2b7d9 );
-	private static final java.awt.Color DEFAULT_FUNCTION_COLOR = new java.awt.Color( 0xb0c9a4 );
-	private static final java.awt.Color DEFAULT_CONSTRUCTOR_COLOR = new java.awt.Color( 0xadc0ab );
-	private static final java.awt.Color DEFAULT_FIELD_COLOR = new java.awt.Color( 230, 230, 210 );
-
-	public java.awt.Color getProcedureColor() {
-		return DEFAULT_PROCEDURE_COLOR;
-	}
-	public java.awt.Color getFunctionColor() {
-		return DEFAULT_FUNCTION_COLOR;
-	}
-	public java.awt.Color getConstructorColor() {
-		return DEFAULT_CONSTRUCTOR_COLOR;
-	}
-	public java.awt.Color getFieldColor() {
-		return DEFAULT_FIELD_COLOR;
-	}
-	public java.awt.Color getLocalColor() {
-		return getFieldColor();
-	}
-	public java.awt.Color getParameterColor() {
-		return getFieldColor();
-	}
-
-	public java.awt.Paint getPaintFor( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int x, int y, int width, int height ) {
-		java.awt.Color color = this.getColorFor( cls );
-		if( edu.cmu.cs.dennisc.alice.ast.Comment.class.isAssignableFrom( cls ) ) {
-			return color;
-		} else {
-			if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.DoTogether.class, edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether.class, edu.cmu.cs.dennisc.alice.ast.DoInThread.class ) ) {
-				java.awt.Color colorA = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 0.9, 0.85 );
-				java.awt.Color colorB = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 1.0, 1.15 );
-				return new java.awt.GradientPaint( x, y, colorA, x + 200, y, colorB );
-			} else {
-				return color;
-				//return new java.awt.GradientPaint( x, y, colorB, x, y + 64, color );
-			}
-		}
-	}
-	public java.awt.Color getColorFor( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls ) {
-		if( edu.cmu.cs.dennisc.alice.ast.Statement.class.isAssignableFrom( cls ) ) {
-			if( edu.cmu.cs.dennisc.alice.ast.Comment.class.isAssignableFrom( cls ) ) {
-				return edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 245 );
-			} else {
-//				if( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class.isAssignableFrom( cls ) ) {
-//					return new java.awt.Color( 255, 230, 180 );
-////				} else if( edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement.class.isAssignableFrom( cls ) ) {
-////					return new java.awt.Color( 255, 230, 180 );
-//				} else {
-					return new java.awt.Color( 0xd3d7f0 );
-					//return new java.awt.Color( 255, 255, 210 );
-//				}
-			}
-		} else if( edu.cmu.cs.dennisc.alice.ast.Expression.class.isAssignableFrom( cls ) ) {
-			if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) ) {
-				return new java.awt.Color( 0xd3e7c7 );
-			} else if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplement.class, edu.cmu.cs.dennisc.alice.ast.StringConcatenation.class ) ) {
-				return new java.awt.Color( 0xDEEBD3 );
-			} else if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class, edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation.class ) ) {
-				return new java.awt.Color( 0xbdcfb3 );
-			} else if( edu.cmu.cs.dennisc.alice.ast.ResourceExpression.class.isAssignableFrom( cls ) ) {
-				return new java.awt.Color( 0xffffff );
-			} else {
-				if( edu.cmu.cs.dennisc.alice.ast.NullLiteral.class.isAssignableFrom( cls ) ) {
-					return java.awt.Color.RED;
-				} else {
-					//return new java.awt.Color( 255, 255, 210 );
-					return new java.awt.Color( 0xfdf6c0 );
-				}
-			}
-		} else {
-			return java.awt.Color.BLUE;
-		}
-	}
-	public java.awt.Color getColorFor( edu.cmu.cs.dennisc.alice.ast.Node node ) {
-		if( node != null ) {
-			Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls = node.getClass();
-//			if( node instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-//				edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)node;
-//				if( fieldAccess.expression.getValue() instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
-//					//pass
-//				} else {
-//					cls = edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class;
-//				}
-//			}
-			return this.getColorFor( cls );
-		} else {
-			return java.awt.Color.RED;
-		}
-	}
-
-	public java.awt.Color getCommentForegroundColor() {
-		return new java.awt.Color( 0, 100, 0 );
-	}
-
-	public java.awt.Color getCodeDeclaredInAliceColor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-		if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
-			if( methodDeclaredInAlice.isProcedure() ) {
-				return getProcedureColor();
-			} else {
-				return getFunctionColor();
-			}
-		} else if( code instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {
-			return getConstructorColor();
-		} else {
-			return java.awt.Color.GRAY;
-		}
-	}
 	private static <E extends edu.cmu.cs.dennisc.alice.ast.Node> E getAncestor( edu.cmu.cs.dennisc.alice.ast.Node node, Class< E > cls ) {
 		edu.cmu.cs.dennisc.alice.ast.Node ancestor = node.getParent();
 		while( ancestor != null ) {
@@ -1495,6 +1325,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return (E)ancestor;
 	}
 
+	private java.util.Map< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node > mapUUIDToNode = new java.util.HashMap< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node >();
 	protected void ensureNodeVisible( edu.cmu.cs.dennisc.alice.ast.Node node ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode nextFocusedCode = getAncestor( node, edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
 		if( nextFocusedCode != null ) {
@@ -1568,29 +1399,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return true;
 	}
 
-
-//	public boolean isDeclareFieldOfPredeterminedTypeSupported( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType ) {
-//		return true;
-//	}
-
-	//	def _isFieldNameFree( self, name ):
-	//		sceneType = self.getSceneType()
-	//		if sceneType:
-	//			for field in sceneType.fields.iterator():
-	//				if field.getName() == name:
-	//					return False
-	//		return True 
-	//
-	//	def _getAvailableFieldName( self, superClassBaseName ):
-	//		name = superClassBaseName[ 0 ].lower() + superClassBaseName[ 1: ]
-	//		rv = name
-	//		i = 2
-	//		while not self._isFieldNameFree( rv ):
-	//			rv = name + `i`
-	//			i += 1
-	//		return rv
-
-
 	public abstract boolean isInstanceCreationAllowableFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice );
 	public abstract edu.cmu.cs.dennisc.animation.Program createRuntimeProgram( edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType, int frameRate );
 
@@ -1616,43 +1424,5 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			this.updateNameClsPairsForRelationalFillIns( this.nameClsPairsForRelationalFillIns );
 		}
 		return this.nameClsPairsForRelationalFillIns;
-	}
-	@Override
-	public void loadProjectFrom( java.net.URI uri ) {
-		super.loadProjectFrom( uri );
-//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//			public void run() {
-				edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = getSceneField();
-				if( sceneField != null ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractMethod runMethod = sceneField.getValueType().getDeclaredMethod( "run" );
-					setFocusedCode( runMethod );
-				}
-//				final int N = fieldSelectionState.getItemCount();
-//				fieldSelectionState.setValue( fieldSelectionState.getItemAt( N - 1 ) );
-//			}
-//		} );
-		//todo: find a better solution to concurrent modification exception
-		//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-		//			public void run() {
-		//				edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = getSceneField();
-		//				if( sceneField != null ) {
-		//					edu.cmu.cs.dennisc.alice.ast.AbstractMethod runMethod = sceneField.getValueType().getDeclaredMethod( "run" );
-		//					IDE.this.setFocusedCode( runMethod );
-		//					java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = sceneField.getValueType().getDeclaredFields();
-		//					final int N = fields.size();
-		//					int i = N - 1;
-		//					while( i >= 0 ) {
-		//						edu.cmu.cs.dennisc.alice.ast.AbstractField field = fields.get( i );
-		//						if( field.getValueType().isArray() ) {
-		//							//pass
-		//						} else {
-		//							IDE.this.getFieldSelectionState().setValue( field );
-		//							break;
-		//						}
-		//						i--;
-		//					}
-		//				}
-		//			}
-		//		} );
 	}
 }

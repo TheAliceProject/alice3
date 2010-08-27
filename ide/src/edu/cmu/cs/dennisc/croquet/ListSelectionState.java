@@ -232,7 +232,10 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 		}
 		
 		public void setSelectedItem(Object item) {
-			if (item != this.getSelectedItem()) {
+			if( item != this.getSelectedItem() ) {
+				if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( item, this.getSelectedItem() ) ) {
+					throw new RuntimeException();
+				}
 				int selectedIndex = -1;
 				if( item != null ) {
 					final int N = this.getSize();

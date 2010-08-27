@@ -141,7 +141,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
 	public CreateTextPane() {
 		final int INSET = 16;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
-		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getFieldColor() );
+		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getTheme().getFieldColor() );
 		class TextField extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField {
 			public TextField( String text, String textForBlankCondition ) {
 				this.setText( text );

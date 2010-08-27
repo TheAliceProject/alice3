@@ -96,7 +96,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 	public CodeEditor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		this.code = code;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		java.awt.Color color = getIDE().getCodeDeclaredInAliceColor( this.code );
+		java.awt.Color color = getIDE().getTheme().getCodeDeclaredInAliceColor( this.code );
 		color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0f, 1.1f, 1.1f );
 		this.setBackgroundColor( color );
 	}
