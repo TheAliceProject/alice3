@@ -391,74 +391,18 @@ public class StageIDE extends org.alice.ide.IDE {
 			return false;
 		}
 	}
-//	public MoveAndTurnRuntimeProgram createRuntimeProgram( edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType, edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm ) {
-//		return new MoveAndTurnRuntimeProgram( sceneType, vm );
-//	}
-//	private int xLocation = 100;
-//	private int yLocation = 100;
-//
-//	protected void showInJDialog( MoveAndTurnRuntimeProgram rtProgram ) {
-//		this.disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
-//		try {
-//			rtProgram.showInJDialog( this.getFrame().getAwtWindow(), true, new String[] { "X_LOCATION=" + xLocation, "Y_LOCATION=" + yLocation } );
-//		} finally {
-//			this.enableRendering();
-//			try {
-//				this.xLocation = Integer.parseInt( rtProgram.getParameter( "X_LOCATION" ) );
-//			} catch( Throwable t ) {
-//				this.xLocation = 0;
-//			}
-//			try {
-//				this.yLocation = Integer.parseInt( rtProgram.getParameter( "Y_LOCATION" ) );
-//			} catch( Throwable t ) {
-//				this.yLocation = 0;
-//			}
-//		}
-//	}
-
-//	public void showInContainer( MoveAndTurnRuntimeProgram rtProgram, edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
-//		String[] args = {};
-//		rtProgram.showInAWTContainer( container.getAwtComponent(), args );
-//	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.DialogOperation getRunOperation() {
 		return org.alice.stageide.croquet.models.run.RunOperation.getInstance();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Operation<?> createRestartOperation() {
-		return new org.alice.stageide.croquet.models.run.RestartOperation();
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > getRestartOperation() {
+		return org.alice.stageide.croquet.models.run.RestartOperation.getInstance();
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Operation<?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
 		return new org.alice.stageide.croquet.models.run.PreviewMethodOperation( procedureInvocationTemplate );
 	}
-
-//	public final void handleRun( edu.cmu.cs.dennisc.croquet.ModelContext context ) {
-//		if( this.getProject() != null ) {
-//			this.ensureProjectCodeUpToDate();
-//			this.handleRun( context, this.getSceneType() );
-//		} else {
-//			this.showMessageDialog( "Please open a project first." );
-//		}
-//	}
-//	@Override
-//	public void handleRun( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
-//		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = this.createVirtualMachineForRuntimeProgram();
-//		vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.MouseButtonListener.class, org.alice.stageide.apis.moveandturn.event.MouseButtonAdapter.class );
-//		vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.KeyListener.class, org.alice.stageide.apis.moveandturn.event.KeyAdapter.class );
-//		vm.setEntryPointType( this.getProgramType() );
-//		MoveAndTurnRuntimeProgram rtProgram = this.createRuntimeProgram( sceneType, vm );
-//		showInJDialog( rtProgram );
-//	}
-//	@Override
-//	public void handleRestart( final edu.cmu.cs.dennisc.croquet.ModelContext context ) {
-//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//			public void run() {
-//				handleRun( context );
-//			}
-//		} );
-//	}
-//
 //	@Override
 //	public void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
 //		this.ensureProjectCodeUpToDate();
@@ -489,9 +433,10 @@ public class StageIDE extends org.alice.ide.IDE {
 	protected org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor() {
 		return new org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor();
 	}
+	
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Operation createAboutOperation() {
-		return new org.alice.stageide.croquet.models.help.AboutOperation();
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > getAboutOperation() {
+		return org.alice.stageide.croquet.models.help.AboutOperation.getInstance();
 	}
 
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType, String > mapTypeToText;

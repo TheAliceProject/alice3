@@ -90,9 +90,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 		this.promptForLicenseAgreements();
 
-		//org.alice.ide.preferences.GeneralPreferences.getSingleton().desiredRecentProjectCount.setAndCommitValue( 10 );
-		//org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.clear();
-
 		this.getRunOperation().setEnabled( false );
 
 		this.sceneEditor = this.createSceneEditor();
@@ -191,27 +188,15 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	
 	
-	protected abstract edu.cmu.cs.dennisc.croquet.Operation<?> createRestartOperation();
-	private edu.cmu.cs.dennisc.croquet.Operation<?> aboutOperation = this.createAboutOperation();
-	private edu.cmu.cs.dennisc.croquet.Operation<?> restartOperation = this.createRestartOperation();
-
-	public abstract edu.cmu.cs.dennisc.croquet.Operation<?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
-
-
-	protected abstract edu.cmu.cs.dennisc.croquet.Operation<?> createAboutOperation();
-
-	public abstract edu.cmu.cs.dennisc.croquet.DialogOperation getRunOperation();
-	public final edu.cmu.cs.dennisc.croquet.Operation<?> getRestartOperation() {
-		return this.restartOperation;
-	}
 	public final edu.cmu.cs.dennisc.croquet.Operation<?> getPreferencesOperation() {
-		//return this.preferencesOperation;
 		return null;
 	}
-	public final edu.cmu.cs.dennisc.croquet.Operation<?> getAboutOperation() {
-		return this.aboutOperation;
-	}
+	public abstract edu.cmu.cs.dennisc.croquet.DialogOperation getRunOperation();
+	public abstract edu.cmu.cs.dennisc.croquet.Operation<?> getRestartOperation();
+	public abstract edu.cmu.cs.dennisc.croquet.Operation<?> getAboutOperation();
 
+	public abstract edu.cmu.cs.dennisc.croquet.Operation<?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
+	
 	private static void clearAllPreferencesIfRequested( java.util.prefs.Preferences userPreferences ) {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
 			try {
