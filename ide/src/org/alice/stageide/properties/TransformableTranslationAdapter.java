@@ -43,47 +43,31 @@
 
 package org.alice.stageide.properties;
 
-import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
+import org.alice.apis.moveandturn.AsSeenBy;
+import edu.cmu.cs.dennisc.math.Point3;
 
-import edu.cmu.cs.dennisc.color.Color4f;
+public class TransformableTranslationAdapter extends AbstractAbsolutePositionPropertyAdapter<org.alice.apis.moveandturn.Transformable> {
 
-public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.alice.apis.moveandturn.Model> {
-
-	public ModelColorAdapter(org.alice.apis.moveandturn.Model instance)
-	{
+	public TransformableTranslationAdapter(org.alice.apis.moveandturn.Transformable instance) {
 		super(instance);
 	}
 
-	public Color4f getValue() 
+	public Point3 getValue() 
 	{
 		if (this.instance != null)
 		{
-			return this.instance.getColor().getInternal();
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
-	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(org.alice.apis.moveandturn.Model instance)
-	{
-		if (this.instance != null)
-		{
-			return this.instance.getSGSingleAppearance().diffuseColor;
+			return this.instance.getPosition(AsSeenBy.SCENE);
 		}
 		return null;
 	}
-
+	
 	@Override
-	public void setValue(Color4f value) 
+	public void setValue(Point3 newValue) 
 	{
 		if (this.instance != null)
 		{
-			this.instance.setColor(new org.alice.apis.moveandturn.Color(value));
+			this.instance.moveTo(this.instance.getScene().createOffsetStandIn(newValue));
 		}
-		
 	}
 
 }

@@ -41,26 +41,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties;
+package org.alice.ide.properties.adapter;
 
-import edu.cmu.cs.dennisc.croquet.BorderPanel;
-import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.croquet.Panel;
-
-public class BlankPropertyController extends BorderPanel implements PropertyAdapterController
+public interface PropertyAdapter <P, O>
 {
-	public BlankPropertyController(PropertyAdapter<?, ?> propertyAdapter)
+	public static interface ValueChangeObserver<P>
 	{
-		super();
-		this.addComponent(new Label("NOT IMPLEMENTED YET"), BorderPanel.Constraint.CENTER);
+		public void valueChanged(P newValue);
 	}
 	
-	public void setPropertyAdapter(PropertyAdapter<?, ?> propertyAdapter)
-	{
-	}
+	public String getRepr();
 	
-	public Panel getPanel()
-	{
-		return this;
-	}
+	public Class<P> getPropertyType();
+	
+	public void setInstance(O instance);
+	
+	public P getValue();
+	
+	public void setValue(P value);
+	
+	public void addValueChangeObserver(ValueChangeObserver<P> observer);
+	
+	public void addAndInvokeValueChangeObserver(ValueChangeObserver<P> observer);
+	
+	public void removeValueChangeObserver(ValueChangeObserver<P> observer);
+	
 }

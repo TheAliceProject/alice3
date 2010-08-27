@@ -41,13 +41,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties;
+package org.alice.ide.properties.uicontroller;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+import org.alice.ide.properties.adapter.PropertyAdapter;
+
 import edu.cmu.cs.dennisc.croquet.GridBagPanel;
 import edu.cmu.cs.dennisc.croquet.Label;
+import edu.cmu.cs.dennisc.math.Point3;
 
 public class PropertyAdapterUIController extends GridBagPanel
 {
@@ -121,12 +124,17 @@ public class PropertyAdapterUIController extends GridBagPanel
 		{
 			this.nameLabel.setText("NO PROPERTY, NO NAME");
 		}
-		if (this.valuePanel instanceof BlankPropertyController)
+		if (this.valuePanel.getPropertyType() == propertyAdapter.getPropertyType())
 		{
-			PropertyAdapterController newValuePanel = getValuePanelForPropertyAdapter(propertyAdapter);
+			this.valuePanel.setPropertyAdapter(propertyAdapter);
+		}
+		else
+		{
+			PropertyAdapterController<?> newValuePanel = getValuePanelForPropertyAdapter(propertyAdapter);
 			if (!(newValuePanel instanceof BlankPropertyController))
 			{
 				this.removeComponent(this.valuePanel.getPanel());
+				this.valuePanel.setPropertyAdapter(null);
 				this.valuePanel = newValuePanel;
 				this.addComponent(this.valuePanel.getPanel(), new GridBagConstraints( 
 						2, //gridX
@@ -143,17 +151,35 @@ public class PropertyAdapterUIController extends GridBagPanel
 				);
 			}
 		}
-		else
-		{
-			this.valuePanel.setPropertyAdapter(propertyAdapter);
-		}
 	}
 	
-	public static PropertyAdapterController getValuePanelForPropertyAdapter(PropertyAdapter<?, ?> propertyAdapter)
+	public PropertyAdapterController getValueController()
 	{
-		if (propertyAdapter != null && edu.cmu.cs.dennisc.color.Color4f.class.isAssignableFrom(propertyAdapter.getPropertyType()))
+		return this.valuePanel;
+	}
+	
+	public static PropertyAdapterController getValuePanelForPropertyAdapter(PropertyAdapter propertyAdapter)
+	{
+		Class<?> propertyType = propertyAdapter != null?  propertyAdapter.getPropertyType() : null;
+		if (propertyType == null)
 		{
-			return new Color4fPropertyController((PropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, ?>)propertyAdapter);
+			return new BlankPropertyController(propertyAdapter);
+		}
+		else if (edu.cmu.cs.dennisc.color.Color4f.class.isAssignableFrom(propertyType))
+		{
+			return new Color4fPropertyController(propertyAdapter);
+		}
+		else if (String.class.isAssignableFrom(propertyType))
+		{
+			return new StringPropertyController(propertyAdapter);
+		}
+		else if (Double.class.isAssignableFrom(propertyType))
+		{
+			return new DoublePropertyController(propertyAdapter);
+		}
+		else if (Point3.class.isAssignableFrom(propertyType))
+		{
+			return new Point3PropertyController(propertyAdapter);
 		}
 		else
 		{

@@ -41,69 +41,64 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties;
+package org.alice.ide.properties.uicontroller;
 
-import java.util.LinkedList;
-import java.util.List;
+import org.alice.ide.properties.adapter.PropertyAdapter;
 
-public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P, O> 
+import edu.cmu.cs.dennisc.croquet.BorderPanel;
+import edu.cmu.cs.dennisc.croquet.Panel;
+
+public abstract class AbstractAdapterController<P> extends BorderPanel implements PropertyAdapterController<P>
 {
-	protected O instance;
-	protected String repr;
-	
-	protected List<ValueChangeObserver<P>> valueChangeObservers = new LinkedList<ValueChangeObserver<P>>();
-	
-	public AbstractPropertyAdapter(String repr)
+
+	private PropertyAdapter.ValueChangeObserver<P> valueChangeObserver = new PropertyAdapter.ValueChangeObserver<P>()
 	{
-		this(repr, null);
-	}
-	
-	public AbstractPropertyAdapter(String repr, O instance)
-	{
-		this.repr = repr;
-		this.setInstance(instance);
-	}
-	
-	public String getRepr()
-	{
-		return this.repr;
-	}
-	
-	public void setInstance(O instance)
-	{
-		this.instance = instance;
-	}
-	
-	public void setValue(P newValue)
-	{
-		this.notifyValueObservers(newValue);
-	}
-	
-	public void addValueChangeObserver(ValueChangeObserver<P> observer)
-	{
-		if (!this.valueChangeObservers.contains(observer))
+		public void valueChanged(P newValue) 
 		{
-			this.valueChangeObservers.add(observer);
+			AbstractAdapterController.this.setValue(newValue);
 		}
+	};
+	
+	protected PropertyAdapter<P, ?> propertyAdapter;
+	
+	public AbstractAdapterController(PropertyAdapter<P, ?> propertyAdapter)
+	{
+		super();
+		this.initializeComponents();
+		this.setPropertyAdapter(propertyAdapter);
 	}
 	
-	public void addAndInvokeValueChangeObserver(ValueChangeObserver<P> observer)
+	public Panel getPanel()
 	{
-		this.addValueChangeObserver(observer);
-		observer.valueChanged(this.getValue());
-	}
-	
-	public void removeValueChangeObserver(ValueChangeObserver<P> observer)
-	{
-		this.valueChangeObservers.remove(observer);
-	}
-	
-	protected void notifyValueObservers(P newValue)
-	{
-		for (ValueChangeObserver<P> observer : this.valueChangeObservers)
-		{
-			observer.valueChanged(newValue);
-		}
+		return this;
 	}
 
+	public PropertyAdapter<P, ?> getPropertyAdapter()
+	{
+		return this.propertyAdapter;
+	}
+
+	public void setPropertyAdapter(PropertyAdapter<P, ?> propertyAdapter)
+	{
+		if (this.propertyAdapter != null)
+		{
+			this.propertyAdapter.removeValueChangeObserver(this.valueChangeObserver);
+		}
+		this.propertyAdapter = propertyAdapter;
+		if (this.propertyAdapter != null)
+		{
+			this.propertyAdapter.addAndInvokeValueChangeObserver(this.valueChangeObserver);
+		}
+		else
+		{
+			setValue(null);
+		}
+		
+	}
+	
+	protected abstract void initializeComponents();
+	
+	protected abstract void setValue(P value);
+
+	public abstract Class<?> getPropertyType();
 }

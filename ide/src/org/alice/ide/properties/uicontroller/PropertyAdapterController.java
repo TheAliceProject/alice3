@@ -41,49 +41,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.properties;
+package org.alice.ide.properties.uicontroller;
 
-import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
+import org.alice.ide.properties.adapter.PropertyAdapter;
 
-import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.croquet.Panel;
 
-public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.alice.apis.moveandturn.Model> {
-
-	public ModelColorAdapter(org.alice.apis.moveandturn.Model instance)
-	{
-		super(instance);
-	}
-
-	public Color4f getValue() 
-	{
-		if (this.instance != null)
-		{
-			return this.instance.getColor().getInternal();
-		}
-		else
-		{
-			return null;
-		}
-	}
+public interface PropertyAdapterController<P>
+{
+	public void setPropertyAdapter(PropertyAdapter<P, ?> propertyAdapter);
 	
-	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(org.alice.apis.moveandturn.Model instance)
-	{
-		if (this.instance != null)
-		{
-			return this.instance.getSGSingleAppearance().diffuseColor;
-		}
-		return null;
-	}
-
-	@Override
-	public void setValue(Color4f value) 
-	{
-		if (this.instance != null)
-		{
-			this.instance.setColor(new org.alice.apis.moveandturn.Color(value));
-		}
-		
-	}
-
+	public Class<?> getPropertyType();
+	
+	public PropertyAdapter<P, ?> getPropertyAdapter();
+	
+	public Panel getPanel();
+	
 }

@@ -45,6 +45,9 @@ package org.alice.stageide.sceneeditor;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.lang.reflect.Constructor;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.alice.apis.moveandturn.AsSeenBy;
 import org.alice.apis.moveandturn.CameraMarker;
@@ -52,17 +55,24 @@ import org.alice.apis.moveandturn.Marker;
 import org.alice.apis.moveandturn.Model;
 import org.alice.apis.moveandturn.Transformable;
 import org.alice.ide.IDE;
-import org.alice.ide.properties.PropertyAdapterUIController;
+import org.alice.ide.properties.uicontroller.PropertyAdapterController;
+import org.alice.ide.properties.uicontroller.PropertyAdapterUIController;
 import org.alice.ide.sceneeditor.AbstractInstantiatingSceneEditor;
+import org.alice.stageide.properties.FieldNameAdapter;
 import org.alice.stageide.properties.MarkerColorAdapter;
+import org.alice.stageide.properties.MarkerOpacityAdapter;
 import org.alice.stageide.properties.ModelColorAdapter;
+import org.alice.stageide.properties.ModelOpacityAdapter;
+import org.alice.stageide.properties.TransformableTranslationAdapter;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 import edu.cmu.cs.dennisc.croquet.GridBagPanel;
 import edu.cmu.cs.dennisc.croquet.Label;
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.pattern.event.NameEvent;
 import edu.cmu.cs.dennisc.pattern.event.NameListener;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
@@ -71,75 +81,35 @@ import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>
 {
 	private AbstractField selectedField;
-	private Transformable selectedObject;
+	private Object selectedObject;
 	
-	private Label nameLabel;
+	private class LabelValueControllerPair
+	{
+		public Label label;
+		public PropertyAdapterController controller;
+		
+		public LabelValueControllerPair(Label label, PropertyAdapterController controller)
+		{
+			this.label = label;
+			this.controller = controller;
+		}
+	}
+	
+	private PropertyAdapterUIController nameController;
 	private PropertyAdapterUIController colorController;
-	private Label opacityLabel;
-	private Label positionLabel;
+	private PropertyAdapterUIController opacityController;
+	private PropertyAdapterUIController positionController;
 	private Label classLabel;
-	
-//	private NameListener nameListener = new NameListener()
-//	{
-//		public void nameChanging(NameEvent nameEvent) {}
-//		
-//		public void nameChanged(NameEvent nameEvent)
-//		{
-//			updateNameInformation();
-//		}
-//	};
-
-	private PropertyListener nameListener = new PropertyListener()
-	{
-		public void propertyChanging(PropertyEvent e) {}
-		
-		public void propertyChanged(PropertyEvent e)
-		{
-			updateNameInformation();
-		}
-	};
-	
-	private AbsoluteTransformationListener transformationListener = new AbsoluteTransformationListener() 
-	{	
-		public void absoluteTransformationChanged(
-				AbsoluteTransformationEvent absoluteTransformationEvent) 
-		{
-			updateTransformationInformation();
-		}
-	};
-	
-	private PropertyListener opacityListener = new PropertyListener() 
-	{
-		public void propertyChanging(PropertyEvent e) {}
-		
-		public void propertyChanged(PropertyEvent e)
-		{
-			updateOpacityInformation();
-		}
-	};
 	
 	public SceneObjectPropertyManager()
 	{
 		super();
 		int rowCount = 0;
-		this.nameLabel = new Label("NO NAME");
-		this.addComponent(new Label("Selected Object:"), new GridBagConstraints( 
+		this.nameController = new PropertyAdapterUIController(null);
+		this.addComponent( this.nameController, new GridBagConstraints( 
 				0, //gridX
 				rowCount, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.EAST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.addComponent( this.nameLabel, new GridBagConstraints( 
-				1, //gridX
-				rowCount, //gridY
-				1, //gridWidth
+				2, //gridWidth
 				1, //gridHeight
 				0.0, //weightX
 				0.0, //weightY
@@ -198,24 +168,11 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 		
 		rowCount++;
 		
-		this.addComponent(new Label("Opacity:"), new GridBagConstraints( 
+		this.opacityController = new PropertyAdapterUIController(null);
+		this.addComponent( this.opacityController, new GridBagConstraints( 
 				0, //gridX
 				rowCount, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.EAST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.opacityLabel = new Label("NO OPACITY");
-		this.addComponent( this.opacityLabel, new GridBagConstraints( 
-				1, //gridX
-				rowCount, //gridY
-				1, //gridWidth
+				2, //gridWidth
 				1, //gridHeight
 				0.0, //weightX
 				0.0, //weightY
@@ -226,25 +183,11 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 				0 ) //ipadY
 		);
 		rowCount++;
-		
-		this.addComponent(new Label("Position:"), new GridBagConstraints( 
+		this.positionController = new PropertyAdapterUIController(null);
+		this.addComponent( this.positionController, new GridBagConstraints( 
 				0, //gridX
 				rowCount, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.EAST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.positionLabel = new Label("NO POSITION");
-		this.addComponent( this.positionLabel, new GridBagConstraints( 
-				1, //gridX
-				rowCount, //gridY
-				1, //gridWidth
+				2, //gridWidth
 				1, //gridHeight
 				0.0, //weightX
 				0.0, //weightY
@@ -254,133 +197,111 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 				0, //ipadX
 				0 ) //ipadY
 		);
-		
-		
+	}
+	
+	private static Class<?>[] PROPERTY_ADAPTER_CLASSES= {
+		FieldNameAdapter.class,
+		MarkerColorAdapter.class,
+		MarkerOpacityAdapter.class,
+		ModelColorAdapter.class,
+		ModelOpacityAdapter.class,
+		TransformableTranslationAdapter.class,
+	};
+	
+	private static List<Class<?>> getClassHierarchy(Class<?> startingClass)
+	{
+		List<Class<?>> classes = new LinkedList<Class<?>>();
+		if (startingClass != null)
+		{
+			classes.add(startingClass);
+			Class<?> superClass = startingClass.getSuperclass();
+			while (superClass != null)
+			{
+				classes.add(superClass);
+				superClass = superClass.getSuperclass();
+			}
+		}
+		return classes;
 	}
 
+	public static List<org.alice.ide.properties.adapter.PropertyAdapter<?,?>> getPropertyAdaptersForObject(Object object)
+	{
+		List<org.alice.ide.properties.adapter.PropertyAdapter<?,?>> propertyList = new LinkedList<org.alice.ide.properties.adapter.PropertyAdapter<?,?>>();
+		if (object != null)
+		{
+			PrintUtilities.println("Trying to get adapters for "+object.getClass().getSimpleName());
+			for (Class<?> adapterClass : PROPERTY_ADAPTER_CLASSES)
+			{
+				Constructor<?>[] constructors = adapterClass.getConstructors();
+				for (Constructor<?> constructor : constructors)
+				{
+					if (constructor.getParameterTypes().length == 1)
+					{
+						if (constructor.getParameterTypes()[0].isAssignableFrom(object.getClass()))
+						{
+							try
+							{
+								org.alice.ide.properties.adapter.PropertyAdapter<?,?> propertyAdapter = (org.alice.ide.properties.adapter.PropertyAdapter<?,?>)constructor.newInstance(object);
+								propertyList.add(propertyAdapter);
+							}
+							catch (Exception e)
+							{
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+			}
+		}
+		if (propertyList.size() > 0)
+		{
+			PrintUtilities.println("Found adapters for "+object.getClass().getSimpleName()+":");
+			for (org.alice.ide.properties.adapter.PropertyAdapter<?,?> adapter : propertyList)
+			{
+				PrintUtilities.println("  "+adapter.getRepr());
+			}
+		}
+		else
+		{
+			PrintUtilities.println("Found no adapters for "+object);
+		}
+		return propertyList;
+	}
+	
 	public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) 
 	{
-		if (this.selectedField != null && this.selectedField.getNamePropertyIfItExists() != null)
-		{
-			this.selectedField.getNamePropertyIfItExists().addPropertyListener(this.nameListener);
-		}
-		if (this.selectedObject != null)
-		{
-			this.selectedObject.getSGTransformable().removeAbsoluteTransformationListener(this.transformationListener);
-			if (this.selectedObject instanceof Model)
-			{
-				((Model)this.selectedObject).getSGSingleAppearance().opacity.removePropertyListener(this.opacityListener);
-			}
-			else if (this.selectedObject instanceof Marker)
-			{
-				((Marker)this.selectedObject).getSGSingleAppearance().opacity.removePropertyListener(this.opacityListener);
-			}
-		}
+		this.nameController.setPropertyAdapter(null);
+		this.colorController.setPropertyAdapter(null);
+		this.opacityController.setPropertyAdapter(null);
+		this.positionController.setPropertyAdapter(null);
 		this.selectedField = null;
 		this.selectedObject = null;
 		if( nextValue instanceof AbstractField ) {
 			AbstractField field = (AbstractField)nextValue;
 			this.selectedField = field;
-			if (this.selectedField.getNamePropertyIfItExists() != null)
-			{
-				this.selectedField.getNamePropertyIfItExists().addPropertyListener(this.nameListener);
-			}
 			Object instance = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getInstanceForField( field );
 			if( instance instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
 				edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
 				instance = instanceInAlice.getInstanceInJava();
 			}
-			if( instance instanceof org.alice.apis.moveandturn.Model ) {
-				this.selectedObject = (org.alice.apis.moveandturn.Model)instance;
-				this.colorController.setPropertyAdapter(new ModelColorAdapter((Model)this.selectedObject));
-				((Model)this.selectedObject).getSGSingleAppearance().opacity.addPropertyListener(this.opacityListener);
-			}
-			else if( instance instanceof org.alice.apis.moveandturn.Marker ) {
-				this.selectedObject = (org.alice.apis.moveandturn.Marker)instance;
-				this.colorController.setPropertyAdapter(new MarkerColorAdapter((Marker)this.selectedObject));
-				((Marker)this.selectedObject).getSGSingleAppearance().opacity.addPropertyListener(this.opacityListener);
-			}
-			else
-			{
-				this.colorController.setPropertyAdapter(null);
-			}
-			if (this.selectedObject != null)
-			{
-				this.selectedObject.getSGTransformable().addAbsoluteTransformationListener(this.transformationListener);
-			}
+			this.selectedObject = instance;
 		}
-		else
+		List<org.alice.ide.properties.adapter.PropertyAdapter<?,?>> propertyAdapters = new LinkedList<org.alice.ide.properties.adapter.PropertyAdapter<?,?>>();
+		propertyAdapters.addAll(getPropertyAdaptersForObject(this.selectedField));
+		propertyAdapters.addAll(getPropertyAdaptersForObject(this.selectedObject));
+		
+		for (org.alice.ide.properties.adapter.PropertyAdapter<?,?> adapter : propertyAdapters)
 		{
-			this.colorController.setPropertyAdapter(null);
+			PrintUtilities.println(adapter.getRepr());
 		}
-		setUIFromObject();
-	}
-	
-	private static java.text.NumberFormat format = new java.text.DecimalFormat( "0.00" );
-	
-	private void updateNameInformation()
-	{
-		this.nameLabel.setText(this.selectedField.getName());
-	}
-	
-	private void updateTransformationInformation()
-	{
-		Point3 position = selectedObject.getPosition(AsSeenBy.SCENE);
-		this.positionLabel.setText("("+format.format(position.x)+", "+format.format(position.y)+","+format.format(position.z)+")");
-	}
-	
-//	private void updateColorInformation()
-//	{
-//		this.colorLabel.getAwtComponent().setOpaque(true);
-//		if( selectedObject instanceof org.alice.apis.moveandturn.Marker ) 
-//		{
-//			org.alice.apis.moveandturn.Marker marker = (org.alice.apis.moveandturn.Marker)selectedObject;
-//			this.colorLabel.setText("                  ");
-//			this.colorLabel.setBackgroundColor(marker.getMarkerColor().getAsAWTColor());
-//		}
-//		else if( selectedObject instanceof org.alice.apis.moveandturn.Model ) 
-//		{
-//			org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)selectedObject; 
-//			this.colorLabel.setText("                  ");
-//			this.colorLabel.setBackgroundColor(model.getColor().getInternal().getAsAWTColor());
-//		}
-//	}
-	
-	private void updateOpacityInformation()
-	{
-		if( selectedObject instanceof org.alice.apis.moveandturn.Marker ) 
-		{
-			org.alice.apis.moveandturn.Marker marker = (org.alice.apis.moveandturn.Marker)selectedObject;
-			this.opacityLabel.setText(marker.getOpacity().toString());
-		}
-		else if( selectedObject instanceof org.alice.apis.moveandturn.Model ) 
-		{
-			org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)selectedObject; 
-			this.opacityLabel.setText(model.getOpacity().toString());
-		}
-	}
-	
-	private void setUIFromObject()
-	{
+		
 		if (this.selectedField != null)
 		{
-			updateNameInformation();
 			this.classLabel.setText(this.selectedField.getDesiredValueType().getName());
 		}
 		else
 		{
-			this.nameLabel.setText("NO FIELD, NO NAME");
 			this.classLabel.setText("NO FIELD, NO CLASS");
-		}
-		if (this.selectedObject != null)
-		{
-			updateTransformationInformation();
-			updateOpacityInformation();
-		}
-		else
-		{
-			this.positionLabel.setText("NO OBJECT, NO POSITION");
-			this.opacityLabel.setText("NO OBJECT, NO OPACITY");
 		}
 	}
 

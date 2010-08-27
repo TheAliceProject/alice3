@@ -41,49 +41,57 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.properties;
+package org.alice.ide.properties.adapter;
 
-import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
-import edu.cmu.cs.dennisc.color.Color4f;
+public abstract class AbstractInstancePropertyAdapter<P, O> extends AbstractPropertyAdapter<P, O> {
 
-public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.alice.apis.moveandturn.Model> {
-
-	public ModelColorAdapter(org.alice.apis.moveandturn.Model instance)
+	private PropertyListener propertyListener = new PropertyListener()
 	{
-		super(instance);
-	}
-
-	public Color4f getValue() 
-	{
-		if (this.instance != null)
+		public void propertyChanging(PropertyEvent e) {}
+		
+		public void propertyChanged(PropertyEvent e)
 		{
-			return this.instance.getColor().getInternal();
+			handleInternalValueChanged();
 		}
-		else
+	};
+	
+	@Override
+	protected void startListening() 
+	{
+		if (this.getPropertyInstanceForInstance(this.instance) != null)
 		{
-			return null;
+			this.getPropertyInstanceForInstance(this.instance).addPropertyListener(this.propertyListener);
 		}
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(org.alice.apis.moveandturn.Model instance)
+	protected void stopListening() 
 	{
-		if (this.instance != null)
+		if (this.getPropertyInstanceForInstance(this.instance) != null)
 		{
-			return this.instance.getSGSingleAppearance().diffuseColor;
+			this.getPropertyInstanceForInstance(this.instance).removePropertyListener(this.propertyListener);
 		}
-		return null;
+	}
+	
+	public AbstractInstancePropertyAdapter(String repr) 
+	{
+		super(repr);
+	}
+	
+	public AbstractInstancePropertyAdapter(String repr, O instance )
+	{
+		super(repr, instance);
 	}
 
-	@Override
-	public void setValue(Color4f value) 
+	protected abstract edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(O instance);
+	
+	protected void handleInternalValueChanged()
 	{
-		if (this.instance != null)
-		{
-			this.instance.setColor(new org.alice.apis.moveandturn.Color(value));
-		}
-		
+		P newValue = this.getValue();
+		this.notifyValueObservers(newValue);
 	}
 
 }

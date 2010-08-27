@@ -41,49 +41,51 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.properties;
+package org.alice.ide.properties.uicontroller;
 
-import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
+import java.awt.Color;
 
-import edu.cmu.cs.dennisc.color.Color4f;
+import org.alice.ide.properties.adapter.PropertyAdapter;
 
-public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.alice.apis.moveandturn.Model> {
+import edu.cmu.cs.dennisc.croquet.BorderPanel;
+import edu.cmu.cs.dennisc.croquet.Label;
+import edu.cmu.cs.dennisc.croquet.Panel;
 
-	public ModelColorAdapter(org.alice.apis.moveandturn.Model instance)
+public class StringPropertyController extends AbstractAdapterController<String>
+{
+
+	private Label stringLabel;
+	
+	private static final String BLANK_STRING = "NO VALUE";
+	
+	public StringPropertyController(PropertyAdapter<String, ?> propertyAdapter)
 	{
-		super(instance);
-	}
-
-	public Color4f getValue() 
-	{
-		if (this.instance != null)
-		{
-			return this.instance.getColor().getInternal();
-		}
-		else
-		{
-			return null;
-		}
+		super(propertyAdapter);
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(org.alice.apis.moveandturn.Model instance)
+	protected void initializeComponents() 
 	{
-		if (this.instance != null)
-		{
-			return this.instance.getSGSingleAppearance().diffuseColor;
-		}
-		return null;
+		this.stringLabel = new Label();
+		this.addComponent(this.stringLabel, BorderPanel.Constraint.CENTER);
 	}
-
+	
 	@Override
-	public void setValue(Color4f value) 
+	public Class<?> getPropertyType() 
 	{
-		if (this.instance != null)
-		{
-			this.instance.setColor(new org.alice.apis.moveandturn.Color(value));
-		}
-		
+		return String.class;
 	}
-
+	
+	@Override
+	protected void setValue(String stringValue)
+	{
+		if (stringValue != null)
+		{
+			this.stringLabel.setText(stringValue);
+		}
+		else
+		{
+			this.stringLabel.setText(BLANK_STRING);
+		}
+	}
 }

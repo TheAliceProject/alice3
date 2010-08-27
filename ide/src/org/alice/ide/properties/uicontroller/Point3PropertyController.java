@@ -41,18 +41,50 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties;
+package org.alice.ide.properties.uicontroller;
 
-public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, O> {
+import org.alice.ide.properties.adapter.PropertyAdapter;
+
+import edu.cmu.cs.dennisc.croquet.BorderPanel;
+import edu.cmu.cs.dennisc.croquet.Label;
+import edu.cmu.cs.dennisc.math.Point3;
+
+public class Point3PropertyController extends AbstractAdapterController<Point3>
+{
+	private Label point3Label;
 	
-	public AbstractColorPropertyAdapter(O instance)
+	private static final String BLANK_STRING = "NO VALUE";
+	
+	public Point3PropertyController(PropertyAdapter<Point3, ?> propertyAdapter)
 	{
-		super("Color", instance);
+		super(propertyAdapter);
 	}
 	
-	public Class<edu.cmu.cs.dennisc.color.Color4f> getPropertyType()
+	@Override
+	protected void initializeComponents() 
 	{
-		return edu.cmu.cs.dennisc.color.Color4f.class;
+		this.point3Label = new Label();
+		this.addComponent(this.point3Label, BorderPanel.Constraint.CENTER);
 	}
-
+	
+	@Override
+	public Class<?> getPropertyType() 
+	{
+		return Point3.class;
+	}
+	
+	private static java.text.NumberFormat format = new java.text.DecimalFormat( "0.00" );
+	
+	@Override
+	protected void setValue(Point3 point3Value)
+	{
+		if (point3Value != null)
+		{
+			this.point3Label.setText("("+format.format(point3Value.x)+", "+format.format(point3Value.y)+","+format.format(point3Value.z)+")");
+		}
+		else
+		{
+			this.point3Label.setText(BLANK_STRING);
+		}
+	}
 }

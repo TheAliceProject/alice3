@@ -41,49 +41,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.properties;
+package org.alice.ide.properties.adapter;
 
-import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
+public abstract class AbstractNamePropertyAdapter<O> extends AbstractStringPropertyAdapter<O> {
 
-import edu.cmu.cs.dennisc.color.Color4f;
-
-public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.alice.apis.moveandturn.Model> {
-
-	public ModelColorAdapter(org.alice.apis.moveandturn.Model instance)
+	public AbstractNamePropertyAdapter(O instance)
 	{
-		super(instance);
-	}
-
-	public Color4f getValue() 
-	{
-		if (this.instance != null)
-		{
-			return this.instance.getColor().getInternal();
-		}
-		else
-		{
-			return null;
-		}
+		this("Name", instance);
 	}
 	
-	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(org.alice.apis.moveandturn.Model instance)
+	public AbstractNamePropertyAdapter(String repr, O instance )
 	{
-		if (this.instance != null)
-		{
-			return this.instance.getSGSingleAppearance().diffuseColor;
-		}
-		return null;
-	}
-
-	@Override
-	public void setValue(Color4f value) 
-	{
-		if (this.instance != null)
-		{
-			this.instance.setColor(new org.alice.apis.moveandturn.Color(value));
-		}
-		
+		super(repr, instance);
 	}
 
 }

@@ -41,62 +41,75 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties;
+package org.alice.ide.properties.adapter;
 
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import java.util.LinkedList;
+import java.util.List;
 
-public abstract class AbstractInstancePropertyAdapter<P, O> extends AbstractPropertyAdapter<P, O> {
-
-	private PropertyListener propertyListener = new PropertyListener()
-	{
-		public void propertyChanging(PropertyEvent e) {}
-		
-		public void propertyChanged(PropertyEvent e)
-		{
-			handleInternalValueChanged();
-		}
-	};
+public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P, O> 
+{
+	protected O instance;
+	protected String repr;
 	
-	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> propertyInstance;
+	protected List<ValueChangeObserver<P>> valueChangeObservers = new LinkedList<ValueChangeObserver<P>>();
 	
-	protected void setPropertyInstance(edu.cmu.cs.dennisc.property.InstanceProperty<?> propertyInstance)
+	public AbstractPropertyAdapter(String repr)
 	{
-		if (this.propertyInstance != null)
-		{
-			this.propertyInstance.removePropertyListener(this.propertyListener);
-		}
-		this.propertyInstance = propertyInstance;
-		if (this.propertyInstance != null)
-		{
-			this.propertyInstance.addPropertyListener(this.propertyListener);
-			this.handleInternalValueChanged();
-		}
+		this(repr, null);
 	}
 	
-	public AbstractInstancePropertyAdapter(String repr) 
+	public AbstractPropertyAdapter(String repr, O instance)
 	{
-		super(repr);
+		this.repr = repr;
+		this.setInstance(instance);
 	}
 	
-	public AbstractInstancePropertyAdapter(String repr, O instance )
+	public String getRepr()
 	{
-		super(repr, instance);
+		return this.repr;
 	}
 	
-	@Override
 	public void setInstance(O instance)
 	{
-		super.setInstance(instance);
-		this.setPropertyInstance(this.getPropertyInstanceForInstance(instance));
+		this.stopListening();
+		this.instance = instance;
+		this.startListening();
 	}
-
-	protected abstract edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(O instance);
 	
-	protected void handleInternalValueChanged()
+	public void setValue(P newValue)
 	{
-		P newValue = this.getValue();
 		this.notifyValueObservers(newValue);
 	}
+	
+	public void addValueChangeObserver(ValueChangeObserver<P> observer)
+	{
+		if (!this.valueChangeObservers.contains(observer))
+		{
+			this.valueChangeObservers.add(observer);
+		}
+	}
+	
+	public void addAndInvokeValueChangeObserver(ValueChangeObserver<P> observer)
+	{
+		this.addValueChangeObserver(observer);
+		observer.valueChanged(this.getValue());
+	}
+	
+	public void removeValueChangeObserver(ValueChangeObserver<P> observer)
+	{
+		this.valueChangeObservers.remove(observer);
+	}
+	
+	protected void notifyValueObservers(P newValue)
+	{
+		for (ValueChangeObserver<P> observer : this.valueChangeObservers)
+		{
+			observer.valueChanged(newValue);
+		}
+	}
 
+	protected abstract void startListening();
+	
+	protected abstract void stopListening();
+	
 }

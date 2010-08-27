@@ -41,49 +41,54 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.properties;
+package org.alice.ide.properties.uicontroller;
 
-import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
+import org.alice.ide.properties.adapter.PropertyAdapter;
 
-import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.croquet.BorderPanel;
+import edu.cmu.cs.dennisc.croquet.Label;
+import edu.cmu.cs.dennisc.croquet.Panel;
 
-public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.alice.apis.moveandturn.Model> {
-
-	public ModelColorAdapter(org.alice.apis.moveandturn.Model instance)
+public class DoublePropertyController extends AbstractAdapterController<Double>
+{
+	private Label doubleLabel;
+	
+	private static final String BLANK_STRING = "NO VALUE";
+	
+	public DoublePropertyController(PropertyAdapter<Double, ?> propertyAdapter)
 	{
-		super(instance);
-	}
-
-	public Color4f getValue() 
-	{
-		if (this.instance != null)
-		{
-			return this.instance.getColor().getInternal();
-		}
-		else
-		{
-			return null;
-		}
+		super(propertyAdapter);
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(org.alice.apis.moveandturn.Model instance)
+	protected void initializeComponents() 
 	{
-		if (this.instance != null)
-		{
-			return this.instance.getSGSingleAppearance().diffuseColor;
-		}
-		return null;
+		this.doubleLabel = new Label();
+		this.addComponent(this.doubleLabel, BorderPanel.Constraint.CENTER);
 	}
-
+	
 	@Override
-	public void setValue(Color4f value) 
+	public Panel getPanel()
 	{
-		if (this.instance != null)
-		{
-			this.instance.setColor(new org.alice.apis.moveandturn.Color(value));
-		}
-		
+		return this;
 	}
-
+	
+	@Override
+	public Class<?> getPropertyType() 
+	{
+		return Double.class;
+	}
+	
+	@Override
+	protected void setValue(Double value)
+	{
+		if (value != null)
+		{
+			this.doubleLabel.setText(value.toString());
+		}
+		else
+		{
+			this.doubleLabel.setText(BLANK_STRING);
+		}
+	}
 }

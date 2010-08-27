@@ -43,47 +43,54 @@
 
 package org.alice.stageide.properties;
 
-import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
+import org.alice.apis.moveandturn.Transformable;
+import org.alice.ide.properties.adapter.AbstractPoint3PropertyAdapter;
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 
-import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
-public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.alice.apis.moveandturn.Model> {
-
-	public ModelColorAdapter(org.alice.apis.moveandturn.Model instance)
+public abstract class AbstractAbsolutePositionPropertyAdapter<O extends Transformable> extends AbstractPoint3PropertyAdapter<O>
+{
+	private AbsoluteTransformationListener absoluteTransformationListener = new AbsoluteTransformationListener() {
+		
+		public void absoluteTransformationChanged(AbsoluteTransformationEvent absoluteTransformationEvent) 
+		{
+			AbstractAbsolutePositionPropertyAdapter.this.handleInternalValueChanged();
+		}
+	};
+	
+	public AbstractAbsolutePositionPropertyAdapter(O instance) 
 	{
-		super(instance);
+		this("Position", instance);
 	}
-
-	public Color4f getValue() 
+	
+	public AbstractAbsolutePositionPropertyAdapter(String repr, O instance )
+	{
+		super(repr, instance);
+	}
+	
+	@Override
+	protected void startListening() 
 	{
 		if (this.instance != null)
 		{
-			return this.instance.getColor().getInternal();
-		}
-		else
-		{
-			return null;
+			this.instance.getSGAbstractTransformable().addAbsoluteTransformationListener(this.absoluteTransformationListener);
 		}
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(org.alice.apis.moveandturn.Model instance)
+	protected void stopListening() 
 	{
 		if (this.instance != null)
 		{
-			return this.instance.getSGSingleAppearance().diffuseColor;
+			this.instance.getSGAbstractTransformable().removeAbsoluteTransformationListener(this.absoluteTransformationListener);
 		}
-		return null;
 	}
 
-	@Override
-	public void setValue(Color4f value) 
+	protected void handleInternalValueChanged()
 	{
-		if (this.instance != null)
-		{
-			this.instance.setColor(new org.alice.apis.moveandturn.Color(value));
-		}
-		
+		this.notifyValueObservers(this.getValue());
 	}
 
 }

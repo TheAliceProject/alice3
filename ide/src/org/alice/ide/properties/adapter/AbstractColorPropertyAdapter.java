@@ -41,49 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.properties;
+package org.alice.ide.properties.adapter;
 
-import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
-
-import edu.cmu.cs.dennisc.color.Color4f;
-
-public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.alice.apis.moveandturn.Model> {
-
-	public ModelColorAdapter(org.alice.apis.moveandturn.Model instance)
+public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, O> {
+	
+	public AbstractColorPropertyAdapter(O instance)
 	{
-		super(instance);
-	}
-
-	public Color4f getValue() 
-	{
-		if (this.instance != null)
-		{
-			return this.instance.getColor().getInternal();
-		}
-		else
-		{
-			return null;
-		}
+		this("Color", instance);
 	}
 	
-	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(org.alice.apis.moveandturn.Model instance)
+	public AbstractColorPropertyAdapter(String repr, O instance )
 	{
-		if (this.instance != null)
-		{
-			return this.instance.getSGSingleAppearance().diffuseColor;
-		}
-		return null;
+		super(repr, instance);
 	}
-
-	@Override
-	public void setValue(Color4f value) 
+	
+	public Class<edu.cmu.cs.dennisc.color.Color4f> getPropertyType()
 	{
-		if (this.instance != null)
-		{
-			this.instance.setColor(new org.alice.apis.moveandturn.Color(value));
-		}
-		
+		return edu.cmu.cs.dennisc.color.Color4f.class;
 	}
 
 }

@@ -41,76 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties;
+package org.alice.ide.properties.adapter;
 
-import java.awt.Color;
+import edu.cmu.cs.dennisc.math.Point3;
 
-import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.croquet.BorderPanel;
-import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.croquet.Panel;
-
-public class Color4fPropertyController extends BorderPanel implements PropertyAdapterController
+public abstract class AbstractPoint3PropertyAdapter<O> extends AbstractPropertyAdapter<Point3, O> 
 {
-	private PropertyAdapter.ValueChangeObserver<edu.cmu.cs.dennisc.color.Color4f> colorChangeObserver = new PropertyAdapter.ValueChangeObserver<edu.cmu.cs.dennisc.color.Color4f>()
+	public AbstractPoint3PropertyAdapter(String repr, O instance )
 	{
-		public void valueChanged(Color4f newValue) 
-		{
-			Color4fPropertyController.this.setColor(newValue);
-		}
-	};
-	
-	private PropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, ?> propertyAdapter;
-	private Label colorLabel;
-	
-	private static final String COLOR_STRING = "    COLOR    ";
-	private static final String BLANK_STRING = "NO COLOR";
-	
-	public Color4fPropertyController(PropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, ?> propertyAdapter)
-	{
-		super();
-		this.colorLabel = new Label();
-		this.colorLabel.getAwtComponent().setOpaque(true);
-		this.addComponent(this.colorLabel, BorderPanel.Constraint.CENTER);
-		this.setPropertyAdapter(propertyAdapter);
+		super(repr, instance);
 	}
 	
-	public void setPropertyAdapter(PropertyAdapter<?, ?> propertyAdapter)
+	public Class<Point3> getPropertyType()
 	{
-		if (this.propertyAdapter != null)
-		{
-			this.propertyAdapter.removeValueChangeObserver(this.colorChangeObserver);
-		}
-		if (propertyAdapter != null && edu.cmu.cs.dennisc.color.Color4f.class.isAssignableFrom(propertyAdapter.getPropertyType()))
-		{
-			this.propertyAdapter = (PropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, ?>)propertyAdapter;
-		}
-		else
-		{
-			this.propertyAdapter = null;
-		}
-		if (this.propertyAdapter != null)
-		{
-			this.colorLabel.getAwtComponent().setOpaque(true);
-			this.colorLabel.setText(COLOR_STRING);
-			this.propertyAdapter.addAndInvokeValueChangeObserver(this.colorChangeObserver);
-		}
-		else
-		{
-			this.colorLabel.getAwtComponent().setOpaque(false);
-			this.colorLabel.setText(BLANK_STRING);
-			this.colorLabel.setForegroundColor(Color.BLACK);
-		}
-	}
-	
-	public Panel getPanel()
-	{
-		return this;
-	}
-	
-	private void setColor(edu.cmu.cs.dennisc.color.Color4f color)
-	{
-		this.colorLabel.setForegroundColor(color.getAsAWTColor());
-		this.colorLabel.setBackgroundColor(color.getAsAWTColor());
+		return Point3.class;
 	}
 }

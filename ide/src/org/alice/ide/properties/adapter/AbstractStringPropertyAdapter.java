@@ -41,13 +41,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties;
+package org.alice.ide.properties.adapter;
 
-import edu.cmu.cs.dennisc.croquet.Panel;
-
-public interface PropertyAdapterController
+public abstract class AbstractStringPropertyAdapter<O> extends AbstractInstancePropertyAdapter<String, O> 
 {
-	public void setPropertyAdapter(PropertyAdapter<?, ?> propertyAdapter);
+
+	public AbstractStringPropertyAdapter(String repr, O instance )
+	{
+		super(repr, instance);
+	}
 	
-	public Panel getPanel();
+	public Class<String> getPropertyType()
+	{
+		return String.class;
+	}
+	
+
 }

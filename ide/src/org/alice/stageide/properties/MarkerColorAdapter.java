@@ -43,7 +43,7 @@
 
 package org.alice.stageide.properties;
 
-import org.alice.ide.properties.AbstractColorPropertyAdapter;
+import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 
@@ -69,7 +69,11 @@ public class MarkerColorAdapter extends AbstractColorPropertyAdapter<org.alice.a
 	@Override
 	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(org.alice.apis.moveandturn.Marker instance)
 	{
-		return instance.getSGSingleAppearance().diffuseColor;
+		if (this.instance != null)
+		{
+			return instance.getSGSingleAppearance().diffuseColor;
+		}
+		return null;
 	}
 
 	@Override

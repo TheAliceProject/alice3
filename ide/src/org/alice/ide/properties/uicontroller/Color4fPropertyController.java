@@ -41,49 +41,59 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.properties;
+package org.alice.ide.properties.uicontroller;
 
-import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
+import java.awt.Color;
+
+import org.alice.ide.properties.adapter.PropertyAdapter;
 
 import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.croquet.BorderPanel;
+import edu.cmu.cs.dennisc.croquet.Label;
+import edu.cmu.cs.dennisc.croquet.Panel;
 
-public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.alice.apis.moveandturn.Model> {
-
-	public ModelColorAdapter(org.alice.apis.moveandturn.Model instance)
+public class Color4fPropertyController extends AbstractAdapterController<Color4f>
+{
+	private Label colorLabel;
+	
+	private static final String COLOR_STRING = "    COLOR    ";
+	private static final String BLANK_STRING = "NO COLOR";
+	
+	public Color4fPropertyController(PropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, ?> propertyAdapter)
 	{
-		super(instance);
+		super(propertyAdapter);
 	}
 
-	public Color4f getValue() 
+	@Override
+	protected void initializeComponents() 
 	{
-		if (this.instance != null)
-		{
-			return this.instance.getColor().getInternal();
-		}
-		else
-		{
-			return null;
-		}
+		this.colorLabel = new Label();
+		this.colorLabel.getAwtComponent().setOpaque(true);
+		this.addComponent(this.colorLabel, BorderPanel.Constraint.CENTER);
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(org.alice.apis.moveandturn.Model instance)
+	public Class<?> getPropertyType() 
 	{
-		if (this.instance != null)
-		{
-			return this.instance.getSGSingleAppearance().diffuseColor;
-		}
-		return null;
+		return edu.cmu.cs.dennisc.color.Color4f.class;
 	}
-
+	
 	@Override
-	public void setValue(Color4f value) 
+	protected void setValue(edu.cmu.cs.dennisc.color.Color4f color)
 	{
-		if (this.instance != null)
+		if (color != null)
 		{
-			this.instance.setColor(new org.alice.apis.moveandturn.Color(value));
+			this.colorLabel.getAwtComponent().setOpaque(true);
+			this.colorLabel.setText(COLOR_STRING);
+			this.colorLabel.setForegroundColor(color.getAsAWTColor());
+			this.colorLabel.setBackgroundColor(color.getAsAWTColor());
+		}
+		else
+		{
+			this.colorLabel.getAwtComponent().setOpaque(false);
+			this.colorLabel.setText(BLANK_STRING);
+			this.colorLabel.setForegroundColor(Color.BLACK);
 		}
 		
 	}
-
 }

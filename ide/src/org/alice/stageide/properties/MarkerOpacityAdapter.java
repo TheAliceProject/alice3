@@ -43,22 +43,32 @@
 
 package org.alice.stageide.properties;
 
-import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
+import org.alice.ide.properties.adapter.AbstractOpacityPropertyAdapter;
 
-import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 
-public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.alice.apis.moveandturn.Model> {
+public class MarkerOpacityAdapter extends AbstractOpacityPropertyAdapter<org.alice.apis.moveandturn.Marker> {
 
-	public ModelColorAdapter(org.alice.apis.moveandturn.Model instance)
+	public MarkerOpacityAdapter(org.alice.apis.moveandturn.Marker instance)
 	{
 		super(instance);
 	}
-
-	public Color4f getValue() 
+	
+	@Override
+	protected InstanceProperty<?> getPropertyInstanceForInstance(org.alice.apis.moveandturn.Marker instance) 
 	{
 		if (this.instance != null)
 		{
-			return this.instance.getColor().getInternal();
+			return this.instance.getSGSingleAppearance().opacity;
+		}
+		return null;
+	}
+
+	public Double getValue() 
+	{
+		if (this.instance != null)
+		{
+			return this.instance.getOpacity();
 		}
 		else
 		{
@@ -67,21 +77,11 @@ public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.alice.ap
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(org.alice.apis.moveandturn.Model instance)
+	public void setValue(Double value) 
 	{
 		if (this.instance != null)
 		{
-			return this.instance.getSGSingleAppearance().diffuseColor;
-		}
-		return null;
-	}
-
-	@Override
-	public void setValue(Color4f value) 
-	{
-		if (this.instance != null)
-		{
-			this.instance.setColor(new org.alice.apis.moveandturn.Color(value));
+			this.instance.setOpacity(value);
 		}
 		
 	}

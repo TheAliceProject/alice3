@@ -41,29 +41,47 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties;
+package org.alice.stageide.properties;
 
-public interface PropertyAdapter <P, O>
-{
-	public static interface ValueChangeObserver<P>
+import org.alice.ide.properties.adapter.AbstractNamePropertyAdapter;
+
+public class FieldNameAdapter extends AbstractNamePropertyAdapter<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> {
+
+	public FieldNameAdapter(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice instance)
 	{
-		public void valueChanged(P newValue);
+		super(instance);
+	}
+
+	public String getValue() 
+	{
+		if (this.instance != null)
+		{
+			return this.instance.getName();
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
-	public String getRepr();
-	
-	public Class<P> getPropertyType();
-	
-	public void setInstance(O instance);
-	
-	public P getValue();
-	
-	public void setValue(P value);
-	
-	public void addValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void addAndInvokeValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void removeValueChangeObserver(ValueChangeObserver<P> observer);
-	
+	@Override
+	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice instance)
+	{
+		if (this.instance != null)
+		{
+			return this.instance.name;
+		}
+		return null;
+	}
+
+	@Override
+	public void setValue(String value) 
+	{
+		if (this.instance != null)
+		{
+			this.instance.setName(value);
+		}
+		
+	}
+
 }
