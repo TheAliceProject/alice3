@@ -46,14 +46,17 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class ContextManager {
-	private ContextManager() {
-		throw new AssertionError();
+public class RootContext extends ModelContext {
+	private static class SingletonHolder {
+		private static RootContext instance = new RootContext();
+	}
+	public static RootContext getInstance() {
+		return SingletonHolder.instance;
+	}
+	private RootContext() {
+		super( null, null, null, null );
 	}
 	
-	public static ModelContext< ? > getRootContext() {
-		return null;
-	}
 	
 	public static <A extends Application> A createAndShowApplication( Class<A> cls, String[] args ) throws IllegalAccessException, InstantiationException {
 		A application = cls.newInstance();

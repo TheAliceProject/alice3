@@ -218,7 +218,7 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 			this.isOk = false;
 
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate.  observer should not need to be added to the root" );
-			Application.getSingleton().getRootContext().addChildrenObserver( this.childrenObserver );
+			RootContext.getInstance().addChildrenObserver( this.childrenObserver );
 			this.updateOkOperationAndExplanation( context );
 
 			return borderPanel;
@@ -232,7 +232,7 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 		if( contentPane != null ) {
 			this.epilogue(context, this.isOk);
 			
-			Application.getSingleton().getRootContext().removeChildrenObserver( this.childrenObserver );
+			RootContext.getInstance().removeChildrenObserver( this.childrenObserver );
 
 			this.okOperation.setDialog(null);
 			this.cancelOperation.setDialog(null);

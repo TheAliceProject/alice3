@@ -56,8 +56,7 @@ public final class BoundedRangeIntegerState extends Model {
 	private javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
 		private boolean previousValueIsAdjusting = false;
 		public void stateChanged(javax.swing.event.ChangeEvent e) {
-			Application application = Application.getSingleton();
-			ModelContext<?> parentContext = application.getCurrentContext();
+			ModelContext<?> parentContext = RootContext.getInstance().getCurrentContext();
 			BoundedRangeIntegerStateContext boundedRangeIntegerStateContext;
 			if( this.previousValueIsAdjusting ) {
 				boundedRangeIntegerStateContext = (BoundedRangeIntegerStateContext)parentContext;

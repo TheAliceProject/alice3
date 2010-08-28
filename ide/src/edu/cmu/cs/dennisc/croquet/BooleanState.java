@@ -76,7 +76,7 @@ public /*final*/ class BooleanState extends Model {
 			if( application.isInTheMidstOfUndoOrRedo() ) {
 				//pass
 			} else {
-				ModelContext<?> parentContext = application.getCurrentContext();
+				ModelContext<?> parentContext = RootContext.getInstance().getCurrentContext();
 				BooleanStateContext childContext = parentContext.createBooleanStateContext( BooleanState.this, e, null );
 				childContext.commitAndInvokeDo( new BooleanStateEdit( e ) );
 			}

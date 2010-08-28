@@ -110,8 +110,7 @@ public abstract class MenuModel extends Model {
 			MenuBar menuBar = (MenuBar)parent;
 			parentContext = menuBar.createMenuBarContext();
 		} else {
-			Application application = Application.getSingleton();
-			parentContext = application.getCurrentContext();
+			parentContext = RootContext.getInstance().getCurrentContext();
 		}
 		MenuModelContext context = parentContext.createMenuModelContext( MenuModel.this, menuItemContainer );
 		context.handleMenuSelected( e );
@@ -120,15 +119,13 @@ public abstract class MenuModel extends Model {
 //		menuSelectionManager.addChangeListener( this.changeListener );
 	}
 	protected void handleHiding( MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-		Application application = Application.getSingleton();
-		MenuModelContext context = (MenuModelContext)application.getCurrentContext();
+		MenuModelContext context = (MenuModelContext)RootContext.getInstance().getCurrentContext();
 		context.handleMenuDeselected( e );
 		javax.swing.MenuSelectionManager menuSelectionManager = javax.swing.MenuSelectionManager.defaultManager();
 		menuSelectionManager.removeChangeListener( this.changeListener );
 	}
 	protected void handleCanceled( MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-		Application application = Application.getSingleton();
-		MenuModelContext context = (MenuModelContext)application.getCurrentContext();
+		MenuModelContext context = (MenuModelContext)RootContext.getInstance().getCurrentContext();
 		context.handleMenuCanceled( e );
 		
 		System.err.println( "todo: cancel" + " " + e );

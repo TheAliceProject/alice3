@@ -198,7 +198,7 @@ public abstract class DragComponent extends Control {
 	private void handleLeftMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
 		Application application = Application.getSingleton();
 		application.setDragInProgress( true );
-		ModelContext<?> parentContext = application.getCurrentContext();
+		ModelContext<?> parentContext = RootContext.getInstance().getCurrentContext();
 	
 		this.updateProxySizes();
 		this.updateProxyPosition( e );

@@ -218,7 +218,7 @@ abstract class DialogOperationWithControls<C extends AbstractDialogOperationCont
 		rv.addComponent( new HorizontalSeparator(), gbc );
 		rv.addComponent( controlPanel, gbc );
 		
-		Application.getSingleton().getRootContext().addChildrenObserver( this.childrenObserver );
+		RootContext.getInstance().addChildrenObserver( this.childrenObserver );
 		this.updateExplanation( context );
 		
 		this.completeOperation.setDialog( dialog );
@@ -229,7 +229,7 @@ abstract class DialogOperationWithControls<C extends AbstractDialogOperationCont
 	@Override
 	protected final void releaseContentPane(C context, Dialog dialog, Container<?> contentPane) {
 		if( contentPane != null ) {
-			Application.getSingleton().getRootContext().removeChildrenObserver( this.childrenObserver );
+			RootContext.getInstance().removeChildrenObserver( this.childrenObserver );
 			this.release( context, dialog, this.isCompleted );
 		} else {
 			context.cancel();

@@ -40,25 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.editorstabbedpane;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MenuBar extends ViewController< javax.swing.JMenuBar, MenuBarModel > {
-	/*package-private*/ MenuBar( MenuBarModel model ) {
-		super( model );
+public class EditPreviousCodeOperation extends org.alice.ide.operations.ActionOperation {
+	private static class SingletonHolder {
+		private static EditPreviousCodeOperation instance = new EditPreviousCodeOperation();
+	}
+	public static EditPreviousCodeOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private EditPreviousCodeOperation() {
+		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "71ff1171-9e5e-443f-a7aa-cb4012f05fec" ) );
+		this.setName( "previous" );
 	}
 	@Override
-	protected javax.swing.JMenuBar createAwtComponent() {
-		return new javax.swing.JMenuBar();
-	}
-	/*package-private*/ void addMenu( Menu<?> menu ) {
-		this.getAwtComponent().add( menu.getAwtComponent() );
-	}
-	public ModelContext< ? > createMenuBarContext() {
-		ModelContext<?> rootContext = RootContext.getInstance();
-		return rootContext.createMenuBarModelContext( this.getModel(), this );
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		EditorsTabSelectionState.getInstance().editPreviousCode();
 	}
 }

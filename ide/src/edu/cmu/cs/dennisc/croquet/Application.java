@@ -57,7 +57,7 @@ public abstract class Application {
 		return singleton;
 	}
 
-	private ModelContext<Model> rootContext = new ModelContext<Model>( null, null, null, null ) {};
+//	private ModelContext<Model> rootContext = new ModelContext<Model>( null, null, null, null ) {};
 	private java.util.Map< java.util.UUID, java.util.Set< Model > > mapIdToModels = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public Application() {
@@ -73,12 +73,12 @@ public abstract class Application {
 //		} );
 	}
 
-	public ModelContext<?> getRootContext() {
-		return this.rootContext;
-	}
-	public ModelContext<?> getCurrentContext() {
-		return this.rootContext.getCurrentContext();
-	}
+//	public RootContext getRootContext() {
+//		return RootContext.getInstance();
+//	}
+//	public ModelContext<?> getCurrentContext() {
+//		return RootContext.getInstance().getCurrentContext();
+//	}
 
 	private java.util.Set< Model > lookupModels( java.util.UUID id ) {
 		synchronized ( this.mapIdToModels ) {

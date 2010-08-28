@@ -61,8 +61,7 @@ public abstract class Operation< C extends OperationContext<?>> extends Model {
 
 	public C fire( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		if( this.isEnabled() ) {
-			Application application = Application.getSingleton();
-			ModelContext<?> parentContext = application.getCurrentContext();
+			ModelContext<?> parentContext = RootContext.getInstance().getCurrentContext();
 			return this.handleFire(parentContext, e, viewController);
 		} else {
 			return null;
