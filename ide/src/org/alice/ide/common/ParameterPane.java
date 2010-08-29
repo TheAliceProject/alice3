@@ -73,7 +73,7 @@ public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.Pa
 					}
 					models.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 					models.add( deleteParameterOperation );
-					edu.cmu.cs.dennisc.croquet.Application.addMenuElements( popupMenu, models );
+					edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
 				}
 			}.getPopupMenuOperation() );
 		} else {

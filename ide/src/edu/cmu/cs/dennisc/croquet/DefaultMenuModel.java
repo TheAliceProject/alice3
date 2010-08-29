@@ -54,15 +54,17 @@ public class DefaultMenuModel extends MenuModel {
 	public DefaultMenuModel( java.util.UUID individualId, java.util.List< Model > models ) {
 		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(models, Model.class) );
 	}
+	
+	//todo:
 	@Override
 	/*package-private*/ Menu<MenuModel> createMenu() {
 		Menu<MenuModel> rv = super.createMenu();
-		Application.addMenuElements( rv, this.models );
+		MenuItemContainerUtilities.addMenuElements( rv, this.models );
 		return rv;
 	}
 	@Override
 	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
-		Application.addMenuElements( popupMenu, this.models );
+		MenuItemContainerUtilities.addMenuElements( popupMenu, this.models );
 	}
 }

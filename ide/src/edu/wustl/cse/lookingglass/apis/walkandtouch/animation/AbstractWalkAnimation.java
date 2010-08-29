@@ -370,7 +370,7 @@ public abstract class AbstractWalkAnimation extends edu.cmu.cs.dennisc.animation
 		}
 		//subject.moveRightNow( org.alice.apis.moveandturn.MoveDirection.DOWN, distanceAboveGround, subject.getScene() );
 		//subject.applyTranslationInScene( 0, -distanceAboveGround, 0 );
-		subject.move( org.alice.apis.moveandturn.MoveDirection.DOWN, distanceAboveGround, subject.RIGHT_NOW, org.alice.apis.moveandturn.AsSeenBy.SCENE );
+		subject.move( org.alice.apis.moveandturn.MoveDirection.DOWN, distanceAboveGround, org.alice.apis.moveandturn.Composite.RIGHT_NOW, org.alice.apis.moveandturn.AsSeenBy.SCENE );
 	}
 
 	public void getCurrentOrientations() {

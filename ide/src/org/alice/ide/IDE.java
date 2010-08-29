@@ -895,12 +895,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 					accessibles.add( parameter );
 				}
 			}
-			for( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable : this.getVariables( code ) ) {
+			for( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable : IDE.getVariables( code ) ) {
 				if( this.isAccessibleDesired( variable ) ) {
 					accessibles.add( variable );
 				}
 			}
-			for( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant : this.getConstants( code ) ) {
+			for( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant : IDE.getConstants( code ) ) {
 				if( this.isAccessibleDesired( constant ) ) {
 					accessibles.add( constant );
 				}

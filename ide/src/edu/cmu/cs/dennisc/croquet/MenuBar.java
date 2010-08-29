@@ -57,8 +57,7 @@ public class MenuBar extends ViewController< javax.swing.JMenuBar, MenuBarModel 
 	/*package-private*/ void addMenu( Menu<?> menu ) {
 		this.getAwtComponent().add( menu.getAwtComponent() );
 	}
-	public ModelContext< ? > createMenuBarContext() {
-		ModelContext<?> rootContext = RootContext.getInstance();
-		return rootContext.createMenuBarModelContext( this.getModel(), this );
-	}
+//	public ModelContext< ? > createMenuBarContext() {
+//		return ContextManager.createAndPushMenuBarModelContext( this.getModel(), this );
+//	}
 }

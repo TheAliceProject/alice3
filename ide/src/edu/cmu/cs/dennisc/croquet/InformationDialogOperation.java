@@ -50,7 +50,7 @@ public abstract class InformationDialogOperation<J extends Component<?>> extends
 		super(Application.INFORMATION_GROUP, individualId);
 	}
 	@Override
-	protected InformationDialogOperationContext<J> createContext( ModelContext< ? > parent, java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return parent.createInformationDialogOperationContext( this, e, viewController );
+	protected InformationDialogOperationContext<J> createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		return ContextManager.createAndPushInformationDialogOperationContext( this, e, viewController );
 	}
 }

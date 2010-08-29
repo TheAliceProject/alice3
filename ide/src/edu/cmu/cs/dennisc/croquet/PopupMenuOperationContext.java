@@ -49,4 +49,37 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 	public PopupMenuOperationContext( ModelContext<?> parent, PopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( parent, popupMenuOperation, e, viewController );
 	}
+	
+	public static class MenuSelectionEvent extends ModelEvent< PopupMenuOperationContext > {
+		private javax.swing.MenuElement[] menuElements;
+		private javax.swing.event.ChangeEvent changeEvent;
+
+		public MenuSelectionEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private MenuSelectionEvent( PopupMenuOperationContext parent, javax.swing.MenuElement[] menuElements, javax.swing.event.ChangeEvent changeEvent ) {
+			super( parent );
+			this.menuElements = menuElements;
+			this.changeEvent = changeEvent;
+		}
+		public javax.swing.event.ChangeEvent getChangeEvent() {
+			return this.changeEvent;
+		}
+		@Override
+		public State getState() {
+			return null;
+		}
+		@Override
+		protected StringBuilder appendRepr( StringBuilder rv ) {
+			super.appendRepr( rv );
+			for( javax.swing.MenuElement menuElement : this.menuElements ) {
+				rv.append( " " );
+				rv.append( menuElement.getClass().getName() );
+			}
+			return rv;
+		}
+	}
+	/*package-private*/ void handleMenuSelection( javax.swing.MenuElement[] menuElements, javax.swing.event.ChangeEvent e ) {
+		this.addChild( new MenuSelectionEvent( this, menuElements, e ) );
+	}
 }

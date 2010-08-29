@@ -52,7 +52,7 @@ public class HistoryManager {
 		}
 	};
 	static {
-		edu.cmu.cs.dennisc.croquet.RootContext.getInstance().addCommitObserver( HistoryManager.commitObserver );
+		edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext().addCommitObserver( HistoryManager.commitObserver );
 	}
 
 	private static java.util.Map< edu.cmu.cs.dennisc.croquet.Group, HistoryManager > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();

@@ -66,7 +66,7 @@ public class RecentProjectsMenuModel extends edu.cmu.cs.dennisc.croquet.MenuMode
 			java.io.File file = new java.io.File( path );
 			models[ i ] = org.alice.ide.croquet.models.projecturi.OpenRecentProjectOperation.getInstance( file.toURI() );
 		}
-		edu.cmu.cs.dennisc.croquet.Application.addMenuElements( menuItemContainer, models );
+		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( menuItemContainer, models );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: RecentProjectsMenuModel handleMenuSelected" );
 		super.handleShowing( menuItemContainer, e );
 	}

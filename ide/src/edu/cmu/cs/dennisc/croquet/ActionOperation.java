@@ -50,7 +50,7 @@ public abstract class ActionOperation extends Operation<ActionOperationContext> 
 		super( group, individualUUID );
 	}
 	@Override
-	protected ActionOperationContext createContext( ModelContext< ? > parent, java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return parent.createActionOperationContext( this, e, viewController );
+	protected ActionOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		return ContextManager.createAndPushActionOperationContext( this, e, viewController );
 	}
 }

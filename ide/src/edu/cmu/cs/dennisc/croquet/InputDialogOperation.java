@@ -108,8 +108,8 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 	}
 
 	@Override
-	protected InputDialogOperationContext<J> createContext( ModelContext< ? > parent, java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return parent.createInputDialogOperationContext( this, e, viewController );
+	protected InputDialogOperationContext<J> createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		return ContextManager.createAndPushInputDialogOperationContext( this, e, viewController );
 	}
 
 
@@ -218,7 +218,7 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 			this.isOk = false;
 
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate.  observer should not need to be added to the root" );
-			RootContext.getInstance().addChildrenObserver( this.childrenObserver );
+			ContextManager.getRootContext().addChildrenObserver( this.childrenObserver );
 			this.updateOkOperationAndExplanation( context );
 
 			return borderPanel;
@@ -232,7 +232,7 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 		if( contentPane != null ) {
 			this.epilogue(context, this.isOk);
 			
-			RootContext.getInstance().removeChildrenObserver( this.childrenObserver );
+			ContextManager.getRootContext().removeChildrenObserver( this.childrenObserver );
 
 			this.okOperation.setDialog(null);
 			this.cancelOperation.setDialog(null);

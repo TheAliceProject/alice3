@@ -97,38 +97,39 @@ public abstract class MenuModel extends Model {
 	protected void handlePopupMenuEpilogue( PopupMenu popupMenu, PopupMenuOperationContext context ) {
 	}
 	
-	private javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
-		public void stateChanged( javax.swing.event.ChangeEvent e ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "stateChanged", javax.swing.MenuSelectionManager.defaultManager().getSelectedPath() );
-		}
-	};
+//	private javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+//		public void stateChanged( javax.swing.event.ChangeEvent e ) {
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "stateChanged", javax.swing.MenuSelectionManager.defaultManager().getSelectedPath() );
+//		}
+//	};
 	protected void handleShowing( MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-//		//menuItemContainer.addChangeListener( this.changeListener );
-		Container< ? > parent = menuItemContainer.getParent();
-		ModelContext< ? > parentContext;
-		if( parent instanceof MenuBar ) {
-			MenuBar menuBar = (MenuBar)parent;
-			parentContext = menuBar.createMenuBarContext();
-		} else {
-			parentContext = RootContext.getInstance().getCurrentContext();
-		}
-		MenuModelContext context = parentContext.createMenuModelContext( MenuModel.this, menuItemContainer );
-		context.handleMenuSelected( e );
-//		
-//		javax.swing.MenuSelectionManager menuSelectionManager = javax.swing.MenuSelectionManager.defaultManager();
-//		menuSelectionManager.addChangeListener( this.changeListener );
+////		//menuItemContainer.addChangeListener( this.changeListener );
+//		Container< ? > parent = menuItemContainer.getParent();
+////		ModelContext< ? > parentContext;
+////		if( parent instanceof MenuBar ) {
+////			MenuBar menuBar = (MenuBar)parent;
+////			parentContext = menuBar.createMenuBarContext();
+////		} else {
+////			parentContext = RootContext.getInstance().getCurrentContext();
+////		}
+//		MenuModelContext context = RootContext.createAndPushMenuModelContext( MenuModel.this, menuItemContainer );
+//		context.handleMenuSelected( e );
+////		
+////		javax.swing.MenuSelectionManager menuSelectionManager = javax.swing.MenuSelectionManager.defaultManager();
+////		menuSelectionManager.addChangeListener( this.changeListener );
 	}
 	protected void handleHiding( MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-		MenuModelContext context = (MenuModelContext)RootContext.getInstance().getCurrentContext();
-		context.handleMenuDeselected( e );
-		javax.swing.MenuSelectionManager menuSelectionManager = javax.swing.MenuSelectionManager.defaultManager();
-		menuSelectionManager.removeChangeListener( this.changeListener );
+//		MenuModelContext context = (MenuModelContext)RootContext.getCurrentContext();
+//		context.handleMenuDeselected( e );
+//		ModelContext< ? > modelContext = RootContext.popContext();
+//		assert modelContext instanceof MenuModelContext;
+//		javax.swing.MenuSelectionManager menuSelectionManager = javax.swing.MenuSelectionManager.defaultManager();
+//		menuSelectionManager.removeChangeListener( this.changeListener );
 	}
 	protected void handleCanceled( MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-		MenuModelContext context = (MenuModelContext)RootContext.getInstance().getCurrentContext();
-		context.handleMenuCanceled( e );
-		
-		System.err.println( "todo: cancel" + " " + e );
+////		MenuModelContext context = (MenuModelContext)RootContext.getCurrentContext();
+////		context.handleMenuCanceled( e );
+//		System.err.println( "todo: cancel" + " " + e );
 	}
 	
 	private class PopupMenuListener implements javax.swing.event.PopupMenuListener {

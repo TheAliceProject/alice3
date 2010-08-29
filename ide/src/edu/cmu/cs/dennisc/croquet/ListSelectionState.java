@@ -166,9 +166,10 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 					if( application.isInTheMidstOfUndoOrRedo() ) {
 						//pass
 					} else {
-						ModelContext<?> parentContext = RootContext.getInstance().getCurrentContext();
-						ListSelectionStateContext< E > childContext = parentContext.createItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController, prevIndex, prevSelection, nextIndex, nextSelection );
+						ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController, prevIndex, prevSelection, nextIndex, nextSelection );
 						childContext.commitAndInvokeDo( new ListSelectionEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ) );
+						ModelContext< ? > popContext = ContextManager.popContext();
+						assert popContext == childContext;
 					}
 					ListSelectionState.this.fireValueChanged(nextSelection);
 					this.mostRecentEvent = null;

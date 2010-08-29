@@ -53,12 +53,17 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 		this.menuModel = menuModel;
 	}
 	@Override
-	protected PopupMenuOperationContext createContext( ModelContext< ? > parent, java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return parent.createPopupMenuOperationContext( this, e, viewController );
+	protected PopupMenuOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		return ContextManager.createAndPushPopupMenuOperationContext( this, e, viewController );
 	}
 	
  	@Override
-	protected final void perform(final PopupMenuOperationContext context) {
+	protected final void perform( PopupMenuOperationContext context) {
+	}
+	@Override
+	protected final void perform( final PopupMenuOperationContext context, final Operation.PerformObserver performObserver ) {
+		
+		//note: do not call super
 		final PopupMenu popupMenu = new PopupMenu( this ) {
 			@Override
 			protected void handleDisplayabilityChanged( java.awt.event.HierarchyEvent e ) {
@@ -84,6 +89,8 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 					this.cancelEvent = null;
 				}
 				PopupMenuOperation.this.menuModel.handlePopupMenuEpilogue( popupMenu, context );
+				
+				performObserver.handleFinally();
 			}
 			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
 				this.cancelEvent = e;

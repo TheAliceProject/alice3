@@ -198,41 +198,41 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		final int N = this.children.size();
 		if (N > 0) {
 			State state = this.children.get(N - 1).getState();
-			//todo
-			if( state == State.DESELECTED ) {
-				HistoryNode lastNode = this.children.get(N - 1);
-				if( lastNode instanceof edu.cmu.cs.dennisc.croquet.MenuModelContext.MenuDeselectedEvent ) { 
-					//pass
-				} else {
-					return null;
-				}
-			}
+//			//todo
+//			if( state == State.DESELECTED ) {
+//				HistoryNode lastNode = this.children.get(N - 1);
+//				if( lastNode instanceof edu.cmu.cs.dennisc.croquet.MenuModelContext.MenuDeselectedEvent ) { 
+//					//pass
+//				} else {
+//					return null;
+//				}
+//			}
 			return state;
 		} else {
 			return null;
 		}
 	}
-	//todo
-	public ModelContext<?> getCurrentContext() {
-		final int N = this.children.size();
-		if (N > 0) {
-			HistoryNode lastChild = this.children.get(N - 1);
-			if (lastChild instanceof ModelContext<?>) {
-				ModelContext<?> lastContext = (ModelContext<?>) lastChild;
-				State state = lastContext.getState();
-				if( state != null ) {
-					return this;
-				} else {
-					return lastContext.getCurrentContext();
-				}
-			} else {
-				return this;
-			}
-
-		} else {
-			return this;
-		}
-	}
+//	//todo
+//	public ModelContext<?> getCurrentContext() {
+//		final int N = this.children.size();
+//		if (N > 0) {
+//			HistoryNode lastChild = this.children.get(N - 1);
+//			if (lastChild instanceof ModelContext<?>) {
+//				ModelContext<?> lastContext = (ModelContext<?>) lastChild;
+//				State state = lastContext.getState();
+//				if( state != null ) {
+//					return this;
+//				} else {
+//					return lastContext.getCurrentContext();
+//				}
+//			} else {
+//				return this;
+//			}
+//
+//		} else {
+//			return this;
+//		}
+//	}
 
 	//	public final boolean isCommitted() {
 	//		return this.getState() == State.COMMITTED;
@@ -253,78 +253,6 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 			this.children.add(child);
 		}
 		this.fireAddedChild(child);
-	}
-
-	/*package-private*/ActionOperationContext createActionOperationContext(ActionOperation actionOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		ActionOperationContext rv = new ActionOperationContext(this, actionOperation, e, viewController);
-		this.addChild(rv);
-		return rv;
-	}
-	/*package-private*/CompositeOperationContext createCompositeOperationContext(CompositeOperation compositeOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		CompositeOperationContext rv = new CompositeOperationContext(this, compositeOperation, e, viewController);
-		this.addChild(rv);
-		return rv;
-	}
-	/*package-private*/DialogOperationContext createDialogOperationContext(DialogOperation dialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		DialogOperationContext rv = new DialogOperationContext(this, dialogOperation, e, viewController);
-		this.addChild(rv);
-		return rv;
-	}
-	/*package-private*/ <J extends Component< ? >> InputDialogOperationContext<J> createInputDialogOperationContext(InputDialogOperation<J> inputDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		InputDialogOperationContext<J> rv = new InputDialogOperationContext<J>(this, inputDialogOperation, e, viewController);
-		this.addChild(rv);
-		return rv;
-	}
-	/*package-private*/InformationDialogOperationContext createInformationDialogOperationContext(InformationDialogOperation informationDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		InformationDialogOperationContext rv = new InformationDialogOperationContext(this, informationDialogOperation, e, viewController);
-		this.addChild(rv);
-		return rv;
-	}
-	/*package-private*/WizardDialogOperationContext createWizardDialogOperationContext(WizardDialogOperation informationDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		WizardDialogOperationContext rv = new WizardDialogOperationContext(this, informationDialogOperation, e, viewController);
-		this.addChild(rv);
-		return rv;
-	}
-	
-	/*package-private*/PopupMenuOperationContext createPopupMenuOperationContext(PopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		PopupMenuOperationContext rv = new PopupMenuOperationContext(this, popupMenuOperation, e, viewController);
-		this.addChild(rv);
-		return rv;
-	}
-	/*package-private*/<T> ListSelectionStateContext<T> createItemSelectionStateContext(ListSelectionState<T> itemSelectionState, java.util.EventObject e, ViewController<?, ?> viewController, int prevIndex, T prevItem, int nextIndex, T nextItem) {
-		ListSelectionStateContext<T> rv = new ListSelectionStateContext<T>(this, itemSelectionState, e, viewController, prevIndex, prevItem, nextIndex, nextItem);
-		this.addChild(rv);
-		return rv;
-	}
-	/*package-private*/BoundedRangeIntegerStateContext createBoundedRangeIntegerStateContext(BoundedRangeIntegerState boundedRangeIntegerState) {
-		BoundedRangeIntegerStateContext rv = new BoundedRangeIntegerStateContext(this, boundedRangeIntegerState, null, null);
-		this.addChild(rv);
-		return rv;
-	}
-	/*package-private*/BooleanStateContext createBooleanStateContext(BooleanState booleanState, java.awt.event.ItemEvent e, ViewController<?, ?> viewController) {
-		BooleanStateContext rv = new BooleanStateContext(this, booleanState, e, viewController);
-		this.addChild(rv);
-		return rv;
-	}
-	/*package-private*/StringStateContext createStringStateContext(StringState stringState) {
-		StringStateContext rv = new StringStateContext(this, stringState, null, null);
-		this.addChild(rv);
-		return rv;
-	}
-	/*package-private*/MenuBarModelContext createMenuBarModelContext(MenuBarModel menuBarModel, MenuBar menuBar) {
-		MenuBarModelContext rv = new MenuBarModelContext(this, menuBarModel, null, menuBar);
-		this.addChild(rv);
-		return rv;
-	}
-	/*package-private*/MenuModelContext createMenuModelContext(MenuModel menuModel, MenuItemContainer menuItemContainer) {
-		MenuModelContext rv = new MenuModelContext( this, menuModel, null, menuItemContainer.getViewController() );
-		this.addChild(rv);
-		return rv;
-	}
-	/*package-private*/DragAndDropContext createDragAndDropContext(DragAndDropOperation dragAndDropOperation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource) {
-		DragAndDropContext rv = new DragAndDropContext(this, dragAndDropOperation, originalMouseEvent, latestMouseEvent, dragSource);
-		this.addChild(rv);
-		return rv;
 	}
 
 	public void finish() {

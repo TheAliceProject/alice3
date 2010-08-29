@@ -198,8 +198,6 @@ public abstract class DragComponent extends Control {
 	private void handleLeftMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
 		Application application = Application.getSingleton();
 		application.setDragInProgress( true );
-		ModelContext<?> parentContext = RootContext.getInstance().getCurrentContext();
-	
 		this.updateProxySizes();
 		this.updateProxyPosition( e );
 
@@ -207,7 +205,7 @@ public abstract class DragComponent extends Control {
 		layeredPane.add( this.dragProxy, new Integer( 1 ) );
 		layeredPane.setLayer( this.dragProxy, javax.swing.JLayeredPane.DRAG_LAYER );
 
-		this.dragAndDropContext = parentContext.createDragAndDropContext( this.dragAndDropOperation, this.getLeftButtonPressedEvent(), e, this );
+		this.dragAndDropContext = ContextManager.createAndPushDragAndDropContext( this.dragAndDropOperation, this.getLeftButtonPressedEvent(), e, this );
 		this.dragAndDropOperation.handleDragStarted( this.dragAndDropContext );
 	}
 	private void handleLeftMouseDragged( java.awt.event.MouseEvent e ) {
@@ -264,6 +262,9 @@ public abstract class DragComponent extends Control {
 					layeredPane.repaint( bounds );
 					if( this.dragAndDropContext != null ) {
 						this.dragAndDropContext.handleMouseReleased( e );
+						ModelContext< ? > popContext = ContextManager.popContext();
+						//investigate
+						assert popContext == this.dragAndDropContext;
 					}
 				}
 			}

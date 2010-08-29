@@ -218,7 +218,7 @@ abstract class DialogOperationWithControls<C extends AbstractDialogOperationCont
 		rv.addComponent( new HorizontalSeparator(), gbc );
 		rv.addComponent( controlPanel, gbc );
 		
-		RootContext.getInstance().addChildrenObserver( this.childrenObserver );
+		ContextManager.getRootContext().addChildrenObserver( this.childrenObserver );
 		this.updateExplanation( context );
 		
 		this.completeOperation.setDialog( dialog );
@@ -229,7 +229,7 @@ abstract class DialogOperationWithControls<C extends AbstractDialogOperationCont
 	@Override
 	protected final void releaseContentPane(C context, Dialog dialog, Container<?> contentPane) {
 		if( contentPane != null ) {
-			RootContext.getInstance().removeChildrenObserver( this.childrenObserver );
+			ContextManager.getRootContext().removeChildrenObserver( this.childrenObserver );
 			this.release( context, dialog, this.isCompleted );
 		} else {
 			context.cancel();
@@ -408,8 +408,8 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 		this.updateExplanation( null );
 	}
 	@Override
-	protected WizardDialogOperationContext createContext( ModelContext< ? > parent, java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return parent.createWizardDialogOperationContext( this, e, viewController );
+	protected WizardDialogOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		return ContextManager.createAndPushWizardDialogOperationContext( this, e, viewController );
 	}
 
 	protected abstract WizardStep[] createSteps( WizardDialogOperationContext context );

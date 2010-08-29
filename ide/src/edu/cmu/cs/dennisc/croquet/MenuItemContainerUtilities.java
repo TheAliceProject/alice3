@@ -46,22 +46,45 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class RootContext extends ModelContext {
-	private static class SingletonHolder {
-		private static RootContext instance = new RootContext();
+public class MenuItemContainerUtilities {
+	private MenuItemContainerUtilities() {
+		throw new AssertionError();
 	}
-	public static RootContext getInstance() {
-		return SingletonHolder.instance;
+	public static MenuItemContainer addMenuElement( MenuItemContainer rv, Model model ) {
+		if( model != null ) {
+			if( model instanceof MenuModel ) {
+				MenuModel menuOperation = (MenuModel)model;
+				rv.addMenu( menuOperation.createMenu() );
+			} else if( model instanceof ListSelectionState< ? > ) {
+				ListSelectionState< ? > itemSelectionOperation = (ListSelectionState< ? >)model;
+				rv.addMenu( itemSelectionOperation.getMenuModel().createMenu() );
+			} else if( model instanceof MenuSeparatorModel ) {
+				MenuSeparatorModel menuSeparatorModel = (MenuSeparatorModel)model;
+				rv.addSeparator( menuSeparatorModel.createMenuTextSeparator() );
+			} else if( model instanceof Operation<?> ) {
+				Operation<?> operation = (Operation<?>)model;
+				rv.addMenuItem( operation.createMenuItem() );
+			} else if( model instanceof BooleanState ) {
+				BooleanState booleanState = (BooleanState)model;
+				rv.addCheckBoxMenuItem( booleanState.createCheckBoxMenuItem() );
+			} else {
+				throw new RuntimeException();
+			}
+		} else {
+			rv.addSeparator();
+		}
+		return rv;
 	}
-	private RootContext() {
-		super( null, null, null, null );
+	public static MenuItemContainer addMenuElements( MenuItemContainer rv, java.util.List<Model> models ) {
+		for( Model model : models ) {
+			addMenuElement( rv, model );
+		}
+		return rv;
 	}
-	
-	
-	public static <A extends Application> A createAndShowApplication( Class<A> cls, String[] args ) throws IllegalAccessException, InstantiationException {
-		A application = cls.newInstance();
-		//application.initialize( args );
-		//application.getFrame().setVisible( true );
-		return application;
+	public static MenuItemContainer addMenuElements( MenuItemContainer rv, Model[] models ) {
+		for( Model model : models ) {
+			addMenuElement( rv, model );
+		}
+		return rv;
 	}
 }

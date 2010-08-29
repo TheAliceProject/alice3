@@ -171,7 +171,7 @@ public abstract class FillIn< E > extends Node {
 		this.select();
 		Blank blank = this.getNextNode();
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo handleMenuSelected" );
-		edu.cmu.cs.dennisc.croquet.Application.addMenuElements( menuItemContainer, blank.getModels() );
+		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( menuItemContainer, blank.getModels() );
 //		Node.this.addNextNodeMenuItems( Node.this.model, menu );
 ////		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 ////			public void run() {

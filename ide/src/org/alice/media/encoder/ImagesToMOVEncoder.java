@@ -207,7 +207,7 @@ public class ImagesToMOVEncoder implements ControllerListener, DataSinkListener,
 		// Put the Processor into configured state so we can set
 		// some processing options on the processor.
 		this.p.configure();
-		if( !waitForState( this.p, this.p.Configured ) ) {
+		if( !waitForState( this.p, Processor.Configured ) ) {
 			System.err.println( "Failed to configure the processor." );
 			return false;
 		}
@@ -231,7 +231,7 @@ public class ImagesToMOVEncoder implements ControllerListener, DataSinkListener,
 		// We are done with programming the processor.  Let's just
 		// realize it.
 		this.p.realize();
-		if( !waitForState( this.p, this.p.Realized ) ) {
+		if( !waitForState( this.p, Controller.Realized ) ) {
 			System.err.println( "Failed to realize the processor." );
 			return false;
 		}
