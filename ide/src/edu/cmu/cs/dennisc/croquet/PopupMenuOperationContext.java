@@ -51,15 +51,15 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 	}
 	
 	public static class MenuSelectionEvent extends ModelEvent< PopupMenuOperationContext > {
-		private javax.swing.MenuElement[] menuElements;
+		private java.util.List< Model > models;
 		private javax.swing.event.ChangeEvent changeEvent;
 
 		public MenuSelectionEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
-		private MenuSelectionEvent( PopupMenuOperationContext parent, javax.swing.MenuElement[] menuElements, javax.swing.event.ChangeEvent changeEvent ) {
+		private MenuSelectionEvent( PopupMenuOperationContext parent, java.util.List< Model > models, javax.swing.event.ChangeEvent changeEvent ) {
 			super( parent );
-			this.menuElements = menuElements;
+			this.models = models;
 			this.changeEvent = changeEvent;
 		}
 		public javax.swing.event.ChangeEvent getChangeEvent() {
@@ -72,14 +72,14 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 		@Override
 		protected StringBuilder appendRepr( StringBuilder rv ) {
 			super.appendRepr( rv );
-			for( javax.swing.MenuElement menuElement : this.menuElements ) {
+			for( Model model : this.models ) {
 				rv.append( " " );
-				rv.append( menuElement.getClass().getName() );
+				rv.append( model.getClass().getName() );
 			}
 			return rv;
 		}
 	}
-	/*package-private*/ void handleMenuSelection( javax.swing.MenuElement[] menuElements, javax.swing.event.ChangeEvent e ) {
-		this.addChild( new MenuSelectionEvent( this, menuElements, e ) );
+	/*package-private*/ void handleMenuSelectionChanged( java.util.List< Model > models, javax.swing.event.ChangeEvent e ) {
+		this.addChild( new MenuSelectionEvent( this, models, e ) );
 	}
 }
