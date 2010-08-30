@@ -1135,6 +1135,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	private java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > updateAccessibleLocals( java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > rv, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		edu.cmu.cs.dennisc.alice.ast.Node parent = statement.getParent();
+		if( parent instanceof edu.cmu.cs.dennisc.alice.ast.BooleanExpressionBodyPair ) {
+			parent = parent.getParent();
+		}
 		if( parent instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
 			edu.cmu.cs.dennisc.alice.ast.Statement statementParent = (edu.cmu.cs.dennisc.alice.ast.Statement)parent;
 			if( statementParent instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
