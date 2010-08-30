@@ -64,11 +64,14 @@ public abstract class ResourcePrompter<E extends org.alice.virtualmachine.Resour
 				StringBuilder sb = new StringBuilder();
 				sb.append( "File extension for \"" );
 				sb.append( file.getName() );
-				sb.append( "\" is not in the supported set: " );
+				sb.append( "\" is not in the supported set: { " );
+				String prefix = "";
 				for( String s : set ) {
+					sb.append( prefix );
 					sb.append( s );
-					sb.append( " " );
+					prefix = ", ";
 				}
+				sb.append( " }." );
 				org.alice.ide.IDE.getSingleton().showMessageDialog( sb.toString(), "Content Type Not Supported", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
 				return null;
 			}
