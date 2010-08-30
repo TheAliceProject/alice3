@@ -63,9 +63,7 @@ public class DefaultRadioButtons< E > extends AbstractRadioButtons< E > {
 		return new java.awt.GridBagLayout();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.BooleanStateButton<?> createBooleanStateButton(E item) {
-		BooleanState booleanState = new BooleanState( Application.INHERIT_GROUP, java.util.UUID.fromString( "721f3d0f-6b39-440c-b9ac-d0ae170e15a0" ), false );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: RADIO_BUTTON_BOOLEAN_STATE" );
+	protected edu.cmu.cs.dennisc.croquet.BooleanStateButton<?> createBooleanStateButton( E item, BooleanState booleanState ) {
 		booleanState.setTextForBothTrueAndFalse( item.toString() );
 		return booleanState.createRadioButton(); 
 	}

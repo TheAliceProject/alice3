@@ -92,7 +92,7 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 	protected abstract AbstractButton< ?, BooleanState > createTitleButton( BooleanState booleanState, java.awt.event.ActionListener closeButtonActionListener );
 	protected abstract D createTabItemDetails( E item, java.util.UUID id, AbstractButton< ?, BooleanState > titleButton, ScrollPane scrollPane, JComponent<?> mainComponent );
 	@Override
-	protected final D createItemDetails( final E item ) {
+	protected final D createItemDetails( final E item, BooleanState booleanState ) {
 		java.util.UUID id = this.tabCreator.getId( item );
 		assert id != null : item;
 		java.awt.event.ActionListener closeButtonActionListener;
@@ -105,7 +105,6 @@ public abstract class AbstractTabbedPane<E,D extends AbstractTabbedPane.TabItemD
 		} else {
 			closeButtonActionListener = null;
 		}
-		BooleanState booleanState = new BooleanState( Application.INHERIT_GROUP, java.util.UUID.fromString( "a6ed465d-39f4-4604-a5d0-e6c9463606b0" ), false );
 		AbstractButton< ?, BooleanState > titleButton = this.createTitleButton( booleanState, closeButtonActionListener );
 		this.tabCreator.customizeTitleComponent( booleanState, titleButton, item );
 		return createTabItemDetails( item, id, titleButton, this.tabCreator.createScrollPane( item ), this.tabCreator.createMainComponent( item ) );

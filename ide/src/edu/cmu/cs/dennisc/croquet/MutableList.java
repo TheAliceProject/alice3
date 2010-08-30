@@ -210,14 +210,13 @@ public final class MutableList< E > extends ItemSelectablePanel< E, MutableList.
 		}
 	}
 	@Override
-	protected final MutableList.MutableListItemDetails createItemDetails( final E item ) {
+	protected final MutableList.MutableListItemDetails createItemDetails( final E item, BooleanState booleanState ) {
 		java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent e) {
 				MutableList.this.getModel().removeItem( item );
 			}
 		};
 
-		BooleanState booleanState = new BooleanState( Application.UI_STATE_GROUP, java.util.UUID.fromString( "637720ae-b885-49b5-896d-c697ce21a021" ), false );
 		MutableListButton mutableListButton = new MutableListButton( booleanState );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MUTABLE_LIST_BOOLEAN_STATE" );
 		MutableListItemDetails rv = new MutableListItemDetails( item, mutableListButton, factory.createLeadingComponent(), factory.createMainComponent(), factory.createTrailingComponent(), actionListener );
