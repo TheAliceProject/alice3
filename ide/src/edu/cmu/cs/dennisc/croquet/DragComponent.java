@@ -262,9 +262,6 @@ public abstract class DragComponent extends Control {
 					layeredPane.repaint( bounds );
 					if( this.dragAndDropContext != null ) {
 						this.dragAndDropContext.handleMouseReleased( e );
-						ModelContext< ? > popContext = ContextManager.popContext();
-						//investigate
-						assert popContext == this.dragAndDropContext;
 					}
 				}
 			}
