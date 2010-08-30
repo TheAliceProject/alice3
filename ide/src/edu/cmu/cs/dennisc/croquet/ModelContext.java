@@ -120,7 +120,6 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 			return super.findContextFor(model);
 		}
 	}
-
 	public boolean isLeaf() {
 		return false;
 	}
@@ -147,6 +146,10 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		return this.children.indexOf( child );
 	}
 
+	/*package-private*/ void popping() {
+	}
+	/*package-private*/ void popped() {
+	}
 	protected void fireCommitting(Edit edit) {
 		if (this.commitObservers.size() > 0) {
 			for (CommitObserver commitObserver : this.commitObservers) {
@@ -240,6 +243,9 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 	public final boolean isCanceled() {
 		//todo
 		for (HistoryNode node : this.children) {
+//			if( node instanceof CancelEvent ) {
+//				return true;
+//			}
 			if (node.getState() == State.CANCELED) {
 				return true;
 			}

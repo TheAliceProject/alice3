@@ -72,6 +72,9 @@ public abstract class Formatter {
 		}
 	}
 	
+	
+	public abstract String getNameForField( java.lang.reflect.Field fld );
+	
 	public abstract boolean isTypeExpressionDesired();
 
 	public abstract String getTextForThis();

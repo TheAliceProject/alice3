@@ -48,6 +48,7 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public class ContextManager {
 	private static java.util.Stack< ModelContext< ? > > stack;
+	private static java.util.Map< ModelContext< ? >, ModelContext< ? > > mapChildContextPendingParentContext = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	static {
 		stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 		stack.push( new ModelContext( null, null, null, null ) {
@@ -159,7 +160,23 @@ public class ContextManager {
 		return rv;
 	}
 	/*package-private*/ static ModelContext< ? > popContext() {
-		return stack.pop();
+		ModelContext< ? > childContext = stack.peek();
+		ModelContext< ? > parentContext = mapChildContextPendingParentContext.get( childContext );
+		
+		childContext.popping();
+		ModelContext< ? > rv = stack.pop();
+		childContext.popped();
+		if( parentContext != null ) {
+			mapChildContextPendingParentContext.remove( childContext );
+			assert parentContext == stack.peek() : parentContext + " " + stack.peek();
+			popContext();
+		}
+		return rv;
+	}
+	
+	/*package-private*/ static void popParentContextWhenChildContextIsPopped( ModelContext< ? > parentContext, ModelContext< ? > childContext ) {
+		assert childContext.getParent() == parentContext;
+		mapChildContextPendingParentContext.put( childContext, parentContext );
 	}
 	
 	private static javax.swing.JMenuBar getJMenuBarOrigin( javax.swing.MenuElement[] menuElements ) { 

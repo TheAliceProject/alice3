@@ -410,7 +410,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 					source.setDropProxyLocationAndShowIfNecessary( p, this.currentUnder, height, availableHeight );
 				}
 			} else {
-				source.hideDropProxyIfNecessary();
+//				source.hideDropProxyIfNecessary();
 			}
 		}
 		this.repaint();
@@ -435,7 +435,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 				if( EPIC_HACK_desiredStatementListPropertyPane != statementListPropertyPane || desiredIndex != index ) {
 //					EPIC_HACK_desiredStatementListPropertyPane = null;
 //					EPIC_HACK_desiredIndex = -1;
-					source.hideDropProxyIfNecessary();
+//					source.hideDropProxyIfNecessary();
 					context.cancel();
 					return null;
 				}
@@ -540,20 +540,20 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 						//index = -1;
 					}
 					rv = statementTemplate.createDropOperation( context, blockStatement, index );
-					context.addChildrenObserver( new edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver() {
-						public void addingChild( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
-						}
-						public void addedChild( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
-							if( child instanceof edu.cmu.cs.dennisc.croquet.CancelEvent || child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
-								context.getDragSource().hideDropProxyIfNecessary();
-							}
-						}
-					} );
+//					context.addChildrenObserver( new edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver() {
+//						public void addingChild( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+//						}
+//						public void addedChild( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+//							if( child instanceof edu.cmu.cs.dennisc.croquet.CancelEvent || child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
+//								context.getDragSource().hideDropProxyIfNecessary();
+//							}
+//						}
+//					} );
 				} else {
-					source.hideDropProxyIfNecessary();
+//					source.hideDropProxyIfNecessary();
 				}
 			} else if( source != null && source.getSubject() instanceof org.alice.ide.common.AbstractStatementPane ) {
-				source.hideDropProxyIfNecessary();
+//				source.hideDropProxyIfNecessary();
 				if( this.currentUnder != null ) {
 					org.alice.ide.common.AbstractStatementPane abstractStatementPane = (org.alice.ide.common.AbstractStatementPane)source.getSubject();
 					final edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
@@ -709,14 +709,14 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 		this.statementListPropertyPaneInfos = null;
 		this.setCurrentUnder( null, null );
 		this.repaint();
-		if( isDropRecipient ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
-			if( source != null ) {
-				source.hideDropProxyIfNecessary();
-			}
-		}
+//		if( isDropRecipient ) {
+//			//pass
+//		} else {
+//			edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
+//			if( source != null ) {
+//				source.hideDropProxyIfNecessary();
+//			}
+//		}
 	}
 	public final void dragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 		EPIC_HACK_desiredStatementListPropertyPane = null;

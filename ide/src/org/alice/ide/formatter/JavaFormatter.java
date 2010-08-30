@@ -79,4 +79,9 @@ public class JavaFormatter extends Formatter {
 	public boolean isTypeExpressionDesired() {
 		return true;
 	}
+	
+	@Override
+	public String getNameForField( java.lang.reflect.Field fld ) {
+		return fld.getName();
+	}
 }
