@@ -48,6 +48,7 @@ package org.alice.ide.resource.prompter;
  * @author Dennis Cosgrove
  */
 public class AudioResourcePrompter extends ResourcePrompter< org.alice.virtualmachine.resources.AudioResource> {
+	private static final java.util.Set< String > extensionSet = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( "mp3", "wav", "au" );
 	private static AudioResourcePrompter singleton = new AudioResourcePrompter();
 	public static AudioResourcePrompter getSingleton() {
 		return singleton;
@@ -67,10 +68,13 @@ public class AudioResourcePrompter extends ResourcePrompter< org.alice.virtualma
 		}
 	}
 	@Override
+	protected java.util.Set< String > getLowercaseSupportedExtensions() {
+		return extensionSet;
+	}
+	@Override
 	protected String getFileDialogTitle() {
 		return "Select Audio File To Import";
 	}
-	
 	@Override
 	protected org.alice.virtualmachine.resources.AudioResource createResourceFromFile( java.io.File file ) throws java.io.IOException {
 		return edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton().createAudioResource( file );

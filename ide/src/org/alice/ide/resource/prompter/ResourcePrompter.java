@@ -48,6 +48,7 @@ package org.alice.ide.resource.prompter;
  */
 public abstract class ResourcePrompter<E extends org.alice.virtualmachine.Resource> {
 	protected abstract String getInitialFileText();
+	protected abstract java.util.Set< String > getLowercaseSupportedExtensions();
 	protected abstract E createResourceFromFile( java.io.File file ) throws java.io.IOException;
 	protected abstract String getFileDialogTitle();
 	protected abstract java.io.FilenameFilter createFilenameFilter();
@@ -55,7 +56,14 @@ public abstract class ResourcePrompter<E extends org.alice.virtualmachine.Resour
 		java.io.File initialDirectory = null;
 		java.io.File file = org.alice.ide.IDE.getSingleton().showOpenFileDialog( initialDirectory, this.getInitialFileText(), edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory().getAbsolutePath(), true );
 		if( file != null ) {
-			return this.createResourceFromFile( file );
+			String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file );
+			java.util.Set< String > set = this.getLowercaseSupportedExtensions();
+			if( extension != null && set.contains( extension ) ) {
+				return this.createResourceFromFile( file );
+			} else {
+				org.alice.ide.IDE.getSingleton().showMessageDialog( "Content Type Not Supported", "Content Type Not Supported", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
+				return null;
+			}
 		} else {
 			return null;
 		}

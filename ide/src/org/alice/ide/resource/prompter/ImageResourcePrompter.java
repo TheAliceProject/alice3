@@ -48,6 +48,7 @@ package org.alice.ide.resource.prompter;
  * @author Dennis Cosgrove
  */
 public class ImageResourcePrompter extends ResourcePrompter< org.alice.virtualmachine.resources.ImageResource> {
+	private static final java.util.Set< String > extensionSet = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( "png", "jpg", "gif", "bmp" );
 	private static ImageResourcePrompter singleton = new ImageResourcePrompter();
 	public static ImageResourcePrompter getSingleton() {
 		return singleton;
@@ -65,6 +66,10 @@ public class ImageResourcePrompter extends ResourcePrompter< org.alice.virtualma
 		} else {
 			return null;
 		}
+	}
+	@Override
+	protected java.util.Set< String > getLowercaseSupportedExtensions() {
+		return extensionSet;
 	}
 	@Override
 	protected String getFileDialogTitle() {
