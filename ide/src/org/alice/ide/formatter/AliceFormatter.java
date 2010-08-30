@@ -127,4 +127,9 @@ public class AliceFormatter extends Formatter {
 	public boolean isTypeExpressionDesired() {
 		return false;
 	}
+	
+	@Override
+	public String getNameForField( java.lang.reflect.Field fld ) {
+		return fld.getName();
+	}
 }

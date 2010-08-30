@@ -112,14 +112,14 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupM
 		if( rv != null ) {
 			//pass
 		} else {
-			source.hideDropProxyIfNecessary();
+//			source.hideDropProxyIfNecessary();
 			context.cancel();
 		}
 		return rv;
 	}
 	public void dragExited( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, boolean isDropRecipient ) {
-		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
-		source.hideDropProxyIfNecessary();
+//		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
+//		source.hideDropProxyIfNecessary();
 	}
 	public void dragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 	}

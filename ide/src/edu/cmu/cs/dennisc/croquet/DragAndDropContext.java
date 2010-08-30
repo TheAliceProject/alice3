@@ -134,8 +134,6 @@ public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
 	private DropReceptorInfo[] potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
 	private DropReceptor currentDropReceptor;
 	private java.awt.event.MouseEvent latestMouseEvent;
-	private boolean isAlreadyPopped;
-
 	public DragAndDropContext( ModelContext<?> parent, DragAndDropOperation dragAndDropOperation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource ) {
 		super( parent, dragAndDropOperation, originalMouseEvent, dragSource );
 		this.setLatestMouseEvent( latestMouseEvent );
@@ -153,7 +151,6 @@ public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
 			//todo: pass original mouse pressed event?
 			dropReceptorInfo.getDropReceptor().dragStarted( this );
 		}
-		this.isAlreadyPopped = false;
 	}
 
 	public java.awt.event.MouseEvent getOriginalMouseEvent() {
@@ -250,44 +247,48 @@ public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
 		}
 	}
 	
-	private void popContext() {
-		if( this.isAlreadyPopped ) {
-			//pass
+	private void popContext( OperationContext< ? > childContext ) {
+		System.err.println( "popContext" );
+		if( childContext != null ) {
+			ContextManager.popParentContextWhenChildContextIsPopped( this, childContext );
 		} else {
-			System.err.println( "popContext" );
-//			ModelContext< ? > modelContext = ContextManager.popContext();
-//			assert modelContext == this;
-			this.isAlreadyPopped = true;
+			ModelContext< ? > modelContext = ContextManager.popContext();
+			assert modelContext == this;
 		}
 	}
 	
 	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
-		this.setLatestMouseEvent( e );
-		if( this.currentDropReceptor != null ) {
-			Operation<?> operation = this.currentDropReceptor.dragDropped( this );
-			if( operation != null ) {
-				this.addChild( new DroppedEvent( this, e, this.currentDropReceptor ) );
-				JComponent<?> component = this.currentDropReceptor.getViewController();
-				ViewController<?,?> viewController; 
-				if( component instanceof ViewController<?,?> ) {
-					viewController = (ViewController<?,?>)component;
+		if( this.isCanceled() ) {
+			//pass
+		} else {
+			OperationContext< ? > childContext = null;
+			this.setLatestMouseEvent( e );
+			if( this.currentDropReceptor != null ) {
+				Operation<?> operation = this.currentDropReceptor.dragDropped( this );
+				if( operation != null ) {
+					this.addChild( new DroppedEvent( this, e, this.currentDropReceptor ) );
+					JComponent<?> component = this.currentDropReceptor.getViewController();
+					ViewController<?,?> viewController; 
+					if( component instanceof ViewController<?,?> ) {
+						viewController = (ViewController<?,?>)component;
+					} else {
+						viewController = null;
+					}
+					childContext = operation.fire( this.getLatestMouseEvent(), viewController );
 				} else {
-					viewController = null;
+					this.cancel();
 				}
-				operation.fire( this.getLatestMouseEvent(), viewController );
+				this.currentDropReceptor.dragExited( this, true );
 			} else {
 				this.cancel();
 			}
-			this.currentDropReceptor.dragExited( this, true );
-		} else {
-			this.cancel();
+			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
+				dropReceptorInfo.getDropReceptor().dragStopped( this );
+			}
+			this.getModel().handleDragStopped( this );
+			this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
+			this.popContext( childContext );
 		}
-		for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
-			dropReceptorInfo.getDropReceptor().dragStopped( this );
-		}
-		this.getModel().handleDragStopped( this );
-		this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
-		this.popContext();
 	}
 	public void handleCancel( java.util.EventObject e ) {
 		if( this.currentDropReceptor != null ) {
@@ -298,8 +299,13 @@ public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
 		}
 		this.getModel().handleDragStopped( this );
 		this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
-		this.getDragSource().hideDropProxyIfNecessary();
 		this.cancel();
-		this.popContext();
+		this.popContext( null );
+	}
+
+	@Override
+	/*package-private*/ void popped() {
+		super.popped();
+		this.getDragSource().hideDropProxyIfNecessary();
 	}
 }
