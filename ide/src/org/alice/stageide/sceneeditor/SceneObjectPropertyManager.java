@@ -49,15 +49,9 @@ import java.lang.reflect.Constructor;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.alice.apis.moveandturn.AsSeenBy;
-import org.alice.apis.moveandturn.CameraMarker;
-import org.alice.apis.moveandturn.Marker;
-import org.alice.apis.moveandturn.Model;
-import org.alice.apis.moveandturn.Transformable;
 import org.alice.ide.IDE;
+import org.alice.ide.properties.uicontroller.AdapterControllerUtilities;
 import org.alice.ide.properties.uicontroller.PropertyAdapterController;
-import org.alice.ide.properties.uicontroller.PropertyAdapterUIController;
-import org.alice.ide.sceneeditor.AbstractInstantiatingSceneEditor;
 import org.alice.stageide.properties.FieldNameAdapter;
 import org.alice.stageide.properties.MarkerColorAdapter;
 import org.alice.stageide.properties.MarkerOpacityAdapter;
@@ -68,15 +62,7 @@ import org.alice.stageide.properties.TransformableTranslationAdapter;
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 import edu.cmu.cs.dennisc.croquet.GridBagPanel;
 import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.pattern.event.NameEvent;
-import edu.cmu.cs.dennisc.pattern.event.NameListener;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
 public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>
 {
@@ -86,117 +72,26 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 	private class LabelValueControllerPair
 	{
 		public Label label;
-		public PropertyAdapterController controller;
+		public PropertyAdapterController<?> controller;
 		
-		public LabelValueControllerPair(Label label, PropertyAdapterController controller)
+		public LabelValueControllerPair(Label label, PropertyAdapterController<?> controller)
 		{
 			this.label = label;
 			this.controller = controller;
-		}
+		} 
 	}
 	
-	private PropertyAdapterUIController nameController;
-	private PropertyAdapterUIController colorController;
-	private PropertyAdapterUIController opacityController;
-	private PropertyAdapterUIController positionController;
+	private List<LabelValueControllerPair> labelControllerList = new LinkedList<LabelValueControllerPair>();
+	private List<LabelValueControllerPair> activeControllers = new LinkedList<LabelValueControllerPair>();
 	private Label classLabel;
+	private Label classNameLabel;
 	
 	public SceneObjectPropertyManager()
 	{
 		super();
-		int rowCount = 0;
-		this.nameController = new PropertyAdapterUIController(null);
-		this.addComponent( this.nameController, new GridBagConstraints( 
-				0, //gridX
-				rowCount, //gridY
-				2, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		rowCount++;
-		
 		this.classLabel = new Label("NO CLASS");
-		this.addComponent(new Label("Class:"), new GridBagConstraints( 
-				0, //gridX
-				rowCount, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.EAST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.addComponent( this.classLabel, new GridBagConstraints( 
-				1, //gridX
-				rowCount, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		rowCount++;
+		this.classNameLabel = new Label("Class = ");
 		
-		this.colorController = new PropertyAdapterUIController(null);
-		
-		this.addComponent(this.colorController, new GridBagConstraints( 
-				0, //gridX
-				rowCount, //gridY
-				2, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.EAST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		
-		rowCount++;
-		
-		this.opacityController = new PropertyAdapterUIController(null);
-		this.addComponent( this.opacityController, new GridBagConstraints( 
-				0, //gridX
-				rowCount, //gridY
-				2, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		rowCount++;
-		this.positionController = new PropertyAdapterUIController(null);
-		this.addComponent( this.positionController, new GridBagConstraints( 
-				0, //gridX
-				rowCount, //gridY
-				2, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
-				GridBagConstraints.HORIZONTAL, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
 	}
 	
 	private static Class<?>[] PROPERTY_ADAPTER_CLASSES= {
@@ -207,29 +102,12 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 		ModelOpacityAdapter.class,
 		TransformableTranslationAdapter.class,
 	};
-	
-	private static List<Class<?>> getClassHierarchy(Class<?> startingClass)
-	{
-		List<Class<?>> classes = new LinkedList<Class<?>>();
-		if (startingClass != null)
-		{
-			classes.add(startingClass);
-			Class<?> superClass = startingClass.getSuperclass();
-			while (superClass != null)
-			{
-				classes.add(superClass);
-				superClass = superClass.getSuperclass();
-			}
-		}
-		return classes;
-	}
 
 	public static List<org.alice.ide.properties.adapter.PropertyAdapter<?,?>> getPropertyAdaptersForObject(Object object)
 	{
 		List<org.alice.ide.properties.adapter.PropertyAdapter<?,?>> propertyList = new LinkedList<org.alice.ide.properties.adapter.PropertyAdapter<?,?>>();
 		if (object != null)
 		{
-			PrintUtilities.println("Trying to get adapters for "+object.getClass().getSimpleName());
 			for (Class<?> adapterClass : PROPERTY_ADAPTER_CLASSES)
 			{
 				Constructor<?>[] constructors = adapterClass.getConstructors();
@@ -253,27 +131,13 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 				}
 			}
 		}
-		if (propertyList.size() > 0)
-		{
-			PrintUtilities.println("Found adapters for "+object.getClass().getSimpleName()+":");
-			for (org.alice.ide.properties.adapter.PropertyAdapter<?,?> adapter : propertyList)
-			{
-				PrintUtilities.println("  "+adapter.getRepr());
-			}
-		}
-		else
-		{
-			PrintUtilities.println("Found no adapters for "+object);
-		}
 		return propertyList;
 	}
 	
+	
+	
 	public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) 
 	{
-		this.nameController.setPropertyAdapter(null);
-		this.colorController.setPropertyAdapter(null);
-		this.opacityController.setPropertyAdapter(null);
-		this.positionController.setPropertyAdapter(null);
 		this.selectedField = null;
 		this.selectedObject = null;
 		if( nextValue instanceof AbstractField ) {
@@ -286,22 +150,113 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 			}
 			this.selectedObject = instance;
 		}
+		
+		for (LabelValueControllerPair activeController : this.activeControllers)
+		{
+			if (activeController.controller != null)
+			{
+				activeController.controller.setPropertyAdapter(null);
+			}
+		}
+		this.activeControllers.clear();
+		
+		this.removeAllComponents();
+		
+		
+		
 		List<org.alice.ide.properties.adapter.PropertyAdapter<?,?>> propertyAdapters = new LinkedList<org.alice.ide.properties.adapter.PropertyAdapter<?,?>>();
 		propertyAdapters.addAll(getPropertyAdaptersForObject(this.selectedField));
 		propertyAdapters.addAll(getPropertyAdaptersForObject(this.selectedObject));
 		
-		for (org.alice.ide.properties.adapter.PropertyAdapter<?,?> adapter : propertyAdapters)
+		if (propertyAdapters.size() != 0)
 		{
-			PrintUtilities.println(adapter.getRepr());
-		}
-		
-		if (this.selectedField != null)
-		{
-			this.classLabel.setText(this.selectedField.getDesiredValueType().getName());
-		}
-		else
-		{
-			this.classLabel.setText("NO FIELD, NO CLASS");
+			int propertyCount = 0;
+			if (this.selectedField != null)
+			{
+				this.classLabel.setText(this.selectedField.getDesiredValueType().getName());
+			}
+			else
+			{
+				this.classLabel.setText("NO FIELD, NO CLASS");
+			}
+			this.addComponent(this.classNameLabel, new GridBagConstraints( 
+					0, //gridX
+					propertyCount, //gridY
+					1, //gridWidth
+					1, //gridHeight
+					0.0, //weightX
+					0.0, //weightY
+					GridBagConstraints.EAST, //anchor 
+					GridBagConstraints.NONE, //fill
+					new Insets(2,2,2,2), //insets
+					0, //ipadX
+					0 ) //ipadY
+			);
+			this.addComponent( this.classLabel, new GridBagConstraints( 
+					1, //gridX
+					propertyCount, //gridY
+					1, //gridWidth
+					1, //gridHeight
+					0.0, //weightX
+					0.0, //weightY
+					GridBagConstraints.WEST, //anchor 
+					GridBagConstraints.NONE, //fill
+					new Insets(2,2,2,2), //insets
+					0, //ipadX
+					0 ) //ipadY
+			);
+			propertyCount++;
+			for (org.alice.ide.properties.adapter.PropertyAdapter propertyAdapter : propertyAdapters)
+			{
+				LabelValueControllerPair matchingLabelController = null;
+				for (LabelValueControllerPair labelController : this.labelControllerList)
+				{
+					if (labelController.controller.getPropertyType().equals(propertyAdapter.getPropertyType()))
+					{
+						matchingLabelController = labelController;
+						matchingLabelController.label.setText(propertyAdapter.getRepr()+ " = ");
+						matchingLabelController.controller.setPropertyAdapter(propertyAdapter);
+						break;
+					}
+				}
+				if (matchingLabelController == null)
+				{
+					PropertyAdapterController<?> propertyController = AdapterControllerUtilities.getValuePanelForPropertyAdapter(propertyAdapter);
+					assert propertyController != null;
+					matchingLabelController = new LabelValueControllerPair(new Label(propertyAdapter.getRepr()+ " = "), propertyController);
+					this.labelControllerList.add(matchingLabelController);
+				}
+				assert matchingLabelController != null;
+				
+				this.addComponent( matchingLabelController.label, new GridBagConstraints( 
+						0, //gridX
+						propertyCount, //gridY
+						1, //gridWidth
+						1, //gridHeight
+						0.0, //weightX
+						0.0, //weightY
+						GridBagConstraints.EAST, //anchor 
+						GridBagConstraints.NONE, //fill
+						new Insets(2,2,2,2), //insets
+						0, //ipadX
+						0 ) //ipadY
+				);
+				this.addComponent( matchingLabelController.controller.getPanel(), new GridBagConstraints( 
+						1, //gridX
+						propertyCount, //gridY
+						1, //gridWidth
+						1, //gridHeight
+						0.0, //weightX
+						0.0, //weightY
+						GridBagConstraints.WEST, //anchor 
+						GridBagConstraints.NONE, //fill
+						new Insets(2,2,2,2), //insets
+						0, //ipadX
+						0 ) //ipadY
+				);
+				this.activeControllers.add(matchingLabelController);
+				propertyCount++;
+			}
 		}
 	}
 

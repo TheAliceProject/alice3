@@ -48,21 +48,30 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
 public abstract class AbstractInstancePropertyAdapter<P, O> extends AbstractPropertyAdapter<P, O> {
 
-	private PropertyListener propertyListener = new PropertyListener()
+	private PropertyListener propertyListener;
+	
+	private void initializeListenersIfNecessary()
 	{
-		public void propertyChanging(PropertyEvent e) {}
-		
-		public void propertyChanged(PropertyEvent e)
+		if (this.propertyListener == null)
 		{
-			handleInternalValueChanged();
+			this.propertyListener = new PropertyListener()
+			{
+				public void propertyChanging(PropertyEvent e) {}
+				
+				public void propertyChanged(PropertyEvent e)
+				{
+					handleInternalValueChanged();
+				}
+			};
 		}
-	};
+	}
 	
 	@Override
 	protected void startListening() 
 	{
 		if (this.getPropertyInstanceForInstance(this.instance) != null)
 		{
+			this.initializeListenersIfNecessary();
 			this.getPropertyInstanceForInstance(this.instance).addPropertyListener(this.propertyListener);
 		}
 	}

@@ -52,13 +52,7 @@ import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
 public abstract class AbstractAbsolutePositionPropertyAdapter<O extends Transformable> extends AbstractPoint3PropertyAdapter<O>
 {
-	private AbsoluteTransformationListener absoluteTransformationListener = new AbsoluteTransformationListener() {
-		
-		public void absoluteTransformationChanged(AbsoluteTransformationEvent absoluteTransformationEvent) 
-		{
-			AbstractAbsolutePositionPropertyAdapter.this.handleInternalValueChanged();
-		}
-	};
+	private AbsoluteTransformationListener absoluteTransformationListener;
 	
 	public AbstractAbsolutePositionPropertyAdapter(O instance) 
 	{
@@ -70,11 +64,25 @@ public abstract class AbstractAbsolutePositionPropertyAdapter<O extends Transfor
 		super(repr, instance);
 	}
 	
+	private void initializeTransformationListenersIfNecessary()
+	{
+		if (this.absoluteTransformationListener == null)
+		{
+			this.absoluteTransformationListener = new AbsoluteTransformationListener() {
+				public void absoluteTransformationChanged(AbsoluteTransformationEvent absoluteTransformationEvent) 
+				{
+					AbstractAbsolutePositionPropertyAdapter.this.handleInternalValueChanged();
+				}
+			};
+		}
+	}
+	
 	@Override
 	protected void startListening() 
 	{
 		if (this.instance != null)
 		{
+			this.initializeTransformationListenersIfNecessary();
 			this.instance.getSGAbstractTransformable().addAbsoluteTransformationListener(this.absoluteTransformationListener);
 		}
 	}

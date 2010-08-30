@@ -43,121 +43,12 @@
 
 package org.alice.ide.properties.uicontroller;
 
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-
 import org.alice.ide.properties.adapter.PropertyAdapter;
 
-import edu.cmu.cs.dennisc.croquet.GridBagPanel;
-import edu.cmu.cs.dennisc.croquet.Label;
 import edu.cmu.cs.dennisc.math.Point3;
 
-public class PropertyAdapterUIController extends GridBagPanel
+public class AdapterControllerUtilities 
 {
-	private PropertyAdapterController valuePanel; 
-	private Label nameLabel;
-	
-	public PropertyAdapterUIController(PropertyAdapter<?, ?> propertyAdapter)
-	{
-		super();
-		this.nameLabel = new Label();
-		if (propertyAdapter != null)
-		{
-			this.nameLabel.setText(propertyAdapter.getRepr());
-		}
-		else
-		{
-			this.nameLabel.setText("NO PROPERTY, NO NAME");
-		}
-		Label middleLabel = new Label(" = ");
-		this.valuePanel = getValuePanelForPropertyAdapter(propertyAdapter);
-		
-		this.addComponent(this.nameLabel, new GridBagConstraints( 
-				0, //gridX
-				0, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.EAST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.addComponent(middleLabel, new GridBagConstraints( 
-				1, //gridX
-				0, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.CENTER, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.addComponent(this.valuePanel.getPanel(), new GridBagConstraints( 
-				2, //gridX
-				0, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.CENTER, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		
-	}
-	
-	public void setPropertyAdapter(PropertyAdapter<?, ?> propertyAdapter)
-	{
-		if (propertyAdapter != null)
-		{
-			this.nameLabel.setText(propertyAdapter.getRepr());
-		}
-		else
-		{
-			this.nameLabel.setText("NO PROPERTY, NO NAME");
-		}
-		if (this.valuePanel.getPropertyType() == propertyAdapter.getPropertyType())
-		{
-			this.valuePanel.setPropertyAdapter(propertyAdapter);
-		}
-		else
-		{
-			PropertyAdapterController<?> newValuePanel = getValuePanelForPropertyAdapter(propertyAdapter);
-			if (!(newValuePanel instanceof BlankPropertyController))
-			{
-				this.removeComponent(this.valuePanel.getPanel());
-				this.valuePanel.setPropertyAdapter(null);
-				this.valuePanel = newValuePanel;
-				this.addComponent(this.valuePanel.getPanel(), new GridBagConstraints( 
-						2, //gridX
-						0, //gridY
-						1, //gridWidth
-						1, //gridHeight
-						0.0, //weightX
-						0.0, //weightY
-						GridBagConstraints.CENTER, //anchor 
-						GridBagConstraints.NONE, //fill
-						new Insets(2,2,2,2), //insets
-						0, //ipadX
-						0 ) //ipadY
-				);
-			}
-		}
-	}
-	
-	public PropertyAdapterController getValueController()
-	{
-		return this.valuePanel;
-	}
-	
 	public static PropertyAdapterController getValuePanelForPropertyAdapter(PropertyAdapter propertyAdapter)
 	{
 		Class<?> propertyType = propertyAdapter != null?  propertyAdapter.getPropertyType() : null;
@@ -186,5 +77,4 @@ public class PropertyAdapterUIController extends GridBagPanel
 			return new BlankPropertyController(propertyAdapter);
 		}
 	}
-	
 }
