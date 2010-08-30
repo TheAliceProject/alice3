@@ -61,7 +61,15 @@ public abstract class ResourcePrompter<E extends org.alice.virtualmachine.Resour
 			if( extension != null && set.contains( extension ) ) {
 				return this.createResourceFromFile( file );
 			} else {
-				org.alice.ide.IDE.getSingleton().showMessageDialog( "Content Type Not Supported", "Content Type Not Supported", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
+				StringBuilder sb = new StringBuilder();
+				sb.append( "File extension for \"" );
+				sb.append( file.getName() );
+				sb.append( "\" is not in the supported set: " );
+				for( String s : set ) {
+					sb.append( s );
+					sb.append( " " );
+				}
+				org.alice.ide.IDE.getSingleton().showMessageDialog( sb.toString(), "Content Type Not Supported", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
 				return null;
 			}
 		} else {
