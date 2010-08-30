@@ -70,7 +70,7 @@ abstract class CreateInstanceFromFileOperation extends AbstractGalleryDeclareFie
 	protected org.alice.ide.declarationpanes.CreateFieldFromGalleryPane prologue( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.CreateFieldFromGalleryPane > context ) {
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane rv = null;
 		java.io.File directory = this.getInitialDirectory();
-		java.io.File file = edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.getIDE().getFrame().getAwtComponent(), directory, null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION, false );
+		java.io.File file = this.getIDE().showOpenFileDialog( directory, null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION, false );
 		if( file != null ) {
 			String lcFilename = file.getName().toLowerCase();
 			if( lcFilename.endsWith( ".a2c" ) ) {

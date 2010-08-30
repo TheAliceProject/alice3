@@ -1061,7 +1061,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 		}
 		else if (e.getSource() == this.saveButton)
 		{
-			File selectedFile = edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog(this, getDefaultDirectory(), getDefaultFilename(), "mov", true);
+			File selectedFile = edu.cmu.cs.dennisc.croquet.Application.getSingleton().showSaveFileDialog(getDefaultDirectory(), getDefaultFilename(), "mov", true);
 			if (selectedFile != null)
 			{
 				copyRecordedFile( this.recordedMovieFile, selectedFile );
