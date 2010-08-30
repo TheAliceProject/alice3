@@ -40,40 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class MenuSelectionManagerUtilities {
-	private MenuSelectionManagerUtilities() {
-		throw new AssertionError();
-	}
-	private static javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
-		public void stateChanged( javax.swing.event.ChangeEvent e ) {
-			handleStateChanged( e );
-		}
-	};
-	private static void handleStateChanged( javax.swing.event.ChangeEvent e ) {
-		javax.swing.MenuElement[] menuElements = javax.swing.MenuSelectionManager.defaultManager().getSelectedPath();
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleStateChanged" );
-		int indentCount = 0;
-		for( javax.swing.MenuElement menuElement : menuElements ) {
-			StringBuilder sb = new StringBuilder();
-			for( int i=0; i<indentCount; i++ ) {
-				sb.append( "\t" );
-			}
-			sb.append( menuElement.getClass().getName() );
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( sb.toString() );
-			indentCount++;
-		}
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println();
-	}
-	/*package-private*/ static void startListening() {
-		javax.swing.MenuSelectionManager.defaultManager().addChangeListener( changeListener );
-	}
-	/*package-private*/ static void stopListening() {
-		javax.swing.MenuSelectionManager.defaultManager().removeChangeListener( changeListener );
-	}
+public interface Theme {
+	public java.awt.Color getProcedureColor();
+	public java.awt.Color getFunctionColor();
+	public java.awt.Color getConstructorColor();
+	public java.awt.Color getFieldColor();
+	public java.awt.Color getLocalColor();
+	public java.awt.Color getParameterColor();
+	public java.awt.Paint getPaintFor( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int x, int y, int width, int height );
+	public java.awt.Color getColorFor( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls );
+	public java.awt.Color getColorFor( edu.cmu.cs.dennisc.alice.ast.Node node );
+	public java.awt.Color getCommentForegroundColor();
+	public java.awt.Color getCodeDeclaredInAliceColor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code );
 }

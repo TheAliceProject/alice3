@@ -69,20 +69,16 @@ public class StringState extends Model {
 	private javax.swing.text.Document document;
 	private javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
 		private void handleUpdate(javax.swing.event.DocumentEvent e) {
-			Application application = Application.getSingleton();
-			ModelContext<?> context = application.getCurrentContext();
-			StringStateContext stringStateContext;
-			if( context instanceof StringStateContext ) {
-				stringStateContext = (StringStateContext)context;
-			} else {
-				stringStateContext = context.createStringStateContext( StringState.this );
-			}
 			try {
-				fireValueChanged( document.getText( 0, document.getLength() ) );
+				String s = document.getText( 0, document.getLength() );
+				StringStateContext stringStateContext = ContextManager.createAndPushStringStateContext( StringState.this );
+				fireValueChanged( s );
+				stringStateContext.handleDocumentEvent( e );
+				ModelContext< ? > popContext = ContextManager.popContext();
+				assert popContext == stringStateContext;
 			} catch( javax.swing.text.BadLocationException ble ) {
 				throw new RuntimeException( ble );
 			}
-			stringStateContext.handleDocumentEvent( e );
 		}
 		public void changedUpdate(javax.swing.event.DocumentEvent e) {
 			this.handleUpdate(e);

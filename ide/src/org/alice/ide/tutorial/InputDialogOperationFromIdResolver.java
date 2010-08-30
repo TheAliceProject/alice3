@@ -61,6 +61,6 @@ import edu.cmu.cs.dennisc.croquet.Resolver;
 //				}
 //			}
 //		}
-		return (edu.cmu.cs.dennisc.croquet.InputDialogOperation)org.alice.ide.IDE.getSingleton().findFirstAppropriateModel( this.id );
+		return (edu.cmu.cs.dennisc.croquet.InputDialogOperation)edu.cmu.cs.dennisc.croquet.ContextManager.findFirstAppropriateModel( this.id );
 	}
 }

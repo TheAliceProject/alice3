@@ -40,46 +40,51 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PopupMenuOperationContext extends OperationContext<PopupMenuOperation> {
-	public PopupMenuOperationContext( ModelContext<?> parent, PopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
-		super( parent, popupMenuOperation, e, viewController );
+public class MenuItemContainerUtilities {
+	private MenuItemContainerUtilities() {
+		throw new AssertionError();
 	}
-	
-	public static class MenuSelectionEvent extends ModelEvent< PopupMenuOperationContext > {
-		private java.util.List< Model > models;
-		private javax.swing.event.ChangeEvent changeEvent;
-
-		public MenuSelectionEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-		private MenuSelectionEvent( PopupMenuOperationContext parent, java.util.List< Model > models, javax.swing.event.ChangeEvent changeEvent ) {
-			super( parent );
-			this.models = models;
-			this.changeEvent = changeEvent;
-		}
-		public javax.swing.event.ChangeEvent getChangeEvent() {
-			return this.changeEvent;
-		}
-		@Override
-		public State getState() {
-			return null;
-		}
-		@Override
-		protected StringBuilder appendRepr( StringBuilder rv ) {
-			super.appendRepr( rv );
-			for( Model model : this.models ) {
-				rv.append( " " );
-				rv.append( model.getClass().getName() );
+	public static MenuItemContainer addMenuElement( MenuItemContainer rv, Model model ) {
+		if( model != null ) {
+			if( model instanceof MenuModel ) {
+				MenuModel menuOperation = (MenuModel)model;
+				rv.addMenu( menuOperation.createMenu() );
+			} else if( model instanceof ListSelectionState< ? > ) {
+				ListSelectionState< ? > itemSelectionOperation = (ListSelectionState< ? >)model;
+				rv.addMenu( itemSelectionOperation.getMenuModel().createMenu() );
+			} else if( model instanceof MenuSeparatorModel ) {
+				MenuSeparatorModel menuSeparatorModel = (MenuSeparatorModel)model;
+				rv.addSeparator( menuSeparatorModel.createMenuTextSeparator() );
+			} else if( model instanceof Operation<?> ) {
+				Operation<?> operation = (Operation<?>)model;
+				rv.addMenuItem( operation.createMenuItem() );
+			} else if( model instanceof BooleanState ) {
+				BooleanState booleanState = (BooleanState)model;
+				rv.addCheckBoxMenuItem( booleanState.createCheckBoxMenuItem() );
+			} else {
+				throw new RuntimeException();
 			}
-			return rv;
+		} else {
+			rv.addSeparator();
 		}
+		return rv;
 	}
-	/*package-private*/ void handleMenuSelectionChanged( java.util.List< Model > models, javax.swing.event.ChangeEvent e ) {
-		this.addChild( new MenuSelectionEvent( this, models, e ) );
+	public static MenuItemContainer addMenuElements( MenuItemContainer rv, java.util.List<Model> models ) {
+		for( Model model : models ) {
+			addMenuElement( rv, model );
+		}
+		return rv;
+	}
+	public static MenuItemContainer addMenuElements( MenuItemContainer rv, Model[] models ) {
+		for( Model model : models ) {
+			addMenuElement( rv, model );
+		}
+		return rv;
 	}
 }

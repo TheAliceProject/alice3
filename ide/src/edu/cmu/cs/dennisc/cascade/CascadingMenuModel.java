@@ -84,7 +84,7 @@ public abstract class CascadingMenuModel extends edu.cmu.cs.dennisc.croquet.Menu
 		java.util.List< edu.cmu.cs.dennisc.cascade.Node > children = blank.getChildren();
 		for( edu.cmu.cs.dennisc.cascade.Node child : children ) {
 			edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn = (edu.cmu.cs.dennisc.cascade.FillIn< ? >)child;
-			edu.cmu.cs.dennisc.croquet.Application.addMenuElement( popupMenu, fillIn.getCroquetModel() );
+			edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( popupMenu, fillIn.getCroquetModel() );
 		}
 	}
 }

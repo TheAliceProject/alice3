@@ -40,46 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.editorstabbedpane;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PopupMenuOperationContext extends OperationContext<PopupMenuOperation> {
-	public PopupMenuOperationContext( ModelContext<?> parent, PopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
-		super( parent, popupMenuOperation, e, viewController );
+public class EditPreviousCodeOperation extends org.alice.ide.operations.ActionOperation {
+	private static class SingletonHolder {
+		private static EditPreviousCodeOperation instance = new EditPreviousCodeOperation();
 	}
-	
-	public static class MenuSelectionEvent extends ModelEvent< PopupMenuOperationContext > {
-		private java.util.List< Model > models;
-		private javax.swing.event.ChangeEvent changeEvent;
-
-		public MenuSelectionEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-		private MenuSelectionEvent( PopupMenuOperationContext parent, java.util.List< Model > models, javax.swing.event.ChangeEvent changeEvent ) {
-			super( parent );
-			this.models = models;
-			this.changeEvent = changeEvent;
-		}
-		public javax.swing.event.ChangeEvent getChangeEvent() {
-			return this.changeEvent;
-		}
-		@Override
-		public State getState() {
-			return null;
-		}
-		@Override
-		protected StringBuilder appendRepr( StringBuilder rv ) {
-			super.appendRepr( rv );
-			for( Model model : this.models ) {
-				rv.append( " " );
-				rv.append( model.getClass().getName() );
-			}
-			return rv;
-		}
+	public static EditPreviousCodeOperation getInstance() {
+		return SingletonHolder.instance;
 	}
-	/*package-private*/ void handleMenuSelectionChanged( java.util.List< Model > models, javax.swing.event.ChangeEvent e ) {
-		this.addChild( new MenuSelectionEvent( this, models, e ) );
+	private EditPreviousCodeOperation() {
+		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "71ff1171-9e5e-443f-a7aa-cb4012f05fec" ) );
+		this.setName( "previous" );
+	}
+	@Override
+	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		EditorsTabSelectionState.getInstance().editPreviousCode();
 	}
 }

@@ -52,7 +52,7 @@ public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.Pa
 		super( parameter );
 		this.parametersProperty = parametersProperty;
 		this.addComponent( new org.alice.ide.common.DeclarationNameLabel( parameter ) );
-		this.setEnabledBackgroundPaint( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ParameterAccess.class ) );
+		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.ParameterAccess.class ) );
 		final org.alice.ide.operations.ast.RenameParameterOperation renameParameterOperation = new org.alice.ide.operations.ast.RenameParameterOperation( parameter );
 		
 		if( this.parametersProperty != null ) {
@@ -73,7 +73,7 @@ public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.Pa
 					}
 					models.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 					models.add( deleteParameterOperation );
-					edu.cmu.cs.dennisc.croquet.Application.addMenuElements( popupMenu, models );
+					edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
 				}
 			}.getPopupMenuOperation() );
 		} else {

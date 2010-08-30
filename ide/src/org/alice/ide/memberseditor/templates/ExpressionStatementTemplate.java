@@ -71,7 +71,7 @@ package org.alice.ide.memberseditor.templates;
 	protected void refresh() {
 		this.removeAllComponents();
 		edu.cmu.cs.dennisc.alice.ast.Expression incompleteExpression = this.createIncompleteExpression();
-		this.setBackgroundColor( getIDE().getColorFor( incompleteExpression ) );
+		this.setBackgroundColor( getIDE().getTheme().getColorFor( incompleteExpression ) );
 		this.addComponent( getIDE().getTemplatesFactory().createExpressionPane( incompleteExpression ) );
 	}
 

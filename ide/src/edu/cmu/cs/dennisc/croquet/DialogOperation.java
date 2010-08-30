@@ -50,7 +50,7 @@ public abstract class DialogOperation extends AbstractDialogOperation<DialogOper
 		super(group, individualUUID);
 	}
 	@Override
-	protected DialogOperationContext createContext( ModelContext< ? > parent, java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return parent.createDialogOperationContext( this, e, viewController );
+	protected DialogOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		return ContextManager.createAndPushDialogOperationContext( this, e, viewController );
 	}
 }

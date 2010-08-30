@@ -56,13 +56,11 @@ public final class BoundedRangeIntegerState extends Model {
 	private javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
 		private boolean previousValueIsAdjusting = false;
 		public void stateChanged(javax.swing.event.ChangeEvent e) {
-			Application application = Application.getSingleton();
-			ModelContext<?> parentContext = application.getCurrentContext();
 			BoundedRangeIntegerStateContext boundedRangeIntegerStateContext;
 			if( this.previousValueIsAdjusting ) {
-				boundedRangeIntegerStateContext = (BoundedRangeIntegerStateContext)parentContext;
+				boundedRangeIntegerStateContext = (BoundedRangeIntegerStateContext)ContextManager.getCurrentContext();
 			} else {
-				boundedRangeIntegerStateContext = parentContext.createBoundedRangeIntegerStateContext( BoundedRangeIntegerState.this );
+				boundedRangeIntegerStateContext = ContextManager.createAndPushBoundedRangeIntegerStateContext( BoundedRangeIntegerState.this );
 			}
 			this.previousValueIsAdjusting = boundedRangeModel.getValueIsAdjusting();
 			boundedRangeIntegerStateContext.handleStateChanged( e );
@@ -74,6 +72,8 @@ public final class BoundedRangeIntegerState extends Model {
 				int nextValue = boundedRangeModel.getValue();
 				boundedRangeIntegerStateContext.commitAndInvokeDo( new BoundedRangeIntegerStateEdit( e, BoundedRangeIntegerState.this, BoundedRangeIntegerState.this.previousValue, nextValue, false ) );
 				BoundedRangeIntegerState.this.previousValue = nextValue;
+				ModelContext< ? > popContext = ContextManager.popContext();
+				assert popContext == boundedRangeIntegerStateContext;
 			}
 		}
 	};

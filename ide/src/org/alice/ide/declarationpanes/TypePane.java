@@ -191,7 +191,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				models.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 				models.add( new org.alice.ide.croquet.models.ast.OtherTypesMenuModel( otherTypeModels ) );
 			}
-			edu.cmu.cs.dennisc.croquet.Application.addMenuElements( popupMenu, models );
+			edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
 		}
 	}.getPopupMenuOperation();
 	

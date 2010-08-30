@@ -57,52 +57,11 @@ public abstract class Application {
 		return singleton;
 	}
 
-	private ModelContext<Model> rootContext = new ModelContext<Model>( null, null, null, null ) {};
-	private java.util.Map< java.util.UUID, java.util.Set< Model > > mapIdToModels = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-
 	public Application() {
 		assert Application.singleton == null;
 		Application.singleton = this;
-		MenuSelectionManagerUtilities.startListening();
-//		rootContext.addCommitObserver( new ModelContext.CommitObserver() {
-//			public void committing( Edit edit ) {
-//			}
-//			public void committed( Edit edit ) {
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( edit );
-//			}
-//		} );
+		ContextManager.startListeningToMenuSelection();
 	}
-
-	public ModelContext<?> getRootContext() {
-		return this.rootContext;
-	}
-	public ModelContext<?> getCurrentContext() {
-		return this.rootContext.getCurrentContext();
-	}
-
-	private java.util.Set< Model > lookupModels( java.util.UUID id ) {
-		synchronized ( this.mapIdToModels ) {
-			return this.mapIdToModels.get( id );
-		}
-	}
-	@Deprecated
-	public Model findFirstAppropriateModel( java.util.UUID id ) {
-		java.util.Set< Model > models = lookupModels( id );
-		for( Model model : models ) {
-			for( JComponent<?> component : model.getComponents() ) {
-				if( component.getAwtComponent().isShowing() ) {
-					return model;
-				}
-			}
-			for( JComponent<?> component : model.getComponents() ) {
-				if( component.getAwtComponent().isVisible() ) {
-					return model;
-				}
-			}
-		}
-		return null;
-	}
-	
 
 	protected abstract Component< ? > createContentPane();
 
@@ -161,51 +120,20 @@ public abstract class Application {
 		//this.frame.pack();
 	}
 
-//	public static interface LocaleObserver {
-//		public void localeChanging( java.util.Locale previousLocale, java.util.Locale nextLocale );
-//		public void localeChanged( java.util.Locale previousLocale, java.util.Locale nextLocale );
-//	}
-//	private java.util.List< LocaleObserver > localeObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-//	public void addLocaleObserver( LocaleObserver localeObserver ) {
-//		this.localeObservers.add( localeObserver );
-//	}
-//	public void removeLocaleObserver( LocaleObserver localeObserver ) {
-//		this.localeObservers.remove( localeObserver );
-//	}
-//	public void setLocale( java.util.Locale locale ) {
-//		java.util.Locale previousLocale = this.frame.getAwtComponent().getLocale();
-//
-//		for( LocaleObserver localeObserver : this.localeObservers ) {
-//			localeObserver.localeChanging( previousLocale, locale );
-//		}
-//		this.frame.getAwtComponent().setLocale( locale );
-//		//todo: remove
-//		javax.swing.JComponent.setDefaultLocale( locale );
-//		for( LocaleObserver localeObserver : this.localeObservers ) {
-//			localeObserver.localeChanged( previousLocale, locale );
-//		}
-//	}
 	public void setLocale( java.util.Locale locale ) {
 		if( locale != null ) {
 			if( locale.equals( java.util.Locale.getDefault() ) && locale.equals( javax.swing.JComponent.getDefaultLocale() ) ) {
 				//pass
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "skipping locale", locale );
 			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "setLocale", locale );
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "java.util.Locale.getDefault()", java.util.Locale.getDefault() );
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "javax.swing.JComponent.getDefaultLocale()", javax.swing.JComponent.getDefaultLocale() );
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "setLocale", locale );
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "java.util.Locale.getDefault()", java.util.Locale.getDefault() );
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "javax.swing.JComponent.getDefaultLocale()", javax.swing.JComponent.getDefaultLocale() );
 				java.util.Locale.setDefault( locale );
 				javax.swing.JComponent.setDefaultLocale( locale );
-				synchronized ( this.mapIdToModels ) {
-					java.util.Collection< java.util.Set< Model > > sets = this.mapIdToModels.values();
-					for( java.util.Set< Model > set : sets ) {
-						for( Model model : set ) {
-							model.localize();
-//							for( JComponent<?> component : model.getComponents() ) {
-//							}
-						}
-					}
-				}
+				
+				ContextManager.localizeAllModels();
+				
 				try {
 					javax.swing.UIManager.setLookAndFeel( javax.swing.UIManager.getLookAndFeel() );
 				} catch( javax.swing.UnsupportedLookAndFeelException ulafe ) {
@@ -226,80 +154,10 @@ public abstract class Application {
 		}
 	}
 
-
 	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
 	protected abstract void handleAbout( java.util.EventObject e );
 	protected abstract void handlePreferences( java.util.EventObject e );
 	protected abstract void handleQuit( java.util.EventObject e );
-
-	/*package-private*/ void registerModel( Model model ) {
-		java.util.UUID id = model.getIndividualUUID();
-		synchronized ( this.mapIdToModels ) {
-			java.util.Set< Model > set = this.mapIdToModels.get( id );
-			if( set != null ) {
-				//pass
-			} else {
-				set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
-				this.mapIdToModels.put( id, set );
-			}
-			set.add( model );
-		}
-	}
-	/*package-private*/ void unregisterModel( Model model ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "unregister:", model );
-		java.util.UUID id = model.getIndividualUUID();
-		synchronized ( this.mapIdToModels ) {
-			java.util.Set< Model > set = this.mapIdToModels.get( id );
-			if( set != null ) {
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "pre set size:", set.size() );
-				set.remove( model );
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "post set size:", set.size() );
-				if( set.size() == 0 ) {
-					this.mapIdToModels.remove( id );
-				}
-			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate unregister" );
-			}
-		}
-	}
-
-	public static MenuItemContainer addMenuElement( MenuItemContainer rv, Model model ) {
-		if( model != null ) {
-			if( model instanceof MenuModel ) {
-				MenuModel menuOperation = (MenuModel)model;
-				rv.addMenu( menuOperation.createMenu() );
-			} else if( model instanceof ListSelectionState< ? > ) {
-				ListSelectionState< ? > itemSelectionOperation = (ListSelectionState< ? >)model;
-				rv.addMenu( itemSelectionOperation.getMenuModel().createMenu() );
-			} else if( model instanceof MenuSeparatorModel ) {
-				MenuSeparatorModel menuSeparatorModel = (MenuSeparatorModel)model;
-				rv.addSeparator( menuSeparatorModel.createMenuTextSeparator() );
-			} else if( model instanceof Operation<?> ) {
-				Operation<?> operation = (Operation<?>)model;
-				rv.addMenuItem( operation.createMenuItem() );
-			} else if( model instanceof BooleanState ) {
-				BooleanState booleanState = (BooleanState)model;
-				rv.addCheckBoxMenuItem( booleanState.createCheckBoxMenuItem() );
-			} else {
-				throw new RuntimeException();
-			}
-		} else {
-			rv.addSeparator();
-		}
-		return rv;
-	}
-	public static MenuItemContainer addMenuElements( MenuItemContainer rv, java.util.List<Model> models ) {
-		for( Model model : models ) {
-			addMenuElement( rv, model );
-		}
-		return rv;
-	}
-	public static MenuItemContainer addMenuElements( MenuItemContainer rv, Model[] models ) {
-		for( Model model : models ) {
-			addMenuElement( rv, model );
-		}
-		return rv;
-	}
 
 	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
 		if( message instanceof Component<?> ) {

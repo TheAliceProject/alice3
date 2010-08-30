@@ -44,6 +44,8 @@ package org.alice.ide.croquet.models.ui.debug;
 
 import org.alice.ide.croquet.models.IsFrameShowingState;
 
+import edu.cmu.cs.dennisc.croquet.ContextManager;
+
 class HistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel< edu.cmu.cs.dennisc.croquet.HistoryNode > {
 	private edu.cmu.cs.dennisc.croquet.HistoryNode root;
 	public HistoryTreeModel( edu.cmu.cs.dennisc.croquet.HistoryNode root ) {
@@ -117,7 +119,7 @@ public class IsInteractionTreeShowingState extends IsFrameShowingState {
 	}
 	@Override
 	protected java.awt.Component createPane() {
-		edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getRootContext();
+		edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
 		final HistoryTreeModel treeModel = new HistoryTreeModel( context );
 		final javax.swing.JTree tree = new javax.swing.JTree( treeModel );
 		tree.setRootVisible( false );

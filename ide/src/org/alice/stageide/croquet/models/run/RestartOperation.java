@@ -46,7 +46,13 @@ package org.alice.stageide.croquet.models.run;
  * @author Dennis Cosgrove
  */
 public class RestartOperation extends org.alice.ide.operations.ActionOperation {
-	public RestartOperation() {
+	private static class SingletonHolder {
+		private static RestartOperation instance = new RestartOperation();
+	}
+	public static RestartOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private RestartOperation() {
 		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "f8acb9c4-f4d8-4c6e-84ae-6555cc0da4e0" ) );
 	}
 	@Override

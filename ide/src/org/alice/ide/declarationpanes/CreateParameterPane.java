@@ -51,7 +51,7 @@ public abstract class CreateParameterPane extends CreateDeclarationPane<edu.cmu.
 	public CreateParameterPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
 		super( new org.alice.ide.name.validators.ParameterNameValidator( code ) );
 		this.code = code;
-		this.setBackgroundColor( getIDE().getParameterColor() );
+		this.setBackgroundColor( getIDE().getTheme().getParameterColor() );
 		
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {

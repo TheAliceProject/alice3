@@ -57,13 +57,11 @@ public abstract class Operation< C extends OperationContext<?>> extends Model {
 	}
 	private java.util.Map< AbstractButton< ?,? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
-	protected abstract C createContext( ModelContext<?> parent, java.util.EventObject e, ViewController< ?, ? > viewController );
+	protected abstract C createContext( java.util.EventObject e, ViewController< ?, ? > viewController );
 
 	public C fire( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		if( this.isEnabled() ) {
-			Application application = Application.getSingleton();
-			ModelContext<?> parentContext = application.getCurrentContext();
-			return this.handleFire(parentContext, e, viewController);
+			return this.handleFire(e, viewController);
 		} else {
 			return null;
 		}
@@ -94,13 +92,28 @@ public abstract class Operation< C extends OperationContext<?>> extends Model {
 		this.setMnemonicKey( this.getLocalizedMnemonicKey() );
 		this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 	}
-	
-	/*package-private*/ final C handleFire( ModelContext<?> parentContext, java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		C childContext = this.createContext( parentContext, e, viewController );
-		this.perform( childContext );
+	protected static interface PerformObserver { 
+		public void handleFinally(); 
+	}
+	/*package-private*/ final C handleFire( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		final C childContext = this.createContext( e, viewController );
+		this.perform( childContext, new PerformObserver() {
+			public void handleFinally() {
+				ModelContext< ? > popContext = ContextManager.popContext();
+				assert popContext == childContext : popContext.getClass() + " " + childContext.getClass();
+			}
+		} );
 		return childContext;
 	}
+	protected void perform( C context, PerformObserver performObserver ) {
+		try {
+			this.perform( context );
+		} finally {
+			performObserver.handleFinally();
+		}
+	}
 	protected abstract void perform( C context );
+
 	//protected abstract void perform( ModelContext context, java.util.EventObject e, Component<?> component );
 
 	public String getName() {

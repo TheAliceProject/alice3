@@ -240,24 +240,13 @@ class Cycle< E > {
  * @author Dennis Cosgrove
  */
 public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState<edu.cmu.cs.dennisc.alice.ast.AbstractCode> {
-	class EditPreviousCodeOperation extends org.alice.ide.operations.ActionOperation {
-		public EditPreviousCodeOperation() {
-			super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "71ff1171-9e5e-443f-a7aa-cb4012f05fec" ) );
-			this.setName( "previous" );
-		}
-		@Override
-		protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-			EditorsTabSelectionState.this.editPreviousCode();
-		}
+	private static class SingletonHolder {
+		private static EditorsTabSelectionState instance = new EditorsTabSelectionState();
 	}
-	private EditPreviousCodeOperation editPreviousCodeOperation;
-	
-//	private SelectionObserver selectionObserver = new SelectionObserver() {
-//		public void selected(edu.cmu.cs.dennisc.croquet.TabStateOperation next) {
-//			EditorsTabSelectionStateOperation.this.updateFocusedCode();
-//		}
-//	};
-	public EditorsTabSelectionState() {
+	public static EditorsTabSelectionState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private EditorsTabSelectionState() {
 		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "846ef10d-b22b-44a7-8fdd-a6b5d459948d" ), new org.alice.ide.croquet.codecs.NodeCodec< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() );
 //		this.addSelectionObserver( this.selectionObserver );
 		org.alice.ide.IDE.getSingleton().addProjectObserver( this.projectObserver );
@@ -496,15 +485,6 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 		this.singleton.setHeaderLeadingComponent( this.dropDownPanel );
 		return this.singleton;
 	}
-	public EditPreviousCodeOperation getEditPreviousCodeOperation() {
-		if( this.editPreviousCodeOperation != null ) {
-			//pass
-		} else {
-			this.editPreviousCodeOperation = new EditPreviousCodeOperation();
-		}
-		return this.editPreviousCodeOperation;
-	}
-	
 //	private void updateFocusedCode() {
 //		edu.cmu.cs.dennisc.croquet.Component< ? > component = this.getCurrentTabStateOperation().getSingletonView();
 //		if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
@@ -520,13 +500,13 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 //	}
 
 	private Cycle< edu.cmu.cs.dennisc.alice.ast.AbstractCode > editedCodes = Cycle.newInstance();
-	private void editPreviousCode() {
+	/*package-private*/ void editPreviousCode() {
 		this.edit( this.editedCodes.setToPrevious(), true );
 		
 	}
 	private void updateBackOperationsEnabled() {
 		boolean isVisibleAndEnabled = this.editedCodes.size() > 1;
-		this.getEditPreviousCodeOperation().setEnabled( isVisibleAndEnabled );
+		EditPreviousCodeOperation.getInstance().setEnabled( isVisibleAndEnabled );
 		//this.getEditPreviousCodeOperation().setVisible( isVisibleAndEnabled );
 	}
 	

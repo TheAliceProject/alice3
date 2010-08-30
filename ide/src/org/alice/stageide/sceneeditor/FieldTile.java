@@ -45,7 +45,7 @@ package org.alice.stageide.sceneeditor;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class FieldTile extends edu.cmu.cs.dennisc.croquet.BooleanStateButton<javax.swing.AbstractButton>{
+/*package-private*/ class FieldTile extends edu.cmu.cs.dennisc.croquet.BooleanStateButton<javax.swing.AbstractButton> {
 	private edu.cmu.cs.dennisc.alice.ast.Accessible accessible;
 //	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
 //		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
@@ -190,7 +190,7 @@ package org.alice.stageide.sceneeditor;
 
 	protected java.awt.Color calculateColor() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		java.awt.Color color = ide.getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
+		java.awt.Color color = ide.getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
 		if( this.accessible == ide.getAccessibleListState().getSelectedItem() ) {
 			color = java.awt.Color.YELLOW;
 		} else {

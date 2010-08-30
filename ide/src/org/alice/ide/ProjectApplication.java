@@ -47,6 +47,9 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Application {
+	public static final edu.cmu.cs.dennisc.croquet.Group HISTORY_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
+	public static final edu.cmu.cs.dennisc.croquet.Group URI_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
+
 	private static ProjectApplication singleton;
 	public static ProjectApplication getSingleton() {
 		return ProjectApplication.singleton;
@@ -71,63 +74,14 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 		} );
 	}
 
-	public static final edu.cmu.cs.dennisc.croquet.Group HISTORY_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
-	public static final edu.cmu.cs.dennisc.croquet.Group URI_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
-
-//	private edu.cmu.cs.dennisc.croquet.Operation<?> saveProjectOperation = new org.alice.ide.croquet.models.project.SaveProjectOperation();
-//	private edu.cmu.cs.dennisc.croquet.Operation<?> saveAsProjectOperation = new org.alice.ide.croquet.models.project.SaveAsProjectOperation();
-//	private edu.cmu.cs.dennisc.croquet.Operation<?> newProjectOperation = new org.alice.ide.croquet.models.project.NewProjectOperation( this.saveProjectOperation );
-//	private edu.cmu.cs.dennisc.croquet.Operation<?> openProjectOperation = new org.alice.ide.croquet.models.project.OpenProjectOperation( this.saveProjectOperation );
-//	private edu.cmu.cs.dennisc.croquet.Operation<?> exitOperation = new org.alice.ide.croquet.models.project.ClearanceCheckingExitOperation( this.saveProjectOperation );
-//	private edu.cmu.cs.dennisc.croquet.Operation<?> revertProjectOperation = new org.alice.ide.croquet.models.project.RevertProjectOperation();
-//	private edu.cmu.cs.dennisc.croquet.Operation<?> undoOperation = new org.alice.ide.croquet.models.history.UndoOperation();
-//	private edu.cmu.cs.dennisc.croquet.Operation<?> redoOperation = new org.alice.ide.croquet.models.history.RedoOperation();
-//	
-//	public edu.cmu.cs.dennisc.croquet.Operation<?> getNewProjectOperation() {
-//		return this.newProjectOperation;
-//	}
-//	public edu.cmu.cs.dennisc.croquet.Operation<?> getOpenProjectOperation() {
-//		return this.openProjectOperation;
-//	}
-//	public edu.cmu.cs.dennisc.croquet.Operation<?> getSaveProjectOperation() {
-//		return this.saveProjectOperation;
-//	}
-//	public edu.cmu.cs.dennisc.croquet.Operation<?> getSaveAsProjectOperation() {
-//		return this.saveAsProjectOperation;
-//	}
-//	public edu.cmu.cs.dennisc.croquet.Operation<?> getRevertProjectOperation() {
-//		return this.revertProjectOperation;
-//	}
-//	public edu.cmu.cs.dennisc.croquet.Operation<?> getExitOperation() {
-//		return this.exitOperation;
-//	}
-//	
-//	public edu.cmu.cs.dennisc.croquet.Operation<?> getUndoOperation() {
-//		return this.undoOperation;
-//	}
-//	public edu.cmu.cs.dennisc.croquet.Operation<?> getRedoOperation() {
-//		return this.redoOperation;
-//	}
-
 	protected abstract org.alice.ide.openprojectpane.TabContentPanel createTemplatesTabContentPane();
-//	private org.alice.app.openprojectpane.OpenProjectPane openProjectPane;
-//	public org.alice.app.openprojectpane.OpenProjectPane getOpenProjectPane() {
-//		if( this.openProjectPane != null ) {
-//			//pass
-//		} else {
-//			this.openProjectPane = new org.alice.app.openprojectpane.OpenProjectPane(); 
-//		}
-//		this.openProjectPane.refresh();
-//		return this.openProjectPane;
-//	}
 
 	private java.util.Map< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node > mapUUIDToNode = new java.util.HashMap< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node >();
 
 	public abstract String getApplicationName();
 	protected abstract String getVersionText();
 	protected abstract String getVersionAdornment();
-	
-	
+
 	private void showUnableToOpenProjectMessageDialog( java.io.File file, boolean isValidZip ) {
 		StringBuffer sb = new StringBuffer();
 		sb.append( "Unable to open project from file " );

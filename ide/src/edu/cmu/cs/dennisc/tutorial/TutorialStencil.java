@@ -118,7 +118,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		final int PAD = 4;
 		frame.getJMenuBar().setBorder( javax.swing.BorderFactory.createEmptyBorder(PAD+32,PAD,0,PAD));
 		((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder(0,PAD,PAD,PAD));
-		return new TutorialStencil( layeredPane, groups, application.getRootContext() ); 
+		return new TutorialStencil( layeredPane, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() ); 
 	}
 	private TutorialStencil( javax.swing.JLayeredPane layeredPane, edu.cmu.cs.dennisc.croquet.Group[] groups, edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext ) {
 		super( layeredPane );

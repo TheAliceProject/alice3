@@ -59,7 +59,7 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 	public CreateLocalPane( edu.cmu.cs.dennisc.alice.ast.BlockStatement block ) {
 		super( new org.alice.ide.name.validators.LocalNameValidator( block ) );
 		assert block != null;
-		this.setBackgroundColor( getIDE().getLocalColor() );
+		this.setBackgroundColor( getIDE().getTheme().getLocalColor() );
 	}
 
 	@Override
