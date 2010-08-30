@@ -90,8 +90,8 @@ public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide
 	
 	@Override
 	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-		this.removeAllComponents();
-		this.getIDE().removeFromConcealedBin( this.implementor.getIncompleteStatementPane() );
+//		this.removeAllComponents();
+//		this.getIDE().removeFromConcealedBin( this.implementor.getIncompleteStatementPane() );
 		super.handleRemovedFrom( parent );
 	}
 	
