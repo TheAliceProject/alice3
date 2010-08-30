@@ -467,15 +467,15 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		{
 			return;
 		}
-		//The animation is not going to get us to the desired value, so see if we're already there
-		if (currentOpacity == targetOpacity)
-		{
-			return;
-		}
 		//Stop any existing animation
 		if (this.opacityAnimation != null && this.opacityAnimation.isActive())
 		{
 			this.opacityAnimation.cancel();
+		}
+		//The animation is not going to get us to the desired value, so see if we're already there
+		if (currentOpacity == targetOpacity)
+		{
+			return;
 		}
 		//Make a new animation and launch it
 		this.opacityAnimation = new DoubleInterruptibleAnimation(ANIMATION_DURATION, TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentOpacity, targetOpacity)
@@ -497,15 +497,15 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		{
 			return;
 		}
-		//The animation is not going to get us to the desired value, so see if we're already there
-		if (currentColor.equals(targetColor))
-		{
-			return;
-		}
 		//Stop any existing animation
 		if (this.colorAnimation != null && this.colorAnimation.isActive())
 		{
 			this.colorAnimation.cancel();
+		}
+		//The animation is not going to get us to the desired value, so see if we're already there
+		if (currentColor.equals(targetColor))
+		{
+			return;
 		}
 		//Make a new animation and launch it
 		this.colorAnimation = new Color4fInterruptibleAnimation(ANIMATION_DURATION, TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentColor, targetColor) 

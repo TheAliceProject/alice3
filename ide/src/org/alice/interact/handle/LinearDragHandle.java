@@ -195,15 +195,15 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 		{
 			return;
 		}
-		//The animation is not going to get us to the desired value, so see if we're already there
-		if (currentLength == desiredLength)
-		{
-			return;
-		}
 		//Stop any existing animation
 		if (this.lengthAnimation != null && this.lengthAnimation.isActive())
 		{
 			this.lengthAnimation.cancel();
+		}
+		//The animation is not going to get us to the desired value, so see if we're already there
+		if (currentLength == desiredLength)
+		{
+			return;
 		}
 		//Make a new animation and launch it
 		this.lengthAnimation = new DoubleInterruptibleAnimation(ANIMATION_DURATION, TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentLength, desiredLength)

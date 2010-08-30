@@ -252,15 +252,15 @@ public class RotationRingHandle extends ManipulationHandle3D{
 		{
 			return;
 		}
-		//The animation is not going to get us to the desired value, so see if we're already there
-		if (currentRadius == desiredRadius)
-		{
-			return;
-		}
 		//Stop any existing animation
 		if (this.radiusAnimation != null && this.radiusAnimation.isActive())
 		{
 			this.radiusAnimation.cancel();
+		}
+		//The animation is not going to get us to the desired value, so see if we're already there
+		if (currentRadius == desiredRadius)
+		{
+			return;
 		}
 		//Make a new animation and launch it
 		this.radiusAnimation = new DoubleInterruptibleAnimation(ANIMATION_DURATION, TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentRadius, desiredRadius)
