@@ -76,10 +76,13 @@ public /*final*/ class BooleanState extends Model {
 			if( application.isInTheMidstOfUndoOrRedo() ) {
 				//pass
 			} else {
-				BooleanStateContext childContext = ContextManager.createAndPushBooleanStateContext( BooleanState.this, e, null );
-				childContext.commitAndInvokeDo( new BooleanStateEdit( e ) );
-				ModelContext< ? > popContext = ContextManager.popContext();
-				assert popContext == childContext;
+				if( BooleanState.this.isContextDesired() ) {
+					BooleanStateContext childContext = ContextManager.createAndPushBooleanStateContext( BooleanState.this, e, null );
+					childContext.commitAndInvokeDo( new BooleanStateEdit( e ) );
+					ModelContext< ? > popContext = ContextManager.popContext();
+					assert popContext == childContext;
+					Thread.dumpStack();
+				}
 			}
 		}
 	};
@@ -99,6 +102,10 @@ public /*final*/ class BooleanState extends Model {
 	public BooleanState(Group group, java.util.UUID individualUUID, boolean initialState, String name ) {
 		this(group, individualUUID, initialState );
 		this.setTextForBothTrueAndFalse( name );
+	}
+	
+	/*package-private*/boolean isContextDesired() {
+		return true;
 	}
 	
 	@Override

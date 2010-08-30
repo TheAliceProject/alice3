@@ -217,7 +217,12 @@ public final class MutableList< E > extends ItemSelectablePanel< E, MutableList.
 			}
 		};
 
-		BooleanState booleanState = new BooleanState( Application.UI_STATE_GROUP, java.util.UUID.fromString( "637720ae-b885-49b5-896d-c697ce21a021" ), false );
+		BooleanState booleanState = new BooleanState( Application.UI_STATE_GROUP, java.util.UUID.fromString( "637720ae-b885-49b5-896d-c697ce21a021" ), false ) {
+			@Override
+			/*package-private*/ boolean isContextDesired() {
+				return false;
+			}
+		};
 		MutableListButton mutableListButton = new MutableListButton( booleanState );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MUTABLE_LIST_BOOLEAN_STATE" );
 		MutableListItemDetails rv = new MutableListItemDetails( item, mutableListButton, factory.createLeadingComponent(), factory.createMainComponent(), factory.createTrailingComponent(), actionListener );
