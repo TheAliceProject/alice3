@@ -54,7 +54,7 @@ public class PartSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelection
 	}
 	private PartSelectionState() {
 		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "17b94498-cf54-414c-aa57-be2ef333de57" ), new org.alice.ide.croquet.codecs.NodeCodec<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField>() );
-		org.alice.ide.IDE.getSingleton().getSingleton().getAccessibleListState().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>() {
+		org.alice.ide.IDE.getSingleton().getAccessibleListState().addValueObserver( new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>() {
 			public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
 				if( nextValue != null ) {

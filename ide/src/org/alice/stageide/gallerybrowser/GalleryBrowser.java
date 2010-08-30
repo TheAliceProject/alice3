@@ -153,7 +153,7 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 			}
 			if( iterable != null ) {
 				for( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> child : iterable ) {
-					String name = GalleryBrowser.this.getTextFor(child, false);
+					String name = GalleryBrowser.getTextFor(child, false);
 					if( name != null ) {
 						if( child.isLeaf() ) {
 							this.addComponent( GalleryDragComponent.getInstance( child ) );
@@ -337,7 +337,7 @@ public class GalleryBrowser extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				return rv;
 			}
 			public edu.cmu.cs.dennisc.croquet.Operation<?> getOperationForLeaf(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode) {
-				String name = GalleryBrowser.this.getTextFor(treeNode, true);
+				String name = GalleryBrowser.getTextFor(treeNode, true);
 				if( name != null ) {
 					edu.cmu.cs.dennisc.croquet.Operation<?> rv = GalleryFileOperation.getInstance( treeNode );
 					rv.setName( name );
