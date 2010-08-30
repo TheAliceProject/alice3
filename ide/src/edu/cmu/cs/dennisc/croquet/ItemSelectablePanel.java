@@ -47,6 +47,17 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.ItemDetails > extends ItemSelectable<javax.swing.JPanel, E> {
+	private static final Group ITEM_SELECTABLE_IMPLEMENTATION_GROUP = new Group( java.util.UUID.fromString( "40759574-7892-469f-93c7-730ed6617d3e" ), "ITEM_SELECTABLE_IMPLEMENTATION_GROUP" );
+	private static class ImplementationBooleanState extends BooleanState {
+		public ImplementationBooleanState() {
+			super( ITEM_SELECTABLE_IMPLEMENTATION_GROUP, java.util.UUID.fromString( "f0faf391-1b41-417d-98a9-ab9ba1a20335" ), false );
+		}
+		@Override
+		/*package-private*/boolean isContextCommitDesired() {
+			return false;
+		}
+	}
+	
 	//todo: better name
 	public class ItemDetails {
 		private E item;
@@ -106,8 +117,6 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 		return rv;
 	}
 
-	protected abstract D createItemDetails( E item );
-	
 	private java.util.Map<E, D > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 	private javax.swing.ComboBoxModel swingModel;
@@ -150,6 +159,7 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 //		return null;
 //	}
 	
+	protected abstract D createItemDetails( E item, BooleanState booleanState );
 	protected abstract void removeAllDetails();
 	protected abstract void addPrologue( int count );
 	protected abstract void addItem( D itemDetails );
@@ -188,7 +198,8 @@ public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.Item
 					if( itemDetails != null ) {
 						//pass
 					} else {
-						itemDetails = this.createItemDetails( item );
+						BooleanState booleanState = new ImplementationBooleanState();
+						itemDetails = this.createItemDetails( item, booleanState );
 						this.map.put( item, itemDetails );
 					}
 					itemDetails.add( this.buttonGroup );

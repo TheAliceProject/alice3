@@ -306,8 +306,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 		
 		@Override
-		protected edu.cmu.cs.dennisc.croquet.BooleanStateButton< ? > createBooleanStateButton( edu.cmu.cs.dennisc.alice.ast.Accessible item ) {
-			return new FieldTile( item );
+		protected edu.cmu.cs.dennisc.croquet.BooleanStateButton< ? > createBooleanStateButton( edu.cmu.cs.dennisc.alice.ast.Accessible item, BooleanState booleanState ) {
+			return new FieldTile( item, booleanState );
 		}
 		
 		private edu.cmu.cs.dennisc.croquet.Component<?> previousComponent;

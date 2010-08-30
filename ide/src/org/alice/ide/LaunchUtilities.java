@@ -84,7 +84,7 @@ public class LaunchUtilities {
 		}
 		return null;
 	}
-	private static Runnable preLaunchAndCreateRunnable( final Class<? extends IDE> cls, final java.awt.Window splashScreen, final String[] args, final boolean isVisible ) {
+	private static void preLaunch( final java.awt.Window splashScreen ) {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
 		if( lookAndFeelInfo != null ) {
 //			javax.swing.LookAndFeel laf = javax.swing.UIManager.getLookAndFeel();
@@ -117,6 +117,8 @@ public class LaunchUtilities {
 				}
 			}
 		}
+	}
+	private static Runnable createRunnable( final Class<? extends IDE> cls, final java.awt.Window splashScreen, final String[] args, final boolean isVisible ) {
 		return new Runnable() {
 			public void run() {
 				java.io.File installDir = getInstallDirectory();
@@ -126,29 +128,14 @@ public class LaunchUtilities {
 						for( String path : new String[] { "classinfos.zip", "classinfos" } ) {
 							java.io.File file = new java.io.File( applicationRootDirectory, path );
 							if( file.exists() ) {
-								//edu.cmu.cs.dennisc.print.PrintUtilities.println( "reading class information:", file.getAbsolutePath() );
-								//long t0 = System.currentTimeMillis();
 								edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.addClassInfosFrom( file );
-								//long tDelta = System.currentTimeMillis() - t0;
 								break;
 							}
 						}
 					}
 				}
+				
 				IDE ide = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
-//				java.io.File applicationRootDirectory = ide.getApplicationRootDirectory();
-//				if( applicationRootDirectory != null && applicationRootDirectory.exists() ) {
-//					for( String path : new String[] { "classinfos.zip", "classinfos" } ) {
-//						java.io.File file = new java.io.File( applicationRootDirectory, path );
-//						if( file.exists() ) {
-//							edu.cmu.cs.dennisc.print.PrintUtilities.println( file.getAbsolutePath() );
-//							//long t0 = System.currentTimeMillis();
-//							edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.addClassInfosFrom( file );
-//							//long tDelta = System.currentTimeMillis() - t0;
-//							break;
-//						}
-//					}
-//				}
 				final int DEFAULT_WIDTH = 1000;
 				final int DEFAULT_HEIGHT = 740;
 				int xLocation = 0;
@@ -202,10 +189,28 @@ public class LaunchUtilities {
 	}
 	
 	public static void launch( final Class<? extends IDE> cls, final java.awt.Window splashScreen, final String[] args ) {
-		javax.swing.SwingUtilities.invokeLater( preLaunchAndCreateRunnable( cls, splashScreen, args, true ) );	
+		preLaunch( splashScreen );
+		class CreateIdeOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+			public CreateIdeOperation() {
+				super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "3780661e-0bfe-4bc3-b8c8-a27f81b65632" ) );
+			}
+			@Override
+			protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+				Runnable runnable = createRunnable( cls, splashScreen, args, true );
+				runnable.run();
+				context.finish();
+			}
+		}
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				CreateIdeOperation createIdeOperation = new CreateIdeOperation();
+				createIdeOperation.fire();
+			}
+		} );
 	}
 	public static <I extends IDE> I launchAndWait( final Class<I> cls, final java.awt.Window splashScreen, final String[] args, boolean isVisible ) throws InterruptedException, java.lang.reflect.InvocationTargetException {
-		Runnable runnable = preLaunchAndCreateRunnable( cls, splashScreen, args, isVisible );
+		preLaunch( splashScreen );
+		Runnable runnable = createRunnable( cls, splashScreen, args, isVisible );
 		javax.swing.SwingUtilities.invokeAndWait( runnable );
 		return cls.cast( IDE.getSingleton() );
 	}

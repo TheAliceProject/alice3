@@ -76,7 +76,7 @@ public /*final*/ class BooleanState extends Model {
 			if( application.isInTheMidstOfUndoOrRedo() ) {
 				//pass
 			} else {
-				if( BooleanState.this.isContextDesired() ) {
+				if( BooleanState.this.isContextCommitDesired() ) {
 					BooleanStateContext childContext = ContextManager.createAndPushBooleanStateContext( BooleanState.this, e, null );
 					childContext.commitAndInvokeDo( new BooleanStateEdit( e ) );
 					ModelContext< ? > popContext = ContextManager.popContext();
@@ -104,7 +104,7 @@ public /*final*/ class BooleanState extends Model {
 		this.setTextForBothTrueAndFalse( name );
 	}
 	
-	/*package-private*/boolean isContextDesired() {
+	/*package-private*/boolean isContextCommitDesired() {
 		return true;
 	}
 	

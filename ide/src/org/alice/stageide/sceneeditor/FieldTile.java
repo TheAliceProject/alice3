@@ -42,6 +42,8 @@
  */
 package org.alice.stageide.sceneeditor;
 
+import edu.cmu.cs.dennisc.croquet.BooleanState;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -57,9 +59,8 @@ package org.alice.stageide.sceneeditor;
 //		FieldSelectedState state = FieldSelectedState.getInstance(accessible);
 //		return state.register( new FieldTile( accessible ) );
 //	}
-	public FieldTile( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
-		super( new edu.cmu.cs.dennisc.croquet.BooleanState( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "d3e50396-64c2-4a7d-b255-067aa212bca7" ), false ) );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: FIELD_TILE_BOOLEAN_STATE" );
+	public FieldTile( edu.cmu.cs.dennisc.alice.ast.Accessible accessible, BooleanState booleanState ) {
+		super( booleanState );
 		assert accessible != null;
 		this.accessible = accessible;
 		//this.setOpaque( false );
