@@ -134,6 +134,7 @@ public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
 	private DropReceptorInfo[] potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
 	private DropReceptor currentDropReceptor;
 	private java.awt.event.MouseEvent latestMouseEvent;
+	private boolean isAlreadyPopped;
 
 	public DragAndDropContext( ModelContext<?> parent, DragAndDropOperation dragAndDropOperation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource ) {
 		super( parent, dragAndDropOperation, originalMouseEvent, dragSource );
@@ -152,6 +153,7 @@ public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
 			//todo: pass original mouse pressed event?
 			dropReceptorInfo.getDropReceptor().dragStarted( this );
 		}
+		this.isAlreadyPopped = false;
 	}
 
 	public java.awt.event.MouseEvent getOriginalMouseEvent() {
@@ -247,6 +249,18 @@ public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
 			this.currentDropReceptor.dragUpdated( this );
 		}
 	}
+	
+	private void popContext() {
+		if( this.isAlreadyPopped ) {
+			//pass
+		} else {
+			System.err.println( "popContext" );
+//			ModelContext< ? > modelContext = ContextManager.popContext();
+//			assert modelContext == this;
+			this.isAlreadyPopped = true;
+		}
+	}
+	
 	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		this.setLatestMouseEvent( e );
 		if( this.currentDropReceptor != null ) {
@@ -273,6 +287,7 @@ public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
 		}
 		this.getModel().handleDragStopped( this );
 		this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
+		this.popContext();
 	}
 	public void handleCancel( java.util.EventObject e ) {
 		if( this.currentDropReceptor != null ) {
@@ -285,5 +300,6 @@ public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
 		this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
 		this.getDragSource().hideDropProxyIfNecessary();
 		this.cancel();
+		this.popContext();
 	}
 }

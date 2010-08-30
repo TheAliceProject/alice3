@@ -81,7 +81,6 @@ public /*final*/ class BooleanState extends Model {
 					childContext.commitAndInvokeDo( new BooleanStateEdit( e ) );
 					ModelContext< ? > popContext = ContextManager.popContext();
 					assert popContext == childContext;
-					Thread.dumpStack();
 				}
 			}
 		}
