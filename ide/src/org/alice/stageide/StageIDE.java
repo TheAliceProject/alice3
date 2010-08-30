@@ -513,8 +513,8 @@ public class StageIDE extends org.alice.ide.IDE {
 		return new org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Operation createAboutOperation() {
-		return new org.alice.stageide.croquet.models.help.AboutOperation();
+	public edu.cmu.cs.dennisc.croquet.Operation<?> getAboutOperation() {
+		return org.alice.stageide.croquet.models.help.AboutOperation.getInstance();
 	}
 
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType, String > mapTypeToText;

@@ -81,14 +81,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public abstract edu.cmu.cs.dennisc.croquet.Operation<?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
 
 	private edu.cmu.cs.dennisc.croquet.Operation<?> preferencesOperation = this.createPreferencesOperation();
-	private edu.cmu.cs.dennisc.croquet.Operation<?> aboutOperation = this.createAboutOperation();
 	private edu.cmu.cs.dennisc.croquet.Operation<?> restartOperation = this.createRestartOperation();
 
 	protected edu.cmu.cs.dennisc.croquet.Operation<?> createPreferencesOperation() {
 		return new org.alice.ide.operations.preferences.PreferencesOperation();
 	}
-	protected abstract edu.cmu.cs.dennisc.croquet.Operation<?> createAboutOperation();
-
 	public abstract edu.cmu.cs.dennisc.croquet.DialogOperation getRunOperation();
 	public final edu.cmu.cs.dennisc.croquet.Operation<?> getRestartOperation() {
 		return this.restartOperation;
@@ -96,9 +93,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public final edu.cmu.cs.dennisc.croquet.Operation<?> getPreferencesOperation() {
 		return this.preferencesOperation;
 	}
-	public final edu.cmu.cs.dennisc.croquet.Operation<?> getAboutOperation() {
-		return this.aboutOperation;
-	}
+	public abstract edu.cmu.cs.dennisc.croquet.Operation<?> getAboutOperation();
 
 	private static void clearAllPreferencesIfRequested( java.util.prefs.Preferences userPreferences ) {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {

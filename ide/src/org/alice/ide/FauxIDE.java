@@ -47,7 +47,7 @@ package org.alice.ide;
  */
 public class FauxIDE extends IDE {
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.Operation createAboutOperation() {
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > getAboutOperation() {
 		return null;
 	}
 	@Override
