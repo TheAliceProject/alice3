@@ -116,6 +116,7 @@ class TransientStatementsWrapper extends edu.cmu.cs.dennisc.croquet.LineAxisPane
 				}
 			}
 		}
+		this.revalidateAndRepaint();
 	}
 }
 

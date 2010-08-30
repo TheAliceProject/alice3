@@ -131,9 +131,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 				refreshAccessibles();
 			}
 		} );
-
 	}
-
 	private int rootDividerLocation = 340;
 	private int leftDividerLocation = 240;
 
@@ -241,7 +239,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			}
 		}
 	}
-
 	public final edu.cmu.cs.dennisc.croquet.Operation< ? > getPreferencesOperation() {
 		return null;
 	}
