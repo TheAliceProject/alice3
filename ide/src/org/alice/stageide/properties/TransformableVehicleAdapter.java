@@ -41,33 +41,101 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties.adapter;
+package org.alice.stageide.properties;
+
+import java.util.Locale;
+
+import org.alice.apis.moveandturn.Composite;
+import org.alice.apis.moveandturn.Transformable;
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 
 import edu.cmu.cs.dennisc.croquet.Operation;
+import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
+import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
 
-public interface PropertyAdapter <P, O>
-{
-	public static interface ValueChangeObserver<P>
+public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composite, Transformable> {
+
+	private HierarchyListener hierarchyListener;
+	
+	public TransformableVehicleAdapter(Transformable instance) 
 	{
-		public void valueChanged(P newValue);
+		super("Vehicle", instance);
 	}
 	
-	public String getRepr();
+
+	private void initializeListenersIfNecessary()
+	{
+		if (this.hierarchyListener == null)
+		{
+			this.hierarchyListener = new HierarchyListener()
+			{
+
+				public void hierarchyChanged(HierarchyEvent hierarchyEvent) 
+				{
+					TransformableVehicleAdapter.this.handleHeirarchyChanged();
+				}
+			};
+		}
+	}
 	
-	public Class<P> getPropertyType();
+	protected void handleHeirarchyChanged()
+	{
+		this.notifyValueObservers(this.getValue());
+	}
 	
-	public void setInstance(O instance);
-	
-	public P getValue();
-	
-	public void setValue(P value);
-	
-	public void addValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void addAndInvokeValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void removeValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public abstract Operation getEditOperation();
-	
+	@Override
+	public Operation getEditOperation() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected String getUndoRedoDescription(Locale locale) 
+	{
+		return "Set Vehicle";
+	}
+
+	@Override
+	public void setValue(Composite value) 
+	{
+		if (this.instance != null)
+		{
+			this.instance.setVehicle(value);
+		}
+	}
+
+	public Class<Composite> getPropertyType() 
+	{
+		return Composite.class;
+	}
+
+	public Composite getValue() 
+	{
+		if (this.instance != null)
+		{
+			return this.instance.getVehicle();
+		}
+		return null;
+	}
+
+	@Override
+	protected void startListening() 
+	{
+		if (this.instance != null && this.instance.getSGTransformable() != null)
+		{
+			this.initializeListenersIfNecessary();
+			this.instance.getSGTransformable().addHierarchyListener(this.hierarchyListener);
+		}
+	}
+
+	@Override
+	protected void stopListening() 
+	{
+		if (this.instance != null && this.instance.getSGTransformable() != null)
+		{
+			this.instance.getSGTransformable().removeHierarchyListener(this.hierarchyListener);
+		}
+	}
+
+
 }

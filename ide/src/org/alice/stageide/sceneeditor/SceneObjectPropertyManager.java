@@ -58,6 +58,7 @@ import org.alice.stageide.properties.MarkerOpacityAdapter;
 import org.alice.stageide.properties.ModelColorAdapter;
 import org.alice.stageide.properties.ModelOpacityAdapter;
 import org.alice.stageide.properties.TransformableTranslationAdapter;
+import org.alice.stageide.properties.TransformableVehicleAdapter;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 import edu.cmu.cs.dennisc.croquet.GridBagPanel;
@@ -101,6 +102,7 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 		ModelColorAdapter.class,
 		ModelOpacityAdapter.class,
 		TransformableTranslationAdapter.class,
+		TransformableVehicleAdapter.class,
 	};
 
 	public static List<org.alice.ide.properties.adapter.PropertyAdapter<?,?>> getPropertyAdaptersForObject(Object object)

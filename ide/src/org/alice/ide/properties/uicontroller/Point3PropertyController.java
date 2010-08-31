@@ -43,6 +43,8 @@
 
 package org.alice.ide.properties.uicontroller;
 
+import java.util.Locale;
+
 import org.alice.ide.properties.adapter.PropertyAdapter;
 
 import edu.cmu.cs.dennisc.croquet.BorderPanel;

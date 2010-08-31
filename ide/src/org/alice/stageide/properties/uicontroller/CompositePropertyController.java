@@ -41,33 +41,49 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties.adapter;
+package org.alice.stageide.properties.uicontroller;
 
-import edu.cmu.cs.dennisc.croquet.Operation;
+import org.alice.apis.moveandturn.Composite;
+import org.alice.ide.properties.adapter.PropertyAdapter;
+import org.alice.ide.properties.uicontroller.AbstractAdapterController;
 
-public interface PropertyAdapter <P, O>
-{
-	public static interface ValueChangeObserver<P>
+import edu.cmu.cs.dennisc.croquet.BorderPanel;
+import edu.cmu.cs.dennisc.croquet.Label;
+
+public class CompositePropertyController extends AbstractAdapterController<Composite>{
+
+	private Label compositeLabel;
+	
+	public CompositePropertyController(PropertyAdapter<Composite, ?> propertyAdapter) 
 	{
-		public void valueChanged(P newValue);
+		super(propertyAdapter);
 	}
-	
-	public String getRepr();
-	
-	public Class<P> getPropertyType();
-	
-	public void setInstance(O instance);
-	
-	public P getValue();
-	
-	public void setValue(P value);
-	
-	public void addValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void addAndInvokeValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void removeValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public abstract Operation getEditOperation();
-	
+
+	@Override
+	public Class<?> getPropertyType() 
+	{
+		return Composite.class;
+	}
+
+	@Override
+	protected void initializeComponents() 
+	{
+		this.compositeLabel = new Label();
+		this.addComponent(this.compositeLabel, BorderPanel.Constraint.CENTER);
+//		this.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
+	}
+
+	@Override
+	protected void setValueOnUI(Composite value) 
+	{
+		if (value != null)
+		{
+			this.compositeLabel.setText(value.getName()+", "+value.getClass().getSimpleName());
+		}
+		else
+		{
+			this.compositeLabel.setText("No Vehicle");
+		}
+	}
+
 }

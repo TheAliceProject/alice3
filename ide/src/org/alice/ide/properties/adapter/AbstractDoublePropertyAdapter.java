@@ -43,8 +43,29 @@
 
 package org.alice.ide.properties.adapter;
 
-public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstancePropertyAdapter<Double, O> {
+import java.util.Locale;
 
+import org.alice.ide.properties.uicontroller.DoublePropertyController;
+
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.croquet.Model;
+import edu.cmu.cs.dennisc.croquet.Operation;
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+
+public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstancePropertyAdapter<Double, O> 
+{
+
+	protected class SetDoubleOperation extends SetValueOperation 
+	{
+		public SetDoubleOperation( Double value, String name) {
+			super( value, name, java.util.UUID.fromString( "34c9f0d6-62e1-4c13-b773-9a7dc3b6b7f1" ) );
+		}
+	}
+	
+	public static java.text.NumberFormat format = new java.text.DecimalFormat( "0.0" );
+	protected edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenuOperation;
+	protected java.util.List< SetDoubleOperation > defaultDoubleOperationModels;
+	
 	public AbstractDoublePropertyAdapter(String repr, O instance )
 	{
 		super(repr, instance);
@@ -53,6 +74,54 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 	public Class<Double> getPropertyType()
 	{
 		return Double.class;
+	}
+	
+	@Override
+	protected String getUndoRedoDescription(Locale locale) 
+	{
+		return "Double";
+	}
+	
+	@Override
+	public Operation getEditOperation() 
+	{
+		if (this.popupMenuOperation == null)
+		{
+			this.defaultDoubleOperationModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			
+			ReflectionUtilities.getPublicStaticFinalInstances(Color4f.class, Color4f.class);
+			
+			for (double d : this.getDefaultValues())
+			{
+				this.defaultDoubleOperationModels.add(new SetDoubleOperation(new Double(d), format.format(d)));
+			}
+				
+			this.popupMenuOperation = new edu.cmu.cs.dennisc.croquet.MenuModel( java.util.UUID.fromString( "66435390-e900-44c7-b440-0789c31e5a7a" ) ) {
+				@Override
+				protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
+					super.handlePopupMenuPrologue( popupMenu, context );
+					
+					Double currentDouble = AbstractDoublePropertyAdapter.this.getValue();
+					String currentDoubleName = format.format(currentDouble)+" (current value)";
+					
+					SetDoubleOperation currentDoubleOperation = new SetDoubleOperation(currentDouble, currentDoubleName);
+					
+					java.util.List<Model> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					models.add(currentDoubleOperation);
+					models.add(edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR);
+					models.addAll(AbstractDoublePropertyAdapter.this.defaultDoubleOperationModels);
+					
+					edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
+				}
+			}.getPopupMenuOperation();
+		}
+		return this.popupMenuOperation;
+	}
+	
+	protected double[] getDefaultValues()
+	{
+		double[] defaultValues = {0.0, .5, 1.0, 2.0, 5.0};
+		return defaultValues;
 	}
 
 }

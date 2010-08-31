@@ -43,7 +43,81 @@
 
 package org.alice.ide.properties.adapter;
 
-public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, O> {
+import java.util.Locale;
+
+import org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState;
+import org.alice.ide.swing.icons.ColorIcon;
+
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.croquet.Model;
+import edu.cmu.cs.dennisc.croquet.Operation;
+
+public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, O> 
+{
+	protected class SetColorOperation extends SetValueOperation {
+		public SetColorOperation( Color4f value, String name) {
+			super( value, name, java.util.UUID.fromString( "828f978a-ce77-45a0-83c6-dbac238b4210" ) );
+			this.setSmallIcon(new ColorIcon(this.value.getAsAWTColor()));
+		}
+	}
+	
+	private edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenuOperation;
+	protected java.util.List< SetColorOperation > defaultColorOperationModels;
+	private static java.text.NumberFormat format = new java.text.DecimalFormat( "0.00" );
+	
+	@Override
+	public Operation getEditOperation() 
+	{
+		if (this.popupMenuOperation == null)
+		{
+			this.defaultColorOperationModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			
+			Class< ? > colorClass = Color4f.class;
+			for( java.lang.reflect.Field fld : edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getPublicStaticFinalFields( colorClass, colorClass ) ) 
+			{
+				try
+				{
+					defaultColorOperationModels.add(new SetColorOperation((Color4f)fld.get(colorClass), FormatterSelectionState.getInstance().getSelectedItem().getNameForField(fld)));
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+			this.popupMenuOperation = new edu.cmu.cs.dennisc.croquet.MenuModel( java.util.UUID.fromString( "9aa93f57-87cc-412b-b166-beb73bcd1fe8" ) ) {
+				@Override
+				protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
+					super.handlePopupMenuPrologue( popupMenu, context );
+					
+					Color4f currentColor = AbstractColorPropertyAdapter.this.getValue();
+					String currentColorName = null;
+					for (SetColorOperation defaultColor : AbstractColorPropertyAdapter.this.defaultColorOperationModels)
+					{
+						if (currentColor.equals(defaultColor.value))
+						{
+							currentColorName = defaultColor.getName();
+						}
+					}
+					if (currentColorName ==  null)
+					{
+						currentColorName = "r="+format.format(currentColor.red)+", g="+format.format(currentColor.green)+", b="+format.format(currentColor.blue);
+					}
+					currentColorName += " (current value)";
+					
+					SetColorOperation currentColorOperation = new SetColorOperation(currentColor, currentColorName);
+					
+					java.util.List<Model> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					models.add(currentColorOperation);
+					models.add(edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR);
+					models.addAll(AbstractColorPropertyAdapter.this.defaultColorOperationModels);
+					
+					edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
+				}
+			}.getPopupMenuOperation();
+		}
+		return this.popupMenuOperation;
+	}
+	
 	
 	public AbstractColorPropertyAdapter(O instance)
 	{
@@ -53,6 +127,12 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 	public AbstractColorPropertyAdapter(String repr, O instance )
 	{
 		super(repr, instance);
+	}
+	
+	@Override
+	protected String getUndoRedoDescription(Locale locale) 
+	{
+		return "Color";
 	}
 	
 	public Class<edu.cmu.cs.dennisc.color.Color4f> getPropertyType()

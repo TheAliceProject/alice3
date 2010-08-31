@@ -43,7 +43,11 @@
 
 package org.alice.stageide.properties;
 
+import java.util.Locale;
+
 import org.alice.apis.moveandturn.AsSeenBy;
+
+import edu.cmu.cs.dennisc.croquet.Operation;
 import edu.cmu.cs.dennisc.math.Point3;
 
 public class TransformableTranslationAdapter extends AbstractAbsolutePositionPropertyAdapter<org.alice.apis.moveandturn.Transformable> {
@@ -68,6 +72,20 @@ public class TransformableTranslationAdapter extends AbstractAbsolutePositionPro
 		{
 			this.instance.moveTo(this.instance.getScene().createOffsetStandIn(newValue));
 		}
+	}
+
+	@Override
+	public Operation getEditOperation() 
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected String getUndoRedoDescription(Locale locale) 
+	{
+		// TODO Auto-generated method stub
+		return "Position Change";
 	}
 
 }

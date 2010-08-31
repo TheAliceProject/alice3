@@ -77,11 +77,16 @@ public class MarkerOpacityAdapter extends AbstractOpacityPropertyAdapter<org.ali
 	}
 	
 	@Override
-	public void setValue(Double value) 
+	public void setValue(final Double value) 
 	{
 		if (this.instance != null)
 		{
-			this.instance.setOpacity(value);
+			new Thread() {
+				@Override
+				public void run() {
+					MarkerOpacityAdapter.this.instance.setOpacity(value);
+				}
+			}.start();
 		}
 		
 	}

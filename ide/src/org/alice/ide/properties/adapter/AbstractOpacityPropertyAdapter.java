@@ -43,8 +43,12 @@
 
 package org.alice.ide.properties.adapter;
 
+import java.util.Locale;
+
 public abstract class AbstractOpacityPropertyAdapter<O> extends AbstractDoublePropertyAdapter<O> {
 
+
+	
 	public AbstractOpacityPropertyAdapter(O instance)
 	{
 		this("Opacity", instance);
@@ -53,5 +57,18 @@ public abstract class AbstractOpacityPropertyAdapter<O> extends AbstractDoublePr
 	public AbstractOpacityPropertyAdapter(String repr, O instance )
 	{
 		super(repr, instance);
+	}
+	
+	@Override
+	protected double[] getDefaultValues()
+	{
+		double[] defaultValues = { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
+		return defaultValues;
+	}
+	
+	@Override
+	protected String getUndoRedoDescription(Locale locale) 
+	{
+		return "Opacity";
 	}
 }

@@ -43,10 +43,27 @@
 
 package org.alice.stageide.properties;
 
+import java.util.Locale;
+
+import org.alice.ide.operations.ast.RenameFieldOperation;
 import org.alice.ide.properties.adapter.AbstractNamePropertyAdapter;
+
+import edu.cmu.cs.dennisc.croquet.Operation;
 
 public class FieldNameAdapter extends AbstractNamePropertyAdapter<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> {
 
+	protected class CustomRenameFieldOperation extends RenameFieldOperation
+	{
+		public CustomRenameFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field )
+		{
+			super(field);
+			this.setName("Rename...");
+		}
+	}
+	
+	
+	protected org.alice.ide.operations.ast.RenameFieldOperation renameFieldOperation;
+	
 	public FieldNameAdapter(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice instance)
 	{
 		super(instance);
@@ -82,6 +99,22 @@ public class FieldNameAdapter extends AbstractNamePropertyAdapter<edu.cmu.cs.den
 			this.instance.setName(value);
 		}
 		
+	}
+
+	@Override
+	public Operation getEditOperation() 
+	{
+		if (this.renameFieldOperation == null)
+		{
+			this.renameFieldOperation = new CustomRenameFieldOperation(this.instance);
+		}
+		return this.renameFieldOperation;
+	}
+
+	@Override
+	protected String getUndoRedoDescription(Locale locale) 
+	{
+		return "Field Name";
 	}
 
 }

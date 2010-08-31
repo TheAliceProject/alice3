@@ -44,6 +44,7 @@
 package org.alice.ide.properties.uicontroller;
 
 import java.awt.Color;
+import java.util.Locale;
 
 import org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState;
 import org.alice.ide.properties.adapter.PropertyAdapter;
@@ -61,27 +62,6 @@ public class Color4fPropertyController extends AbstractAdapterController<Color4f
 	
 	private static final String BLANK_STRING = "NO COLOR";
 	
-	private class SelectColorOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-		protected Color4f color;
-		
-		public SelectColorOperation( Color4f color, String name) {
-			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "828f978a-ce77-45a0-83c6-dbac238b4210" ) );
-			this.color = color;
-			this.setSmallIcon(new ColorIcon(this.color.getAsAWTColor()));
-			this.setName( name );
-		}
-		@Override
-		protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-			Color4fPropertyController.this.setValueOnData(this.color);
-			context.finish();
-		}
-		
-	}
-	
-	private static java.text.NumberFormat format = new java.text.DecimalFormat( "0.00" );
-	
-	private edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenuOperation;
-	protected java.util.List< SelectColorOperation > defaultColorOperationModels;
 	
 	public Color4fPropertyController(PropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, ?> propertyAdapter)
 	{
@@ -94,54 +74,7 @@ public class Color4fPropertyController extends AbstractAdapterController<Color4f
 		this.colorLabel = new Label();
 		this.colorLabel.getAwtComponent().setOpaque(true);
 		this.addComponent(this.colorLabel, BorderPanel.Constraint.CENTER);
-		this.defaultColorOperationModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		
-		ReflectionUtilities.getPublicStaticFinalInstances(Color4f.class, Color4f.class);
-		
-		Class< ? > colorClass = Color4f.class;
-		for( java.lang.reflect.Field fld : edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getPublicStaticFinalFields( colorClass, colorClass ) ) 
-		{
-			try
-			{
-				defaultColorOperationModels.add(new SelectColorOperation((Color4f)fld.get(colorClass), FormatterSelectionState.getInstance().getSelectedItem().getNameForField(fld)));
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-		this.popupMenuOperation = new edu.cmu.cs.dennisc.croquet.MenuModel( java.util.UUID.fromString( "9aa93f57-87cc-412b-b166-beb73bcd1fe8" ) ) {
-			@Override
-			protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
-				super.handlePopupMenuPrologue( popupMenu, context );
-				
-				Color4f currentColor = Color4fPropertyController.this.propertyAdapter.getValue();
-				String currentColorName = null;
-				for (SelectColorOperation defaultColor : Color4fPropertyController.this.defaultColorOperationModels)
-				{
-					if (currentColor.equals(defaultColor.color))
-					{
-						currentColorName = defaultColor.getName();
-					}
-				}
-				if (currentColorName ==  null)
-				{
-					currentColorName = "r="+format.format(currentColor.red)+", g="+format.format(currentColor.green)+", b="+format.format(currentColor.blue);
-				}
-				currentColorName += " (current value)";
-				
-				SelectColorOperation currentColorOperation = new SelectColorOperation(currentColor, currentColorName);
-				
-				java.util.List<Model> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				models.add(currentColorOperation);
-				models.add(edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR);
-				models.addAll(Color4fPropertyController.this.defaultColorOperationModels);
-				
-				edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
-			}
-		}.getPopupMenuOperation();
-		
-		this.addComponent(this.popupMenuOperation.createButton(), BorderPanel.Constraint.EAST);
+		this.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
 		
 	}
 	
@@ -168,4 +101,5 @@ public class Color4fPropertyController extends AbstractAdapterController<Color4f
 		}
 		
 	}
+
 }

@@ -44,6 +44,7 @@
 package org.alice.ide.properties.uicontroller;
 
 import java.awt.Color;
+import java.util.Locale;
 
 import org.alice.ide.properties.adapter.PropertyAdapter;
 
@@ -68,6 +69,7 @@ public class StringPropertyController extends AbstractAdapterController<String>
 	{
 		this.stringLabel = new Label();
 		this.addComponent(this.stringLabel, BorderPanel.Constraint.CENTER);
+		this.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
 	}
 	
 	@Override

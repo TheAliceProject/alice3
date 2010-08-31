@@ -43,7 +43,9 @@
 
 package org.alice.ide.properties.uicontroller;
 
+import org.alice.apis.moveandturn.Composite;
 import org.alice.ide.properties.adapter.PropertyAdapter;
+import org.alice.stageide.properties.uicontroller.CompositePropertyController;
 
 import edu.cmu.cs.dennisc.math.Point3;
 
@@ -72,6 +74,10 @@ public class AdapterControllerUtilities
 		else if (Point3.class.isAssignableFrom(propertyType))
 		{
 			return new Point3PropertyController(propertyAdapter);
+		}
+		else if (Composite.class.isAssignableFrom(propertyType))
+		{
+			return new CompositePropertyController(propertyAdapter);
 		}
 		else
 		{
