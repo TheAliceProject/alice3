@@ -76,7 +76,7 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 	private static java.text.NumberFormat format = new java.text.DecimalFormat( "0.00" );
 	
 	@Override
-	protected void setValue(Point3 point3Value)
+	protected void setValueOnUI(Point3 point3Value)
 	{
 		if (point3Value != null)
 		{

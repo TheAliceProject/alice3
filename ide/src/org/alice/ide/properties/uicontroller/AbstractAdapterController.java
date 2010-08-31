@@ -51,11 +51,11 @@ import edu.cmu.cs.dennisc.croquet.Panel;
 public abstract class AbstractAdapterController<P> extends BorderPanel implements PropertyAdapterController<P>
 {
 
-	private PropertyAdapter.ValueChangeObserver<P> valueChangeObserver = new PropertyAdapter.ValueChangeObserver<P>()
+	protected PropertyAdapter.ValueChangeObserver<P> valueChangeObserver = new PropertyAdapter.ValueChangeObserver<P>()
 	{
 		public void valueChanged(P newValue) 
 		{
-			AbstractAdapterController.this.setValue(newValue);
+			AbstractAdapterController.this.setValueOnUI(newValue);
 		}
 	};
 	
@@ -91,14 +91,19 @@ public abstract class AbstractAdapterController<P> extends BorderPanel implement
 		}
 		else
 		{
-			setValue(null);
+			setValueOnUI(null);
 		}
 		
 	}
 	
 	protected abstract void initializeComponents();
 	
-	protected abstract void setValue(P value);
+	protected abstract void setValueOnUI(P value);
+	
+	protected void setValueOnData(P value)
+	{
+		this.propertyAdapter.setValue(value);
+	}
 
 	public abstract Class<?> getPropertyType();
 }

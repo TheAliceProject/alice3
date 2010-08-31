@@ -49,6 +49,7 @@ import edu.cmu.cs.dennisc.math.Point3;
 
 public class AdapterControllerUtilities 
 {
+	//TODO: base this lookup on a (type -> property controller) registration that happens in the IDE
 	public static PropertyAdapterController getValuePanelForPropertyAdapter(PropertyAdapter propertyAdapter)
 	{
 		Class<?> propertyType = propertyAdapter != null?  propertyAdapter.getPropertyType() : null;
@@ -66,7 +67,7 @@ public class AdapterControllerUtilities
 		}
 		else if (Double.class.isAssignableFrom(propertyType))
 		{
-			return new DoublePropertyController(propertyAdapter);
+			return new PortionPropertyController(propertyAdapter);
 		}
 		else if (Point3.class.isAssignableFrom(propertyType))
 		{

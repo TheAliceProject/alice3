@@ -77,7 +77,7 @@ public class StringPropertyController extends AbstractAdapterController<String>
 	}
 	
 	@Override
-	protected void setValue(String stringValue)
+	protected void setValueOnUI(String stringValue)
 	{
 		if (stringValue != null)
 		{

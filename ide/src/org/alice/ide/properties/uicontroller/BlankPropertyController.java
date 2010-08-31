@@ -73,7 +73,7 @@ public class BlankPropertyController extends AbstractAdapterController<Object>
 	}
 	
 	@Override
-	protected void setValue(Object value)
+	protected void setValueOnUI(Object value)
 	{
 		if (value != null)
 		{
@@ -83,5 +83,11 @@ public class BlankPropertyController extends AbstractAdapterController<Object>
 		{
 			objectLabel.setText(BLANK_STRING+"NULL");
 		}
+	}
+	
+	@Override
+	protected void setValueOnData(Object value) 
+	{
+		//Do Nothing
 	}
 }
