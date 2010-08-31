@@ -47,9 +47,19 @@ package org.alice.ide.croquet.codecs;
  */
 public class NodeCodec<T extends edu.cmu.cs.dennisc.alice.ast.Node> implements edu.cmu.cs.dennisc.croquet.Codec< T > {
 	public T decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
+		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
+		if( valueIsNotNull ) {
+			java.util.UUID id = binaryDecoder.decodeId();
+			throw new RuntimeException( "todo" );
+		} else {
+			return null;
+		}
 	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T t) {
-		throw new RuntimeException( "todo" );
+	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value) {
+		boolean valueIsNotNull = value != null;
+		binaryEncoder.encode( valueIsNotNull );
+		if( valueIsNotNull ) {
+			binaryEncoder.encode( value.getUUID() );
+		}
 	}
 }

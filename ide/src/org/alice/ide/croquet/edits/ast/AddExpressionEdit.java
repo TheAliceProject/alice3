@@ -69,7 +69,7 @@ public class AddExpressionEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit<
 	@Override
 	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
 		rv.append( "add: " );
-		edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, this.expression, locale );
+		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, this.expression, locale );
 		return rv;
 	}
 

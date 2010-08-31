@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanExpressionBodyPair extends Node {
+public class BooleanExpressionBodyPair extends AbstractNode {
 	public ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?,?,?> getExpressionType() {

@@ -76,7 +76,7 @@ public class InsertStatementEdit<M extends edu.cmu.cs.dennisc.cascade.CascadingR
 	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
 		//super.updatePresentation( rv, locale );
 		rv.append( "drop: " );
-		edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, statement, locale );
+		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, statement, locale );
 		return rv;
 	}
 	@Override

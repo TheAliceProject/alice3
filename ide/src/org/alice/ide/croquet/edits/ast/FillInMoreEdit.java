@@ -103,11 +103,11 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< or
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = popupMenuOperation.getNextMethodInvocation();
 		if( nextMethodInvocation != null ) {
 			rv.append( "more: " );
-			edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, nextMethodInvocation.method.getValue(), locale );
+			edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, nextMethodInvocation.method.getValue(), locale );
 			rv.append( " " );
 			final int N = nextMethodInvocation.arguments.size(); 
 			edu.cmu.cs.dennisc.alice.ast.Argument argument = nextMethodInvocation.arguments.get( N-1 );
-			edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, argument, locale );
+			edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, argument, locale );
 		}
 		return rv;
 	}

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class NodeListProperty< E extends Node > extends edu.cmu.cs.dennisc.property.ListProperty< E > {
+public class NodeListProperty< E extends AbstractNode > extends edu.cmu.cs.dennisc.property.ListProperty< E > {
 	public NodeListProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		super( owner );
 	}

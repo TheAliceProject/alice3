@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class Argument extends Node {
+public class Argument extends AbstractNode {
 	public DeclarationProperty< AbstractParameter > parameter = new DeclarationProperty< AbstractParameter >( this );
 	public ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
@@ -63,9 +63,9 @@ public class Argument extends Node {
 	@Override
 	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
 		//return super.appendRepr( rv, locale );
-		Node.safeAppendRepr( rv, this.parameter.getValue(), locale );
+		NodeUtilities.safeAppendRepr( rv, this.parameter.getValue(), locale );
 		rv.append( ": " );
-		Node.safeAppendRepr( rv, this.expression.getValue(), locale );
+		NodeUtilities.safeAppendRepr( rv, this.expression.getValue(), locale );
 		return rv;
 	}
 }

@@ -160,11 +160,11 @@ public abstract class Edit<M extends Model> implements edu.cmu.cs.dennisc.codec.
 	protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
 	protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
 	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.contextId = edu.cmu.cs.dennisc.java.util.UuidUtilities.decodeUuid( binaryDecoder );
+		this.contextId = binaryDecoder.decodeId();
 		this.decodeInternal(binaryDecoder);
 	}
 	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		edu.cmu.cs.dennisc.java.util.UuidUtilities.encodeUuid( binaryEncoder, this.contextId );
+		binaryEncoder.encode( this.contextId );
 		this.encodeInternal(binaryEncoder);
 	}
 	

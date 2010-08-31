@@ -48,23 +48,49 @@ package org.alice.ide.resource.prompter;
  */
 public abstract class ResourcePrompter<E extends org.alice.virtualmachine.Resource> {
 	protected abstract String getInitialFileText();
+	protected abstract java.util.Set< String > getLowercaseSupportedExtensions();
 	protected abstract E createResourceFromFile( java.io.File file ) throws java.io.IOException;
 	protected abstract String getFileDialogTitle();
 	protected abstract java.io.FilenameFilter createFilenameFilter();
 	public E promptUserForResource( edu.cmu.cs.dennisc.croquet.Frame owner ) throws java.io.IOException {
-		java.awt.FileDialog fileDialog = new java.awt.FileDialog( owner.getAwtComponent() );
-		fileDialog.setTitle( this.getFileDialogTitle() );
-		fileDialog.setFilenameFilter( this.createFilenameFilter() );
-		fileDialog.setFile( this.getInitialFileText() );
-		fileDialog.setMode( java.awt.FileDialog.LOAD );
-		fileDialog.setVisible( true );
-		String filename = fileDialog.getFile();
-		if( filename != null ) {
-			java.io.File directory = new java.io.File( fileDialog.getDirectory() );
-			java.io.File file = new java.io.File( directory, filename );
-			return this.createResourceFromFile( file );
+		java.io.File initialDirectory = null;
+		java.io.File file = org.alice.ide.IDE.getSingleton().showOpenFileDialog( initialDirectory, this.getInitialFileText(), edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory().getAbsolutePath(), true );
+		if( file != null ) {
+			String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file );
+			java.util.Set< String > set = this.getLowercaseSupportedExtensions();
+			if( extension != null && set.contains( extension ) ) {
+				return this.createResourceFromFile( file );
+			} else {
+				StringBuilder sb = new StringBuilder();
+				sb.append( "File extension for \"" );
+				sb.append( file.getName() );
+				sb.append( "\" is not in the supported set: { " );
+				String prefix = "";
+				for( String s : set ) {
+					sb.append( prefix );
+					sb.append( s );
+					prefix = ", ";
+				}
+				sb.append( " }." );
+				org.alice.ide.IDE.getSingleton().showMessageDialog( sb.toString(), "Content Type Not Supported", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
+				return null;
+			}
 		} else {
-			return null;			
+			return null;
 		}
+//		java.awt.FileDialog fileDialog = new java.awt.FileDialog( owner.getAwtComponent() );
+//		fileDialog.setTitle( this.getFileDialogTitle() );
+//		fileDialog.setFilenameFilter( this.createFilenameFilter() );
+//		fileDialog.setFile( this.getInitialFileText() );
+//		fileDialog.setMode( java.awt.FileDialog.LOAD );
+//		fileDialog.setVisible( true );
+//		String filename = fileDialog.getFile();
+//		if( filename != null ) {
+//			java.io.File directory = new java.io.File( fileDialog.getDirectory() );
+//			java.io.File file = new java.io.File( directory, filename );
+//			return this.createResourceFromFile( file );
+//		} else {
+//			return null;			
+//		}
 	}
 }

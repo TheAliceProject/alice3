@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionProperty extends NodeProperty<Expression> {
-	public ExpressionProperty( Node owner ) {
+	public ExpressionProperty( AbstractNode owner ) {
 		super( owner );
 	}
 	public abstract AbstractType<?,?,?> getExpressionType();

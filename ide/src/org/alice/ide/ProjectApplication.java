@@ -76,8 +76,6 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 
 	protected abstract org.alice.ide.openprojectpane.TabContentPanel createTemplatesTabContentPane();
 
-	private java.util.Map< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node > mapUUIDToNode = new java.util.HashMap< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node >();
-
 	public abstract String getApplicationName();
 	protected abstract String getVersionText();
 	protected abstract String getVersionAdornment();
@@ -267,7 +265,6 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 	}
 	
 	public void loadProjectFrom( java.net.URI uri ) {
-		this.mapUUIDToNode.clear();
 		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = this.getProjectHistoryManager();
 		projectHistoryManager.performClear();
 		this.updateHistoryLengthAtLastFileOperation();

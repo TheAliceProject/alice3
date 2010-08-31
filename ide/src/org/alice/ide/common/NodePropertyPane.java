@@ -56,8 +56,8 @@ public class NodePropertyPane< E extends edu.cmu.cs.dennisc.alice.ast.NodeProper
 	protected void refresh() {
 		this.forgetAndRemoveAllComponents();
 		Object value = getProperty().getValue();
-		if( value instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
-			this.addComponent( this.getFactory().createComponent( (edu.cmu.cs.dennisc.alice.ast.Node)value ) );
+		if( value instanceof edu.cmu.cs.dennisc.alice.ast.AbstractNode ) {
+			this.addComponent( this.getFactory().createComponent( (edu.cmu.cs.dennisc.alice.ast.AbstractNode)value ) );
 		}
 	}
 }

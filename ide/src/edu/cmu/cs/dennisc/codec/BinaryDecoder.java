@@ -60,6 +60,8 @@ public interface BinaryDecoder {
 	@Deprecated
 	public <E extends Enum< E >> E decodeEnum( Class< E > cls );
 	
+	public java.util.UUID decodeId();
+	
 	public BinaryEncodableAndDecodable decodeBinaryEncodableAndDecodable( BinaryEncodableAndDecodable rv );
 	public <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable();
 	@Deprecated
@@ -80,6 +82,7 @@ public interface BinaryDecoder {
 	public short[] decodeShortArray();
 	public String[] decodeStringArray();
 	public <E extends Enum< E >> E[] decodeEnumArray( Class< E > cls );
+	public java.util.UUID[] decodeIdArray();
 	public <E extends BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray( Class< E > componentCls );
 	public <E extends ReferenceableBinaryEncodableAndDecodable> E[] decodeReferenceableBinaryEncodableAndDecodableArray( Class< E > componentCls, java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map );
 }

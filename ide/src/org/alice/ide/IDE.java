@@ -213,6 +213,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void loadProjectFrom( java.net.URI uri ) {
 		super.loadProjectFrom( uri );
+		this.mapUUIDToNode.clear();
 		edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = getSceneField();
 		if( sceneField != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractMethod runMethod = sceneField.getValueType().getDeclaredMethod( "run" );
@@ -827,7 +828,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibleListState = new edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible >( UI_STATE_GROUP,
-			java.util.UUID.fromString( "a6d09409-82b8-4dfe-b156-588f1983893c" ), new org.alice.ide.croquet.codecs.AccessibleCodec() );
+			java.util.UUID.fromString( "a6d09409-82b8-4dfe-b156-588f1983893c" ), new org.alice.ide.croquet.codecs.NodeCodec< edu.cmu.cs.dennisc.alice.ast.Accessible >() );
 
 	public edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > getAccessibleListState() {
 		return this.accessibleListState;
@@ -937,13 +938,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.setRootField( this.getSceneField() );
 	}
 
-	public <N extends edu.cmu.cs.dennisc.alice.ast.Node> N createCopy( N original ) {
+	public <N extends edu.cmu.cs.dennisc.alice.ast.AbstractNode> N createCopy( N original ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice root = this.getProgramType();
 		java.util.Set< edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration > abstractDeclarations = root.createDeclarationSet();
 		original.removeDeclarationsThatNeedToBeCopied( abstractDeclarations );
-		java.util.Map< Integer, edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration > map = edu.cmu.cs.dennisc.alice.ast.Node.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
+		java.util.Map< Integer, edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration > map = edu.cmu.cs.dennisc.alice.ast.AbstractNode.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
 		org.w3c.dom.Document xmlDocument = original.encode( abstractDeclarations );
-		edu.cmu.cs.dennisc.alice.ast.Node dst = edu.cmu.cs.dennisc.alice.ast.Node.decode( xmlDocument, edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText(), map, false );
+		edu.cmu.cs.dennisc.alice.ast.AbstractNode dst = edu.cmu.cs.dennisc.alice.ast.AbstractNode.decode( xmlDocument, edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText(), map, false );
 
 		//		if( original.isEquivalentTo( dst ) ) {
 		//			return dst;
@@ -1180,8 +1181,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 						return null;
 					}
 				} else {
-					edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)accessible;
-					if( focusedCode == node.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class ) ) {
+					if( focusedCode == accessible.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class ) ) {
 						if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.AbstractParameter ) {
 							edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = (edu.cmu.cs.dennisc.alice.ast.AbstractParameter)accessible;
 							return new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );

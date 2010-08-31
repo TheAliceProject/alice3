@@ -209,8 +209,8 @@ public class Decoder {
 		ClassReflectionProxy[] parameterClses = decodeParameters( xmlMethod );
 		return new MethodReflectionProxy( declaringCls, name, parameterClses );
 	}
-	public Node decode( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
-		Node rv;
+	public AbstractNode decode( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
+		AbstractNode rv;
 		if( xmlElement.hasAttribute( CodecConstants.TYPE_ATTRIBUTE ) ) {
 			String clsName = getClassName( xmlElement );
 			if( clsName.equals( TypeDeclaredInJava.class.getName() ) ) {
@@ -246,7 +246,7 @@ public class Decoder {
 				int index = Integer.parseInt( xmlIndex.getTextContent() );
 				rv = methodDeclaredInJava.getParameters().get( index );
 			} else {
-				rv = (Node)newInstance( xmlElement );
+				rv = (AbstractNode)newInstance( xmlElement );
 				assert rv != null;
 			}
 			if( rv instanceof AbstractDeclaration ) {

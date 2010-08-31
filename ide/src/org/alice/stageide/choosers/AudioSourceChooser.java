@@ -106,7 +106,7 @@ class TimeSlider extends javax.swing.JSlider {
  * @author Dennis Cosgrove
  */
 public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.InstanceCreation > {
-	class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
+	class BogusNode extends edu.cmu.cs.dennisc.alice.ast.AbstractNode {
 		private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty bogusProperty = new edu.cmu.cs.dennisc.alice.ast.ExpressionProperty( this ) {
 			@Override
 			public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {

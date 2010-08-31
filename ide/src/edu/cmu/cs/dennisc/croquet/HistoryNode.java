@@ -206,11 +206,11 @@ public abstract class HistoryNode implements edu.cmu.cs.dennisc.codec.BinaryEnco
 	protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
 	protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
 	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.id = edu.cmu.cs.dennisc.java.util.UuidUtilities.decodeUuid( binaryDecoder );
+		this.id = binaryDecoder.decodeId();
 		this.decodeInternal( binaryDecoder );
 	}
 	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		edu.cmu.cs.dennisc.java.util.UuidUtilities.encodeUuid( binaryEncoder, this.id );
+		binaryEncoder.encode( this.id );
 		this.encodeInternal( binaryEncoder );
 	}
 	

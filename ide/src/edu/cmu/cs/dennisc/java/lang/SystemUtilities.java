@@ -103,6 +103,9 @@ public class SystemUtilities {
 		}
 	}
 
+	public static boolean isLinux() {
+		return SystemUtilities.platform == Platform.LINUX;
+	}
 	public static boolean isMac() {
 		return SystemUtilities.platform == Platform.OSX;
 	}

@@ -114,7 +114,7 @@ public class MethodInvocation extends Expression {
 	
 	@Override
 	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
-		Node.safeAppendRepr( rv, this.method.getValue(), locale );
+		NodeUtilities.safeAppendRepr( rv, this.method.getValue(), locale );
 		return rv;
 	}
 	

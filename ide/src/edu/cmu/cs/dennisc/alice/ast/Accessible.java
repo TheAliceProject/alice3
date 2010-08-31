@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public interface Accessible extends edu.cmu.cs.dennisc.pattern.Nameable {
+public interface Accessible extends Node {
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getValueType();
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
 	public String getValidName( Node context );

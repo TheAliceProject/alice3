@@ -139,7 +139,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 					@Override
 					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
 						rv.append( "delete:" );
-						edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, getParameter(), locale);
+						edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, getParameter(), locale);
 						return rv;
 					}
 				} );

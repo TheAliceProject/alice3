@@ -46,7 +46,7 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class DeleteFieldOperation extends AbstractDeleteNodeOperation< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
-	private static edu.cmu.cs.dennisc.alice.ast.NodeListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.Node > getFieldsProperty( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+	private static edu.cmu.cs.dennisc.alice.ast.NodeListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractNode > getFieldsProperty( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = field.getDeclaringType();
 		assert type != null;
 		assert type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;

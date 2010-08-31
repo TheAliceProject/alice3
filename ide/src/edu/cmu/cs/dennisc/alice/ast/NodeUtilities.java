@@ -40,55 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package edu.cmu.cs.dennisc.alice.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FocusCodeOperation extends org.alice.ide.operations.ActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode;
-	
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractCode, FocusCodeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static FocusCodeOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
-		FocusCodeOperation rv = map.get( nextCode );
-		if( rv != null ) {
-			//pass
+public class NodeUtilities {
+	private NodeUtilities() {
+		throw new AssertionError();
+	}
+	public static StringBuffer safeAppendRepr( StringBuffer rv, AbstractNode node, java.util.Locale locale ) {
+		if( node != null ) {
+			node.appendRepr( rv, locale );
 		} else {
-			rv = new FocusCodeOperation( nextCode );
-			map.put( nextCode, rv );
+			//todo?
 		}
 		return rv;
-	}
-	
-	private FocusCodeOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
-		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "82bf4d2a-f1ff-4df5-a5dc-80f981181ba5" ) );
-		this.nextCode = nextCode;
-		String name;
-		if( nextCode instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {
-			name = "Edit Constructor";
-		} else {
-			name = "Edit";
-		}
-		this.setName( name );
-	}
-	@Override
-	protected final void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-		final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = getIDE().getFocusedCode();
-		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
-			@Override
-			protected final void doOrRedoInternal( boolean isDo ) {
-				getIDE().setFocusedCode( nextCode );
-			}
-			@Override
-			protected final void undoInternal() {
-				getIDE().setFocusedCode( prevCode );
-			}
-			@Override
-			protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-				rv.append( "focus: " );
-				rv.append( edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, nextCode, locale) );
-				return rv;
-			}
-		} );
 	}
 }

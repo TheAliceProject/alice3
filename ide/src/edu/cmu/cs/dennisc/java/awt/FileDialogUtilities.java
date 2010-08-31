@@ -46,12 +46,99 @@ package edu.cmu.cs.dennisc.java.awt;
  * @author Dennis Cosgrove
  */
 public class FileDialogUtilities {
-	private static edu.cmu.cs.dennisc.map.MapToMap<java.awt.Component, String, java.awt.FileDialog> mapPathToLoadFileDialog = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	private static edu.cmu.cs.dennisc.map.MapToMap<java.awt.Component, String, java.awt.FileDialog> mapPathToSaveFileDialog = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	
+	private static interface FileDialog {
+		public String getFile();
+		public void setFile( String filename );
+		public String getDirectory();
+		public void setDirectory( String path );
+		public void show();
+	}
+	
+	private static class AwtFileDialog implements FileDialog {
+		private final java.awt.FileDialog awtFileDialog;
+		public AwtFileDialog( java.awt.Component root, String title, int mode ) {
+			if( root instanceof java.awt.Frame ) {
+				awtFileDialog = new java.awt.FileDialog( (java.awt.Frame)root, title, mode );
+			} else if( root instanceof java.awt.Dialog ) {
+				awtFileDialog = new java.awt.FileDialog( (java.awt.Dialog)root, title, mode );
+			} else {
+				awtFileDialog = new java.awt.FileDialog( (java.awt.Dialog)null, title, mode );
+			}
+		}
+		public String getFile() {
+			return this.awtFileDialog.getFile();
+		}
+		public void setFile( String filename ) {
+			this.awtFileDialog.setFile( filename );
+		}
+		public String getDirectory() {
+			return this.awtFileDialog.getDirectory();
+		}
+		public void setDirectory( String path ) {
+			this.awtFileDialog.setDirectory( path );
+		}
+		public void show() {
+			this.awtFileDialog.setVisible( true );
+		}
+	}
+	private static class SwingFileDialog implements FileDialog {
+		private final javax.swing.JFileChooser jFileChooser = new javax.swing.JFileChooser();
+		private final java.awt.Component root;
+		private final String title;
+		private final int mode;
+		public SwingFileDialog( java.awt.Component root, String title, int mode ) {
+			this.root = root;
+			this.title = title;
+			this.mode = mode;
+		}
+		public String getFile() {
+			java.io.File file = this.jFileChooser.getSelectedFile();
+			if( file != null ) {
+				return file.getName();
+			} else {
+				return null;
+			}
+		}
+		public void setFile( String filename ) {
+			//this.jFileChooser.setFile( filename );
+		}
+		public String getDirectory() {
+			java.io.File file = this.jFileChooser.getCurrentDirectory();
+			if( file != null ) {
+				return file.getAbsolutePath();
+			} else {
+				return null;
+			}
+		}
+		public void setDirectory( String path ) {
+			if( path != null ) {
+				this.jFileChooser.setSelectedFile( new java.io.File( path ) );
+			}
+		}
+		public void show() {
+			if( mode == java.awt.FileDialog.LOAD ) {
+				this.jFileChooser.showOpenDialog( this.root );
+			} else {
+				this.jFileChooser.showSaveDialog( this.root );
+			}
+		}
+	}
+	
+	private static edu.cmu.cs.dennisc.map.MapToMap<java.awt.Component, String, FileDialog> mapPathToLoadFileDialog = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<java.awt.Component, String, FileDialog> mapPathToSaveFileDialog = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	private static java.util.Map<String, String> mapSecondaryKeyToPath = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
+	
+	private static FileDialog createFileDialog( java.awt.Component root, String title, int mode ) {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
+			return new SwingFileDialog( root, title, mode );
+		} else {
+			return new AwtFileDialog( root, title, mode );
+		}
+	}
 	private static java.io.File showFileDialog( java.awt.Component component, String title, int mode, String directoryPath, String filename, String extension, boolean isSharingDesired ) {
-		java.awt.FileDialog fileDialog;
+		FileDialog fileDialog;
 		java.awt.Component root = javax.swing.SwingUtilities.getRoot( component );
 		String secondaryKey;
 		if( directoryPath != null ) {
@@ -59,7 +146,7 @@ public class FileDialogUtilities {
 		} else {
 			secondaryKey = "null";
 		}
-		edu.cmu.cs.dennisc.map.MapToMap<java.awt.Component, String, java.awt.FileDialog> mapPathToFileDialog;
+		edu.cmu.cs.dennisc.map.MapToMap<java.awt.Component, String, FileDialog> mapPathToFileDialog;
 		if( mode == java.awt.FileDialog.LOAD ) {
 			mapPathToFileDialog = FileDialogUtilities.mapPathToLoadFileDialog;
 		} else {
@@ -73,13 +160,7 @@ public class FileDialogUtilities {
 		if( fileDialog != null ) {
 			//pass
 		} else {
-			if( root instanceof java.awt.Frame ) {
-				fileDialog = new java.awt.FileDialog( (java.awt.Frame)root, title, mode );
-			} else if( root instanceof java.awt.Dialog ) {
-				fileDialog = new java.awt.FileDialog( (java.awt.Dialog)root, title, mode );
-			} else {
-				fileDialog = new java.awt.FileDialog( (java.awt.Dialog)null, title, mode );
-			}
+			fileDialog = createFileDialog( root, title, mode );
 			if( isSharingDesired ) {
 				mapPathToFileDialog.put( component, secondaryKey, fileDialog );
 			}
@@ -103,7 +184,7 @@ public class FileDialogUtilities {
 			fileDialog.setDirectory( path );
 		}
 		
-		fileDialog.setVisible( true );
+		fileDialog.show();
 		String fileName = fileDialog.getFile();
 		java.io.File rv;
 		if( fileName != null ) {

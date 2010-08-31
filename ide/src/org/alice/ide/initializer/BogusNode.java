@@ -45,7 +45,7 @@ package org.alice.ide.initializer;
 /**
  * @author Dennis Cosgrove
  */
-public class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
+public class BogusNode extends edu.cmu.cs.dennisc.alice.ast.AbstractNode {
 	public edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentType = new edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> >( this ) {
 		@Override
 		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> value) {

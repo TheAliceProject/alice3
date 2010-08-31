@@ -194,7 +194,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			throw new RuntimeException( "todo" );
 		}
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, CameraMarker cameraMarker ) {
-			throw new RuntimeException( "todo" );
+			System.err.println( "todo: convert mainCameraMarkerList to AST: " + cameraMarker );
 		}
 	} );
 	

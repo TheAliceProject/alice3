@@ -79,9 +79,9 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 				@Override
 				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
 					rv.append( "convert:" );
-					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, original, locale);
+					edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, original, locale);
 					rv.append( " --> " );
-					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, replacement, locale);
+					edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, replacement, locale);
 					return rv;
 				}
 			} );
@@ -141,7 +141,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOp
 				@Override
 				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
 					rv.append( "dissolve:" );
-					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, abstractStatementWithBody, locale);
+					edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, abstractStatementWithBody, locale);
 					return rv;
 				}
 			} );
@@ -190,7 +190,7 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOper
 				@Override
 				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
 					rv.append( "delete:" );
-					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, statement, locale);
+					edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, statement, locale);
 					return rv;
 				}
 			} );
