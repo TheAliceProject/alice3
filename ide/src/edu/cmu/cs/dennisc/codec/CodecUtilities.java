@@ -46,13 +46,22 @@ package edu.cmu.cs.dennisc.codec;
  * @author Dennis Cosgrove
  */
 public abstract class CodecUtilities {
+	@Deprecated
+	public static boolean isDebugDesired = false;
+
+	
 	private static final String DEFAULT_ZIP_ENTRY_NAME = "edu.cmu.cs.dennisc.codec.CodecUtilities.DEFAULT_ZIP_ENTRY_NAME";
 	private CodecUtilities() {
 		throw new AssertionError();
 	}
 	public static <E extends BinaryEncodableAndDecodable> E decodeBinary( java.io.InputStream is, Class<E> cls ) {
-		BinaryDecoder binaryDecoder = new InputStreamBinaryDecoder( is );
-		return binaryDecoder.decodeBinaryEncodableAndDecodable( cls );
+		BinaryDecoder binaryDecoder;
+		if( isDebugDesired ) {
+			binaryDecoder = new DebugInputStreamBinaryDecoder( is );
+		} else {
+			binaryDecoder = new InputStreamBinaryDecoder( is );
+		}
+		return binaryDecoder.decodeBinaryEncodableAndDecodable(/* cls */);
 	}
 	public static <E extends BinaryEncodableAndDecodable> E decodeBinary( java.io.File file, Class<E> cls ) {
 		try {
@@ -101,68 +110,73 @@ public abstract class CodecUtilities {
 			throw new RuntimeException( ioe );
 		}
 	}
-	public static BinaryEncodableAndDecodable decodeBinary( BinaryEncodableAndDecodable rv, java.io.InputStream is ) {
-		BinaryDecoder binaryDecoder = new InputStreamBinaryDecoder( is );
-		return binaryDecoder.decodeBinaryEncodableAndDecodable( rv );
-	}
-	public static BinaryEncodableAndDecodable decodeBinary( BinaryEncodableAndDecodable rv, java.io.File file ) {
-		try {
-			java.io.FileInputStream fis = new java.io.FileInputStream( file );
-			try {
-				return decodeBinary( rv, fis );
-			} finally {
-				fis.close();
-			}
-		} catch( java.io.FileNotFoundException fnfe ) {
-			throw new RuntimeException( fnfe );
-		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
-	
-	public static BinaryEncodableAndDecodable decodeBinary( BinaryEncodableAndDecodable rv, String path ) {
-		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
-			return decodeZippedBinary( rv, path, DEFAULT_ZIP_ENTRY_NAME );
-		} else {
-			return decodeBinary( rv, new java.io.File( path ) );
-		}
-	}
-	public static BinaryEncodableAndDecodable decodeBinary( BinaryEncodableAndDecodable rv, byte[] data ) {
-		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( data );
-		return decodeBinary(rv, bais);
-	}
+//	public static BinaryEncodableAndDecodable decodeBinary( BinaryEncodableAndDecodable rv, java.io.InputStream is ) {
+//		BinaryDecoder binaryDecoder = new InputStreamBinaryDecoder( is );
+//		return binaryDecoder.decodeBinaryEncodableAndDecodable( rv );
+//	}
+//	public static BinaryEncodableAndDecodable decodeBinary( BinaryEncodableAndDecodable rv, java.io.File file ) {
+//		try {
+//			java.io.FileInputStream fis = new java.io.FileInputStream( file );
+//			try {
+//				return decodeBinary( rv, fis );
+//			} finally {
+//				fis.close();
+//			}
+//		} catch( java.io.FileNotFoundException fnfe ) {
+//			throw new RuntimeException( fnfe );
+//		} catch( java.io.IOException ioe ) {
+//			throw new RuntimeException( ioe );
+//		}
+//	}
+//	
+//	public static BinaryEncodableAndDecodable decodeBinary( BinaryEncodableAndDecodable rv, String path ) {
+//		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
+//			return decodeZippedBinary( rv, path, DEFAULT_ZIP_ENTRY_NAME );
+//		} else {
+//			return decodeBinary( rv, new java.io.File( path ) );
+//		}
+//	}
+//	public static BinaryEncodableAndDecodable decodeBinary( BinaryEncodableAndDecodable rv, byte[] data ) {
+//		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( data );
+//		return decodeBinary(rv, bais);
+//	}
 	public static <E extends BinaryEncodableAndDecodable> E decodeBinary( byte[] data, Class<E> cls ) {
 		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( data );
 		return decodeBinary(bais, cls);
 	}
 
-	public static BinaryEncodableAndDecodable decodeZippedBinary( BinaryEncodableAndDecodable rv, java.util.zip.ZipFile file, java.util.zip.ZipEntry entry ) {
-		try {
-			java.io.InputStream is = file.getInputStream( entry );
-			try {
-				return decodeBinary( rv, is );
-			} finally {
-				is.close();
-			}
-		} catch( java.io.FileNotFoundException fnfe ) {
-			throw new RuntimeException( fnfe );
-		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
-
-	public static BinaryEncodableAndDecodable decodeZippedBinary( BinaryEncodableAndDecodable rv, String path, String entryName ) {
-		try {
-			java.util.zip.ZipFile file = new java.util.zip.ZipFile( path );
-			java.util.zip.ZipEntry entry = file.getEntry( entryName );
-			return decodeZippedBinary( rv, file, entry );
-		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
-	
+//	public static BinaryEncodableAndDecodable decodeZippedBinary( BinaryEncodableAndDecodable rv, java.util.zip.ZipFile file, java.util.zip.ZipEntry entry ) {
+//		try {
+//			java.io.InputStream is = file.getInputStream( entry );
+//			try {
+//				return decodeBinary( rv, is );
+//			} finally {
+//				is.close();
+//			}
+//		} catch( java.io.FileNotFoundException fnfe ) {
+//			throw new RuntimeException( fnfe );
+//		} catch( java.io.IOException ioe ) {
+//			throw new RuntimeException( ioe );
+//		}
+//	}
+//
+//	public static BinaryEncodableAndDecodable decodeZippedBinary( BinaryEncodableAndDecodable rv, String path, String entryName ) {
+//		try {
+//			java.util.zip.ZipFile file = new java.util.zip.ZipFile( path );
+//			java.util.zip.ZipEntry entry = file.getEntry( entryName );
+//			return decodeZippedBinary( rv, file, entry );
+//		} catch( java.io.IOException ioe ) {
+//			throw new RuntimeException( ioe );
+//		}
+//	}
+		
 	public static void encodeBinary( BinaryEncodableAndDecodable binaryEncodableAndDecodable, java.io.OutputStream os ) {
-		BinaryEncoder binaryEncoder = new OutputStreamBinaryEncoder( os );
+		BinaryEncoder binaryEncoder;
+		if( isDebugDesired ) {
+			binaryEncoder = new DebugOutputStreamBinaryEncoder( os );
+		} else {
+			binaryEncoder = new OutputStreamBinaryEncoder( os );
+		}
 		binaryEncoder.encode( binaryEncodableAndDecodable );
 		binaryEncoder.flush();
 	}
@@ -232,7 +246,7 @@ public abstract class CodecUtilities {
 	public static <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinary( java.io.InputStream is, Class<E> cls ) {
 		BinaryDecoder binaryDecoder = new InputStreamBinaryDecoder( is );
 		java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map = new java.util.HashMap< Integer, ReferenceableBinaryEncodableAndDecodable >();
-		return binaryDecoder.decodeReferenceableBinaryEncodableAndDecodable( cls, map );
+		return binaryDecoder.decodeReferenceableBinaryEncodableAndDecodable( /*cls, */map );
 	}
 	public static <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinary( java.io.File file, Class<E> cls ) {
 		try {
@@ -281,11 +295,13 @@ public abstract class CodecUtilities {
 			throw new RuntimeException( ioe );
 		}
 	}
+	@Deprecated
 	public static ReferenceableBinaryEncodableAndDecodable decodeReferenceableBinary( ReferenceableBinaryEncodableAndDecodable rv, java.io.InputStream is ) {
 		BinaryDecoder binaryDecoder = new InputStreamBinaryDecoder( is );
 		java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map = new java.util.HashMap< Integer, ReferenceableBinaryEncodableAndDecodable >();
 		return binaryDecoder.decodeReferenceableBinaryEncodableAndDecodable( rv, map );
 	}
+	@Deprecated
 	public static ReferenceableBinaryEncodableAndDecodable decodeReferenceableBinary( ReferenceableBinaryEncodableAndDecodable rv, java.io.File file ) {
 		try {
 			java.io.FileInputStream fis = new java.io.FileInputStream( file );
@@ -300,7 +316,7 @@ public abstract class CodecUtilities {
 			throw new RuntimeException( ioe );
 		}
 	}
-	
+	@Deprecated
 	public static ReferenceableBinaryEncodableAndDecodable decodeReferenceableBinary( ReferenceableBinaryEncodableAndDecodable rv, String path ) {
 		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
 			return decodeZippedReferenceableBinary( rv, path, DEFAULT_ZIP_ENTRY_NAME );
@@ -308,7 +324,7 @@ public abstract class CodecUtilities {
 			return decodeReferenceableBinary( rv, new java.io.File( path ) );
 		}
 	}
-
+	@Deprecated
 	public static ReferenceableBinaryEncodableAndDecodable decodeZippedReferenceableBinary( ReferenceableBinaryEncodableAndDecodable rv, java.util.zip.ZipFile file, java.util.zip.ZipEntry entry ) {
 		try {
 			java.io.InputStream is = file.getInputStream( entry );
@@ -324,6 +340,7 @@ public abstract class CodecUtilities {
 		}
 	}
 
+	@Deprecated
 	public static ReferenceableBinaryEncodableAndDecodable decodeZippedReferenceableBinary( ReferenceableBinaryEncodableAndDecodable rv, String path, String entryName ) {
 		try {
 			java.util.zip.ZipFile file = new java.util.zip.ZipFile( path );
@@ -333,73 +350,73 @@ public abstract class CodecUtilities {
 			throw new RuntimeException( ioe );
 		}
 	}
-	
-	public static void encodeReferenceableBinary( ReferenceableBinaryEncodableAndDecodable referenceableBinaryEncodableAndDecodable, java.io.OutputStream os ) {
-		BinaryEncoder binaryEncoder = new OutputStreamBinaryEncoder( os );
-		java.util.Map< ReferenceableBinaryEncodableAndDecodable, Integer > map = new java.util.HashMap< ReferenceableBinaryEncodableAndDecodable, Integer >();
-		binaryEncoder.encode( referenceableBinaryEncodableAndDecodable, map );
-		binaryEncoder.flush();
-	}
-	public static void encodeReferenceableBinary( ReferenceableBinaryEncodableAndDecodable referenceableBinaryEncodableAndDecodable, java.io.File file ) {
-		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
-		try {
-			java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
-			try {
-				encodeReferenceableBinary( referenceableBinaryEncodableAndDecodable, fos );
-			} finally {
-				fos.close();
-			}
-		} catch( java.io.FileNotFoundException fnfe ) {
-			throw new RuntimeException( fnfe );
-		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
-	
-	public static void encodeReferenceableBinary( ReferenceableBinaryEncodableAndDecodable referenceableBinaryEncodableAndDecodable, String path ) {
-		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
-			encodeZippedReferenceableBinary( referenceableBinaryEncodableAndDecodable, path, DEFAULT_ZIP_ENTRY_NAME );
-		} else {
-			encodeReferenceableBinary( referenceableBinaryEncodableAndDecodable, new java.io.File( path ) );
-		}
-	}
-
-	public static void encodeZippedReferenceableBinary( ReferenceableBinaryEncodableAndDecodable referenceableBinaryEncodableAndDecodable, java.util.zip.ZipOutputStream zos, java.util.zip.ZipEntry entry ) {
-		try {
-			zos.putNextEntry( entry );
-			encodeReferenceableBinary( referenceableBinaryEncodableAndDecodable, zos );
-			zos.closeEntry();
-		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
-
-	public static void encodeZippedReferenceableBinary( ReferenceableBinaryEncodableAndDecodable referenceableBinaryEncodableAndDecodable, java.io.OutputStream os, String entryName ) {
-		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( new java.io.BufferedOutputStream( os ) );
-		java.util.zip.ZipEntry entry = new java.util.zip.ZipEntry( entryName );
-		encodeZippedReferenceableBinary( referenceableBinaryEncodableAndDecodable, zos, entry );
-		try {
-			//todo?
-			zos.close();
-		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
-	public static void encodeZippedReferenceableBinary( ReferenceableBinaryEncodableAndDecodable referenceableBinaryEncodableAndDecodable, java.io.File file, String entryName ) {
-		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
-		try {
-			java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
-			try {
-				encodeZippedReferenceableBinary( referenceableBinaryEncodableAndDecodable, fos, entryName );
-			} finally {
-				fos.flush();
-				fos.close();
-			}
-		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
-	public static void encodeZippedReferenceableBinary( ReferenceableBinaryEncodableAndDecodable referenceableBinaryEncodableAndDecodable, String path, String entryName ) {
-		encodeZippedReferenceableBinary( referenceableBinaryEncodableAndDecodable, new java.io.File( path ), entryName );
-	}
+//	
+//	public static void encodeReferenceableBinary( ReferenceableBinaryEncodableAndDecodable referenceableBinaryEncodableAndDecodable, java.io.OutputStream os ) {
+//		BinaryEncoder binaryEncoder = new OutputStreamBinaryEncoder( os );
+//		java.util.Map< ReferenceableBinaryEncodableAndDecodable, Integer > map = new java.util.HashMap< ReferenceableBinaryEncodableAndDecodable, Integer >();
+//		binaryEncoder.encode( referenceableBinaryEncodableAndDecodable, map );
+//		binaryEncoder.flush();
+//	}
+//	public static void encodeReferenceableBinary( ReferenceableBinaryEncodableAndDecodable referenceableBinaryEncodableAndDecodable, java.io.File file ) {
+//		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
+//		try {
+//			java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
+//			try {
+//				encodeReferenceableBinary( referenceableBinaryEncodableAndDecodable, fos );
+//			} finally {
+//				fos.close();
+//			}
+//		} catch( java.io.FileNotFoundException fnfe ) {
+//			throw new RuntimeException( fnfe );
+//		} catch( java.io.IOException ioe ) {
+//			throw new RuntimeException( ioe );
+//		}
+//	}
+//	
+//	public static void encodeReferenceableBinary( ReferenceableBinaryEncodableAndDecodable referenceableBinaryEncodableAndDecodable, String path ) {
+//		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
+//			encodeZippedReferenceableBinary( referenceableBinaryEncodableAndDecodable, path, DEFAULT_ZIP_ENTRY_NAME );
+//		} else {
+//			encodeReferenceableBinary( referenceableBinaryEncodableAndDecodable, new java.io.File( path ) );
+//		}
+//	}
+//
+//	public static void encodeZippedReferenceableBinary( ReferenceableBinaryEncodableAndDecodable referenceableBinaryEncodableAndDecodable, java.util.zip.ZipOutputStream zos, java.util.zip.ZipEntry entry ) {
+//		try {
+//			zos.putNextEntry( entry );
+//			encodeReferenceableBinary( referenceableBinaryEncodableAndDecodable, zos );
+//			zos.closeEntry();
+//		} catch( java.io.IOException ioe ) {
+//			throw new RuntimeException( ioe );
+//		}
+//	}
+//
+//	public static void encodeZippedReferenceableBinary( ReferenceableBinaryEncodableAndDecodable referenceableBinaryEncodableAndDecodable, java.io.OutputStream os, String entryName ) {
+//		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( new java.io.BufferedOutputStream( os ) );
+//		java.util.zip.ZipEntry entry = new java.util.zip.ZipEntry( entryName );
+//		encodeZippedReferenceableBinary( referenceableBinaryEncodableAndDecodable, zos, entry );
+//		try {
+//			//todo?
+//			zos.close();
+//		} catch( java.io.IOException ioe ) {
+//			throw new RuntimeException( ioe );
+//		}
+//	}
+//	public static void encodeZippedReferenceableBinary( ReferenceableBinaryEncodableAndDecodable referenceableBinaryEncodableAndDecodable, java.io.File file, String entryName ) {
+//		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
+//		try {
+//			java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
+//			try {
+//				encodeZippedReferenceableBinary( referenceableBinaryEncodableAndDecodable, fos, entryName );
+//			} finally {
+//				fos.flush();
+//				fos.close();
+//			}
+//		} catch( java.io.IOException ioe ) {
+//			throw new RuntimeException( ioe );
+//		}
+//	}
+//	public static void encodeZippedReferenceableBinary( ReferenceableBinaryEncodableAndDecodable referenceableBinaryEncodableAndDecodable, String path, String entryName ) {
+//		encodeZippedReferenceableBinary( referenceableBinaryEncodableAndDecodable, new java.io.File( path ), entryName );
+//	}
 }

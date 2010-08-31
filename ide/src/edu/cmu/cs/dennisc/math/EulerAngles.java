@@ -220,7 +220,7 @@ public class EulerAngles implements Orientation, edu.cmu.cs.dennisc.codec.Binary
 		yaw.decode( binaryDecoder );
 		pitch.decode( binaryDecoder );
 		roll.decode( binaryDecoder );
-		order = binaryDecoder.decodeEnum( Order.class );
+		order = binaryDecoder.decodeEnum(/* Order.class */);
 	}
 	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
 		yaw.encode( binaryEncoder );

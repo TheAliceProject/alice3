@@ -123,16 +123,17 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 	}
 	public void encode( String value ) {
 		try {
-			m_oos.writeBoolean( value != null );
-			m_oos.writeUTF( value );
-			//m_oos.writeInt( value.length() );
-			//m_oos.writeChars( value );
+			boolean isNotNull = value != null;
+			m_oos.writeBoolean( isNotNull );
+			if( isNotNull ) {
+				m_oos.writeUTF( value );
+			}
 		} catch( java.io.IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
 
-	public void flush() {
+	public final void flush() {
 		try {
 			m_oos.flush();
 		} catch( java.io.IOException ioe ) {

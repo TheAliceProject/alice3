@@ -46,10 +46,14 @@ package edu.cmu.cs.dennisc.codec;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractBinaryDecoder implements BinaryDecoder {
+	//todo: handle null arrays
 	private Object createArray( Class<?> componentType ) {
-		int length = decodeInt();
-		//todo: -1 for null array?
-		return java.lang.reflect.Array.newInstance( componentType, length );
+		int length = this.decodeInt();
+		if( length != -1 ) {
+			return java.lang.reflect.Array.newInstance( componentType, length );
+		} else {
+			return null;
+		}
 	}
 	public final boolean[] decodeBooleanArray() {
 		boolean[] rv = (boolean[])createArray( Boolean.TYPE );
@@ -130,7 +134,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 	public final <E extends BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray( Class< E > componentCls ) {
 		E[] rv = (E[])createArray( componentCls );
 		for( int i=0; i<rv.length; i++ ) {
-			rv[ i ] = decodeBinaryEncodableAndDecodable( componentCls );
+			rv[ i ] = decodeBinaryEncodableAndDecodable();
 		}
 		return rv;
 	}
@@ -152,6 +156,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 			return null;
 		}
 	}
+	@Deprecated
 	public final <E extends Enum< E >> E decodeEnum( Class< E > cls ) {
 		E rv = decodeEnum();
 		assert cls.isInstance( rv );
@@ -159,13 +164,18 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 	}
 
 	public final java.util.UUID decodeId() {
-		long mostSigBits = this.decodeLong();
-		long leastSigBits = this.decodeLong();
-		return new java.util.UUID( mostSigBits, leastSigBits );
+		boolean isNotNull = this.decodeBoolean();
+		if( isNotNull ) {
+			long mostSigBits = this.decodeLong();
+			long leastSigBits = this.decodeLong();
+			return new java.util.UUID( mostSigBits, leastSigBits );
+		} else {
+			return null;
+		}
 	}
 
 	public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable() {
-		String clsName = decodeString();
+		String clsName = this.decodeString();
 		if( clsName.length() > 0 ) {
 			Class clsActual = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
 			java.lang.reflect.Constructor< E > cnstrctr;
@@ -183,22 +193,22 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 			return null;
 		}
 	}
-	@Deprecated
-	public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable( Class< E > cls ) {
-		E rv = decodeBinaryEncodableAndDecodable();
-		assert cls.isInstance( rv );
-		return rv;
-	}
-	public final BinaryEncodableAndDecodable decodeBinaryEncodableAndDecodable( BinaryEncodableAndDecodable rv ) {
-		String clsName = decodeString();
-		if( rv != null ) {
-			assert edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( clsName, rv.getClass().getName() );
-			rv.decode( this );
-		} else {
-			assert clsName.length() == 0;
-		}
-		return rv;
-	}
+//	@Deprecated
+//	public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable( Class< E > cls ) {
+//		E rv = decodeBinaryEncodableAndDecodable();
+//		assert cls.isInstance( rv );
+//		return rv;
+//	}
+//	public final BinaryEncodableAndDecodable decodeBinaryEncodableAndDecodable( BinaryEncodableAndDecodable rv ) {
+//		String clsName = decodeString();
+//		if( rv != null ) {
+//			assert edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( clsName, rv.getClass().getName() );
+//			rv.decode( this );
+//		} else {
+//			assert clsName.length() == 0;
+//		}
+//		return rv;
+//	}
 	public final <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinaryEncodableAndDecodable( java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map ) {
 		String clsName = decodeString();
 		if( clsName.length() > 0 ) {
