@@ -166,7 +166,7 @@ public abstract class ProjectUtilities {
 	private static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice readType( java.util.zip.ZipFile zipFile, String entryName ) throws java.io.IOException {
 		String version = readVersion( zipFile );
 		org.w3c.dom.Document xmlDocument = readXML( zipFile, entryName );
-		return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)edu.cmu.cs.dennisc.alice.ast.Node.decode( xmlDocument, version );
+		return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)edu.cmu.cs.dennisc.alice.ast.AbstractNode.decode( xmlDocument, version );
 	}
 	private static java.util.Set< org.alice.virtualmachine.Resource > readResources( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
 		java.util.Set< org.alice.virtualmachine.Resource > rv = new java.util.HashSet< org.alice.virtualmachine.Resource >();

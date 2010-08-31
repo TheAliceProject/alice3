@@ -47,6 +47,7 @@ package edu.cmu.cs.dennisc.codec;
  */
 public abstract class AbstractBinaryEncoder implements BinaryEncoder {
 	private void encodeArrayLength( Object array ) {
+		//todo: encode -1 for null?
 		encode( java.lang.reflect.Array.getLength( array ) );
 	}
 
@@ -111,6 +112,12 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
 			encode( array[ i ] );
 		}
 	}
+	public final void encode( java.util.UUID[] array ) {
+		encodeArrayLength( array );
+		for( int i=0; i<array.length; i++ ) {
+			encode( array[ i ] );
+		}
+	}
 	public final void encode( BinaryEncodableAndDecodable[] array ) {
 		encodeArrayLength( array );
 		for( int i=0; i<array.length; i++ ) {
@@ -131,6 +138,15 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
 		if( isNotNull ) {
 			encode( value.getClass().getName() );
 			encode( value.name() );
+		}
+	}
+
+	public final void encode( java.util.UUID value ) {
+		boolean isNotNull = value != null;
+		encode( isNotNull );
+		if( isNotNull ) {
+			encode( value.getMostSignificantBits() );
+			encode( value.getLeastSignificantBits() );
 		}
 	}
 

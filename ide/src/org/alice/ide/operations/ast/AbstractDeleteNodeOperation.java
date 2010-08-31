@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.croquet.Component;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.alice.ast.Node > extends org.alice.ide.operations.ActionOperation {
+public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.alice.ast.AbstractNode > extends org.alice.ide.operations.ActionOperation {
 	private E node;
 	private edu.cmu.cs.dennisc.alice.ast.NodeListProperty owner;
 	public AbstractDeleteNodeOperation( java.util.UUID individualId, E node, edu.cmu.cs.dennisc.alice.ast.NodeListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.Node > owner ) {
@@ -88,7 +88,7 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 				@Override
 				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
 					rv.append( "delete: " );
-					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, node, locale);
+					edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, node, locale);
 					return rv;
 				}
 			} );

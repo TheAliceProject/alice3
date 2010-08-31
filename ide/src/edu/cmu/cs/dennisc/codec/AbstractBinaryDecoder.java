@@ -48,6 +48,7 @@ package edu.cmu.cs.dennisc.codec;
 public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 	private Object createArray( Class<?> componentType ) {
 		int length = decodeInt();
+		//todo: -1 for null array?
 		return java.lang.reflect.Array.newInstance( componentType, length );
 	}
 	public final boolean[] decodeBooleanArray() {
@@ -119,6 +120,13 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		}
 		return rv;
 	}
+	public final java.util.UUID[] decodeIdArray() {
+		java.util.UUID[] rv = (java.util.UUID[])createArray( java.util.UUID.class );
+		for( int i=0; i<rv.length; i++ ) {
+			rv[ i ] = decodeId();
+		}
+		return rv;
+	}
 	public final <E extends BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray( Class< E > componentCls ) {
 		E[] rv = (E[])createArray( componentCls );
 		for( int i=0; i<rv.length; i++ ) {
@@ -150,6 +158,11 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		return rv;
 	}
 
+	public final java.util.UUID decodeId() {
+		long mostSigBits = this.decodeLong();
+		long leastSigBits = this.decodeLong();
+		return new java.util.UUID( mostSigBits, leastSigBits );
+	}
 
 	public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable() {
 		String clsName = decodeString();

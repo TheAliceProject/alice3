@@ -46,11 +46,11 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclaration extends Node {
+public abstract class AbstractDeclaration extends AbstractNode {
 	public abstract boolean isDeclaredInAlice();
 	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
 	@Override
-	protected java.util.Set< AbstractDeclaration > fillInDeclarationSet( java.util.Set< AbstractDeclaration > rv, java.util.Set< Node > nodes ) {
+	protected java.util.Set< AbstractDeclaration > fillInDeclarationSet( java.util.Set< AbstractDeclaration > rv, java.util.Set< AbstractNode > nodes ) {
 		rv.add( this );
 		return super.fillInDeclarationSet( rv, nodes );
 	}

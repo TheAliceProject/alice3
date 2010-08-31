@@ -129,7 +129,7 @@ public class DeclareMethodParameterOperation extends org.alice.ide.operations.In
 					@Override
 					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
 						rv.append( "declare:" );
-						edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, parameter, locale);
+						edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, parameter, locale);
 						return rv;
 					}
 				} );

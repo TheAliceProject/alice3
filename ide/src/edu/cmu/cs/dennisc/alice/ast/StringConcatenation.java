@@ -71,9 +71,9 @@ public class StringConcatenation extends Expression {
 	}
 	@Override
 	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
-		Node.safeAppendRepr( rv, this.leftOperand.getValue(), locale );
+		NodeUtilities.safeAppendRepr( rv, this.leftOperand.getValue(), locale );
 		rv.append( " + " );
-		Node.safeAppendRepr( rv, this.rightOperand.getValue(), locale );
+		NodeUtilities.safeAppendRepr( rv, this.rightOperand.getValue(), locale );
 		return rv;
 	}
 }

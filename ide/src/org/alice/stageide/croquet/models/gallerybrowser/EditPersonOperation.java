@@ -94,7 +94,7 @@ public class EditPersonOperation extends PersonOperation {
 			@Override
 			protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
 				rv.append( "edit: " );
-				edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, field, locale );
+				edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, field, locale );
 				return rv;
 			}
 		} );

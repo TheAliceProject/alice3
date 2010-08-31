@@ -93,7 +93,7 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.In
 					@Override
 					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
 						rv.append( "declare:" );
-						edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, method, locale);
+						edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, method, locale);
 						return rv;
 					}
 				} );

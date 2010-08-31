@@ -86,7 +86,7 @@ public class CountLoop extends AbstractLoop {
 	@Override
 	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
 		rv.append( "count " );
-		Node.safeAppendRepr( rv, this.count.getValue(), locale );
+		NodeUtilities.safeAppendRepr( rv, this.count.getValue(), locale );
 		return super.appendRepr( rv, locale );
 	}
 }

@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Statement extends Node {
+public abstract class Statement extends AbstractNode {
 	public edu.cmu.cs.dennisc.property.BooleanProperty isEnabled = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
 //	protected java.util.List<MethodInvocation> addIfMethodInvocation( java.util.List<MethodInvocation> rv, AbstractMethod method, Expression expression ) {
 //		if( expression instanceof MethodInvocation ) {

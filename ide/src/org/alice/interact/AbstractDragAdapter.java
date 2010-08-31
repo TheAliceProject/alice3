@@ -203,7 +203,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			throw new RuntimeException( "todo" );
 		}
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.interact.InteractionGroup interactionGroup ) {
-			throw new RuntimeException( "todo" );
+			System.err.println( "todo: encode InteractionGroup: " + interactionGroup );
 		}
 	} );
 	private List< SelectionListener > selectionListeners = new java.util.LinkedList< SelectionListener >(); 

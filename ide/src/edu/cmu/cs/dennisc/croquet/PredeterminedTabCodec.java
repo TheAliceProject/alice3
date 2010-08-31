@@ -48,9 +48,9 @@ package edu.cmu.cs.dennisc.croquet;
 public enum PredeterminedTabCodec implements Codec< PredeterminedTab > {
 	SINGLETON;
 	public edu.cmu.cs.dennisc.croquet.PredeterminedTab decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
+		return binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.croquet.PredeterminedTab t ) {
-		throw new RuntimeException( "todo" );
+		binaryEncoder.encode( t );
 	}
 }

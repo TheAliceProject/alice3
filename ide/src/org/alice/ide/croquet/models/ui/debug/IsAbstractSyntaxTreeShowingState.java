@@ -58,8 +58,8 @@ class ASTModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTree
 	public int getChildCount(Object parent) {
 		if( parent instanceof edu.cmu.cs.dennisc.alice.Project ) {
 			return org.alice.ide.IDE.getSingleton().getTypesDeclaredInAlice().size();
-		} else if( parent instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
-			edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)parent;
+		} else if( parent instanceof edu.cmu.cs.dennisc.alice.ast.AbstractNode ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractNode node = (edu.cmu.cs.dennisc.alice.ast.AbstractNode)parent;
 			return node.getProperties().size();
 		} else if( parent instanceof edu.cmu.cs.dennisc.property.ListProperty<?> ) {
 			edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)parent;
@@ -72,8 +72,8 @@ class ASTModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTree
 		if( parent instanceof edu.cmu.cs.dennisc.alice.Project ) {
 			//edu.cmu.cs.dennisc.alice.Project project = (edu.cmu.cs.dennisc.alice.Project)parent;
 			return org.alice.ide.IDE.getSingleton().getTypesDeclaredInAlice().get( index );
-		} else if( parent instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
-			edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)parent;
+		} else if( parent instanceof edu.cmu.cs.dennisc.alice.ast.AbstractNode ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractNode node = (edu.cmu.cs.dennisc.alice.ast.AbstractNode)parent;
 			return node.getProperties().get( index );
 		} else if( parent instanceof edu.cmu.cs.dennisc.property.ListProperty<?> ) {
 			edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)parent;
@@ -86,8 +86,8 @@ class ASTModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTree
 		if( parent instanceof edu.cmu.cs.dennisc.alice.Project ) {
 			edu.cmu.cs.dennisc.alice.Project project = (edu.cmu.cs.dennisc.alice.Project)parent;
 			return 0;
-		} else if( parent instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
-			edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)parent;
+		} else if( parent instanceof edu.cmu.cs.dennisc.alice.ast.AbstractNode ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractNode node = (edu.cmu.cs.dennisc.alice.ast.AbstractNode)parent;
 			return node.getProperties().indexOf( child );
 		} else if( parent instanceof edu.cmu.cs.dennisc.property.ListProperty<?> ) {
 			edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)parent;
@@ -108,8 +108,8 @@ class ASTCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellR
 	@Override
 	protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 		StringBuilder sb = new StringBuilder();
-		if( value instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
-			edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)value;
+		if( value instanceof edu.cmu.cs.dennisc.alice.ast.AbstractNode ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractNode node = (edu.cmu.cs.dennisc.alice.ast.AbstractNode)value;
 			sb.append( node.getClass().getSimpleName() );
 			sb.append( ": " );
 			sb.append( node.getName() );

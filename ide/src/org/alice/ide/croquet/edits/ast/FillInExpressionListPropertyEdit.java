@@ -73,9 +73,9 @@ public class FillInExpressionListPropertyEdit extends edu.cmu.cs.dennisc.cascade
 	@Override
 	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
 		rv.append( "set: " );
-		edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, this.prevExpression, locale );
+		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, this.prevExpression, locale );
 		rv.append( " ===> " );
-		edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, this.nextExpression, locale );
+		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, this.nextExpression, locale );
 		return rv;
 	}
 	@Override

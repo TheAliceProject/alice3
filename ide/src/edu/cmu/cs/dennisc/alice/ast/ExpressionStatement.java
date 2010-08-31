@@ -60,7 +60,7 @@ public class ExpressionStatement extends Statement {
 	}
 	@Override
 	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
-		Node.safeAppendRepr( rv, this.expression.getValue(), locale );
+		NodeUtilities.safeAppendRepr( rv, this.expression.getValue(), locale );
 		return rv;
 	}
 }

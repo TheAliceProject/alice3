@@ -56,6 +56,7 @@ public interface BinaryEncoder {
 	public void encode( short value );
 	public void encode( String value );
 	public void encode( Enum<?> value );
+	public void encode( java.util.UUID value );
 	public void encode( BinaryEncodableAndDecodable value );
 	public void encode( ReferenceableBinaryEncodableAndDecodable value, java.util.Map< ReferenceableBinaryEncodableAndDecodable, Integer > map );
 
@@ -69,6 +70,7 @@ public interface BinaryEncoder {
 	public void encode( short[] array );
 	public void encode( String[] array );
 	public void encode( Enum<?>[] array );
+	public void encode( java.util.UUID[] array );
 	public void encode( BinaryEncodableAndDecodable[] array );
 	public void encode( ReferenceableBinaryEncodableAndDecodable[] array, java.util.Map< ReferenceableBinaryEncodableAndDecodable, Integer > map );
 	

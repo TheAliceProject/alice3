@@ -52,7 +52,7 @@ public class DefaultNodeListPropertyPane extends AbstractListPropertyPane< edu.c
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createComponent( Object instance ) {
-		return this.getFactory().createComponent( (edu.cmu.cs.dennisc.alice.ast.Node)instance );
+		return this.getFactory().createComponent( (edu.cmu.cs.dennisc.alice.ast.AbstractNode)instance );
 	}
 }
 
