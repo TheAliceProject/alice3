@@ -82,8 +82,8 @@ public class FilFaerimin extends edu.wustl.cse.lookingglass.apis.walkandtouch.ga
 	}
 
 	public void FlapWings( final Number Duration) {
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> StillFlapping= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  StillFlapping.value = new Boolean(true);;
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> NumberOfFlapsPerSecond= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();  NumberOfFlapsPerSecond.value = new Double(10.0);;
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> StillFlapping= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>( true );
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> NumberOfFlapsPerSecond= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 10.0 );
 		//Faerie will flap wings "FlapsPerSecond" times for "HowLong" seconds
 		org.alice.virtualmachine.DoTogether.invokeAndWait(
 			new Runnable() {

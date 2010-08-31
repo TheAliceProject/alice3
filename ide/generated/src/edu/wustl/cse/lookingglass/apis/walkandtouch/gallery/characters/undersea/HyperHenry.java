@@ -73,7 +73,7 @@ public class HyperHenry extends edu.wustl.cse.lookingglass.apis.walkandtouch.gal
 	}
 
 	public void MoveTail( final Number Amount) {
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> Speed= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();  Speed.value = new Double(0.25);;
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> Speed= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 0.25 );
 		org.alice.virtualmachine.DoTogether.invokeAndWait(
 			new Runnable() {
 				public void run() {
@@ -132,7 +132,7 @@ public class HyperHenry extends edu.wustl.cse.lookingglass.apis.walkandtouch.gal
 	}
 
 	public void MoveArms( final Number Amount) {
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> Speed= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();  Speed.value = new Double(0.125);;
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> Speed= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 0.125 );
 		for (int index1 = 0; index1 < (Amount.doubleValue() * 2.0); index1 = index1 + 1) {
 			org.alice.virtualmachine.DoTogether.invokeAndWait(
 				new Runnable() {

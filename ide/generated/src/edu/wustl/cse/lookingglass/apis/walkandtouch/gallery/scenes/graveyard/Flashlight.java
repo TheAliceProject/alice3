@@ -44,10 +44,9 @@
 package edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.scenes.graveyard;
 
 public class Flashlight extends edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.GalleryModel { 
-	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> IsOn= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
+	private final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> IsOn= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>( false );  
 	public Flashlight() {
 		super( "graveyard/flashlight" );
-		edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> IsOn= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
 }
 	public enum Part {
 		TheSwitch( "switch" ),

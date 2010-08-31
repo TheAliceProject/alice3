@@ -44,11 +44,10 @@
 package edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.kids;
 
 public class Philip extends edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.GalleryPerson { 
-	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> OnBoard= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
+	private edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> OnBoard= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>( false );  
 	public Philip() {
 		super( "kids/Philip" );
-		edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> OnBoard= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
-}
+	}
 	public enum Part {
 		LeftEar( "hips", "lowerTorso", "upperTorso", "neck", "head", "leftEar" ),
 		RightEar( "hips", "lowerTorso", "upperTorso", "neck", "head", "rightEar" ),

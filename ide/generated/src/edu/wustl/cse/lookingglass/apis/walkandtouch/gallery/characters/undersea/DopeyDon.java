@@ -44,11 +44,10 @@
 package edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.undersea;
 
 public class DopeyDon extends edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.GalleryCharacter { 
-	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> Inflated= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
+	private final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> Inflated= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>( false );  
 	public DopeyDon() {
 		super( "undersea/Dopey Don" );
-		edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> Inflated= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
-}
+	}
 	public enum Part {
 		Upperlip( "body", "upperlip" ),
 		Lowerlip( "body", "lowerlip" ),
@@ -101,7 +100,7 @@ public class DopeyDon extends edu.wustl.cse.lookingglass.apis.walkandtouch.galle
 	}
 
 	public void BlowUp( ) {
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> Speed= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();  Speed.value = new Double(1.0);;
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> Speed= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 1.0 );
 		if (Inflated.value ) {		} else { 
 			Inflated.value = true;
 			org.alice.virtualmachine.DoTogether.invokeAndWait(
@@ -179,7 +178,7 @@ public class DopeyDon extends edu.wustl.cse.lookingglass.apis.walkandtouch.galle
 	}
 
 	public void Deflate( ) {
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> Speed= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();  Speed.value = new Double(1.0);;
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> Speed= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 1.0 );
 		if (Inflated.value ) {			Inflated.value = false;
 			org.alice.virtualmachine.DoTogether.invokeAndWait(
 				new Runnable() {
@@ -257,7 +256,7 @@ public class DopeyDon extends edu.wustl.cse.lookingglass.apis.walkandtouch.galle
 	}
 
 	public void Collide( final edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel Who) {
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> Speed= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();  Speed.value = new Double(1.0);;
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> Speed= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 1.0 );
 		this.moveTo( Who, edu.wustl.cse.lookingglass.apis.walkandtouch.SpatialRelation.IN_FRONT_OF );
 		org.alice.virtualmachine.DoTogether.invokeAndWait(
 			new Runnable() {

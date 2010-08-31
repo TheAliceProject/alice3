@@ -44,12 +44,10 @@
 package edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.pets;
 
 public class PuzzledPug extends edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.GalleryCharacter { 
-	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> Flopped= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
-	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> Sitting= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
+	private final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> Flopped= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>( false );  
+	private final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> Sitting= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>( false );  
 	public PuzzledPug() {
 		super( "pets/Puzzled Pug" );
-		edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> Flopped= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
-		edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> Sitting= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
 }
 	public enum Part {
 		Front_LeftCalf( "front_LeftThigh", "front_LeftCalf" ),

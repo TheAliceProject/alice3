@@ -44,12 +44,10 @@
 package edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.kids;
 
 public class Kristen extends edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.GalleryPerson { 
-	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> BoardOffset= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();
-	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> OnBoard= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
+	private final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> BoardOffset= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 0.0 );
+	private final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> OnBoard= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>( false );  
 	public Kristen() {
 		super( "kids/Kristen" );
-		edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> BoardOffset= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();
-		edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> OnBoard= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
 }
 	public enum Part {
 		LeftFoot( "hips", "leftUpperLeg", "leftLowerLeg", "leftFoot" ),

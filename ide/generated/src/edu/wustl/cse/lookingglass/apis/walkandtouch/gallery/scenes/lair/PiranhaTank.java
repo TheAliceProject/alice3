@@ -44,10 +44,9 @@
 package edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.scenes.lair;
 
 public class PiranhaTank extends edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.GalleryModel { 
-	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> State= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();
+	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> State= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 0.0 );
 	public PiranhaTank() {
 		super( "lair/Piranha Tank" );
-		edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> State= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();
 }
 	public enum Part {
 		Tankfloor_TankWater( "tankfloor(", "tank water" ),

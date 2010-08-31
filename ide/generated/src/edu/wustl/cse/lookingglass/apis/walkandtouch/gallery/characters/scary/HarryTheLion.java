@@ -44,14 +44,11 @@
 package edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.scary;
 
 public class HarryTheLion extends edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.GalleryCharacter { 
-	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> SpotlightOn= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
-	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> StillBusy= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
-	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> NumEaten= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();
+	private final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> SpotlightOn= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>( false );  
+	private final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> StillBusy= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>( false );  
+	private final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> NumEaten= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 0.0 );
 	public HarryTheLion() {
 		super( "scary/Harry the Lion" );
-		edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> SpotlightOn= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
-		edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> StillBusy= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
-		edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> NumEaten= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();
 }
 	public enum Part {
 		Frontpawright( "body", "frontlegright", "frontshinright", "frontpawright" ),
