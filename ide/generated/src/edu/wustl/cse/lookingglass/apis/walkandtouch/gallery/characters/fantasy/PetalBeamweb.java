@@ -472,7 +472,7 @@ public class PetalBeamweb extends edu.wustl.cse.lookingglass.apis.walkandtouch.g
 	}
 
 	public void FlapWings( final Number Duration) {
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> TurnAmount= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();  TurnAmount.value = new Double(0.1);;
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> TurnAmount= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 0.1 );
 		for (int index1 = 0; index1 < (Duration.doubleValue() * 5.0); index1 = index1 + 1) {
 			org.alice.virtualmachine.DoTogether.invokeAndWait(
 				new Runnable() {
@@ -525,7 +525,7 @@ public class PetalBeamweb extends edu.wustl.cse.lookingglass.apis.walkandtouch.g
 	}
 
 	public void JumpAndClap( ) {
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> BendAmount= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();  BendAmount.value = new Double(0.03);;
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> BendAmount= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 0.3 );
 		org.alice.virtualmachine.DoTogether.invokeAndWait(
 			new Runnable() {
 				public void run() {

@@ -209,7 +209,7 @@ public class DouglasTheTree extends edu.wustl.cse.lookingglass.apis.walkandtouch
 	}
 
 	public void ActScary( ) {
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> StillScaring= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  StillScaring.value = new Boolean(true);;
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> StillScaring= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>( true );
 		org.alice.virtualmachine.DoTogether.invokeAndWait(
 			new Runnable() {
 				public void run() {
@@ -400,7 +400,7 @@ public class DouglasTheTree extends edu.wustl.cse.lookingglass.apis.walkandtouch
 	}
 
 	public void CreepForward( final Number Distance) {
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> Moving= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  Moving.value = new Boolean(true);;
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> Moving= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>( true );
 		//makes the tree creep forwards. you can enter a negative number to make the tree creep backwards
 		org.alice.virtualmachine.DoTogether.invokeAndWait(
 			new Runnable() {

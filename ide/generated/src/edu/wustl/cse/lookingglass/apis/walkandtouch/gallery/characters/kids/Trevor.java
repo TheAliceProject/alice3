@@ -44,10 +44,9 @@
 package edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.kids;
 
 public class Trevor extends edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.GalleryPerson { 
-	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> OnBoard= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
+	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> OnBoard= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>( false );  
 	public Trevor() {
 		super( "kids/Trevor" );
-		edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> OnBoard= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
 }
 	public enum Part {
 		RightFoot( "upperTorso", "lowerTorso", "hips", "rightUpperLeg", "rightLowerLeg", "rightFoot" ),

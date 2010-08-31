@@ -44,12 +44,10 @@
 package edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.adults;
 
 public class MrsMiller extends edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.GalleryPerson { 
-	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> IsAlive= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
-	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> IsAsleep= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
+	private final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> IsAlive= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>( false );  
+	private final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> IsAsleep= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>( false );  
 	public MrsMiller() {
 		super( "adults/Mrs Miller" );
-		edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> IsAlive= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
-		edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> IsAsleep= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
 }
 	public enum Part {
 		LeftHand( "leftUpperArm", "leftLowerArm", "leftHand" ),

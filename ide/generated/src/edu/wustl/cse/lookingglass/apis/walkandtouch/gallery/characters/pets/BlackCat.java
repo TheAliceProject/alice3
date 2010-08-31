@@ -322,7 +322,7 @@ public class BlackCat extends edu.wustl.cse.lookingglass.apis.walkandtouch.galle
 	}
 
 	public void WalkTo( final edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel What) {
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> Walking= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  Walking.value = new Boolean(true);;
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> Walking= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>( true );
 		org.alice.virtualmachine.DoTogether.invokeAndWait(
 			new Runnable() {
 				public void run() {

@@ -44,12 +44,10 @@
 package edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.funny;
 
 public class TopsyTheClown extends edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.GalleryPerson { 
-	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> SpotlightOn= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
-	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> StillBusyCL= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
+	private final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> SpotlightOn= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>( false );  
+	private final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> StillBusyCL= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>( false );  
 	public TopsyTheClown() {
 		super( "funny/Topsy the Clown" );
-		edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> SpotlightOn= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
-		edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> StillBusyCL= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
 }
 	public enum Part {
 		LeftSuspenders( "hoopPants", "leftSuspenders" ),

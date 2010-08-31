@@ -69,10 +69,10 @@ public class GhastlyGhost extends edu.wustl.cse.lookingglass.apis.walkandtouch.g
 	}
 
 	public void Whoooooooo( ) {
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> UpperArmRotation= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();  UpperArmRotation.value = new Double(0.1);;
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> Duration= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();  Duration.value = new Double(0.5);;
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> ForearmRotation= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();  ForearmRotation.value = new Double(0.2);;
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> HandRotation= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();  HandRotation.value = new Double(0.2);;
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> UpperArmRotation= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 0.1 );
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> Duration= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 0.5 );
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> ForearmRotation= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 0.2 );
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> HandRotation= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 0.2 );
 		org.alice.virtualmachine.DoTogether.invokeAndWait(
 			new Runnable() {
 				public void run() {
@@ -263,7 +263,7 @@ public class GhastlyGhost extends edu.wustl.cse.lookingglass.apis.walkandtouch.g
 	}
 
 	public void Boo( ) {
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> HeadRotation= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();  HeadRotation.value = new Double(0.1);;
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> HeadRotation= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 0.1 );
 		org.alice.virtualmachine.DoTogether.invokeAndWait(
 			new Runnable() {
 				public void run() {

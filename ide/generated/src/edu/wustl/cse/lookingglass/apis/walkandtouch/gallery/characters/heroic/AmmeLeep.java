@@ -80,7 +80,7 @@ public class AmmeLeep extends edu.wustl.cse.lookingglass.apis.walkandtouch.galle
 	}
 
 	public void SuperJumpKick( final edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel What, final Boolean SlowMotion) {
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> Delay= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();  Delay.value = new Double(1.0);;
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> Delay= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 1.0 );
 		this.walkTo( What, edu.wustl.cse.lookingglass.apis.walkandtouch.SpatialRelation.IN_FRONT_OF, 1.2 );
 		if (SlowMotion.booleanValue() ) {			Delay.value = 1.0;
 		} else { 

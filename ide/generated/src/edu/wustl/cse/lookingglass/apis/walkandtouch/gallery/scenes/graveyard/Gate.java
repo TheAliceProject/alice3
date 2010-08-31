@@ -44,10 +44,9 @@
 package edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.scenes.graveyard;
 
 public class Gate extends edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.GalleryModel { 
-	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> Open= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
+	private final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> Open= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>( false );  
 	public Gate() {
 		super( "graveyard/gate" );
-		edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> Open= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
 }
 	public enum Part {
 		Fence_Post15_Fence_Post( "Fence_Post15", "Fence_Post" ),
