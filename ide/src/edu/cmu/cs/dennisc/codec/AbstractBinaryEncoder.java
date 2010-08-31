@@ -46,123 +46,132 @@ package edu.cmu.cs.dennisc.codec;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractBinaryEncoder implements BinaryEncoder {
+	//todo: handle null arrays
 	private void encodeArrayLength( Object array ) {
 		//todo: encode -1 for null?
-		encode( java.lang.reflect.Array.getLength( array ) );
+		int arrayLength;
+		if( array != null ) {
+			arrayLength = java.lang.reflect.Array.getLength( array );
+		} else {
+			arrayLength = -1;
+		}
+		this.encode( arrayLength );
 	}
 
 	public final void encode( boolean[] array ) {
-		encodeArrayLength( array );
+		this.encodeArrayLength( array );
 		for( int i=0; i<array.length; i++ ) {
-			encode( array[ i ] );
+			this.encode( array[ i ] );
 		}
 	}
 
 	protected abstract void encodeBuffer( byte[] buffer );
 	
 	public final void encode( byte[] array ) {
-		encodeArrayLength( array );
-		encodeBuffer( array );
+		this.encodeArrayLength( array );
+		this.encodeBuffer( array );
 	}
 	public final void encode( char[] array ) {
-		encodeArrayLength( array );
+		this.encodeArrayLength( array );
 		for( int i=0; i<array.length; i++ ) {
-			encode( array[ i ] );
+			this.encode( array[ i ] );
 		}
 	}
 	public final void encode( double[] array ) {
-		encodeArrayLength( array );
+		this.encodeArrayLength( array );
 		for( int i=0; i<array.length; i++ ) {
-			encode( array[ i ] );
+			this.encode( array[ i ] );
 		}
 	}
 	public final void encode( float[] array ) {
-		encodeArrayLength( array );
+		this.encodeArrayLength( array );
 		for( int i=0; i<array.length; i++ ) {
-			encode( array[ i ] );
+			this.encode( array[ i ] );
 		}
 	}
 	public final void encode( int[] array ) {
-		encodeArrayLength( array );
+		this.encodeArrayLength( array );
 		for( int i=0; i<array.length; i++ ) {
-			encode( array[ i ] );
+			this.encode( array[ i ] );
 		}
 	}
 	public final void encode( long[] array ) {
-		encodeArrayLength( array );
+		this.encodeArrayLength( array );
 		for( int i=0; i<array.length; i++ ) {
-			encode( array[ i ] );
+			this.encode( array[ i ] );
 		}
 	}
 	public final void encode( short[] array ) {
-		encodeArrayLength( array );
+		this.encodeArrayLength( array );
 		for( int i=0; i<array.length; i++ ) {
-			encode( array[ i ] );
+			this.encode( array[ i ] );
 		}
 	}
 	public final void encode( String[] array ) {
-		encodeArrayLength( array );
+		this.encodeArrayLength( array );
 		for( int i=0; i<array.length; i++ ) {
-			encode( array[ i ] );
+			this.encode( array[ i ] );
 		}
 	}
 	public final void encode( Enum< ? >[] array ) {
-		encodeArrayLength( array );
+		this.encodeArrayLength( array );
 		for( int i=0; i<array.length; i++ ) {
-			encode( array[ i ] );
+			this.encode( array[ i ] );
 		}
 	}
 	public final void encode( java.util.UUID[] array ) {
-		encodeArrayLength( array );
+		this.encodeArrayLength( array );
 		for( int i=0; i<array.length; i++ ) {
-			encode( array[ i ] );
+			this.encode( array[ i ] );
 		}
 	}
 	public final void encode( BinaryEncodableAndDecodable[] array ) {
-		encodeArrayLength( array );
+		this.encodeArrayLength( array );
 		for( int i=0; i<array.length; i++ ) {
-			encode( array[ i ] );
+			this.encode( array[ i ] );
+			//array[ i ].encode( this );
 		}
 	}
 
 	public final void encode( ReferenceableBinaryEncodableAndDecodable[] array, java.util.Map< ReferenceableBinaryEncodableAndDecodable, Integer > map ) {
-		encodeArrayLength( array );
+		this.encodeArrayLength( array );
 		for( int i=0; i<array.length; i++ ) {
-			encode( array[ i ], map );
+			this.encode( array[ i ], map );
+			//array[ i ].encode( this, map );
 		}
 	}
 	
 	public final void encode( Enum< ? > value ) {
 		boolean isNotNull = value != null;
-		encode( isNotNull );
+		this.encode( isNotNull );
 		if( isNotNull ) {
-			encode( value.getClass().getName() );
-			encode( value.name() );
+			this.encode( value.getClass().getName() );
+			this.encode( value.name() );
 		}
 	}
 
 	public final void encode( java.util.UUID value ) {
 		boolean isNotNull = value != null;
-		encode( isNotNull );
+		this.encode( isNotNull );
 		if( isNotNull ) {
-			encode( value.getMostSignificantBits() );
-			encode( value.getLeastSignificantBits() );
+			this.encode( value.getMostSignificantBits() );
+			this.encode( value.getLeastSignificantBits() );
 		}
 	}
 
 	public final void encode( BinaryEncodableAndDecodable value ) {
 		if( value != null ) {
-			encode( value.getClass().getName() );
+			this.encode( value.getClass().getName() );
 			value.encode( this );
 		} else {
-			encode( "" );
+			this.encode( "" );
 		}
 	}
 
 	public final void encode( ReferenceableBinaryEncodableAndDecodable value, java.util.Map< ReferenceableBinaryEncodableAndDecodable, Integer > map ) {
 		if( value != null ) {
-			encode( value.getClass().getName() );
-			encode( value.hashCode() );
+			this.encode( value.getClass().getName() );
+			this.encode( value.hashCode() );
 			if( map.containsKey( value ) ) {
 				//pass
 			} else {
@@ -173,16 +182,4 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
 			encode( "" );
 		}
 	}
-	
-
-//	@Override
-//	public final void encode( Collection< ? extends BinaryEncodableAndDecodable > collection ) {
-//		synchronized( collection ) {
-//			encode( collection.size() );
-//			for( BinaryEncodableAndDecodable binaryEncodableAndDecodable : collection ) {
-//				encode( binaryEncodableAndDecodable );
-//			}
-//		}
-//		
-//	}
 }

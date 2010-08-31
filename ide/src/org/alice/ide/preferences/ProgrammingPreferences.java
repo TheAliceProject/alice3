@@ -65,7 +65,7 @@ public class ProgrammingPreferences extends edu.cmu.cs.dennisc.preference.Collec
 		@Override
 		protected org.alice.ide.preferences.programming.BinaryEncodableAndDecodableConfiguration decode( int itemVersion, edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 			if( itemVersion == 1 ) {
-				return binaryDecoder.decodeBinaryEncodableAndDecodable(org.alice.ide.preferences.programming.BinaryEncodableAndDecodableConfiguration.class);
+				return binaryDecoder.decodeBinaryEncodableAndDecodable(/*org.alice.ide.preferences.programming.BinaryEncodableAndDecodableConfiguration.class*/);
 			} else {
 				return null;
 			}

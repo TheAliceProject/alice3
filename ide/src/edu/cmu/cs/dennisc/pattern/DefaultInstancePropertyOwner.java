@@ -239,9 +239,9 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 	private Object decodeObject( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Class valueCls, java.util.Map< Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable > map ) {
 		Object rv;
 		if( edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable.class.isAssignableFrom( valueCls ) ) {
-			rv = binaryDecoder.decodeBinaryEncodableAndDecodable( valueCls );
+			rv = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		} else if( edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable.class.isAssignableFrom( valueCls ) ) {
-			rv = binaryDecoder.decodeReferenceableBinaryEncodableAndDecodable( valueCls, map );
+			rv = binaryDecoder.decodeReferenceableBinaryEncodableAndDecodable( map );
 		} else if( Boolean.class == valueCls ) {
 			rv = binaryDecoder.decodeBoolean();
 		} else if( Byte.class == valueCls ) {
@@ -261,7 +261,8 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 		} else if( String.class == valueCls ) {
 			rv = binaryDecoder.decodeString();
 		} else if( Enum.class.isAssignableFrom( valueCls ) ) {
-			rv = binaryDecoder.decodeEnum( (Class< ? extends Enum >)valueCls );
+			Enum e = binaryDecoder.decodeEnum();
+			rv = e;
 		} else {
 			throw new RuntimeException( valueCls.getName() );
 		}

@@ -122,11 +122,17 @@ public final class ClassInfoManager {
 //				Thread.dumpStack();
 //			}
 //		}
-		ClassInfo clsInfo = get( cls );
-		if( clsInfo != null ) {
-			return clsInfo.getMethodInfos();
-		} else {
-			return null;
-		}
+		//try {
+			ClassInfo clsInfo = get( cls );
+			if( clsInfo != null ) {
+				return clsInfo.getMethodInfos();
+			} else {
+				//throw new NullPointerException();
+				return null;
+			}
+		//} catch( Exception e ) {
+		//	e.printStackTrace();
+		//	return null;
+		//}
 	}
 }

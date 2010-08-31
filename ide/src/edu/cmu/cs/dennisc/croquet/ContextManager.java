@@ -51,11 +51,10 @@ public class ContextManager {
 	private static java.util.Map< ModelContext< ? >, ModelContext< ? > > mapChildContextPendingParentContext = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	static {
 		stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-		stack.push( new ModelContext( null, null, null, null ) {
-		} );
+		stack.push( new RootContext() );
 	}
-	public static ModelContext< ? > getRootContext() {
-		return stack.firstElement();
+	public static RootContext getRootContext() {
+		return (RootContext)stack.firstElement();
 	}
 	public static ModelContext< ? > getCurrentContext() {
 		return stack.peek();

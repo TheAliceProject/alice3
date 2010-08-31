@@ -40,33 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CommitEvent extends AbstractCompleteEvent {
-	private Edit<?> edit;
-	public CommitEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+public class RootContext extends ModelContext {
+	public RootContext() {
+		super( null, null, null, null );
+	}
+	public RootContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-	}
-	public CommitEvent( ModelContext parent, Edit<?> edit ) {
-		super( parent );
-		this.edit = edit;
-	}
-	@Override
-	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.edit = binaryDecoder.decodeBinaryEncodableAndDecodable(/* Edit.class */);
-	}
-	@Override
-	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.edit );
-	}
-	@Override
-	public State getState() {
-		return State.COMMITTED;
-	}
-	public Edit<?> getEdit() {
-		return this.edit;
 	}
 }

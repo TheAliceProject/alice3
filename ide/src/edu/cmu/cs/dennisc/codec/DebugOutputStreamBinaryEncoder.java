@@ -40,33 +40,61 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.codec;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CommitEvent extends AbstractCompleteEvent {
-	private Edit<?> edit;
-	public CommitEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+public class DebugOutputStreamBinaryEncoder extends OutputStreamBinaryEncoder {
+	private java.io.ObjectOutputStream m_oos;
+
+	public DebugOutputStreamBinaryEncoder( java.io.OutputStream os ) {
+		super( os );
 	}
-	public CommitEvent( ModelContext parent, Edit<?> edit ) {
-		super( parent );
-		this.edit = edit;
-	}
-	@Override
-	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.edit = binaryDecoder.decodeBinaryEncodableAndDecodable(/* Edit.class */);
+
+	private void writeByte( char c ) {
+		super.encode( (byte)c );
 	}
 	@Override
-	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.edit );
+	public void encode( boolean value ) {
+		this.writeByte( 'B' );
+		super.encode( value );
+		this.writeByte( 'b' );
 	}
 	@Override
-	public State getState() {
-		return State.COMMITTED;
+	public void encode( char value ) {
+		this.writeByte( 'C' );
+		super.encode( value );
+		this.writeByte( 'c' );
 	}
-	public Edit<?> getEdit() {
-		return this.edit;
+	@Override
+	public void encode( double value ) {
+		this.writeByte( 'D' );
+		super.encode( value );
+		this.writeByte( 'd' );
+	}
+	@Override
+	public void encode( int value ) {
+		this.writeByte( 'I' );
+		super.encode( value );
+		this.writeByte( 'i' );
+	}
+	@Override
+	public void encode( long value ) {
+		this.writeByte( 'L' );
+		super.encode( value );
+		this.writeByte( 'l' );
+	}
+	@Override
+	public void encode( short value ) {
+		this.writeByte( 'S' );
+		super.encode( value );
+		this.writeByte( 's' );
+	}
+	@Override
+	public void encode( String value ) {
+		this.writeByte( 'X' );
+		super.encode( value );
+		this.writeByte( 'x' );
 	}
 }

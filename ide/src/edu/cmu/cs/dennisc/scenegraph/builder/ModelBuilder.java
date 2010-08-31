@@ -102,7 +102,7 @@ public class ModelBuilder {
 					}
 				}
 				edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( isMainEntry );
-				rv.root = decoder.decodeBinaryEncodableAndDecodable( ModelPart.class );
+				rv.root = decoder.decodeBinaryEncodableAndDecodable(/* ModelPart.class */);
 				rv.root.resolve( mapIdToGeometry, mapIdToTexture );
 
 				rv.geometries = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( mapIdToGeometry.values() );

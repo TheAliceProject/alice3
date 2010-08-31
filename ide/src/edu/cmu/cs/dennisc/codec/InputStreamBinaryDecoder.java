@@ -64,7 +64,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 		try {
 			m_ois = new java.io.ObjectInputStream( is );
 		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( ioe );
+			throw new RuntimeException( is.toString(), ioe );
 		}
 	}
 
@@ -143,11 +143,14 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 			//				chars[ i ] = m_ois.readChar();
 			//			}
 			//			return new String( chars );
-			if( m_ois.readBoolean() ) {
+			boolean isNotNull = m_ois.readBoolean();
+			if( isNotNull ) {
 				return m_ois.readUTF();
 			} else {
 				return null;
 			}
+		} catch( java.io.UTFDataFormatException utfdfe ) {
+			throw new RuntimeException( utfdfe );
 		} catch( java.io.IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}

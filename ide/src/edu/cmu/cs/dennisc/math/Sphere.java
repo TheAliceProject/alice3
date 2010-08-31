@@ -68,7 +68,8 @@ public class Sphere implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecoda
 		binaryEncoder.encode( this.radius );
 	}
 	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		binaryDecoder.decodeBinaryEncodableAndDecodable( this.center );
+		Point3 p = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		this.center.set( p );
 		this.radius = binaryDecoder.decodeDouble();
 	}
 	@Override

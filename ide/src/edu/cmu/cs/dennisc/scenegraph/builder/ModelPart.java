@@ -88,14 +88,15 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 	}
 	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.name = binaryDecoder.decodeString();
-		this.localTransformation = binaryDecoder.decodeBinaryEncodableAndDecodable( edu.cmu.cs.dennisc.math.AffineMatrix4x4.class );
+		this.localTransformation = binaryDecoder.decodeBinaryEncodableAndDecodable(/* edu.cmu.cs.dennisc.math.AffineMatrix4x4.class */);
 		this.geometryID = binaryDecoder.decodeInt();
 		this.textureID = binaryDecoder.decodeInt();
 		final int N = binaryDecoder.decodeInt();
 		java.util.ArrayList< ModelPart > arrayList = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 		arrayList.ensureCapacity( N );
 		for( int i = 0; i < N; i++ ) {
-			arrayList.add( binaryDecoder.decodeBinaryEncodableAndDecodable( ModelPart.class ) );
+			ModelPart modelPart = binaryDecoder.decodeBinaryEncodableAndDecodable(/* ModelPart.class */); 
+			arrayList.add( modelPart );
 		}
 		this.children = arrayList;
 	}

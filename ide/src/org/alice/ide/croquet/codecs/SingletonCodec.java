@@ -62,9 +62,8 @@ public class SingletonCodec< E > implements edu.cmu.cs.dennisc.croquet.Codec< E 
 				Class<?> cls = Class.forName( clsName );
 				java.lang.reflect.Method mthd = cls.getDeclaredMethod( "getInstance" );
 				return (E)mthd.invoke( null );
-			} catch( Throwable t ) {
-				t.printStackTrace();
-				return null;
+			} catch( Exception e ) {
+				throw new RuntimeException( e );
 			}
 		} else {
 			return null;
