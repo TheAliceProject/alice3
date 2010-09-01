@@ -45,8 +45,11 @@ package org.alice.stageide.properties;
 
 import java.util.Locale;
 
+import org.alice.apis.moveandturn.AbstractCamera;
 import org.alice.apis.moveandturn.AsSeenBy;
 import org.alice.apis.moveandturn.Composite;
+import org.alice.apis.moveandturn.Light;
+import org.alice.apis.moveandturn.Scene;
 import org.alice.apis.moveandturn.Transformable;
 import org.alice.ide.IDE;
 import org.alice.ide.properties.adapter.AbstractDoublePropertyAdapter;
@@ -59,6 +62,7 @@ import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.croquet.Model;
 import edu.cmu.cs.dennisc.croquet.Operation;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
 
@@ -130,7 +134,28 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 						if (field instanceof FieldDeclaredInAlice)
 						{
 							Composite objectInJava = ((MoveAndTurnSceneEditor)IDE.getSingleton().getSceneEditor()).getInstanceInJavaForField((FieldDeclaredInAlice)field, Composite.class);
+							boolean canBeVehicle = false;
 							if (objectInJava != null && objectInJava != TransformableVehicleAdapter.this.instance)
+							{
+								if (objectInJava instanceof AbstractCamera || objectInJava instanceof Light)
+								{
+									canBeVehicle = false;
+								}
+								else if (objectInJava instanceof Transformable)
+								{
+									Transformable transformableInJava = (Transformable)objectInJava;
+									if (transformableInJava.getVehicle() != TransformableVehicleAdapter.this.instance)
+									{
+										canBeVehicle = true;
+									}
+								}
+								else if (objectInJava instanceof Scene)
+								{
+									canBeVehicle = true;
+								}
+								
+							}
+							if (canBeVehicle)
 							{
 								setVehicleOperations.add(new SetVehicleOperation(objectInJava, TransformableVehicleAdapter.getNameForVehicle(objectInJava)));
 							}
@@ -191,11 +216,11 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 	{
 		if (this.instance != null)
 		{
-			AffineMatrix4x4 currentPosition = this.instance.getTransformation(AsSeenBy.SCENE);
+//			AffineMatrix4x4 currentPosition = this.instance.getTransformation(AsSeenBy.SCENE);
 			this.instance.setVehicle(value);
-			org.alice.apis.moveandturn.Scene scene = this.instance.getScene();
-			assert scene != null;
-			this.instance.moveAndOrientTo(scene.createOffsetStandIn(currentPosition), 0);
+//			org.alice.apis.moveandturn.Scene scene = this.instance.getScene();
+//			assert scene != null;
+//			this.instance.moveAndOrientTo(scene.createOffsetStandIn(currentPosition), 0);
 		}
 	}
 

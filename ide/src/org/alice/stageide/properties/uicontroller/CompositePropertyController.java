@@ -72,8 +72,6 @@ public class CompositePropertyController extends AbstractAdapterController<Compo
 	protected void initializeComponents() 
 	{
 		this.compositeLabel = new Label();
-		this.addComponent(this.compositeLabel, BorderPanel.Constraint.CENTER);
-		this.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
 	}
 
 	@Override
@@ -81,6 +79,17 @@ public class CompositePropertyController extends AbstractAdapterController<Compo
 	{
 		this.compositeLabel.setIcon(TransformableVehicleAdapter.getIconForVehicle(value));
 		this.compositeLabel.setText(TransformableVehicleAdapter.getNameForVehicle(value));
+	}
+	
+	@Override
+	protected void updateUIFromNewAdapter() 
+	{
+		this.removeAllComponents();
+		this.addComponent(this.compositeLabel, BorderPanel.Constraint.CENTER);
+		if (this.propertyAdapter != null)
+		{
+			this.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
+		}
 	}
 
 }

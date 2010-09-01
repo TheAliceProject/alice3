@@ -66,7 +66,6 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 	protected void initializeComponents() 
 	{
 		this.point3Label = new Label();
-		this.addComponent(this.point3Label, BorderPanel.Constraint.CENTER);
 	}
 	
 	@Override
@@ -87,6 +86,17 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 		else
 		{
 			this.point3Label.setText(BLANK_STRING);
+		}
+	}
+	
+	@Override
+	protected void updateUIFromNewAdapter() 
+	{
+		this.removeAllComponents();
+		this.addComponent(this.point3Label, BorderPanel.Constraint.CENTER);
+		if (this.propertyAdapter != null)
+		{
+//			this.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
 		}
 	}
 }

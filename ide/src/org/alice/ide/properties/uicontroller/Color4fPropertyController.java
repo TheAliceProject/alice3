@@ -73,9 +73,6 @@ public class Color4fPropertyController extends AbstractAdapterController<Color4f
 	{
 		this.colorLabel = new Label();
 		this.colorLabel.getAwtComponent().setOpaque(true);
-		this.addComponent(this.colorLabel, BorderPanel.Constraint.CENTER);
-		this.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
-		
 	}
 	
 	@Override
@@ -100,6 +97,17 @@ public class Color4fPropertyController extends AbstractAdapterController<Color4f
 			this.colorLabel.setIcon(null);
 		}
 		
+	}
+
+	@Override
+	protected void updateUIFromNewAdapter() 
+	{
+		this.removeAllComponents();
+		this.addComponent(this.colorLabel, BorderPanel.Constraint.CENTER);
+		if (this.propertyAdapter != null)
+		{
+			this.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
+		}
 	}
 
 }

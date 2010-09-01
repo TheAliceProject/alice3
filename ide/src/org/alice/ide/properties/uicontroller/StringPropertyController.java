@@ -68,8 +68,6 @@ public class StringPropertyController extends AbstractAdapterController<String>
 	protected void initializeComponents() 
 	{
 		this.stringLabel = new Label();
-		this.addComponent(this.stringLabel, BorderPanel.Constraint.CENTER);
-		this.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
 	}
 	
 	@Override
@@ -88,6 +86,17 @@ public class StringPropertyController extends AbstractAdapterController<String>
 		else
 		{
 			this.stringLabel.setText(BLANK_STRING);
+		}
+	}
+	
+	@Override
+	protected void updateUIFromNewAdapter() 
+	{
+		this.removeAllComponents();
+		this.addComponent(this.stringLabel, BorderPanel.Constraint.CENTER);
+		if (this.propertyAdapter != null)
+		{
+			this.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
 		}
 	}
 }

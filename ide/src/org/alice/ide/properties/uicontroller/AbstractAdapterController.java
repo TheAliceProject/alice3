@@ -47,6 +47,7 @@ import org.alice.ide.properties.adapter.PropertyAdapter;
 
 import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.croquet.BorderPanel;
+import edu.cmu.cs.dennisc.croquet.Component;
 import edu.cmu.cs.dennisc.croquet.Panel;
 
 public abstract class AbstractAdapterController<P> extends BorderPanel implements PropertyAdapterController<P>
@@ -87,6 +88,7 @@ public abstract class AbstractAdapterController<P> extends BorderPanel implement
 			this.propertyAdapter.removeValueChangeObserver(this.valueChangeObserver);
 		}
 		this.propertyAdapter = propertyAdapter;
+		this.updateUIFromNewAdapter();
 		if (this.propertyAdapter != null)
 		{
 			this.propertyAdapter.addAndInvokeValueChangeObserver(this.valueChangeObserver);
@@ -97,6 +99,8 @@ public abstract class AbstractAdapterController<P> extends BorderPanel implement
 		}
 		
 	}
+	
+	protected abstract void updateUIFromNewAdapter();
 	
 	protected abstract void initializeComponents();
 	

@@ -66,8 +66,6 @@ public class DoublePropertyController extends AbstractAdapterController<Double>
 	protected void initializeComponents() 
 	{
 		this.doubleLabel = new Label();
-		this.addComponent(this.doubleLabel, BorderPanel.Constraint.CENTER);
-		this.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
 	}
 	
 	@Override
@@ -92,6 +90,17 @@ public class DoublePropertyController extends AbstractAdapterController<Double>
 		else
 		{
 			this.doubleLabel.setText(BLANK_STRING);
+		}
+	}
+	
+	@Override
+	protected void updateUIFromNewAdapter() 
+	{
+		this.removeAllComponents();
+		this.addComponent(this.doubleLabel, BorderPanel.Constraint.CENTER);
+		if (this.propertyAdapter != null)
+		{
+			this.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
 		}
 	}
 	
