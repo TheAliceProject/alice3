@@ -40,62 +40,62 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.memberseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class BooleanStateEdit extends Edit<BooleanState> {
-	//can't really imagine this values being the same, but it doesn't seem likely to hurt to track both values
-	private boolean previousValue;
-	private boolean nextValue;
+abstract class OrganizedByTypeMembersContentPanel extends MembersContentPanel {
+	@Override
+	protected void refresh( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > types ) {
+		this.removeAllComponents();
+		boolean isNonConsumedTypeDeclaredInJavaAlreadyEncountered = false;
 
-	public BooleanStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	public BooleanStateEdit( java.awt.event.ItemEvent e ) {
-		if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
-			this.previousValue = false;
-			this.nextValue = true;
-		} else {
-			this.previousValue = true;
-			this.nextValue = false;
+		if( types.size() > 0 ) {
+			boolean isSeparatorDesired = types.get( 0 ) instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+			for( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type : types ) {
+				boolean isFirstNonConsumedTypeEncounteredInJava = false;
+				if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava ) {
+					if( isSeparatorDesired ) {
+						this.addComponent( new edu.cmu.cs.dennisc.croquet.HorizontalSeparator() );
+						this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 16 ) );
+						isSeparatorDesired = false;
+					}
+					if( isNonConsumedTypeDeclaredInJavaAlreadyEncountered ) {
+						//pass
+					} else {
+						if( type.isConsumptionBySubClassDesired() ) {
+							//pass
+						} else {
+							isFirstNonConsumedTypeEncounteredInJava = true;
+							isNonConsumedTypeDeclaredInJavaAlreadyEncountered = true;
+						}
+					}
+				}
+				if( type.isConsumptionBySubClassDesired() ) {
+					//pass
+				} else {
+					if( /*org.alice.ide.IDE.getSingleton().isEmphasizingClasses() ||*/ type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice || isFirstNonConsumedTypeEncounteredInJava ) {
+						this.addComponent( MembersEditor.getComponentFor( this.getClass(), type ) );
+					}
+				}
+				this.addComponent( this.getTypeMembersPane( type ) );
+			}
 		}
-	}
-	@Override
-	protected void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		this.previousValue = binaryDecoder.decodeBoolean();
-		this.nextValue = binaryDecoder.decodeBoolean();
-	}
-	@Override
-	protected void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		binaryEncoder.encode( this.previousValue );
-		binaryEncoder.encode( this.nextValue );
-	}
-	
-	@Override
-	public boolean canRedo() {
-		return this.getModel() != null;
-	}
-	@Override
-	public boolean canUndo() {
-		return this.getModel() != null;
+		this.revalidateAndRepaint();
 	}
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		this.getModel().setValue(this.nextValue);
-	}
-
-	@Override
-	protected final void undoInternal() {
-		this.getModel().setValue(this.previousValue);
-	}
-
-	@Override
-	protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-		rv.append( "boolean: " );
-		rv.append( this.nextValue );
+	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, AbstractTypeMembersPane > mapTypeToPane = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, AbstractTypeMembersPane >();
+	protected abstract AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type );
+	protected AbstractTypeMembersPane getTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		AbstractTypeMembersPane rv = this.mapTypeToPane.get( type );
+		if( rv != null ) {
+			//todo?
+			rv.refresh();
+		} else {
+			rv = this.createTypeMembersPane( type );
+			this.mapTypeToPane.put( type, rv );
+		}
 		return rv;
 	}
 }

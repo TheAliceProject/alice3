@@ -72,8 +72,7 @@ public /*final*/ class BooleanState extends Model {
 	};
 	private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 		public void itemStateChanged(java.awt.event.ItemEvent e) {
-			Application application = Application.getSingleton();
-			if( application.isInTheMidstOfUndoOrRedo() ) {
+			if( ContextManager.isInTheMidstOfUndoOrRedo() ) {
 				//pass
 			} else {
 				if( BooleanState.this.isContextCommitDesired() ) {

@@ -48,8 +48,7 @@ package edu.cmu.cs.dennisc.croquet;
 public class AbstractDialogOperationContext<M extends AbstractDialogOperation<?>> extends OperationContext<M> {
 	public static abstract class WindowEvent extends ModelEvent< AbstractDialogOperationContext > {
 		private java.awt.event.WindowEvent windowEvent;
-		public WindowEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
+		public WindowEvent() {
 		}
 		/*package-private*/ WindowEvent( java.awt.event.WindowEvent windowEvent ) {
 			this.windowEvent = windowEvent;
@@ -64,8 +63,7 @@ public class AbstractDialogOperationContext<M extends AbstractDialogOperation<?>
 	}
 
 	public static class WindowOpenedEvent extends WindowEvent {
-		public WindowOpenedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
+		public WindowOpenedEvent() {
 		}
 		/*package-private*/ WindowOpenedEvent( java.awt.event.WindowEvent e ) {
 			super( e );
@@ -73,8 +71,7 @@ public class AbstractDialogOperationContext<M extends AbstractDialogOperation<?>
 	}
 
 	public static class WindowClosedEvent extends WindowEvent {
-		public WindowClosedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
+		public WindowClosedEvent() {
 		}
 		/*package-private*/ WindowClosedEvent( java.awt.event.WindowEvent e ) {
 			super( e );

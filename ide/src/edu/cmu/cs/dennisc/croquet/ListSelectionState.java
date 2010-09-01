@@ -162,8 +162,7 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 					E nextSelection = this.getSelection(nextIndex);
 					this.indexOfLastPerform = nextIndex;
 
-					Application application = Application.getSingleton();
-					if( application.isInTheMidstOfUndoOrRedo() ) {
+					if( ContextManager.isInTheMidstOfUndoOrRedo() ) {
 						//pass
 					} else {
 						ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController, prevIndex, prevSelection, nextIndex, nextSelection );

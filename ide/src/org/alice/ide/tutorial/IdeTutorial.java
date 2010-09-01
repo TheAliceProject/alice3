@@ -271,15 +271,15 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 
 
 	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.PredeterminedTab > getProceduresTab() {
-		return new PredeterminedTabResolver( ide.getMembersEditor().getTabbedPaneSelectionState(), java.util.UUID.fromString( "2731d704-1f80-444e-a610-e6e5866c0b9a" ) );
+		return new PredeterminedTabResolver( org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(), java.util.UUID.fromString( "2731d704-1f80-444e-a610-e6e5866c0b9a" ) );
 	}
 
 	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.PredeterminedTab > getFunctionsTab() {
-		return new PredeterminedTabResolver( ide.getMembersEditor().getTabbedPaneSelectionState(), java.util.UUID.fromString( "0f5d1f93-fc67-4109-9aff-0e7b232f201c" ) );
+		return new PredeterminedTabResolver( org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(), java.util.UUID.fromString( "0f5d1f93-fc67-4109-9aff-0e7b232f201c" ) );
 	}
 
 	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.PredeterminedTab > getFieldsTab() {
-		return new PredeterminedTabResolver( ide.getMembersEditor().getTabbedPaneSelectionState(), java.util.UUID.fromString( "6cb9c5a1-dc60-48e7-9a52-534009a093b8" ) );
+		return new PredeterminedTabResolver( org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(), java.util.UUID.fromString( "6cb9c5a1-dc60-48e7-9a52-534009a093b8" ) );
 	}
 	
 	public RuntimeResolver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > createCurrentCodeResolver() {

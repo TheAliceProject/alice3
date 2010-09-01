@@ -56,12 +56,13 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 	}
 	private java.util.List<CommitObserver> commitObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private java.util.List<ChildrenObserver> childrenObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private java.util.List<HistoryNode> children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private java.util.List<HistoryNode> children;
 	private M model;
 	private CodableResolver< M > modelResolver;
 	private java.util.EventObject awtEvent;
 	private ViewController<?, ?> viewController;
 	/*package-private*/ ModelContext(M model, java.util.EventObject awtEvent, ViewController<?, ?> viewController) {
+		this.children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.model = model;
 		if( this.model != null ) {
 			this.modelResolver = this.model.getCodableResolver();
@@ -92,6 +93,7 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 	protected final void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		HistoryNode[] array = binaryDecoder.decodeBinaryEncodableAndDecodableArray(HistoryNode.class);
+		this.children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set(this.children, array);
 	}
 	@Override

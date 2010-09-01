@@ -148,7 +148,7 @@ public class IntroductionTutorial {
 		tutorial.addSpotlightTabScrollPaneStep( 
 				"Note Ice Skater Details", 
 				"These are all of the procedures that the <b>iceSkater</b> knows how to do.", 
-				membersEditor.getTabbedPaneSelectionState(),
+				org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(),
 				tutorial.getFunctionsTab()
 		);
 

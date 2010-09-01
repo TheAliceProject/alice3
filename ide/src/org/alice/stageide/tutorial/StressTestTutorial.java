@@ -48,15 +48,9 @@ package org.alice.stageide.tutorial;
 public class StressTestTutorial {
 	private static void createAndShowTutorial( final org.alice.stageide.StageIDE ide ) {
 		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( ide, 0 );
-		org.alice.ide.memberseditor.MembersEditor membersEditor = ide.getMembersEditor();
-
-		
-		
 		//ide.getEmphasizingClassesState().setValue( false );
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( false ); 
-		
-		
-		
+
 		tutorial.addMessageStep( 
 				"Title", 
 				"<b><center>Welcome To The Tutorial</center></b><p>This tutorial will introduce you to the basics.<p>" 
@@ -819,13 +813,13 @@ public class StressTestTutorial {
 		tutorial.addSelectTabStep( 
 				"Select Functions Tab", 
 				"Select the <b>Functions</b> tab.", 
-				membersEditor.getTabbedPaneSelectionState(),
+				org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(),
 				tutorial.getFunctionsTab()
 		);
 		tutorial.addSpotlightTabScrollPaneStep( 
 				"Note Functions Tab", 
 				"Now the functions are now displayed.", 
-				membersEditor.getTabbedPaneSelectionState(),
+				org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(),
 				tutorial.getFunctionsTab()
 		);
 		tutorial.addSpotlightStepForModel( 
@@ -863,13 +857,13 @@ public class StressTestTutorial {
 		tutorial.addSelectTabStep( 
 				"Procedures Tab", 
 				"Select the <b>Procedures</b> tab.", 
-				membersEditor.getTabbedPaneSelectionState(),
+				org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(),
 				tutorial.getProceduresTab()
 		);
 		tutorial.addSpotlightTabScrollPaneStep( 
 				"Note Procedures Tab", 
 				"Now the procedures are now displayed.", 
-				membersEditor.getTabbedPaneSelectionState(),
+				org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(),
 				tutorial.getProceduresTab()
 		);
 
@@ -894,13 +888,13 @@ public class StressTestTutorial {
 		tutorial.addSelectTabStep( 
 				"Procedures Tab", 
 				"Select the <b>Procedures</b> tab.", 
-				membersEditor.getTabbedPaneSelectionState(),
+				org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(),
 				tutorial.getProceduresTab()
 		);
 		tutorial.addSpotlightTabScrollPaneStep( 
 				"Note Procedures Tab", 
 				"Now the procedures are now displayed.", 
-				membersEditor.getTabbedPaneSelectionState(),
+				org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(),
 				tutorial.getProceduresTab()
 		);
 
@@ -930,13 +924,13 @@ public class StressTestTutorial {
 		tutorial.addSelectTabStep( 
 				"Procedures Tab", 
 				"Select the <b>Procedures</b> tab.", 
-				membersEditor.getTabbedPaneSelectionState(),
+				org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(),
 				tutorial.getProceduresTab()
 		);
 		tutorial.addSpotlightTabScrollPaneStep( 
 				"Note Procedures Tab", 
 				"Now the procedures are now displayed.", 
-				membersEditor.getTabbedPaneSelectionState(),
+				org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(),
 				tutorial.getProceduresTab()
 		);
 
@@ -1023,7 +1017,7 @@ public class StressTestTutorial {
 		tutorial.addSpotlightStep( 
 				"Instance Details", 
 				"The currently selected instance methods and fields are displayed here.<p>Right now, it is showing the details of the <b>camera</b>.", 
-				membersEditor 
+				ide.getMembersEditor() 
 		);
 
 		tutorial.addSpotlightStepForModel( 
@@ -1056,37 +1050,37 @@ public class StressTestTutorial {
 		tutorial.addSelectTabStep( 
 				"Select Functions Tab", 
 				"Select the <b>Functions</b> tab.", 
-				membersEditor.getTabbedPaneSelectionState(),
+				org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(),
 				tutorial.getFunctionsTab()
 		);
 		tutorial.addSpotlightTabScrollPaneStep( 
 				"Note Functions Tab", 
 				"Now the functions are now displayed.", 
-				membersEditor.getTabbedPaneSelectionState(),
+				org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(),
 				tutorial.getFunctionsTab()
 		);
 		tutorial.addSelectTabStep( 
 				"Properies Tab", 
 				"Select the <b>Properies</b> tab.", 
-				membersEditor.getTabbedPaneSelectionState(),
+				org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(),
 				tutorial.getFieldsTab()
 		);
 		tutorial.addSpotlightTabScrollPaneStep( 
 				"Note Properies Tab", 
 				"Now the properties are now displayed.", 
-				membersEditor.getTabbedPaneSelectionState(),
+				org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(),
 				tutorial.getFieldsTab()
 		);
 		tutorial.addSelectTabStep( 
 				"Procedures Tab", 
 				"Select the <b>Procedures</b> tab.", 
-				membersEditor.getTabbedPaneSelectionState(),
+				org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(),
 				tutorial.getProceduresTab()
 		);
 		tutorial.addSpotlightTabScrollPaneStep( 
 				"Note Procedures Tab", 
 				"Now the procedures are now displayed.", 
-				membersEditor.getTabbedPaneSelectionState(),
+				org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(),
 				tutorial.getProceduresTab()
 		);
 

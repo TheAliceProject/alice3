@@ -115,7 +115,7 @@ public class ExerciseRoutineTutorial {
 		tutorial.addSpotlightTabScrollPaneStep( 
 				"Note Details: daughter", 
 				"These are all of the procedures that the <b>daughter</b> knows how to do.", 
-				membersEditor.getTabbedPaneSelectionState(),
+				org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(),
 				tutorial.getFunctionsTab()
 		);
 		

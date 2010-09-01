@@ -111,11 +111,11 @@ public abstract class Edit<M extends Model> implements edu.cmu.cs.dennisc.codec.
 				throw new javax.swing.undo.CannotRedoException();
 			}
 		}
-		Application.getSingleton().pushUndoOrRedo();
+		ContextManager.pushUndoOrRedo();
 		try {
 			this.doOrRedoInternal( isDo );
 		} finally {
-			Application.getSingleton().popUndoOrRedo();
+			ContextManager.popUndoOrRedo();
 		}
 	}
 	public final void undo() {
@@ -124,11 +124,11 @@ public abstract class Edit<M extends Model> implements edu.cmu.cs.dennisc.codec.
 		} else {
 			throw new javax.swing.undo.CannotRedoException();
 		}
-		Application.getSingleton().pushUndoOrRedo();
+		ContextManager.pushUndoOrRedo();
 		try {
 			this.undoInternal();
 		} finally {
-			Application.getSingleton().popUndoOrRedo();
+			ContextManager.popUndoOrRedo();
 		}
 	}
 

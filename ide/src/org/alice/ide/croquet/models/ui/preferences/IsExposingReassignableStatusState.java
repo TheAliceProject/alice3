@@ -54,6 +54,6 @@ public class IsExposingReassignableStatusState extends edu.cmu.cs.dennisc.croque
 	}
 	private IsExposingReassignableStatusState() {
 		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "81c41ccf-657e-4e95-ae96-67c90b7075b5" ), false );
-		org.alice.ide.IDE.getSingleton().registerAndInitializePreference( this );
+		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 	}
 }

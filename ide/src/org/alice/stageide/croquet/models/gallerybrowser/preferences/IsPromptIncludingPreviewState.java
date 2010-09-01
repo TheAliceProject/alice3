@@ -54,6 +54,6 @@ public class IsPromptIncludingPreviewState extends edu.cmu.cs.dennisc.croquet.Bo
 	}
 	private IsPromptIncludingPreviewState() {
 		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "292ccba4-7de7-4385-9b93-2723c2ddb745" ), true );
-		org.alice.ide.IDE.getSingleton().registerAndInitializePreference( this );
+		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 	}
 }

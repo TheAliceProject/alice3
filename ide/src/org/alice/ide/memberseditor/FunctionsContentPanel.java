@@ -40,20 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.members;
+package org.alice.ide.memberseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MembersTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSelectionState {
-	private static class SingletonHolder {
-		private static MembersTabSelectionState instance = new MembersTabSelectionState();
+public class FunctionsContentPanel extends MethodsContentPanel {
+	public FunctionsContentPanel() {
+		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getTheme().getFunctionColor() );
 	}
-	public static MembersTabSelectionState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private MembersTabSelectionState() {
-		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ));
-		this.setListData( 0, ProceduresTab.getInstance(), FunctionsTab.getInstance(), FieldsTab.getInstance() );
+	@Override
+	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		return new TypeFunctionsPane( type );
 	}
 }

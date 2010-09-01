@@ -45,15 +45,18 @@ package org.alice.ide.croquet.models.members;
 /**
  * @author Dennis Cosgrove
  */
-public class MembersTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSelectionState {
+public class FieldsTab extends MemberTab {
 	private static class SingletonHolder {
-		private static MembersTabSelectionState instance = new MembersTabSelectionState();
+		private static FieldsTab instance = new FieldsTab();
 	}
-	public static MembersTabSelectionState getInstance() {
+	public static FieldsTab getInstance() {
 		return SingletonHolder.instance;
 	}
-	private MembersTabSelectionState() {
-		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ));
-		this.setListData( 0, ProceduresTab.getInstance(), FunctionsTab.getInstance(), FieldsTab.getInstance() );
+	private FieldsTab() {
+		super( java.util.UUID.fromString( "6cb9c5a1-dc60-48e7-9a52-534009a093b8" ), "Properties" /*this.getLocalizedText( "fields" )*/ );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {
+		return new org.alice.ide.memberseditor.FieldsContentPanel();
 	}
 }
