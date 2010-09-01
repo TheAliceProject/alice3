@@ -42,16 +42,16 @@
  */
 package edu.cmu.cs.dennisc.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.Resolver;
+import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class ItemSelectionStateItemResolver<E> implements Resolver<edu.cmu.cs.dennisc.croquet.TrackableShape> {
-	private Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver;
-	private Resolver<E> itemResolver;
+/* package-private */class ItemSelectionStateItemResolver<E> implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.TrackableShape> {
+	private RuntimeResolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver;
+	private RuntimeResolver<E> itemResolver;
 
-	public ItemSelectionStateItemResolver(Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<E> itemResolver) {
+	public ItemSelectionStateItemResolver(RuntimeResolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, RuntimeResolver<E> itemResolver) {
 		this.itemSelectionStateResolver = itemSelectionStateResolver;
 		this.itemResolver = itemResolver;
 	}

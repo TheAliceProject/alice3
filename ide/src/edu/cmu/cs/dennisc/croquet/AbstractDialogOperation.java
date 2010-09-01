@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDialogOperation< C extends AbstractDialogOperationContext<?> > extends Operation<C> {
-	public AbstractDialogOperation(Group group, java.util.UUID individualUUID) {
-		super(group, individualUUID);
+	public AbstractDialogOperation(Group group, java.util.UUID id) {
+		super(group, id);
 	}
 	protected java.awt.Point getDesiredDialogLocation( Dialog dialog ) {
 		return null;

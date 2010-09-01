@@ -44,10 +44,9 @@
 package edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.kids;
 
 public class Melly extends edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.GalleryPerson { 
-	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> OnBoard= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
+	private final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> OnBoard= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>( false );  
 	public Melly() {
 		super( "kids/Melly" );
-		edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> OnBoard= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
 }
 	public enum Part {
 		LeftPonytail( "Hips", "Stomach", "Torso", "Neck", "Head", "LeftPonytail" ),
@@ -135,7 +134,7 @@ public class Melly extends edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.
 	}
 
 	public void Backflip( ) {
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> Zero= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();  Zero.value = new Double(0.0);;
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> Zero= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 0.0 );
 		org.alice.virtualmachine.DoTogether.invokeAndWait(
 			new Runnable() {
 				public void run() {

@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /*package-private*/ class PopupMenuStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.PopupMenuOperation> {
 	private PopupMenuOperationCompletor completor;
 	private PopupMenuOperationValidator validator;
-	public PopupMenuStep( String title, String popupText, final edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.PopupMenuOperation> popupMenuOperationResolver, String commitText, PopupMenuOperationCompletor completor, PopupMenuOperationValidator validator ) {
+	public PopupMenuStep( String title, String popupText, final edu.cmu.cs.dennisc.croquet.RuntimeResolver<edu.cmu.cs.dennisc.croquet.PopupMenuOperation> popupMenuOperationResolver, String commitText, PopupMenuOperationCompletor completor, PopupMenuOperationValidator validator ) {
 		super( title, popupText, new Hole( new FirstComponentResolver( popupMenuOperationResolver ), Feature.ConnectionPreference.EAST_WEST ), popupMenuOperationResolver );
 		this.completor = completor;
 		this.validator = validator;

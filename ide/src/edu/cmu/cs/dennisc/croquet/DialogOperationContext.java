@@ -46,7 +46,10 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class DialogOperationContext extends AbstractDialogOperationContext<DialogOperation> {
-	public DialogOperationContext( ModelContext<?> parent, DialogOperation operation, java.util.EventObject e, ViewController< ?,? > viewController ) {
-		super( parent, operation, e, viewController );
+	/*package-private*/ DialogOperationContext( DialogOperation operation, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( operation, e, viewController );
+	}
+	public DialogOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

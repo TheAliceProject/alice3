@@ -42,31 +42,6 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-/*package-private*/abstract class Event<C extends ModelContext<?>> extends HistoryNode {
-	public Event(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		super(binaryDecoder);
-	}
-	public Event(C parent) {
-		super(parent);
-	}
-}
-
-/*package-private*/abstract class ModelEvent<C extends ModelContext<?>> extends Event<C> {
-	public ModelEvent(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		super(binaryDecoder);
-	}
-	public ModelEvent(C parent) {
-		super(parent);
-	}
-	@Override
-	protected void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-	}
-	@Override
-	protected void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-	}
-	//	
-}
-
 /**
  * @author Dennis Cosgrove
  */
@@ -83,11 +58,16 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 	private java.util.List<ChildrenObserver> childrenObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private java.util.List<HistoryNode> children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private M model;
+	private CodableResolver< M > modelResolver;
 	private java.util.EventObject awtEvent;
 	private ViewController<?, ?> viewController;
-	/*package-private*/ ModelContext(ModelContext<?> parent, M model, java.util.EventObject awtEvent, ViewController<?, ?> viewController) {
-		super(parent);
+	/*package-private*/ ModelContext(M model, java.util.EventObject awtEvent, ViewController<?, ?> viewController) {
 		this.model = model;
+		if( this.model != null ) {
+			this.modelResolver = this.model.getCodableResolver();
+		} else {
+			this.modelResolver = null;
+		}
 		this.awtEvent = awtEvent;
 		this.viewController = viewController;
 	}
@@ -96,8 +76,39 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 	}
 	
 	public M getModel() {
+		if( this.model != null ) {
+			//pass
+		} else {
+			if( this.modelResolver != null ) {
+				this.model = this.modelResolver.getResolved();
+			} else {
+				//pass
+			}
+		}
 		return this.model;
 	}
+	
+	@Override
+	protected final void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		HistoryNode[] array = binaryDecoder.decodeBinaryEncodableAndDecodableArray(HistoryNode.class);
+		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set(this.children, array);
+	}
+	@Override
+	protected final void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+		M model = this.getModel();
+		CodableResolver< M > modelResolver;
+		if( model != null ) {
+			modelResolver = model.getCodableResolver();
+		} else {
+			modelResolver = null;
+		}
+		binaryEncoder.encode( modelResolver );
+		HistoryNode[] array = new HistoryNode[this.children.size()];
+		this.children.toArray(array);
+		binaryEncoder.encode(array);
+	}
+
 	public java.util.EventObject getAwtEvent() {
 		return this.awtEvent;
 	}
@@ -262,11 +273,12 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		synchronized (this.children) {
 			this.children.add(child);
 		}
+		child.setParent( this );
 		this.fireAddedChild(child);
 	}
 
 	public void finish() {
-		this.addChild(new FinishEvent(this));
+		this.addChild(new FinishEvent());
 	}
 	public void commitAndInvokeDo(Edit edit) {
 		assert edit != null;
@@ -274,22 +286,10 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		this.fireCommitting(edit);
 		edit.doOrRedo(true);
 		this.fireCommitted(edit);
-		this.addChild(new CommitEvent(this, edit));
+		this.addChild(new CommitEvent(edit));
 	}
 	public void cancel() {
-		this.addChild(new CancelEvent(this));
-	}
-
-	@Override
-	protected final void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		HistoryNode[] array = binaryDecoder.decodeBinaryEncodableAndDecodableArray(HistoryNode.class);
-		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set(this.children, array);
-	}
-	@Override
-	protected final void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		HistoryNode[] array = new HistoryNode[this.children.size()];
-		this.children.toArray(array);
-		binaryEncoder.encode(array);
+		this.addChild(new CancelEvent());
 	}
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv ) {

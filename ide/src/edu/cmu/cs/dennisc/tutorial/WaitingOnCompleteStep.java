@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.tutorial;
  */
 /*package-private*/ abstract class WaitingOnCompleteStep<M extends edu.cmu.cs.dennisc.croquet.Model> extends WaitingStep<M> {
 	private boolean isExactMatchRequired;
-	public WaitingOnCompleteStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, Feature.ConnectionPreference connectionPreference, edu.cmu.cs.dennisc.croquet.Resolver< M > modelResolver, boolean isDiscriminatingAboutComplete ) {
+	public WaitingOnCompleteStep( String title, String text, edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, Feature.ConnectionPreference connectionPreference, edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > modelResolver, boolean isDiscriminatingAboutComplete ) {
 		super( title, text, new Hole( trackableShapeResolver, connectionPreference ), modelResolver );
 		this.isExactMatchRequired = isDiscriminatingAboutComplete;
 	}

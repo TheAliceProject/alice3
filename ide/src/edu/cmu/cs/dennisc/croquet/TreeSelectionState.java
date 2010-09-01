@@ -72,8 +72,8 @@ public abstract class TreeSelectionState<E> extends Model {
 	}
 	private SingleTreeSelectionModel treeSelectionModel;
 	private edu.cmu.cs.dennisc.javax.swing.models.TreeModel<E> treeModel;
-	public TreeSelectionState(Group group, java.util.UUID individualUUID, edu.cmu.cs.dennisc.javax.swing.models.TreeModel<E> treeModel, E initialSelection ) {
-		super(group, individualUUID);
+	public TreeSelectionState(Group group, java.util.UUID id, edu.cmu.cs.dennisc.javax.swing.models.TreeModel<E> treeModel, E initialSelection ) {
+		super(group, id);
 		this.treeSelectionModel = new SingleTreeSelectionModel();
 		this.treeModel = treeModel;
 		this.setSelection( initialSelection );

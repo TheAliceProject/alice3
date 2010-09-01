@@ -42,15 +42,15 @@
  */
 package org.alice.ide.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.Resolver;
+import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class MethodInvocationStatementResolver implements Resolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
-	private Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver;
+/*package-private*/class MethodInvocationStatementResolver implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
+	private RuntimeResolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver;
 	private int index;
-	public MethodInvocationStatementResolver(Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int index) {
+	public MethodInvocationStatementResolver(RuntimeResolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int index) {
 		this.methodResolver = methodResolver;
 		this.index = index;
 	}

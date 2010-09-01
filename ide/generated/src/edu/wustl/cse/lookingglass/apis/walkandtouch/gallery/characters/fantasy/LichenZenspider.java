@@ -482,7 +482,7 @@ public class LichenZenspider extends edu.wustl.cse.lookingglass.apis.walkandtouc
 	}
 
 	public void FlapWings( final Number Duration) {
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> TurnAmount= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();  TurnAmount.value = new Double(0.1);;
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> TurnAmount= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 0.1 );
 		for (int index1 = 0; index1 < (Duration.doubleValue() * 5.0); index1 = index1 + 1) {
 			org.alice.virtualmachine.DoTogether.invokeAndWait(
 				new Runnable() {

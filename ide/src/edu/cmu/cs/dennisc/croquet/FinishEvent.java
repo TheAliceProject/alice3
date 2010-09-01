@@ -46,11 +46,10 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class FinishEvent extends AbstractCompleteEvent {
+	/*package-private*/ FinishEvent() {
+	}
 	public FinishEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-	}
-	public FinishEvent( ModelContext parent ) {
-		super( parent );
 	}
 	@Override
 	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

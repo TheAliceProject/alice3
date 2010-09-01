@@ -54,6 +54,9 @@ public class SingletonCodec< E > implements edu.cmu.cs.dennisc.croquet.Codec< E 
 	}
 	private SingletonCodec() {
 	}
+	public edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.Codec< E >> getResolver() {
+		throw new RuntimeException( "todo" );
+	}
 	public E decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {

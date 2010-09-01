@@ -42,12 +42,12 @@
  */
 package org.alice.ide.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.Resolver;
+import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class TemplateDragComponentResolver implements Resolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
+/*package-private*/class TemplateDragComponentResolver implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
 	private Class<? extends edu.cmu.cs.dennisc.croquet.DragComponent> cls;
 	public TemplateDragComponentResolver(Class<? extends edu.cmu.cs.dennisc.croquet.DragComponent> cls) {
 		assert edu.cmu.cs.dennisc.croquet.Component.class.isAssignableFrom(cls);

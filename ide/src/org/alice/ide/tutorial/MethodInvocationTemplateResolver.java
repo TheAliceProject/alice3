@@ -42,12 +42,12 @@
  */
 package org.alice.ide.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.Resolver;
+import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class MethodInvocationTemplateResolver implements Resolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
+/*package-private*/ abstract class MethodInvocationTemplateResolver implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
 	private String methodName;
 	public MethodInvocationTemplateResolver(String methodName) {
 		this.methodName = methodName;

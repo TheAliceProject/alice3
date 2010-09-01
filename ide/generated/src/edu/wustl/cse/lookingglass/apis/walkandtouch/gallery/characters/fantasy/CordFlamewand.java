@@ -520,7 +520,7 @@ public class CordFlamewand extends edu.wustl.cse.lookingglass.apis.walkandtouch.
 	}
 
 	public void FlapWings( final Number Duration) {
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> FlapAmount= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();  FlapAmount.value = new Double(0.15);;
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> FlapAmount= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 0.15 );
 		for (int index1 = 0; index1 < (Duration.doubleValue() * 5.0); index1 = index1 + 1) {
 			org.alice.virtualmachine.DoTogether.invokeAndWait(
 				new Runnable() {

@@ -190,6 +190,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private ComboBox<CameraMarker> mainCameraViewSelector;
 	private CameraMarkerTracker mainCameraViewTracker;
 	private ListSelectionState<CameraMarker> mainCameraMarkerList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< CameraMarker >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "951c85e8-e8db-45d8-aa10-3e906c8d4bbf" ), new edu.cmu.cs.dennisc.croquet.Codec< CameraMarker >() {
+		public edu.cmu.cs.dennisc.croquet.CodableResolver<edu.cmu.cs.dennisc.croquet.Codec<CameraMarker>> getResolver() {
+			throw new RuntimeException( "todo" );
+		}
 		public CameraMarker decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			throw new RuntimeException( "todo" );
 		}

@@ -55,6 +55,9 @@ public class LocaleSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelecti
 	private LocaleSelectionState() {
 		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ), 
 				new edu.cmu.cs.dennisc.croquet.Codec< java.util.Locale >() {
+					public edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.Codec< java.util.Locale >> getResolver() {
+						throw new RuntimeException( "todo" );
+					}			
 					public java.util.Locale decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 						boolean isNotNull = binaryDecoder.decodeBoolean();
 						if( isNotNull ) {

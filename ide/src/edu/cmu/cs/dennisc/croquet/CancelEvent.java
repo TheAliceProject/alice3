@@ -46,11 +46,10 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class CancelEvent extends Event {
+	/*package-private*/ CancelEvent() {
+	}
 	public CancelEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-	}
-	public CancelEvent( ModelContext parent ) {
-		super( parent );
 	}
 	@Override
 	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

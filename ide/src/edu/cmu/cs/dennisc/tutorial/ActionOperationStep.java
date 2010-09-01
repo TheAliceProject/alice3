@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /*package-private*/ class ActionOperationStep extends WaitingOnCompleteStep<edu.cmu.cs.dennisc.croquet.ActionOperation> {
 	private ActionOperationCompletor completor;
 	private ActionOperationValidator validator;
-	public ActionOperationStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.ActionOperation > operationResolver, ActionOperationCompletor completor, ActionOperationValidator validator ) {
+	public ActionOperationStep( String title, String text, edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.ActionOperation > operationResolver, ActionOperationCompletor completor, ActionOperationValidator validator ) {
 		super( title, text, new FirstComponentResolver(operationResolver), Feature.ConnectionPreference.EAST_WEST, operationResolver, false );
 		this.completor = completor;
 		this.validator = validator;

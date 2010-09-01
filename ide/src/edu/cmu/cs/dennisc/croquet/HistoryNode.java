@@ -169,18 +169,26 @@ package edu.cmu.cs.dennisc.croquet;
 //}
 
 public abstract class HistoryNode implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	private static java.util.Map< java.util.UUID, HistoryNode > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static < N extends HistoryNode > N lookup( java.util.UUID id ) {
+		return (N)map.get( id );
+	}
 	private ModelContext<?> parent;
 	private java.util.UUID id;
 
+	public HistoryNode() {
+		this.id = java.util.UUID.randomUUID();
+		map.put( id, this );
+	}
 	public HistoryNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.decode( binaryDecoder );
 	}
-	public HistoryNode( ModelContext<?> parent ) {
-		this.parent = parent;
-		this.id = java.util.UUID.randomUUID();
-	}
+
 	public ModelContext<?> getParent() {
 		return this.parent;
+	}
+	/*package-private*/ final void setParent( ModelContext< ? > parent ) {
+		this.parent = parent;
 	}
 	public java.util.UUID getId() {
 		return this.id;
@@ -207,6 +215,7 @@ public abstract class HistoryNode implements edu.cmu.cs.dennisc.codec.BinaryEnco
 	protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
 	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.id = binaryDecoder.decodeId();
+		map.put( id, this );
 		this.decodeInternal( binaryDecoder );
 	}
 	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {

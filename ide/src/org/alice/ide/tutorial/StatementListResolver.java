@@ -42,15 +42,15 @@
  */
 package org.alice.ide.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.Resolver;
+import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
 /*package-private*/ class StatementListResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.TrackableShape> {
-	private Resolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > statementListPropertyResolver;
+	private RuntimeResolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > statementListPropertyResolver;
 	private int index;
-	public StatementListResolver(Resolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > statementListPropertyResolver, int index) {
+	public StatementListResolver(RuntimeResolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > statementListPropertyResolver, int index) {
 		this.statementListPropertyResolver = statementListPropertyResolver;
 		this.index = index;
 	}

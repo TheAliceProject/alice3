@@ -42,14 +42,14 @@
  */
 package edu.cmu.cs.dennisc.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.Resolver;
+import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class FirstComponentResolver implements Resolver< edu.cmu.cs.dennisc.croquet.Component<?> > {
-	private Resolver< ? extends edu.cmu.cs.dennisc.croquet.Model > modelResolver;
-	public FirstComponentResolver( Resolver< ? extends edu.cmu.cs.dennisc.croquet.Model > modelResolver ) {
+/*package-private*/ class FirstComponentResolver implements RuntimeResolver< edu.cmu.cs.dennisc.croquet.Component<?> > {
+	private RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.Model > modelResolver;
+	public FirstComponentResolver( RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.Model > modelResolver ) {
 		this.modelResolver = modelResolver;
 	}
 	public edu.cmu.cs.dennisc.croquet.Component<?> getResolved() {

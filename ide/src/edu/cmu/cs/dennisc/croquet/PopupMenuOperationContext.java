@@ -46,8 +46,11 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class PopupMenuOperationContext extends OperationContext<PopupMenuOperation> {
-	public PopupMenuOperationContext( ModelContext<?> parent, PopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
-		super( parent, popupMenuOperation, e, viewController );
+	/*package-private*/ PopupMenuOperationContext( PopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( popupMenuOperation, e, viewController );
+	}
+	public PopupMenuOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 	
 	public static class MenuSelectionEvent extends ModelEvent< PopupMenuOperationContext > {
@@ -57,8 +60,7 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 		public MenuSelectionEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
-		private MenuSelectionEvent( PopupMenuOperationContext parent, java.util.List< Model > models, javax.swing.event.ChangeEvent changeEvent ) {
-			super( parent );
+		private MenuSelectionEvent( java.util.List< Model > models, javax.swing.event.ChangeEvent changeEvent ) {
 			this.models = models;
 			this.changeEvent = changeEvent;
 		}
@@ -80,6 +82,6 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 		}
 	}
 	/*package-private*/ void handleMenuSelectionChanged( java.util.List< Model > models, javax.swing.event.ChangeEvent e ) {
-		this.addChild( new MenuSelectionEvent( this, models, e ) );
+		this.addChild( new MenuSelectionEvent( models, e ) );
 	}
 }

@@ -46,6 +46,9 @@ package org.alice.ide.croquet.codecs;
  * @author Dennis Cosgrove
  */
 public class NodeCodec<T extends edu.cmu.cs.dennisc.alice.ast.Node> implements edu.cmu.cs.dennisc.croquet.Codec< T > {
+	public edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.Codec< T >> getResolver() {
+		throw new RuntimeException( "todo" );
+	}
 	public T decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {

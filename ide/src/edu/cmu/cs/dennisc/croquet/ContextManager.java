@@ -59,104 +59,55 @@ public class ContextManager {
 	public static ModelContext< ? > getCurrentContext() {
 		return stack.peek();
 	}
-	/*package-private*/ static ActionOperationContext createAndPushActionOperationContext(ActionOperation actionOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+	private static <C extends ModelContext< ? > > C push( C rv ) {
 		ModelContext< ? > parentContext = getCurrentContext();
-		ActionOperationContext rv = new ActionOperationContext(parentContext, actionOperation, e, viewController);
-		parentContext.addChild(rv);
-		stack.push( rv );
-		return rv;
-	}
-	/*package-private*/ static CompositeOperationContext createAndPushCompositeOperationContext(CompositeOperation compositeOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		ModelContext< ? > parentContext = getCurrentContext();
-		CompositeOperationContext rv = new CompositeOperationContext(parentContext, compositeOperation, e, viewController);
-		parentContext.addChild(rv);
-		stack.push( rv );
-		return rv;
-	}
-	/*package-private*/ static DialogOperationContext createAndPushDialogOperationContext(DialogOperation dialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		ModelContext< ? > parentContext = getCurrentContext();
-		DialogOperationContext rv = new DialogOperationContext(parentContext, dialogOperation, e, viewController);
-		parentContext.addChild(rv);
-		stack.push( rv );
-		return rv;
-	}
-	/*package-private*/ static <J extends Component<?>> InformationDialogOperationContext<J> createAndPushInformationDialogOperationContext(InformationDialogOperation<J> informationDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		ModelContext< ? > parentContext = getCurrentContext();
-		InformationDialogOperationContext<J> rv = new InformationDialogOperationContext<J>(parentContext, informationDialogOperation, e, viewController);
-		parentContext.addChild(rv);
-		stack.push( rv );
-		return rv;
-	}
-	/*package-private*/ static <J extends Component< ? >> InputDialogOperationContext<J> createAndPushInputDialogOperationContext(InputDialogOperation<J> inputDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		ModelContext< ? > parentContext = getCurrentContext();
-		InputDialogOperationContext<J> rv = new InputDialogOperationContext<J>(parentContext, inputDialogOperation, e, viewController);
-		parentContext.addChild(rv);
-		stack.push( rv );
-		return rv;
-	}
-	/*package-private*/ static WizardDialogOperationContext createAndPushWizardDialogOperationContext(WizardDialogOperation informationDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		ModelContext< ? > parentContext = getCurrentContext();
-		WizardDialogOperationContext rv = new WizardDialogOperationContext(parentContext, informationDialogOperation, e, viewController);
-		parentContext.addChild(rv);
+		parentContext.addChild( rv );
 		stack.push( rv );
 		return rv;
 	}
 	
+	/*package-private*/ static ActionOperationContext createAndPushActionOperationContext(ActionOperation actionOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		return push( new ActionOperationContext(actionOperation, e, viewController) );
+	}
+	/*package-private*/ static CompositeOperationContext createAndPushCompositeOperationContext(CompositeOperation compositeOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		return push( new CompositeOperationContext(compositeOperation, e, viewController) );
+	}
+	/*package-private*/ static DialogOperationContext createAndPushDialogOperationContext(DialogOperation dialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		return push( new DialogOperationContext(dialogOperation, e, viewController) );
+	}
+	/*package-private*/ static <J extends Component<?>> InformationDialogOperationContext<J> createAndPushInformationDialogOperationContext(InformationDialogOperation<J> informationDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		return push( new InformationDialogOperationContext<J>(informationDialogOperation, e, viewController) );
+	}
+	/*package-private*/ static <J extends Component< ? >> InputDialogOperationContext<J> createAndPushInputDialogOperationContext(InputDialogOperation<J> inputDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		return push( new InputDialogOperationContext<J>(inputDialogOperation, e, viewController) );
+	}
+	/*package-private*/ static WizardDialogOperationContext createAndPushWizardDialogOperationContext(WizardDialogOperation wizardDialogOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
+		return push( new WizardDialogOperationContext(wizardDialogOperation, e, viewController) );
+	}
+	
 	/*package-private*/ static PopupMenuOperationContext createAndPushPopupMenuOperationContext(PopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
-		ModelContext< ? > parentContext = getCurrentContext();
-		PopupMenuOperationContext rv = new PopupMenuOperationContext(parentContext, popupMenuOperation, e, viewController);
-		parentContext.addChild(rv);
-		stack.push( rv );
-		return rv;
+		return push( new PopupMenuOperationContext(popupMenuOperation, e, viewController) );
 	}
 	/*package-private*/ static <T> ListSelectionStateContext<T> createAndPushItemSelectionStateContext(ListSelectionState<T> itemSelectionState, java.util.EventObject e, ViewController<?, ?> viewController, int prevIndex, T prevItem, int nextIndex, T nextItem) {
-		ModelContext< ? > parentContext = getCurrentContext();
-		ListSelectionStateContext<T> rv = new ListSelectionStateContext<T>(parentContext, itemSelectionState, e, viewController, prevIndex, prevItem, nextIndex, nextItem);
-		parentContext.addChild(rv);
-		stack.push( rv );
-		return rv;
+		return push( new ListSelectionStateContext<T>( itemSelectionState, e, viewController, prevIndex, prevItem, nextIndex, nextItem ) );
 	}
 	/*package-private*/ static BoundedRangeIntegerStateContext createAndPushBoundedRangeIntegerStateContext(BoundedRangeIntegerState boundedRangeIntegerState) {
-		ModelContext< ? > parentContext = getCurrentContext();
-		BoundedRangeIntegerStateContext rv = new BoundedRangeIntegerStateContext(parentContext, boundedRangeIntegerState, null, null);
-		parentContext.addChild(rv);
-		stack.push( rv );
-		return rv;
+		return push( new BoundedRangeIntegerStateContext(boundedRangeIntegerState, null, null) );
 	}
 	/*package-private*/ static BooleanStateContext createAndPushBooleanStateContext(BooleanState booleanState, java.awt.event.ItemEvent e, ViewController<?, ?> viewController) {
-		ModelContext< ? > parentContext = getCurrentContext();
-		BooleanStateContext rv = new BooleanStateContext(parentContext, booleanState, e, viewController);
-		parentContext.addChild(rv);
-		stack.push( rv );
-		return rv;
+		return push( new BooleanStateContext(booleanState, e, viewController) );
 	}
 	/*package-private*/ static StringStateContext createAndPushStringStateContext(StringState stringState) {
-		ModelContext< ? > parentContext = getCurrentContext();
-		StringStateContext rv = new StringStateContext(parentContext, stringState, null, null);
-		parentContext.addChild(rv);
-		stack.push( rv );
-		return rv;
+		return push( new StringStateContext(stringState, null, null) );
 	}
 	/*package-private*/ static MenuBarModelContext createAndPushMenuBarModelContext(MenuBarModel menuBarModel, javax.swing.event.ChangeEvent e, MenuBar menuBar) {
-		ModelContext< ? > parentContext = getCurrentContext();
-		MenuBarModelContext rv = new MenuBarModelContext(parentContext, menuBarModel, e, menuBar);
-		parentContext.addChild(rv);
-		stack.push( rv );
-		return rv;
+		return push( new MenuBarModelContext(menuBarModel, e, menuBar) );
 	}
 	/*package-private*/ static MenuModelContext createAndPushMenuModelContext(MenuModel menuModel, MenuItemContainer menuItemContainer) {
-		ModelContext< ? > parentContext = getCurrentContext();
-		MenuModelContext rv = new MenuModelContext( parentContext, menuModel, null, menuItemContainer.getViewController() );
-		parentContext.addChild(rv);
-		stack.push( rv );
-		return rv;
+		return push( new MenuModelContext(menuModel, null, menuItemContainer.getViewController() ) );
 	}
 	/*package-private*/ static DragAndDropContext createAndPushDragAndDropContext(DragAndDropOperation dragAndDropOperation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource) {
-		ModelContext< ? > parentContext = getCurrentContext();
-		DragAndDropContext rv = new DragAndDropContext(parentContext, dragAndDropOperation, originalMouseEvent, latestMouseEvent, dragSource);
-		parentContext.addChild(rv);
-		stack.push( rv );
-		return rv;
+		return push( new DragAndDropContext(dragAndDropOperation, originalMouseEvent, latestMouseEvent, dragSource) );
 	}
 	/*package-private*/ static ModelContext< ? > popContext() {
 		ModelContext< ? > childContext = stack.peek();
@@ -285,10 +236,18 @@ public class ContextManager {
 					assert menuElements.length == 2;
 				} else {
 					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
-					assert modelContext instanceof PopupMenuOperationContext;
+					if( modelContext instanceof PopupMenuOperationContext ) {
+						//pass
+					} else {
+						System.err.println( "combo box? " + menuElements.length + " " + java.util.Arrays.toString( menuElements ) );
+						System.err.println( "modelContext: " + modelContext );
+					}
 				}
 			} else {
-				assert false;
+				//assert false;
+				ModelContext< ? > modelContext = ContextManager.getCurrentContext();
+				System.err.println( "both prev and current menu selection length 0" );
+				System.err.println( "modelContext: " + modelContext );
 			}
 		}
 		previousMenuElements = menuElements;
@@ -339,7 +298,7 @@ public class ContextManager {
 	}
 
 	/*package-private*/ static void registerModel( Model model ) {
-		java.util.UUID id = model.getIndividualUUID();
+		java.util.UUID id = model.getId();
 		synchronized ( mapIdToModels ) {
 			java.util.Set< Model > set = mapIdToModels.get( id );
 			if( set != null ) {
@@ -353,7 +312,7 @@ public class ContextManager {
 	}
 	/*package-private*/ static void unregisterModel( Model model ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "unregister:", model );
-		java.util.UUID id = model.getIndividualUUID();
+		java.util.UUID id = model.getId();
 		synchronized ( mapIdToModels ) {
 			java.util.Set< Model > set = mapIdToModels.get( id );
 			if( set != null ) {

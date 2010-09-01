@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ActionOperation extends Operation<ActionOperationContext> {
-	public ActionOperation( Group group, java.util.UUID individualUUID ) {
-		super( group, individualUUID );
+	public ActionOperation( Group group, java.util.UUID id ) {
+		super( group, id );
 	}
 	@Override
 	protected ActionOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {

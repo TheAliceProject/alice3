@@ -63,8 +63,8 @@ public class MenuBarModel extends Model {
 //	};
 //	private java.util.Map< KMenuBar, MenuBarChangeListener > mapMenuBarToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.concurrent.CopyOnWriteArrayList< MenuModel > menuModels = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public MenuBarModel( Group group, java.util.UUID individualUUID ) {
-		super( group, individualUUID );
+	public MenuBarModel( Group group, java.util.UUID id ) {
+		super( group, id );
 		this.localize();
 	}
 

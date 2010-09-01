@@ -85,7 +85,7 @@ public class ActiveAli extends edu.wustl.cse.lookingglass.apis.walkandtouch.gall
 	}
 
 	public void Swim( final Number Distance) {
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> Speed= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();  Speed.value = new Double(0.5);;
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> Speed= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 0.5 );
 		org.alice.virtualmachine.DoTogether.invokeAndWait(
 			new Runnable() {
 				public void run() {

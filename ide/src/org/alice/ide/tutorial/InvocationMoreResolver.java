@@ -42,13 +42,13 @@
  */
 package org.alice.ide.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.Resolver;
+import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
 /*package-private*/ class InvocationMoreResolver extends InvocationOperationResolver<edu.cmu.cs.dennisc.croquet.PopupMenuOperation> {
-	public InvocationMoreResolver(Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int invocationIndex) {
+	public InvocationMoreResolver(RuntimeResolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int invocationIndex) {
 		super( methodResolver, invocationIndex );
 	}
 	@Override

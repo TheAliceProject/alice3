@@ -260,7 +260,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	private static String getKey( edu.cmu.cs.dennisc.croquet.Model model ) {
-		return model.getIndividualUUID().toString();
+		return model.getId().toString();
 	}
 	private static <T> T decode( byte[] data, edu.cmu.cs.dennisc.croquet.Codec< T > codec ) {
 		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( data );
@@ -302,7 +302,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public void registerAndInitializePreference( edu.cmu.cs.dennisc.croquet.BooleanState booleanState ) {
 		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( this.getClass() );
 		clearAllPreferencesIfRequested( userPreferences );
-		java.util.UUID id = booleanState.getIndividualUUID();
+		java.util.UUID id = booleanState.getId();
 		boolean value = userPreferences.getBoolean( id.toString(), booleanState.getValue() );
 		booleanState.setValue( value );
 		booleanStatePreferences.add( booleanState );
@@ -320,7 +320,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private void preservePreferences() {
 		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( this.getClass() );
 		for( edu.cmu.cs.dennisc.croquet.BooleanState booleanState : booleanStatePreferences ) {
-			userPreferences.putBoolean( booleanState.getIndividualUUID().toString(), booleanState.getValue() );
+			userPreferences.putBoolean( booleanState.getId().toString(), booleanState.getValue() );
 		}
 		for( edu.cmu.cs.dennisc.croquet.ListSelectionState< ? > listSelectionState : listSelectionStatePreferences ) {
 			try {

@@ -42,12 +42,12 @@
  */
 package org.alice.ide.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.Resolver;
+import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class InputDialogOperationFromIdResolver implements Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> {
+/*package-private*/class InputDialogOperationFromIdResolver implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation> {
 	private java.util.UUID id;
 	public InputDialogOperationFromIdResolver(java.util.UUID id) {
 		this.id = id;

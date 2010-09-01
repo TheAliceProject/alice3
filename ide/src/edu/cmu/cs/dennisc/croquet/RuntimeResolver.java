@@ -46,6 +46,6 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface Resolver<T> {
+public interface RuntimeResolver<T> {
 	public T getResolved();
 }

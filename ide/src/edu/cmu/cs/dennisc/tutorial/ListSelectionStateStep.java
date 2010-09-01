@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class ListSelectionStateStep<E> extends WaitingOnCompleteStep<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> {
-	private edu.cmu.cs.dennisc.croquet.Resolver< ? extends E > desiredValueResolver;
-	public ListSelectionStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState< E >> itemSelectionStateResolver, edu.cmu.cs.dennisc.croquet.Resolver< ? extends E > desiredValueResolver, Feature.ConnectionPreference connectionPreference ) {
+	private edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends E > desiredValueResolver;
+	public ListSelectionStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.RuntimeResolver<edu.cmu.cs.dennisc.croquet.ListSelectionState< E >> itemSelectionStateResolver, edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends E > desiredValueResolver, Feature.ConnectionPreference connectionPreference ) {
 		super( title, text, new ItemSelectionStateItemResolver( itemSelectionStateResolver, desiredValueResolver ), connectionPreference, itemSelectionStateResolver, true );
 		this.desiredValueResolver = desiredValueResolver;
 	}

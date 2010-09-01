@@ -49,6 +49,9 @@ public class LocalePreferenceComboBoxProxy extends PreferenceLabeledPaneProxy< j
 	class LocaleSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation< java.util.Locale > {
 		public LocaleSelectionOperation() {
 			super( java.util.UUID.fromString( "5cbe1b25-a5fc-4c54-8381-bfbc7c39a4ba" ), new edu.cmu.cs.dennisc.croquet.Codec< java.util.Locale >() {
+				public edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.Codec< java.util.Locale >> getResolver() {
+					throw new RuntimeException( "todo" );
+				}
 				public java.util.Locale decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 					throw new RuntimeException( "todo" );
 				}

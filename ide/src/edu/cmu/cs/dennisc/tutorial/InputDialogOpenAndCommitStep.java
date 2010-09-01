@@ -49,13 +49,13 @@ package edu.cmu.cs.dennisc.tutorial;
 	private InputDialogOperationCompletor completor;
 	private InputDialogOperationValidator validator;
 	private edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler externalOkButtonDisabler;
-	public InputDialogOpenAndCommitStep( String title, String openText, String commitText, final edu.cmu.cs.dennisc.croquet.Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> inputDialogOperationResolver, InputDialogOperationCompletor completor, InputDialogOperationValidator validator, edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler externalOkButtonDisabler ) {
+	public InputDialogOpenAndCommitStep( String title, String openText, String commitText, final edu.cmu.cs.dennisc.croquet.RuntimeResolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> inputDialogOperationResolver, InputDialogOperationCompletor completor, InputDialogOperationValidator validator, edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler externalOkButtonDisabler ) {
 		super( title, openText, new Hole( new FirstComponentResolver( inputDialogOperationResolver ), Feature.ConnectionPreference.EAST_WEST ), inputDialogOperationResolver );
 		this.completor = completor;
 		this.validator = validator;
 		this.externalOkButtonDisabler = externalOkButtonDisabler;
 		Note commitNote = new Note( commitText );
-		commitNote.addFeature( new InputDialogCommitFeature( new edu.cmu.cs.dennisc.croquet.Resolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
+		commitNote.addFeature( new InputDialogCommitFeature( new edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
 			public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
 				edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> inputDialogOperation = inputDialogOperationResolver.getResolved();
 				if( inputDialogOperation != null ) {

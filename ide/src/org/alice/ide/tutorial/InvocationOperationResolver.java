@@ -42,15 +42,15 @@
  */
 package org.alice.ide.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.Resolver;
+import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
 /*package-private*/abstract class InvocationOperationResolver<M extends edu.cmu.cs.dennisc.croquet.Operation<?>> extends CurrentCodeEditorResolver<M> {
-	private Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver;
+	private RuntimeResolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver;
 	private int invocationIndex;
-	public InvocationOperationResolver(Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int invocationIndex) {
+	public InvocationOperationResolver(RuntimeResolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int invocationIndex) {
 		this.methodResolver = methodResolver;
 		this.invocationIndex = invocationIndex;
 	}

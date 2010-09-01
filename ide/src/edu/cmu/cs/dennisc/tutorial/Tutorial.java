@@ -42,13 +42,13 @@
  */
 package edu.cmu.cs.dennisc.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.Resolver;
+import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
 public class Tutorial {
-	private static class SelfResolver<T> implements Resolver<T> {
+	private static class SelfResolver<T> implements RuntimeResolver<T> {
 		private T t;
 		public SelfResolver( T t ) {
 			this.t = t;
@@ -72,139 +72,139 @@ public class Tutorial {
 	public Step addMessageStep( String title, String text ) {
 		return this.addStep( new MessageStep( title, text ) );
 	}
-	public Step addSpotlightStep( String title, String text, Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver ) {
+	public Step addSpotlightStep( String title, String text, RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver ) {
 		return this.addStep( new SpotlightStep( title, text, trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST ) );
 	}
-	public Step addSpotlightStepForModel( String title, String text, Resolver< ? extends edu.cmu.cs.dennisc.croquet.Model > modelResolver ) {
+	public Step addSpotlightStepForModel( String title, String text, RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.Model > modelResolver ) {
 		return this.addSpotlightStep( title, text, new FirstComponentResolver(modelResolver) );
 	}
 	public Step addSpotlightStepForModel( String title, String text, edu.cmu.cs.dennisc.croquet.Model model ) {
 		return this.addSpotlightStep( title, text, new FirstComponentResolver( new SelfResolver<edu.cmu.cs.dennisc.croquet.Model>(model)) );
 	}
-	public Step addActionStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.ActionOperation > actionOperationResolver, ActionOperationCompletorValidator completorValidator ) {
+	public Step addActionStep( String title, String text, RuntimeResolver< edu.cmu.cs.dennisc.croquet.ActionOperation > actionOperationResolver, ActionOperationCompletorValidator completorValidator ) {
 		return this.addStep( new ActionOperationStep( title, text, actionOperationResolver, completorValidator, completorValidator ) );
 	}
 	public Step addActionStep( String title, String text, edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation, ActionOperationCompletorValidator completorValidator ) {
 		return this.addStep( new ActionOperationStep( title, text, new SelfResolver<edu.cmu.cs.dennisc.croquet.ActionOperation>(actionOperation), completorValidator, completorValidator ) );
 	}
-	public Step addBooleanStateStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.BooleanState> booleanStateResolver, boolean desiredValue ) {
+	public Step addBooleanStateStep( String title, String text, RuntimeResolver<edu.cmu.cs.dennisc.croquet.BooleanState> booleanStateResolver, boolean desiredValue ) {
 		return this.addStep( new BooleanStateStep( title, text, booleanStateResolver, desiredValue ) );
 	}
 	public Step addBooleanStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.BooleanState booleanState, boolean desiredValue ) {
 		return this.addStep( new BooleanStateStep( title, text, new SelfResolver<edu.cmu.cs.dennisc.croquet.BooleanState>( booleanState ), desiredValue ) );
 	}
 
-	public Step addDialogOpenAndCloseStep( String title, String openText, String closeText, Resolver<edu.cmu.cs.dennisc.croquet.DialogOperation> dialogOperationResolver ) {
+	public Step addDialogOpenAndCloseStep( String title, String openText, String closeText, RuntimeResolver<edu.cmu.cs.dennisc.croquet.DialogOperation> dialogOperationResolver ) {
 		return this.addStep( new DialogOpenAndCloseStep( title, openText, closeText, dialogOperationResolver ) );
 	}
 	public Step addDialogOpenAndCloseStep( String title, String openText, String closeText, edu.cmu.cs.dennisc.croquet.DialogOperation dialogOperation ) {
 		return this.addStep( new DialogOpenAndCloseStep( title, openText, closeText, new SelfResolver<edu.cmu.cs.dennisc.croquet.DialogOperation>( dialogOperation ) ) );
 	}
 
-	public Step addInputDialogOpenAndCommitStep( String title, String openText, String commitText, Resolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> inputDialogOperationResolver, InputDialogOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
+	public Step addInputDialogOpenAndCommitStep( String title, String openText, String commitText, RuntimeResolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> inputDialogOperationResolver, InputDialogOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
 		return this.addStep( new InputDialogOpenAndCommitStep( title, openText, commitText, inputDialogOperationResolver, completorValidatorOkButtonDisabler, completorValidatorOkButtonDisabler, completorValidatorOkButtonDisabler ) );
 	}
 	public Step addInputDialogOpenAndCommitStep( String title, String openText, String commitText, edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> inputDialogOperation, InputDialogOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
 		return this.addStep( new InputDialogOpenAndCommitStep( title, openText, commitText, new SelfResolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>>( inputDialogOperation ), completorValidatorOkButtonDisabler, completorValidatorOkButtonDisabler, completorValidatorOkButtonDisabler ) );
 	}
 	
-	public Step addPopupMenuStep( String title, String popupText, Resolver<edu.cmu.cs.dennisc.croquet.PopupMenuOperation> popupMenuResolver, String commitText, PopupMenuOperationCompletorValidator completorValidator ) {
+	public Step addPopupMenuStep( String title, String popupText, RuntimeResolver<edu.cmu.cs.dennisc.croquet.PopupMenuOperation> popupMenuResolver, String commitText, PopupMenuOperationCompletorValidator completorValidator ) {
 		return this.addStep( new PopupMenuStep( title, popupText, popupMenuResolver, commitText, completorValidator, completorValidator ) );
 	}
 	public Step addPopupMenuStep( String title, String popupText, edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenu, String commitText, PopupMenuOperationCompletorValidator completorValidator ) {
 		return this.addStep( new PopupMenuStep( title, popupText, new SelfResolver<edu.cmu.cs.dennisc.croquet.PopupMenuOperation>( popupMenu ), commitText, completorValidator, completorValidator ) );
 	}
 	
-	public <E> Step addListSelectionStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
+	public <E> Step addListSelectionStep( String title, String text, RuntimeResolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, RuntimeResolver<? extends E> itemResolver ) {
 		return this.addStep( new ListSelectionStateStep<E>( title, text, itemSelectionStateResolver, itemResolver, Feature.ConnectionPreference.EAST_WEST ) );
 	}
-	public <E> Step addListSelectionStep( String title, String text, edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState, Resolver<? extends E> itemResolver ) {
+	public <E> Step addListSelectionStep( String title, String text, edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState, RuntimeResolver<? extends E> itemResolver ) {
 		return this.addStep( new ListSelectionStateStep<E>( title, text, new SelfResolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>>( itemSelectionState ), itemResolver, Feature.ConnectionPreference.EAST_WEST ) );
 	}
 	
-	public <E> Step addSelectTabStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
+	public <E> Step addSelectTabStep( String title, String text, RuntimeResolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, RuntimeResolver<? extends E> itemResolver ) {
 		return this.addStep( new ListSelectionStateStep<E>( title, text, itemSelectionStateResolver, itemResolver, Feature.ConnectionPreference.NORTH_SOUTH ) );
 	}
-	public <E> Step addSelectTabStep( String title, String text, edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState, Resolver<? extends E> itemResolver ) {
+	public <E> Step addSelectTabStep( String title, String text, edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState, RuntimeResolver<? extends E> itemResolver ) {
 		return this.addStep( new ListSelectionStateStep<E>( title, text, new SelfResolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>>( itemSelectionState ), itemResolver, Feature.ConnectionPreference.NORTH_SOUTH ) );
 	}
 	
-	public <E> Step addSpotlightTabTitleStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
+	public <E> Step addSpotlightTabTitleStep( String title, String text, RuntimeResolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, RuntimeResolver<? extends E> itemResolver ) {
 		return this.addStep( new SpotlightStep( title, text, new ItemSelectionStateItemResolver( itemSelectionStateResolver, itemResolver ), Feature.ConnectionPreference.NORTH_SOUTH ) );
 	}
-	public <E> Step addSpotlightTabTitleStep( String title, String text, edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState, Resolver<? extends E> itemResolver ) {
+	public <E> Step addSpotlightTabTitleStep( String title, String text, edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState, RuntimeResolver<? extends E> itemResolver ) {
 		return this.addStep( new SpotlightStep( title, text, new ItemSelectionStateItemResolver( new SelfResolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>>( itemSelectionState ), itemResolver ), Feature.ConnectionPreference.NORTH_SOUTH ) );
 	}
 
-	public <E> Step addSpotlightTabMainComponentStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
+	public <E> Step addSpotlightTabMainComponentStep( String title, String text, RuntimeResolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, RuntimeResolver<? extends E> itemResolver ) {
 		return this.addStep( new SpotlightStep( title, text, new MainComponentResolver( itemSelectionStateResolver, itemResolver ), Feature.ConnectionPreference.EAST_WEST ) );
 	}
-	public <E> Step addSpotlightTabMainComponentStep( String title, String text, edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState, Resolver<? extends E> itemResolver ) {
+	public <E> Step addSpotlightTabMainComponentStep( String title, String text, edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState, RuntimeResolver<? extends E> itemResolver ) {
 		return this.addStep( new SpotlightStep( title, text, new MainComponentResolver( new SelfResolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>>( itemSelectionState ), itemResolver ), Feature.ConnectionPreference.EAST_WEST ) );
 	}
 
-	public <E> Step addSpotlightTabScrollPaneStep( String title, String text, Resolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, Resolver<? extends E> itemResolver ) {
+	public <E> Step addSpotlightTabScrollPaneStep( String title, String text, RuntimeResolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>> itemSelectionStateResolver, RuntimeResolver<? extends E> itemResolver ) {
 		return this.addStep( new SpotlightStep( title, text, new ScrollPaneResolver( itemSelectionStateResolver, itemResolver ), Feature.ConnectionPreference.EAST_WEST ) );
 	}
-	public <E> Step addSpotlightTabScrollPaneStep( String title, String text, edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState, Resolver<? extends E> itemResolver ) {
+	public <E> Step addSpotlightTabScrollPaneStep( String title, String text, edu.cmu.cs.dennisc.croquet.ListSelectionState<E> itemSelectionState, RuntimeResolver<? extends E> itemResolver ) {
 		return this.addStep( new SpotlightStep( title, text, new ScrollPaneResolver( new SelfResolver<edu.cmu.cs.dennisc.croquet.ListSelectionState<E>>( itemSelectionState ), itemResolver ), Feature.ConnectionPreference.EAST_WEST ) );
 	}
 
 	
 	
-	private Step addDragAndDropStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, String inputDialogText, DragAndDropOperationCompletorValidator completorValidator, edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler externalOkButtonDisabler ) {
+	private Step addDragAndDropStep( String title, String text, RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, String inputDialogText, DragAndDropOperationCompletorValidator completorValidator, edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler externalOkButtonDisabler ) {
 		return this.addStep( new DragAndDropStep( title, text, dragResolver, dropText, dropShapeResolver, popupMenuText, inputDialogText, completorValidator, completorValidator, externalOkButtonDisabler ) );
 	}
 
-	public Step addDragAndDropStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, DragAndDropOperationCompletorValidator completorValidator ) {
+	public Step addDragAndDropStep( String title, String text, RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, DragAndDropOperationCompletorValidator completorValidator ) {
 		return this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, null, null, completorValidator, null );
 	}
-	public Step addDragAndDropToPopupMenuStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, DragAndDropOperationCompletorValidator completorValidator ) {
+	public Step addDragAndDropToPopupMenuStep( String title, String text, RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, DragAndDropOperationCompletorValidator completorValidator ) {
 		return this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, popupMenuText, null, completorValidator, null );
 	}
-	public Step addDragAndDropToInputDialogStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String inputDialogText, DragAndDropOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
+	public Step addDragAndDropToInputDialogStep( String title, String text, RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String inputDialogText, DragAndDropOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
 		return this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, null, inputDialogText, completorValidatorOkButtonDisabler, completorValidatorOkButtonDisabler );
 	}
-	public Step addDragAndDropToPopupMenuToInputDialogStep( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, String inputDialogText, DragAndDropOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
+	public Step addDragAndDropToPopupMenuToInputDialogStep( String title, String text, RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, String inputDialogText, DragAndDropOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
 		return this.addDragAndDropStep(title, text, dragResolver, dropText, dropShapeResolver, popupMenuText, inputDialogText, completorValidatorOkButtonDisabler, completorValidatorOkButtonDisabler );
 	}
 
-	public Step addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, DragAndDropOperationCompletorValidator completorValidator ) {
+	public Step addDragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation, String dropText, RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, DragAndDropOperationCompletorValidator completorValidator ) {
 		return this.addDragAndDropStep(title, text, new SelfResolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation>( dragOperation ), dropText, dropShapeResolver, null, null, completorValidator, null );
 	}
-	public Step addDragAndDropToPopupMenuStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, DragAndDropOperationCompletorValidator completorValidator ) {
+	public Step addDragAndDropToPopupMenuStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation, String dropText, RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, DragAndDropOperationCompletorValidator completorValidator ) {
 		return this.addDragAndDropStep(title, text, new SelfResolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation>( dragOperation ), dropText, dropShapeResolver, popupMenuText, null, completorValidator, null );
 	}
-	public Step addDragAndDropToInputDialogStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String inputDialogText, DragAndDropOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
+	public Step addDragAndDropToInputDialogStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation, String dropText, RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String inputDialogText, DragAndDropOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
 		return this.addDragAndDropStep(title, text, new SelfResolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation>( dragOperation ), dropText, dropShapeResolver, null, inputDialogText, completorValidatorOkButtonDisabler, completorValidatorOkButtonDisabler );
 	}
-	public Step addDragAndDropToPopupMenuToInputDialogStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, String inputDialogText, DragAndDropOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
+	public Step addDragAndDropToPopupMenuToInputDialogStep( String title, String text, edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation, String dropText, RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, String inputDialogText, DragAndDropOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
 		return this.addDragAndDropStep(title, text, new SelfResolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation>( dragOperation ), dropText, dropShapeResolver, popupMenuText, inputDialogText, completorValidatorOkButtonDisabler, completorValidatorOkButtonDisabler );
 	}
 
-	public Step addDragAndDropStepForModel( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.Model> dropModelResolver, DragAndDropOperationCompletorValidator completorValidator ) {
+	public Step addDragAndDropStepForModel( String title, String text, RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.Model> dropModelResolver, DragAndDropOperationCompletorValidator completorValidator ) {
 		return this.addDragAndDropStep(title, text, dragResolver, dropText, new FirstComponentResolver(dropModelResolver), null, null, completorValidator, null );
 	}
-	public Step addDragAndDropToPopupMenuStepForModel( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.Model> dropModelResolver, String popupMenuText, DragAndDropOperationCompletorValidator completorValidator ) {
+	public Step addDragAndDropToPopupMenuStepForModel( String title, String text, RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.Model> dropModelResolver, String popupMenuText, DragAndDropOperationCompletorValidator completorValidator ) {
 		return this.addDragAndDropStep(title, text, dragResolver, dropText, new FirstComponentResolver(dropModelResolver), popupMenuText, null, completorValidator, null );
 	}
-	public Step addDragAndDropToInputDialogStepForModel( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.Model> dropModelResolver, String inputDialogText, DragAndDropOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
+	public Step addDragAndDropToInputDialogStepForModel( String title, String text, RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.Model> dropModelResolver, String inputDialogText, DragAndDropOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
 		return this.addDragAndDropStep(title, text, dragResolver, dropText, new FirstComponentResolver(dropModelResolver), null, inputDialogText, completorValidatorOkButtonDisabler, completorValidatorOkButtonDisabler );
 	}
-	public Step addDragAndDropToPopupMenuToInputDialogStepForModel( String title, String text, Resolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.Model> dropModelResolver, String popupMenuText, String inputDialogText, DragAndDropOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
+	public Step addDragAndDropToPopupMenuToInputDialogStepForModel( String title, String text, RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.Model> dropModelResolver, String popupMenuText, String inputDialogText, DragAndDropOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
 		return this.addDragAndDropStep(title, text, dragResolver, dropText, new FirstComponentResolver(dropModelResolver), popupMenuText, inputDialogText, completorValidatorOkButtonDisabler, completorValidatorOkButtonDisabler );
 	}
 
-	public Step addDragAndDropStepForModel( String title, String text, edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.Model> dropModelResolver, DragAndDropOperationCompletorValidator completorValidator ) {
+	public Step addDragAndDropStepForModel( String title, String text, edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation, String dropText, RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.Model> dropModelResolver, DragAndDropOperationCompletorValidator completorValidator ) {
 		return this.addDragAndDropStep(title, text, new SelfResolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation>( dragOperation ), dropText, new FirstComponentResolver(dropModelResolver), null, null, completorValidator, null );
 	}
-	public Step addDragAndDropToPopupMenuStepForModel( String title, String text, edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.Model> dropModelResolver, String popupMenuText, DragAndDropOperationCompletorValidator completorValidator ) {
+	public Step addDragAndDropToPopupMenuStepForModel( String title, String text, edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation, String dropText, RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.Model> dropModelResolver, String popupMenuText, DragAndDropOperationCompletorValidator completorValidator ) {
 		return this.addDragAndDropStep(title, text, new SelfResolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation>( dragOperation ), dropText, new FirstComponentResolver(dropModelResolver), popupMenuText, null, completorValidator, null );
 	}
-	public Step addDragAndDropToInputDialogStepForModel( String title, String text, edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.Model> dropModelResolver, String inputDialogText, DragAndDropOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
+	public Step addDragAndDropToInputDialogStepForModel( String title, String text, edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation, String dropText, RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.Model> dropModelResolver, String inputDialogText, DragAndDropOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
 		return this.addDragAndDropStep(title, text, new SelfResolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation>( dragOperation ), dropText, new FirstComponentResolver(dropModelResolver), null, inputDialogText, completorValidatorOkButtonDisabler, completorValidatorOkButtonDisabler );
 	}
-	public Step addDragAndDropToPopupMenuToInputDialogStepForModel( String title, String text, edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.Model> dropModelResolver, String popupMenuText, String inputDialogText, DragAndDropOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
+	public Step addDragAndDropToPopupMenuToInputDialogStepForModel( String title, String text, edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation, String dropText, RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.Model> dropModelResolver, String popupMenuText, String inputDialogText, DragAndDropOperationCompletorValidatorOkButtonDisabler completorValidatorOkButtonDisabler ) {
 		return this.addDragAndDropStep(title, text, new SelfResolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation>( dragOperation ), dropText, new FirstComponentResolver(dropModelResolver), popupMenuText, inputDialogText, completorValidatorOkButtonDisabler, completorValidatorOkButtonDisabler );
 	}
 

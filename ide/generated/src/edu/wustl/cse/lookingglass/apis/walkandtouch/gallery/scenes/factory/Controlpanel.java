@@ -44,10 +44,9 @@
 package edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.scenes.factory;
 
 public class Controlpanel extends edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.GalleryModel { 
-	edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> On= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
+	final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> On= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>( false );  
 	public Controlpanel() {
 		super( "factory/controlpanel" );
-		edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean> On= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Boolean>();  
 }
 	public enum Part {
 		Button( "button" ),

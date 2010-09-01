@@ -42,12 +42,12 @@
  */
 package org.alice.ide.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.Resolver;
+import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class PredeterminedTabResolver implements Resolver< edu.cmu.cs.dennisc.croquet.PredeterminedTab > {
+/*package-private*/ class PredeterminedTabResolver implements RuntimeResolver< edu.cmu.cs.dennisc.croquet.PredeterminedTab > {
 		private edu.cmu.cs.dennisc.croquet.TabSelectionState tabSelectionOperation;
 		private java.util.UUID id;
 		public PredeterminedTabResolver( edu.cmu.cs.dennisc.croquet.TabSelectionState tabSelectionOperation, java.util.UUID id ) {

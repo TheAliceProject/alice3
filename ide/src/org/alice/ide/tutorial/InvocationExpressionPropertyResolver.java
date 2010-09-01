@@ -42,13 +42,13 @@
  */
 package org.alice.ide.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.Resolver;
+import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
 /*package-private*/abstract class InvocationExpressionPropertyResolver extends InvocationOperationResolver<edu.cmu.cs.dennisc.croquet.PopupMenuOperation> {
-	public InvocationExpressionPropertyResolver(Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int invocationIndex) {
+	public InvocationExpressionPropertyResolver(RuntimeResolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int invocationIndex) {
 		super( methodResolver, invocationIndex );
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty(edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation);

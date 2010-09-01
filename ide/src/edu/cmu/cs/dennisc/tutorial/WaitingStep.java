@@ -46,12 +46,12 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/ abstract class WaitingStep<M extends edu.cmu.cs.dennisc.croquet.Model > extends FeatureStep {
-	private edu.cmu.cs.dennisc.croquet.Resolver< M > modelResolver;
-	public WaitingStep( String title, String text, Feature feature, edu.cmu.cs.dennisc.croquet.Resolver< M > modelResolver ) {
+	private edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > modelResolver;
+	public WaitingStep( String title, String text, Feature feature, edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > modelResolver ) {
 		super( title, text, feature );
 		this.modelResolver = modelResolver;
 	}
-	private edu.cmu.cs.dennisc.croquet.Resolver< M > getModelResolver() {
+	private edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > getModelResolver() {
 		return this.modelResolver;
 	}
 	protected M getModel() {

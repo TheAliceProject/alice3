@@ -42,14 +42,14 @@
  */
 package org.alice.ide.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.Resolver;
+import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class CodeBodyStatementListPropertyResolver implements Resolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > {
-	private Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractCode> codeResolver;
-	public CodeBodyStatementListPropertyResolver(Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractCode> codeResolver) {
+/*package-private*/ class CodeBodyStatementListPropertyResolver implements RuntimeResolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > {
+	private RuntimeResolver<edu.cmu.cs.dennisc.alice.ast.AbstractCode> codeResolver;
+	public CodeBodyStatementListPropertyResolver(RuntimeResolver<edu.cmu.cs.dennisc.alice.ast.AbstractCode> codeResolver) {
 		this.codeResolver = codeResolver;
 	}
 	public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getResolved() {

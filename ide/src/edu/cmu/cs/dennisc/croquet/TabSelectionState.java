@@ -66,11 +66,11 @@ public class TabSelectionState extends ListSelectionState<PredeterminedTab> {
 		}
 	};
 	
-	public TabSelectionState( Group group, java.util.UUID individualUUID ) {
-		super( group, individualUUID, PredeterminedTabCodec.SINGLETON );
+	public TabSelectionState( Group group, java.util.UUID id ) {
+		super( group, id, PredeterminedTabCodec.SINGLETON );
 	}
-	public TabSelectionState( Group group, java.util.UUID individualUUID, int selectedIndex, PredeterminedTab... tabs ) {
-		this( group, individualUUID );
+	public TabSelectionState( Group group, java.util.UUID id, int selectedIndex, PredeterminedTab... tabs ) {
+		this( group, id );
 		this.setListData( selectedIndex, tabs );
 	}
 

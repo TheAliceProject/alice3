@@ -46,7 +46,10 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class CompositeOperationContext extends OperationContext<CompositeOperation> {
-	public CompositeOperationContext( ModelContext<?> parent, CompositeOperation operation, java.util.EventObject e, ViewController< ?,? > viewController ) {
-		super( parent, operation, e, viewController );
+	/*package-private*/ CompositeOperationContext( CompositeOperation operation, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( operation, e, viewController );
+	}
+	public CompositeOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

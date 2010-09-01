@@ -195,7 +195,7 @@ public class Horse extends edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.
 	}
 
 	public void Run( final Number Distance) {
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> Speed= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();  Speed.value = new Double(0.3);;
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> Speed= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 0.3 );
 		 
 		 if (Speed.value < 0) Speed.value = -1.0 * Speed.value;
 		 
@@ -461,8 +461,8 @@ public class Horse extends edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.
 	}
 
 	public void Rear( ) {
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> SpeedGoingUp= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();  SpeedGoingUp.value = new Double(1.0);;
-		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> SpeedGoingDown= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>();  SpeedGoingDown.value = new Double(1.0);;
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> SpeedGoingUp= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 1.0 );
+		 final edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double> SpeedGoingDown= new edu.cmu.cs.dennisc.alice.virtualmachine.Variable<Double>( 1.0 );
 		org.alice.virtualmachine.DoTogether.invokeAndWait(
 			new Runnable() {
 				public void run() {

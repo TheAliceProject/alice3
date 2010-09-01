@@ -42,15 +42,15 @@
  */
 package org.alice.ide.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.Resolver;
+import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class MethodInvocationStatementPopupMenuResolver implements Resolver<edu.cmu.cs.dennisc.croquet.PopupMenuOperation> {
-	private Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver;
+/*package-private*/class MethodInvocationStatementPopupMenuResolver implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.PopupMenuOperation> {
+	private RuntimeResolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver;
 	private int index;
-	public MethodInvocationStatementPopupMenuResolver(Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int index) {
+	public MethodInvocationStatementPopupMenuResolver(RuntimeResolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int index) {
 		this.methodResolver = methodResolver;
 		this.index = index;
 	}

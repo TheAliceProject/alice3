@@ -46,8 +46,8 @@ package org.alice.ide.croquet.models.projecturi;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractSaveOperation extends UriActionOperation {
-	public AbstractSaveOperation( java.util.UUID individualUUID ) {
-		super( individualUUID );
+	public AbstractSaveOperation( java.util.UUID id ) {
+		super( id );
 	}
 
 	protected abstract boolean isPromptNecessary( java.io.File file );

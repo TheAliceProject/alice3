@@ -57,8 +57,8 @@ public abstract class CompositeOperation extends Operation<CompositeOperationCon
 			}
 		}
 	}
-	public CompositeOperation( Group group, java.util.UUID individualUUID ) {
-		super( group, individualUUID );
+	public CompositeOperation( Group group, java.util.UUID id ) {
+		super( group, id );
 	}
 	@Override
 	protected CompositeOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
