@@ -63,6 +63,7 @@ import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Component;
@@ -456,20 +457,22 @@ public class SnapUtilities
 	public static Point3 doMovementSnapping(Transformable t, Point3 currentPosition, AbstractDragAdapter dragAdapter, ReferenceFrame referenceFrame, AbstractCamera camera)
 	{
 		Point3 snapPosition = new Point3(currentPosition);
-		
-		//Try snapping to various snaps
-		if (dragAdapter.getSnapState().shouldSnapToGround())
+		if (dragAdapter != null && dragAdapter.getSnapState() != null)
 		{
-			snapPosition = SnapUtilities.snapObjectToGround(t, currentPosition, referenceFrame);
-		}
-		if (dragAdapter.getSnapState().shouldSnapToGrid())
-		{
-			snapPosition = SnapUtilities.snapObjectToGrid(t, snapPosition, dragAdapter.getSnapState().getGridSpacing(), referenceFrame);
-		}
-		//Visualize any snapping that happened
-		if (camera != null)
-		{
-			SnapUtilities.showSnapLines(camera, currentPosition, snapPosition, referenceFrame);
+			//Try snapping to various snaps
+			if (dragAdapter.getSnapState().shouldSnapToGround())
+			{
+				snapPosition = SnapUtilities.snapObjectToGround(t, currentPosition, referenceFrame);
+			}
+			if (dragAdapter.getSnapState().shouldSnapToGrid())
+			{
+				snapPosition = SnapUtilities.snapObjectToGrid(t, snapPosition, dragAdapter.getSnapState().getGridSpacing(), referenceFrame);
+			}
+			//Visualize any snapping that happened
+			if (camera != null)
+			{
+				SnapUtilities.showSnapLines(camera, currentPosition, snapPosition, referenceFrame);
+			}
 		}
 		//Apply the new snap position
 		return snapPosition;
@@ -582,9 +585,12 @@ public class SnapUtilities
 	{
 		Angle snapAngle = new AngleInRadians(currentAngle);
 		//Try snapping to various snaps
-		if (dragAdapter.getSnapState().shouldSnapToRotation())
+		if (dragAdapter != null && dragAdapter.getSnapState() != null)
 		{
-			snapAngle = snapObjectToAngle(currentAngle, dragAdapter.getSnapState().getRotationSnapAngle());
+			if (dragAdapter.getSnapState().shouldSnapToRotation())
+			{
+				snapAngle = snapObjectToAngle(currentAngle, dragAdapter.getSnapState().getRotationSnapAngle());
+			}
 		}
 		return snapAngle;
 	}

@@ -1311,8 +1311,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		//Find the new scene's main perspective camera
 		this.sgPerspectiveCamera = null;
 		for( int i = 0; i < this.onscreenLookingGlass.getCameraCount(); i++ ) {
-			if( this.onscreenLookingGlass.getCameraAt( 0 ) instanceof SymmetricPerspectiveCamera ) {
-				this.sgPerspectiveCamera = (SymmetricPerspectiveCamera)this.onscreenLookingGlass.getCameraAt( 0 );
+			if( this.onscreenLookingGlass.getCameraAt( i ) instanceof SymmetricPerspectiveCamera ) {
+				this.sgPerspectiveCamera = (SymmetricPerspectiveCamera)this.onscreenLookingGlass.getCameraAt( i );
 			}
 		}
 		assert this.sgPerspectiveCamera != null;
