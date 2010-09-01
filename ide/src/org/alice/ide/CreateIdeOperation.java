@@ -40,45 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class SingletonResolver<T> implements CodableResolver< T > {
-	private T instance;
-	public SingletonResolver( T instance ) {
-		this.instance = instance;
-	}
-	public SingletonResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.decode( binaryDecoder );
-	}
-	public T getResolved() {
-		return this.instance;
-	}
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		String clsName = binaryDecoder.decodeString();
-		try {
-			Class<T> cls = (Class<T>)Class.forName( clsName );
-			try {
-				java.lang.reflect.Method mthd = cls.getMethod( "getInstance" );
-				this.instance = (T)mthd.invoke( null );
-			} catch( IllegalAccessException iae ) {
-				throw new RuntimeException( iae );
-			} catch( IllegalArgumentException iae ) {
-				throw new RuntimeException( iae );
-			} catch( NoSuchMethodException nsme ) {
-				throw new RuntimeException( nsme );
-			} catch( java.lang.reflect.InvocationTargetException ite ) {
-				throw new RuntimeException( ite );
-			}
-		} catch( ClassNotFoundException cnfe ) {
-			throw new RuntimeException( cnfe );
+public class CreateIdeOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+	private static java.util.Map< Class<?>, CreateIdeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized CreateIdeOperation getInstance( Class<? extends IDE> cls ) {
+		CreateIdeOperation rv = map.get( cls );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new CreateIdeOperation( cls );
+			map.put( cls, rv );
 		}
+		return rv;
 	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		Class<T> cls = (Class<T>)this.instance.getClass();
-		String clsName = cls.getName();
-		binaryEncoder.encode( clsName );
+	private Class<? extends IDE> cls;
+	private CreateIdeOperation( Class<? extends IDE> cls ) {
+		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "3780661e-0bfe-4bc3-b8c8-a27f81b65632" ) );
+		this.cls = cls;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.CodableResolver< CreateIdeOperation > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.ClassKeyedResolver< CreateIdeOperation >( this, this.cls );
+	}
+	@Override
+	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		IDE ide = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( this.cls );
+		context.finish();
 	}
 }

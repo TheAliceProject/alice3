@@ -77,7 +77,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 	}
 	
 	public final Model getResolved() {
-		return (Model)this;
+		return this;
 	}
 	/*package-private*/ abstract void localize();
 	
@@ -86,11 +86,15 @@ public abstract class Model implements RuntimeResolver< Model > {
 		try {
 			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
 			String key;
+			
+			//todo?
 			if( cls.isMemberClass() ) {
 				key = cls.getSimpleName();
 			} else {
 				key = cls.getSimpleName();
 			}
+			
+			
 			if( subKey != null ) {
 				StringBuilder sb = new StringBuilder();
 				sb.append( key );

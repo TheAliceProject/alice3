@@ -45,24 +45,28 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class SingletonResolver<T> implements CodableResolver< T > {
+public abstract class KeyedResolver<T> implements CodableResolver< T > {
 	private T instance;
-	public SingletonResolver( T instance ) {
+	public KeyedResolver( T instance ) {
 		this.instance = instance;
 	}
-	public SingletonResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public KeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.decode( binaryDecoder );
 	}
 	public T getResolved() {
 		return this.instance;
 	}
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	protected abstract Class<?>[] getParameterTypes();
+	protected abstract Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
+	protected abstract void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
+	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		String clsName = binaryDecoder.decodeString();
+		Object[] arguments = this.decodeArguments( binaryDecoder );
 		try {
 			Class<T> cls = (Class<T>)Class.forName( clsName );
 			try {
-				java.lang.reflect.Method mthd = cls.getMethod( "getInstance" );
-				this.instance = (T)mthd.invoke( null );
+				java.lang.reflect.Method mthd = cls.getMethod( "getInstance", this.getParameterTypes() );
+				this.instance = (T)mthd.invoke( null, arguments );
 			} catch( IllegalAccessException iae ) {
 				throw new RuntimeException( iae );
 			} catch( IllegalArgumentException iae ) {
@@ -76,9 +80,10 @@ public final class SingletonResolver<T> implements CodableResolver< T > {
 			throw new RuntimeException( cnfe );
 		}
 	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		Class<T> cls = (Class<T>)this.instance.getClass();
 		String clsName = cls.getName();
 		binaryEncoder.encode( clsName );
+		this.encodeArguments( binaryEncoder );
 	}
 }
