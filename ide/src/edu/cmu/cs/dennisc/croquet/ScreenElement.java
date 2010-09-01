@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ScreenElement implements TrackableShape, Resolver< ScreenElement > {
+public abstract class ScreenElement implements TrackableShape, RuntimeResolver< ScreenElement > {
 	/*package-private*/ public abstract java.awt.Component getAwtComponent();
 	public final java.awt.Point convertPoint( java.awt.Point pt, ScreenElement destination ) {
 		return javax.swing.SwingUtilities.convertPoint( this.getAwtComponent(), pt, destination.getAwtComponent() );

@@ -42,12 +42,12 @@
  */
 package org.alice.ide.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.Resolver;
+import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class CurrentCodeEditorResolver<T> implements Resolver<T> {
+/*package-private*/ abstract class CurrentCodeEditorResolver<T> implements RuntimeResolver<T> {
 	protected abstract T getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor);
 	public final T getResolved() {
 		org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getCodeEditorInFocus();

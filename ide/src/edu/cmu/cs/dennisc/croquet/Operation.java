@@ -81,8 +81,8 @@ public abstract class Operation< C extends OperationContext<?>> extends Model {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 		}
 	};
-	public Operation( Group group, java.util.UUID individualUUID ) {
-		super( group, individualUUID );
+	public Operation( Group group, java.util.UUID id ) {
+		super( group, id );
 		this.localize();
 	}
 	

@@ -90,16 +90,16 @@ public /*final*/ class BooleanState extends Model {
 	private String trueText;
 	private String falseText;
 
-	public BooleanState(Group group, java.util.UUID individualUUID, boolean initialState ) {
-		super(group, individualUUID);
+	public BooleanState(Group group, java.util.UUID id, boolean initialState ) {
+		super(group, id);
 		this.value = initialState;
 		this.buttonModel.setSelected(initialState);
 		this.buttonModel.addItemListener(this.itemListener);
 		this.localize();
 	}
 	@Deprecated
-	public BooleanState(Group group, java.util.UUID individualUUID, boolean initialState, String name ) {
-		this(group, individualUUID, initialState );
+	public BooleanState(Group group, java.util.UUID id, boolean initialState, String name ) {
+		this(group, id, initialState );
 		this.setTextForBothTrueAndFalse( name );
 	}
 	

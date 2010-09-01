@@ -50,12 +50,15 @@ public class ListSelectionStateContext< T > extends ModelContext<ListSelectionSt
 	private T prevItem;
 	private int nextIndex;
 	private T nextItem;
-	/*package-private*/ ListSelectionStateContext( ModelContext<?> parent, ListSelectionState< T > itemSelectionState, java.util.EventObject e, ViewController< ?,? > viewController, int prevIndex, T prevItem, int nextIndex, T nextItem ) {
-		super( parent, itemSelectionState, e, viewController );
+	/*package-private*/ ListSelectionStateContext( ListSelectionState< T > itemSelectionState, java.util.EventObject e, ViewController< ?,? > viewController, int prevIndex, T prevItem, int nextIndex, T nextItem ) {
+		super( itemSelectionState, e, viewController );
 		this.prevIndex = prevIndex;
 		this.prevItem = prevItem;
 		this.nextIndex = nextIndex;
 		this.nextItem = nextItem;
+	}
+	public ListSelectionStateContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv ) {

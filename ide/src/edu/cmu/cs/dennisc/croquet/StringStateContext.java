@@ -52,8 +52,7 @@ public class StringStateContext extends ModelContext<StringState> {
 		public StringStateEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
-		private StringStateEvent( StringStateContext parent, javax.swing.event.DocumentEvent documentEvent ) {
-			super( parent );
+		private StringStateEvent( javax.swing.event.DocumentEvent documentEvent ) {
 			this.documentEvent = documentEvent;
 		}
 		public javax.swing.event.DocumentEvent getDocumentEvent() {
@@ -65,11 +64,14 @@ public class StringStateContext extends ModelContext<StringState> {
 		}
 	}
 	
-	/*package-private*/ StringStateContext( ModelContext<?> parent, StringState stringState, java.util.EventObject e, ViewController< ?,? > viewController ) {
-		super( parent, stringState, e, viewController );
+	/*package-private*/ StringStateContext( StringState stringState, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( stringState, e, viewController );
+	}
+	public StringStateContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 
 	/*package-private*/ void handleDocumentEvent( javax.swing.event.DocumentEvent e ) {
-		this.addChild( new StringStateEvent( this, e ) );
+		this.addChild( new StringStateEvent( e ) );
 	}
 }

@@ -42,12 +42,12 @@
  */
 package org.alice.ide.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.Resolver;
+import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class StatementWithBodyAssignableToStatementListPropertyResolver implements Resolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > {
+/*package-private*/class StatementWithBodyAssignableToStatementListPropertyResolver implements RuntimeResolver< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > {
 	private Class<? extends edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> cls;
 	private int index;
 	public StatementWithBodyAssignableToStatementListPropertyResolver(Class<? extends edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody> cls, int index) {

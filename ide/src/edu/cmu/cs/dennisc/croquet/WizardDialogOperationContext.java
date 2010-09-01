@@ -46,7 +46,10 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class WizardDialogOperationContext extends AbstractDialogOperationContext<WizardDialogOperation> {
-	/*package-private*/ WizardDialogOperationContext( ModelContext<?> parent, WizardDialogOperation wizardDialogOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
-		super( parent, wizardDialogOperation, e, viewController );
+	/*package-private*/ WizardDialogOperationContext( WizardDialogOperation wizardDialogOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( wizardDialogOperation, e, viewController );
+	}
+	public WizardDialogOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

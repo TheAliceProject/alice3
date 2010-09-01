@@ -40,15 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCompleteEvent extends Event {
-	/*package-private*/ AbstractCompleteEvent() {
-	}
-	public AbstractCompleteEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
+public interface CodableResolver<T> extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	public T getResolved();
 }

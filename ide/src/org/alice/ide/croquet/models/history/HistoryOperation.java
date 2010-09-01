@@ -46,8 +46,8 @@ package org.alice.ide.croquet.models.history;
  * @author Dennis Cosgrove
  */
 public abstract class HistoryOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-	public HistoryOperation( java.util.UUID individualUUID ) {
-		super( org.alice.ide.ProjectApplication.HISTORY_GROUP, individualUUID );
+	public HistoryOperation( java.util.UUID id ) {
+		super( org.alice.ide.ProjectApplication.HISTORY_GROUP, id );
 	}
 	protected abstract void performInternal( edu.cmu.cs.dennisc.history.HistoryManager historyManager );
 	@Override

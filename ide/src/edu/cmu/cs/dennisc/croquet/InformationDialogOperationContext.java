@@ -46,7 +46,10 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class InformationDialogOperationContext<J extends Component<?>> extends AbstractDialogOperationContext<InformationDialogOperation<J>> {
-	/*package-private*/ InformationDialogOperationContext( ModelContext<?> parent, InformationDialogOperation inputDialogOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
-		super( parent, inputDialogOperation, e, viewController );
+	/*package-private*/ InformationDialogOperationContext( InformationDialogOperation<J> inputDialogOperation, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( inputDialogOperation, e, viewController );
+	}
+	public InformationDialogOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

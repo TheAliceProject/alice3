@@ -42,12 +42,12 @@
  */
 package org.alice.ide.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.Resolver;
+import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class DeclareMemberResolver<M extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> implements Resolver<M> {
+/*package-private*/ abstract class DeclareMemberResolver<M extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> implements RuntimeResolver<M> {
 	protected abstract M getResolved(edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type);
 	public M getResolved() {
 		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.IDE.getSingleton().getAccessibleListState().getSelectedItem();

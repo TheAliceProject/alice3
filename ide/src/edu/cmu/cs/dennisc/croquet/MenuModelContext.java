@@ -47,8 +47,11 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class MenuModelContext extends ModelContext<MenuModel> {
-	/*package-private*/ MenuModelContext( ModelContext< ? > parent, MenuModel menuModel, java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		super( parent, menuModel, e, viewController );
+	/*package-private*/ MenuModelContext( MenuModel menuModel, java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		super( menuModel, e, viewController );
+	}
+	public MenuModelContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 //	public static abstract class MenuEvent extends ModelEvent< MenuModelContext > {
 //		private java.util.EventObject menuEvent;

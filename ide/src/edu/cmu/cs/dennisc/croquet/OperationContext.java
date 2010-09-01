@@ -46,8 +46,11 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class OperationContext<O extends Operation<?>> extends ModelContext<O> {
-	public OperationContext( ModelContext<?> parent, O operation, java.util.EventObject e, ViewController< ?,? > viewController ) {
-		super( parent, operation, e, viewController );
+	/*package-private*/ OperationContext( O operation, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( operation, e, viewController );
+	}
+	/*package-private*/ OperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 	public java.awt.Point getPoint() {
 		java.awt.event.MouseEvent mouseEvent = this.getMouseEvent();

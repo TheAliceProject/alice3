@@ -46,7 +46,10 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class BooleanStateContext extends ModelContext<BooleanState> {
-	/*package-private*/ BooleanStateContext( ModelContext<?> parent, BooleanState booleanState, java.awt.event.ItemEvent e, ViewController< ?,? > viewController ) {
-		super( parent, booleanState, e, viewController );
+	/*package-private*/ BooleanStateContext( BooleanState booleanState, java.awt.event.ItemEvent e, ViewController< ?,? > viewController ) {
+		super( booleanState, e, viewController );
+	}
+	public BooleanStateContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

@@ -79,11 +79,11 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	private static final java.awt.Stroke ARROW_STROKE = new java.awt.BasicStroke( 3.0f ); 
 
-	private edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver;
+	private edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver;
 	private ConnectionPreference connectionPreference;
 	private Integer heightConstraint = null;
 	private boolean isEntered = false;
-	public Feature( edu.cmu.cs.dennisc.croquet.Resolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
+	public Feature( edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
 		//assert trackableShape != null;
 		this.trackableShapeResolver = trackableShapeResolver;
 		this.connectionPreference = connectionPreference;

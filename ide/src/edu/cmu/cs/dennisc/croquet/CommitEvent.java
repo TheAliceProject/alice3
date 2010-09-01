@@ -47,12 +47,11 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public class CommitEvent extends AbstractCompleteEvent {
 	private Edit<?> edit;
+	/*package-private*/ CommitEvent( Edit<?> edit ) {
+		this.edit = edit;
+	}
 	public CommitEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-	}
-	public CommitEvent( ModelContext parent, Edit<?> edit ) {
-		super( parent );
-		this.edit = edit;
 	}
 	@Override
 	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

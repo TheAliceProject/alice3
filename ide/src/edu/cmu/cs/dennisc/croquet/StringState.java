@@ -91,8 +91,8 @@ public class StringState extends Model {
 		}
 	};
 
-	public StringState(Group group, java.util.UUID individualUUID, String initialState) {
-		super(group, individualUUID);
+	public StringState(Group group, java.util.UUID id, String initialState) {
+		super(group, id);
 		this.document = new javax.swing.text.PlainDocument();
 		try {
 			this.document.insertString(0, initialState, null);

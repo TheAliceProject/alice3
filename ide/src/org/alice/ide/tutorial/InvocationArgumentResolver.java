@@ -42,14 +42,14 @@
  */
 package org.alice.ide.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.Resolver;
+import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
 /*package-private*/class InvocationArgumentResolver extends InvocationExpressionPropertyResolver {
 	private int argumentIndex;
-	public InvocationArgumentResolver(Resolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int invocationIndex, int argumentIndex) {
+	public InvocationArgumentResolver(RuntimeResolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int invocationIndex, int argumentIndex) {
 		super(methodResolver, invocationIndex);
 		this.argumentIndex = argumentIndex;
 	}

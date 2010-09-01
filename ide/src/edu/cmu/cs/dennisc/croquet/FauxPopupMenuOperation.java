@@ -47,8 +47,8 @@ package edu.cmu.cs.dennisc.croquet;
  */
 @Deprecated
 /*public*/ abstract class FauxPopupMenuOperation extends ActionOperation {
-	public FauxPopupMenuOperation( Group group, java.util.UUID individualUUID ) {
-		super( group, individualUUID );
+	public FauxPopupMenuOperation( Group group, java.util.UUID id ) {
+		super( group, id );
 	}
 	private static class ArrowIcon extends AbstractArrowIcon {
 		public ArrowIcon( int size ) {

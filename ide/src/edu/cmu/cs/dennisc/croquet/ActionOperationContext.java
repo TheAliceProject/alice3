@@ -46,7 +46,10 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class ActionOperationContext extends OperationContext<ActionOperation> {
-	public ActionOperationContext( ModelContext<?> parent, ActionOperation operation, java.util.EventObject e, ViewController< ?,? > viewController ) {
-		super( parent, operation, e, viewController );
+	/*package-private*/ ActionOperationContext( ActionOperation operation, java.util.EventObject e, ViewController< ?,? > viewController ) {
+		super( operation, e, viewController );
+	}
+	public ActionOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

@@ -59,8 +59,9 @@ public abstract class Edit<M extends Model> implements edu.cmu.cs.dennisc.codec.
 		if( this.context != null ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: resolve", this.contextId );
+			this.context = HistoryNode.lookup( this.contextId );
 		}
+		assert this.context != null;
 		return this.context;
 	}
 	public M getModel() {

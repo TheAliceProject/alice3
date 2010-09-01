@@ -329,15 +329,15 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 	private final SingleListSelectionModel listSelectionModel = new SingleListSelectionModel();
 	private final ComboBoxModel comboBoxModel = new ComboBoxModel();
 	private Codec< E > codec;
-	public ListSelectionState(Group group, java.util.UUID individualUUID, Codec< E > codec, int selectedIndex, E... items) {
-		super(group, individualUUID);
+	public ListSelectionState(Group group, java.util.UUID id, Codec< E > codec, int selectedIndex, E... items) {
+		super(group, id);
 		this.codec = codec;
 		this.listSelectionModel.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		this.comboBoxModel.setListData(selectedIndex, items);
 		this.localize();
 	}
-	public ListSelectionState(Group group, java.util.UUID individualUUID, Codec< E > codec) {
-		this(group, individualUUID, codec, -1);
+	public ListSelectionState(Group group, java.util.UUID id, Codec< E > codec) {
+		this(group, id, codec, -1);
 	}
 	@Override
 	/*package-private*/ void localize() {

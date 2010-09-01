@@ -45,26 +45,48 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Model implements Resolver< Model > {
+public abstract class Model implements RuntimeResolver< Model > {
 	private static final int NULL_MNEMONIC = 0;
 	private static final int NULL_ACCELERATOR_MASK = 0;
 	private Group group;
-	private java.util.UUID inividualUUID;
-	public Model( Group group, java.util.UUID inividualUUID ) {
+	private java.util.UUID id;
+	private CodableResolver codableResolver;
+	public Model( Group group, java.util.UUID id ) {
 		this.group = group;
-		this.inividualUUID = inividualUUID;
+		this.id = id;
 	}
 	public Group getGroup() {
 		return this.group;
 	}
-	public java.util.UUID getIndividualUUID() {
-		return this.inividualUUID;
+	
+	//todo
+	public java.util.UUID getId() {
+		return this.id;
+	}
+	
+	protected <M extends Model> CodableResolver< M > createCodableResolver() {
+		return new CodableResolver< M >() {
+			public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			}
+			public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			}
+			public M getResolved() {
+				return (M)Model.this;
+			}
+		};
+	}
+	public <M extends Model> CodableResolver< M > getCodableResolver() {
+		if( this.codableResolver != null ) {
+			//pass
+		} else {
+			this.codableResolver = this.createCodableResolver();
+		}
+		return this.codableResolver;
 	}
 	
 	public final Model getResolved() {
 		return (Model)this;
 	}
-
 	/*package-private*/ abstract void localize();
 	
 	protected static String getLocalizedText( Class<?> cls, String subKey ) {
@@ -325,56 +347,6 @@ public abstract class Model implements Resolver< Model > {
 			this.firstComponentHint = firstComponentHint;
 		}
 	}
-//	public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
-//		Component< ? > component = this.getFirstComponent();
-//		if( component != null ) {
-//			return component.getShape( asSeenBy, insets );
-//		} else {
-//			return null;
-//		}
-//	}
-//	public java.awt.Shape getVisibleShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
-//		Component< ? > component = this.getFirstComponent();
-//		if( component != null ) {
-//			return component.getVisibleShape( asSeenBy, insets );
-//		} else {
-//			return null;
-//		}
-//	}
-//	public ScrollPane getScrollPaneAncestor() {
-//		Component< ? > component = this.getFirstComponent();
-//		if( component != null ) {
-//			return component.getScrollPaneAncestor();
-//		} else {
-//			return null;
-//		}
-//	}
-//	public boolean isInView() {
-//		Component< ? > component = this.getFirstComponent();
-//		if( component != null ) {
-//			return component.isInView();
-//		} else {
-//			return false;
-//		}
-//	}
-
-//	@Deprecated
-//	public <J extends Component<?>> J getFirstComponent( Class<J> cls ) {
-//		for( Component<?> component : this.components ) {
-//			if( cls.isAssignableFrom( component.getClass() ) ) {
-//				return (J)component;
-//			}
-//		}
-//		return null;
-//	}
-	
-//	protected abstract void perform( C context );
-//	protected abstract C createContext( CompositeContext parentContext, java.util.EventObject e, CancelEffectiveness cancelEffectiveness );
-//	protected final void performAsChildInCurrentContext( java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
-//		CompositeContext parentContext = Application.getSingleton().getCurrentCompositeContext();
-//		C context = this.createContext( parentContext, e, cancelEffectiveness );
-//		parentContext.performAsChild( this, context );
-//	}
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
