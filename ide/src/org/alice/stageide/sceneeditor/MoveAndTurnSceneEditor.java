@@ -1319,13 +1319,18 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			}
 		}
 		assert this.sgPerspectiveCamera != null;
-
+		//Add and set up the snap grid (this needs to happen before setting the camera)
+		this.scene.getSGComposite().addComponent(this.snapGrid);
+		this.snapGrid.setTranslationOnly(0, 0, 0, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE);
+		this.snapGrid.setShowing(this.snapState.shouldShowSnapGrid());
+		
+		//Initialize stuff that needs a camera
+		this.setCameras(this.sgPerspectiveCamera, this.sgOrthographicCamera);
+		
 		//Add the orthographic camera to this scene
 		this.scene.getSGComposite().addComponent( this.sgOrthographicCamera.getParent() );
 		//Add the orthographic markers
 		addCameraMarkersToScene(this.scene);
-		//Clear the selection on the camera markers so we can set them to the values specified by the scene
-		
 		this.openingSceneMarker.setLocalTransformation(this.sgPerspectiveCamera.getAbsoluteTransformation());
 		
 		AffineMatrix4x4 sceneViewTransform = getSGCameraForCreatingMarker().getTransformation( AsSeenBy.SCENE.getSGReferenceFrame() );
@@ -1340,14 +1345,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		{
 			this.sceneViewMarker.setLocalTransformation(sceneViewTransform);
 		}
-
-		//Add and set up the snap grid (this needs to happen before setting the camera)
-		this.scene.getSGComposite().addComponent(this.snapGrid);
-		this.snapGrid.setTranslationOnly(0, 0, 0, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE);
-		this.snapGrid.setShowing(this.snapState.shouldShowSnapGrid());
-		
-		//Initialize stuff that needs a camera
-		this.setCameras(this.sgPerspectiveCamera, this.sgOrthographicCamera);
 		
 		//Make the markers visible
 		setCameraMarkerVisibility(true);
