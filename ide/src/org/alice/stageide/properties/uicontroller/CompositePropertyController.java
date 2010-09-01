@@ -44,8 +44,11 @@
 package org.alice.stageide.properties.uicontroller;
 
 import org.alice.apis.moveandturn.Composite;
+import org.alice.ide.IDE;
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.ide.properties.uicontroller.AbstractAdapterController;
+import org.alice.stageide.properties.TransformableVehicleAdapter;
+import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.croquet.BorderPanel;
 import edu.cmu.cs.dennisc.croquet.Label;
@@ -70,20 +73,14 @@ public class CompositePropertyController extends AbstractAdapterController<Compo
 	{
 		this.compositeLabel = new Label();
 		this.addComponent(this.compositeLabel, BorderPanel.Constraint.CENTER);
-//		this.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
+		this.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
 	}
 
 	@Override
 	protected void setValueOnUI(Composite value) 
 	{
-		if (value != null)
-		{
-			this.compositeLabel.setText(value.getName()+", "+value.getClass().getSimpleName());
-		}
-		else
-		{
-			this.compositeLabel.setText("No Vehicle");
-		}
+		this.compositeLabel.setIcon(TransformableVehicleAdapter.getIconForVehicle(value));
+		this.compositeLabel.setText(TransformableVehicleAdapter.getNameForVehicle(value));
 	}
 
 }

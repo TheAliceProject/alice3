@@ -102,7 +102,7 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 					super.handlePopupMenuPrologue( popupMenu, context );
 					
 					Double currentDouble = AbstractDoublePropertyAdapter.this.getValue();
-					String currentDoubleName = format.format(currentDouble)+" (current value)";
+					String currentDoubleName = format.format(currentDouble)+AbstractDoublePropertyAdapter.this.getCurrentValueLabelString();
 					
 					SetDoubleOperation currentDoubleOperation = new SetDoubleOperation(currentDouble, currentDoubleName);
 					

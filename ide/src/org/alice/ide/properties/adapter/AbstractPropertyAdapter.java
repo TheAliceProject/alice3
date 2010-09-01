@@ -50,6 +50,7 @@ import edu.cmu.cs.dennisc.croquet.Operation;
 
 public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P, O> 
 {
+	
 	protected O instance;
 	protected String repr;
 	
@@ -85,6 +86,11 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 			} );	
 		}
 		
+	}
+	
+	protected String getCurrentValueLabelString()
+	{
+		return  " (current value)";
 	}
 	
 	protected List<ValueChangeObserver<P>> valueChangeObservers = new LinkedList<ValueChangeObserver<P>>();

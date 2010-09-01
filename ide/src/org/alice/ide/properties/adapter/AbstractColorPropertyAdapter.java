@@ -102,7 +102,7 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 					{
 						currentColorName = "r="+format.format(currentColor.red)+", g="+format.format(currentColor.green)+", b="+format.format(currentColor.blue);
 					}
-					currentColorName += " (current value)";
+					currentColorName += AbstractColorPropertyAdapter.this.getCurrentValueLabelString();
 					
 					SetColorOperation currentColorOperation = new SetColorOperation(currentColor, currentColorName);
 					
