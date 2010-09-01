@@ -65,15 +65,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 	}
 	
 	protected <M extends Model> CodableResolver< M > createCodableResolver() {
-		return new CodableResolver< M >() {
-			public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			}
-			public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			}
-			public M getResolved() {
-				return (M)Model.this;
-			}
-		};
+		return new SingletonResolver( this );
 	}
 	public <M extends Model> CodableResolver< M > getCodableResolver() {
 		if( this.codableResolver != null ) {

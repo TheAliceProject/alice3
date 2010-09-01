@@ -299,6 +299,9 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 	};
 	
 	private final ListSelectionState< Card > cardSelectionState = new ListSelectionState< Card >( Application.INFORMATION_GROUP, java.util.UUID.fromString( "2382103d-a67e-4a35-baa2-9a612fd2d8f2" ), new Codec< Card >() {
+		public edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.Codec< edu.cmu.cs.dennisc.croquet.WizardDialogOperation.Card >> getResolver() {
+			throw new RuntimeException( "todo" );
+		}
 		public Card decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			throw new RuntimeException( "todo" );
 		}

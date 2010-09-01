@@ -47,6 +47,9 @@ package org.alice.ide.croquet.codecs;
  */
 public enum StringCodec implements edu.cmu.cs.dennisc.croquet.Codec< String > {
 	SINGLETON;
+	public edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.Codec< String > > getResolver() {
+		throw new RuntimeException( "todo" );
+	}
 	public String decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}

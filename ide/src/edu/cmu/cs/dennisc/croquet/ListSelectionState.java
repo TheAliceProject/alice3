@@ -329,6 +329,8 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 	private final SingleListSelectionModel listSelectionModel = new SingleListSelectionModel();
 	private final ComboBoxModel comboBoxModel = new ComboBoxModel();
 	private Codec< E > codec;
+	private CodableResolver< Codec<E> > codecResolver;
+	
 	public ListSelectionState(Group group, java.util.UUID id, Codec< E > codec, int selectedIndex, E... items) {
 		super(group, id);
 		this.codec = codec;
@@ -357,15 +359,26 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 	public void removeListDataListener( javax.swing.event.ListDataListener listener ) {
 		this.comboBoxModel.removeListDataListener( listener );
 	}
-	/*package-private*/ final E decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		return this.codec.decode( binaryDecoder );
-	}
-	/*package-private*/ final void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, E value ) {
-		this.codec.encode( binaryEncoder, value );
-	}
+//	/*package-private*/ final E decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+//		return this.codec.decode( binaryDecoder );
+//	}
+//	/*package-private*/ final void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, E value ) {
+//		this.codec.encode( binaryEncoder, value );
+//	}
+
 	public Codec<E> getCodec() {
 		return this.codec;
 	}
+	
+	/*package-private*/ CodableResolver< Codec<E> > getCodecResolver() {
+		if( this.codecResolver != null ) {
+			//pass
+		} else {
+			this.codecResolver = this.codec.getResolver();
+		}
+		return this.codecResolver;
+	}
+	
 	public E getSelectedItem() {
 		return (E) this.comboBoxModel.getSelectedItem();
 	}

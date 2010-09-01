@@ -48,4 +48,6 @@ package edu.cmu.cs.dennisc.croquet;
 public interface Codec<T> {
 	public T decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T t );
+	
+	public CodableResolver< Codec<T> > getResolver();
 }

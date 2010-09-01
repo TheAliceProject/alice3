@@ -45,15 +45,44 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public enum PredeterminedTabCodec implements Codec< PredeterminedTab > {
-	SINGLETON;
-	public edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.Codec< edu.cmu.cs.dennisc.croquet.PredeterminedTab >> getResolver() {
-		throw new RuntimeException( "todo" );
-	}	
-	public edu.cmu.cs.dennisc.croquet.PredeterminedTab decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return binaryDecoder.decodeBinaryEncodableAndDecodable();
+public class SingletonResolver<T> implements CodableResolver< T > {
+//	private Class<T> cls;
+//	public SingletonResolver( Class<T> cls, java.util.UUID id ) {
+//		this.cls = cls;
+//	}
+	private T instance;
+	public SingletonResolver( T instance ) {
+		this.instance = instance;
 	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.croquet.PredeterminedTab t ) {
-		binaryEncoder.encode( t );
+	public SingletonResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.decode( binaryDecoder );
+	}
+	public T getResolved() {
+		return this.instance;
+	}
+	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		String clsName = binaryDecoder.decodeString();
+		try {
+			Class<T> cls = (Class<T>)Class.forName( clsName );
+			try {
+				java.lang.reflect.Method mthd = cls.getMethod( "getInstance" );
+				this.instance = (T)mthd.invoke( null );
+			} catch( IllegalAccessException iae ) {
+				throw new RuntimeException( iae );
+			} catch( IllegalArgumentException iae ) {
+				throw new RuntimeException( iae );
+			} catch( NoSuchMethodException nsme ) {
+				throw new RuntimeException( nsme );
+			} catch( java.lang.reflect.InvocationTargetException ite ) {
+				throw new RuntimeException( ite );
+			}
+		} catch( ClassNotFoundException cnfe ) {
+			throw new RuntimeException( cnfe );
+		}
+	}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		Class<T> cls = (Class<T>)this.instance.getClass();
+		String clsName = cls.getName();
+		binaryEncoder.encode( clsName );
 	}
 }

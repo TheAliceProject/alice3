@@ -90,11 +90,20 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 	
 	@Override
 	protected final void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		HistoryNode[] array = binaryDecoder.decodeBinaryEncodableAndDecodableArray(HistoryNode.class);
 		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set(this.children, array);
 	}
 	@Override
 	protected final void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+		M model = this.getModel();
+		CodableResolver< M > modelResolver;
+		if( model != null ) {
+			modelResolver = model.getCodableResolver();
+		} else {
+			modelResolver = null;
+		}
+		binaryEncoder.encode( modelResolver );
 		HistoryNode[] array = new HistoryNode[this.children.size()];
 		this.children.toArray(array);
 		binaryEncoder.encode(array);

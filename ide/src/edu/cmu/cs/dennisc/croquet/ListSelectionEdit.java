@@ -48,6 +48,7 @@ package edu.cmu.cs.dennisc.croquet;
 public final class ListSelectionEdit<E> extends Edit<ListSelectionState<E>> {
 	private E prevValue;
 	private E nextValue;
+	
 	public ListSelectionEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
@@ -55,6 +56,7 @@ public final class ListSelectionEdit<E> extends Edit<ListSelectionState<E>> {
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
 	}
+		
 	@Override
 	public boolean canRedo() {
 		return this.getModel() != null;
@@ -66,13 +68,19 @@ public final class ListSelectionEdit<E> extends Edit<ListSelectionState<E>> {
 
 	@Override
 	protected final void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		this.prevValue = this.getModel().decodeValue( binaryDecoder );
-		this.nextValue = this.getModel().decodeValue( binaryDecoder );
+//		CodableResolver< Codec<E> > codecResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+//		Codec<E> codec = codecResolver.getResolved();
+		ListSelectionState< E > listSelectionState = this.getModel();
+		Codec<E> codec = listSelectionState.getCodec();
+		this.prevValue = codec.decode( binaryDecoder );
+		this.nextValue = codec.decode( binaryDecoder );
 	}
 	@Override
 	protected final void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		this.getModel().encodeValue( binaryEncoder, this.prevValue );
-		this.getModel().encodeValue( binaryEncoder, this.nextValue );
+		ListSelectionState< E > listSelectionState = this.getModel();
+		Codec<E> codec = listSelectionState.getCodec();
+		codec.encode( binaryEncoder, this.prevValue );
+		codec.encode( binaryEncoder, this.nextValue );
 	}
 
 	@Override

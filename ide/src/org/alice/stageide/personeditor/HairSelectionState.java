@@ -48,6 +48,9 @@ package org.alice.stageide.personeditor;
 class HairSelectionState extends AbstractListSelectionState<org.alice.apis.stage.Hair> {
 	public HairSelectionState() {
 		super( java.util.UUID.fromString( "682e4dea-91f3-4b0a-8004-51942613c643" ), new edu.cmu.cs.dennisc.croquet.Codec< org.alice.apis.stage.Hair >(){
+			public edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.Codec< org.alice.apis.stage.Hair >> getResolver() {
+				throw new RuntimeException( "todo" );
+			}
 			public org.alice.apis.stage.Hair decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 				throw new RuntimeException( "todo" );
 			}

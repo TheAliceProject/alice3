@@ -48,7 +48,10 @@ package org.alice.ide.preferencesinputpane;
 public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.ide.preferences.programming.Configuration> {
 	class ConfigurationSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<org.alice.ide.preferences.programming.Configuration> {
 		public ConfigurationSelectionOperation( org.alice.ide.preferences.programming.Configuration... panes ) {
-			super( java.util.UUID.fromString( "68071aa4-895c-4d30-8b8a-5bbcc5262586" ), new edu.cmu.cs.dennisc.croquet.Codec< org.alice.ide.preferences.programming.Configuration >(){
+			super( java.util.UUID.fromString( "68071aa4-895c-4d30-8b8a-5bbcc5262586" ), new edu.cmu.cs.dennisc.croquet.Codec< org.alice.ide.preferences.programming.Configuration >() {
+				public edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.Codec< org.alice.ide.preferences.programming.Configuration >> getResolver() {
+					throw new RuntimeException( "todo" );
+				}
 				public org.alice.ide.preferences.programming.Configuration decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 					throw new RuntimeException( "todo" );
 				}
