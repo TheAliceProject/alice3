@@ -68,19 +68,7 @@ public class NodeKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.KeyedResolv
 		final Object[] rv = new Object[] { null };
 		final java.util.UUID id = binaryDecoder.decodeId();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-//		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = ide.getProgramType();
-//		edu.cmu.cs.dennisc.pattern.Crawler crawler = new edu.cmu.cs.dennisc.pattern.Crawler() {
-//			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-//				if( cls.isAssignableFrom( crawlable.getClass() ) ) {
-//					edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)crawlable;
-//					if( id.equals( node.getUUID() ) ) {
-//						rv[ 0 ] = node;
-//					}
-//				}
-//			}
-//		};
-		rv[ 0 ] = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), id );
-		return rv;
+		return new Object[] { edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), id ) };
 	}
 	@Override
 	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
