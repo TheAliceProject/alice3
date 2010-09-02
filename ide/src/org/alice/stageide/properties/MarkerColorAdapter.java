@@ -41,8 +41,55 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.sceneeditor.propertiesmanager;
+package org.alice.stageide.properties;
 
-public class SceneObjectPropertyManager {
+import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
+
+import edu.cmu.cs.dennisc.color.Color4f;
+
+public class MarkerColorAdapter extends AbstractColorPropertyAdapter<org.alice.apis.moveandturn.Marker> {
+
+	public MarkerColorAdapter(org.alice.apis.moveandturn.Marker instance)
+	{
+		super(instance);
+	}
+
+	public Color4f getValue() 
+	{
+		if (this.instance != null)
+		{
+			return this.instance.getColor().getInternal();
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(org.alice.apis.moveandturn.Marker instance)
+	{
+		if (this.instance != null)
+		{
+			return instance.getSGSingleAppearance().diffuseColor;
+		}
+		return null;
+	}
+
+	@Override
+	public void setValue(final Color4f value) 
+	{
+		super.setValue(value);
+		if (this.instance != null)
+		{
+			new Thread() {
+				@Override
+				public void run() {
+					MarkerColorAdapter.this.instance.setColor(new org.alice.apis.moveandturn.Color(value));
+				}
+			}.start();
+		}
+		
+	}
 
 }

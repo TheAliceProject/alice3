@@ -200,50 +200,18 @@ public class StageIDE extends org.alice.ide.IDE {
 
 	private static final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava COLOR_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Color.class );
 
-	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, ColorIcon > mapFieldToIcon = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractField, ColorIcon >();
-
-	class ColorIcon implements javax.swing.Icon {
-		private static final int SIZE = 15;
-		private java.awt.Color fillColor;
-		private java.awt.Color outlineColor;
-
-		public ColorIcon( java.awt.Color color ) {
-			this.fillColor = color;
-			float[] hsb = new float[ 3 ];
-			//todo
-			java.awt.Color.RGBtoHSB( this.fillColor.getRed(), this.fillColor.getGreen(), this.fillColor.getBlue(), hsb );
-			if( hsb[ 2 ] > 0.9f ) {
-				this.outlineColor = java.awt.Color.GRAY;
-			} else {
-				this.outlineColor = null;
-			}
-		}
-		public int getIconWidth() {
-			return SIZE + 3 + 2;
-		}
-		public int getIconHeight() {
-			return SIZE + 3;
-		}
-		public void paintIcon( java.awt.Component arg0, java.awt.Graphics g, int x, int y ) {
-			g.setColor( this.fillColor );
-			g.fillRect( x + 1 + 2, y + 1, SIZE, SIZE );
-			if( this.outlineColor != null ) {
-				g.setColor( this.outlineColor );
-				g.drawRect( x + 1 + 2, y + 1, SIZE, SIZE );
-			}
-		}
-	}
+	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, org.alice.ide.swing.icons.ColorIcon > mapFieldToIcon = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractField, org.alice.ide.swing.icons.ColorIcon >();
 
 	private javax.swing.Icon getIconFor( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		if( field.getDeclaringType() == COLOR_TYPE && field.getValueType() == COLOR_TYPE ) {
-			ColorIcon rv = this.mapFieldToIcon.get( field );
+			org.alice.ide.swing.icons.ColorIcon rv = this.mapFieldToIcon.get( field );
 			if( rv != null ) {
 				//pass
 			} else {
 				try {
 					edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField fieldInJava = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField)field;
 					org.alice.apis.moveandturn.Color color = (org.alice.apis.moveandturn.Color)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fieldInJava.getFieldReflectionProxy().getReification(), null );
-					rv = new ColorIcon( color.getInternal().getAsAWTColor() );
+					rv = new org.alice.ide.swing.icons.ColorIcon( color.getInternal().getAsAWTColor() );
 					this.mapFieldToIcon.put( field, rv );
 				} catch( RuntimeException re ) {
 					//pass

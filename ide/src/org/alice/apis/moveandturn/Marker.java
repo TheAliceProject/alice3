@@ -49,6 +49,7 @@ import java.util.List;
 import org.alice.interact.PickHint;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
+import edu.cmu.cs.dennisc.alice.annotations.MethodTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.Visibility;
 import edu.cmu.cs.dennisc.color.Color4f;
@@ -125,8 +126,12 @@ public class Marker extends Transformable
 		if (color != null)
 		{
 			this.setMarkerColor(color.getInternal());
-		}
-		
+		}	
+	}
+	
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	public edu.cmu.cs.dennisc.scenegraph.SingleAppearance getSGSingleAppearance() {
+		return sgFrontFacingAppearance;
 	}
 	
 	protected void createVisuals()
@@ -146,6 +151,32 @@ public class Marker extends Transformable
 	protected Color4f getDefaultMarkerColor()
 	{
 		return Color4f.CYAN;
+	}
+	
+	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
+	public Color getColor() {
+		return new Color( sgFrontFacingAppearance.diffuseColor.getValue() );
+	}
+
+	public void setColor( final Color color, Number duration, final Style style) {
+		final double actualDuration = adjustDurationIfNecessary( duration );
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( actualDuration, RIGHT_NOW ) ) {
+			Marker.this.setMarkerColor( color.getInternal() );
+		} else {
+			perform( new edu.cmu.cs.dennisc.color.animation.Color4fAnimation( actualDuration, style, getColor().getInternal(), color.getInternal() ) {
+				@Override
+				protected void updateValue( edu.cmu.cs.dennisc.color.Color4f color ) {
+					Marker.this.setMarkerColor( color );
+				}
+			} );
+		}
+	}
+	
+	public void setColor( Color color, Number duration ) {
+		setColor( color, duration, DEFAULT_STYLE );
+	}
+	public void setColor( Color color ) {
+		setColor( color, DEFAULT_DURATION );
 	}
 	
 	protected float getDefaultMarkerOpacity()
