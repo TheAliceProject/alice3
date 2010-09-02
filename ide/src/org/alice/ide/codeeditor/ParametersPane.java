@@ -106,7 +106,7 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 			if( method.isSignatureLocked.getValue() ) {
 				//pass
 			} else {
-				this.addComponent( org.alice.ide.operations.ast.DeclareMethodParameterOperation.getInstance( method ).createButton() );
+				this.addComponent( org.alice.ide.croquet.models.ast.DeclareMethodParameterOperation.getInstance( method ).createButton() );
 			}
 		}
 		if( getIDE().isJava() ) {

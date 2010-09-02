@@ -62,12 +62,11 @@ public class DeclareProcedureOperation extends DeclareMethodOperation {
 		this.setName( "Declare Procedure..." );
 	}
 	@Override
-	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
-		return new org.alice.ide.declarationpanes.CreateProcedurePane( type );
-	}
-	@Override
 	protected org.alice.ide.croquet.resolvers.NodeKeyedResolver< DeclareProcedureOperation > createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeKeyedResolver< DeclareProcedureOperation >( this, this.getDeclaringType(), edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class );
 	}
-	
+	@Override
+	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+		return new org.alice.ide.declarationpanes.CreateProcedurePane( type );
+	}
 }

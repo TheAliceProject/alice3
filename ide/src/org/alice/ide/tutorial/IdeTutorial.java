@@ -557,7 +557,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 				if( code != null ) {
 					if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
-						return org.alice.ide.operations.ast.DeclareMethodParameterOperation.getInstance( method );
+						return org.alice.ide.croquet.models.ast.DeclareMethodParameterOperation.getInstance( method );
 					} else {
 						return null;
 					}

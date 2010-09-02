@@ -76,10 +76,14 @@ public class AutoTutorialIde extends org.alice.stageide.StageIDE {
 	public static void main( String[] args ) throws Exception {
 		IS_ENCODING = Boolean.parseBoolean( args[ 5 ] );
 		final AutoTutorialIde ide = org.alice.ide.LaunchUtilities.launchAndWait( AutoTutorialIde.class, null, args, false );
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				ide.createAndShowTutorial();
-			} 
-		} );
+		if( IS_ENCODING ) {
+			ide.getFrame().setVisible( true );
+		} else {
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					ide.createAndShowTutorial();
+				} 
+			} );
+		}
 	}
 }

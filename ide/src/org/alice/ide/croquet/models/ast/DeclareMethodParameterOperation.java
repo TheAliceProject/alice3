@@ -40,17 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
 public class DeclareMethodParameterOperation extends org.alice.ide.operations.InputDialogWithPreviewOperation<org.alice.ide.declarationpanes.CreateMethodParameterPane> {
 	@Deprecated
-//	public interface EPIC_HACK_Validator {
-//		public String getExplanationIfOkButtonShouldBeDisabled( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > valueType );
-//	}
-//	private EPIC_HACK_Validator validator = null;
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice, DeclareMethodParameterOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static DeclareMethodParameterOperation getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		DeclareMethodParameterOperation rv = map.get( method );
@@ -68,42 +64,10 @@ public class DeclareMethodParameterOperation extends org.alice.ide.operations.In
 		this.method = method;
 		this.setName( "Add Parameter..." );
 	}
-//	public EPIC_HACK_Validator getValidator() {
-//		return this.validator;
-//	}
-//	public void setValidator( EPIC_HACK_Validator validator ) {
-//		this.validator = validator;
-//	}
-//	@Override
-//	protected String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context) {
-//		String rv = super.getExplanationIfOkButtonShouldBeDisabled( context );
-//		if( this.validator != null ) {
-//			String explanation = this.validator.getExplanationIfOkButtonShouldBeDisabled( this.getDeclarationName( context ), this.getValueType( context ) );
-//			if( explanation != null ) {
-//				rv = explanation;
-//			}
-//		}
-//		return rv;
-//	}
-
-	private String getDeclarationName(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context) {
-		org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = context.getMainPanel();
-		if( createMethodParameterPane != null ) {
-			return createMethodParameterPane.getDeclarationName();
-		} else {
-			return null;
-		}
+	@Override
+	protected org.alice.ide.croquet.resolvers.NodeKeyedResolver< DeclareMethodParameterOperation > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeKeyedResolver< DeclareMethodParameterOperation >( this, this.method, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
 	}
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > getValueType(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context) {
-		org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = context.getMainPanel();
-		if( createMethodParameterPane != null ) {
-			return createMethodParameterPane.getValueType();
-		} else {
-			return null;
-		}
-	}
-
-	
 	@Override
 	protected org.alice.ide.declarationpanes.CreateMethodParameterPane prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context) {
 		//todo: create before hand and refresh at this point
