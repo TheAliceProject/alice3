@@ -62,7 +62,6 @@ public class DeclareMethodParameterOperation extends org.alice.ide.operations.In
 	private DeclareMethodParameterOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "aa3d337d-b409-46ae-816f-54f139b32d86" ) );
 		this.method = method;
-		this.setName( "Add Parameter..." );
 	}
 	
 	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getMethod() {

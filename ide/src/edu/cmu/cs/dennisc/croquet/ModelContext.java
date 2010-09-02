@@ -75,22 +75,9 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 	/*package-private*/ ModelContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	
+
 	public void EPIC_HACK_clear() {
 		this.children.clear();
-	}
-
-	public M getModel() {
-		if( this.model != null ) {
-			//pass
-		} else {
-			if( this.modelResolver != null ) {
-				this.model = this.modelResolver.getResolved();
-			} else {
-				//pass
-			}
-		}
-		return this.model;
 	}
 	
 	@Override
@@ -115,6 +102,19 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		binaryEncoder.encode(array);
 	}
 
+	public M getModel() {
+		if( this.model != null ) {
+			//pass
+		} else {
+			if( this.modelResolver != null ) {
+				this.model = this.modelResolver.getResolved();
+			} else {
+				//pass
+			}
+		}
+		return this.model;
+	}
+	
 	public java.util.EventObject getAwtEvent() {
 		return this.awtEvent;
 	}

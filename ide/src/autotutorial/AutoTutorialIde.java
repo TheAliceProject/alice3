@@ -66,6 +66,18 @@ public class AutoTutorialIde extends org.alice.stageide.StageIDE {
 				assert inputDialogOperation != null;
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "inputDialogOperation:", inputDialogOperation );
 				tutorial.addInputDialogOpenAndCommitStep( "title", "openText", "commitText", inputDialogOperation, tutorial.createToDoCompletorValidator() );
+			} else if( node instanceof edu.cmu.cs.dennisc.croquet.BooleanStateContext ) {
+				edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext = (edu.cmu.cs.dennisc.croquet.BooleanStateContext)node;
+				edu.cmu.cs.dennisc.croquet.BooleanStateEdit edit = booleanStateContext.getEdit();
+				if( edit != null ) {
+					edu.cmu.cs.dennisc.croquet.BooleanState booleanState = booleanStateContext.getModel();
+					//booleanState = org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance();
+					if( booleanState instanceof org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState ) {
+						//pass
+					} else {
+						tutorial.addBooleanStateStep( booleanState.getClass().getSimpleName(), booleanState.getClass().getName(), booleanState, edit.getNextValue() );
+					}
+				}
 			}
 		}
 		tutorial.addMessageStep( "end", "end of tutorial" );

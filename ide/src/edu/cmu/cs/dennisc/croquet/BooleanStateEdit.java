@@ -62,6 +62,11 @@ public final class BooleanStateEdit extends Edit<BooleanState> {
 			this.nextValue = false;
 		}
 	}
+	
+	public boolean getNextValue() {
+		return this.nextValue;
+	}
+	
 	@Override
 	protected void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 		this.previousValue = binaryDecoder.decodeBoolean();
