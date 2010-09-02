@@ -62,7 +62,6 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 	}
 	@Override
 	protected final void perform( final PopupMenuOperationContext context, final Operation.PerformObserver performObserver ) {
-		
 		//note: do not call super
 		final PopupMenu popupMenu = new PopupMenu( this ) {
 			@Override
