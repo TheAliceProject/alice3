@@ -65,7 +65,6 @@ public class NodeKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.KeyedResolv
 	}
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		final Object[] rv = new Object[] { null };
 		final java.util.UUID id = binaryDecoder.decodeId();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		return new Object[] { edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), id ) };

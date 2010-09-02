@@ -4,6 +4,10 @@ public class AutoTutorialIde extends org.alice.stageide.StageIDE {
 	private static boolean IS_ENCODING;
 	private static final String UI_HISTORY_PATH = "/autoTutorial1.bin";
 	private static final String POST_PROJECT_PATH = "/post.a3p";
+	
+	private boolean isPostProjectLive = false;
+	private edu.cmu.cs.dennisc.alice.Project postProject;
+	private edu.cmu.cs.dennisc.croquet.RootContext postContext;
 	@Override
 	public void loadProjectFrom( java.net.URI uri ) {
 		super.loadProjectFrom( uri );
@@ -11,9 +15,27 @@ public class AutoTutorialIde extends org.alice.stageide.StageIDE {
 			edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
 			rootContext.EPIC_HACK_clear();
 		} else {
+			
+			edu.cmu.cs.dennisc.alice.project.ProjectUtilities.addAllToReplacementMap( this.getProject() );
+			
+			this.postProject = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readProject( POST_PROJECT_PATH );
+			
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this.project:", this.getProject().getProgramType().getUUID(), this.getProject().hashCode() );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "this.postProject:", this.postProject.getProgramType().getUUID(), this.postProject.hashCode() );
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
-			edu.cmu.cs.dennisc.croquet.RootContext rootContext = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( UI_HISTORY_PATH, edu.cmu.cs.dennisc.croquet.RootContext.class );
+			this.isPostProjectLive = true;
+			postContext = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( UI_HISTORY_PATH, edu.cmu.cs.dennisc.croquet.RootContext.class );
+			this.isPostProjectLive = false;
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
+		}
+	}
+	
+	@Override
+	public edu.cmu.cs.dennisc.alice.Project getProject() {
+		if( this.isPostProjectLive ) {
+			return this.postProject;
+		} else {
+			return super.getProject();
 		}
 	}
 	@Override
@@ -33,14 +55,31 @@ public class AutoTutorialIde extends org.alice.stageide.StageIDE {
 		System.exit( 0 );
 		//super.handleQuit( e );
 	}
-	
-	public static void main( String[] args ) {
-		IS_ENCODING = Boolean.parseBoolean( args[ 5 ] );
-		if( IS_ENCODING ) {
-			//pass
-		} else {
-			args[ 0 ] = POST_PROJECT_PATH;
+	private void createAndShowTutorial() {
+		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( this, 0 );
+		
+		tutorial.addMessageStep( "start", "start of tutorial" );
+		for( edu.cmu.cs.dennisc.croquet.HistoryNode node : this.postContext.getChildren() ) {
+			if( node instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > ) {
+				edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? >)node;
+				edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > inputDialogOperation = inputDialogOperationContext.getModel();
+				assert inputDialogOperation != null;
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "inputDialogOperation:", inputDialogOperation );
+				tutorial.addInputDialogOpenAndCommitStep( "title", "openText", "commitText", inputDialogOperation, tutorial.createToDoCompletorValidator() );
+			}
 		}
-		org.alice.ide.LaunchUtilities.launch( AutoTutorialIde.class, null, args );
+		tutorial.addMessageStep( "end", "end of tutorial" );
+		tutorial.setVisible( true );
+		this.getFrame().setVisible( true );
+	}
+	
+	public static void main( String[] args ) throws Exception {
+		IS_ENCODING = Boolean.parseBoolean( args[ 5 ] );
+		final AutoTutorialIde ide = org.alice.ide.LaunchUtilities.launchAndWait( AutoTutorialIde.class, null, args, false );
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				ide.createAndShowTutorial();
+			} 
+		} );
 	}
 }

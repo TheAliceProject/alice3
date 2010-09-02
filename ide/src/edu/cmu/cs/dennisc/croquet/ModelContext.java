@@ -137,30 +137,35 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 			return super.findContextFor(model);
 		}
 	}
-	public boolean isLeaf() {
-		return false;
-	}
-	//public java.util.Iterator<HistoryTreeNode> iterator() {
-	public java.util.Iterator iterator() {
-		return this.children.iterator();
-	}
-	public java.util.Enumeration<HistoryNode> children() {
-		return java.util.Collections.enumeration(this.children);
-	}
-	public boolean getAllowsChildren() {
-		return true;
-	}
+	
+	
+//	public boolean isLeaf() {
+//		return false;
+//	}
+//	public java.util.Iterator iterator() {
+//		return this.children.iterator();
+//	}
+//	public java.util.Enumeration<HistoryNode> children() {
+//		return java.util.Collections.enumeration(this.children);
+//	}
+//	public boolean getAllowsChildren() {
+//		return true;
+//	}
 	public HistoryNode getChildAt(int childIndex) {
 		return this.children.get(childIndex);
 	}
 	public int getChildCount() {
 		return this.children.size();
 	}
-	public int getIndex(HistoryNode child) {
-		return this.children.indexOf(child);
-	}
+//	public int getIndex(HistoryNode child) {
+//		return this.children.indexOf(child);
+//	}
 	public int getIndexOfChild( HistoryNode child ) {
 		return this.children.indexOf( child );
+	}
+	
+	public Iterable<HistoryNode> getChildren() {
+		return this.children;
 	}
 
 	/*package-private*/ void popping() {
