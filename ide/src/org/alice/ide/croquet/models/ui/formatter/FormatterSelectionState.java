@@ -59,6 +59,6 @@ public class FormatterSelectionState extends edu.cmu.cs.dennisc.croquet.ListSele
 				org.alice.ide.formatter.AliceFormatter.getInstance(), 
 				org.alice.ide.formatter.JavaFormatter.getInstance() 
 		);
-		org.alice.ide.IDE.getSingleton().registerAndInitializePreference( this );
+		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 	}
 }

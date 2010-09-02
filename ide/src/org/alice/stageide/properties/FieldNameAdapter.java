@@ -94,13 +94,14 @@ public class FieldNameAdapter extends AbstractNamePropertyAdapter<edu.cmu.cs.den
 	@Override
 	public void setValue(String value) 
 	{
+		super.setValue(value);
 		if (this.instance != null)
 		{
 			this.instance.setName(value);
 		}
 		
 	}
-
+	
 	@Override
 	public Operation getEditOperation() 
 	{
@@ -112,7 +113,7 @@ public class FieldNameAdapter extends AbstractNamePropertyAdapter<edu.cmu.cs.den
 	}
 
 	@Override
-	protected String getUndoRedoDescription(Locale locale) 
+	public String getUndoRedoDescription(Locale locale) 
 	{
 		return "Field Name";
 	}

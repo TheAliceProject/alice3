@@ -45,7 +45,6 @@ package org.alice.stageide.properties;
 
 import org.alice.apis.moveandturn.Transformable;
 import org.alice.ide.properties.adapter.AbstractPoint3PropertyAdapter;
-import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;

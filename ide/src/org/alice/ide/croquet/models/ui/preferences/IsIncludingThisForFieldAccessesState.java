@@ -54,6 +54,6 @@ public class IsIncludingThisForFieldAccessesState extends edu.cmu.cs.dennisc.cro
 	}
 	private IsIncludingThisForFieldAccessesState() {
 		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "bcf1ce48-f54a-4e80-8b9e-42c2cc302b01" ), true );
-		org.alice.ide.IDE.getSingleton().registerAndInitializePreference( this );
+		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 	}
 }

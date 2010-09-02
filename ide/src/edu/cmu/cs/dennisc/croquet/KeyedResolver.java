@@ -56,16 +56,18 @@ public abstract class KeyedResolver<T> implements CodableResolver< T > {
 	public T getResolved() {
 		return this.instance;
 	}
-	protected abstract Class<?>[] getParameterTypes();
+	protected abstract Class<?>[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
 	protected abstract Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
+	protected abstract void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
 	protected abstract void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
 	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		String clsName = binaryDecoder.decodeString();
+		Class<?>[] parameterTypes = this.decodeParameterTypes( binaryDecoder );
 		Object[] arguments = this.decodeArguments( binaryDecoder );
 		try {
 			Class<T> cls = (Class<T>)Class.forName( clsName );
 			try {
-				java.lang.reflect.Method mthd = cls.getMethod( "getInstance", this.getParameterTypes() );
+				java.lang.reflect.Method mthd = cls.getMethod( "getInstance", parameterTypes );
 				this.instance = (T)mthd.invoke( null, arguments );
 			} catch( IllegalAccessException iae ) {
 				throw new RuntimeException( iae );
@@ -84,6 +86,7 @@ public abstract class KeyedResolver<T> implements CodableResolver< T > {
 		Class<T> cls = (Class<T>)this.instance.getClass();
 		String clsName = cls.getName();
 		binaryEncoder.encode( clsName );
+		this.encodeParameterTypes( binaryEncoder );
 		this.encodeArguments( binaryEncoder );
 	}
 }

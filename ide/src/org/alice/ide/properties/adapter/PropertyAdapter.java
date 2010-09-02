@@ -60,6 +60,8 @@ public interface PropertyAdapter <P, O>
 	
 	public P getValue();
 	
+	public P getLastSetValue();
+	
 	public void setValue(P value);
 	
 	public void addValueChangeObserver(ValueChangeObserver<P> observer);
@@ -68,6 +70,10 @@ public interface PropertyAdapter <P, O>
 	
 	public void removeValueChangeObserver(ValueChangeObserver<P> observer);
 	
-	public abstract Operation getEditOperation();
+	public Operation getEditOperation();
+	
+	public SetValueOperation<P> getSetValueOperation(P value); 
+	
+	public String getUndoRedoDescription(java.util.Locale locale);
 	
 }

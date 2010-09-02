@@ -89,12 +89,7 @@ public final class BooleanStateEdit extends Edit<BooleanState> {
 
 	@Override
 	protected final void undoInternal() {
-		Application.getSingleton().pushUndoOrRedo();
-		try {
-			this.getModel().setValue(this.previousValue);
-		} finally {
-			Application.getSingleton().popUndoOrRedo();
-		}
+		this.getModel().setValue(this.previousValue);
 	}
 
 	@Override

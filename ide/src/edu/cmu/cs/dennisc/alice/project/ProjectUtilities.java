@@ -423,4 +423,37 @@ public abstract class ProjectUtilities {
 	//			}
 	//		} );
 	//	}
+	
+	private static java.util.Map< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node > mapIdToReplacementNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	
+	public static void addAllToReplacementMap( edu.cmu.cs.dennisc.alice.Project project ) {
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = project.getProgramType();
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.Node > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.Node >( edu.cmu.cs.dennisc.alice.ast.Node.class );
+		programType.crawl( crawler, true );
+		for( edu.cmu.cs.dennisc.alice.ast.Node node : crawler.getList() ) {
+			mapIdToReplacementNode.put( node.getUUID(), node );
+		}
+	}
+	
+	public static <N extends edu.cmu.cs.dennisc.alice.ast.Node > N lookupNode( edu.cmu.cs.dennisc.alice.Project project, final java.util.UUID id ) {
+		edu.cmu.cs.dennisc.alice.ast.Node node = mapIdToReplacementNode.get( id );
+		if( node != null ) {
+			return (N)node;
+		} else {
+			final edu.cmu.cs.dennisc.alice.ast.Node[] buffer = { null };
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = project.getProgramType();
+			edu.cmu.cs.dennisc.pattern.Crawler crawler = new edu.cmu.cs.dennisc.pattern.Crawler() {
+				public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
+					if( crawlable instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
+						edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)crawlable;
+						if( id.equals( node.getUUID() ) ) {
+							buffer[ 0 ] = node;
+						}
+					}
+				}
+			};
+			programType.crawl( crawler, true );
+			return (N)buffer[ 0 ];
+		}
+	}
 }

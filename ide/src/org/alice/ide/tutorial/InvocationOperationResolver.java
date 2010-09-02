@@ -59,7 +59,7 @@ import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 	protected final M getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.methodResolver.getResolved();
 		if (method != null) {
-			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getSelectedItem();
+			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getSelectedItem();
 			edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = IdeTutorial.getMethodInvocationAt(code, method, this.invocationIndex);
 			if (methodInvocation != null) {
 				return getOperation( codeEditor, methodInvocation);

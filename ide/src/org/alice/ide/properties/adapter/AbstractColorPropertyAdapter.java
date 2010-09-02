@@ -54,10 +54,23 @@ import edu.cmu.cs.dennisc.croquet.Operation;
 
 public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, O> 
 {
-	protected class SetColorOperation extends SetValueOperation {
+	protected class SetColorOperation extends SetValueOperation<edu.cmu.cs.dennisc.color.Color4f> {
 		public SetColorOperation( Color4f value, String name) {
-			super( value, name, java.util.UUID.fromString( "828f978a-ce77-45a0-83c6-dbac238b4210" ) );
-			this.setSmallIcon(new ColorIcon(this.value.getAsAWTColor()));
+			super( AbstractColorPropertyAdapter.this, value, name, java.util.UUID.fromString( "828f978a-ce77-45a0-83c6-dbac238b4210" ) );
+			if (this.value != null)
+			{
+				this.setSmallIcon(new ColorIcon(this.value.getAsAWTColor()));
+			}
+		}
+		
+		@Override
+		public void setValue(edu.cmu.cs.dennisc.color.Color4f value)
+		{
+			super.setValue(value);
+			if (value != null)
+			{
+				this.setSmallIcon(new ColorIcon(this.value.getAsAWTColor()));
+			}
 		}
 	}
 	
@@ -119,6 +132,12 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 	}
 	
 	
+	@Override
+	public SetValueOperation<Color4f> getSetValueOperation(Color4f value) 
+	{
+		return new SetColorOperation(value, null);
+	}
+	
 	public AbstractColorPropertyAdapter(O instance)
 	{
 		this("Color", instance);
@@ -130,7 +149,7 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 	}
 	
 	@Override
-	protected String getUndoRedoDescription(Locale locale) 
+	public String getUndoRedoDescription(Locale locale) 
 	{
 		return "Color";
 	}

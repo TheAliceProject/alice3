@@ -40,29 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.stageide.croquet.models.sceneditor;
 
+import org.alice.apis.moveandturn.CameraMarker;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareFunctionOperation extends DeclareMethodOperation {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >, DeclareFunctionOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static DeclareFunctionOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
-		DeclareFunctionOperation rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new DeclareFunctionOperation( type );
-			map.put( type, rv );
-		}
-		return rv;
+public class HandleStyleListSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState< CameraMarker > {
+	private static class SingletonHolder {
+		private static HandleStyleListSelectionState instance = new HandleStyleListSelectionState();
 	}
-	private DeclareFunctionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
-		super( java.util.UUID.fromString( "171164e5-8159-4641-9528-a230ef4d2600" ), type );
-		this.setName( "Declare Function..." );
+	public static HandleStyleListSelectionState getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
-		return new org.alice.ide.declarationpanes.CreateFunctionPane( type );
+	private HandleStyleListSelectionState() {
+		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "6e9c4eb8-a2a5-4d7e-bd7a-a96a82055d19" ), new edu.cmu.cs.dennisc.croquet.Codec< CameraMarker >() {
+			public edu.cmu.cs.dennisc.croquet.CodableResolver<edu.cmu.cs.dennisc.croquet.Codec<CameraMarker>> getResolver() {
+				throw new RuntimeException( "todo" );
+			}
+			public CameraMarker decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+				System.err.println( "todo: convert mainCameraMarkerList to AST: returning null" );
+				return null;
+			}
+			public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, CameraMarker cameraMarker ) {
+				System.err.println( "todo: convert mainCameraMarkerList to AST: " + cameraMarker );
+			}
+		} );
 	}
 }

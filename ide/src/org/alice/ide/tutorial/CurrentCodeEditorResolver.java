@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 /*package-private*/ abstract class CurrentCodeEditorResolver<T> implements RuntimeResolver<T> {
 	protected abstract T getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor);
 	public final T getResolved() {
-		org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getCodeEditorInFocus();
+		org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getCodeEditorInFocus();
 		if (codeEditor != null) {
 			return this.getResolved(codeEditor);
 		} else {

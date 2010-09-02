@@ -45,6 +45,7 @@ package org.alice.ide.properties.adapter;
 
 import java.util.Locale;
 
+import org.alice.ide.properties.adapter.AbstractStringPropertyAdapter.SetStringOperation;
 import org.alice.ide.properties.uicontroller.DoublePropertyController;
 
 import edu.cmu.cs.dennisc.color.Color4f;
@@ -55,10 +56,10 @@ import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstancePropertyAdapter<Double, O> 
 {
 
-	protected class SetDoubleOperation extends SetValueOperation 
+	protected class SetDoubleOperation extends SetValueOperation<Double>
 	{
 		public SetDoubleOperation( Double value, String name) {
-			super( value, name, java.util.UUID.fromString( "34c9f0d6-62e1-4c13-b773-9a7dc3b6b7f1" ) );
+			super( AbstractDoublePropertyAdapter.this, value, name, java.util.UUID.fromString( "34c9f0d6-62e1-4c13-b773-9a7dc3b6b7f1" ) );
 		}
 	}
 	
@@ -77,7 +78,7 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 	}
 	
 	@Override
-	protected String getUndoRedoDescription(Locale locale) 
+	public String getUndoRedoDescription(Locale locale) 
 	{
 		return "Double";
 	}
@@ -116,6 +117,12 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 			}.getPopupMenuOperation();
 		}
 		return this.popupMenuOperation;
+	}
+	
+	@Override
+	public SetValueOperation<Double> getSetValueOperation(Double value) 
+	{
+		return new SetDoubleOperation(value, null);
 	}
 	
 	protected double[] getDefaultValues()

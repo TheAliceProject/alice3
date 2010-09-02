@@ -79,6 +79,7 @@ public class MarkerColorAdapter extends AbstractColorPropertyAdapter<org.alice.a
 	@Override
 	public void setValue(final Color4f value) 
 	{
+		super.setValue(value);
 		if (this.instance != null)
 		{
 			new Thread() {

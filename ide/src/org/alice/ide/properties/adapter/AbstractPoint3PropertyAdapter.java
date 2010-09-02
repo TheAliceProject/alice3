@@ -47,6 +47,12 @@ import edu.cmu.cs.dennisc.math.Point3;
 
 public abstract class AbstractPoint3PropertyAdapter<O> extends AbstractPropertyAdapter<Point3, O> 
 {
+	protected class SetPoint3Operation extends SetValueOperation<Point3> {
+		public SetPoint3Operation( Point3 value, String name) {
+			super( AbstractPoint3PropertyAdapter.this, value, name, java.util.UUID.fromString( "fa074f8e-71f3-46bc-af04-2e3c262ed6e8" ) );
+		}
+	}
+
 	public AbstractPoint3PropertyAdapter(String repr, O instance )
 	{
 		super(repr, instance);
@@ -55,5 +61,11 @@ public abstract class AbstractPoint3PropertyAdapter<O> extends AbstractPropertyA
 	public Class<Point3> getPropertyType()
 	{
 		return Point3.class;
+	}
+	
+	@Override
+	public SetValueOperation<Point3> getSetValueOperation(Point3 value) 
+	{
+		return new SetPoint3Operation(value, null);
 	}
 }

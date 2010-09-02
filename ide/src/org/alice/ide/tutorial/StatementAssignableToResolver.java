@@ -55,7 +55,7 @@ import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 		this.index = index;
 	}
 	public edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved() {
-		org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getCodeEditorInFocus();
+		org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getCodeEditorInFocus();
 		if (codeEditor != null) {
 			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) codeEditor.getCode();
 			edu.cmu.cs.dennisc.alice.ast.Statement statement = IdeTutorial.getNodeAt(code, this.cls, this.index);

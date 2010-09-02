@@ -54,6 +54,6 @@ public class IsPromptingUserForFieldNamesState extends edu.cmu.cs.dennisc.croque
 	}
 	private IsPromptingUserForFieldNamesState() {
 		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "ed88aee1-3edf-42b7-bb2d-9424769a075b" ), true );
-		org.alice.ide.IDE.getSingleton().registerAndInitializePreference( this );
+		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 	}
 }

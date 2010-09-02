@@ -48,10 +48,12 @@ import java.util.Locale;
 import org.alice.apis.moveandturn.AsSeenBy;
 
 import edu.cmu.cs.dennisc.croquet.Operation;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 
 public class TransformableTranslationAdapter extends AbstractAbsolutePositionPropertyAdapter<org.alice.apis.moveandturn.Transformable> {
-
+	
 	public TransformableTranslationAdapter(org.alice.apis.moveandturn.Transformable instance) {
 		super(instance);
 	}
@@ -68,9 +70,21 @@ public class TransformableTranslationAdapter extends AbstractAbsolutePositionPro
 	@Override
 	public void setValue(Point3 newValue) 
 	{
+		super.setValue(newValue);
 		if (this.instance != null)
 		{
-			this.instance.moveTo(this.instance.getScene().createOffsetStandIn(newValue));
+			AffineMatrix4x4 currentTrans = this.instance.getTransformation(AsSeenBy.SCENE);
+			double dist = Point3.calculateDistanceBetween(currentTrans.translation, newValue);
+			double duration = 1;
+			if (dist < .02)
+			{
+				duration = 0;
+			}
+			else if (dist < .1)
+			{
+				duration = (dist - .02) / (.1 - .02);
+			}
+			this.instance.moveTo(this.instance.getScene().createOffsetStandIn(newValue), duration);
 		}
 	}
 
@@ -82,7 +96,7 @@ public class TransformableTranslationAdapter extends AbstractAbsolutePositionPro
 	}
 
 	@Override
-	protected String getUndoRedoDescription(Locale locale) 
+	public String getUndoRedoDescription(Locale locale) 
 	{
 		// TODO Auto-generated method stub
 		return "Position Change";

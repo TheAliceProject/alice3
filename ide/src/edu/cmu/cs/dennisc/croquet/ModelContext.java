@@ -56,12 +56,13 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 	}
 	private java.util.List<CommitObserver> commitObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private java.util.List<ChildrenObserver> childrenObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private java.util.List<HistoryNode> children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private java.util.List<HistoryNode> children;
 	private M model;
 	private CodableResolver< M > modelResolver;
 	private java.util.EventObject awtEvent;
 	private ViewController<?, ?> viewController;
 	/*package-private*/ ModelContext(M model, java.util.EventObject awtEvent, ViewController<?, ?> viewController) {
+		this.children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.model = model;
 		if( this.model != null ) {
 			this.modelResolver = this.model.getCodableResolver();
@@ -92,6 +93,7 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 	protected final void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		HistoryNode[] array = binaryDecoder.decodeBinaryEncodableAndDecodableArray(HistoryNode.class);
+		this.children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set(this.children, array);
 	}
 	@Override
@@ -135,30 +137,35 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 			return super.findContextFor(model);
 		}
 	}
-	public boolean isLeaf() {
-		return false;
-	}
-	//public java.util.Iterator<HistoryTreeNode> iterator() {
-	public java.util.Iterator iterator() {
-		return this.children.iterator();
-	}
-	public java.util.Enumeration<HistoryNode> children() {
-		return java.util.Collections.enumeration(this.children);
-	}
-	public boolean getAllowsChildren() {
-		return true;
-	}
+	
+	
+//	public boolean isLeaf() {
+//		return false;
+//	}
+//	public java.util.Iterator iterator() {
+//		return this.children.iterator();
+//	}
+//	public java.util.Enumeration<HistoryNode> children() {
+//		return java.util.Collections.enumeration(this.children);
+//	}
+//	public boolean getAllowsChildren() {
+//		return true;
+//	}
 	public HistoryNode getChildAt(int childIndex) {
 		return this.children.get(childIndex);
 	}
 	public int getChildCount() {
 		return this.children.size();
 	}
-	public int getIndex(HistoryNode child) {
-		return this.children.indexOf(child);
-	}
+//	public int getIndex(HistoryNode child) {
+//		return this.children.indexOf(child);
+//	}
 	public int getIndexOfChild( HistoryNode child ) {
 		return this.children.indexOf( child );
+	}
+	
+	public Iterable<HistoryNode> getChildren() {
+		return this.children;
 	}
 
 	/*package-private*/ void popping() {
@@ -306,5 +313,9 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 			rv.append( this.getModel() );
 //		}
 		return rv;
+	}
+	
+	public void EPIC_HACK_clear() {
+		this.children.clear();
 	}
 }

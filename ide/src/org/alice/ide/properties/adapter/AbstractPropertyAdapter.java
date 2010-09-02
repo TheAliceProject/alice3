@@ -45,7 +45,6 @@ package org.alice.ide.properties.adapter;
 
 import java.util.LinkedList;
 import java.util.List;
-import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.croquet.Operation;
 
 public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P, O> 
@@ -53,40 +52,7 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 	
 	protected O instance;
 	protected String repr;
-	
-	protected class SetValueOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-		protected P value;
-		protected P originalValue;
-		
-		public SetValueOperation( P value, String name, java.util.UUID individualUUID) {
-			super( Project.GROUP, individualUUID );
-			this.value = value;
-			this.setName( name );
-		}
-		@Override
-		protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) 
-		{
-			this.originalValue = AbstractPropertyAdapter.this.getValue();
-			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
-				@Override
-				protected final void doOrRedoInternal( boolean isDo ) 
-				{
-					AbstractPropertyAdapter.this.setValue( SetValueOperation.this.value );
-				}
-				@Override
-				protected final void undoInternal() 
-				{
-					AbstractPropertyAdapter.this.setValue( SetValueOperation.this.originalValue );
-				}
-				@Override
-				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-					rv.append( AbstractPropertyAdapter.this.getUndoRedoDescription( locale ) );
-					return rv;
-				}
-			} );	
-		}
-		
-	}
+	protected P lastSetValue;
 	
 	protected String getCurrentValueLabelString()
 	{
@@ -111,7 +77,9 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 		return this.repr;
 	}
 	
-	protected abstract String getUndoRedoDescription(java.util.Locale locale);
+	public abstract SetValueOperation<P> getSetValueOperation(P value);
+
+	public abstract String getUndoRedoDescription(java.util.Locale locale);
 	
 	public void setInstance(O instance)
 	{
@@ -122,7 +90,13 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 	
 	public void setValue(P newValue)
 	{
-		this.notifyValueObservers(newValue);
+		this.lastSetValue = newValue;
+//		this.notifyValueObservers(newValue);
+	}
+	
+	public P getLastSetValue()
+	{
+		return this.lastSetValue;
 	}
 	
 	public void addValueChangeObserver(ValueChangeObserver<P> observer)

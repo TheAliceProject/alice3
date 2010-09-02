@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PredeterminedTab implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public abstract class PredeterminedTab {
 	private java.util.UUID id;
 	private String titleText;
 	private javax.swing.Icon titleIcon;
@@ -55,24 +55,14 @@ public abstract class PredeterminedTab implements edu.cmu.cs.dennisc.codec.Binar
 	//todo: remove
 	private edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button = null;
 	
-	public PredeterminedTab( java.util.UUID id, String titleText, javax.swing.Icon titleIcon ) {
+	public PredeterminedTab( java.util.UUID id ) {
 		assert id != null;
 		this.id = id;
-		this.titleText = titleText;
-		this.titleIcon = titleIcon;
 	}
 	public java.util.UUID getId() {
 		return this.id;
 	}
-	
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		java.util.UUID id = binaryDecoder.decodeId();
-		throw new RuntimeException();
-	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.id );
-	}
-	
+		
 	public void setTitleText( String titleText ) {
 		this.titleText = titleText;
 		this.updateTitleText();

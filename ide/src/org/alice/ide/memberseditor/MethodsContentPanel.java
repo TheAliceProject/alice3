@@ -40,20 +40,10 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.memberseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum PredeterminedTabCodec implements Codec< PredeterminedTab > {
-	SINGLETON;
-	public edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.Codec< edu.cmu.cs.dennisc.croquet.PredeterminedTab >> getResolver() {
-		throw new RuntimeException( "todo" );
-	}	
-	public edu.cmu.cs.dennisc.croquet.PredeterminedTab decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return binaryDecoder.decodeBinaryEncodableAndDecodable();
-	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.croquet.PredeterminedTab t ) {
-		binaryEncoder.encode( t );
-	}
+abstract class MethodsContentPanel extends OrganizedByTypeMembersContentPanel {
 }

@@ -247,7 +247,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 		return SingletonHolder.instance;
 	}
 	private EditorsTabSelectionState() {
-		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "846ef10d-b22b-44a7-8fdd-a6b5d459948d" ), new org.alice.ide.croquet.codecs.NodeCodec< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() );
+		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "846ef10d-b22b-44a7-8fdd-a6b5d459948d" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class ) );
 //		this.addSelectionObserver( this.selectionObserver );
 		org.alice.ide.IDE.getSingleton().addProjectObserver( this.projectObserver );
 //		org.alice.ide.IDE.getSingleton().addCodeInFocusObserver( this.codeInFocusObserver );
@@ -456,13 +456,13 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 		@Override
 		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 			super.handleAddedTo( parent );
-			org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeValueObserver( this.selectionObserver );
+			org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().addAndInvokeValueObserver( this.selectionObserver );
 			org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addAndInvokeValueObserver( this.isEmphasizingClassesObserver );
 		}
 		@Override
 		protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 			org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().removeValueObserver( this.isEmphasizingClassesObserver );
-			org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeValueObserver( this.selectionObserver );
+			org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().removeValueObserver( this.selectionObserver );
 			super.handleRemovedFrom( parent );
 		}
 		private void updateOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {

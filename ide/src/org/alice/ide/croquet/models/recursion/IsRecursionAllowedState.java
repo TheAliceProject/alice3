@@ -54,6 +54,6 @@ public class IsRecursionAllowedState extends edu.cmu.cs.dennisc.croquet.BooleanS
 	}
 	private IsRecursionAllowedState() {
 		super( org.alice.ide.IDE.PROGRAMMING_LANGUAGE_GROUP, java.util.UUID.fromString( "a5e1ded2-18c7-4ae5-8676-e6deca5650fe" ), false );
-		org.alice.ide.IDE.getSingleton().registerAndInitializePreference( this );
+		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 	}
 }

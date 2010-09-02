@@ -271,15 +271,15 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 
 
 	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.PredeterminedTab > getProceduresTab() {
-		return new PredeterminedTabResolver( ide.getMembersEditor().getTabbedPaneSelectionState(), java.util.UUID.fromString( "2731d704-1f80-444e-a610-e6e5866c0b9a" ) );
+		return new PredeterminedTabResolver( org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(), java.util.UUID.fromString( "2731d704-1f80-444e-a610-e6e5866c0b9a" ) );
 	}
 
 	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.PredeterminedTab > getFunctionsTab() {
-		return new PredeterminedTabResolver( ide.getMembersEditor().getTabbedPaneSelectionState(), java.util.UUID.fromString( "0f5d1f93-fc67-4109-9aff-0e7b232f201c" ) );
+		return new PredeterminedTabResolver( org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(), java.util.UUID.fromString( "0f5d1f93-fc67-4109-9aff-0e7b232f201c" ) );
 	}
 
 	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.PredeterminedTab > getFieldsTab() {
-		return new PredeterminedTabResolver( ide.getMembersEditor().getTabbedPaneSelectionState(), java.util.UUID.fromString( "6cb9c5a1-dc60-48e7-9a52-534009a093b8" ) );
+		return new PredeterminedTabResolver( org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(), java.util.UUID.fromString( "6cb9c5a1-dc60-48e7-9a52-534009a093b8" ) );
 	}
 	
 	public RuntimeResolver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > createCurrentCodeResolver() {
@@ -316,7 +316,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	public RuntimeResolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > createCurrentAccessibleMethodResolver( final String methodName ) {
 		return new RuntimeResolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod >() {
 			public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getResolved() {
-				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = ide.getAccessibleListState().getSelectedItem();
+				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
 				return findShortestMethod( accessible, methodName );
 			}
 		};
@@ -502,7 +502,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	public RuntimeResolver< edu.cmu.cs.dennisc.alice.ast.Accessible > createAccessibleResolver( final String name ) {
 		return new RuntimeResolver< edu.cmu.cs.dennisc.alice.ast.Accessible >() {
 			public edu.cmu.cs.dennisc.alice.ast.Accessible getResolved() {
-				for( edu.cmu.cs.dennisc.alice.ast.Accessible accessible : ide.getAccessibleListState() ) {
+				for( edu.cmu.cs.dennisc.alice.ast.Accessible accessible : org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance() ) {
 					if( name.equalsIgnoreCase( accessible.getName() ) ) {
 						return accessible;
 					}
@@ -529,16 +529,16 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> > createDeclareProcedureOperationResolver() {
 		return new DeclareMemberResolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>>() {
 			@Override
-			protected org.alice.ide.operations.ast.DeclareProcedureOperation getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
-				return org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance( type );
+			protected org.alice.ide.croquet.models.ast.DeclareProcedureOperation getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+				return org.alice.ide.croquet.models.ast.DeclareProcedureOperation.getInstance( type );
 			}
 		};
 	}
 	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> > createDeclareFunctionOperationResolver() {
 		return new DeclareMemberResolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> >() {
 			@Override
-			protected org.alice.ide.operations.ast.DeclareFunctionOperation getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
-				return org.alice.ide.operations.ast.DeclareFunctionOperation.getInstance( type );
+			protected org.alice.ide.croquet.models.ast.DeclareFunctionOperation getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+				return org.alice.ide.croquet.models.ast.DeclareFunctionOperation.getInstance( type );
 			}
 		};
 	}
@@ -557,7 +557,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 				if( code != null ) {
 					if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
-						return org.alice.ide.operations.ast.DeclareMethodParameterOperation.getInstance( method );
+						return org.alice.ide.croquet.models.ast.DeclareMethodParameterOperation.getInstance( method );
 					} else {
 						return null;
 					}

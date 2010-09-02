@@ -730,12 +730,14 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	{
 		//TODO: introduce a true sense of "active"
 		CameraPair activeCameraPair = this.cameraMap.get( CameraView.MAIN );
-		if (activeCameraPair == null || activeCameraPair.getActiveCamera() == null)
+		if ( activeCameraPair != null && activeCameraPair.getActiveCamera() != null )
 		{
-			PrintUtilities.println("MAIN camera view not set.");
+			return activeCameraPair.getActiveCamera();
 		}
-		assert( activeCameraPair != null && activeCameraPair.getActiveCamera() != null );
-		return activeCameraPair.getActiveCamera();
+		else
+		{
+			return null;
+		}
 	}
 	
 	public AbstractCamera getCameraForManipulator(CameraInformedManipulator cameraManipulator)

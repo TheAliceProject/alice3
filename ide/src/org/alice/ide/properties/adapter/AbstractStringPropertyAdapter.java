@@ -46,6 +46,12 @@ package org.alice.ide.properties.adapter;
 public abstract class AbstractStringPropertyAdapter<O> extends AbstractInstancePropertyAdapter<String, O> 
 {
 
+	protected class SetStringOperation extends SetValueOperation<String> {
+		public SetStringOperation( String value, String name) {
+			super( AbstractStringPropertyAdapter.this, value, name, java.util.UUID.fromString( "cc558b11-321a-4196-9cf2-9947978f6218" ) );
+		}
+	}
+	
 	public AbstractStringPropertyAdapter(String repr, O instance )
 	{
 		super(repr, instance);
@@ -56,5 +62,10 @@ public abstract class AbstractStringPropertyAdapter<O> extends AbstractInstanceP
 		return String.class;
 	}
 	
+	@Override
+	public SetValueOperation<String> getSetValueOperation(String value) 
+	{
+		return new SetStringOperation(value, null);
+	}
 
 }

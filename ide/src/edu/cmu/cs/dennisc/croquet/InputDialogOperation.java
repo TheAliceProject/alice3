@@ -47,11 +47,12 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public abstract class InputDialogOperation<J extends Component<?>> extends AbstractDialogOperation<InputDialogOperationContext<J>> {
 	protected static final Group ENCLOSING_INPUT_DIALOG_GROUP = new Group( java.util.UUID.fromString( "8dc8d3e5-9153-423e-bf1b-caa94597f57c" ), "ENCLOSING_INPUT_DIALOG_GROUP" );
-	private class ButtonOperation extends ActionOperation {
+	protected static final Group INPUT_DIALOG_IMPLEMENTATION_GROUP = new Group( java.util.UUID.fromString( "35b47d9d-d17b-4862-ac22-5ece4e317242" ), "INPUT_DIALOG_IMPLEMENTATION_GROUP" );
+	private static abstract class ButtonOperation extends ActionOperation {
 		private boolean isOk;
 		private Dialog dialog;
 		public ButtonOperation(java.util.UUID individualId, String name, boolean isOk) {
-			super( Application.INHERIT_GROUP, individualId );
+			super( INPUT_DIALOG_IMPLEMENTATION_GROUP, individualId );
 			this.setName(name);
 			this.isOk = isOk;
 		}
@@ -61,20 +62,48 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 			}
 			this.dialog = dialog;
 		}
+		
+		private InputDialogOperationContext< ? > getInputDialogOperationContext( ActionOperationContext context ) {
+			System.err.println( "todo: getInputDialogOperationContext" );
+			return (InputDialogOperationContext< ? >)context.getParent();
+		}
+		private InputDialogOperation< ? > getInputDialogOperation( ActionOperationContext context ) {
+			return this.getInputDialogOperationContext( context ).getModel();
+		}
 		@Override
 		protected final void perform(ActionOperationContext context) {
 			assert this.dialog != null;
-			InputDialogOperation.this.isOk = this.isOk;
+			InputDialogOperation< ? > inputDialogOperation = this.getInputDialogOperation( context );
+			inputDialogOperation.isOk = this.isOk;
 			this.dialog.setVisible( false );
 			//this.dialog.getAwtWindow().dispose();
 			context.finish();
 		}
 	}
-
-
+	
+	public static class CommitOperation extends ButtonOperation { 
+		private static class SingletonHolder {
+			private static CommitOperation instance = new CommitOperation();
+		}
+		public static CommitOperation getInstance() {
+			return SingletonHolder.instance;
+		}
+		private CommitOperation() {
+			super( java.util.UUID.fromString("f6019ff0-cf2b-4d6c-8c8d-14cac8154ebc"), "OK", true );
+		}
+	}
+	public static class CancelOperation extends ButtonOperation { 
+		private static class SingletonHolder {
+			private static CancelOperation instance = new CancelOperation();
+		}
+		public static CancelOperation getInstance() {
+			return SingletonHolder.instance;
+		}
+		private CancelOperation() {
+			super( java.util.UUID.fromString("2a7e61c8-119a-45b1-830c-f59edda720a0"), "Cancel", false );
+		}
+	}
 	private static final String NULL_EXPLANATION = "good to go";
-	private ButtonOperation okOperation;
-	private ButtonOperation cancelOperation;
 	private Label explanationLabel = new Label( NULL_EXPLANATION ) {
 		@Override
 		protected javax.swing.JLabel createAwtComponent() {
@@ -90,15 +119,11 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 			};
 		};
 	};
+	private boolean isCancelDesired;
 	private boolean isOk = false;
 	public InputDialogOperation(Group group, java.util.UUID individualId, boolean isCancelDesired) {
 		super(group, individualId);
-		this.okOperation = new ButtonOperation(java.util.UUID.fromString("f6019ff0-cf2b-4d6c-8c8d-14cac8154ebc"), "OK", true);
-		if( isCancelDesired ) {
-			this.cancelOperation = new ButtonOperation(java.util.UUID.fromString( "2a7e61c8-119a-45b1-830c-f59edda720a0"), "Cancel", false);
-		} else {
-			this.cancelOperation = null;
-		}
+		this.isCancelDesired = isCancelDesired;
 		this.explanationLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
 		this.explanationLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
 		this.explanationLabel.setForegroundColor( java.awt.Color.RED.darker().darker() );
@@ -138,7 +163,7 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 					explanation = externalExplanation;
 				}
 			}
-			this.okOperation.setEnabled( explanation == null );
+			CommitOperation.getInstance().setEnabled( explanation == null );
 			if( explanation != null ) {
 				this.explanationLabel.setText( explanation );
 			} else {
@@ -146,7 +171,7 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 			}
 		} else {
 			this.explanationLabel.setText( "todo: updateOkOperationAndExplanation context==null" );
-			this.okOperation.setEnabled( true );
+			CommitOperation.getInstance().setEnabled( true );
 		}
 	}
 
@@ -165,18 +190,18 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 			assert mainPane != null;
 			context.setMainPanel( mainPane );
 			class OkCancelPanel extends Panel {
-				private Button okButton = okOperation.createButton();
+				private Button okButton = CommitOperation.getInstance().createButton();
 				public OkCancelPanel() {
 					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 						this.internalAddComponent( okButton );
-						if( cancelOperation != null ) {
+						if( isCancelDesired ) {
 							//this.internalAddComponent( BoxUtilities.createHorizontalSliver( 2 ) );
-							this.internalAddComponent( cancelOperation.createButton() );
+							this.internalAddComponent( CancelOperation.getInstance().createButton() );
 						}
 					} else {
 						this.internalAddComponent( BoxUtilities.createHorizontalGlue() );
-						if( cancelOperation != null ) {
-							this.internalAddComponent( cancelOperation.createButton() );
+						if( isCancelDesired ) {
+							this.internalAddComponent( CancelOperation.getInstance().createButton() );
 							//this.internalAddComponent( BoxUtilities.createHorizontalSliver( 2 ) );
 						}
 						this.internalAddComponent( okButton );
@@ -213,8 +238,8 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 			
 			dialog.setDefaultButton( okCancelPanel.getOkButton() );
 
-			this.okOperation.setDialog(dialog);
-			this.cancelOperation.setDialog(dialog);
+			CommitOperation.getInstance().setDialog(dialog);
+			CancelOperation.getInstance().setDialog(dialog);
 			this.isOk = false;
 
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate.  observer should not need to be added to the root" );
@@ -234,8 +259,8 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 			
 			ContextManager.getRootContext().removeChildrenObserver( this.childrenObserver );
 
-			this.okOperation.setDialog(null);
-			this.cancelOperation.setDialog(null);
+			CommitOperation.getInstance().setDialog(null);
+			CancelOperation.getInstance().setDialog(null);
 			if( this.isOk ) {
 				//pass
 			} else {

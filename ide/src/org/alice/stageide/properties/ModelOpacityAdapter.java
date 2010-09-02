@@ -79,6 +79,7 @@ public class ModelOpacityAdapter extends AbstractOpacityPropertyAdapter<org.alic
 	@Override
 	public void setValue(final Double value) 
 	{
+		super.setValue(value);
 		if (this.instance != null)
 		{
 			new Thread() {

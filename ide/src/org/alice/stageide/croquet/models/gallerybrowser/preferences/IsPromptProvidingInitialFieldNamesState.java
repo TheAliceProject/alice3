@@ -54,6 +54,6 @@ public class IsPromptProvidingInitialFieldNamesState extends edu.cmu.cs.dennisc.
 	}
 	private IsPromptProvidingInitialFieldNamesState() {
 		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "3e551420-bb50-4e33-9175-9f29738998f0" ), true );
-		org.alice.ide.IDE.getSingleton().registerAndInitializePreference( this );
+		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 	}
 }

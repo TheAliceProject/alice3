@@ -54,6 +54,6 @@ public class IsAccessToRecursionAllowedEnabledState extends edu.cmu.cs.dennisc.c
 	}
 	private IsAccessToRecursionAllowedEnabledState() {
 		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "feb28c71-be9f-46a4-84db-57e9205bc220" ), false );
-		org.alice.ide.IDE.getSingleton().registerAndInitializePreference( this );
+		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 	}
 }

@@ -55,11 +55,11 @@ import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 		this.index = index;
 	}
 	public edu.cmu.cs.dennisc.croquet.PopupMenuOperation getResolved() {
-		org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getCodeEditorInFocus();
+		org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getCodeEditorInFocus();
 		if (codeEditor != null) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.methodResolver.getResolved();
 			if (method != null) {
-				edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getSelectedItem();
+				edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getSelectedItem();
 				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = IdeTutorial.getMethodInvocationAt(code, method, this.index);
 				if (methodInvocation != null) {
 					edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement) methodInvocation.getParent();

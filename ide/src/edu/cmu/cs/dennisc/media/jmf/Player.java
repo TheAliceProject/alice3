@@ -187,12 +187,27 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 	public double getDuration() {
 		return this.player.getDuration().getSeconds();
 	}
+	
+	private static final double CONSIDERED_TO_BE_STARTED_THRESHOLD = 0.1;
 	@Override
 	public double getTimeRemaining() {
 		javax.media.Time duration = this.player.getDuration();
 		javax.media.Time stop = this.player.getStopTime();
 		javax.media.Time curr = this.player.getMediaTime();
-		return Math.min( duration.getSeconds(), stop.getSeconds() ) - curr.getSeconds();
+		
+		double endSeconds = Math.min( duration.getSeconds(), stop.getSeconds() );
+		double currSeconds = curr.getSeconds();
+		double rv = endSeconds - currSeconds;
+		
+		int state = this.player.getState();
+		if( state >= javax.media.Controller.Started ) {
+			//pass
+		} else {
+			if( currSeconds > CONSIDERED_TO_BE_STARTED_THRESHOLD ) {
+				rv = 0.0;
+			}
+		}
+		return rv;
 	}
 	@Override
 	public void playUntilStop() {

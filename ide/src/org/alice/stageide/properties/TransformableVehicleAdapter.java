@@ -45,24 +45,18 @@ package org.alice.stageide.properties;
 
 import java.util.Locale;
 
-import org.alice.apis.moveandturn.AbstractCamera;
-import org.alice.apis.moveandturn.AsSeenBy;
 import org.alice.apis.moveandturn.Composite;
 import org.alice.apis.moveandturn.Light;
 import org.alice.apis.moveandturn.Scene;
 import org.alice.apis.moveandturn.Transformable;
 import org.alice.ide.IDE;
-import org.alice.ide.properties.adapter.AbstractDoublePropertyAdapter;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.alice.ide.swing.icons.ColorIcon;
+import org.alice.ide.properties.adapter.SetValueOperation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.croquet.Model;
 import edu.cmu.cs.dennisc.croquet.Operation;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
 
@@ -71,10 +65,10 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 	private HierarchyListener hierarchyListener;
 	private edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenuOperation;
 	
-	protected class SetVehicleOperation extends SetValueOperation
+	protected class SetVehicleOperation extends SetValueOperation<Composite>
 	{
 		public SetVehicleOperation( Composite value, String name) {
-			super( value, name, java.util.UUID.fromString( "981768b7-f40b-4363-b64f-34264be73651" ) );
+			super( TransformableVehicleAdapter.this, value, name, java.util.UUID.fromString( "981768b7-f40b-4363-b64f-34264be73651" ) );
 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = ((MoveAndTurnSceneEditor)IDE.getSingleton().getSceneEditor()).getFieldForInstanceInJava(value);
 			if (field != null)
 			{
@@ -110,6 +104,26 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 		this.notifyValueObservers(this.getValue());
 	}
 	
+	protected boolean isValidVehicle(Composite vehicle)
+	{
+		Composite o = vehicle;
+		while( true ) {
+			if ( o == this.instance )
+			{
+				return false;
+			}
+			if( o == null ) {
+				break;
+			}
+			if( o instanceof Transformable ) {
+				o = ((Transformable)o).getVehicle();
+			} else {
+				break;
+			}
+		}
+		return true;
+	}
+	
 	@Override
 	public Operation getEditOperation() 
 	{
@@ -119,7 +133,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 				@Override
 				protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) 
 				{
-					edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > possibleFields = org.alice.ide.IDE.getSingleton().getAccessibleListState();
+					edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > possibleFields = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
 					java.util.List<Model> setVehicleOperations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 					
 					Composite currentVehicle = TransformableVehicleAdapter.this.getValue();
@@ -135,19 +149,15 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 						{
 							Composite objectInJava = ((MoveAndTurnSceneEditor)IDE.getSingleton().getSceneEditor()).getInstanceInJavaForField((FieldDeclaredInAlice)field, Composite.class);
 							boolean canBeVehicle = false;
-							if (objectInJava != null && objectInJava != TransformableVehicleAdapter.this.instance)
+							if (objectInJava != null)
 							{
-								if (objectInJava instanceof AbstractCamera || objectInJava instanceof Light)
+								if (objectInJava instanceof Light)
 								{
 									canBeVehicle = false;
 								}
-								else if (objectInJava instanceof Transformable)
+								else if (objectInJava instanceof Transformable && TransformableVehicleAdapter.this.isValidVehicle(objectInJava))
 								{
-									Transformable transformableInJava = (Transformable)objectInJava;
-									if (transformableInJava.getVehicle() != TransformableVehicleAdapter.this.instance)
-									{
-										canBeVehicle = true;
-									}
+									canBeVehicle = true;
 								}
 								else if (objectInJava instanceof Scene)
 								{
@@ -168,6 +178,12 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 		
 		// TODO Auto-generated method stub
 		return this.popupMenuOperation;
+	}
+	
+	@Override
+	public SetValueOperation<Composite> getSetValueOperation(Composite value) 
+	{
+		return new SetVehicleOperation(value, null);
 	}
 
 	public static String getNameForVehicle(Composite vehicle)
@@ -206,7 +222,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 	}
 	
 	@Override
-	protected String getUndoRedoDescription(Locale locale) 
+	public String getUndoRedoDescription(Locale locale) 
 	{
 		return "Set Vehicle";
 	}
@@ -214,13 +230,10 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 	@Override
 	public void setValue(Composite value) 
 	{
+		super.setValue(value);
 		if (this.instance != null)
 		{
-//			AffineMatrix4x4 currentPosition = this.instance.getTransformation(AsSeenBy.SCENE);
 			this.instance.setVehicle(value);
-//			org.alice.apis.moveandturn.Scene scene = this.instance.getScene();
-//			assert scene != null;
-//			this.instance.moveAndOrientTo(scene.createOffsetStandIn(currentPosition), 0);
 		}
 	}
 

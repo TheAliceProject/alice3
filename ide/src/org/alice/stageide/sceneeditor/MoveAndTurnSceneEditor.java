@@ -189,21 +189,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	
 	private ComboBox<CameraMarker> mainCameraViewSelector;
 	private CameraMarkerTracker mainCameraViewTracker;
-	private ListSelectionState<CameraMarker> mainCameraMarkerList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< CameraMarker >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "951c85e8-e8db-45d8-aa10-3e906c8d4bbf" ), new edu.cmu.cs.dennisc.croquet.Codec< CameraMarker >() {
-		public edu.cmu.cs.dennisc.croquet.CodableResolver<edu.cmu.cs.dennisc.croquet.Codec<CameraMarker>> getResolver() {
-			throw new RuntimeException( "todo" );
-		}
-		public CameraMarker decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			throw new RuntimeException( "todo" );
-		}
-		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, CameraMarker cameraMarker ) {
-			System.err.println( "todo: convert mainCameraMarkerList to AST: " + cameraMarker );
-		}
-	} );
-	
-	private FieldDeclaredInAlice currentSelectedCameraMarkerField = null;
-	
-	private ListSelectionState<FieldDeclaredInAlice> sceneMarkerFieldList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< FieldDeclaredInAlice >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "a09eeae2-53fc-4cbe-ab09-a6d6d7975d4d" ), new org.alice.ide.croquet.codecs.NodeCodec< FieldDeclaredInAlice >() );
+	private ListSelectionState<CameraMarker> mainCameraMarkerList = org.alice.stageide.croquet.models.sceneditor.ViewListSelectionState.getInstance();
+	private ListSelectionState<FieldDeclaredInAlice> sceneMarkerFieldList = org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelectionState.getInstance();
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
 		public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractCode next ) {
 			MoveAndTurnSceneEditor.this.handleFocusedCodeChanged( next );
@@ -413,15 +400,13 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		if (newMarker != null)
 		{
 			//Camera markers are not in the same selection state as things in the scene, so null out the field selection state if we're selecting a marker
-			org.alice.ide.IDE.getSingleton().getAccessibleListState().setSelectedItem(null);
+			org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedItem(null);
 			this.globalDragAdapter.setSelectedObject(newMarker.getSGTransformable());
 		}
 		else
 		{
 			this.globalDragAdapter.setSelectedObject(null);
 		}
-		this.currentSelectedCameraMarkerField = cameraMarkerField;
-		
 		MoveActiveCameraToMarkerActionOperation.getInstance().setMarkerField(cameraMarkerField);
 		MoveMarkerToActiveCameraActionOperation.getInstance().setMarkerField(cameraMarkerField);
 		this.sidePane.getViewManager().updateButtons();
@@ -491,7 +476,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		else
 		{
 			this.sceneMarkerFieldList.setSelectedItem(null);
-			org.alice.ide.IDE.getSingleton().getAccessibleListState().setSelectedItem(field);
+			org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedItem(field);
 		}
 	}
 	
@@ -614,7 +599,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 							MoveAndTurnSceneEditor.this.getGoodLookAtShowInstanceAndReturnCamera( camera, (org.alice.apis.moveandturn.BookmarkCameraMarker)transformable );
 							CreateCameraMarkerActionOperation.getInstance().setEnabled(true);
 						}
-						ListSelectionState<Accessible> accessibleListSelectionState = IDE.getSingleton().getAccessibleListState();
+						ListSelectionState<Accessible> accessibleListSelectionState = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
 						if( accessibleListSelectionState.containsItem( addedField ) ) {
 							accessibleListSelectionState.setSelectedItem( addedField );
 						}
@@ -780,9 +765,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
 		this.splitPane.setLeftComponent( this.lookingGlassPanel );
-		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().addAndInvokeValueObserver( this.codeSelectionObserver );
-		org.alice.ide.IDE.getSingleton().getAccessibleListState().addAndInvokeValueObserver( this.fieldSelectionObserver );
-		org.alice.ide.IDE.getSingleton().getAccessibleListState().addAndInvokeValueObserver( this.sidePane.getPropertyManager() );
+		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().addAndInvokeValueObserver( this.codeSelectionObserver );
+		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().addAndInvokeValueObserver( this.fieldSelectionObserver );
+		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().addAndInvokeValueObserver( this.sidePane.getPropertyManager() );
 		this.sceneMarkerFieldList.addListDataListener( this.listDataListener );
 	}
 
@@ -793,9 +778,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.removeFieldListening();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().removeAutomaticDisplayListener( this.automaticDisplayListener );
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
-		org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().removeValueObserver( this.codeSelectionObserver );
-		org.alice.ide.IDE.getSingleton().getAccessibleListState().removeValueObserver( this.fieldSelectionObserver );
-		org.alice.ide.IDE.getSingleton().getAccessibleListState().removeValueObserver( this.sidePane.getPropertyManager() );
+		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().removeValueObserver( this.codeSelectionObserver );
+		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().removeValueObserver( this.fieldSelectionObserver );
+		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().removeValueObserver( this.sidePane.getPropertyManager() );
 		super.handleRemovedFrom( parent );
 	}
 	
@@ -951,7 +936,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouth( lgPanel, mainCameraNavigatorWidget, INSET );
 
-			this.fieldRadioButtons = new FieldRadioButtons( this.getIDE().getAccessibleListState() );
+			this.fieldRadioButtons = new FieldRadioButtons( org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance() );
 			this.globalDragAdapter.setAnimator( animator );
 			this.globalDragAdapter.addPropertyListener( new org.alice.interact.event.SelectionListener() {
 				public void selecting( org.alice.interact.event.SelectionEvent e ) {
@@ -1154,7 +1139,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		if( code != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = code.getDeclaringType();
 			if( type != null ) {
-				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = this.getIDE().getAccessibleListState().getSelectedItem();
+				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
 				if( accessible instanceof AbstractField ) {
 					AbstractField selectedField = (AbstractField)accessible;
 					if( selectedField != null ) {
@@ -1170,7 +1155,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 								} else {
 									for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
 										if( type.isAssignableFrom( field.getValueType() ) ) {
-											this.getIDE().getAccessibleListState().setSelectedItem( field );
+											org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedItem( field );
 											break;
 										}
 									}
@@ -1327,13 +1312,18 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			}
 		}
 		assert this.sgPerspectiveCamera != null;
-
+		//Add and set up the snap grid (this needs to happen before setting the camera)
+		this.scene.getSGComposite().addComponent(this.snapGrid);
+		this.snapGrid.setTranslationOnly(0, 0, 0, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE);
+		this.snapGrid.setShowing(this.snapState.shouldShowSnapGrid());
+		
+		//Initialize stuff that needs a camera
+		this.setCameras(this.sgPerspectiveCamera, this.sgOrthographicCamera);
+		
 		//Add the orthographic camera to this scene
 		this.scene.getSGComposite().addComponent( this.sgOrthographicCamera.getParent() );
 		//Add the orthographic markers
 		addCameraMarkersToScene(this.scene);
-		//Clear the selection on the camera markers so we can set them to the values specified by the scene
-		
 		this.openingSceneMarker.setLocalTransformation(this.sgPerspectiveCamera.getAbsoluteTransformation());
 		
 		AffineMatrix4x4 sceneViewTransform = getSGCameraForCreatingMarker().getTransformation( AsSeenBy.SCENE.getSGReferenceFrame() );
@@ -1348,14 +1338,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		{
 			this.sceneViewMarker.setLocalTransformation(sceneViewTransform);
 		}
-
-		//Add and set up the snap grid (this needs to happen before setting the camera)
-		this.scene.getSGComposite().addComponent(this.snapGrid);
-		this.snapGrid.setTranslationOnly(0, 0, 0, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE);
-		this.snapGrid.setShowing(this.snapState.shouldShowSnapGrid());
-		
-		//Initialize stuff that needs a camera
-		this.setCameras(this.sgPerspectiveCamera, this.sgOrthographicCamera);
 		
 		//Make the markers visible
 		setCameraMarkerVisibility(true);

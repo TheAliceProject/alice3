@@ -47,10 +47,10 @@ package org.alice.ide.operations.ast;
  */
 public class FieldItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractField > {
 	public FieldItemSelectionOperation( int selectedIndex, edu.cmu.cs.dennisc.alice.ast.AbstractField... fields ) {
-		super( java.util.UUID.fromString( "8a59686c-1c12-493d-bdc8-8e053e7ff90b" ), new org.alice.ide.croquet.codecs.NodeCodec< edu.cmu.cs.dennisc.alice.ast.AbstractField >(), selectedIndex, fields );
+		super( java.util.UUID.fromString( "8a59686c-1c12-493d-bdc8-8e053e7ff90b" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField.class ), selectedIndex, fields );
 	}
 	@Override
 	protected void handleSelectionChange(edu.cmu.cs.dennisc.alice.ast.AbstractField value) {
-		getIDE().getAccessibleListState().setSelectedItem( value);
+		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedItem( value);
 	}
 }

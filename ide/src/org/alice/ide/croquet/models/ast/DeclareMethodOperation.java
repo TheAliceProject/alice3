@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
@@ -73,31 +73,31 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.In
 			if( method != null ) {
 				final org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 				final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = ide.getFocusedCode();
-				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
-					@Override
-					protected final void doOrRedoInternal( boolean isDo ) {
-						declaringType.methods.add( method );
-//						assert method.getDeclaringType() == method.body.getValue().getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractType.class );
-						ide.setFocusedCode( method );
-					}
-					@Override
-					protected final void undoInternal() {
-						int index = declaringType.methods.indexOf( method );
-						if( index != -1 ) {
-							declaringType.methods.remove( index );
-							ide.setFocusedCode( prevCode );
-						} else {
-							throw new javax.swing.undo.CannotUndoException();
-						}
-					}
-					@Override
-					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-						rv.append( "declare:" );
-						edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, method, locale);
-						return rv;
-					}
-				} );
-//				context.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareMethodEdit(declaringType, method));
+//				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+//					@Override
+//					protected final void doOrRedoInternal( boolean isDo ) {
+//						declaringType.methods.add( method );
+////						assert method.getDeclaringType() == method.body.getValue().getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractType.class );
+//						ide.setFocusedCode( method );
+//					}
+//					@Override
+//					protected final void undoInternal() {
+//						int index = declaringType.methods.indexOf( method );
+//						if( index != -1 ) {
+//							declaringType.methods.remove( index );
+//							ide.setFocusedCode( prevCode );
+//						} else {
+//							throw new javax.swing.undo.CannotUndoException();
+//						}
+//					}
+//					@Override
+//					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+//						rv.append( "declare:" );
+//						edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, method, locale);
+//						return rv;
+//					}
+//				} );
+				context.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareMethodEdit(declaringType, method));
 			} else {
 				context.cancel();
 			}

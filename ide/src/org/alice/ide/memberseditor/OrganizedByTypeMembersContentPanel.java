@@ -40,29 +40,62 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.memberseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareProcedureOperation extends DeclareMethodOperation {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >, DeclareProcedureOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static DeclareProcedureOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
-		DeclareProcedureOperation rv = map.get( type );
+abstract class OrganizedByTypeMembersContentPanel extends MembersContentPanel {
+	@Override
+	protected void refresh( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > types ) {
+		this.removeAllComponents();
+		boolean isNonConsumedTypeDeclaredInJavaAlreadyEncountered = false;
+
+		if( types.size() > 0 ) {
+			boolean isSeparatorDesired = types.get( 0 ) instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+			for( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type : types ) {
+				boolean isFirstNonConsumedTypeEncounteredInJava = false;
+				if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava ) {
+					if( isSeparatorDesired ) {
+						this.addComponent( new edu.cmu.cs.dennisc.croquet.HorizontalSeparator() );
+						this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalSliver( 16 ) );
+						isSeparatorDesired = false;
+					}
+					if( isNonConsumedTypeDeclaredInJavaAlreadyEncountered ) {
+						//pass
+					} else {
+						if( type.isConsumptionBySubClassDesired() ) {
+							//pass
+						} else {
+							isFirstNonConsumedTypeEncounteredInJava = true;
+							isNonConsumedTypeDeclaredInJavaAlreadyEncountered = true;
+						}
+					}
+				}
+				if( type.isConsumptionBySubClassDesired() ) {
+					//pass
+				} else {
+					if( /*org.alice.ide.IDE.getSingleton().isEmphasizingClasses() ||*/ type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice || isFirstNonConsumedTypeEncounteredInJava ) {
+						this.addComponent( MembersEditor.getComponentFor( this.getClass(), type ) );
+					}
+				}
+				this.addComponent( this.getTypeMembersPane( type ) );
+			}
+		}
+		this.revalidateAndRepaint();
+	}
+
+	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, AbstractTypeMembersPane > mapTypeToPane = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, AbstractTypeMembersPane >();
+	protected abstract AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type );
+	protected AbstractTypeMembersPane getTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		AbstractTypeMembersPane rv = this.mapTypeToPane.get( type );
 		if( rv != null ) {
-			//pass
+			//todo?
+			rv.refresh();
 		} else {
-			rv = new DeclareProcedureOperation( type );
-			map.put( type, rv );
+			rv = this.createTypeMembersPane( type );
+			this.mapTypeToPane.put( type, rv );
 		}
 		return rv;
-	}
-	private DeclareProcedureOperation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
-		super( java.util.UUID.fromString( "dcaee920-08ea-4b03-85d1-f2df5f73bfb4" ), type );
-		this.setName( "Declare Procedure..." );
-	}
-	@Override
-	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
-		return new org.alice.ide.declarationpanes.CreateProcedurePane( type );
 	}
 }

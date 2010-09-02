@@ -79,6 +79,7 @@ public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.alice.ap
 	@Override
 	public void setValue(final Color4f value) 
 	{
+		super.setValue(value);
 		if (this.instance != null)
 		{
 			new Thread() {

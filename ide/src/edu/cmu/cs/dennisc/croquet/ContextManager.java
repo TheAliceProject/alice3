@@ -341,4 +341,16 @@ public class ContextManager {
 			}
 		}
 	}
+	
+	private static int isUndoOrRedoCount = 0;
+	public static boolean isInTheMidstOfUndoOrRedo() {
+		return isUndoOrRedoCount > 0;
+	}
+	public static void pushUndoOrRedo() {
+		isUndoOrRedoCount ++;
+	}
+	public static void popUndoOrRedo() {
+		isUndoOrRedoCount --;
+	}
+	
 }

@@ -69,7 +69,7 @@ public class IntroductionTutorial {
 
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				ide.getAccessibleListState().setSelectedItem( cameraField );
+				org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedItem( cameraField );
 			}
 		} );
 		
@@ -85,7 +85,7 @@ public class IntroductionTutorial {
 		tutorial.addSpotlightStepForModel( 
 				"Curent Instance", 
 				"The current instance is displayed here.", 
-				ide.getAccessibleListState()
+				org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance()
 		);
 		tutorial.addSpotlightStep( 
 				"Instance Details", 
@@ -96,7 +96,7 @@ public class IntroductionTutorial {
 		tutorial.addSpotlightStepForModel( 
 				"Instance Details", 
 				"This is the code editor.", 
-				ide.getEditorsTabSelectionState() 
+				org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance()
 		);
 
 		tutorial.addMessageStep( 
@@ -141,14 +141,14 @@ public class IntroductionTutorial {
 		tutorial.addListSelectionStep(
 				"Select Ice Skater", 
 				"By selecting an instance we can see what procedures it knows how to do.<p><p><i>Select the <b>iceSkater</b>.<i>",
-				ide.getAccessibleListState(),
+				org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance(),
 				tutorial.createAccessibleResolver( "iceSkater" )
 		);
 		
 		tutorial.addSpotlightTabScrollPaneStep( 
 				"Note Ice Skater Details", 
 				"These are all of the procedures that the <b>iceSkater</b> knows how to do.", 
-				membersEditor.getTabbedPaneSelectionState(),
+				org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance(),
 				tutorial.getFunctionsTab()
 		);
 

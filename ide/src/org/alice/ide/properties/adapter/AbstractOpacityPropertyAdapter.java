@@ -67,7 +67,7 @@ public abstract class AbstractOpacityPropertyAdapter<O> extends AbstractDoublePr
 	}
 	
 	@Override
-	protected String getUndoRedoDescription(Locale locale) 
+	public String getUndoRedoDescription(Locale locale) 
 	{
 		return "Opacity";
 	}

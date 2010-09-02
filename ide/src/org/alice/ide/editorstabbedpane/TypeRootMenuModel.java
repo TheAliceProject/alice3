@@ -68,7 +68,7 @@ class TypeMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
 		menuItemContainer.addSeparator();
 		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, new EditConstructorOperation( this.type.getDeclaredConstructor() ) );
 		menuItemContainer.addSeparator();
-		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance( this.type ) );
+		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.croquet.models.ast.DeclareProcedureOperation.getInstance( this.type ) );
 		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.type.methods ) {
 			if( method.isProcedure() ) {
 				edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, new EditMethodOperation( method ) );
@@ -80,7 +80,7 @@ class TypeMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
 				edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, new EditMethodOperation( method ) );
 			}
 		}
-		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.operations.ast.DeclareFunctionOperation.getInstance( this.type ) );
+		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.croquet.models.ast.DeclareFunctionOperation.getInstance( this.type ) );
 		menuItemContainer.addSeparator();
 		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( this.type ) );
 		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : this.type.fields ) {

@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class RootContext extends ModelContext {
+public class RootContext extends ModelContext<Model> {
 	/*package-private*/ RootContext() {
 		super( null, null, null );
 	}

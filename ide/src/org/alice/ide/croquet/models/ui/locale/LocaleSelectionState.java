@@ -104,7 +104,7 @@ public class LocaleSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelecti
 				new java.util.Locale( "zh" ),
 				new java.util.Locale( "ko" )
 		);
-		org.alice.ide.IDE.getSingleton().registerAndInitializePreference( this );
+		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 		this.addValueObserver( new ValueObserver< java.util.Locale >() {
 			public void changed( java.util.Locale nextValue ) {
 				org.alice.ide.croquet.models.information.RestartRequiredOperation.getInstance().fire();
