@@ -95,10 +95,10 @@ public class ContextManager {
 		return push( new BoundedRangeIntegerStateContext(boundedRangeIntegerState, null, null) );
 	}
 	/*package-private*/ static BooleanStateContext createAndPushBooleanStateContext(BooleanState booleanState, java.awt.event.ItemEvent e, ViewController<?, ?> viewController) {
-		return push( new BooleanStateContext(booleanState, e, viewController) );
+		return push( new BooleanStateContext( booleanState, e, viewController ) );
 	}
-	/*package-private*/ static StringStateContext createAndPushStringStateContext(StringState stringState) {
-		return push( new StringStateContext(stringState, null, null) );
+	/*package-private*/ static StringStateContext createAndPushStringStateContext(StringState stringState, java.util.EventObject e, ViewController< ?, ? > viewController ) {
+		return push( new StringStateContext( stringState, e, viewController ) );
 	}
 	/*package-private*/ static MenuBarModelContext createAndPushMenuBarModelContext(MenuBarModel menuBarModel, javax.swing.event.ChangeEvent e, MenuBar menuBar) {
 		return push( new MenuBarModelContext(menuBarModel, e, menuBar) );

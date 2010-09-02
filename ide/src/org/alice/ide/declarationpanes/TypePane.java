@@ -62,87 +62,6 @@ class IsArrayState extends edu.cmu.cs.dennisc.croquet.BooleanState {
 
 
 public class TypePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-//	private static class TypeSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > {
-//		private static class TypeListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane implements javax.swing.ListCellRenderer {
-//			private javax.swing.JLabel leadingLabel = new javax.swing.JLabel();
-//			private class Label extends javax.swing.JLabel {
-//				private boolean isPaintingDesired = true;
-//				@Override
-//				protected void paintComponent(java.awt.Graphics g) {
-//					if( this.isPaintingDesired ) {
-//						super.paintComponent( g );
-//					}
-//				}
-//			}
-//			private Label trailingLabel = new Label();
-//			public TypeListCellRenderer() {
-//				this.add( this.leadingLabel, java.awt.BorderLayout.LINE_START );
-//				this.add( javax.swing.Box.createHorizontalStrut( 16 ) );
-//				this.add( this.trailingLabel, java.awt.BorderLayout.LINE_END );
-//				this.setOpaque( true );
-//				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
-//			}
-//			public java.awt.Component getListCellRendererComponent(javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-//				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = (edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>)value;
-//				org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-//				this.leadingLabel.setIcon( ide.getIconFor( type ) );
-//				this.trailingLabel.setText( ide.getTextFor( type ) );
-//				
-//				if( isSelected ) {
-//					this.setBackground( list.getSelectionBackground() );
-//					this.leadingLabel.setForeground( list.getSelectionForeground() );
-//					this.trailingLabel.setForeground( list.getSelectionForeground() );
-//				} else {
-//					this.setBackground( list.getBackground() );
-//					this.leadingLabel.setForeground( list.getForeground() );
-//					this.trailingLabel.setForeground( list.getForeground() );
-//				}
-//				this.trailingLabel.isPaintingDesired = index != -1;
-////				if( index != -1 ) {
-////					//pass
-////				} else {
-////					this.trailingLabel.setForeground( null );
-////				}
-//				return this;
-//			}
-//		}
-//
-//		public TypeSelectionState() {
-//			super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "ef5677ca-a5d9-49c4-90bb-5fb43ef15ba6" ) );
-//			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( org.alice.ide.IDE.getSingleton().getTypesForComboBoxes(), edu.cmu.cs.dennisc.alice.ast.AbstractType.class );
-//			//int selectedIndex = java.util.Arrays.binarySearch( types, type );
-//			this.setListData( -1, types );
-//		}
-//		@Override
-//		public edu.cmu.cs.dennisc.croquet.ComboBox<edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>> createComboBox() {
-//			edu.cmu.cs.dennisc.croquet.ComboBox<edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>> rv = super.createComboBox();
-//			TypeListCellRenderer typeListCellRenderer = new TypeListCellRenderer();
-//			rv.setRenderer( typeListCellRenderer );
-//			rv.setMaximumRowCount( Math.min( this.getItemCount(), 20 ) );
-//			return rv;
-//		}
-//		
-//		@Override
-//		public void setSelectedItem(edu.cmu.cs.dennisc.alice.ast.AbstractType<?, ?, ?> selectedItem) {
-//			if( selectedItem != null ) {
-//				if( this.containsItem( selectedItem ) ) {
-//					//pass
-//				} else {
-//					this.addItem( selectedItem );
-//				}
-//			}
-//			super.setSelectedItem(selectedItem);
-//		}
-//		@Override
-//		protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> value) {
-//			throw new RuntimeException( "todo" );
-//		}
-//		@Override
-//		protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-//			throw new RuntimeException( "todo" );
-//		}
-//	}
-
 	private edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > typeProperty;
 	private IsArrayState isArrayStateState;
 	//private TypeSelectionState typeSelectionState = new TypeSelectionState();
@@ -161,39 +80,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		}
 	}
 	
-	private edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenuOperation = new edu.cmu.cs.dennisc.croquet.MenuModel( java.util.UUID.fromString( "b59ec150-56cd-4270-8b5a-80dcb5cd7bd9" ) ) {
-		@Override
-		protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
-			super.handlePopupMenuPrologue( popupMenu, context );
-			java.util.List< edu.cmu.cs.dennisc.croquet.Model > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-
-			java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > javaTypes = org.alice.ide.IDE.getSingleton().getPrimeTimeSelectableTypesDeclaredInJava();
-			for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava javaType : javaTypes ) {
-				models.add( new SelectTypeOperation( javaType ) );
-			}
-			
-			java.util.List< edu.cmu.cs.dennisc.croquet.Model > myTypeModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > aliceTypes = org.alice.ide.IDE.getSingleton().getTypesDeclaredInAlice();
-			for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice aliceType : aliceTypes ) {
-				myTypeModels.add( new SelectTypeOperation( aliceType ) );
-			}
-			if( myTypeModels.size() > 0 ) {
-				models.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
-				models.add( new org.alice.ide.croquet.models.ast.MyTypesMenuModel( myTypeModels ) );
-			}
-
-			java.util.List< edu.cmu.cs.dennisc.croquet.Model > otherTypeModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > otherTypes = org.alice.ide.IDE.getSingleton().getSecondarySelectableTypesDeclaredInJava();
-			for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava otherType : otherTypes ) {
-				otherTypeModels.add( new SelectTypeOperation( otherType ) );
-			}
-			if( otherTypeModels.size() > 0 ) {
-				models.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
-				models.add( new org.alice.ide.croquet.models.ast.OtherTypesMenuModel( otherTypeModels ) );
-			}
-			edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
-		}
-	}.getPopupMenuOperation();
+	private edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenuOperation = org.alice.ide.croquet.models.ast.declaration.TypeMenuModel.getInstance().getPopupMenuOperation();
 	
 	private class TypeDropDownPane extends org.alice.ide.common.AbstractDropDownPane {
 		private edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label();

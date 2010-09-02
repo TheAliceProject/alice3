@@ -40,55 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.croquet.models.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareMethodParameterOperation extends org.alice.ide.operations.InputDialogWithPreviewOperation<org.alice.ide.declarationpanes.CreateMethodParameterPane> {
-	@Deprecated
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice, DeclareMethodParameterOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static DeclareMethodParameterOperation getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		DeclareMethodParameterOperation rv = map.get( method );
+public class SelectTypeOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, SelectTypeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized SelectTypeOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		SelectTypeOperation rv = map.get( type );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new DeclareMethodParameterOperation( method );
-			map.put( method, rv );
+			rv = new SelectTypeOperation( type );
+			map.put( type, rv );
 		}
 		return rv;
 	}
-	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
-	private DeclareMethodParameterOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "aa3d337d-b409-46ae-816f-54f139b32d86" ) );
-		this.method = method;
-		this.setName( "Add Parameter..." );
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
+	private SelectTypeOperation( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8f3e1f74-d1fd-4484-98e0-bc37da452005" ) );
+		this.type = type;
+		this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( this.type ) );
+		this.setName( org.alice.ide.IDE.getSingleton().getTextFor( type ) );
 	}
 	
-	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getMethod() {
-		return this.method;
-	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeKeyedResolver< DeclareMethodParameterOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeKeyedResolver< DeclareMethodParameterOperation >( this, this.method, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+	protected org.alice.ide.croquet.resolvers.NodeKeyedResolver< SelectTypeOperation > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeKeyedResolver< SelectTypeOperation >( this, this.type, edu.cmu.cs.dennisc.alice.ast.AbstractType.class );
 	}
+	
 	@Override
-	protected org.alice.ide.declarationpanes.CreateMethodParameterPane prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context) {
-		//todo: create before hand and refresh at this point
-		return new org.alice.ide.declarationpanes.CreateMethodParameterPane( method, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
-	}
-	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context, boolean isOk) {
-		if( isOk ) {
-			org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = context.getMainPanel();
-			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = createMethodParameterPane.getActualInputValue();
-			if( parameter != null ) {
-				context.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareMethodParameterEdit( parameter ) );
-			} else {
-				context.cancel();
-			}
-		} else {
-			context.cancel();
-		}
+	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+		//typeProperty.setValue( this.type );
+		edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.CreateMethodParameterPane > inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< org.alice.ide.declarationpanes.CreateMethodParameterPane >)context.getParent();
+		org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = inputDialogOperationContext.getMainPanel();
+		createMethodParameterPane.EPIC_HACK_setComponentType( this.type );
+		context.finish();
 	}
 }

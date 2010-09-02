@@ -68,6 +68,11 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	public AbstractDeclarationPane( org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
 		this( nodeNameValidator, null, null );
 	}
+	
+	public void EPIC_HACK_setComponentType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> componentType ) {
+		this.bogusNode.componentType.setValue( componentType );
+	}
+
 	public void setNodeNameValidator(org.alice.ide.name.validators.NodeNameValidator nodeNameValidator) {
 		this.nodeNameValidator = nodeNameValidator;
 	}

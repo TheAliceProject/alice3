@@ -57,12 +57,38 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 		return ContextManager.createAndPushPopupMenuOperationContext( this, e, viewController );
 	}
 	
+	public static class PopupMenuOperationResolver implements CodableResolver< PopupMenuOperation > {
+		private PopupMenuOperation popupMenuOperation;
+		
+		public PopupMenuOperationResolver( PopupMenuOperation popupMenuOperation ) {
+			this.popupMenuOperation = popupMenuOperation;
+		}
+		public PopupMenuOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			this.decode( binaryDecoder );
+		}
+		public edu.cmu.cs.dennisc.croquet.PopupMenuOperation getResolved() {
+			return this.popupMenuOperation;
+		}
+		public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			CodableResolver<MenuModel> menuModelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			MenuModel menuModel = menuModelResolver.getResolved();
+			this.popupMenuOperation = menuModel.getPopupMenuOperation();
+		}
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			CodableResolver<MenuModel> menuModelResolver = this.popupMenuOperation.menuModel.getCodableResolver();
+			binaryEncoder.encode( menuModelResolver );
+		}
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.CodableResolver< PopupMenuOperation > createCodableResolver() {
+		return new PopupMenuOperationResolver( this );
+	}
+	
  	@Override
 	protected final void perform( PopupMenuOperationContext context) {
 	}
 	@Override
 	protected final void perform( final PopupMenuOperationContext context, final Operation.PerformObserver performObserver ) {
-		
 		//note: do not call super
 		final PopupMenu popupMenu = new PopupMenu( this ) {
 			@Override

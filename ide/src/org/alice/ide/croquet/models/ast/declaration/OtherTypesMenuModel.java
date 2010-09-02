@@ -40,58 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.croquet.models.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.alice.ast.AbstractNode > extends org.alice.ide.operations.ActionOperation {
-	private E node;
-	private edu.cmu.cs.dennisc.alice.ast.NodeListProperty owner;
-	public AbstractDeleteNodeOperation( java.util.UUID individualId, E node, edu.cmu.cs.dennisc.alice.ast.NodeListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.Node > owner ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
-		this.node = node;
-		this.owner = owner;
-		this.setName( "Delete" );
+public class OtherTypesMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+	private static class SingletonHolder {
+		private static OtherTypesMenuModel instance = new OtherTypesMenuModel();
 	}
-	protected abstract boolean isClearToDelete( E node );
+	public static OtherTypesMenuModel getInstance() {
+		return SingletonHolder.instance;
+	}
+	private OtherTypesMenuModel() {
+		super( java.util.UUID.fromString( "909d8fb3-f1a0-4f21-9bbf-a871ea04d1a0" ) );
+	}
 	@Override
-	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-		if( this.isClearToDelete( this.node ) ) {
-			final int index = this.owner.indexOf( this.node );
-			final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
-			final Object instance;
-			if( this.node instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-				field = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.node;
-				instance = this.getIDE().getSceneEditor().getInstanceInJavaForUndo( field );
-			} else {
-				field = null;
-				instance = null;
-			}
-			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
-				@Override
-				protected final void doOrRedoInternal( boolean isDo ) {
-					owner.remove( index );
-				}
-				@Override
-				protected final void undoInternal() {
-					if( instance != null ) {
-						getIDE().getSceneEditor().putInstanceForInitializingPendingField( field, instance );
-					}
-					owner.add( index, node );
-//					if( field != null && instance != null ) {
-//						getIDE().getSceneEditor().handleFieldCreation((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)field.getDeclaringType(), field, instance, false );
-//					}
-				}
-				@Override
-				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-					rv.append( "delete: " );
-					edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, node, locale);
-					return rv;
-				}
-			} );
-		} else {
-			context.cancel();
+	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
+		super.handlePopupMenuPrologue( popupMenu, context );
+		java.util.List< edu.cmu.cs.dennisc.croquet.Model > otherTypeModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > otherTypes = org.alice.ide.IDE.getSingleton().getSecondarySelectableTypesDeclaredInJava();
+		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava otherType : otherTypes ) {
+			otherTypeModels.add( SelectTypeOperation.getInstance( otherType ) );
 		}
+		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, otherTypeModels );
 	}
 }

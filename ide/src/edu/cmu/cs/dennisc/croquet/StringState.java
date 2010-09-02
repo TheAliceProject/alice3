@@ -67,18 +67,46 @@ public class StringState extends Model {
 	}
 	
 	private javax.swing.text.Document document;
+	
+//	private class FocusListener implements java.awt.event.FocusListener { 
+//		private TextComponent< ? > textComponent;
+//		public FocusListener( TextComponent< ? > textComponent ) {
+//			this.textComponent = textComponent;
+//		}
+//		public void focusGained(java.awt.event.FocusEvent e) {
+//			StringStateContext stringStateContext = ContextManager.createAndPushStringStateContext( StringState.this, e, this.textComponent );
+//			stringStateContext.handleFocusGained( e );
+//			ModelContext< ? > popContext = ContextManager.popContext();
+//			assert popContext == stringStateContext;
+//		}
+//		public void focusLost(java.awt.event.FocusEvent e) {
+//			StringStateContext stringStateContext = ContextManager.createAndPushStringStateContext( StringState.this, e, this.textComponent );
+//			stringStateContext.handleFocusLost( e );
+//			ModelContext< ? > popContext = ContextManager.popContext();
+//			assert popContext == stringStateContext;
+//		}
+//	}
+	
+	
 	private javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
 		private void handleUpdate(javax.swing.event.DocumentEvent e) {
-			try {
-				String s = document.getText( 0, document.getLength() );
-				StringStateContext stringStateContext = ContextManager.createAndPushStringStateContext( StringState.this );
-				fireValueChanged( s );
-				stringStateContext.handleDocumentEvent( e );
-				ModelContext< ? > popContext = ContextManager.popContext();
-				assert popContext == stringStateContext;
-			} catch( javax.swing.text.BadLocationException ble ) {
-				throw new RuntimeException( ble );
-			}
+//			ModelContext< ? > currentContext = ContextManager.getCurrentContext();
+			StringStateContext stringStateContext = ContextManager.createAndPushStringStateContext( StringState.this, null, null );
+//			if( currentContext instanceof StringStateContext ) {
+//				StringStateContext stringStateContext = (StringStateContext)currentContext; 
+				try {
+					String s = document.getText( 0, document.getLength() );
+					fireValueChanged( s );
+					stringStateContext.handleDocumentEvent( e );
+				} catch( javax.swing.text.BadLocationException ble ) {
+					throw new RuntimeException( ble );
+				} finally {
+					ModelContext< ? > popContext = ContextManager.popContext();
+					assert popContext == stringStateContext;
+				}
+//			} else {
+//				System.err.println( "not string state context: " + currentContext );
+//			}
 		}
 		public void changedUpdate(javax.swing.event.DocumentEvent e) {
 			this.handleUpdate(e);
@@ -136,6 +164,14 @@ public class StringState extends Model {
 				StringState.this.removeComponent( rv );
 			}
 		} );
+
+		
+		
+		//todo:
+//		rv.getAwtComponent().addFocusListener( new FocusListener( rv ) );
+		
+		
+		
 		rv.setMargin( new java.awt.Insets( 4, 4, 2, 2 ) );
 		rv.setBackgroundColor( new java.awt.Color( 255, 255, 221 ) );
 		return rv;

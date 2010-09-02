@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class StringStateContext extends ModelContext<StringState> {
-	public static  class StringStateEvent extends ModelEvent<StringStateContext> {
+	public static class StringStateEvent extends ModelEvent<StringStateContext> {
 		private javax.swing.event.DocumentEvent documentEvent;
 		public StringStateEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
@@ -64,6 +64,39 @@ public class StringStateContext extends ModelContext<StringState> {
 		}
 	}
 	
+//	private static class FocusEvent extends ModelEvent< StringStateContext > {
+//		private java.awt.event.FocusEvent focusEvent;
+//		public FocusEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+//			super( binaryDecoder );
+//		}
+//		private FocusEvent( java.awt.event.FocusEvent focusEvent ) {
+//			this.focusEvent = focusEvent;
+//		}
+//		public java.awt.event.FocusEvent getFocusEvent() {
+//			return this.focusEvent;
+//		}
+//		@Override
+//		public State getState() {
+//			return null;
+//		}
+//	}
+//	public static class FocusGainedEvent extends FocusEvent {
+//		public FocusGainedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+//			super( binaryDecoder );
+//		}
+//		private FocusGainedEvent( java.awt.event.FocusEvent focusEvent ) {
+//			super( focusEvent );
+//		}
+//	}
+//	public static class FocusLostEvent extends FocusEvent {
+//		public FocusLostEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+//			super( binaryDecoder );
+//		}
+//		private FocusLostEvent( java.awt.event.FocusEvent focusEvent ) {
+//			super( focusEvent );
+//		}
+//	}
+	
 	/*package-private*/ StringStateContext( StringState stringState, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( stringState, e, viewController );
 	}
@@ -71,6 +104,12 @@ public class StringStateContext extends ModelContext<StringState> {
 		super( binaryDecoder );
 	}
 
+//	/*package-private*/ void handleFocusGained( java.awt.event.FocusEvent e ) {
+//		this.addChild( new FocusGainedEvent( e ) );
+//	}
+//	/*package-private*/ void handleFocusLost( java.awt.event.FocusEvent e ) {
+//		this.addChild( new FocusLostEvent( e ) );
+//	}
 	/*package-private*/ void handleDocumentEvent( javax.swing.event.DocumentEvent e ) {
 		this.addChild( new StringStateEvent( e ) );
 	}
