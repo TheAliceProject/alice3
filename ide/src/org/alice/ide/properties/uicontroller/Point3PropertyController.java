@@ -44,23 +44,14 @@
 package org.alice.ide.properties.uicontroller;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Locale;
 
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
 
-import edu.cmu.cs.dennisc.croquet.BorderPanel;
 import edu.cmu.cs.dennisc.croquet.FlowPanel;
 import edu.cmu.cs.dennisc.croquet.Label;
 import edu.cmu.cs.dennisc.croquet.SwingAdapter;
