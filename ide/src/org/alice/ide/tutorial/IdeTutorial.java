@@ -529,16 +529,16 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> > createDeclareProcedureOperationResolver() {
 		return new DeclareMemberResolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>>() {
 			@Override
-			protected org.alice.ide.operations.ast.DeclareProcedureOperation getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
-				return org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance( type );
+			protected org.alice.ide.croquet.models.ast.DeclareProcedureOperation getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+				return org.alice.ide.croquet.models.ast.DeclareProcedureOperation.getInstance( type );
 			}
 		};
 	}
 	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> > createDeclareFunctionOperationResolver() {
 		return new DeclareMemberResolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> >() {
 			@Override
-			protected org.alice.ide.operations.ast.DeclareFunctionOperation getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
-				return org.alice.ide.operations.ast.DeclareFunctionOperation.getInstance( type );
+			protected org.alice.ide.croquet.models.ast.DeclareFunctionOperation getResolved( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+				return org.alice.ide.croquet.models.ast.DeclareFunctionOperation.getInstance( type );
 			}
 		};
 	}

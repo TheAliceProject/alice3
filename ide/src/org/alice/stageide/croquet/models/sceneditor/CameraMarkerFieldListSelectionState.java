@@ -40,61 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.edits.ast;
+package org.alice.stageide.croquet.models.sceneditor;
+
+import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice.ide.croquet.models.ast.DeclareMethodOperation> {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type;
-	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
-	
-	private edu.cmu.cs.dennisc.alice.ast.AbstractCode prevFocusedCode;
-	
-	public DeclareMethodEdit( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		this.type = type;
-		this.method = method;
+public class CameraMarkerFieldListSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState< FieldDeclaredInAlice > {
+	private static class SingletonHolder {
+		private static CameraMarkerFieldListSelectionState instance = new CameraMarkerFieldListSelectionState();
 	}
-	@Override
-	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		throw new RuntimeException( "todo" );
+	public static CameraMarkerFieldListSelectionState getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
+	private CameraMarkerFieldListSelectionState() {
+		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "a09eeae2-53fc-4cbe-ab09-a6d6d7975d4d" ), new org.alice.ide.croquet.codecs.NodeCodec< FieldDeclaredInAlice >() );
 	}
-	@Override
-	public boolean canRedo() {
-		return true;
-	}
-	@Override
-	public boolean canUndo() {
-		return true;
-	}
-	
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		this.type.methods.add( this.method );
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		this.prevFocusedCode = ide.getFocusedCode();
-		ide.setFocusedCode( method );
-	}
-	@Override
-	protected final void undoInternal() {
-		int index = type.methods.indexOf( method );
-		if( index != -1 ) {
-			type.methods.remove( index );
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-			ide.setFocusedCode( this.prevFocusedCode );
-		} else {
-			throw new javax.swing.undo.CannotUndoException();
-		}
-	}
-	@Override
-	protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-		rv.append( "declare:" );
-		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, method, locale);
-		return rv;
-	}
-	
 }

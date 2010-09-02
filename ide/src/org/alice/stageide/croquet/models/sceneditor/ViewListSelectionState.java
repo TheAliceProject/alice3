@@ -40,61 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.edits.ast;
+package org.alice.stageide.croquet.models.sceneditor;
 
+import org.alice.apis.moveandturn.CameraMarker;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice.ide.croquet.models.ast.DeclareMethodOperation> {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type;
-	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
-	
-	private edu.cmu.cs.dennisc.alice.ast.AbstractCode prevFocusedCode;
-	
-	public DeclareMethodEdit( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		this.type = type;
-		this.method = method;
+public class ViewListSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState< CameraMarker > {
+	private static class SingletonHolder {
+		private static ViewListSelectionState instance = new ViewListSelectionState();
 	}
-	@Override
-	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		throw new RuntimeException( "todo" );
+	public static ViewListSelectionState getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
+	private ViewListSelectionState() {
+		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "6e9c4eb8-a2a5-4d7e-bd7a-a96a82055d19" ), new edu.cmu.cs.dennisc.croquet.Codec< CameraMarker >() {
+			public edu.cmu.cs.dennisc.croquet.CodableResolver<edu.cmu.cs.dennisc.croquet.Codec<CameraMarker>> getResolver() {
+				throw new RuntimeException( "todo" );
+			}
+			public CameraMarker decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+				System.err.println( "todo: convert mainCameraMarkerList to AST: returning null" );
+				return null;
+			}
+			public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, CameraMarker cameraMarker ) {
+				System.err.println( "todo: convert mainCameraMarkerList to AST: " + cameraMarker );
+			}
+		} );
 	}
-	@Override
-	public boolean canRedo() {
-		return true;
-	}
-	@Override
-	public boolean canUndo() {
-		return true;
-	}
-	
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		this.type.methods.add( this.method );
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		this.prevFocusedCode = ide.getFocusedCode();
-		ide.setFocusedCode( method );
-	}
-	@Override
-	protected final void undoInternal() {
-		int index = type.methods.indexOf( method );
-		if( index != -1 ) {
-			type.methods.remove( index );
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-			ide.setFocusedCode( this.prevFocusedCode );
-		} else {
-			throw new javax.swing.undo.CannotUndoException();
-		}
-	}
-	@Override
-	protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-		rv.append( "declare:" );
-		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, method, locale);
-		return rv;
-	}
-	
 }

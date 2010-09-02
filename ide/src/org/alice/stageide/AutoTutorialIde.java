@@ -4,8 +4,13 @@ public class AutoTutorialIde extends org.alice.stageide.StageIDE {
 	private static final String PATH = "/autoTutorial1.bin";
 
 	@Override
+	public void loadProjectFrom( java.net.URI uri ) {
+		super.loadProjectFrom( uri );
+		edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
+		rootContext.EPIC_HACK_clear();
+	}
+	@Override
 	protected void handleQuit( java.util.EventObject e ) {
-		
 		edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
 		edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
 		edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( rootContext, PATH );

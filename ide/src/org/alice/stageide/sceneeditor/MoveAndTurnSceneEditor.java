@@ -189,21 +189,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	
 	private ComboBox<CameraMarker> mainCameraViewSelector;
 	private CameraMarkerTracker mainCameraViewTracker;
-	private ListSelectionState<CameraMarker> mainCameraMarkerList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< CameraMarker >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "951c85e8-e8db-45d8-aa10-3e906c8d4bbf" ), new edu.cmu.cs.dennisc.croquet.Codec< CameraMarker >() {
-		public edu.cmu.cs.dennisc.croquet.CodableResolver<edu.cmu.cs.dennisc.croquet.Codec<CameraMarker>> getResolver() {
-			throw new RuntimeException( "todo" );
-		}
-		public CameraMarker decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			throw new RuntimeException( "todo" );
-		}
-		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, CameraMarker cameraMarker ) {
-			System.err.println( "todo: convert mainCameraMarkerList to AST: " + cameraMarker );
-		}
-	} );
-	
-	private FieldDeclaredInAlice currentSelectedCameraMarkerField = null;
-	
-	private ListSelectionState<FieldDeclaredInAlice> sceneMarkerFieldList = new edu.cmu.cs.dennisc.croquet.ListSelectionState< FieldDeclaredInAlice >( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "a09eeae2-53fc-4cbe-ab09-a6d6d7975d4d" ), new org.alice.ide.croquet.codecs.NodeCodec< FieldDeclaredInAlice >() );
+	private ListSelectionState<CameraMarker> mainCameraMarkerList = org.alice.stageide.croquet.models.sceneditor.ViewListSelectionState.getInstance();
+	private ListSelectionState<FieldDeclaredInAlice> sceneMarkerFieldList = org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelectionState.getInstance();
 	private edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode > codeSelectionObserver = new edu.cmu.cs.dennisc.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractCode >() {
 		public void changed( edu.cmu.cs.dennisc.alice.ast.AbstractCode next ) {
 			MoveAndTurnSceneEditor.this.handleFocusedCodeChanged( next );
@@ -414,8 +401,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		{
 			this.globalDragAdapter.setSelectedObject(null);
 		}
-		this.currentSelectedCameraMarkerField = cameraMarkerField;
-		
 		MoveActiveCameraToMarkerActionOperation.getInstance().setMarkerField(cameraMarkerField);
 		MoveMarkerToActiveCameraActionOperation.getInstance().setMarkerField(cameraMarkerField);
 		this.sidePane.getViewManager().updateButtons();

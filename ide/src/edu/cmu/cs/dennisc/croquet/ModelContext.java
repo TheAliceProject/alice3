@@ -309,4 +309,8 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 //		}
 		return rv;
 	}
+	
+	public void EPIC_HACK_clear() {
+		this.children.clear();
+	}
 }

@@ -450,11 +450,11 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		fieldsList.setBackgroundColor( null );
 
 		edu.cmu.cs.dennisc.croquet.BooleanState proceduresToolPaletteState = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "4236c740-8881-4cf1-82e3-e3aef61c13dd" ), true, "procedures" );
-		edu.cmu.cs.dennisc.croquet.ToolPalette proceduresToolPalette = proceduresToolPaletteState.createToolPalette( createMembersPanel( proceduresList, org.alice.ide.operations.ast.DeclareProcedureOperation.getInstance( type ) ) );
+		edu.cmu.cs.dennisc.croquet.ToolPalette proceduresToolPalette = proceduresToolPaletteState.createToolPalette( createMembersPanel( proceduresList, org.alice.ide.croquet.models.ast.DeclareProcedureOperation.getInstance( type ) ) );
 		proceduresToolPalette.setBackgroundColor( ide.getTheme().getProcedureColor() );
 
 		edu.cmu.cs.dennisc.croquet.BooleanState functionsToolPaletteState = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "ea7e601f-255b-41aa-bccd-af181c6b3bf0" ), true, "functions" );
-		edu.cmu.cs.dennisc.croquet.ToolPalette functionsToolPalette = functionsToolPaletteState.createToolPalette( createMembersPanel( functionsList, org.alice.ide.operations.ast.DeclareFunctionOperation.getInstance( type ) ) );
+		edu.cmu.cs.dennisc.croquet.ToolPalette functionsToolPalette = functionsToolPaletteState.createToolPalette( createMembersPanel( functionsList, org.alice.ide.croquet.models.ast.DeclareFunctionOperation.getInstance( type ) ) );
 		functionsToolPalette.setBackgroundColor( ide.getTheme().getFunctionColor() );
 
 		edu.cmu.cs.dennisc.croquet.BooleanState fieldsToolPaletteState = new edu.cmu.cs.dennisc.croquet.BooleanState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "7176c895-4e0f-4ebe-98a2-f820b27c9206" ), true, "properties" );

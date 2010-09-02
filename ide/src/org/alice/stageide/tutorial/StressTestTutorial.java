@@ -146,7 +146,7 @@ public class StressTestTutorial {
 						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 					}
 					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation) {
-						org.alice.ide.operations.ast.DeclareProcedureOperation declareProcedureOperation = (org.alice.ide.operations.ast.DeclareProcedureOperation)inputDialogOperation;
+						org.alice.ide.croquet.models.ast.DeclareProcedureOperation declareProcedureOperation = (org.alice.ide.croquet.models.ast.DeclareProcedureOperation)inputDialogOperation;
 						edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType = declareProcedureOperation.getDeclaringType();
 						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = org.alice.ide.ast.NodeUtilities.createProcedure( requiredProcedureName );
 						return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit(declaringType, method);

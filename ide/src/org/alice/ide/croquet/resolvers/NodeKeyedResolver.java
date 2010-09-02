@@ -40,61 +40,47 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.edits.ast;
+
+package org.alice.ide.croquet.resolvers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice.ide.croquet.models.ast.DeclareMethodOperation> {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type;
-	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
-	
-	private edu.cmu.cs.dennisc.alice.ast.AbstractCode prevFocusedCode;
-	
-	public DeclareMethodEdit( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		this.type = type;
-		this.method = method;
+public class NodeKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.KeyedResolver< T > {
+	private edu.cmu.cs.dennisc.alice.ast.Node node;
+	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls;
+	public NodeKeyedResolver( T instance, edu.cmu.cs.dennisc.alice.ast.Node node, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls ) {
+		super( instance );
+		this.node = node;
+		this.cls = cls;
+	}
+	public NodeKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 	@Override
-	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		throw new RuntimeException( "todo" );
+	protected Class<?>[] getParameterTypes() {
+		return new Class[] { this.cls };
 	}
 	@Override
-	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
-	}
-	@Override
-	public boolean canRedo() {
-		return true;
-	}
-	@Override
-	public boolean canUndo() {
-		return true;
-	}
-	
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		this.type.methods.add( this.method );
+	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		final Object[] rv = new Object[] { null };
+		final java.util.UUID id = binaryDecoder.decodeId();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		this.prevFocusedCode = ide.getFocusedCode();
-		ide.setFocusedCode( method );
-	}
-	@Override
-	protected final void undoInternal() {
-		int index = type.methods.indexOf( method );
-		if( index != -1 ) {
-			type.methods.remove( index );
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-			ide.setFocusedCode( this.prevFocusedCode );
-		} else {
-			throw new javax.swing.undo.CannotUndoException();
-		}
-	}
-	@Override
-	protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-		rv.append( "declare:" );
-		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, method, locale);
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = ide.getProgramType();
+		edu.cmu.cs.dennisc.pattern.Crawler crawler = new edu.cmu.cs.dennisc.pattern.Crawler() {
+			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
+				if( cls.isAssignableFrom( crawlable.getClass() ) ) {
+					edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)crawlable;
+					if( id.equals( node.getUUID() ) ) {
+						rv[ 0 ] = node;
+					}
+				}
+			}
+		};
 		return rv;
 	}
-	
+	@Override
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.node.getUUID() );
+	}
 }
