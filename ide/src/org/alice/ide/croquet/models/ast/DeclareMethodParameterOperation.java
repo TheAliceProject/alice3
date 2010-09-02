@@ -64,6 +64,10 @@ public class DeclareMethodParameterOperation extends org.alice.ide.operations.In
 		this.method = method;
 		this.setName( "Add Parameter..." );
 	}
+	
+	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getMethod() {
+		return this.method;
+	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeKeyedResolver< DeclareMethodParameterOperation > createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeKeyedResolver< DeclareMethodParameterOperation >( this, this.method, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
@@ -77,26 +81,9 @@ public class DeclareMethodParameterOperation extends org.alice.ide.operations.In
 	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context, boolean isOk) {
 		if( isOk ) {
 			org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = context.getMainPanel();
-			final edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = createMethodParameterPane.getActualInputValue();
+			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = createMethodParameterPane.getActualInputValue();
 			if( parameter != null ) {
-				final int index = method.parameters.size();
-				final java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument >();
-				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
-					@Override
-					protected final void doOrRedoInternal( boolean isDo ) {
-						org.alice.ide.ast.NodeUtilities.addParameter( map, method, parameter, index, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
-					}
-					@Override
-					protected final void undoInternal() {
-						org.alice.ide.ast.NodeUtilities.removeParameter( map, method, parameter, index, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
-					}
-					@Override
-					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-						rv.append( "declare:" );
-						edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, parameter, locale);
-						return rv;
-					}
-				} );
+				context.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareMethodParameterEdit( parameter ) );
 			} else {
 				context.cancel();
 			}

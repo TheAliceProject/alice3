@@ -40,58 +40,52 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.croquet.edits.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.alice.ast.AbstractNode > extends org.alice.ide.operations.ActionOperation {
-	private E node;
-	private edu.cmu.cs.dennisc.alice.ast.NodeListProperty owner;
-	public AbstractDeleteNodeOperation( java.util.UUID individualId, E node, edu.cmu.cs.dennisc.alice.ast.NodeListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.Node > owner ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
-		this.node = node;
-		this.owner = owner;
-		this.setName( "Delete" );
+public class DeclareMethodParameterEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.DeclareMethodParameterOperation > {
+	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
+	private int index;
+	public DeclareMethodParameterEdit( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+		this.parameter = parameter;
 	}
-	protected abstract boolean isClearToDelete( E node );
+	public DeclareMethodParameterEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 	@Override
-	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-		if( this.isClearToDelete( this.node ) ) {
-			final int index = this.owner.indexOf( this.node );
-			final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
-			final Object instance;
-			if( this.node instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-				field = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.node;
-				instance = this.getIDE().getSceneEditor().getInstanceInJavaForUndo( field );
-			} else {
-				field = null;
-				instance = null;
-			}
-			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
-				@Override
-				protected final void doOrRedoInternal( boolean isDo ) {
-					owner.remove( index );
-				}
-				@Override
-				protected final void undoInternal() {
-					if( instance != null ) {
-						getIDE().getSceneEditor().putInstanceForInitializingPendingField( field, instance );
-					}
-					owner.add( index, node );
-//					if( field != null && instance != null ) {
-//						getIDE().getSceneEditor().handleFieldCreation((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)field.getDeclaringType(), field, instance, false );
-//					}
-				}
-				@Override
-				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-					rv.append( "delete: " );
-					edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, node, locale);
-					return rv;
-				}
-			} );
-		} else {
-			context.cancel();
-		}
+	protected final void doOrRedoInternal( boolean isDo ) {
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = this.getModel().getMethod();
+		this.index = method.parameters.size();
+		org.alice.ide.ast.NodeUtilities.addParameter( map, method, this.parameter, this.index, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
+	}
+	@Override
+	protected final void undoInternal() {
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = this.getModel().getMethod();
+		org.alice.ide.ast.NodeUtilities.removeParameter( map, method, this.parameter, this.index, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
+	}
+	@Override
+	protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+		rv.append( "declare:" );
+		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, parameter, locale);
+		return rv;
+	}
+	@Override
+	public boolean canUndo() {
+		return true;
+	}
+	@Override
+	public boolean canRedo() {
+		return true;
+	}
+	@Override
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.parameter = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice.class ).decode( binaryDecoder );
+	}
+	@Override
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice.class ).encode( binaryEncoder, this.parameter );
 	}
 }
