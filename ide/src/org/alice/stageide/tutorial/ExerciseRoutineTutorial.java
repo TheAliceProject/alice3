@@ -71,7 +71,7 @@ public class ExerciseRoutineTutorial {
 		tutorial.addSpotlightStepForModel( 
 				"Curent Instance", 
 				"The currently selected instance is <strong>daughter</strong>.", 
-				ide.getAccessibleListState()
+				org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance()
 		);
 
 		tutorial.addDragAndDropToPopupMenuStep(  
@@ -102,13 +102,13 @@ public class ExerciseRoutineTutorial {
 		tutorial.addSpotlightStepForModel( 
 				"Code Editor", 
 				"This is the code editor.", 
-				ide.getEditorsTabSelectionState() 
+				org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance()
 		);
 
 		tutorial.addListSelectionStep(
 				"Select Instance: daughter", 
 				"By selecting an instance we can see what procedures it knows how to do.<p><p><i>Select the <b>iceSkater</b>.<i>",
-				ide.getAccessibleListState(),
+				org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance(),
 				tutorial.createAccessibleResolver( "iceSkater" )
 		);
 

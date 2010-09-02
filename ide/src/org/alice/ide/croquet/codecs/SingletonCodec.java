@@ -73,10 +73,13 @@ public class SingletonCodec< E > implements edu.cmu.cs.dennisc.croquet.Codec< E 
 		}
 	}
 	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, E value ) {
+		//Thread.dumpStack();
 		if( value != null ) {
+			System.err.println( "SingletonCodec encode: " + value.getClass().getName() );
 			binaryEncoder.encode( true );
 			binaryEncoder.encode( value.getClass().getName() );
 		} else {
+			System.err.println( "SingletonCodec encode null" );
 			binaryEncoder.encode( false );
 		}
 	}

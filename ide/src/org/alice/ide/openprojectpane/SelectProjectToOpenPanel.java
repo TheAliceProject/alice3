@@ -48,8 +48,9 @@ package org.alice.ide.openprojectpane;
  */
 public class SelectProjectToOpenPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private static abstract class ContentTab extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
-		public ContentTab(java.util.UUID individualId, String title) {
-			super(individualId, title, null);
+		public ContentTab(java.util.UUID id, String title) {
+			super(id);
+			this.setTitleText( title );
 		}
 		@Override
 		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane() {
@@ -98,7 +99,10 @@ public class SelectProjectToOpenPanel extends edu.cmu.cs.dennisc.croquet.BorderP
 		}
 	};
 
-	private edu.cmu.cs.dennisc.croquet.TabSelectionState tabSelectionOperation = new edu.cmu.cs.dennisc.croquet.TabSelectionState(edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString("12e1d59b-2893-4144-b995-08090680a318"),
+	private edu.cmu.cs.dennisc.croquet.TabSelectionState tabSelectionOperation = new edu.cmu.cs.dennisc.croquet.TabSelectionState(
+			edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, 
+			java.util.UUID.fromString("12e1d59b-2893-4144-b995-08090680a318"),
+			null,
 			-1, 
 			this.templatesTab,
 			this.myProjectsTab, 

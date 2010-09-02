@@ -46,45 +46,8 @@ package org.alice.ide.croquet.models.members;
  * @author Dennis Cosgrove
  */
 /*package-private*/ abstract class MemberTab extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
-	private static class IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
-		private javax.swing.Icon getCurrentAccessibleTypeIcon() {
-			edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.IDE.getSingleton().getAccessibleListState().getSelectedItem();
-			String className;
-			if( accessible != null ) {
-				className = accessible.getValueType().getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getName();
-			} else {
-				className = null;
-			}
-			return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForGalleryClassName( className );
-		}
-		public int getIconHeight() {
-			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
-			if( icon != null ) {
-				return icon.getIconHeight();
-			} else {
-				return 0;
-			}
-		}
-		public int getIconWidth() {
-			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
-			if( icon != null ) {
-				return icon.getIconWidth();
-			} else {
-				return 0;
-			}
-		}
-		public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
-			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
-			if( icon != null ) {
-				icon.paintIcon(c, g, x, y);
-			}
-		}
-	}
-	
-	private static javax.swing.Icon ICON = org.alice.ide.memberseditor.MembersEditor.IS_FOLDER_TABBED_PANE_DESIRED ? null : new IndirectCurrentAccessibleTypeIcon();
-
-	public MemberTab( java.util.UUID individualId, String text ) {
-		super( individualId, text, ICON );
+	public MemberTab( java.util.UUID individualId ) {
+		super( individualId );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane() {

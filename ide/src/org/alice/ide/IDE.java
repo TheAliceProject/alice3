@@ -108,7 +108,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.right.addComponent( tabbedPane, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 		//this.right.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "hello" ), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER );
 
-		this.accessibleListState.addAndInvokeValueObserver( this.accessibleSelectionObserver );
+		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().addAndInvokeValueObserver( this.accessibleSelectionObserver );
 
 		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
 			public void changing( boolean nextValue ) {
@@ -451,10 +451,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public org.alice.ide.ubiquitouspane.UbiquitousPane getUbiquitousPane() {
 		return this.ubiquitousPane;
 	}
-	@Deprecated
-	public org.alice.ide.editorstabbedpane.EditorsTabSelectionState getEditorsTabSelectionState() {
-		return org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance();
-	}
 	public org.alice.ide.memberseditor.MembersEditor getMembersEditor() {
 		return this.membersEditor;
 	}
@@ -745,13 +741,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.enableRendering();
 	}
 
-	private edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibleListState = new edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible >( UI_STATE_GROUP,
-			java.util.UUID.fromString( "a6d09409-82b8-4dfe-b156-588f1983893c" ), new org.alice.ide.croquet.codecs.NodeCodec< edu.cmu.cs.dennisc.alice.ast.Accessible >() );
-
-	public edu.cmu.cs.dennisc.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > getAccessibleListState() {
-		return this.accessibleListState;
-	}
-
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > fieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
 		}
@@ -791,7 +780,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of refreshAccessibles" );
 
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getFocusedCode();
-		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = this.accessibleListState.getSelectedItem();
+		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
 
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibles = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( this.rootField != null ) {
@@ -838,7 +827,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		if( selectedIndex == -1 ) {
 			selectedIndex = indexOfLastField;
 		}
-		this.accessibleListState.setListData( selectedIndex, accessibles );
+		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setListData( selectedIndex, accessibles );
 	}
 	private void setRootField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField ) {
 		if( this.rootField != null ) {
@@ -984,11 +973,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		if( org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().getValue() ) {
 			return this.getPerformEditorGeneratedSetUpMethod();
 		} else {
-			return this.getEditorsTabSelectionState().getSelectedItem();
+			return org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getSelectedItem();
 		}
 	}
 	public void setFocusedCode( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextFocusedCode ) {
-		this.getEditorsTabSelectionState().edit( nextFocusedCode, false );
+		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().edit( nextFocusedCode, false );
 	}
 
 	@Override
@@ -1125,7 +1114,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 	public final edu.cmu.cs.dennisc.alice.ast.Expression createInstanceExpression() /*throws OutOfScopeException*/{
-		edu.cmu.cs.dennisc.alice.ast.Expression rv = this.createInstanceExpression( this.getAccessibleListState().getSelectedItem() );
+		edu.cmu.cs.dennisc.alice.ast.Expression rv = this.createInstanceExpression( org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem() );
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField partField = org.alice.ide.croquet.models.members.PartSelectionState.getInstance().getSelectedItem();
 		if( partField != null ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField field = org.alice.ide.croquet.models.members.PartSelectionState.getInstance().getSelectedItem();
@@ -1151,7 +1140,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return createInstanceExpression( accessible ) != null;
 	}
 	public final boolean isSelectedAccessibleInScope() {
-		return isAccessibleInScope( this.getAccessibleListState().getSelectedItem() );
+		return isAccessibleInScope( org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem() );
 	}
 
 	@Override

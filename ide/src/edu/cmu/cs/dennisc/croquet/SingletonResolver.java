@@ -64,13 +64,13 @@ public final class SingletonResolver<T> implements CodableResolver< T > {
 				java.lang.reflect.Method mthd = cls.getMethod( "getInstance" );
 				this.instance = (T)mthd.invoke( null );
 			} catch( IllegalAccessException iae ) {
-				throw new RuntimeException( iae );
+				throw new RuntimeException( clsName, iae );
 			} catch( IllegalArgumentException iae ) {
-				throw new RuntimeException( iae );
+				throw new RuntimeException( clsName, iae );
 			} catch( NoSuchMethodException nsme ) {
-				throw new RuntimeException( nsme );
+				throw new RuntimeException( clsName, nsme );
 			} catch( java.lang.reflect.InvocationTargetException ite ) {
-				throw new RuntimeException( ite );
+				throw new RuntimeException( clsName, ite );
 			}
 		} catch( ClassNotFoundException cnfe ) {
 			throw new RuntimeException( cnfe );

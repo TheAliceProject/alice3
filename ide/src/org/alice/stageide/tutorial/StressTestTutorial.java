@@ -364,7 +364,7 @@ public class StressTestTutorial {
 		tutorial.addSelectTabStep( 
 				"Select Run", 
 				"Select run tab.", 
-				ide.getEditorsTabSelectionState(),
+				org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance(),
 				tutorial.createCodeResolver( "scene", "run" )
 		);
 
@@ -552,7 +552,7 @@ public class StressTestTutorial {
 		tutorial.addSelectTabStep(   
 				"Select Run", 
 				"Select run tab.", 
-				ide.getEditorsTabSelectionState(),
+				org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance(),
 				tutorial.createCodeResolver( "scene", "run" )
 		);
 
@@ -726,7 +726,7 @@ public class StressTestTutorial {
 //		tutorial.addSpotlightTabTitleStep(  
 //				"Note Foo Tab", 
 //				"Note the foo folder tab.", 
-//				ide.getEditorsTabSelectionState(),
+//				org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance(),
 //				tutorial.createCurrentCodeResolver()
 //		);
 //
@@ -871,7 +871,7 @@ public class StressTestTutorial {
 		tutorial.addListSelectionStep(
 				"Select Scene", 
 				"Select the <b>scene</b>.<i>",
-				ide.getAccessibleListState(),
+				org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance(),
 				tutorial.createAccessibleResolver( "scene" )
 		);
 
@@ -908,14 +908,14 @@ public class StressTestTutorial {
 		tutorial.addSpotlightTabTitleStep(  
 				"Note Hop Tab", 
 				"Note the folder tab.", 
-				ide.getEditorsTabSelectionState(),
+				org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance(),
 				tutorial.createCurrentCodeResolver()
 		);
 
 		tutorial.addSpotlightTabScrollPaneStep( 
 				"Note Properies Tab", 
 				"Note the area to implement hop.", 
-				ide.getEditorsTabSelectionState(),
+				org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance(),
 				tutorial.createCurrentCodeResolver()
 		);
 
@@ -1012,7 +1012,7 @@ public class StressTestTutorial {
 		tutorial.addSpotlightStepForModel( 
 				"Curent Instance", 
 				"The current instance is displayed here.", 
-				ide.getAccessibleListState()
+				org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance()
 		);
 		tutorial.addSpotlightStep( 
 				"Instance Details", 
@@ -1023,7 +1023,7 @@ public class StressTestTutorial {
 		tutorial.addSpotlightStepForModel( 
 				"Instance Details", 
 				"This is the code editor.", 
-				ide.getEditorsTabSelectionState() 
+				org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance() 
 		);
 
 //		tutorial.addItemSelectionStep(

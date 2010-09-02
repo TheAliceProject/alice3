@@ -92,8 +92,9 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 
 	private java.util.Map<org.alice.apis.stage.LifeStage, org.alice.apis.stage.Person> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private static abstract class ContentTabStateOperation extends edu.cmu.cs.dennisc.croquet.PredeterminedTab {
-		public ContentTabStateOperation(java.util.UUID individualId, String title) {
-			super(individualId, title, null);
+		public ContentTabStateOperation(java.util.UUID id, String title) {
+			super(id);
+			this.setTitleText( title );
 		}
 		@Override
 		public edu.cmu.cs.dennisc.croquet.ScrollPane createScrollPane() {
@@ -208,7 +209,7 @@ public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		} );
 
 
-		this.tabbedPaneSelection = new edu.cmu.cs.dennisc.croquet.TabSelectionState( PersonEditor.GROUP, java.util.UUID.fromString( "d525f0c5-9f39-4807-a9d3-f66775f9eb2d" ), 0, new BodyTab(), new HeadTab() );
+		this.tabbedPaneSelection = new edu.cmu.cs.dennisc.croquet.TabSelectionState( PersonEditor.GROUP, java.util.UUID.fromString( "d525f0c5-9f39-4807-a9d3-f66775f9eb2d" ), null, 0, new BodyTab(), new HeadTab() );
 		final edu.cmu.cs.dennisc.croquet.FolderTabbedPane<?> tabbedPane = this.tabbedPaneSelection.createDefaultFolderTabbedPane();
 		tabbedPane.scaleFont( 1.5f );
 

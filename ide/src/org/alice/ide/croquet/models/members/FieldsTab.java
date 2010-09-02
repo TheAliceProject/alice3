@@ -53,7 +53,7 @@ public class FieldsTab extends MemberTab {
 		return SingletonHolder.instance;
 	}
 	private FieldsTab() {
-		super( java.util.UUID.fromString( "6cb9c5a1-dc60-48e7-9a52-534009a093b8" ), "Properties" /*this.getLocalizedText( "fields" )*/ );
+		super( java.util.UUID.fromString( "6cb9c5a1-dc60-48e7-9a52-534009a093b8" ) );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {

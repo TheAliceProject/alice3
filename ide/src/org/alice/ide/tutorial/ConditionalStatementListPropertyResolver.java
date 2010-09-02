@@ -54,7 +54,7 @@ import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.BlockStatement getBlockStatement(edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement);
 	public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getResolved() {
-		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) org.alice.ide.IDE.getSingleton().getEditorsTabSelectionState().getSelectedItem();
+		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getSelectedItem();
 		edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement = IdeTutorial.getNodeAt(code, edu.cmu.cs.dennisc.alice.ast.ConditionalStatement.class, this.index);
 		if (conditionalStatement != null) {
 			return this.getBlockStatement(conditionalStatement).statements;

@@ -316,7 +316,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	public RuntimeResolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod > createCurrentAccessibleMethodResolver( final String methodName ) {
 		return new RuntimeResolver< edu.cmu.cs.dennisc.alice.ast.AbstractMethod >() {
 			public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getResolved() {
-				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = ide.getAccessibleListState().getSelectedItem();
+				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
 				return findShortestMethod( accessible, methodName );
 			}
 		};
@@ -502,7 +502,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	public RuntimeResolver< edu.cmu.cs.dennisc.alice.ast.Accessible > createAccessibleResolver( final String name ) {
 		return new RuntimeResolver< edu.cmu.cs.dennisc.alice.ast.Accessible >() {
 			public edu.cmu.cs.dennisc.alice.ast.Accessible getResolved() {
-				for( edu.cmu.cs.dennisc.alice.ast.Accessible accessible : ide.getAccessibleListState() ) {
+				for( edu.cmu.cs.dennisc.alice.ast.Accessible accessible : org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance() ) {
 					if( name.equalsIgnoreCase( accessible.getName() ) ) {
 						return accessible;
 					}

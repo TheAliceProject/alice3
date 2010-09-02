@@ -53,7 +53,7 @@ public class FunctionsTab extends MemberTab {
 		return SingletonHolder.instance;
 	}
 	private FunctionsTab() {
-		super( java.util.UUID.fromString( "0f5d1f93-fc67-4109-9aff-0e7b232f201c" ), "Functions" /*this.getLocalizedText( "functions" )*/ );
+		super( java.util.UUID.fromString( "0f5d1f93-fc67-4109-9aff-0e7b232f201c" ) );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent() {

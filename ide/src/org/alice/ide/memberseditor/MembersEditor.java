@@ -71,7 +71,7 @@ public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	}
 	public MembersEditor() {
 		final float FONT_SCALAR = 1.4f;
-		edu.cmu.cs.dennisc.croquet.ComboBox< edu.cmu.cs.dennisc.alice.ast.Accessible > comboBox = org.alice.ide.IDE.getSingleton().getAccessibleListState().createComboBox();
+		edu.cmu.cs.dennisc.croquet.ComboBox< edu.cmu.cs.dennisc.alice.ast.Accessible > comboBox = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().createComboBox();
 		comboBox.scaleFont( FONT_SCALAR );
 		//comboBox.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		

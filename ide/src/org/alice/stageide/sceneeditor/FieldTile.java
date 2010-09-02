@@ -192,7 +192,7 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 	protected java.awt.Color calculateColor() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		java.awt.Color color = ide.getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
-		if( this.accessible == ide.getAccessibleListState().getSelectedItem() ) {
+		if( this.accessible == org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem() ) {
 			color = java.awt.Color.YELLOW;
 		} else {
 			if( ide.isAccessibleInScope( this.accessible ) ) {

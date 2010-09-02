@@ -358,13 +358,6 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 	public void removeListDataListener( javax.swing.event.ListDataListener listener ) {
 		this.comboBoxModel.removeListDataListener( listener );
 	}
-//	/*package-private*/ final E decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-//		return this.codec.decode( binaryDecoder );
-//	}
-//	/*package-private*/ final void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, E value ) {
-//		this.codec.encode( binaryEncoder, value );
-//	}
-
 	public Codec<E> getCodec() {
 		return this.codec;
 	}

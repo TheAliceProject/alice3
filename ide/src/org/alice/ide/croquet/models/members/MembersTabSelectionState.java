@@ -46,6 +46,43 @@ package org.alice.ide.croquet.models.members;
  * @author Dennis Cosgrove
  */
 public class MembersTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSelectionState {
+	private static class IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
+		private javax.swing.Icon getCurrentAccessibleTypeIcon() {
+			edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
+			String className;
+			if( accessible != null ) {
+				className = accessible.getValueType().getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getName();
+			} else {
+				className = null;
+			}
+			return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForGalleryClassName( className );
+		}
+		public int getIconHeight() {
+			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
+			if( icon != null ) {
+				return icon.getIconHeight();
+			} else {
+				return 0;
+			}
+		}
+		public int getIconWidth() {
+			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
+			if( icon != null ) {
+				return icon.getIconWidth();
+			} else {
+				return 0;
+			}
+		}
+		public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
+			if( icon != null ) {
+				icon.paintIcon(c, g, x, y);
+			}
+		}
+	}
+	
+	private static javax.swing.Icon ICON = org.alice.ide.memberseditor.MembersEditor.IS_FOLDER_TABBED_PANE_DESIRED ? null : new IndirectCurrentAccessibleTypeIcon();
+
 	private static class SingletonHolder {
 		private static MembersTabSelectionState instance = new MembersTabSelectionState();
 	}
@@ -53,7 +90,16 @@ public class MembersTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 		return SingletonHolder.instance;
 	}
 	private MembersTabSelectionState() {
-		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ));
-		this.setListData( 0, ProceduresTab.getInstance(), FunctionsTab.getInstance(), FieldsTab.getInstance() );
+		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ), org.alice.ide.croquet.codecs.SingletonCodec.getInstance( edu.cmu.cs.dennisc.croquet.PredeterminedTab.class ) );
+		ProceduresTab proceduresTab = ProceduresTab.getInstance();
+		proceduresTab.setTitleIcon( ICON );
+		proceduresTab.setTitleText( this.getLocalizedText( "procedures" ) );
+		FunctionsTab functionsTab = FunctionsTab.getInstance();
+		functionsTab.setTitleIcon( ICON );
+		functionsTab.setTitleText( this.getLocalizedText( "functions" ) );
+		FieldsTab fieldsTab = FieldsTab.getInstance();
+		fieldsTab.setTitleIcon( ICON );
+		fieldsTab.setTitleText( this.getLocalizedText( "fields" ) );
+		this.setListData( 0, proceduresTab, functionsTab, fieldsTab );
 	}
 }
