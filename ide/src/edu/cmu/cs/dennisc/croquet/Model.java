@@ -50,19 +50,23 @@ public abstract class Model implements RuntimeResolver< Model > {
 	private static final int NULL_ACCELERATOR_MASK = 0;
 	private Group group;
 	private java.util.UUID id;
-	private CodableResolver codableResolver;
+	//private java.util.UUID instanceId;
+	private CodableResolver<?> codableResolver;
 	public Model( Group group, java.util.UUID id ) {
 		this.group = group;
 		this.id = id;
+		//this.instanceId = java.util.UUID.randomUUID();
 	}
 	public Group getGroup() {
 		return this.group;
 	}
-	
-	//todo
+
 	public java.util.UUID getId() {
 		return this.id;
 	}
+//	public java.util.UUID getInstanceId() {
+//		return this.instanceId;
+//	}
 	
 	protected <M extends Model> CodableResolver< M > createCodableResolver() {
 		return new SingletonResolver( this );
@@ -73,7 +77,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 		} else {
 			this.codableResolver = this.createCodableResolver();
 		}
-		return this.codableResolver;
+		return (CodableResolver< M >)this.codableResolver;
 	}
 	
 	public final Model getResolved() {
@@ -189,34 +193,6 @@ public abstract class Model implements RuntimeResolver< Model > {
 		return getLocalizedAcceleratorKeyStroke( this.getClass() );
 	}
 	
-//	public CompositeContext getCurrentCompositeContext() {	
-//		Application application = Application.getSingleton();
-//		return application.getCurrentCompositeContext();
-//	}
-//	protected java.awt.Component getSourceComponent( Context< ? > context ) {
-//		if( context != null ) {
-//			java.util.EventObject e = context.getEvent();
-//			return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( e.getSource(), java.awt.Component.class );
-//		} else {
-//			return null;
-//		}
-//	}
-
-
-//	private boolean isVisible = true;
-//	public boolean isVisible() {
-//		return this.isVisible;
-//	}
-//	public void setVisible( boolean isVisible ) {
-//		if( this.isVisible != isVisible ) {
-//			this.isVisible = isVisible;
-//			synchronized( this.components ) {
-//				for( Component<?> component : this.components ) {
-//					component.setVisible( this.isVisible );
-//				}
-//			}
-//		}
-//	}
 	private boolean isEnabled = true;
 	public boolean isEnabled() {
 		return this.isEnabled;

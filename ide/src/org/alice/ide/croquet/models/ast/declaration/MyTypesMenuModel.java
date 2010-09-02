@@ -40,13 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.croquet.models.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
 public class MyTypesMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
-	public MyTypesMenuModel( java.util.List< edu.cmu.cs.dennisc.croquet.Model > models ) {
-		super( java.util.UUID.fromString( "71f303de-54a8-481e-b57f-f5c8ade814ea" ), models );
+	private static class SingletonHolder {
+		private static MyTypesMenuModel instance = new MyTypesMenuModel();
+	}
+	public static MyTypesMenuModel getInstance() {
+		return SingletonHolder.instance;
+	}
+	private MyTypesMenuModel() {
+		super( java.util.UUID.fromString( "71f303de-54a8-481e-b57f-f5c8ade814ea" ) );
+	}
+	@Override
+	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
+		super.handlePopupMenuPrologue( popupMenu, context );
+		java.util.List< edu.cmu.cs.dennisc.croquet.Model > myTypeModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > aliceTypes = org.alice.ide.IDE.getSingleton().getTypesDeclaredInAlice();
+		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice aliceType : aliceTypes ) {
+			myTypeModels.add( SelectTypeOperation.getInstance( aliceType ) );
+		}
+		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElements( popupMenu, myTypeModels );
 	}
 }
