@@ -55,12 +55,4 @@ public abstract class ToDoEdit extends edu.cmu.cs.dennisc.croquet.Edit {
 	@Override
 	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 	}
-	@Override
-	public boolean canRedo() {
-		return true;
-	}
-	@Override
-	public boolean canUndo() {
-		return true;
-	}
 }

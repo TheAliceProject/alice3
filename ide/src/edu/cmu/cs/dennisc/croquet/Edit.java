@@ -95,8 +95,12 @@ public abstract class Edit<M extends Model> implements edu.cmu.cs.dennisc.codec.
 	protected java.util.UUID getContextId() {
 		return this.contextId;
 	}
-	public abstract boolean canRedo();
-	public abstract boolean canUndo();
+	public boolean canUndo() {
+		return true;
+	}
+	public boolean canRedo() {
+		return true;
+	}
 	
 	protected abstract void doOrRedoInternal( boolean isDo );
 	protected abstract void undoInternal();
