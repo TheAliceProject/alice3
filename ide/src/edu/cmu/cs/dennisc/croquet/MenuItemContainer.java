@@ -57,7 +57,7 @@ public interface MenuItemContainer {
 	public void removePopupMenuListener( javax.swing.event.PopupMenuListener listener );
 	
 	public Container< ? > getParent();
-	public void addMenu( Menu<?> menu );
+	public void addMenu( Menu menu );
 	public void addMenuItem( MenuItem menuItem );
 	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem );
 	public void addSeparator();

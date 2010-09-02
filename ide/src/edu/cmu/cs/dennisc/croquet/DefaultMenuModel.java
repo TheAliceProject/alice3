@@ -57,8 +57,8 @@ public class DefaultMenuModel extends MenuModel {
 	
 	//todo:
 	@Override
-	/*package-private*/ Menu<MenuModel> createMenu() {
-		Menu<MenuModel> rv = super.createMenu();
+	/*package-private*/ Menu createMenu() {
+		Menu rv = super.createMenu();
 		MenuItemContainerUtilities.addMenuElements( rv, this.models );
 		return rv;
 	}

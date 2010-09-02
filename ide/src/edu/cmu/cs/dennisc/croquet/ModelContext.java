@@ -76,6 +76,10 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		super( binaryDecoder );
 	}
 	
+	public void EPIC_HACK_clear() {
+		this.children.clear();
+	}
+
 	public M getModel() {
 		if( this.model != null ) {
 			//pass
@@ -137,29 +141,12 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 			return super.findContextFor(model);
 		}
 	}
-	
-	
-//	public boolean isLeaf() {
-//		return false;
-//	}
-//	public java.util.Iterator iterator() {
-//		return this.children.iterator();
-//	}
-//	public java.util.Enumeration<HistoryNode> children() {
-//		return java.util.Collections.enumeration(this.children);
-//	}
-//	public boolean getAllowsChildren() {
-//		return true;
-//	}
 	public HistoryNode getChildAt(int childIndex) {
 		return this.children.get(childIndex);
 	}
 	public int getChildCount() {
 		return this.children.size();
 	}
-//	public int getIndex(HistoryNode child) {
-//		return this.children.indexOf(child);
-//	}
 	public int getIndexOfChild( HistoryNode child ) {
 		return this.children.indexOf( child );
 	}
@@ -237,28 +224,6 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 			return null;
 		}
 	}
-//	//todo
-//	public ModelContext<?> getCurrentContext() {
-//		final int N = this.children.size();
-//		if (N > 0) {
-//			HistoryNode lastChild = this.children.get(N - 1);
-//			if (lastChild instanceof ModelContext<?>) {
-//				ModelContext<?> lastContext = (ModelContext<?>) lastChild;
-//				State state = lastContext.getState();
-//				if( state != null ) {
-//					return this;
-//				} else {
-//					return lastContext.getCurrentContext();
-//				}
-//			} else {
-//				return this;
-//			}
-//
-//		} else {
-//			return this;
-//		}
-//	}
-
 	//	public final boolean isCommitted() {
 	//		return this.getState() == State.COMMITTED;
 	//	}
@@ -313,9 +278,5 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 			rv.append( this.getModel() );
 //		}
 		return rv;
-	}
-	
-	public void EPIC_HACK_clear() {
-		this.children.clear();
 	}
 }

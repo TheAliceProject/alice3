@@ -179,7 +179,7 @@ public class ContextManager {
 					javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElements[ 2 ];
 					
 					javax.swing.JMenu jMenu = (javax.swing.JMenu)menuElements[ 1 ];
-					Menu<MenuModel> menu = (Menu<MenuModel>)Component.lookup( jMenu );
+					Menu menu = (Menu)Component.lookup( jMenu );
 					assert menu != null;
 
 					MenuModel menuModel = menu.getModel();

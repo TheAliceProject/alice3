@@ -162,8 +162,8 @@ public abstract class MenuModel extends Model {
 		this.popupMenuListener = null;
 	}
 	
-	/*package-private*/ Menu<MenuModel> createMenu() {
-		Menu<MenuModel> rv = new Menu<MenuModel>( this ) {
+	/*package-private*/ Menu createMenu() {
+		Menu rv = new Menu( this ) {
 			@Override
 			protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 				this.getAwtComponent().setAction( MenuModel.this.action );
