@@ -58,7 +58,9 @@ public class NodeKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.KeyedResolv
 		super( binaryDecoder );
 	}
 	@Override
-	protected Class<?>[] getParameterTypes() {
+	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		String clsName = binaryDecoder.decodeString();
+		this.cls = (Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node >)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
 		return new Class[] { this.cls };
 	}
 	@Override
@@ -78,6 +80,10 @@ public class NodeKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.KeyedResolv
 			}
 		};
 		return rv;
+	}
+	@Override
+	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.cls.getName() );
 	}
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {

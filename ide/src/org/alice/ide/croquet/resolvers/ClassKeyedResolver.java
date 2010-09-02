@@ -56,7 +56,7 @@ public class ClassKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.KeyedResol
 		super( binaryDecoder );
 	}
 	@Override
-	protected Class<?>[] getParameterTypes() {
+	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return new Class[] { Class.class };
 	}
 	@Override
@@ -64,6 +64,9 @@ public class ClassKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.KeyedResol
 		String clsName = binaryDecoder.decodeString();
 		Class<?> cls = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
 		return new Object[] { cls };
+	}
+	@Override
+	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
