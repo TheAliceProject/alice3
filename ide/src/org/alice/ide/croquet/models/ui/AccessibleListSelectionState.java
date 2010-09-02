@@ -53,6 +53,6 @@ public class AccessibleListSelectionState extends edu.cmu.cs.dennisc.croquet.Lis
 		return SingletonHolder.instance;
 	}
 	private AccessibleListSelectionState() {
-		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "a6d09409-82b8-4dfe-b156-588f1983893c" ), new org.alice.ide.croquet.codecs.NodeCodec< edu.cmu.cs.dennisc.alice.ast.Accessible >() );
+		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "a6d09409-82b8-4dfe-b156-588f1983893c" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.Accessible.class ) );
 	}
 }

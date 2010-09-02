@@ -1261,5 +1261,5 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			this.updateNameClsPairsForRelationalFillIns( this.nameClsPairsForRelationalFillIns );
 		}
 		return this.nameClsPairsForRelationalFillIns;
-	}
+	}	
 }

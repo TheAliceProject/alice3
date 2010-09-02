@@ -423,4 +423,20 @@ public abstract class ProjectUtilities {
 	//			}
 	//		} );
 	//	}
+	
+	public static <N extends edu.cmu.cs.dennisc.alice.ast.Node > N lookupNode( edu.cmu.cs.dennisc.alice.Project project, final java.util.UUID id ) {
+		final edu.cmu.cs.dennisc.alice.ast.Node[] buffer = { null };
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = project.getProgramType();
+		edu.cmu.cs.dennisc.pattern.Crawler crawler = new edu.cmu.cs.dennisc.pattern.Crawler() {
+			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
+				if( crawlable instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
+					edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)crawlable;
+					if( id.equals( node.getUUID() ) ) {
+						buffer[ 0 ] = node;
+					}
+				}
+			}
+		};
+		return (N)buffer[ 0 ];
+	}
 }

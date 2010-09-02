@@ -46,6 +46,14 @@ package org.alice.ide.croquet.codecs;
  * @author Dennis Cosgrove
  */
 public class NodeCodec<T extends edu.cmu.cs.dennisc.alice.ast.Node> implements edu.cmu.cs.dennisc.croquet.Codec< T > {
+	private static class SingletonHolder {
+		private static NodeCodec instance = new NodeCodec();
+	}
+	public static <T extends edu.cmu.cs.dennisc.alice.ast.Node> NodeCodec<T> getInstance( Class<T> cls ) {
+		return SingletonHolder.instance;
+	}
+	private NodeCodec() {
+	}
 	public edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.Codec< T >> getResolver() {
 		throw new RuntimeException( "todo" );
 	}
@@ -53,7 +61,8 @@ public class NodeCodec<T extends edu.cmu.cs.dennisc.alice.ast.Node> implements e
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
 			java.util.UUID id = binaryDecoder.decodeId();
-			throw new RuntimeException( "todo" );
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			return edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), id );
 		} else {
 			return null;
 		}

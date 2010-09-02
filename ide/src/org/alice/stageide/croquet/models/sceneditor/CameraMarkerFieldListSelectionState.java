@@ -55,6 +55,6 @@ public class CameraMarkerFieldListSelectionState extends edu.cmu.cs.dennisc.croq
 		return SingletonHolder.instance;
 	}
 	private CameraMarkerFieldListSelectionState() {
-		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "a09eeae2-53fc-4cbe-ab09-a6d6d7975d4d" ), new org.alice.ide.croquet.codecs.NodeCodec< FieldDeclaredInAlice >() );
+		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "a09eeae2-53fc-4cbe-ab09-a6d6d7975d4d" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( FieldDeclaredInAlice.class ) );
 	}
 }
