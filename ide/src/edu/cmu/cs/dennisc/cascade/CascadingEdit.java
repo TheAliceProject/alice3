@@ -52,12 +52,4 @@ public abstract class CascadingEdit<M extends CascadingRoot> extends edu.cmu.cs.
 		Blank rootBlank = fillIn.getRootBlank();
 		return (M)rootBlank.getCascadingRoot();
 	}
-	@Override
-	public final boolean canRedo() {
-		return true;
-	}
-	@Override
-	public final boolean canUndo() {
-		return true;
-	}
 }

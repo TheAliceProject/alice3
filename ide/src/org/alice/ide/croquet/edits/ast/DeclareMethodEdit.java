@@ -67,14 +67,6 @@ public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice
 		org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class ).encode( binaryEncoder, this.type );
 		org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class ).encode( binaryEncoder, this.method );
 	}
-	@Override
-	public boolean canRedo() {
-		return true;
-	}
-	@Override
-	public boolean canUndo() {
-		return true;
-	}
 	
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
