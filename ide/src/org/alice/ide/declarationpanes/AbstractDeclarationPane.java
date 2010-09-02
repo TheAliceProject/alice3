@@ -46,9 +46,6 @@ package org.alice.ide.declarationpanes;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.PanelWithPreview {
-	private edu.cmu.cs.dennisc.croquet.StringState declarationNameState = new edu.cmu.cs.dennisc.croquet.StringState(
-			edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "c63e8377-84e0-48b0-a77e-137879e398c1" ), ""
-	);
 	private org.alice.ide.initializer.BogusNode bogusNode;
 	private edu.cmu.cs.dennisc.croquet.BooleanState isReassignableStateOperation;
 	private TypePane typePane;
@@ -125,7 +122,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	}
 	//todo: reduce to protected
 	public final String getDeclarationName() {
-		return this.declarationNameState.getValue();
+		return org.alice.ide.croquet.models.ast.DeclarationNameState.getInstance().getValue();
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
 		if( this.initializerPane != null ) {
@@ -210,7 +207,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	}
 
 	protected final edu.cmu.cs.dennisc.croquet.Component< ? >[] createNameRow() {
-		this.declarationNameTextField = this.declarationNameState.createTextField();
+		this.declarationNameTextField = org.alice.ide.croquet.models.ast.DeclarationNameState.getInstance().createTextField();
 		this.declarationNameTextField.setMinimumPreferredWidth( 240 );
 		//this.declarationNameTextField.setFontSize( 24.0f );
 		this.declarationNameTextField.scaleFont( 1.5f );
@@ -292,7 +289,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	@Override
 	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
 		super.handleAddedTo( parent );
-		this.declarationNameState.setValue( this.getDefaultNameText() );
+		org.alice.ide.croquet.models.ast.DeclarationNameState.getInstance().setValue( this.getDefaultNameText() );
 		this.declarationNameTextField.selectAll();
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -302,7 +299,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	}
 	protected String getExplanationIfOkButtonShouldBeDisabled(String name) {
 		if( this.nodeNameValidator != null ) {
-			return this.nodeNameValidator.getExplanationIfOkButtonShouldBeDisabled( this.declarationNameState.getValue() );
+			return this.nodeNameValidator.getExplanationIfOkButtonShouldBeDisabled( org.alice.ide.croquet.models.ast.DeclarationNameState.getInstance().getValue() );
 		} else {
 			return null;
 		}
