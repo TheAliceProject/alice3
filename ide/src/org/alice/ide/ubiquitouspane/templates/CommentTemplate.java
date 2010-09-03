@@ -45,7 +45,7 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class CommentTemplate extends CascadingUbiquitousStatementTemplate {
+public class CommentTemplate extends CascadingUbiquitousStatementClassTemplate {
 	public CommentTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.Comment.class, org.alice.ide.ast.NodeUtilities.createComment() );
 	}

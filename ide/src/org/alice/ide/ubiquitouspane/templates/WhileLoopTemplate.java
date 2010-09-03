@@ -45,7 +45,7 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class WhileLoopTemplate extends CascadingUbiquitousStatementTemplate {
+public class WhileLoopTemplate extends CascadingUbiquitousStatementClassTemplate {
 	public WhileLoopTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.WhileLoop.class, org.alice.ide.ast.NodeUtilities.createIncompleteWhileLoop() );
 	}

@@ -40,65 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.resolvers;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NodeKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.KeyedResolver< T > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< T > {
-	private edu.cmu.cs.dennisc.alice.ast.Node node;
-	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls;
-
-	
-	private String clsName;
-	private java.lang.Class<?>[] parameterTypes;
-	private Object[] arguments;
-	
-	public NodeKeyedResolver( T instance, edu.cmu.cs.dennisc.alice.ast.Node node, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls ) {
-		super( instance );
-		this.node = node;
-		this.cls = cls;
-	}
-	public NodeKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	
-	
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		assert this.arguments != null;
-		assert this.arguments.length == 1;
-		this.arguments[ 0 ] = retargeter.retarget( this.arguments[ 0 ] );
-	}
-
-	@Override
-	public T getResolved() {
-		return this.resolve( this.clsName, this.parameterTypes, this.arguments );
+public abstract class DragModel extends Model {
+	private static final Group DRAG_GROUP = new Group( java.util.UUID.fromString( "16f67072-dd57-453c-a812-69f2303bc948" ), "DRAG_GROUP" );
+	public DragModel( java.util.UUID inividualUUID ) {
+		super( DRAG_GROUP, inividualUUID );
+		this.localize();
 	}
 	@Override
-	protected void handleDecoded(String clsName, java.lang.Class<?>[] parameterTypes, Object[] arguments) {
-		this.clsName = clsName;
-		this.parameterTypes = parameterTypes;
-		this.arguments = arguments;
+	/*package-private*/ void localize() {
 	}
-	@Override
-	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		String clsName = binaryDecoder.decodeString();
-		this.cls = (Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node >)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
-		return new Class[] { this.cls };
-	}
-	@Override
-	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		final java.util.UUID id = binaryDecoder.decodeId();
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		return new Object[] { edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), id ) };
-	}
-	@Override
-	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.cls.getName() );
-	}
-	@Override
-	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.node.getUUID() );
-	}
+	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( DragComponent dragSource );
+	public abstract void handleDragStarted( DragAndDropContext dragAndDropContext );
+	public abstract void handleDragEnteredDropReceptor( DragAndDropContext dragAndDropContext );
+	public abstract void handleDragExitedDropReceptor( DragAndDropContext dragAndDropContext );
+	public abstract void handleDragStopped( DragAndDropContext dragAndDropContext );
 }

@@ -160,15 +160,15 @@ public class IntroductionTutorial {
 		tutorial.addDragAndDropToPopupMenuStep(  
 				"Invoke Skate Procedure",
 				"Drag <b>skate</b> <i>numberOfStrides</i>...",
-				org.alice.ide.memberseditor.templates.TemplateFactory.getProcedureInvocationTemplate( skateMethod ).getDragAndDropOperation(),
+				org.alice.ide.memberseditor.templates.TemplateFactory.getProcedureInvocationTemplate( skateMethod ).getDragModel(),
 				"Drop it <b>here</b>.",
 				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
 				"Select <b>2</b> from the menu.",
 				new edu.cmu.cs.dennisc.tutorial.DragAndDropOperationCompletorValidator() {
-					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit edit ) {
+					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit edit ) {
 						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 					}
-					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
+					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
 						return new org.alice.ide.codeeditor.InsertStatementEdit(
 								runMethod.body.getValue().statements,
 								org.alice.ide.codeeditor.InsertStatementEdit.AT_END, 
@@ -219,15 +219,15 @@ public class IntroductionTutorial {
 		tutorial.addDragAndDropToPopupMenuStep( 
 				"Invoke Skate Backwards Procedure",
 				"Drag <b>skateBackwards</b> <i>numberOfStrides</i>...",
-				org.alice.ide.memberseditor.templates.TemplateFactory.getProcedureInvocationTemplate( skateBackwardsMethod ).getDragAndDropOperation(),
+				org.alice.ide.memberseditor.templates.TemplateFactory.getProcedureInvocationTemplate( skateBackwardsMethod ).getDragModel(),
 				"Drop it <b>here</b>.",
 				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
 				"Select <b>1</b> from the menu.",
 				new edu.cmu.cs.dennisc.tutorial.DragAndDropOperationCompletorValidator() {
-					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit edit ) {
+					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit edit ) {
 						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 					}
-					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
+					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
 						return new org.alice.ide.codeeditor.InsertStatementEdit(
 								runMethod.body.getValue().statements,
 								org.alice.ide.codeeditor.InsertStatementEdit.AT_END, 
@@ -254,14 +254,14 @@ public class IntroductionTutorial {
 		tutorial.addDragAndDropStep( 
 				"Invoke Jump Procedure",
 				"Drag <b>jump</b>...",
-				org.alice.ide.memberseditor.templates.TemplateFactory.getProcedureInvocationTemplate( jumpMethod ).getDragAndDropOperation(),
+				org.alice.ide.memberseditor.templates.TemplateFactory.getProcedureInvocationTemplate( jumpMethod ).getDragModel(),
 				"Drop it <b>here</b>.",
 				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
 				new edu.cmu.cs.dennisc.tutorial.DragAndDropOperationCompletorValidator() {
-					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit edit ) {
+					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit edit ) {
 						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 					}
-					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
+					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
 						return new org.alice.ide.codeeditor.InsertStatementEdit(
 								runMethod.body.getValue().statements,
 								org.alice.ide.codeeditor.InsertStatementEdit.AT_END, 

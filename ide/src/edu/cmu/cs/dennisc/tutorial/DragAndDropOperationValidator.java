@@ -47,5 +47,5 @@ package edu.cmu.cs.dennisc.tutorial;
  */
 
 public interface DragAndDropOperationValidator extends Validator {
-	public Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit );
+	public Result checkValidity( edu.cmu.cs.dennisc.croquet.DragModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit );
 }

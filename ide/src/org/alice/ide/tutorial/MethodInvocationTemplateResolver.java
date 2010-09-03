@@ -47,20 +47,20 @@ import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class MethodInvocationTemplateResolver implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
+/*package-private*/ abstract class MethodInvocationTemplateResolver implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.DragModel> {
 	private String methodName;
 	public MethodInvocationTemplateResolver(String methodName) {
 		this.methodName = methodName;
 	}
 	protected abstract edu.cmu.cs.dennisc.croquet.DragComponent getDragComponent(edu.cmu.cs.dennisc.alice.ast.AbstractMethod method);
-	public edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved() {
+	public edu.cmu.cs.dennisc.croquet.DragModel getResolved() {
 		edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = IdeTutorial.findShortestMethod(accessible, methodName);
 		assert method != null;
 		if (method != null) {
 			edu.cmu.cs.dennisc.croquet.DragComponent dragComponent = this.getDragComponent(method);
 			assert dragComponent != null;
-			edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragOperation = dragComponent.getDragAndDropOperation();
+			edu.cmu.cs.dennisc.croquet.DragModel dragOperation = dragComponent.getDragModel();
 			assert dragComponent == dragOperation.getFirstComponent();
 			return dragOperation;
 		} else {

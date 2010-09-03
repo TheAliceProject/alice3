@@ -40,23 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.tutorial;
+package org.alice.ide.croquet.models;
+
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class LocalNamedResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.DragModel> {
-	private String localName;
-	public LocalNamedResolver(String localName) {
-		this.localName = localName;
+public abstract class IdeDragModel extends edu.cmu.cs.dennisc.croquet.DragModel {
+	public IdeDragModel( java.util.UUID id ) {
+		super( id );
+	}
+	protected org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.croquet.DragModel getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
-		edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local = IdeTutorial.findFirstLocalNamed( codeEditor.getCode(), this.localName );
-		if( local != null ) {
-			return codeEditor.getDragAndDropOperationForTransient( local );
-		} else {
-			return null;
-		}
+	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.DragComponent dragSource ) {
+		return getIDE().createListOfPotentialDropReceptors( dragSource );
+	}
+	@Override
+	public void handleDragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+		getIDE().handleDragStarted( dragAndDropContext );
+	}
+	@Override
+	public void handleDragEnteredDropReceptor( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+		getIDE().handleDragEnteredDropReceptor( dragAndDropContext );
+	}
+	@Override
+	public void handleDragExitedDropReceptor( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+		getIDE().handleDragExitedDropReceptor( dragAndDropContext );
+	}
+	@Override
+	public void handleDragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+		getIDE().handleDragStopped( dragAndDropContext );
 	}
 }

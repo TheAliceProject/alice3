@@ -68,8 +68,8 @@ public class DeclareMethodParameterOperation extends org.alice.ide.operations.In
 		return this.method;
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeKeyedResolver< DeclareMethodParameterOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeKeyedResolver< DeclareMethodParameterOperation >( this, this.method, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareMethodParameterOperation > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareMethodParameterOperation >( this, this.method, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
 	}
 	@Override
 	protected org.alice.ide.declarationpanes.CreateMethodParameterPane prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context) {

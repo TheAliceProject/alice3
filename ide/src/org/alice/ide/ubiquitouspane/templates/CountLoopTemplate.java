@@ -45,7 +45,7 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class CountLoopTemplate extends CascadingUbiquitousStatementTemplate {
+public class CountLoopTemplate extends CascadingUbiquitousStatementClassTemplate {
 	public CountLoopTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.CountLoop.class, org.alice.ide.ast.NodeUtilities.createIncompleteCountLoop() );
 	}

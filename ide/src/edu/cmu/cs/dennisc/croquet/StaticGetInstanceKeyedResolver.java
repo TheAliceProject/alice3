@@ -40,36 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.resolvers;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ClassKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.KeyedResolver< T > {
-	private Class<?> cls;
-	public ClassKeyedResolver( T instance, Class<?> cls ) {
+public abstract class StaticGetInstanceKeyedResolver<T> extends KeyedResolver< T > {
+	public StaticGetInstanceKeyedResolver( T instance ) {
 		super( instance );
-		this.cls = cls;
 	}
-	public ClassKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public StaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	@Override
-	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return new Class[] { Class.class };
-	}
-	@Override
-	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		String clsName = binaryDecoder.decodeString();
-		Class<?> cls = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
-		return new Object[] { cls };
-	}
-	@Override
-	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-	}
-	@Override
-	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.cls.getName() );
+	protected T resolve( String clsName, Class<?>[] parameterTypes, Object[] arguments ) {
+		try {
+			Class<T> cls = (Class<T>)Class.forName( clsName );
+			try {
+				java.lang.reflect.Method mthd = cls.getMethod( "getInstance", parameterTypes );
+				return (T)mthd.invoke( null, arguments );
+			} catch( IllegalAccessException iae ) {
+				throw new RuntimeException( iae );
+			} catch( IllegalArgumentException iae ) {
+				throw new RuntimeException( iae );
+			} catch( NoSuchMethodException nsme ) {
+				throw new RuntimeException( nsme );
+			} catch( java.lang.reflect.InvocationTargetException ite ) {
+				throw new RuntimeException( ite );
+			}
+		} catch( ClassNotFoundException cnfe ) {
+			throw new RuntimeException( cnfe );
+		}
 	}
 }

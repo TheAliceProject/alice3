@@ -45,7 +45,7 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class DoTogetherTemplate extends CascadingUbiquitousStatementTemplate {
+public class DoTogetherTemplate extends CascadingUbiquitousStatementClassTemplate {
 	public DoTogetherTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.DoTogether.class, org.alice.ide.ast.NodeUtilities.createDoTogether() );
 	}

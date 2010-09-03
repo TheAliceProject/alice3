@@ -57,26 +57,7 @@ public abstract class KeyedResolver<T> implements CodableResolver< T > {
 		return this.instance;
 	}
 	
-	protected T resolve( String clsName, Class<?>[] parameterTypes, Object[] arguments ) {
-		try {
-			Class<T> cls = (Class<T>)Class.forName( clsName );
-			try {
-				java.lang.reflect.Method mthd = cls.getMethod( "getInstance", parameterTypes );
-				return (T)mthd.invoke( null, arguments );
-			} catch( IllegalAccessException iae ) {
-				throw new RuntimeException( iae );
-			} catch( IllegalArgumentException iae ) {
-				throw new RuntimeException( iae );
-			} catch( NoSuchMethodException nsme ) {
-				throw new RuntimeException( nsme );
-			} catch( java.lang.reflect.InvocationTargetException ite ) {
-				throw new RuntimeException( ite );
-			}
-		} catch( ClassNotFoundException cnfe ) {
-			throw new RuntimeException( cnfe );
-		}
-	}
-	
+	protected abstract T resolve( String clsName, Class<?>[] parameterTypes, Object[] arguments );
 	protected void handleDecoded( String clsName, Class<?>[] parameterTypes, Object[] arguments ) {
 		this.instance = this.resolve( clsName, parameterTypes, arguments );
 	}

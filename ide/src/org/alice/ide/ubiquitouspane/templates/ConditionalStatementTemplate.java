@@ -45,7 +45,7 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class ConditionalStatementTemplate extends CascadingUbiquitousStatementTemplate {
+public class ConditionalStatementTemplate extends CascadingUbiquitousStatementClassTemplate {
 	public ConditionalStatementTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.ConditionalStatement.class, org.alice.ide.ast.NodeUtilities.createIncompleteConditionalStatement() );
 	}

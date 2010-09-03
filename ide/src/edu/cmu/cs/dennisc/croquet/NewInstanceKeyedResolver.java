@@ -40,23 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.tutorial;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class LocalNamedResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.DragModel> {
-	private String localName;
-	public LocalNamedResolver(String localName) {
-		this.localName = localName;
+public abstract class NewInstanceKeyedResolver<T> extends KeyedResolver< T > {
+	public NewInstanceKeyedResolver( T instance ) {
+		super( instance );
+	}
+	public NewInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.croquet.DragModel getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
-		edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local = IdeTutorial.findFirstLocalNamed( codeEditor.getCode(), this.localName );
-		if( local != null ) {
-			return codeEditor.getDragAndDropOperationForTransient( local );
-		} else {
-			return null;
+	protected T resolve( String clsName, Class<?>[] parameterTypes, Object[] arguments ) {
+		try {
+			Class<T> cls = (Class<T>)Class.forName( clsName );
+			try {
+				java.lang.reflect.Method mthd = cls.getMethod( "getInstance", parameterTypes );
+				return (T)mthd.invoke( null, arguments );
+			} catch( IllegalAccessException iae ) {
+				throw new RuntimeException( iae );
+			} catch( IllegalArgumentException iae ) {
+				throw new RuntimeException( iae );
+			} catch( NoSuchMethodException nsme ) {
+				throw new RuntimeException( nsme );
+			} catch( java.lang.reflect.InvocationTargetException ite ) {
+				throw new RuntimeException( ite );
+			}
+		} catch( ClassNotFoundException cnfe ) {
+			throw new RuntimeException( cnfe );
 		}
 	}
 }

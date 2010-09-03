@@ -40,23 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.tutorial;
+
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class LocalNamedResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.DragModel> {
-	private String localName;
-	public LocalNamedResolver(String localName) {
-		this.localName = localName;
+public class StatementClassTemplateDragModel extends TemplateDragModel {
+	private static java.util.Map< Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement >, StatementClassTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized StatementClassTemplateDragModel getInstance( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+		StatementClassTemplateDragModel rv = map.get( cls );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new StatementClassTemplateDragModel( cls );
+			map.put( cls, rv );
+		}
+		return rv;
+	}
+	private Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls;
+	private StatementClassTemplateDragModel( Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+		super( java.util.UUID.fromString( "3aed4ad9-5a20-4209-982b-5fea07e966d9" ) );
+		this.cls = cls;
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.croquet.DragModel getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
-		edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local = IdeTutorial.findFirstLocalNamed( codeEditor.getCode(), this.localName );
-		if( local != null ) {
-			return codeEditor.getDragAndDropOperationForTransient( local );
-		} else {
-			return null;
-		}
+	protected edu.cmu.cs.dennisc.croquet.CodableResolver< StatementClassTemplateDragModel > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.ClassStaticGetInstanceKeyedResolver< StatementClassTemplateDragModel >( this, this.cls );
 	}
 }

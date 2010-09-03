@@ -46,5 +46,5 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 public interface DragAndDropOperationCompletor extends Completor {
-	public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape );
+	public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit( edu.cmu.cs.dennisc.croquet.DragModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape );
 }

@@ -106,7 +106,7 @@ public class ContextManager {
 	/*package-private*/ static MenuModelContext createAndPushMenuModelContext(MenuModel menuModel, MenuItemContainer menuItemContainer) {
 		return push( new MenuModelContext(menuModel, null, menuItemContainer.getViewController() ) );
 	}
-	/*package-private*/ static DragAndDropContext createAndPushDragAndDropContext(DragAndDropOperation dragAndDropOperation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource) {
+	/*package-private*/ static DragAndDropContext createAndPushDragAndDropContext(DragModel dragAndDropOperation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource) {
 		return push( new DragAndDropContext(dragAndDropOperation, originalMouseEvent, latestMouseEvent, dragSource) );
 	}
 	/*package-private*/ static ModelContext< ? > popContext() {

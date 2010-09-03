@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
+public class DragAndDropContext extends ModelContext<DragModel> {
 	public static abstract class DragAndDropEvent extends ModelEvent< DragAndDropContext > {
 		private java.awt.event.MouseEvent mouseEvent;
 		public DragAndDropEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -133,7 +133,7 @@ public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
 	private DropReceptorInfo[] potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
 	private DropReceptor currentDropReceptor;
 	private java.awt.event.MouseEvent latestMouseEvent;
-	/*package-private*/ DragAndDropContext( DragAndDropOperation dragAndDropOperation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource ) {
+	/*package-private*/ DragAndDropContext( DragModel dragAndDropOperation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource ) {
 		super( dragAndDropOperation, originalMouseEvent, dragSource );
 		this.setLatestMouseEvent( latestMouseEvent );
 		java.util.List< ? extends DropReceptor > potentialDropReceptors = dragAndDropOperation.createListOfPotentialDropReceptors( dragSource );

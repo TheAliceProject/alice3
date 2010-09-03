@@ -48,7 +48,7 @@ package org.alice.ide.ubiquitouspane.templates;
 public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTemplate {
 	private UbiquitousStatementImplementor implementor;
 	public DeclareLocalTemplate() {
-		super( edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement.class );
+		super( new org.alice.ide.croquet.models.ToDoDragModel(), edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement.class );
 		this.implementor = new UbiquitousStatementImplementor( org.alice.ide.ast.NodeUtilities.createIncompleteVariableDeclarationStatement() );
 		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( this.getLabelText() ) );
 		this.setToolTipText( "" );

@@ -47,14 +47,14 @@ import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class StatementAssignableToResolver implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
+/*package-private*/ class StatementAssignableToResolver implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.DragModel> {
 	private Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls;
 	private int index;
 	public StatementAssignableToResolver(Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls, int index) {
 		this.cls = cls;
 		this.index = index;
 	}
-	public edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved() {
+	public edu.cmu.cs.dennisc.croquet.DragModel getResolved() {
 		org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getCodeEditorInFocus();
 		if (codeEditor != null) {
 			edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) codeEditor.getCode();

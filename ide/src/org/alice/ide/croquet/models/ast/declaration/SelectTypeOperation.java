@@ -66,8 +66,8 @@ public class SelectTypeOperation extends edu.cmu.cs.dennisc.croquet.ActionOperat
 	}
 	
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeKeyedResolver< SelectTypeOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeKeyedResolver< SelectTypeOperation >( this, this.type, edu.cmu.cs.dennisc.alice.ast.AbstractType.class );
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< SelectTypeOperation > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< SelectTypeOperation >( this, this.type, edu.cmu.cs.dennisc.alice.ast.AbstractType.class );
 	}
 	
 	@Override

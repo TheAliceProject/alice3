@@ -42,14 +42,12 @@
  */
 package org.alice.ide.templates;
 
-import org.alice.ide.common.ExpressionCreatorPane;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class CascadingExpressionsStatementTemplate extends StatementTemplate {
-	public CascadingExpressionsStatementTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
-		super( cls );
+	public CascadingExpressionsStatementTemplate( edu.cmu.cs.dennisc.croquet.DragModel dragModel, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+		super( dragModel, cls );
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes();
 	protected String getTitleAt( int index ) {

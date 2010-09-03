@@ -45,7 +45,7 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class ReturnStatementTemplate extends CascadingUbiquitousStatementTemplate {
+public class ReturnStatementTemplate extends CascadingUbiquitousStatementClassTemplate {
 	public ReturnStatementTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.ReturnStatement.class, org.alice.ide.ast.NodeUtilities.createIncompleteReturnStatement( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE ) );
 	}

@@ -40,23 +40,65 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.tutorial;
+
+package org.alice.ide.croquet.resolvers;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class LocalNamedResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.DragModel> {
-	private String localName;
-	public LocalNamedResolver(String localName) {
-		this.localName = localName;
+public class NodeStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< T > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< T > {
+	private edu.cmu.cs.dennisc.alice.ast.Node node;
+	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls;
+
+	
+	private String clsName;
+	private java.lang.Class<?>[] parameterTypes;
+	private Object[] arguments;
+	
+	public NodeStaticGetInstanceKeyedResolver( T instance, edu.cmu.cs.dennisc.alice.ast.Node node, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls ) {
+		super( instance );
+		this.node = node;
+		this.cls = cls;
+	}
+	public NodeStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	
+	
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		assert this.arguments != null;
+		assert this.arguments.length == 1;
+		this.arguments[ 0 ] = retargeter.retarget( this.arguments[ 0 ] );
+	}
+
+	@Override
+	public T getResolved() {
+		return this.resolve( this.clsName, this.parameterTypes, this.arguments );
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.croquet.DragModel getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
-		edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local = IdeTutorial.findFirstLocalNamed( codeEditor.getCode(), this.localName );
-		if( local != null ) {
-			return codeEditor.getDragAndDropOperationForTransient( local );
-		} else {
-			return null;
-		}
+	protected void handleDecoded(String clsName, java.lang.Class<?>[] parameterTypes, Object[] arguments) {
+		this.clsName = clsName;
+		this.parameterTypes = parameterTypes;
+		this.arguments = arguments;
+	}
+	@Override
+	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		String clsName = binaryDecoder.decodeString();
+		this.cls = (Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node >)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
+		return new Class[] { this.cls };
+	}
+	@Override
+	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		final java.util.UUID id = binaryDecoder.decodeId();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		return new Object[] { edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), id ) };
+	}
+	@Override
+	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.cls.getName() );
+	}
+	@Override
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.node.getUUID() );
 	}
 }

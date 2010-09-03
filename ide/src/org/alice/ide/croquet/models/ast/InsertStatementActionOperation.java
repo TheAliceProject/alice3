@@ -56,6 +56,10 @@ public class InsertStatementActionOperation extends edu.cmu.cs.dennisc.croquet.A
 		this.index = index;
 	}
 	@Override
+	protected edu.cmu.cs.dennisc.croquet.CodableResolver< InsertStatementActionOperation > createCodableResolver() {
+		return super.createCodableResolver();
+	}
+	@Override
 	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		context.commitAndInvokeDo( new org.alice.ide.codeeditor.InsertStatementEdit( this.blockStatement.statements, this.index, this.statement ) );
 	}

@@ -388,30 +388,30 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return this.createCountLoopCountResolver(Short.MAX_VALUE);
 	}
 
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createForEachInArrayLoopVariableResolver( int index ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createForEachInArrayLoopVariableResolver( int index ) {
 		return new ForEachInArrayLoopVariableResolver( index );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createFirstForEachInArrayLoopVariableResolver() {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createFirstForEachInArrayLoopVariableResolver() {
 		return this.createForEachInArrayLoopVariableResolver(0);
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createLastForEachInArrayLoopVariableResolver() {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createLastForEachInArrayLoopVariableResolver() {
 		return this.createForEachInArrayLoopVariableResolver(Short.MAX_VALUE);
 	}
 
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createParameterResolver( int index ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createParameterResolver( int index ) {
 		return new ParameterAtResolver( index );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createFirstParameterResolver() {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createFirstParameterResolver() {
 		return this.createParameterResolver( 0 );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createLastParameterResolver() {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createLastParameterResolver() {
 		return this.createParameterResolver( Short.MAX_VALUE );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createParameterNamedResolver( String paramaterName ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createParameterNamedResolver( String paramaterName ) {
 		return new ParameterNamedResolver( paramaterName );
 	}
 	
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createLocalNamedResolver( String paramaterName ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createLocalNamedResolver( String paramaterName ) {
 		return new LocalNamedResolver( paramaterName );
 	}
 
@@ -435,13 +435,13 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 		return this.createStatementAssignableToPopupMenuResolver( cls, Short.MAX_VALUE );
 	}
 
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int index ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int index ) {
 		return new StatementAssignableToResolver( cls, index );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createFirstStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createFirstStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
 		return this.createStatementAssignableToResolver( cls, 0 );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createLastStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createLastStatementAssignableToResolver( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
 		return this.createStatementAssignableToResolver( cls, Short.MAX_VALUE );
 	}
 
@@ -454,13 +454,13 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.PopupMenuOperation > createLastInvocationPopupMenuResolver( String methodName ) {
 		return this.createInvocationPopupMenuResolver(methodName, Short.MAX_VALUE);
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createInvocationResolver( String methodName, int index ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createInvocationResolver( String methodName, int index ) {
 		return new MethodInvocationStatementResolver(this.createCurrentCodeMethodResolver(methodName), index);
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createFirstInvocationResolver( String methodName ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createFirstInvocationResolver( String methodName ) {
 		return this.createInvocationResolver(methodName, 0);
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createLastInvocationResolver( String methodName ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createLastInvocationResolver( String methodName ) {
 		return this.createInvocationResolver(methodName, Short.MAX_VALUE);
 	}
 
@@ -570,41 +570,41 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	}
 	
 	
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createProcedureInvocationTemplateResolver( String methodName ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createProcedureInvocationTemplateResolver( String methodName ) {
 		return new ProcedureInvocationTemplateResolver( methodName );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createFunctionInvocationTemplateResolver( String methodName ) {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createFunctionInvocationTemplateResolver( String methodName ) {
 		return new FunctionInvocationTemplateResolver( methodName );
 	}
 	
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createDoInOrderTemplateResolver() {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createDoInOrderTemplateResolver() {
 		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.DoInOrderTemplate.class );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createCountLoopTemplateResolver() {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createCountLoopTemplateResolver() {
 		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.CountLoopTemplate.class );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createWhileLoopTemplateResolver() {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createWhileLoopTemplateResolver() {
 		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.WhileLoopTemplate.class );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createForEachInArrayLoopTemplateResolver() {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createForEachInArrayLoopTemplateResolver() {
 		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.ForEachInArrayLoopTemplate.class );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createIfElseTemplateResolver() {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createIfElseTemplateResolver() {
 		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.ConditionalStatementTemplate.class );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createDoTogetherTemplateResolver() {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createDoTogetherTemplateResolver() {
 		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.DoTogetherTemplate.class );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createEachInArrayTogetherTemplateResolver() {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createEachInArrayTogetherTemplateResolver() {
 		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.EachInArrayTogetherTemplate.class );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createDoInThreadTemplateResolver() {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createDoInThreadTemplateResolver() {
 		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.DoInThreadTemplate.class );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createDeclareLocalTemplateResolver() {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createDeclareLocalTemplateResolver() {
 		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.DeclareLocalTemplate.class );
 	}
-	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > createCommentTemplateResolver() {
+	public RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > createCommentTemplateResolver() {
 		return new TemplateDragComponentResolver( org.alice.ide.ubiquitouspane.templates.CommentTemplate.class );
 	}
 
@@ -687,7 +687,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			public Result checkValidity(edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenuOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
 				return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 			}
-			public Result checkValidity(edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
+			public Result checkValidity(edu.cmu.cs.dennisc.croquet.DragModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit) {
 				return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 			}
 			public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation) {
@@ -699,7 +699,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenuOperation) {
 				return createToDoEdit();
 			}
-			public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape) {
+			public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit(edu.cmu.cs.dennisc.croquet.DragModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape) {
 				return createToDoEdit();
 			}
 		};

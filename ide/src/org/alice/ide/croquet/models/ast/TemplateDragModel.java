@@ -40,23 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.tutorial;
+
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class LocalNamedResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.DragModel> {
-	private String localName;
-	public LocalNamedResolver(String localName) {
-		this.localName = localName;
-	}
-	@Override
-	protected final edu.cmu.cs.dennisc.croquet.DragModel getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
-		edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local = IdeTutorial.findFirstLocalNamed( codeEditor.getCode(), this.localName );
-		if( local != null ) {
-			return codeEditor.getDragAndDropOperationForTransient( local );
-		} else {
-			return null;
-		}
+public abstract class TemplateDragModel extends org.alice.ide.croquet.models.IdeDragModel {
+	public TemplateDragModel( java.util.UUID id ) {
+		super( id );
 	}
 }

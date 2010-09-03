@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class TemplateDragComponentResolver implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
+/*package-private*/class TemplateDragComponentResolver implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.DragModel> {
 	private Class<? extends edu.cmu.cs.dennisc.croquet.DragComponent> cls;
 	public TemplateDragComponentResolver(Class<? extends edu.cmu.cs.dennisc.croquet.DragComponent> cls) {
 		assert edu.cmu.cs.dennisc.croquet.Component.class.isAssignableFrom(cls);
@@ -57,10 +57,10 @@ import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 		org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane = org.alice.ide.IDE.getSingleton().getUbiquitousPane();
 		return this.cls.cast(edu.cmu.cs.dennisc.croquet.HierarchyUtilities.findFirstMatch(ubiquitousPane, this.cls));
 	}
-	public edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved() {
+	public edu.cmu.cs.dennisc.croquet.DragModel getResolved() {
 		edu.cmu.cs.dennisc.croquet.DragComponent dragComponent = this.getDragComponent();
 		if (dragComponent != null) {
-			edu.cmu.cs.dennisc.croquet.DragAndDropOperation rv = dragComponent.getDragAndDropOperation();
+			edu.cmu.cs.dennisc.croquet.DragModel rv = dragComponent.getDragModel();
 			return rv;
 		} else {
 			return null;

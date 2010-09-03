@@ -45,7 +45,7 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class DoInOrderTemplate extends CascadingUbiquitousStatementTemplate {
+public class DoInOrderTemplate extends CascadingUbiquitousStatementClassTemplate {
 	public DoInOrderTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class, org.alice.ide.ast.NodeUtilities.createDoInOrder() );
 	}

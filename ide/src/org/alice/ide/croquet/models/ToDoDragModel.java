@@ -40,38 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations;
+package org.alice.ide.croquet.models;
 
 
 /**
  * @author Dennis Cosgrove
  */
 @Deprecated
-public class DefaultDragOperation extends edu.cmu.cs.dennisc.croquet.DragAndDropOperation {
-	public DefaultDragOperation( edu.cmu.cs.dennisc.croquet.Group group ) {
-		super( group, java.util.UUID.fromString( "002705e1-18e6-49ca-b261-0e9c79e8f080" ) );
-	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
-	}
-	@Override
-	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.DragComponent dragSource ) {
-		return getIDE().createListOfPotentialDropReceptors( dragSource );
-	}
-	@Override
-	public void handleDragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		getIDE().handleDragStarted( dragAndDropContext );
-	}
-	@Override
-	public void handleDragEnteredDropReceptor( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		getIDE().handleDragEnteredDropReceptor( dragAndDropContext );
-	}
-	@Override
-	public void handleDragExitedDropReceptor( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		getIDE().handleDragExitedDropReceptor( dragAndDropContext );
-	}
-	@Override
-	public void handleDragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		getIDE().handleDragStopped( dragAndDropContext );
+public class ToDoDragModel extends IdeDragModel {
+	public ToDoDragModel() {
+		super( java.util.UUID.fromString( "18c35df3-fc24-434c-b451-94090f13310e" ) );
 	}
 }

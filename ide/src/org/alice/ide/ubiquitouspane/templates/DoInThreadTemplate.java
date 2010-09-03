@@ -45,7 +45,7 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class DoInThreadTemplate extends CascadingUbiquitousStatementTemplate {
+public class DoInThreadTemplate extends CascadingUbiquitousStatementClassTemplate {
 	public DoInThreadTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.DoInThread.class, org.alice.ide.ast.NodeUtilities.createDoInThread() );
 	}

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class DragAndDropStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
+/*package-private*/ class DragAndDropStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DragModel> {
 	private enum State {
 		WAITING_ON_DRAG,
 		WAITING_ON_DROP,
@@ -58,7 +58,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	private DragAndDropOperationCompletor completor;
 	private DragAndDropOperationValidator validator;
 	private edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler<?> externalOkButtonDisabler;
-	public DragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropOperation > dragResolver, String dropText, edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > dropShapeResolver, String popupMenuText, String inputDialogText, DragAndDropOperationCompletor completor, DragAndDropOperationValidator validator, edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler<?> externalOkButtonDisabler ) {
+	public DragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > dragResolver, String dropText, edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > dropShapeResolver, String popupMenuText, String inputDialogText, DragAndDropOperationCompletor completor, DragAndDropOperationValidator validator, edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler<?> externalOkButtonDisabler ) {
 		super( title, text, new Hole( new FirstComponentResolver( dragResolver ), Feature.ConnectionPreference.EAST_WEST ), dragResolver );
 		this.completor = completor;
 		this.validator = validator;
