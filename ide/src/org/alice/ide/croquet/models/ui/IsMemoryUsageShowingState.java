@@ -73,7 +73,7 @@ public class IsMemoryUsageShowingState extends IsFrameShowingState {
 		return SingletonHolder.instance;
 	}
 	private IsMemoryUsageShowingState() {
-		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "e460dca7-e707-4075-883a-ff47367c21fd" ), false );
+		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "e460dca7-e707-4075-883a-ff47367c21fd" ), false );
 	}
 	@Override
 	protected java.awt.Component createPane() {

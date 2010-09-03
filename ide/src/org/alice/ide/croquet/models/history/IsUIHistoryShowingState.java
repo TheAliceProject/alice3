@@ -50,7 +50,7 @@ public class IsUIHistoryShowingState extends org.alice.ide.croquet.models.IsFram
 		return SingletonHolder.instance;
 	}
 	private IsUIHistoryShowingState() {
-		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "6d294f89-9ddc-4cbf-9020-370e383d4ff3" ), false );
+		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "6d294f89-9ddc-4cbf-9020-370e383d4ff3" ), false );
 		this.setTextForBothTrueAndFalse( "UI History" );
 	}
 	@Override

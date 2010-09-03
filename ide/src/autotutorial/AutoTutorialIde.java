@@ -43,28 +43,6 @@ public class AutoTutorialIde extends org.alice.stageide.StageIDE {
 					}
 				}
 			};
-			
-			class AstLiveRetargeter implements edu.cmu.cs.dennisc.croquet.Retargeter {
-				private java.util.Map< edu.cmu.cs.dennisc.alice.ast.Node, edu.cmu.cs.dennisc.alice.ast.Node > mapOriginalNodeToReplacementNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-				public void addKeyValuePair( Object key, Object value ) {
-					if( key instanceof edu.cmu.cs.dennisc.alice.ast.Node && value instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
-						this.mapOriginalNodeToReplacementNode.put( (edu.cmu.cs.dennisc.alice.ast.Node)key, (edu.cmu.cs.dennisc.alice.ast.Node)value );
-					}
-				}
-				public <N> N retarget(N value) {
-					if( value instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
-						edu.cmu.cs.dennisc.alice.ast.Node originalNode = (edu.cmu.cs.dennisc.alice.ast.Node)value;
-						edu.cmu.cs.dennisc.alice.ast.Node retargetedNode = mapOriginalNodeToReplacementNode.get( originalNode );
-						if( retargetedNode != null ) {
-							return (N)retargetedNode;
-						} else {
-							return value;
-						}
-					} else {
-						return value;
-					}
-				}
-			};
 
 			this.postProject = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readProject( POST_PROJECT_PATH );
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
@@ -105,31 +83,37 @@ public class AutoTutorialIde extends org.alice.stageide.StageIDE {
 		//super.handleQuit( e );
 	}
 	private void createAndShowTutorial() {
-		final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( this, 0 );
+		//final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( this, 0 );
 		
-		tutorial.addMessageStep( "start", "start of tutorial" );
-		for( edu.cmu.cs.dennisc.croquet.HistoryNode node : this.postContext.getChildren() ) {
-			if( node instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > ) {
-				edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? >)node;
-				edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > inputDialogOperation = inputDialogOperationContext.getModel();
-				assert inputDialogOperation != null;
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "inputDialogOperation:", inputDialogOperation );
-				tutorial.addInputDialogOpenAndCommitStep( "title", "openText", "commitText", inputDialogOperation, tutorial.createToDoCompletorValidator() );
-			} else if( node instanceof edu.cmu.cs.dennisc.croquet.BooleanStateContext ) {
-				edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext = (edu.cmu.cs.dennisc.croquet.BooleanStateContext)node;
-				edu.cmu.cs.dennisc.croquet.BooleanStateEdit edit = booleanStateContext.getEdit();
-				if( edit != null ) {
-					edu.cmu.cs.dennisc.croquet.BooleanState booleanState = booleanStateContext.getModel();
-					//booleanState = org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance();
-					if( booleanState instanceof org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState ) {
-						//pass
-					} else {
-						tutorial.addBooleanStateStep( booleanState.getClass().getSimpleName(), booleanState.getClass().getName(), booleanState, edit.getNextValue() );
-					}
+		class AstLiveRetargeter implements edu.cmu.cs.dennisc.croquet.Retargeter {
+			private java.util.Map< edu.cmu.cs.dennisc.alice.ast.Node, edu.cmu.cs.dennisc.alice.ast.Node > mapOriginalNodeToReplacementNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			public void addKeyValuePair( Object key, Object value ) {
+				if( key instanceof edu.cmu.cs.dennisc.alice.ast.Node && value instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
+					this.mapOriginalNodeToReplacementNode.put( (edu.cmu.cs.dennisc.alice.ast.Node)key, (edu.cmu.cs.dennisc.alice.ast.Node)value );
 				}
 			}
-		}
-		tutorial.addMessageStep( "end", "end of tutorial" );
+			public <N> N retarget(N value) {
+				if( value instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
+					edu.cmu.cs.dennisc.alice.ast.Node originalNode = (edu.cmu.cs.dennisc.alice.ast.Node)value;
+					edu.cmu.cs.dennisc.alice.ast.Node retargetedNode = mapOriginalNodeToReplacementNode.get( originalNode );
+					if( retargetedNode != null ) {
+						return (N)retargetedNode;
+					} else {
+						return value;
+					}
+				} else {
+					return value;
+				}
+			}
+		};
+
+		
+		edu.cmu.cs.dennisc.tutorial.AutomaticTutorial tutorial = new edu.cmu.cs.dennisc.tutorial.AutomaticTutorial( new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
+		tutorial.addSteps( this.postContext );
+		
+		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
+		tutorial.setRetargeter( astLiveRetargeter );
+
 		tutorial.setVisible( true );
 		this.getFrame().setVisible( true );
 	}

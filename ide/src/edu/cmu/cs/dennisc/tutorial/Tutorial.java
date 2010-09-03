@@ -208,58 +208,6 @@ public class Tutorial {
 		return this.addDragAndDropStep(title, text, new SelfResolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation>( dragOperation ), dropText, new FirstComponentResolver(dropModelResolver), popupMenuText, inputDialogText, completorValidatorOkButtonDisabler, completorValidatorOkButtonDisabler );
 	}
 
-	
-//	@Deprecated
-//	public Step EPIC_HACK_addDeclareProcedureDialogOpenAndCommitStep( String title, String openText, String commitText, InputDialogOperationCompletorValidator completorValidator, final org.alice.ide.operations.ast.DeclareProcedureOperation.EPIC_HACK_Validator validator ) {
-//		Step step = new InputDialogOpenAndCommitStep( title, openText, commitText, ((org.alice.ide.tutorial.IdeTutorial)this).createDeclareProcedureOperationResolver(), completorValidator, completorValidator ) {
-//			@Override
-//			protected void setActiveNote(int activeIndex) {
-//				super.setActiveNote(activeIndex);
-//				if( activeIndex == 1 ) {
-//					org.alice.ide.operations.ast.DeclareProcedureOperation declareProcedureOperation = (org.alice.ide.operations.ast.DeclareProcedureOperation)this.getModel();
-//					declareProcedureOperation.setValidator( validator );
-//				}
-//			}
-//		};
-//		return this.addStep( step );
-//	}
-//	@Deprecated
-//	public Step EPIC_HACK_addDeclareMethodParameterDialogOpenAndCommitStep( String title, String openText, String commitText, InputDialogOperationCompletorValidator completorValidator, final org.alice.ide.operations.ast.DeclareMethodParameterOperation.EPIC_HACK_Validator validator ) {
-//		Step step = new InputDialogOpenAndCommitStep( title, openText, commitText, ((org.alice.ide.tutorial.IdeTutorial)this).createDeclareMethodParameterOperationResolver(), completorValidator, completorValidator ) {
-//			@Override
-//			protected void setActiveNote(int activeIndex) {
-//				super.setActiveNote(activeIndex);
-//				if( activeIndex == 1 ) {
-//					org.alice.ide.operations.ast.DeclareMethodParameterOperation declareParameterOperation = (org.alice.ide.operations.ast.DeclareMethodParameterOperation)this.getModel();
-//					declareParameterOperation.setValidator( validator );
-//				}
-//			}
-//		};
-//		return this.addStep( step );
-//	}
-//
-//	
-//	@Deprecated
-//	public Step EPIC_HACK_addForEachInArrayLoopDragAndDropToPopupMenuToInputDialogStep( String title, String text, String dropText, Resolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> dropShapeResolver, String popupMenuText, String inputDialogText, DragAndDropOperationCompletorValidator completorValidator, final org.alice.ide.cascade.customfillin.CustomInputDialogOperation.EPIC_HACK_Validator validator ) {
-//		Step step = new DragAndDropStep( title, text, ((org.alice.ide.tutorial.IdeTutorial)this).createForEachInArrayLoopTemplateResolver(), dropText, dropShapeResolver, popupMenuText, inputDialogText, completorValidator, completorValidator ) {
-//			@Override
-//			public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
-//				boolean rv = super.isWhatWeveBeenWaitingFor( child );
-//				if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext<?> ) {
-//					edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext<?> context = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext<?>)child;
-//					edu.cmu.cs.dennisc.croquet.Model model = context.getModel();
-//					if (model instanceof org.alice.ide.cascade.customfillin.CustomInputDialogOperation ) {
-//						org.alice.ide.cascade.customfillin.CustomInputDialogOperation customInputDialogOperation = (org.alice.ide.cascade.customfillin.CustomInputDialogOperation) model;
-//						customInputDialogOperation.setValidator( validator );
-//					}
-//				}
-//				return rv;
-//			}
-//		};
-//		return this.addStep( step );
-//	}
-
-
 	public void setVisible( boolean isVisible ) {
 		if( isVisible ) {
 			this.stencil.addToLayeredPane();

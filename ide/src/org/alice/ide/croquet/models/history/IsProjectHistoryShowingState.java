@@ -50,7 +50,7 @@ public class IsProjectHistoryShowingState extends org.alice.ide.croquet.models.I
 		return SingletonHolder.instance;
 	}
 	private IsProjectHistoryShowingState() {
-		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "cf08f7ac-16b2-4121-9f36-9aca59db4cf7" ), false );
+		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "cf08f7ac-16b2-4121-9f36-9aca59db4cf7" ), false );
 	}
 	@Override
 	protected java.awt.Component createPane() {
