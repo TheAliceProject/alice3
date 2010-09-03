@@ -103,16 +103,22 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 	}
 
 	public M getModel() {
+		M rv;
 		if( this.model != null ) {
-			//pass
+			rv = this.model;
 		} else {
 			if( this.modelResolver != null ) {
-				this.model = this.modelResolver.getResolved();
+				rv = this.modelResolver.getResolved(); 
+				if( this.modelResolver instanceof RetargetableResolver< ? > ) {
+					//pass
+				} else {
+					this.model = rv;
+				}
 			} else {
-				//pass
+				rv = null;
 			}
 		}
-		return this.model;
+		return rv;
 	}
 	
 	public java.util.EventObject getAwtEvent() {
@@ -278,5 +284,16 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 			rv.append( this.getModel() );
 //		}
 		return rv;
+	}
+	
+	@Override
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		if( this.modelResolver instanceof RetargetableResolver< ? > ) {
+			RetargetableResolver< ? > retargetableResolver = (RetargetableResolver< ? >)this.modelResolver;
+			retargetableResolver.retarget( retargeter );
+		}
+		for( HistoryNode child : this.children ) {
+			child.retarget( retargeter );
+		}
 	}
 }

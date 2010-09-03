@@ -51,4 +51,7 @@ package edu.cmu.cs.dennisc.croquet;
 	public Event(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 		super(binaryDecoder);
 	}
+	@Override
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	}
 }

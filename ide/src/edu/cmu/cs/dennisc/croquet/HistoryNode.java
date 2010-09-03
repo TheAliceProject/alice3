@@ -42,132 +42,6 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-//import edu.cmu.cs.dennisc.croquet.Node.State;
-//
-//public abstract class Node implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-//	private Node parent;
-//	private java.util.UUID id;
-//	public enum State {
-//		COMMITTED,
-//		SKIPPED,
-//		CANCELED,
-//		PENDING
-//	}
-//	public Node( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-//		this.decode( binaryDecoder );
-//	}
-//	public Node( CompositeContext parent ) {
-//		this.parent = parent;
-//		this.id = java.util.UUID.randomUUID();
-//	}
-//	public Node getParent() {
-//		return this.parent;
-//	}
-//	public java.util.UUID getId() {
-//		return this.id;
-//	}
-//	public abstract State getState();
-//	public final boolean isCommitted() {
-//		return this.getState() == State.COMMITTED;
-//	}
-//	public final boolean isCanceled() {
-//		return this.getState() == CANCELED;
-//	}
-//
-//	protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
-//	protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
-//	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-//		this.id = edu.cmu.cs.dennisc.java.util.UuidUtilities.decodeUuid( binaryDecoder );
-//		this.decodeInternal(binaryDecoder);
-//	}
-//	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-//		edu.cmu.cs.dennisc.java.util.UuidUtilities.encodeUuid( binaryEncoder, this.id );
-//		this.encodeInternal(binaryEncoder);
-//	}
-//}
-
-//public abstract class ComponentContext< O extends ComponentOperation > extends Node {
-////	private State state;
-//	private O operation;
-//	private java.util.EventObject event;
-//	private CancelEffectiveness cancelEffectiveness;
-//	public ComponentContext( CompositeContext parent, O operation, java.util.EventObject event, CancelEffectiveness cancelEffectiveness ) {
-//		super( parent );
-//		this.operation = operation;
-//		this.event = event;
-//		this.cancelEffectiveness = cancelEffectiveness;
-//	}
-////	@Override
-////	public State getState() {
-////		return this.state;
-////	}
-//	public O getOperation() {
-//		return this.operation;
-//	}
-//	public java.util.EventObject getEvent() {
-//		return event;
-//	}
-//	public CancelEffectiveness getCancelEffectiveness() {
-//		return this.cancelEffectiveness;
-//	}
-//	public boolean isCancelWorthwhile() {
-//		return this.cancelEffectiveness == CancelEffectiveness.WORTHWHILE;
-//	}
-//	
-////	private void commitAndInvokeDo( Edit<O> edit ) {
-////		assert this.state == null;
-////		//edu.cmu.cs.dennisc.croquet.event.CommitEvent e = new edu.cmu.cs.dennisc.croquet.event.CommitEvent( this.getOperation(), this, edit );
-////		//this.parent.committing();
-////		if( edit != null ) {
-////			edit.doOrRedo( true );
-////		}
-////		this.state = State.COMMITTED;
-////		//this.parent.committed();
-////	}
-////	public void commit() {
-////		this.commitAndInvokeDo( null );
-////	}
-////	public void skip() {
-////		//edu.cmu.cs.dennisc.croquet.event.SkipEvent e = new edu.cmu.cs.dennisc.croquet.event.SkipEvent( this.operation, this );
-////		//this.parent.skipping();
-////		this.state = State.SKIPPED;
-////		//this.parent.skipped();
-////	}
-////	public void cancel() {
-////		assert this.state == null;
-////		//edu.cmu.cs.dennisc.croquet.event.CancelEvent e = new edu.cmu.cs.dennisc.croquet.event.CancelEvent( this.getOperation(), this );
-////		//this.parent.canceling();
-////		this.state = State.CANCELED;
-////		//this.parent.canceled();
-////	}
-////	private class PendTaskObserver< E extends Edit,F > implements edu.cmu.cs.dennisc.task.TaskObserver< F > {
-////		private Resolver<E,F> resolver;
-////		private E edit;
-////		public PendTaskObserver( Resolver<E,F> resolver ) {
-////			this.resolver = resolver;
-////			this.edit = this.resolver.createEdit();
-////			this.edit = this.resolver.initialize( this.edit, ComponentContext.this, this );
-////		}
-////		public void handleCompletion(F f) {
-////			this.edit = this.resolver.handleCompletion( this.edit, f);
-////			ComponentContext.this.commitAndInvokeDo( this.edit );
-////		}
-////		public void handleCancelation() {
-////			this.resolver.handleCancelation();
-////			ComponentContext.this.cancel();
-////		}
-////	}
-////	public void pend( Resolver<? extends Edit, ?> resolver ) {
-////		new PendTaskObserver(resolver);
-////		this.state = State.PENDING;
-////	}
-////	
-//////	public void execute( org.jdesktop.swingworker.SwingWorker< ?, ? > worker ) {
-//////		worker.execute();
-//////	}
-//	
-//}
-
 public abstract class HistoryNode implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	private static java.util.Map< java.util.UUID, HistoryNode > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static < N extends HistoryNode > N lookup( java.util.UUID id ) {
@@ -178,7 +52,7 @@ public abstract class HistoryNode implements edu.cmu.cs.dennisc.codec.BinaryEnco
 
 	public HistoryNode() {
 		this.id = java.util.UUID.randomUUID();
-		map.put( id, this );
+		map.put( this.id, this );
 	}
 	public HistoryNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.decode( binaryDecoder );
@@ -215,7 +89,7 @@ public abstract class HistoryNode implements edu.cmu.cs.dennisc.codec.BinaryEnco
 	protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
 	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.id = binaryDecoder.decodeId();
-		map.put( id, this );
+		map.put( this.id, this );
 		this.decodeInternal( binaryDecoder );
 	}
 	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
@@ -233,4 +107,6 @@ public abstract class HistoryNode implements edu.cmu.cs.dennisc.codec.BinaryEnco
 		this.appendRepr( sb );
 		return sb.toString();
 	}
+	
+	public abstract void retarget( Retargeter retargeter );
 }

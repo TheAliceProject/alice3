@@ -40,62 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KeyedResolver<T> implements CodableResolver< T > {
-	private T instance;
-	public KeyedResolver( T instance ) {
-		this.instance = instance;
-	}
-	public KeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.decode( binaryDecoder );
-	}
-	public T getResolved() {
-		return this.instance;
-	}
-	
-	protected T resolve( String clsName, Class<?>[] parameterTypes, Object[] arguments ) {
-		try {
-			Class<T> cls = (Class<T>)Class.forName( clsName );
-			try {
-				java.lang.reflect.Method mthd = cls.getMethod( "getInstance", parameterTypes );
-				return (T)mthd.invoke( null, arguments );
-			} catch( IllegalAccessException iae ) {
-				throw new RuntimeException( iae );
-			} catch( IllegalArgumentException iae ) {
-				throw new RuntimeException( iae );
-			} catch( NoSuchMethodException nsme ) {
-				throw new RuntimeException( nsme );
-			} catch( java.lang.reflect.InvocationTargetException ite ) {
-				throw new RuntimeException( ite );
-			}
-		} catch( ClassNotFoundException cnfe ) {
-			throw new RuntimeException( cnfe );
-		}
-	}
-	
-	protected void handleDecoded( String clsName, Class<?>[] parameterTypes, Object[] arguments ) {
-		this.instance = this.resolve( clsName, parameterTypes, arguments );
-	}
-	
-	protected abstract Class<?>[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
-	protected abstract Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
-	protected abstract void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
-	protected abstract void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
-	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		String clsName = binaryDecoder.decodeString();
-		Class<?>[] parameterTypes = this.decodeParameterTypes( binaryDecoder );
-		Object[] arguments = this.decodeArguments( binaryDecoder );
-		this.handleDecoded( clsName, parameterTypes, arguments );
-	}
-	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		Class<T> cls = (Class<T>)this.instance.getClass();
-		String clsName = cls.getName();
-		binaryEncoder.encode( clsName );
-		this.encodeParameterTypes( binaryEncoder );
-		this.encodeArguments( binaryEncoder );
-	}
+public interface RetargetableResolver<T> extends CodableResolver<T> {
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter );
 }

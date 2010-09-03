@@ -46,9 +46,15 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class NodeKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.KeyedResolver< T > {
+public class NodeKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.KeyedResolver< T > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< T > {
 	private edu.cmu.cs.dennisc.alice.ast.Node node;
 	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls;
+
+	
+	private String clsName;
+	private java.lang.Class<?>[] parameterTypes;
+	private Object[] arguments;
+	
 	public NodeKeyedResolver( T instance, edu.cmu.cs.dennisc.alice.ast.Node node, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls ) {
 		super( instance );
 		this.node = node;
@@ -56,6 +62,24 @@ public class NodeKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.KeyedResolv
 	}
 	public NodeKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+	}
+	
+	
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		assert this.arguments != null;
+		assert this.arguments.length == 1;
+		this.arguments[ 0 ] = retargeter.retarget( this.arguments[ 0 ] );
+	}
+
+	@Override
+	public T getResolved() {
+		return this.resolve( this.clsName, this.parameterTypes, this.arguments );
+	}
+	@Override
+	protected void handleDecoded(String clsName, java.lang.Class<?>[] parameterTypes, Object[] arguments) {
+		this.clsName = clsName;
+		this.parameterTypes = parameterTypes;
+		this.arguments = arguments;
 	}
 	@Override
 	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

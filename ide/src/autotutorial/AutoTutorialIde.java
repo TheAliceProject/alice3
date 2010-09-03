@@ -15,18 +15,43 @@ public class AutoTutorialIde extends org.alice.stageide.StageIDE {
 			edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
 			rootContext.EPIC_HACK_clear();
 		} else {
+			class AstRetargeter implements edu.cmu.cs.dennisc.croquet.Retargeter {
+				private java.util.Map< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node > mapIdToReplacementNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+				public void addAllToReplacementMap( edu.cmu.cs.dennisc.alice.Project project ) {
+					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = project.getProgramType();
+					edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.Node > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.Node >( edu.cmu.cs.dennisc.alice.ast.Node.class );
+					programType.crawl( crawler, true );
+					for( edu.cmu.cs.dennisc.alice.ast.Node node : crawler.getList() ) {
+						mapIdToReplacementNode.put( node.getUUID(), node );
+					}
+				}
+				public <N> N retarget(N value) {
+					if( value instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
+						edu.cmu.cs.dennisc.alice.ast.Node originalNode = (edu.cmu.cs.dennisc.alice.ast.Node)value;
+						edu.cmu.cs.dennisc.alice.ast.Node retargetedNode = mapIdToReplacementNode.get( originalNode.getUUID() );
+						if( retargetedNode != null ) {
+							return (N)retargetedNode;
+						} else {
+							return value;
+						}
+					} else {
+						return value;
+					}
+				}
+			};
+			AstRetargeter astRetargeter = new AstRetargeter();
+			astRetargeter.addAllToReplacementMap( this.getProject() );
+			//edu.cmu.cs.dennisc.alice.project.ProjectUtilities.addAllToReplacementMap( this.getProject() );
 			
-			edu.cmu.cs.dennisc.alice.project.ProjectUtilities.addAllToReplacementMap( this.getProject() );
-			
+			astRetargeter.addAllToReplacementMap( this.getProject() );
 			this.postProject = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readProject( POST_PROJECT_PATH );
-			
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this.project:", this.getProject().getProgramType().getUUID(), this.getProject().hashCode() );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "this.postProject:", this.postProject.getProgramType().getUUID(), this.postProject.hashCode() );
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
 			this.isPostProjectLive = true;
-			postContext = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( UI_HISTORY_PATH, edu.cmu.cs.dennisc.croquet.RootContext.class );
+			this.postContext = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( UI_HISTORY_PATH, edu.cmu.cs.dennisc.croquet.RootContext.class );
 			this.isPostProjectLive = false;
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
+			
+			this.postContext.retarget( astRetargeter );
 		}
 	}
 	
