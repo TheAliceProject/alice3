@@ -51,11 +51,9 @@ import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.ImageBasedManipulationHandle2D;
-import org.alice.interact.operations.PredeterminedSetLocalTransformationActionOperation;
 import org.alice.interact.operations.PredeterminedSetOrthographicPicturePlaneActionOperation;
 
 import edu.cmu.cs.dennisc.alice.Project;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.math.Vector2;
 import edu.cmu.cs.dennisc.math.Vector3;
@@ -63,7 +61,6 @@ import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
-import edu.cmu.cs.dennisc.zoot.ZManager;
 
 public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulator
 {
@@ -174,8 +171,8 @@ public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulat
 			} else {
 				animator = null;
 			}
-			PredeterminedSetOrthographicPicturePlaneActionOperation undoOperation = new PredeterminedSetOrthographicPicturePlaneActionOperation(Project.GROUP.getId(), false, animator, (OrthographicCamera)this.camera, this.originalZoomValue, newZoom, getUndoRedoDescription());
-			ZManager.performIfAppropriate( undoOperation, null, false );
+			PredeterminedSetOrthographicPicturePlaneActionOperation undoOperation = new PredeterminedSetOrthographicPicturePlaneActionOperation(Project.GROUP, false, animator, (OrthographicCamera)this.camera, this.originalZoomValue, newZoom, getUndoRedoDescription());
+			undoOperation.fire();
 		}
 	}
 	

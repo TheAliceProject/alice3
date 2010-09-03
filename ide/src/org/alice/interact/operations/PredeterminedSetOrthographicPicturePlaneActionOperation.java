@@ -44,10 +44,11 @@
 package org.alice.interact.operations;
 
 import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
+import edu.cmu.cs.dennisc.croquet.ActionOperationContext;
 import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 
-public class PredeterminedSetOrthographicPicturePlaneActionOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
+public class PredeterminedSetOrthographicPicturePlaneActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 	private boolean isDoRequired;
 	private edu.cmu.cs.dennisc.animation.Animator animator;
 	private edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgCamera;
@@ -55,8 +56,8 @@ public class PredeterminedSetOrthographicPicturePlaneActionOperation extends edu
 	private double nextPicturePlaneHeight;
 	
 	private String editPresentationKey;
-	public PredeterminedSetOrthographicPicturePlaneActionOperation( java.util.UUID groupUUID, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgCamera, double previousPicturePlaneHeight, double nextPicturePlaneHeight, String editPresentationKey ) {
-		super( groupUUID );
+	public PredeterminedSetOrthographicPicturePlaneActionOperation( edu.cmu.cs.dennisc.croquet.Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgCamera, double previousPicturePlaneHeight, double nextPicturePlaneHeight, String editPresentationKey ) {
+		super( group, java.util.UUID.fromString( "67faf90c-97c6-40d4-9ddb-f31f22003682" ) );
 		this.isDoRequired = isDoRequired;
 		this.animator = animator;
 		this.sgCamera = sgCamera;
@@ -92,8 +93,10 @@ public class PredeterminedSetOrthographicPicturePlaneActionOperation extends edu
 		}
 		
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+	
+	@Override
+	protected void perform(ActionOperationContext context) {
+		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			public void doOrRedo( boolean isDo ) {
 				if( isDo && ( isDoRequired == false ) ) {
@@ -113,4 +116,5 @@ public class PredeterminedSetOrthographicPicturePlaneActionOperation extends edu
 			}
 		} );
 	}
+
 }

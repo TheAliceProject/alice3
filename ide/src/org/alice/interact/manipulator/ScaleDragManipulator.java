@@ -42,22 +42,14 @@
  */
 package org.alice.interact.manipulator;
 
-import org.alice.interact.InputState;
-import org.alice.interact.PickHint;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.LinearScaleHandle;
 import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.interact.operations.PredeterminedScaleActionOperation;
-import org.alice.interact.operations.PredeterminedSetLocalTransformationActionOperation;
 
 import edu.cmu.cs.dennisc.alice.Project;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.pattern.Criterion;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
-import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities;
-import edu.cmu.cs.dennisc.zoot.ZManager;
 
 /**
  * @author David Culyba

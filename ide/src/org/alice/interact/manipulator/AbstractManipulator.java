@@ -44,7 +44,6 @@
 package org.alice.interact.manipulator;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.Vector;
 
 import org.alice.interact.AbstractDragAdapter;
@@ -56,7 +55,6 @@ import org.alice.interact.operations.PredeterminedSetLocalTransformationActionOp
 import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
-import edu.cmu.cs.dennisc.zoot.ZManager;
 
 
 //adding comment for testing tags
@@ -204,14 +202,14 @@ public abstract class AbstractManipulator {
 			{
 				undoRedoEndManipulation();
 			}
-			else if (this.getManipulatedTransformable() != null)
-			{
-				AffineMatrix4x4 newTransformation = this.getManipulatedTransformable().getLocalTransformation();
-				if (!newTransformation.equals( originalTransformation ) && originalTransformation != null)
-				{
-					PrintUtilities.println("Skipping undoable action for a manipulation that actually changed the transformation.");
-				}
-			}
+//			else if (this.getManipulatedTransformable() != null)
+//			{
+//				AffineMatrix4x4 newTransformation = this.getManipulatedTransformable().getLocalTransformation();
+//				if (!newTransformation.equals( originalTransformation ) && originalTransformation != null)
+//				{
+//					PrintUtilities.println("Skipping undoable action for a manipulation that actually changed the transformation.");
+//				}
+//			}
 			this.hasStarted = false;
 			HandleSet setToShow = this.getHandleSetToEnable();
 			if (setToShow != null && this.dragAdapter != null)
@@ -267,7 +265,7 @@ public abstract class AbstractManipulator {
 	
 	public boolean isUndoable()
 	{
-		return this.hasUpdated();
+		return this.dragAdapter.hasSceneEditor() && this.hasUpdated();
 	}
 	
 	public abstract boolean doStartManipulator( InputState startInput );

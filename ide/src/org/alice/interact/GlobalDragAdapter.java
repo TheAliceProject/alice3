@@ -439,19 +439,23 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		scaleAxisZ.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION );
 		scaleAxisZ.setDragAdapterAndAddHandle( this );
 
-		InteractionGroup defaultInteraction = new InteractionGroup(HandleSet.DEFAULT_INTERACTION, leftClickMouseTranslateObject);
-		InteractionGroup rotationInteraction = new InteractionGroup(HandleSet.ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight);
-		InteractionGroup translationInteraction = new InteractionGroup(HandleSet.TRANSLATION_INTERACTION, leftClickMouseTranslateObject);
-		InteractionGroup resizeInteraction = new InteractionGroup(HandleSet.RESIZE_INTERACTION, leftClickMouseResizeObject);
 		
-		this.interactionSelectionState.addItem(defaultInteraction);
-		this.interactionSelectionState.addItem(rotationInteraction);
-		this.interactionSelectionState.addItem(translationInteraction);
-		this.interactionSelectionState.addItem(resizeInteraction);
-		
-		this.interactionSelectionState.setSelectedItem(defaultInteraction);
-		
-		this.interactionSelectionState.addAndInvokeValueObserver(this.handleStateValueObserver);
+		if (this.sceneEditor != null)
+		{
+			InteractionGroup defaultInteraction = new InteractionGroup(HandleSet.DEFAULT_INTERACTION, leftClickMouseTranslateObject);
+			InteractionGroup rotationInteraction = new InteractionGroup(HandleSet.ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight);
+			InteractionGroup translationInteraction = new InteractionGroup(HandleSet.TRANSLATION_INTERACTION, leftClickMouseTranslateObject);
+			InteractionGroup resizeInteraction = new InteractionGroup(HandleSet.RESIZE_INTERACTION, leftClickMouseResizeObject);
+			
+			this.interactionSelectionState.addItem(defaultInteraction);
+			this.interactionSelectionState.addItem(rotationInteraction);
+			this.interactionSelectionState.addItem(translationInteraction);
+			this.interactionSelectionState.addItem(resizeInteraction);
+			
+			this.interactionSelectionState.setSelectedItem(defaultInteraction);
+			
+			this.interactionSelectionState.addAndInvokeValueObserver(this.handleStateValueObserver);
+		}
 	}
 	
 	@Override

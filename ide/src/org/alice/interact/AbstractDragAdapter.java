@@ -260,6 +260,11 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		
 	}
 	
+	public boolean hasSceneEditor()
+	{
+		return this.sceneEditor != null;
+	}
+	
 	public ListSelectionState<InteractionGroup> getInteractionSelectionStateList()
 	{
 		return this.interactionSelectionState;

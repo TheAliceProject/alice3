@@ -43,13 +43,11 @@
 
 package org.alice.interact.manipulator;
 
-import org.alice.apis.moveandturn.Quaternion;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.QuaternionAndTranslation;
 import org.alice.interact.QuaternionAndTranslationTargetBasedAnimation;
-import org.alice.interact.VectorUtilities;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
@@ -59,21 +57,13 @@ import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.ClippedZPlane;
-import edu.cmu.cs.dennisc.math.Matrix3x3;
-import edu.cmu.cs.dennisc.math.Orientation;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.math.polynomial.BasisMatrixCubic;
-import edu.cmu.cs.dennisc.math.polynomial.CatmullRomCubic;
-import edu.cmu.cs.dennisc.math.polynomial.HermiteCubic;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
-import edu.cmu.cs.dennisc.zoot.ZManager;
 
 public class CameraZoomMouseWheelManipulator extends CameraManipulator implements AnimatorDependentManipulator{
 
@@ -458,8 +448,8 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
 			} else {
 				animator = null;
 			}
-			PredeterminedSetOrthographicPicturePlaneActionOperation undoOperation = new PredeterminedSetOrthographicPicturePlaneActionOperation(Project.GROUP.getId(), false, animator, (OrthographicCamera)this.camera, this.originalOrthographicZoomValue, newZoom, getUndoRedoDescription());
-			ZManager.performIfAppropriate( undoOperation, null, false );
+			PredeterminedSetOrthographicPicturePlaneActionOperation undoOperation = new PredeterminedSetOrthographicPicturePlaneActionOperation(Project.GROUP, false, animator, (OrthographicCamera)this.camera, this.originalOrthographicZoomValue, newZoom, getUndoRedoDescription());
+			undoOperation.fire();
 		}
 		else
 		{
