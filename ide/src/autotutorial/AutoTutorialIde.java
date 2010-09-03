@@ -112,8 +112,10 @@ public class AutoTutorialIde extends org.alice.stageide.StageIDE {
 		tutorial.addSteps( this.postContext );
 		
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
-		tutorial.setRetargeter( astLiveRetargeter );
+		edu.cmu.cs.dennisc.tutorial.AutomaticTutorial.setRetargeter( astLiveRetargeter );
 
+		tutorial.setSelectedIndex( 0 );
+		
 		tutorial.setVisible( true );
 		this.getFrame().setVisible( true );
 	}

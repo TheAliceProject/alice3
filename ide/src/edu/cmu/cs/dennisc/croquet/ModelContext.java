@@ -269,6 +269,29 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 	public void cancel() {
 		this.addChild(new CancelEvent());
 	}
+	
+	public Edit< ? > getEdit() {
+		for( HistoryNode historyNode : this.getChildren() ) {
+			if( historyNode instanceof CommitEvent ) {
+				CommitEvent commitEvent = (CommitEvent)historyNode;
+				return commitEvent.getEdit();
+			}
+		}
+		return null;
+	}
+	
+	
+	@Override
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		if( this.modelResolver instanceof RetargetableResolver< ? > ) {
+			RetargetableResolver< ? > retargetableResolver = (RetargetableResolver< ? >)this.modelResolver;
+			retargetableResolver.retarget( retargeter );
+		}
+		for( HistoryNode child : this.children ) {
+			child.retarget( retargeter );
+		}
+	}
+
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv ) {
 		super.appendRepr( rv );
@@ -284,16 +307,5 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 			rv.append( this.getModel() );
 //		}
 		return rv;
-	}
-	
-	@Override
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		if( this.modelResolver instanceof RetargetableResolver< ? > ) {
-			RetargetableResolver< ? > retargetableResolver = (RetargetableResolver< ? >)this.modelResolver;
-			retargetableResolver.retarget( retargeter );
-		}
-		for( HistoryNode child : this.children ) {
-			child.retarget( retargeter );
-		}
 	}
 }

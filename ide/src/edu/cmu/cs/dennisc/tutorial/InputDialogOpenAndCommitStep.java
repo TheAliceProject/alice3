@@ -116,6 +116,9 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	}
 	
+	protected boolean isEditAcceptable( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		return this.validator.checkValidity( this.getModel(), edit ).isProcedeApprorpiate();
+	}
 	
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
@@ -159,7 +162,7 @@ package edu.cmu.cs.dennisc.tutorial;
 						} else {
 							edit = null;
 						}
-						rv = this.validator.checkValidity( this.getModel(), edit ).isProcedeApprorpiate();
+						rv = this.isEditAcceptable( edit );
 						if( rv ) {
 							SoundCache.SUCCESS.startIfNotAlreadyActive();
 						} else {

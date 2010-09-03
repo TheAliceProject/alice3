@@ -52,17 +52,4 @@ public class BooleanStateContext extends ModelContext<BooleanState> {
 	public BooleanStateContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	
-	public BooleanStateEdit getEdit() {
-		for( HistoryNode historyNode : this.getChildren() ) {
-			if( historyNode instanceof CommitEvent ) {
-				CommitEvent commitEvent = (CommitEvent)historyNode;
-				Edit< ? > edit = commitEvent.getEdit();
-				if( edit instanceof BooleanStateEdit ) {
-					return (BooleanStateEdit)edit;
-				}
-			}
-		}
-		return null;
-	}
 }

@@ -45,15 +45,34 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 public class AutomaticTutorial {
-	private TutorialStencil stencil;
-	private edu.cmu.cs.dennisc.croquet.Retargeter retargeter;
-	private java.util.ArrayList< edu.cmu.cs.dennisc.croquet.Group > groups; 
-	public AutomaticTutorial( edu.cmu.cs.dennisc.croquet.Group[] groups ) {
-		this.stencil = TutorialStencil.createInstance( groups );
-		this.groups = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groups );
+	private static edu.cmu.cs.dennisc.croquet.Retargeter retargeter;
+	public static edu.cmu.cs.dennisc.croquet.Retargeter getRetargeter() {
+		return retargeter;
 	}
-	public void setRetargeter( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		this.retargeter = retargeter;
+	public static void setRetargeter( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		AutomaticTutorial.retargeter = retargeter;
+	}
+	
+	public static javax.swing.JLayeredPane getLayeredPane() {
+		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
+		javax.swing.JFrame frame = application.getFrame().getAwtComponent();
+		javax.swing.JLayeredPane layeredPane = frame.getLayeredPane();
+		final int PAD = 4;
+		frame.getJMenuBar().setBorder( javax.swing.BorderFactory.createEmptyBorder(PAD+32,PAD,0,PAD));
+		((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder(0,PAD,PAD,PAD));
+		return layeredPane; 
+	}
+	private class AutomaticTutorialStencil extends TutorialStencil {
+		public AutomaticTutorialStencil( javax.swing.JLayeredPane layeredPane, edu.cmu.cs.dennisc.croquet.Group[] groups ) {
+			super( layeredPane, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() );
+		}
+	}
+	private AutomaticTutorialStencil stencil;
+	private java.util.ArrayList< edu.cmu.cs.dennisc.croquet.Group > groups; 
+	private edu.cmu.cs.dennisc.croquet.RootContext sourceContext;
+	public AutomaticTutorial( edu.cmu.cs.dennisc.croquet.Group[] groups ) {
+		this.stencil = new AutomaticTutorialStencil( getLayeredPane(), groups );
+		this.groups = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groups );
 	}
 	private void addMessageStep( String title, String text ) {
 		this.stencil.addStep( new MessageStep( title, text ) );
@@ -68,37 +87,47 @@ public class AutomaticTutorial {
 		}
 	}
 	private class AutomaticBooleanStateStep extends BooleanStateStep { 
-		public AutomaticBooleanStateStep( edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext, edu.cmu.cs.dennisc.croquet.BooleanStateEdit edit ) {
-			super( booleanStateContext.getModel().getClass().getSimpleName(), booleanStateContext.getModel().getClass().getName(), new ModelResolver< edu.cmu.cs.dennisc.croquet.BooleanState >( booleanStateContext ), edit.getNextValue() );
-		}
-		@Override
-		protected void complete() {
+		public AutomaticBooleanStateStep( edu.cmu.cs.dennisc.croquet.BooleanStateContext context, edu.cmu.cs.dennisc.croquet.BooleanStateEdit edit ) {
+			super( context.getModel().getClass().getSimpleName(), context.getModel().getClass().getName(), new ModelResolver< edu.cmu.cs.dennisc.croquet.BooleanState >( context ), edit.getNextValue() );
 		}
 	}
-	public void addSteps( edu.cmu.cs.dennisc.croquet.RootContext rootContext ) {
+	private class AutomaticInputDialogOperationStep extends InputDialogOpenAndCommitStep {
+		private edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > context;
+		private edu.cmu.cs.dennisc.croquet.Edit<?> edit;
+		public AutomaticInputDialogOperationStep( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > context, edu.cmu.cs.dennisc.croquet.Edit<?> edit ) {
+			super( context.getModel().getClass().getSimpleName(), context.getModel().getClass().getName(), "commit text", new ModelResolver( context ), null, null, null );
+			this.context = context;
+			this.edit = edit;
+		}
+		@Override
+		protected boolean isEditAcceptable( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+			boolean rv = this.edit.isReplacementAcceptable( edit );
+			if( rv ) {
+				this.edit.retarget( retargeter, edit );
+				sourceContext.retarget( retargeter );
+			}
+			return rv;
+		}
+	}
+	public void addSteps( edu.cmu.cs.dennisc.croquet.RootContext sourceContext ) {
 		this.addMessageStep( "start", "start of tutorial" );
-		for( edu.cmu.cs.dennisc.croquet.HistoryNode node : rootContext.getChildren() ) {
+		this.sourceContext = sourceContext;
+		for( edu.cmu.cs.dennisc.croquet.HistoryNode node : sourceContext.getChildren() ) {
 			if( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
 				edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)node;
 				edu.cmu.cs.dennisc.croquet.Model model = modelContext.getModel();
 				if( this.groups.contains( model.getGroup() ) ) {
 					if( modelContext instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > ) {
 						edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? >)modelContext;
-						edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > inputDialogOperation = inputDialogOperationContext.getModel();
-						assert inputDialogOperation != null;
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "inputDialogOperation:", inputDialogOperation );
-						//tutorial.addInputDialogOpenAndCommitStep( "title", "openText", "commitText", inputDialogOperation, tutorial.createToDoCompletorValidator() );
+						edu.cmu.cs.dennisc.croquet.Edit<?> edit = inputDialogOperationContext.getEdit();
+						if( edit != null ) {
+							this.stencil.addStep( new AutomaticInputDialogOperationStep( inputDialogOperationContext, edit ) );
+						}
 					} else if( modelContext instanceof edu.cmu.cs.dennisc.croquet.BooleanStateContext ) {
 						edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext = (edu.cmu.cs.dennisc.croquet.BooleanStateContext)modelContext;
-						edu.cmu.cs.dennisc.croquet.BooleanStateEdit edit = booleanStateContext.getEdit();
-						if( edit != null ) {
-							edu.cmu.cs.dennisc.croquet.BooleanState booleanState = booleanStateContext.getModel();
-//							//booleanState = org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance();
-//							if( booleanState instanceof org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState ) {
-//								//pass
-//							} else {
-								this.stencil.addStep( new AutomaticBooleanStateStep( booleanStateContext, edit ) );
-//							}
+						edu.cmu.cs.dennisc.croquet.Edit<?> edit = booleanStateContext.getEdit();
+						if( edit instanceof edu.cmu.cs.dennisc.croquet.BooleanStateEdit ) {
+							this.stencil.addStep( new AutomaticBooleanStateStep( booleanStateContext, (edu.cmu.cs.dennisc.croquet.BooleanStateEdit)edit ) );
 						}
 					}
 				}

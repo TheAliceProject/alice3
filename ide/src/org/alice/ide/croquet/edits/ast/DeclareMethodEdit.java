@@ -86,11 +86,22 @@ public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice
 			throw new javax.swing.undo.CannotUndoException();
 		}
 	}
+	
 	@Override
 	protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
 		rv.append( "declare:" );
 		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, method, locale);
 		return rv;
 	}
-	
+
+	@Override
+	public boolean isReplacementAcceptable( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		return edit instanceof DeclareMethodEdit;
+	}
+	@Override
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		assert edit instanceof DeclareMethodEdit;
+		DeclareMethodEdit replacementEdit = (DeclareMethodEdit)edit;
+		retargeter.addKeyValuePair( this.method, replacementEdit.method );
+	}
 }
