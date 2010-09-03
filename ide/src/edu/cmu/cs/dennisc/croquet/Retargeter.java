@@ -47,5 +47,6 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public interface Retargeter {
+	public void addKeyValuePair( Object key, Object value );
 	public <T> T retarget( T value );
 }

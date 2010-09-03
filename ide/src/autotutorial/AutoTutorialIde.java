@@ -15,7 +15,8 @@ public class AutoTutorialIde extends org.alice.stageide.StageIDE {
 			edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
 			rootContext.EPIC_HACK_clear();
 		} else {
-			class AstRetargeter implements edu.cmu.cs.dennisc.croquet.Retargeter {
+			
+			class AstDecodingRetargeter implements edu.cmu.cs.dennisc.croquet.Retargeter {
 				private java.util.Map< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node > mapIdToReplacementNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 				public void addAllToReplacementMap( edu.cmu.cs.dennisc.alice.Project project ) {
 					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = project.getProgramType();
@@ -24,6 +25,9 @@ public class AutoTutorialIde extends org.alice.stageide.StageIDE {
 					for( edu.cmu.cs.dennisc.alice.ast.Node node : crawler.getList() ) {
 						mapIdToReplacementNode.put( node.getUUID(), node );
 					}
+				}
+				public void addKeyValuePair( Object key, Object value ) {
+					assert false;
 				}
 				public <N> N retarget(N value) {
 					if( value instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
@@ -39,11 +43,29 @@ public class AutoTutorialIde extends org.alice.stageide.StageIDE {
 					}
 				}
 			};
-			AstRetargeter astRetargeter = new AstRetargeter();
-			astRetargeter.addAllToReplacementMap( this.getProject() );
-			//edu.cmu.cs.dennisc.alice.project.ProjectUtilities.addAllToReplacementMap( this.getProject() );
 			
-			astRetargeter.addAllToReplacementMap( this.getProject() );
+			class AstLiveRetargeter implements edu.cmu.cs.dennisc.croquet.Retargeter {
+				private java.util.Map< edu.cmu.cs.dennisc.alice.ast.Node, edu.cmu.cs.dennisc.alice.ast.Node > mapOriginalNodeToReplacementNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+				public void addKeyValuePair( Object key, Object value ) {
+					if( key instanceof edu.cmu.cs.dennisc.alice.ast.Node && value instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
+						this.mapOriginalNodeToReplacementNode.put( (edu.cmu.cs.dennisc.alice.ast.Node)key, (edu.cmu.cs.dennisc.alice.ast.Node)value );
+					}
+				}
+				public <N> N retarget(N value) {
+					if( value instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
+						edu.cmu.cs.dennisc.alice.ast.Node originalNode = (edu.cmu.cs.dennisc.alice.ast.Node)value;
+						edu.cmu.cs.dennisc.alice.ast.Node retargetedNode = mapOriginalNodeToReplacementNode.get( originalNode );
+						if( retargetedNode != null ) {
+							return (N)retargetedNode;
+						} else {
+							return value;
+						}
+					} else {
+						return value;
+					}
+				}
+			};
+
 			this.postProject = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readProject( POST_PROJECT_PATH );
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
 			this.isPostProjectLive = true;
@@ -51,7 +73,9 @@ public class AutoTutorialIde extends org.alice.stageide.StageIDE {
 			this.isPostProjectLive = false;
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
 			
-			this.postContext.retarget( astRetargeter );
+			AstDecodingRetargeter astDecodingRetargeter = new AstDecodingRetargeter();
+			astDecodingRetargeter.addAllToReplacementMap( this.getProject() );
+			this.postContext.retarget( astDecodingRetargeter );
 		}
 	}
 	
