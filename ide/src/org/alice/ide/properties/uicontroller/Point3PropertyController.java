@@ -220,7 +220,7 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 	
 	
 	protected void updateAdapterFromUI(ActionEvent e)
-	{
+	{ 
 		if (this.doUpdateOnAdapter)
 		{
 			Point3 newPoint = getPointFromUI();
