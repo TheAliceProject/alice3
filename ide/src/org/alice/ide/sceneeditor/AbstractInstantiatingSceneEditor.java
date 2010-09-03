@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.print.PrintUtilities;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEditor {
+public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEditor implements FieldAndInstanceMapper{
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, Object > mapFieldToInstance = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractField, Object >();
 	private java.util.Map< Object, edu.cmu.cs.dennisc.alice.ast.AbstractField > mapInstanceToField = new java.util.HashMap< Object, edu.cmu.cs.dennisc.alice.ast.AbstractField >();
 	private java.util.Map< Object, edu.cmu.cs.dennisc.alice.ast.AbstractField > mapInstanceInJavaToField = new java.util.HashMap< Object, edu.cmu.cs.dennisc.alice.ast.AbstractField >();
@@ -88,23 +88,32 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 	@Override
 	public Object getInstanceInJavaForUndo( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		if( field.getDeclaringType() == getIDE().getSceneType() ) {
-			return this.getInstanceInJavaForField( field );
+			return this.getInstanceInJavaVMForField( field );
 		} else {
 			return null;
 		}
 	}
-	protected Object getInstanceForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		return this.mapFieldToInstance.get( field );
-	}
+	
 	@Override
 	public void putInstanceForInitializingPendingField(FieldDeclaredInAlice field, Object instance) 
 	{
 		this.putInstanceForField(field, instance);
 	}
 	
-	protected Object getInstanceInJavaForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	
+	public Object getInstanceInAliceVMForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		return this.mapFieldToInstance.get( field );
+	}
+	public edu.cmu.cs.dennisc.alice.ast.AbstractField getFieldForInstanceInAliceVM( Object instance ) {
+		return this.mapInstanceToField.get( instance );
+	}
+	
+	public edu.cmu.cs.dennisc.alice.ast.AbstractField getFieldForInstanceInJavaVM( Object instanceInJava ) {
+		return this.mapInstanceInJavaToField.get( instanceInJava );
+	}
+	public Object getInstanceInJavaVMForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		Object rv;
-		Object instance = this.getInstanceForField( field );
+		Object instance = this.getInstanceInAliceVMForField( field );
 		if( instance instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
 			edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
 			rv = instanceInAlice.getInstanceInJava();
@@ -113,17 +122,13 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 		}
 		return rv;
 	}
+	
 	//todo: reduce visibility?
 	public <E> E getInstanceInJavaForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Class<E> cls ) {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( getInstanceInJavaForField( field ), cls );
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( getInstanceInJavaVMForField( field ), cls );
 	}
 	
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractField getFieldForInstance( Object instance ) {
-		return this.mapInstanceToField.get( instance );
-	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractField getFieldForInstanceInJava( Object instanceInJava ) {
-		return this.mapInstanceInJavaToField.get( instanceInJava );
-	}
+	
 	protected Object createScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
 		getVM().setConstructorBodyExecutionDesired( false );
 		try {
@@ -148,6 +153,6 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 	}
 	
 	protected Object getSceneInstanceInJava() {
-		return this.getInstanceInJavaForField( this.getSceneField() );
+		return this.getInstanceInJavaVMForField( this.getSceneField() );
 	}
 }

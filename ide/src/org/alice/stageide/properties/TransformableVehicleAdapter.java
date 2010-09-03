@@ -69,7 +69,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 	{
 		public SetVehicleOperation( Composite value, String name) {
 			super( TransformableVehicleAdapter.this, value, name, java.util.UUID.fromString( "981768b7-f40b-4363-b64f-34264be73651" ) );
-			edu.cmu.cs.dennisc.alice.ast.AbstractField field = ((MoveAndTurnSceneEditor)IDE.getSingleton().getSceneEditor()).getFieldForInstanceInJava(value);
+			edu.cmu.cs.dennisc.alice.ast.AbstractField field = ((MoveAndTurnSceneEditor)IDE.getSingleton().getSceneEditor()).getFieldForInstanceInJavaVM(value);
 			if (field != null)
 			{
 				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = field.getValueType();
@@ -190,7 +190,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 	{
 		if (vehicle != null)
 		{
-			edu.cmu.cs.dennisc.alice.ast.AbstractField field = ((MoveAndTurnSceneEditor)IDE.getSingleton().getSceneEditor()).getFieldForInstanceInJava(vehicle);
+			edu.cmu.cs.dennisc.alice.ast.AbstractField field = ((MoveAndTurnSceneEditor)IDE.getSingleton().getSceneEditor()).getFieldForInstanceInJavaVM(vehicle);
 			if (field != null)
 			{
 				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = field.getValueType();
@@ -211,7 +211,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 	{
 		if (vehicle != null)
 		{
-			edu.cmu.cs.dennisc.alice.ast.AbstractField field = ((MoveAndTurnSceneEditor)IDE.getSingleton().getSceneEditor()).getFieldForInstanceInJava(vehicle);
+			edu.cmu.cs.dennisc.alice.ast.AbstractField field = ((MoveAndTurnSceneEditor)IDE.getSingleton().getSceneEditor()).getFieldForInstanceInJavaVM(vehicle);
 			if (field != null)
 			{
 				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = field.getValueType();

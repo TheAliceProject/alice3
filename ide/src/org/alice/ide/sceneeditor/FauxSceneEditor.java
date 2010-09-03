@@ -53,7 +53,7 @@ import edu.cmu.cs.dennisc.croquet.ViewController;
  */
 public class FauxSceneEditor extends AbstractSceneEditor {
 	@Override
-	public void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty ) {
+	public void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, FieldAndInstanceMapper fieldAndInstanceMapper ) {
 		throw new RuntimeException();
 	}
 //	@Override
@@ -96,6 +96,26 @@ public class FauxSceneEditor extends AbstractSceneEditor {
 	}
 	public boolean isPotentiallyAcceptingOf(DragComponent source) {
 		return false;
+	}
+	
+	public edu.cmu.cs.dennisc.alice.ast.AbstractField getFieldForInstanceInAliceVM(Object instance)
+	{
+		return null;
+	}
+	
+	public Object getInstanceInAliceVMForField(edu.cmu.cs.dennisc.alice.ast.AbstractField field)
+	{
+		return null;
+	}
+	
+	public edu.cmu.cs.dennisc.alice.ast.AbstractField getFieldForInstanceInJavaVM(Object instance)
+	{
+		return null;
+	}
+	
+	public Object getInstanceInJavaVMForField(edu.cmu.cs.dennisc.alice.ast.AbstractField field)
+	{
+		return null;
 	}
 	
 }
