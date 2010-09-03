@@ -92,10 +92,4 @@ public class BlankPropertyController extends AbstractAdapterController<Object>
 	{
 		//Do Nothing
 	}
-
-	@Override
-	protected void updateUIFromNewAdapter() 
-	{
-		//Do Nothing
-	}
 }

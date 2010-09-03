@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.animation;
 
+import edu.cmu.cs.dennisc.print.PrintUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -93,6 +95,7 @@ public abstract class AbstractAnimation implements Animation {
 					animationObserver.finished( this );
 				}
 				m_state = State.COMPLETED;
+				tRemaining = 0.0;
 			}
 		} else {
 			//todo

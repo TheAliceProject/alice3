@@ -49,6 +49,7 @@ import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.croquet.BorderPanel;
 import edu.cmu.cs.dennisc.croquet.Component;
 import edu.cmu.cs.dennisc.croquet.Panel;
+import edu.cmu.cs.dennisc.math.Point3;
 
 public abstract class AbstractAdapterController<P> extends BorderPanel implements PropertyAdapterController<P>
 {
@@ -100,7 +101,17 @@ public abstract class AbstractAdapterController<P> extends BorderPanel implement
 		
 	}
 	
-	protected abstract void updateUIFromNewAdapter();
+	protected void updateUIFromNewAdapter() 
+	{
+		if (this.propertyAdapter != null)
+		{
+			this.setValueOnUI(this.propertyAdapter.getValue());
+		}
+		else
+		{
+			this.setValueOnUI(null);
+		}
+	}
 	
 	protected abstract void initializeComponents();
 	

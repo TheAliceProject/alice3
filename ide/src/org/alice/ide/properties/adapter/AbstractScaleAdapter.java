@@ -41,52 +41,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties.uicontroller;
-
-import org.alice.apis.moveandturn.Composite;
-import org.alice.ide.properties.adapter.PropertyAdapter;
-import org.alice.stageide.properties.uicontroller.CompositePropertyController;
-import org.alice.stageide.properties.uicontroller.ModelScalePropertyController;
+package org.alice.ide.properties.adapter;
 
 import edu.cmu.cs.dennisc.math.Matrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
 
-public class AdapterControllerUtilities 
+public abstract class AbstractScaleAdapter<O> extends AbstractInstancePropertyAdapter<Matrix3x3, O> 
 {
-	//TODO: base this lookup on a (type -> property controller) registration that happens in the IDE
-	public static PropertyAdapterController getValuePanelForPropertyAdapter(PropertyAdapter propertyAdapter)
+	protected class SetScaleOperation extends SetValueOperation<Matrix3x3> {
+		public SetScaleOperation( Matrix3x3 value, String name) {
+			super( AbstractScaleAdapter.this, value, name, java.util.UUID.fromString( "c742ea2e-cafe-41a0-9b76-38cb51921823" ) );
+		}
+	}
+
+	public AbstractScaleAdapter(String repr, O instance )
 	{
-		Class<?> propertyType = propertyAdapter != null?  propertyAdapter.getPropertyType() : null;
-		if (propertyType == null)
-		{
-			return new BlankPropertyController(propertyAdapter);
-		}
-		else if (edu.cmu.cs.dennisc.color.Color4f.class.isAssignableFrom(propertyType))
-		{
-			return new Color4fPropertyController(propertyAdapter);
-		}
-		else if (String.class.isAssignableFrom(propertyType))
-		{
-			return new StringPropertyController(propertyAdapter);
-		}
-		else if (Double.class.isAssignableFrom(propertyType))
-		{
-			return new DoublePropertyController(propertyAdapter);
-		}
-		else if (Point3.class.isAssignableFrom(propertyType))
-		{
-			return new Point3PropertyController(propertyAdapter);
-		}
-		else if (Composite.class.isAssignableFrom(propertyType))
-		{
-			return new CompositePropertyController(propertyAdapter);
-		}
-		else if (Matrix3x3.class.isAssignableFrom(propertyType))
-		{
-			return new ModelScalePropertyController(propertyAdapter);
-		}else
-		{
-			return new BlankPropertyController(propertyAdapter);
-		}
+		super(repr, instance);
+	}
+	
+	public Class<Matrix3x3> getPropertyType()
+	{
+		return Matrix3x3.class;
+	}
+	
+	@Override
+	public SetValueOperation<Matrix3x3> getSetValueOperation(Matrix3x3 value) 
+	{
+		return new SetScaleOperation(value, null);
 	}
 }

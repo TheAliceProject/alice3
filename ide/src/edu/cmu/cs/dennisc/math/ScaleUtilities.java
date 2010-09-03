@@ -84,6 +84,11 @@ public class ScaleUtilities {
 	public static Matrix3x3 newScaleMatrix3d( Tuple3 t ) {
 		return newScaleMatrix3d( Matrix3x3.createNaN(), t );
 	}
+	
+	public static Vector3 newScaleVector3( Matrix3x3 scaleMatrix)
+	{
+		return new Vector3(scaleMatrix.right.x, scaleMatrix.up.y, scaleMatrix.backward.z);
+	}
 
 	public static Matrix3x3 applyScale( Matrix3x3 rv, double x, double y, double z ) {
 		rv.applyMultiplication( newScaleMatrix3d( x, y, z ) );

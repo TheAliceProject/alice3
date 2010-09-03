@@ -41,14 +41,69 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties.uicontroller;
+package org.alice.stageide.properties;
 
-import org.alice.ide.properties.adapter.PropertyAdapter;
+import java.util.Locale;
 
-public class PortionPropertyController extends DoublePropertyController 
+import org.alice.apis.moveandturn.Model;
+import org.alice.ide.properties.adapter.AbstractScaleAdapter;
+import org.alice.interact.handle.ManipulationHandle3D;
+
+import edu.cmu.cs.dennisc.croquet.Operation;
+import edu.cmu.cs.dennisc.math.Matrix3x3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities;
+
+public class ModelScaleAdapter extends AbstractScaleAdapter<org.alice.apis.moveandturn.Model>
 {
-	public PortionPropertyController(PropertyAdapter<Double, ?> propertyAdapter)
+	public ModelScaleAdapter(org.alice.apis.moveandturn.Model instance)
 	{
-		super(propertyAdapter);
+		super("Size", instance);
+	}
+	
+	@Override
+	public String getUndoRedoDescription(Locale locale) 
+	{
+		return "Resize";
+	}
+	
+	@Override
+	protected InstanceProperty<?> getPropertyInstanceForInstance(org.alice.apis.moveandturn.Model instance) 
+	{
+		if (this.instance != null)
+		{
+			return this.instance.getSGVisual().scale;
+		}
+		return null;
+	}
+
+	public Matrix3x3 getValue() 
+	{
+		if (this.instance != null)
+		{
+			return this.instance.getSGVisual().scale.getValue();
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	@Override
+	public void setValue(Matrix3x3 value) 
+	{
+		super.setValue(value);
+		if (this.instance != null)
+		{
+			Vector3 scaleVector = edu.cmu.cs.dennisc.math.ScaleUtilities.newScaleVector3(value);
+			ScaleUtilities.applyScale( this.instance.getSGComposite(), scaleVector, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION );
+		}
+	}
+
+	@Override
+	public Operation getEditOperation() 
+	{
+		return null;
 	}
 }

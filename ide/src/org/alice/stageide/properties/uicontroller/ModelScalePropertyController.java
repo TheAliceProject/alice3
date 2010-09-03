@@ -41,52 +41,56 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties.uicontroller;
+package org.alice.stageide.properties.uicontroller;
 
 import org.alice.apis.moveandturn.Composite;
+import org.alice.apis.moveandturn.Model;
 import org.alice.ide.properties.adapter.PropertyAdapter;
-import org.alice.stageide.properties.uicontroller.CompositePropertyController;
-import org.alice.stageide.properties.uicontroller.ModelScalePropertyController;
+import org.alice.ide.properties.uicontroller.AbstractAdapterController;
+import org.alice.stageide.properties.TransformableVehicleAdapter;
 
+import edu.cmu.cs.dennisc.croquet.BorderPanel;
+import edu.cmu.cs.dennisc.croquet.Label;
 import edu.cmu.cs.dennisc.math.Matrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.ScaleUtilities;
+import edu.cmu.cs.dennisc.math.Vector3;
 
-public class AdapterControllerUtilities 
+public class ModelScalePropertyController extends AbstractAdapterController<Matrix3x3>
 {
-	//TODO: base this lookup on a (type -> property controller) registration that happens in the IDE
-	public static PropertyAdapterController getValuePanelForPropertyAdapter(PropertyAdapter propertyAdapter)
+	private Label scaleLabel;
+	private static java.text.NumberFormat format = new java.text.DecimalFormat( "0.00" );
+	
+	public ModelScalePropertyController(PropertyAdapter<Matrix3x3, ?> propertyAdapter) 
 	{
-		Class<?> propertyType = propertyAdapter != null?  propertyAdapter.getPropertyType() : null;
-		if (propertyType == null)
+		super(propertyAdapter);
+	}
+	
+	@Override
+	public Class<?> getPropertyType() 
+	{
+		return org.alice.apis.moveandturn.Model.class;
+	}
+
+	@Override
+	protected void initializeComponents() 
+	{
+		this.scaleLabel = new Label();
+		this.addComponent(this.scaleLabel, Constraint.CENTER);
+	}
+
+	@Override
+	protected void setValueOnUI(Matrix3x3 value) 
+	{
+		if (value != null)
 		{
-			return new BlankPropertyController(propertyAdapter);
+			Vector3 scaleVector = ScaleUtilities.newScaleVector3(value); 
+			this.scaleLabel.setText("("+format.format(scaleVector.x)+", "+format.format(scaleVector.y)+", "+format.format(scaleVector.z)+")");
 		}
-		else if (edu.cmu.cs.dennisc.color.Color4f.class.isAssignableFrom(propertyType))
+		else
 		{
-			return new Color4fPropertyController(propertyAdapter);
+			this.scaleLabel.setText("NO SCALE");
 		}
-		else if (String.class.isAssignableFrom(propertyType))
-		{
-			return new StringPropertyController(propertyAdapter);
-		}
-		else if (Double.class.isAssignableFrom(propertyType))
-		{
-			return new DoublePropertyController(propertyAdapter);
-		}
-		else if (Point3.class.isAssignableFrom(propertyType))
-		{
-			return new Point3PropertyController(propertyAdapter);
-		}
-		else if (Composite.class.isAssignableFrom(propertyType))
-		{
-			return new CompositePropertyController(propertyAdapter);
-		}
-		else if (Matrix3x3.class.isAssignableFrom(propertyType))
-		{
-			return new ModelScalePropertyController(propertyAdapter);
-		}else
-		{
-			return new BlankPropertyController(propertyAdapter);
-		}
+		
 	}
 }

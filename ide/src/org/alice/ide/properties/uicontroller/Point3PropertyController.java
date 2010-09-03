@@ -239,13 +239,4 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 		}
 	}
 	
-	@Override
-	protected void updateUIFromNewAdapter() 
-	{
-		if (this.propertyAdapter != null)
-		{
-			Point3 currentValue = this.propertyAdapter.getValue();
-			this.setValueOnUI(currentValue);
-		}
-	}
 }
