@@ -40,29 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.edits.ast;
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class StaticGetInstanceKeyedResolver<T> extends KeyedResolver< T > {
-	public StaticGetInstanceKeyedResolver( T instance ) {
-		super( instance );
+public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > {
+	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
+	private int index;
+	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
+	public InsertStatementEdit( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		this.blockStatement = blockStatement;
+		this.index = index;
+		this.statement = statement;
 	}
-	public StaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+
+	@Override
+	protected final void doOrRedoInternal( boolean isDo ) {
+		this.blockStatement.statements.add( this.index, this.statement );
+	}
+
+	@Override
+	protected final void undoInternal() {
+		if( this.blockStatement.statements.get( this.index ) == this.statement ) {
+			this.blockStatement.statements.remove( this.index );
+		} else {
+			throw new javax.swing.undo.CannotUndoException();
+		}
+	}
+	
+	@Override
+	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+		//super.updatePresentation( rv, locale );
+		rv.append( "drop: " );
+		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, this.statement, locale );
+		return rv;
 	}
 	@Override
-	protected T resolve( Class<T> cls, Class<?>[] parameterTypes, Object[] arguments ) {
-		try {
-			java.lang.reflect.Method mthd = cls.getMethod( "getInstance", parameterTypes );
-			return (T)mthd.invoke( null, arguments );
-		} catch( IllegalAccessException iae ) {
-			throw new RuntimeException( iae );
-		} catch( NoSuchMethodException nsme ) {
-			throw new RuntimeException( nsme );
-		} catch( java.lang.reflect.InvocationTargetException ite ) {
-			throw new RuntimeException( ite );
-		}
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	}
+	@Override
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
 }

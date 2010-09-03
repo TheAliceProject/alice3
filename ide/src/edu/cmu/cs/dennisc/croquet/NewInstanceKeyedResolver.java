@@ -53,23 +53,18 @@ public abstract class NewInstanceKeyedResolver<T> extends KeyedResolver< T > {
 		super( binaryDecoder );
 	}
 	@Override
-	protected T resolve( String clsName, Class<?>[] parameterTypes, Object[] arguments ) {
+	protected T resolve(java.lang.Class<T> instanceCls, java.lang.Class<?>[] parameterTypes, Object[] arguments) {
 		try {
-			Class<T> cls = (Class<T>)Class.forName( clsName );
-			try {
-				java.lang.reflect.Method mthd = cls.getMethod( "getInstance", parameterTypes );
-				return (T)mthd.invoke( null, arguments );
-			} catch( IllegalAccessException iae ) {
-				throw new RuntimeException( iae );
-			} catch( IllegalArgumentException iae ) {
-				throw new RuntimeException( iae );
-			} catch( NoSuchMethodException nsme ) {
-				throw new RuntimeException( nsme );
-			} catch( java.lang.reflect.InvocationTargetException ite ) {
-				throw new RuntimeException( ite );
-			}
-		} catch( ClassNotFoundException cnfe ) {
-			throw new RuntimeException( cnfe );
+			java.lang.reflect.Constructor< T > cstrctr = instanceCls.getConstructor( parameterTypes );
+			return cstrctr.newInstance( arguments );
+		} catch( InstantiationException ie ) {
+			throw new RuntimeException( ie );
+		} catch( IllegalAccessException iae ) {
+			throw new RuntimeException( iae );
+		} catch( NoSuchMethodException nsme ) {
+			throw new RuntimeException( nsme );
+		} catch( java.lang.reflect.InvocationTargetException ite ) {
+			throw new RuntimeException( ite );
 		}
 	}
 }

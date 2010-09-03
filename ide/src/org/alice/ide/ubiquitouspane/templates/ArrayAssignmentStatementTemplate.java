@@ -60,5 +60,4 @@ public abstract class ArrayAssignmentStatementTemplate extends CascadingUbiquito
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
 		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, this.getTransientComponentType() };
 	}
-	
 }

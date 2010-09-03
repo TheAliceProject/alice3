@@ -60,16 +60,15 @@ public class ClassStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.c
 		return new Class[] { Class.class };
 	}
 	@Override
-	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		String clsName = binaryDecoder.decodeString();
-		Class<?> cls = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
-		return new Object[] { cls };
-	}
-	@Override
 	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
 	@Override
+	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		Class<?> cls = this.decodeClass( binaryDecoder );
+		return new Object[] { cls };
+	}
+	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.cls.getName() );
+		this.encodeClass( binaryEncoder, this.cls );
 	}
 }

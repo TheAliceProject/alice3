@@ -49,18 +49,29 @@ public class InsertStatementActionOperation extends edu.cmu.cs.dennisc.croquet.A
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
 	private int index;
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
-	public InsertStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
+	public InsertStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "a6aa2cea-f205-434a-8ec8-c068c9fb3b83" ) );
-		this.statement = statement;
 		this.blockStatement = blockStatement;
 		this.index = index;
+		this.statement = statement;
 	}
+	
+	public edu.cmu.cs.dennisc.alice.ast.BlockStatement getBlockStatement() {
+		return this.blockStatement;
+	}
+	public int getIndex() {
+		return this.index;
+	}
+	public edu.cmu.cs.dennisc.alice.ast.Statement getStatement() {
+		return this.statement;
+	}
+	
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.CodableResolver< InsertStatementActionOperation > createCodableResolver() {
-		return super.createCodableResolver();
+		return new org.alice.ide.croquet.resolvers.InsertStatementResolver( this );
 	}
 	@Override
 	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		context.commitAndInvokeDo( new org.alice.ide.codeeditor.InsertStatementEdit( this.blockStatement.statements, this.index, this.statement ) );
+		context.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( this.blockStatement, this.index, this.statement ) );
 	}
 }

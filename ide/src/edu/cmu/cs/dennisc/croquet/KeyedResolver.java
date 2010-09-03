@@ -56,26 +56,45 @@ public abstract class KeyedResolver<T> implements CodableResolver< T > {
 	public T getResolved() {
 		return this.instance;
 	}
-	
-	protected abstract T resolve( String clsName, Class<?>[] parameterTypes, Object[] arguments );
-	protected void handleDecoded( String clsName, Class<?>[] parameterTypes, Object[] arguments ) {
-		this.instance = this.resolve( clsName, parameterTypes, arguments );
+	protected T getInstance() {
+		return this.instance;
 	}
 	
+	protected abstract T resolve( Class<T> instanceCls, Class<?>[] parameterTypes, Object[] arguments );
+	protected void handleDecoded( Class<T> instanceCls, Class<?>[] parameterTypes, Object[] arguments ) {
+		this.instance = this.resolve( instanceCls, parameterTypes, arguments );
+	}
+	
+	protected final void encodeClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Class<?> cls ) {
+		binaryEncoder.encode( cls.getName() );
+	}
+	protected final Class<?> decodeClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) { 
+		String clsName = binaryDecoder.decodeString();
+		try {
+			return edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( clsName );
+		} catch( ClassNotFoundException cnfe ) {
+			throw new RuntimeException( clsName, cnfe );
+		}
+	}
+	
+	protected Class<T> decodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return (Class<T>)decodeClass( binaryDecoder );
+	}
 	protected abstract Class<?>[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
 	protected abstract Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
+	protected void encodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Class<T> cls ) {
+		this.encodeClass( binaryEncoder, cls );
+	}
 	protected abstract void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
 	protected abstract void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
 	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		String clsName = binaryDecoder.decodeString();
+		Class<T> instanceCls = this.decodeInstanceClass( binaryDecoder );
 		Class<?>[] parameterTypes = this.decodeParameterTypes( binaryDecoder );
 		Object[] arguments = this.decodeArguments( binaryDecoder );
-		this.handleDecoded( clsName, parameterTypes, arguments );
+		this.handleDecoded( instanceCls, parameterTypes, arguments );
 	}
 	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		Class<T> cls = (Class<T>)this.instance.getClass();
-		String clsName = cls.getName();
-		binaryEncoder.encode( clsName );
+		this.encodeInstanceClass( binaryEncoder, (Class<T>)this.instance.getClass() );
 		this.encodeParameterTypes( binaryEncoder );
 		this.encodeArguments( binaryEncoder );
 	}

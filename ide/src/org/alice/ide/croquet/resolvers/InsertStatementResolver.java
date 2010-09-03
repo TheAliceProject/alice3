@@ -46,57 +46,54 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class NodeStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< T > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< T > {
-	private edu.cmu.cs.dennisc.alice.ast.Node node;
-	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > parameterType;
-	
-	private Class<T> instanceCls;
-	private java.lang.Class<?>[] parameterTypes;
-	private Object[] arguments;
-	
-	public NodeStaticGetInstanceKeyedResolver( T instance, edu.cmu.cs.dennisc.alice.ast.Node node, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > parameterType ) {
+public class InsertStatementResolver extends edu.cmu.cs.dennisc.croquet.NewInstanceKeyedResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > {
+	private static final Class<?>[] PARAMETER_TYPES = new Class[] { edu.cmu.cs.dennisc.alice.ast.BlockStatement.class, Integer.TYPE, edu.cmu.cs.dennisc.alice.ast.Statement.class };
+	private Object[] arguments = { null, null, null };
+	public InsertStatementResolver( org.alice.ide.croquet.models.ast.InsertStatementActionOperation instance ) {
 		super( instance );
-		this.node = node;
-		this.parameterType = parameterType;
 	}
-	public NodeStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public InsertStatementResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	
-	
+
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		assert this.arguments != null;
-		assert this.arguments.length == 1;
+		assert this.arguments.length == 3;
 		this.arguments[ 0 ] = retargeter.retarget( this.arguments[ 0 ] );
+		//todo: retarget index?
+		this.arguments[ 2 ] = retargeter.retarget( this.arguments[ 2 ] );
 	}
 
 	@Override
-	public T getResolved() {
-		return this.resolve( this.instanceCls, this.parameterTypes, this.arguments );
+	public org.alice.ide.croquet.models.ast.InsertStatementActionOperation getResolved() {
+		return this.resolve( org.alice.ide.croquet.models.ast.InsertStatementActionOperation.class, PARAMETER_TYPES, this.arguments );
 	}
 	@Override
-	protected void handleDecoded(Class<T> instanceCls, java.lang.Class<?>[] parameterTypes, Object[] arguments) {
-		this.instanceCls = instanceCls;
-		this.parameterTypes = parameterTypes;
+	protected void handleDecoded(Class<org.alice.ide.croquet.models.ast.InsertStatementActionOperation> instanceCls, java.lang.Class<?>[] parameterTypes, Object[] arguments) {
 		this.arguments = arguments;
 	}
 	@Override
 	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		Class<?> parameterType = this.decodeClass( binaryDecoder );
-		return new Class[] { parameterType };
+		return PARAMETER_TYPES;
 	}
 	@Override
 	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		this.encodeClass( binaryEncoder, this.parameterType );
 	}
+
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		final java.util.UUID id = binaryDecoder.decodeId();
+		java.util.UUID blockStatementId = binaryDecoder.decodeId();
+		int index = binaryDecoder.decodeInt();
+		java.util.UUID statementId = binaryDecoder.decodeId();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		return new Object[] { edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), id ) };
+		edu.cmu.cs.dennisc.alice.ast.Statement statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), statementId );
+		edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), blockStatementId );
+		return new Object[] { statement, blockStatement, index };
 	}
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.node.getUUID() );
+		binaryEncoder.encode( this.getInstance().getBlockStatement().getUUID() );
+		binaryEncoder.encode( this.getInstance().getIndex() );
+		binaryEncoder.encode( this.getInstance().getStatement().getUUID() );
 	}
 }

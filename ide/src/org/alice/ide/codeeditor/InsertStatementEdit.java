@@ -42,6 +42,7 @@
  */
 package org.alice.ide.codeeditor;
 
+@Deprecated
 public class InsertStatementEdit<M extends edu.cmu.cs.dennisc.cascade.CascadingRoot> extends edu.cmu.cs.dennisc.cascade.CascadingEdit< M > {
 	public static final int AT_END = Short.MAX_VALUE;
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty;
