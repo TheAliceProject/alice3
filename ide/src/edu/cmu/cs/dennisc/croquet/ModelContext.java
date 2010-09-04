@@ -89,17 +89,28 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 	}
 	@Override
 	protected final void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		M model = this.getModel();
-		CodableResolver< M > modelResolver;
-		if( model != null ) {
-			modelResolver = model.getCodableResolver();
-		} else {
-			modelResolver = null;
-		}
+//		M model = this.getModel();
+//		CodableResolver< M > modelResolver;
+//		if( model != null ) {
+//			modelResolver = model.getCodableResolver();
+//		} else {
+//			modelResolver = null;
+//		}
 		binaryEncoder.encode( modelResolver );
 		HistoryNode[] array = new HistoryNode[this.children.size()];
 		this.children.toArray(array);
 		binaryEncoder.encode(array);
+	}
+
+	@Override
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		if( this.modelResolver instanceof RetargetableResolver< ? > ) {
+			RetargetableResolver< ? > retargetableResolver = (RetargetableResolver< ? >)this.modelResolver;
+			retargetableResolver.retarget( retargeter );
+		}
+		for( HistoryNode child : this.children ) {
+			child.retarget( retargeter );
+		}
 	}
 
 	public M getModel() {
@@ -278,18 +289,6 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 			}
 		}
 		return null;
-	}
-	
-	
-	@Override
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		if( this.modelResolver instanceof RetargetableResolver< ? > ) {
-			RetargetableResolver< ? > retargetableResolver = (RetargetableResolver< ? >)this.modelResolver;
-			retargetableResolver.retarget( retargeter );
-		}
-		for( HistoryNode child : this.children ) {
-			child.retarget( retargeter );
-		}
 	}
 
 	@Override

@@ -56,6 +56,13 @@ public class BlockStatementIndexPair implements edu.cmu.cs.dennisc.croquet.Retar
 		this.blockStatement = blockStatement;
 		this.index = index;
 	}
+	
+	public edu.cmu.cs.dennisc.alice.ast.BlockStatement getBlockStatement() {
+		return this.blockStatement;
+	}
+	public int getIndex() {
+		return this.index;
+	}
 
 	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();

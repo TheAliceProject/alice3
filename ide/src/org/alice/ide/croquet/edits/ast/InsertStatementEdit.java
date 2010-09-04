@@ -76,12 +76,19 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.al
 		return rv;
 	}
 	@Override
+	public boolean isReplacementAcceptable( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		return edit instanceof InsertStatementEdit;
+	}
+	@Override
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 		super.retarget( retargeter, edit );
 		InsertStatementEdit replacementEdit = (InsertStatementEdit)edit;
-		this.blockStatement = replacementEdit.blockStatement;
-		this.index = replacementEdit.index;
-		this.statement = replacementEdit.statement;
+		retargeter.addKeyValuePair( this.blockStatement, replacementEdit.blockStatement );
+		retargeter.addKeyValuePair( this.statement, replacementEdit.statement );
+		System.err.println( "TODO: recursive retarget" );
+		if( this.statement instanceof edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody ) {
+			retargeter.addKeyValuePair( ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)this.statement).body.getValue(), ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)replacementEdit.statement).body.getValue() );
+		}
 	}
 	@Override
 	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

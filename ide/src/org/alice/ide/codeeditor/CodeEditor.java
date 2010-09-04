@@ -84,7 +84,18 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 	private StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
 	private edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane;
 
-	public CodeEditor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractCode, CodeEditor > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized CodeEditor getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+		CodeEditor rv = map.get( code );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new CodeEditor( code );
+			map.put( code, rv );
+		}
+		return rv;
+	}
+	private CodeEditor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		this.code = code;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		java.awt.Color color = getIDE().getTheme().getCodeDeclaredInAliceColor( this.code );
@@ -92,6 +103,20 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 		this.setBackgroundColor( color );
 	}
 
+	public edu.cmu.cs.dennisc.croquet.CodableResolver< CodeEditor > getCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<CodeEditor>( this, this.code, edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
+	}
+	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape( edu.cmu.cs.dennisc.croquet.PotentialDropSite potentialDropSite ) {
+		if( potentialDropSite instanceof BlockStatementIndexPair ) {
+			BlockStatementIndexPair blockStatementIndexPair = (BlockStatementIndexPair)potentialDropSite;
+			edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty = blockStatementIndexPair.getBlockStatement().statements;
+			int index = Math.max( 0, blockStatementIndexPair.getIndex() );
+			return this.getTrackableShapeAtIndexOf( statementListProperty, index, false );
+		} else {
+			return null;
+		}
+	}
+	
 	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
 		return this.code;
 	}
@@ -394,8 +419,13 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 
 		if( this.currentUnder != null ) {
 			edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)this.currentUnder.getProperty().getOwner();
-			int index = this.currentUnder.getCurrentPotentialDropIndex();
-			return new BlockStatementIndexPair( blockStatement, index );
+			java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
+			java.awt.event.MouseEvent eAsSeenBy = source.convertMouseEvent( eSource, this.getAsSeenBy() );
+			java.awt.event.MouseEvent eUnder = this.getAsSeenBy().convertMouseEvent( eAsSeenBy, this.currentUnder );
+			int index = this.currentUnder.calculateIndex( eUnder.getPoint() );
+			BlockStatementIndexPair blockStatementIndexPair = new BlockStatementIndexPair( blockStatement, index );
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "blockStatementIndexPair", blockStatementIndexPair );
+			return blockStatementIndexPair;
 		} else {
 			return null;
 		}

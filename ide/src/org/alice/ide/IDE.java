@@ -92,7 +92,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 		this.getRunOperation().setEnabled( false );
 
-		this.sceneEditor = this.createSceneEditor();
 		this.galleryBrowser = this.createGalleryBrowser( this.getGalleryRoot() );
 		this.membersEditor = this.createClassMembersEditor();
 		this.ubiquitousPane = this.createUbiquitousPane();
@@ -136,7 +135,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private int leftDividerLocation = 240;
 
 	private edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin concealedBin = new edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin();
-	private org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor;
 	private edu.cmu.cs.dennisc.croquet.JComponent< ? > galleryBrowser;
 	private org.alice.ide.memberseditor.MembersEditor membersEditor;
 	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
@@ -172,7 +170,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			}
 			this.left.setResizeWeight( 1.0 );
 			this.root.setLeftComponent( this.left );
-			this.left.setTopComponent( this.sceneEditor );
+			this.left.setTopComponent( this.getSceneEditor() );
 			this.left.setBottomComponent( this.galleryBrowser );
 			//this.root.setRightComponent( null );
 			this.right.setVisible( false );
@@ -184,7 +182,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			this.right.setVisible( true );
 			//this.root.setRightComponent( this.right );
 			this.root.setDividerLocation( this.rootDividerLocation );
-			this.left.setTopComponent( this.sceneEditor );
+			this.left.setTopComponent( this.getSceneEditor() );
 			this.left.setBottomComponent( this.membersEditor );
 			this.left.setDividerLocation( this.leftDividerLocation );
 			//			if( this.right.getComponentCount() == 0 ) {
@@ -438,7 +436,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return rv;
 	}
 
-	protected abstract org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor();
 	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > getGalleryRoot();
 	protected abstract edu.cmu.cs.dennisc.croquet.JComponent< ? > createGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > root );
 	protected org.alice.ide.memberseditor.MembersEditor createClassMembersEditor() {
@@ -457,9 +454,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public edu.cmu.cs.dennisc.croquet.JComponent< ? > getGalleryBrowser() {
 		return this.galleryBrowser;
 	}
-	public org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor() {
-		return this.sceneEditor;
-	}
+	public abstract org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor();
 
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractCode, edu.cmu.cs.dennisc.alice.ast.Accessible > mapCodeToAccessible = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
@@ -695,7 +690,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			this.left.setIgnoreRepaint( true );
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignore repaint: true" );
 		}
-		this.sceneEditor.disableRendering( reasonToDisableSomeAmountOfRendering );
+		this.getSceneEditor().disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
 	public void enableRendering() {
 		if( reasonToDisableSomeAmountOfRenderingStack.size() > 0 ) {
@@ -707,7 +702,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 				this.root.setIgnoreRepaint( false );
 				this.left.setIgnoreRepaint( false );
 			}
-			this.sceneEditor.enableRendering( reasonToDisableSomeAmountOfRendering );
+			this.getSceneEditor().enableRendering( reasonToDisableSomeAmountOfRendering );
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate extra enableRendering" );
 		}
@@ -991,7 +986,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty = methodDeclaredInAlice.body.getValue().statements;
 		bodyStatementsProperty.clear();
 		bodyStatementsProperty.add( new edu.cmu.cs.dennisc.alice.ast.Comment( GENERATED_CODE_WARNING ) );
-		this.sceneEditor.generateCodeForSetUp( bodyStatementsProperty );
+		this.getSceneEditor().generateCodeForSetUp( bodyStatementsProperty );
 	}
 
 	@Deprecated

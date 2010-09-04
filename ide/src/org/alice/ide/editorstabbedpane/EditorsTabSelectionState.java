@@ -261,7 +261,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 			return null;
 		}
 		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-			return new org.alice.ide.codeeditor.CodeEditor( code );
+			return org.alice.ide.codeeditor.CodeEditor.getInstance( code );
 		}
 		
 		private boolean isEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {

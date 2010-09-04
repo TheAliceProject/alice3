@@ -142,8 +142,6 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
  * @author Dennis Cosgrove
  */
 public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractInstantiatingSceneEditor implements LookingGlassListener{
-
-	
 	public static interface SceneEditorFieldObserver
 	{
 		public void fieldAdded( FieldDeclaredInAlice addedField );
@@ -346,9 +344,22 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 	
-	
-	public MoveAndTurnSceneEditor() 
+
+	private static class SingletonHolder {
+		private static MoveAndTurnSceneEditor instance = new MoveAndTurnSceneEditor();
+	}
+	public static MoveAndTurnSceneEditor getInstance() {
+		return SingletonHolder.instance;
+	}
+	private MoveAndTurnSceneEditor()
 	{
+	}
+	
+	public edu.cmu.cs.dennisc.croquet.CodableResolver< MoveAndTurnSceneEditor > getCodableResolver() {
+		return new edu.cmu.cs.dennisc.croquet.SingletonResolver< MoveAndTurnSceneEditor >( this );
+	}
+	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape( edu.cmu.cs.dennisc.croquet.PotentialDropSite potentialDropSite ) {
+		return this;
 	}
 
 	public ListSelectionState<CameraMarker> getMainCameraMarkerList()

@@ -64,19 +64,59 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 	}
 	public static abstract class DropReceptorEvent extends DragAndDropEvent {
 		private DropReceptor dropReceptor;
+		private CodableResolver< DropReceptor > dropReceptorResolver;
 		public DropReceptorEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
 		private DropReceptorEvent( java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor ) {
 			super( mouseEvent );
 			this.dropReceptor = dropReceptor;
+			if( this.dropReceptor != null ) {
+				this.dropReceptorResolver = this.dropReceptor.getCodableResolver();
+			} else {
+				this.dropReceptorResolver = null;
+			}
 		}
 		public DropReceptor getDropReceptor() {
-			return this.dropReceptor;
+			DropReceptor rv;
+			if( this.dropReceptor != null ) {
+				rv = this.dropReceptor;
+			} else {
+				if( this.dropReceptorResolver != null ) {
+					rv = this.dropReceptorResolver.getResolved(); 
+					if( this.dropReceptorResolver instanceof RetargetableResolver< ? > ) {
+						//pass
+					} else {
+						this.dropReceptor = rv;
+					}
+				} else {
+					rv = null;
+				}
+			}
+			return rv;
 		}
 		@Override
 		public State getState() {
 			return null;
+		}
+		@Override
+		protected void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+			super.decodeInternal( binaryDecoder );
+			this.dropReceptorResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		}
+		@Override
+		protected void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+			super.encodeInternal( binaryEncoder );
+			binaryEncoder.encode( this.dropReceptorResolver );
+		}
+
+		@Override
+		public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+			super.retarget( retargeter );
+			if( this.dropReceptorResolver instanceof RetargetableResolver< ? > ) {
+				RetargetableResolver< ? > retargetableResolver = (RetargetableResolver< ? >)this.dropReceptorResolver;
+				retargetableResolver.retarget( retargeter );
+			}
 		}
 	}
 	public static class EnteredDropReceptorEvent extends DropReceptorEvent {

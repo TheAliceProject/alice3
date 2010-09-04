@@ -50,12 +50,10 @@ public abstract class Model implements RuntimeResolver< Model > {
 	private static final int NULL_ACCELERATOR_MASK = 0;
 	private Group group;
 	private java.util.UUID id;
-	//private java.util.UUID instanceId;
 	private CodableResolver<?> codableResolver;
 	public Model( Group group, java.util.UUID id ) {
 		this.group = group;
 		this.id = id;
-		//this.instanceId = java.util.UUID.randomUUID();
 	}
 	public Group getGroup() {
 		return this.group;
@@ -64,10 +62,6 @@ public abstract class Model implements RuntimeResolver< Model > {
 	public java.util.UUID getId() {
 		return this.id;
 	}
-//	public java.util.UUID getInstanceId() {
-//		return this.instanceId;
-//	}
-	
 	protected <M extends Model> CodableResolver< M > createCodableResolver() {
 		return new SingletonResolver( this );
 	}

@@ -45,14 +45,6 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 public class AutomaticTutorial {
-	private static edu.cmu.cs.dennisc.croquet.Retargeter retargeter;
-	public static edu.cmu.cs.dennisc.croquet.Retargeter getRetargeter() {
-		return retargeter;
-	}
-	public static void setRetargeter( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		AutomaticTutorial.retargeter = retargeter;
-	}
-	
 	public static javax.swing.JLayeredPane getLayeredPane() {
 		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		javax.swing.JFrame frame = application.getFrame().getAwtComponent();
@@ -62,17 +54,26 @@ public class AutomaticTutorial {
 		((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder(0,PAD,PAD,PAD));
 		return layeredPane; 
 	}
+
+	private AutomaticTutorialStencil stencil;
+	private java.util.ArrayList< edu.cmu.cs.dennisc.croquet.Group > groups; 
+	private edu.cmu.cs.dennisc.croquet.RootContext sourceContext;
+	private edu.cmu.cs.dennisc.croquet.Retargeter retargeter;
+
 	private class AutomaticTutorialStencil extends TutorialStencil {
 		public AutomaticTutorialStencil( javax.swing.JLayeredPane layeredPane, edu.cmu.cs.dennisc.croquet.Group[] groups ) {
 			super( layeredPane, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() );
 		}
 	}
-	private AutomaticTutorialStencil stencil;
-	private java.util.ArrayList< edu.cmu.cs.dennisc.croquet.Group > groups; 
-	private edu.cmu.cs.dennisc.croquet.RootContext sourceContext;
 	public AutomaticTutorial( edu.cmu.cs.dennisc.croquet.Group[] groups ) {
 		this.stencil = new AutomaticTutorialStencil( getLayeredPane(), groups );
 		this.groups = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groups );
+	}
+	public edu.cmu.cs.dennisc.croquet.Retargeter getRetargeter() {
+		return this.retargeter;
+	}
+	public void setRetargeter( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		this.retargeter = retargeter;
 	}
 	private void addMessageStep( String title, String text ) {
 		this.stencil.addStep( new MessageStep( title, text ) );
@@ -84,6 +85,31 @@ public class AutomaticTutorial {
 		}
 		public M getResolved() {
 			return this.modelContext.getModel();
+		}
+	}
+	private static class DropSiteResolver implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape > {
+		private edu.cmu.cs.dennisc.croquet.DragAndDropContext.EnteredPotentialDropSiteEvent enteredPotentialDropSiteEvent;
+		public DropSiteResolver( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+			final int N = dragAndDropContext.getChildCount();
+			int i=N-1;
+			while( i >= 0 ) {
+				edu.cmu.cs.dennisc.croquet.HistoryNode node = dragAndDropContext.getChildAt( i );
+				if( node instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext.EnteredPotentialDropSiteEvent ) {
+					this.enteredPotentialDropSiteEvent = (edu.cmu.cs.dennisc.croquet.DragAndDropContext.EnteredPotentialDropSiteEvent)node;
+					break;
+				}
+				i--;
+			}
+		}
+		public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
+			if( this.enteredPotentialDropSiteEvent != null ) {
+				edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor = this.enteredPotentialDropSiteEvent.getDropReceptor();
+				if( dropReceptor != null ) {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( this.enteredPotentialDropSiteEvent.getPotentialDropSite() );
+					return dropReceptor.getTrackableShape( this.enteredPotentialDropSiteEvent.getPotentialDropSite() );
+				}
+			}
+			return null;
 		}
 	}
 	private class AutomaticBooleanStateStep extends BooleanStateStep { 
@@ -103,12 +129,39 @@ public class AutomaticTutorial {
 		protected boolean isEditAcceptable( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 			boolean rv = this.edit.isReplacementAcceptable( edit );
 			if( rv ) {
-				this.edit.retarget( retargeter, edit );
-				sourceContext.retarget( retargeter );
+				this.edit.retarget( AutomaticTutorial.this.retargeter, edit );
+				sourceContext.retarget( AutomaticTutorial.this.retargeter );
 			}
 			return rv;
 		}
 	}
+	private class AutomaticDragAndDropStep extends DragAndDropStep {
+		private edu.cmu.cs.dennisc.croquet.Edit< ? > edit;
+		public AutomaticDragAndDropStep( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+			super( 
+					dragAndDropContext.getClass().getSimpleName(), 
+					dragAndDropContext.getClass().getName(), 
+					new ModelResolver< edu.cmu.cs.dennisc.croquet.DragAndDropModel >( dragAndDropContext ), 
+					"dropText", 
+					new DropSiteResolver( dragAndDropContext ), 
+					null, null, null, null, null );
+			this.edit = edit;
+		}
+		@Override
+		public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+			boolean rv = super.isWhatWeveBeenWaitingFor( child );
+			if( child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
+				edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent)child;
+				edu.cmu.cs.dennisc.croquet.Edit< ? > edit = commitEvent.getEdit();
+				if( this.edit.isReplacementAcceptable( edit ) ) {
+					this.edit.retarget( AutomaticTutorial.this.retargeter, edit );
+					sourceContext.retarget( AutomaticTutorial.this.retargeter );
+				}
+			}
+			return rv;
+		}
+	}
+	
 	public void addSteps( edu.cmu.cs.dennisc.croquet.RootContext sourceContext ) {
 		this.addMessageStep( "start", "start of tutorial" );
 		this.sourceContext = sourceContext;
@@ -134,7 +187,11 @@ public class AutomaticTutorial {
 				} else if( edu.cmu.cs.dennisc.croquet.DragAndDropModel.DRAG_GROUP == group ) {
 					if( modelContext instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
 						edu.cmu.cs.dennisc.croquet.DragAndDropContext dragContext = (edu.cmu.cs.dennisc.croquet.DragAndDropContext)modelContext;
-						this.addMessageStep( "drag", "drag" );
+						edu.cmu.cs.dennisc.croquet.ActionOperationContext actionOperationContext = (edu.cmu.cs.dennisc.croquet.ActionOperationContext)dragContext.getChildAt( dragContext.getChildCount()-1 );
+						edu.cmu.cs.dennisc.croquet.Edit< ? > edit = actionOperationContext.getEdit();
+						if( edit != null ) {
+							this.stencil.addStep( new AutomaticDragAndDropStep( dragContext, edit ) );
+						}
 					}
 				}
 			}

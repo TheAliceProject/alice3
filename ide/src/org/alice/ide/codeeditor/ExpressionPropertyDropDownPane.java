@@ -42,6 +42,8 @@
  */
 package org.alice.ide.codeeditor;
 
+import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -76,6 +78,12 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupM
 //		return rv;	
 //	}
 
+	public edu.cmu.cs.dennisc.croquet.CodableResolver< ExpressionPropertyDropDownPane > getCodableResolver() {
+		throw new RuntimeException( "todo" );
+	}
+	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape( edu.cmu.cs.dennisc.croquet.PotentialDropSite potentialDropSite ) {
+		return this;
+	}
 
 	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.croquet.DragComponent source ) {
 		return source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance;
