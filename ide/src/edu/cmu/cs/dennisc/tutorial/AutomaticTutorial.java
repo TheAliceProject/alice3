@@ -41,6 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package edu.cmu.cs.dennisc.tutorial;
+
+
+class ContextUtilities {
+	private ContextUtilities() {
+		throw new AssertionError();
+	}
+	public static <N extends edu.cmu.cs.dennisc.croquet.HistoryNode> N getLastNodeAssignableTo( edu.cmu.cs.dennisc.croquet.ModelContext<?> context, Class<N> cls ) {
+		final int N = context.getChildCount();
+		int i=N-1;
+		while( i >= 0 ) {
+			edu.cmu.cs.dennisc.croquet.HistoryNode node = context.getChildAt( i );
+			if( cls.isAssignableFrom( node.getClass() ) ) {
+				return cls.cast( node );
+			}
+			i--;
+		}
+		return null;
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
@@ -87,19 +107,21 @@ public class AutomaticTutorial {
 			return this.modelContext.getModel();
 		}
 	}
+	private static class IthModelResolver< M extends edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > {
+		private edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent;
+		private int index;
+		public IthModelResolver( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int index ) {
+			this.menuSelectionEvent = menuSelectionEvent;
+			this.index = index;
+		}
+		public M getResolved() {
+			return this.menuSelectionEvent.getModelAt( this.index );
+		}
+	}
 	private static class DropSiteResolver implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape > {
 		private edu.cmu.cs.dennisc.croquet.DragAndDropContext.EnteredPotentialDropSiteEvent enteredPotentialDropSiteEvent;
 		public DropSiteResolver( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-			final int N = dragAndDropContext.getChildCount();
-			int i=N-1;
-			while( i >= 0 ) {
-				edu.cmu.cs.dennisc.croquet.HistoryNode node = dragAndDropContext.getChildAt( i );
-				if( node instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext.EnteredPotentialDropSiteEvent ) {
-					this.enteredPotentialDropSiteEvent = (edu.cmu.cs.dennisc.croquet.DragAndDropContext.EnteredPotentialDropSiteEvent)node;
-					break;
-				}
-				i--;
-			}
+			this.enteredPotentialDropSiteEvent = ContextUtilities.getLastNodeAssignableTo( dragAndDropContext, edu.cmu.cs.dennisc.croquet.DragAndDropContext.EnteredPotentialDropSiteEvent.class );
 		}
 		public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
 			if( this.enteredPotentialDropSiteEvent != null ) {
@@ -161,36 +183,93 @@ public class AutomaticTutorial {
 			return rv;
 		}
 	}
+
+	private static class AutomaticPopupMenuStep extends WaitingStep {
+		public static AutomaticPopupMenuStep createInstance( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int index0, edu.cmu.cs.dennisc.croquet.ModelContext modelContext ) {
+			AutomaticPopupMenuStep rv = new AutomaticPopupMenuStep( menuSelectionEvent, index0 );
+			final int N = menuSelectionEvent.getModelCount();
+			for( int i=index0+1; i<N; i++ ) {
+				rv.addNote( new Note( Integer.toString( i ) ) );
+			}
+			return rv;
+		}
+		private AutomaticPopupMenuStep( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int index ) {
+			super( menuSelectionEvent.getModelAt( index ).toString(), menuSelectionEvent.getModelAt( index ).getClass().getSimpleName(), new Hole( new FirstComponentResolver( new IthModelResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, index ) ), Feature.ConnectionPreference.NORTH_SOUTH ), new IthModelResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, index ) );
+		}
+		@Override
+		public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+			return false;
+		}
+		@Override
+		protected boolean isAlreadyInTheDesiredState() {
+			return false;
+		}
+		@Override
+		protected void complete() {
+		}
+	}
 	
 	public void addSteps( edu.cmu.cs.dennisc.croquet.RootContext sourceContext ) {
 		this.addMessageStep( "start", "start of tutorial" );
 		this.sourceContext = sourceContext;
-		for( edu.cmu.cs.dennisc.croquet.HistoryNode node : sourceContext.getChildren() ) {
+		final int N = sourceContext.getChildCount();
+		for( int i=0; i<N; i++ ) {
+			edu.cmu.cs.dennisc.croquet.HistoryNode node = sourceContext.getChildAt( i );
 			if( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
 				edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)node;
+				edu.cmu.cs.dennisc.croquet.HistoryNode.State state = modelContext.getState();
 				edu.cmu.cs.dennisc.croquet.Model model = modelContext.getModel();
 				edu.cmu.cs.dennisc.croquet.Group group = model.getGroup();
-				if( this.groups.contains( group ) ) {
-					if( modelContext instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > ) {
-						edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? >)modelContext;
-						edu.cmu.cs.dennisc.croquet.Edit<?> edit = inputDialogOperationContext.getEdit();
-						if( edit != null ) {
-							this.stencil.addStep( new AutomaticInputDialogOperationStep( inputDialogOperationContext, edit ) );
+				if( state == edu.cmu.cs.dennisc.croquet.HistoryNode.State.CANCELED ) {
+					//pass
+				} else {
+					if( this.groups.contains( group ) ) {
+						if( modelContext instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > ) {
+							edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? >)modelContext;
+							edu.cmu.cs.dennisc.croquet.Edit<?> edit = inputDialogOperationContext.getEdit();
+							if( edit != null ) {
+								this.stencil.addStep( new AutomaticInputDialogOperationStep( inputDialogOperationContext, edit ) );
+							}
+						} else if( modelContext instanceof edu.cmu.cs.dennisc.croquet.BooleanStateContext ) {
+							edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext = (edu.cmu.cs.dennisc.croquet.BooleanStateContext)modelContext;
+							edu.cmu.cs.dennisc.croquet.Edit<?> edit = booleanStateContext.getEdit();
+							if( edit instanceof edu.cmu.cs.dennisc.croquet.BooleanStateEdit ) {
+								this.stencil.addStep( new AutomaticBooleanStateStep( booleanStateContext, (edu.cmu.cs.dennisc.croquet.BooleanStateEdit)edit ) );
+							}
 						}
-					} else if( modelContext instanceof edu.cmu.cs.dennisc.croquet.BooleanStateContext ) {
-						edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext = (edu.cmu.cs.dennisc.croquet.BooleanStateContext)modelContext;
-						edu.cmu.cs.dennisc.croquet.Edit<?> edit = booleanStateContext.getEdit();
-						if( edit instanceof edu.cmu.cs.dennisc.croquet.BooleanStateEdit ) {
-							this.stencil.addStep( new AutomaticBooleanStateStep( booleanStateContext, (edu.cmu.cs.dennisc.croquet.BooleanStateEdit)edit ) );
+					} else if( edu.cmu.cs.dennisc.croquet.DragAndDropModel.DRAG_GROUP == group ) {
+						if( modelContext instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
+							edu.cmu.cs.dennisc.croquet.DragAndDropContext dragContext = (edu.cmu.cs.dennisc.croquet.DragAndDropContext)modelContext;
+							edu.cmu.cs.dennisc.croquet.ActionOperationContext actionOperationContext = (edu.cmu.cs.dennisc.croquet.ActionOperationContext)dragContext.getChildAt( dragContext.getChildCount()-1 );
+							edu.cmu.cs.dennisc.croquet.Edit< ? > edit = actionOperationContext.getEdit();
+							if( edit != null ) {
+								this.stencil.addStep( new AutomaticDragAndDropStep( dragContext, edit ) );
+							}
 						}
-					}
-				} else if( edu.cmu.cs.dennisc.croquet.DragAndDropModel.DRAG_GROUP == group ) {
-					if( modelContext instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
-						edu.cmu.cs.dennisc.croquet.DragAndDropContext dragContext = (edu.cmu.cs.dennisc.croquet.DragAndDropContext)modelContext;
-						edu.cmu.cs.dennisc.croquet.ActionOperationContext actionOperationContext = (edu.cmu.cs.dennisc.croquet.ActionOperationContext)dragContext.getChildAt( dragContext.getChildCount()-1 );
-						edu.cmu.cs.dennisc.croquet.Edit< ? > edit = actionOperationContext.getEdit();
-						if( edit != null ) {
-							this.stencil.addStep( new AutomaticDragAndDropStep( dragContext, edit ) );
+					} else if( edu.cmu.cs.dennisc.croquet.MenuBarModel.MENU_BAR_MODEL_GROUP == group ) {
+						if( modelContext instanceof edu.cmu.cs.dennisc.croquet.MenuBarModelContext ) {
+							edu.cmu.cs.dennisc.croquet.MenuBarModelContext menuBarModelContext = (edu.cmu.cs.dennisc.croquet.MenuBarModelContext)modelContext;
+							edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = ContextUtilities.getLastNodeAssignableTo( menuBarModelContext, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.class );
+							if( popupMenuOperationContext != null ) {
+								edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = ContextUtilities.getLastNodeAssignableTo( popupMenuOperationContext, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent.class );
+								if( menuSelectionEvent != null ) {
+									final int MODEL_COUNT = menuSelectionEvent.getModelCount();
+									edu.cmu.cs.dennisc.print.PrintUtilities.println();
+									edu.cmu.cs.dennisc.print.PrintUtilities.println();
+									edu.cmu.cs.dennisc.print.PrintUtilities.println();
+									edu.cmu.cs.dennisc.print.PrintUtilities.println( "MENU_BAR_MODEL_GROUP" );
+									for( int j=0; j<MODEL_COUNT; j++ ) {
+										edu.cmu.cs.dennisc.print.PrintUtilities.println( menuSelectionEvent.getModelAt( j ) );
+									}
+									edu.cmu.cs.dennisc.print.PrintUtilities.println();
+									edu.cmu.cs.dennisc.print.PrintUtilities.println();
+									edu.cmu.cs.dennisc.print.PrintUtilities.println();
+									
+									this.stencil.addStep( AutomaticPopupMenuStep.createInstance( menuSelectionEvent, 1, null ) );
+								}
+							}
+							
+							System.err.println( "menuBarModelContext: " + menuBarModelContext );
 						}
 					}
 				}

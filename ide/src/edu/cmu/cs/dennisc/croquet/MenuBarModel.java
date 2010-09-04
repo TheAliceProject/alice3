@@ -46,24 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class MenuBarModel extends Model {
-	private static final Group MENU_BAR_MODEL_GROUP = new Group( java.util.UUID.fromString( "7d9cd79e-6011-4174-94d4-d67647211481" ), "MENU_BAR_MODEL_GROUP" );
-
-//	private class MenuBarChangeListener implements javax.swing.event.ChangeListener {
-//		private KMenuBar menuBar;
-//		public MenuBarChangeListener( KMenuBar menuBar ) {
-//			this.menuBar = menuBar;
-//		}
-//		public void stateChanged( javax.swing.event.ChangeEvent e ) {
-//			Application application = Application.getSingleton();
-//			Context parentContext = application.getCurrentContext();
-//			Context childContext = parentContext.open();
-//			javax.swing.SingleSelectionModel singleSelectionModel = (javax.swing.SingleSelectionModel)e.getSource();
-//			int index = singleSelectionModel.getSelectedIndex();
-//			MenuModel menuModelAtIndex = MenuBarOperation.this.menuModels.get( index );
-//			childContext.addChild( new MenuBarStateChangeEvent( childContext, MenuBarOperation.this, e, this.menuBar, singleSelectionModel, index, menuModelAtIndex ) );
-//		}
-//	};
-//	private java.util.Map< KMenuBar, MenuBarChangeListener > mapMenuBarToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static final Group MENU_BAR_MODEL_GROUP = new Group( java.util.UUID.fromString( "7d9cd79e-6011-4174-94d4-d67647211481" ), "MENU_BAR_MODEL_GROUP" );
 	private java.util.concurrent.CopyOnWriteArrayList< MenuModel > menuModels = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	public MenuBarModel( java.util.UUID id ) {
 		super( MENU_BAR_MODEL_GROUP, id );

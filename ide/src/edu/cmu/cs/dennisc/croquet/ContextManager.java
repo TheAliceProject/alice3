@@ -217,7 +217,7 @@ public class ContextManager {
 				ModelContext< ? > modelContext = ContextManager.getCurrentContext();
 				assert modelContext instanceof PopupMenuOperationContext;
 				PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)modelContext;
-				popupMenuOperationContext.handleMenuSelectionChanged( models, e );
+				popupMenuOperationContext.handleMenuSelectionChanged( e, models );
 			} else {
 				MenuBarModel menuBarModel = getMenuBarModelOrigin( previousMenuElements );
 				if( menuBarModel != null ) {
