@@ -181,8 +181,8 @@ package edu.cmu.cs.dennisc.tutorial;
 			boolean rv = false;
 			switch( state ) {
 			case WAITING_ON_DRAG:
-				if( child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
-					edu.cmu.cs.dennisc.croquet.DragAndDropContext context = (edu.cmu.cs.dennisc.croquet.DragAndDropContext)child;
+				if( child instanceof edu.cmu.cs.dennisc.croquet.DragContext ) {
+					edu.cmu.cs.dennisc.croquet.DragContext context = (edu.cmu.cs.dennisc.croquet.DragContext)child;
 					Note noteB = this.getNoteAt( 1 );
 					Feature featureB = noteB.getFeatures().get( 0 );
 					java.awt.Dimension size = context.getDragSource().getDropProxySize();
@@ -191,7 +191,7 @@ package edu.cmu.cs.dennisc.tutorial;
 				}
 				break;
 			case WAITING_ON_DROP:
-				if( child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent ) {
+				if( child instanceof edu.cmu.cs.dennisc.croquet.DragContext.DroppedEvent ) {
 					//edu.cmu.cs.dennisc.croquet.ModelContext< ? > parent = child.getParent(); 
 					//return parent.getModel() == this.getModel();
 					rv = this.getNoteCount() == 2;

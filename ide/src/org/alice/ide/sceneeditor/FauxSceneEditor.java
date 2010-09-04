@@ -43,7 +43,7 @@
 package org.alice.ide.sceneeditor;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
+import edu.cmu.cs.dennisc.croquet.DragContext;
 import edu.cmu.cs.dennisc.croquet.DragComponent;
 import edu.cmu.cs.dennisc.croquet.Operation;
 import edu.cmu.cs.dennisc.croquet.ViewController;
@@ -78,18 +78,18 @@ public class FauxSceneEditor extends AbstractSceneEditor {
 		// TODO Auto-generated method stub
 		
 	}
-	public Operation<?> dragDropped(DragAndDropContext dragAndDropContext) {
+	public Operation<?> dragDropped(DragContext dragAndDropContext) {
 		return null;
 	}
-	public void dragEntered(DragAndDropContext dragAndDropContext) {
+	public void dragEntered(DragContext dragAndDropContext) {
 	}
-	public void dragExited(DragAndDropContext dragAndDropContext, boolean isDropRecipient) {
+	public void dragExited(DragContext dragAndDropContext, boolean isDropRecipient) {
 	}
-	public void dragStarted(DragAndDropContext dragAndDropContext) {
+	public void dragStarted(DragContext dragAndDropContext) {
 	}
-	public void dragStopped(DragAndDropContext dragAndDropContext) {
+	public void dragStopped(DragContext dragAndDropContext) {
 	}
-	public void dragUpdated(DragAndDropContext dragAndDropContext) {
+	public void dragUpdated(DragContext dragAndDropContext) {
 	}
 	public ViewController<?, ?> getViewController() {
 		return null;

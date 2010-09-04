@@ -272,10 +272,10 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 			}
 		}
 	}
-	public final void dragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public final void dragStarted( edu.cmu.cs.dennisc.croquet.DragContext context ) {
 	}
 
-	public final void dragEntered( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public final void dragEntered( edu.cmu.cs.dennisc.croquet.DragContext context ) {
 		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
 		this.statementListPropertyPaneInfos = createStatementListPropertyPaneInfos( source );
 		this.repaint();
@@ -328,7 +328,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 		}
 		return rv;
 	}
-	public final void dragUpdated( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public final void dragUpdated( edu.cmu.cs.dennisc.croquet.DragContext context ) {
 		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
 		if( source != null ) {
 			java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
@@ -416,7 +416,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 		this.repaint();
 
 	}
-	public final edu.cmu.cs.dennisc.croquet.Operation<?> dragDropped( final edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public final edu.cmu.cs.dennisc.croquet.Operation<?> dragDropped( final edu.cmu.cs.dennisc.croquet.DragContext context ) {
 		edu.cmu.cs.dennisc.croquet.Operation<?> rv = null;
 		final java.awt.Point viewPosition = this.scrollPane.getAwtComponent().getViewport().getViewPosition();
 		final edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
@@ -705,7 +705,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 			}
 		} );
 	}
-	public final void dragExited( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, boolean isDropRecipient ) {
+	public final void dragExited( edu.cmu.cs.dennisc.croquet.DragContext context, boolean isDropRecipient ) {
 		this.statementListPropertyPaneInfos = null;
 		this.setCurrentUnder( null, null );
 		this.repaint();
@@ -718,7 +718,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 //			}
 //		}
 	}
-	public final void dragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public final void dragStopped( edu.cmu.cs.dennisc.croquet.DragContext context ) {
 		EPIC_HACK_desiredStatementListPropertyPane = null;
 		EPIC_HACK_desiredIndex = -1;
 	}

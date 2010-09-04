@@ -193,7 +193,7 @@ public abstract class DragComponent extends Control {
 	}
 
 
-	private DragAndDropContext dragAndDropContext;
+	private DragContext dragAndDropContext;
 
 	private void handleLeftMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
 		Application application = Application.getSingleton();

@@ -47,7 +47,7 @@ import java.awt.event.InputEvent;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.handle.ManipulationHandle;
 
-import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
+import edu.cmu.cs.dennisc.croquet.DragContext;
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Component;
@@ -87,7 +87,7 @@ public class InputState {
 	private long timeCaptured = 0;
 	private InputEvent inputEvent = null;
 	private boolean isDragEvent = false;
-	private DragAndDropContext dragAndDropContext = null;
+	private DragContext dragAndDropContext = null;
 	
 	
 	public InputEvent getInputEvent()
@@ -127,12 +127,12 @@ public class InputState {
 		return this.isDragEvent;
 	}
 	
-	public void setDragAndDropContext(DragAndDropContext dragAndDropContext)
+	public void setDragAndDropContext(DragContext dragAndDropContext)
 	{
 		this.dragAndDropContext = dragAndDropContext;
 	}
 	
-	public DragAndDropContext getDragAndDropContext()
+	public DragContext getDragAndDropContext()
 	{
 		return this.dragAndDropContext;
 	}

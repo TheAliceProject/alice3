@@ -116,7 +116,8 @@ public class AutomaticTutorial {
 			if( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
 				edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)node;
 				edu.cmu.cs.dennisc.croquet.Model model = modelContext.getModel();
-				if( this.groups.contains( model.getGroup() ) ) {
+				edu.cmu.cs.dennisc.croquet.Group group = model.getGroup();
+				if( this.groups.contains( group ) ) {
 					if( modelContext instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > ) {
 						edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? >)modelContext;
 						edu.cmu.cs.dennisc.croquet.Edit<?> edit = inputDialogOperationContext.getEdit();
@@ -129,6 +130,11 @@ public class AutomaticTutorial {
 						if( edit instanceof edu.cmu.cs.dennisc.croquet.BooleanStateEdit ) {
 							this.stencil.addStep( new AutomaticBooleanStateStep( booleanStateContext, (edu.cmu.cs.dennisc.croquet.BooleanStateEdit)edit ) );
 						}
+					}
+				} else if( edu.cmu.cs.dennisc.croquet.DragModel.DRAG_GROUP == group ) {
+					if( modelContext instanceof edu.cmu.cs.dennisc.croquet.DragContext ) {
+						edu.cmu.cs.dennisc.croquet.DragContext dragContext = (edu.cmu.cs.dennisc.croquet.DragContext)modelContext;
+						this.addMessageStep( "drag", "drag" );
 					}
 				}
 			}

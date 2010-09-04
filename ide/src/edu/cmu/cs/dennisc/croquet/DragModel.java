@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class DragModel extends Model {
-	private static final Group DRAG_GROUP = new Group( java.util.UUID.fromString( "16f67072-dd57-453c-a812-69f2303bc948" ), "DRAG_GROUP" );
+	public static final Group DRAG_GROUP = new Group( java.util.UUID.fromString( "16f67072-dd57-453c-a812-69f2303bc948" ), "DRAG_GROUP" );
 	public DragModel( java.util.UUID inividualUUID ) {
 		super( DRAG_GROUP, inividualUUID );
 		this.localize();
@@ -55,8 +55,8 @@ public abstract class DragModel extends Model {
 	/*package-private*/ void localize() {
 	}
 	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( DragComponent dragSource );
-	public abstract void handleDragStarted( DragAndDropContext dragAndDropContext );
-	public abstract void handleDragEnteredDropReceptor( DragAndDropContext dragAndDropContext );
-	public abstract void handleDragExitedDropReceptor( DragAndDropContext dragAndDropContext );
-	public abstract void handleDragStopped( DragAndDropContext dragAndDropContext );
+	public abstract void handleDragStarted( DragContext dragAndDropContext );
+	public abstract void handleDragEnteredDropReceptor( DragContext dragAndDropContext );
+	public abstract void handleDragExitedDropReceptor( DragContext dragAndDropContext );
+	public abstract void handleDragStopped( DragContext dragAndDropContext );
 }

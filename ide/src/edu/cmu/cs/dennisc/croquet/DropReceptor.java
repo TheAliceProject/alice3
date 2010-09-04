@@ -51,14 +51,14 @@ public interface DropReceptor {
 	//public ViewController<?,?> getViewController();
 	//todo: rename
 	public JComponent<?> getViewController();
-	public void dragStarted( DragAndDropContext dragAndDropContext );
-	public void dragEntered( DragAndDropContext dragAndDropContext );
-	public void dragUpdated( DragAndDropContext dragAndDropContext );
+	public void dragStarted( DragContext dragAndDropContext );
+	public void dragEntered( DragContext dragAndDropContext );
+	public void dragUpdated( DragContext dragAndDropContext );
 	
 	//todo: Dropped or Exited but not both?
-	public Operation<?> dragDropped( DragAndDropContext dragAndDropContext );
-	public void dragExited( DragAndDropContext dragAndDropContext, boolean isDropRecipient );
+	public Operation<?> dragDropped( DragContext dragAndDropContext );
+	public void dragExited( DragContext dragAndDropContext, boolean isDropRecipient );
 	
 	
-	public void dragStopped( DragAndDropContext dragAndDropContext );
+	public void dragStopped( DragContext dragAndDropContext );
 }

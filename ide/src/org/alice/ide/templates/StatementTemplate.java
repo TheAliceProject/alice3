@@ -51,7 +51,7 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 		this.setDragModel( dragModel );
 	}
 	
-	public abstract edu.cmu.cs.dennisc.croquet.Operation< ? > createDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index );
+	public abstract edu.cmu.cs.dennisc.croquet.Operation< ? > createDropOperation( edu.cmu.cs.dennisc.croquet.DragContext context, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index );
 	@Override
 	protected boolean isPressed() {
 		return false;

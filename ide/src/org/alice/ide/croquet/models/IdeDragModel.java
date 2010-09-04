@@ -58,19 +58,19 @@ public abstract class IdeDragModel extends edu.cmu.cs.dennisc.croquet.DragModel 
 		return getIDE().createListOfPotentialDropReceptors( dragSource );
 	}
 	@Override
-	public void handleDragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+	public void handleDragStarted( edu.cmu.cs.dennisc.croquet.DragContext dragAndDropContext ) {
 		getIDE().handleDragStarted( dragAndDropContext );
 	}
 	@Override
-	public void handleDragEnteredDropReceptor( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+	public void handleDragEnteredDropReceptor( edu.cmu.cs.dennisc.croquet.DragContext dragAndDropContext ) {
 		getIDE().handleDragEnteredDropReceptor( dragAndDropContext );
 	}
 	@Override
-	public void handleDragExitedDropReceptor( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+	public void handleDragExitedDropReceptor( edu.cmu.cs.dennisc.croquet.DragContext dragAndDropContext ) {
 		getIDE().handleDragExitedDropReceptor( dragAndDropContext );
 	}
 	@Override
-	public void handleDragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+	public void handleDragStopped( edu.cmu.cs.dennisc.croquet.DragContext dragAndDropContext ) {
 		getIDE().handleDragStopped( dragAndDropContext );
 	}
 }

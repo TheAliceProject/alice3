@@ -46,6 +46,8 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.al
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
 	private int index;
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
+	public InsertStatementEdit() {
+	}
 	public InsertStatementEdit( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		this.blockStatement = blockStatement;
 		this.index = index;
@@ -74,9 +76,27 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.al
 		return rv;
 	}
 	@Override
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		super.retarget( retargeter, edit );
+		InsertStatementEdit replacementEdit = (InsertStatementEdit)edit;
+		this.blockStatement = replacementEdit.blockStatement;
+		this.index = replacementEdit.index;
+		this.statement = replacementEdit.statement;
+	}
+	@Override
 	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+		java.util.UUID blockStatementId = binaryDecoder.decodeId();
+		this.blockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, blockStatementId );
+		this.index = binaryDecoder.decodeInt();
+		java.util.UUID statementId = binaryDecoder.decodeId();
+		this.statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, statementId );
 	}
 	@Override
 	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.blockStatement.getUUID() );
+		binaryEncoder.encode( this.index );
+		binaryEncoder.encode( this.statement.getUUID() );
 	}
 }
