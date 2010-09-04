@@ -95,6 +95,56 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 			super( mouseEvent, dropReceptor );
 		}
 	}
+
+	
+	public static abstract class PotentialDropSiteEvent extends DropReceptorEvent {
+		private PotentialDropSite potentialDropSite;
+		public PotentialDropSiteEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private PotentialDropSiteEvent( java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor, PotentialDropSite potentialDropSite ) {
+			super( mouseEvent, dropReceptor );
+			this.potentialDropSite = potentialDropSite;
+		}
+		public PotentialDropSite getPotentialDropSite() {
+			return this.potentialDropSite;
+		}
+		@Override
+		public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+			super.retarget( retargeter );
+			if( this.potentialDropSite instanceof RetargetablePotentialDropSite ) {
+				RetargetablePotentialDropSite retargetablePotentialDropSite = (RetargetablePotentialDropSite)this.potentialDropSite;
+				retargetablePotentialDropSite.retarget( retargeter );
+			}
+		}
+		@Override
+		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super.decodeInternal( binaryDecoder );
+			this.potentialDropSite = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		}
+		@Override
+		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			super.encodeInternal( binaryEncoder );
+			binaryEncoder.encode( this.potentialDropSite );
+		}
+	}
+	public static class EnteredPotentialDropSiteEvent extends PotentialDropSiteEvent {
+		public EnteredPotentialDropSiteEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private EnteredPotentialDropSiteEvent( java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor, PotentialDropSite potentialDropSite ) {
+			super( mouseEvent, dropReceptor, potentialDropSite );
+		}
+	}
+	public static class ExitedPotentialDropSiteEvent extends PotentialDropSiteEvent {
+		public ExitedPotentialDropSiteEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private ExitedPotentialDropSiteEvent( java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor, PotentialDropSite potentialDropSite ) {
+			super( mouseEvent, dropReceptor, potentialDropSite );
+		}
+	}
+
 	public static class DroppedEvent extends DropReceptorEvent {
 		public DroppedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
@@ -226,10 +276,16 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 		}
 		return rv;
 	}
+	
 	public void handleMouseDragged( java.awt.event.MouseEvent e ) {
 		this.setLatestMouseEvent( e );
 		DropReceptor nextDropReceptor = getDropReceptorUnder( e );
 		if( this.currentDropReceptor != nextDropReceptor ) {
+			if( this.currentPotentialDropSite != null ) {
+				if( this.currentDropReceptor != null ) {
+					this.addChild( new ExitedPotentialDropSiteEvent( e, this.currentDropReceptor, this.currentPotentialDropSite ) );
+				}
+			}
 			if( this.currentDropReceptor != null ) {
 				this.getModel().handleDragExitedDropReceptor( this );
 				this.currentDropReceptor.dragExited( this, false );
@@ -242,12 +298,23 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 				this.addChild( new EnteredDropReceptorEvent( e, this.currentDropReceptor ) );
 			}
 		}
+		if( this.currentDropReceptor != null ) {
+			PotentialDropSite nextPotentialDropSite = this.currentDropReceptor.dragUpdated( this );
+			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.currentPotentialDropSite, nextPotentialDropSite ) ) {
+				//pass
+			} else {
+				if( this.currentPotentialDropSite != null ) {
+					this.addChild( new ExitedPotentialDropSiteEvent( e, this.currentDropReceptor, this.currentPotentialDropSite ) );
+				}
+				this.currentPotentialDropSite = nextPotentialDropSite;
+				if( this.currentPotentialDropSite != null ) {
+					this.addChild( new EnteredPotentialDropSiteEvent( e, this.currentDropReceptor, this.currentPotentialDropSite ) );
+				}
+			}
+		}
+
 		if( this.getDragSource().getDragProxy() != null ) {
 			this.getDragSource().getDragProxy().setOverDropAcceptor( this.currentDropReceptor != null );
-		}
-		if( this.currentDropReceptor != null ) {
-			PotentialDropSite potentialDropSite = this.currentDropReceptor.dragUpdated( this );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "potentialDropSite", potentialDropSite );
 		}
 	}
 	
