@@ -46,7 +46,7 @@ package org.alice.ide.templates;
  * @author Dennis Cosgrove
  */
 public abstract class CascadingExpressionsStatementTemplate extends StatementTemplate {
-	public CascadingExpressionsStatementTemplate( edu.cmu.cs.dennisc.croquet.DragModel dragModel, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+	public CascadingExpressionsStatementTemplate( edu.cmu.cs.dennisc.croquet.DragAndDropModel dragModel, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
 		super( dragModel, cls );
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes();
@@ -57,7 +57,7 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
 	
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation< ? > createDropOperation( final edu.cmu.cs.dennisc.croquet.DragContext dragAndDropContext, final edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, final int index ) {
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > createDropOperation( final edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, final edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, final int index ) {
 		final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types = this.getBlankExpressionTypes();
 		edu.cmu.cs.dennisc.alice.ast.Expression[] predeterminedExpressions = org.alice.ide.IDE.getSingleton().createPredeterminedExpressionsIfAppropriate( types );
 		if( predeterminedExpressions != null ) {

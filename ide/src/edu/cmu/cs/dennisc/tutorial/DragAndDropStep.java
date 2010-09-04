@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class DragAndDropStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DragModel> {
+/*package-private*/ class DragAndDropStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DragAndDropModel> {
 	private enum State {
 		WAITING_ON_DRAG,
 		WAITING_ON_DROP,
@@ -58,7 +58,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	private DragAndDropOperationCompletor completor;
 	private DragAndDropOperationValidator validator;
 	private edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler<?> externalOkButtonDisabler;
-	public DragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragModel > dragResolver, String dropText, edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > dropShapeResolver, String popupMenuText, String inputDialogText, DragAndDropOperationCompletor completor, DragAndDropOperationValidator validator, edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler<?> externalOkButtonDisabler ) {
+	public DragAndDropStep( String title, String text, edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.DragAndDropModel > dragResolver, String dropText, edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > dropShapeResolver, String popupMenuText, String inputDialogText, DragAndDropOperationCompletor completor, DragAndDropOperationValidator validator, edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler<?> externalOkButtonDisabler ) {
 		super( title, text, new Hole( new FirstComponentResolver( dragResolver ), Feature.ConnectionPreference.EAST_WEST ), dragResolver );
 		this.completor = completor;
 		this.validator = validator;
@@ -181,8 +181,8 @@ package edu.cmu.cs.dennisc.tutorial;
 			boolean rv = false;
 			switch( state ) {
 			case WAITING_ON_DRAG:
-				if( child instanceof edu.cmu.cs.dennisc.croquet.DragContext ) {
-					edu.cmu.cs.dennisc.croquet.DragContext context = (edu.cmu.cs.dennisc.croquet.DragContext)child;
+				if( child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
+					edu.cmu.cs.dennisc.croquet.DragAndDropContext context = (edu.cmu.cs.dennisc.croquet.DragAndDropContext)child;
 					Note noteB = this.getNoteAt( 1 );
 					Feature featureB = noteB.getFeatures().get( 0 );
 					java.awt.Dimension size = context.getDragSource().getDropProxySize();
@@ -191,7 +191,7 @@ package edu.cmu.cs.dennisc.tutorial;
 				}
 				break;
 			case WAITING_ON_DROP:
-				if( child instanceof edu.cmu.cs.dennisc.croquet.DragContext.DroppedEvent ) {
+				if( child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent ) {
 					//edu.cmu.cs.dennisc.croquet.ModelContext< ? > parent = child.getParent(); 
 					//return parent.getModel() == this.getModel();
 					rv = this.getNoteCount() == 2;

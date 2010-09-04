@@ -47,5 +47,5 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public interface RetargetableResolver<T> extends CodableResolver<T> {
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter );
+	public void retarget( Retargeter retargeter );
 }

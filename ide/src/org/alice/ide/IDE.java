@@ -712,7 +712,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate extra enableRendering" );
 		}
 	}
-	public void handleDragStarted( edu.cmu.cs.dennisc.croquet.DragContext dragAndDropContext ) {
+	public void handleDragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
 		this.potentialDragSource = null;
 		if( this.stencil != null && this.holes != null ) {
 			this.stencil.repaint();
@@ -725,19 +725,19 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 		this.disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
-	public void handleDragEnteredDropReceptor( edu.cmu.cs.dennisc.croquet.DragContext dragAndDropContext ) {
+	public void handleDragEnteredDropReceptor( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
 		//		this.currentDropReceptorComponent = dragAndDropContext.getCurrentDropReceptor().getAWTComponent();
 		//		if( this.stencil != null && this.holes != null ) {
 		//			this.stencil.repaint();
 		//		}
 	}
-	public void handleDragExitedDropReceptor( edu.cmu.cs.dennisc.croquet.DragContext dragAndDropContext ) {
+	public void handleDragExitedDropReceptor( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
 		this.currentDropReceptorComponent = null;
 		if( this.stencil != null && this.holes != null ) {
 			this.stencil.repaint();
 		}
 	}
-	public void handleDragStopped( edu.cmu.cs.dennisc.croquet.DragContext dragAndDropContext ) {
+	public void handleDragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
 		this.enableRendering();
 	}
 

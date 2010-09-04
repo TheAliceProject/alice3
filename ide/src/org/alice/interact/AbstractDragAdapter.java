@@ -79,7 +79,7 @@ import org.alice.interact.manipulator.OnScreenLookingGlassInformedManipulator;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 
-import edu.cmu.cs.dennisc.croquet.DragContext;
+import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
 import edu.cmu.cs.dennisc.croquet.DragComponent;
 import edu.cmu.cs.dennisc.croquet.ListSelectionState;
 
@@ -1000,14 +1000,14 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
-	private Point getDragAndDropPoint(DragContext dragAndDropContext)
+	private Point getDragAndDropPoint(DragAndDropContext dragAndDropContext)
 	{
 		java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 		java.awt.Point pointInLookingGlass = javax.swing.SwingUtilities.convertPoint( eSource.getComponent(), eSource.getPoint(), this.getAWTComponent() );
 		return pointInLookingGlass;
 	}
 	
-	public void dragUpdated(DragContext dragAndDropContext) {
+	public void dragUpdated(DragAndDropContext dragAndDropContext) {
 		this.currentInputState.setDragAndDropContext(dragAndDropContext);
 		this.currentInputState.setIsDragEvent(true);
 		this.currentInputState.setMouseLocation( getDragAndDropPoint(dragAndDropContext) );
@@ -1016,7 +1016,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		handleStateChange();
 	}
 	
-	public void dragEntered(DragContext dragAndDropContext) {
+	public void dragEntered(DragAndDropContext dragAndDropContext) {
 		this.currentInputState.setDragAndDropContext(dragAndDropContext);
 		this.currentInputState.setIsDragEvent(true);
 		this.currentInputState.setMouseLocation( getDragAndDropPoint(dragAndDropContext) );
@@ -1025,7 +1025,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		handleStateChange();
 	}
 	
-	public void dragExited(DragContext dragAndDropContext) {		
+	public void dragExited(DragAndDropContext dragAndDropContext) {		
 		this.currentInputState.setDragAndDropContext(dragAndDropContext); //We need a valid dragAndDropContext when we handle the update
 		this.currentInputState.setIsDragEvent(false);
 		this.currentInputState.setMouseLocation( getDragAndDropPoint(dragAndDropContext) );

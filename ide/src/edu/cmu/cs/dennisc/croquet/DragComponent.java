@@ -43,7 +43,7 @@
 package edu.cmu.cs.dennisc.croquet;
 
 public abstract class DragComponent extends Control {
-	private DragModel dragModel;
+	private DragAndDropModel dragModel;
 
 	private DragProxy dragProxy = null;
 	private DropProxy dropProxy = null;
@@ -106,13 +106,13 @@ public abstract class DragComponent extends Control {
 	//	public void setSubject( java.awt.Component subject ) {
 	//		this.subject = subject;
 	//	}
-	public DragModel getDragModel() {
+	public DragAndDropModel getDragModel() {
 		if( this.dragModel != null ) {
 			this.dragModel.setFirstComponentHint( DragComponent.this );
 		}
 		return this.dragModel;
 	}
-	public void setDragModel( DragModel dragModel ) {
+	public void setDragModel( DragAndDropModel dragModel ) {
 		if( this.dragModel != dragModel ) {
 //			if( this.dragAndDropOperation != null ) {
 //				assert dragAndDropOperation == null; 
@@ -193,7 +193,7 @@ public abstract class DragComponent extends Control {
 	}
 
 
-	private DragContext dragAndDropContext;
+	private DragAndDropContext dragAndDropContext;
 
 	private void handleLeftMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
 		Application application = Application.getSingleton();

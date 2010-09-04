@@ -78,7 +78,7 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 		super.handleRemovedFrom( parent );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation<?> createDropOperation( edu.cmu.cs.dennisc.croquet.DragContext context, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
+	public edu.cmu.cs.dennisc.croquet.Operation<?> createDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
 		org.alice.ide.operations.ast.DeclareLocalOperation declareLocalOperation = new org.alice.ide.operations.ast.DeclareLocalOperation( blockStatement, index );
 		return declareLocalOperation;
 	}

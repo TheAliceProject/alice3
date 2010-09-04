@@ -45,13 +45,13 @@ package org.alice.ide.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class LocalNamedResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.DragModel> {
+/*package-private*/class LocalNamedResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.DragAndDropModel> {
 	private String localName;
 	public LocalNamedResolver(String localName) {
 		this.localName = localName;
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.croquet.DragModel getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
+	protected final edu.cmu.cs.dennisc.croquet.DragAndDropModel getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
 		edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local = IdeTutorial.findFirstLocalNamed( codeEditor.getCode(), this.localName );
 		if( local != null ) {
 			return codeEditor.getDragAndDropOperationForTransient( local );

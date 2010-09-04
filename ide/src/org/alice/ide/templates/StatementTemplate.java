@@ -46,12 +46,12 @@ package org.alice.ide.templates;
  * @author Dennis Cosgrove
  */
 public abstract class StatementTemplate extends org.alice.ide.common.StatementLikeSubstance {
-	public StatementTemplate( edu.cmu.cs.dennisc.croquet.DragModel dragModel, Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls) {
+	public StatementTemplate( edu.cmu.cs.dennisc.croquet.DragAndDropModel dragModel, Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls) {
 		super(cls, javax.swing.BoxLayout.LINE_AXIS);
 		this.setDragModel( dragModel );
 	}
 	
-	public abstract edu.cmu.cs.dennisc.croquet.Operation< ? > createDropOperation( edu.cmu.cs.dennisc.croquet.DragContext context, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index );
+	public abstract edu.cmu.cs.dennisc.croquet.Operation< ? > createDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index );
 	@Override
 	protected boolean isPressed() {
 		return false;

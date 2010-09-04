@@ -40,38 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.tutorial;
-
-import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class MethodInvocationStatementResolver implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.DragAndDropModel> {
-	private RuntimeResolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver;
-	private int index;
-	public MethodInvocationStatementResolver(RuntimeResolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int index) {
-		this.methodResolver = methodResolver;
-		this.index = index;
+public abstract class DragAndDropModel extends Model {
+	public static final Group DRAG_GROUP = new Group( java.util.UUID.fromString( "16f67072-dd57-453c-a812-69f2303bc948" ), "DRAG_GROUP" );
+	public DragAndDropModel( java.util.UUID inividualUUID ) {
+		super( DRAG_GROUP, inividualUUID );
+		this.localize();
 	}
-	public edu.cmu.cs.dennisc.croquet.DragAndDropModel getResolved() {
-		org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getCodeEditorInFocus();
-		if (codeEditor != null) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.methodResolver.getResolved();
-			if (method != null) {
-				edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getSelectedItem();
-				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = IdeTutorial.getMethodInvocationAt(code, method, this.index);
-				if (methodInvocation != null) {
-					edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement) methodInvocation.getParent();
-					return codeEditor.getDragAndDropOperationForStatement(statement);
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
+	@Override
+	/*package-private*/ void localize() {
 	}
+	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( DragComponent dragSource );
+	public abstract void handleDragStarted( DragAndDropContext dragAndDropContext );
+	public abstract void handleDragEnteredDropReceptor( DragAndDropContext dragAndDropContext );
+	public abstract void handleDragExitedDropReceptor( DragAndDropContext dragAndDropContext );
+	public abstract void handleDragStopped( DragAndDropContext dragAndDropContext );
 }

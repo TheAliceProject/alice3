@@ -40,38 +40,69 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
+package org.alice.ide.codeeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class MethodInvocationStatementResolver implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.DragAndDropModel> {
-	private RuntimeResolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver;
+public class BlockStatementIndexPair implements edu.cmu.cs.dennisc.croquet.RetargetablePotentialDropSite {
+	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
 	private int index;
-	public MethodInvocationStatementResolver(RuntimeResolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int index) {
-		this.methodResolver = methodResolver;
+	public BlockStatementIndexPair( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.decode( binaryDecoder );
+	}
+	public BlockStatementIndexPair( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
+		this.blockStatement = blockStatement;
 		this.index = index;
 	}
-	public edu.cmu.cs.dennisc.croquet.DragAndDropModel getResolved() {
-		org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getCodeEditorInFocus();
-		if (codeEditor != null) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.methodResolver.getResolved();
-			if (method != null) {
-				edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getSelectedItem();
-				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = IdeTutorial.getMethodInvocationAt(code, method, this.index);
-				if (methodInvocation != null) {
-					edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement) methodInvocation.getParent();
-					return codeEditor.getDragAndDropOperationForStatement(statement);
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
+
+	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+		java.util.UUID id = binaryDecoder.decodeId();
+		this.blockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, id );
+		this.index = binaryDecoder.decodeInt(); 
+	}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.blockStatement.getUUID() );
+		binaryEncoder.encode( this.index );
+	}
+	
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		this.blockStatement = retargeter.retarget( this.blockStatement );
+	}
+
+	@Override
+	public boolean equals( Object o ) {
+		if( o == this )
+			return true;
+		if( o instanceof BlockStatementIndexPair ) {
+			BlockStatementIndexPair bsip = (BlockStatementIndexPair)o;
+			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.blockStatement, bsip.blockStatement ) && this.index == bsip.index;
 		} else {
-			return null;
+			return false;
 		}
+	}
+	@Override
+	public int hashCode() {
+		int rv = 17;
+		if( this.blockStatement != null ) {
+			rv = 37*rv + this.blockStatement.hashCode();
+		}
+		rv = 37*rv + this.index;
+		return rv;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( "[blockStatement=" );
+		sb.append( this.blockStatement );
+		sb.append( ";index=" );
+		sb.append( this.index );
+		sb.append( "]" );
+		return sb.toString();
 	}
 }

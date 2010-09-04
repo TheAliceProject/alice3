@@ -45,8 +45,8 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class DragContext extends ModelContext<DragModel> {
-	public static abstract class DragAndDropEvent extends ModelEvent< DragContext > {
+public class DragAndDropContext extends ModelContext<DragAndDropModel> {
+	public static abstract class DragAndDropEvent extends ModelEvent< DragAndDropContext > {
 		private java.awt.event.MouseEvent mouseEvent;
 		public DragAndDropEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
@@ -99,7 +99,7 @@ public class DragContext extends ModelContext<DragModel> {
 		public DroppedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
-		private DroppedEvent( DragContext parent, java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor ) {
+		private DroppedEvent( DragAndDropContext parent, java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor ) {
 			super( mouseEvent, dropReceptor );
 		}
 	}
@@ -132,8 +132,9 @@ public class DragContext extends ModelContext<DragModel> {
 	}
 	private DropReceptorInfo[] potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
 	private DropReceptor currentDropReceptor;
+	private PotentialDropSite currentPotentialDropSite;
 	private java.awt.event.MouseEvent latestMouseEvent;
-	/*package-private*/ DragContext( DragModel dragAndDropOperation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource ) {
+	/*package-private*/ DragAndDropContext( DragAndDropModel dragAndDropOperation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource ) {
 		super( dragAndDropOperation, originalMouseEvent, dragSource );
 		this.setLatestMouseEvent( latestMouseEvent );
 		java.util.List< ? extends DropReceptor > potentialDropReceptors = dragAndDropOperation.createListOfPotentialDropReceptors( dragSource );
@@ -151,7 +152,7 @@ public class DragContext extends ModelContext<DragModel> {
 			dropReceptorInfo.getDropReceptor().dragStarted( this );
 		}
 	}
-	public DragContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public DragAndDropContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 
@@ -245,7 +246,8 @@ public class DragContext extends ModelContext<DragModel> {
 			this.getDragSource().getDragProxy().setOverDropAcceptor( this.currentDropReceptor != null );
 		}
 		if( this.currentDropReceptor != null ) {
-			this.currentDropReceptor.dragUpdated( this );
+			PotentialDropSite potentialDropSite = this.currentDropReceptor.dragUpdated( this );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "potentialDropSite", potentialDropSite );
 		}
 	}
 	

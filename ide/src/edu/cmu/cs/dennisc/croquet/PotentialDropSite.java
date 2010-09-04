@@ -40,38 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.tutorial;
+package edu.cmu.cs.dennisc.croquet;
 
-import edu.cmu.cs.dennisc.croquet.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class MethodInvocationStatementResolver implements RuntimeResolver<edu.cmu.cs.dennisc.croquet.DragAndDropModel> {
-	private RuntimeResolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver;
-	private int index;
-	public MethodInvocationStatementResolver(RuntimeResolver<edu.cmu.cs.dennisc.alice.ast.AbstractMethod> methodResolver, int index) {
-		this.methodResolver = methodResolver;
-		this.index = index;
-	}
-	public edu.cmu.cs.dennisc.croquet.DragAndDropModel getResolved() {
-		org.alice.ide.codeeditor.CodeEditor codeEditor = org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getCodeEditorInFocus();
-		if (codeEditor != null) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.methodResolver.getResolved();
-			if (method != null) {
-				edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getSelectedItem();
-				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = IdeTutorial.getMethodInvocationAt(code, method, this.index);
-				if (methodInvocation != null) {
-					edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement) methodInvocation.getParent();
-					return codeEditor.getDragAndDropOperationForStatement(statement);
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+public interface PotentialDropSite extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 }

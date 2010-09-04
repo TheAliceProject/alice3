@@ -131,9 +131,9 @@ public class AutomaticTutorial {
 							this.stencil.addStep( new AutomaticBooleanStateStep( booleanStateContext, (edu.cmu.cs.dennisc.croquet.BooleanStateEdit)edit ) );
 						}
 					}
-				} else if( edu.cmu.cs.dennisc.croquet.DragModel.DRAG_GROUP == group ) {
-					if( modelContext instanceof edu.cmu.cs.dennisc.croquet.DragContext ) {
-						edu.cmu.cs.dennisc.croquet.DragContext dragContext = (edu.cmu.cs.dennisc.croquet.DragContext)modelContext;
+				} else if( edu.cmu.cs.dennisc.croquet.DragAndDropModel.DRAG_GROUP == group ) {
+					if( modelContext instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
+						edu.cmu.cs.dennisc.croquet.DragAndDropContext dragContext = (edu.cmu.cs.dennisc.croquet.DragAndDropContext)modelContext;
 						this.addMessageStep( "drag", "drag" );
 					}
 				}

@@ -111,7 +111,7 @@ import edu.cmu.cs.dennisc.croquet.PopupMenuOperation;
 import edu.cmu.cs.dennisc.croquet.Application;
 import edu.cmu.cs.dennisc.croquet.BooleanState;
 import edu.cmu.cs.dennisc.croquet.ComboBox;
-import edu.cmu.cs.dennisc.croquet.DragContext;
+import edu.cmu.cs.dennisc.croquet.DragAndDropContext;
 import edu.cmu.cs.dennisc.croquet.DragComponent;
 import edu.cmu.cs.dennisc.croquet.ListSelectionState;
 import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
@@ -1827,7 +1827,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	{
 	}
 
-	public void dragStarted(DragContext dragAndDropContext) {
+	public void dragStarted(DragAndDropContext dragAndDropContext) {
 		DragComponent dragSource = dragAndDropContext.getDragSource();
 		dragSource.showDragProxy();
 		Operation<?> operation = dragSource.getLeftButtonClickOperation();
@@ -1837,28 +1837,28 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 
-	public void dragStopped(DragContext dragAndDropContext) 
+	public void dragStopped(DragAndDropContext dragAndDropContext) 
 	{
 		this.globalDragAdapter.dragExited(dragAndDropContext);
 	}
 
-	public void dragEntered(DragContext dragAndDropContext) 
+	public void dragEntered(DragAndDropContext dragAndDropContext) 
 	{
 	}
-	public void dragExited(DragContext dragAndDropContext, boolean isDropRecipient) 
+	public void dragExited(DragAndDropContext dragAndDropContext, boolean isDropRecipient) 
 	{
 	}
 
 	private boolean overLookingGlass = false;
 	
-	private boolean isDropLocationOverLookingGlass(DragContext dragAndDropContext)
+	private boolean isDropLocationOverLookingGlass(DragAndDropContext dragAndDropContext)
 	{
 		java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 		java.awt.Point pointInLookingGlass = javax.swing.SwingUtilities.convertPoint( eSource.getComponent(), eSource.getPoint(), this.lookingGlassPanel.getAwtComponent() );
 		return this.lookingGlassPanel.getAwtComponent().contains(pointInLookingGlass);
 	}
 	
-	public void dragUpdated(DragContext dragAndDropContext) {
+	public edu.cmu.cs.dennisc.croquet.PotentialDropSite dragUpdated(DragAndDropContext dragAndDropContext) {
 		if (isDropLocationOverLookingGlass(dragAndDropContext))
 		{
 			if (!overLookingGlass)
@@ -1876,6 +1876,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				this.globalDragAdapter.dragExited(dragAndDropContext);
 			}
 		}
+		return null;
 	}
 
 	public edu.cmu.cs.dennisc.croquet.JComponent<?> getViewController() {
@@ -1886,7 +1887,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return source instanceof org.alice.stageide.gallerybrowser.GalleryDragComponent;
 	}
 	
-	public Operation<?> dragDropped(DragContext dragAndDropContext) {
+	public Operation<?> dragDropped(DragAndDropContext dragAndDropContext) {
 		DragComponent dragSource = dragAndDropContext.getDragSource();
 		if (isDropLocationOverLookingGlass(dragAndDropContext))
 		{

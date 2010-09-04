@@ -45,13 +45,13 @@ package org.alice.ide.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class ForEachInArrayLoopVariableResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.DragModel> {
+/*package-private*/class ForEachInArrayLoopVariableResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.DragAndDropModel> {
 	private int index;
 	public ForEachInArrayLoopVariableResolver(int index) {
 		this.index = index;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.DragModel getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
+	protected edu.cmu.cs.dennisc.croquet.DragAndDropModel getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
 		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) codeEditor.getCode();
 		edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop forEachInArrayLoop = IdeTutorial.getNodeAt(code, edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop.class, this.index);
 		if (forEachInArrayLoop != null) {
