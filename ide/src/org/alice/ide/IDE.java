@@ -147,6 +147,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void initialize( java.lang.String[] args ) {
 		super.initialize( args );
+		edu.cmu.cs.dennisc.croquet.MenuBar menuBar =  org.alice.ide.croquet.models.MenuBarModel.getInstance().createMenuBar();
+		this.getFrame().setMenuBar( menuBar );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createContentPane() {
@@ -259,19 +261,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			//return AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
 			return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
 		}
-	}
-
-
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.MenuBarModel createMenuBarOperation() {
-		edu.cmu.cs.dennisc.croquet.MenuBarModel rv = new edu.cmu.cs.dennisc.croquet.MenuBarModel( UI_STATE_GROUP, java.util.UUID.fromString( "f621208a-244e-4cbe-8263-52ebb6916c2d" ) );
-		rv.addMenuModel( org.alice.ide.croquet.models.menubar.FileMenuModel.getInstance() );
-		rv.addMenuModel( org.alice.ide.croquet.models.menubar.EditMenuModel.getInstance() );
-		rv.addMenuModel( org.alice.ide.croquet.models.menubar.ProjectMenuModel.getInstance() );
-		rv.addMenuModel( org.alice.ide.croquet.models.menubar.RunMenuModel.getInstance() );
-		rv.addMenuModel( org.alice.ide.croquet.models.menubar.WindowMenuModel.getInstance() );
-		rv.addMenuModel( org.alice.ide.croquet.models.menubar.HelpMenuModel.getInstance() );
-		return rv;
 	}
 
 	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getPerformEditorGeneratedSetUpMethod() {

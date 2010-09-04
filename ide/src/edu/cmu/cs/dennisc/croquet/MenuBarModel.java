@@ -46,6 +46,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class MenuBarModel extends Model {
+	private static final Group MENU_BAR_MODEL_GROUP = new Group( java.util.UUID.fromString( "7d9cd79e-6011-4174-94d4-d67647211481" ), "MENU_BAR_MODEL_GROUP" );
+
 //	private class MenuBarChangeListener implements javax.swing.event.ChangeListener {
 //		private KMenuBar menuBar;
 //		public MenuBarChangeListener( KMenuBar menuBar ) {
@@ -63,8 +65,8 @@ public class MenuBarModel extends Model {
 //	};
 //	private java.util.Map< KMenuBar, MenuBarChangeListener > mapMenuBarToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.concurrent.CopyOnWriteArrayList< MenuModel > menuModels = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public MenuBarModel( Group group, java.util.UUID id ) {
-		super( group, id );
+	public MenuBarModel( java.util.UUID id ) {
+		super( MENU_BAR_MODEL_GROUP, id );
 		this.localize();
 	}
 
