@@ -106,6 +106,30 @@ public /*final*/ class BooleanState extends Model {
 		return true;
 	}
 	
+	public String getTutorialNoteText( BooleanStateEdit booleanStateEdit ) {
+		StringBuilder sb = new StringBuilder();
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.trueText, this.falseText ) ) {
+			if( booleanStateEdit.getNextValue() ) {
+				sb.append( "Select " );
+			} else {
+				sb.append( "Unselect " );
+			}
+			sb.append( "<strong><em>" );
+			sb.append( this.getTrueText() );
+			sb.append( "</strong></em>" );
+		} else {
+			sb.append( "Press " );
+			sb.append( "<strong><em>" );
+			if( booleanStateEdit.getNextValue() ) {
+				sb.append( this.falseText );
+			} else {
+				sb.append( this.trueText );
+			}
+			sb.append( "</strong></em>" );
+		}
+		return sb.toString();
+	}
+	
 	@Override
 	/*package-private*/ void localize() {
 		String text = this.getDefaultLocalizedText();

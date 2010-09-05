@@ -84,7 +84,7 @@ public class FocusCodeOperation extends org.alice.ide.operations.ActionOperation
 				getIDE().setFocusedCode( prevCode );
 			}
 			@Override
-			protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+			protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
 				rv.append( "focus: " );
 				rv.append( edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, nextCode, locale) );
 				return rv;

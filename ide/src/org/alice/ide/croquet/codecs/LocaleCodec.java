@@ -45,16 +45,35 @@ package org.alice.ide.croquet.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public enum StringCodec implements edu.cmu.cs.dennisc.croquet.Codec< String > {
+public enum LocaleCodec implements edu.cmu.cs.dennisc.croquet.Codec< java.util.Locale > {
 	SINGLETON;
-	public StringBuilder appendRepresentation(StringBuilder rv, String value, java.util.Locale locale) {
-		rv.append( value );
+	public StringBuilder appendRepresentation(StringBuilder rv, java.util.Locale value, java.util.Locale locale) {
+		if( value != null ) {
+			rv.append( value.getDisplayName() );
+		} else {
+			rv.append( value );
+		}
 		return rv;
 	}
-	public String decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return binaryDecoder.decodeString();
+	public java.util.Locale decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+		boolean isNotNull = binaryDecoder.decodeBoolean();
+		if( isNotNull ) {
+			String language = binaryDecoder.decodeString();
+			String country = binaryDecoder.decodeString();
+			String variant = binaryDecoder.decodeString();
+			return new java.util.Locale( language, country, variant );
+		} else {
+			return null;
+		}
 	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, String value ) {
-		binaryEncoder.encode( value );
+	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.util.Locale value) {
+		if( value != null ) {
+			binaryEncoder.encode( true );
+			binaryEncoder.encode( value.getLanguage() );
+			binaryEncoder.encode( value.getCountry() );
+			binaryEncoder.encode( value.getVariant() );
+		} else {
+			binaryEncoder.encode( false );
+		}
 	}
 }

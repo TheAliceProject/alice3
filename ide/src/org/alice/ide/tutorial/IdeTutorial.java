@@ -665,7 +665,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 			protected final void undoInternal() {
 			}
 			@Override
-			protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+			protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 				return rv;
 			}
 		};

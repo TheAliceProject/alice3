@@ -111,7 +111,7 @@ public class PredeterminedScaleActionOperation extends edu.cmu.cs.dennisc.croque
 				scale( undoVector );
 			}
 			@Override
-			protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+			protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 				rv.append( editPresentationKey );
 				return rv;
 			}

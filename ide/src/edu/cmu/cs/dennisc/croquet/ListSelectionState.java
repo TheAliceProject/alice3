@@ -228,7 +228,7 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 						//pass
 					} else {
 						ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController, prevIndex, prevSelection, nextIndex, nextSelection );
-						childContext.commitAndInvokeDo( new ListSelectionEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ) );
+						childContext.commitAndInvokeDo( new ListSelectionStateEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ) );
 						ModelContext< ? > popContext = ContextManager.popContext();
 						assert popContext == childContext;
 					}
@@ -390,7 +390,7 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 	private final SingleListSelectionModel listSelectionModel = new SingleListSelectionModel();
 	private final ComboBoxModel comboBoxModel = new ComboBoxModel();
 	private Codec< E > codec;
-	private CodableResolver< Codec<E> > codecResolver;
+	//private CodableResolver< Codec<E> > codecResolver;
 	
 	public ListSelectionState(Group group, java.util.UUID id, Codec< E > codec, int selectedIndex, E... items) {
 		super(group, id);
@@ -404,6 +404,16 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 	}
 	@Override
 	/*package-private*/ void localize() {
+	}
+	
+	public String getTutorialNoteText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "Select " );
+		sb.append( "<strong><em>" );
+		E nextValue = listSelectionStateEdit.getNextValue();
+		this.codec.appendRepresentation( sb, nextValue, java.util.Locale.getDefault() );
+		sb.append( "</strong></em>" );
+		return sb.toString();
 	}
 	
 	/*package-private*/ ComboBoxModel getComboBoxModel() {
@@ -424,14 +434,14 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 		return this.codec;
 	}
 	
-	/*package-private*/ CodableResolver< Codec<E> > getCodecResolver() {
-		if( this.codecResolver != null ) {
-			//pass
-		} else {
-			this.codecResolver = this.codec.getResolver();
-		}
-		return this.codecResolver;
-	}
+//	/*package-private*/ CodableResolver< Codec<E> > getCodecResolver() {
+//		if( this.codecResolver != null ) {
+//			//pass
+//		} else {
+//			this.codecResolver = this.codec.getResolver();
+//		}
+//		return this.codecResolver;
+//	}
 	
 	public E getSelectedItem() {
 		return (E) this.comboBoxModel.getSelectedItem();

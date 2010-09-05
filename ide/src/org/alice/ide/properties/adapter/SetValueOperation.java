@@ -79,7 +79,7 @@ public class SetValueOperation<P> extends edu.cmu.cs.dennisc.croquet.ActionOpera
 				SetValueOperation.this.propertyAdapter.setValue( SetValueOperation.this.originalValue );
 			}
 			@Override
-			protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+			protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 				rv.append( SetValueOperation.this.propertyAdapter.getUndoRedoDescription( locale ) );
 				return rv;
 			}

@@ -55,7 +55,7 @@ public abstract class AbstractDeclaration extends AbstractNode {
 		return super.fillInDeclarationSet( rv, nodes );
 	}
 	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		//return super.appendRepr( rv, locale );
 		rv.append( this.getName() );
 		return rv;

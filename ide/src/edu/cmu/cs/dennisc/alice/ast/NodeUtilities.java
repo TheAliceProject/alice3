@@ -49,11 +49,12 @@ public class NodeUtilities {
 	private NodeUtilities() {
 		throw new AssertionError();
 	}
-	public static StringBuffer safeAppendRepr( StringBuffer rv, AbstractNode node, java.util.Locale locale ) {
-		if( node != null ) {
-			node.appendRepr( rv, locale );
+	public static StringBuilder safeAppendRepr( StringBuilder rv, Node node, java.util.Locale locale ) {
+		if( node instanceof AbstractNode ) {
+			((AbstractNode)node).appendRepr( rv, locale );
 		} else {
 			//todo?
+			rv.append( node );
 		}
 		return rv;
 	}

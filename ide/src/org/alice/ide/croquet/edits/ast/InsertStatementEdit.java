@@ -69,7 +69,7 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.al
 	}
 	
 	@Override
-	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		//super.updatePresentation( rv, locale );
 		rv.append( "drop: " );
 		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, this.statement, locale );

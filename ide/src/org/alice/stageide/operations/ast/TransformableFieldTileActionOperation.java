@@ -73,7 +73,7 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 						setAbsolutePOV( transformable, prevPOV );
 					}
 					@Override
-					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+					protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 						//todo
 						rv.append( TransformableFieldTileActionOperation.this.getName() );
 						return rv;

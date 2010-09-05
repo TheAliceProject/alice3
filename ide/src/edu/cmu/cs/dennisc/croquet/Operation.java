@@ -93,7 +93,6 @@ public abstract class Operation< C extends OperationContext<?>> extends Model {
 		this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 	}
 	
-	@Override
 	public String getTutorialNoteText() {
 		return this.getName();
 	}

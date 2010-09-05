@@ -53,33 +53,7 @@ public class LocaleSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelecti
 		return SingletonHolder.instance;
 	}
 	private LocaleSelectionState() {
-		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ), 
-				new edu.cmu.cs.dennisc.croquet.Codec< java.util.Locale >() {
-					public edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.Codec< java.util.Locale >> getResolver() {
-						throw new RuntimeException( "todo" );
-					}			
-					public java.util.Locale decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-						boolean isNotNull = binaryDecoder.decodeBoolean();
-						if( isNotNull ) {
-							String language = binaryDecoder.decodeString();
-							String country = binaryDecoder.decodeString();
-							String variant = binaryDecoder.decodeString();
-							return new java.util.Locale( language, country, variant );
-						} else {
-							return null;
-						}
-					}
-					public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.util.Locale value) {
-						if( value != null ) {
-							binaryEncoder.encode( true );
-							binaryEncoder.encode( value.getLanguage() );
-							binaryEncoder.encode( value.getCountry() );
-							binaryEncoder.encode( value.getVariant() );
-						} else {
-							binaryEncoder.encode( false );
-						}
-					}
-				}, 
+		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ), org.alice.ide.croquet.codecs.LocaleCodec.SINGLETON,
 				0, 
 				new java.util.Locale( "en", "US" ),
 				new java.util.Locale( "pt" ),

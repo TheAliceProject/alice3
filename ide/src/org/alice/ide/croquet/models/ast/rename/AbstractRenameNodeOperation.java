@@ -72,7 +72,7 @@ public abstract class AbstractRenameNodeOperation extends edu.cmu.cs.dennisc.cro
 					nameProperty.setValue( prevValue );
 				}
 				@Override
-				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+				protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 					rv.append( "rename: " );
 					rv.append( prevValue );
 					rv.append( " ===> " );

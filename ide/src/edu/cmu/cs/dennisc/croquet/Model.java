@@ -61,9 +61,9 @@ public abstract class Model implements RuntimeResolver< Model > {
 		return this.group;
 	}
 
-	public String getTutorialNoteText() {
-		return this.toString();
-	}
+//	public String getTutorialNoteText() {
+//		return this.toString();
+//	}
 	
 	public java.util.UUID getId() {
 		return this.id;

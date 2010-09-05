@@ -180,7 +180,7 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 						setAbsolutePOV( camera, prevPOV );
 					}
 					@Override
-					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+					protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 						rv.append( MoveActiveCameraToMarkerActionOperation.this.getName() );
 						return rv;
 					}

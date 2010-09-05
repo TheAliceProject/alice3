@@ -45,18 +45,24 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class ListSelectionEdit<E> extends Edit<ListSelectionState<E>> {
+public final class ListSelectionStateEdit<E> extends Edit<ListSelectionState<E>> {
 	private E prevValue;
 	private E nextValue;
 	
-	public ListSelectionEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public ListSelectionStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public ListSelectionEdit( java.util.EventObject e, E prevValue, E nextValue ) {
+	public ListSelectionStateEdit( java.util.EventObject e, E prevValue, E nextValue ) {
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
 	}
-		
+	
+	public E getPreviousValue() {
+		return this.prevValue;
+	}
+	public E getNextValue() {
+		return this.nextValue;
+	}
 	@Override
 	public boolean canRedo() {
 		return this.getModel() != null;
@@ -68,8 +74,6 @@ public final class ListSelectionEdit<E> extends Edit<ListSelectionState<E>> {
 
 	@Override
 	protected final void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-//		CodableResolver< Codec<E> > codecResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-//		Codec<E> codec = codecResolver.getResolved();
 		ListSelectionState< E > listSelectionState = this.getModel();
 		Codec<E> codec = listSelectionState.getCodec();
 		this.prevValue = codec.decode( binaryDecoder );
@@ -92,7 +96,7 @@ public final class ListSelectionEdit<E> extends Edit<ListSelectionState<E>> {
 		this.getModel().setSelectedItem( this.prevValue );
 	}
 	@Override
-	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "select " );
 		rv.append( this.prevValue );
 		rv.append( " ===> " );

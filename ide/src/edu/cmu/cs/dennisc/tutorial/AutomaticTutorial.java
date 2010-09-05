@@ -98,19 +98,19 @@ public class AutomaticTutorial {
 	private void addMessageStep( String title, String text ) {
 		this.stencil.addStep( new MessageStep( title, text ) );
 	}
-	private static class ModelResolver< M extends edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > {
+	private static class ModelFromContextResolver< M extends edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > {
 		private edu.cmu.cs.dennisc.croquet.ModelContext< M > modelContext;
-		public ModelResolver( edu.cmu.cs.dennisc.croquet.ModelContext< M > modelContext ) {
+		public ModelFromContextResolver( edu.cmu.cs.dennisc.croquet.ModelContext< M > modelContext ) {
 			this.modelContext = modelContext;
 		}
 		public M getResolved() {
 			return this.modelContext.getModel();
 		}
 	}
-	private static class IthModelResolver< M extends edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > {
+	private static class ModelFromMenuSelectionResolver< M extends edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > {
 		private edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent;
 		private int index;
-		public IthModelResolver( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int index ) {
+		public ModelFromMenuSelectionResolver( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int index ) {
 			this.menuSelectionEvent = menuSelectionEvent;
 			this.index = index;
 		}
@@ -134,16 +134,41 @@ public class AutomaticTutorial {
 			return null;
 		}
 	}
-	private class AutomaticBooleanStateStep extends BooleanStateStep { 
-		public AutomaticBooleanStateStep( edu.cmu.cs.dennisc.croquet.BooleanStateContext context, edu.cmu.cs.dennisc.croquet.BooleanStateEdit edit ) {
-			super( context.getModel().getClass().getSimpleName(), context.getModel().getClass().getName(), new ModelResolver< edu.cmu.cs.dennisc.croquet.BooleanState >( context ), edit.getNextValue() );
+	private static class AutomaticBooleanStateStep extends BooleanStateStep { 
+		public static AutomaticBooleanStateStep createInstance( edu.cmu.cs.dennisc.croquet.BooleanStateContext context, edu.cmu.cs.dennisc.croquet.BooleanStateEdit edit ) {
+			edu.cmu.cs.dennisc.croquet.BooleanState booleanState = context.getModel();
+			String title = booleanState.getClass().getSimpleName();
+			String text = booleanState.getTutorialNoteText( edit );
+			ModelFromContextResolver modelResolver = new ModelFromContextResolver( context );
+			return new AutomaticBooleanStateStep( title, text, modelResolver, edit.getNextValue() );
+		}
+		private AutomaticBooleanStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.BooleanState > booleanStateResolver, boolean desiredValue ) {
+			super( title, text, booleanStateResolver, desiredValue );
+		}
+	}
+	private static class AutomaticListSelectionStateStep< E > extends ListSelectionStateStep< E > { 
+		public static <E> AutomaticListSelectionStateStep createInstance( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > context, final edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E > edit ) {
+			edu.cmu.cs.dennisc.croquet.ListSelectionState< E > listSelectionState = context.getModel();
+			String title = listSelectionState.getClass().getSimpleName();
+			String text = listSelectionState.getTutorialNoteText( edit );
+			ModelFromContextResolver modelResolver = new ModelFromContextResolver( context );
+			edu.cmu.cs.dennisc.croquet.RuntimeResolver itemResolver = new edu.cmu.cs.dennisc.croquet.RuntimeResolver<E>() {
+				public E getResolved() {
+					return edit.getNextValue();
+				}
+			};
+			Feature.ConnectionPreference connectionPreference = Feature.ConnectionPreference.EAST_WEST;
+			return new AutomaticListSelectionStateStep( title, text, modelResolver, itemResolver, connectionPreference );
+		}
+		private AutomaticListSelectionStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.RuntimeResolver<edu.cmu.cs.dennisc.croquet.ListSelectionState< E >> itemSelectionStateResolver, edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends E > desiredValueResolver, Feature.ConnectionPreference connectionPreference ) {
+			super( title, text, itemSelectionStateResolver, desiredValueResolver, connectionPreference );
 		}
 	}
 	private class AutomaticInputDialogOperationStep extends InputDialogOpenAndCommitStep {
 		private edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > context;
 		private edu.cmu.cs.dennisc.croquet.Edit<?> edit;
 		public AutomaticInputDialogOperationStep( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > context, edu.cmu.cs.dennisc.croquet.Edit<?> edit ) {
-			super( context.getModel().getClass().getSimpleName(), context.getModel().getClass().getName(), "commit text", new ModelResolver( context ), null, null, null );
+			super( context.getModel().getClass().getSimpleName(), context.getModel().getClass().getName(), "commit text", new ModelFromContextResolver( context ), null, null, null );
 			this.context = context;
 			this.edit = edit;
 		}
@@ -163,7 +188,7 @@ public class AutomaticTutorial {
 			super( 
 					dragAndDropContext.getClass().getSimpleName(), 
 					dragAndDropContext.getClass().getName(), 
-					new ModelResolver< edu.cmu.cs.dennisc.croquet.DragAndDropModel >( dragAndDropContext ), 
+					new ModelFromContextResolver< edu.cmu.cs.dennisc.croquet.DragAndDropModel >( dragAndDropContext ), 
 					"dropText", 
 					new DropSiteResolver( dragAndDropContext ), 
 					null, null, null, null, null );
@@ -191,10 +216,18 @@ public class AutomaticTutorial {
 			
 			for( int i=index0+1; i<N; i++ ) {
 				edu.cmu.cs.dennisc.croquet.Model modelI = menuSelectionEvent.getModelAt( i );
-				Note noteI = new Note( "select <strong><em>" + modelI.getTutorialNoteText() + "</em></strong>" );
+				StringBuilder sb = new StringBuilder();
+				sb.append( "select <strong><em>" );
+				if( modelI instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
+					sb.append( ((edu.cmu.cs.dennisc.croquet.MenuModel)modelI).getTutorialNoteText() );
+				} else {
+					sb.append( modelI.toString() );
+				}
+				sb.append( "</em></strong>" );
+				Note noteI = new Note( sb.toString() );
 				noteI.setLabel( Integer.toString( i-index0 ) );
 				for( int j=index0; j<=i; j++ ) {
-					noteI.addFeature( new Hole( new FirstComponentResolver( new IthModelResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, j ) ), Feature.ConnectionPreference.EAST_WEST, j==i ) );
+					noteI.addFeature( new Hole( new FirstComponentResolver( new ModelFromMenuSelectionResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, j ) ), Feature.ConnectionPreference.EAST_WEST, j==i ) );
 				}
 				rv.addNote( noteI );
 			}
@@ -209,7 +242,7 @@ public class AutomaticTutorial {
 		private edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent originalMenuSelectionEvent;
 		private int index0;
 		private AutomaticPopupMenuStep( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int index0 ) {
-			super( menuSelectionEvent.getModelAt( index0 ).toString(), menuSelectionEvent.getModelAt( index0 ).getClass().getSimpleName(), new Hole( new FirstComponentResolver( new IthModelResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, index0 ) ), Feature.ConnectionPreference.NORTH_SOUTH ), new IthModelResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, index0 ) );
+			super( menuSelectionEvent.getModelAt( index0 ).toString(), menuSelectionEvent.getModelAt( index0 ).getClass().getSimpleName(), new Hole( new FirstComponentResolver( new ModelFromMenuSelectionResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, index0 ) ), Feature.ConnectionPreference.NORTH_SOUTH ), new ModelFromMenuSelectionResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, index0 ) );
 			this.originalMenuSelectionEvent = menuSelectionEvent;
 			this.index0 = index0;
 		}
@@ -277,7 +310,13 @@ public class AutomaticTutorial {
 							edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext = (edu.cmu.cs.dennisc.croquet.BooleanStateContext)modelContext;
 							edu.cmu.cs.dennisc.croquet.Edit<?> edit = booleanStateContext.getEdit();
 							if( edit instanceof edu.cmu.cs.dennisc.croquet.BooleanStateEdit ) {
-								this.stencil.addStep( new AutomaticBooleanStateStep( booleanStateContext, (edu.cmu.cs.dennisc.croquet.BooleanStateEdit)edit ) );
+								this.stencil.addStep( AutomaticBooleanStateStep.createInstance( booleanStateContext, (edu.cmu.cs.dennisc.croquet.BooleanStateEdit)edit ) );
+							}
+						} else if( modelContext instanceof edu.cmu.cs.dennisc.croquet.ListSelectionStateContext ) {
+							edu.cmu.cs.dennisc.croquet.ListSelectionStateContext listSelectionStateContext = (edu.cmu.cs.dennisc.croquet.ListSelectionStateContext)modelContext;
+							edu.cmu.cs.dennisc.croquet.Edit<?> edit = listSelectionStateContext.getEdit();
+							if( edit instanceof edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit ) {
+								this.stencil.addStep( AutomaticListSelectionStateStep.createInstance( listSelectionStateContext, (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit)edit ) );
 							}
 						}
 					} else if( edu.cmu.cs.dennisc.croquet.DragAndDropModel.DRAG_GROUP == group ) {

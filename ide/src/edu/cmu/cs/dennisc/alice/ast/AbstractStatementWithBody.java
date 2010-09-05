@@ -55,7 +55,7 @@ public abstract class AbstractStatementWithBody extends Statement {
 		this.body.setValue( body );
 	}
 	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		return rv;
 	}
 }

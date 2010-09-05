@@ -94,7 +94,7 @@ public abstract class AbstractSetLocalTransformationActionOperation extends edu.
 				setLocalTransformation( prevLT );
 			}
 			@Override
-			protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+			protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 				rv.append( getEditPresentationName( locale ) );
 				return rv;
 			}

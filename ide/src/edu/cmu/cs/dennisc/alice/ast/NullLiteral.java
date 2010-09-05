@@ -52,7 +52,7 @@ public class NullLiteral extends AbstractLiteral {
 		return TypeDeclaredInJava.OBJECT_TYPE;
 	}
 	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		//todo
 		if( "java".equals( locale.getVariant() ) ) {
 			rv.append( "null" );

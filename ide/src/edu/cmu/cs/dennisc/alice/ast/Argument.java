@@ -61,7 +61,7 @@ public class Argument extends AbstractNode {
 		this.expression.setValue( expression );
 	}
 	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		//return super.appendRepr( rv, locale );
 		NodeUtilities.safeAppendRepr( rv, this.parameter.getValue(), locale );
 		rv.append( ": " );

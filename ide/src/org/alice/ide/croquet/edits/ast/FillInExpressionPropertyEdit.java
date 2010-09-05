@@ -69,7 +69,7 @@ public class FillInExpressionPropertyEdit extends edu.cmu.cs.dennisc.cascade.Cas
 		expressionProperty.setValue( this.prevExpression );
 	}
 	@Override
-	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "set: " );
 		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, this.prevExpression, locale );
 		rv.append( " ===> " );

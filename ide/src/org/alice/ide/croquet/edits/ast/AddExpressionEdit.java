@@ -67,7 +67,7 @@ public class AddExpressionEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit<
 		expressionListProperty.remove( this.index );
 	}
 	@Override
-	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "add: " );
 		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, this.expression, locale );
 		return rv;

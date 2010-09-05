@@ -77,7 +77,7 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 					getIDE().refreshUbiquitousPane();
 				}
 				@Override
-				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+				protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 					rv.append( "convert:" );
 					edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, original, locale);
 					rv.append( " --> " );
@@ -139,7 +139,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOp
 					getIDE().refreshUbiquitousPane();
 				}
 				@Override
-				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+				protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 					rv.append( "dissolve:" );
 					edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, abstractStatementWithBody, locale);
 					return rv;
@@ -188,7 +188,7 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOper
 					getIDE().refreshUbiquitousPane();
 				}
 				@Override
-				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+				protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 					rv.append( "delete:" );
 					edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, statement, locale);
 					return rv;

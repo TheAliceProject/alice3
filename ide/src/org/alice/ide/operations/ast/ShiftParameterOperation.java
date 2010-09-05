@@ -73,7 +73,7 @@ public abstract class ShiftParameterOperation extends AbstractCodeParameterOpera
 					swap( method, bIndex, aIndex );
 				}
 				@Override
-				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+				protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 					rv.append( "Parameter" );
 					rv.append( ShiftParameterOperation.this.getName() );
 					return rv;

@@ -67,7 +67,7 @@ public class DeclareMethodParameterEdit extends edu.cmu.cs.dennisc.croquet.Edit<
 		org.alice.ide.ast.NodeUtilities.removeParameter( map, method, this.parameter, this.index, org.alice.ide.IDE.getSingleton().getMethodInvocations( method ) );
 	}
 	@Override
-	protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
 		rv.append( "declare:" );
 		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, parameter, locale);
 		return rv;

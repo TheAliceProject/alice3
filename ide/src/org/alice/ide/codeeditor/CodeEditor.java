@@ -619,7 +619,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 										}
 									}
 									@Override
-									protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+									protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
 										rv.append( "copy code" );
 										return rv;
 									}
@@ -666,7 +666,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 												this.owner.add( this.aIndex, statement );
 											}
 											@Override
-											protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+											protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 												rv.append( "move code" );
 												return rv;
 											}
@@ -695,7 +695,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 											prevOwner.add( prevIndex, statement );
 										}
 										@Override
-										protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+										protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
 											rv.append( "move code" );
 											return rv;
 										}

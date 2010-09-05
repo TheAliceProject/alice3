@@ -108,7 +108,7 @@ public final class BoundedRangeIntegerStateEdit extends Edit<BoundedRangeInteger
 	}
 
 	@Override
-	protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
 		rv.append("integer: ");
 		rv.append(this.nextValue);
 		return rv;

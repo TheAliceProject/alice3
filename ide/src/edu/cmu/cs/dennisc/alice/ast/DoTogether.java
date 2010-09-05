@@ -53,7 +53,7 @@ public class DoTogether extends AbstractStatementWithBody {
 		super( body );
 	}
 	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "do together" );
 		return super.appendRepr( rv, locale );
 	}

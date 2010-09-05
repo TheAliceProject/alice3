@@ -70,7 +70,7 @@ public class StringConcatenation extends Expression {
 		return TypeDeclaredInJava.get( String.class );
 	}
 	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		NodeUtilities.safeAppendRepr( rv, this.leftOperand.getValue(), locale );
 		rv.append( " + " );
 		NodeUtilities.safeAppendRepr( rv, this.rightOperand.getValue(), locale );
