@@ -242,6 +242,9 @@ public abstract class Step {
 		}
 	}
 	
+	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
+		return true;
+	}
 	public void resetStencilRenderingDesiredToDefault() {
 		this.isStencilRenderingDesired = IS_STENCIL_RENDERING_DESIRED_BY_DEFAULT;
 	}

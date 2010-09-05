@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.tutorial;
  */
 /*package-private*/class InputDialogCommitFeature extends Feature {
 	public InputDialogCommitFeature(edu.cmu.cs.dennisc.croquet.RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> trackableShapeResolver) {
-		super(trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST);
+		super( trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST, true );
 	}
 	@Override
 	protected java.awt.Insets getBoundsInsets() {

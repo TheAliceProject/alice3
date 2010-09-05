@@ -61,7 +61,6 @@ public abstract class MenuModel extends Model {
 	public MenuModel( java.util.UUID individualId ) {
 		this( individualId, null );
 	}
-	
 	@Override
 	/*package-private*/ void localize() {
 		if( clsForI18N != null ) {
@@ -73,9 +72,18 @@ public abstract class MenuModel extends Model {
 		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, getLocalizedMnemonicKey( clsForI18N ) );
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, getLocalizedAcceleratorKeyStroke( clsForI18N ) );
 	}
-	
+	@Override
+	public String getTutorialNoteText() {
+		return this.getName();
+	}
+	private String getName() {
+		return (String)this.action.getValue( javax.swing.Action.NAME );
+	}
 	public void setName( String name ) {
 		this.action.putValue( javax.swing.Action.NAME, name );
+	}
+	private javax.swing.Icon getSmallIcon() {
+		return (javax.swing.Icon)this.action.getValue( javax.swing.Action.SMALL_ICON );
 	}
 	public void setSmallIcon( javax.swing.Icon icon ) {
 		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );

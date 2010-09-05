@@ -188,16 +188,58 @@ public class AutomaticTutorial {
 		public static AutomaticPopupMenuStep createInstance( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int index0, edu.cmu.cs.dennisc.croquet.ModelContext modelContext ) {
 			AutomaticPopupMenuStep rv = new AutomaticPopupMenuStep( menuSelectionEvent, index0 );
 			final int N = menuSelectionEvent.getModelCount();
+			
 			for( int i=index0+1; i<N; i++ ) {
-				rv.addNote( new Note( Integer.toString( i ) ) );
+				edu.cmu.cs.dennisc.croquet.Model modelI = menuSelectionEvent.getModelAt( i );
+				Note noteI = new Note( "select <strong><em>" + modelI.getTutorialNoteText() + "</em></strong>" );
+				noteI.setLabel( Integer.toString( i-index0 ) );
+				for( int j=index0; j<=i; j++ ) {
+					noteI.addFeature( new Hole( new FirstComponentResolver( new IthModelResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, j ) ), Feature.ConnectionPreference.EAST_WEST, j==i ) );
+				}
+				rv.addNote( noteI );
+			}
+			
+			int i=0;
+			for( Note note : rv.getNotes() ) {
+				note.setLabel( Integer.toString( i+1 ) );
+				i++;
 			}
 			return rv;
 		}
-		private AutomaticPopupMenuStep( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int index ) {
-			super( menuSelectionEvent.getModelAt( index ).toString(), menuSelectionEvent.getModelAt( index ).getClass().getSimpleName(), new Hole( new FirstComponentResolver( new IthModelResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, index ) ), Feature.ConnectionPreference.NORTH_SOUTH ), new IthModelResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, index ) );
+		private edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent originalMenuSelectionEvent;
+		private int index0;
+		private AutomaticPopupMenuStep( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int index0 ) {
+			super( menuSelectionEvent.getModelAt( index0 ).toString(), menuSelectionEvent.getModelAt( index0 ).getClass().getSimpleName(), new Hole( new FirstComponentResolver( new IthModelResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, index0 ) ), Feature.ConnectionPreference.NORTH_SOUTH ), new IthModelResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, index0 ) );
+			this.originalMenuSelectionEvent = menuSelectionEvent;
+			this.index0 = index0;
+		}
+		
+		@Override
+		public void reset() {
+			super.reset();
+			this.setActiveNote( 0 );
 		}
 		@Override
+		public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
+			return e.getID() == java.awt.event.MouseEvent.MOUSE_PRESSED || e.getID() == java.awt.event.MouseEvent.MOUSE_RELEASED || e.getID() == java.awt.event.MouseEvent.MOUSE_CLICKED || e.getID() == java.awt.event.MouseEvent.MOUSE_DRAGGED;
+		}
+		
+		@Override
 		public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+			if( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
+				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)child;
+				int noteIndex = 0; 
+				for( int i=0; i<menuSelectionEvent.getModelCount(); i++ ) {
+					edu.cmu.cs.dennisc.croquet.Model orginalModelI = this.originalMenuSelectionEvent.getModelAt( i );
+					edu.cmu.cs.dennisc.croquet.Model replacementModelI = menuSelectionEvent.getModelAt( i );
+					if( orginalModelI == replacementModelI ) {
+						noteIndex = i;
+					}
+					//Note noteI = this.getNoteAt( i );
+					//noteI.setText()
+				}
+				this.setActiveNote( noteIndex );
+			}
 			return false;
 		}
 		@Override

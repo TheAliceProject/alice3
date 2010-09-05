@@ -92,6 +92,12 @@ public abstract class Operation< C extends OperationContext<?>> extends Model {
 		this.setMnemonicKey( this.getLocalizedMnemonicKey() );
 		this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 	}
+	
+	@Override
+	public String getTutorialNoteText() {
+		return this.getName();
+	}
+	
 	protected static interface PerformObserver { 
 		public void handleFinally(); 
 	}

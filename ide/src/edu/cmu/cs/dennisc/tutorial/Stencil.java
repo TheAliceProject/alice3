@@ -89,7 +89,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	
 	public void addToLayeredPane() {
 		this.layeredPane.add( this.getAwtComponent(), null );
-		this.layeredPane.setLayer( this.getAwtComponent(), javax.swing.JLayeredPane.POPUP_LAYER - 1 );
+		this.layeredPane.setLayer( this.getAwtComponent(), javax.swing.JLayeredPane.POPUP_LAYER + 1 );
 	}
 	public void removeFromLayeredPane() {
 		this.layeredPane.remove( this.getAwtComponent() );
@@ -109,15 +109,34 @@ package edu.cmu.cs.dennisc.tutorial;
 		java.awt.Toolkit.getDefaultToolkit().removeAWTEventListener( this.awtEventListener );
 		super.handleRemovedFrom(parent);
 	}
-	private static void redispatchMouseEvent(java.awt.event.MouseEvent e) {
-		java.awt.Point p = e.getPoint();
-		if( e.getComponent().contains( p.x, p.y ) ) {
+	private void redispatchMouseEvent(java.awt.event.MouseEvent eSrc) {
+		Step step = Stencil.this.getCurrentStep();
+		
+		boolean isInterceptable = step == null || step.isEventInterceptable( eSrc );
+		java.awt.Point pSrc = eSrc.getPoint();
+		java.awt.Component componentSrc = eSrc.getComponent();
+		if( isInterceptable && eSrc.getComponent().contains( pSrc.x, pSrc.y ) ) {
 			// pass
 		} else {
-			java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getAwtComponent().getContentPane(), p.x, p.y);
-			if (component != null) {
-				java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint(e.getComponent(), p, component);
-				component.dispatchEvent(new java.awt.event.MouseEvent(component, e.getID(), e.getWhen(), e.getModifiers() + e.getModifiersEx(), pComponent.x, pComponent.y, e.getClickCount(), e.isPopupTrigger()));
+			javax.swing.MenuSelectionManager menuSelectionManager = javax.swing.MenuSelectionManager.defaultManager();
+			if( menuSelectionManager.getSelectedPath().length > 0 ) {
+				java.awt.Component componentDst = menuSelectionManager.componentForPoint( componentSrc, pSrc );
+				if( componentDst != null ) {
+					java.awt.Point pDst = javax.swing.SwingUtilities.convertPoint( componentSrc, pSrc, componentDst );
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( pDst );
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( componentDst );
+//					java.awt.event.MouseEvent eDst = new java.awt.event.MouseEvent(componentDst, eSrc.getID(), eSrc.getWhen(), eSrc.getModifiers() + eSrc.getModifiersEx(), pDst.x, pDst.y, eSrc.getClickCount(), eSrc.isPopupTrigger() ); 
+					//componentDst.dispatchEvent( eDst );
+					//menuSelectionManager.processMouseEvent( eDst );
+					menuSelectionManager.processMouseEvent( eSrc );
+				}
+			} else {
+				javax.swing.JFrame jFrame = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getAwtComponent();
+				java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(jFrame.getContentPane(), pSrc.x, pSrc.y);
+				if (component != null) {
+					java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint(componentSrc, pSrc, component);
+					component.dispatchEvent(new java.awt.event.MouseEvent(component, eSrc.getID(), eSrc.getWhen(), eSrc.getModifiers() + eSrc.getModifiersEx(), pComponent.x, pComponent.y, eSrc.getClickCount(), eSrc.isPopupTrigger()));
+				}
 			}
 		}
 	}
@@ -175,6 +194,17 @@ package edu.cmu.cs.dennisc.tutorial;
 			}
 		}
 	}
+//	private java.util.Stack< Boolean > isEventInterceptEnabledStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+//	public void pushEventInterceptEnabled( boolean isEventInterceptEnabled ) {
+//		this.isEventInterceptEnabledStack.push( this.isEventInterceptEnabled );
+//		this.setEventInterceptEnabled( isEventInterceptEnabled );
+//	}
+//	public boolean popEventInterceptEnabled() {
+//		boolean rv = this.isEventInterceptEnabled;
+//		boolean nextValue = this.isEventInterceptEnabledStack.pop();
+//		this.setEventInterceptEnabled( nextValue );
+//		return rv;
+//	}
 	
 	protected abstract boolean isPaintingStencilEnabled();
 	

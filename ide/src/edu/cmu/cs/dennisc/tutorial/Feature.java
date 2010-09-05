@@ -83,10 +83,17 @@ package edu.cmu.cs.dennisc.tutorial;
 	private ConnectionPreference connectionPreference;
 	private Integer heightConstraint = null;
 	private boolean isEntered = false;
-	public Feature( edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
+	private boolean isPathRenderingDesired;
+	
+	public Feature( edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference, boolean isPathRenderingDesired ) {
 		//assert trackableShape != null;
 		this.trackableShapeResolver = trackableShapeResolver;
 		this.connectionPreference = connectionPreference;
+		this.isPathRenderingDesired = isPathRenderingDesired;
+	}
+
+	protected boolean isPathRenderingDesired() {
+		return this.isPathRenderingDesired;
 	}
 	
 	public java.awt.Rectangle getBoundsForRepaint( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy ) {
@@ -496,21 +503,25 @@ package edu.cmu.cs.dennisc.tutorial;
 			java.awt.Stroke prevStroke = g2.getStroke();
 
 			this.paint( g2, shape );
-			g2.setPaint( java.awt.Color.BLACK );
 
-			java.awt.Rectangle noteBounds = note.getComponent( 0 ).getBounds( asSeenBy );
-			java.awt.Rectangle shapeBounds = shape.getBounds();
-			if( shapeBounds != null ) {
-				java.awt.Point ptComponent = actualConnection.getPoint( shapeBounds );
-				int xContraint;
-				if( noteBounds.x > ptComponent.x ) {
-					xContraint = javax.swing.SwingConstants.LEADING;
-				} else {
-					xContraint = javax.swing.SwingConstants.TRAILING;
+			
+			if( this.isPathRenderingDesired ) {
+				g2.setPaint( java.awt.Color.BLACK );
+
+				java.awt.Rectangle noteBounds = note.getComponent( 0 ).getBounds( asSeenBy );
+				java.awt.Rectangle shapeBounds = shape.getBounds();
+				if( shapeBounds != null ) {
+					java.awt.Point ptComponent = actualConnection.getPoint( shapeBounds );
+					int xContraint;
+					if( noteBounds.x > ptComponent.x ) {
+						xContraint = javax.swing.SwingConstants.LEADING;
+					} else {
+						xContraint = javax.swing.SwingConstants.TRAILING;
+					}
+					java.awt.Point ptNote = edu.cmu.cs.dennisc.java.awt.RectangleUtilities.getPoint( noteBounds, xContraint, javax.swing.SwingConstants.CENTER );
+					g2.setStroke( ARROW_STROKE );
+					drawPath( g2, ptNote.x, ptNote.y, ptComponent.x, ptComponent.y, actualConnection.isCurveDesired() );
 				}
-				java.awt.Point ptNote = edu.cmu.cs.dennisc.java.awt.RectangleUtilities.getPoint( noteBounds, xContraint, javax.swing.SwingConstants.CENTER );
-				g2.setStroke( ARROW_STROKE );
-				drawPath( g2, ptNote.x, ptNote.y, ptComponent.x, ptComponent.y, actualConnection.isCurveDesired() );
 			}
 			
 			g2.setStroke( prevStroke );

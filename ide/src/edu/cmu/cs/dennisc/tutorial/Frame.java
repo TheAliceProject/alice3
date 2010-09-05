@@ -68,7 +68,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	private static final java.awt.Stroke STROKE = new java.awt.BasicStroke( 3.0f ); 
 
 	public Frame( edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
-		super( trackableShapeResolver, connectionPreference );
+		super( trackableShapeResolver, connectionPreference, true );
 	}
 	@Override
 	protected java.awt.Insets getBoundsInsets() {

@@ -55,10 +55,16 @@ public abstract class Model implements RuntimeResolver< Model > {
 		this.group = group;
 		this.id = id;
 	}
+	/*package-private*/ abstract void localize();
+
 	public Group getGroup() {
 		return this.group;
 	}
 
+	public String getTutorialNoteText() {
+		return this.toString();
+	}
+	
 	public java.util.UUID getId() {
 		return this.id;
 	}
@@ -77,7 +83,6 @@ public abstract class Model implements RuntimeResolver< Model > {
 	public final Model getResolved() {
 		return this;
 	}
-	/*package-private*/ abstract void localize();
 	
 	protected static String getLocalizedText( Class<?> cls, String subKey ) {
 		String bundleName = cls.getPackage().getName() + ".croquet";
