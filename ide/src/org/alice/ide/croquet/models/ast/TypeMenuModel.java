@@ -83,7 +83,7 @@ public class TypeMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = ide.getSceneType();
 			edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, new org.alice.ide.operations.ast.DeclareFieldOfPredeterminedTypeOperation( ownerType, this.type ) );
 		}
-		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, new org.alice.ide.operations.file.SaveAsTypeOperation( this.type ) );
+		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, TypeSaveAsOperation.getInstance( this.type ) );
 		menuItemContainer.addSeparator();
 		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, EditConstructorOperation.getInstance( this.type.getDeclaredConstructor() ) );
 		menuItemContainer.addSeparator();
