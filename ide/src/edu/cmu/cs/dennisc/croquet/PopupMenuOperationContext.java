@@ -99,6 +99,15 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 			return (M)rv;
 		}
 		
+		public <M extends Model> M getLastModel() {
+			final int N = this.getModelCount();
+			if( N > 0 ) {
+				return this.getModelAt( N-1 );
+			} else {
+				return null;
+			}
+		}
+		
 		@Override
 		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super.decodeInternal( binaryDecoder );

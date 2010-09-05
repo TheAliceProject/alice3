@@ -228,8 +228,9 @@ public class AutomaticTutorial {
 		public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
 			if( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
 				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)child;
-				int noteIndex = 0; 
-				for( int i=0; i<menuSelectionEvent.getModelCount(); i++ ) {
+				int noteIndex = 0;
+				final int N = menuSelectionEvent.getModelCount();
+				for( int i=0; i<N; i++ ) {
 					edu.cmu.cs.dennisc.croquet.Model orginalModelI = this.originalMenuSelectionEvent.getModelAt( i );
 					edu.cmu.cs.dennisc.croquet.Model replacementModelI = menuSelectionEvent.getModelAt( i );
 					if( orginalModelI == replacementModelI ) {

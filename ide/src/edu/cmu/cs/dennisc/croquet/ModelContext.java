@@ -158,18 +158,26 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 			return super.findContextFor(model);
 		}
 	}
-	public HistoryNode getChildAt(int childIndex) {
-		return this.children.get(childIndex);
+
+	public Iterable<HistoryNode> getChildren() {
+		return this.children;
 	}
 	public int getChildCount() {
 		return this.children.size();
 	}
+	public HistoryNode getChildAt(int childIndex) {
+		return this.children.get(childIndex);
+	}
 	public int getIndexOfChild( HistoryNode child ) {
 		return this.children.indexOf( child );
 	}
-	
-	public Iterable<HistoryNode> getChildren() {
-		return this.children;
+	public HistoryNode getLastChild() {
+		final int N = this.getChildCount();
+		if( N > 0 ) {
+			return this.getChildAt( N-1 );
+		} else {
+			return null;
+		}
 	}
 
 	/*package-private*/ void popping() {

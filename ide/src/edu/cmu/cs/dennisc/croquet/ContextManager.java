@@ -59,9 +59,61 @@ public class ContextManager {
 	public static ModelContext< ? > getCurrentContext() {
 		return stack.peek();
 	}
+		
+	/*package-private*/ static void popParentContextWhenChildContextIsPopped( ModelContext< ? > parentContext, ModelContext< ? > childContext ) {
+		assert childContext.getParent() == parentContext;
+		mapChildContextPendingParentContext.put( childContext, parentContext );
+	}
+
+	private static PopupMenuOperationContext getPopupMenuOperationContextToPushOnto( PopupMenuOperationContext candidate, ModelContext< ? > childContext ) {
+		HistoryNode lastChild = candidate.getLastChild();
+		if( lastChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
+			edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)lastChild;
+			Model model = menuSelectionEvent.getLastModel();
+			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( model, childContext.getModel() ) ) {
+				return candidate;
+			}
+		}
+		return null;
+	}
 	private static <C extends ModelContext< ? > > C push( C rv ) {
 		ModelContext< ? > parentContext = getCurrentContext();
+		HistoryNode lastChild = parentContext.getLastChild();
+		MenuBarModelContext menuBarModelContextToPushOnto = null;
+		PopupMenuOperationContext popupMenuOperationContextToPushOnto = null;
+		if( lastChild != null ) {
+			HistoryNode.State state = lastChild.getState();
+			if( state == null ) {
+				if( lastChild instanceof MenuBarModelContext ) {
+					MenuBarModelContext menuBarModelContext = (MenuBarModelContext)lastChild; 
+					HistoryNode lastGrandchild = menuBarModelContext.getLastChild();
+					if( lastGrandchild instanceof PopupMenuOperationContext ) {
+						PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)lastGrandchild; 
+						popupMenuOperationContextToPushOnto = getPopupMenuOperationContextToPushOnto( popupMenuOperationContext, rv );
+						if( popupMenuOperationContextToPushOnto != null ) {
+							menuBarModelContextToPushOnto = menuBarModelContext;
+						}
+					}
+				} else if( lastChild instanceof PopupMenuOperationContext ) {
+					PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)lastChild; 
+					popupMenuOperationContextToPushOnto = getPopupMenuOperationContextToPushOnto( popupMenuOperationContext, rv );
+				}
+
+				if( popupMenuOperationContextToPushOnto != null ) {
+					parentContext = popupMenuOperationContextToPushOnto;
+				}
+			}
+		}
 		parentContext.addChild( rv );
+		if( popupMenuOperationContextToPushOnto != null ) {
+			if( menuBarModelContextToPushOnto != null ) {
+				popParentContextWhenChildContextIsPopped( menuBarModelContextToPushOnto, popupMenuOperationContextToPushOnto );
+				stack.push( menuBarModelContextToPushOnto );
+			}
+			popParentContextWhenChildContextIsPopped( popupMenuOperationContextToPushOnto, rv );
+			stack.push( popupMenuOperationContextToPushOnto );
+			parentContext = popupMenuOperationContextToPushOnto;
+		}
 		stack.push( rv );
 		return rv;
 	}
@@ -123,12 +175,7 @@ public class ContextManager {
 		}
 		return rv;
 	}
-	
-	/*package-private*/ static void popParentContextWhenChildContextIsPopped( ModelContext< ? > parentContext, ModelContext< ? > childContext ) {
-		assert childContext.getParent() == parentContext;
-		mapChildContextPendingParentContext.put( childContext, parentContext );
-	}
-	
+		
 	private static javax.swing.JMenuBar getJMenuBarOrigin( javax.swing.MenuElement[] menuElements ) { 
 		if( menuElements.length > 0 ) {
 			javax.swing.MenuElement menuElement0 = menuElements[ 0 ];
