@@ -40,18 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor.templates;
+package org.alice.ide.croquet.models.ast.rename;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class MethodPopupOperation extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
-	public MethodPopupOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice ) {
-		super( 
-			java.util.UUID.fromString( "5b1b6ac7-b2f9-453e-9fd9-ab06b621c473" ),
-			org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( methodInAlice ),
-			new org.alice.ide.operations.ast.DeleteMethodOperation( methodInAlice ),
-			org.alice.ide.operations.ast.FocusCodeOperation.getInstance( methodInAlice )
-		);
+public class RenameLocalOperation extends RenameDeclarationOperation< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice, RenameLocalOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized RenameLocalOperation getInstance( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local ) {
+		RenameLocalOperation rv = map.get( local );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new RenameLocalOperation( local );
+			map.put( local, rv );
+		}
+		return rv;
+	}
+
+	private RenameLocalOperation( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local ) {
+		super( java.util.UUID.fromString( "b2998aa4-dcfc-4977-9070-449b0d587130" ), local, new org.alice.ide.name.validators.LocalNameValidator( local ) );
+	}
+	@Override
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameLocalOperation > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameLocalOperation >( this, this.getDeclaration(), edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice.class );
 	}
 }

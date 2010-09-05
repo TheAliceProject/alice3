@@ -40,13 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.croquet.models.ast.rename;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenameLocalDeclarationOperation extends RenameNodeOperation {
-	public RenameLocalDeclarationOperation( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice ) {
-		super( java.util.UUID.fromString( "b2998aa4-dcfc-4977-9070-449b0d587130" ), localDeclaredInAlice.name, new org.alice.ide.name.validators.LocalNameValidator( localDeclaredInAlice ) );
+public abstract class RenameNodeOperation extends AbstractRenameNodeOperation {
+	private edu.cmu.cs.dennisc.property.StringProperty nameProperty;
+	private org.alice.ide.name.validators.NodeNameValidator nodeNameValidator;
+	public RenameNodeOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.property.StringProperty nameProperty, org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
+		this.setName( "<html>Rename <strong>" + nameProperty.getValue() + "</strong>...</html>" );
+		this.nameProperty = nameProperty;
+		this.nodeNameValidator = nodeNameValidator;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.property.StringProperty getNameProperty() {
+		return this.nameProperty;
+	}
+	@Override
+	protected org.alice.ide.name.validators.NodeNameValidator getNodeNameValidator() {
+		return this.nodeNameValidator;
 	}
 }

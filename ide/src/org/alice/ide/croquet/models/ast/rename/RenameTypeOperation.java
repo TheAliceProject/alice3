@@ -40,26 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.croquet.models.ast.rename;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RenameNodeOperation extends AbstractRenameNodeOperation {
-	private edu.cmu.cs.dennisc.property.StringProperty nameProperty;
-	private org.alice.ide.name.validators.NodeNameValidator nodeNameValidator;
-	public RenameNodeOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.property.StringProperty nameProperty, org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
-		this.setName( "<html>Rename <strong>" + nameProperty.getValue() + "</strong>...</html>" );
-		this.nameProperty = nameProperty;
-		this.nodeNameValidator = nodeNameValidator;
+public class RenameTypeOperation extends RenameDeclarationOperation< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice, RenameTypeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized RenameTypeOperation getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		RenameTypeOperation rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new RenameTypeOperation( type );
+			map.put( type, rv );
+		}
+		return rv;
+	}
+
+	private RenameTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		super( java.util.UUID.fromString( "94fd3bb8-2f02-4e70-a16c-05df244b317b" ), type, new org.alice.ide.name.validators.TypeNameValidator( type ) );
+		//this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.property.StringProperty getNameProperty() {
-		return this.nameProperty;
-	}
-	@Override
-	protected org.alice.ide.name.validators.NodeNameValidator getNodeNameValidator() {
-		return this.nodeNameValidator;
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameTypeOperation > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameTypeOperation >( this, this.getDeclaration(), edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice.class );
 	}
 }

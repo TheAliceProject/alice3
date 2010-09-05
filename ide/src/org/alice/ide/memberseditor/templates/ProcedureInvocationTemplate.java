@@ -62,7 +62,7 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 		//operations.add( org.alice.ide.IDE.getSingleton().createPreviewOperation( this ) );
 		if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
-			operations.add( new org.alice.ide.operations.ast.RenameMethodOperation( methodInAlice ) );
+			operations.add( org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( methodInAlice ) );
 			operations.add( org.alice.ide.operations.ast.FocusCodeOperation.getInstance( methodInAlice ) );
 			operations.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 			operations.add( new org.alice.ide.operations.ast.DeleteMethodOperation( methodInAlice ) );

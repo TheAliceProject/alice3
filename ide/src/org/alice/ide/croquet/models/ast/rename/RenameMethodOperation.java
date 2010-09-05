@@ -40,13 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.croquet.models.ast.rename;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenameMethodOperation extends RenameNodeOperation{
-	public RenameMethodOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		super( java.util.UUID.fromString( "98b443d0-c7d3-4ff8-ba1b-b16d2695c618" ), method.name, new org.alice.ide.name.validators.MethodNameValidator( method ) );
+public class RenameMethodOperation extends RenameDeclarationOperation< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice, RenameMethodOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized RenameMethodOperation getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		RenameMethodOperation rv = map.get( method );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new RenameMethodOperation( method );
+			map.put( method, rv );
+		}
+		return rv;
+	}
+
+	private RenameMethodOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		super( java.util.UUID.fromString( "98b443d0-c7d3-4ff8-ba1b-b16d2695c618" ), method, new org.alice.ide.name.validators.MethodNameValidator( method ) );
+	}
+	@Override
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameMethodOperation > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameMethodOperation >( this, this.getDeclaration(), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
 	}
 }

@@ -40,13 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.croquet.models.ast.rename;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenameParameterOperation extends RenameNodeOperation {
-	public RenameParameterOperation( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
-		super( java.util.UUID.fromString( "a5ea865d-495f-4962-99a6-b481d4ca3eb9" ), parameter.name, new org.alice.ide.name.validators.ParameterNameValidator( parameter ) );
+public class RenameFieldOperation extends RenameDeclarationOperation< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, RenameFieldOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized RenameFieldOperation getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+		RenameFieldOperation rv = map.get( field );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new RenameFieldOperation( field );
+			map.put( field, rv );
+		}
+		return rv;
+	}
+
+	private RenameFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+		super( java.util.UUID.fromString( "acdff8cd-51f0-4708-92b7-c05827409ac8" ), field, new org.alice.ide.name.validators.FieldNameValidator( field ) );
+	}
+	@Override
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameFieldOperation > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameFieldOperation >( this, this.getDeclaration(), edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice.class );
 	}
 }

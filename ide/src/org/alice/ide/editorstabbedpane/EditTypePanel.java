@@ -360,7 +360,7 @@ public class EditTypePanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( item.getName() + " is locked and therefore cannot be renamed." );
 				return null;
 			} else {
-				return new org.alice.ide.operations.ast.RenameMethodOperation( item );
+				return org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( item );
 			}
 		}
 		@Override

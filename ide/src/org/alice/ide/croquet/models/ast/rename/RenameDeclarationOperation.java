@@ -40,14 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.croquet.models.ast.rename;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenameTypeOperation extends RenameNodeOperation {
-	public RenameTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		super( java.util.UUID.fromString( "94fd3bb8-2f02-4e70-a16c-05df244b317b" ), type.name, new org.alice.ide.name.validators.TypeNameValidator( type ) );
-		//this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
+public abstract class RenameDeclarationOperation< N extends edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration > extends RenameNodeOperation {
+	private N declaration;
+	public RenameDeclarationOperation( java.util.UUID individualId, N declaration, org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
+		super( individualId, declaration.getNamePropertyIfItExists(), nodeNameValidator );
+		this.declaration = declaration;
+	}
+	public N getDeclaration() {
+		return this.declaration;
 	}
 }
