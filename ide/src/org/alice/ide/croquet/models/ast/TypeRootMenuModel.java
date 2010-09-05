@@ -40,53 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.editorstabbedpane;
+package org.alice.ide.croquet.models.ast;
 
-//class CheckMarkIcon implements javax.swing.Icon {
-//	@Override
-//	public int getIconWidth() {
-//		return 16;
-//	}
-//	@Override
-//	public int getIconHeight() {
-//		return 16;
-//	}
-//	@Override
-//	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-//		g.setColor( java.awt.Color.RED );
-//		g.fillRect( x, y, 16, 16 );
-//	}
-//}
 /**
-* @author Dennis Cosgrove
-*/
-//todo
-class EditMethodOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-//	private static CheckMarkIcon checkMarkIcon = new CheckMarkIcon();
-	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
-
-	public EditMethodOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		super( java.util.UUID.fromString( "4a6e51f7-630a-4f36-b7db-5fa37c62eb54" ) );
-		this.method = method;
-		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-		sb.append( "Edit " );
-		sb.append( "<strong>" );
-		sb.append( this.method.getName() );
-		if( this.method == org.alice.ide.IDE.getSingleton().getFocusedCode() ) {
-			sb.append( " <font color=007F00>&#x2713;</font>" );
-		}
-		sb.append( "</strong>" );
-		sb.append( "</html>" );
-		this.setName( sb.toString() );
-//		if( this.method == org.alice.ide.IDE.getSingleton().getFocusedCode() ) {
-//			this.setSmallIcon( checkMarkIcon );
-//		} else {
-//			this.setSmallIcon( null );
-//		}
+ * @author Dennis Cosgrove
+ */
+public class TypeRootMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+	private static class SingletonHolder {
+		private static TypeRootMenuModel instance = new TypeRootMenuModel();
+	}
+	public static TypeRootMenuModel getInstance() {
+		return SingletonHolder.instance;
+	}
+	private TypeRootMenuModel() {
+		super( java.util.UUID.fromString( "259dfcc5-dd20-4890-8104-a34a075734d0" ) );
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		this.getIDE().setFocusedCode( this.method );
+	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		super.handleShowing( menuItemContainer, e );
+		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.IDE.getSingleton().getProject();
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice.class );
+		final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = project.getProgramType();
+		programType.crawl( crawler, true );
+		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type : crawler.getList() ) {
+			if( type == programType ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, TypeMenuModel.getInstance( type ) );
+			}
+		}
+	}
+	@Override
+	protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		menuItemContainer.forgetAndRemoveAllMenuItems();
+		super.handleHiding( menuItemContainer, e );
 	}
 }

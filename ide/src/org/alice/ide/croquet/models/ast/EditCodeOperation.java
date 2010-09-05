@@ -40,22 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.editorstabbedpane;
+package org.alice.ide.croquet.models.ast;
 
 /**
 * @author Dennis Cosgrove
 */
 //todo
-class EditConstructorOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor;
-
-	public EditConstructorOperation( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor ) {
-		super( java.util.UUID.fromString( "4dce50a6-c637-490c-b1ff-3cd3028dd8ac" ) );
-		this.constructor = constructor;
-		this.setName( "<html>Edit <strong>constructor</strong></html>" );
+/*package-private*/ abstract class EditCodeOperation<N extends edu.cmu.cs.dennisc.alice.ast.AbstractCode> extends org.alice.ide.operations.ActionOperation {
+	private N code;
+	public EditCodeOperation( java.util.UUID id, N code ) {
+		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, id );
+		this.code = code;
+	}
+	public N getCode() {
+		return this.code;
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		this.getIDE().setFocusedCode( this.constructor );
+	protected final void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		this.getIDE().setFocusedCode( this.code );
+		context.finish();
 	}
 }

@@ -40,18 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
 public class EditTypeOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.ide.editorstabbedpane.EditTypePanel> {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice, EditTypeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized EditTypeOperation getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		EditTypeOperation rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new EditTypeOperation( type );
+			map.put( type, rv );
+		}
+		return rv;
+	}
+
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
-	public EditTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	private EditTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		super( ENCLOSING_INPUT_DIALOG_GROUP, java.util.UUID.fromString( "027be381-1467-4ca4-82c1-67f908dc0297" ) );
 		this.type = type;
 		this.setName( "<html>Edit <strong>" + this.type.getName() + "</strong>...</html>" );
 		//this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
+	}
+	@Override
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditTypeOperation > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditTypeOperation >( this, this.type, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice.class );
 	}
 	@Override
 	protected java.awt.Dimension getDesiredDialogSize( edu.cmu.cs.dennisc.croquet.Dialog dialog ) {

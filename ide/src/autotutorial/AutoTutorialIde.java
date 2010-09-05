@@ -67,6 +67,7 @@ public class AutoTutorialIde extends org.alice.stageide.StageIDE {
 	}
 	@Override
 	protected void handleQuit( java.util.EventObject e ) {
+		//super.handleQuit( e );
 		if( IS_ENCODING ) {
 			edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
@@ -80,7 +81,6 @@ public class AutoTutorialIde extends org.alice.stageide.StageIDE {
 			}
 		}
 		System.exit( 0 );
-		//super.handleQuit( e );
 	}
 	private void createAndShowTutorial() {
 		//final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( this, 0 );
