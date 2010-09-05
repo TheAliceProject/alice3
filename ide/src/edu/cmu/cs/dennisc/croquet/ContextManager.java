@@ -80,6 +80,7 @@ public class ContextManager {
 		ModelContext< ? > parentContext = getCurrentContext();
 		HistoryNode lastChild = parentContext.getLastChild();
 		MenuBarModelContext menuBarModelContextToPushOnto = null;
+		DragAndDropContext dragAndDropContextToPushOnto = null;
 		PopupMenuOperationContext popupMenuOperationContextToPushOnto = null;
 		if( lastChild != null ) {
 			HistoryNode.State state = lastChild.getState();
@@ -92,6 +93,16 @@ public class ContextManager {
 						popupMenuOperationContextToPushOnto = getPopupMenuOperationContextToPushOnto( popupMenuOperationContext, rv );
 						if( popupMenuOperationContextToPushOnto != null ) {
 							menuBarModelContextToPushOnto = menuBarModelContext;
+						}
+					}
+				} else if( lastChild instanceof DragAndDropContext ) {
+					DragAndDropContext dragAndDropContext = (DragAndDropContext)lastChild; 
+					HistoryNode lastGrandchild = dragAndDropContext.getLastChild();
+					if( lastGrandchild instanceof PopupMenuOperationContext ) {
+						PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)lastGrandchild; 
+						popupMenuOperationContextToPushOnto = getPopupMenuOperationContextToPushOnto( popupMenuOperationContext, rv );
+						if( popupMenuOperationContextToPushOnto != null ) {
+							dragAndDropContextToPushOnto = dragAndDropContext;
 						}
 					}
 				} else if( lastChild instanceof PopupMenuOperationContext ) {
@@ -109,6 +120,10 @@ public class ContextManager {
 			if( menuBarModelContextToPushOnto != null ) {
 				popParentContextWhenChildContextIsPopped( menuBarModelContextToPushOnto, popupMenuOperationContextToPushOnto );
 				stack.push( menuBarModelContextToPushOnto );
+			}
+			if( dragAndDropContextToPushOnto != null ) {
+				popParentContextWhenChildContextIsPopped( dragAndDropContextToPushOnto, popupMenuOperationContextToPushOnto );
+				stack.push( dragAndDropContextToPushOnto );
 			}
 			popParentContextWhenChildContextIsPopped( popupMenuOperationContextToPushOnto, rv );
 			stack.push( popupMenuOperationContextToPushOnto );
