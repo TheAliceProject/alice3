@@ -40,70 +40,53 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.edits.ast;
 
-public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > {
-	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
-	private int index;
-	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
-	public InsertStatementEdit() {
-	}
-	public InsertStatementEdit( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		this.blockStatement = blockStatement;
-		this.index = index;
-		this.statement = statement;
-	}
+package org.alice.ide.croquet.edits;
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		this.blockStatement.statements.add( this.index, this.statement );
-	}
-
-	@Override
-	protected final void undoInternal() {
-		if( this.blockStatement.statements.get( this.index ) == this.statement ) {
-			this.blockStatement.statements.remove( this.index );
+/**
+ * @author Dennis Cosgrove
+ */
+public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Model> extends edu.cmu.cs.dennisc.croquet.Edit< M > {
+	private org.alice.ide.croquet.models.BeholdenModel getBeholdenModel() {
+		edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = this.getContext();
+		if( context != null ) {
+			edu.cmu.cs.dennisc.croquet.Model model = context.getModel();
+			if( model instanceof org.alice.ide.croquet.models.BeholdenModel ) {
+				return (org.alice.ide.croquet.models.BeholdenModel)model;
+			} else {
+				throw new RuntimeException();
+			}
 		} else {
-			throw new javax.swing.undo.CannotUndoException();
+			throw new NullPointerException();
 		}
+	}
+	@Override
+	protected void doOrRedoInternal( boolean isDo ) {
+		this.getBeholdenModel().doOrRedoInternal( isDo );
+	}
+
+	@Override
+	protected void undoInternal() {
+		this.getBeholdenModel().undoInternal();
 	}
 	
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-		//super.updatePresentation( rv, locale );
-		rv.append( "drop: " );
-		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, this.statement, locale );
-		return rv;
+		return this.getBeholdenModel().updatePresentation( rv, locale );
 	}
 	@Override
 	public boolean isReplacementAcceptable( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		return edit instanceof InsertStatementEdit;
+		return this.getBeholdenModel().isReplacementAcceptable( edit );
 	}
 	@Override
 	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		super.addKeyValuePairs( retargeter, edit );
-		InsertStatementEdit replacementEdit = (InsertStatementEdit)edit;
-		retargeter.addKeyValuePair( this.blockStatement, replacementEdit.blockStatement );
-		retargeter.addKeyValuePair( this.statement, replacementEdit.statement );
-		System.err.println( "TODO: recursive retarget" );
-		if( this.statement instanceof edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody ) {
-			retargeter.addKeyValuePair( ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)this.statement).body.getValue(), ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)replacementEdit.statement).body.getValue() );
-		}
+		this.getBeholdenModel().addKeyValuePairs( retargeter, edit );
 	}
 	@Override
 	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
-		java.util.UUID blockStatementId = binaryDecoder.decodeId();
-		this.blockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, blockStatementId );
-		this.index = binaryDecoder.decodeInt();
-		java.util.UUID statementId = binaryDecoder.decodeId();
-		this.statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, statementId );
 	}
 	@Override
 	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.blockStatement.getUUID() );
-		binaryEncoder.encode( this.index );
-		binaryEncoder.encode( this.statement.getUUID() );
 	}
+
 }

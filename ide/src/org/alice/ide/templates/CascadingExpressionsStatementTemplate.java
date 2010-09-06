@@ -62,7 +62,7 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 		edu.cmu.cs.dennisc.alice.ast.Expression[] predeterminedExpressions = org.alice.ide.IDE.getSingleton().createPredeterminedExpressionsIfAppropriate( types );
 		if( predeterminedExpressions != null ) {
 			edu.cmu.cs.dennisc.alice.ast.Statement statement = this.createStatement( predeterminedExpressions ); 
-			return new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( blockStatement, index, statement );
+			return org.alice.ide.croquet.models.ast.InsertStatementActionOperation.getInstance( java.util.UUID.randomUUID(), blockStatement, index, statement );
 		} else {
 			if( types.length == 1 ) {
 				return new org.alice.ide.croquet.models.ast.FillInSingleExpressionMenuModel( java.util.UUID.fromString( "9a67ff7b-df1f-492e-b128-721f58ea2ad1" ) ) {

@@ -50,10 +50,6 @@ public class NodeStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.cr
 	private edu.cmu.cs.dennisc.alice.ast.Node node;
 	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > parameterType;
 	
-	private Class<T> instanceCls;
-	private java.lang.Class<?>[] parameterTypes;
-	private Object[] arguments;
-	
 	public NodeStaticGetInstanceKeyedResolver( T instance, edu.cmu.cs.dennisc.alice.ast.Node node, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > parameterType ) {
 		super( instance );
 		this.node = node;
@@ -65,21 +61,12 @@ public class NodeStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.cr
 	
 	
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		assert this.arguments != null;
-		assert this.arguments.length == 1;
-		this.arguments[ 0 ] = retargeter.retarget( this.arguments[ 0 ] );
+		Object[] arguments = this.getArguments();
+		assert arguments != null;
+		assert arguments.length == 1;
+		arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
 	}
 
-	@Override
-	public T getResolved() {
-		return this.resolve( this.instanceCls, this.parameterTypes, this.arguments );
-	}
-	@Override
-	protected void handleDecoded(Class<T> instanceCls, java.lang.Class<?>[] parameterTypes, Object[] arguments) {
-		this.instanceCls = instanceCls;
-		this.parameterTypes = parameterTypes;
-		this.arguments = arguments;
-	}
 	@Override
 	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		Class<?> parameterType = this.decodeClass( binaryDecoder );

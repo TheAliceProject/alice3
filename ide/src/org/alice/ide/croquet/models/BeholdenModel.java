@@ -41,35 +41,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.resolvers;
+package org.alice.ide.croquet.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ClassStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< T > {
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { Class.class };
-	private Class<?> cls;
-	public ClassStaticGetInstanceKeyedResolver( T instance, Class<?> cls ) {
-		super( instance );
-		this.cls = cls;
-	}
-	public ClassStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	@Override
-	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return PARAMETER_TYPES;
-	}
-	@Override
-	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-	}
-	@Override
-	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		Class<?> cls = this.decodeClass( binaryDecoder );
-		return new Object[] { cls };
-	}
-	@Override
-	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		this.encodeClass( binaryEncoder, this.cls );
-	}
+public interface BeholdenModel {
+	public void doOrRedoInternal( boolean isDo );
+	public void undoInternal();
+	public StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale );
+	public boolean isReplacementAcceptable( edu.cmu.cs.dennisc.croquet.Edit< ? > edit );
+	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit );	
 }

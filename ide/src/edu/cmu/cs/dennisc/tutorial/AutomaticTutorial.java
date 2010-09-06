@@ -70,6 +70,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /*package-private*/ class ModelFromContextResolver< M extends edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > {
 	private edu.cmu.cs.dennisc.croquet.ModelContext< M > modelContext;
 	public ModelFromContextResolver( edu.cmu.cs.dennisc.croquet.ModelContext< M > modelContext ) {
+		assert modelContext != null;
 		this.modelContext = modelContext;
 	}
 	public M getResolved() {
@@ -153,10 +154,14 @@ public class AutomaticTutorial {
 	public void setRetargeter( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		this.retargeter = retargeter;
 	}
+	
+	private static boolean isMouseEventInterceptedInAllCases( java.awt.event.MouseEvent e ) {
+		return e.getID() == java.awt.event.MouseEvent.MOUSE_PRESSED || e.getID() == java.awt.event.MouseEvent.MOUSE_RELEASED || e.getID() == java.awt.event.MouseEvent.MOUSE_CLICKED || e.getID() == java.awt.event.MouseEvent.MOUSE_DRAGGED;
+	}
+
 	private void addMessageStep( String title, String text ) {
 		this.stencil.addStep( new MessageStep( title, text ) );
 	}
-
 	private static abstract class HistoryNote extends Note {
 		public HistoryNote( String text ) {
 			super( text );
@@ -167,10 +172,22 @@ public class AutomaticTutorial {
 		public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child );
 	}
 	
-	private static boolean isInterceptedInAllCasesMouseEvent( java.awt.event.MouseEvent e ) {
-		return e.getID() == java.awt.event.MouseEvent.MOUSE_PRESSED || e.getID() == java.awt.event.MouseEvent.MOUSE_RELEASED || e.getID() == java.awt.event.MouseEvent.MOUSE_CLICKED || e.getID() == java.awt.event.MouseEvent.MOUSE_DRAGGED;
+	private static class DragAndDropNote extends HistoryNote {
+		public static DragAndDropNote createInstance( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+			return new DragAndDropNote( dragAndDropContext );
+		}
+		private DragAndDropNote( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+			super( dragAndDropContext.getModel().getTutorialNoteText() );
+			ModelFromContextResolver modelResolver = new ModelFromContextResolver( dragAndDropContext );
+			FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
+			this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			
+		}
+		@Override
+		public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+			return child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext;
+		}
 	}
-	
+
 	private static abstract class WaitingOnCommitHistoryNote extends HistoryNote {
 		private edu.cmu.cs.dennisc.croquet.Edit< ? > edit;
 		public WaitingOnCommitHistoryNote( String text, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
@@ -195,6 +212,18 @@ public class AutomaticTutorial {
 		
 	}
 	
+	private static class OperationNote extends WaitingOnCommitHistoryNote {
+		public static OperationNote createInstance( edu.cmu.cs.dennisc.croquet.OperationContext operationContext ) {
+			return new OperationNote( operationContext, operationContext.getEdit() );
+		}
+		private OperationNote( edu.cmu.cs.dennisc.croquet.OperationContext<?> operationContext, edu.cmu.cs.dennisc.croquet.Edit<?> operationEdit ) {
+			super( "todo", /*operationContext.getModel().getTutorialNoteText( operationEdit ),*/ operationEdit );
+			ModelFromContextResolver modelResolver = new ModelFromContextResolver( operationContext );
+			FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
+			this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			
+		}
+	}
+
 	private static class BooleanStateNote extends WaitingOnCommitHistoryNote {
 		public static BooleanStateNote createInstance( edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext ) {
 			edu.cmu.cs.dennisc.croquet.BooleanStateEdit booleanStateEdit = (edu.cmu.cs.dennisc.croquet.BooleanStateEdit)booleanStateContext.getEdit();
@@ -269,7 +298,7 @@ public class AutomaticTutorial {
 		}
 		@Override
 		public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
-			return isInterceptedInAllCasesMouseEvent( e );
+			return isMouseEventInterceptedInAllCases( e );
 		}
 	}
 	private static class MenuSelectionNote extends HistoryNote {
@@ -304,7 +333,7 @@ public class AutomaticTutorial {
 		
 		@Override
 		public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
-			return isInterceptedInAllCasesMouseEvent( e );
+			return isMouseEventInterceptedInAllCases( e );
 		}
 
 		public boolean isAtLeastWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent ) {
@@ -377,6 +406,20 @@ public class AutomaticTutorial {
 					}
 				}
 			}
+		} else if( node instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
+			edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext = (edu.cmu.cs.dennisc.croquet.DragAndDropContext)node;
+			int DND_CONTEXT_CHILD_COUNT = dragAndDropContext.getChildCount();
+			if( DND_CONTEXT_CHILD_COUNT > 1 ) {
+				edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = dragAndDropContext.getChildAt( DND_CONTEXT_CHILD_COUNT-1 );
+				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
+					edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)lastChild;
+					rv.add( DragAndDropNote.createInstance( dragAndDropContext ) );
+					appendNotes( rv, modelContext );
+				}
+			}
+		} else if( node instanceof edu.cmu.cs.dennisc.croquet.OperationContext ) {
+			edu.cmu.cs.dennisc.croquet.OperationContext operationContext = (edu.cmu.cs.dennisc.croquet.OperationContext)node;
+			rv.add( OperationNote.createInstance( operationContext ) );
 		} else if( node instanceof edu.cmu.cs.dennisc.croquet.BooleanStateContext ) {
 			edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext = (edu.cmu.cs.dennisc.croquet.BooleanStateContext)node;
 			rv.add( BooleanStateNote.createInstance( booleanStateContext ) );

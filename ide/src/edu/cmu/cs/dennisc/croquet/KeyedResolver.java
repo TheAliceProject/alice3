@@ -53,16 +53,31 @@ public abstract class KeyedResolver<T> implements CodableResolver< T > {
 	public KeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.decode( binaryDecoder );
 	}
-	public T getResolved() {
-		return this.instance;
-	}
+
 	protected T getInstance() {
 		return this.instance;
 	}
 	
+	private Class<T> instanceCls;
+	private java.lang.Class<?>[] parameterTypes;
+	private Object[] arguments;
+	
+	protected Object[] getArguments() {
+		return this.arguments;
+	}
+	
 	protected abstract T resolve( Class<T> instanceCls, Class<?>[] parameterTypes, Object[] arguments );
-	protected void handleDecoded( Class<T> instanceCls, Class<?>[] parameterTypes, Object[] arguments ) {
-		this.instance = this.resolve( instanceCls, parameterTypes, arguments );
+	public final T getResolved() {
+		if( this.instance != null ) {
+			return this.instance;
+		} else {
+			return this.resolve( this.instanceCls, this.parameterTypes, this.arguments );
+		}
+	}
+	protected final void handleDecoded(Class<T> instanceCls, java.lang.Class<?>[] parameterTypes, Object[] arguments) {
+		this.instanceCls = instanceCls;
+		this.parameterTypes = parameterTypes;
+		this.arguments = arguments;
 	}
 	
 	protected final void encodeClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Class<?> cls ) {

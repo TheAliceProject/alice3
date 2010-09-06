@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Operation< C extends OperationContext<?>> extends Model {
+public abstract class Operation< C extends OperationContext<? extends Operation<?>>> extends Model {
 	private class ButtonActionListener implements java.awt.event.ActionListener {
 		private AbstractButton< ?,? > button;
 		public ButtonActionListener( AbstractButton< ?,? > button ) {
@@ -59,6 +59,11 @@ public abstract class Operation< C extends OperationContext<?>> extends Model {
 	
 	protected abstract C createContext( java.util.EventObject e, ViewController< ?, ? > viewController );
 
+	//todo
+	public String getTutorialNoteText( Edit<?> edit ) {
+		return "Press " + this.getName();
+	}
+	
 	public C fire( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		if( this.isEnabled() ) {
 			return this.handleFire(e, viewController);
