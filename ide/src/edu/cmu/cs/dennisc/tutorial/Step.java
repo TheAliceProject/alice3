@@ -218,7 +218,7 @@ public abstract class Step {
 		return this.getNoteAt( 0 ).calculateLocation( container );
 	}
 
-	public abstract java.util.List< Note > getNotes();
+	public abstract java.util.List< ? extends Note > getNotes();
 	public Note getNoteAt( int index ) {
 		return this.getNotes().get( index );
 	}

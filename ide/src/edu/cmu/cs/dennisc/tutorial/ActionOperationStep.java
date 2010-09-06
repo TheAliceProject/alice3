@@ -58,7 +58,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		return this.validator.checkValidity( this.getModel(), edit ).isProcedeApprorpiate();
 	}
 	@Override
-	protected boolean isAlreadyInTheDesiredState() {
+	public boolean isAlreadyInTheDesiredState() {
 		return false;
 	}
 	@Override

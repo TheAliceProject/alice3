@@ -45,49 +45,18 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class WaitingOnCompleteStep<M extends edu.cmu.cs.dennisc.croquet.Model> extends AuthoredWaitingStep<M> {
-	private boolean isExactMatchRequired;
-	public WaitingOnCompleteStep( String title, String text, edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, Feature.ConnectionPreference connectionPreference, edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > modelResolver, boolean isDiscriminatingAboutComplete ) {
-		super( title, text, new Hole( trackableShapeResolver, connectionPreference ), modelResolver );
-		this.isExactMatchRequired = isDiscriminatingAboutComplete;
+/*package-private*/ abstract class AuthoredWaitingStep<M extends edu.cmu.cs.dennisc.croquet.Model > extends FeatureStep implements WaitingStep {
+	private edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > modelResolver;
+	public AuthoredWaitingStep( String title, String text, Feature feature, edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > modelResolver ) {
+		super( title, text, feature );
+		this.modelResolver = modelResolver;
 	}
-	protected abstract boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Edit<?> edit);
-	private boolean isAcceptable( edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent completeEvent ) {
-		edu.cmu.cs.dennisc.croquet.Model eventModel = completeEvent.getParent().getModel();
-		if( this.isExactMatchRequired ) {
-			return this.getModel() == eventModel;
-		} else {
-			if( this.getModel() != null ) {
-				return this.getModel().getGroup() == eventModel.getGroup();
-			} else {
-				return false;
-			}
-		}
+	private edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > getModelResolver() {
+		return this.modelResolver;
 	}
-	@Override
-	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
-		if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
-			edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent completeEvent = (edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent)child;
-			if( this.isAcceptable( completeEvent ) ) {
-				edu.cmu.cs.dennisc.croquet.Edit<?> edit;
-				if (child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent) {
-					edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent) child;
-					edit = commitEvent.getEdit();
-				} else {
-					edit = null;
-				}
-				boolean rv = this.isInTheDesiredState(edit);
-				if( rv ) {
-					SoundCache.SUCCESS.startIfNotAlreadyActive();
-				} else {
-					SoundCache.FAILURE.startIfNotAlreadyActive();
-				}
-				return rv;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
+	protected M getModel() {
+		return this.getModelResolver().getResolved();
 	}
+	public abstract boolean isAlreadyInTheDesiredState();
+	public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child );
 }

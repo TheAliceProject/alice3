@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class InputDialogOpenAndCommitStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> {
+/*package-private*/ class InputDialogOpenAndCommitStep extends AuthoredWaitingStep<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> {
 	private InputDialogOperationCompletor completor;
 	private InputDialogOperationValidator validator;
 	private edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler externalOkButtonDisabler;
@@ -79,7 +79,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 
 	@Override
-	protected boolean isAlreadyInTheDesiredState() {
+	public boolean isAlreadyInTheDesiredState() {
 		return false;
 	}
 	@Override

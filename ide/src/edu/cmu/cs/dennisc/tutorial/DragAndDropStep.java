@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class DragAndDropStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.DragAndDropModel> {
+/*package-private*/ class DragAndDropStep extends AuthoredWaitingStep<edu.cmu.cs.dennisc.croquet.DragAndDropModel> {
 	private enum State {
 		WAITING_ON_DRAG,
 		WAITING_ON_DROP,
@@ -155,7 +155,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		this.setActiveNote( 0 );
 	}
 	@Override
-	protected boolean isAlreadyInTheDesiredState() {
+	public boolean isAlreadyInTheDesiredState() {
 		return false;
 	}
 

@@ -57,8 +57,8 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 		public void addedChild(edu.cmu.cs.dennisc.croquet.HistoryNode child) {
 			Step step = stepsModel.getSelectedStep();
-			if (step instanceof WaitingStep<?>) {
-				WaitingStep<?> waitingStep = (WaitingStep<?>) step;
+			if (step instanceof WaitingStep) {
+				WaitingStep waitingStep = (WaitingStep) step;
 				if( waitingStep.isWhatWeveBeenWaitingFor( child ) ) {
 					nextStepOperation.setEnabled( true );
 					if( step.isAutoAdvanceDesired() ) {
@@ -296,8 +296,8 @@ package edu.cmu.cs.dennisc.tutorial;
 			int selectedIndex = stepsModel.getSelectedIndex();
 
 			boolean isWaiting;
-			if (step instanceof WaitingStep<?>) {
-				WaitingStep<?> waitingStep = (WaitingStep<?>) step;
+			if (step instanceof WaitingStep) {
+				WaitingStep waitingStep = (WaitingStep) step;
 				isWaiting = waitingStep.isAlreadyInTheDesiredState() == false;
 			} else {
 				isWaiting = false;

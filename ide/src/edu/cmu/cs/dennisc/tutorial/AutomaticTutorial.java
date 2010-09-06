@@ -46,13 +46,13 @@ package edu.cmu.cs.dennisc.tutorial;
 	private ContextUtilities() {
 		throw new AssertionError();
 	}
-	private static edu.cmu.cs.dennisc.croquet.Retargeter retargeter;
-	public static edu.cmu.cs.dennisc.croquet.Retargeter getRetargeter() {
-		return ContextUtilities.retargeter;
-	}
-	public static void setRetargeter( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		ContextUtilities.retargeter = retargeter;
-	}
+//	private static edu.cmu.cs.dennisc.croquet.Retargeter retargeter;
+//	public static edu.cmu.cs.dennisc.croquet.Retargeter getRetargeter() {
+//		return ContextUtilities.retargeter;
+//	}
+//	public static void setRetargeter( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+//		ContextUtilities.retargeter = retargeter;
+//	}
 	public static <N extends edu.cmu.cs.dennisc.croquet.HistoryNode> N getLastNodeAssignableTo( edu.cmu.cs.dennisc.croquet.ModelContext<?> context, Class<N> cls ) {
 		final int N = context.getChildCount();
 		int i=N-1;
@@ -103,113 +103,6 @@ package edu.cmu.cs.dennisc.tutorial;
 		return null;
 	}
 }
-
-/*package-private*/ class AutomaticBooleanStateStep extends BooleanStateStep { 
-	public static AutomaticBooleanStateStep createInstance( edu.cmu.cs.dennisc.croquet.BooleanStateContext context, edu.cmu.cs.dennisc.croquet.BooleanStateEdit edit ) {
-		edu.cmu.cs.dennisc.croquet.BooleanState booleanState = context.getModel();
-		String title = booleanState.getClass().getSimpleName();
-		String text = booleanState.getTutorialNoteText( edit );
-		ModelFromContextResolver modelResolver = new ModelFromContextResolver( context );
-		return new AutomaticBooleanStateStep( title, text, modelResolver, edit.getNextValue() );
-	}
-	private AutomaticBooleanStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.BooleanState > booleanStateResolver, boolean desiredValue ) {
-		super( title, text, booleanStateResolver, desiredValue );
-	}
-}
-/*package-private*/ class AutomaticListSelectionStateStep< E > extends ListSelectionStateStep< E > { 
-	public static <E> AutomaticListSelectionStateStep createInstance( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > context, final edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E > edit ) {
-		edu.cmu.cs.dennisc.croquet.ListSelectionState< E > listSelectionState = context.getModel();
-		String title = listSelectionState.getClass().getSimpleName();
-		String text = listSelectionState.getTutorialNoteText( edit );
-		ModelFromContextResolver modelResolver = new ModelFromContextResolver( context );
-		edu.cmu.cs.dennisc.croquet.RuntimeResolver itemResolver = new edu.cmu.cs.dennisc.croquet.RuntimeResolver<E>() {
-			public E getResolved() {
-				return edit.getNextValue();
-			}
-		};
-		Feature.ConnectionPreference connectionPreference = Feature.ConnectionPreference.EAST_WEST;
-		return new AutomaticListSelectionStateStep( title, text, modelResolver, itemResolver, connectionPreference );
-	}
-	private AutomaticListSelectionStateStep( String title, String text, edu.cmu.cs.dennisc.croquet.RuntimeResolver<edu.cmu.cs.dennisc.croquet.ListSelectionState< E >> itemSelectionStateResolver, edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends E > desiredValueResolver, Feature.ConnectionPreference connectionPreference ) {
-		super( title, text, itemSelectionStateResolver, desiredValueResolver, connectionPreference );
-	}
-}
-
-/*package-private*/ class AutomaticPopupMenuStep extends WaitingStep {
-	public static AutomaticPopupMenuStep createInstance( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int index0, edu.cmu.cs.dennisc.croquet.ModelContext modelContext ) {
-		AutomaticPopupMenuStep rv = new AutomaticPopupMenuStep( menuSelectionEvent, index0 );
-		final int N = menuSelectionEvent.getModelCount();
-		for( int i=index0+1; i<N; i++ ) {
-			edu.cmu.cs.dennisc.croquet.Model modelI = menuSelectionEvent.getModelAt( i );
-			StringBuilder sb = new StringBuilder();
-			sb.append( "select <strong><em>" );
-			if( modelI instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
-				sb.append( ((edu.cmu.cs.dennisc.croquet.MenuModel)modelI).getTutorialNoteText() );
-			} else {
-				sb.append( modelI.toString() );
-			}
-			sb.append( "</em></strong>" );
-			Note noteI = new Note( sb.toString() );
-			noteI.setLabel( Integer.toString( i-index0 ) );
-			for( int j=index0; j<=i; j++ ) {
-				noteI.addFeature( new Hole( new FirstComponentResolver( new ModelFromMenuSelectionResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, j ) ), Feature.ConnectionPreference.EAST_WEST, j==i ) );
-			}
-			rv.addNote( noteI );
-		}
-		
-		int i=0;
-		for( Note note : rv.getNotes() ) {
-			note.setLabel( Integer.toString( i+1 ) );
-			i++;
-		}
-		return rv;
-	}
-	private edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent originalMenuSelectionEvent;
-	private int index0;
-	private AutomaticPopupMenuStep( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int index0 ) {
-		super( menuSelectionEvent.getModelAt( index0 ).toString(), menuSelectionEvent.getModelAt( index0 ).getClass().getSimpleName(), new Hole( new FirstComponentResolver( new ModelFromMenuSelectionResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, index0 ) ), Feature.ConnectionPreference.NORTH_SOUTH ), new ModelFromMenuSelectionResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, index0 ) );
-		this.originalMenuSelectionEvent = menuSelectionEvent;
-		this.index0 = index0;
-	}
-	
-	@Override
-	public void reset() {
-		super.reset();
-		this.setActiveNote( 0 );
-	}
-	@Override
-	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
-		return e.getID() == java.awt.event.MouseEvent.MOUSE_PRESSED || e.getID() == java.awt.event.MouseEvent.MOUSE_RELEASED || e.getID() == java.awt.event.MouseEvent.MOUSE_CLICKED || e.getID() == java.awt.event.MouseEvent.MOUSE_DRAGGED;
-	}
-	
-	@Override
-	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
-		if( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
-			edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)child;
-			int noteIndex = 0;
-			final int N = menuSelectionEvent.getModelCount();
-			for( int i=0; i<N; i++ ) {
-				edu.cmu.cs.dennisc.croquet.Model orginalModelI = this.originalMenuSelectionEvent.getModelAt( i );
-				edu.cmu.cs.dennisc.croquet.Model replacementModelI = menuSelectionEvent.getModelAt( i );
-				if( orginalModelI == replacementModelI ) {
-					noteIndex = i;
-				}
-				//Note noteI = this.getNoteAt( i );
-				//noteI.setText()
-			}
-			this.setActiveNote( noteIndex );
-		}
-		return false;
-	}
-	@Override
-	protected boolean isAlreadyInTheDesiredState() {
-		return false;
-	}
-	@Override
-	protected void complete() {
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
@@ -238,66 +131,93 @@ public class AutomaticTutorial {
 		this.groups = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groups );
 	}
 	
+	private edu.cmu.cs.dennisc.croquet.Retargeter retargeter;
 	public edu.cmu.cs.dennisc.croquet.Retargeter getRetargeter() {
-		//todo
-		return ContextUtilities.getRetargeter();
+		return this.getRetargeter();
 	}
 	public void setRetargeter( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		//todo
-		ContextUtilities.setRetargeter( retargeter );
+		this.retargeter = retargeter;
 	}
 	private void addMessageStep( String title, String text ) {
 		this.stencil.addStep( new MessageStep( title, text ) );
 	}
-	
-	/*package-private*/ class AutomaticInputDialogOperationStep extends InputDialogOpenAndCommitStep {
-		private edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > context;
-		private edu.cmu.cs.dennisc.croquet.Edit<?> edit;
-		public AutomaticInputDialogOperationStep( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > context, edu.cmu.cs.dennisc.croquet.Edit<?> edit ) {
-			super( context.getModel().getClass().getSimpleName(), context.getModel().getClass().getName(), "commit text", new ModelFromContextResolver( context ), null, null, null );
-			this.context = context;
-			this.edit = edit;
+
+	private static abstract class HistoryNote extends Note {
+		public HistoryNote( String text ) {
+			super( text );
 		}
-		@Override
-		protected boolean isEditAcceptable( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-			boolean rv = this.edit.isReplacementAcceptable( edit );
-			if( rv ) {
-				edu.cmu.cs.dennisc.croquet.Retargeter retargeter = ContextUtilities.getRetargeter();
-				this.edit.retarget( retargeter, edit );
-				sourceContext.retarget( retargeter );
-			}
-			return rv;
+		public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
+			return true;
 		}
+		public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child );
 	}
-	/*package-private*/ class AutomaticDragAndDropStep extends DragAndDropStep {
-		private edu.cmu.cs.dennisc.croquet.Edit< ? > edit;
-		public AutomaticDragAndDropStep( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-			super( 
-					dragAndDropContext.getClass().getSimpleName(), 
-					dragAndDropContext.getClass().getName(), 
-					new ModelFromContextResolver< edu.cmu.cs.dennisc.croquet.DragAndDropModel >( dragAndDropContext ), 
-					"dropText", 
-					new DropSiteResolver( dragAndDropContext ), 
-					null, null, null, null, null );
-			this.edit = edit;
+	
+	private static class MenuSelectionNote extends HistoryNote {
+		private static String getText( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i ) {
+			edu.cmu.cs.dennisc.croquet.Model modelI = menuSelectionEvent.getModelAt( i );
+			StringBuilder sb = new StringBuilder();
+			sb.append( "select <strong><em>" );
+			if( modelI instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
+				sb.append( ((edu.cmu.cs.dennisc.croquet.MenuModel)modelI).getTutorialNoteText() );
+			} else {
+				sb.append( modelI.toString() );
+			}
+			sb.append( "</em></strong>" );
+			return sb.toString();
 		}
+		public static MenuSelectionNote createInstance( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, int index0 ) {
+			return new MenuSelectionNote( menuSelectionEvent, i, index0 );
+		}
+		
+		private edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent originalMenuSelectionEvent;
+		private int i;
+
+		private MenuSelectionNote( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, int index0 ) {
+			super( getText( menuSelectionEvent, i ) );
+			this.originalMenuSelectionEvent = menuSelectionEvent;
+			this.i = i;
+			for( int j=index0; j<=i; j++ ) {
+				this.addFeature( new Hole( new FirstComponentResolver( new ModelFromMenuSelectionResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, j ) ), Feature.ConnectionPreference.EAST_WEST, j==i ) );
+			}
+		}
+		
+		@Override
+		public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
+			return e.getID() == java.awt.event.MouseEvent.MOUSE_PRESSED || e.getID() == java.awt.event.MouseEvent.MOUSE_RELEASED || e.getID() == java.awt.event.MouseEvent.MOUSE_CLICKED || e.getID() == java.awt.event.MouseEvent.MOUSE_DRAGGED;
+		}
+
+		public boolean isAtLeastWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent ) {
+			final int N = this.i+1;
+			if( menuSelectionEvent.getModelCount() >= N ) {
+				for( int i=0; i<N; i++ ) {
+					edu.cmu.cs.dennisc.croquet.Model orginalModelI = this.originalMenuSelectionEvent.getModelAt( i );
+					edu.cmu.cs.dennisc.croquet.Model replacementModelI = menuSelectionEvent.getModelAt( i );
+					if( orginalModelI == replacementModelI ) {
+						//pass
+					} else {
+						return false;
+					}
+				}
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
 		@Override
 		public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
-			boolean rv = super.isWhatWeveBeenWaitingFor( child );
-			if( child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
-				edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent)child;
-				edu.cmu.cs.dennisc.croquet.Edit< ? > edit = commitEvent.getEdit();
-				if( this.edit.isReplacementAcceptable( edit ) ) {
-					edu.cmu.cs.dennisc.croquet.Retargeter retargeter = ContextUtilities.getRetargeter();
-					this.edit.retarget( retargeter, edit );
-					sourceContext.retarget( retargeter );
+			if( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
+				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)child;
+				final int N = this.i;
+				if( menuSelectionEvent.getModelCount() == N ) {
+					return this.isAtLeastWhatWeveBeenWaitingFor( menuSelectionEvent );
 				}
 			}
-			return rv;
+			return false;
 		}
 	}
 	
-	private static java.util.List< Note > appendNotes( java.util.List< Note > rv, edu.cmu.cs.dennisc.croquet.HistoryNode node ) {
+	private static java.util.List< HistoryNote > appendNotes( java.util.List< HistoryNote > rv, edu.cmu.cs.dennisc.croquet.HistoryNode node ) {
 		if( node instanceof edu.cmu.cs.dennisc.croquet.MenuBarModelContext ) {
 			edu.cmu.cs.dennisc.croquet.MenuBarModelContext menuBarModelContext = (edu.cmu.cs.dennisc.croquet.MenuBarModelContext)node;
 			edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = menuBarModelContext.getLastChild();
@@ -324,20 +244,7 @@ public class AutomaticTutorial {
 								index0 = 0;
 							}
 							for( int i=index0; i<N; i++ ) {
-								edu.cmu.cs.dennisc.croquet.Model modelI = menuSelectionEvent.getModelAt( i );
-								StringBuilder sb = new StringBuilder();
-								sb.append( "select <strong><em>" );
-								if( modelI instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
-									sb.append( ((edu.cmu.cs.dennisc.croquet.MenuModel)modelI).getTutorialNoteText() );
-								} else {
-									sb.append( modelI.toString() );
-								}
-								sb.append( "</em></strong>" );
-								Note noteI = new Note( sb.toString() );
-								for( int j=index0; j<=i; j++ ) {
-									noteI.addFeature( new Hole( new FirstComponentResolver( new ModelFromMenuSelectionResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, j ) ), Feature.ConnectionPreference.EAST_WEST, j==i ) );
-								}
-								rv.add( noteI );
+								rv.add( MenuSelectionNote.createInstance( menuSelectionEvent, i, index0 ) );
 							}
 						}
 					}
@@ -347,7 +254,7 @@ public class AutomaticTutorial {
 		return rv;
 	}
 
-	/*package-private*/ class ContextStep extends Step {
+	/*package-private*/ class ContextStep extends Step implements WaitingStep {
 		private edu.cmu.cs.dennisc.croquet.ModelContext< ? > context;
 		public ContextStep( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
 			this.context = context;
@@ -357,15 +264,20 @@ public class AutomaticTutorial {
 			edu.cmu.cs.dennisc.croquet.Model model = context.getModel();
 			return model.getClass().getSimpleName();
 		}
+		@Override
+		public void reset() {
+			super.reset();
+			this.setActiveNote( 0 );
+		}
 		
-		private java.util.List< Note > notes;
-		private java.util.List< Note > createNotes() {
-			java.util.List< Note > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		private java.util.List< HistoryNote > notes;
+		private java.util.List< HistoryNote > createNotes() {
+			java.util.List< HistoryNote > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			appendNotes( rv, this.context );
 			return rv;
 		}
 		@Override
-		public java.util.List< Note > getNotes() {
+		public java.util.List< ? extends Note > getNotes() {
 			if( this.notes != null ) {
 				//pass
 			} else {
@@ -379,6 +291,52 @@ public class AutomaticTutorial {
 				}
 			}
 			return this.notes;
+		}
+		
+		public boolean isAlreadyInTheDesiredState() {
+			return false;
+		}
+		@Override
+		public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
+			int activeNoteIndex = this.getIndexOfFirstActiveNote();
+			if( activeNoteIndex > 0 ) {
+				return this.notes.get( activeNoteIndex ).isEventInterceptable( e );
+			} else {
+				return super.isEventInterceptable( e );
+			}
+		}
+		public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+			final int NOTE_COUNT = this.getNoteCount();
+			if( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
+				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)child;
+				for( int i=0; i<NOTE_COUNT; i++ ) {
+					HistoryNote historyNote = this.notes.get( i );
+					if( historyNote instanceof MenuSelectionNote ) {
+						MenuSelectionNote menuSelectionNote = (MenuSelectionNote)historyNote;
+						if( menuSelectionNote.isAtLeastWhatWeveBeenWaitingFor( menuSelectionEvent ) ) {
+							//pass
+						} else {
+							this.setActiveNote( i );
+							break;
+						}
+					}
+				}
+			} else {
+				int activeNoteIndex = this.getIndexOfFirstActiveNote();
+				activeNoteIndex = Math.max( activeNoteIndex, 0 );
+				if( activeNoteIndex < NOTE_COUNT ) {
+					HistoryNote activeNote = this.notes.get( activeNoteIndex );
+					if( activeNote.isWhatWeveBeenWaitingFor( child ) ) {
+						activeNoteIndex ++;
+						if( activeNoteIndex == NOTE_COUNT ) {
+							return true;
+						} else {
+							this.setActiveNote( activeNoteIndex );
+						}
+					}
+				}
+			}
+			return false;
 		}
 		@Override
 		protected void complete() {
@@ -399,7 +357,9 @@ public class AutomaticTutorial {
 				if( state == edu.cmu.cs.dennisc.croquet.HistoryNode.State.CANCELED ) {
 					//pass
 				} else {
-					this.stencil.addStep( new ContextStep( context ) );
+					if( this.groups.contains( group ) || group == edu.cmu.cs.dennisc.croquet.MenuBarModel.MENU_BAR_MODEL_GROUP ) {
+						this.stencil.addStep( new ContextStep( context ) );
+					}
 //					if( this.groups.contains( group ) ) {
 //						if( modelContext instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > ) {
 //							edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? >)modelContext;

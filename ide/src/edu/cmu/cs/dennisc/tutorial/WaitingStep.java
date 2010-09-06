@@ -45,18 +45,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class WaitingStep<M extends edu.cmu.cs.dennisc.croquet.Model > extends FeatureStep {
-	private edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > modelResolver;
-	public WaitingStep( String title, String text, Feature feature, edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > modelResolver ) {
-		super( title, text, feature );
-		this.modelResolver = modelResolver;
-	}
-	private edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > getModelResolver() {
-		return this.modelResolver;
-	}
-	protected M getModel() {
-		return this.getModelResolver().getResolved();
-	}
-	protected abstract boolean isAlreadyInTheDesiredState();
+/*package-private*/ interface WaitingStep {
+	public abstract boolean isAlreadyInTheDesiredState();
 	public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child );
 }

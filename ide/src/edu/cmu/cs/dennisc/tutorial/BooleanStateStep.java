@@ -56,7 +56,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		this.getModel().setValue( this.desiredValue );
 	}
 	@Override
-	protected boolean isAlreadyInTheDesiredState() {
+	public boolean isAlreadyInTheDesiredState() {
 		return this.getModel().getValue() == this.desiredValue;
 	}
 	@Override
