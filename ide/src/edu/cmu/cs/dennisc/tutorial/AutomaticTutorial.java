@@ -172,19 +172,34 @@ public class AutomaticTutorial {
 		public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child );
 	}
 	
-	private static class DragAndDropNote extends HistoryNote {
-		public static DragAndDropNote createInstance( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-			return new DragAndDropNote( dragAndDropContext );
+	private static class DragNote extends HistoryNote {
+		public static DragNote createInstance( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+			return new DragNote( dragAndDropContext );
 		}
-		private DragAndDropNote( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-			super( dragAndDropContext.getModel().getTutorialNoteText() );
+		private DragNote( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+			super( dragAndDropContext.getModel().getTutorialDragNoteText() );
 			ModelFromContextResolver modelResolver = new ModelFromContextResolver( dragAndDropContext );
 			FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
+			DropSiteResolver dropSiteResolver = new DropSiteResolver( dragAndDropContext ); 
 			this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			
 		}
 		@Override
 		public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
 			return child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext;
+		}
+	}
+	private static class DropNote extends HistoryNote {
+		public static DropNote createInstance( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+			return new DropNote( dragAndDropContext );
+		}
+		private DropNote( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+			super( dragAndDropContext.getModel().getTutorialDropNoteText() );
+			DropSiteResolver dropSiteResolver = new DropSiteResolver( dragAndDropContext ); 
+			this.addFeature( new Hole( dropSiteResolver, Feature.ConnectionPreference.EAST_WEST ) );			
+		}
+		@Override
+		public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+			return child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent;
 		}
 	}
 
@@ -413,7 +428,8 @@ public class AutomaticTutorial {
 				edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = dragAndDropContext.getChildAt( DND_CONTEXT_CHILD_COUNT-1 );
 				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
 					edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)lastChild;
-					rv.add( DragAndDropNote.createInstance( dragAndDropContext ) );
+					rv.add( DragNote.createInstance( dragAndDropContext ) );
+					rv.add( DropNote.createInstance( dragAndDropContext ) );
 					appendNotes( rv, modelContext );
 				}
 			}

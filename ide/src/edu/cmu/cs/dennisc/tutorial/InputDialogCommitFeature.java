@@ -50,6 +50,10 @@ package edu.cmu.cs.dennisc.tutorial;
 		super( trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST, true );
 	}
 	@Override
+	public boolean isPotentiallyScrollable() {
+		return false;
+	}
+	@Override
 	protected java.awt.Insets getBoundsInsets() {
 		return null;
 	}

@@ -47,6 +47,7 @@ package org.alice.ide.croquet.models;
  * @author Dennis Cosgrove
  */
 public interface BeholdenModel {
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter );
 	public void doOrRedoInternal( boolean isDo );
 	public void undoInternal();
 	public StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale );

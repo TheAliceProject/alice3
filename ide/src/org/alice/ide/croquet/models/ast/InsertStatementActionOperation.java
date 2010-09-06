@@ -95,6 +95,12 @@ public class InsertStatementActionOperation extends edu.cmu.cs.dennisc.croquet.A
 		}
 	}
 	
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		this.blockStatement = retargeter.retarget( this.blockStatement );
+		this.statement = retargeter.retarget( this.statement );
+	}
+	
+	
 	public StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		//super.updatePresentation( rv, locale );
 		rv.append( "drop: " );
@@ -107,6 +113,8 @@ public class InsertStatementActionOperation extends edu.cmu.cs.dennisc.croquet.A
 	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 		org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation>)edit;
 		InsertStatementActionOperation replacementModel = replacementEdit.getModel();
+		retargeter.addKeyValuePair( this, replacementModel );
+		retargeter.addKeyValuePair( this.instanceId, replacementModel.instanceId );
 		retargeter.addKeyValuePair( this.blockStatement, replacementModel.blockStatement );
 		retargeter.addKeyValuePair( this.statement, replacementModel.statement );
 		System.err.println( "TODO: recursive retarget" );

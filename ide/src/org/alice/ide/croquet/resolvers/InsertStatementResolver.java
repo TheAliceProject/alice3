@@ -59,6 +59,7 @@ public class InsertStatementResolver extends edu.cmu.cs.dennisc.croquet.StaticGe
 		Object[] arguments = this.getArguments();
 		assert arguments != null;
 		assert arguments.length == 4;
+		arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
 		arguments[ 1 ] = retargeter.retarget( arguments[ 1 ] );
 		//todo: retarget index?
 		arguments[ 3 ] = retargeter.retarget( arguments[ 3 ] );

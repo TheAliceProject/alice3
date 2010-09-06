@@ -59,8 +59,11 @@ public abstract class DragAndDropModel extends Model {
 	/*package-private*/ void localize() {
 	}
 	
-	public String getTutorialNoteText() {
-		return "Drag this...";
+	public String getTutorialDragNoteText() {
+		return "Drag...";
+	}
+	public String getTutorialDropNoteText() {
+		return "Drop...";
 	}
 	
 	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( DragComponent dragSource );
