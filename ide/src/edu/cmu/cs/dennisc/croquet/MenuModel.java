@@ -62,6 +62,10 @@ public abstract class MenuModel extends Model {
 		this( individualId, null );
 	}
 	@Override
+	protected boolean isOwnerOfEdit() {
+		return false;
+	}
+	@Override
 	/*package-private*/ void localize() {
 		if( clsForI18N != null ) {
 			//pass

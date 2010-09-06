@@ -73,6 +73,19 @@ public final class ListSelectionStateEdit<E> extends Edit<ListSelectionState<E>>
 	}
 
 	@Override
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		super.retarget( retargeter );
+		this.prevValue = retargeter.retarget( this.prevValue );
+		this.nextValue = retargeter.retarget( this.nextValue );
+	}
+//	@Override
+//	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit ) {
+//		super.addKeyValuePairs( retargeter, replacementEdit );
+//		ListSelectionStateEdit listSelectionStateEdit = (ListSelectionStateEdit)replacementEdit;
+//		retargeter.addKeyValuePair( this.prevValue, listSelectionStateEdit.prevValue );
+//		retargeter.addKeyValuePair( this.nextValue, listSelectionStateEdit.nextValue );
+//	}
+	@Override
 	protected final void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 		ListSelectionState< E > listSelectionState = this.getModel();
 		Codec<E> codec = listSelectionState.getCodec();

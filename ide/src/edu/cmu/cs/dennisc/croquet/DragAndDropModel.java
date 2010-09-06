@@ -52,6 +52,10 @@ public abstract class DragAndDropModel extends Model {
 		this.localize();
 	}
 	@Override
+	protected boolean isOwnerOfEdit() {
+		return false;
+	}
+	@Override
 	/*package-private*/ void localize() {
 	}
 	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( DragComponent dragSource );

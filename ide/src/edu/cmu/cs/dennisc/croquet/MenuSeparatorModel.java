@@ -57,6 +57,10 @@ public final class MenuSeparatorModel extends Model {
 		this( null, null );
 	}
 	@Override
+	protected boolean isOwnerOfEdit() {
+		return false;
+	}
+	@Override
 	/*package-private*/ void localize() {
 	}
 	public String getName() {

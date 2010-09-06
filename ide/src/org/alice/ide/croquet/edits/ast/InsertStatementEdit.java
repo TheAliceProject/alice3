@@ -80,8 +80,8 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.Edit< org.al
 		return edit instanceof InsertStatementEdit;
 	}
 	@Override
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		super.retarget( retargeter, edit );
+	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		super.addKeyValuePairs( retargeter, edit );
 		InsertStatementEdit replacementEdit = (InsertStatementEdit)edit;
 		retargeter.addKeyValuePair( this.blockStatement, replacementEdit.blockStatement );
 		retargeter.addKeyValuePair( this.statement, replacementEdit.statement );

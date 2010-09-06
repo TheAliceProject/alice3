@@ -87,6 +87,11 @@ public abstract class Operation< C extends OperationContext<?>> extends Model {
 	}
 	
 	@Override
+	protected boolean isOwnerOfEdit() {
+		return true;
+	}
+
+	@Override
 	/*package-private*/ void localize() {
 		this.setName( this.getDefaultLocalizedText() );
 		this.setMnemonicKey( this.getLocalizedMnemonicKey() );

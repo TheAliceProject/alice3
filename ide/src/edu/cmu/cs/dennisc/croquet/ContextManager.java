@@ -155,9 +155,24 @@ public class ContextManager {
 	/*package-private*/ static PopupMenuOperationContext createAndPushPopupMenuOperationContext(PopupMenuOperation popupMenuOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		return push( new PopupMenuOperationContext(popupMenuOperation, e, viewController) );
 	}
-	/*package-private*/ static <T> ListSelectionStateContext<T> createAndPushItemSelectionStateContext(ListSelectionState<T> itemSelectionState, java.util.EventObject e, ViewController<?, ?> viewController, int prevIndex, T prevItem, int nextIndex, T nextItem) {
-		return push( new ListSelectionStateContext<T>( itemSelectionState, e, viewController, prevIndex, prevItem, nextIndex, nextItem ) );
+	/*package-private*/ static <E> ListSelectionStateContext<E> createAndPushItemSelectionStateContext(ListSelectionState<E> itemSelectionState, java.util.EventObject e, ViewController<?, ?> viewController/*, int prevIndex, E prevItem, int nextIndex, E nextItem*/) {
+		ModelContext< ? > currentContext = getCurrentContext();
+		if( currentContext instanceof ListSelectionStateContext ) {
+			return (ListSelectionStateContext<E>)currentContext;
+		} else {
+			return push( new ListSelectionStateContext<E>( itemSelectionState, e, viewController /*, prevIndex, prevItem, nextIndex, nextItem*/ ) );
+		}
 	}
+	/*package-private*/ static <E> void addListSelectionPopupMenuWillBecomeVisible( ListSelectionState<E> itemSelectionState, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
+		ListSelectionStateContext<E> listSelectionStateContext = createAndPushItemSelectionStateContext( itemSelectionState, e, itemSelectable );
+		listSelectionStateContext.handlePopupMenuWillBecomeVisibleEvent( e );
+		
+	}
+	/*package-private*/ static <E> void addListSelectionPopupMenuWillBecomeInvisible( ListSelectionState<E> itemSelectionState, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
+	}
+	/*package-private*/ static <E> void addListSelectionPopupMenuCanceled( ListSelectionState<E> itemSelectionState, javax.swing.event.PopupMenuEvent e, ItemSelectable< ?, ? > itemSelectable ) {
+	}
+
 	/*package-private*/ static BoundedRangeIntegerStateContext createAndPushBoundedRangeIntegerStateContext(BoundedRangeIntegerState boundedRangeIntegerState) {
 		return push( new BoundedRangeIntegerStateContext(boundedRangeIntegerState, null, null) );
 	}
@@ -414,5 +429,4 @@ public class ContextManager {
 	public static void popUndoOrRedo() {
 		isUndoOrRedoCount --;
 	}
-	
 }

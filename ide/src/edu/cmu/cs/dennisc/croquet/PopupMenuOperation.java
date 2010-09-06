@@ -53,6 +53,10 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 		this.menuModel = menuModel;
 	}
 	@Override
+	protected boolean isOwnerOfEdit() {
+		return false;
+	}
+	@Override
 	protected PopupMenuOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushPopupMenuOperationContext( this, e, viewController );
 	}

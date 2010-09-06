@@ -76,6 +76,21 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 		super( binaryDecoder );
 	}
 
+//	public Group getEditGroup() {
+//		Model model = this.getModel();
+//		if( model.isOwnerOfEdit() ) {
+//			return model.getGroup();
+//		} else {
+//			HistoryNode lastChild = this.getLastChild();
+//			if( lastChild instanceof ModelContext< ? > ) {
+//				ModelContext< ? > lastChildContext = (ModelContext< ? >)lastChild;
+//				return lastChildContext.getEditGroup();
+//			} else {
+//				return null;
+//			}
+//		}
+//	}
+
 	public void EPIC_HACK_clear() {
 		this.children.clear();
 	}

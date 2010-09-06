@@ -176,6 +176,8 @@ public abstract class Edit<M extends Model> implements edu.cmu.cs.dennisc.codec.
 	public boolean isReplacementAcceptable( Edit< ? > edit ) {
 		return edit != null;
 	}
-	public void retarget( Retargeter retargeter, Edit< ? > edit ) {
+	public void retarget( Retargeter retargeter ) {
+	}
+	public void addKeyValuePairs( Retargeter retargeter, Edit< ? > edit ) {
 	}
 }

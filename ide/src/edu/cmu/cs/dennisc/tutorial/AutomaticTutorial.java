@@ -103,6 +103,17 @@ package edu.cmu.cs.dennisc.tutorial;
 		return null;
 	}
 }
+
+/*package-private*/ class ItemResolver<E> implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< E > {
+	private edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E > listSelectionStateEdit;
+	public ItemResolver( edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E > listSelectionStateEdit ) {
+		this.listSelectionStateEdit = listSelectionStateEdit;
+	}
+	public E getResolved() {
+		return this.listSelectionStateEdit.getNextValue();
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
@@ -133,7 +144,7 @@ public class AutomaticTutorial {
 	
 	private edu.cmu.cs.dennisc.croquet.Retargeter retargeter;
 	public edu.cmu.cs.dennisc.croquet.Retargeter getRetargeter() {
-		return this.getRetargeter();
+		return this.retargeter;
 	}
 	public void setRetargeter( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		this.retargeter = retargeter;
@@ -152,6 +163,101 @@ public class AutomaticTutorial {
 		public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child );
 	}
 	
+	private static boolean isInterceptedInAllCasesMouseEvent( java.awt.event.MouseEvent e ) {
+		return e.getID() == java.awt.event.MouseEvent.MOUSE_PRESSED || e.getID() == java.awt.event.MouseEvent.MOUSE_RELEASED || e.getID() == java.awt.event.MouseEvent.MOUSE_CLICKED || e.getID() == java.awt.event.MouseEvent.MOUSE_DRAGGED;
+	}
+	
+	private static abstract class WaitingOnCommitHistoryNote extends HistoryNote {
+		private edu.cmu.cs.dennisc.croquet.Edit< ? > edit;
+		public WaitingOnCommitHistoryNote( String text, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+			super( text );
+			this.edit = edit;
+		}
+		@Override
+		public final boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+			//todo
+			return child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent;
+		}
+		
+	}
+	
+	private static class BooleanStateNote extends WaitingOnCommitHistoryNote {
+		public static BooleanStateNote createInstance( edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext ) {
+			edu.cmu.cs.dennisc.croquet.BooleanStateEdit booleanStateEdit = (edu.cmu.cs.dennisc.croquet.BooleanStateEdit)booleanStateContext.getEdit();
+			return new BooleanStateNote( booleanStateContext, booleanStateEdit );
+		}
+		private BooleanStateNote( edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext, edu.cmu.cs.dennisc.croquet.BooleanStateEdit booleanStateEdit ) {
+			super( booleanStateContext.getModel().getTutorialNoteText( booleanStateEdit ), booleanStateEdit );
+			ModelFromContextResolver modelResolver = new ModelFromContextResolver( booleanStateContext );
+			FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
+			this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			
+		}
+	}
+
+	private static class ListSelectionStateSimpleNote<E> extends WaitingOnCommitHistoryNote {
+		public static <E> ListSelectionStateSimpleNote<E> createInstance( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext ) {
+			edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit<E> listSelectionStateEdit = (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E >)listSelectionStateContext.getEdit();
+			return new ListSelectionStateSimpleNote( listSelectionStateContext, listSelectionStateEdit );
+		}
+		private ListSelectionStateSimpleNote( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit<E> listSelectionStateEdit ) {
+			super( listSelectionStateContext.getModel().getTutorialNoteText( listSelectionStateEdit ), listSelectionStateEdit );
+			ModelFromContextResolver modelResolver = new ModelFromContextResolver( listSelectionStateContext );
+			FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
+			this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			
+		}
+	}
+
+	private static class ListSelectionStateStartNote<E> extends HistoryNote {
+		public static <E> ListSelectionStateStartNote<E> createInstance( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext ) {
+			edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit<E> listSelectionStateEdit = (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E >)listSelectionStateContext.getEdit();
+			return new ListSelectionStateStartNote( listSelectionStateContext, listSelectionStateEdit );
+		}
+		private ListSelectionStateStartNote( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit<E> listSelectionStateEdit ) {
+			super( listSelectionStateContext.getModel().getTutorialNoteStartText( listSelectionStateEdit ) );
+			ModelFromContextResolver modelResolver = new ModelFromContextResolver( listSelectionStateContext );
+			FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
+			this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			
+		}
+		@Override
+		public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+			return child instanceof edu.cmu.cs.dennisc.croquet.ListSelectionStateContext.PopupMenuWillBecomeVisibleEvent;
+		}
+	}
+	private static class ListSelectionStateFinishNote<E> extends WaitingOnCommitHistoryNote {
+		public static <E> ListSelectionStateFinishNote<E> createInstance( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext ) {
+			edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit<E> listSelectionStateEdit = (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E >)listSelectionStateContext.getEdit();
+			return new ListSelectionStateFinishNote( listSelectionStateContext, listSelectionStateEdit );
+		}
+		private ListSelectionStateFinishNote( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit<E> listSelectionStateEdit ) {
+			super( listSelectionStateContext.getModel().getTutorialNoteFinishText( listSelectionStateEdit ), listSelectionStateEdit );
+			ModelFromContextResolver modelResolver = new ModelFromContextResolver( listSelectionStateContext );
+			ItemSelectionStateItemResolver itemSelectionStateItemResolver = new ItemSelectionStateItemResolver( modelResolver, new ItemResolver( listSelectionStateEdit ) );
+			//FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
+			//this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST, false ) );			
+			this.addFeature( new Hole( itemSelectionStateItemResolver, Feature.ConnectionPreference.EAST_WEST ) {
+				@Override
+				protected edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape() {
+					return this.getTrackableShapeResolver().getResolved();
+//					this.unbind();
+//					this.bind();
+//					return super.getTrackableShape();
+////					edu.cmu.cs.dennisc.croquet.TrackableShape rv = super.getTrackableShape();
+////					if( rv != null ) {
+////						//pass
+////					} else {
+////						this.unbind();
+////						this.bind();
+////						rv = super.getTrackableShape();
+////					}
+////					return rv;
+				}
+			} );			
+		}
+		@Override
+		public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
+			return isInterceptedInAllCasesMouseEvent( e );
+		}
+	}
 	private static class MenuSelectionNote extends HistoryNote {
 		private static String getText( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i ) {
 			edu.cmu.cs.dennisc.croquet.Model modelI = menuSelectionEvent.getModelAt( i );
@@ -165,14 +271,15 @@ public class AutomaticTutorial {
 			sb.append( "</em></strong>" );
 			return sb.toString();
 		}
-		public static MenuSelectionNote createInstance( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, int index0 ) {
-			return new MenuSelectionNote( menuSelectionEvent, i, index0 );
+		public static MenuSelectionNote createInstance( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, int index0 ) {
+			return new MenuSelectionNote( menuSelectionEvent, i, modelContext, index0 );
 		}
 		
 		private edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent originalMenuSelectionEvent;
 		private int i;
+		private edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext;
 
-		private MenuSelectionNote( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, int index0 ) {
+		private MenuSelectionNote( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, int index0 ) {
 			super( getText( menuSelectionEvent, i ) );
 			this.originalMenuSelectionEvent = menuSelectionEvent;
 			this.i = i;
@@ -183,7 +290,7 @@ public class AutomaticTutorial {
 		
 		@Override
 		public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
-			return e.getID() == java.awt.event.MouseEvent.MOUSE_PRESSED || e.getID() == java.awt.event.MouseEvent.MOUSE_RELEASED || e.getID() == java.awt.event.MouseEvent.MOUSE_CLICKED || e.getID() == java.awt.event.MouseEvent.MOUSE_DRAGGED;
+			return isInterceptedInAllCasesMouseEvent( e );
 		}
 
 		public boolean isAtLeastWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent ) {
@@ -211,6 +318,12 @@ public class AutomaticTutorial {
 				final int N = this.i;
 				if( menuSelectionEvent.getModelCount() == N ) {
 					return this.isAtLeastWhatWeveBeenWaitingFor( menuSelectionEvent );
+				}
+			} else {
+				if( this.originalMenuSelectionEvent.getModelCount() == this.i+1 ) {
+					if( child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
+						return true;
+					}
 				}
 			}
 			return false;
@@ -244,11 +357,25 @@ public class AutomaticTutorial {
 								index0 = 0;
 							}
 							for( int i=index0; i<N; i++ ) {
-								rv.add( MenuSelectionNote.createInstance( menuSelectionEvent, i, index0 ) );
+								rv.add( MenuSelectionNote.createInstance( menuSelectionEvent, i, modelContext, index0 ) );
 							}
 						}
 					}
 				}
+			}
+		} else if( node instanceof edu.cmu.cs.dennisc.croquet.BooleanStateContext ) {
+			edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext = (edu.cmu.cs.dennisc.croquet.BooleanStateContext)node;
+			rv.add( BooleanStateNote.createInstance( booleanStateContext ) );
+		} else if( node instanceof edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< ? > ) {
+			edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< ? > listSelectionStateContext = (edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< ? >)node;
+			ModelFromContextResolver modelResolver = new ModelFromContextResolver( listSelectionStateContext );
+			FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
+			edu.cmu.cs.dennisc.croquet.Component< ? > component = firstComponentResolver.getResolved();
+			if( component instanceof edu.cmu.cs.dennisc.croquet.ComboBox< ? > ) {
+				rv.add( ListSelectionStateStartNote.createInstance( listSelectionStateContext ) );
+				rv.add( ListSelectionStateFinishNote.createInstance( listSelectionStateContext ) );
+			} else {
+				rv.add( ListSelectionStateSimpleNote.createInstance( listSelectionStateContext ) );
 			}
 		}
 		return rv;
@@ -352,69 +479,13 @@ public class AutomaticTutorial {
 			if( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
 				edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)node;
 				edu.cmu.cs.dennisc.croquet.HistoryNode.State state = context.getState();
-				edu.cmu.cs.dennisc.croquet.Model model = context.getModel();
-				edu.cmu.cs.dennisc.croquet.Group group = model.getGroup();
+				edu.cmu.cs.dennisc.croquet.Group group = context.getModel().getGroup();
 				if( state == edu.cmu.cs.dennisc.croquet.HistoryNode.State.CANCELED ) {
 					//pass
 				} else {
-					if( this.groups.contains( group ) || group == edu.cmu.cs.dennisc.croquet.MenuBarModel.MENU_BAR_MODEL_GROUP ) {
+					if( this.groups.contains( group ) || group == edu.cmu.cs.dennisc.croquet.DragAndDropModel.DRAG_GROUP || group == edu.cmu.cs.dennisc.croquet.MenuBarModel.MENU_BAR_MODEL_GROUP ) {
 						this.stencil.addStep( new ContextStep( context ) );
 					}
-//					if( this.groups.contains( group ) ) {
-//						if( modelContext instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > ) {
-//							edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? >)modelContext;
-//							edu.cmu.cs.dennisc.croquet.Edit<?> edit = inputDialogOperationContext.getEdit();
-//							if( edit != null ) {
-//								this.stencil.addStep( new AutomaticInputDialogOperationStep( inputDialogOperationContext, edit ) );
-//							}
-//						} else if( modelContext instanceof edu.cmu.cs.dennisc.croquet.BooleanStateContext ) {
-//							edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext = (edu.cmu.cs.dennisc.croquet.BooleanStateContext)modelContext;
-//							edu.cmu.cs.dennisc.croquet.Edit<?> edit = booleanStateContext.getEdit();
-//							if( edit instanceof edu.cmu.cs.dennisc.croquet.BooleanStateEdit ) {
-//								this.stencil.addStep( AutomaticBooleanStateStep.createInstance( booleanStateContext, (edu.cmu.cs.dennisc.croquet.BooleanStateEdit)edit ) );
-//							}
-//						} else if( modelContext instanceof edu.cmu.cs.dennisc.croquet.ListSelectionStateContext ) {
-//							edu.cmu.cs.dennisc.croquet.ListSelectionStateContext listSelectionStateContext = (edu.cmu.cs.dennisc.croquet.ListSelectionStateContext)modelContext;
-//							edu.cmu.cs.dennisc.croquet.Edit<?> edit = listSelectionStateContext.getEdit();
-//							if( edit instanceof edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit ) {
-//								this.stencil.addStep( AutomaticListSelectionStateStep.createInstance( listSelectionStateContext, (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit)edit ) );
-//							}
-//						}
-//					} else if( edu.cmu.cs.dennisc.croquet.DragAndDropModel.DRAG_GROUP == group ) {
-//						if( modelContext instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
-//							edu.cmu.cs.dennisc.croquet.DragAndDropContext dragContext = (edu.cmu.cs.dennisc.croquet.DragAndDropContext)modelContext;
-//							edu.cmu.cs.dennisc.croquet.ActionOperationContext actionOperationContext = (edu.cmu.cs.dennisc.croquet.ActionOperationContext)dragContext.getChildAt( dragContext.getChildCount()-1 );
-//							edu.cmu.cs.dennisc.croquet.Edit< ? > edit = actionOperationContext.getEdit();
-//							if( edit != null ) {
-//								this.stencil.addStep( new AutomaticDragAndDropStep( dragContext, edit ) );
-//							}
-//						}
-//					} else if( edu.cmu.cs.dennisc.croquet.MenuBarModel.MENU_BAR_MODEL_GROUP == group ) {
-//						if( modelContext instanceof edu.cmu.cs.dennisc.croquet.MenuBarModelContext ) {
-//							edu.cmu.cs.dennisc.croquet.MenuBarModelContext menuBarModelContext = (edu.cmu.cs.dennisc.croquet.MenuBarModelContext)modelContext;
-//							edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = ContextUtilities.getLastNodeAssignableTo( menuBarModelContext, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.class );
-//							if( popupMenuOperationContext != null ) {
-//								edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = ContextUtilities.getLastNodeAssignableTo( popupMenuOperationContext, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent.class );
-//								if( menuSelectionEvent != null ) {
-//									final int MODEL_COUNT = menuSelectionEvent.getModelCount();
-//									edu.cmu.cs.dennisc.print.PrintUtilities.println();
-//									edu.cmu.cs.dennisc.print.PrintUtilities.println();
-//									edu.cmu.cs.dennisc.print.PrintUtilities.println();
-//									edu.cmu.cs.dennisc.print.PrintUtilities.println( "MENU_BAR_MODEL_GROUP" );
-//									for( int j=0; j<MODEL_COUNT; j++ ) {
-//										edu.cmu.cs.dennisc.print.PrintUtilities.println( menuSelectionEvent.getModelAt( j ) );
-//									}
-//									edu.cmu.cs.dennisc.print.PrintUtilities.println();
-//									edu.cmu.cs.dennisc.print.PrintUtilities.println();
-//									edu.cmu.cs.dennisc.print.PrintUtilities.println();
-//									
-//									this.stencil.addStep( AutomaticPopupMenuStep.createInstance( menuSelectionEvent, 1, null ) );
-//								}
-//							}
-//							
-//							System.err.println( "menuBarModelContext: " + menuBarModelContext );
-//						}
-//					}
 				}
 			}
 		}

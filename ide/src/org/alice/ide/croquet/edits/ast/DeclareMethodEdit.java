@@ -99,7 +99,8 @@ public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice
 		return edit instanceof DeclareMethodEdit;
 	}
 	@Override
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		super.addKeyValuePairs( retargeter, edit );
 		assert edit instanceof DeclareMethodEdit;
 		DeclareMethodEdit replacementEdit = (DeclareMethodEdit)edit;
 		retargeter.addKeyValuePair( this.method, replacementEdit.method );

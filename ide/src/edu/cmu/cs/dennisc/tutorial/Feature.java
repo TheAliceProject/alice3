@@ -139,6 +139,10 @@ package edu.cmu.cs.dennisc.tutorial;
 			repaintAll();
 		}
 	};
+	
+	protected edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > getTrackableShapeResolver() {
+		return this.trackableShapeResolver;
+	}
 	private edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape;
 	/*package-private*/ void updateTrackableShapeIfNecessary() {
 		edu.cmu.cs.dennisc.croquet.TrackableShape nextTrackableShape = this.trackableShapeResolver.getResolved();

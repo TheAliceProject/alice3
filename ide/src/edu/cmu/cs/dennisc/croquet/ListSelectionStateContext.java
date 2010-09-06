@@ -46,19 +46,41 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class ListSelectionStateContext< T > extends ModelContext<ListSelectionState<T>> {
-	private int prevIndex;
-	private T prevItem;
-	private int nextIndex;
-	private T nextItem;
-	/*package-private*/ ListSelectionStateContext( ListSelectionState< T > itemSelectionState, java.util.EventObject e, ViewController< ?,? > viewController, int prevIndex, T prevItem, int nextIndex, T nextItem ) {
+	public static class PopupMenuWillBecomeVisibleEvent<T> extends ModelEvent< ListSelectionStateContext< T > > {
+		private javax.swing.event.PopupMenuEvent popupMenuEvent;
+		public PopupMenuWillBecomeVisibleEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private PopupMenuWillBecomeVisibleEvent( javax.swing.event.PopupMenuEvent popupMenuEvent ) {
+			this.popupMenuEvent = popupMenuEvent;
+		}
+		@Override
+		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		}
+		@Override
+		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		}
+		@Override
+		public State getState() {
+			return null;
+		}
+	}
+	//private int prevIndex;
+	//private T prevItem;
+	//private int nextIndex;
+	//private T nextItem;
+	/*package-private*/ ListSelectionStateContext( ListSelectionState< T > itemSelectionState, java.util.EventObject e, ViewController< ?,? > viewController/*, int prevIndex, T prevItem, int nextIndex, T nextItem*/ ) {
 		super( itemSelectionState, e, viewController );
-		this.prevIndex = prevIndex;
-		this.prevItem = prevItem;
-		this.nextIndex = nextIndex;
-		this.nextItem = nextItem;
+		//this.prevIndex = prevIndex;
+		//this.prevItem = prevItem;
+		//this.nextIndex = nextIndex;
+		//this.nextItem = nextItem;
 	}
 	public ListSelectionStateContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+	}
+	/*package-private*/ void handlePopupMenuWillBecomeVisibleEvent( javax.swing.event.PopupMenuEvent e ) {
+		this.addChild( new PopupMenuWillBecomeVisibleEvent( e ) );
 	}
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv ) {

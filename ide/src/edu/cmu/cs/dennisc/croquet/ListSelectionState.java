@@ -227,7 +227,7 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 					if( ContextManager.isInTheMidstOfUndoOrRedo() ) {
 						//pass
 					} else {
-						ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController, prevIndex, prevSelection, nextIndex, nextSelection );
+						ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController /*, prevIndex, prevSelection, nextIndex, nextSelection*/ );
 						childContext.commitAndInvokeDo( new ListSelectionStateEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ) );
 						ModelContext< ? > popContext = ContextManager.popContext();
 						assert popContext == childContext;
@@ -405,17 +405,40 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 	@Override
 	/*package-private*/ void localize() {
 	}
+	@Override
+	protected boolean isOwnerOfEdit() {
+		return true;
+	}
 	
 	public String getTutorialNoteText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "Select " );
-		sb.append( "<strong><em>" );
-		E nextValue = listSelectionStateEdit.getNextValue();
-		this.codec.appendRepresentation( sb, nextValue, java.util.Locale.getDefault() );
-		sb.append( "</strong></em>" );
+		sb.append( "<strong>" );
+		this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
+		sb.append( "</strong>" );
 		return sb.toString();
 	}
-	
+	public String getTutorialNoteStartText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "First press on " );
+		sb.append( "<strong>" );
+		this.codec.appendRepresentation( sb, listSelectionStateEdit.getPreviousValue(), java.util.Locale.getDefault() );
+		sb.append( "</strong>" );
+		sb.append( " in order to change it to " );
+		sb.append( "<strong>" );
+		this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
+		sb.append( "</strong>" );
+		return sb.toString();
+	}
+	public String getTutorialNoteFinishText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "Now select " );
+		sb.append( "<strong>" );
+		this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
+		sb.append( "</strong>" );
+		return sb.toString();
+	}
+
 	/*package-private*/ ComboBoxModel getComboBoxModel() {
 		return this.comboBoxModel;
 	}
@@ -456,6 +479,13 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 		this.listSelectionModel.setSelectedIndex( nextIndex, true );;
 	}
 
+
+	public int indexOf( E item ) {
+		return this.comboBoxModel.items.indexOf( item );
+	}
+	public int lastIndexOf( E item ) {
+		return this.comboBoxModel.items.indexOf( item );
+	}
 	public java.util.Iterator< E > iterator() {
 		return this.comboBoxModel.items.iterator();
 	}

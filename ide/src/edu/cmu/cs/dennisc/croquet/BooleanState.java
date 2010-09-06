@@ -102,6 +102,11 @@ public /*final*/ class BooleanState extends Model {
 		this.setTextForBothTrueAndFalse( name );
 	}
 	
+	@Override
+	protected boolean isOwnerOfEdit() {
+		return true;
+	}
+	
 	/*package-private*/boolean isContextCommitDesired() {
 		return true;
 	}
@@ -114,18 +119,18 @@ public /*final*/ class BooleanState extends Model {
 			} else {
 				sb.append( "Unselect " );
 			}
-			sb.append( "<strong><em>" );
+			sb.append( "<strong>" );
 			sb.append( this.getTrueText() );
-			sb.append( "</strong></em>" );
+			sb.append( "</strong>" );
 		} else {
 			sb.append( "Press " );
-			sb.append( "<strong><em>" );
+			sb.append( "<strong>" );
 			if( booleanStateEdit.getNextValue() ) {
 				sb.append( this.falseText );
 			} else {
 				sb.append( this.trueText );
 			}
-			sb.append( "</strong></em>" );
+			sb.append( "</strong>" );
 		}
 		return sb.toString();
 	}
