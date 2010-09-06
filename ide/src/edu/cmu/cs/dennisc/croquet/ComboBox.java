@@ -52,7 +52,7 @@ public class ComboBox< E > extends ItemSelectable<javax.swing.JComboBox, E> {
 	}
 	
 	@Override
-	protected boolean isSingleStageSelectable() {
+	public boolean isSingleStageSelectable() {
 		return false;
 	}
 	@Override

@@ -202,8 +202,8 @@ public class AutomaticTutorial {
 		private ListSelectionStateSimpleNote( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit<E> listSelectionStateEdit ) {
 			super( listSelectionStateContext.getModel().getTutorialNoteText( listSelectionStateEdit ), listSelectionStateEdit );
 			ModelFromContextResolver modelResolver = new ModelFromContextResolver( listSelectionStateContext );
-			FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
-			this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			
+			ItemSelectionStateItemResolver itemSelectionStateItemResolver = new ItemSelectionStateItemResolver( modelResolver, new ItemResolver( listSelectionStateEdit ) );
+			this.addFeature( new Hole( itemSelectionStateItemResolver, Feature.ConnectionPreference.EAST_WEST ) );			
 		}
 	}
 
@@ -371,11 +371,15 @@ public class AutomaticTutorial {
 			ModelFromContextResolver modelResolver = new ModelFromContextResolver( listSelectionStateContext );
 			FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
 			edu.cmu.cs.dennisc.croquet.Component< ? > component = firstComponentResolver.getResolved();
-			if( component instanceof edu.cmu.cs.dennisc.croquet.ComboBox< ? > ) {
-				rv.add( ListSelectionStateStartNote.createInstance( listSelectionStateContext ) );
-				rv.add( ListSelectionStateFinishNote.createInstance( listSelectionStateContext ) );
-			} else {
-				rv.add( ListSelectionStateSimpleNote.createInstance( listSelectionStateContext ) );
+			if( component instanceof edu.cmu.cs.dennisc.croquet.ItemSelectable< ?,? > ) {
+				edu.cmu.cs.dennisc.croquet.ItemSelectable< ?,? > itemSelectable = (edu.cmu.cs.dennisc.croquet.ItemSelectable< ?,? >)component;
+				System.err.println( "itemSelectable: " + itemSelectable );
+				if( itemSelectable.isSingleStageSelectable() ) {
+					rv.add( ListSelectionStateSimpleNote.createInstance( listSelectionStateContext ) );
+				} else {
+					rv.add( ListSelectionStateStartNote.createInstance( listSelectionStateContext ) );
+					rv.add( ListSelectionStateFinishNote.createInstance( listSelectionStateContext ) );
+				}
 			}
 		}
 		return rv;
@@ -409,17 +413,26 @@ public class AutomaticTutorial {
 				//pass
 			} else {
 				this.notes = this.createNotes();
-				if( this.notes.size() > 1 ) {
-					int i = 1;
-					for( Note note : this.notes ) {
+				int i = 1;
+				for( Note note : this.notes ) {
+					if( this.notes.size() > 1 ) {
 						note.setLabel( Integer.toString( i ) );
-						i++;
 					}
+					note.setTutorialStencil( this.getTutorialStencil() );
+					i++;
 				}
 			}
 			return this.notes;
 		}
-		
+		@Override
+		void setTutorialStencil( edu.cmu.cs.dennisc.tutorial.TutorialStencil tutorialStencil ) {
+			super.setTutorialStencil( tutorialStencil );
+			if( this.notes != null ) {
+				for( Note note : this.notes ) {
+					note.setTutorialStencil( this.getTutorialStencil() );
+				}
+			}
+		}
 		public boolean isAlreadyInTheDesiredState() {
 			return false;
 		}

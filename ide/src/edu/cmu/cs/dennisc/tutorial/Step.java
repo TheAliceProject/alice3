@@ -174,6 +174,15 @@ public abstract class Step {
 			rv.setOpaque( false );
 			return rv;
 		}
+//		@Override
+//		protected void handleDisplayabilityChanged( java.awt.event.HierarchyEvent e ) {
+//			super.handleDisplayabilityChanged( e );
+//			if( this.getComponentCount() == 0 ) {
+//				for( Note note : Step.this.getNotes() ) {
+//					this.internalAddComponent( note );
+//				}
+//			}
+//		}
 		@Override
 		protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
 			for( Note note : Step.this.getNotes() ) {
@@ -240,9 +249,6 @@ public abstract class Step {
 	protected abstract void complete();
 	/*package-private*/ void setTutorialStencil( TutorialStencil tutorialStencil ) {
 		this.tutorialStencil = tutorialStencil;
-		for( Note note : this.getNotes() ) {
-			note.setTutorialStencil( this.tutorialStencil );
-		}
 	}
 	
 	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {

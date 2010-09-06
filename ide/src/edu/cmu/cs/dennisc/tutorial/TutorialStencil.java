@@ -158,9 +158,10 @@ package edu.cmu.cs.dennisc.tutorial;
 			}
 		} );
 
+
 		edu.cmu.cs.dennisc.croquet.FlowPanel controlPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.CENTER, 2, 0);
 		controlPanel.addComponent(this.previousStepOperation.createButton());
-		controlPanel.addComponent(new StepsComboBox( this.stepsComboBoxModel ) );
+		controlPanel.addComponent( new StepsComboBox( this.stepsComboBoxModel, this.isAbovePopupMenus()==false ) );
 		controlPanel.addComponent(this.nextStepOperation.createButton());
 		this.controlsPanel.addComponent(controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
 		this.isPaintingStencil.setTextForTrueAndTextForFalse( "", "WARNING: stencil is disabled.  Click here to turn re-enable." );

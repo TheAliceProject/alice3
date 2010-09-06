@@ -51,7 +51,7 @@ public abstract class ItemSelectable< J extends javax.swing.JComponent, E > exte
 		super( model );
 	}
 	/*package-private*/ abstract TrackableShape getTrackableShapeFor( E item );
-	protected boolean isSingleStageSelectable() {
+	public boolean isSingleStageSelectable() {
 		return true;
 	}
 }

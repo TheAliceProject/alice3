@@ -64,4 +64,11 @@ public abstract class AuthoredStep extends Step {
 	public java.util.List< Note > getNotes() {
 		return this.notes;
 	}
+	@Override
+	/*package-private*/ void setTutorialStencil( edu.cmu.cs.dennisc.tutorial.TutorialStencil tutorialStencil ) {
+		super.setTutorialStencil( tutorialStencil );
+		for( Note note : this.notes ) {
+			note.setTutorialStencil( tutorialStencil );
+		}
+	}
 }
