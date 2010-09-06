@@ -103,7 +103,6 @@ package edu.cmu.cs.dennisc.tutorial;
 		return null;
 	}
 }
-
 /*package-private*/ class ItemResolver<E> implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< E > {
 	private edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E > listSelectionStateEdit;
 	public ItemResolver( edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E > listSelectionStateEdit ) {
@@ -118,6 +117,10 @@ package edu.cmu.cs.dennisc.tutorial;
  * @author Dennis Cosgrove
  */
 public class AutomaticTutorial {
+	private static AutomaticTutorial instance;
+	public static AutomaticTutorial getInstance() {
+		return instance;
+	}
 	public static javax.swing.JLayeredPane getLayeredPane() {
 		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		javax.swing.JFrame frame = application.getFrame().getAwtComponent();
@@ -138,6 +141,7 @@ public class AutomaticTutorial {
 		}
 	}
 	public AutomaticTutorial( edu.cmu.cs.dennisc.croquet.Group[] groups ) {
+		instance = this;
 		this.stencil = new AutomaticTutorialStencil( getLayeredPane(), groups );
 		this.groups = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groups );
 	}
@@ -175,8 +179,18 @@ public class AutomaticTutorial {
 		}
 		@Override
 		public final boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
-			//todo
-			return child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent;
+			boolean rv = false;
+			if( child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
+				edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent)child;
+				edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit = commitEvent.getEdit();
+				if( this.edit.isReplacementAcceptable( replacementEdit ) ) {
+					edu.cmu.cs.dennisc.croquet.Retargeter retargeter = AutomaticTutorial.getInstance().getRetargeter();
+					this.edit.addKeyValuePairs( retargeter, replacementEdit );
+					AutomaticTutorial.getInstance().sourceContext.retarget( retargeter );
+					rv = true;
+				}
+			}
+			return rv;
 		}
 		
 	}
