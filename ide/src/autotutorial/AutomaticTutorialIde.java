@@ -1,6 +1,6 @@
 package autotutorial;
 
-public class AutoTutorialIde extends org.alice.stageide.StageIDE {
+public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 	private static boolean IS_ENCODING;
 	private static final String UI_HISTORY_PATH = "/autoTutorial1.bin";
 	private static final String POST_PROJECT_PATH = "/post.a3p";
@@ -127,7 +127,7 @@ public class AutoTutorialIde extends org.alice.stageide.StageIDE {
 	
 	public static void main( String[] args ) throws Exception {
 		IS_ENCODING = Boolean.parseBoolean( args[ 5 ] );
-		final AutoTutorialIde ide = org.alice.ide.LaunchUtilities.launchAndWait( AutoTutorialIde.class, null, args, false );
+		final AutomaticTutorialIde ide = org.alice.ide.LaunchUtilities.launchAndWait( AutomaticTutorialIde.class, null, args, false );
 		if( IS_ENCODING ) {
 			ide.getFrame().setVisible( true );
 		} else {

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class FeatureStep extends Step {
+/*package-private*/ abstract class FeatureStep extends AuthoredStep {
 	public FeatureStep( String title, String text, Feature feature ) {
 		super( title, text );
 		if( feature != null ) {

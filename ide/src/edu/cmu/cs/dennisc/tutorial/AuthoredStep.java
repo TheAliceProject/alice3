@@ -45,11 +45,23 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class MessageStep extends AuthoredStep {
-	public MessageStep( String title, String text ) {
-		super( title, text );
+public abstract class AuthoredStep extends Step {
+	private String title;
+	private java.util.List< Note > notes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	public AuthoredStep( String title, String text ) {
+		this.title = title;
+		this.addNote( new Note( text ) );
 	}
 	@Override
-	protected void complete() {
+	protected String getTitle() {
+		return this.title;
 	}
-}	
+	public void addNote( Note note ) {
+		this.notes.add( note );
+		note.setTutorialStencil( this.getTutorialStencil() );
+	}
+	@Override
+	public java.util.List< Note > getNotes() {
+		return this.notes;
+	}
+}

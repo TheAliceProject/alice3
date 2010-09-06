@@ -112,35 +112,6 @@ public abstract class Step {
 			}
 		}
 	}
-	protected int getIndexOfFirstActiveNote() { 
-		final int N = this.getNoteCount();
-		for( int i=0; i<N; i++ ) {
-			Note note = this.getNoteAt( i );
-			if( note.isActive() ) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	protected void setActiveNote( int activeIndex ) {
-		final int N = this.getNoteCount();
-		for( int i=0; i<N; i++ ) {
-			this.getNoteAt( i ).setActive( i==activeIndex );
-		}
-	}
-	
-	protected java.awt.Point calculateLocationForNoteAt( edu.cmu.cs.dennisc.croquet.Container< ? > container, int index ) {
-		return this.notes.get( 0 ).calculateLocation( container );
-	}
-
-	protected java.awt.Point calculateLocationOfFirstNote( edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
-		return this.calculateLocationForNoteAt( container, 0 );
-	}
-
-	private java.awt.Point calculateLocationOfFirstNote() {
-		return this.calculateLocationOfFirstNote( this.stepPanel );
-	}
-
 	private class StepPanel extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JPanel > {
 		@Override
 		protected javax.swing.JPanel createAwtComponent() {
@@ -220,24 +191,56 @@ public abstract class Step {
 	private java.util.UUID id = java.util.UUID.randomUUID();
 	private TutorialStencil tutorialStencil;
 	private StepPanel stepPanel = new StepPanel();
-	private java.util.List< Note > notes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private String title;
 	private java.awt.Point layoutHint = null;
 	
 	private int[] historyIndices = null;
 	private boolean isStencilRenderingDesired = IS_STENCIL_RENDERING_DESIRED_BY_DEFAULT;
 	
-	public Step( String title, String text ) {
-		this.title = title;
-		this.addNote( new Note( text ) );
+
+	protected int getIndexOfFirstActiveNote() { 
+		final int N = this.getNoteCount();
+		for( int i=0; i<N; i++ ) {
+			Note note = this.getNoteAt( i );
+			if( note.isActive() ) {
+				return i;
+			}
+		}
+		return -1;
 	}
+	protected void setActiveNote( int activeIndex ) {
+		final int N = this.getNoteCount();
+		for( int i=0; i<N; i++ ) {
+			this.getNoteAt( i ).setActive( i==activeIndex );
+		}
+	}
+	
+	protected java.awt.Point calculateLocationForNoteAt( edu.cmu.cs.dennisc.croquet.Container< ? > container, int index ) {
+		return this.getNoteAt( 0 ).calculateLocation( container );
+	}
+
+	public abstract java.util.List< Note > getNotes();
+	public Note getNoteAt( int index ) {
+		return this.getNotes().get( index );
+	}
+	public int getNoteCount() {
+		return this.getNotes().size();
+	}
+
+	protected java.awt.Point calculateLocationOfFirstNote( edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
+		return this.calculateLocationForNoteAt( container, 0 );
+	}
+
+	private java.awt.Point calculateLocationOfFirstNote() {
+		return this.calculateLocationOfFirstNote( this.stepPanel );
+	}
+
 	public TutorialStencil getTutorialStencil() {
 		return this.tutorialStencil;
 	}
 	protected abstract void complete();
 	/*package-private*/ void setTutorialStencil( TutorialStencil tutorialStencil ) {
 		this.tutorialStencil = tutorialStencil;
-		for( Note note : this.notes ) {
+		for( Note note : this.getNotes() ) {
 			note.setTutorialStencil( this.tutorialStencil );
 		}
 	}
@@ -277,19 +280,6 @@ public abstract class Step {
 		this.setLayoutHint( new java.awt.Point( x, y ) );
 	}
 	
-	public void addNote( Note note ) {
-		this.notes.add( note );
-		note.setTutorialStencil( this.tutorialStencil );
-	}
-	public Note getNoteAt( int index ) {
-		return this.notes.get( index );
-	}
-	public int getNoteCount() {
-		return this.notes.size();
-	}
-	public Iterable< Note > getNotes() {
-		return this.notes;
-	}
 	public edu.cmu.cs.dennisc.croquet.Component< ? > getCard() {
 		return this.stepPanel;
 	}
@@ -298,13 +288,16 @@ public abstract class Step {
 	}
 
 	public void reset() {
-		for( Note note : this.notes ) {
+		for( Note note : this.getNotes() ) {
 			note.reset();
 		}
 	}
 	
+	protected abstract String getTitle();
+		
+	
 	@Override
 	public String toString() {
-		return this.title;
+		return this.getTitle();
 	}
 }
