@@ -40,59 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.cascade;
+
+package org.alice.ide.cascade.fillerinners;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InternalCascadingItemOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.croquet.Group, FillIn< ? >, InternalCascadingItemOperation > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-
-	public static synchronized InternalCascadingItemOperation getInstance( edu.cmu.cs.dennisc.croquet.Group group, FillIn< ? > fillIn ) {
-		InternalCascadingItemOperation rv = mapToMap.get( group, fillIn );
-		if( rv != null ) {
-			//pass
+public class IntegerLiteralFillIn extends org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.IntegerLiteral > {
+	public IntegerLiteralFillIn( int value ) {
+		super( new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( value ) );
+	}
+	public IntegerLiteralFillIn( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	@Override
+	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super.decode( binaryDecoder );
+		int value = binaryDecoder.decodeInt();
+		this.setModel( new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( value  ) );
+	}
+	@Override
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		int value = this.getModel().value.getValue();
+		binaryEncoder.encode( value );
+	}
+	@Override
+	public final boolean equals( Object o ) {
+		if( this == o ) {
+			return true;
 		} else {
-			rv = new InternalCascadingItemOperation( group, fillIn );
-			mapToMap.put( group, fillIn, rv );
+			if( o instanceof IntegerLiteralFillIn ) {
+				IntegerLiteralFillIn other = (IntegerLiteralFillIn)o;
+				return this.getModel().value.getValue() == other.getModel().value.getValue();
+			} else {
+				return false;
+			}
 		}
+	}
+	@Override
+	public final int hashCode() {
+		int rv = 17;
+		rv = 37*rv + this.getModel().value.getValue();
 		return rv;
-	}
-
-	private FillIn< ? > fillIn;
-	private InternalCascadingItemOperation( edu.cmu.cs.dennisc.croquet.Group group, FillIn< ? > fillIn ) {
-		super( group, java.util.UUID.fromString( "98e30a01-242f-4f3c-852c-d0b0a33d277f" ) );
-		this.fillIn = fillIn;
-	}
-	public FillIn< ? > getFillIn() {
-		return this.fillIn;
-	}
-	
-	@Override
-	public String getTutorialNoteText() {
-		StringBuilder sb = new StringBuilder();
-		this.fillIn.appendTutorialNoteText( sb, java.util.Locale.getDefault() );
-		if( sb.length() > 0 ) {
-			return sb.toString();
-		} else {
-			return this.fillIn.toString();
-		}
-	}
-	@Override
-	protected org.alice.ide.croquet.resolvers.InternalCascadingItemOperationStaticGetInstanceKeyedResolver createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.InternalCascadingItemOperationStaticGetInstanceKeyedResolver( this );
-	}
-	@Override
-	protected final void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		this.fillIn.handleActionOperationPerformed( context );
-		Blank rootBlank = this.fillIn.getRootBlank();
-		CascadingRoot cascadingRoot = rootBlank.getCascadingRoot();
-		try {
-			Object value = rootBlank.getSelectedFillIn().getValue();
-			edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > edit = cascadingRoot.createEdit( value, context );
-			context.commitAndInvokeDo( edit );
-		} catch( CancelException ce ) {
-			context.cancel();
-		}
 	}
 }

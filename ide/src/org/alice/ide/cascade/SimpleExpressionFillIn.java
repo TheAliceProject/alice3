@@ -59,20 +59,20 @@ public class SimpleExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expr
 		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, this.getModel(), locale );
 		return rv;
 	}
-	@Override
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super.decode( binaryDecoder );
-		java.util.UUID id = binaryDecoder.decodeId();
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
-		E expression = (E)edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, id );
-		this.setModel( expression );
-	}
-	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode(  this.getModel().getUUID() );
-	}
+//	@Override
+//	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+//		super.decode( binaryDecoder );
+//		java.util.UUID id = binaryDecoder.decodeId();
+//		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+//		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+//		E expression = (E)edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, id );
+//		this.setModel( expression );
+//	}
+//	@Override
+//	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+//		super.encode( binaryEncoder );
+//		binaryEncoder.encode(  this.getModel().getUUID() );
+//	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}

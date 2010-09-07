@@ -64,7 +64,7 @@ public class CreateIdeOperation extends edu.cmu.cs.dennisc.croquet.ActionOperati
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.CodableResolver< CreateIdeOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.ClassStaticGetInstanceKeyedResolver< CreateIdeOperation >( this, this.cls );
+		return new org.alice.ide.croquet.resolvers.ClassKeyedStaticGetInstanceKeyedResolver< CreateIdeOperation >( this, this.cls );
 	}
 	@Override
 	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {

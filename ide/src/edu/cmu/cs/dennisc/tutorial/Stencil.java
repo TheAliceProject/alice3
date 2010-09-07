@@ -82,24 +82,24 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	};
 
+	private MenuPolicy menuPolicy;
 	private javax.swing.JLayeredPane layeredPane;
-	public Stencil( javax.swing.JLayeredPane layeredPane ) {
+	public Stencil( MenuPolicy menuPolicy, javax.swing.JLayeredPane layeredPane ) {
+		this.menuPolicy = menuPolicy;
 		this.layeredPane = layeredPane;
 	}
 	
 	public boolean isAbovePopupMenus() {
 		return true;
 	}
-	private int getLayer() {
-		if( this.isAbovePopupMenus() ) {
-			return javax.swing.JLayeredPane.POPUP_LAYER + 1;
-		} else {
-			return javax.swing.JLayeredPane.POPUP_LAYER - 1;
-		}
+	
+	public MenuPolicy getMenuPolicy() {
+		return this.menuPolicy;
 	}
+	
 	public void addToLayeredPane() {
 		this.layeredPane.add( this.getAwtComponent(), null );
-		this.layeredPane.setLayer( this.getAwtComponent(), this.getLayer() );
+		this.layeredPane.setLayer( this.getAwtComponent(), this.menuPolicy.getStencilLayer() );
 	}
 	public void removeFromLayeredPane() {
 		this.layeredPane.remove( this.getAwtComponent() );

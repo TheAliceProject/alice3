@@ -83,18 +83,12 @@ package edu.cmu.cs.dennisc.tutorial;
 	private ConnectionPreference connectionPreference;
 	private Integer heightConstraint = null;
 	private boolean isEntered = false;
-	private boolean isPathRenderingDesired;
-	
-	public Feature( edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference, boolean isPathRenderingDesired ) {
+	public Feature( edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
 		//assert trackableShape != null;
 		this.trackableShapeResolver = trackableShapeResolver;
 		this.connectionPreference = connectionPreference;
-		this.isPathRenderingDesired = isPathRenderingDesired;
 	}
-
-	protected boolean isPathRenderingDesired() {
-		return this.isPathRenderingDesired;
-	}
+	protected abstract boolean isPathRenderingDesired();
 	
 	public java.awt.Rectangle getBoundsForRepaint( edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy ) {
 		edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = this.getTrackableShape();
@@ -509,7 +503,7 @@ package edu.cmu.cs.dennisc.tutorial;
 			this.paint( g2, shape );
 
 			
-			if( this.isPathRenderingDesired ) {
+			if( this.isPathRenderingDesired() ) {
 				g2.setPaint( java.awt.Color.BLACK );
 
 				java.awt.Rectangle noteBounds = note.getComponent( 0 ).getBounds( asSeenBy );

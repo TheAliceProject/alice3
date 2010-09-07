@@ -65,12 +65,16 @@ package edu.cmu.cs.dennisc.tutorial;
 	};
 
 	public Hole( edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
-		this( trackableShapeResolver, connectionPreference, true );
+		super( trackableShapeResolver, connectionPreference );
 	}
-	public Hole( edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference, boolean isPathRenderingDesired ) {
-		super( trackableShapeResolver, connectionPreference, isPathRenderingDesired );
+
+	@Override
+	protected boolean isPathRenderingDesired() {
+		return true;
 	}
-		
+	protected boolean isHoleRenderingDesired() {
+		return true;
+	}
 	@Override
 	protected java.awt.Insets getBoundsInsets() {
 		return BOUNDS_INSETS;
@@ -86,52 +90,52 @@ package edu.cmu.cs.dennisc.tutorial;
 
 	@Override
 	protected void paint(java.awt.Graphics2D g2, java.awt.Shape shape) {
-		java.awt.Shape prevClip = g2.getClip();
-		java.awt.Paint prevPaint = g2.getPaint();
-		java.awt.Stroke prevStroke = g2.getStroke();
-		
-		java.awt.geom.Area area = new java.awt.geom.Area(prevClip);
-		area.subtract(new java.awt.geom.Area(shape));
-
-
-		g2.setClip(area);
-		java.awt.Paint paint;
-		if( this.isEntered() ) {
-			paint = ENTERED_HIGHLIGHT_PAINT;
-		} else {
-			if( this.isPathRenderingDesired() ) {
-				paint = HIGHLIGHT_WITH_PATH_PAINT;
+		if( this.isHoleRenderingDesired() ) {
+			java.awt.Shape prevClip = g2.getClip();
+			java.awt.Paint prevPaint = g2.getPaint();
+			java.awt.Stroke prevStroke = g2.getStroke();
+			
+			java.awt.geom.Area area = new java.awt.geom.Area(prevClip);
+			area.subtract(new java.awt.geom.Area(shape));
+			g2.setClip(area);
+			java.awt.Paint paint;
+			if( this.isEntered() ) {
+				paint = ENTERED_HIGHLIGHT_PAINT;
 			} else {
-				paint = HIGHLIGHT_NO_PATH_PAINT;
+				if( this.isPathRenderingDesired() ) {
+					paint = HIGHLIGHT_WITH_PATH_PAINT;
+				} else {
+					paint = HIGHLIGHT_NO_PATH_PAINT;
+				}
 			}
-		}
-		g2.setPaint(paint);
-		for (java.awt.Stroke stroke : HIGHLIGHT_STROKES) {
-			g2.setStroke(stroke);
-			g2.draw(shape);
-		}
-		g2.setClip(prevClip);
+			g2.setPaint(paint);
+			for (java.awt.Stroke stroke : HIGHLIGHT_STROKES) {
+				g2.setStroke(stroke);
+				g2.draw(shape);
+			}
+			g2.setClip(prevClip);
 
-		if (shape instanceof java.awt.Rectangle) {
-			java.awt.Rectangle rect = (java.awt.Rectangle) shape;
-	
-			// g2.setPaint( java.awt.Color.GRAY );
-			// g2.draw3DRect(componentBounds.x, componentBounds.y,
-			// componentBounds.width, componentBounds.height, false);
-	
-			int x0 = rect.x;
-			int y0 = rect.y;
-			int x1 = rect.x + rect.width - HOLE_BEVEL_THICKNESS;
-			int y1 = rect.y + rect.height - HOLE_BEVEL_THICKNESS;
-			g2.setPaint(java.awt.Color.DARK_GRAY);
-			g2.fillRect(x0, y0, HOLE_BEVEL_THICKNESS, rect.height);
-			g2.fillRect(x0, y0, rect.width, HOLE_BEVEL_THICKNESS);
-			g2.setPaint(java.awt.Color.WHITE);
-			g2.fillRect(x1, y0, HOLE_BEVEL_THICKNESS, rect.height);
-			g2.fillRect(x0, y1, rect.width, HOLE_BEVEL_THICKNESS);
-		}
+			if (shape instanceof java.awt.Rectangle) {
+				java.awt.Rectangle rect = (java.awt.Rectangle) shape;
+		
+				// g2.setPaint( java.awt.Color.GRAY );
+				// g2.draw3DRect(componentBounds.x, componentBounds.y,
+				// componentBounds.width, componentBounds.height, false);
+		
+				int x0 = rect.x;
+				int y0 = rect.y;
+				int x1 = rect.x + rect.width - HOLE_BEVEL_THICKNESS;
+				int y1 = rect.y + rect.height - HOLE_BEVEL_THICKNESS;
+				g2.setPaint(java.awt.Color.DARK_GRAY);
+				g2.fillRect(x0, y0, HOLE_BEVEL_THICKNESS, rect.height);
+				g2.fillRect(x0, y0, rect.width, HOLE_BEVEL_THICKNESS);
+				g2.setPaint(java.awt.Color.WHITE);
+				g2.fillRect(x1, y0, HOLE_BEVEL_THICKNESS, rect.height);
+				g2.fillRect(x0, y1, rect.width, HOLE_BEVEL_THICKNESS);
+			}
 
-		g2.setStroke( prevStroke );
-		g2.setPaint( prevPaint );
+			g2.setStroke( prevStroke );
+			g2.setPaint( prevPaint );
+		}
 	}
 }

@@ -117,7 +117,7 @@ public class CountLoopMenuModel extends InsertStatementFillInExpressionsMenuMode
 		return org.alice.ide.ast.NodeUtilities.createCountLoop( expression );
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairGetStaticInstanceKeyedResolver<CountLoopMenuModel> createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairGetStaticInstanceKeyedResolver<CountLoopMenuModel>( this, this.getBlockStatementIndexPair() );
+	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver<CountLoopMenuModel> createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver<CountLoopMenuModel>( this, this.getBlockStatementIndexPair() );
 	}
 }

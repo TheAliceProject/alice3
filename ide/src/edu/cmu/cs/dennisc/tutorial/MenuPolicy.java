@@ -41,44 +41,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.resolvers;
+package edu.cmu.cs.dennisc.tutorial;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InternalCascadingItemOperationNewInstanceResolver extends edu.cmu.cs.dennisc.croquet.NewInstanceKeyedResolver< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > {
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { edu.cmu.cs.dennisc.croquet.Group.class, edu.cmu.cs.dennisc.cascade.FillIn.class };
-	public InternalCascadingItemOperationNewInstanceResolver( edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation instance ) {
-		super( instance );
+public enum MenuPolicy {
+	ABOVE_STENCIL_WITH_FEEDBACK( javax.swing.JLayeredPane.POPUP_LAYER - 1, true ),
+	ABOVE_STENCIL_WITHOUT_FEEDBACK( javax.swing.JLayeredPane.POPUP_LAYER - 1, false ),
+	BELOW_STENCIL( javax.swing.JLayeredPane.POPUP_LAYER + 1, true );
+	private int stencilLayer;
+	private boolean isFeedbackDesired;
+	private MenuPolicy( int stencilLayer, boolean isFeedbackDesired ) {
+		this.stencilLayer = stencilLayer;
+		this.isFeedbackDesired = isFeedbackDesired;
 	}
-	public InternalCascadingItemOperationNewInstanceResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public int getStencilLayer() {
+		return this.stencilLayer;
 	}
-
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		Object[] arguments = this.getArguments();
-		assert arguments != null;
-		assert arguments.length == 2;
+	public boolean isAboveStencil() {
+		return this.stencilLayer < javax.swing.JLayeredPane.POPUP_LAYER;
 	}
-
-	@Override
-	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return PARAMETER_TYPES;
+	public boolean isBelowStencil() {
+		return this.stencilLayer > javax.swing.JLayeredPane.POPUP_LAYER;
 	}
-	@Override
-	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-	}
-
-	@Override
-	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		java.util.UUID groupId = binaryDecoder.decodeId();
-		edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		edu.cmu.cs.dennisc.croquet.Group group = edu.cmu.cs.dennisc.croquet.Group.getInstance( groupId );
-		return new Object[] { group, fillIn };
-	}
-	@Override
-	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.getInstance().getGroup().getId() );
-		binaryEncoder.encode( this.getInstance().getFillIn() );
+	public boolean isFeedbackDesired() {
+		return this.isFeedbackDesired;
 	}
 }

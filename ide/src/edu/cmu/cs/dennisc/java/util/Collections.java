@@ -49,6 +49,14 @@ public class Collections {
 	private Collections() {
 		throw new AssertionError();
 	}
+	
+	public static <C extends java.util.Collection< E >, E> C addAll( C rv, E... values ) {
+		for( E value : values ) {
+			rv.add( value );
+		}
+		return rv;
+	}
+
 	public static <E> java.util.LinkedList< E > newLinkedList() {
 		return new java.util.LinkedList< E >();
 	}

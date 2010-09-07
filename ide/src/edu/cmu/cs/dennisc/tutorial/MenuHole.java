@@ -45,31 +45,82 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class InputDialogCommitFeature extends Feature {
-	public InputDialogCommitFeature(edu.cmu.cs.dennisc.croquet.RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> trackableShapeResolver) {
-		super( trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST );
+/* package-private */class MenuHole extends Hole {
+	private boolean isPathRenderingDesired;
+	public MenuHole( edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference, boolean isPathRenderingDesired ) {
+		super( trackableShapeResolver, connectionPreference );
+		this.isPathRenderingDesired = isPathRenderingDesired;
 	}
 	@Override
 	protected boolean isPathRenderingDesired() {
-		return true;
+		return this.isPathRenderingDesired;
 	}
 	@Override
-	public boolean isPotentiallyScrollable() {
-		return false;
+	protected boolean isHoleRenderingDesired() {
+		return AutomaticTutorial.getInstance().getStencil().getMenuPolicy().isBelowStencil();
 	}
 	@Override
-	protected java.awt.Insets getBoundsInsets() {
-		return null;
+	public java.awt.geom.Area getAreaToSubstractForContains( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy ) {
+		if( this.isHoleRenderingDesired() ) {
+			return super.getAreaToSubstractForContains( asSeenBy );
+		} else {
+			return null;
+		}
 	}
 	@Override
-	protected java.awt.Insets getContainsInsets() {
-		return null;
+	public java.awt.geom.Area getAreaToSubstractForPaint( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy ) {
+		if( this.isHoleRenderingDesired() ) {
+			return super.getAreaToSubstractForPaint( asSeenBy );
+		} else {
+			return null;
+		}
 	}
-	@Override
-	protected java.awt.Insets getPaintInsets() {
-		return null;
+	
+	
+	private static java.awt.Shape createCheckMark( int size ) {
+		float x0 = 0.0f * size;
+		float xA = 0.325f * size;
+		float xB = 0.575f * size;
+
+		float y0 = 0.0f * size;
+		float yA = 0.75f * size;
+		float y1 = 1.0f * size;
+		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+		path.moveTo( x0, y1 );
+		path.lineTo( xB, y1 );
+		path.lineTo( xB, y0 );
+		path.lineTo( xA, y0 );
+		path.lineTo( xA, yA );
+		path.lineTo( x0, yA );
+		path.closePath();
+		return path;
 	}
+	private static final int BUFFER = 0;
 	@Override
-	protected void paint(java.awt.Graphics2D g2, java.awt.Shape shape) {
+	protected void paint( java.awt.Graphics2D g2, java.awt.Shape shape ) {
+		if( this.isHoleRenderingDesired() ) {
+			super.paint( g2, shape );
+		} else {
+			if( AutomaticTutorial.getInstance().getStencil().getMenuPolicy().isFeedbackDesired() ) {
+				if( this.isEntered() ) {
+					if( shape != null ) {
+						java.awt.Rectangle bounds = shape.getBounds();
+						if( bounds != null ) {
+							int size = bounds.height;
+							int width = size/2;
+							java.awt.Shape checkMark = createCheckMark( size );
+							java.awt.geom.AffineTransform m = g2.getTransform();
+							g2.translate( bounds.x-BUFFER-width, bounds.y-size/8 );
+							g2.rotate( Math.PI/5 );
+							g2.setPaint( java.awt.Color.GREEN );
+							g2.fill( checkMark );
+							g2.setPaint( java.awt.Color.GREEN.darker() );
+							g2.draw( checkMark );
+							g2.setTransform( m );
+						}
+					}
+				}
+			}
+		}
 	}
 }

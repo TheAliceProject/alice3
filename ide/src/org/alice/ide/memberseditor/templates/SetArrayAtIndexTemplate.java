@@ -48,6 +48,7 @@ package org.alice.ide.memberseditor.templates;
 /*package-private*/ class SetArrayAtIndexTemplate extends ExpressionStatementTemplate {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	public SetArrayAtIndexTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( new org.alice.ide.croquet.models.ToDoDragModel() );
 		this.field = field;
 		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;

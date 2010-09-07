@@ -40,59 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.cascade;
+
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InternalCascadingItemOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.croquet.Group, FillIn< ? >, InternalCascadingItemOperation > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-
-	public static synchronized InternalCascadingItemOperation getInstance( edu.cmu.cs.dennisc.croquet.Group group, FillIn< ? > fillIn ) {
-		InternalCascadingItemOperation rv = mapToMap.get( group, fillIn );
+public class MethodTemplateDragModel extends TemplateDragModel {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, MethodTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized MethodTemplateDragModel getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		MethodTemplateDragModel rv = map.get( method );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new InternalCascadingItemOperation( group, fillIn );
-			mapToMap.put( group, fillIn, rv );
+			rv = new MethodTemplateDragModel( method );
+			map.put( method, rv );
 		}
 		return rv;
 	}
-
-	private FillIn< ? > fillIn;
-	private InternalCascadingItemOperation( edu.cmu.cs.dennisc.croquet.Group group, FillIn< ? > fillIn ) {
-		super( group, java.util.UUID.fromString( "98e30a01-242f-4f3c-852c-d0b0a33d277f" ) );
-		this.fillIn = fillIn;
-	}
-	public FillIn< ? > getFillIn() {
-		return this.fillIn;
-	}
-	
-	@Override
-	public String getTutorialNoteText() {
-		StringBuilder sb = new StringBuilder();
-		this.fillIn.appendTutorialNoteText( sb, java.util.Locale.getDefault() );
-		if( sb.length() > 0 ) {
-			return sb.toString();
-		} else {
-			return this.fillIn.toString();
-		}
+	private edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
+	private MethodTemplateDragModel( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "3aed4ad9-5a20-4209-982b-5fea07e966d9" ) );
+		this.method = method;
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.InternalCascadingItemOperationStaticGetInstanceKeyedResolver createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.InternalCascadingItemOperationStaticGetInstanceKeyedResolver( this );
-	}
-	@Override
-	protected final void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		this.fillIn.handleActionOperationPerformed( context );
-		Blank rootBlank = this.fillIn.getRootBlank();
-		CascadingRoot cascadingRoot = rootBlank.getCascadingRoot();
-		try {
-			Object value = rootBlank.getSelectedFillIn().getValue();
-			edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > edit = cascadingRoot.createEdit( value, context );
-			context.commitAndInvokeDo( edit );
-		} catch( CancelException ce ) {
-			context.cancel();
-		}
+	protected edu.cmu.cs.dennisc.croquet.CodableResolver< MethodTemplateDragModel > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< MethodTemplateDragModel >( this, this.method, edu.cmu.cs.dennisc.alice.ast.AbstractMethod.class );
 	}
 }
