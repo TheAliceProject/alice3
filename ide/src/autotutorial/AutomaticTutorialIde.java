@@ -108,7 +108,10 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 		};
 
 		
-		final edu.cmu.cs.dennisc.tutorial.AutomaticTutorial tutorial = new edu.cmu.cs.dennisc.tutorial.AutomaticTutorial( new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
+		final edu.cmu.cs.dennisc.tutorial.AutomaticTutorial tutorial = new edu.cmu.cs.dennisc.tutorial.AutomaticTutorial( 
+				new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP },
+				new edu.cmu.cs.dennisc.croquet.Group[] { org.alice.ide.IDE.RUN_GROUP }
+		);
 		tutorial.addSteps( this.postContext );
 		
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();

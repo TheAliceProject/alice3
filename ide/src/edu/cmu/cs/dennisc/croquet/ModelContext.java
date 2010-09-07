@@ -194,6 +194,19 @@ public abstract class ModelContext<M extends Model> extends HistoryNode {
 			return null;
 		}
 	}
+	public <N extends edu.cmu.cs.dennisc.croquet.HistoryNode> N getLastChildAssignableTo( Class<N> cls ) {
+		final int N = this.getChildCount();
+		int i=N-1;
+		while( i >= 0 ) {
+			edu.cmu.cs.dennisc.croquet.HistoryNode node = this.getChildAt( i );
+			if( cls.isAssignableFrom( node.getClass() ) ) {
+				return cls.cast( node );
+			}
+			i--;
+		}
+		return null;
+	}
+	
 
 	/*package-private*/ void popping() {
 	}

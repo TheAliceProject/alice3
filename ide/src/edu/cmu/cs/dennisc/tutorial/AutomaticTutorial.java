@@ -42,31 +42,6 @@
  */
 package edu.cmu.cs.dennisc.tutorial;
 
-/*package-private*/ class ContextUtilities {
-	private ContextUtilities() {
-		throw new AssertionError();
-	}
-//	private static edu.cmu.cs.dennisc.croquet.Retargeter retargeter;
-//	public static edu.cmu.cs.dennisc.croquet.Retargeter getRetargeter() {
-//		return ContextUtilities.retargeter;
-//	}
-//	public static void setRetargeter( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-//		ContextUtilities.retargeter = retargeter;
-//	}
-	public static <N extends edu.cmu.cs.dennisc.croquet.HistoryNode> N getLastNodeAssignableTo( edu.cmu.cs.dennisc.croquet.ModelContext<?> context, Class<N> cls ) {
-		final int N = context.getChildCount();
-		int i=N-1;
-		while( i >= 0 ) {
-			edu.cmu.cs.dennisc.croquet.HistoryNode node = context.getChildAt( i );
-			if( cls.isAssignableFrom( node.getClass() ) ) {
-				return cls.cast( node );
-			}
-			i--;
-		}
-		return null;
-	}
-}
-
 /*package-private*/ class ModelFromContextResolver< M extends edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > {
 	private edu.cmu.cs.dennisc.croquet.ModelContext< M > modelContext;
 	public ModelFromContextResolver( edu.cmu.cs.dennisc.croquet.ModelContext< M > modelContext ) {
@@ -91,7 +66,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /*package-private*/ class DropSiteResolver implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape > {
 	private edu.cmu.cs.dennisc.croquet.DragAndDropContext.EnteredPotentialDropSiteEvent enteredPotentialDropSiteEvent;
 	public DropSiteResolver( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		this.enteredPotentialDropSiteEvent = ContextUtilities.getLastNodeAssignableTo( dragAndDropContext, edu.cmu.cs.dennisc.croquet.DragAndDropContext.EnteredPotentialDropSiteEvent.class );
+		this.enteredPotentialDropSiteEvent = dragAndDropContext.getLastChildAssignableTo( edu.cmu.cs.dennisc.croquet.DragAndDropContext.EnteredPotentialDropSiteEvent.class );
 	}
 	public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
 		if( this.enteredPotentialDropSiteEvent != null ) {
@@ -133,7 +108,7 @@ public class AutomaticTutorial {
 	}
 
 	private AutomaticTutorialStencil stencil;
-	private java.util.ArrayList< edu.cmu.cs.dennisc.croquet.Group > groups; 
+	private java.util.List< edu.cmu.cs.dennisc.croquet.Group > groupsForWhichStepsAreGenerated; 
 	private edu.cmu.cs.dennisc.croquet.RootContext sourceContext;
 
 	private class AutomaticTutorialStencil extends TutorialStencil {
@@ -141,12 +116,18 @@ public class AutomaticTutorial {
 			super( layeredPane, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() );
 		}
 	}
-	public AutomaticTutorial( edu.cmu.cs.dennisc.croquet.Group[] groups ) {
+	public AutomaticTutorial( edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess, edu.cmu.cs.dennisc.croquet.Group[] bonusGroupsForWhichStepsAreGenerated ) {
 		instance = this;
-		this.stencil = new AutomaticTutorialStencil( getLayeredPane(), groups );
-		this.groups = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groups );
+		this.stencil = new AutomaticTutorialStencil( getLayeredPane(), groupsTrackedForRandomAccess );
+		this.groupsForWhichStepsAreGenerated = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		edu.cmu.cs.dennisc.java.util.Collections.addAll( this.groupsForWhichStepsAreGenerated, groupsTrackedForRandomAccess );
+		edu.cmu.cs.dennisc.java.util.Collections.addAll( this.groupsForWhichStepsAreGenerated, bonusGroupsForWhichStepsAreGenerated );
+		
+		
+		//todo: remove
+		this.groupsForWhichStepsAreGenerated.add( edu.cmu.cs.dennisc.croquet.DragAndDropModel.DRAG_GROUP );
+		this.groupsForWhichStepsAreGenerated.add( edu.cmu.cs.dennisc.croquet.MenuBarModel.MENU_BAR_MODEL_GROUP );
 	}
-	
 	private edu.cmu.cs.dennisc.croquet.Retargeter retargeter;
 	public edu.cmu.cs.dennisc.croquet.Retargeter getRetargeter() {
 		return this.retargeter;
@@ -569,7 +550,7 @@ public class AutomaticTutorial {
 				if( state == edu.cmu.cs.dennisc.croquet.HistoryNode.State.CANCELED ) {
 					//pass
 				} else {
-					if( this.groups.contains( group ) || group == edu.cmu.cs.dennisc.croquet.DragAndDropModel.DRAG_GROUP || group == edu.cmu.cs.dennisc.croquet.MenuBarModel.MENU_BAR_MODEL_GROUP ) {
+					if( this.groupsForWhichStepsAreGenerated.contains( group ) ) {
 						this.stencil.addStep( new ContextStep( context ) );
 					}
 				}
