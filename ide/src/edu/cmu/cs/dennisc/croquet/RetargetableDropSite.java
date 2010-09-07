@@ -46,6 +46,6 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface RetargetablePotentialDropSite extends PotentialDropSite {
+public interface RetargetableDropSite extends DropSite {
 	public void retarget( Retargeter retargeter );
 }

@@ -138,22 +138,22 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 
 	
 	public static abstract class PotentialDropSiteEvent extends DropReceptorEvent {
-		private PotentialDropSite potentialDropSite;
+		private DropSite potentialDropSite;
 		public PotentialDropSiteEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
-		private PotentialDropSiteEvent( java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor, PotentialDropSite potentialDropSite ) {
+		private PotentialDropSiteEvent( java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor, DropSite potentialDropSite ) {
 			super( mouseEvent, dropReceptor );
 			this.potentialDropSite = potentialDropSite;
 		}
-		public PotentialDropSite getPotentialDropSite() {
+		public DropSite getPotentialDropSite() {
 			return this.potentialDropSite;
 		}
 		@Override
 		public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 			super.retarget( retargeter );
-			if( this.potentialDropSite instanceof RetargetablePotentialDropSite ) {
-				RetargetablePotentialDropSite retargetablePotentialDropSite = (RetargetablePotentialDropSite)this.potentialDropSite;
+			if( this.potentialDropSite instanceof RetargetableDropSite ) {
+				RetargetableDropSite retargetablePotentialDropSite = (RetargetableDropSite)this.potentialDropSite;
 				retargetablePotentialDropSite.retarget( retargeter );
 			}
 		}
@@ -172,7 +172,7 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 		public EnteredPotentialDropSiteEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
-		private EnteredPotentialDropSiteEvent( java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor, PotentialDropSite potentialDropSite ) {
+		private EnteredPotentialDropSiteEvent( java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor, DropSite potentialDropSite ) {
 			super( mouseEvent, dropReceptor, potentialDropSite );
 		}
 	}
@@ -180,7 +180,7 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 		public ExitedPotentialDropSiteEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
-		private ExitedPotentialDropSiteEvent( java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor, PotentialDropSite potentialDropSite ) {
+		private ExitedPotentialDropSiteEvent( java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor, DropSite potentialDropSite ) {
 			super( mouseEvent, dropReceptor, potentialDropSite );
 		}
 	}
@@ -222,7 +222,7 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 	}
 	private DropReceptorInfo[] potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
 	private DropReceptor currentDropReceptor;
-	private PotentialDropSite currentPotentialDropSite;
+	private DropSite currentPotentialDropSite;
 	private java.awt.event.MouseEvent latestMouseEvent;
 	/*package-private*/ DragAndDropContext( DragAndDropModel dragAndDropOperation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource ) {
 		super( dragAndDropOperation, originalMouseEvent, dragSource );
@@ -339,7 +339,7 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 			}
 		}
 		if( this.currentDropReceptor != null ) {
-			PotentialDropSite nextPotentialDropSite = this.currentDropReceptor.dragUpdated( this );
+			DropSite nextPotentialDropSite = this.currentDropReceptor.dragUpdated( this );
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.currentPotentialDropSite, nextPotentialDropSite ) ) {
 				//pass
 			} else {

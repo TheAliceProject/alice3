@@ -46,7 +46,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class BlockStatementIndexPair implements edu.cmu.cs.dennisc.croquet.RetargetablePotentialDropSite {
+public final class BlockStatementIndexPair implements edu.cmu.cs.dennisc.croquet.RetargetableDropSite {
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
 	private int index;
 	public BlockStatementIndexPair( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

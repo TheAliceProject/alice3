@@ -46,5 +46,5 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface PotentialDropSite extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public interface DropSite extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 }

@@ -84,7 +84,7 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 						return null;
 					}
 					@Override
-					protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.BlockStatement, java.lang.Integer > getBlockStatementAndIndex() {
+					protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.BlockStatement, Integer > getBlockStatementAndIndex() {
 						return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( blockStatement, index );
 					}
 					@Override

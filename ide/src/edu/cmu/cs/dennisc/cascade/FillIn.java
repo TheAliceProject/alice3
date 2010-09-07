@@ -45,10 +45,15 @@ package edu.cmu.cs.dennisc.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FillIn< E > extends Node {
+public abstract class FillIn< E > extends Node /*implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable*/ {
 	private edu.cmu.cs.dennisc.croquet.Model model = null;
 	private javax.swing.JComponent menuProxy = null;
 	private boolean wasLast = false; 
+	
+//	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+//	}
+//	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+//	}
 
 	public edu.cmu.cs.dennisc.croquet.Model getCroquetModel() {
 		boolean isLast = this.isLast();
