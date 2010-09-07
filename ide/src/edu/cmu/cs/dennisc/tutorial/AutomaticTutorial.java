@@ -323,8 +323,8 @@ public class AutomaticTutorial {
 			sb.append( "select <strong><em>" );
 			if( modelI instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
 				sb.append( ((edu.cmu.cs.dennisc.croquet.MenuModel)modelI).getTutorialNoteText() );
-			} else {
-				sb.append( modelI.toString() );
+			} else if( modelI instanceof edu.cmu.cs.dennisc.croquet.Operation< ? > ){
+				sb.append( ((edu.cmu.cs.dennisc.croquet.Operation< ? >)modelI).getTutorialNoteText() );
 			}
 			sb.append( "</em></strong>" );
 			return sb.toString();

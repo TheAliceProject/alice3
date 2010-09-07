@@ -46,12 +46,12 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class InsertStatementResolver extends edu.cmu.cs.dennisc.croquet.NewInstanceKeyedResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > {
+public class InsertStatementActionOperationNewInstanceResolver extends edu.cmu.cs.dennisc.croquet.NewInstanceKeyedResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > {
 	private static final Class<?>[] PARAMETER_TYPES = new Class[] { edu.cmu.cs.dennisc.alice.ast.BlockStatement.class, Integer.TYPE, edu.cmu.cs.dennisc.alice.ast.Statement.class };
-	public InsertStatementResolver( org.alice.ide.croquet.models.ast.InsertStatementActionOperation instance ) {
+	public InsertStatementActionOperationNewInstanceResolver( org.alice.ide.croquet.models.ast.InsertStatementActionOperation instance ) {
 		super( instance );
 	}
-	public InsertStatementResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public InsertStatementActionOperationNewInstanceResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 

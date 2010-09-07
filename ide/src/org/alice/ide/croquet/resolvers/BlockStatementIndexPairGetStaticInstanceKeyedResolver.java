@@ -46,14 +46,14 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class BlockStatementIndexPairStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< T > {
+public class BlockStatementIndexPairGetStaticInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< T >{
 	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.codeeditor.BlockStatementIndexPair.class };
 	private org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
-	public BlockStatementIndexPairStaticGetInstanceKeyedResolver( T instance, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	public BlockStatementIndexPairGetStaticInstanceKeyedResolver( T instance, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( instance );
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
-	public BlockStatementIndexPairStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public BlockStatementIndexPairGetStaticInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	@Override

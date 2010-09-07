@@ -46,17 +46,38 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public final class Group {
+	private static java.util.Map< java.util.UUID, Group > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized Group getInstance( java.util.UUID id ) {
+		Group rv = map.get( id );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new Group( id );
+			map.put( id, rv );
+		}
+		return rv;
+	}
+	public static Group getInstance( java.util.UUID id, String description ) {
+		Group rv = getInstance( id );
+		assert rv.description == null;
+		rv.description = description;
+		return rv;
+	}
+	
 	private java.util.UUID id;
 	private String description;
-	public Group( java.util.UUID id, String description ) {
+	private Group( java.util.UUID id ) {
 		this.id = id;
-		this.description = description;
 	}
 	public java.util.UUID getId() {
 		return this.id;
 	}
 	@Override
 	public String toString() {
-		return this.description;
+		if( this.description != null ) {
+			return this.description;
+		} else {
+			return "Unknown Group";
+		}
 	}
 }

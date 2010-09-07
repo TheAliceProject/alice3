@@ -46,7 +46,7 @@ import edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint;
 
 abstract class NumberModel extends edu.cmu.cs.dennisc.croquet.StringState {
 	@Deprecated
-	protected final static edu.cmu.cs.dennisc.croquet.Group CALCULATOR_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "afe9fee0-e91f-4344-9b80-6fa84f3458d3" ), "CALCULATOR_GROUP" );
+	protected final static edu.cmu.cs.dennisc.croquet.Group CALCULATOR_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "afe9fee0-e91f-4344-9b80-6fa84f3458d3" ), "CALCULATOR_GROUP" );
 	private static String getInitialText() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		if( ide != null ) {

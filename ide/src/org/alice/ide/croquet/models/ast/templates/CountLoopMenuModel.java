@@ -70,6 +70,9 @@ abstract class InsertStatementFillInExpressionsMenuModel extends org.alice.ide.c
 			return rv;
 		}
 	}
+	public org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
+		return this.blockStatementIndexPair;
+	}
 	
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
@@ -82,10 +85,6 @@ abstract class InsertStatementFillInExpressionsMenuModel extends org.alice.ide.c
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement( Object value );
 	public edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( blockStatementIndexPair.getBlockStatement(), blockStatementIndexPair.getIndex(), this.createStatement( value ) );
-	}
-	@Override
-	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, this.blockStatementIndexPair );
 	}
 }
 
@@ -104,7 +103,6 @@ public class CountLoopMenuModel extends InsertStatementFillInExpressionsMenuMode
 		}
 		return rv;
 	}
-	
 	private CountLoopMenuModel( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( java.util.UUID.fromString( "c14ac2f2-72bf-44a1-8f25-49ddc09cd239" ), blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE );
 	}
@@ -117,5 +115,9 @@ public class CountLoopMenuModel extends InsertStatementFillInExpressionsMenuMode
 		assert value instanceof edu.cmu.cs.dennisc.alice.ast.Expression;
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = (edu.cmu.cs.dennisc.alice.ast.Expression)value;
 		return org.alice.ide.ast.NodeUtilities.createCountLoop( expression );
+	}
+	@Override
+	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairGetStaticInstanceKeyedResolver<CountLoopMenuModel> createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairGetStaticInstanceKeyedResolver<CountLoopMenuModel>( this, this.getBlockStatementIndexPair() );
 	}
 }

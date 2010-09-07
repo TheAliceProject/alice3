@@ -243,7 +243,7 @@ abstract class DialogOperationWithControls<C extends AbstractDialogOperationCont
  * @author Dennis Cosgrove
  */
 public abstract class WizardDialogOperation extends DialogOperationWithControls<WizardDialogOperationContext> {
-	protected static final Group ENCLOSING_WIZARD_DIALOG_GROUP = new Group( java.util.UUID.fromString( "100a8027-cf11-4070-abd5-450f8c5ab1cc" ), "ENCLOSING_WIZARD_DIALOG_GROUP" );
+	protected static final Group ENCLOSING_WIZARD_DIALOG_GROUP = Group.getInstance( java.util.UUID.fromString( "100a8027-cf11-4070-abd5-450f8c5ab1cc" ), "ENCLOSING_WIZARD_DIALOG_GROUP" );
 	private class NextOperation extends ActionOperation {
 		public NextOperation() {
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "e1239539-1eb0-411d-b808-947d0b1c1e94" ) );

@@ -47,7 +47,7 @@ package org.alice.ide.operations.preferences;
  */
 public class PreferencesOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.ide.preferencesinputpane.PreferencesPanel> {
 	@Deprecated
-	public static final edu.cmu.cs.dennisc.croquet.Group PREFERENCES_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "c090cda0-4a77-4e2c-a839-faf28c98c10c" ), "PREFERENCES_GROUP" );
+	public static final edu.cmu.cs.dennisc.croquet.Group PREFERENCES_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "c090cda0-4a77-4e2c-a839-faf28c98c10c" ), "PREFERENCES_GROUP" );
 	public PreferencesOperation() {
 		super( PREFERENCES_GROUP, java.util.UUID.fromString( "8662d722-9a02-47d5-a7ed-27d20528175a" ) );
 		this.setName( "Preferences..." );

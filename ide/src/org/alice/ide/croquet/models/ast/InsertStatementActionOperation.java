@@ -131,7 +131,7 @@ public class InsertStatementActionOperation extends edu.cmu.cs.dennisc.croquet.A
 	
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.CodableResolver< InsertStatementActionOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.InsertStatementResolver( this );
+		return new org.alice.ide.croquet.resolvers.InsertStatementActionOperationNewInstanceResolver( this );
 	}
 	@Override
 	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
