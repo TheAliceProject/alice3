@@ -46,12 +46,12 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class InternalCascadingItemOperationNewInstanceResolver extends edu.cmu.cs.dennisc.croquet.NewInstanceKeyedResolver< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > {
+public class InternalCascadingItemOperationResolver extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > {
 	private static final Class<?>[] PARAMETER_TYPES = new Class[] { edu.cmu.cs.dennisc.croquet.Group.class, edu.cmu.cs.dennisc.cascade.FillIn.class };
-	public InternalCascadingItemOperationNewInstanceResolver( edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation instance ) {
+	public InternalCascadingItemOperationResolver( edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation instance ) {
 		super( instance );
 	}
-	public InternalCascadingItemOperationNewInstanceResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public InternalCascadingItemOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 
@@ -59,6 +59,7 @@ public class InternalCascadingItemOperationNewInstanceResolver extends edu.cmu.c
 		Object[] arguments = this.getArguments();
 		assert arguments != null;
 		assert arguments.length == 2;
+		arguments[ 1 ] = retargeter.retarget( arguments[ 1 ] );
 	}
 
 	@Override

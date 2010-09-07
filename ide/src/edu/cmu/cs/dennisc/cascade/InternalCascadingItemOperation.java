@@ -46,18 +46,26 @@ package edu.cmu.cs.dennisc.cascade;
  * @author Dennis Cosgrove
  */
 public class InternalCascadingItemOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.croquet.Group, FillIn< ? >, InternalCascadingItemOperation > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
+	public static synchronized InternalCascadingItemOperation getInstance( edu.cmu.cs.dennisc.croquet.Group group, FillIn< ? > fillIn ) {
+		InternalCascadingItemOperation rv = mapToMap.get( group, fillIn );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new InternalCascadingItemOperation( group, fillIn );
+			mapToMap.put( group, fillIn, rv );
+		}
+		return rv;
+	}
+
 	private FillIn< ? > fillIn;
-	public InternalCascadingItemOperation( edu.cmu.cs.dennisc.croquet.Group group, FillIn< ? > fillIn ) {
+	private InternalCascadingItemOperation( edu.cmu.cs.dennisc.croquet.Group group, FillIn< ? > fillIn ) {
 		super( group, java.util.UUID.fromString( "98e30a01-242f-4f3c-852c-d0b0a33d277f" ) );
 		this.fillIn = fillIn;
 	}
 	public FillIn< ? > getFillIn() {
 		return this.fillIn;
-	}
-	
-	@Override
-	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		return "a" + this.fillIn.toString();
 	}
 	
 	@Override
@@ -71,8 +79,8 @@ public class InternalCascadingItemOperation extends edu.cmu.cs.dennisc.croquet.A
 		}
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.InternalCascadingItemOperationNewInstanceResolver createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.InternalCascadingItemOperationNewInstanceResolver( this );
+	protected org.alice.ide.croquet.resolvers.InternalCascadingItemOperationResolver createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.InternalCascadingItemOperationResolver( this );
 	}
 	@Override
 	protected final void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {

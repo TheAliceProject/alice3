@@ -82,7 +82,8 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 		}
 		
 		for( int i=0; i<4; i++ ) {
-			this.addExpressionFillIn( blank, i );
+			blank.addFillIn( new IntegerLiteralFillIn( i ) );
+			//this.addExpressionFillIn( blank, i );
 		}
 		blank.addSeparator();
 		if( isTop ) {

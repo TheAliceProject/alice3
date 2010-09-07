@@ -40,52 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.cascade;
+
+package org.alice.ide.cascade.fillerinners;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SimpleExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends edu.cmu.cs.dennisc.cascade.SimpleFillIn< E > {
-	public SimpleExpressionFillIn( E model ) {
-		super( model );
+public class IntegerLiteralFillIn extends org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.IntegerLiteral > {
+	public IntegerLiteralFillIn( int value ) {
+		super( new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( value ) );
 	}
-	public SimpleExpressionFillIn( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public IntegerLiteralFillIn( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	
 	@Override
-	public java.lang.StringBuilder appendTutorialNoteText( java.lang.StringBuilder rv, java.util.Locale locale ) {
-		super.appendTutorialNoteText( rv, locale );
-		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, this.getModel(), locale );
-		return rv;
-	}
-//	@Override
-//	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-//		super.decode( binaryDecoder );
-//		java.util.UUID id = binaryDecoder.decodeId();
-//		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-//		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
-//		E expression = (E)edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, id );
-//		this.setModel( expression );
-//	}
-//	@Override
-//	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-//		super.encode( binaryEncoder );
-//		binaryEncoder.encode(  this.getModel().getUUID() );
-//	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super.decode( binaryDecoder );
+		int value = binaryDecoder.decodeInt();
+		this.setModel( new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( value  ) );
 	}
 	@Override
-	protected javax.swing.JComponent createMenuProxy() {
-		javax.swing.JComponent rv;
-		org.alice.ide.common.Factory factory = getIDE().getPreviewFactory();
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.getModel();
-//		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-//			rv = new org.alice.ide.common.FieldAccessPane( factory, (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
-//		} else {
-			rv = factory.createExpressionPane( expression ).getAwtComponent();
-//		}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		int value = this.getModel().value.getValue();
+		binaryEncoder.encode( value );
+	}
+	@Override
+	public final boolean equals( Object o ) {
+		if( this == o ) {
+			return true;
+		} else {
+			if( o instanceof IntegerLiteralFillIn ) {
+				IntegerLiteralFillIn other = (IntegerLiteralFillIn)o;
+				return this.getModel().value.getValue() == other.getModel().value.getValue();
+			} else {
+				return false;
+			}
+		}
+	}
+	@Override
+	public final int hashCode() {
+		int rv = 17;
+		rv = 37*rv + this.getModel().value.getValue();
 		return rv;
 	}
 }
