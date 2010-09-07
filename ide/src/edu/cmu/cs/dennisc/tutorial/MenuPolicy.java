@@ -40,44 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package edu.cmu.cs.dennisc.tutorial;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class DialogCloseButtonFeature extends Feature {
-	public DialogCloseButtonFeature(edu.cmu.cs.dennisc.croquet.RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> trackableShapeResolver) {
-		super( trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST );
+public enum MenuPolicy {
+	ABOVE_STENCIL_WITH_FEEDBACK( javax.swing.JLayeredPane.POPUP_LAYER - 1, true ),
+	ABOVE_STENCIL_WITHOUT_FEEDBACK( javax.swing.JLayeredPane.POPUP_LAYER - 1, false ),
+	BELOW_STENCIL(  javax.swing.JLayeredPane.POPUP_LAYER + 1, true );
+	private int stencilLayer;
+	private boolean isFeedbackDesired;
+	private MenuPolicy( int stencilLayer, boolean isFeedbackDesired ) {
+		this.stencilLayer = stencilLayer;
+		this.isFeedbackDesired = isFeedbackDesired;
 	}
-	@Override
-	protected boolean isPathRenderingDesired() {
-		return true;
+	public int getStencilLayer() {
+		return this.stencilLayer;
 	}
-	@Override
-	public boolean isPotentiallyScrollable() {
-		return false;
+	public boolean isAboveStencil() {
+		return this.stencilLayer < javax.swing.JLayeredPane.POPUP_LAYER;
 	}
-	@Override
-	protected java.awt.Insets getBoundsInsets() {
-		return null;
+	public boolean isBelowStencil() {
+		return this.stencilLayer > javax.swing.JLayeredPane.POPUP_LAYER;
 	}
-	@Override
-	protected java.awt.Insets getContainsInsets() {
-		return null;
-	}
-	@Override
-	protected java.awt.Insets getPaintInsets() {
-		return null;
-	}
-	@Override
-	public java.awt.geom.Area getAreaToSubstractForPaint(edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy) {
-		return null;
-	}
-	@Override
-	public java.awt.geom.Area getAreaToSubstractForContains(edu.cmu.cs.dennisc.croquet.Component<?> asSeenBy) {
-		return null;
-	}
-	@Override
-	protected void paint(java.awt.Graphics2D g2, java.awt.Shape shape) {
+	public boolean isFeedbackDesired() {
+		return this.isFeedbackDesired;
 	}
 }

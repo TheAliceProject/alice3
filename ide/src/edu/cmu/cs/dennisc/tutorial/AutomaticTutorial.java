@@ -111,14 +111,14 @@ public class AutomaticTutorial {
 	private java.util.List< edu.cmu.cs.dennisc.croquet.Group > groupsForWhichStepsAreGenerated; 
 	private edu.cmu.cs.dennisc.croquet.RootContext sourceContext;
 
-	private class AutomaticTutorialStencil extends TutorialStencil {
-		public AutomaticTutorialStencil( javax.swing.JLayeredPane layeredPane, edu.cmu.cs.dennisc.croquet.Group[] groups ) {
-			super( layeredPane, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() );
+	/*package-private*/ class AutomaticTutorialStencil extends TutorialStencil {
+		public AutomaticTutorialStencil( MenuPolicy menuPolicy, javax.swing.JLayeredPane layeredPane, edu.cmu.cs.dennisc.croquet.Group[] groups ) {
+			super( menuPolicy, layeredPane, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() );
 		}
 	}
-	public AutomaticTutorial( edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess, edu.cmu.cs.dennisc.croquet.Group[] bonusGroupsForWhichStepsAreGenerated ) {
+	public AutomaticTutorial( MenuPolicy menuPolicy, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess, edu.cmu.cs.dennisc.croquet.Group[] bonusGroupsForWhichStepsAreGenerated ) {
 		instance = this;
-		this.stencil = new AutomaticTutorialStencil( getLayeredPane(), groupsTrackedForRandomAccess );
+		this.stencil = new AutomaticTutorialStencil( menuPolicy, getLayeredPane(), groupsTrackedForRandomAccess );
 		this.groupsForWhichStepsAreGenerated = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		edu.cmu.cs.dennisc.java.util.Collections.addAll( this.groupsForWhichStepsAreGenerated, groupsTrackedForRandomAccess );
 		edu.cmu.cs.dennisc.java.util.Collections.addAll( this.groupsForWhichStepsAreGenerated, bonusGroupsForWhichStepsAreGenerated );
@@ -127,6 +127,8 @@ public class AutomaticTutorial {
 		//todo: remove
 		this.groupsForWhichStepsAreGenerated.add( edu.cmu.cs.dennisc.croquet.DragAndDropModel.DRAG_GROUP );
 		this.groupsForWhichStepsAreGenerated.add( edu.cmu.cs.dennisc.croquet.MenuBarModel.MENU_BAR_MODEL_GROUP );
+		//
+		
 	}
 	private edu.cmu.cs.dennisc.croquet.Retargeter retargeter;
 	public edu.cmu.cs.dennisc.croquet.Retargeter getRetargeter() {
@@ -321,9 +323,10 @@ public class AutomaticTutorial {
 		private MenuSelectionNote( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, int index0 ) {
 			super( getText( menuSelectionEvent, i ) );
 			this.originalMenuSelectionEvent = menuSelectionEvent;
+			
 			this.i = i;
 			for( int j=index0; j<=i; j++ ) {
-				this.addFeature( new Hole( new FirstComponentResolver( new ModelFromMenuSelectionResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, j ) ), Feature.ConnectionPreference.EAST_WEST, j==i ) );
+				this.addFeature( new MenuHole( new FirstComponentResolver( new ModelFromMenuSelectionResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, j ) ), Feature.ConnectionPreference.EAST_WEST, j==i ) );
 			}
 		}
 		
@@ -537,6 +540,9 @@ public class AutomaticTutorial {
 		}
 	}
 
+	/*package-private*/ AutomaticTutorialStencil getStencil() {
+		return this.stencil;
+	}
 	public void addSteps( edu.cmu.cs.dennisc.croquet.RootContext sourceContext ) {
 		this.addMessageStep( "start", "start of tutorial" );
 		this.sourceContext = sourceContext;
