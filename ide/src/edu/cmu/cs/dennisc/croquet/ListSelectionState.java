@@ -50,6 +50,68 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 		public void changed(E nextValue);
 	};
 
+	public static class ListSelectionMenuModelResolver<E> implements CodableResolver< ListSelectionMenuModel<E> > {
+		private ListSelectionMenuModel<E> listSelectionMenuModel;
+		
+		public ListSelectionMenuModelResolver( ListSelectionMenuModel<E> listSelectionMenuModel ) {
+			this.listSelectionMenuModel = listSelectionMenuModel;
+		}
+		public ListSelectionMenuModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			this.decode( binaryDecoder );
+		}
+		public ListSelectionMenuModel<E> getResolved() {
+			return this.listSelectionMenuModel;
+		}
+		public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			CodableResolver<ListSelectionState<E>> listSelectionStateResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			ListSelectionState<E> listSelectionState = listSelectionStateResolver.getResolved();
+			this.listSelectionMenuModel = listSelectionState.getMenuModel();
+		}
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			CodableResolver<ListSelectionState<E>> listSelectionStateResolver = this.listSelectionMenuModel.listSelectionState.getCodableResolver();
+			binaryEncoder.encode( listSelectionStateResolver );
+		}
+	}
+	public static class ListSelectionMenuModel<E> extends MenuModel {
+		private ListSelectionState< E > listSelectionState;
+		public ListSelectionMenuModel( ListSelectionState<E> listSelectionState ) {
+			super( java.util.UUID.fromString( "e33bc1ff-3790-4715-b88c-3c978aa16947" ), listSelectionState.getClass() );
+			this.listSelectionState = listSelectionState;
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.croquet.CodableResolver< ListSelectionMenuModel<E> > createCodableResolver() {
+			return new ListSelectionMenuModelResolver<E>( this );
+		}
+		@Override
+		protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ListSelectionMenuModel handleShowing" );
+			super.handleShowing( menuItemContainer, e );
+			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
+			for (final Object item : this.listSelectionState.comboBoxModel.items) {
+				javax.swing.Action action = this.listSelectionState.createAction( (E)item );
+				javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem(action);
+				buttonGroup.add(jMenuItem);
+				jMenuItem.setSelected( this.listSelectionState.comboBoxModel.getSelectedItem() == item);
+				menuItemContainer.getViewController().getAwtComponent().add(jMenuItem);
+			}
+		}
+		@Override
+		protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+			menuItemContainer.forgetAndRemoveAllMenuItems();
+			super.handleHiding( menuItemContainer, e );
+		}
+	}
+
+	private ListSelectionMenuModel<E> menuModel;
+	public synchronized ListSelectionMenuModel<E> getMenuModel() {
+		if( this.menuModel != null ) {
+			//pass
+		} else {
+			this.menuModel = new ListSelectionMenuModel<E>( this );
+		}
+		return this.menuModel;
+	}
+	
 	private java.util.List<ValueObserver<E>> valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	public void addValueObserver(ValueObserver<E> valueObserver) {
@@ -165,8 +227,8 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 					if( ContextManager.isInTheMidstOfUndoOrRedo() ) {
 						//pass
 					} else {
-						ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController, prevIndex, prevSelection, nextIndex, nextSelection );
-						childContext.commitAndInvokeDo( new ListSelectionEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ) );
+						ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController /*, prevIndex, prevSelection, nextIndex, nextSelection*/ );
+						childContext.commitAndInvokeDo( new ListSelectionStateEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ) );
 						ModelContext< ? > popContext = ContextManager.popContext();
 						assert popContext == childContext;
 					}
@@ -328,7 +390,7 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 	private final SingleListSelectionModel listSelectionModel = new SingleListSelectionModel();
 	private final ComboBoxModel comboBoxModel = new ComboBoxModel();
 	private Codec< E > codec;
-	private CodableResolver< Codec<E> > codecResolver;
+	//private CodableResolver< Codec<E> > codecResolver;
 	
 	public ListSelectionState(Group group, java.util.UUID id, Codec< E > codec, int selectedIndex, E... items) {
 		super(group, id);
@@ -343,7 +405,40 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 	@Override
 	/*package-private*/ void localize() {
 	}
+	@Override
+	protected boolean isOwnerOfEdit() {
+		return true;
+	}
 	
+	public String getTutorialNoteText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "Select " );
+		sb.append( "<strong>" );
+		this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
+		sb.append( "</strong>" );
+		return sb.toString();
+	}
+	public String getTutorialNoteStartText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "First press on " );
+		sb.append( "<strong>" );
+		this.codec.appendRepresentation( sb, listSelectionStateEdit.getPreviousValue(), java.util.Locale.getDefault() );
+		sb.append( "</strong>" );
+		sb.append( " in order to change it to " );
+		sb.append( "<strong>" );
+		this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
+		sb.append( "</strong>" );
+		return sb.toString();
+	}
+	public String getTutorialNoteFinishText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "Now select " );
+		sb.append( "<strong>" );
+		this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
+		sb.append( "</strong>" );
+		return sb.toString();
+	}
+
 	/*package-private*/ ComboBoxModel getComboBoxModel() {
 		return this.comboBoxModel;
 	}
@@ -362,14 +457,14 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 		return this.codec;
 	}
 	
-	/*package-private*/ CodableResolver< Codec<E> > getCodecResolver() {
-		if( this.codecResolver != null ) {
-			//pass
-		} else {
-			this.codecResolver = this.codec.getResolver();
-		}
-		return this.codecResolver;
-	}
+//	/*package-private*/ CodableResolver< Codec<E> > getCodecResolver() {
+//		if( this.codecResolver != null ) {
+//			//pass
+//		} else {
+//			this.codecResolver = this.codec.getResolver();
+//		}
+//		return this.codecResolver;
+//	}
 	
 	public E getSelectedItem() {
 		return (E) this.comboBoxModel.getSelectedItem();
@@ -384,6 +479,13 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 		this.listSelectionModel.setSelectedIndex( nextIndex, true );;
 	}
 
+
+	public int indexOf( E item ) {
+		return this.comboBoxModel.items.indexOf( item );
+	}
+	public int lastIndexOf( E item ) {
+		return this.comboBoxModel.items.indexOf( item );
+	}
 	public java.util.Iterator< E > iterator() {
 		return this.comboBoxModel.items.iterator();
 	}
@@ -558,6 +660,16 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 		}
 	}
 	
+	protected String getMenuText( E item ) {
+		if( item != null ) {
+			return item.toString();
+		} else {
+			return null;
+		}
+	}
+	protected javax.swing.Icon getMenuSmallIcon( E item ) {
+		return null;
+	}
 	/*package-private*/ javax.swing.Action createAction( final E item ) {
 		javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -569,48 +681,4 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 		return action;
 	}
 
-	private class ListSelectionMenuModel extends MenuModel {
-		public ListSelectionMenuModel() {
-			super( java.util.UUID.fromString( "e33bc1ff-3790-4715-b88c-3c978aa16947" ), ListSelectionState.this.getClass() );
-		}
-		@Override
-		protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ListSelectionMenuModel handleShowing" );
-			super.handleShowing( menuItemContainer, e );
-			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-			for (final Object item : ListSelectionState.this.comboBoxModel.items) {
-				javax.swing.Action action = createAction( (E)item );
-				javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem(action);
-				buttonGroup.add(jMenuItem);
-				jMenuItem.setSelected(comboBoxModel.getSelectedItem() == item);
-				menuItemContainer.getViewController().getAwtComponent().add(jMenuItem);
-			}
-		}
-		@Override
-		protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-			menuItemContainer.forgetAndRemoveAllMenuItems();
-			super.handleHiding( menuItemContainer, e );
-		}
-	}
-	
-	protected String getMenuText( E item ) {
-		if( item != null ) {
-			return item.toString();
-		} else {
-			return null;
-		}
-	}
-	protected javax.swing.Icon getMenuSmallIcon( E item ) {
-		return null;
-	}
-	
-	private ListSelectionMenuModel menuModel = null;
-	public synchronized MenuModel getMenuModel() {
-		if( this.menuModel != null ) {
-			//pass
-		} else {
-			this.menuModel = new ListSelectionMenuModel();
-		}
-		return this.menuModel;
-	}
 }

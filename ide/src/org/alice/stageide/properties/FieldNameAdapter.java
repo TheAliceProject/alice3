@@ -45,24 +45,24 @@ package org.alice.stageide.properties;
 
 import java.util.Locale;
 
-import org.alice.ide.operations.ast.RenameFieldOperation;
+import org.alice.ide.croquet.models.ast.rename.RenameFieldOperation;
 import org.alice.ide.properties.adapter.AbstractNamePropertyAdapter;
 
 import edu.cmu.cs.dennisc.croquet.Operation;
 
 public class FieldNameAdapter extends AbstractNamePropertyAdapter<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> {
 
-	protected class CustomRenameFieldOperation extends RenameFieldOperation
-	{
-		public CustomRenameFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field )
-		{
-			super(field);
-			this.setName("Rename...");
-		}
-	}
-	
-	
-	protected org.alice.ide.operations.ast.RenameFieldOperation renameFieldOperation;
+//	protected class CustomRenameFieldOperation extends RenameFieldOperation
+//	{
+//		public CustomRenameFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field )
+//		{
+//			super(field);
+//			this.setName("Rename...");
+//		}
+//	}
+//	
+//	
+//	protected org.alice.ide.croquet.models.ast.rename.RenameFieldOperation renameFieldOperation;
 	
 	public FieldNameAdapter(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice instance)
 	{
@@ -105,11 +105,13 @@ public class FieldNameAdapter extends AbstractNamePropertyAdapter<edu.cmu.cs.den
 	@Override
 	public Operation getEditOperation() 
 	{
-		if (this.renameFieldOperation == null)
-		{
-			this.renameFieldOperation = new CustomRenameFieldOperation(this.instance);
-		}
-		return this.renameFieldOperation;
+//		if (this.renameFieldOperation == null)
+//		{
+//			this.renameFieldOperation = new CustomRenameFieldOperation(this.instance);
+//		}
+//		return this.renameFieldOperation;
+		return RenameFieldOperation.getInstance( this.instance );
+		
 	}
 
 	@Override

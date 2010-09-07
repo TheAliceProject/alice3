@@ -40,13 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenameParameterOperation extends RenameNodeOperation {
-	public RenameParameterOperation( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
-		super( java.util.UUID.fromString( "a5ea865d-495f-4962-99a6-b481d4ca3eb9" ), parameter.name, new org.alice.ide.name.validators.ParameterNameValidator( parameter ) );
+public class TypeSaveAsOperation extends org.alice.ide.croquet.models.projecturi.AbstractSaveOperation {
+
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice, TypeSaveAsOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized TypeSaveAsOperation getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		TypeSaveAsOperation rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new TypeSaveAsOperation( type );
+			map.put( type, rv );
+		}
+		return rv;
+	}
+
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
+	private TypeSaveAsOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		super( java.util.UUID.fromString( "e8da4117-db15-40d6-b486-7f226d827be7" ) );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: SaveAsTypeOperation" );
+		this.type = type;
+		this.setName( "<html>Save <strong>" + this.type.getName() + "</strong> As...</html>" );
+		//this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
+	}
+
+	@Override
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeSaveAsOperation > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeSaveAsOperation >( this, this.type, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice.class );
+	}
+
+	@Override
+	protected java.io.File getDefaultDirectory( org.alice.ide.ProjectApplication application ) {
+		return org.alice.ide.IDE.getSingleton().getMyTypesDirectory();
+	}
+	@Override
+	protected String getExtension() {
+		return edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION;
+	}
+	@Override
+	protected String getInitialFilename() {
+		return this.type.name.getValue() + "." + this.getExtension();
+	}
+	@Override
+	protected void save( org.alice.ide.ProjectApplication application, java.io.File file ) throws java.io.IOException {
+		edu.cmu.cs.dennisc.alice.project.ProjectUtilities.writeType( file, this.type );
+	}
+	@Override
+	protected boolean isPromptNecessary( java.io.File file ) {
+		return true;
 	}
 }

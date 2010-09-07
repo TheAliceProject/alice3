@@ -40,13 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.croquet.models;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenameMethodOperation extends RenameNodeOperation{
-	public RenameMethodOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		super( java.util.UUID.fromString( "98b443d0-c7d3-4ff8-ba1b-b16d2695c618" ), method.name, new org.alice.ide.name.validators.MethodNameValidator( method ) );
+@Deprecated
+public class ToDoDragModel extends IdeDragModel {
+	public ToDoDragModel() {
+		super( java.util.UUID.fromString( "18c35df3-fc24-434c-b451-94090f13310e" ) );
 	}
 }

@@ -88,6 +88,11 @@ public final class BoundedRangeIntegerState extends Model {
 	}
 
 	@Override
+	protected boolean isOwnerOfEdit() {
+		return true;
+	}
+
+	@Override
 	/*package-private*/ void localize() {
 	}
 	

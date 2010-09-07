@@ -40,63 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ListSelectionEdit<E> extends Edit<ListSelectionState<E>> {
-	private E prevValue;
-	private E nextValue;
-	
-	public ListSelectionEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+public class TypeRootMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+	private static class SingletonHolder {
+		private static TypeRootMenuModel instance = new TypeRootMenuModel();
 	}
-	public ListSelectionEdit( java.util.EventObject e, E prevValue, E nextValue ) {
-		this.prevValue = prevValue;
-		this.nextValue = nextValue;
+	public static TypeRootMenuModel getInstance() {
+		return SingletonHolder.instance;
 	}
-		
-	@Override
-	public boolean canRedo() {
-		return this.getModel() != null;
+	private TypeRootMenuModel() {
+		super( java.util.UUID.fromString( "259dfcc5-dd20-4890-8104-a34a075734d0" ) );
 	}
 	@Override
-	public boolean canUndo() {
-		return this.getModel() != null;
-	}
-
-	@Override
-	protected final void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-//		CodableResolver< Codec<E> > codecResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-//		Codec<E> codec = codecResolver.getResolved();
-		ListSelectionState< E > listSelectionState = this.getModel();
-		Codec<E> codec = listSelectionState.getCodec();
-		this.prevValue = codec.decode( binaryDecoder );
-		this.nextValue = codec.decode( binaryDecoder );
-	}
-	@Override
-	protected final void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		ListSelectionState< E > listSelectionState = this.getModel();
-		Codec<E> codec = listSelectionState.getCodec();
-		codec.encode( binaryEncoder, this.prevValue );
-		codec.encode( binaryEncoder, this.nextValue );
-	}
-
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		this.getModel().setSelectedItem( this.nextValue );
+	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		super.handleShowing( menuItemContainer, e );
+		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.IDE.getSingleton().getProject();
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice.class );
+		final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = project.getProgramType();
+		programType.crawl( crawler, true );
+		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type : crawler.getList() ) {
+			if( type == programType ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, TypeMenuModel.getInstance( type ) );
+			}
+		}
 	}
 	@Override
-	protected final void undoInternal() {
-		this.getModel().setSelectedItem( this.prevValue );
-	}
-	@Override
-	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
-		rv.append( "select " );
-		rv.append( this.prevValue );
-		rv.append( " ===> " );
-		rv.append( this.nextValue );
-		return rv;
+	protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		menuItemContainer.forgetAndRemoveAllMenuItems();
+		super.handleHiding( menuItemContainer, e );
 	}
 }

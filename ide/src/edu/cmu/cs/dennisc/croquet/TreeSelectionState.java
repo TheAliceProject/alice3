@@ -86,6 +86,10 @@ public abstract class TreeSelectionState<E> extends Model {
 	}
 
 	@Override
+	protected boolean isOwnerOfEdit() {
+		return true;
+	}
+	@Override
 	/*package-private*/ void localize() {
 	}
 	protected abstract E decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder);

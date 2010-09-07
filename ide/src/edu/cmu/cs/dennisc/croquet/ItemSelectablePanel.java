@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ItemSelectablePanel< E, D extends ItemSelectablePanel.ItemDetails > extends ItemSelectable<javax.swing.JPanel, E> {
-	private static final Group ITEM_SELECTABLE_IMPLEMENTATION_GROUP = new Group( java.util.UUID.fromString( "40759574-7892-469f-93c7-730ed6617d3e" ), "ITEM_SELECTABLE_IMPLEMENTATION_GROUP" );
+	private static final Group ITEM_SELECTABLE_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "40759574-7892-469f-93c7-730ed6617d3e" ), "ITEM_SELECTABLE_IMPLEMENTATION_GROUP" );
 	private static class ImplementationBooleanState extends BooleanState {
 		public ImplementationBooleanState() {
 			super( ITEM_SELECTABLE_IMPLEMENTATION_GROUP, java.util.UUID.fromString( "f0faf391-1b41-417d-98a9-ab9ba1a20335" ), false );

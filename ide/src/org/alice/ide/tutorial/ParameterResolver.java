@@ -45,10 +45,10 @@ package org.alice.ide.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/abstract class ParameterResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.DragAndDropOperation> {
+/*package-private*/abstract class ParameterResolver extends CurrentCodeEditorResolver<edu.cmu.cs.dennisc.croquet.DragAndDropModel> {
 	protected abstract edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice getResolvedParameter( edu.cmu.cs.dennisc.alice.ast.NodeListProperty<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice> parametersProperty );
 	@Override
-	protected final edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
+	protected final edu.cmu.cs.dennisc.croquet.DragAndDropModel getResolved(org.alice.ide.codeeditor.CodeEditor codeEditor) {
 		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice) codeEditor.getCode();
 		edu.cmu.cs.dennisc.alice.ast.NodeListProperty<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice> parametersProperty = code.getParamtersProperty();
 		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = this.getResolvedParameter( parametersProperty);

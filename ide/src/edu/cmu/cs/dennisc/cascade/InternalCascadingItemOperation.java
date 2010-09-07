@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.cascade;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class InternalCascadingItemOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+public class InternalCascadingItemOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
 	private FillIn< ? > fillIn;
 	public InternalCascadingItemOperation( edu.cmu.cs.dennisc.croquet.Group group, FillIn< ? > fillIn ) {
 		super( group, java.util.UUID.fromString( "98e30a01-242f-4f3c-852c-d0b0a33d277f" ) );
@@ -53,6 +53,26 @@ package edu.cmu.cs.dennisc.cascade;
 	}
 	public FillIn< ? > getFillIn() {
 		return this.fillIn;
+	}
+	
+	@Override
+	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		return "a" + this.fillIn.toString();
+	}
+	
+	@Override
+	public String getTutorialNoteText() {
+		StringBuilder sb = new StringBuilder();
+		this.fillIn.appendTutorialNoteText( sb, java.util.Locale.getDefault() );
+		if( sb.length() > 0 ) {
+			return sb.toString();
+		} else {
+			return this.fillIn.toString();
+		}
+	}
+	@Override
+	protected org.alice.ide.croquet.resolvers.InternalCascadingItemOperationNewInstanceResolver createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.InternalCascadingItemOperationNewInstanceResolver( this );
 	}
 	@Override
 	protected final void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {

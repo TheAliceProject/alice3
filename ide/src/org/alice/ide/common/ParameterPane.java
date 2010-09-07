@@ -53,7 +53,7 @@ public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.Pa
 		this.parametersProperty = parametersProperty;
 		this.addComponent( new org.alice.ide.common.DeclarationNameLabel( parameter ) );
 		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.ParameterAccess.class ) );
-		final org.alice.ide.operations.ast.RenameParameterOperation renameParameterOperation = new org.alice.ide.operations.ast.RenameParameterOperation( parameter );
+		final org.alice.ide.croquet.models.ast.rename.RenameParameterOperation renameParameterOperation = org.alice.ide.croquet.models.ast.rename.RenameParameterOperation.getInstance( parameter );
 		
 		if( this.parametersProperty != null ) {
 			final org.alice.ide.operations.ast.DeleteParameterOperation deleteParameterOperation = new org.alice.ide.operations.ast.DeleteParameterOperation( this.parametersProperty, parameter );

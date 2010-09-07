@@ -49,16 +49,16 @@ package edu.cmu.cs.dennisc.tutorial;
 	@Deprecated
 	/*package-private*/ static boolean isResultOfNextOperation = false;
 	/*package-private*/ static java.awt.Color CONTROL_COLOR = new java.awt.Color(255, 255, 191);
-	/*package-private*/ static edu.cmu.cs.dennisc.croquet.Group TUTORIAL_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "7bfa86e3-234e-4bd1-9177-d4acac0b12d9" ), "TUTORIAL_GROUP" );
-	private static edu.cmu.cs.dennisc.croquet.Group TUTORIAL_COMPLETION_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "ea5df77d-d74d-4364-9bf5-2df1b2ede0a4" ), "TUTORIAL_COMPLETION_GROUP" );
+	/*package-private*/ static edu.cmu.cs.dennisc.croquet.Group TUTORIAL_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "7bfa86e3-234e-4bd1-9177-d4acac0b12d9" ), "TUTORIAL_GROUP" );
+	private static edu.cmu.cs.dennisc.croquet.Group TUTORIAL_COMPLETION_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "ea5df77d-d74d-4364-9bf5-2df1b2ede0a4" ), "TUTORIAL_COMPLETION_GROUP" );
 
 	private edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver childrenObserver = new edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver() {
 		public void addingChild(edu.cmu.cs.dennisc.croquet.HistoryNode child) {
 		}
 		public void addedChild(edu.cmu.cs.dennisc.croquet.HistoryNode child) {
 			Step step = stepsModel.getSelectedStep();
-			if (step instanceof WaitingStep<?>) {
-				WaitingStep<?> waitingStep = (WaitingStep<?>) step;
+			if (step instanceof WaitingStep) {
+				WaitingStep waitingStep = (WaitingStep) step;
 				if( waitingStep.isWhatWeveBeenWaitingFor( child ) ) {
 					nextStepOperation.setEnabled( true );
 					if( step.isAutoAdvanceDesired() ) {
@@ -158,9 +158,10 @@ package edu.cmu.cs.dennisc.tutorial;
 			}
 		} );
 
+
 		edu.cmu.cs.dennisc.croquet.FlowPanel controlPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.CENTER, 2, 0);
 		controlPanel.addComponent(this.previousStepOperation.createButton());
-		controlPanel.addComponent(new StepsComboBox( this.stepsComboBoxModel ) );
+		controlPanel.addComponent( new StepsComboBox( this.stepsComboBoxModel, this.isAbovePopupMenus()==false ) );
 		controlPanel.addComponent(this.nextStepOperation.createButton());
 		this.controlsPanel.addComponent(controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
 		this.isPaintingStencil.setTextForTrueAndTextForFalse( "", "WARNING: stencil is disabled.  Click here to turn re-enable." );
@@ -296,8 +297,8 @@ package edu.cmu.cs.dennisc.tutorial;
 			int selectedIndex = stepsModel.getSelectedIndex();
 
 			boolean isWaiting;
-			if (step instanceof WaitingStep<?>) {
-				WaitingStep<?> waitingStep = (WaitingStep<?>) step;
+			if (step instanceof WaitingStep) {
+				WaitingStep waitingStep = (WaitingStep) step;
 				isWaiting = waitingStep.isAlreadyInTheDesiredState() == false;
 			} else {
 				isWaiting = false;

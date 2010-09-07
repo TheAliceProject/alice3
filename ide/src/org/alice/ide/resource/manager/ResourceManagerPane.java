@@ -247,7 +247,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 					this.removeResource( resource );
 				}
 				@Override
-				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+				protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 					rv.append( "add resource" );
 					rv.append( edu.cmu.cs.dennisc.pattern.NameableUtilities.safeGetName( resource ) );
 					return rv;
@@ -277,7 +277,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 					this.addResource( resource );
 				}
 				@Override
-				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+				protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 					rv.append( "remove resource" );
 					rv.append( edu.cmu.cs.dennisc.pattern.NameableUtilities.safeGetName( resource ) );
 					return rv;
@@ -400,7 +400,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 							ResourceManagerPane.this.table.repaint();
 						}
 						@Override
-						protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+						protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 							rv.append( "rename resource: " );
 							rv.append( prevName );
 							rv.append( " ===> " );
@@ -525,7 +525,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel 
 							prevCapsule.update( resource );
 						}
 						@Override
-						protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+						protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 							rv.append( "reload content" );
 							return rv;
 						}

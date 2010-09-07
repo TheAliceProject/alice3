@@ -47,8 +47,8 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Application {
-	public static final edu.cmu.cs.dennisc.croquet.Group HISTORY_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
-	public static final edu.cmu.cs.dennisc.croquet.Group URI_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
+	public static final edu.cmu.cs.dennisc.croquet.Group HISTORY_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
+	public static final edu.cmu.cs.dennisc.croquet.Group URI_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
 
 	private static ProjectApplication singleton;
 	public static ProjectApplication getSingleton() {
@@ -94,14 +94,6 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 		this.showMessageDialog( sb.toString(), "Cannot read file", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
 	}
 
-	protected abstract edu.cmu.cs.dennisc.croquet.MenuBarModel createMenuBarOperation();
-	@Override
-	public void initialize(java.lang.String[] args) {
-		super.initialize(args);
-		edu.cmu.cs.dennisc.croquet.MenuBarModel menuBarOperation = this.createMenuBarOperation();
-		edu.cmu.cs.dennisc.croquet.MenuBar menuBar = menuBarOperation.createMenuBar();
-		this.getFrame().setMenuBar( menuBar );
-	}
 	private java.net.URI uri = null;
 	public java.net.URI getUri() {
 		return this.uri;

@@ -42,6 +42,8 @@
  */
 package org.alice.ide.editorstabbedpane;
 
+import org.alice.ide.croquet.models.ast.TypeRootMenuModel;
+
 class Cycle< E > {
 	private java.util.LinkedList< E > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private int index = -1;
@@ -261,7 +263,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 			return null;
 		}
 		public edu.cmu.cs.dennisc.croquet.JComponent< ? > createMainComponent( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-			return new org.alice.ide.codeeditor.CodeEditor( code );
+			return org.alice.ide.codeeditor.CodeEditor.getInstance( code );
 		}
 		
 		private boolean isEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
@@ -430,10 +432,9 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 		}
 	};
 	private static class DropDownPanel extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-		private TypeRootMenuModel rootMenu = new TypeRootMenuModel();
 		private javax.swing.ButtonModel buttonModel;
 		public DropDownPanel() {
-			edu.cmu.cs.dennisc.croquet.Button button = this.rootMenu.getPopupMenuOperation().createButton();
+			edu.cmu.cs.dennisc.croquet.Button button = TypeRootMenuModel.getInstance().getPopupMenuOperation().createButton();
 			button.getAwtComponent().setFocusable( false );
 			this.buttonModel = button.getAwtComponent().getModel();
 			button.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.LEADING );
@@ -472,8 +473,8 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 			} else {
 				type = null;
 			}
-			this.rootMenu.getPopupMenuOperation().setSmallIcon( new org.alice.ide.common.TypeDropDownIcon( type, this.buttonModel ) );
-			this.rootMenu.getPopupMenuOperation().setName( "class:" );
+			TypeRootMenuModel.getInstance().getPopupMenuOperation().setSmallIcon( new org.alice.ide.common.TypeDropDownIcon( type, this.buttonModel ) );
+			TypeRootMenuModel.getInstance().getPopupMenuOperation().setName( "class:" );
 			this.revalidateAndRepaint();
 		}
 	}

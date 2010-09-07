@@ -40,12 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.editorstabbedpane;
+package org.alice.ide.croquet.models.ast;
 
-class TypeMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
+/**
+ * @author Dennis Cosgrove
+ */
+public class TypeMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice, TypeMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized TypeMenuModel getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		TypeMenuModel rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new TypeMenuModel( type );
+			map.put( type, rv );
+		}
+		return rv;
+	}
+
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
-
-	public TypeMenuModel( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	private TypeMenuModel( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		super( java.util.UUID.fromString( "90a5b2c2-1182-4c05-ac90-a1dc405a7a2f" ) );
 		this.type = type;
 		//this.setName( type.getName() );
@@ -53,67 +67,43 @@ class TypeMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
 	}
 	
 	@Override
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeMenuModel > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeMenuModel >( this, this.type, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice.class );
+	}
+
+	@Override
 	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		super.handleShowing( menuItemContainer, e );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handleMenuSelected" );
 		
-		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, new org.alice.ide.operations.ast.EditTypeOperation( this.type ) );
-		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, new org.alice.ide.operations.ast.RenameTypeOperation( this.type ) );
+		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.croquet.models.ast.EditTypeOperation.getInstance( this.type ) );
+		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.croquet.models.ast.rename.RenameTypeOperation.getInstance( this.type ) );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		if( ide.isInstanceCreationAllowableFor( this.type ) ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = ide.getSceneType();
 			edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, new org.alice.ide.operations.ast.DeclareFieldOfPredeterminedTypeOperation( ownerType, this.type ) );
 		}
-		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, new org.alice.ide.operations.file.SaveAsTypeOperation( this.type ) );
+		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, TypeSaveAsOperation.getInstance( this.type ) );
 		menuItemContainer.addSeparator();
-		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, new EditConstructorOperation( this.type.getDeclaredConstructor() ) );
+		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, EditConstructorOperation.getInstance( this.type.getDeclaredConstructor() ) );
 		menuItemContainer.addSeparator();
-		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.croquet.models.ast.DeclareProcedureOperation.getInstance( this.type ) );
+		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, DeclareProcedureOperation.getInstance( this.type ) );
 		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.type.methods ) {
 			if( method.isProcedure() ) {
-				edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, new EditMethodOperation( method ) );
+				edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, EditMethodOperation.getInstance( method ) );
 			}
 		}
 		menuItemContainer.addSeparator();
 		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.type.methods ) {
 			if( method.isFunction() ) {
-				edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, new EditMethodOperation( method ) );
+				edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, EditMethodOperation.getInstance( method ) );
 			}
 		}
-		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.croquet.models.ast.DeclareFunctionOperation.getInstance( this.type ) );
+		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, DeclareFunctionOperation.getInstance( this.type ) );
 		menuItemContainer.addSeparator();
 		edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( this.type ) );
 		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : this.type.fields ) {
 			edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, new org.alice.ide.operations.ast.EditFieldOperation( field ) );
-		}
-	}
-	@Override
-	protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-		menuItemContainer.forgetAndRemoveAllMenuItems();
-		super.handleHiding( menuItemContainer, e );
-	}
-}
-
-/**
- * @author Dennis Cosgrove
- */
-public class TypeRootMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
-	public TypeRootMenuModel() {
-		super( java.util.UUID.fromString( "259dfcc5-dd20-4890-8104-a34a075734d0" ) );
-	}
-	@Override
-	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-		super.handleShowing( menuItemContainer, e );
-		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.IDE.getSingleton().getProject();
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice.class );
-		final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = project.getProgramType();
-		programType.crawl( crawler, true );
-		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type : crawler.getList() ) {
-			if( type == programType ) {
-				//pass
-			} else {
-				edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.addMenuElement( menuItemContainer, new TypeMenuModel( type ) );
-			}
 		}
 	}
 	@Override

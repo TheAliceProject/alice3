@@ -47,13 +47,14 @@ package org.alice.ide.croquet.codecs;
  */
 public enum StringCodec implements edu.cmu.cs.dennisc.croquet.Codec< String > {
 	SINGLETON;
-	public edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.Codec< String > > getResolver() {
-		throw new RuntimeException( "todo" );
+	public StringBuilder appendRepresentation(StringBuilder rv, String value, java.util.Locale locale) {
+		rv.append( value );
+		return rv;
 	}
 	public String decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
+		return binaryDecoder.decodeString();
 	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, String s ) {
-		throw new RuntimeException( "todo" );
+	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, String value ) {
+		binaryEncoder.encode( value );
 	}
 }

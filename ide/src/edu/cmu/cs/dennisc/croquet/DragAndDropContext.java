@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
+public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 	public static abstract class DragAndDropEvent extends ModelEvent< DragAndDropContext > {
 		private java.awt.event.MouseEvent mouseEvent;
 		public DragAndDropEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -64,19 +64,59 @@ public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
 	}
 	public static abstract class DropReceptorEvent extends DragAndDropEvent {
 		private DropReceptor dropReceptor;
+		private CodableResolver< DropReceptor > dropReceptorResolver;
 		public DropReceptorEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
 		private DropReceptorEvent( java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor ) {
 			super( mouseEvent );
 			this.dropReceptor = dropReceptor;
+			if( this.dropReceptor != null ) {
+				this.dropReceptorResolver = this.dropReceptor.getCodableResolver();
+			} else {
+				this.dropReceptorResolver = null;
+			}
 		}
 		public DropReceptor getDropReceptor() {
-			return this.dropReceptor;
+			DropReceptor rv;
+			if( this.dropReceptor != null ) {
+				rv = this.dropReceptor;
+			} else {
+				if( this.dropReceptorResolver != null ) {
+					rv = this.dropReceptorResolver.getResolved(); 
+					if( this.dropReceptorResolver instanceof RetargetableResolver< ? > ) {
+						//pass
+					} else {
+						this.dropReceptor = rv;
+					}
+				} else {
+					rv = null;
+				}
+			}
+			return rv;
 		}
 		@Override
 		public State getState() {
 			return null;
+		}
+		@Override
+		protected void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+			super.decodeInternal( binaryDecoder );
+			this.dropReceptorResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		}
+		@Override
+		protected void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+			super.encodeInternal( binaryEncoder );
+			binaryEncoder.encode( this.dropReceptorResolver );
+		}
+
+		@Override
+		public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+			super.retarget( retargeter );
+			if( this.dropReceptorResolver instanceof RetargetableResolver< ? > ) {
+				RetargetableResolver< ? > retargetableResolver = (RetargetableResolver< ? >)this.dropReceptorResolver;
+				retargetableResolver.retarget( retargeter );
+			}
 		}
 	}
 	public static class EnteredDropReceptorEvent extends DropReceptorEvent {
@@ -95,6 +135,56 @@ public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
 			super( mouseEvent, dropReceptor );
 		}
 	}
+
+	
+	public static abstract class PotentialDropSiteEvent extends DropReceptorEvent {
+		private DropSite potentialDropSite;
+		public PotentialDropSiteEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private PotentialDropSiteEvent( java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor, DropSite potentialDropSite ) {
+			super( mouseEvent, dropReceptor );
+			this.potentialDropSite = potentialDropSite;
+		}
+		public DropSite getPotentialDropSite() {
+			return this.potentialDropSite;
+		}
+		@Override
+		public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+			super.retarget( retargeter );
+			if( this.potentialDropSite instanceof RetargetableDropSite ) {
+				RetargetableDropSite retargetablePotentialDropSite = (RetargetableDropSite)this.potentialDropSite;
+				retargetablePotentialDropSite.retarget( retargeter );
+			}
+		}
+		@Override
+		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super.decodeInternal( binaryDecoder );
+			this.potentialDropSite = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		}
+		@Override
+		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			super.encodeInternal( binaryEncoder );
+			binaryEncoder.encode( this.potentialDropSite );
+		}
+	}
+	public static class EnteredPotentialDropSiteEvent extends PotentialDropSiteEvent {
+		public EnteredPotentialDropSiteEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private EnteredPotentialDropSiteEvent( java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor, DropSite potentialDropSite ) {
+			super( mouseEvent, dropReceptor, potentialDropSite );
+		}
+	}
+	public static class ExitedPotentialDropSiteEvent extends PotentialDropSiteEvent {
+		public ExitedPotentialDropSiteEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private ExitedPotentialDropSiteEvent( java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor, DropSite potentialDropSite ) {
+			super( mouseEvent, dropReceptor, potentialDropSite );
+		}
+	}
+
 	public static class DroppedEvent extends DropReceptorEvent {
 		public DroppedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
@@ -132,8 +222,9 @@ public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
 	}
 	private DropReceptorInfo[] potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
 	private DropReceptor currentDropReceptor;
+	private DropSite currentPotentialDropSite;
 	private java.awt.event.MouseEvent latestMouseEvent;
-	/*package-private*/ DragAndDropContext( DragAndDropOperation dragAndDropOperation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource ) {
+	/*package-private*/ DragAndDropContext( DragAndDropModel dragAndDropOperation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource ) {
 		super( dragAndDropOperation, originalMouseEvent, dragSource );
 		this.setLatestMouseEvent( latestMouseEvent );
 		java.util.List< ? extends DropReceptor > potentialDropReceptors = dragAndDropOperation.createListOfPotentialDropReceptors( dragSource );
@@ -225,10 +316,16 @@ public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
 		}
 		return rv;
 	}
+	
 	public void handleMouseDragged( java.awt.event.MouseEvent e ) {
 		this.setLatestMouseEvent( e );
 		DropReceptor nextDropReceptor = getDropReceptorUnder( e );
 		if( this.currentDropReceptor != nextDropReceptor ) {
+			if( this.currentPotentialDropSite != null ) {
+				if( this.currentDropReceptor != null ) {
+					this.addChild( new ExitedPotentialDropSiteEvent( e, this.currentDropReceptor, this.currentPotentialDropSite ) );
+				}
+			}
 			if( this.currentDropReceptor != null ) {
 				this.getModel().handleDragExitedDropReceptor( this );
 				this.currentDropReceptor.dragExited( this, false );
@@ -241,17 +338,30 @@ public class DragAndDropContext extends ModelContext<DragAndDropOperation> {
 				this.addChild( new EnteredDropReceptorEvent( e, this.currentDropReceptor ) );
 			}
 		}
+		if( this.currentDropReceptor != null ) {
+			DropSite nextPotentialDropSite = this.currentDropReceptor.dragUpdated( this );
+			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.currentPotentialDropSite, nextPotentialDropSite ) ) {
+				//pass
+			} else {
+				if( this.currentPotentialDropSite != null ) {
+					this.addChild( new ExitedPotentialDropSiteEvent( e, this.currentDropReceptor, this.currentPotentialDropSite ) );
+				}
+				this.currentPotentialDropSite = nextPotentialDropSite;
+				if( this.currentPotentialDropSite != null ) {
+					this.addChild( new EnteredPotentialDropSiteEvent( e, this.currentDropReceptor, this.currentPotentialDropSite ) );
+				}
+			}
+		}
+
 		if( this.getDragSource().getDragProxy() != null ) {
 			this.getDragSource().getDragProxy().setOverDropAcceptor( this.currentDropReceptor != null );
-		}
-		if( this.currentDropReceptor != null ) {
-			this.currentDropReceptor.dragUpdated( this );
 		}
 	}
 	
 	private void popContext( OperationContext< ? > childContext ) {
 		System.err.println( "popContext" );
-		if( childContext != null ) {
+		ModelContext< ? > currentContext = ContextManager.getCurrentContext();
+		if( childContext != null && childContext == currentContext ) {
 			ContextManager.popParentContextWhenChildContextIsPopped( this, childContext );
 		} else {
 			ModelContext< ? > modelContext = ContextManager.popContext();

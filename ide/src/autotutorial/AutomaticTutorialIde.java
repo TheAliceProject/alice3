@@ -1,6 +1,6 @@
 package autotutorial;
 
-public class AutoTutorialIde extends org.alice.stageide.StageIDE {
+public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 	private static boolean IS_ENCODING;
 	private static final String UI_HISTORY_PATH = "/autoTutorial1.bin";
 	private static final String POST_PROJECT_PATH = "/post.a3p";
@@ -67,6 +67,7 @@ public class AutoTutorialIde extends org.alice.stageide.StageIDE {
 	}
 	@Override
 	protected void handleQuit( java.util.EventObject e ) {
+		//super.handleQuit( e );
 		if( IS_ENCODING ) {
 			edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
@@ -80,7 +81,6 @@ public class AutoTutorialIde extends org.alice.stageide.StageIDE {
 			}
 		}
 		System.exit( 0 );
-		//super.handleQuit( e );
 	}
 	private void createAndShowTutorial() {
 		//final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( this, 0 );
@@ -108,21 +108,26 @@ public class AutoTutorialIde extends org.alice.stageide.StageIDE {
 		};
 
 		
-		edu.cmu.cs.dennisc.tutorial.AutomaticTutorial tutorial = new edu.cmu.cs.dennisc.tutorial.AutomaticTutorial( new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
+		final edu.cmu.cs.dennisc.tutorial.AutomaticTutorial tutorial = new edu.cmu.cs.dennisc.tutorial.AutomaticTutorial( new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
 		tutorial.addSteps( this.postContext );
 		
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
-		edu.cmu.cs.dennisc.tutorial.AutomaticTutorial.setRetargeter( astLiveRetargeter );
+		tutorial.setRetargeter( astLiveRetargeter );
 
-		tutorial.setSelectedIndex( 0 );
-		
 		tutorial.setVisible( true );
 		this.getFrame().setVisible( true );
+		
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				tutorial.setSelectedIndex( 0 );
+			}
+		} );
+
 	}
 	
 	public static void main( String[] args ) throws Exception {
 		IS_ENCODING = Boolean.parseBoolean( args[ 5 ] );
-		final AutoTutorialIde ide = org.alice.ide.LaunchUtilities.launchAndWait( AutoTutorialIde.class, null, args, false );
+		final AutomaticTutorialIde ide = org.alice.ide.LaunchUtilities.launchAndWait( AutomaticTutorialIde.class, null, args, false );
 		if( IS_ENCODING ) {
 			ide.getFrame().setVisible( true );
 		} else {

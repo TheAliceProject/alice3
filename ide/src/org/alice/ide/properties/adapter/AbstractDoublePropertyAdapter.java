@@ -83,6 +83,11 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 		return "Double";
 	}
 	
+	public Double getValueCopy() 
+	{
+		return new Double(this.getValue());
+	}
+	
 	@Override
 	public Operation getEditOperation() 
 	{

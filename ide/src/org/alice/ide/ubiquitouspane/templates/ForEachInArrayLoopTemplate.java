@@ -45,7 +45,7 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class ForEachInArrayLoopTemplate extends CascadingUbiquitousStatementTemplate {
+public class ForEachInArrayLoopTemplate extends CascadingUbiquitousStatementClassTemplate {
 	public ForEachInArrayLoopTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop.class, org.alice.ide.ast.NodeUtilities.createIncompleteForEachInArrayLoop() );
 	}

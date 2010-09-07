@@ -98,7 +98,7 @@ public class FillInMoreEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< or
 //		this.getModel().updateToolTipText();
 	}
 	@Override
-	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		org.alice.ide.croquet.models.ast.FillInMoreMenuModel popupMenuOperation = this.getCascadingRoot();
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation = popupMenuOperation.getNextMethodInvocation();
 		if( nextMethodInvocation != null ) {

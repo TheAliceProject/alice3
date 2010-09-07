@@ -250,6 +250,11 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Composi
 		}
 		return null;
 	}
+	
+	public Composite getValueCopy() 
+	{
+		return this.getValue();
+	}
 
 	@Override
 	protected void startListening() 

@@ -55,4 +55,5 @@ public abstract class AbstractNamePropertyAdapter<O> extends AbstractStringPrope
 		super(repr, instance);
 	}
 
+
 }

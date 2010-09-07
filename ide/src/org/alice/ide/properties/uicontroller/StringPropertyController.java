@@ -54,7 +54,7 @@ import edu.cmu.cs.dennisc.croquet.Panel;
 
 public class StringPropertyController extends AbstractAdapterController<String>
 {
-
+	private BorderPanel mainPanel;
 	private Label stringLabel;
 	
 	private static final String BLANK_STRING = "NO VALUE";
@@ -67,6 +67,7 @@ public class StringPropertyController extends AbstractAdapterController<String>
 	@Override
 	protected void initializeComponents() 
 	{
+		this.mainPanel = new BorderPanel();
 		this.stringLabel = new Label();
 	}
 	
@@ -92,11 +93,17 @@ public class StringPropertyController extends AbstractAdapterController<String>
 	@Override
 	protected void updateUIFromNewAdapter() 
 	{
-		this.removeAllComponents();
-		this.addComponent(this.stringLabel, BorderPanel.Constraint.CENTER);
+		this.mainPanel.removeAllComponents();
+		this.mainPanel.addComponent(this.stringLabel, BorderPanel.Constraint.CENTER);
 		if (this.propertyAdapter != null)
 		{
-			this.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
+			this.mainPanel.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
 		}
+	}
+	
+	@Override
+	public Panel getPanel() 
+	{
+		return this.mainPanel;
 	}
 }

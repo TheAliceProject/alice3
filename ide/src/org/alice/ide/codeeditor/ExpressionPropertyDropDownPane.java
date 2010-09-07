@@ -42,6 +42,8 @@
  */
 package org.alice.ide.codeeditor;
 
+import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -76,6 +78,12 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupM
 //		return rv;	
 //	}
 
+	public edu.cmu.cs.dennisc.croquet.CodableResolver< ExpressionPropertyDropDownPane > getCodableResolver() {
+		throw new RuntimeException( "todo" );
+	}
+	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape( edu.cmu.cs.dennisc.croquet.DropSite potentialDropSite ) {
+		return this;
+	}
 
 	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.croquet.DragComponent source ) {
 		return source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance;
@@ -86,7 +94,8 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupM
 //		zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 		context.getDragSource().setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), this.getMainComponent(), this.getBounds().height, -1 );
 	}
-	public void dragUpdated( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+	public edu.cmu.cs.dennisc.croquet.DropSite dragUpdated( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
+		return null;
 	}
 	public edu.cmu.cs.dennisc.croquet.Operation<?> dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 		edu.cmu.cs.dennisc.croquet.Operation<?> rv;

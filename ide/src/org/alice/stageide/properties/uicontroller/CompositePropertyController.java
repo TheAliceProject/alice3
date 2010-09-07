@@ -51,10 +51,13 @@ import org.alice.stageide.properties.TransformableVehicleAdapter;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.croquet.BorderPanel;
+import edu.cmu.cs.dennisc.croquet.FlowPanel;
 import edu.cmu.cs.dennisc.croquet.Label;
+import edu.cmu.cs.dennisc.croquet.Panel;
 
 public class CompositePropertyController extends AbstractAdapterController<Composite>{
 
+	private BorderPanel mainPanel;
 	private Label compositeLabel;
 	
 	public CompositePropertyController(PropertyAdapter<Composite, ?> propertyAdapter) 
@@ -71,6 +74,7 @@ public class CompositePropertyController extends AbstractAdapterController<Compo
 	@Override
 	protected void initializeComponents() 
 	{
+		this.mainPanel = new BorderPanel();
 		this.compositeLabel = new Label();
 	}
 
@@ -84,12 +88,18 @@ public class CompositePropertyController extends AbstractAdapterController<Compo
 	@Override
 	protected void updateUIFromNewAdapter() 
 	{
-		this.removeAllComponents();
-		this.addComponent(this.compositeLabel, BorderPanel.Constraint.CENTER);
+		this.mainPanel.removeAllComponents();
+		this.mainPanel.addComponent(this.compositeLabel, BorderPanel.Constraint.CENTER);
 		if (this.propertyAdapter != null)
 		{
-			this.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
+			this.mainPanel.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
 		}
+	}
+
+	@Override
+	public Panel getPanel() 
+	{
+		return this.mainPanel;
 	}
 
 }

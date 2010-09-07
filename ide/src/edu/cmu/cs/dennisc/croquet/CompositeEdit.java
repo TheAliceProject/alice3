@@ -98,7 +98,7 @@ public class CompositeEdit extends Edit {
 		return true;
 	}
 	@Override
-	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( this.presentation );
 		return rv;
 	}

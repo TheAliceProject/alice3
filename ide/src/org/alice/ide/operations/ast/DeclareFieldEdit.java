@@ -82,7 +82,7 @@ public class DeclareFieldEdit extends org.alice.ide.ToDoEdit {
 	}
 
 	@Override
-	protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
 		rv.append("declare:");
 		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, field, locale);
 		return rv;

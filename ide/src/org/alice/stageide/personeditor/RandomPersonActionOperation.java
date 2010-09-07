@@ -66,7 +66,7 @@ class RandomPersonActionOperation extends org.alice.ide.operations.ActionOperati
 				RandomPersonActionOperation.this.personEditor.setPersonInfo( prevState );
 			}
 			@Override
-			protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+			protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 				rv.append( "randomize person" );
 				return rv;
 			}

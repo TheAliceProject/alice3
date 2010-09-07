@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class MenuModel extends Model {
-	private static final Group MENU_GROUP = new Group( java.util.UUID.fromString( "4ed42b1f-b4ea-4f70-99d1-5bb2c3f11081" ), "MENU_GROUP" );
+	private static final Group MENU_GROUP = Group.getInstance( java.util.UUID.fromString( "4ed42b1f-b4ea-4f70-99d1-5bb2c3f11081" ), "MENU_GROUP" );
 	public static final Model SEPARATOR = null;
 	private Class<?> clsForI18N;
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
@@ -61,7 +61,10 @@ public abstract class MenuModel extends Model {
 	public MenuModel( java.util.UUID individualId ) {
 		this( individualId, null );
 	}
-	
+	@Override
+	protected boolean isOwnerOfEdit() {
+		return false;
+	}
 	@Override
 	/*package-private*/ void localize() {
 		if( clsForI18N != null ) {
@@ -73,9 +76,17 @@ public abstract class MenuModel extends Model {
 		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, getLocalizedMnemonicKey( clsForI18N ) );
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, getLocalizedAcceleratorKeyStroke( clsForI18N ) );
 	}
-	
+	public String getTutorialNoteText() {
+		return this.getName();
+	}
+	private String getName() {
+		return (String)this.action.getValue( javax.swing.Action.NAME );
+	}
 	public void setName( String name ) {
 		this.action.putValue( javax.swing.Action.NAME, name );
+	}
+	private javax.swing.Icon getSmallIcon() {
+		return (javax.swing.Icon)this.action.getValue( javax.swing.Action.SMALL_ICON );
 	}
 	public void setSmallIcon( javax.swing.Icon icon ) {
 		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );

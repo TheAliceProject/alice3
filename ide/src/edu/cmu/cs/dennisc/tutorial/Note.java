@@ -66,7 +66,6 @@ package edu.cmu.cs.dennisc.tutorial;
 		assert text != null;
 		this.text = text;
 	}
-	
 	public String getLabel() {
 		return this.label;
 	}

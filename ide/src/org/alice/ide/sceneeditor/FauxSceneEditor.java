@@ -52,6 +52,12 @@ import edu.cmu.cs.dennisc.croquet.ViewController;
  * @author Dennis Cosgrove
  */
 public class FauxSceneEditor extends AbstractSceneEditor {
+	public <R extends edu.cmu.cs.dennisc.croquet.DropReceptor> edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.DropReceptor > getCodableResolver() {
+		return null;
+	}
+	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape( edu.cmu.cs.dennisc.croquet.DropSite potentialDropSite ) {
+		return null;
+	}
 	@Override
 	public void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, FieldAndInstanceMapper fieldAndInstanceMapper ) {
 		throw new RuntimeException();
@@ -89,7 +95,8 @@ public class FauxSceneEditor extends AbstractSceneEditor {
 	}
 	public void dragStopped(DragAndDropContext dragAndDropContext) {
 	}
-	public void dragUpdated(DragAndDropContext dragAndDropContext) {
+	public edu.cmu.cs.dennisc.croquet.DropSite dragUpdated(DragAndDropContext dragAndDropContext) {
+		return null;
 	}
 	public ViewController<?, ?> getViewController() {
 		return null;

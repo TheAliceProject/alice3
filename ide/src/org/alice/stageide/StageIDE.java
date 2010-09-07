@@ -398,8 +398,8 @@ public class StageIDE extends org.alice.ide.IDE {
 //	}
 
 	@Override
-	protected org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor() {
-		return new org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor();
+	public org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor() {
+		return org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor.getInstance();
 	}
 	
 	@Override

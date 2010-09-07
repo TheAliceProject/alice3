@@ -42,14 +42,12 @@
  */
 package org.alice.ide.templates;
 
-import org.alice.ide.common.ExpressionCreatorPane;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class CascadingExpressionsStatementTemplate extends StatementTemplate {
-	public CascadingExpressionsStatementTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
-		super( cls );
+	public CascadingExpressionsStatementTemplate( edu.cmu.cs.dennisc.croquet.DragAndDropModel dragModel, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+		super( dragModel, cls );
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes();
 	protected String getTitleAt( int index ) {
@@ -64,7 +62,8 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 		edu.cmu.cs.dennisc.alice.ast.Expression[] predeterminedExpressions = org.alice.ide.IDE.getSingleton().createPredeterminedExpressionsIfAppropriate( types );
 		if( predeterminedExpressions != null ) {
 			edu.cmu.cs.dennisc.alice.ast.Statement statement = this.createStatement( predeterminedExpressions ); 
-			return new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( statement, blockStatement, index );
+			//return org.alice.ide.croquet.models.ast.InsertStatementActionOperation.getInstance( java.util.UUID.randomUUID(), blockStatement, index, statement );
+			return new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( blockStatement, index, statement );
 		} else {
 			if( types.length == 1 ) {
 				return new org.alice.ide.croquet.models.ast.FillInSingleExpressionMenuModel( java.util.UUID.fromString( "9a67ff7b-df1f-492e-b128-721f58ea2ad1" ) ) {
@@ -85,7 +84,7 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 						return null;
 					}
 					@Override
-					protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.BlockStatement, java.lang.Integer > getBlockStatementAndIndex() {
+					protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.BlockStatement, Integer > getBlockStatementAndIndex() {
 						return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( blockStatement, index );
 					}
 					@Override

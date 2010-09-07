@@ -40,38 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations;
+package org.alice.ide.croquet.models.ast.rename;
 
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class DefaultDragOperation extends edu.cmu.cs.dennisc.croquet.DragAndDropOperation {
-	public DefaultDragOperation( edu.cmu.cs.dennisc.croquet.Group group ) {
-		super( group, java.util.UUID.fromString( "002705e1-18e6-49ca-b261-0e9c79e8f080" ) );
-	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
-	}
-	@Override
-	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.DragComponent dragSource ) {
-		return getIDE().createListOfPotentialDropReceptors( dragSource );
+public abstract class RenameNodeOperation extends AbstractRenameNodeOperation {
+	private edu.cmu.cs.dennisc.property.StringProperty nameProperty;
+	private org.alice.ide.name.validators.NodeNameValidator nodeNameValidator;
+	public RenameNodeOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.property.StringProperty nameProperty, org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
+		this.setName( "<html>Rename <strong>" + nameProperty.getValue() + "</strong>...</html>" );
+		this.nameProperty = nameProperty;
+		this.nodeNameValidator = nodeNameValidator;
 	}
 	@Override
-	public void handleDragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		getIDE().handleDragStarted( dragAndDropContext );
+	protected edu.cmu.cs.dennisc.property.StringProperty getNameProperty() {
+		return this.nameProperty;
 	}
 	@Override
-	public void handleDragEnteredDropReceptor( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		getIDE().handleDragEnteredDropReceptor( dragAndDropContext );
-	}
-	@Override
-	public void handleDragExitedDropReceptor( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		getIDE().handleDragExitedDropReceptor( dragAndDropContext );
-	}
-	@Override
-	public void handleDragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		getIDE().handleDragStopped( dragAndDropContext );
+	protected org.alice.ide.name.validators.NodeNameValidator getNodeNameValidator() {
+		return this.nodeNameValidator;
 	}
 }

@@ -97,8 +97,7 @@ public class MoveStatementEdit extends org.alice.ide.ToDoEdit {
 	}
 
 	@Override
-	protected StringBuffer updatePresentation(StringBuffer rv,
-			java.util.Locale locale) {
+	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		// super.updatePresentation( rv, locale );
 		rv.append("move: ");
 		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, this.statement, locale);

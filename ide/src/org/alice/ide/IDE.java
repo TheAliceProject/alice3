@@ -46,8 +46,8 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public abstract class IDE extends org.alice.ide.ProjectApplication {
-	public static final edu.cmu.cs.dennisc.croquet.Group RUN_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "f7a87645-567c-42c6-bf5f-ab218d93a226" ), "RUN_GROUP" );
-	public static final edu.cmu.cs.dennisc.croquet.Group PROGRAMMING_LANGUAGE_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "1fc6d8ce-3ce8-4b8d-91be-bc74d0d02c3e" ), "PROGRAMMING_LANGUAGE_GROUP" );
+	public static final edu.cmu.cs.dennisc.croquet.Group RUN_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "f7a87645-567c-42c6-bf5f-ab218d93a226" ), "RUN_GROUP" );
+	public static final edu.cmu.cs.dennisc.croquet.Group PROGRAMMING_LANGUAGE_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "1fc6d8ce-3ce8-4b8d-91be-bc74d0d02c3e" ), "PROGRAMMING_LANGUAGE_GROUP" );
 
 	public static final String DEBUG_PROPERTY_KEY = "org.alice.ide.DebugMode";
 
@@ -92,7 +92,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 		this.getRunOperation().setEnabled( false );
 
-		this.sceneEditor = this.createSceneEditor();
 		this.galleryBrowser = this.createGalleryBrowser( this.getGalleryRoot() );
 		this.membersEditor = this.createClassMembersEditor();
 		this.ubiquitousPane = this.createUbiquitousPane();
@@ -136,7 +135,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private int leftDividerLocation = 240;
 
 	private edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin concealedBin = new edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin();
-	private org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor;
 	private edu.cmu.cs.dennisc.croquet.JComponent< ? > galleryBrowser;
 	private org.alice.ide.memberseditor.MembersEditor membersEditor;
 	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
@@ -149,6 +147,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void initialize( java.lang.String[] args ) {
 		super.initialize( args );
+		edu.cmu.cs.dennisc.croquet.MenuBar menuBar =  org.alice.ide.croquet.models.MenuBarModel.getInstance().createMenuBar();
+		this.getFrame().setMenuBar( menuBar );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createContentPane() {
@@ -172,7 +172,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			}
 			this.left.setResizeWeight( 1.0 );
 			this.root.setLeftComponent( this.left );
-			this.left.setTopComponent( this.sceneEditor );
+			this.left.setTopComponent( this.getSceneEditor() );
 			this.left.setBottomComponent( this.galleryBrowser );
 			//this.root.setRightComponent( null );
 			this.right.setVisible( false );
@@ -184,7 +184,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			this.right.setVisible( true );
 			//this.root.setRightComponent( this.right );
 			this.root.setDividerLocation( this.rootDividerLocation );
-			this.left.setTopComponent( this.sceneEditor );
+			this.left.setTopComponent( this.getSceneEditor() );
 			this.left.setBottomComponent( this.membersEditor );
 			this.left.setDividerLocation( this.leftDividerLocation );
 			//			if( this.right.getComponentCount() == 0 ) {
@@ -261,19 +261,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			//return AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
 			return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
 		}
-	}
-
-
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.MenuBarModel createMenuBarOperation() {
-		edu.cmu.cs.dennisc.croquet.MenuBarModel rv = new edu.cmu.cs.dennisc.croquet.MenuBarModel( UI_STATE_GROUP, java.util.UUID.fromString( "f621208a-244e-4cbe-8263-52ebb6916c2d" ) );
-		rv.addMenuModel( org.alice.ide.croquet.models.menubar.FileMenuModel.getInstance() );
-		rv.addMenuModel( org.alice.ide.croquet.models.menubar.EditMenuModel.getInstance() );
-		rv.addMenuModel( org.alice.ide.croquet.models.menubar.ProjectMenuModel.getInstance() );
-		rv.addMenuModel( org.alice.ide.croquet.models.menubar.RunMenuModel.getInstance() );
-		rv.addMenuModel( org.alice.ide.croquet.models.menubar.WindowMenuModel.getInstance() );
-		rv.addMenuModel( org.alice.ide.croquet.models.menubar.HelpMenuModel.getInstance() );
-		return rv;
 	}
 
 	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getPerformEditorGeneratedSetUpMethod() {
@@ -438,7 +425,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return rv;
 	}
 
-	protected abstract org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor();
 	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > getGalleryRoot();
 	protected abstract edu.cmu.cs.dennisc.croquet.JComponent< ? > createGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > root );
 	protected org.alice.ide.memberseditor.MembersEditor createClassMembersEditor() {
@@ -457,9 +443,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public edu.cmu.cs.dennisc.croquet.JComponent< ? > getGalleryBrowser() {
 		return this.galleryBrowser;
 	}
-	public org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor() {
-		return this.sceneEditor;
-	}
+	public abstract org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor();
 
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractCode, edu.cmu.cs.dennisc.alice.ast.Accessible > mapCodeToAccessible = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
@@ -695,7 +679,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			this.left.setIgnoreRepaint( true );
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignore repaint: true" );
 		}
-		this.sceneEditor.disableRendering( reasonToDisableSomeAmountOfRendering );
+		this.getSceneEditor().disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
 	public void enableRendering() {
 		if( reasonToDisableSomeAmountOfRenderingStack.size() > 0 ) {
@@ -707,7 +691,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 				this.root.setIgnoreRepaint( false );
 				this.left.setIgnoreRepaint( false );
 			}
-			this.sceneEditor.enableRendering( reasonToDisableSomeAmountOfRendering );
+			this.getSceneEditor().enableRendering( reasonToDisableSomeAmountOfRendering );
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate extra enableRendering" );
 		}
@@ -991,7 +975,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty = methodDeclaredInAlice.body.getValue().statements;
 		bodyStatementsProperty.clear();
 		bodyStatementsProperty.add( new edu.cmu.cs.dennisc.alice.ast.Comment( GENERATED_CODE_WARNING ) );
-		this.sceneEditor.generateCodeForSetUp( bodyStatementsProperty, this.sceneEditor );
+		this.getSceneEditor().generateCodeForSetUp( bodyStatementsProperty, this.getSceneEditor() );
 	}
 
 	@Deprecated

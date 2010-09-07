@@ -50,7 +50,8 @@ package edu.cmu.cs.dennisc.tutorial;
 	private static final int BOUNDS_PAD = PAD + 64;
 	private static final java.awt.Insets PAINT_INSETS = new java.awt.Insets( PAD, PAD, PAD, PAD );
 	private static final java.awt.Insets BOUNDS_INSETS = new java.awt.Insets( BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD );
-	private static final java.awt.Paint HIGHLIGHT_PAINT = new java.awt.Color(255, 255, 0, 23);
+	private static final java.awt.Paint HIGHLIGHT_NO_PATH_PAINT = new java.awt.Color(220, 220, 170, 31);
+	private static final java.awt.Paint HIGHLIGHT_WITH_PATH_PAINT = new java.awt.Color(255, 255, 0, 23);
 	private static final java.awt.Paint ENTERED_HIGHLIGHT_PAINT = new java.awt.Color(127, 255, 0, 31);
 	private static final int HOLE_BEVEL_THICKNESS = 2;
 	//private static final java.awt.Stroke HOLE_BEVEL_STROKE = new java.awt.BasicStroke(2.0f);
@@ -64,9 +65,12 @@ package edu.cmu.cs.dennisc.tutorial;
 	};
 
 	public Hole( edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
-		super( trackableShapeResolver, connectionPreference );
+		this( trackableShapeResolver, connectionPreference, true );
 	}
-	
+	public Hole( edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference, boolean isPathRenderingDesired ) {
+		super( trackableShapeResolver, connectionPreference, isPathRenderingDesired );
+	}
+		
 	@Override
 	protected java.awt.Insets getBoundsInsets() {
 		return BOUNDS_INSETS;
@@ -95,7 +99,11 @@ package edu.cmu.cs.dennisc.tutorial;
 		if( this.isEntered() ) {
 			paint = ENTERED_HIGHLIGHT_PAINT;
 		} else {
-			paint = HIGHLIGHT_PAINT;
+			if( this.isPathRenderingDesired() ) {
+				paint = HIGHLIGHT_WITH_PATH_PAINT;
+			} else {
+				paint = HIGHLIGHT_NO_PATH_PAINT;
+			}
 		}
 		g2.setPaint(paint);
 		for (java.awt.Stroke stroke : HIGHLIGHT_STROKES) {

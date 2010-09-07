@@ -47,8 +47,10 @@ package edu.cmu.cs.dennisc.tutorial;
  */
 public class StepsComboBox extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JComboBox > {
 	private StepsComboBoxModel stepsComboBoxModel;
-	public StepsComboBox( StepsComboBoxModel stepsComboBoxModel ) {
+	private boolean isLightWeightPopupEnabled;
+	public StepsComboBox( StepsComboBoxModel stepsComboBoxModel, boolean isLightWeightPopupEnabled ) {
 		this.stepsComboBoxModel = stepsComboBoxModel;
+		this.isLightWeightPopupEnabled = isLightWeightPopupEnabled;
 	}
 	@Override
 	protected javax.swing.JComboBox createAwtComponent() {
@@ -81,6 +83,8 @@ public class StepsComboBox extends edu.cmu.cs.dennisc.croquet.JComponent< javax.
 			}
 		} );
 
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ", this.isLightWeightPopupEnabled );
+		//rv.setLightWeightPopupEnabled( this.isLightWeightPopupEnabled );
 		StepCellRenderer stepCellRenderer = new StepCellRenderer( this.stepsComboBoxModel.getStepsModel(), TutorialStencil.CONTROL_COLOR );
 		rv.setRenderer( stepCellRenderer );
 		return rv;

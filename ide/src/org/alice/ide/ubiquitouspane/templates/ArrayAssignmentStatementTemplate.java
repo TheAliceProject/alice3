@@ -47,7 +47,7 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public abstract class ArrayAssignmentStatementTemplate extends CascadingUbiquitousStatementTemplate {
 	public ArrayAssignmentStatementTemplate( edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement ) {
-		super( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class, incompleteStatement );
+		super( new org.alice.ide.croquet.models.ToDoDragModel(), edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class, incompleteStatement );
 	}
 	
 	protected abstract String getTransientName();
@@ -60,5 +60,4 @@ public abstract class ArrayAssignmentStatementTemplate extends CascadingUbiquito
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
 		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, this.getTransientComponentType() };
 	}
-	
 }

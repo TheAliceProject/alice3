@@ -43,77 +43,25 @@
 
 package org.alice.ide.properties.uicontroller;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JTextField;
-
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
 
+import edu.cmu.cs.dennisc.croquet.BorderPanel;
 import edu.cmu.cs.dennisc.croquet.FlowPanel;
 import edu.cmu.cs.dennisc.croquet.Label;
+import edu.cmu.cs.dennisc.croquet.Panel;
 import edu.cmu.cs.dennisc.croquet.SwingAdapter;
+import edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 
 public class Point3PropertyController extends AbstractAdapterController<Point3>
-{
-	private class DoubleTextField extends JTextField
-	{
-		protected boolean isDirty = false;	
-		protected double trueValue = Double.NaN;
-		
-		protected DoubleTextField(int columns)
-		{
-			super(columns);
-			this.getDocument().addDocumentListener( new edu.cmu.cs.dennisc.javax.swing.event.SimplifiedDocumentAdapter() {
-				@Override
-				protected void updated( javax.swing.event.DocumentEvent e ) 
-				{
-					try
-					{
-						DoubleTextField.this.setForeground(Color.BLACK);
-						Double.parseDouble(DoubleTextField.this.getText());
-						
-					}
-					catch (Exception exception)
-					{
-						DoubleTextField.this.setForeground(Color.RED);
-					}
-					finally
-					{
-						DoubleTextField.this.isDirty = true;
-					}
-				}
-			} );
-		}
-		
-		protected double getValue()
-		{
-			if (this.isDirty)
-			{
-				try
-				{
-					double value = Double.parseDouble(this.getText());
-					this.trueValue = value;
-				}
-				catch (Exception e)
-				{
-					this.trueValue = Double.NaN;
-				}
-			}
-			this.isDirty = false;
-			return this.trueValue;
-		}
-		
-	}
-	
-	
+{	
 	private ActionListener valueChangeListener;
 	
-	private Label point3Label;
+	private BorderPanel mainPanel;
 	
 	private Label xLabel;
 	private Label yLabel;
@@ -134,7 +82,8 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 	@Override
 	protected void initializeComponents() 
 	{
-		this.point3Label = new Label();
+		this.mainPanel = new BorderPanel();
+		
 		this.valueChangeListener = new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) 
@@ -166,7 +115,7 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 		uiPanel.addComponent(new SwingAdapter(this.zField));
 		uiPanel.addComponent(this.endLabel);
 		
-		this.addComponent(uiPanel, Constraint.CENTER);
+		this.mainPanel.addComponent(uiPanel, Constraint.CENTER);
 		
 	}
 	
@@ -176,7 +125,7 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 		return Point3.class;
 	}
 	
-	private static java.text.NumberFormat format = new java.text.DecimalFormat( "0.00" );
+	
 	
 	@Override
 	protected void setValueOnUI(Point3 point3Value)
@@ -184,25 +133,16 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 		this.doUpdateOnAdapter = false;
 		if (point3Value != null)
 		{
-			this.xField.trueValue = point3Value.x;
-			this.yField.trueValue = point3Value.y;
-			this.zField.trueValue = point3Value.z;
-			this.xField.setText(format.format(point3Value.x));
-			this.yField.setText(format.format(point3Value.y));
-			this.zField.setText(format.format(point3Value.z));
+			this.xField.setValue(point3Value.x);
+			this.yField.setValue(point3Value.y);
+			this.zField.setValue(point3Value.z);
 		}
 		else
 		{
-			this.xField.trueValue = Double.NaN;
-			this.yField.trueValue = Double.NaN;
-			this.zField.trueValue = Double.NaN;
-			this.xField.setText("none");
-			this.yField.setText("none");
-			this.zField.setText("none");
+			this.xField.setValue(null);
+			this.yField.setValue(null);
+			this.zField.setValue(null);
 		}
-		this.xField.isDirty = false;
-		this.yField.isDirty = false;
-		this.zField.isDirty = false;
 		this.doUpdateOnAdapter = true;
 	}
 	
@@ -237,6 +177,12 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 				}
 			}
 		}
+	}
+	
+	@Override
+	public Panel getPanel() 
+	{
+		return this.mainPanel;
 	}
 	
 }

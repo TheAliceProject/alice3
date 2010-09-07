@@ -46,59 +46,29 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class NodeKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.KeyedResolver< T > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< T > {
-	private edu.cmu.cs.dennisc.alice.ast.Node node;
-	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls;
-
-	
-	private String clsName;
-	private java.lang.Class<?>[] parameterTypes;
-	private Object[] arguments;
-	
-	public NodeKeyedResolver( T instance, edu.cmu.cs.dennisc.alice.ast.Node node, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls ) {
+public class BlockStatementIndexPairGetStaticInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< T >{
+	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.codeeditor.BlockStatementIndexPair.class };
+	private org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
+	public BlockStatementIndexPairGetStaticInstanceKeyedResolver( T instance, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( instance );
-		this.node = node;
-		this.cls = cls;
+		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
-	public NodeKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public BlockStatementIndexPairGetStaticInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-	}
-	
-	
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		assert this.arguments != null;
-		assert this.arguments.length == 1;
-		this.arguments[ 0 ] = retargeter.retarget( this.arguments[ 0 ] );
-	}
-
-	@Override
-	public T getResolved() {
-		return this.resolve( this.clsName, this.parameterTypes, this.arguments );
-	}
-	@Override
-	protected void handleDecoded(String clsName, java.lang.Class<?>[] parameterTypes, Object[] arguments) {
-		this.clsName = clsName;
-		this.parameterTypes = parameterTypes;
-		this.arguments = arguments;
 	}
 	@Override
 	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		String clsName = binaryDecoder.decodeString();
-		this.cls = (Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node >)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
-		return new Class[] { this.cls };
-	}
-	@Override
-	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		final java.util.UUID id = binaryDecoder.decodeId();
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		return new Object[] { edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), id ) };
+		return PARAMETER_TYPES;
 	}
 	@Override
 	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.cls.getName() );
+	}
+	@Override
+	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return new Object[] { binaryDecoder.decodeBinaryEncodableAndDecodable() };
 	}
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.node.getUUID() );
+		binaryEncoder.encode( this.blockStatementIndexPair );
 	}
 }

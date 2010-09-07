@@ -105,7 +105,7 @@ class MemoryUsageGraph extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swin
 };
 
 class GarbageCollectAction extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-	private static final edu.cmu.cs.dennisc.croquet.Group SYSTEM_GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "7261a372-2b8d-4862-9669-852ba5e217e6" ), "SYSTEM_GROUP" );
+	private static final edu.cmu.cs.dennisc.croquet.Group SYSTEM_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "7261a372-2b8d-4862-9669-852ba5e217e6" ), "SYSTEM_GROUP" );
 	public GarbageCollectAction() {
 		super( SYSTEM_GROUP, java.util.UUID.fromString( "04dd2f4c-31d8-400e-8467-22a810e089b4" ) );
 		this.setName( "garbage collect" );

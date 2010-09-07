@@ -70,7 +70,7 @@ public abstract class AbstractIsEnabledStatementOperation extends org.alice.ide.
 			}
 			
 			@Override
-			protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+			protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 				rv.append( "set enabled: " );
 				rv.append( nextValue );
 				return rv;

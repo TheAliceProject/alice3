@@ -50,8 +50,14 @@ public class SimpleFillIn< E > extends FillIn< E > {
 	public SimpleFillIn( E model ) {
 		this.model = model;
 	}
+	public SimpleFillIn( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 	public E getModel() {
 		return this.model;
+	}
+	protected void setModel( E model ) {
+		this.model = model;
 	}
 	@Override
 	protected void addChildren() {

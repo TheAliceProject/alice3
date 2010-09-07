@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import org.alice.apis.moveandturn.CameraMarker;
+
 abstract class DialogOperationWithControls<C extends AbstractDialogOperationContext<?>> extends AbstractDialogOperation<C> {
 	private static final String NULL_EXPLANATION = "good to go";
 
@@ -241,7 +243,7 @@ abstract class DialogOperationWithControls<C extends AbstractDialogOperationCont
  * @author Dennis Cosgrove
  */
 public abstract class WizardDialogOperation extends DialogOperationWithControls<WizardDialogOperationContext> {
-	protected static final Group ENCLOSING_WIZARD_DIALOG_GROUP = new Group( java.util.UUID.fromString( "100a8027-cf11-4070-abd5-450f8c5ab1cc" ), "ENCLOSING_WIZARD_DIALOG_GROUP" );
+	protected static final Group ENCLOSING_WIZARD_DIALOG_GROUP = Group.getInstance( java.util.UUID.fromString( "100a8027-cf11-4070-abd5-450f8c5ab1cc" ), "ENCLOSING_WIZARD_DIALOG_GROUP" );
 	private class NextOperation extends ActionOperation {
 		public NextOperation() {
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "e1239539-1eb0-411d-b808-947d0b1c1e94" ) );
@@ -299,8 +301,9 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 	};
 	
 	private final ListSelectionState< Card > cardSelectionState = new ListSelectionState< Card >( Application.INFORMATION_GROUP, java.util.UUID.fromString( "2382103d-a67e-4a35-baa2-9a612fd2d8f2" ), new Codec< Card >() {
-		public edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.Codec< edu.cmu.cs.dennisc.croquet.WizardDialogOperation.Card >> getResolver() {
-			throw new RuntimeException( "todo" );
+		public StringBuilder appendRepresentation( StringBuilder rv, Card value, java.util.Locale locale ) {
+			rv.append( value );
+			return rv;
 		}
 		public Card decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			throw new RuntimeException( "todo" );
@@ -464,128 +467,128 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 		return rv;
 	}
 	
-	public static void main( String[] args ) {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			try {
-				edu.cmu.cs.dennisc.javax.swing.plaf.nimbus.NimbusUtilities.installModifiedNimbus( lookAndFeelInfo );
-			} catch( Throwable t ) {
-				t.printStackTrace();
-			}
-		}
-		org.alice.stageide.StageIDE stageIDE = new org.alice.stageide.StageIDE();
-		WizardDialogOperation wizardDialogOperation = new WizardDialogOperation( null, null ) {
-			private StringState name = new StringState( Application.INHERIT_GROUP, java.util.UUID.fromString( "63245276-7fba-4905-8ac1-34629ed258e5" ), "" );
-			private StringState description = new StringState( Application.INHERIT_GROUP, java.util.UUID.fromString( "18c58e94-7155-45c3-b158-82d299a0f5c9" ), "" );
-			@Override
-			protected java.awt.Dimension getDesiredDialogSize( Dialog dialog ) {
-				return new java.awt.Dimension( 640, 480 );
-			}
-			@Override
-			/*package-private*/ void localize() {
-				super.localize();
-				this.setName( "Action Script" );
-			}
-			@Override
-			protected WizardStep[] createSteps( WizardDialogOperationContext context ) {
-				class ReviewPanel extends PageAxisPanel implements WizardStep {
-					public ReviewPanel() {
-						this.addComponent( new Label( "please review your animation" ) );
-					}
-					public String getTitle() {
-						return "Review";
-					}
-					public Component< ? > getComponent() {
-						return this;
-					}
-					public String getExplanationIfProcedeButtonShouldBeDisabled() {
-						return null;
-					}
-					public boolean isFinishPotentiallyEnabled() {
-						return false;
-					}
-				};
-				class NamePanel extends RowsSpringPanel implements WizardStep {
-					public String getTitle() {
-						return "Name/Description";
-					}
-					@Override
-					protected java.util.List< Component< ? >[] > updateComponentRows( java.util.List< Component< ? >[] > rv ) {
-						rv.add( SpringUtilities.createLabeledRow( "name:", name.createTextField() ) );
-						rv.add( SpringUtilities.createTopLabeledRow( "description:", description.createTextArea() ) );
-						return rv;
-					}
-					public Component< ? > getComponent() {
-						return this;
-					}
-					public String getExplanationIfProcedeButtonShouldBeDisabled() {
-						boolean isNameAcceptable = name.getValue().length() > 0;
-						boolean isDescriptionAcceptable = description.getValue().length() > 0;
-						if( isNameAcceptable ) {
-							if( isDescriptionAcceptable ) {
-								return null;
-							} else {
-								return "enter description";
-							}
-						} else {
-							if( isDescriptionAcceptable ) {
-								return "enter name";
-							} else {
-								return "enter name and description";
-							}
-						}
-					}
-					public boolean isFinishPotentiallyEnabled() {
-						return true;
-					}
-				};
-				class CharactersPanel extends BorderPanel implements WizardStep {
-					public CharactersPanel() {
-						this.addComponent( new Label( "todo" ), Constraint.CENTER );
-					}
-					public String getTitle() {
-						return "Characters";
-					}
-					public Component< ? > getComponent() {
-						return this;
-					}
-					public String getExplanationIfProcedeButtonShouldBeDisabled() {
-						return null;
-					}
-					public boolean isFinishPotentiallyEnabled() {
-						return true;
-					}
-				};
-				return new WizardStep[] {
-					new ReviewPanel(),
-					new NamePanel(), 
-					new CharactersPanel()
-				};
-			}
-			@Override
-			protected void release( edu.cmu.cs.dennisc.croquet.WizardDialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog, boolean isCompleted ) {
-				if( isCompleted ) {
-					context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
-						@Override
-						protected void doOrRedoInternal( boolean isDo ) {
-							edu.cmu.cs.dennisc.print.PrintUtilities.println( "do", name.getValue() );
-						}
-						@Override
-						protected void undoInternal() {
-							edu.cmu.cs.dennisc.print.PrintUtilities.println( "undo", name.getValue() );
-						}
-						@Override
-						protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
-							rv.append( "todo" );
-							return rv;
-						}
-					} );
-				} else {
-					context.cancel();
-				}
-			}
-		};
-		wizardDialogOperation.fire();
-		System.exit( 0 );
-	}
+//	public static void main( String[] args ) {
+//		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+//		if( lookAndFeelInfo != null ) {
+//			try {
+//				edu.cmu.cs.dennisc.javax.swing.plaf.nimbus.NimbusUtilities.installModifiedNimbus( lookAndFeelInfo );
+//			} catch( Throwable t ) {
+//				t.printStackTrace();
+//			}
+//		}
+//		org.alice.stageide.StageIDE stageIDE = new org.alice.stageide.StageIDE();
+//		WizardDialogOperation wizardDialogOperation = new WizardDialogOperation( null, null ) {
+//			private StringState name = new StringState( Application.INHERIT_GROUP, java.util.UUID.fromString( "63245276-7fba-4905-8ac1-34629ed258e5" ), "" );
+//			private StringState description = new StringState( Application.INHERIT_GROUP, java.util.UUID.fromString( "18c58e94-7155-45c3-b158-82d299a0f5c9" ), "" );
+//			@Override
+//			protected java.awt.Dimension getDesiredDialogSize( Dialog dialog ) {
+//				return new java.awt.Dimension( 640, 480 );
+//			}
+//			@Override
+//			/*package-private*/ void localize() {
+//				super.localize();
+//				this.setName( "Action Script" );
+//			}
+//			@Override
+//			protected WizardStep[] createSteps( WizardDialogOperationContext context ) {
+//				class ReviewPanel extends PageAxisPanel implements WizardStep {
+//					public ReviewPanel() {
+//						this.addComponent( new Label( "please review your animation" ) );
+//					}
+//					public String getTitle() {
+//						return "Review";
+//					}
+//					public Component< ? > getComponent() {
+//						return this;
+//					}
+//					public String getExplanationIfProcedeButtonShouldBeDisabled() {
+//						return null;
+//					}
+//					public boolean isFinishPotentiallyEnabled() {
+//						return false;
+//					}
+//				};
+//				class NamePanel extends RowsSpringPanel implements WizardStep {
+//					public String getTitle() {
+//						return "Name/Description";
+//					}
+//					@Override
+//					protected java.util.List< Component< ? >[] > updateComponentRows( java.util.List< Component< ? >[] > rv ) {
+//						rv.add( SpringUtilities.createLabeledRow( "name:", name.createTextField() ) );
+//						rv.add( SpringUtilities.createTopLabeledRow( "description:", description.createTextArea() ) );
+//						return rv;
+//					}
+//					public Component< ? > getComponent() {
+//						return this;
+//					}
+//					public String getExplanationIfProcedeButtonShouldBeDisabled() {
+//						boolean isNameAcceptable = name.getValue().length() > 0;
+//						boolean isDescriptionAcceptable = description.getValue().length() > 0;
+//						if( isNameAcceptable ) {
+//							if( isDescriptionAcceptable ) {
+//								return null;
+//							} else {
+//								return "enter description";
+//							}
+//						} else {
+//							if( isDescriptionAcceptable ) {
+//								return "enter name";
+//							} else {
+//								return "enter name and description";
+//							}
+//						}
+//					}
+//					public boolean isFinishPotentiallyEnabled() {
+//						return true;
+//					}
+//				};
+//				class CharactersPanel extends BorderPanel implements WizardStep {
+//					public CharactersPanel() {
+//						this.addComponent( new Label( "todo" ), Constraint.CENTER );
+//					}
+//					public String getTitle() {
+//						return "Characters";
+//					}
+//					public Component< ? > getComponent() {
+//						return this;
+//					}
+//					public String getExplanationIfProcedeButtonShouldBeDisabled() {
+//						return null;
+//					}
+//					public boolean isFinishPotentiallyEnabled() {
+//						return true;
+//					}
+//				};
+//				return new WizardStep[] {
+//					new ReviewPanel(),
+//					new NamePanel(), 
+//					new CharactersPanel()
+//				};
+//			}
+//			@Override
+//			protected void release( edu.cmu.cs.dennisc.croquet.WizardDialogOperationContext context, edu.cmu.cs.dennisc.croquet.Dialog dialog, boolean isCompleted ) {
+//				if( isCompleted ) {
+//					context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
+//						@Override
+//						protected void doOrRedoInternal( boolean isDo ) {
+//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "do", name.getValue() );
+//						}
+//						@Override
+//						protected void undoInternal() {
+//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "undo", name.getValue() );
+//						}
+//						@Override
+//						protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+//							rv.append( "todo" );
+//							return rv;
+//						}
+//					} );
+//				} else {
+//					context.cancel();
+//				}
+//			}
+//		};
+//		wizardDialogOperation.fire();
+//		System.exit( 0 );
+//	}
 }

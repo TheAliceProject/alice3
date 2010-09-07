@@ -57,7 +57,7 @@ public class FloatLiteral extends AbstractValueLiteral {
 		return TypeDeclaredInJava.get( Float.class );
 	}
 	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( this.value.getValue() );
 		return rv;
 	}

@@ -616,12 +616,12 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 
 	//todo: i18n
 	//protected abstract StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ); 
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( this.getClass().getSimpleName() );
 		return rv;
 	}
 	public final String getRepr( java.util.Locale locale ) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		this.appendRepr( sb, locale );
 		return sb.toString();
 	}

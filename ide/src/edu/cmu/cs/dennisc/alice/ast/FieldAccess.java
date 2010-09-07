@@ -73,7 +73,7 @@ public class FieldAccess extends Expression {
 	}
 	
 	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		//return super.appendRepr( rv, locale );
 		NodeUtilities.safeAppendRepr( rv, this.field.getValue(), locale );
 		return rv;

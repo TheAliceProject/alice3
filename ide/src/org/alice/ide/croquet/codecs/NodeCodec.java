@@ -54,8 +54,9 @@ public class NodeCodec<T extends edu.cmu.cs.dennisc.alice.ast.Node> implements e
 	}
 	private NodeCodec() {
 	}
-	public edu.cmu.cs.dennisc.croquet.CodableResolver< edu.cmu.cs.dennisc.croquet.Codec< T >> getResolver() {
-		throw new RuntimeException( "todo" );
+	public StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
+		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, value, locale );
+		return rv;
 	}
 	public T decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();

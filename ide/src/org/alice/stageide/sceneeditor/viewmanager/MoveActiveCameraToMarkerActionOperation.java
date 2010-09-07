@@ -43,12 +43,6 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import java.awt.Toolkit;
-import java.util.HashMap;
-import java.util.UUID;
-
-import javax.swing.ImageIcon;
-
 import org.alice.apis.moveandturn.CameraMarker;
 import org.alice.apis.moveandturn.Element;
 import org.alice.apis.moveandturn.OrthographicCameraMarker;
@@ -57,29 +51,10 @@ import org.alice.ide.operations.ActionOperation;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.alice.ast.ThisExpression;
 import edu.cmu.cs.dennisc.croquet.ActionOperationContext;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
-	
-//	private static class SingletonHolder {
-//		private static HashMap<FieldDeclaredInAlice, MoveActiveCameraToMarkerActionOperation> fieldToOperationMap = new HashMap<FieldDeclaredInAlice, MoveActiveCameraToMarkerActionOperation>();
-//	}
-//	
-//	public static MoveActiveCameraToMarkerActionOperation getInstanceForField(FieldDeclaredInAlice markerField) 
-//	{
-//		if ( SingletonHolder.fieldToOperationMap.containsKey(markerField) )
-//		{
-//			return SingletonHolder.fieldToOperationMap.get(markerField);
-//		}
-//		else
-//		{
-//			MoveActiveCameraToMarkerActionOperation operation = new MoveActiveCameraToMarkerActionOperation(markerField);
-//			SingletonHolder.fieldToOperationMap.put(markerField, operation);
-//			return operation;
-//		}
-//	}
 	
 	private static class SingletonHolder {
 		private static MoveActiveCameraToMarkerActionOperation instance = new MoveActiveCameraToMarkerActionOperation();
@@ -180,7 +155,7 @@ public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 						setAbsolutePOV( camera, prevPOV );
 					}
 					@Override
-					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+					protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 						rv.append( MoveActiveCameraToMarkerActionOperation.this.getName() );
 						return rv;
 					}

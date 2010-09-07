@@ -45,7 +45,7 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class EachInArrayTogetherTemplate extends CascadingUbiquitousStatementTemplate {
+public class EachInArrayTogetherTemplate extends CascadingUbiquitousStatementClassTemplate {
 	public EachInArrayTogetherTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether.class, org.alice.ide.ast.NodeUtilities.createIncompleteEachInArrayTogether() );
 	}

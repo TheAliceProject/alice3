@@ -49,9 +49,11 @@ import java.util.Locale;
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import edu.cmu.cs.dennisc.croquet.BorderPanel;
 import edu.cmu.cs.dennisc.croquet.Label;
+import edu.cmu.cs.dennisc.croquet.Panel;
 
 public class BlankPropertyController extends AbstractAdapterController<Object>
 {
+	private BorderPanel mainPanel;
 	private Label objectLabel;
 	
 	private static final String BLANK_STRING = "TODO: ";
@@ -64,8 +66,9 @@ public class BlankPropertyController extends AbstractAdapterController<Object>
 	@Override
 	protected void initializeComponents() 
 	{
+		this.mainPanel = new BorderPanel();
 		this.objectLabel = new Label(BLANK_STRING);
-		this.addComponent(this.objectLabel, BorderPanel.Constraint.CENTER);
+		this.mainPanel.addComponent(this.objectLabel, BorderPanel.Constraint.CENTER);
 	}
 	
 	@Override
@@ -91,5 +94,11 @@ public class BlankPropertyController extends AbstractAdapterController<Object>
 	protected void setValueOnData(Object value) 
 	{
 		//Do Nothing
+	}
+
+	@Override
+	public Panel getPanel() 
+	{
+		return this.mainPanel;
 	}
 }

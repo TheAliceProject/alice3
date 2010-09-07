@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.tutorial;
  */
 /*package-private*/class DialogCloseButtonFeature extends Feature {
 	public DialogCloseButtonFeature(edu.cmu.cs.dennisc.croquet.RuntimeResolver<? extends edu.cmu.cs.dennisc.croquet.TrackableShape> trackableShapeResolver) {
-		super(trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST);
+		super( trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST, true );
 	}
 	@Override
 	public boolean isPotentiallyScrollable() {

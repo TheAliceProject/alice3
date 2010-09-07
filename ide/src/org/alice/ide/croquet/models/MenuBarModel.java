@@ -40,14 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+
+package org.alice.ide.croquet.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenameTypeOperation extends RenameNodeOperation {
-	public RenameTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		super( java.util.UUID.fromString( "94fd3bb8-2f02-4e70-a16c-05df244b317b" ), type.name, new org.alice.ide.name.validators.TypeNameValidator( type ) );
-		//this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
+public class MenuBarModel extends edu.cmu.cs.dennisc.croquet.MenuBarModel {
+	private static class SingletonHolder {
+		private static MenuBarModel instance = new MenuBarModel();
+	}
+	public static MenuBarModel getInstance() {
+		return SingletonHolder.instance;
+	}
+	private MenuBarModel() {
+		super( java.util.UUID.fromString( "f621208a-244e-4cbe-8263-52ebb6916c2d" ) );
+		this.addMenuModel( org.alice.ide.croquet.models.menubar.FileMenuModel.getInstance() );
+		this.addMenuModel( org.alice.ide.croquet.models.menubar.EditMenuModel.getInstance() );
+		this.addMenuModel( org.alice.ide.croquet.models.menubar.ProjectMenuModel.getInstance() );
+		this.addMenuModel( org.alice.ide.croquet.models.menubar.RunMenuModel.getInstance() );
+		this.addMenuModel( org.alice.ide.croquet.models.menubar.WindowMenuModel.getInstance() );
+		this.addMenuModel( org.alice.ide.croquet.models.menubar.HelpMenuModel.getInstance() );
 	}
 }

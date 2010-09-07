@@ -102,8 +102,37 @@ public /*final*/ class BooleanState extends Model {
 		this.setTextForBothTrueAndFalse( name );
 	}
 	
+	@Override
+	protected boolean isOwnerOfEdit() {
+		return true;
+	}
+	
 	/*package-private*/boolean isContextCommitDesired() {
 		return true;
+	}
+	
+	public String getTutorialNoteText( BooleanStateEdit booleanStateEdit ) {
+		StringBuilder sb = new StringBuilder();
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.trueText, this.falseText ) ) {
+			if( booleanStateEdit.getNextValue() ) {
+				sb.append( "Select " );
+			} else {
+				sb.append( "Unselect " );
+			}
+			sb.append( "<strong>" );
+			sb.append( this.getTrueText() );
+			sb.append( "</strong>" );
+		} else {
+			sb.append( "Press " );
+			sb.append( "<strong>" );
+			if( booleanStateEdit.getNextValue() ) {
+				sb.append( this.falseText );
+			} else {
+				sb.append( this.trueText );
+			}
+			sb.append( "</strong>" );
+		}
+		return sb.toString();
 	}
 	
 	@Override

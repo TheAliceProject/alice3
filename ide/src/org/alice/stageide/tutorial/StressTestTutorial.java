@@ -64,10 +64,10 @@ public class StressTestTutorial {
 				tutorial.createEndOfCurrentMethodBodyStatementListResolver(),
 				"Select <strong>UP</strong> from the menu, and then 1.0.",
 				new edu.cmu.cs.dennisc.tutorial.DragAndDropOperationCompletorValidator() {
-					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit ) {
+					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit ) {
 						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 					}
-					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
+					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
 						org.alice.ide.codeeditor.CodeEditor.StatementListIndexTrackableShape statementListIndexTrackableShape = (org.alice.ide.codeeditor.CodeEditor.StatementListIndexTrackableShape)dropShape;
 						edu.cmu.cs.dennisc.croquet.DragComponent dragComponent = (edu.cmu.cs.dennisc.croquet.DragComponent)dragAndDropOperation.getFirstComponent();
 						
@@ -174,10 +174,10 @@ public class StressTestTutorial {
 				tutorial.createBeginingOfCurrentMethodBodyStatementListResolver(),
 				"Select <b>" + count + "</b>.",
 				new edu.cmu.cs.dennisc.tutorial.DragAndDropOperationCompletorValidator() {
-					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit edit ) {
+					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit edit ) {
 						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 					}
-					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
+					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
 						org.alice.ide.codeeditor.CodeEditor.StatementListIndexTrackableShape statementListIndexTrackableShape = (org.alice.ide.codeeditor.CodeEditor.StatementListIndexTrackableShape)dropShape;
 						edu.cmu.cs.dennisc.alice.ast.Statement statement = org.alice.ide.ast.NodeUtilities.createCountLoop( new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( count ) ); 
 						return new org.alice.ide.codeeditor.InsertStatementEdit(
@@ -199,10 +199,10 @@ public class StressTestTutorial {
 				),
 				"Select <strong>UP</strong> from the menu, and then 1.0.",
 				new edu.cmu.cs.dennisc.tutorial.DragAndDropOperationCompletorValidator() {
-					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit ) {
+					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit ) {
 						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 					}
-					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
+					public edu.cmu.cs.dennisc.croquet.Edit<?> createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
 						org.alice.ide.codeeditor.CodeEditor.StatementListIndexTrackableShape statementListIndexTrackableShape = (org.alice.ide.codeeditor.CodeEditor.StatementListIndexTrackableShape)dropShape;
 						edu.cmu.cs.dennisc.croquet.DragComponent dragComponent = (edu.cmu.cs.dennisc.croquet.DragComponent)dragAndDropOperation.getFirstComponent();
 						
@@ -259,10 +259,10 @@ public class StressTestTutorial {
 				"Select <strong>Other Array...</strong>",
 				"Select <strong>" + requiredTypeName + "</strong>, add <strong>" + desiredFieldNames[ 0 ] + "</strong> and <strong>" + desiredFieldNames[ 1 ] + "</strong>, and press <strong>OK</strong>",
 				new edu.cmu.cs.dennisc.tutorial.DragAndDropOperationCompletorValidatorOkButtonDisabler<org.alice.ide.cascade.customfillin.CustomInputPane<?>>() {
-					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit edit ) {
+					public edu.cmu.cs.dennisc.tutorial.Validator.Result checkValidity( edu.cmu.cs.dennisc.croquet.DragAndDropModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.Edit edit ) {
 						return Result.TO_BE_HONEST_I_DIDNT_EVEN_CHECK;
 					}
-					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropOperation dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
+					public edu.cmu.cs.dennisc.croquet.Edit createEdit( edu.cmu.cs.dennisc.croquet.DragAndDropModel dragAndDropOperation, edu.cmu.cs.dennisc.croquet.TrackableShape dropShape ) {
 						return tutorial.createToDoEdit();
 					}
 					private boolean isAccessOfFieldNamed( edu.cmu.cs.dennisc.alice.ast.Expression expression, String name ) {

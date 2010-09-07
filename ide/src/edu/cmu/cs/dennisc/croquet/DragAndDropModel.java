@@ -40,22 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.editorstabbedpane;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
-* @author Dennis Cosgrove
-*/
-//todo
-class EditConstructorOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor;
-
-	public EditConstructorOperation( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor ) {
-		super( java.util.UUID.fromString( "4dce50a6-c637-490c-b1ff-3cd3028dd8ac" ) );
-		this.constructor = constructor;
-		this.setName( "<html>Edit <strong>constructor</strong></html>" );
+ * @author Dennis Cosgrove
+ */
+public abstract class DragAndDropModel extends Model {
+	public static final Group DRAG_GROUP = Group.getInstance( java.util.UUID.fromString( "16f67072-dd57-453c-a812-69f2303bc948" ), "DRAG_GROUP" );
+	public DragAndDropModel( java.util.UUID inividualUUID ) {
+		super( DRAG_GROUP, inividualUUID );
+		this.localize();
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		this.getIDE().setFocusedCode( this.constructor );
+	protected boolean isOwnerOfEdit() {
+		return false;
 	}
+	@Override
+	/*package-private*/ void localize() {
+	}
+	
+	public String getTutorialDragNoteText() {
+		return "Drag...";
+	}
+	public String getTutorialDropNoteText() {
+		return "Drop...";
+	}
+	
+	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( DragComponent dragSource );
+	public abstract void handleDragStarted( DragAndDropContext dragAndDropContext );
+	public abstract void handleDragEnteredDropReceptor( DragAndDropContext dragAndDropContext );
+	public abstract void handleDragExitedDropReceptor( DragAndDropContext dragAndDropContext );
+	public abstract void handleDragStopped( DragAndDropContext dragAndDropContext );
 }

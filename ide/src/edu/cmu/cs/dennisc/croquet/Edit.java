@@ -136,9 +136,9 @@ public abstract class Edit<M extends Model> implements edu.cmu.cs.dennisc.codec.
 		}
 	}
 
-	protected abstract StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale );
+	protected abstract StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale );
 	public final String getPresentation( java.util.Locale locale ) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		this.updatePresentation( sb, locale );
 		if( sb.length() == 0 ) {
 			Class<?> cls = this.getClass();
@@ -150,13 +150,13 @@ public abstract class Edit<M extends Model> implements edu.cmu.cs.dennisc.codec.
 		return sb.toString();
 	}
 	public String getRedoPresentation( java.util.Locale locale ) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append( "Redo:" );
 		this.updatePresentation( sb, locale );
 		return sb.toString();
 	}
 	public String getUndoPresentation( java.util.Locale locale ) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append( "Undo:" );
 		this.updatePresentation( sb, locale );
 		return sb.toString();
@@ -176,6 +176,8 @@ public abstract class Edit<M extends Model> implements edu.cmu.cs.dennisc.codec.
 	public boolean isReplacementAcceptable( Edit< ? > edit ) {
 		return edit != null;
 	}
-	public void retarget( Retargeter retargeter, Edit< ? > edit ) {
+	public void retarget( Retargeter retargeter ) {
+	}
+	public void addKeyValuePairs( Retargeter retargeter, Edit< ? > edit ) {
 	}
 }

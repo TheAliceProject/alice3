@@ -47,13 +47,16 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public interface DropReceptor {
+	public <R extends DropReceptor> CodableResolver< DropReceptor > getCodableResolver();
+	public TrackableShape getTrackableShape( DropSite potentialDropSite );
+	
 	public boolean isPotentiallyAcceptingOf( DragComponent source );
 	//public ViewController<?,?> getViewController();
 	//todo: rename
 	public JComponent<?> getViewController();
 	public void dragStarted( DragAndDropContext dragAndDropContext );
 	public void dragEntered( DragAndDropContext dragAndDropContext );
-	public void dragUpdated( DragAndDropContext dragAndDropContext );
+	public DropSite dragUpdated( DragAndDropContext dragAndDropContext );
 	
 	//todo: Dropped or Exited but not both?
 	public Operation<?> dragDropped( DragAndDropContext dragAndDropContext );

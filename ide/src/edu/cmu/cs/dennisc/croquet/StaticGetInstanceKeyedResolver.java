@@ -40,38 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.file;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SaveAsTypeOperation extends org.alice.ide.croquet.models.projecturi.AbstractSaveOperation {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
-	public SaveAsTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		super( java.util.UUID.fromString( "e8da4117-db15-40d6-b486-7f226d827be7" ) );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: SaveAsTypeOperation" );
-		this.type = type;
-		this.setName( "<html>Save <strong>" + this.type.getName() + "</strong> As...</html>" );
-		//this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
+public abstract class StaticGetInstanceKeyedResolver<T> extends KeyedResolver< T > {
+	public StaticGetInstanceKeyedResolver( T instance ) {
+		super( instance );
+	}
+	public StaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 	@Override
-	protected java.io.File getDefaultDirectory( org.alice.ide.ProjectApplication application ) {
-		return org.alice.ide.IDE.getSingleton().getMyTypesDirectory();
-	}
-	@Override
-	protected String getExtension() {
-		return edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION;
-	}
-	@Override
-	protected String getInitialFilename() {
-		return this.type.name.getValue() + "." + this.getExtension();
-	}
-	@Override
-	protected void save( org.alice.ide.ProjectApplication application, java.io.File file ) throws java.io.IOException {
-		edu.cmu.cs.dennisc.alice.project.ProjectUtilities.writeType( file, this.type );
-	}
-	@Override
-	protected boolean isPromptNecessary( java.io.File file ) {
-		return true;
+	protected T resolve( Class<T> cls, Class<?>[] parameterTypes, Object[] arguments ) {
+		try {
+			java.lang.reflect.Method mthd = cls.getMethod( "getInstance", parameterTypes );
+			return (T)mthd.invoke( null, arguments );
+		} catch( IllegalAccessException iae ) {
+			throw new RuntimeException( iae );
+		} catch( NoSuchMethodException nsme ) {
+			throw new RuntimeException( nsme );
+		} catch( java.lang.reflect.InvocationTargetException ite ) {
+			throw new RuntimeException( ite );
+		}
 	}
 }

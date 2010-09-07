@@ -47,6 +47,6 @@ package org.alice.ide.common;
  */
 public abstract class AccessiblePane extends ExpressionCreatorPane {
 	public AccessiblePane() {
-		this.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragOperation( edu.cmu.cs.dennisc.alice.Project.GROUP ) );
+		this.setDragModel( new org.alice.ide.croquet.models.ToDoDragModel() );
 	}
 }

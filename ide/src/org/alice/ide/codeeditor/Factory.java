@@ -77,7 +77,7 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 					getIDE().refreshUbiquitousPane();
 				}
 				@Override
-				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+				protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 					rv.append( "convert:" );
 					edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, original, locale);
 					rv.append( " --> " );
@@ -139,7 +139,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOp
 					getIDE().refreshUbiquitousPane();
 				}
 				@Override
-				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+				protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 					rv.append( "dissolve:" );
 					edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, abstractStatementWithBody, locale);
 					return rv;
@@ -188,7 +188,7 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOper
 					getIDE().refreshUbiquitousPane();
 				}
 				@Override
-				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+				protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 					rv.append( "delete:" );
 					edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, statement, locale);
 					return rv;
@@ -251,7 +251,7 @@ public class Factory extends org.alice.ide.common.Factory {
 	@Override
 	public org.alice.ide.common.AbstractStatementPane createStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
 		org.alice.ide.common.AbstractStatementPane abstractStatementPane = super.createStatementPane( statement, statementListProperty );
-		abstractStatementPane.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragOperation( edu.cmu.cs.dennisc.alice.Project.GROUP ) );
+		abstractStatementPane.setDragModel( new org.alice.ide.croquet.models.ToDoDragModel() );
 		abstractStatementPane.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.DefaultMenuModel(
 				java.util.UUID.fromString( "6190553d-309e-453f-b9eb-ded8aaf7ce63" ),
 				this.createPopupOperations( abstractStatementPane ) 

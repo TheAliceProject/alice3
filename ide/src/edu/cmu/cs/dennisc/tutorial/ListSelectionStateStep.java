@@ -52,7 +52,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		this.desiredValueResolver = desiredValueResolver;
 	}
 	@Override
-	protected boolean isAlreadyInTheDesiredState() {
+	public boolean isAlreadyInTheDesiredState() {
 		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.getModel().getSelectedItem(), this.desiredValueResolver.getResolved() );
 	}
 	@Override

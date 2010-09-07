@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class PopupMenuStep extends WaitingStep<edu.cmu.cs.dennisc.croquet.PopupMenuOperation> {
+/*package-private*/ class PopupMenuStep extends AuthoredWaitingStep<edu.cmu.cs.dennisc.croquet.PopupMenuOperation> {
 	private PopupMenuOperationCompletor completor;
 	private PopupMenuOperationValidator validator;
 	public PopupMenuStep( String title, String popupText, final edu.cmu.cs.dennisc.croquet.RuntimeResolver<edu.cmu.cs.dennisc.croquet.PopupMenuOperation> popupMenuOperationResolver, String commitText, PopupMenuOperationCompletor completor, PopupMenuOperationValidator validator ) {
@@ -62,7 +62,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 
 	@Override
-	protected boolean isAlreadyInTheDesiredState() {
+	public boolean isAlreadyInTheDesiredState() {
 		return false;
 	}
 	@Override

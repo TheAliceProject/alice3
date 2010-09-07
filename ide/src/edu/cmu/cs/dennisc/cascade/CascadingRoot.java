@@ -46,6 +46,6 @@ package edu.cmu.cs.dennisc.cascade;
  * @author Dennis Cosgrove
  */
 public interface CascadingRoot {
-	public CascadingEdit< ? > createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context );
+	public edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context );
 	public edu.cmu.cs.dennisc.croquet.Model createCroquetModel( FillIn< ? > fillIn, boolean isLast );
 }

@@ -40,36 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.resolvers;
+package org.alice.ide.croquet.models.ast;
 
 /**
- * @author Dennis Cosgrove
- */
-public class ClassKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.KeyedResolver< T > {
-	private Class<?> cls;
-	public ClassKeyedResolver( T instance, Class<?> cls ) {
-		super( instance );
-		this.cls = cls;
+* @author Dennis Cosgrove
+*/
+//todo
+/*package-private*/ abstract class EditCodeOperation<N extends edu.cmu.cs.dennisc.alice.ast.AbstractCode> extends org.alice.ide.operations.ActionOperation {
+	private N code;
+	public EditCodeOperation( java.util.UUID id, N code ) {
+		super( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, id );
+		this.code = code;
 	}
-	public ClassKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	@Override
-	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return new Class[] { Class.class };
+	public N getCode() {
+		return this.code;
 	}
 	@Override
-	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		String clsName = binaryDecoder.decodeString();
-		Class<?> cls = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
-		return new Object[] { cls };
-	}
-	@Override
-	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-	}
-	@Override
-	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.cls.getName() );
+	protected final void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		this.getIDE().setFocusedCode( this.code );
+		context.finish();
 	}
 }

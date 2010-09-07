@@ -201,6 +201,10 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 			}
 		}
 	}
+	
+	public int getCurrentPotentialDropIndex() {
+		return this.currentPotentialDropIndex;
+	}
 	public void setCurrentPotentialDropIndex( int currentPotentialDropIndex ) {
 		if( this.currentPotentialDropIndex != currentPotentialDropIndex ) {
 			this.currentPotentialDropIndex = currentPotentialDropIndex;

@@ -66,7 +66,7 @@ class FitnessLevelActionOperation extends org.alice.ide.operations.Inconsequenti
  * @author Dennis Cosgrove
  */
 public class PersonEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	public static final edu.cmu.cs.dennisc.croquet.Group GROUP = new edu.cmu.cs.dennisc.croquet.Group( java.util.UUID.fromString( "2d7d725d-1806-40d1-ac2b-d9cd48cb0abb" ), "PersonEditor.GROUP" );
+	public static final edu.cmu.cs.dennisc.croquet.Group GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "2d7d725d-1806-40d1-ac2b-d9cd48cb0abb" ), "PersonEditor.GROUP" );
 
 	///*package-private*/ static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 220, 220, 255 );
 	/*package-private*/ static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );

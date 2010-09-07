@@ -62,7 +62,7 @@ public class ForEachInArrayLoop extends AbstractForEachLoop {
 		this.array.setValue( array );
 	}
 	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "for each in " );
 		NodeUtilities.safeAppendRepr( rv, this.array.getValue(), locale );
 		return super.appendRepr( rv, locale );

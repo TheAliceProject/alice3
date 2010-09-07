@@ -48,8 +48,8 @@ package org.alice.ide.ubiquitouspane.templates;
 public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide.templates.CascadingExpressionsStatementTemplate {
 	private UbiquitousStatementImplementor implementor;
 	private edu.cmu.cs.dennisc.croquet.Label label;
-	public CascadingUbiquitousStatementTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement ) {
-		super( cls );
+	public CascadingUbiquitousStatementTemplate( edu.cmu.cs.dennisc.croquet.DragAndDropModel dragModel, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement ) {
+		super( dragModel, cls );
 		this.implementor = new UbiquitousStatementImplementor( incompleteStatement );
 	}
 	

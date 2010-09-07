@@ -40,22 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+
+package org.alice.ide.ubiquitouspane.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DragAndDropOperation extends Model {
-	public DragAndDropOperation( Group group, java.util.UUID inividualUUID ) {
-		super( group, inividualUUID );
-		this.localize();
+public abstract class CascadingUbiquitousStatementClassTemplate extends CascadingUbiquitousStatementTemplate {
+	public CascadingUbiquitousStatementClassTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement ) {
+		super( org.alice.ide.croquet.models.ast.StatementClassTemplateDragModel.getInstance( cls ), cls, incompleteStatement );
 	}
-	@Override
-	/*package-private*/ void localize() {
-	}
-	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( DragComponent dragSource );
-	public abstract void handleDragStarted( DragAndDropContext dragAndDropContext );
-	public abstract void handleDragEnteredDropReceptor( DragAndDropContext dragAndDropContext );
-	public abstract void handleDragExitedDropReceptor( DragAndDropContext dragAndDropContext );
-	public abstract void handleDragStopped( DragAndDropContext dragAndDropContext );
 }

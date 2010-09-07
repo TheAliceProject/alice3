@@ -48,7 +48,7 @@ package org.alice.ide.ubiquitouspane.templates;
 public class VariableAssignmentStatementTemplate extends CascadingUbiquitousStatementTemplate {
 	private edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
 	public VariableAssignmentStatementTemplate( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
-		super( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class, org.alice.ide.ast.NodeUtilities.createIncompleteVariableAssignmentStatement( variable ) );
+		super( new org.alice.ide.croquet.models.ToDoDragModel(), edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class, org.alice.ide.ast.NodeUtilities.createIncompleteVariableAssignmentStatement( variable ) );
 		this.variable = variable;
 		this.variable.name.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {

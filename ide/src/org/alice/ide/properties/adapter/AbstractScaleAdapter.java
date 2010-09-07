@@ -42,7 +42,6 @@
  */
 
 package org.alice.ide.properties.adapter;
-
 import edu.cmu.cs.dennisc.math.Matrix3x3;
 
 public abstract class AbstractScaleAdapter<O> extends AbstractInstancePropertyAdapter<Matrix3x3, O> 
@@ -67,5 +66,10 @@ public abstract class AbstractScaleAdapter<O> extends AbstractInstancePropertyAd
 	public SetValueOperation<Matrix3x3> getSetValueOperation(Matrix3x3 value) 
 	{
 		return new SetScaleOperation(value, null);
+	}
+	
+	public Matrix3x3 getValueCopy() 
+	{
+		return new Matrix3x3(this.getValue());
 	}
 }

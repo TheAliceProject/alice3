@@ -62,6 +62,11 @@ public class CommitEvent extends AbstractCompleteEvent {
 		binaryEncoder.encode( this.edit );
 	}
 	@Override
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		super.retarget( retargeter );
+		this.edit.retarget( retargeter );
+	}
+	@Override
 	public State getState() {
 		return State.COMMITTED;
 	}

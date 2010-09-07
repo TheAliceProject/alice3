@@ -45,18 +45,97 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class InsertStatementActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+public class InsertStatementActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation implements org.alice.ide.croquet.models.BeholdenModel {
+//	private java.util.UUID instanceId;
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
 	private int index;
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
-	public InsertStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
+	
+//	private static java.util.Map< java.util.UUID, InsertStatementActionOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+//	public static synchronized InsertStatementActionOperation getInstance( java.util.UUID instanceId, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+//		InsertStatementActionOperation rv = map.get( instanceId );
+//		if( rv != null ) {
+//			//pass
+//		} else {
+//			rv = new InsertStatementActionOperation( instanceId, blockStatement, index, statement );
+//			map.put( instanceId, rv );
+//		}
+//		return rv;
+//	}
+//	private InsertStatementActionOperation( java.util.UUID instanceId, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+//		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "a6aa2cea-f205-434a-8ec8-c068c9fb3b83" ) );
+//		this.instanceId = instanceId;
+//		this.blockStatement = blockStatement;
+//		this.index = index;
+//		this.statement = statement;
+//	}
+//	public java.util.UUID getInstanceId() {
+//		return this.instanceId;
+//	}
+
+	public InsertStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "a6aa2cea-f205-434a-8ec8-c068c9fb3b83" ) );
-		this.statement = statement;
 		this.blockStatement = blockStatement;
 		this.index = index;
+		this.statement = statement;
+	}
+	
+	public edu.cmu.cs.dennisc.alice.ast.BlockStatement getBlockStatement() {
+		return this.blockStatement;
+	}
+	public int getIndex() {
+		return this.index;
+	}
+	public edu.cmu.cs.dennisc.alice.ast.Statement getStatement() {
+		return this.statement;
+	}
+
+	public void doOrRedoInternal( boolean isDo ) {
+		this.blockStatement.statements.add( this.index, this.statement );
+	}
+
+	public void undoInternal() {
+		if( this.blockStatement.statements.get( this.index ) == this.statement ) {
+			this.blockStatement.statements.remove( this.index );
+		} else {
+			throw new javax.swing.undo.CannotUndoException();
+		}
+	}
+	
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		this.blockStatement = retargeter.retarget( this.blockStatement );
+		this.statement = retargeter.retarget( this.statement );
+	}
+	
+	
+	public StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+		//super.updatePresentation( rv, locale );
+		rv.append( "drop: " );
+		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, this.statement, locale );
+		return rv;
+	}
+	public boolean isReplacementAcceptable( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		return edit instanceof org.alice.ide.croquet.edits.DependentEdit;
+	}
+	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation>)edit;
+		InsertStatementActionOperation replacementModel = replacementEdit.getModel();
+		//retargeter.addKeyValuePair( this, replacementModel );
+		retargeter.addKeyValuePair( this.blockStatement, replacementModel.blockStatement );
+		retargeter.addKeyValuePair( this.statement, replacementModel.statement );
+		System.err.println( "TODO: recursive retarget" );
+		if( this.statement instanceof edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody ) {
+			retargeter.addKeyValuePair( ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)this.statement).body.getValue(), ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)replacementModel.statement).body.getValue() );
+		}
+	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.CodableResolver< InsertStatementActionOperation > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.InsertStatementActionOperationNewInstanceResolver( this );
 	}
 	@Override
 	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		context.commitAndInvokeDo( new org.alice.ide.codeeditor.InsertStatementEdit( this.blockStatement.statements, this.index, this.statement ) );
+		//context.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( this.blockStatement, this.index, this.statement ) );
+		context.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit< InsertStatementActionOperation >() );
 	}
 }

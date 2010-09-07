@@ -106,6 +106,7 @@ import edu.cmu.cs.dennisc.alice.ast.MethodInvocation;
 import edu.cmu.cs.dennisc.alice.ast.MethodReflectionProxy;
 import edu.cmu.cs.dennisc.alice.ast.Statement;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.croquet.AbstractButton;
 import edu.cmu.cs.dennisc.croquet.PopupMenuOperation;
@@ -143,8 +144,6 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
  * @author Dennis Cosgrove
  */
 public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractInstantiatingSceneEditor implements LookingGlassListener{
-
-	
 	public static interface SceneEditorFieldObserver
 	{
 		public void fieldAdded( FieldDeclaredInAlice addedField );
@@ -347,9 +346,22 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 	
-	
-	public MoveAndTurnSceneEditor() 
+
+	private static class SingletonHolder {
+		private static MoveAndTurnSceneEditor instance = new MoveAndTurnSceneEditor();
+	}
+	public static MoveAndTurnSceneEditor getInstance() {
+		return SingletonHolder.instance;
+	}
+	private MoveAndTurnSceneEditor()
 	{
+	}
+	
+	public edu.cmu.cs.dennisc.croquet.CodableResolver< MoveAndTurnSceneEditor > getCodableResolver() {
+		return new edu.cmu.cs.dennisc.croquet.SingletonResolver< MoveAndTurnSceneEditor >( this );
+	}
+	public edu.cmu.cs.dennisc.croquet.TrackableShape getTrackableShape( edu.cmu.cs.dennisc.croquet.DropSite potentialDropSite ) {
+		return this;
 	}
 
 	public ListSelectionState<CameraMarker> getMainCameraMarkerList()
@@ -377,6 +389,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	public void removeSceneEditorFieldObserver( SceneEditorFieldObserver fieldObserver )
 	{
 		this.fieldObservers.remove(fieldObserver);
+	}
+	
+	public Animator getAnimator()
+	{
+		return this.animator;
 	}
 	
 	
@@ -1853,7 +1870,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return this.lookingGlassPanel.getAwtComponent().contains(pointInLookingGlass);
 	}
 	
-	public void dragUpdated(DragAndDropContext dragAndDropContext) {
+	public edu.cmu.cs.dennisc.croquet.DropSite dragUpdated(DragAndDropContext dragAndDropContext) {
 		if (isDropLocationOverLookingGlass(dragAndDropContext))
 		{
 			if (!overLookingGlass)
@@ -1871,6 +1888,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				this.globalDragAdapter.dragExited(dragAndDropContext);
 			}
 		}
+		return null;
 	}
 
 	public edu.cmu.cs.dennisc.croquet.JComponent<?> getViewController() {

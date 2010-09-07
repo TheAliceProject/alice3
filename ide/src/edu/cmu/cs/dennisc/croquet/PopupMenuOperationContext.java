@@ -54,18 +54,70 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 	}
 	
 	public static class MenuSelectionEvent extends ModelEvent< PopupMenuOperationContext > {
-		private java.util.List< Model > models;
 		private javax.swing.event.ChangeEvent changeEvent;
+		private Model[] models;
+		private CodableResolver< Model >[] modelResolvers;
 
 		public MenuSelectionEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
-		private MenuSelectionEvent( java.util.List< Model > models, javax.swing.event.ChangeEvent changeEvent ) {
-			this.models = models;
+		private MenuSelectionEvent( javax.swing.event.ChangeEvent changeEvent, java.util.List< Model > models ) {
 			this.changeEvent = changeEvent;
+			final int N = models.size();
+			
+			this.models = new Model[ N ];
+			this.modelResolvers = new CodableResolver[ N ];
+			
+			for( int i=0; i<N; i++ ) {
+				this.models[ i ] = models.get( i );
+				this.modelResolvers[ i ] = this.models[ i ].getCodableResolver();
+			}
 		}
 		public javax.swing.event.ChangeEvent getChangeEvent() {
 			return this.changeEvent;
+		}
+		
+		public int getModelCount() {
+			return this.models.length;
+		}
+		public <M extends Model> M getModelAt( int i ) {
+			Model rv;
+			if( this.models[ i ] != null ) {
+				rv = this.models[ i ];
+			} else {
+				if( this.modelResolvers[ i ] != null ) {
+					rv = this.modelResolvers[ i ].getResolved(); 
+					if( this.modelResolvers[ i ] instanceof RetargetableResolver< ? > ) {
+						//pass
+					} else {
+						this.models[ i ] = rv;
+					}
+				} else {
+					rv = null;
+				}
+			}
+			return (M)rv;
+		}
+		
+		public <M extends Model> M getLastModel() {
+			final int N = this.getModelCount();
+			if( N > 0 ) {
+				return this.getModelAt( N-1 );
+			} else {
+				return null;
+			}
+		}
+		
+		@Override
+		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super.decodeInternal( binaryDecoder );
+			this.modelResolvers = binaryDecoder.decodeBinaryEncodableAndDecodableArray( CodableResolver.class );
+			this.models = new Model[ this.modelResolvers.length ];
+		}
+		@Override
+		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			super.encodeInternal( binaryEncoder );
+			binaryEncoder.encode( this.modelResolvers );
 		}
 		@Override
 		public State getState() {
@@ -81,7 +133,7 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 			return rv;
 		}
 	}
-	/*package-private*/ void handleMenuSelectionChanged( java.util.List< Model > models, javax.swing.event.ChangeEvent e ) {
-		this.addChild( new MenuSelectionEvent( models, e ) );
+	/*package-private*/ void handleMenuSelectionChanged( javax.swing.event.ChangeEvent e, java.util.List< Model > models ) {
+		this.addChild( new MenuSelectionEvent( e, models ) );
 	}
 }

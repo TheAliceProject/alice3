@@ -45,7 +45,7 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class CountLoopTemplate extends CascadingUbiquitousStatementTemplate {
+public class CountLoopTemplate extends CascadingUbiquitousStatementClassTemplate {
 	public CountLoopTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.CountLoop.class, org.alice.ide.ast.NodeUtilities.createIncompleteCountLoop() );
 	}
@@ -58,5 +58,10 @@ public class CountLoopTemplate extends CascadingUbiquitousStatementTemplate {
 		edu.cmu.cs.dennisc.alice.ast.CountLoop rv = org.alice.ide.ast.NodeUtilities.createIncompleteCountLoop();
 		rv.count.setValue( expressions[ 0 ] );
 		return rv;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.Operation< ? > createDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
+		org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair = new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index );
+		return org.alice.ide.croquet.models.ast.templates.CountLoopMenuModel.getInstance( blockStatementIndexPair ).getPopupMenuOperation();//super.createDropOperation( dragAndDropContext, blockStatement, index );
 	}
 }

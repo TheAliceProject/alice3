@@ -43,7 +43,7 @@
 package edu.cmu.cs.dennisc.croquet;
 
 public abstract class DragComponent extends Control {
-	private DragAndDropOperation dragAndDropOperation;
+	private DragAndDropModel dragModel;
 
 	private DragProxy dragProxy = null;
 	private DropProxy dropProxy = null;
@@ -97,7 +97,7 @@ public abstract class DragComponent extends Control {
 
 	@Override
 	protected boolean isMouseListeningDesired() {
-		return super.isMouseListeningDesired() || this.dragAndDropOperation != null;
+		return super.isMouseListeningDesired() || this.dragModel != null;
 	}
 
 	public Component<?> getSubject() {
@@ -106,25 +106,25 @@ public abstract class DragComponent extends Control {
 	//	public void setSubject( java.awt.Component subject ) {
 	//		this.subject = subject;
 	//	}
-	public DragAndDropOperation getDragAndDropOperation() {
-		if( this.dragAndDropOperation != null ) {
-			this.dragAndDropOperation.setFirstComponentHint( DragComponent.this );
+	public DragAndDropModel getDragModel() {
+		if( this.dragModel != null ) {
+			this.dragModel.setFirstComponentHint( DragComponent.this );
 		}
-		return this.dragAndDropOperation;
+		return this.dragModel;
 	}
-	public void setDragAndDropOperation( DragAndDropOperation dragAndDropOperation ) {
-		if( this.dragAndDropOperation != dragAndDropOperation ) {
+	public void setDragModel( DragAndDropModel dragModel ) {
+		if( this.dragModel != dragModel ) {
 //			if( this.dragAndDropOperation != null ) {
 //				assert dragAndDropOperation == null; 
 //			} else {
 //				assert dragAndDropOperation != null; 
 //			}
-			if( this.dragAndDropOperation != null ) {
-				this.dragAndDropOperation.removeComponent( this );
+			if( this.dragModel != null ) {
+				this.dragModel.removeComponent( this );
 			}
-			this.dragAndDropOperation = dragAndDropOperation;
-			if( this.dragAndDropOperation != null ) {
-				this.dragAndDropOperation.addComponent( this );
+			this.dragModel = dragModel;
+			if( this.dragModel != null ) {
+				this.dragModel.addComponent( this );
 			}
 		} else {
 			assert false;
@@ -136,7 +136,7 @@ public abstract class DragComponent extends Control {
 	}
 
 	private boolean isActuallyPotentiallyDraggable() {
-		boolean rv = this.dragAndDropOperation != null;
+		boolean rv = this.dragModel != null;
 		if( rv ) {
 			if( this.dragProxy != null ) {
 				//pass
@@ -205,8 +205,8 @@ public abstract class DragComponent extends Control {
 		layeredPane.add( this.dragProxy, new Integer( 1 ) );
 		layeredPane.setLayer( this.dragProxy, javax.swing.JLayeredPane.DRAG_LAYER );
 
-		this.dragAndDropContext = ContextManager.createAndPushDragAndDropContext( this.dragAndDropOperation, this.getLeftButtonPressedEvent(), e, this );
-		this.dragAndDropOperation.handleDragStarted( this.dragAndDropContext );
+		this.dragAndDropContext = ContextManager.createAndPushDragAndDropContext( this.dragModel, this.getLeftButtonPressedEvent(), e, this );
+		this.dragModel.handleDragStarted( this.dragAndDropContext );
 	}
 	private void handleLeftMouseDragged( java.awt.event.MouseEvent e ) {
 		if( Application.getSingleton().isDragInProgress() ) {

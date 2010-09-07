@@ -66,7 +66,7 @@ public class SetValueOperation<P> extends edu.cmu.cs.dennisc.croquet.ActionOpera
 	@Override
 	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) 
 	{
-		this.originalValue = this.propertyAdapter.getValue();
+		this.originalValue = this.propertyAdapter.getValueCopy();
 		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) 
@@ -79,7 +79,7 @@ public class SetValueOperation<P> extends edu.cmu.cs.dennisc.croquet.ActionOpera
 				SetValueOperation.this.propertyAdapter.setValue( SetValueOperation.this.originalValue );
 			}
 			@Override
-			protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+			protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 				rv.append( SetValueOperation.this.propertyAdapter.getUndoRedoDescription( locale ) );
 				return rv;
 			}
