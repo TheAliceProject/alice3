@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.tutorial;
 public enum MenuPolicy {
 	ABOVE_STENCIL_WITH_FEEDBACK( javax.swing.JLayeredPane.POPUP_LAYER - 1, true ),
 	ABOVE_STENCIL_WITHOUT_FEEDBACK( javax.swing.JLayeredPane.POPUP_LAYER - 1, false ),
-	BELOW_STENCIL(  javax.swing.JLayeredPane.POPUP_LAYER + 1, true );
+	BELOW_STENCIL( javax.swing.JLayeredPane.POPUP_LAYER + 1, true );
 	private int stencilLayer;
 	private boolean isFeedbackDesired;
 	private MenuPolicy( int stencilLayer, boolean isFeedbackDesired ) {

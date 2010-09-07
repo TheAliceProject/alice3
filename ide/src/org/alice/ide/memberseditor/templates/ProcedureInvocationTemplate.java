@@ -57,6 +57,7 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 		}
 	};
 	/*package-private*/ ProcedureInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		super( org.alice.ide.croquet.models.ast.MethodTemplateDragModel.getInstance( method ) );
 		this.method = method;
 		java.util.List< edu.cmu.cs.dennisc.croquet.Model > operations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		//operations.add( org.alice.ide.IDE.getSingleton().createPreviewOperation( this ) );

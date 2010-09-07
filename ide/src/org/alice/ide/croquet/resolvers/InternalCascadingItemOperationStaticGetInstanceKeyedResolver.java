@@ -46,16 +46,22 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class BlockStatementIndexPairGetStaticInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< T >{
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.codeeditor.BlockStatementIndexPair.class };
-	private org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
-	public BlockStatementIndexPairGetStaticInstanceKeyedResolver( T instance, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+public class InternalCascadingItemOperationStaticGetInstanceKeyedResolver extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > {
+	private static final Class<?>[] PARAMETER_TYPES = new Class[] { edu.cmu.cs.dennisc.croquet.Group.class, edu.cmu.cs.dennisc.cascade.FillIn.class };
+	public InternalCascadingItemOperationStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation instance ) {
 		super( instance );
-		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
-	public BlockStatementIndexPairGetStaticInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public InternalCascadingItemOperationStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		Object[] arguments = this.getArguments();
+		assert arguments != null;
+		assert arguments.length == 2;
+		arguments[ 1 ] = retargeter.retarget( arguments[ 1 ] );
+	}
+
 	@Override
 	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return PARAMETER_TYPES;
@@ -63,12 +69,17 @@ public class BlockStatementIndexPairGetStaticInstanceKeyedResolver<T> extends ed
 	@Override
 	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
+
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return new Object[] { binaryDecoder.decodeBinaryEncodableAndDecodable() };
+		java.util.UUID groupId = binaryDecoder.decodeId();
+		edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		edu.cmu.cs.dennisc.croquet.Group group = edu.cmu.cs.dennisc.croquet.Group.getInstance( groupId );
+		return new Object[] { group, fillIn };
 	}
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.blockStatementIndexPair );
+		binaryEncoder.encode( this.getInstance().getGroup().getId() );
+		binaryEncoder.encode( this.getInstance().getFillIn() );
 	}
 }

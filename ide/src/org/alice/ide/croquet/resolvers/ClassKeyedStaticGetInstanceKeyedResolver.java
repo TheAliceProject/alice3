@@ -40,59 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.cascade;
+
+package org.alice.ide.croquet.resolvers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InternalCascadingItemOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.croquet.Group, FillIn< ? >, InternalCascadingItemOperation > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-
-	public static synchronized InternalCascadingItemOperation getInstance( edu.cmu.cs.dennisc.croquet.Group group, FillIn< ? > fillIn ) {
-		InternalCascadingItemOperation rv = mapToMap.get( group, fillIn );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new InternalCascadingItemOperation( group, fillIn );
-			mapToMap.put( group, fillIn, rv );
-		}
-		return rv;
+public class ClassKeyedStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< T > {
+	private static final Class<?>[] PARAMETER_TYPES = new Class[] { Class.class };
+	private Class<?> cls;
+	public ClassKeyedStaticGetInstanceKeyedResolver( T instance, Class<?> cls ) {
+		super( instance );
+		this.cls = cls;
 	}
-
-	private FillIn< ? > fillIn;
-	private InternalCascadingItemOperation( edu.cmu.cs.dennisc.croquet.Group group, FillIn< ? > fillIn ) {
-		super( group, java.util.UUID.fromString( "98e30a01-242f-4f3c-852c-d0b0a33d277f" ) );
-		this.fillIn = fillIn;
-	}
-	public FillIn< ? > getFillIn() {
-		return this.fillIn;
-	}
-	
-	@Override
-	public String getTutorialNoteText() {
-		StringBuilder sb = new StringBuilder();
-		this.fillIn.appendTutorialNoteText( sb, java.util.Locale.getDefault() );
-		if( sb.length() > 0 ) {
-			return sb.toString();
-		} else {
-			return this.fillIn.toString();
-		}
+	public ClassKeyedStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.InternalCascadingItemOperationStaticGetInstanceKeyedResolver createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.InternalCascadingItemOperationStaticGetInstanceKeyedResolver( this );
+	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return PARAMETER_TYPES;
 	}
 	@Override
-	protected final void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		this.fillIn.handleActionOperationPerformed( context );
-		Blank rootBlank = this.fillIn.getRootBlank();
-		CascadingRoot cascadingRoot = rootBlank.getCascadingRoot();
-		try {
-			Object value = rootBlank.getSelectedFillIn().getValue();
-			edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > edit = cascadingRoot.createEdit( value, context );
-			context.commitAndInvokeDo( edit );
-		} catch( CancelException ce ) {
-			context.cancel();
-		}
+	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+	@Override
+	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		Class<?> cls = this.decodeClass( binaryDecoder );
+		return new Object[] { cls };
+	}
+	@Override
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		this.encodeClass( binaryEncoder, this.cls );
 	}
 }

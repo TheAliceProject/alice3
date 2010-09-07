@@ -41,45 +41,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.resolvers;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InternalCascadingItemOperationResolver extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > {
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { edu.cmu.cs.dennisc.croquet.Group.class, edu.cmu.cs.dennisc.cascade.FillIn.class };
-	public InternalCascadingItemOperationResolver( edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation instance ) {
-		super( instance );
+public class MethodTemplateDragModel extends TemplateDragModel {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, MethodTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized MethodTemplateDragModel getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		MethodTemplateDragModel rv = map.get( method );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new MethodTemplateDragModel( method );
+			map.put( method, rv );
+		}
+		return rv;
 	}
-	public InternalCascadingItemOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		Object[] arguments = this.getArguments();
-		assert arguments != null;
-		assert arguments.length == 2;
-		arguments[ 1 ] = retargeter.retarget( arguments[ 1 ] );
-	}
-
-	@Override
-	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return PARAMETER_TYPES;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
+	private MethodTemplateDragModel( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "3aed4ad9-5a20-4209-982b-5fea07e966d9" ) );
+		this.method = method;
 	}
 	@Override
-	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-	}
-
-	@Override
-	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		java.util.UUID groupId = binaryDecoder.decodeId();
-		edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		edu.cmu.cs.dennisc.croquet.Group group = edu.cmu.cs.dennisc.croquet.Group.getInstance( groupId );
-		return new Object[] { group, fillIn };
-	}
-	@Override
-	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.getInstance().getGroup().getId() );
-		binaryEncoder.encode( this.getInstance().getFillIn() );
+	protected edu.cmu.cs.dennisc.croquet.CodableResolver< MethodTemplateDragModel > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< MethodTemplateDragModel >( this, this.method, edu.cmu.cs.dennisc.alice.ast.AbstractMethod.class );
 	}
 }
