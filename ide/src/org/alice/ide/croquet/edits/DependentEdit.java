@@ -47,14 +47,10 @@ package org.alice.ide.croquet.edits;
  * @author Dennis Cosgrove
  */
 public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Model> extends edu.cmu.cs.dennisc.croquet.Edit< M > {
-//	private M retargetedModel;
 	private org.alice.ide.croquet.models.BeholdenModel getBeholdenModel() {
 		edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = this.getContext();
 		if( context != null ) {
 			edu.cmu.cs.dennisc.croquet.Model model = context.getModel();
-//			if( this.retargetedModel != null ) {
-//				model = this.retargetedModel;
-//			}
 			if( model instanceof org.alice.ide.croquet.models.BeholdenModel ) {
 				return (org.alice.ide.croquet.models.BeholdenModel)model;
 			} else {
@@ -64,26 +60,6 @@ public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Model> ext
 			throw new NullPointerException();
 		}
 	}
-	
-//	private edu.cmu.cs.dennisc.croquet.Edit< M > replacementEdit;
-//	@Override
-//	public edu.cmu.cs.dennisc.croquet.ModelContext< M > getContext() {
-//		if( replacementEdit != null ) {
-//			return replacementEdit.getContext();
-//		} else {
-//			return super.getContext();
-//		}
-//	}
-	
-//	@Override
-//	public M getModel() {
-//		if( this.retargetedModel != null ) {
-//			return this.retargetedModel;
-//		} else {
-//			return super.getModel();
-//		}
-//	}
-	
 	@Override
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
@@ -111,7 +87,6 @@ public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Model> ext
 	@Override
 	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 		super.addKeyValuePairs( retargeter, edit );
-//		this.replacementEdit = (edu.cmu.cs.dennisc.croquet.Edit< M >)edit;
 		this.getBeholdenModel().addKeyValuePairs( retargeter, edit );
 	}
 	@Override

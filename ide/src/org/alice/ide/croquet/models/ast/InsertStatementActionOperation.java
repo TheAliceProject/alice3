@@ -46,33 +46,40 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class InsertStatementActionOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation implements org.alice.ide.croquet.models.BeholdenModel {
-	private java.util.UUID instanceId;
+//	private java.util.UUID instanceId;
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
 	private int index;
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 	
-	private static java.util.Map< java.util.UUID, InsertStatementActionOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized InsertStatementActionOperation getInstance( java.util.UUID instanceId, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		InsertStatementActionOperation rv = map.get( instanceId );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new InsertStatementActionOperation( instanceId, blockStatement, index, statement );
-			map.put( instanceId, rv );
-		}
-		return rv;
-	}
-	private InsertStatementActionOperation( java.util.UUID instanceId, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+//	private static java.util.Map< java.util.UUID, InsertStatementActionOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+//	public static synchronized InsertStatementActionOperation getInstance( java.util.UUID instanceId, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+//		InsertStatementActionOperation rv = map.get( instanceId );
+//		if( rv != null ) {
+//			//pass
+//		} else {
+//			rv = new InsertStatementActionOperation( instanceId, blockStatement, index, statement );
+//			map.put( instanceId, rv );
+//		}
+//		return rv;
+//	}
+//	private InsertStatementActionOperation( java.util.UUID instanceId, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+//		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "a6aa2cea-f205-434a-8ec8-c068c9fb3b83" ) );
+//		this.instanceId = instanceId;
+//		this.blockStatement = blockStatement;
+//		this.index = index;
+//		this.statement = statement;
+//	}
+//	public java.util.UUID getInstanceId() {
+//		return this.instanceId;
+//	}
+
+	public InsertStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "a6aa2cea-f205-434a-8ec8-c068c9fb3b83" ) );
-		this.instanceId = instanceId;
 		this.blockStatement = blockStatement;
 		this.index = index;
 		this.statement = statement;
 	}
 	
-	public java.util.UUID getInstanceId() {
-		return this.instanceId;
-	}
 	public edu.cmu.cs.dennisc.alice.ast.BlockStatement getBlockStatement() {
 		return this.blockStatement;
 	}
@@ -113,8 +120,7 @@ public class InsertStatementActionOperation extends edu.cmu.cs.dennisc.croquet.A
 	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 		org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation>)edit;
 		InsertStatementActionOperation replacementModel = replacementEdit.getModel();
-		retargeter.addKeyValuePair( this, replacementModel );
-		retargeter.addKeyValuePair( this.instanceId, replacementModel.instanceId );
+		//retargeter.addKeyValuePair( this, replacementModel );
 		retargeter.addKeyValuePair( this.blockStatement, replacementModel.blockStatement );
 		retargeter.addKeyValuePair( this.statement, replacementModel.statement );
 		System.err.println( "TODO: recursive retarget" );

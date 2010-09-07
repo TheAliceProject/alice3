@@ -46,8 +46,8 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class InsertStatementResolver extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > {
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { java.util.UUID.class, edu.cmu.cs.dennisc.alice.ast.BlockStatement.class, Integer.TYPE, edu.cmu.cs.dennisc.alice.ast.Statement.class };
+public class InsertStatementResolver extends edu.cmu.cs.dennisc.croquet.NewInstanceKeyedResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > {
+	private static final Class<?>[] PARAMETER_TYPES = new Class[] { edu.cmu.cs.dennisc.alice.ast.BlockStatement.class, Integer.TYPE, edu.cmu.cs.dennisc.alice.ast.Statement.class };
 	public InsertStatementResolver( org.alice.ide.croquet.models.ast.InsertStatementActionOperation instance ) {
 		super( instance );
 	}
@@ -58,11 +58,10 @@ public class InsertStatementResolver extends edu.cmu.cs.dennisc.croquet.StaticGe
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		Object[] arguments = this.getArguments();
 		assert arguments != null;
-		assert arguments.length == 4;
+		assert arguments.length == 3;
 		arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
-		arguments[ 1 ] = retargeter.retarget( arguments[ 1 ] );
 		//todo: retarget index?
-		arguments[ 3 ] = retargeter.retarget( arguments[ 3 ] );
+		arguments[ 2 ] = retargeter.retarget( arguments[ 2 ] );
 	}
 
 	@Override
@@ -75,20 +74,64 @@ public class InsertStatementResolver extends edu.cmu.cs.dennisc.croquet.StaticGe
 
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		java.util.UUID instanceId = binaryDecoder.decodeId();
 		java.util.UUID blockStatementId = binaryDecoder.decodeId();
 		int index = binaryDecoder.decodeInt();
 		java.util.UUID statementId = binaryDecoder.decodeId();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), statementId );
 		edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), blockStatementId );
-		return new Object[] { instanceId, blockStatement, index, statement };
+		return new Object[] { blockStatement, index, statement };
 	}
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.getInstance().getInstanceId() );
 		binaryEncoder.encode( this.getInstance().getBlockStatement().getUUID() );
 		binaryEncoder.encode( this.getInstance().getIndex() );
 		binaryEncoder.encode( this.getInstance().getStatement().getUUID() );
 	}
 }
+//public class InsertStatementResolver extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > {
+//	private static final Class<?>[] PARAMETER_TYPES = new Class[] { java.util.UUID.class, edu.cmu.cs.dennisc.alice.ast.BlockStatement.class, Integer.TYPE, edu.cmu.cs.dennisc.alice.ast.Statement.class };
+//	public InsertStatementResolver( org.alice.ide.croquet.models.ast.InsertStatementActionOperation instance ) {
+//		super( instance );
+//	}
+//	public InsertStatementResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+//		super( binaryDecoder );
+//	}
+//
+//	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+//		Object[] arguments = this.getArguments();
+//		assert arguments != null;
+//		assert arguments.length == 4;
+//		arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
+//		arguments[ 1 ] = retargeter.retarget( arguments[ 1 ] );
+//		//todo: retarget index?
+//		arguments[ 3 ] = retargeter.retarget( arguments[ 3 ] );
+//	}
+//
+//	@Override
+//	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+//		return PARAMETER_TYPES;
+//	}
+//	@Override
+//	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+//	}
+//
+//	@Override
+//	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+//		java.util.UUID instanceId = binaryDecoder.decodeId();
+//		java.util.UUID blockStatementId = binaryDecoder.decodeId();
+//		int index = binaryDecoder.decodeInt();
+//		java.util.UUID statementId = binaryDecoder.decodeId();
+//		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+//		edu.cmu.cs.dennisc.alice.ast.Statement statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), statementId );
+//		edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), blockStatementId );
+//		return new Object[] { instanceId, blockStatement, index, statement };
+//	}
+//	@Override
+//	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+//		binaryEncoder.encode( this.getInstance().getInstanceId() );
+//		binaryEncoder.encode( this.getInstance().getBlockStatement().getUUID() );
+//		binaryEncoder.encode( this.getInstance().getIndex() );
+//		binaryEncoder.encode( this.getInstance().getStatement().getUUID() );
+//	}
+//}
