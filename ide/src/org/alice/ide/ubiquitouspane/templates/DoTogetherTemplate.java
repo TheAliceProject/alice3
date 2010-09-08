@@ -57,4 +57,8 @@ public class DoTogetherTemplate extends CascadingUbiquitousStatementClassTemplat
 	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
 		return org.alice.ide.ast.NodeUtilities.createDoTogether();
 	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel(edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types) {
+		throw new AssertionError();
+	}
 }

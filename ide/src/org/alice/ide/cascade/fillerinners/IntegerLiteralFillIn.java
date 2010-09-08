@@ -80,8 +80,6 @@ public class IntegerLiteralFillIn extends org.alice.ide.cascade.SimpleExpression
 	}
 	@Override
 	public final int hashCode() {
-		int rv = 17;
-		rv = 37*rv + this.getModel().value.getValue();
-		return rv;
+		return this.getModel().value.getValue();
 	}
 }

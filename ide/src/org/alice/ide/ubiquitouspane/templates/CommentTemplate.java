@@ -59,4 +59,8 @@ public class CommentTemplate extends CascadingUbiquitousStatementClassTemplate {
 		getIDE().setCommentThatWantsFocus( rv );
 		return rv;
 	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel(edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types) {
+		throw new AssertionError();
+	}
 }

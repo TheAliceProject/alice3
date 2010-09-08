@@ -59,9 +59,9 @@ public class CountLoopTemplate extends CascadingUbiquitousStatementClassTemplate
 		rv.count.setValue( expressions[ 0 ] );
 		return rv;
 	}
+	
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Operation< ? > createDropOperation( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
-		org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair = new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index );
-		return org.alice.ide.croquet.models.ast.templates.CountLoopMenuModel.getInstance( blockStatementIndexPair ).getPopupMenuOperation();//super.createDropOperation( dragAndDropContext, blockStatement, index );
+	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel(edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types) {
+		return org.alice.ide.croquet.models.ast.templates.CountLoopMenuModel.getInstance( blockStatementIndexPair );
 	}
 }

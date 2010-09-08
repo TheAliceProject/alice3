@@ -40,27 +40,50 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ubiquitouspane.templates;
+
+package org.alice.ide.cascade.fillerinners;
 
 /**
  * @author Dennis Cosgrove
  */
-public class WhileLoopTemplate extends CascadingUbiquitousStatementClassTemplate {
-	public WhileLoopTemplate() {
-		super( edu.cmu.cs.dennisc.alice.ast.WhileLoop.class, org.alice.ide.ast.NodeUtilities.createIncompleteWhileLoop() );
+public class BooleanLiteralFillIn extends org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.BooleanLiteral > {
+	public BooleanLiteralFillIn( boolean value ) {
+		super( new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( value ) );
+	}
+	public BooleanLiteralFillIn( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
-		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE };
+	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super.decode( binaryDecoder );
+		boolean value = binaryDecoder.decodeBoolean();
+		this.setModel( new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( value  ) );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		edu.cmu.cs.dennisc.alice.ast.WhileLoop rv = org.alice.ide.ast.NodeUtilities.createIncompleteWhileLoop();
-		rv.conditional.setValue( expressions[ 0 ] );
-		return rv;
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		boolean value = this.getModel().value.getValue();
+		binaryEncoder.encode( value );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel(edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types) {
-		return org.alice.ide.croquet.models.ast.templates.WhileLoopMenuModel.getInstance( blockStatementIndexPair );
+	public final boolean equals( Object o ) {
+		if( this == o ) {
+			return true;
+		} else {
+			if( o instanceof BooleanLiteralFillIn ) {
+				BooleanLiteralFillIn other = (BooleanLiteralFillIn)o;
+				return this.getModel().value.getValue() == other.getModel().value.getValue();
+			} else {
+				return false;
+			}
+		}
+	}
+	@Override
+	public final int hashCode() {
+		if( this.getModel().value.getValue() ) {
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 }

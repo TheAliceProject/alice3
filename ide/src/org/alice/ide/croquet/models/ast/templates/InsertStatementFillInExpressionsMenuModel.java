@@ -46,33 +46,48 @@ package org.alice.ide.croquet.models.ast.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class CountLoopMenuModel extends InsertStatementFillInExpressionsMenuModel {
-	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, CountLoopMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized CountLoopMenuModel getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		CountLoopMenuModel rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
+abstract class InsertStatementFillInExpressionsMenuModel extends org.alice.ide.croquet.models.ast.AbstractFillInExpressionOrExpressionsMenuModel {
+	private org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] desiredValueTypes;
+	public InsertStatementFillInExpressionsMenuModel( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >... desiredValueTypes ) {
+		super( id );
+		this.blockStatementIndexPair = blockStatementIndexPair;
+		this.desiredValueTypes = desiredValueTypes;
+	}
+	protected abstract String getTitleAt( int index, java.util.Locale locale );
+	@Override
+	protected edu.cmu.cs.dennisc.cascade.Blank createCascadeBlank() {
+		java.util.Locale locale = java.util.Locale.getDefault();
+		if( this.desiredValueTypes.length > 1 ) {
+			final edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn = org.alice.ide.IDE.getSingleton().getCascadeManager().createExpressionsFillIn( this.desiredValueTypes, false );
+			final int N = fillIn.getChildren().size();
+			for( int i=0; i<N; i++ ) {
+				edu.cmu.cs.dennisc.cascade.Blank blank = fillIn.getBlankAt( i );
+				blank.setTitle( this.getTitleAt( i, locale ) );
+			}
+			edu.cmu.cs.dennisc.cascade.Blank rv = new edu.cmu.cs.dennisc.cascade.ForwardingBlank( fillIn );
+			return rv;
 		} else {
-			rv = new CountLoopMenuModel( blockStatementIndexPair );
-			map.put( blockStatementIndexPair, rv );
+			edu.cmu.cs.dennisc.cascade.Blank rv = new org.alice.ide.cascade.ExpressionBlank( this.desiredValueTypes[ 0 ] );
+			rv.setTitle( this.getTitleAt( 0, locale ) );
+			return rv;
 		}
-		return rv;
-	}
-	private CountLoopMenuModel( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "c14ac2f2-72bf-44a1-8f25-49ddc09cd239" ), blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE );
 	}
 	@Override
-	protected String getTitleAt( int index, java.util.Locale locale ) {
-		return "count";
+	protected org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
+		return this.blockStatementIndexPair;
+	}
+	
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+		return null;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( Object value ) {
-		assert value instanceof edu.cmu.cs.dennisc.alice.ast.Expression;
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = (edu.cmu.cs.dennisc.alice.ast.Expression)value;
-		return org.alice.ide.ast.NodeUtilities.createCountLoop( expression );
+	protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
+		return edu.cmu.cs.dennisc.alice.Project.GROUP;
 	}
-	@Override
-	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver<CountLoopMenuModel> createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver<CountLoopMenuModel>( this, this.getBlockStatementIndexPair() );
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement( Object value );
+	public edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( blockStatementIndexPair.getBlockStatement(), blockStatementIndexPair.getIndex(), this.createStatement( value ) );
 	}
 }

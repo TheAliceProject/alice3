@@ -59,4 +59,8 @@ public class ConditionalStatementTemplate extends CascadingUbiquitousStatementCl
 		rv.booleanExpressionBodyPairs.get( 0 ).expression.setValue( expressions[ 0 ] );
 		return rv;
 	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel(edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types) {
+		return org.alice.ide.croquet.models.ast.templates.ConditionalStatementMenuModel.getInstance( blockStatementIndexPair );
+	}
 }

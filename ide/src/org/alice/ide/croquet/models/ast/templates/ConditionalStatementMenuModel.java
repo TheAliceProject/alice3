@@ -40,27 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ubiquitouspane.templates;
+
+package org.alice.ide.croquet.models.ast.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-public class WhileLoopTemplate extends CascadingUbiquitousStatementClassTemplate {
-	public WhileLoopTemplate() {
-		super( edu.cmu.cs.dennisc.alice.ast.WhileLoop.class, org.alice.ide.ast.NodeUtilities.createIncompleteWhileLoop() );
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
-		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE };
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		edu.cmu.cs.dennisc.alice.ast.WhileLoop rv = org.alice.ide.ast.NodeUtilities.createIncompleteWhileLoop();
-		rv.conditional.setValue( expressions[ 0 ] );
+public class ConditionalStatementMenuModel extends InsertStatementFillInExpressionsMenuModel {
+	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, ConditionalStatementMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ConditionalStatementMenuModel getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		ConditionalStatementMenuModel rv = map.get( blockStatementIndexPair );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ConditionalStatementMenuModel( blockStatementIndexPair );
+			map.put( blockStatementIndexPair, rv );
+		}
 		return rv;
 	}
+	private ConditionalStatementMenuModel( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( java.util.UUID.fromString( "a67f5fb9-1a66-4d9f-82b9-987aed5bc79c" ), blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE );
+	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel(edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types) {
-		return org.alice.ide.croquet.models.ast.templates.WhileLoopMenuModel.getInstance( blockStatementIndexPair );
+	protected String getTitleAt( int index, java.util.Locale locale ) {
+		return "condition";
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( Object value ) {
+		assert value instanceof edu.cmu.cs.dennisc.alice.ast.Expression;
+		edu.cmu.cs.dennisc.alice.ast.Expression expression = (edu.cmu.cs.dennisc.alice.ast.Expression)value;
+		return org.alice.ide.ast.NodeUtilities.createConditionalStatement( expression );
+	}
+	@Override
+	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver<ConditionalStatementMenuModel> createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver<ConditionalStatementMenuModel>( this, this.getBlockStatementIndexPair() );
 	}
 }

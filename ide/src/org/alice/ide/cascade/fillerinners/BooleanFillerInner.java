@@ -80,8 +80,8 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 				blank.addSeparator();
 			}
 		}
-		this.addExpressionFillIn( blank, true );
-		this.addExpressionFillIn( blank, false );
+		blank.addFillIn( new BooleanLiteralFillIn( true ) );
+		blank.addFillIn( new BooleanLiteralFillIn( false ) );
 		blank.addSeparator();
 		if( isTop ) {
 	//			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Random" ) {
