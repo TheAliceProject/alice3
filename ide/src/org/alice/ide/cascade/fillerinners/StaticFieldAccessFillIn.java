@@ -40,26 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.ide.cascade.fillerinners;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ConstantsOwningFillerInner extends ExpressionFillerInner {
-	public ConstantsOwningFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		super( type, edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
+public class StaticFieldAccessFillIn extends org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.FieldAccess > {
+	public StaticFieldAccessFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( org.alice.ide.ast.NodeUtilities.createStaticFieldAccess( field ) );
 	}
-	public ConstantsOwningFillerInner( Class<?> cls ) {
-		this( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
+	public StaticFieldAccessFillIn( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = this.getType();
- 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
- 			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
- 	 			//this.addExpressionFillIn( blank, new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), field );
- 	 			blank.addFillIn( new StaticFieldAccessFillIn( field ) );
- 			}
- 		}
+	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super.decode( binaryDecoder );
+		String typeName = binaryDecoder.decodeString();
+		String fieldName = binaryDecoder.decodeString();
+		Class<?> cls = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( typeName );
+		java.lang.reflect.Field fld = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getField( cls, fieldName );
+		edu.cmu.cs.dennisc.alice.ast.AbstractField field = edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField.get( fld );
+		this.setModel( org.alice.ide.ast.NodeUtilities.createStaticFieldAccess( field ) );
+	}
+	@Override
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getModel().field.getValue();
+		if( field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField ) {
+			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField fieldInJava = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField)field;
+			java.lang.reflect.Field fld = fieldInJava.getFieldReflectionProxy().getReification();
+			binaryEncoder.encode( fld.getType().getName() );
+			binaryEncoder.encode( fld.getName() );
+		} else {
+			throw new RuntimeException( "todo" );
+		}
+	}
+	@Override
+	public final boolean equals( Object o ) {
+		if( this == o ) {
+			return true;
+		} else {
+			if( o instanceof StaticFieldAccessFillIn ) {
+				StaticFieldAccessFillIn other = (StaticFieldAccessFillIn)o;
+				return this.getModel().field.getValue() == other.getModel().field.getValue();
+			} else {
+				return false;
+			}
+		}
+	}
+	@Override
+	public final int hashCode() {
+		return this.getModel().field.getValue().hashCode();
 	}
 }
