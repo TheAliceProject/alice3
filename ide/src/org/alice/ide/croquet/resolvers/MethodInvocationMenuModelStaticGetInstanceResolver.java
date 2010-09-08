@@ -59,7 +59,15 @@ public class MethodInvocationMenuModelStaticGetInstanceResolver extends edu.cmu.
 		Object[] arguments = this.getArguments();
 		assert arguments != null;
 		assert arguments.length == 2;
-		arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
+		//arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
+		
+		org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.codeeditor.BlockStatementIndexPair)arguments[ 0 ];
+		edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = blockStatementIndexPair.getBlockStatement();
+		blockStatement = retargeter.retarget( blockStatement );
+		int index = blockStatementIndexPair.getIndex();
+		
+		
+		arguments[ 0 ] = new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index );
 		arguments[ 1 ] = retargeter.retarget( arguments[ 1 ] );
 	}
 

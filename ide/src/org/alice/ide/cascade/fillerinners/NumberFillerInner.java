@@ -74,7 +74,7 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 		}
 		
 		for( double d : new double[] { 0.0, 0.25, 0.5, 1.0, 2.0, 10.0 } ) {
-			this.addExpressionFillIn( blank, d );
+			blank.addFillIn( new DoubleLiteralFillIn( d ) );
 		}
 		blank.addSeparator();
 		if( isTop ) {

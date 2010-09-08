@@ -56,7 +56,7 @@ public class DoubleLiteralFillIn extends org.alice.ide.cascade.SimpleExpressionF
 	@Override
 	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super.decode( binaryDecoder );
-		double value = binaryDecoder.decodeInt();
+		double value = binaryDecoder.decodeDouble();
 		this.setModel( new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value  ) );
 	}
 	@Override
