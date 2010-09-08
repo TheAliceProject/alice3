@@ -46,31 +46,18 @@ package org.alice.ide.croquet.models.ast.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class CountLoopMenuModel extends InsertStatementFillInExpressionsMenuModel {
-	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, CountLoopMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized CountLoopMenuModel getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		CountLoopMenuModel rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new CountLoopMenuModel( blockStatementIndexPair );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
+abstract class InsertExpressionStatementFillInExpressionsMenuModel extends InsertStatementFillInExpressionsMenuModel {
+	public InsertExpressionStatementFillInExpressionsMenuModel( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >... desiredValueTypes ) {
+		super( id, blockStatementIndexPair, desiredValueTypes );
 	}
-	private CountLoopMenuModel( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "c14ac2f2-72bf-44a1-8f25-49ddc09cd239" ), blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE );
-	}
-	@Override
-	protected String getTitleAt( int index, java.util.Locale locale ) {
-		return "count";
-	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions );
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createCountLoop( expressions[ 0 ] );
-	}
-	@Override
-	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver<CountLoopMenuModel> createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver<CountLoopMenuModel>( this, this.getBlockStatementIndexPair() );
+		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.createExpression( expressions );
+		if( expression != null ) {
+			return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( expression );
+		} else {
+			return null;
+		}
 	}
 }

@@ -110,4 +110,10 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 		org.alice.ide.ast.NodeUtilities.completeMethodInvocation( rv, expressions );
 		return rv;
 	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel(edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types) {
+		return org.alice.ide.croquet.models.ast.templates.MethodInvocationMenuModel.getInstance( blockStatementIndexPair, this.method );
+	}
+	
 }

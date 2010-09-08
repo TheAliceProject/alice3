@@ -41,51 +41,44 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.resolvers;
+package org.alice.ide.croquet.models.ast.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InsertStatementActionOperationNewInstanceResolver extends edu.cmu.cs.dennisc.croquet.NewInstanceKeyedResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > {
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { edu.cmu.cs.dennisc.alice.ast.BlockStatement.class, Integer.TYPE, edu.cmu.cs.dennisc.alice.ast.Statement.class };
-	public InsertStatementActionOperationNewInstanceResolver( org.alice.ide.croquet.models.ast.InsertStatementActionOperation instance ) {
-		super( instance );
-	}
-	public InsertStatementActionOperationNewInstanceResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
+public class MethodInvocationMenuModel extends InsertExpressionStatementFillInExpressionsMenuModel {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.ide.codeeditor.BlockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractMethod, MethodInvocationMenuModel > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		Object[] arguments = this.getArguments();
-		assert arguments != null;
-		assert arguments.length == 3;
-		arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
-		//todo: retarget index?
-		arguments[ 2 ] = retargeter.retarget( arguments[ 2 ] );
+	public static synchronized MethodInvocationMenuModel getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		MethodInvocationMenuModel rv = mapToMap.get( blockStatementIndexPair, method );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new MethodInvocationMenuModel( blockStatementIndexPair, method );
+			mapToMap.put( blockStatementIndexPair, method, rv );
+		}
+		return rv;
 	}
-
-	@Override
-	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return PARAMETER_TYPES;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
+	private MethodInvocationMenuModel( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "c14ac2f2-72bf-44a1-8f25-49ddc09cd239" ), blockStatementIndexPair, org.alice.ide.ast.NodeUtilities.getDesiredParameterValueTypes( method ) );
+		this.method = method;
 	}
-	@Override
-	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-	}
-
-	@Override
-	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		java.util.UUID blockStatementId = binaryDecoder.decodeId();
-		int index = binaryDecoder.decodeInt();
-		java.util.UUID statementId = binaryDecoder.decodeId();
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		edu.cmu.cs.dennisc.alice.ast.Statement statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), statementId );
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), blockStatementId );
-		return new Object[] { blockStatement, index, statement };
+	public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getMethod() {
+		return this.method;
 	}
 	@Override
-	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.getInstance().getBlockStatement().getUUID() );
-		binaryEncoder.encode( this.getInstance().getIndex() );
-		binaryEncoder.encode( this.getInstance().getStatement().getUUID() );
+	protected String getTitleAt( int index, java.util.Locale locale ) {
+		return this.method.getParameters().get( index ).getName();
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv = org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( method );
+		org.alice.ide.ast.NodeUtilities.completeMethodInvocation( rv, expressions );
+		return rv;
+	}
+	@Override
+	protected org.alice.ide.croquet.resolvers.MethodInvocationMenuModelStaticGetInstanceResolver createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.MethodInvocationMenuModelStaticGetInstanceResolver( this );
 	}
 }

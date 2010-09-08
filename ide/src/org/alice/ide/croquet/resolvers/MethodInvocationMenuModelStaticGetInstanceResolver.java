@@ -46,24 +46,31 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class InsertStatementActionOperationNewInstanceResolver extends edu.cmu.cs.dennisc.croquet.NewInstanceKeyedResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > {
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { edu.cmu.cs.dennisc.alice.ast.BlockStatement.class, Integer.TYPE, edu.cmu.cs.dennisc.alice.ast.Statement.class };
-	public InsertStatementActionOperationNewInstanceResolver( org.alice.ide.croquet.models.ast.InsertStatementActionOperation instance ) {
+public class MethodInvocationMenuModelStaticGetInstanceResolver extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.templates.MethodInvocationMenuModel > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.templates.MethodInvocationMenuModel > {
+	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.codeeditor.BlockStatementIndexPair.class, edu.cmu.cs.dennisc.alice.ast.AbstractMethod.class };
+	public MethodInvocationMenuModelStaticGetInstanceResolver( org.alice.ide.croquet.models.ast.templates.MethodInvocationMenuModel instance ) {
 		super( instance );
 	}
-	public InsertStatementActionOperationNewInstanceResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public MethodInvocationMenuModelStaticGetInstanceResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		Object[] arguments = this.getArguments();
 		assert arguments != null;
-		assert arguments.length == 3;
+		assert arguments.length == 2;
 		arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
-		//todo: retarget index?
-		arguments[ 2 ] = retargeter.retarget( arguments[ 2 ] );
+		arguments[ 1 ] = retargeter.retarget( arguments[ 1 ] );
 	}
 
+	@Override
+	protected java.lang.Class< org.alice.ide.croquet.models.ast.templates.MethodInvocationMenuModel > decodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return org.alice.ide.croquet.models.ast.templates.MethodInvocationMenuModel.class;
+	}
+	@Override
+	protected void encodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.lang.Class< org.alice.ide.croquet.models.ast.templates.MethodInvocationMenuModel > cls ) {
+		//note: do not call super
+	}
 	@Override
 	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return PARAMETER_TYPES;
@@ -74,18 +81,15 @@ public class InsertStatementActionOperationNewInstanceResolver extends edu.cmu.c
 
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		java.util.UUID blockStatementId = binaryDecoder.decodeId();
-		int index = binaryDecoder.decodeInt();
+		org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		java.util.UUID statementId = binaryDecoder.decodeId();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		edu.cmu.cs.dennisc.alice.ast.Statement statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), statementId );
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), blockStatementId );
-		return new Object[] { blockStatement, index, statement };
+		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), statementId );
+		return new Object[] { blockStatementIndexPair, method };
 	}
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.getInstance().getBlockStatement().getUUID() );
-		binaryEncoder.encode( this.getInstance().getIndex() );
-		binaryEncoder.encode( this.getInstance().getStatement().getUUID() );
+		binaryEncoder.encode( this.getInstance().getBlockStatementIndexPair() );
+		binaryEncoder.encode( this.getInstance().getMethod().getUUID() );
 	}
 }

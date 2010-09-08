@@ -74,7 +74,7 @@ abstract class InsertStatementFillInExpressionsMenuModel extends org.alice.ide.c
 		}
 	}
 	@Override
-	protected org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
+	public final org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
 		return this.blockStatementIndexPair;
 	}
 	
@@ -86,8 +86,14 @@ abstract class InsertStatementFillInExpressionsMenuModel extends org.alice.ide.c
 	protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
 		return edu.cmu.cs.dennisc.alice.Project.GROUP;
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement( Object value );
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression[] value );
 	public edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( blockStatementIndexPair.getBlockStatement(), blockStatementIndexPair.getIndex(), this.createStatement( value ) );
+		edu.cmu.cs.dennisc.alice.ast.Expression[] expressions;
+		if( value instanceof edu.cmu.cs.dennisc.alice.ast.Expression ) {
+			expressions = new edu.cmu.cs.dennisc.alice.ast.Expression[] { (edu.cmu.cs.dennisc.alice.ast.Expression)value };
+		} else {
+			expressions = (edu.cmu.cs.dennisc.alice.ast.Expression[])value;
+		}
+		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( blockStatementIndexPair.getBlockStatement(), blockStatementIndexPair.getIndex(), this.createStatement( expressions ) );
 	}
 }

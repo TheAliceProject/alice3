@@ -66,10 +66,8 @@ public class ConditionalStatementMenuModel extends InsertStatementFillInExpressi
 		return "condition";
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( Object value ) {
-		assert value instanceof edu.cmu.cs.dennisc.alice.ast.Expression;
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = (edu.cmu.cs.dennisc.alice.ast.Expression)value;
-		return org.alice.ide.ast.NodeUtilities.createConditionalStatement( expression );
+	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+		return org.alice.ide.ast.NodeUtilities.createConditionalStatement( expressions[ 0 ] );
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver<ConditionalStatementMenuModel> createCodableResolver() {
