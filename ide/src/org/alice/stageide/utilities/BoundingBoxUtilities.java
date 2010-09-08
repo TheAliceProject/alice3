@@ -41,69 +41,59 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties.uicontroller;
+package org.alice.stageide.utilities;
 
-import java.awt.Color;
-import java.util.Locale;
+import org.alice.interact.GlobalDragAdapter;
 
-import org.alice.ide.properties.adapter.PropertyAdapter;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.scenegraph.Component;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+import edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities;
 
-import edu.cmu.cs.dennisc.croquet.BorderPanel;
-import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.croquet.Panel;
-
-public class StringPropertyController extends AbstractAdapterController<String>
-{
-	private BorderPanel mainPanel;
-	private Label stringLabel;
+public class BoundingBoxUtilities {
 	
-	private static final String BLANK_STRING = "NO VALUE";
-	
-	public StringPropertyController(PropertyAdapter<String, ?> propertyAdapter)
+	private static AxisAlignedBox getSGTransformableBBox( edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable, boolean scaled )
 	{
-		super(propertyAdapter);
-	}
-	
-	@Override
-	protected void initializeComponents() 
-	{
-		this.mainPanel = new BorderPanel();
-		this.stringLabel = new Label();
-	}
-	
-	@Override
-	public Class<?> getPropertyType() 
-	{
-		return String.class;
-	}
-	
-	@Override
-	protected void setValueOnUI(String stringValue)
-	{
-		if (stringValue != null)
+		AxisAlignedBox boundingBox = null;
+		if ( sgTransformable != null)
 		{
-			this.stringLabel.setText(stringValue);
+			Object bbox = sgTransformable.getBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY );
+			if (bbox instanceof edu.cmu.cs.dennisc.math.AxisAlignedBox)
+			{
+				boundingBox = new AxisAlignedBox((edu.cmu.cs.dennisc.math.AxisAlignedBox)bbox);
+				if (boundingBox.isNaN())
+				{
+					boundingBox = null;
+				}
+			}
 		}
-		else
+		if (boundingBox != null && scaled)
 		{
-			this.stringLabel.setText(BLANK_STRING);
+			boundingBox.scale(ScaleUtilities.getTransformableScale( sgTransformable ) );
 		}
+		return boundingBox;
 	}
 	
-	@Override
-	protected void updateUIFromNewAdapter() 
+	public static AxisAlignedBox getSGTransformableScaledBBox(edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable)
 	{
-		this.mainPanel.removeAllComponents();
-		this.mainPanel.addComponent(this.stringLabel, BorderPanel.Constraint.CENTER);
-		if (this.propertyAdapter != null)
-		{
-			this.mainPanel.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
-		}
+		return getSGTransformableBBox(sgTransformable, true);
 	}
 	
-	@Override
-	public Panel getPanel() 
+	public static AxisAlignedBox getSGTransformableUnscaledBBox(edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable)
 	{
-		return this.mainPanel;
+		return getSGTransformableBBox(sgTransformable, false);
 	}
+	
+	public static AxisAlignedBox getTransformableScaledBBox(org.alice.apis.moveandturn.Transformable transformable)
+	{
+		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = transformable.getSGTransformable();
+		return getSGTransformableBBox(sgTransformable, true);
+	}
+	
+	public static AxisAlignedBox getTransformableUnscaledBBox(org.alice.apis.moveandturn.Transformable transformable)
+	{
+		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = transformable.getSGTransformable();
+		return getSGTransformableBBox(sgTransformable, false);
+	}
+
 }

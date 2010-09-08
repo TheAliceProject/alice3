@@ -88,6 +88,11 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 		this.startListening();
 	}
 	
+	public O getInstance()
+	{
+		return this.instance;
+	}
+	
 	public void setValue(P newValue)
 	{
 		this.lastSetValue = newValue;

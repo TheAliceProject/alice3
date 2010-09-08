@@ -46,7 +46,9 @@ package org.alice.ide.properties.uicontroller;
 import org.alice.apis.moveandturn.Composite;
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.stageide.properties.uicontroller.CompositePropertyController;
+import org.alice.stageide.properties.uicontroller.ModelScalePropertyController;
 
+import edu.cmu.cs.dennisc.math.Matrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 
 public class AdapterControllerUtilities 
@@ -69,7 +71,7 @@ public class AdapterControllerUtilities
 		}
 		else if (Double.class.isAssignableFrom(propertyType))
 		{
-			return new PortionPropertyController(propertyAdapter);
+			return new DoublePropertyController(propertyAdapter);
 		}
 		else if (Point3.class.isAssignableFrom(propertyType))
 		{
@@ -79,7 +81,10 @@ public class AdapterControllerUtilities
 		{
 			return new CompositePropertyController(propertyAdapter);
 		}
-		else
+		else if (Matrix3x3.class.isAssignableFrom(propertyType))
+		{
+			return new ModelScalePropertyController(propertyAdapter);
+		}else
 		{
 			return new BlankPropertyController(propertyAdapter);
 		}

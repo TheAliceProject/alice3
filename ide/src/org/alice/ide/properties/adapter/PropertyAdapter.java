@@ -60,6 +60,10 @@ public interface PropertyAdapter <P, O>
 	
 	public P getValue();
 	
+	public P getValueCopy();
+	
+	public O getInstance();
+	
 	public P getLastSetValue();
 	
 	public void setValue(P value);

@@ -68,4 +68,9 @@ public abstract class AbstractPoint3PropertyAdapter<O> extends AbstractPropertyA
 	{
 		return new SetPoint3Operation(value, null);
 	}
+	
+	public Point3 getValueCopy() 
+	{
+		return new Point3(this.getValue());
+	}
 }

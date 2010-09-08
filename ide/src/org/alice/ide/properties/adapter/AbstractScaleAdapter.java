@@ -41,14 +41,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties.uicontroller;
+package org.alice.ide.properties.adapter;
+import edu.cmu.cs.dennisc.math.Matrix3x3;
 
-import org.alice.ide.properties.adapter.PropertyAdapter;
-
-public class PortionPropertyController extends DoublePropertyController 
+public abstract class AbstractScaleAdapter<O> extends AbstractInstancePropertyAdapter<Matrix3x3, O> 
 {
-	public PortionPropertyController(PropertyAdapter<Double, ?> propertyAdapter)
+	protected class SetScaleOperation extends SetValueOperation<Matrix3x3> {
+		public SetScaleOperation( Matrix3x3 value, String name) {
+			super( AbstractScaleAdapter.this, value, name, java.util.UUID.fromString( "c742ea2e-cafe-41a0-9b76-38cb51921823" ) );
+		}
+	}
+
+	public AbstractScaleAdapter(String repr, O instance )
 	{
-		super(propertyAdapter);
+		super(repr, instance);
+	}
+	
+	public Class<Matrix3x3> getPropertyType()
+	{
+		return Matrix3x3.class;
+	}
+	
+	@Override
+	public SetValueOperation<Matrix3x3> getSetValueOperation(Matrix3x3 value) 
+	{
+		return new SetScaleOperation(value, null);
+	}
+	
+	public Matrix3x3 getValueCopy() 
+	{
+		return new Matrix3x3(this.getValue());
 	}
 }

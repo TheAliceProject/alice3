@@ -42,6 +42,9 @@
  */
 package edu.cmu.cs.dennisc.scenegraph.scale;
 
+import edu.cmu.cs.dennisc.scenegraph.Component;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -101,5 +104,38 @@ public class ScaleUtilities {
 				exorciseTheDemonsOfScaledSpace( sgChildTransformable );
 			}
 		}
+	}
+	
+	public static Visual getSGVisualForTransformable( edu.cmu.cs.dennisc.scenegraph.Transformable object )
+	{
+		if (object == null)
+		{
+			return null;
+		}
+		for (int i=0; i<object.getComponentCount(); i++)
+		{
+			Component c = object.getComponentAt( i );
+			if (c instanceof Visual)
+			{
+				return (Visual)c;
+			}
+		}
+		return null;
+	}
+	
+	public static edu.cmu.cs.dennisc.math.Matrix3x3 getTransformableScale( edu.cmu.cs.dennisc.scenegraph.Transformable t )
+	{
+		edu.cmu.cs.dennisc.math.Matrix3x3 returnScale;
+		Visual objectVisual = getSGVisualForTransformable( t );
+		if (objectVisual != null)
+		{
+			returnScale = new edu.cmu.cs.dennisc.math.Matrix3x3();
+			returnScale.setValue( objectVisual.scale.getValue() );
+		}
+		else
+		{
+			returnScale = edu.cmu.cs.dennisc.math.ScaleUtilities.newScaleMatrix3d( 1.0d, 1.0d, 1.0d );
+		}
+		return returnScale;
 	}
 }

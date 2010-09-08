@@ -57,6 +57,7 @@ import org.alice.stageide.properties.MarkerColorAdapter;
 import org.alice.stageide.properties.MarkerOpacityAdapter;
 import org.alice.stageide.properties.ModelColorAdapter;
 import org.alice.stageide.properties.ModelOpacityAdapter;
+import org.alice.stageide.properties.ModelScaleAdapter;
 import org.alice.stageide.properties.TransformableTranslationAdapter;
 import org.alice.stageide.properties.TransformableVehicleAdapter;
 
@@ -103,6 +104,7 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 		ModelOpacityAdapter.class,
 		TransformableTranslationAdapter.class,
 		TransformableVehicleAdapter.class,
+		ModelScaleAdapter.class,
 	};
 
 	public static List<org.alice.ide.properties.adapter.PropertyAdapter<?,?>> getPropertyAdaptersForObject(Object object)
@@ -145,7 +147,7 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 		if( nextValue instanceof AbstractField ) {
 			AbstractField field = (AbstractField)nextValue;
 			this.selectedField = field;
-			Object instance = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getInstanceForField( field );
+			Object instance = ((MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor())).getInstanceInAliceVMForField( field );
 			if( instance instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
 				edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
 				instance = instanceInAlice.getInstanceInJava();

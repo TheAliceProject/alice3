@@ -53,6 +53,7 @@ import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;
 import org.alice.interact.manipulator.AbstractManipulator;
+import org.alice.stageide.utilities.BoundingBoxUtilities;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
@@ -340,23 +341,6 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		HandleRenderState renderState = HandleRenderState.getStateForHandle( this );
 		sgFrontFacingAppearance.diffuseColor.setValue( this.getDesiredColor(renderState) );
 		sgFrontFacingAppearance.opacity.setValue( new Float(this.getDesiredOpacity(renderState)) );
-	}
-	
-	protected edu.cmu.cs.dennisc.math.Matrix3x3 getTransformableScale( Transformable t )
-	{
-		edu.cmu.cs.dennisc.math.Matrix3x3 returnScale;
-		Visual objectVisual = getSGVisualForTransformable( t );
-		if (objectVisual != null)
-		{
-			returnScale = new edu.cmu.cs.dennisc.math.Matrix3x3();
-			returnScale.setValue( objectVisual.scale.getValue() );
-		}
-		else
-		{
-			returnScale = edu.cmu.cs.dennisc.math.ScaleUtilities.newScaleMatrix3d( 1.0d, 1.0d, 1.0d );
-		}
-		return returnScale;
-		
 	}
 	
 	protected void setTransformableScale( Transformable t, edu.cmu.cs.dennisc.math.Matrix3x3 scaleMatrix )
@@ -729,27 +713,11 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
 	protected AxisAlignedBox getManipulatedObjectBox()
 	{
-		AxisAlignedBox boundingBox = null;
 		Transformable parent = this.getParentTransformable();
-		if (parent != null)
-		{
-			Object bbox = parent.getBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY );
-			if (bbox instanceof edu.cmu.cs.dennisc.math.AxisAlignedBox)
-			{
-				boundingBox = new AxisAlignedBox((edu.cmu.cs.dennisc.math.AxisAlignedBox)bbox);
-				if (boundingBox.isNaN())
-				{
-					boundingBox = null;
-				}
-			}
-		}
+		AxisAlignedBox boundingBox = BoundingBoxUtilities.getSGTransformableScaledBBox(parent);
 		if (boundingBox == null)
 		{
 			boundingBox = new AxisAlignedBox(new Point3(-1, 0, -1), new Point3(1, 1, 1));
-		}
-		if (boundingBox != null)
-		{
-			boundingBox.scale( this.getTransformableScale( parent ) );
 		}
 		return boundingBox;
 	}

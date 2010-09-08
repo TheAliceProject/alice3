@@ -148,6 +148,11 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 		super(repr, instance);
 	}
 	
+	public Color4f getValueCopy() 
+	{
+		return new Color4f(this.getValue());
+	}
+	
 	@Override
 	public String getUndoRedoDescription(Locale locale) 
 	{

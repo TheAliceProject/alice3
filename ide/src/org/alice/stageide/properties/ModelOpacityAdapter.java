@@ -63,7 +63,7 @@ public class ModelOpacityAdapter extends AbstractOpacityPropertyAdapter<org.alic
 		}
 		return null;
 	}
-
+	
 	public Double getValue() 
 	{
 		if (this.instance != null)

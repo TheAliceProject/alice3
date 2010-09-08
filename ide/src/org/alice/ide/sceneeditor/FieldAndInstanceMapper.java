@@ -41,69 +41,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties.uicontroller;
+package org.alice.ide.sceneeditor;
 
-import java.awt.Color;
-import java.util.Locale;
-
-import org.alice.ide.properties.adapter.PropertyAdapter;
-
-import edu.cmu.cs.dennisc.croquet.BorderPanel;
-import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.croquet.Panel;
-
-public class StringPropertyController extends AbstractAdapterController<String>
+public interface FieldAndInstanceMapper 
 {
-	private BorderPanel mainPanel;
-	private Label stringLabel;
+	public edu.cmu.cs.dennisc.alice.ast.AbstractField getFieldForInstanceInAliceVM(Object instance);
 	
-	private static final String BLANK_STRING = "NO VALUE";
+	public Object getInstanceInAliceVMForField(edu.cmu.cs.dennisc.alice.ast.AbstractField field);
 	
-	public StringPropertyController(PropertyAdapter<String, ?> propertyAdapter)
-	{
-		super(propertyAdapter);
-	}
+	public edu.cmu.cs.dennisc.alice.ast.AbstractField getFieldForInstanceInJavaVM(Object instance);
 	
-	@Override
-	protected void initializeComponents() 
-	{
-		this.mainPanel = new BorderPanel();
-		this.stringLabel = new Label();
-	}
+	public Object getInstanceInJavaVMForField(edu.cmu.cs.dennisc.alice.ast.AbstractField field);
 	
-	@Override
-	public Class<?> getPropertyType() 
-	{
-		return String.class;
-	}
-	
-	@Override
-	protected void setValueOnUI(String stringValue)
-	{
-		if (stringValue != null)
-		{
-			this.stringLabel.setText(stringValue);
-		}
-		else
-		{
-			this.stringLabel.setText(BLANK_STRING);
-		}
-	}
-	
-	@Override
-	protected void updateUIFromNewAdapter() 
-	{
-		this.mainPanel.removeAllComponents();
-		this.mainPanel.addComponent(this.stringLabel, BorderPanel.Constraint.CENTER);
-		if (this.propertyAdapter != null)
-		{
-			this.mainPanel.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
-		}
-	}
-	
-	@Override
-	public Panel getPanel() 
-	{
-		return this.mainPanel;
-	}
 }

@@ -71,6 +71,7 @@ import org.alice.ide.IDE;
 import org.alice.ide.ProjectApplication;
 import org.alice.ide.declarationpanes.CreateFieldFromGalleryPane;
 import org.alice.ide.name.validators.FieldNameValidator;
+import org.alice.ide.sceneeditor.FieldAndInstanceMapper;
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.InteractionGroup;
@@ -105,6 +106,7 @@ import edu.cmu.cs.dennisc.alice.ast.MethodInvocation;
 import edu.cmu.cs.dennisc.alice.ast.MethodReflectionProxy;
 import edu.cmu.cs.dennisc.alice.ast.Statement;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.croquet.AbstractButton;
 import edu.cmu.cs.dennisc.croquet.PopupMenuOperation;
@@ -389,10 +391,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.fieldObservers.remove(fieldObserver);
 	}
 	
-	@Override
-	protected Object getInstanceForField(AbstractField field)
+	public Animator getAnimator()
 	{
-		return super.getInstanceForField(field);
+		return this.animator;
 	}
 	
 	
@@ -434,7 +435,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private void handleAccessibleSelection( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
 		if( accessible instanceof AbstractField ) {
 			AbstractField field = (AbstractField)accessible;
-			Object instance = this.getInstanceForField( field );
+			Object instance = this.getInstanceInAliceVMForField( field );
 			if( instance instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
 				edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
 				instance = instanceInAlice.getInstanceInJava();
@@ -479,7 +480,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			objectInJava = org.alice.apis.moveandturn.Element.getElement(this.sgPerspectiveCamera);
 		}
 //		PrintUtilities.println("trying to select "+objectInJava+":"+objectInJava.hashCode());
-		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldForInstanceInJava( objectInJava );
+		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldForInstanceInJavaVM( objectInJava );
 		if (objectInJava instanceof CameraMarker)
 		{
 			this.sceneMarkerFieldList.setSelectedItem((FieldDeclaredInAlice)field);			
@@ -587,7 +588,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	
 	private void handleFieldAdded(final FieldDeclaredInAlice addedField)
 	{
-		Object instance = this.getInstanceInJavaForField( addedField );
+		Object instance = this.getInstanceInJavaVMForField( addedField );
 		if( instance instanceof org.alice.apis.moveandturn.Transformable ) {
 			final org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instance;
 
@@ -628,7 +629,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	{
 		PrintUtilities.println( "todo: have handleFieldRemoved just remove the passed in field rather than check for inconsistencies." );
 
-		Object instance = this.getInstanceInJavaForField( removedField );
+		Object instance = this.getInstanceInJavaVMForField( removedField );
 		if( instance instanceof org.alice.apis.moveandturn.Transformable ) {
 			final org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instance;
 			this.scene.removeComponent( transformable );
@@ -1022,7 +1023,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	{
 		edu.cmu.cs.dennisc.scenegraph.Transformable t = input.getClickPickTransformable();
 		org.alice.apis.moveandturn.Element element = org.alice.apis.moveandturn.Element.getElement(t);
-		FieldDeclaredInAlice clickedJavaField = (FieldDeclaredInAlice)this.getFieldForInstanceInJava(element);
+		FieldDeclaredInAlice clickedJavaField = (FieldDeclaredInAlice)this.getFieldForInstanceInJavaVM(element);
 		FieldTile tile = this.fieldRadioButtons.getFieldTileForField(clickedJavaField);
 		if (tile != null)
 		{
@@ -1379,21 +1380,21 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 
-	private void fillInAutomaticSetUpMethod( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field) {
-		SetUpMethodGenerator.fillInAutomaticSetUpMethod( bodyStatementsProperty, isThis, field, this.getInstanceInJavaForField( field ) );
+	private void fillInAutomaticSetUpMethod( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field, FieldAndInstanceMapper mapper) {
+		SetUpMethodGenerator.fillInAutomaticSetUpMethod( bodyStatementsProperty, isThis, field, mapper.getInstanceInJavaVMForField( field ), mapper );
 	}
 	
 	@Override
-	public void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty ) {
+	public void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, FieldAndInstanceMapper fieldAndInstanceMapper ) {
 		//Set the camera to have the point of view of the opening scene marker
 		AffineMatrix4x4 currentCameraTransformable = this.sgPerspectiveCamera.getAbsoluteTransformation();
 		edu.cmu.cs.dennisc.scenegraph.Transformable cameraParent = (edu.cmu.cs.dennisc.scenegraph.Transformable)this.sgPerspectiveCamera.getParent();
 		cameraParent.setTransformation(this.openingSceneMarker.getTransformation(AsSeenBy.SCENE), this.scene.getSGReferenceFrame());
 		
 		edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
-		this.fillInAutomaticSetUpMethod( bodyStatementsProperty, true, sceneField );
+		this.fillInAutomaticSetUpMethod( bodyStatementsProperty, true, sceneField, fieldAndInstanceMapper );
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : this.sceneType.getDeclaredFields() ) {
-			this.fillInAutomaticSetUpMethod( bodyStatementsProperty, false, field );
+			this.fillInAutomaticSetUpMethod( bodyStatementsProperty, false, field, fieldAndInstanceMapper );
 		}
 		
 		//Set the camera back to its original position
@@ -1912,6 +1913,5 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 		return null;
 	}
-
 	
 }

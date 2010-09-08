@@ -67,5 +67,10 @@ public abstract class AbstractStringPropertyAdapter<O> extends AbstractInstanceP
 	{
 		return new SetStringOperation(value, null);
 	}
+	
+	public String getValueCopy() 
+	{
+		return new String(this.getValue());
+	}
 
 }

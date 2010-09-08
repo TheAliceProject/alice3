@@ -41,69 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties.uicontroller;
+package org.alice.stageide.properties;
 
-import java.awt.Color;
-import java.util.Locale;
+import edu.cmu.cs.dennisc.croquet.BooleanState;
 
-import org.alice.ide.properties.adapter.PropertyAdapter;
-
-import edu.cmu.cs.dennisc.croquet.BorderPanel;
-import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.croquet.Panel;
-
-public class StringPropertyController extends AbstractAdapterController<String>
+public class IsScaleLinkedState extends BooleanState 
 {
-	private BorderPanel mainPanel;
-	private Label stringLabel;
-	
-	private static final String BLANK_STRING = "NO VALUE";
-	
-	public StringPropertyController(PropertyAdapter<String, ?> propertyAdapter)
-	{
-		super(propertyAdapter);
+	private static class SingletonHolder {
+		private static IsScaleLinkedState instance = new IsScaleLinkedState();
 	}
-	
-	@Override
-	protected void initializeComponents() 
-	{
-		this.mainPanel = new BorderPanel();
-		this.stringLabel = new Label();
+	public static IsScaleLinkedState getInstance() {
+		return SingletonHolder.instance;
 	}
-	
-	@Override
-	public Class<?> getPropertyType() 
-	{
-		return String.class;
-	}
-	
-	@Override
-	protected void setValueOnUI(String stringValue)
-	{
-		if (stringValue != null)
-		{
-			this.stringLabel.setText(stringValue);
-		}
-		else
-		{
-			this.stringLabel.setText(BLANK_STRING);
-		}
-	}
-	
-	@Override
-	protected void updateUIFromNewAdapter() 
-	{
-		this.mainPanel.removeAllComponents();
-		this.mainPanel.addComponent(this.stringLabel, BorderPanel.Constraint.CENTER);
-		if (this.propertyAdapter != null)
-		{
-			this.mainPanel.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
-		}
-	}
-	
-	@Override
-	public Panel getPanel() 
-	{
-		return this.mainPanel;
+	private IsScaleLinkedState() {
+		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "2667c9ff-fc8a-4675-aa4d-0ae317dbcf51" ), true );
 	}
 }

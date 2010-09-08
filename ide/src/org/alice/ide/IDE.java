@@ -975,7 +975,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty = methodDeclaredInAlice.body.getValue().statements;
 		bodyStatementsProperty.clear();
 		bodyStatementsProperty.add( new edu.cmu.cs.dennisc.alice.ast.Comment( GENERATED_CODE_WARNING ) );
-		this.getSceneEditor().generateCodeForSetUp( bodyStatementsProperty );
+		this.getSceneEditor().generateCodeForSetUp( bodyStatementsProperty, this.getSceneEditor() );
 	}
 
 	@Deprecated

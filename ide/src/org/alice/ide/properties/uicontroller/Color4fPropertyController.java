@@ -54,10 +54,12 @@ import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.croquet.BorderPanel;
 import edu.cmu.cs.dennisc.croquet.Label;
 import edu.cmu.cs.dennisc.croquet.Model;
+import edu.cmu.cs.dennisc.croquet.Panel;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 
 public class Color4fPropertyController extends AbstractAdapterController<Color4f>
 {
+	private BorderPanel mainPanel;
 	private Label colorLabel;
 	
 	private static final String BLANK_STRING = "NO COLOR";
@@ -71,6 +73,7 @@ public class Color4fPropertyController extends AbstractAdapterController<Color4f
 	@Override
 	protected void initializeComponents() 
 	{
+		this.mainPanel = new BorderPanel();
 		this.colorLabel = new Label();
 		this.colorLabel.getAwtComponent().setOpaque(true);
 	}
@@ -102,12 +105,18 @@ public class Color4fPropertyController extends AbstractAdapterController<Color4f
 	@Override
 	protected void updateUIFromNewAdapter() 
 	{
-		this.removeAllComponents();
-		this.addComponent(this.colorLabel, BorderPanel.Constraint.CENTER);
+		this.mainPanel.removeAllComponents();
+		this.mainPanel.addComponent(this.colorLabel, BorderPanel.Constraint.CENTER);
 		if (this.propertyAdapter != null)
 		{
-			this.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
+			this.mainPanel.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
 		}
+	}
+	
+	@Override
+	public Panel getPanel() 
+	{
+		return this.mainPanel;
 	}
 
 }

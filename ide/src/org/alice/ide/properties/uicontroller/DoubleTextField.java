@@ -44,66 +44,106 @@
 package org.alice.ide.properties.uicontroller;
 
 import java.awt.Color;
-import java.util.Locale;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import org.alice.ide.properties.adapter.PropertyAdapter;
+import javax.swing.JTextField;
 
-import edu.cmu.cs.dennisc.croquet.BorderPanel;
-import edu.cmu.cs.dennisc.croquet.Label;
-import edu.cmu.cs.dennisc.croquet.Panel;
-
-public class StringPropertyController extends AbstractAdapterController<String>
+public class DoubleTextField extends JTextField
 {
-	private BorderPanel mainPanel;
-	private Label stringLabel;
+	private static java.text.NumberFormat FORMAT = new java.text.DecimalFormat( "0.00" );
+	protected boolean isDirty = false;	
+	protected double trueValue = Double.NaN;
 	
-	private static final String BLANK_STRING = "NO VALUE";
-	
-	public StringPropertyController(PropertyAdapter<String, ?> propertyAdapter)
+	public DoubleTextField(int columns)
 	{
-		super(propertyAdapter);
-	}
-	
-	@Override
-	protected void initializeComponents() 
-	{
-		this.mainPanel = new BorderPanel();
-		this.stringLabel = new Label();
-	}
-	
-	@Override
-	public Class<?> getPropertyType() 
-	{
-		return String.class;
-	}
-	
-	@Override
-	protected void setValueOnUI(String stringValue)
-	{
-		if (stringValue != null)
+		super(columns);
+		this.addActionListener(new ActionListener() 
 		{
-			this.stringLabel.setText(stringValue);
+			public void actionPerformed(ActionEvent e) 
+			{
+				markValueSet();
+			}
+		});
+		this.getDocument().addDocumentListener( new edu.cmu.cs.dennisc.javax.swing.event.SimplifiedDocumentAdapter() {
+			@Override
+			protected void updated( javax.swing.event.DocumentEvent e ) 
+			{
+				markValueTemporary();
+				DoubleTextField.this.isDirty = true;
+			}
+		} );
+	}
+	
+	public boolean isValueValid()
+	{
+		try
+		{
+			Double.parseDouble(this.getText());
+			return true;
+		}
+		catch (Exception e)
+		{
+			return false;
+		}
+	}
+	
+	public void markValueTemporary()
+	{
+		if (isValueValid())
+		{
+			DoubleTextField.this.setForeground(Color.GRAY);
 		}
 		else
 		{
-			this.stringLabel.setText(BLANK_STRING);
+			DoubleTextField.this.setForeground(Color.RED);
 		}
 	}
 	
-	@Override
-	protected void updateUIFromNewAdapter() 
+	public void markValueSet()
 	{
-		this.mainPanel.removeAllComponents();
-		this.mainPanel.addComponent(this.stringLabel, BorderPanel.Constraint.CENTER);
-		if (this.propertyAdapter != null)
+		if (isValueValid())
 		{
-			this.mainPanel.addComponent(this.propertyAdapter.getEditOperation().createButton(), BorderPanel.Constraint.EAST);
+			DoubleTextField.this.setForeground(Color.BLACK);
+		}
+		else
+		{
+			DoubleTextField.this.setForeground(Color.RED);
 		}
 	}
 	
-	@Override
-	public Panel getPanel() 
+	public double getValue()
 	{
-		return this.mainPanel;
+		if (this.isDirty)
+		{
+			try
+			{
+				double value = Double.parseDouble(this.getText());
+				this.trueValue = value;
+			}
+			catch (Exception e)
+			{
+				this.trueValue = Double.NaN;
+			}
+		}
+		this.isDirty = false;
+		return this.trueValue;
 	}
+	
+	public void setValue(Double value)
+	{
+		if (value != null)
+		{
+			this.trueValue = value;
+			this.setText(FORMAT.format(this.trueValue));
+		}
+		else
+		{
+			this.trueValue = Double.NaN;
+			this.setText("None");
+		}
+		this.isDirty = false;
+		this.markValueSet();
+	}
+	
 }
