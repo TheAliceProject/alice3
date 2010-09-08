@@ -71,8 +71,6 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 	}
 	
 	public edu.cmu.cs.dennisc.croquet.Operation< ? > createDropOperation( final edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		
-		
 		final edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = null;
 		final int index = -1;
 		
@@ -104,8 +102,8 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 						return null;
 					}
 					@Override
-					protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.BlockStatement, java.lang.Integer > getBlockStatementAndIndex() {
-						return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( blockStatement, index );
+					protected org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
+						return new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index );
 					}
 					@Override
 					protected String getTitle() {
@@ -132,8 +130,8 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 						return null;
 					}
 					@Override
-					protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.BlockStatement, java.lang.Integer > getBlockStatementAndIndex() {
-						return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( blockStatement, index );
+					protected org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
+						return new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index );
 					}
 					@Override
 					protected String getTitleAt( int index ) {

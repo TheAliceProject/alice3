@@ -58,7 +58,7 @@ public abstract class AbstractFillInExpressionOrExpressionsMenuModel extends edu
 			return null;
 		}
 	}
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.BlockStatement, Integer > getBlockStatementAndIndex() {
+	protected org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = getStatement();
 		if( statement != null ) {
 			edu.cmu.cs.dennisc.alice.ast.Node node = statement.getParent();
@@ -66,7 +66,7 @@ public abstract class AbstractFillInExpressionOrExpressionsMenuModel extends edu
 				edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)node;
 				int index = blockStatement.statements.indexOf( statement );
 				if( index != -1 ) {
-					return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( blockStatement, index );
+					return new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index );
 				}
 			}
 		}
@@ -87,7 +87,7 @@ public abstract class AbstractFillInExpressionOrExpressionsMenuModel extends edu
 	
 	@Override
 	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
-		org.alice.ide.IDE.getSingleton().getCascadeManager().pushContext( this.getPreviousExpression(), this.getBlockStatementAndIndex() );
+		org.alice.ide.IDE.getSingleton().getCascadeManager().pushContext( this.getPreviousExpression(), this.getBlockStatementIndexPair() );
 		super.handlePopupMenuPrologue( popupMenu, context );
 	}
 	@Override

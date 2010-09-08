@@ -51,7 +51,7 @@ public abstract class CascadingMenuModel extends edu.cmu.cs.dennisc.croquet.Menu
 	}
 	protected abstract edu.cmu.cs.dennisc.croquet.Group getItemGroup();
 	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel( FillIn< ? > fillIn ) {
-		return new InternalCascadingMenuModel( fillIn );
+		return InternalCascadingMenuModel.getInstance( fillIn );
 	}
 	protected edu.cmu.cs.dennisc.croquet.Operation< ? > createItemOperation( FillIn< ? > fillIn ) {
 		return InternalCascadingItemOperation.getInstance( this.getItemGroup(), fillIn );

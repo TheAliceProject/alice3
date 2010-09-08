@@ -46,8 +46,19 @@ package edu.cmu.cs.dennisc.cascade;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class InternalCascadingMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+	private static java.util.Map< FillIn<?>, InternalCascadingMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized InternalCascadingMenuModel getInstance( FillIn<?> fillIn ) {
+		InternalCascadingMenuModel rv = map.get( fillIn );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new InternalCascadingMenuModel( fillIn );
+			map.put( fillIn, rv );
+		}
+		return rv;
+	}
 	private FillIn<?> fillIn;
-	public InternalCascadingMenuModel( FillIn<?> fillIn ) {
+	private InternalCascadingMenuModel( FillIn<?> fillIn ) {
 		super( java.util.UUID.fromString( "69570d24-a52f-40d4-ac7d-15a74333c5fa" ) );
 		this.fillIn = fillIn;
 	}

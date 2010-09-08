@@ -70,7 +70,8 @@ abstract class InsertStatementFillInExpressionsMenuModel extends org.alice.ide.c
 			return rv;
 		}
 	}
-	public org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
+	@Override
+	protected org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
 		return this.blockStatementIndexPair;
 	}
 	

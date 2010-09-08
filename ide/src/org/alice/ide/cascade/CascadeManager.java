@@ -62,16 +62,16 @@ public abstract class CascadeManager {
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement dropParent = null;
 	private int dropIndex = -1;
 
-	public void pushContext( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.BlockStatement, Integer > blockStatementAndIndex ) {
+	public void pushContext( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		this.previousExpression = previousExpression;
-		if( blockStatementAndIndex != null ) {
-			this.dropParent = blockStatementAndIndex.getA();
-			this.dropIndex = blockStatementAndIndex.getB();
+		if( blockStatementIndexPair != null ) {
+			this.dropParent = blockStatementIndexPair.getBlockStatement();
+			this.dropIndex = blockStatementIndexPair.getIndex();
 		} else {
 			this.dropParent = null;
 			this.dropIndex = -1;
 		}
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "pushContext", previousExpression, blockStatementAndIndex );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "pushContext", previousExpression, blockStatementIndexPair );
 	}
 	public void popContext() {
 		this.previousExpression = null;

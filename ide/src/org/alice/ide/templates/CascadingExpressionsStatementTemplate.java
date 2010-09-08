@@ -84,8 +84,8 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 						return null;
 					}
 					@Override
-					protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.BlockStatement, Integer > getBlockStatementAndIndex() {
-						return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( blockStatement, index );
+					protected org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
+						return new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index );
 					}
 					@Override
 					protected String getTitle() {
@@ -111,8 +111,8 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 						return null;
 					}
 					@Override
-					protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.BlockStatement, java.lang.Integer > getBlockStatementAndIndex() {
-						return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( blockStatement, index );
+					protected org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
+						return new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index );
 					}
 					@Override
 					protected String getTitleAt( int index ) {
