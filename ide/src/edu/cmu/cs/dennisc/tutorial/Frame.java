@@ -108,7 +108,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		}
 	}
 	@Override
-	protected void paint(java.awt.Graphics2D g2, java.awt.Shape shape) {
+	protected void paint(java.awt.Graphics2D g2, java.awt.Shape shape, Connection actualConnection) {
 		java.awt.Rectangle componentBounds = shape.getBounds();
 		g2.setPaint( Paint.SINGLETON.internal );
 		g2.fillRect( componentBounds.x, componentBounds.y, componentBounds.width, componentBounds.height );

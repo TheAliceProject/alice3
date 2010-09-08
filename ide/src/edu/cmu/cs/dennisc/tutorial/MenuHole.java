@@ -42,14 +42,25 @@
  */
 package edu.cmu.cs.dennisc.tutorial;
 
+import edu.cmu.cs.dennisc.tutorial.Feature.Connection;
+
 /**
  * @author Dennis Cosgrove
  */
 /* package-private */class MenuHole extends Hole {
 	private boolean isPathRenderingDesired;
-	public MenuHole( edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference, boolean isPathRenderingDesired ) {
+	private boolean isHoleRenderingDesired;
+	private boolean isCheckMarkRenderingDesired;
+	public MenuHole( 
+			edu.cmu.cs.dennisc.croquet.RuntimeResolver< ? extends edu.cmu.cs.dennisc.croquet.TrackableShape > trackableShapeResolver, 
+			ConnectionPreference connectionPreference, 
+			boolean isPathRenderingDesired, 
+			boolean isHoleRenderingDesired,
+			boolean isCheckMarkRenderingDesired ) {
 		super( trackableShapeResolver, connectionPreference );
 		this.isPathRenderingDesired = isPathRenderingDesired;
+		this.isHoleRenderingDesired = isHoleRenderingDesired;
+		this.isCheckMarkRenderingDesired = isCheckMarkRenderingDesired;
 	}
 	@Override
 	protected boolean isPathRenderingDesired() {
@@ -57,7 +68,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	@Override
 	protected boolean isHoleRenderingDesired() {
-		return AutomaticTutorial.getInstance().getStencil().getMenuPolicy().isBelowStencil();
+		return this.isHoleRenderingDesired;
 	}
 	@Override
 	public java.awt.geom.Area getAreaToSubstractForContains( edu.cmu.cs.dennisc.croquet.Component< ? > asSeenBy ) {
@@ -95,22 +106,32 @@ package edu.cmu.cs.dennisc.tutorial;
 		path.closePath();
 		return path;
 	}
-	private static final int BUFFER = 0;
 	@Override
-	protected void paint( java.awt.Graphics2D g2, java.awt.Shape shape ) {
+	protected void paint( java.awt.Graphics2D g2, java.awt.Shape shape, Connection actualConnection ) {
+		super.paint( g2, shape, actualConnection );
 		if( this.isHoleRenderingDesired() ) {
-			super.paint( g2, shape );
+			//pass
 		} else {
-			if( AutomaticTutorial.getInstance().getStencil().getMenuPolicy().isFeedbackDesired() ) {
+			if( this.isCheckMarkRenderingDesired ) {
 				if( this.isEntered() ) {
 					if( shape != null ) {
 						java.awt.Rectangle bounds = shape.getBounds();
 						if( bounds != null ) {
 							int size = bounds.height;
-							int width = size/2;
 							java.awt.Shape checkMark = createCheckMark( size );
 							java.awt.geom.AffineTransform m = g2.getTransform();
-							g2.translate( bounds.x-BUFFER-width, bounds.y-size/8 );
+							
+							int x = bounds.x;
+							if( actualConnection == Connection.EAST ) {
+								x -= 0;
+								x -= size / 2;
+							} else {
+								x += 8;
+								x += size / 4;
+								x += bounds.width;
+							}
+							
+							g2.translate( x, bounds.y-size/8 );
 							g2.rotate( Math.PI/5 );
 							g2.setPaint( java.awt.Color.GREEN );
 							g2.fill( checkMark );

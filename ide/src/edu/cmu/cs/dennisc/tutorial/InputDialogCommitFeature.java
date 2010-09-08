@@ -70,6 +70,6 @@ package edu.cmu.cs.dennisc.tutorial;
 		return null;
 	}
 	@Override
-	protected void paint(java.awt.Graphics2D g2, java.awt.Shape shape) {
+	protected void paint(java.awt.Graphics2D g2, java.awt.Shape shape, Connection actualConnection) {
 	}
 }

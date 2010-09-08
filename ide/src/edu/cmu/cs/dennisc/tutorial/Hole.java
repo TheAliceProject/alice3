@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.tutorial;
 
+import edu.cmu.cs.dennisc.tutorial.Feature.Connection;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -89,7 +91,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 
 	@Override
-	protected void paint(java.awt.Graphics2D g2, java.awt.Shape shape) {
+	protected void paint(java.awt.Graphics2D g2, java.awt.Shape shape, Connection actualConnection) {
 		if( this.isHoleRenderingDesired() ) {
 			java.awt.Shape prevClip = g2.getClip();
 			java.awt.Paint prevPaint = g2.getPaint();

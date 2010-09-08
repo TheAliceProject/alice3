@@ -320,13 +320,30 @@ public class AutomaticTutorial {
 		private int i;
 		private edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext;
 
+		private static FirstComponentResolver createComponentResolver( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int index ) {
+			return new FirstComponentResolver( new ModelFromMenuSelectionResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, index ) );
+		}
+		
 		private MenuSelectionNote( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, int index0 ) {
 			super( getText( menuSelectionEvent, i ) );
 			this.originalMenuSelectionEvent = menuSelectionEvent;
-			
+			this.modelContext = modelContext;
 			this.i = i;
-			for( int j=index0; j<=i; j++ ) {
-				this.addFeature( new MenuHole( new FirstComponentResolver( new ModelFromMenuSelectionResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, j ) ), Feature.ConnectionPreference.EAST_WEST, j==i ) );
+
+			boolean isBelowStencil = AutomaticTutorial.getInstance().getStencil().getMenuPolicy().isBelowStencil();
+			boolean isInMenuBar = index0 == 1;
+			if( isBelowStencil ) {
+				for( int j=index0; j<=i; j++ ) {
+					this.addFeature( new MenuHole( createComponentResolver( menuSelectionEvent, j ), Feature.ConnectionPreference.EAST_WEST, j==i, true, false ) );
+				}
+			} else {
+				boolean isCheckMarkRenderingDesired = AutomaticTutorial.getInstance().getStencil().getMenuPolicy().isFeedbackDesired();
+				if( isInMenuBar ) {
+					this.addFeature( new MenuHole( createComponentResolver( menuSelectionEvent, index0 ), Feature.ConnectionPreference.EAST_WEST, this.i == index0, true, false ) );
+				}
+				if( isInMenuBar==false || this.i > index0 ) {
+					this.addFeature( new MenuHole( createComponentResolver( menuSelectionEvent, this.i ), Feature.ConnectionPreference.EAST_WEST, true, false, isCheckMarkRenderingDesired ) );
+				}
 			}
 		}
 		
@@ -456,6 +473,14 @@ public class AutomaticTutorial {
 		public void reset() {
 			super.reset();
 			this.setActiveNote( 0 );
+		}
+		
+		@Override
+		protected java.awt.Point calculateLocationOfFirstNote( edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
+			java.awt.Point rv = super.calculateLocationOfFirstNote( container );
+			rv.x += 400;
+			rv.y += 350;
+			return rv;
 		}
 		
 		private java.util.List< HistoryNote > notes;

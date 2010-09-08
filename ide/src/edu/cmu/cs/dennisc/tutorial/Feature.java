@@ -401,7 +401,7 @@ package edu.cmu.cs.dennisc.tutorial;
 			return null;
 		}
 	}
-	protected abstract void paint( java.awt.Graphics2D g2, java.awt.Shape shape );
+	protected abstract void paint( java.awt.Graphics2D g2, java.awt.Shape shape, Connection actualConnection );
 	private static void drawPath( java.awt.Graphics2D g2, float xFrom, float yFrom, float xTo, float yTo, boolean isCurveDesired ) {
 		edu.cmu.cs.dennisc.math.polynomial.Polynomial xPolynomial;
 		edu.cmu.cs.dennisc.math.polynomial.Polynomial yPolynomial;
@@ -500,7 +500,7 @@ package edu.cmu.cs.dennisc.tutorial;
 			java.awt.Paint prevPaint = g2.getPaint();
 			java.awt.Stroke prevStroke = g2.getStroke();
 
-			this.paint( g2, shape );
+			this.paint( g2, shape, actualConnection );
 
 			
 			if( this.isPathRenderingDesired() ) {
