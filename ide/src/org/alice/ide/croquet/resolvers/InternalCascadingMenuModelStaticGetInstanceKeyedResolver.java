@@ -46,12 +46,12 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class InternalCascadingItemOperationStaticGetInstanceKeyedResolver extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > {
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { edu.cmu.cs.dennisc.croquet.Group.class, edu.cmu.cs.dennisc.cascade.FillIn.class };
-	public InternalCascadingItemOperationStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation instance ) {
+public class InternalCascadingMenuModelStaticGetInstanceKeyedResolver extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< edu.cmu.cs.dennisc.cascade.InternalCascadingMenuModel > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< edu.cmu.cs.dennisc.cascade.InternalCascadingMenuModel > {
+	private static final Class<?>[] PARAMETER_TYPES = new Class[] { edu.cmu.cs.dennisc.cascade.FillIn.class };
+	public InternalCascadingMenuModelStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.cascade.InternalCascadingMenuModel instance ) {
 		super( instance );
 	}
-	public InternalCascadingItemOperationStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public InternalCascadingMenuModelStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 
@@ -63,11 +63,11 @@ public class InternalCascadingItemOperationStaticGetInstanceKeyedResolver extend
 	}
 
 	@Override
-	protected java.lang.Class< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > decodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation.class;
+	protected java.lang.Class< edu.cmu.cs.dennisc.cascade.InternalCascadingMenuModel > decodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return edu.cmu.cs.dennisc.cascade.InternalCascadingMenuModel.class;
 	}
 	@Override
-	protected void encodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.lang.Class< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > cls ) {
+	protected void encodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.lang.Class< edu.cmu.cs.dennisc.cascade.InternalCascadingMenuModel > cls ) {
 	}
 	@Override
 	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -79,14 +79,11 @@ public class InternalCascadingItemOperationStaticGetInstanceKeyedResolver extend
 
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		java.util.UUID groupId = binaryDecoder.decodeId();
 		edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		edu.cmu.cs.dennisc.croquet.Group group = edu.cmu.cs.dennisc.croquet.Group.getInstance( groupId );
-		return new Object[] { group, fillIn };
+		return new Object[] { fillIn };
 	}
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.getInstance().getGroup().getId() );
 		binaryEncoder.encode( this.getInstance().getFillIn() );
 	}
 }

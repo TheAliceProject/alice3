@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.cascade;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class InternalCascadingMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
+public class InternalCascadingMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 	private static java.util.Map< FillIn<?>, InternalCascadingMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized InternalCascadingMenuModel getInstance( FillIn<?> fillIn ) {
 		InternalCascadingMenuModel rv = map.get( fillIn );
@@ -62,6 +62,9 @@ package edu.cmu.cs.dennisc.cascade;
 		super( java.util.UUID.fromString( "69570d24-a52f-40d4-ac7d-15a74333c5fa" ) );
 		this.fillIn = fillIn;
 	}
+	public FillIn< ? > getFillIn() {
+		return this.fillIn;
+	}
 	@Override
 	protected void handleShowing( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		super.handleShowing( menuItemContainer, e );
@@ -71,5 +74,9 @@ package edu.cmu.cs.dennisc.cascade;
 	protected void handleHiding( edu.cmu.cs.dennisc.croquet.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		this.fillIn.handleMenuDeselected( menuItemContainer, e );
 		super.handleHiding( menuItemContainer, e );
+	}
+	@Override
+	protected org.alice.ide.croquet.resolvers.InternalCascadingMenuModelStaticGetInstanceKeyedResolver createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.InternalCascadingMenuModelStaticGetInstanceKeyedResolver( this );
 	}
 }
