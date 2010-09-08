@@ -69,7 +69,6 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 		assert accessible != null;
 		this.accessible = accessible;
 		//this.setOpaque( false );
-		
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,4 ) );
 		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation(
 				java.util.UUID.fromString( "8e3989b2-34d6-44cf-998c-dda26662b3a0" ) ) {
