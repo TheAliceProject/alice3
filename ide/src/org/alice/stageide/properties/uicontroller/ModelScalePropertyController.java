@@ -88,7 +88,7 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 	
 	private Button resetButton;
 	
-	private BooleanStateButton<javax.swing.AbstractButton> lockUnlockButton;
+	private BooleanStateButton<javax.swing.AbstractButton> linkButton;
 	
 	private boolean doUpdateOnAdapter = true;
 	
@@ -118,9 +118,9 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 			}
 		};
 		
-		this.widthLabel = new Label("width:");
-		this.heightLabel = new Label("height:");
-		this.depthLabel = new Label("depth:");
+		this.widthLabel = new Label("Width:");
+		this.heightLabel = new Label("Height:");
+		this.depthLabel = new Label("Depth:");
 		
 		this.widthField = new DoubleTextField(4);
 		this.widthField.addActionListener(this.valueChangeListener);
@@ -139,7 +139,7 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 		uiPanel.addComponent(this.depthLabel);
 		uiPanel.addComponent(new SwingAdapter(this.depthField));
 
-		this.lockUnlockButton = new LinkScaleButton(IsScaleLinkedState.getInstance());
+		this.linkButton = new LinkScaleButton(IsScaleLinkedState.getInstance());
 		
 		this.mainPanel.addComponent( this.widthLabel, new GridBagConstraints( 
 			0, //gridX
@@ -219,7 +219,7 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 			0, //ipadX
 			0 ) //ipadY
 		);
-		this.mainPanel.addComponent( this.lockUnlockButton, new GridBagConstraints( 
+		this.mainPanel.addComponent( this.linkButton, new GridBagConstraints( 
 				2, //gridX
 				0, //gridY
 				1, //gridWidth

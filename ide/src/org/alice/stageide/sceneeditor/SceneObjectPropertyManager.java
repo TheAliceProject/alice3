@@ -92,7 +92,7 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 	{
 		super();
 		this.classLabel = new Label("NO CLASS");
-		this.classNameLabel = new Label("Class = ");
+		this.classNameLabel = createLabel("Class = ");
 		
 	}
 	
@@ -138,7 +138,10 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 		return propertyList;
 	}
 	
-	
+	private Label createLabel(String labelText)
+	{
+		return new Label(labelText, 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD);
+	}
 	
 	public void changed(edu.cmu.cs.dennisc.alice.ast.Accessible nextValue) 
 	{
@@ -227,7 +230,7 @@ public class SceneObjectPropertyManager extends GridBagPanel implements edu.cmu.
 				{
 					PropertyAdapterController<?> propertyController = AdapterControllerUtilities.getValuePanelForPropertyAdapter(propertyAdapter);
 					assert propertyController != null;
-					matchingLabelController = new LabelValueControllerPair(new Label(propertyAdapter.getRepr()+ " = "), propertyController);
+					matchingLabelController = new LabelValueControllerPair(createLabel(propertyAdapter.getRepr()+ " = "), propertyController);
 					this.labelControllerList.add(matchingLabelController);
 				}
 				assert matchingLabelController != null;
