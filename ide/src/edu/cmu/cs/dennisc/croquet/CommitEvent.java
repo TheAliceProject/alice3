@@ -73,4 +73,10 @@ public class CommitEvent extends AbstractCompleteEvent {
 	public Edit<?> getEdit() {
 		return this.edit;
 	}
+	@Override
+	protected java.lang.StringBuilder appendRepr( java.lang.StringBuilder rv ) {
+		super.appendRepr( rv );
+		rv.append( this.edit );
+		return rv;
+	}
 }
