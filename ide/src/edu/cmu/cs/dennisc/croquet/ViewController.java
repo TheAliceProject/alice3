@@ -77,11 +77,15 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: setPopupMenuOperation" );
 		}
 		if( this.popupMenuOperation != null ) {
+			this.getAwtComponent().removeMouseListener( this.lenientMouseClickAdapter );
+			this.getAwtComponent().removeMouseMotionListener( this.lenientMouseClickAdapter );
 			this.popupMenuOperation.removeComponent( this );
 		}
 		this.popupMenuOperation = popupMenuOperation;
 		if( this.popupMenuOperation != null ) {
 			this.popupMenuOperation.addComponent( this );
+			this.getAwtComponent().addMouseListener( this.lenientMouseClickAdapter );
+			this.getAwtComponent().addMouseMotionListener( this.lenientMouseClickAdapter );
 		}
 	}
 
@@ -98,20 +102,20 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 		}
 	};
 	
-	@Override
-	protected void handleAddedTo( Component<?> parent ) {
-		super.handleAddedTo( parent );
-		if( this.popupMenuOperation != null ) {
-			this.getAwtComponent().addMouseListener( this.lenientMouseClickAdapter );
-			this.getAwtComponent().addMouseMotionListener( this.lenientMouseClickAdapter );
-		}
-	}
-	@Override
-	protected void handleRemovedFrom( Component<?> parent ) {
-		if( this.popupMenuOperation != null ) {
-			this.getAwtComponent().removeMouseListener( this.lenientMouseClickAdapter );
-			this.getAwtComponent().removeMouseMotionListener( this.lenientMouseClickAdapter );
-		}
-		super.handleRemovedFrom( parent );
-	}
+//	@Override
+//	protected void handleAddedTo( Component<?> parent ) {
+//		super.handleAddedTo( parent );
+//		if( this.popupMenuOperation != null ) {
+//			this.getAwtComponent().addMouseListener( this.lenientMouseClickAdapter );
+//			this.getAwtComponent().addMouseMotionListener( this.lenientMouseClickAdapter );
+//		}
+//	}
+//	@Override
+//	protected void handleRemovedFrom( Component<?> parent ) {
+//		if( this.popupMenuOperation != null ) {
+//			this.getAwtComponent().removeMouseListener( this.lenientMouseClickAdapter );
+//			this.getAwtComponent().removeMouseMotionListener( this.lenientMouseClickAdapter );
+//		}
+//		super.handleRemovedFrom( parent );
+//	}
 }

@@ -43,8 +43,12 @@
 
 package org.alice.apis.moveandturn;
 
+import org.alice.interact.AbstractDragAdapter.CameraView;
+
 import edu.cmu.cs.dennisc.alice.annotations.*;
+import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.program.Program;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 /**
  * @author Dennis Cosgrove
@@ -116,7 +120,18 @@ public class Scene extends Composite {
 		} else {
 			//this.dragAdapter = new org.alice.interact.RuntimeDragAdapter();
 			this.dragAdapter = new org.alice.interact.GlobalDragAdapter();
-			this.dragAdapter.setOnscreenLookingGlass( this.getOwner().getOnscreenLookingGlass() );
+			OnscreenLookingGlass lookingGlass = this.getOwner().getOnscreenLookingGlass();
+			SymmetricPerspectiveCamera camera = null;
+			for( int i = 0; i < lookingGlass.getCameraCount(); i++ ) {
+				if( lookingGlass.getCameraAt( i ) instanceof SymmetricPerspectiveCamera ) 
+				{
+					camera = (SymmetricPerspectiveCamera)lookingGlass.getCameraAt( i );
+					break;
+				}
+			}
+			this.dragAdapter.setOnscreenLookingGlass( lookingGlass );
+			this.dragAdapter.addCameraView(CameraView.MAIN, camera, null);
+			this.dragAdapter.makeCameraActive(camera);
 			//this.dragAdapter.setAnimator( ((Program)this.getOwner()).getAnimator() );
 			for( Transformable transformable : this.getComponents() ) {
 				this.putBonusDataFor( transformable );

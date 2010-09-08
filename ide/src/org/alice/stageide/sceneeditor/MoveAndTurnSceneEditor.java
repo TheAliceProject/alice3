@@ -79,6 +79,7 @@ import org.alice.interact.PickHint;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.SnapGrid;
 import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.condition.ClickedObjectCondition;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.handle.HandleSet;
@@ -846,7 +847,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.sceneMarkerFieldList.addAndInvokeValueObserver(this.cameraMarkerFieldSelectionObserver);
 			
 			
-			MouseDragCondition rightMouseAndInteractive = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON3 , new PickCondition( PickHint.MOVEABLE_OBJECTS ) );
+			ClickedObjectCondition rightMouseAndInteractive = new ClickedObjectCondition( java.awt.event.MouseEvent.BUTTON3 , new PickCondition( PickHint.MOVEABLE_OBJECTS ) );
 			ManipulatorClickAdapter rightClickAdapter = new ManipulatorClickAdapter() {
 				public void onClick(InputState clickInput) {
 					showRightClickMenuForModel(clickInput);
@@ -1319,8 +1320,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		//Find the new scene's main perspective camera
 		this.sgPerspectiveCamera = null;
 		for( int i = 0; i < this.onscreenLookingGlass.getCameraCount(); i++ ) {
-			if( this.onscreenLookingGlass.getCameraAt( 0 ) instanceof SymmetricPerspectiveCamera ) {
-				this.sgPerspectiveCamera = (SymmetricPerspectiveCamera)this.onscreenLookingGlass.getCameraAt( 0 );
+			if( this.onscreenLookingGlass.getCameraAt( i ) instanceof SymmetricPerspectiveCamera ) {
+				this.sgPerspectiveCamera = (SymmetricPerspectiveCamera)this.onscreenLookingGlass.getCameraAt( i );
 			}
 		}
 		assert this.sgPerspectiveCamera != null;
