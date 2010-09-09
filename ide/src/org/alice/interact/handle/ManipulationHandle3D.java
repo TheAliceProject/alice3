@@ -571,7 +571,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	
 	public float calculateCameraRelativeOpacity(Point3 cameraPosition)
 	{
-		if (this.getParentTransformable() != null)
+		if (this.getParentTransformable() != null && cameraPosition != null)
 		{
 			Point3 handlePosition = this.getParentTransformable().getAbsoluteTransformation().translation;
 			double distance = Point3.calculateDistanceBetween(cameraPosition, handlePosition);

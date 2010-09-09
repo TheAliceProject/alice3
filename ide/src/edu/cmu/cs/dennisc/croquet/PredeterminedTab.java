@@ -62,10 +62,15 @@ public abstract class PredeterminedTab {
 	public java.util.UUID getId() {
 		return this.id;
 	}
-		
+	public String getTitleText() {
+		return this.titleText;
+	}
 	public void setTitleText( String titleText ) {
 		this.titleText = titleText;
 		this.updateTitleText();
+	}
+	public javax.swing.Icon getTitleIcon() {
+		return this.titleIcon;
 	}
 	public void setTitleIcon( javax.swing.Icon titleIcon ) {
 		this.titleIcon = titleIcon;
@@ -100,5 +105,9 @@ public abstract class PredeterminedTab {
 		ScrollPane rv = new ScrollPane();
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		return rv;
+	}
+	@Override
+	public String toString() {
+		return this.titleText;
 	}
 };
