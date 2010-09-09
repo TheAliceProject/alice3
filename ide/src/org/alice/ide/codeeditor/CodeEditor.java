@@ -721,7 +721,12 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 	}
 	public final void dragExited( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, boolean isDropRecipient ) {
 		this.statementListPropertyPaneInfos = null;
+		
+		//todo: listen to context
+		StatementListPropertyPane.EPIC_HACK_ignoreDrawingDesired = true;
 		this.setCurrentUnder( null, null );
+		StatementListPropertyPane.EPIC_HACK_ignoreDrawingDesired = false;
+		
 		this.repaint();
 		if( isDropRecipient ) {
 			//pass

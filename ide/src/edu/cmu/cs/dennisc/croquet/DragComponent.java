@@ -153,12 +153,17 @@ public abstract class DragComponent extends Control {
 	}
 
 	protected javax.swing.JLayeredPane getLayeredPane() {
-		javax.swing.JRootPane rootPane = this.getRoot().getRootPane();
-		if( rootPane != null ) {
-			return rootPane.getLayeredPane();
+		AbstractWindow< ? > root = this.getRoot();
+		if( root != null ) {
+			javax.swing.JRootPane rootPane = root.getRootPane();
+			if( rootPane != null ) {
+				return rootPane.getLayeredPane();
+			} else {
+				//throw new RuntimeException( "cannot find rootPane: " + this );
+				return null;
+			}
 		} else {
-			throw new RuntimeException( "cannot find rootPane: " + this );
-			//return null;
+			return null;
 		}
 	}
 
