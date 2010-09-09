@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,35 +39,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.tutorial;
+package edu.cmu.cs.dennisc.croquet.tutorial;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AuthoredStep extends Step {
-	private String title;
-	private java.util.List< Note > notes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public AuthoredStep( String title, String text ) {
-		this.title = title;
-		this.addNote( new Note( text ) );
+/*package-private*/ abstract class WaitingOnCommitHistoryNote extends HistoryNote {
+	private edu.cmu.cs.dennisc.croquet.Edit< ? > edit;
+	public WaitingOnCommitHistoryNote( String text, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		super( text );
+		this.edit = edit;
 	}
 	@Override
-	protected String getTitle() {
-		return this.title;
-	}
-	public void addNote( Note note ) {
-		this.notes.add( note );
-		note.setTutorialStencil( this.getTutorialStencil() );
-	}
-	@Override
-	public java.util.List< Note > getNotes() {
-		return this.notes;
-	}
-	@Override
-	public void setTutorialStencil( edu.cmu.cs.dennisc.tutorial.TutorialStencil tutorialStencil ) {
-		super.setTutorialStencil( tutorialStencil );
-		for( Note note : this.notes ) {
-			note.setTutorialStencil( tutorialStencil );
+	public final boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+		boolean rv = false;
+		if( child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
+			edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent)child;
+			edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit = commitEvent.getEdit();
+			if( this.edit.isReplacementAcceptable( replacementEdit ) ) {
+				this.retarget( this.edit, replacementEdit );
+				rv = true;
+			}
 		}
+		return rv;
 	}
 }

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class TutorialStencil extends Stencil {
+public class TutorialStencil extends Stencil {
 	@Deprecated
 	/*package-private*/ static boolean isResultOfNextOperation = false;
 	/*package-private*/ static java.awt.Color CONTROL_COLOR = new java.awt.Color(255, 255, 191);
@@ -120,7 +120,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder(0,PAD,PAD,PAD));
 		return new TutorialStencil( MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK, layeredPane, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() ); 
 	}
-	/*package-private*/ TutorialStencil( MenuPolicy menuPolicy, javax.swing.JLayeredPane layeredPane, edu.cmu.cs.dennisc.croquet.Group[] groups, edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext ) {
+	public TutorialStencil( MenuPolicy menuPolicy, javax.swing.JLayeredPane layeredPane, edu.cmu.cs.dennisc.croquet.Group[] groups, edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext ) {
 		super( menuPolicy, layeredPane );
 		
 		rootContext.addChildrenObserver( this.childrenObserver );
@@ -377,11 +377,11 @@ package edu.cmu.cs.dennisc.tutorial;
 	protected Step getCurrentStep() {
 		return this.stepsModel.getSelectedStep();
 	}
-	/*package-private*/ void addStep( Step step ) {
+	public void addStep( Step step ) {
 		this.stepsModel.addStep( step );
 		step.setTutorialStencil( this );
 	}
-	/*package-private*/ void setSelectedIndex( int index ) {
+	public void setSelectedIndex( int index ) {
 		this.stepsModel.setSelectedIndex( index );
 	}
 		

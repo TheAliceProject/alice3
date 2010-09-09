@@ -247,7 +247,7 @@ public abstract class Step {
 		return this.tutorialStencil;
 	}
 	protected abstract void complete();
-	/*package-private*/ void setTutorialStencil( TutorialStencil tutorialStencil ) {
+	public void setTutorialStencil( TutorialStencil tutorialStencil ) {
 		this.tutorialStencil = tutorialStencil;
 	}
 	

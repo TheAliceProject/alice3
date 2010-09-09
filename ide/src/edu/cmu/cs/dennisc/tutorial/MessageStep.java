@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class MessageStep extends AuthoredStep {
+public class MessageStep extends AuthoredStep {
 	public MessageStep( String title, String text ) {
 		super( title, text );
 	}

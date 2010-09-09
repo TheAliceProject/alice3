@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JComponent > {
+public class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JComponent > {
 	/*package-private*/ class JNote extends javax.swing.JPanel {
 		public boolean isActive() {
 			return Note.this.isActive();

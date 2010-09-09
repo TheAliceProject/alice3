@@ -40,9 +40,9 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.tutorial;
+package edu.cmu.cs.dennisc.croquet.tutorial;
 
-import edu.cmu.cs.dennisc.tutorial.Feature.Connection;
+import edu.cmu.cs.dennisc.tutorial.*;
 
 /**
  * @author Dennis Cosgrove

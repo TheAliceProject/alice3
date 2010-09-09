@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,35 +39,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.tutorial;
+package edu.cmu.cs.dennisc.croquet.tutorial;
+
+import edu.cmu.cs.dennisc.tutorial.*;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AuthoredStep extends Step {
-	private String title;
-	private java.util.List< Note > notes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public AuthoredStep( String title, String text ) {
-		this.title = title;
-		this.addNote( new Note( text ) );
+/*package-private*/ abstract class HistoryNote extends Note {
+	protected static boolean isMouseEventInterceptedInAllCases( java.awt.event.MouseEvent e ) {
+		return e.getID() == java.awt.event.MouseEvent.MOUSE_PRESSED || e.getID() == java.awt.event.MouseEvent.MOUSE_RELEASED || e.getID() == java.awt.event.MouseEvent.MOUSE_CLICKED || e.getID() == java.awt.event.MouseEvent.MOUSE_DRAGGED;
 	}
-	@Override
-	protected String getTitle() {
-		return this.title;
+
+	public HistoryNote( String text ) {
+		super( text );
 	}
-	public void addNote( Note note ) {
-		this.notes.add( note );
-		note.setTutorialStencil( this.getTutorialStencil() );
+	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
+		return true;
 	}
-	@Override
-	public java.util.List< Note > getNotes() {
-		return this.notes;
-	}
-	@Override
-	public void setTutorialStencil( edu.cmu.cs.dennisc.tutorial.TutorialStencil tutorialStencil ) {
-		super.setTutorialStencil( tutorialStencil );
-		for( Note note : this.notes ) {
-			note.setTutorialStencil( tutorialStencil );
-		}
+	public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child );
+	
+	protected final void retarget( edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit ) {
+		edu.cmu.cs.dennisc.croquet.Retargeter retargeter = AutomaticTutorial.getInstance().getRetargeter();
+		originalEdit.addKeyValuePairs( retargeter, replacementEdit );
+		AutomaticTutorial.getInstance().retargetOriginalContext( retargeter );
 	}
 }

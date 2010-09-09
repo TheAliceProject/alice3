@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,35 +39,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.tutorial;
+package edu.cmu.cs.dennisc.croquet.tutorial;
+
+import edu.cmu.cs.dennisc.tutorial.*;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AuthoredStep extends Step {
-	private String title;
-	private java.util.List< Note > notes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public AuthoredStep( String title, String text ) {
-		this.title = title;
-		this.addNote( new Note( text ) );
+/*package-private*/ class ListSelectionStateSimpleNote<E> extends WaitingOnCommitHistoryNote {
+	public static <E> ListSelectionStateSimpleNote<E> createInstance( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext ) {
+		edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit<E> listSelectionStateEdit = (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E >)listSelectionStateContext.getEdit();
+		return new ListSelectionStateSimpleNote( listSelectionStateContext, listSelectionStateEdit );
 	}
-	@Override
-	protected String getTitle() {
-		return this.title;
-	}
-	public void addNote( Note note ) {
-		this.notes.add( note );
-		note.setTutorialStencil( this.getTutorialStencil() );
-	}
-	@Override
-	public java.util.List< Note > getNotes() {
-		return this.notes;
-	}
-	@Override
-	public void setTutorialStencil( edu.cmu.cs.dennisc.tutorial.TutorialStencil tutorialStencil ) {
-		super.setTutorialStencil( tutorialStencil );
-		for( Note note : this.notes ) {
-			note.setTutorialStencil( tutorialStencil );
-		}
+	private ListSelectionStateSimpleNote( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit<E> listSelectionStateEdit ) {
+		super( listSelectionStateContext.getModel().getTutorialNoteText( listSelectionStateEdit ), listSelectionStateEdit );
+		ModelFromContextResolver modelResolver = new ModelFromContextResolver( listSelectionStateContext );
+		ItemSelectionStateItemResolver itemSelectionStateItemResolver = new ItemSelectionStateItemResolver( modelResolver, new ItemResolver( listSelectionStateEdit ) );
+		this.addFeature( new Hole( itemSelectionStateItemResolver, Feature.ConnectionPreference.EAST_WEST ) );			
 	}
 }

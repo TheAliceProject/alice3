@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class Feature {
+public abstract class Feature {
 	private static final int ARROW_HEAD_LENGTH = 19;
 	private static final double ARROW_HEAD_LENGTH_SQUARED = ARROW_HEAD_LENGTH*ARROW_HEAD_LENGTH;
 	private static final int ARROW_HEAD_HALF_HEIGHT = 6;

@@ -42,12 +42,10 @@
  */
 package edu.cmu.cs.dennisc.tutorial;
 
-import edu.cmu.cs.dennisc.tutorial.Feature.Connection;
-
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class Hole extends Feature {
+public class Hole extends Feature {
 	private static final int PAD = 4;
 	private static final int BOUNDS_PAD = PAD + 64;
 	private static final java.awt.Insets PAINT_INSETS = new java.awt.Insets( PAD, PAD, PAD, PAD );
