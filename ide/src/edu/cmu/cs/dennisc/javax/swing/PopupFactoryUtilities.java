@@ -40,56 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.tutorial;
+package edu.cmu.cs.dennisc.javax.swing;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StepsComboBox extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JComboBox > {
-	private StepsComboBoxModel stepsComboBoxModel;
-	private boolean isLightWeightPopupEnabled;
-	public StepsComboBox( StepsComboBoxModel stepsComboBoxModel, boolean isLightWeightPopupEnabled ) {
-		this.stepsComboBoxModel = stepsComboBoxModel;
-		this.isLightWeightPopupEnabled = isLightWeightPopupEnabled;
-	}
-	@Override
-	protected javax.swing.JComboBox createAwtComponent() {
-		javax.swing.JComboBox rv = new javax.swing.JComboBox( this.stepsComboBoxModel );
-		//todo: find a better way
-		//warning monumentally brittle code below
-		rv.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
-			public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
-				javax.swing.JComboBox box = (javax.swing.JComboBox)e.getSource();
-				javax.accessibility.Accessible accessible = box.getUI().getAccessibleChild( box, 0 );
-				if( accessible instanceof javax.swing.JPopupMenu ) {
-					javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)accessible;
-					java.awt.Component component = jPopupMenu.getComponent( 0 );
-					if( component instanceof javax.swing.JScrollPane ) {
-						javax.swing.JScrollPane scrollPane = (javax.swing.JScrollPane)component;
-						java.awt.Dimension size = scrollPane.getPreferredSize();
-
-						javax.swing.JViewport viewport = scrollPane.getViewport();
-						java.awt.Component view = viewport.getView();
-						java.awt.Dimension viewportSize = view.getPreferredSize();
-						size.width = viewportSize.width;
-						scrollPane.setPreferredSize( size );
-						scrollPane.setMaximumSize( size );
-					}
-				}
-			}
-			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
-			}
-			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-			}
-		} );
-
-		if( this.isLightWeightPopupEnabled ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.javax.swing.PopupFactoryUtilities.forceHeavyWeightPopups( rv );
+public class PopupFactoryUtilities {
+	public static javax.swing.JComboBox forceHeavyWeightPopups( javax.swing.JComboBox rv ) {
+		rv.setLightWeightPopupEnabled( false );
+		try {
+			Class< ? > cls = Class.forName( "javax.swing.PopupFactory" );
+			java.lang.reflect.Field field = cls.getDeclaredField( "forceHeavyWeightPopupKey" );
+			field.setAccessible( true );
+			rv.putClientProperty( field.get( null ), Boolean.TRUE );
+		} catch( Exception e ) {
+			e.printStackTrace();
 		}
-		StepCellRenderer stepCellRenderer = new StepCellRenderer( this.stepsComboBoxModel.getStepsModel(), TutorialStencil.CONTROL_COLOR );
-		rv.setRenderer( stepCellRenderer );
 		return rv;
 	}
-};
+}
