@@ -47,7 +47,7 @@ package org.alice.ide.croquet.resolvers;
  * @author Dennis Cosgrove
  */
 public class InternalCascadingItemOperationStaticGetInstanceKeyedResolver extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > {
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { edu.cmu.cs.dennisc.croquet.Group.class, edu.cmu.cs.dennisc.cascade.FillIn.class };
+	private static final Class<?>[] PARAMETER_TYPES = new Class[] { edu.cmu.cs.dennisc.croquet.Group.class, java.util.UUID.class };
 	public InternalCascadingItemOperationStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation instance ) {
 		super( instance );
 	}
@@ -80,13 +80,13 @@ public class InternalCascadingItemOperationStaticGetInstanceKeyedResolver extend
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		java.util.UUID groupId = binaryDecoder.decodeId();
-		edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		java.util.UUID fillInId = binaryDecoder.decodeId();
 		edu.cmu.cs.dennisc.croquet.Group group = edu.cmu.cs.dennisc.croquet.Group.getInstance( groupId );
-		return new Object[] { group, fillIn };
+		return new Object[] { group, fillInId };
 	}
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.getInstance().getGroup().getId() );
-		binaryEncoder.encode( this.getInstance().getFillIn() );
+		binaryEncoder.encode( this.getInstance().getFillIn().getId() );
 	}
 }

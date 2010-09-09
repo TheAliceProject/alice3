@@ -51,10 +51,10 @@ public abstract class CascadingMenuModel extends edu.cmu.cs.dennisc.croquet.Reta
 	}
 	protected abstract edu.cmu.cs.dennisc.croquet.Group getItemGroup();
 	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel( FillIn< ? > fillIn ) {
-		return InternalCascadingMenuModel.createInstance( fillIn );
+		return InternalCascadingMenuModel.getInstance( fillIn.getId() );
 	}
 	protected edu.cmu.cs.dennisc.croquet.Operation< ? > createItemOperation( FillIn< ? > fillIn ) {
-		return InternalCascadingItemOperation.getInstance( this.getItemGroup(), fillIn );
+		return InternalCascadingItemOperation.getInstance( this.getItemGroup(), fillIn.getId() );
 	}
 	public edu.cmu.cs.dennisc.croquet.Model createCroquetModel( FillIn< ? > fillIn, boolean isLast ) {
 		if( fillIn instanceof SeparatorFillIn ) {
