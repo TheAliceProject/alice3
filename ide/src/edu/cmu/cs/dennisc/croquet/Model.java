@@ -148,8 +148,12 @@ public abstract class Model implements RuntimeResolver< Model > {
 	private static int getKeyCode( String vkFieldName ) {
 		return getField( java.awt.event.KeyEvent.class, vkFieldName, NULL_MNEMONIC );
 	}
-	private static int getModifierMask( String vkFieldName ) {
-		return getField( java.awt.event.InputEvent.class, vkFieldName, NULL_ACCELERATOR_MASK );
+	private static int getModifierMask( String modifierText ) {
+		if( "PLATFORM_ACCELERATOR_MASK".equals( modifierText ) ) {
+			return edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask();
+		} else {
+			return getField( java.awt.event.InputEvent.class, modifierText, NULL_ACCELERATOR_MASK );
+		}
 	}
 	
 	protected static int getLocalizedMnemonicKey( Class<?> cls ) {
