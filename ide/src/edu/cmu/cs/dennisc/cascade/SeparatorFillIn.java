@@ -61,8 +61,10 @@ public class SeparatorFillIn extends FillIn< Object > {
 //	}
 	
 	private javax.swing.Icon icon;
+	public SeparatorFillIn() {
+		this( (String)null );
+	}
 	public SeparatorFillIn( final String text ) {
-		
 		if( text != null ) {
 			final java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
 			final java.awt.Font font = edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont( g.getFont(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
@@ -85,8 +87,8 @@ public class SeparatorFillIn extends FillIn< Object > {
 			};
 		}
 	}
-	public SeparatorFillIn() {
-		this( null );
+	public SeparatorFillIn( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 	/*package-private*/ String getName() {
 		return null;

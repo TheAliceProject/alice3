@@ -53,13 +53,22 @@ public abstract class MenuFillIn< E > extends FillIn< E > {
 		this.title = title;
 	}
 	protected abstract void addChildrenToBlank( Blank blank );
+	
+	public static class MenuBlank extends Blank {
+		private MenuFillIn menuFillIn;
+		public MenuBlank( MenuFillIn menuFillIn ) {
+			this.menuFillIn = menuFillIn;
+		}
+		public MenuBlank( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		protected void addChildren() {
+			this.menuFillIn.addChildrenToBlank( this );
+		}	
+	}
 	private Blank createBlank() {
-		return new Blank() {
-			@Override
-			protected void addChildren() {
-				MenuFillIn.this.addChildrenToBlank( this );
-			}	
-		};
+		return new MenuBlank( this );
 	}
 	protected String getLabelText() {
 		return this.title;

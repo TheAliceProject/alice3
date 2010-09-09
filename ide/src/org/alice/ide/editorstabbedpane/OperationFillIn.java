@@ -49,6 +49,9 @@ public class OperationFillIn extends edu.cmu.cs.dennisc.cascade.SimpleFillIn<  e
 	public OperationFillIn( edu.cmu.cs.dennisc.croquet.Operation<?> actionOperation ) {
 		super( actionOperation );
 	}
+	public OperationFillIn( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 	@Override
 	protected String getMenuProxyText() {
 		return this.getModel().getName();

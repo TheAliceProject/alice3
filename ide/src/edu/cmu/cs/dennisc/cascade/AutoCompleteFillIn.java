@@ -50,6 +50,9 @@ public class AutoCompleteFillIn< T > extends FillIn< T > {
 	public AutoCompleteFillIn( T value ) {
 		this.value = value;
 	}
+	public AutoCompleteFillIn( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 	@Override
 	protected final void addChildren() {
 	}

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FillIn< E > extends Node implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public abstract class FillIn< E > extends Node {
 	private edu.cmu.cs.dennisc.croquet.Model model = null;
 	private javax.swing.JComponent menuProxy = null;
 	private boolean wasLast = false; 
@@ -53,13 +53,18 @@ public abstract class FillIn< E > extends Node implements edu.cmu.cs.dennisc.cod
 	public FillIn() {
 	}
 	public FillIn( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.decode( binaryDecoder );
+		super( binaryDecoder );
 	}
 	
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	@Override
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		//todo?
 	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	@Override
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		//todo?
 	}
+
 	public StringBuilder appendTutorialNoteText( StringBuilder rv, java.util.Locale locale ) {
 		return rv;
 	}

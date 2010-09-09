@@ -40,23 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.cascade;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LabeledExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends SimpleExpressionFillIn< E > {
-	private String text;
-	public LabeledExpressionFillIn( E model, String text ) {
-		super( model );
-		this.text = text;
-	}
-	public LabeledExpressionFillIn( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	@Override
-	protected javax.swing.JComponent createMenuProxy() {
-		javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( this.text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
-		return new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( super.createMenuProxy(), javax.swing.Box.createHorizontalStrut( 16 ), label );
-	}
+public interface RetargetingData extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	public void addKeyValuePairs( Retargeter retargeter, RetargetingData replacement );
 }

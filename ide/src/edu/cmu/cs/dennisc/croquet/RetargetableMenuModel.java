@@ -40,23 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.cascade;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LabeledExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends SimpleExpressionFillIn< E > {
-	private String text;
-	public LabeledExpressionFillIn( E model, String text ) {
-		super( model );
-		this.text = text;
-	}
-	public LabeledExpressionFillIn( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+public abstract class RetargetableMenuModel extends MenuModel {
+	public RetargetableMenuModel( java.util.UUID individualId ) {
+		super( individualId );
 	}
 	@Override
-	protected javax.swing.JComponent createMenuProxy() {
-		javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( this.text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
-		return new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( super.createMenuProxy(), javax.swing.Box.createHorizontalStrut( 16 ), label );
+	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
+		super.handlePopupMenuPrologue( popupMenu, context );
+		context.handleRetargetableMenuModelInitialization( this.getRetargetableData() );
 	}
+	public abstract RetargetingData getRetargetableData();
 }

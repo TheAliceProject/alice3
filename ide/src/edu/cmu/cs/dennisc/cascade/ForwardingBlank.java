@@ -52,6 +52,9 @@ public class ForwardingBlank extends Blank {
 		this.fillIn.setParent( this );
 		this.setSelectedFillIn( this.fillIn );
 	}
+	public ForwardingBlank( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 	@Override
 	protected void addChildren() {
 		this.addFillIn( this.fillIn );

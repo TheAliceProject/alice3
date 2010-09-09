@@ -52,6 +52,11 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 		super( POPUP_MENU_GROUP, java.util.UUID.fromString( "34efc403-9eff-4151-b1c6-53dd1249a325" ) );
 		this.menuModel = menuModel;
 	}
+	
+	public MenuModel getMenuModel() {
+		return this.menuModel;
+	}
+	
 	@Override
 	protected boolean isOwnerOfEdit() {
 		return false;
@@ -88,9 +93,12 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 		return new PopupMenuOperationResolver( this );
 	}
 	
+	
+	//todo?
  	@Override
 	protected final void perform( PopupMenuOperationContext context) {
 	}
+ 	
 	@Override
 	protected final void perform( final PopupMenuOperationContext context, final Operation.PerformObserver performObserver ) {
 		//note: do not call super

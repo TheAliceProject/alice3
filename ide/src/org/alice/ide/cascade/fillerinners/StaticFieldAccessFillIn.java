@@ -54,8 +54,8 @@ public class StaticFieldAccessFillIn extends org.alice.ide.cascade.SimpleExpress
 		super( binaryDecoder );
 	}
 	@Override
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super.decode( binaryDecoder );
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super.decodeInternal( binaryDecoder );
 		String typeName = binaryDecoder.decodeString();
 		String fieldName = binaryDecoder.decodeString();
 		Class<?> cls = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( typeName );
@@ -64,8 +64,8 @@ public class StaticFieldAccessFillIn extends org.alice.ide.cascade.SimpleExpress
 		this.setModel( org.alice.ide.ast.NodeUtilities.createStaticFieldAccess( field ) );
 	}
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encodeInternal( binaryEncoder );
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getModel().field.getValue();
 		if( field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField fieldInJava = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField)field;
@@ -76,21 +76,21 @@ public class StaticFieldAccessFillIn extends org.alice.ide.cascade.SimpleExpress
 			throw new RuntimeException( "todo" );
 		}
 	}
-	@Override
-	public final boolean equals( Object o ) {
-		if( this == o ) {
-			return true;
-		} else {
-			if( o instanceof StaticFieldAccessFillIn ) {
-				StaticFieldAccessFillIn other = (StaticFieldAccessFillIn)o;
-				return this.getModel().field.getValue() == other.getModel().field.getValue();
-			} else {
-				return false;
-			}
-		}
-	}
-	@Override
-	public final int hashCode() {
-		return this.getModel().field.getValue().hashCode();
-	}
+//	@Override
+//	public final boolean equals( Object o ) {
+//		if( this == o ) {
+//			return true;
+//		} else {
+//			if( o instanceof StaticFieldAccessFillIn ) {
+//				StaticFieldAccessFillIn other = (StaticFieldAccessFillIn)o;
+//				return this.getModel().field.getValue() == other.getModel().field.getValue();
+//			} else {
+//				return false;
+//			}
+//		}
+//	}
+//	@Override
+//	public final int hashCode() {
+//		return this.getModel().field.getValue().hashCode();
+//	}
 }

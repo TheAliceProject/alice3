@@ -50,11 +50,25 @@ public abstract class Blank extends Node {
 	private CascadingRoot cascadingRoot;
 	private FillIn<?> selectedFillIn;
 
+	public Blank() {
+	}
+	public Blank( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 	public String getTitle() {
 		return this.title;
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	
+	@Override
+	protected final void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		//todo?
+	}
+	@Override
+	protected final void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		//todo?
 	}
 	
 	@Override

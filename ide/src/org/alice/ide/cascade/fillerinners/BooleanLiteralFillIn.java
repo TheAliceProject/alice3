@@ -54,36 +54,36 @@ public class BooleanLiteralFillIn extends org.alice.ide.cascade.SimpleExpression
 		super( binaryDecoder );
 	}
 	@Override
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super.decode( binaryDecoder );
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super.decodeInternal( binaryDecoder );
 		boolean value = binaryDecoder.decodeBoolean();
 		this.setModel( new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( value  ) );
 	}
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encodeInternal( binaryEncoder );
 		boolean value = this.getModel().value.getValue();
 		binaryEncoder.encode( value );
 	}
-	@Override
-	public final boolean equals( Object o ) {
-		if( this == o ) {
-			return true;
-		} else {
-			if( o instanceof BooleanLiteralFillIn ) {
-				BooleanLiteralFillIn other = (BooleanLiteralFillIn)o;
-				return this.getModel().value.getValue() == other.getModel().value.getValue();
-			} else {
-				return false;
-			}
-		}
-	}
-	@Override
-	public final int hashCode() {
-		if( this.getModel().value.getValue() ) {
-			return 1;
-		} else {
-			return 0;
-		}
-	}
+//	@Override
+//	public final boolean equals( Object o ) {
+//		if( this == o ) {
+//			return true;
+//		} else {
+//			if( o instanceof BooleanLiteralFillIn ) {
+//				BooleanLiteralFillIn other = (BooleanLiteralFillIn)o;
+//				return this.getModel().value.getValue() == other.getModel().value.getValue();
+//			} else {
+//				return false;
+//			}
+//		}
+//	}
+//	@Override
+//	public final int hashCode() {
+//		if( this.getModel().value.getValue() ) {
+//			return 1;
+//		} else {
+//			return 0;
+//		}
+//	}
 }

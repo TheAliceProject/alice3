@@ -313,7 +313,7 @@ package edu.cmu.cs.dennisc.tutorial;
 												}
 											}
 										} else {
-											System.err.println( "cannot find trackable shape for: " + feature );
+											//System.err.println( "cannot find trackable shape for: " + feature );
 											feature.unbind();
 											feature.bind();
 										}
@@ -459,7 +459,7 @@ package edu.cmu.cs.dennisc.tutorial;
 										}
 									}
 								} else {
-									System.err.println( "cannot find trackable shape for: " + feature );
+									//System.err.println( "cannot find trackable shape for: " + feature );
 								}
 							}
 						}

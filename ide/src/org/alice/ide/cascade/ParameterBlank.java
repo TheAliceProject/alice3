@@ -51,4 +51,7 @@ public class ParameterBlank extends ExpressionBlank {
 		super( parameter.getDesiredValueType() );
 //		this.parameter = parameter;
 	}
+	public ParameterBlank( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 }

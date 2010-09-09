@@ -45,13 +45,13 @@ package edu.cmu.cs.dennisc.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel implements CascadingRoot {
+public abstract class CascadingMenuModel extends edu.cmu.cs.dennisc.croquet.RetargetableMenuModel implements CascadingRoot {
 	public CascadingMenuModel( java.util.UUID id ) {
 		super( id );
 	}
 	protected abstract edu.cmu.cs.dennisc.croquet.Group getItemGroup();
 	protected edu.cmu.cs.dennisc.croquet.MenuModel createMenuModel( FillIn< ? > fillIn ) {
-		return InternalCascadingMenuModel.getInstance( fillIn );
+		return InternalCascadingMenuModel.createInstance( fillIn );
 	}
 	protected edu.cmu.cs.dennisc.croquet.Operation< ? > createItemOperation( FillIn< ? > fillIn ) {
 		return InternalCascadingItemOperation.getInstance( this.getItemGroup(), fillIn );
@@ -73,6 +73,11 @@ public abstract class CascadingMenuModel extends edu.cmu.cs.dennisc.croquet.Menu
 				return this.createMenuModel( fillIn );
 			}
 		}
+	}
+	
+	@Override
+	public edu.cmu.cs.dennisc.croquet.RetargetingData getRetargetableData() {
+		return this.getCascadeBlank();
 	}
 
 	protected abstract edu.cmu.cs.dennisc.cascade.Blank getCascadeBlank();
