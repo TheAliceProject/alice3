@@ -59,6 +59,12 @@ public abstract class Node implements edu.cmu.cs.dennisc.croquet.RetargetingData
 	
 	public Node() {
 		this.setId( java.util.UUID.randomUUID() );
+		if( this instanceof SeparatorFillIn ) {
+			//pass
+		} else {
+			System.err.println( "Node: " + this.id + " " + this );
+			//Thread.dumpStack();
+		}
 	}
 	public Node( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.decode( binaryDecoder );
@@ -68,7 +74,6 @@ public abstract class Node implements edu.cmu.cs.dennisc.croquet.RetargetingData
 	}
 	private void setId( java.util.UUID id ) {
 		this.id = id;
-		System.err.println( "setId: " + id );
 		map.put( id, this );
 	}
 	
@@ -76,6 +81,7 @@ public abstract class Node implements edu.cmu.cs.dennisc.croquet.RetargetingData
 	protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
 	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.setId( binaryDecoder.decodeId() );
+		System.err.println( "decode: " + this.id + " " + this );
 		this.decodeInternal( binaryDecoder );
 		final int N = binaryDecoder.decodeInt();
 		this.children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();

@@ -86,4 +86,12 @@ public class InternalCascadingMenuModel extends edu.cmu.cs.dennisc.croquet.MenuM
 	protected org.alice.ide.croquet.resolvers.InternalCascadingMenuModelStaticGetInstanceKeyedResolver createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.InternalCascadingMenuModelStaticGetInstanceKeyedResolver( this );
 	}
+	@Override
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		super.appendRepr( rv );
+		rv.append( "[" );
+		rv.append( this.id );
+		rv.append( "]" );
+		return rv;
+	}
 }

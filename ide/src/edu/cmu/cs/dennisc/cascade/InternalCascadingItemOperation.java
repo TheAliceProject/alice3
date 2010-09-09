@@ -95,4 +95,12 @@ public class InternalCascadingItemOperation extends edu.cmu.cs.dennisc.croquet.A
 			context.cancel();
 		}
 	}
+	@Override
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		super.appendRepr( rv );
+		rv.append( "[" );
+		rv.append( this.id );
+		rv.append( "]" );
+		return rv;
+	}
 }

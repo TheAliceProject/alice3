@@ -54,29 +54,31 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 	}
 	
 	public static class RetargetableMenuModelInitializationEvent extends ModelEvent< PopupMenuOperationContext > {
-		private RetargetingData data;
+		private RetargetingData retargetingData;
 		public RetargetableMenuModelInitializationEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
 		private RetargetableMenuModelInitializationEvent( RetargetingData data ) {
-			this.data = data;
+			this.retargetingData = data;
 		}
-
 		
-		@Override
-		public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-			super.retarget( retargeter );
-			this.data = retargeter.retarget( this.data );
+		public RetargetingData getRetargetingData() {
+			return this.retargetingData;
 		}
+//		@Override
+//		public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+//			super.retarget( retargeter );
+//			this.retargetingData = retargeter.retarget( this.retargetingData );
+//		}
 		@Override
 		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super.decodeInternal( binaryDecoder );
-			this.data = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			this.retargetingData = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		}
 		@Override
 		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 			super.encodeInternal( binaryEncoder );
-			binaryEncoder.encode( this.data );
+			binaryEncoder.encode( this.retargetingData );
 		}
 		@Override
 		public State getState() {
@@ -176,7 +178,7 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 			super.appendRepr( rv );
 			for( Model model : this.models ) {
 				rv.append( " " );
-				rv.append( model.getClass().getName() );
+				rv.append( model );
 			}
 			return rv;
 		}

@@ -86,24 +86,18 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 		//final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( this, 0 );
 		
 		class AstLiveRetargeter implements edu.cmu.cs.dennisc.croquet.Retargeter {
-			private java.util.Map< edu.cmu.cs.dennisc.alice.ast.Node, edu.cmu.cs.dennisc.alice.ast.Node > mapOriginalNodeToReplacementNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			private java.util.Map< Object, Object > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 			public void addKeyValuePair( Object key, Object value ) {
-				if( key instanceof edu.cmu.cs.dennisc.alice.ast.Node && value instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
-					this.mapOriginalNodeToReplacementNode.put( (edu.cmu.cs.dennisc.alice.ast.Node)key, (edu.cmu.cs.dennisc.alice.ast.Node)value );
-				}
+				this.map.put( key, value );
 			}
-			public <N> N retarget(N value) {
-				if( value instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
-					edu.cmu.cs.dennisc.alice.ast.Node originalNode = (edu.cmu.cs.dennisc.alice.ast.Node)value;
-					edu.cmu.cs.dennisc.alice.ast.Node retargetedNode = mapOriginalNodeToReplacementNode.get( originalNode );
-					if( retargetedNode != null ) {
-						return (N)retargetedNode;
-					} else {
-						return value;
-					}
+			public <N> N retarget(N original) {
+				N rv = (N)map.get( original );
+				if( rv != null ) {
+					//pass
 				} else {
-					return value;
+					rv = original;
 				}
+				return rv;
 			}
 		};
 

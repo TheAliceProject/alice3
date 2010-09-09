@@ -312,12 +312,12 @@ public class AutomaticTutorial {
 			sb.append( "</em></strong>" );
 			return sb.toString();
 		}
-		public static MenuSelectionNote createInstance( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, int index0 ) {
-			return new MenuSelectionNote( popupMenuOperationContext, menuSelectionEvent, i, modelContext, index0 );
+		public static MenuSelectionNote createInstance( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent retargetableMenuModelInitializationEvent, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, int index0 ) {
+			return new MenuSelectionNote( retargetableMenuModelInitializationEvent, menuSelectionEvent, i, modelContext, index0 );
 		}
 		
 		
-		private edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext originalPopupMenuOperationContext;
+		edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent originalRetargetableMenuModelInitializationEvent;
 		private edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent originalMenuSelectionEvent;
 		private int i;
 		private edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext;
@@ -326,9 +326,9 @@ public class AutomaticTutorial {
 			return new FirstComponentResolver( new ModelFromMenuSelectionResolver< edu.cmu.cs.dennisc.croquet.Model >( menuSelectionEvent, index ) );
 		}
 		
-		private MenuSelectionNote( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, int index0 ) {
+		private MenuSelectionNote( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent retargetableMenuModelInitializationEvent, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, int index0 ) {
 			super( getText( menuSelectionEvent, i ) );
-			this.originalPopupMenuOperationContext = popupMenuOperationContext;
+			this.originalRetargetableMenuModelInitializationEvent = retargetableMenuModelInitializationEvent;
 			this.originalMenuSelectionEvent = menuSelectionEvent;
 			this.modelContext = modelContext;
 			this.i = i;
@@ -377,20 +377,15 @@ public class AutomaticTutorial {
 		@Override
 		public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
 			if( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent ) {
-				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent retargetableMenuModelInitializationEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent)child;
-				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)retargetableMenuModelInitializationEvent.getParent();
-				edu.cmu.cs.dennisc.croquet.MenuModel menuModel = popupMenuOperationContext.getModel().getMenuModel();
-				if( menuModel instanceof edu.cmu.cs.dennisc.croquet.RetargetableMenuModel ) {
-					edu.cmu.cs.dennisc.croquet.RetargetableMenuModel retargetableMenuModel = (edu.cmu.cs.dennisc.croquet.RetargetableMenuModel)menuModel;
-					edu.cmu.cs.dennisc.croquet.MenuModel originalMenuModel = this.originalPopupMenuOperationContext.getModel().getMenuModel();
-					if( originalMenuModel instanceof edu.cmu.cs.dennisc.croquet.RetargetableMenuModel ) {
-						edu.cmu.cs.dennisc.croquet.RetargetableMenuModel originalRetargetableMenuModel = (edu.cmu.cs.dennisc.croquet.RetargetableMenuModel)originalMenuModel;
-						
-						
+				if( this.originalRetargetableMenuModelInitializationEvent != null ) {
+					edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent retargetableMenuModelInitializationEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent)child;
+					edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)retargetableMenuModelInitializationEvent.getParent();
+					edu.cmu.cs.dennisc.croquet.MenuModel menuModel = popupMenuOperationContext.getModel().getMenuModel();
+					if( menuModel instanceof edu.cmu.cs.dennisc.croquet.RetargetableMenuModel ) {
+						edu.cmu.cs.dennisc.croquet.RetargetableMenuModel retargetableMenuModel = (edu.cmu.cs.dennisc.croquet.RetargetableMenuModel)menuModel;
+						edu.cmu.cs.dennisc.croquet.RetargetingData originalRetargetingData = this.originalRetargetableMenuModelInitializationEvent.getRetargetingData();
 						edu.cmu.cs.dennisc.croquet.Retargeter retargeter = AutomaticTutorial.getInstance().getRetargeter();
-						originalRetargetableMenuModel.getRetargetableData().addKeyValuePairs( retargeter, retargetableMenuModel.getRetargetableData() );
-						
-						
+						originalRetargetingData.addKeyValuePairs( retargeter, retargetableMenuModel.getRetargetableData() );
 						AutomaticTutorial.getInstance().sourceContext.retarget( retargeter );
 					}
 				}
@@ -423,6 +418,13 @@ public class AutomaticTutorial {
 			edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)node;
 			int POPUP_CONTEXT_CHILD_COUNT = popupMenuOperationContext.getChildCount();
 			if( POPUP_CONTEXT_CHILD_COUNT > 1 ) {
+				edu.cmu.cs.dennisc.croquet.HistoryNode firstChild = popupMenuOperationContext.getChildAt( 0 );
+				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent retargetableMenuModelInitializationEvent;
+				if( firstChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent ) {
+					retargetableMenuModelInitializationEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent)firstChild;
+				} else {
+					retargetableMenuModelInitializationEvent = null;
+				}
 				edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = popupMenuOperationContext.getChildAt( POPUP_CONTEXT_CHILD_COUNT-1 );
 				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
 					edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)lastChild;
@@ -438,7 +440,8 @@ public class AutomaticTutorial {
 								index0 = 0;
 							}
 							for( int i=index0; i<N; i++ ) {
-								rv.add( MenuSelectionNote.createInstance( popupMenuOperationContext, menuSelectionEvent, i, modelContext, index0 ) );
+								rv.add( MenuSelectionNote.createInstance( retargetableMenuModelInitializationEvent, menuSelectionEvent, i, modelContext, index0 ) );
+								retargetableMenuModelInitializationEvent = null;
 							}
 						}
 					}
@@ -500,8 +503,8 @@ public class AutomaticTutorial {
 		@Override
 		protected java.awt.Point calculateLocationOfFirstNote( edu.cmu.cs.dennisc.croquet.Container< ? > container ) {
 			java.awt.Point rv = super.calculateLocationOfFirstNote( container );
-			rv.x += 400;
-			rv.y += 350;
+			rv.x += 200;
+			rv.y += 100;
 			return rv;
 		}
 		

@@ -59,7 +59,9 @@ public class InternalCascadingItemOperationStaticGetInstanceKeyedResolver extend
 		Object[] arguments = this.getArguments();
 		assert arguments != null;
 		assert arguments.length == 2;
+		System.err.println( "pre: " + arguments[ 1 ] );
 		arguments[ 1 ] = retargeter.retarget( arguments[ 1 ] );
+		System.err.println( "pst: " + arguments[ 1 ] );
 	}
 
 	@Override

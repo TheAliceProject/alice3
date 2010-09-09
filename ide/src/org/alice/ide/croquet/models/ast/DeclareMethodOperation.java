@@ -109,15 +109,13 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.In
 		return this.declaringType;
 	}
 	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getName() );
-		sb.append( "[" );
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		super.appendRepr( rv );
+		rv.append( "[" );
 		if( this.declaringType != null ) {
-			sb.append( this.declaringType.getName() );
+			rv.append( this.declaringType.getName() );
 		}
-		sb.append( "]" );
-		return sb.toString();
-	}
-	
+		rv.append( "]" );
+		return rv;
+	}	
 }

@@ -319,13 +319,19 @@ public abstract class Model implements RuntimeResolver< Model > {
 			this.firstComponentHint = firstComponentHint;
 		}
 	}
+	
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		rv.append( this.getClass().getName() );
+		rv.append( "[" );
+		rv.append( this.getGroup() );
+		rv.append( "]" );
+		return rv;
+	}
+	
 	@Override
-	public String toString() {
+	public final String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getName() );
-		sb.append( "[" );
-		sb.append( this.getGroup() );
-		sb.append( "]" );
+		this.appendRepr( sb );
 		return sb.toString();
 	}
 }
