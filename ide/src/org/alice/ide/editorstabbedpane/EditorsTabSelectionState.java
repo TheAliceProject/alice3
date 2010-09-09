@@ -281,10 +281,22 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 			}
 			return false;
 		}
-		public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+		public void customizeTitleComponent( edu.cmu.cs.dennisc.croquet.BooleanState booleanState, final edu.cmu.cs.dennisc.croquet.AbstractButton< ?, edu.cmu.cs.dennisc.croquet.BooleanState > button, edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 			booleanState.setTextForBothTrueAndFalse( getMenuText( code ) );
 			button.getAwtComponent().setIcon( getMenuSmallIcon( code ) );
 			button.scaleFont( 1.5f );
+			
+			if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+				final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
+				methodDeclaredInAlice.name.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+					public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+					}
+					public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+						button.getAwtComponent().setText( (String)e.getValue() );
+					}
+				} );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: name listener" );
+			}
 			
 			if( IS_RUN_BUTTON_DESIRED ) {
 				if( isEntryPoint(code) ) {
