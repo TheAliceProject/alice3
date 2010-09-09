@@ -59,7 +59,7 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = ide.getCascadeManager().createCopyOfPreviousExpression();
 		final boolean isTop = blank.getParentFillIn() == null;
-		if( isTop ) {
+		if( isTop && previousExpression != null ) {
 			if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression ) {
 				edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression previousConditionalInfixExpression = (edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression)previousExpression;
 				edu.cmu.cs.dennisc.alice.ast.Expression leftOperand = previousConditionalInfixExpression.leftOperand.getValue();
@@ -82,8 +82,8 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 		}
 		blank.addFillIn( new BooleanLiteralFillIn( true ) );
 		blank.addFillIn( new BooleanLiteralFillIn( false ) );
-		blank.addSeparator();
-		if( isTop ) {
+		if( isTop && previousExpression != null ) {
+			blank.addSeparator();
 	//			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Random" ) {
 	//			@Override
 	//			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {

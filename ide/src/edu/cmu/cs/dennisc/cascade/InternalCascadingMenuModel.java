@@ -48,7 +48,6 @@ package edu.cmu.cs.dennisc.cascade;
 public class InternalCascadingMenuModel extends edu.cmu.cs.dennisc.croquet.MenuModel {
 	private static java.util.Map< java.util.UUID, InternalCascadingMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized InternalCascadingMenuModel getInstance( java.util.UUID id ) {
-		System.err.println( "getInstance: " + id );
 		InternalCascadingMenuModel rv = map.get( id );
 		if( rv != null ) {
 			//pass

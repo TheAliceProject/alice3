@@ -54,7 +54,7 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		final edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getCascadeManager().createCopyOfPreviousExpression();
 		final boolean isTop = blank.getParentFillIn() == null;
-		if( isTop ) {
+		if( isTop && previousExpression != null ) {
 			if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression ) {
 				edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression previousArithmeticInfixExpression = (edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression)previousExpression;
 				edu.cmu.cs.dennisc.alice.ast.Expression leftOperand = previousArithmeticInfixExpression.leftOperand.getValue();
@@ -76,8 +76,8 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 		for( double d : new double[] { 0.0, 0.25, 0.5, 1.0, 2.0, 10.0 } ) {
 			blank.addFillIn( new DoubleLiteralFillIn( d ) );
 		}
-		blank.addSeparator();
-		if( isTop ) {
+		if( isTop && previousExpression != null ) {
+			blank.addSeparator();
 			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Random" ) {
 				@Override
 				protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {

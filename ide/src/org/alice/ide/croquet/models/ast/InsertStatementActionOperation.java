@@ -119,14 +119,9 @@ public class InsertStatementActionOperation extends edu.cmu.cs.dennisc.croquet.A
 	}
 	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 		org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation>)edit;
-		InsertStatementActionOperation replacementModel = replacementEdit.getModel();
-		//retargeter.addKeyValuePair( this, replacementModel );
-		retargeter.addKeyValuePair( this.blockStatement, replacementModel.blockStatement );
-		retargeter.addKeyValuePair( this.statement, replacementModel.statement );
-		System.err.println( "TODO: recursive retarget" );
-		if( this.statement instanceof edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody ) {
-			retargeter.addKeyValuePair( ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)this.statement).body.getValue(), ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)replacementModel.statement).body.getValue() );
-		}
+		InsertStatementActionOperation replacement = replacementEdit.getModel();
+		retargeter.addKeyValuePair( this.blockStatement, replacement.blockStatement );
+		retargeter.addKeyValuePair( this.statement, replacement.statement );
 	}
 	
 	@Override

@@ -89,6 +89,10 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 			private java.util.Map< Object, Object > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 			public void addKeyValuePair( Object key, Object value ) {
 				this.map.put( key, value );
+				if( key instanceof edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody ) {
+					System.err.println( "TODO: recursive retarget" );
+					this.addKeyValuePair( ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)key).body.getValue(), ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)value).body.getValue() );
+				}
 			}
 			public <N> N retarget(N original) {
 				N rv = (N)map.get( original );

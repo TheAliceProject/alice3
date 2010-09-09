@@ -132,7 +132,7 @@ public abstract class Node implements edu.cmu.cs.dennisc.croquet.RetargetingData
 	protected abstract void addPrefixChildren();
 	protected abstract void cleanUp();
 	protected abstract void addChildren();
-	public java.util.List<Node> getChildren() {
+	public final java.util.List<Node> getChildren() {
 		 if( this.children != null ) {
 			 //pass
 		 } else {

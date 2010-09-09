@@ -51,7 +51,6 @@ public class InternalCascadingMenuModelStaticGetInstanceKeyedResolver extends ed
 	public InternalCascadingMenuModelStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.cascade.InternalCascadingMenuModel instance ) {
 		super( instance );
 		java.util.UUID id = this.getInstance().getFillIn().getId();
-		System.err.println( "InternalCascadingMenuModelStaticGetInstanceKeyedResolver: " + id );
 	}
 	public InternalCascadingMenuModelStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
@@ -61,11 +60,7 @@ public class InternalCascadingMenuModelStaticGetInstanceKeyedResolver extends ed
 		Object[] arguments = this.getArguments();
 		assert arguments != null;
 		assert arguments.length == 1;
-		
-		Object original = arguments[ 0 ];
-		Object replacement = retargeter.retarget( original );
-		arguments[ 0 ] = replacement;
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "retarget: ", original, "->", replacement );
+		arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
 	}
 
 	@Override

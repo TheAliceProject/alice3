@@ -71,11 +71,16 @@ public class InternalCascadingItemOperation extends edu.cmu.cs.dennisc.croquet.A
 	@Override
 	public String getTutorialNoteText() {
 		StringBuilder sb = new StringBuilder();
-		this.getFillIn().appendTutorialNoteText( sb, java.util.Locale.getDefault() );
-		if( sb.length() > 0 ) {
-			return sb.toString();
+		FillIn< ? > fillIn = this.getFillIn();
+		if( fillIn != null ) {
+			fillIn.appendTutorialNoteText( sb, java.util.Locale.getDefault() );
+			if( sb.length() > 0 ) {
+				return sb.toString();
+			} else {
+				return fillIn.toString();
+			}
 		} else {
-			return this.getFillIn().toString();
+			return "unknown fill in: " + this;
 		}
 	}
 	@Override
