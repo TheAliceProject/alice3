@@ -44,6 +44,194 @@ package edu.cmu.cs.dennisc.croquet.tutorial;
 
 import edu.cmu.cs.dennisc.tutorial.*;
 
+class CancelException extends Exception {
+	public CancelException( String message ) {
+		super( message );
+	}
+}
+
+interface ParentContextCriterion {
+	boolean isAcceptableParentContext( edu.cmu.cs.dennisc.croquet.ModelContext< ? > parentContext );
+}
+
+enum IsRootContextCriterion implements ParentContextCriterion {
+	SINGLETON;
+	public boolean isAcceptableParentContext( edu.cmu.cs.dennisc.croquet.ModelContext< ? > parentContext ) {
+		return edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() == parentContext;
+	}
+}
+
+enum IsAnyMenuBarModelContextCriterion implements ParentContextCriterion {
+	SINGLETON;
+	public boolean isAcceptableParentContext( edu.cmu.cs.dennisc.croquet.ModelContext< ? > parentContext ) {
+		return parentContext instanceof edu.cmu.cs.dennisc.croquet.MenuBarModelContext;
+	}
+}
+
+interface Requirement< N extends edu.cmu.cs.dennisc.croquet.HistoryNode > {
+	//void bindParentContext();
+	//void unbindParentContext();
+	boolean isWhatWereLookingFor( edu.cmu.cs.dennisc.croquet.HistoryNode historyNode ) throws CancelException;
+}
+
+class IsChildOfAndInstanceOf<N extends edu.cmu.cs.dennisc.croquet.HistoryNode> implements Requirement<N> {
+	private ParentContextCriterion parentContextCriterion;
+	private Class<N> cls;
+	public IsChildOfAndInstanceOf( ParentContextCriterion parentContextCriterion, Class<N> cls ) {
+		this.parentContextCriterion = parentContextCriterion;
+		this.cls = cls;
+	}
+	protected boolean isSpecificallyWhatWereLookingFor(N historyNode) throws CancelException {
+		return true;
+	}
+	public final boolean isWhatWereLookingFor( edu.cmu.cs.dennisc.croquet.HistoryNode historyNode ) throws CancelException {
+		if( this.parentContextCriterion.isAcceptableParentContext( historyNode.getParent() ) ) {
+			if( this.cls.isAssignableFrom( historyNode.getClass() ) ) {
+				return this.isSpecificallyWhatWereLookingFor( this.cls.cast( historyNode ) );
+			} else {
+				if( historyNode instanceof edu.cmu.cs.dennisc.croquet.CancelEvent ) {
+					throw new CancelException( "cancel" );
+				} else {
+					return false;
+				}
+			}
+		} else {
+			return false;
+		}
+	}
+}
+
+class IsAcceptableCommitOf extends IsChildOfAndInstanceOf< edu.cmu.cs.dennisc.croquet.CommitEvent > {
+	private edu.cmu.cs.dennisc.croquet.CommitEvent originalCommitEvent;
+	public IsAcceptableCommitOf( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent originalCommitEvent ) {
+		super( parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent.class );
+		this.originalCommitEvent = originalCommitEvent;
+	}
+	@Override
+	protected boolean isSpecificallyWhatWereLookingFor( edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) throws CancelException {
+		boolean rv = super.isSpecificallyWhatWereLookingFor( commitEvent );
+		if( rv ) {
+			edu.cmu.cs.dennisc.croquet.Edit< ? > potentialReplacementEdit = commitEvent.getEdit();
+			if( this.originalCommitEvent != null ) {
+				edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit = this.originalCommitEvent.getEdit();
+				if( originalEdit.isReplacementAcceptable( potentialReplacementEdit ) ) {
+					edu.cmu.cs.dennisc.croquet.Retargeter retargeter = AutomaticTutorial.getInstance().getRetargeter();
+					originalEdit.addKeyValuePairs( retargeter, potentialReplacementEdit );
+					AutomaticTutorial.getInstance().retargetOriginalContext( retargeter );
+				} else {
+					throw new CancelException( "unacceptable: replacement edit does not pass muster." );
+				}
+			} else {
+				if( potentialReplacementEdit != null ) {
+					throw new CancelException( "unacceptable: replacement edit is null." );
+				} else {
+					//pass
+				}
+			}
+		}
+		return rv;
+	}
+}
+
+class IsMenuSelectionEventOf extends IsChildOfAndInstanceOf< edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent > {
+	private edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent originalMenuSelectionEvent;
+	private int requiredIndex;
+	public IsMenuSelectionEventOf( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent originalMenuSelectionEvent, int requiredIndex ) {
+		super( parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent.class );
+		this.originalMenuSelectionEvent = originalMenuSelectionEvent;
+		this.requiredIndex = requiredIndex;
+	}
+	@Override
+	protected boolean isSpecificallyWhatWereLookingFor( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent ) throws CancelException {
+		boolean rv = super.isSpecificallyWhatWereLookingFor( menuSelectionEvent );
+		if( rv ) {
+			
+		}
+		return rv;
+	}
+}
+
+class RequirementNote extends HistoryNote implements ParentContextCriterion {
+	private java.util.List< Requirement<?> > requirements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private int fulfilledRequirementIndex;
+	
+	private java.util.List< edu.cmu.cs.dennisc.croquet.HistoryNode > nodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private int checkIndex = -1;
+	
+	public RequirementNote( String text, Requirement<?>... requirements ) {
+		super( text );
+		edu.cmu.cs.dennisc.java.util.Collections.addAll( this.requirements, requirements );
+		for( int i=0; i<this.requirements.size(); i++ ) {
+			this.nodes.add( null );
+		}
+	}
+	public void setCheckIndex( int checkIndex ) {
+		this.checkIndex = checkIndex;
+	}
+	public void addRequirement( Requirement<?> requirement ) {
+		this.requirements.add( requirement );
+		this.nodes.add( null );
+	}
+	@Override
+	public void reset() {
+		super.reset();
+		this.fulfilledRequirementIndex = 0;
+		for( int i=0; i<this.nodes.size(); i++ ) {
+			this.nodes.set( i, null );
+		}
+	}
+	@Override
+	public final boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+		try {
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", child );
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", this.index );
+			final int N = this.requirements.size();
+			while( this.fulfilledRequirementIndex<N ) {
+				if( this.requirements.get( this.fulfilledRequirementIndex ).isWhatWereLookingFor( child ) ) {
+					this.nodes.set( this.fulfilledRequirementIndex, child );
+					this.fulfilledRequirementIndex += 1;
+				} else {
+					break;
+				}
+			}
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", this.index );
+			return this.fulfilledRequirementIndex == N;
+		} catch( CancelException ce ) {
+			throw new RuntimeException( "todo", ce );
+		}
+	}
+	public boolean isAcceptableParentContext( edu.cmu.cs.dennisc.croquet.ModelContext< ? > parentContext ) {
+		boolean rv;
+		final int N = this.requirements.size();
+		int actualIndex = this.checkIndex;
+		if( actualIndex < 0 ) {
+			actualIndex += N;
+		}
+		edu.cmu.cs.dennisc.croquet.HistoryNode checkNode = this.nodes.get( actualIndex );
+		if( checkNode != null ) {
+			if( checkNode instanceof edu.cmu.cs.dennisc.croquet.ModelContext ) {
+				rv = checkNode == parentContext;
+			} else {
+				rv = checkNode.getParent() == parentContext;
+			}
+		} else {
+			throw new NullPointerException();
+		}
+		
+//		if( rv ) {
+//			//pass
+//		} else {
+//			for( int i=0; i<N; i++ ) {
+//				edu.cmu.cs.dennisc.croquet.HistoryNode node = this.nodes.get( i );
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "isAcceptableParentContext:", i, N, node != null ? node.hashCode() : 0, node );
+//			}
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "isAcceptableParentContext: parentCx", parentContext.hashCode(), parentContext );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "isAcceptableParentContext: value", checkNode == parentContext );
+//		}
+		return rv;
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
@@ -108,13 +296,13 @@ public class AutomaticTutorial {
 		}
 		return rv;
 	}
-	private static java.util.List< HistoryNote > appendNotes( java.util.List< HistoryNote > rv, edu.cmu.cs.dennisc.croquet.HistoryNode node ) {
+	private static java.util.List< HistoryNote > appendNotes( java.util.List< HistoryNote > rv, edu.cmu.cs.dennisc.croquet.HistoryNode node, ParentContextCriterion parentContextCriterion ) {
 		if( node instanceof edu.cmu.cs.dennisc.croquet.MenuBarModelContext ) {
 			edu.cmu.cs.dennisc.croquet.MenuBarModelContext menuBarModelContext = (edu.cmu.cs.dennisc.croquet.MenuBarModelContext)node;
 			edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = menuBarModelContext.getLastChild();
 			if( lastChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext ) {
 				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)lastChild;
-				appendNotes( rv, popupMenuOperationContext );
+				appendNotes( rv, popupMenuOperationContext, IsAnyMenuBarModelContextCriterion.SINGLETON );
 			}
 		} else if( node instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
 			edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext = (edu.cmu.cs.dennisc.croquet.DragAndDropContext)node;
@@ -122,10 +310,25 @@ public class AutomaticTutorial {
 			if( DND_CONTEXT_CHILD_COUNT > 1 ) {
 				edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = dragAndDropContext.getChildAt( DND_CONTEXT_CHILD_COUNT-1 );
 				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
-					edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)lastChild;
-					rv.add( DragNote.createInstance( dragAndDropContext ) );
-					rv.add( DropNote.createInstance( dragAndDropContext ) );
-					appendNotes( rv, modelContext );
+					edu.cmu.cs.dennisc.croquet.ModelContext< ? > childModelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)lastChild;
+					
+					edu.cmu.cs.dennisc.croquet.HistoryNode lastGrandchild = childModelContext.getLastChild();
+					if( lastGrandchild instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
+						edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent)lastGrandchild;
+						DragNote dragNote = DragNote.createInstance( dragAndDropContext, parentContextCriterion );
+						boolean isPending = childModelContext instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext;
+						DropNote dropNote;
+						if( isPending ) {
+							dropNote = DropNote.createPendingInstance( dragNote, dragAndDropContext, childModelContext );
+						} else {
+							dropNote = DropNote.createCommitInstance( dragNote, dragAndDropContext, childModelContext, commitEvent );
+						}
+						rv.add( dragNote );
+						rv.add( dropNote );
+//						if( isPending ) {
+//							appendNotes( rv, childModelContext, dropNote );
+//						}
+					}
 				}
 			}
 		} else if( node instanceof edu.cmu.cs.dennisc.croquet.OperationContext ) {
@@ -222,7 +425,7 @@ public class AutomaticTutorial {
 		private java.util.List< HistoryNote > notes;
 		private java.util.List< HistoryNote > createNotes() {
 			java.util.List< HistoryNote > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			appendNotes( rv, this.context );
+			appendNotes( rv, this.context, IsRootContextCriterion.SINGLETON );
 			return rv;
 		}
 		@Override

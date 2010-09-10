@@ -46,19 +46,18 @@ import edu.cmu.cs.dennisc.tutorial.*;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class DragNote extends HistoryNote {
-	public static DragNote createInstance( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		return new DragNote( dragAndDropContext );
+/*package-private*/ class DragNote extends RequirementNote {
+	public static DragNote createInstance( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, ParentContextCriterion parentContextCriterion ) {
+		return new DragNote( 
+				dragAndDropContext, 
+				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.DragAndDropContext.class ) 
+		);
 	}
-	private DragNote( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		super( dragAndDropContext.getModel().getTutorialDragNoteText() );
+	private DragNote( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, Requirement< ? > requirement ) {
+		super( dragAndDropContext.getModel().getTutorialDragNoteText(), requirement );
 		ModelFromContextResolver modelResolver = new ModelFromContextResolver( dragAndDropContext );
 		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
 		DropSiteResolver dropSiteResolver = new DropSiteResolver( dragAndDropContext ); 
 		this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			
-	}
-	@Override
-	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
-		return child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext;
 	}
 }

@@ -46,17 +46,26 @@ import edu.cmu.cs.dennisc.tutorial.*;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class DropNote extends HistoryNote {
-	public static DropNote createInstance( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		return new DropNote( dragAndDropContext );
+/*package-private*/ class DropNote extends RequirementNote {
+	public static DropNote createCommitInstance( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.croquet.ModelContext< ? > childModelContext, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
+		DropNote rv = new DropNote( 
+				dragAndDropContext, 
+				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent.class ),
+				new IsChildOfAndInstanceOf( parentContextCriterion, childModelContext.getClass() )
+		);
+		rv.addRequirement( new IsAcceptableCommitOf( rv, commitEvent ) );
+		rv.setCheckIndex( -2 );
+		return rv;
 	}
-	private DropNote( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		super( dragAndDropContext.getModel().getTutorialDropNoteText() );
+	public static DropNote createPendingInstance( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.croquet.ModelContext< ? > childModelContext ) {
+		return new DropNote( dragAndDropContext, 
+				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent.class ),
+				new IsChildOfAndInstanceOf( parentContextCriterion, childModelContext.getClass() )
+		);
+	}
+	private DropNote( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, Requirement< ? >... requirements ) {
+		super( dragAndDropContext.getModel().getTutorialDropNoteText(), requirements );
 		DropSiteResolver dropSiteResolver = new DropSiteResolver( dragAndDropContext ); 
 		this.addFeature( new Hole( dropSiteResolver, Feature.ConnectionPreference.EAST_WEST ) );			
-	}
-	@Override
-	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
-		return child instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent;
 	}
 }

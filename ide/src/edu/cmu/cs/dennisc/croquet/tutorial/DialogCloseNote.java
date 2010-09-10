@@ -41,8 +41,6 @@
  */
 package edu.cmu.cs.dennisc.croquet.tutorial;
 
-import edu.cmu.cs.dennisc.tutorial.*;
-
 /**
  * @author Dennis Cosgrove
  */
