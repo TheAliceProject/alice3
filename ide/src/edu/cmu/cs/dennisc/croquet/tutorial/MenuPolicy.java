@@ -41,40 +41,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.resolvers;
+package edu.cmu.cs.dennisc.croquet.tutorial;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BlockStatementIndexPairStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< T > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< T > {
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.codeeditor.BlockStatementIndexPair.class };
-	private org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
-	public BlockStatementIndexPairStaticGetInstanceKeyedResolver( T instance, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( instance );
-		this.blockStatementIndexPair = blockStatementIndexPair;
+public enum MenuPolicy {
+	ABOVE_STENCIL_WITH_FEEDBACK( javax.swing.JLayeredPane.POPUP_LAYER - 1, true ),
+	ABOVE_STENCIL_WITHOUT_FEEDBACK( javax.swing.JLayeredPane.POPUP_LAYER - 1, false ),
+	BELOW_STENCIL( javax.swing.JLayeredPane.POPUP_LAYER + 1, true );
+	private int stencilLayer;
+	private boolean isFeedbackDesired;
+	private MenuPolicy( int stencilLayer, boolean isFeedbackDesired ) {
+		this.stencilLayer = stencilLayer;
+		this.isFeedbackDesired = isFeedbackDesired;
 	}
-	public BlockStatementIndexPairStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public int getStencilLayer() {
+		return this.stencilLayer;
 	}
-	
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		Object[] arguments = this.getArguments();
-		arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
+	public boolean isAboveStencil() {
+		return this.stencilLayer < javax.swing.JLayeredPane.POPUP_LAYER;
 	}
-	
-	@Override
-	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return PARAMETER_TYPES;
+	public boolean isBelowStencil() {
+		return this.stencilLayer > javax.swing.JLayeredPane.POPUP_LAYER;
 	}
-	@Override
-	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-	}
-	@Override
-	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return new Object[] { binaryDecoder.decodeBinaryEncodableAndDecodable() };
-	}
-	@Override
-	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.blockStatementIndexPair );
+	public boolean isFeedbackDesired() {
+		return this.isFeedbackDesired;
 	}
 }

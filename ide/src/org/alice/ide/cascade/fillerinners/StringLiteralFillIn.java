@@ -41,31 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.tutorial;
+package org.alice.ide.cascade.fillerinners;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum MenuPolicy {
-	ABOVE_STENCIL_WITH_FEEDBACK( javax.swing.JLayeredPane.POPUP_LAYER - 1, true ),
-	ABOVE_STENCIL_WITHOUT_FEEDBACK( javax.swing.JLayeredPane.POPUP_LAYER - 1, false ),
-	BELOW_STENCIL( javax.swing.JLayeredPane.POPUP_LAYER + 1, true );
-	private int stencilLayer;
-	private boolean isFeedbackDesired;
-	private MenuPolicy( int stencilLayer, boolean isFeedbackDesired ) {
-		this.stencilLayer = stencilLayer;
-		this.isFeedbackDesired = isFeedbackDesired;
+public class StringLiteralFillIn extends org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.StringLiteral > {
+	public StringLiteralFillIn( String value ) {
+		super( new edu.cmu.cs.dennisc.alice.ast.StringLiteral( value ) );
 	}
-	public int getStencilLayer() {
-		return this.stencilLayer;
+	public StringLiteralFillIn( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
-	public boolean isAboveStencil() {
-		return this.stencilLayer < javax.swing.JLayeredPane.POPUP_LAYER;
+	@Override
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super.decodeInternal( binaryDecoder );
+		String value = binaryDecoder.decodeString();
+		this.setModel( new edu.cmu.cs.dennisc.alice.ast.StringLiteral( value  ) );
 	}
-	public boolean isBelowStencil() {
-		return this.stencilLayer > javax.swing.JLayeredPane.POPUP_LAYER;
-	}
-	public boolean isFeedbackDesired() {
-		return this.isFeedbackDesired;
+	@Override
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encodeInternal( binaryEncoder );
+		String value = this.getModel().value.getValue();
+		binaryEncoder.encode( value );
 	}
 }

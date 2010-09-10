@@ -116,43 +116,6 @@ public class AutomaticTutorial {
 				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)lastChild;
 				appendNotes( rv, popupMenuOperationContext );
 			}
-		} else if( node instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext ) {
-			edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)node;
-			int POPUP_CONTEXT_CHILD_COUNT = popupMenuOperationContext.getChildCount();
-			if( POPUP_CONTEXT_CHILD_COUNT > 1 ) {
-				edu.cmu.cs.dennisc.croquet.HistoryNode firstChild = popupMenuOperationContext.getChildAt( 0 );
-				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent retargetableMenuModelInitializationEvent;
-				if( firstChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent ) {
-					retargetableMenuModelInitializationEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent)firstChild;
-				} else {
-					retargetableMenuModelInitializationEvent = null;
-				}
-				edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = popupMenuOperationContext.getChildAt( POPUP_CONTEXT_CHILD_COUNT-1 );
-				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
-					edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)lastChild;
-					edu.cmu.cs.dennisc.croquet.HistoryNode secondToLastChild = popupMenuOperationContext.getChildAt( POPUP_CONTEXT_CHILD_COUNT-2 );
-					if( secondToLastChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
-						edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)secondToLastChild;
-						final int N = menuSelectionEvent.getModelCount();
-						if( N > 0 ) {
-							int index0;
-							if( menuSelectionEvent.getModelAt( 0 ) instanceof edu.cmu.cs.dennisc.croquet.MenuBarModel ) {
-								index0 = 1;
-							} else {
-								index0 = 0;
-							}
-							for( int i=index0; i<N; i++ ) {
-								rv.add( MenuSelectionNote.createInstance( retargetableMenuModelInitializationEvent, menuSelectionEvent, i, modelContext, index0 ) );
-								retargetableMenuModelInitializationEvent = null;
-							}
-						}
-					}
-					if( modelContext instanceof edu.cmu.cs.dennisc.croquet.OperationContext< ? > ) {
-						edu.cmu.cs.dennisc.croquet.OperationContext< ? > operationContext = (edu.cmu.cs.dennisc.croquet.OperationContext< ? >)modelContext;
-						appendBonusOperationNotes( rv, operationContext );
-					}
-				}
-			}
 		} else if( node instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
 			edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext = (edu.cmu.cs.dennisc.croquet.DragAndDropContext)node;
 			int DND_CONTEXT_CHILD_COUNT = dragAndDropContext.getChildCount();
@@ -166,9 +129,48 @@ public class AutomaticTutorial {
 				}
 			}
 		} else if( node instanceof edu.cmu.cs.dennisc.croquet.OperationContext ) {
-			edu.cmu.cs.dennisc.croquet.OperationContext operationContext = (edu.cmu.cs.dennisc.croquet.OperationContext)node;
-			rv.add( OperationNote.createInstance( operationContext ) );
-			appendBonusOperationNotes( rv, operationContext );
+			edu.cmu.cs.dennisc.croquet.OperationContext<?> operationContext = (edu.cmu.cs.dennisc.croquet.OperationContext<?>)node;
+			if( node instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext ) {
+				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)node;
+				int POPUP_CONTEXT_CHILD_COUNT = popupMenuOperationContext.getChildCount();
+				if( POPUP_CONTEXT_CHILD_COUNT > 1 ) {
+					edu.cmu.cs.dennisc.croquet.HistoryNode firstChild = popupMenuOperationContext.getChildAt( 0 );
+					edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent retargetableMenuModelInitializationEvent;
+					if( firstChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent ) {
+						retargetableMenuModelInitializationEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent)firstChild;
+					} else {
+						retargetableMenuModelInitializationEvent = null;
+					}
+					edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = popupMenuOperationContext.getChildAt( POPUP_CONTEXT_CHILD_COUNT-1 );
+					if( lastChild instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
+						edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)lastChild;
+						edu.cmu.cs.dennisc.croquet.HistoryNode secondToLastChild = popupMenuOperationContext.getChildAt( POPUP_CONTEXT_CHILD_COUNT-2 );
+						if( secondToLastChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
+							edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)secondToLastChild;
+							final int N = menuSelectionEvent.getModelCount();
+							if( N > 0 ) {
+								int index0;
+								if( menuSelectionEvent.getModelAt( 0 ) instanceof edu.cmu.cs.dennisc.croquet.MenuBarModel ) {
+									index0 = 1;
+								} else {
+									index0 = 0;
+								}
+								for( int i=index0; i<N; i++ ) {
+									rv.add( MenuSelectionNote.createInstance( retargetableMenuModelInitializationEvent, menuSelectionEvent, i, modelContext, index0 ) );
+									retargetableMenuModelInitializationEvent = null;
+								}
+							}
+						}
+						if( modelContext instanceof edu.cmu.cs.dennisc.croquet.OperationContext< ? > ) {
+							edu.cmu.cs.dennisc.croquet.OperationContext< ? > childOperationContext = (edu.cmu.cs.dennisc.croquet.OperationContext< ? >)modelContext;
+							appendBonusOperationNotes( rv, childOperationContext );
+						}
+					}
+				}
+			} else {
+				rv.add( OperationNote.createInstance( operationContext ) );
+				appendBonusOperationNotes( rv, operationContext );
+			}
 		} else if( node instanceof edu.cmu.cs.dennisc.croquet.BooleanStateContext ) {
 			edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext = (edu.cmu.cs.dennisc.croquet.BooleanStateContext)node;
 			rv.add( BooleanStateNote.createInstance( booleanStateContext ) );
@@ -187,6 +189,8 @@ public class AutomaticTutorial {
 					rv.add( ListSelectionStateFinishNote.createInstance( listSelectionStateContext ) );
 				}
 			}
+		} else {
+			System.err.println( "WARNING: " + node + " not handled." );
 		}
 		return rv;
 	}

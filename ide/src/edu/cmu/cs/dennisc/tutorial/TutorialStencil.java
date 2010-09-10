@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.tutorial;
 
+import edu.cmu.cs.dennisc.croquet.tutorial.MenuPolicy;
+
 /**
  * @author Dennis Cosgrove
  */

@@ -54,7 +54,7 @@ package edu.cmu.cs.dennisc.croquet.tutorial;
 		if( this.enteredPotentialDropSiteEvent != null ) {
 			edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor = this.enteredPotentialDropSiteEvent.getDropReceptor();
 			if( dropReceptor != null ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( this.enteredPotentialDropSiteEvent.getPotentialDropSite() );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "DropSiteResolver", this.enteredPotentialDropSiteEvent.getPotentialDropSite() );
 				return dropReceptor.getTrackableShape( this.enteredPotentialDropSiteEvent.getPotentialDropSite() );
 			}
 		}

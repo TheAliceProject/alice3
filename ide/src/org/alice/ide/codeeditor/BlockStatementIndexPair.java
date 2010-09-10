@@ -76,8 +76,9 @@ public final class BlockStatementIndexPair implements edu.cmu.cs.dennisc.croquet
 		binaryEncoder.encode( this.index );
 	}
 	
-	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-		this.blockStatement = retargeter.retarget( this.blockStatement );
+	public BlockStatementIndexPair createReplacement( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		edu.cmu.cs.dennisc.alice.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
+		return new BlockStatementIndexPair( replacementBlockStatement, this.index );
 	}
 
 	@Override
