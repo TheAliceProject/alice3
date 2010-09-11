@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -44,17 +45,34 @@ package edu.cmu.cs.dennisc.croquet.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class WaitingOnCommitNote extends RequirementNote {
-	public WaitingOnCommitNote( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent originalCommitEvent, boolean isContextRequirementRequired ) {
-		this.setText( context.getModel().getTutorialNoteText( originalCommitEvent.getEdit() ) );
-		if( isContextRequirementRequired ) {
-			this.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, context.getClass() ) );
-			this.setCheckIndex( 0 );
-			parentContextCriterion = this;
-		}
-		this.addRequirement( new IsAcceptableCommitOf( parentContextCriterion, originalCommitEvent ) );
+class IsAcceptableSuccessfulCompletionOf extends IsChildOfAndInstanceOf< edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent > {
+	private edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent originalSuccessfulCompletionEvent;
+	public IsAcceptableSuccessfulCompletionOf( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent originalSuccessfulCompletionEvent ) {
+		super( parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent.class );
+		this.originalSuccessfulCompletionEvent = originalSuccessfulCompletionEvent;
 	}
-	public WaitingOnCommitNote( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent originalCommitEvent ) {
-		this( context, parentContextCriterion, originalCommitEvent, true );
+	@Override
+	protected boolean isSpecificallyWhatWereLookingFor( edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) throws CancelException {
+		boolean rv = super.isSpecificallyWhatWereLookingFor( successfulCompletionEvent );
+		if( rv ) {
+			edu.cmu.cs.dennisc.croquet.Edit< ? > potentialReplacementEdit = successfulCompletionEvent.getEdit();
+			if( this.originalSuccessfulCompletionEvent != null ) {
+				edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit = this.originalSuccessfulCompletionEvent.getEdit();
+				if( originalEdit.isReplacementAcceptable( potentialReplacementEdit ) ) {
+					edu.cmu.cs.dennisc.croquet.Retargeter retargeter = AutomaticTutorial.getInstance().getRetargeter();
+					originalEdit.addKeyValuePairs( retargeter, potentialReplacementEdit );
+					AutomaticTutorial.getInstance().retargetOriginalContext( retargeter );
+				} else {
+					throw new CancelException( "unacceptable: replacement edit does not pass muster." );
+				}
+			} else {
+				if( potentialReplacementEdit != null ) {
+					throw new CancelException( "unacceptable: replacement edit is null." );
+				} else {
+					//pass
+				}
+			}
+		}
+		return rv;
 	}
 }

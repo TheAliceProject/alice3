@@ -101,6 +101,7 @@ public abstract class AbstractDialogOperation< C extends AbstractDialogOperation
 				dialog.setVisible( false );
 			}
 			public void windowClosed( java.awt.event.WindowEvent e ) {
+				context.handleWindowClosed( e );
 			}
 			public void windowActivated( java.awt.event.WindowEvent e ) {
 			}
@@ -139,7 +140,6 @@ public abstract class AbstractDialogOperation< C extends AbstractDialogOperation
 				try {
 					dialog.setVisible( true );
 					this.releaseContentPane( context, dialog, contentPane );
-					context.handleWindowClosed( null );
 					dialog.removeWindowListener( windowListener );
 					dialog.getAwtComponent().dispose();
 				} finally {

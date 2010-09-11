@@ -42,12 +42,12 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-public abstract class HistoryNode implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public abstract class HistoryNode<C extends ModelContext<?>> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	private static java.util.Map< java.util.UUID, HistoryNode > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static < N extends HistoryNode > N lookup( java.util.UUID id ) {
 		return (N)map.get( id );
 	}
-	private ModelContext<?> parent;
+	private C parent;
 	private java.util.UUID id;
 
 	public HistoryNode() {
@@ -58,10 +58,10 @@ public abstract class HistoryNode implements edu.cmu.cs.dennisc.codec.BinaryEnco
 		this.decode( binaryDecoder );
 	}
 
-	public ModelContext<?> getParent() {
+	public C getParent() {
 		return this.parent;
 	}
-	/*package-private*/ final void setParent( ModelContext< ? > parent ) {
+	/*package-private*/ final void setParent( C parent ) {
 		this.parent = parent;
 	}
 	public java.util.UUID getId() {

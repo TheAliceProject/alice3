@@ -45,10 +45,11 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCompleteEvent extends Event {
-	/*package-private*/ AbstractCompleteEvent() {
+public abstract class SuccessfulCompletionEvent extends Event {
+	/*package-private*/ SuccessfulCompletionEvent() {
 	}
-	public AbstractCompleteEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public SuccessfulCompletionEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+	public abstract Edit< ? > getEdit();
 }

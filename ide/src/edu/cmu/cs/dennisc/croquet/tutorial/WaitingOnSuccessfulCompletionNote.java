@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,34 +44,17 @@ package edu.cmu.cs.dennisc.croquet.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-class IsAcceptableCommitOf extends IsChildOfAndInstanceOf< edu.cmu.cs.dennisc.croquet.CommitEvent > {
-	private edu.cmu.cs.dennisc.croquet.CommitEvent originalCommitEvent;
-	public IsAcceptableCommitOf( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent originalCommitEvent ) {
-		super( parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent.class );
-		this.originalCommitEvent = originalCommitEvent;
-	}
-	@Override
-	protected boolean isSpecificallyWhatWereLookingFor( edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) throws CancelException {
-		boolean rv = super.isSpecificallyWhatWereLookingFor( commitEvent );
-		if( rv ) {
-			edu.cmu.cs.dennisc.croquet.Edit< ? > potentialReplacementEdit = commitEvent.getEdit();
-			if( this.originalCommitEvent != null ) {
-				edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit = this.originalCommitEvent.getEdit();
-				if( originalEdit.isReplacementAcceptable( potentialReplacementEdit ) ) {
-					edu.cmu.cs.dennisc.croquet.Retargeter retargeter = AutomaticTutorial.getInstance().getRetargeter();
-					originalEdit.addKeyValuePairs( retargeter, potentialReplacementEdit );
-					AutomaticTutorial.getInstance().retargetOriginalContext( retargeter );
-				} else {
-					throw new CancelException( "unacceptable: replacement edit does not pass muster." );
-				}
-			} else {
-				if( potentialReplacementEdit != null ) {
-					throw new CancelException( "unacceptable: replacement edit is null." );
-				} else {
-					//pass
-				}
-			}
+/*package-private*/ abstract class WaitingOnSuccessfulCompletionNote extends RequirementNote {
+	public WaitingOnSuccessfulCompletionNote( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent originalSuccessfulCompletionEvent, boolean isContextRequirementRequired ) {
+		this.setText( context.getModel().getTutorialNoteText( originalSuccessfulCompletionEvent.getEdit() ) );
+		if( isContextRequirementRequired ) {
+			this.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, context.getClass() ) );
+			this.setCheckIndex( 0 );
+			parentContextCriterion = this;
 		}
-		return rv;
+		this.addRequirement( new IsAcceptableSuccessfulCompletionOf( parentContextCriterion, originalSuccessfulCompletionEvent ) );
+	}
+	public WaitingOnSuccessfulCompletionNote( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent originalSuccessfulCompletionEvent ) {
+		this( context, parentContextCriterion, originalSuccessfulCompletionEvent, true );
 	}
 }

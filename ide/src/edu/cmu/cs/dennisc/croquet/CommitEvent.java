@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CommitEvent extends AbstractCompleteEvent {
+public class CommitEvent extends SuccessfulCompletionEvent {
 	private Edit<?> edit;
 	/*package-private*/ CommitEvent( Edit<?> edit ) {
 		this.edit = edit;
@@ -70,6 +70,7 @@ public class CommitEvent extends AbstractCompleteEvent {
 	public State getState() {
 		return State.COMMITTED;
 	}
+	@Override
 	public Edit<?> getEdit() {
 		return this.edit;
 	}

@@ -113,8 +113,8 @@ public class AutomaticTutorial {
 			}
 		} else if( operationContext instanceof edu.cmu.cs.dennisc.croquet.ActionOperationContext ) {
 			edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = operationContext.getLastChild();
-			if( lastChild instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
-				edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent)lastChild;
+			if( lastChild instanceof edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent ) {
+				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = (edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent)lastChild;
 				edu.cmu.cs.dennisc.croquet.HistoryNode child0 = operationContext.getChildAt( 0 );
 				if( child0 instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext< ? > ) {
 					appendBonusOperationNotes( rv, parentContextCriterion, (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext< ? >)child0 );
@@ -143,10 +143,10 @@ public class AutomaticTutorial {
 					edu.cmu.cs.dennisc.croquet.HistoryNode lastGrandchild = childModelContext.getLastChild();
 					DragNote dragNote = DragNote.createInstance( dragAndDropContext, parentContextCriterion );
 					DropNote dropNote;
-					boolean isCommit = lastGrandchild instanceof edu.cmu.cs.dennisc.croquet.CommitEvent;
+					boolean isCommit = lastGrandchild instanceof edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent;
 					if( isCommit ) {
-						edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent)lastGrandchild;
-						dropNote = DropNote.createCommitInstance( dragNote, dragAndDropContext, childModelContext, commitEvent );
+						edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = (edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent)lastGrandchild;
+						dropNote = DropNote.createCommitInstance( dragNote, dragAndDropContext, childModelContext, successfulCompletionEvent );
 					} else {
 						dropNote = DropNote.createPendingInstance( dragNote, dragAndDropContext, childModelContext );
 					}
@@ -199,31 +199,31 @@ public class AutomaticTutorial {
 					}
 				}
 			} else {
-				final int N = operationContext.getChildCount();
+//				final int N = operationContext.getChildCount();
 				edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = operationContext.getLastChild();
-				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent ) {
-					if( N > 1 ) {
-						lastChild = operationContext.getChildAt( N-2 );
-					}
-				}
-				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
-					edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent)lastChild;
+//				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent ) {
+//					if( N > 1 ) {
+//						lastChild = operationContext.getChildAt( N-2 );
+//					}
+//				}
+				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent ) {
+					edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = (edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent)lastChild;
 					appendBonusOperationNotes( rv, parentContextCriterion, operationContext );
-					rv.add( OperationNote.createInstance( operationContext, parentContextCriterion, commitEvent ) );
+					rv.add( OperationNote.createInstance( operationContext, parentContextCriterion, successfulCompletionEvent ) );
 				}
 			}
 		} else if( node instanceof edu.cmu.cs.dennisc.croquet.BooleanStateContext ) {
 			edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext = (edu.cmu.cs.dennisc.croquet.BooleanStateContext)node;
 			edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = booleanStateContext.getLastChild();
-			if( lastChild instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
-				edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent)lastChild;
-				rv.add( BooleanStateNote.createInstance( booleanStateContext, parentContextCriterion, commitEvent ) );
+			if( lastChild instanceof edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent ) {
+				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = (edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent)lastChild;
+				rv.add( BooleanStateNote.createInstance( booleanStateContext, parentContextCriterion, successfulCompletionEvent ) );
 			}
 		} else if( node instanceof edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< ? > ) {
 			edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< ? > listSelectionStateContext = (edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< ? >)node;
 			edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = listSelectionStateContext.getLastChild();
-			if( lastChild instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
-				edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent)lastChild;
+			if( lastChild instanceof edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent ) {
+				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = (edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent)lastChild;
 				ModelFromContextResolver modelResolver = new ModelFromContextResolver( listSelectionStateContext );
 				FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
 				edu.cmu.cs.dennisc.croquet.Component< ? > component = firstComponentResolver.getResolved();
@@ -231,11 +231,11 @@ public class AutomaticTutorial {
 					edu.cmu.cs.dennisc.croquet.ItemSelectable< ?,? > itemSelectable = (edu.cmu.cs.dennisc.croquet.ItemSelectable< ?,? >)component;
 					System.err.println( "itemSelectable: " + itemSelectable );
 					if( itemSelectable.isSingleStageSelectable() ) {
-						rv.add( ListSelectionStateSimpleNote.createInstance( listSelectionStateContext, parentContextCriterion, commitEvent ) );
+						rv.add( ListSelectionStateSimpleNote.createInstance( listSelectionStateContext, parentContextCriterion, successfulCompletionEvent ) );
 					} else {
-						ListSelectionStateStartNote startNote = ListSelectionStateStartNote.createInstance( listSelectionStateContext, parentContextCriterion, commitEvent ); 
+						ListSelectionStateStartNote startNote = ListSelectionStateStartNote.createInstance( listSelectionStateContext, parentContextCriterion, successfulCompletionEvent ); 
 						rv.add( startNote );
-						rv.add( ListSelectionStateFinishNote.createInstance( listSelectionStateContext, startNote, commitEvent ) );
+						rv.add( ListSelectionStateFinishNote.createInstance( listSelectionStateContext, startNote, successfulCompletionEvent ) );
 					}
 				}
 			}

@@ -47,13 +47,13 @@ import edu.cmu.cs.dennisc.tutorial.*;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class DropNote extends RequirementNote {
-	public static DropNote createCommitInstance( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.croquet.ModelContext< ? > childModelContext, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
+	public static DropNote createCommitInstance( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.croquet.ModelContext< ? > childModelContext, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) {
 		DropNote rv = new DropNote( 
 				dragAndDropContext, 
 				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent.class ),
 				new IsChildOfAndInstanceOf( parentContextCriterion, childModelContext.getClass() )
 		);
-		rv.addRequirement( new IsAcceptableCommitOf( rv, commitEvent ) );
+		rv.addRequirement( new IsAcceptableSuccessfulCompletionOf( rv, successfulCompletionEvent ) );
 		rv.setCheckIndex( -2 );
 		return rv;
 	}

@@ -46,12 +46,12 @@ import edu.cmu.cs.dennisc.tutorial.*;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class OperationNote extends WaitingOnCommitNote {
-	public static OperationNote createInstance( edu.cmu.cs.dennisc.croquet.OperationContext operationContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
-		return new OperationNote( operationContext, parentContextCriterion, commitEvent );
+/*package-private*/ class OperationNote extends WaitingOnSuccessfulCompletionNote {
+	public static OperationNote createInstance( edu.cmu.cs.dennisc.croquet.OperationContext operationContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) {
+		return new OperationNote( operationContext, parentContextCriterion, successfulCompletionEvent );
 	}
-	private OperationNote( edu.cmu.cs.dennisc.croquet.OperationContext operationContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
-		super( operationContext, parentContextCriterion, commitEvent );
+	private OperationNote( edu.cmu.cs.dennisc.croquet.OperationContext operationContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) {
+		super( operationContext, parentContextCriterion, successfulCompletionEvent );
 		ModelFromContextResolver modelResolver = new ModelFromContextResolver( operationContext );
 		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
 		this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			

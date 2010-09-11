@@ -46,13 +46,13 @@ import edu.cmu.cs.dennisc.tutorial.*;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class ListSelectionStateFinishNote<E> extends WaitingOnCommitNote {
-	public static <E> ListSelectionStateFinishNote<E> createInstance( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
-		return new ListSelectionStateFinishNote<E>( listSelectionStateContext, parentContextCriterion, commitEvent );
+/*package-private*/ class ListSelectionStateFinishNote<E> extends WaitingOnSuccessfulCompletionNote {
+	public static <E> ListSelectionStateFinishNote<E> createInstance( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) {
+		return new ListSelectionStateFinishNote<E>( listSelectionStateContext, parentContextCriterion, successfulCompletionEvent );
 	}
-	private ListSelectionStateFinishNote( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
-		super( listSelectionStateContext, parentContextCriterion, commitEvent, false );
-		this.setText( listSelectionStateContext.getModel().getTutorialNoteFinishText( (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E >)commitEvent.getEdit() ) );
+	private ListSelectionStateFinishNote( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) {
+		super( listSelectionStateContext, parentContextCriterion, successfulCompletionEvent, false );
+		this.setText( listSelectionStateContext.getModel().getTutorialNoteFinishText( (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E >)successfulCompletionEvent.getEdit() ) );
 		ModelFromContextResolver modelResolver = new ModelFromContextResolver( listSelectionStateContext );
 		ItemSelectionStateItemResolver itemSelectionStateItemResolver = new ItemSelectionStateItemResolver( modelResolver, new ItemResolver( (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E> )listSelectionStateContext.getEdit() ) );
 		//FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );

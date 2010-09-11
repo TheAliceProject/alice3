@@ -52,7 +52,7 @@ package edu.cmu.cs.dennisc.tutorial;
 		this.isExactMatchRequired = isDiscriminatingAboutComplete;
 	}
 	protected abstract boolean isInTheDesiredState(edu.cmu.cs.dennisc.croquet.Edit<?> edit);
-	private boolean isAcceptable( edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent completeEvent ) {
+	private boolean isAcceptable( edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent completeEvent ) {
 		edu.cmu.cs.dennisc.croquet.Model eventModel = completeEvent.getParent().getModel();
 		if( this.isExactMatchRequired ) {
 			return this.getModel() == eventModel;
@@ -66,8 +66,8 @@ package edu.cmu.cs.dennisc.tutorial;
 	}
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
-		if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
-			edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent completeEvent = (edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent)child;
+		if( child instanceof edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent ) {
+			edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent completeEvent = (edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent)child;
 			if( this.isAcceptable( completeEvent ) ) {
 				edu.cmu.cs.dennisc.croquet.Edit<?> edit;
 				if (child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent) {

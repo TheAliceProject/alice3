@@ -239,7 +239,7 @@ package edu.cmu.cs.dennisc.tutorial;
 						}
 					}
 				} else {
-					if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
+					if( child instanceof edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent ) {
 						edu.cmu.cs.dennisc.croquet.Edit edit;
 						if (child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent) {
 							edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent) child;
