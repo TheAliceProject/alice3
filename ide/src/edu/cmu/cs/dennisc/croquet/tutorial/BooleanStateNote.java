@@ -47,12 +47,11 @@ import edu.cmu.cs.dennisc.tutorial.*;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class BooleanStateNote extends WaitingOnCommitHistoryNote {
-	public static BooleanStateNote createInstance( edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext ) {
-		edu.cmu.cs.dennisc.croquet.BooleanStateEdit booleanStateEdit = (edu.cmu.cs.dennisc.croquet.BooleanStateEdit)booleanStateContext.getEdit();
-		return new BooleanStateNote( booleanStateContext, booleanStateEdit );
+	public static BooleanStateNote createInstance( edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
+		return new BooleanStateNote( booleanStateContext, parentContextCriterion, commitEvent );
 	}
-	private BooleanStateNote( edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext, edu.cmu.cs.dennisc.croquet.BooleanStateEdit booleanStateEdit ) {
-		super( booleanStateContext.getModel().getTutorialNoteText( booleanStateEdit ), booleanStateEdit );
+	private BooleanStateNote( edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
+		super( booleanStateContext, parentContextCriterion, commitEvent );
 		ModelFromContextResolver modelResolver = new ModelFromContextResolver( booleanStateContext );
 		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
 		this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			

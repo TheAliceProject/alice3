@@ -47,11 +47,11 @@ import edu.cmu.cs.dennisc.tutorial.*;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class OperationNote extends WaitingOnCommitHistoryNote {
-	public static OperationNote createInstance( edu.cmu.cs.dennisc.croquet.OperationContext operationContext ) {
-		return new OperationNote( operationContext, operationContext.getEdit() );
+	public static OperationNote createInstance( edu.cmu.cs.dennisc.croquet.OperationContext operationContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
+		return new OperationNote( operationContext, parentContextCriterion, commitEvent );
 	}
-	private OperationNote( edu.cmu.cs.dennisc.croquet.OperationContext<?> operationContext, edu.cmu.cs.dennisc.croquet.Edit<?> operationEdit ) {
-		super( "todo", /*operationContext.getModel().getTutorialNoteText( operationEdit ),*/ operationEdit );
+	private OperationNote( edu.cmu.cs.dennisc.croquet.OperationContext operationContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
+		super( operationContext, parentContextCriterion, commitEvent );
 		ModelFromContextResolver modelResolver = new ModelFromContextResolver( operationContext );
 		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
 		this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			

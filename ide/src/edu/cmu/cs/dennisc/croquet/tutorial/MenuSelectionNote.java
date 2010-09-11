@@ -46,7 +46,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class MenuSelectionNote extends HistoryNote {
+/*package-private*/ class MenuSelectionNote extends RetargetableNote {
 	private static String getText( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i ) {
 		edu.cmu.cs.dennisc.croquet.Model modelI = menuSelectionEvent.getModelAt( i );
 		StringBuilder sb = new StringBuilder();

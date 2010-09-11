@@ -151,7 +151,7 @@ class IsMenuSelectionEventOf extends IsChildOfAndInstanceOf< edu.cmu.cs.dennisc.
 	}
 }
 
-class RequirementNote extends HistoryNote implements ParentContextCriterion {
+class RequirementNote extends RetargetableNote implements ParentContextCriterion {
 	private java.util.List< Requirement<?> > requirements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private int fulfilledRequirementIndex;
 	
@@ -289,14 +289,29 @@ public class AutomaticTutorial {
 	private void addMessageStep( String title, String text ) {
 		this.stencil.addStep( new MessageStep( title, text ) );
 	}
-	private static java.util.List< HistoryNote > appendBonusOperationNotes( java.util.List< HistoryNote > rv, edu.cmu.cs.dennisc.croquet.OperationContext< ? > operationContext ) {
-		if( operationContext instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext ) {
-			edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext = (edu.cmu.cs.dennisc.croquet.DialogOperationContext)operationContext;
-			rv.add( new DialogCloseNote( dialogOperationContext ) );
+	private static java.util.List< RetargetableNote > appendBonusOperationNotes( java.util.List< RetargetableNote > rv, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.OperationContext< ? > operationContext ) {
+		if( operationContext instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext ){
+			if( operationContext instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext ) {
+				edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext = (edu.cmu.cs.dennisc.croquet.DialogOperationContext)operationContext;
+				rv.add( new DialogCloseNote( dialogOperationContext ) );
+			} else if( operationContext instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > ) {
+				edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?>)operationContext;
+				rv.add( InputDialogAcceptableEditNote.createInstance( inputDialogOperationContext, parentContextCriterion ) );
+				rv.add( InputDialogCommitNote.createInstance( inputDialogOperationContext, parentContextCriterion ) );
+			}
+		} else if( operationContext instanceof edu.cmu.cs.dennisc.croquet.ActionOperationContext ) {
+			edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = operationContext.getLastChild();
+			if( lastChild instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
+				edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent)lastChild;
+				edu.cmu.cs.dennisc.croquet.HistoryNode child0 = operationContext.getChildAt( 0 );
+				if( child0 instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext< ? > ) {
+					appendBonusOperationNotes( rv, parentContextCriterion, (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext< ? >)child0 );
+				}
+			}
 		}
 		return rv;
 	}
-	private static java.util.List< HistoryNote > appendNotes( java.util.List< HistoryNote > rv, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.HistoryNode node ) {
+	private static java.util.List< RetargetableNote > appendNotes( java.util.List< RetargetableNote > rv, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.HistoryNode node ) {
 		if( node instanceof edu.cmu.cs.dennisc.croquet.MenuBarModelContext ) {
 			edu.cmu.cs.dennisc.croquet.MenuBarModelContext menuBarModelContext = (edu.cmu.cs.dennisc.croquet.MenuBarModelContext)node;
 			if( menuBarModelContext.getState() != null ) {
@@ -367,35 +382,43 @@ public class AutomaticTutorial {
 						}
 						if( modelContext instanceof edu.cmu.cs.dennisc.croquet.OperationContext< ? > ) {
 							edu.cmu.cs.dennisc.croquet.OperationContext< ? > childOperationContext = (edu.cmu.cs.dennisc.croquet.OperationContext< ? >)modelContext;
-							appendBonusOperationNotes( rv, childOperationContext );
+							appendBonusOperationNotes( rv, parentContextCriterion, childOperationContext );
 						}
 					}
 				}
-			} else if( node instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext ){
-				edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = operationContext.getLastChild();
+			} else {
+				edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext = (edu.cmu.cs.dennisc.croquet.BooleanStateContext)node;
+				edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = booleanStateContext.getLastChild();
 				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
-					rv.add( OperationNote.createInstance( operationContext ) );
-					appendBonusOperationNotes( rv, operationContext );
-				} else {
-					appendNotes( rv, parentContextCriterion, lastChild );
+					edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent)lastChild;
+					rv.add( OperationNote.createInstance( operationContext, parentContextCriterion, commitEvent ) );
+					appendBonusOperationNotes( rv, parentContextCriterion, operationContext );
 				}
 			}
 		} else if( node instanceof edu.cmu.cs.dennisc.croquet.BooleanStateContext ) {
 			edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext = (edu.cmu.cs.dennisc.croquet.BooleanStateContext)node;
-			rv.add( BooleanStateNote.createInstance( booleanStateContext ) );
+			edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = booleanStateContext.getLastChild();
+			if( lastChild instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
+				edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent)lastChild;
+				rv.add( BooleanStateNote.createInstance( booleanStateContext, parentContextCriterion, commitEvent ) );
+			}
 		} else if( node instanceof edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< ? > ) {
 			edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< ? > listSelectionStateContext = (edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< ? >)node;
-			ModelFromContextResolver modelResolver = new ModelFromContextResolver( listSelectionStateContext );
-			FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
-			edu.cmu.cs.dennisc.croquet.Component< ? > component = firstComponentResolver.getResolved();
-			if( component instanceof edu.cmu.cs.dennisc.croquet.ItemSelectable< ?,? > ) {
-				edu.cmu.cs.dennisc.croquet.ItemSelectable< ?,? > itemSelectable = (edu.cmu.cs.dennisc.croquet.ItemSelectable< ?,? >)component;
-				System.err.println( "itemSelectable: " + itemSelectable );
-				if( itemSelectable.isSingleStageSelectable() ) {
-					rv.add( ListSelectionStateSimpleNote.createInstance( listSelectionStateContext ) );
-				} else {
-					rv.add( ListSelectionStateStartNote.createInstance( listSelectionStateContext ) );
-					rv.add( ListSelectionStateFinishNote.createInstance( listSelectionStateContext ) );
+			edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = listSelectionStateContext.getLastChild();
+			if( lastChild instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
+				edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent)lastChild;
+				ModelFromContextResolver modelResolver = new ModelFromContextResolver( listSelectionStateContext );
+				FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
+				edu.cmu.cs.dennisc.croquet.Component< ? > component = firstComponentResolver.getResolved();
+				if( component instanceof edu.cmu.cs.dennisc.croquet.ItemSelectable< ?,? > ) {
+					edu.cmu.cs.dennisc.croquet.ItemSelectable< ?,? > itemSelectable = (edu.cmu.cs.dennisc.croquet.ItemSelectable< ?,? >)component;
+					System.err.println( "itemSelectable: " + itemSelectable );
+					if( itemSelectable.isSingleStageSelectable() ) {
+						rv.add( ListSelectionStateSimpleNote.createInstance( listSelectionStateContext, parentContextCriterion, commitEvent ) );
+					} else {
+						rv.add( ListSelectionStateStartNote.createInstance( listSelectionStateContext, parentContextCriterion, commitEvent ) );
+						rv.add( ListSelectionStateFinishNote.createInstance( listSelectionStateContext, parentContextCriterion, commitEvent ) );
+					}
 				}
 			}
 		} else {
@@ -428,9 +451,9 @@ public class AutomaticTutorial {
 			return rv;
 		}
 		
-		private java.util.List< HistoryNote > notes;
-		private java.util.List< HistoryNote > createNotes() {
-			java.util.List< HistoryNote > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		private java.util.List< RetargetableNote > notes;
+		private java.util.List< RetargetableNote > createNotes() {
+			java.util.List< RetargetableNote > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			appendNotes( rv, IsRootContextCriterion.SINGLETON, this.context );
 			return rv;
 		}
@@ -477,7 +500,7 @@ public class AutomaticTutorial {
 			if( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
 				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)child;
 				for( int i=0; i<NOTE_COUNT; i++ ) {
-					HistoryNote historyNote = this.notes.get( i );
+					RetargetableNote historyNote = this.notes.get( i );
 					if( historyNote instanceof MenuSelectionNote ) {
 						MenuSelectionNote menuSelectionNote = (MenuSelectionNote)historyNote;
 						if( menuSelectionNote.isAtLeastWhatWeveBeenWaitingFor( menuSelectionEvent ) ) {
@@ -492,7 +515,7 @@ public class AutomaticTutorial {
 				int activeNoteIndex = this.getIndexOfFirstActiveNote();
 				activeNoteIndex = Math.max( activeNoteIndex, 0 );
 				if( activeNoteIndex < NOTE_COUNT ) {
-					HistoryNote activeNote = this.notes.get( activeNoteIndex );
+					RetargetableNote activeNote = this.notes.get( activeNoteIndex );
 					if( activeNote.isWhatWeveBeenWaitingFor( child ) ) {
 						activeNoteIndex ++;
 						if( activeNoteIndex == NOTE_COUNT ) {

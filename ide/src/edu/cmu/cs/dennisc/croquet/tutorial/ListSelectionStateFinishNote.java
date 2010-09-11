@@ -47,14 +47,13 @@ import edu.cmu.cs.dennisc.tutorial.*;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class ListSelectionStateFinishNote<E> extends WaitingOnCommitHistoryNote {
-	public static <E> ListSelectionStateFinishNote<E> createInstance( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext ) {
-		edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit<E> listSelectionStateEdit = (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E >)listSelectionStateContext.getEdit();
-		return new ListSelectionStateFinishNote( listSelectionStateContext, listSelectionStateEdit );
+	public static <E> ListSelectionStateFinishNote<E> createInstance( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
+		return new ListSelectionStateFinishNote<E>( listSelectionStateContext, parentContextCriterion, commitEvent );
 	}
-	private ListSelectionStateFinishNote( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit<E> listSelectionStateEdit ) {
-		super( listSelectionStateContext.getModel().getTutorialNoteFinishText( listSelectionStateEdit ), listSelectionStateEdit );
+	private ListSelectionStateFinishNote( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
+		super( listSelectionStateContext, parentContextCriterion, commitEvent );
 		ModelFromContextResolver modelResolver = new ModelFromContextResolver( listSelectionStateContext );
-		ItemSelectionStateItemResolver itemSelectionStateItemResolver = new ItemSelectionStateItemResolver( modelResolver, new ItemResolver( listSelectionStateEdit ) );
+		ItemSelectionStateItemResolver itemSelectionStateItemResolver = new ItemSelectionStateItemResolver( modelResolver, new ItemResolver( (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E> )listSelectionStateContext.getEdit() ) );
 		//FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
 		//this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST, false ) );			
 		this.addFeature( new Hole( itemSelectionStateItemResolver, Feature.ConnectionPreference.EAST_WEST ) {

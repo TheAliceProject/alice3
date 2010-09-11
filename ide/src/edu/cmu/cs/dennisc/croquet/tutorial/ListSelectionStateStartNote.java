@@ -46,19 +46,19 @@ import edu.cmu.cs.dennisc.tutorial.*;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class ListSelectionStateStartNote<E> extends HistoryNote {
-	public static <E> ListSelectionStateStartNote<E> createInstance( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext ) {
-		edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit<E> listSelectionStateEdit = (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E >)listSelectionStateContext.getEdit();
-		return new ListSelectionStateStartNote( listSelectionStateContext, listSelectionStateEdit );
+/*package-private*/ class ListSelectionStateStartNote<E> extends RequirementNote {
+	public static <E> ListSelectionStateStartNote<E> createInstance( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
+		return new ListSelectionStateStartNote( 
+				listSelectionStateContext, 
+				parentContextCriterion,
+				commitEvent,
+				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.ListSelectionStateContext.PopupMenuWillBecomeVisibleEvent.class ) 
+		);
 	}
-	private ListSelectionStateStartNote( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit<E> listSelectionStateEdit ) {
-		super( listSelectionStateContext.getModel().getTutorialNoteStartText( listSelectionStateEdit ) );
+	private ListSelectionStateStartNote( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent, Requirement< ? > requirement ) {
+		super( listSelectionStateContext.getModel().getTutorialNoteStartText( (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E >)commitEvent.getEdit() ), requirement );
 		ModelFromContextResolver modelResolver = new ModelFromContextResolver( listSelectionStateContext );
 		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
 		this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			
-	}
-	@Override
-	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
-		return child instanceof edu.cmu.cs.dennisc.croquet.ListSelectionStateContext.PopupMenuWillBecomeVisibleEvent;
 	}
 }

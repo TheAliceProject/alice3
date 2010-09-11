@@ -59,8 +59,9 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	
 	protected abstract C createContext( java.util.EventObject e, ViewController< ?, ? > viewController );
 
+	@Override
+	public String getTutorialNoteText( Edit< ? > edit ) {
 	//todo
-	public String getTutorialNoteText( Edit<?> edit ) {
 		return "Press " + this.getName();
 	}
 	

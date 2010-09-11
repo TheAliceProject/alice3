@@ -62,9 +62,14 @@ public abstract class Model implements RuntimeResolver< Model > {
 	}
 	protected abstract boolean isOwnerOfEdit();
 
-//	public String getTutorialNoteText() {
-//		return this.toString();
-//	}
+	public String getTutorialNoteText( Edit< ? > edit ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this );
+		sb.append( "[" );
+		sb.append( edit );
+		sb.append( "]" );
+		return sb.toString();
+	}
 	
 	public java.util.UUID getId() {
 		return this.id;

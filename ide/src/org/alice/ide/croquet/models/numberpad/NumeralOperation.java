@@ -50,11 +50,11 @@ public abstract class NumeralOperation extends NumberPadOperation {
 	public NumeralOperation( java.util.UUID id, NumberModel numberModel, short numeral ) {
 		super( id, numberModel );
 		this.numeral = numeral;
+		this.setName( Short.toString( this.numeral ) );
 	}
 	@Override
 	protected void localize() {
-		super.localize();
-		this.setName( Short.toString( this.numeral ) );
+		//super.localize();
 	}
 	@Override
 	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {

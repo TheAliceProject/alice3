@@ -44,7 +44,7 @@ package edu.cmu.cs.dennisc.croquet.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class DialogCloseNote extends HistoryNote {
+/*package-private*/ class DialogCloseNote extends RetargetableNote {
 	public DialogCloseNote( edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext ) {
 		super( "close" );
 	}

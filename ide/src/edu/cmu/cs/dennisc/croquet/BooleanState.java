@@ -111,7 +111,9 @@ public /*final*/ class BooleanState extends Model {
 		return true;
 	}
 	
-	public String getTutorialNoteText( BooleanStateEdit booleanStateEdit ) {
+	@Override
+	public String getTutorialNoteText( Edit< ? > edit ) {
+		BooleanStateEdit booleanStateEdit = (BooleanStateEdit)edit;
 		StringBuilder sb = new StringBuilder();
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.trueText, this.falseText ) ) {
 			if( booleanStateEdit.getNextValue() ) {

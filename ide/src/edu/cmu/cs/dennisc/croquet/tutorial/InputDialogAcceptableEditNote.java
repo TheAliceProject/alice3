@@ -41,19 +41,17 @@
  */
 package edu.cmu.cs.dennisc.croquet.tutorial;
 
-import edu.cmu.cs.dennisc.tutorial.*;
-
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class ListSelectionStateSimpleNote<E> extends WaitingOnCommitHistoryNote {
-	public static <E> ListSelectionStateSimpleNote<E> createInstance( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
-		return new ListSelectionStateSimpleNote<E>( listSelectionStateContext, parentContextCriterion, commitEvent );
+/*package-private*/ class InputDialogAcceptableEditNote extends RequirementNote {
+	public static InputDialogAcceptableEditNote createInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, ParentContextCriterion parentContextCriterion ) {
+		return new InputDialogAcceptableEditNote( 
+				inputDialogOperationContext, 
+				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.HistoryNode.class ) 
+		);
 	}
-	private ListSelectionStateSimpleNote( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
-		super( listSelectionStateContext, parentContextCriterion, commitEvent );
-		ModelFromContextResolver modelResolver = new ModelFromContextResolver( listSelectionStateContext );
-		ItemSelectionStateItemResolver itemSelectionStateItemResolver = new ItemSelectionStateItemResolver( modelResolver, new ItemResolver( (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E> )listSelectionStateContext.getEdit() ) );
-		this.addFeature( new Hole( itemSelectionStateItemResolver, Feature.ConnectionPreference.EAST_WEST ) );			
+	private InputDialogAcceptableEditNote( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, Requirement< ? > requirement ) {
+		super( "make the magic happen", requirement );
 	}
 }

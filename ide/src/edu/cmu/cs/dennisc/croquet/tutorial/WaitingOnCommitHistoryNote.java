@@ -44,23 +44,22 @@ package edu.cmu.cs.dennisc.croquet.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class WaitingOnCommitHistoryNote extends HistoryNote {
-	private edu.cmu.cs.dennisc.croquet.Edit< ? > edit;
-	public WaitingOnCommitHistoryNote( String text, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		super( text );
-		this.edit = edit;
+/*package-private*/ abstract class WaitingOnCommitHistoryNote extends RequirementNote {
+	public WaitingOnCommitHistoryNote( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent originalCommitEvent ) {
+		super( context.getModel().getTutorialNoteText( originalCommitEvent.getEdit() ) );
+		this.addRequirement( new IsAcceptableCommitOf( parentContextCriterion, originalCommitEvent ) );
 	}
-	@Override
-	public final boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
-		boolean rv = false;
-		if( child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
-			edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent)child;
-			edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit = commitEvent.getEdit();
-			if( this.edit.isReplacementAcceptable( replacementEdit ) ) {
-				this.retarget( this.edit, replacementEdit );
-				rv = true;
-			}
-		}
-		return rv;
-	}
+//	@Override
+//	public final boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+//		boolean rv = false;
+//		if( child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
+//			edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent)child;
+//			edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit = commitEvent.getEdit();
+//			if( this.edit.isReplacementAcceptable( replacementEdit ) ) {
+//				this.retarget( this.edit, replacementEdit );
+//				rv = true;
+//			}
+//		}
+//		return rv;
+//	}
 }

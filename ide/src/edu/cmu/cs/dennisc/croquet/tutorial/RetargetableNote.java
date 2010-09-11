@@ -46,12 +46,12 @@ import edu.cmu.cs.dennisc.tutorial.*;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class HistoryNote extends Note {
+/*package-private*/ abstract class RetargetableNote extends Note {
 	protected static boolean isMouseEventInterceptedInAllCases( java.awt.event.MouseEvent e ) {
 		return e.getID() == java.awt.event.MouseEvent.MOUSE_PRESSED || e.getID() == java.awt.event.MouseEvent.MOUSE_RELEASED || e.getID() == java.awt.event.MouseEvent.MOUSE_CLICKED || e.getID() == java.awt.event.MouseEvent.MOUSE_DRAGGED;
 	}
 
-	public HistoryNote( String text ) {
+	public RetargetableNote( String text ) {
 		super( text );
 	}
 	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
