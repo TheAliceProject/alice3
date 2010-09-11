@@ -63,49 +63,51 @@ public abstract class IsFrameShowingState extends edu.cmu.cs.dennisc.croquet.Boo
 			} );
 		}
 	}
+	protected javax.swing.JFrame createFrame() {
+		javax.swing.JFrame rv = new javax.swing.JFrame();
+		rv.setTitle( this.getTitle() );
+		rv.getContentPane().add( this.createPane() );
+		rv.setDefaultCloseOperation( javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE );
+		rv.addWindowListener( new java.awt.event.WindowListener() {
+			public void windowOpened(java.awt.event.WindowEvent e) {
+			} 
+			public void windowActivated(java.awt.event.WindowEvent e) {
+			}
+			public void windowDeiconified(java.awt.event.WindowEvent e) {
+			}
+			public void windowIconified(java.awt.event.WindowEvent e) {
+			}
+			public void windowDeactivated(java.awt.event.WindowEvent e) {
+			}
+			public void windowClosing(java.awt.event.WindowEvent e) {
+				IsFrameShowingState.this.setValue( false );
+			}
+			public void windowClosed(java.awt.event.WindowEvent e) {
+			}
+		} );
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.internalTesting" ) ) {
+			rv.addComponentListener( new java.awt.event.ComponentListener() {
+				public void componentShown( java.awt.event.ComponentEvent e ) {
+				}
+				public void componentHidden( java.awt.event.ComponentEvent e ) {
+				}
+				public void componentMoved( java.awt.event.ComponentEvent e ) {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( e.getComponent().getLocation() );
+				}
+				public void componentResized( java.awt.event.ComponentEvent e ) {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( e.getComponent().getSize() );
+				}
+			} );
+		} else {
+			rv.pack();
+		}
+		return rv;
+	}
 	private javax.swing.JFrame getFrame() {
 		if( this.frame != null ) {
 			//pass
 		} else {
-			this.frame = new javax.swing.JFrame();
-			this.frame.setTitle( this.getTitle() );
-			this.frame.getContentPane().add( this.createPane() );
-			this.frame.setDefaultCloseOperation( javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE );
-			this.frame.addWindowListener( new java.awt.event.WindowListener() {
-				public void windowOpened(java.awt.event.WindowEvent e) {
-				} 
-				public void windowActivated(java.awt.event.WindowEvent e) {
-				}
-				public void windowDeiconified(java.awt.event.WindowEvent e) {
-				}
-				public void windowIconified(java.awt.event.WindowEvent e) {
-				}
-				public void windowDeactivated(java.awt.event.WindowEvent e) {
-				}
-				public void windowClosing(java.awt.event.WindowEvent e) {
-					IsFrameShowingState.this.setValue( false );
-				}
-				public void windowClosed(java.awt.event.WindowEvent e) {
-				}
-			} );
-			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.internalTesting" ) ) {
-				this.frame.addComponentListener( new java.awt.event.ComponentListener() {
-					public void componentShown( java.awt.event.ComponentEvent e ) {
-					}
-					public void componentHidden( java.awt.event.ComponentEvent e ) {
-					}
-					public void componentMoved( java.awt.event.ComponentEvent e ) {
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( e.getComponent().getLocation() );
-					}
-					public void componentResized( java.awt.event.ComponentEvent e ) {
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( e.getComponent().getSize() );
-					}
-				} );
-				this.frame.setLocation( -1200, 0 );
-				this.frame.setSize( 1200, 1600 );
-			} else {
-				this.frame.pack();
-			}
+			this.frame = this.createFrame();
 		}
 		return this.frame;
 	}

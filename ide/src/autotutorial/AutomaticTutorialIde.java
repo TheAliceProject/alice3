@@ -1,6 +1,8 @@
 package autotutorial;
 
 public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
+	
+	
 	private static boolean IS_ENCODING;
 	private static final String UI_HISTORY_PATH = "/autoTutorial1.bin";
 	private static final String POST_PROJECT_PATH = "/post.a3p";
@@ -8,6 +10,7 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 	private boolean isPostProjectLive = false;
 	private edu.cmu.cs.dennisc.alice.Project postProject;
 	private edu.cmu.cs.dennisc.croquet.RootContext postContext;
+	
 	@Override
 	public void loadProjectFrom( java.net.URI uri ) {
 		super.loadProjectFrom( uri );
@@ -51,6 +54,9 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 			this.isPostProjectLive = false;
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
 			
+			org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState isInteractionTreeShowingState = new org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState( this.postContext );
+			isInteractionTreeShowingState.setValue( true );
+
 			AstDecodingRetargeter astDecodingRetargeter = new AstDecodingRetargeter();
 			astDecodingRetargeter.addAllToReplacementMap( this.getProject() );
 			this.postContext.retarget( astDecodingRetargeter );

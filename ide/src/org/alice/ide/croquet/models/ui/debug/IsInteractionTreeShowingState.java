@@ -42,10 +42,6 @@
  */
 package org.alice.ide.croquet.models.ui.debug;
 
-import org.alice.ide.croquet.models.IsFrameShowingState;
-
-import edu.cmu.cs.dennisc.croquet.ContextManager;
-
 class HistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel< edu.cmu.cs.dennisc.croquet.HistoryNode > {
 	private edu.cmu.cs.dennisc.croquet.HistoryNode root;
 	public HistoryTreeModel( edu.cmu.cs.dennisc.croquet.HistoryNode root ) {
@@ -106,22 +102,41 @@ class HistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMut
 /**
  * @author Dennis Cosgrove
  */
-public class IsInteractionTreeShowingState extends IsFrameShowingState {
+public class IsInteractionTreeShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
 	private static class SingletonHolder {
 		private static IsInteractionTreeShowingState instance = new IsInteractionTreeShowingState();
 	}
 	public static IsInteractionTreeShowingState getInstance() {
 		return SingletonHolder.instance;
 	}
+	private edu.cmu.cs.dennisc.croquet.ModelContext< ? > context;
 	private IsInteractionTreeShowingState() {
+		this( edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() );
+	}
+	public IsInteractionTreeShowingState( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
 		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "3fb1e733-1736-476d-b40c-7729c82f0b21" ), false );
+		this.context = context;
+	}
+	@Override
+	protected void localize() {
+		super.localize();
 		this.setTextForBothTrueAndFalse( "Interaction Tree" );
 	}
 	@Override
+	protected javax.swing.JFrame createFrame() {
+		javax.swing.JFrame rv = super.createFrame();
+		rv.setLocation( -1200, 0 );
+		rv.setSize( 1200, 1600 );
+		return rv;
+	}
+	@Override
 	protected java.awt.Component createPane() {
-		edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
-		final HistoryTreeModel treeModel = new HistoryTreeModel( context );
+		final HistoryTreeModel treeModel = new HistoryTreeModel( this.context );
 		final javax.swing.JTree tree = new javax.swing.JTree( treeModel );
+		
+		for( int i=0; i<tree.getRowCount(); i++ ) {
+			tree.expandRow( i );
+		}
 		tree.setRootVisible( false );
 		context.addChildrenObserver( new edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver() {
 			public void addingChild( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
