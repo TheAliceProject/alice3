@@ -40,13 +40,44 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.choosers;
+package org.alice.ide.croquet.models.numberpad;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleChooser extends AbstractNumberChooser {
-	public DoubleChooser() {
-		super( org.alice.ide.croquet.models.numberpad.DoubleModel.getInstance() ); 
+public class IntegerModel extends NumberModel {
+	private static class SingletonHolder {
+		private static IntegerModel instance = new IntegerModel();
+	}
+	public static IntegerModel getInstance() {
+		return SingletonHolder.instance;
+	}
+	private IntegerModel() {
+		super( NUMBER_PAD_GROUP, java.util.UUID.fromString( "fceee598-ccd1-46f9-8539-5f2a42b021b2" ) );
+	}
+	@Override
+	public boolean isDecimalPointSupported() {
+		return false;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression valueOf( String s ) {
+		long l = Long.parseLong( s );
+		if( l > Integer.MAX_VALUE ) {
+			return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( 
+					new edu.cmu.cs.dennisc.alice.ast.TypeExpression( 
+							edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE 
+					), 
+					edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField.get(Integer.class, "MAX_VALUE" ) 
+			);
+		} else if( l < Integer.MIN_VALUE ) {
+			return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( 
+					new edu.cmu.cs.dennisc.alice.ast.TypeExpression( 
+							edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE 
+					), 
+					edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField.get(Integer.class, "MIN_VALUE" ) 
+			);
+		} else {
+			return new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( (int)l );
+		}
 	}
 }

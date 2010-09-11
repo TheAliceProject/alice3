@@ -40,13 +40,52 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.choosers;
+
+package org.alice.ide.croquet.resolvers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleChooser extends AbstractNumberChooser {
-	public DoubleChooser() {
-		super( org.alice.ide.croquet.models.numberpad.DoubleModel.getInstance() ); 
+public class NumberModelStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< T > {
+	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.croquet.models.numberpad.NumberModel.class };
+	private org.alice.ide.croquet.models.numberpad.NumberModel numberModel;
+	public NumberModelStaticGetInstanceKeyedResolver( T instance, org.alice.ide.croquet.models.numberpad.NumberModel numberModel ) {
+		super( instance );
+		this.numberModel = numberModel;
+	}
+	public NumberModelStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+
+	@Override
+	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return PARAMETER_TYPES;
+	}
+	@Override
+	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+	@Override
+	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		final String METHOD_NAME = "getInstance";
+		String clsName = binaryDecoder.decodeString();
+		try {
+			Class< ? > cls = edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( clsName );
+			java.lang.reflect.Method mthd = cls.getMethod( METHOD_NAME );
+			Object instance = mthd.invoke( null );
+			return new Object[] { instance };
+		} catch( ClassNotFoundException cnfe ) {
+			throw new RuntimeException( clsName, cnfe );
+		} catch( NoSuchMethodException nsme ) {
+			throw new RuntimeException( clsName + " " + METHOD_NAME, nsme );
+		} catch( java.lang.IllegalAccessException iae ) {
+			throw new RuntimeException( clsName + " " + METHOD_NAME, iae );
+		} catch( java.lang.reflect.InvocationTargetException ite ) {
+			throw new RuntimeException( clsName + " " + METHOD_NAME, ite );
+		}
+	}
+	@Override
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		Class<?> cls = this.numberModel.getClass();
+		binaryEncoder.encode( cls.getName() );
 	}
 }

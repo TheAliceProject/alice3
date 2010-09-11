@@ -40,13 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.choosers;
+package org.alice.ide.croquet.models.numberpad;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleChooser extends AbstractNumberChooser {
-	public DoubleChooser() {
-		super( org.alice.ide.croquet.models.numberpad.DoubleModel.getInstance() ); 
+public class Numeral5Operation extends NumeralOperation {
+	private static java.util.Map< NumberModel, Numeral5Operation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized Numeral5Operation getInstance( NumberModel numberModel ) {
+		Numeral5Operation rv = map.get( numberModel );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new Numeral5Operation( numberModel );
+			map.put( numberModel, rv );
+		}
+		return rv;
+	}
+
+	private Numeral5Operation( NumberModel numberModel ) {
+		super( java.util.UUID.fromString( "051f7654-c6a5-4543-8190-4fef3f1cf2b5" ), numberModel, (short)5 );
 	}
 }

@@ -40,13 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.choosers;
+package org.alice.ide.croquet.models.numberpad;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleChooser extends AbstractNumberChooser {
-	public DoubleChooser() {
-		super( org.alice.ide.croquet.models.numberpad.DoubleModel.getInstance() ); 
+public class BackspaceOperation extends NumberPadOperation {
+	private static java.util.Map< NumberModel, BackspaceOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized BackspaceOperation getInstance( NumberModel model ) {
+		BackspaceOperation rv = map.get( model );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new BackspaceOperation( model );
+			map.put( model, rv );
+		}
+		return rv;
+	}
+
+	private BackspaceOperation( NumberModel model ) {
+		super( java.util.UUID.fromString( "16a86a58-7672-4eb7-8138-9853978f2d00" ), model );
+		this.setName( "\u2190" );
+	}
+	@Override
+	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+		this.numberModel.deleteLastCharacter();
+		context.finish();
 	}
 }

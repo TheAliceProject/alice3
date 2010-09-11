@@ -42,32 +42,12 @@
  */
 package org.alice.ide.choosers;
 
-class FloatModel extends NumberModel {
-	public FloatModel() {
-		 super( CALCULATOR_GROUP, java.util.UUID.fromString( "f34ce6db-6de0-48cb-ba43-98e89f55b59b" )  );
-	}
-	@Override
-	protected boolean isDecimalPointSupported() {
-		return true;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression valueOf( String s ) {
-		float f = Float.parseFloat( s );
-		if( Float.isNaN( f ) ) {
-			return null;
-		} else {
-			return new edu.cmu.cs.dennisc.alice.ast.FloatLiteral( f );
-		}
-	}
-}
-
-
 /**
  * @author Dennis Cosgrove
  */
 public class FloatChooser extends AbstractNumberChooser {
 	public FloatChooser() {
-		super( new FloatModel() ); 
+		super( org.alice.ide.croquet.models.numberpad.FloatModel.getInstance() ); 
 //		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 //		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.FloatLiteral ) {
 //			edu.cmu.cs.dennisc.alice.ast.FloatLiteral floatLiteral = (edu.cmu.cs.dennisc.alice.ast.FloatLiteral)previousExpression;

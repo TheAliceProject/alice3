@@ -40,13 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.choosers;
+package org.alice.ide.croquet.models.numberpad;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleChooser extends AbstractNumberChooser {
-	public DoubleChooser() {
-		super( org.alice.ide.croquet.models.numberpad.DoubleModel.getInstance() ); 
+public abstract class NumberPadOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+	protected NumberModel numberModel;
+	public NumberPadOperation( java.util.UUID individualId, NumberModel numberModel ) {
+		super( NumberModel.NUMBER_PAD_GROUP, individualId );
+		this.numberModel = numberModel;
+	}
+	
+	@Override
+	protected org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver< NumberPadOperation > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver< NumberPadOperation >( this, this.numberModel );
 	}
 }
