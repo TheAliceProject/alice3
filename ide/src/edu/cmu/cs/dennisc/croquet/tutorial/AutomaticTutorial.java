@@ -296,14 +296,14 @@ public class AutomaticTutorial {
 		}
 		return rv;
 	}
-	private static java.util.List< HistoryNote > appendNotes( java.util.List< HistoryNote > rv, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.HistoryNode node, edu.cmu.cs.dennisc.croquet.CommitEvent pendingCommitEvent ) {
+	private static java.util.List< HistoryNote > appendNotes( java.util.List< HistoryNote > rv, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.HistoryNode node ) {
 		if( node instanceof edu.cmu.cs.dennisc.croquet.MenuBarModelContext ) {
 			edu.cmu.cs.dennisc.croquet.MenuBarModelContext menuBarModelContext = (edu.cmu.cs.dennisc.croquet.MenuBarModelContext)node;
 			if( menuBarModelContext.getState() != null ) {
 				edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = menuBarModelContext.getLastChild();
 				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext ) {
 					edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)lastChild;
-					appendNotes( rv, IsAnyMenuBarModelContextCriterion.SINGLETON, popupMenuOperationContext, null );
+					appendNotes( rv, IsAnyMenuBarModelContextCriterion.SINGLETON, popupMenuOperationContext );
 				}
 			}
 		} else if( node instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
@@ -313,23 +313,22 @@ public class AutomaticTutorial {
 				edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = dragAndDropContext.getChildAt( DND_CONTEXT_CHILD_COUNT-1 );
 				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
 					edu.cmu.cs.dennisc.croquet.ModelContext< ? > childModelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)lastChild;
-					
 					edu.cmu.cs.dennisc.croquet.HistoryNode lastGrandchild = childModelContext.getLastChild();
-					if( lastGrandchild instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
+					DragNote dragNote = DragNote.createInstance( dragAndDropContext, parentContextCriterion );
+					DropNote dropNote;
+					boolean isCommit = lastGrandchild instanceof edu.cmu.cs.dennisc.croquet.CommitEvent;
+					if( isCommit ) {
 						edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent)lastGrandchild;
-						DragNote dragNote = DragNote.createInstance( dragAndDropContext, parentContextCriterion );
-						boolean isPending = childModelContext instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext;
-						DropNote dropNote;
-						if( isPending ) {
-							dropNote = DropNote.createPendingInstance( dragNote, dragAndDropContext, childModelContext );
-						} else {
-							dropNote = DropNote.createCommitInstance( dragNote, dragAndDropContext, childModelContext, commitEvent );
-						}
-						rv.add( dragNote );
-						rv.add( dropNote );
-						if( isPending ) {
-							appendNotes( rv, dropNote, childModelContext, commitEvent );
-						}
+						dropNote = DropNote.createCommitInstance( dragNote, dragAndDropContext, childModelContext, commitEvent );
+					} else {
+						dropNote = DropNote.createPendingInstance( dragNote, dragAndDropContext, childModelContext );
+					}
+					rv.add( dragNote );
+					rv.add( dropNote );
+					if( isCommit ) {
+						//pass
+					} else {
+						appendNotes( rv, dropNote, childModelContext );
 					}
 				}
 			}
@@ -373,9 +372,13 @@ public class AutomaticTutorial {
 					}
 				}
 			} else if( node instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext ){
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "pendingCommitEvent:", pendingCommitEvent );
-				rv.add( OperationNote.createInstance( operationContext ) );
-				appendBonusOperationNotes( rv, operationContext );
+				edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = operationContext.getLastChild();
+				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
+					rv.add( OperationNote.createInstance( operationContext ) );
+					appendBonusOperationNotes( rv, operationContext );
+				} else {
+					appendNotes( rv, parentContextCriterion, lastChild );
+				}
 			}
 		} else if( node instanceof edu.cmu.cs.dennisc.croquet.BooleanStateContext ) {
 			edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext = (edu.cmu.cs.dennisc.croquet.BooleanStateContext)node;
@@ -428,7 +431,7 @@ public class AutomaticTutorial {
 		private java.util.List< HistoryNote > notes;
 		private java.util.List< HistoryNote > createNotes() {
 			java.util.List< HistoryNote > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			appendNotes( rv, IsRootContextCriterion.SINGLETON, this.context, null );
+			appendNotes( rv, IsRootContextCriterion.SINGLETON, this.context );
 			return rv;
 		}
 		@Override
