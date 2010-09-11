@@ -56,7 +56,7 @@ public abstract class DragAndDropModel extends Model {
 		return false;
 	}
 	@Override
-	/*package-private*/ void localize() {
+	protected void localize() {
 	}
 	
 	public String getTutorialDragNoteText() {

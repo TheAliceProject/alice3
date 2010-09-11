@@ -61,7 +61,7 @@ public final class MenuSeparatorModel extends Model {
 		return false;
 	}
 	@Override
-	/*package-private*/ void localize() {
+	protected void localize() {
 	}
 	public String getName() {
 		return this.name;

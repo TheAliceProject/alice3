@@ -97,7 +97,7 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	}
 
 	@Override
-	/*package-private*/ void localize() {
+	protected void localize() {
 		this.setName( this.getDefaultLocalizedText() );
 		this.setMnemonicKey( this.getLocalizedMnemonicKey() );
 		this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );

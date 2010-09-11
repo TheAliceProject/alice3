@@ -55,7 +55,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 		this.group = group;
 		this.id = id;
 	}
-	/*package-private*/ abstract void localize();
+	protected abstract void localize();
 
 	public Group getGroup() {
 		return this.group;

@@ -93,7 +93,7 @@ public final class BoundedRangeIntegerState extends Model {
 	}
 
 	@Override
-	/*package-private*/ void localize() {
+	protected void localize() {
 	}
 	
 	private java.util.List< ValueObserver > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();

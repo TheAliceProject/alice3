@@ -65,7 +65,7 @@ abstract class DialogOperationWithControls<C extends AbstractDialogOperationCont
 			super( java.util.UUID.fromString( "6acdd95e-849c-4281-9779-994e9807b25b" ) );
 		}
 		@Override
-		void localize() {
+		protected void localize() {
 			super.localize();
 			this.setName( "Finish" );
 		}
@@ -81,7 +81,7 @@ abstract class DialogOperationWithControls<C extends AbstractDialogOperationCont
 			super( java.util.UUID.fromString( "3363c6f0-c8a2-48f2-aefc-c53894ec8a99" ) );
 		}
 		@Override
-		void localize() {
+		protected void localize() {
 			super.localize();
 			this.setName( "Cancel" );
 		}
@@ -249,7 +249,7 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "e1239539-1eb0-411d-b808-947d0b1c1e94" ) );
 		}
 		@Override
-		void localize() {
+		protected void localize() {
 			super.localize();
 			this.setName( "Next >" );
 		}
@@ -267,7 +267,7 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "2b1ff0fd-8d8a-4d23-9d95-6203e9abff9c" ) );
 		}
 		@Override
-		void localize() {
+		protected void localize() {
 			super.localize();
 			this.setName( "< Back" );
 		}

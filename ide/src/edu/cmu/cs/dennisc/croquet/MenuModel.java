@@ -66,7 +66,7 @@ public abstract class MenuModel extends Model {
 		return false;
 	}
 	@Override
-	/*package-private*/ void localize() {
+	protected void localize() {
 		if( clsForI18N != null ) {
 			//pass
 		} else {

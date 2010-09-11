@@ -136,7 +136,7 @@ public /*final*/ class BooleanState extends Model {
 	}
 	
 	@Override
-	/*package-private*/ void localize() {
+	protected void localize() {
 		String text = this.getDefaultLocalizedText();
 		if( text != null ) {
 			this.setTextForBothTrueAndFalse( text );

@@ -403,7 +403,7 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 		this(group, id, codec, -1);
 	}
 	@Override
-	/*package-private*/ void localize() {
+	protected void localize() {
 	}
 	@Override
 	protected boolean isOwnerOfEdit() {

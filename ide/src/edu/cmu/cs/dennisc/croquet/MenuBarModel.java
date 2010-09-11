@@ -54,7 +54,7 @@ public class MenuBarModel extends Model {
 	}
 
 	@Override
-	/*package-private*/ void localize() {
+	protected void localize() {
 	}
 
 	@Override

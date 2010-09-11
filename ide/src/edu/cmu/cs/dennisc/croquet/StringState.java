@@ -137,7 +137,7 @@ public class StringState extends Model {
 	}
 
 	@Override
-	/*package-private*/ void localize() {
+	protected void localize() {
 	}
 
 	public String getValue() {
