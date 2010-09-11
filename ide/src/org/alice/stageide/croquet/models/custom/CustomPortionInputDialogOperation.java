@@ -40,18 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.cascade.customfillin;
+package org.alice.stageide.croquet.models.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomDoubleFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > {
-	@Override
-	protected String getTypeDescription() {
-		return "Real Number";
+public class CustomPortionInputDialogOperation extends org.alice.ide.croquet.models.custom.CustomInputDialogOperation< edu.cmu.cs.dennisc.alice.ast.Expression > {
+	private static class SingletonHolder {
+		private static CustomPortionInputDialogOperation instance = new CustomPortionInputDialogOperation();
 	}
-	@Override
-	protected org.alice.ide.croquet.models.custom.CustomDoubleInputDialogOperation getInputDialogOperation() {
-		return org.alice.ide.croquet.models.custom.CustomDoubleInputDialogOperation.getInstance();
+	public static CustomPortionInputDialogOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private CustomPortionInputDialogOperation() {
+		super( java.util.UUID.fromString( "a200dbc2-5a16-4931-8a5d-2a793973e053" ), new org.alice.stageide.choosers.PortionChooser() );
 	}
 }

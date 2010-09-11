@@ -51,7 +51,7 @@ public class CustomPortionFillIn extends org.alice.ide.cascade.customfillin.Cust
 		return "Portion";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser< edu.cmu.cs.dennisc.alice.ast.Expression > createValueChooser() {
-		return new org.alice.stageide.choosers.PortionChooser();
+	protected org.alice.stageide.croquet.models.custom.CustomPortionInputDialogOperation getInputDialogOperation() {
+		return org.alice.stageide.croquet.models.custom.CustomPortionInputDialogOperation.getInstance();
 	}
 }

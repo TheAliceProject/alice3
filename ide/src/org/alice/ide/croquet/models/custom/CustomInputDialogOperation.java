@@ -40,18 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.cascade.customfillin;
+package org.alice.ide.croquet.models.custom;
+
+import org.alice.ide.cascade.customfillin.CustomInputPane;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomDoubleFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > {
-	@Override
-	protected String getTypeDescription() {
-		return "Real Number";
+public abstract class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends org.alice.ide.operations.InputDialogWithPreviewOperation<CustomInputPane< E >> {
+	private CustomInputPane< E > customInputPane;
+	
+	public CustomInputDialogOperation( java.util.UUID id, org.alice.ide.choosers.ValueChooser< E > chooser ) {
+		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, id );
+		this.customInputPane = new CustomInputPane< E >( chooser );
+	}
+	
+	public void EPIC_HACK_setChooserTypeDescription( String typeDescription ) {
+		this.customInputPane.getValueChooser().setTypeDescription( typeDescription );
 	}
 	@Override
-	protected org.alice.ide.croquet.models.custom.CustomDoubleInputDialogOperation getInputDialogOperation() {
-		return org.alice.ide.croquet.models.custom.CustomDoubleInputDialogOperation.getInstance();
+	protected CustomInputPane< E > prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context) {
+		return this.customInputPane;
+	}
+	@Override
+	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context, boolean isOk) {
+		if( isOk ) {
+			context.finish();
+		} else {
+			context.cancel();
+		}
 	}
 }

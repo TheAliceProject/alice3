@@ -40,51 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.cascade.customfillin;
+package org.alice.ide.croquet.models.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends org.alice.ide.operations.InputDialogWithPreviewOperation<CustomInputPane< E >> {
-//	@Deprecated
-//	public interface EPIC_HACK_Validator {
-//		public String getExplanationIfOkButtonShouldBeDisabled( org.alice.ide.choosers.ValueChooser< ? > valueChooser );
-//	}
-//	private EPIC_HACK_Validator validator = null;
-
-	private CustomInputPane< E > customInputPane;
-	public CustomInputDialogOperation( CustomInputPane< E > customInputPane ) {
-		super( edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "0e69d792-3e5b-4a17-b670-465885ade615" ) );
-		this.customInputPane = customInputPane;
+public class CustomFloatInputDialogOperation extends CustomInputDialogOperation< edu.cmu.cs.dennisc.alice.ast.Expression > {
+	private static class SingletonHolder {
+		private static CustomFloatInputDialogOperation instance = new CustomFloatInputDialogOperation();
 	}
-//	public EPIC_HACK_Validator getValidator() {
-//		return this.validator;
-//	}
-//	public void setValidator( EPIC_HACK_Validator validator ) {
-//		this.validator = validator;
-//	}
-//	@Override
-//	protected String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context) {
-//		String rv = super.getExplanationIfOkButtonShouldBeDisabled( context );
-//		if( this.validator != null ) {
-//			String explanation = this.validator.getExplanationIfOkButtonShouldBeDisabled( this.customInputPane.getValueChooser() );
-//			if( explanation != null ) {
-//				rv = explanation;
-//			}
-//		}
-//		return rv;
-//	}
-	
-	@Override
-	protected CustomInputPane< E > prologue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context) {
-		return this.customInputPane;
+	public static CustomFloatInputDialogOperation getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	protected void epilogue(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<CustomInputPane< E >> context, boolean isOk) {
-		if( isOk ) {
-			context.finish();
-		} else {
-			context.cancel();
-		}
+	private CustomFloatInputDialogOperation() {
+		super( java.util.UUID.fromString( "6a04b351-ed30-44e0-a849-783945698720" ), new org.alice.ide.choosers.FloatChooser() );
 	}
 }

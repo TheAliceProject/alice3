@@ -50,7 +50,8 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression> 
 	public CustomInputPane( org.alice.ide.choosers.ValueChooser< E > chooser ) {
 		this.chooser = chooser;
 	}
-		
+
+	
 	@Override
 	public String getExplanationIfOkButtonShouldBeDisabled() {
 		return this.chooser.getExplanationIfOkButtonShouldBeDisabled();

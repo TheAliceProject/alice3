@@ -51,7 +51,7 @@ public class CustomArrayFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.as
 		return "Array";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser< edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation > createValueChooser() {
-		return new org.alice.ide.choosers.ArrayChooser();
+	protected org.alice.ide.croquet.models.custom.CustomArrayInputDialogOperation getInputDialogOperation() {
+		return org.alice.ide.croquet.models.custom.CustomArrayInputDialogOperation.getInstance();
 	}
 }

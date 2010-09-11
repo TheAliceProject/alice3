@@ -42,9 +42,6 @@
  */
 package org.alice.stageide.cascade.customfillin;
 
-import org.alice.stageide.choosers.AngleChooser;
-
-
 /**
  * @author Dennis Cosgrove
  */
@@ -54,8 +51,8 @@ public class CustomAngleFillIn extends org.alice.ide.cascade.customfillin.Custom
 		return "Other Angle...";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser< edu.cmu.cs.dennisc.alice.ast.Expression > createValueChooser() {
-		return new AngleChooser();
+	protected org.alice.stageide.croquet.models.custom.CustomAngleInputDialogOperation getInputDialogOperation() {
+		return org.alice.stageide.croquet.models.custom.CustomAngleInputDialogOperation.getInstance();
 	}
 //	@Override
 //	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.apis.moveandturn.Angle value ) {

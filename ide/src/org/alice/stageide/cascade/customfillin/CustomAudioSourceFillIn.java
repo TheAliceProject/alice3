@@ -45,14 +45,14 @@ package org.alice.stageide.cascade.customfillin;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomizeAudioSourceFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn<edu.cmu.cs.dennisc.alice.ast.InstanceCreation> {
+public class CustomAudioSourceFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn<edu.cmu.cs.dennisc.alice.ast.InstanceCreation> {
 	@Override
 	protected String getTypeDescription() {
 		return "Audio Source";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser<edu.cmu.cs.dennisc.alice.ast.InstanceCreation> createValueChooser() {
-		return new org.alice.stageide.choosers.AudioSourceChooser();
+	protected org.alice.stageide.croquet.models.custom.CustomAudioSourceInputDialogOperation getInputDialogOperation() {
+		return org.alice.stageide.croquet.models.custom.CustomAudioSourceInputDialogOperation.getInstance();
 	}
 //	@Override
 //	protected edu.cmu.cs.dennisc.alice.ast.InstanceCreation createExpression( org.alice.apis.moveandturn.AudioSource value ) {

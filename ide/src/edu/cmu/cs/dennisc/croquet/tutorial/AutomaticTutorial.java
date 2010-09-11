@@ -296,13 +296,15 @@ public class AutomaticTutorial {
 		}
 		return rv;
 	}
-	private static java.util.List< HistoryNote > appendNotes( java.util.List< HistoryNote > rv, edu.cmu.cs.dennisc.croquet.HistoryNode node, ParentContextCriterion parentContextCriterion ) {
+	private static java.util.List< HistoryNote > appendNotes( java.util.List< HistoryNote > rv, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.HistoryNode node, edu.cmu.cs.dennisc.croquet.CommitEvent pendingCommitEvent ) {
 		if( node instanceof edu.cmu.cs.dennisc.croquet.MenuBarModelContext ) {
 			edu.cmu.cs.dennisc.croquet.MenuBarModelContext menuBarModelContext = (edu.cmu.cs.dennisc.croquet.MenuBarModelContext)node;
-			edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = menuBarModelContext.getLastChild();
-			if( lastChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext ) {
-				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)lastChild;
-				appendNotes( rv, popupMenuOperationContext, IsAnyMenuBarModelContextCriterion.SINGLETON );
+			if( menuBarModelContext.getState() != null ) {
+				edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = menuBarModelContext.getLastChild();
+				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext ) {
+					edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)lastChild;
+					appendNotes( rv, IsAnyMenuBarModelContextCriterion.SINGLETON, popupMenuOperationContext, null );
+				}
 			}
 		} else if( node instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
 			edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext = (edu.cmu.cs.dennisc.croquet.DragAndDropContext)node;
@@ -325,9 +327,9 @@ public class AutomaticTutorial {
 						}
 						rv.add( dragNote );
 						rv.add( dropNote );
-//						if( isPending ) {
-//							appendNotes( rv, childModelContext, dropNote );
-//						}
+						if( isPending ) {
+							appendNotes( rv, dropNote, childModelContext, commitEvent );
+						}
 					}
 				}
 			}
@@ -370,7 +372,8 @@ public class AutomaticTutorial {
 						}
 					}
 				}
-			} else {
+			} else if( node instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext ){
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "pendingCommitEvent:", pendingCommitEvent );
 				rv.add( OperationNote.createInstance( operationContext ) );
 				appendBonusOperationNotes( rv, operationContext );
 			}
@@ -425,7 +428,7 @@ public class AutomaticTutorial {
 		private java.util.List< HistoryNote > notes;
 		private java.util.List< HistoryNote > createNotes() {
 			java.util.List< HistoryNote > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			appendNotes( rv, this.context, IsRootContextCriterion.SINGLETON );
+			appendNotes( rv, IsRootContextCriterion.SINGLETON, this.context, null );
 			return rv;
 		}
 		@Override

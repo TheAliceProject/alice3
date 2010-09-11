@@ -51,7 +51,7 @@ public class CustomStringFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.a
 		return "String";
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser< edu.cmu.cs.dennisc.alice.ast.StringLiteral > createValueChooser() {
-		return new org.alice.ide.choosers.StringChooser();
+	protected org.alice.ide.croquet.models.custom.CustomStringInputDialogOperation getInputDialogOperation() {
+		return org.alice.ide.croquet.models.custom.CustomStringInputDialogOperation.getInstance();
 	}
 }
