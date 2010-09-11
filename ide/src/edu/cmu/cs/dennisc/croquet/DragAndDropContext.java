@@ -154,11 +154,11 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 			super.retarget( retargeter );
 			if( this.potentialDropSite instanceof RetargetableDropSite ) {
 				RetargetableDropSite retargetablePotentialDropSite = (RetargetableDropSite)this.potentialDropSite;
-				System.err.println( "pretarget: " + this.potentialDropSite );
+				//System.err.println( "pretarget: " + this.potentialDropSite );
 				RetargetableDropSite replacement = retargetablePotentialDropSite.createReplacement( retargeter );
 				retargeter.addKeyValuePair( this.potentialDropSite, replacement );
 				this.potentialDropSite = replacement;
-				System.err.println( "psttarget: " + this.potentialDropSite );
+				//System.err.println( "psttarget: " + this.potentialDropSite );
 			}
 		}
 		@Override

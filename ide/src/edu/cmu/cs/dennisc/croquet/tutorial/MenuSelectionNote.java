@@ -46,7 +46,28 @@ import edu.cmu.cs.dennisc.tutorial.*;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class MenuSelectionNote extends RetargetableNote {
+/*package-private*/ class IsMenuSelectionEventOf extends IsChildOfAndInstanceOf< edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent > {
+	private edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent originalMenuSelectionEvent;
+	private int requiredIndex;
+	public IsMenuSelectionEventOf( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent originalMenuSelectionEvent, int requiredIndex ) {
+		super( parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent.class );
+		this.originalMenuSelectionEvent = originalMenuSelectionEvent;
+		this.requiredIndex = requiredIndex;
+	}
+	@Override
+	protected boolean isSpecificallyWhatWereLookingFor( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent ) throws CancelException {
+		boolean rv = super.isSpecificallyWhatWereLookingFor( menuSelectionEvent );
+		if( rv ) {
+			
+		}
+		return rv;
+	}
+}
+
+/**
+ * @author Dennis Cosgrove
+ */
+/*package-private*/ class MenuSelectionNote extends RequirementNote {
 	private static String getText( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i ) {
 		edu.cmu.cs.dennisc.croquet.Model modelI = menuSelectionEvent.getModelAt( i );
 		StringBuilder sb = new StringBuilder();
@@ -119,36 +140,35 @@ import edu.cmu.cs.dennisc.tutorial.*;
 			return false;
 		}
 	}
-	
-	
-	@Override
-	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
-		if( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent ) {
-			if( this.originalRetargetableMenuModelInitializationEvent != null ) {
-				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent retargetableMenuModelInitializationEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent)child;
-				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)retargetableMenuModelInitializationEvent.getParent();
-				edu.cmu.cs.dennisc.croquet.MenuModel menuModel = popupMenuOperationContext.getModel().getMenuModel();
-				if( menuModel instanceof edu.cmu.cs.dennisc.croquet.RetargetableMenuModel ) {
-					edu.cmu.cs.dennisc.croquet.RetargetableMenuModel retargetableMenuModel = (edu.cmu.cs.dennisc.croquet.RetargetableMenuModel)menuModel;
-					edu.cmu.cs.dennisc.croquet.RetargetingData originalRetargetingData = this.originalRetargetableMenuModelInitializationEvent.getRetargetingData();
-					edu.cmu.cs.dennisc.croquet.Retargeter retargeter = AutomaticTutorial.getInstance().getRetargeter();
-					originalRetargetingData.addKeyValuePairs( retargeter, retargetableMenuModel.getRetargetableData() );
-					AutomaticTutorial.getInstance().retargetOriginalContext( retargeter );
-				}
-			}
-		} else if ( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
-			edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)child;
-			final int N = this.i;
-			if( menuSelectionEvent.getModelCount() == N ) {
-				return this.isAtLeastWhatWeveBeenWaitingFor( menuSelectionEvent );
-			}
-		} else {
-			if( this.originalMenuSelectionEvent.getModelCount() == this.i+1 ) {
-				if( child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+//
+//	@Override
+//	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+//		if( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent ) {
+//			if( this.originalRetargetableMenuModelInitializationEvent != null ) {
+//				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent retargetableMenuModelInitializationEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent)child;
+//				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)retargetableMenuModelInitializationEvent.getParent();
+//				edu.cmu.cs.dennisc.croquet.MenuModel menuModel = popupMenuOperationContext.getModel().getMenuModel();
+//				if( menuModel instanceof edu.cmu.cs.dennisc.croquet.RetargetableMenuModel ) {
+//					edu.cmu.cs.dennisc.croquet.RetargetableMenuModel retargetableMenuModel = (edu.cmu.cs.dennisc.croquet.RetargetableMenuModel)menuModel;
+//					edu.cmu.cs.dennisc.croquet.RetargetingData originalRetargetingData = this.originalRetargetableMenuModelInitializationEvent.getRetargetingData();
+//					edu.cmu.cs.dennisc.croquet.Retargeter retargeter = AutomaticTutorial.getInstance().getRetargeter();
+//					originalRetargetingData.addKeyValuePairs( retargeter, retargetableMenuModel.getRetargetableData() );
+//					AutomaticTutorial.getInstance().retargetOriginalContext( retargeter );
+//				}
+//			}
+//		} else if ( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
+//			edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)child;
+//			final int N = this.i;
+//			if( menuSelectionEvent.getModelCount() == N ) {
+//				return this.isAtLeastWhatWeveBeenWaitingFor( menuSelectionEvent );
+//			}
+//		} else {
+//			if( this.originalMenuSelectionEvent.getModelCount() == this.i+1 ) {
+//				if( child instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
+//					return true;
+//				}
+//			}
+//		}
+//		return false;
+//	}
 }
