@@ -155,6 +155,7 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.DialogOperation {
 		this.location = dialog.getLocation();
 		this.size = dialog.getSize();
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: releaseContentPane" );
+		context.finish();
 	}
 	
 	@Override

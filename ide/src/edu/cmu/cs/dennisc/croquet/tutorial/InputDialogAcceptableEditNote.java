@@ -52,6 +52,7 @@ package edu.cmu.cs.dennisc.croquet.tutorial;
 		);
 	}
 	private InputDialogAcceptableEditNote( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, Requirement< ? > requirement ) {
-		super( "make the magic happen", requirement );
+		super( requirement );
+		this.setText( "make the magic happen" );
 	}
 }

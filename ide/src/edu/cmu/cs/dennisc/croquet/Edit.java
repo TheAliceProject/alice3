@@ -180,4 +180,13 @@ public abstract class Edit<M extends Model> implements edu.cmu.cs.dennisc.codec.
 	}
 	public void addKeyValuePairs( Retargeter retargeter, Edit< ? > edit ) {
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( ": " );
+		this.updatePresentation( sb, java.util.Locale.getDefault() );
+		return sb.toString();
+	}
 }

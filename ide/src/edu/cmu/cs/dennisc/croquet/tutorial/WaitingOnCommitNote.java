@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet.tutorial;
  */
 /*package-private*/ abstract class WaitingOnCommitNote extends RequirementNote {
 	public WaitingOnCommitNote( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent originalCommitEvent, boolean isContextRequirementRequired ) {
-		super( context.getModel().getTutorialNoteText( originalCommitEvent.getEdit() ) );
+		this.setText( context.getModel().getTutorialNoteText( originalCommitEvent.getEdit() ) );
 		if( isContextRequirementRequired ) {
 			this.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, context.getClass() ) );
 			this.setCheckIndex( 0 );

@@ -52,6 +52,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 	}
 	private ListSelectionStateFinishNote( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
 		super( listSelectionStateContext, parentContextCriterion, commitEvent, false );
+		this.setText( listSelectionStateContext.getModel().getTutorialNoteFinishText( (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E >)commitEvent.getEdit() ) );
 		ModelFromContextResolver modelResolver = new ModelFromContextResolver( listSelectionStateContext );
 		ItemSelectionStateItemResolver itemSelectionStateItemResolver = new ItemSelectionStateItemResolver( modelResolver, new ItemResolver( (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E> )listSelectionStateContext.getEdit() ) );
 		//FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );

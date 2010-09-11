@@ -76,7 +76,9 @@ public class CommitEvent extends AbstractCompleteEvent {
 	@Override
 	protected java.lang.StringBuilder appendRepr( java.lang.StringBuilder rv ) {
 		super.appendRepr( rv );
+		rv.append( "[" );
 		rv.append( this.edit );
+		rv.append( "]" );
 		return rv;
 	}
 }

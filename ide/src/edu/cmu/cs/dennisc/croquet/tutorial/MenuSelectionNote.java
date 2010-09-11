@@ -95,7 +95,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 	}
 	
 	private MenuSelectionNote( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent retargetableMenuModelInitializationEvent, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, int index0 ) {
-		super( getText( menuSelectionEvent, i ) );
+		this.setText( getText( menuSelectionEvent, i ) );
 		this.originalRetargetableMenuModelInitializationEvent = retargetableMenuModelInitializationEvent;
 		this.originalMenuSelectionEvent = menuSelectionEvent;
 		this.modelContext = modelContext;

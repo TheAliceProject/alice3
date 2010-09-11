@@ -52,6 +52,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 	}
 	private ListSelectionStateSimpleNote( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
 		super( listSelectionStateContext, parentContextCriterion, commitEvent );
+		this.setText( listSelectionStateContext.getModel().getTutorialNoteFinishText( (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E >)commitEvent.getEdit() ) );
 		ModelFromContextResolver modelResolver = new ModelFromContextResolver( listSelectionStateContext );
 		ItemSelectionStateItemResolver itemSelectionStateItemResolver = new ItemSelectionStateItemResolver( modelResolver, new ItemResolver( (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E> )listSelectionStateContext.getEdit() ) );
 		this.addFeature( new Hole( itemSelectionStateItemResolver, Feature.ConnectionPreference.EAST_WEST ) );			

@@ -410,7 +410,9 @@ public class ListSelectionState<E> extends Model implements Iterable<E>/*, java.
 		return true;
 	}
 	
-	public String getTutorialNoteText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
+	@Override
+	public java.lang.String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)edit;
 		StringBuilder sb = new StringBuilder();
 		sb.append( "Select " );
 		sb.append( "<strong>" );

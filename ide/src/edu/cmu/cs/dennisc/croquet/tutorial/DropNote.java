@@ -64,7 +64,8 @@ import edu.cmu.cs.dennisc.tutorial.*;
 		);
 	}
 	private DropNote( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, Requirement< ? >... requirements ) {
-		super( dragAndDropContext.getModel().getTutorialDropNoteText(), requirements );
+		super( requirements );
+		this.setText( dragAndDropContext.getModel().getTutorialDropNoteText() );
 		DropSiteResolver dropSiteResolver = new DropSiteResolver( dragAndDropContext ); 
 		this.addFeature( new Hole( dropSiteResolver, Feature.ConnectionPreference.EAST_WEST ) );			
 	}

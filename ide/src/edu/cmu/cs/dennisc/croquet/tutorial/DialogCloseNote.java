@@ -44,12 +44,15 @@ package edu.cmu.cs.dennisc.croquet.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class DialogCloseNote extends RetargetableNote {
-	public DialogCloseNote( edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext ) {
-		super( "close" );
+/*package-private*/ class DialogCloseNote extends RequirementNote {
+	public static DialogCloseNote createInstance( edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext, ParentContextCriterion parentContextCriterion ) {
+		return new DialogCloseNote( 
+				dialogOperationContext, 
+				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent.class ) 
+		);
 	}
-	@Override
-	public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
-		return child instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent;
+	private DialogCloseNote( edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext, Requirement< ? > requirement ) {
+		super( requirement );
+		this.setText( "close" );
 	}
 }

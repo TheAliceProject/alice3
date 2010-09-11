@@ -52,8 +52,7 @@ class RequirementNote extends RetargetableNote implements ParentContextCriterion
 	private java.util.List< edu.cmu.cs.dennisc.croquet.HistoryNode > nodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private int checkIndex = -1;
 	
-	public RequirementNote( String text, Requirement<?>... requirements ) {
-		super( text );
+	public RequirementNote( Requirement<?>... requirements ) {
 		edu.cmu.cs.dennisc.java.util.Collections.addAll( this.requirements, requirements );
 		for( int i=0; i<this.requirements.size(); i++ ) {
 			this.nodes.add( null );

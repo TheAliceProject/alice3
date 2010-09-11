@@ -52,6 +52,7 @@ package edu.cmu.cs.dennisc.croquet.tutorial;
 		);
 	}
 	private InputDialogCommitNote( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, Requirement< ? > requirement ) {
-		super( "press ok button", requirement );
+		super( requirement );
+		this.setText( "press ok button" );
 	}
 }

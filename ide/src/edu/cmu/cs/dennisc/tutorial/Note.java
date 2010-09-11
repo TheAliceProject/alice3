@@ -62,10 +62,21 @@ public class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JCo
 	private String text;
 	private String label = null;
 	
+	public Note() {
+		this( null );
+	}
 	public Note( String text ) {
-		assert text != null;
+//		assert text != null;
 		this.text = text;
 	}
+
+//	private String getText() {
+//		return this.text;
+//	}
+	protected void setText( String text ) {
+		this.text = text;
+	}
+
 	public String getLabel() {
 		return this.label;
 	}
@@ -123,7 +134,7 @@ public class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JCo
 //		isRepaintRequiredForFeatureViewChanged = true;
 //		return false;
 //	}
-	
+		
 	@Override
 	protected javax.swing.JComponent createAwtComponent() {
 		javax.swing.JEditorPane textComponent = new javax.swing.JEditorPane() {
@@ -235,7 +246,7 @@ public class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JCo
 			public java.awt.Dimension getPreferredSize() {
 				java.awt.Dimension rv = super.getPreferredSize();
 				rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( rv, 256 );
-				rv.width = 256;
+				rv.width = 1024;
 				return rv;
 			}
 		};

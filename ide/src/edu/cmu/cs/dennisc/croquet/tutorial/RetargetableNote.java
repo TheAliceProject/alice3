@@ -51,9 +51,6 @@ import edu.cmu.cs.dennisc.tutorial.*;
 		return e.getID() == java.awt.event.MouseEvent.MOUSE_PRESSED || e.getID() == java.awt.event.MouseEvent.MOUSE_RELEASED || e.getID() == java.awt.event.MouseEvent.MOUSE_CLICKED || e.getID() == java.awt.event.MouseEvent.MOUSE_DRAGGED;
 	}
 
-	public RetargetableNote( String text ) {
-		super( text );
-	}
 	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
 		return true;
 	}

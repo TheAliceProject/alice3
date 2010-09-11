@@ -96,7 +96,11 @@ public abstract class Feature {
 			java.awt.Insets boundsInsets = this.getBoundsInsets();
 			if( boundsInsets != null ) {
 				java.awt.Shape shape = trackableShape.getShape( asSeenBy, boundsInsets );
-				return shape.getBounds();
+				if( shape != null ) {
+					return shape.getBounds();
+				} else {
+					return null;
+				}
 			} else {
 				return null;
 			}
