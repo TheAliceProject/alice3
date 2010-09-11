@@ -46,7 +46,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class ListSelectionStateSimpleNote<E> extends WaitingOnCommitHistoryNote {
+/*package-private*/ class ListSelectionStateSimpleNote<E> extends WaitingOnCommitNote {
 	public static <E> ListSelectionStateSimpleNote<E> createInstance( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
 		return new ListSelectionStateSimpleNote<E>( listSelectionStateContext, parentContextCriterion, commitEvent );
 	}

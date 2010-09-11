@@ -46,7 +46,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class OperationNote extends WaitingOnCommitHistoryNote {
+/*package-private*/ class OperationNote extends WaitingOnCommitNote {
 	public static OperationNote createInstance( edu.cmu.cs.dennisc.croquet.OperationContext operationContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
 		return new OperationNote( operationContext, parentContextCriterion, commitEvent );
 	}

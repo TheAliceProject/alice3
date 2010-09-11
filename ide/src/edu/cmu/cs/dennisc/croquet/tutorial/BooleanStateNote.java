@@ -46,7 +46,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class BooleanStateNote extends WaitingOnCommitHistoryNote {
+/*package-private*/ class BooleanStateNote extends WaitingOnCommitNote {
 	public static BooleanStateNote createInstance( edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
 		return new BooleanStateNote( booleanStateContext, parentContextCriterion, commitEvent );
 	}

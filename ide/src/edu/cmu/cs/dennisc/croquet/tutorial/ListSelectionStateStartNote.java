@@ -48,15 +48,18 @@ import edu.cmu.cs.dennisc.tutorial.*;
  */
 /*package-private*/ class ListSelectionStateStartNote<E> extends RequirementNote {
 	public static <E> ListSelectionStateStartNote<E> createInstance( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
-		return new ListSelectionStateStartNote( 
+		ListSelectionStateStartNote rv = new ListSelectionStateStartNote( 
 				listSelectionStateContext, 
 				parentContextCriterion,
-				commitEvent,
-				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.ListSelectionStateContext.PopupMenuWillBecomeVisibleEvent.class ) 
+				commitEvent
 		);
+		rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.ListSelectionStateContext.class ) );
+		rv.setCheckIndex( 0 );
+		rv.addRequirement( new IsChildOfAndInstanceOf( rv, edu.cmu.cs.dennisc.croquet.ListSelectionStateContext.PopupMenuWillBecomeVisibleEvent.class ) );
+		return rv;
 	}
-	private ListSelectionStateStartNote( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent, Requirement< ? > requirement ) {
-		super( listSelectionStateContext.getModel().getTutorialNoteStartText( (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E >)commitEvent.getEdit() ), requirement );
+	private ListSelectionStateStartNote( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
+		super( listSelectionStateContext.getModel().getTutorialNoteStartText( (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E >)commitEvent.getEdit() ) );
 		ModelFromContextResolver modelResolver = new ModelFromContextResolver( listSelectionStateContext );
 		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
 		this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			

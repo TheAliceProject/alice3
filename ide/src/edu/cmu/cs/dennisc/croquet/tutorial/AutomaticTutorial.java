@@ -153,7 +153,7 @@ class IsMenuSelectionEventOf extends IsChildOfAndInstanceOf< edu.cmu.cs.dennisc.
 
 class RequirementNote extends RetargetableNote implements ParentContextCriterion {
 	private java.util.List< Requirement<?> > requirements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private int fulfilledRequirementIndex;
+	private int unfulfilledRequirementIndex;
 	
 	private java.util.List< edu.cmu.cs.dennisc.croquet.HistoryNode > nodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private int checkIndex = -1;
@@ -175,7 +175,7 @@ class RequirementNote extends RetargetableNote implements ParentContextCriterion
 	@Override
 	public void reset() {
 		super.reset();
-		this.fulfilledRequirementIndex = 0;
+		this.unfulfilledRequirementIndex = 0;
 		for( int i=0; i<this.nodes.size(); i++ ) {
 			this.nodes.set( i, null );
 		}
@@ -183,19 +183,23 @@ class RequirementNote extends RetargetableNote implements ParentContextCriterion
 	@Override
 	public final boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
 		try {
+			System.err.println( "isWhatWeveBeenWaitingFor? " + child );
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", child );
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", this.index );
 			final int N = this.requirements.size();
-			while( this.fulfilledRequirementIndex<N ) {
-				if( this.requirements.get( this.fulfilledRequirementIndex ).isWhatWereLookingFor( child ) ) {
-					this.nodes.set( this.fulfilledRequirementIndex, child );
-					this.fulfilledRequirementIndex += 1;
+			while( this.unfulfilledRequirementIndex<N ) {
+				System.err.println( "checking requirement " + this.unfulfilledRequirementIndex );
+				if( this.requirements.get( this.unfulfilledRequirementIndex ).isWhatWereLookingFor( child ) ) {
+					System.err.println( "SUCCESS" );
+					this.nodes.set( this.unfulfilledRequirementIndex, child );
+					this.unfulfilledRequirementIndex += 1;
 				} else {
 					break;
 				}
 			}
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", this.index );
-			return this.fulfilledRequirementIndex == N;
+			System.err.println( this.unfulfilledRequirementIndex == N );
+			return this.unfulfilledRequirementIndex == N;
 		} catch( CancelException ce ) {
 			throw new RuntimeException( "todo", ce );
 		}
@@ -387,12 +391,11 @@ public class AutomaticTutorial {
 					}
 				}
 			} else {
-				edu.cmu.cs.dennisc.croquet.BooleanStateContext booleanStateContext = (edu.cmu.cs.dennisc.croquet.BooleanStateContext)node;
-				edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = booleanStateContext.getLastChild();
+				edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = operationContext.getLastChild();
 				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
 					edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent)lastChild;
-					rv.add( OperationNote.createInstance( operationContext, parentContextCriterion, commitEvent ) );
 					appendBonusOperationNotes( rv, parentContextCriterion, operationContext );
+					rv.add( OperationNote.createInstance( operationContext, parentContextCriterion, commitEvent ) );
 				}
 			}
 		} else if( node instanceof edu.cmu.cs.dennisc.croquet.BooleanStateContext ) {
@@ -416,8 +419,9 @@ public class AutomaticTutorial {
 					if( itemSelectable.isSingleStageSelectable() ) {
 						rv.add( ListSelectionStateSimpleNote.createInstance( listSelectionStateContext, parentContextCriterion, commitEvent ) );
 					} else {
-						rv.add( ListSelectionStateStartNote.createInstance( listSelectionStateContext, parentContextCriterion, commitEvent ) );
-						rv.add( ListSelectionStateFinishNote.createInstance( listSelectionStateContext, parentContextCriterion, commitEvent ) );
+						ListSelectionStateStartNote startNote = ListSelectionStateStartNote.createInstance( listSelectionStateContext, parentContextCriterion, commitEvent ); 
+						rv.add( startNote );
+						rv.add( ListSelectionStateFinishNote.createInstance( listSelectionStateContext, startNote, commitEvent ) );
 					}
 				}
 			}

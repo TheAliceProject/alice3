@@ -46,12 +46,12 @@ import edu.cmu.cs.dennisc.tutorial.*;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class ListSelectionStateFinishNote<E> extends WaitingOnCommitHistoryNote {
+/*package-private*/ class ListSelectionStateFinishNote<E> extends WaitingOnCommitNote {
 	public static <E> ListSelectionStateFinishNote<E> createInstance( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
 		return new ListSelectionStateFinishNote<E>( listSelectionStateContext, parentContextCriterion, commitEvent );
 	}
 	private ListSelectionStateFinishNote( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent ) {
-		super( listSelectionStateContext, parentContextCriterion, commitEvent );
+		super( listSelectionStateContext, parentContextCriterion, commitEvent, false );
 		ModelFromContextResolver modelResolver = new ModelFromContextResolver( listSelectionStateContext );
 		ItemSelectionStateItemResolver itemSelectionStateItemResolver = new ItemSelectionStateItemResolver( modelResolver, new ItemResolver( (edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E> )listSelectionStateContext.getEdit() ) );
 		//FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
