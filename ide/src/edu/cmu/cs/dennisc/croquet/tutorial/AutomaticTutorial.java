@@ -199,7 +199,13 @@ public class AutomaticTutorial {
 					}
 				}
 			} else {
+				final int N = operationContext.getChildCount();
 				edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = operationContext.getLastChild();
+				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent ) {
+					if( N > 1 ) {
+						lastChild = operationContext.getChildAt( N-2 );
+					}
+				}
 				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.CommitEvent ) {
 					edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = (edu.cmu.cs.dennisc.croquet.CommitEvent)lastChild;
 					appendBonusOperationNotes( rv, parentContextCriterion, operationContext );

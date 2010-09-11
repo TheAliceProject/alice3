@@ -184,11 +184,15 @@ public class ResourceManager {
 	}
 	
 	public static javax.swing.Icon getSmallIconForType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
-		if( map.containsKey( typeInJava ) ) {
-			return map.get( typeInJava );
+		if( type != null ) {
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
+			if( map.containsKey( typeInJava ) ) {
+				return map.get( typeInJava );
+			} else {
+				return getSmallIconFor( getLargeIconForType(type) );
+			}
 		} else {
-			return getSmallIconFor( getLargeIconForType(type) );
+			return null;
 		}
 	}
 	

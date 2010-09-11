@@ -884,9 +884,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	protected void handlePreferences( java.util.EventObject e ) {
 		this.getPreferencesOperation().fire( e );
 	}
+	protected void preservePreferences() {
+		PreferenceManager.preservePreferences();
+	}
 	@Override
 	protected void handleQuit( java.util.EventObject e ) {
-		PreferenceManager.preservePreferences();
+		this.preservePreferences();
 		org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().fire( e );
 	}
 

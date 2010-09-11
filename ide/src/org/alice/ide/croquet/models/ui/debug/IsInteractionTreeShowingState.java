@@ -138,6 +138,9 @@ public class IsInteractionTreeShowingState extends org.alice.ide.croquet.models.
 			tree.expandRow( i );
 		}
 		tree.setRootVisible( false );
+		final javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( tree );
+		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
+
 		context.addChildrenObserver( new edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver() {
 			public void addingChild( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
 			}
@@ -154,12 +157,11 @@ public class IsInteractionTreeShowingState extends org.alice.ide.croquet.models.
 							}
 						}
 						tree.scrollRowToVisible( tree.getRowCount()-1 );
+						scrollPane.getHorizontalScrollBar().setValue( 0 );
 					}
 				} );
 			}
 		} );
-		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( tree );
-		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
 		return scrollPane;
 	}
 	@Override

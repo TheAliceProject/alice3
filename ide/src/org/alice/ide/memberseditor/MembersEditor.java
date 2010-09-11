@@ -46,7 +46,7 @@ package org.alice.ide.memberseditor;
  * @author Dennis Cosgrove
  */
 public class MembersEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
-	public static boolean IS_FOLDER_TABBED_PANE_DESIRED = true;
+	public static boolean IS_FOLDER_TABBED_PANE_DESIRED = false;
 	
 //	private edu.cmu.cs.dennisc.croquet.TabSelectionState tabbedPaneSelectionState = new org.alice.ide.croquet.models.members.MembersTabSelectionState( 
 //			new ProceduresContentPanel(), new FunctionsContentPanel(), new FieldsContentPanel(), ICON );

@@ -1,5 +1,7 @@
 package autotutorial;
 
+import org.alice.ide.PreferenceManager;
+
 public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 	
 	
@@ -73,7 +75,8 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 	}
 	@Override
 	protected void handleQuit( java.util.EventObject e ) {
-		//super.handleQuit( e );
+		this.preservePreferences();
+//		super.handleQuit( e );
 		if( IS_ENCODING ) {
 			edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;

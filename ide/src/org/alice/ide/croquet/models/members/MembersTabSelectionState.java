@@ -49,13 +49,13 @@ public class MembersTabSelectionState extends edu.cmu.cs.dennisc.croquet.TabSele
 	private static class IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
 		private javax.swing.Icon getCurrentAccessibleTypeIcon() {
 			edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
-			String className;
+			edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type; 
 			if( accessible != null ) {
-				className = accessible.getValueType().getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getName();
+				type = accessible.getValueType();
 			} else {
-				className = null;
+				type = null;
 			}
-			return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForGalleryClassName( className );
+			return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( type );
 		}
 		public int getIconHeight() {
 			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
