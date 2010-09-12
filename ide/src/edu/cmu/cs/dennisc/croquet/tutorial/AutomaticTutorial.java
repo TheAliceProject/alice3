@@ -203,10 +203,24 @@ public class AutomaticTutorial {
 							edu.cmu.cs.dennisc.croquet.OperationContext< ? > childOperationContext = (edu.cmu.cs.dennisc.croquet.OperationContext< ? >)modelContext;
 							edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = childOperationContext.getSuccessfulCompletionEvent();
 							if( successfulCompletionEvent != null ) {
-								if( operationContext instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext ){
-									RetargetableNote bonusNote = createBonusOperationNote( parentContextCriterion, childOperationContext );
-									if( bonusNote != null ) {
-										rv.add( bonusNote );
+								if( childOperationContext instanceof edu.cmu.cs.dennisc.croquet.ActionOperationContext ) {
+									edu.cmu.cs.dennisc.croquet.ActionOperationContext actionOperationContext = (edu.cmu.cs.dennisc.croquet.ActionOperationContext)childOperationContext;
+									if( actionOperationContext.getChildCount() > 1 ) {
+										edu.cmu.cs.dennisc.croquet.HistoryNode<?> possibleInputDialogOperationContext = actionOperationContext.getChildAt( 0 );
+										if( possibleInputDialogOperationContext instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > ) {
+											edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? >)possibleInputDialogOperationContext;
+											edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent inputDialogCompletionEvent = inputDialogOperationContext.getSuccessfulCompletionEvent();
+											if( inputDialogCompletionEvent != null ) {
+												rv.add( ForwardingFromActionOperationToInputDialogOperationNote.createInstance( parentContextCriterion, actionOperationContext, successfulCompletionEvent, inputDialogOperationContext, inputDialogCompletionEvent ) );
+											}
+										}
+									}
+								} else {
+									if( operationContext instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext ) {
+										RetargetableNote bonusNote = createBonusOperationNote( parentContextCriterion, operationContext );
+										if( bonusNote != null ) {
+											rv.add( bonusNote );
+										}
 									}
 								}
 							}
