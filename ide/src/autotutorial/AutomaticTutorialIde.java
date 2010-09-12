@@ -1,10 +1,6 @@
 package autotutorial;
 
-import org.alice.ide.PreferenceManager;
-
 public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
-	
-	
 	private static boolean IS_ENCODING;
 	private static final String UI_HISTORY_PATH = "/autoTutorial1.bin";
 	private static final String POST_PROJECT_PATH = "/post.a3p";
@@ -52,7 +48,17 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 			this.postProject = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readProject( POST_PROJECT_PATH );
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
 			this.isPostProjectLive = true;
+
+			
 			this.postContext = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( UI_HISTORY_PATH, edu.cmu.cs.dennisc.croquet.RootContext.class );
+			
+			edu.cmu.cs.dennisc.croquet.tutorial.Filter[] filters = {
+					edu.cmu.cs.dennisc.croquet.tutorial.SuccessfullyCompletedFilter.SINGLETON,
+					edu.cmu.cs.dennisc.croquet.tutorial.MenuSelectionEventFilter.SINGLETON,
+			};
+			for( edu.cmu.cs.dennisc.croquet.tutorial.Filter filter : filters ) {
+				this.postContext = filter.filter( this.postContext );
+			}
 			this.isPostProjectLive = false;
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
 			

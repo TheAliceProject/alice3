@@ -174,6 +174,9 @@ public abstract class ModelContext<M extends Model> extends HistoryNode< ModelCo
 		}
 	}
 
+	public java.util.ListIterator<HistoryNode<?>> getChildListIterator() {
+		return this.children.listIterator();
+	}
 	public Iterable<HistoryNode<?>> getChildren() {
 		return this.children;
 	}
@@ -291,6 +294,11 @@ public abstract class ModelContext<M extends Model> extends HistoryNode< ModelCo
 			}
 		}
 		return false;
+	}
+	
+	public final boolean isSuccessfullyCompleted() {
+		State state = this.getState();
+		return state == State.COMMITTED || state == State.FINISHED;
 	}
 	
 	public final SuccessfulCompletionEvent getSuccessfulCompletionEvent() {

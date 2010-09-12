@@ -40,65 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+
+package edu.cmu.cs.dennisc.croquet.tutorial;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AbstractDialogOperationContext<M extends AbstractDialogOperation<?>> extends OperationContext<M> {
-	public static abstract class WindowEvent extends ModelEvent< AbstractDialogOperationContext > {
-		private java.awt.event.WindowEvent windowEvent;
-		public WindowEvent() {
-		}
-		/*package-private*/ WindowEvent( java.awt.event.WindowEvent windowEvent ) {
-			this.windowEvent = windowEvent;
-		}
-		public java.awt.event.WindowEvent getWindowEvent() {
-			return this.windowEvent;
-		}
-		@Override
-		public State getState() {
-			return null;
-		}
-	}
-
-	public static class WindowOpenedEvent extends WindowEvent {
-		public WindowOpenedEvent() {
-		}
-		/*package-private*/ WindowOpenedEvent( java.awt.event.WindowEvent e ) {
-			super( e );
-		}
-	}
-
-	public static class WindowClosedEvent extends WindowEvent {
-		public WindowClosedEvent() {
-		}
-		/*package-private*/ WindowClosedEvent( java.awt.event.WindowEvent e ) {
-			super( e );
-		}
-	}
-
-	/*package-private*/ AbstractDialogOperationContext( M operation, java.util.EventObject e, ViewController< ?,? > viewController ) {
-		super( operation, e, viewController );
-	}
-	/*package-private*/ AbstractDialogOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	/*package-private*/ void handleWindowOpened( java.awt.event.WindowEvent e ) {
-		this.addChild( new WindowOpenedEvent( e ) );
-	}
-	/*package-private*/ void handleWindowClosed( java.awt.event.WindowEvent e ) {
-		this.addChild( new WindowClosedEvent( e ) );
-	}
-	
-//	@Override
-//	public State getState() {
-//		final int N = this.getChildCount();
-//		if( N > 1 ) {
-//			if( this.getChildAt(N-1) instanceof WindowClosedEvent ) {
-//				return this.getChildAt(N-2).getState();
-//			}
-//		}
-//		return null;
-//	}
+public interface Filter {
+	< M extends edu.cmu.cs.dennisc.croquet.ModelContext< ? > > M filter( M rv );
 }

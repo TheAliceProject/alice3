@@ -40,65 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+
+package edu.cmu.cs.dennisc.croquet.tutorial;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AbstractDialogOperationContext<M extends AbstractDialogOperation<?>> extends OperationContext<M> {
-	public static abstract class WindowEvent extends ModelEvent< AbstractDialogOperationContext > {
-		private java.awt.event.WindowEvent windowEvent;
-		public WindowEvent() {
+public enum MenuSelectionEventFilter implements Filter {
+	SINGLETON;
+	
+	private static void stripExtraneousMenuSelectionEvents( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
+		for( edu.cmu.cs.dennisc.croquet.HistoryNode< ? > node : context.getChildren() ) {
+			if( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
+				edu.cmu.cs.dennisc.croquet.ModelContext< ? > childContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)node;
+				if( childContext instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext ) {
+					edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)childContext;
+					
+					java.util.ListIterator< edu.cmu.cs.dennisc.croquet.HistoryNode< ? > > childListIterator = popupMenuOperationContext.getChildListIterator();
+					while( childListIterator.hasNext() ) {
+						edu.cmu.cs.dennisc.croquet.HistoryNode< ? > child = childListIterator.next();
+						if( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
+							if( childListIterator.hasNext() ) {
+								int nextIndex = childListIterator.nextIndex();
+								if( popupMenuOperationContext.getChildAt( nextIndex ) instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
+									childListIterator.remove();
+								}
+							}
+						}
+					}
+				}
+				stripExtraneousMenuSelectionEvents( childContext );
+			}
 		}
-		/*package-private*/ WindowEvent( java.awt.event.WindowEvent windowEvent ) {
-			this.windowEvent = windowEvent;
-		}
-		public java.awt.event.WindowEvent getWindowEvent() {
-			return this.windowEvent;
-		}
-		@Override
-		public State getState() {
-			return null;
-		}
-	}
-
-	public static class WindowOpenedEvent extends WindowEvent {
-		public WindowOpenedEvent() {
-		}
-		/*package-private*/ WindowOpenedEvent( java.awt.event.WindowEvent e ) {
-			super( e );
-		}
-	}
-
-	public static class WindowClosedEvent extends WindowEvent {
-		public WindowClosedEvent() {
-		}
-		/*package-private*/ WindowClosedEvent( java.awt.event.WindowEvent e ) {
-			super( e );
-		}
-	}
-
-	/*package-private*/ AbstractDialogOperationContext( M operation, java.util.EventObject e, ViewController< ?,? > viewController ) {
-		super( operation, e, viewController );
-	}
-	/*package-private*/ AbstractDialogOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-	/*package-private*/ void handleWindowOpened( java.awt.event.WindowEvent e ) {
-		this.addChild( new WindowOpenedEvent( e ) );
-	}
-	/*package-private*/ void handleWindowClosed( java.awt.event.WindowEvent e ) {
-		this.addChild( new WindowClosedEvent( e ) );
 	}
 	
-//	@Override
-//	public State getState() {
-//		final int N = this.getChildCount();
-//		if( N > 1 ) {
-//			if( this.getChildAt(N-1) instanceof WindowClosedEvent ) {
-//				return this.getChildAt(N-2).getState();
-//			}
-//		}
-//		return null;
-//	}
+	public < M extends edu.cmu.cs.dennisc.croquet.ModelContext< ? > > M filter( M rv ) {
+		stripExtraneousMenuSelectionEvents( rv );
+		return rv;
+	}
 }
