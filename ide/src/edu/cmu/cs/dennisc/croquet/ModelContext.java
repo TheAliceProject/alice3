@@ -101,6 +101,9 @@ public abstract class ModelContext<M extends Model> extends HistoryNode< ModelCo
 		HistoryNode[] array = binaryDecoder.decodeBinaryEncodableAndDecodableArray(HistoryNode.class);
 		this.children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set(this.children, array);
+		for( HistoryNode node : this.children ) {
+			node.setParent( this );
+		}
 	}
 	@Override
 	protected final void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
@@ -302,16 +305,24 @@ public abstract class ModelContext<M extends Model> extends HistoryNode< ModelCo
 	}
 	
 	public final SuccessfulCompletionEvent getSuccessfulCompletionEvent() {
-		final int N = this.children.size();
-		int i = N-1;
-		while( i >= 0 ) {
-			HistoryNode node = this.children.get( i );
-			if( node instanceof SuccessfulCompletionEvent ) {
-				return (SuccessfulCompletionEvent)node;
-			}
-			i --;
+		HistoryNode< ? > lastChild = this.getLastChild();
+		if( lastChild instanceof SuccessfulCompletionEvent ) {
+			return (SuccessfulCompletionEvent)lastChild;
+		} else if( lastChild instanceof ModelContext< ? > ) {
+			return ((ModelContext< ? >)lastChild).getSuccessfulCompletionEvent();
+		} else {
+			return null;
 		}
-		return null;
+//		final int N = this.children.size();
+//		int i = N-1;
+//		while( i >= 0 ) {
+//			HistoryNode node = this.children.get( i );
+//			if( node instanceof SuccessfulCompletionEvent ) {
+//				return (SuccessfulCompletionEvent)node;
+//			}
+//			i --;
+//		}
+//		return null;
 	}
 
 	protected void addChild(HistoryNode child) {

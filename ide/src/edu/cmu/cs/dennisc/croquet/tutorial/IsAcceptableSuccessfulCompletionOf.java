@@ -55,21 +55,25 @@ class IsAcceptableSuccessfulCompletionOf extends IsChildOfAndInstanceOf< edu.cmu
 	protected boolean isSpecificallyWhatWereLookingFor( edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) throws CancelException {
 		boolean rv = super.isSpecificallyWhatWereLookingFor( successfulCompletionEvent );
 		if( rv ) {
-			edu.cmu.cs.dennisc.croquet.Edit< ? > potentialReplacementEdit = successfulCompletionEvent.getEdit();
-			if( this.originalSuccessfulCompletionEvent != null ) {
-				edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit = this.originalSuccessfulCompletionEvent.getEdit();
-				if( originalEdit.isReplacementAcceptable( potentialReplacementEdit ) ) {
-					edu.cmu.cs.dennisc.croquet.Retargeter retargeter = AutomaticTutorial.getInstance().getRetargeter();
-					originalEdit.addKeyValuePairs( retargeter, potentialReplacementEdit );
-					AutomaticTutorial.getInstance().retargetOriginalContext( retargeter );
-				} else {
-					throw new CancelException( "unacceptable: replacement edit does not pass muster." );
-				}
+			if( successfulCompletionEvent instanceof edu.cmu.cs.dennisc.croquet.FinishEvent ) {
+				return this.originalSuccessfulCompletionEvent instanceof edu.cmu.cs.dennisc.croquet.FinishEvent;
 			} else {
-				if( potentialReplacementEdit != null ) {
-					throw new CancelException( "unacceptable: replacement edit is null." );
+				edu.cmu.cs.dennisc.croquet.Edit< ? > potentialReplacementEdit = successfulCompletionEvent.getEdit();
+				if( this.originalSuccessfulCompletionEvent != null ) {
+					edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit = this.originalSuccessfulCompletionEvent.getEdit();
+					if( originalEdit.isReplacementAcceptable( potentialReplacementEdit ) ) {
+						edu.cmu.cs.dennisc.croquet.Retargeter retargeter = AutomaticTutorial.getInstance().getRetargeter();
+						originalEdit.addKeyValuePairs( retargeter, potentialReplacementEdit );
+						AutomaticTutorial.getInstance().retargetOriginalContext( retargeter );
+					} else {
+						throw new CancelException( "unacceptable: replacement edit does not pass muster." );
+					}
 				} else {
-					//pass
+					if( potentialReplacementEdit != null ) {
+						throw new CancelException( "unacceptable: replacement edit is null." );
+					} else {
+						//pass
+					}
 				}
 			}
 		}

@@ -99,9 +99,9 @@ public abstract class AbstractDialogOperation< C extends AbstractDialogOperation
 			}
 			public void windowClosing( java.awt.event.WindowEvent e ) {
 				dialog.setVisible( false );
+				context.handleWindowClosing( e );
 			}
 			public void windowClosed( java.awt.event.WindowEvent e ) {
-				context.handleWindowClosed( e );
 			}
 			public void windowActivated( java.awt.event.WindowEvent e ) {
 			}

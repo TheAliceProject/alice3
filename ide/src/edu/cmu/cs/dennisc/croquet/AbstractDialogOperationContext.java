@@ -70,13 +70,20 @@ public class AbstractDialogOperationContext<M extends AbstractDialogOperation<?>
 		}
 	}
 
-	public static class WindowClosedEvent extends WindowEvent {
-		public WindowClosedEvent() {
+	public static class WindowClosingEvent extends WindowEvent {
+		public WindowClosingEvent() {
 		}
-		/*package-private*/ WindowClosedEvent( java.awt.event.WindowEvent e ) {
+		/*package-private*/ WindowClosingEvent( java.awt.event.WindowEvent e ) {
 			super( e );
 		}
 	}
+//	public static class WindowClosedEvent extends WindowEvent {
+//		public WindowClosedEvent() {
+//		}
+//		/*package-private*/ WindowClosedEvent( java.awt.event.WindowEvent e ) {
+//			super( e );
+//		}
+//	}
 
 	/*package-private*/ AbstractDialogOperationContext( M operation, java.util.EventObject e, ViewController< ?,? > viewController ) {
 		super( operation, e, viewController );
@@ -87,8 +94,8 @@ public class AbstractDialogOperationContext<M extends AbstractDialogOperation<?>
 	/*package-private*/ void handleWindowOpened( java.awt.event.WindowEvent e ) {
 		this.addChild( new WindowOpenedEvent( e ) );
 	}
-	/*package-private*/ void handleWindowClosed( java.awt.event.WindowEvent e ) {
-		this.addChild( new WindowClosedEvent( e ) );
+	/*package-private*/ void handleWindowClosing( java.awt.event.WindowEvent e ) {
+		this.addChild( new WindowClosingEvent( e ) );
 	}
 	
 //	@Override

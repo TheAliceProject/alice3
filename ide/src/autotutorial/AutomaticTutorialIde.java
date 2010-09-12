@@ -51,10 +51,18 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 
 			
 			this.postContext = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( UI_HISTORY_PATH, edu.cmu.cs.dennisc.croquet.RootContext.class );
-			
+
+			final boolean IS_SHOW_ME_HOW = true;
+			edu.cmu.cs.dennisc.croquet.tutorial.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.alice.Project.GROUP, edu.cmu.cs.dennisc.croquet.tutorial.GroupFilter.SuccessfulCompletionPolicy.ONLY_COMMITS );
+			edu.cmu.cs.dennisc.croquet.tutorial.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, edu.cmu.cs.dennisc.croquet.tutorial.GroupFilter.SuccessfulCompletionPolicy.ONLY_COMMITS );
+			edu.cmu.cs.dennisc.croquet.tutorial.GroupFilter.SINGLETON.addGroup( org.alice.ide.IDE.RUN_GROUP, edu.cmu.cs.dennisc.croquet.tutorial.GroupFilter.SuccessfulCompletionPolicy.BOTH_COMMITS_AND_FINISHES );
+			if( IS_SHOW_ME_HOW ) {
+				edu.cmu.cs.dennisc.croquet.tutorial.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.croquet.Application.INFORMATION_GROUP, edu.cmu.cs.dennisc.croquet.tutorial.GroupFilter.SuccessfulCompletionPolicy.BOTH_COMMITS_AND_FINISHES );
+			}
 			edu.cmu.cs.dennisc.croquet.tutorial.Filter[] filters = {
-					edu.cmu.cs.dennisc.croquet.tutorial.SuccessfullyCompletedFilter.SINGLETON,
+					//edu.cmu.cs.dennisc.croquet.tutorial.SuccessfullyCompletedFilter.SINGLETON,
 					edu.cmu.cs.dennisc.croquet.tutorial.MenuSelectionEventFilter.SINGLETON,
+					edu.cmu.cs.dennisc.croquet.tutorial.GroupFilter.SINGLETON,
 			};
 			for( edu.cmu.cs.dennisc.croquet.tutorial.Filter filter : filters ) {
 				this.postContext = filter.filter( this.postContext );

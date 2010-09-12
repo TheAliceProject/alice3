@@ -274,9 +274,9 @@ package edu.cmu.cs.dennisc.tutorial;
 						}
 					}
 				}
-				if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent ) {
-					edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent windowClosedEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent)child;
-					edu.cmu.cs.dennisc.croquet.ModelContext<?> c = windowClosedEvent.getParent();
+				if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosingEvent ) {
+					edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosingEvent windowClosingEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosingEvent)child;
+					edu.cmu.cs.dennisc.croquet.ModelContext<?> c = windowClosingEvent.getParent();
 					while( c != null ) {
 						if( c.getModel() == this.getModel() ) {
 							rv = true;

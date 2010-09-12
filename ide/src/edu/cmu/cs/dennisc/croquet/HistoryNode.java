@@ -71,7 +71,7 @@ public abstract class HistoryNode<C extends ModelContext<?>> implements edu.cmu.
 	public enum State {
 		COMMITTED, 
 		FINISHED,
-		DESELECTED,
+		//DESELECTED,
 		//SKIPPED, 
 		CANCELED, 
 		//PENDING

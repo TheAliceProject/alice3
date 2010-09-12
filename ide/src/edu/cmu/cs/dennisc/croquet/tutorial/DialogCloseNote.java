@@ -45,14 +45,15 @@ package edu.cmu.cs.dennisc.croquet.tutorial;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class DialogCloseNote extends RequirementNote {
-	public static DialogCloseNote createInstance( edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext, ParentContextCriterion parentContextCriterion ) {
+	public static DialogCloseNote createInstance( edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) {
 		return new DialogCloseNote( 
 				dialogOperationContext, 
-				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosedEvent.class ) 
+				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosingEvent.class ), 
+				new IsAcceptableSuccessfulCompletionOf( parentContextCriterion, successfulCompletionEvent )
 		);
 	}
-	private DialogCloseNote( edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext, Requirement< ? > requirement ) {
-		super( requirement );
+	private DialogCloseNote( edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext, Requirement< ? >... requirements ) {
+		super( requirements );
 		this.setText( "close" );
 	}
 }

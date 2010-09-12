@@ -105,7 +105,10 @@ public class AutomaticTutorial {
 		if( operationContext instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext ){
 			if( operationContext instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext ) {
 				edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext = (edu.cmu.cs.dennisc.croquet.DialogOperationContext)operationContext;
-				rv.add( DialogCloseNote.createInstance( dialogOperationContext, parentContextCriterion ) );
+				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = operationContext.getSuccessfulCompletionEvent();
+				if( successfulCompletionEvent != null ) {
+					rv.add( DialogCloseNote.createInstance( dialogOperationContext, parentContextCriterion, successfulCompletionEvent ) );
+				}
 			} else if( operationContext instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > ) {
 				edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?>)operationContext;
 				rv.add( InputDialogAcceptableEditNote.createInstance( inputDialogOperationContext, parentContextCriterion ) );
