@@ -41,18 +41,25 @@
  */
 package edu.cmu.cs.dennisc.croquet.tutorial;
 
+import edu.cmu.cs.dennisc.tutorial.Feature;
+import edu.cmu.cs.dennisc.tutorial.FirstComponentResolver;
+import edu.cmu.cs.dennisc.tutorial.Hole;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class InputDialogCommitNote extends RequirementNote {
-	public static InputDialogCommitNote createInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, ParentContextCriterion parentContextCriterion ) {
-		return new InputDialogCommitNote( 
+/*package-private*/ class InputDialogStartNote extends RequirementNote {
+	public static InputDialogStartNote createInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, ParentContextCriterion parentContextCriterion ) {
+		return new InputDialogStartNote( 
 				inputDialogOperationContext, 
-				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.CommitEvent.class ) 
+				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.InputDialogOperationContext.class ) 
 		);
 	}
-	private InputDialogCommitNote( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, Requirement< ? > requirement ) {
+	private InputDialogStartNote( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, Requirement< ? > requirement ) {
 		super( requirement );
-		this.setText( "press ok button" );
+		this.setText( inputDialogOperationContext.getModel().getTutorialNoteText( null ) );
+		ModelFromContextResolver modelResolver = new ModelFromContextResolver( inputDialogOperationContext );
+		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
+		this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			
 	}
 }

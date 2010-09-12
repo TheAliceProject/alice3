@@ -66,6 +66,6 @@ import edu.cmu.cs.dennisc.tutorial.*;
 		super( requirements );
 		this.setText( dragAndDropContext.getModel().getTutorialDropNoteText() );
 		DropSiteResolver dropSiteResolver = new DropSiteResolver( dragAndDropContext ); 
-		this.addFeature( new Hole( dropSiteResolver, Feature.ConnectionPreference.EAST_WEST ) );			
+		this.addFeature( new Hole( dropSiteResolver, Feature.ConnectionPreference.NORTH_SOUTH ) );			
 	}
 }

@@ -104,5 +104,6 @@ public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice
 		assert edit instanceof DeclareMethodEdit;
 		DeclareMethodEdit replacementEdit = (DeclareMethodEdit)edit;
 		retargeter.addKeyValuePair( this.method, replacementEdit.method );
+		retargeter.addKeyValuePair( this.method.body.getValue(), replacementEdit.method.body.getValue() );
 	}
 }

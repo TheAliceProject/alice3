@@ -44,15 +44,33 @@ package edu.cmu.cs.dennisc.croquet.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class InputDialogAcceptableEditNote extends RequirementNote {
-	public static InputDialogAcceptableEditNote createInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, ParentContextCriterion parentContextCriterion ) {
-		return new InputDialogAcceptableEditNote( 
+/*package-private*/ class InputDialogSuccessfulCompletionNote extends RequirementNote {
+	public static InputDialogSuccessfulCompletionNote createInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) {
+		return new InputDialogSuccessfulCompletionNote( 
 				inputDialogOperationContext, 
-				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.HistoryNode.class ) 
+				new IsAcceptableSuccessfulCompletionOf( parentContextCriterion, successfulCompletionEvent ) 
 		);
 	}
-	private InputDialogAcceptableEditNote( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, Requirement< ? > requirement ) {
+	private InputDialogSuccessfulCompletionNote( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, Requirement< ? > requirement ) {
 		super( requirement );
-		this.setText( "make the magic happen" );
+		this.setText( "press ok button" );
+		final ModelFromContextResolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> > inputDialogOperationResolver = new ModelFromContextResolver( inputDialogOperationContext );
+		this.addFeature( new edu.cmu.cs.dennisc.tutorial.InputDialogCommitFeature( new edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
+			public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
+				edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> inputDialogOperation = inputDialogOperationResolver.getResolved();
+				if( inputDialogOperation != null ) {
+					edu.cmu.cs.dennisc.croquet.Dialog activeDialog = inputDialogOperation.getActiveDialog();
+					if( activeDialog != null ) {
+						//todo
+						return activeDialog;
+					} else {
+						return null;
+					}
+				} else {
+					return null;
+				}
+			}
+		} ) );
+		
 	}
 }

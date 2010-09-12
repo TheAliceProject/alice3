@@ -100,8 +100,11 @@ public class AutomaticTutorial {
 				}
 			} else if( operationContext instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > ) {
 				edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?>)operationContext;
-				rv.add( InputDialogAcceptableEditNote.createInstance( inputDialogOperationContext, parentContextCriterion ) );
-				rv.add( InputDialogCommitNote.createInstance( inputDialogOperationContext, parentContextCriterion ) );
+				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = inputDialogOperationContext.getSuccessfulCompletionEvent();
+				if( successfulCompletionEvent != null ) {
+					//rv.add( InputDialogAcceptableEditNote.createInstance( inputDialogOperationContext, parentContextCriterion ) );
+					rv.add( InputDialogSuccessfulCompletionNote.createInstance( inputDialogOperationContext, parentContextCriterion, successfulCompletionEvent ) );
+				}
 			}
 		} else if( operationContext instanceof edu.cmu.cs.dennisc.croquet.ActionOperationContext ) {
 			edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = operationContext.getLastChild();
@@ -206,17 +209,17 @@ public class AutomaticTutorial {
 					}
 				}
 			} else {
-//				final int N = operationContext.getChildCount();
-				edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = operationContext.getLastChild();
-//				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosedEvent ) {
-//					if( N > 1 ) {
-//						lastChild = operationContext.getChildAt( N-2 );
-//					}
-//				}
-				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent ) {
-					edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = (edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent)lastChild;
-					appendBonusOperationNotes( rv, parentContextCriterion, operationContext );
-					rv.add( OperationNote.createInstance( operationContext, parentContextCriterion, successfulCompletionEvent ) );
+				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = operationContext.getSuccessfulCompletionEvent();
+				if( successfulCompletionEvent != null ) {
+					if( operationContext instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > ) {
+						edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? >)operationContext;
+						InputDialogStartNote startNote = InputDialogStartNote.createInstance( inputDialogOperationContext, parentContextCriterion );
+						rv.add( startNote );
+						rv.add( InputDialogSuccessfulCompletionNote.createInstance( inputDialogOperationContext, startNote.getLastAcceptedContext(), successfulCompletionEvent ) );
+					} else {
+						rv.add( OperationNote.createInstance( operationContext, parentContextCriterion, successfulCompletionEvent ) );
+						appendBonusOperationNotes( rv, parentContextCriterion, operationContext );
+					}
 				}
 			}
 		} else if( node instanceof edu.cmu.cs.dennisc.croquet.BooleanStateContext ) {
