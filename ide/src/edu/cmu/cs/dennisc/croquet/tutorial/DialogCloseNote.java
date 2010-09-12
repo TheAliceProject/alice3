@@ -41,6 +41,8 @@
  */
 package edu.cmu.cs.dennisc.croquet.tutorial;
 
+import edu.cmu.cs.dennisc.tutorial.DialogCloseButtonFeature;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,5 +57,21 @@ package edu.cmu.cs.dennisc.croquet.tutorial;
 	private DialogCloseNote( edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext, Requirement< ? >... requirements ) {
 		super( requirements );
 		this.setText( "close" );
+		final ModelFromContextResolver< edu.cmu.cs.dennisc.croquet.DialogOperation > dialogOperationResolver = new ModelFromContextResolver( dialogOperationContext );
+		this.addFeature( new DialogCloseButtonFeature( new edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
+			public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
+				edu.cmu.cs.dennisc.croquet.DialogOperation dialogOperation = dialogOperationResolver.getResolved();
+				if( dialogOperation != null ) {
+					edu.cmu.cs.dennisc.croquet.Dialog activeDialog = dialogOperation.getActiveDialog();
+					if( activeDialog != null ) {
+						return activeDialog.getCloseButtonTrackableShape();
+					} else {
+						return null;
+					}
+				} else {
+					return null;
+				}
+			}
+		} ) );
 	}
 }

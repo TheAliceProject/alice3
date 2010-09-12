@@ -80,6 +80,8 @@ class IsAcceptableSuccessfulCompletionOf extends IsChildOfAndInstanceOf< edu.cmu
 					}
 				}
 			}
+		} else {
+			System.err.println( "IsAcceptableSuccessfulCompletionOf did not pass super" );
 		}
 		return rv;
 	}

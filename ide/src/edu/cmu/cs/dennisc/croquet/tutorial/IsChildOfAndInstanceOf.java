@@ -67,6 +67,9 @@ class IsChildOfAndInstanceOf<N extends edu.cmu.cs.dennisc.croquet.HistoryNode> i
 				}
 			}
 		} else {
+			//System.err.println( "did not pass parentContextCriterion test" );
+			//System.err.println( this.parentContextCriterion );
+			//System.err.println( historyNode.getParent() );
 			return false;
 		}
 	}
@@ -75,11 +78,12 @@ class IsChildOfAndInstanceOf<N extends edu.cmu.cs.dennisc.croquet.HistoryNode> i
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( this.getClass().getName() );
-		sb.append( "[parent:" );
+		sb.append( "[" );
+		sb.append( "\n\tparent:" );
 		sb.append( this.parentContextCriterion );
-		sb.append( ";instanceof:" );
+		sb.append( "\n\tinstanceof:" );
 		sb.append( this.cls );
-		sb.append( "]" );
+		sb.append( "\n]" );
 		return sb.toString();
 	}
 }
