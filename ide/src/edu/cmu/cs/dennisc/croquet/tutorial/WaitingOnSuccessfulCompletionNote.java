@@ -49,8 +49,7 @@ package edu.cmu.cs.dennisc.croquet.tutorial;
 		this.setText( context.getModel().getTutorialNoteText( originalSuccessfulCompletionEvent.getEdit() ) );
 		if( isContextRequirementRequired ) {
 			this.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, context.getClass() ) );
-			this.setCheckIndex( 0 );
-			parentContextCriterion = this;
+			parentContextCriterion = this.getAcceptedContextAt( 0 );
 		}
 		this.addRequirement( new IsAcceptableSuccessfulCompletionOf( parentContextCriterion, originalSuccessfulCompletionEvent ) );
 	}

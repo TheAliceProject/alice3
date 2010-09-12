@@ -45,22 +45,21 @@ package edu.cmu.cs.dennisc.croquet.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-class RequirementNote extends RetargetableNote implements ParentContextCriterion {
+class RequirementNote extends RetargetableNote /* implements ParentContextCriterion */ {
 	private java.util.List< Requirement<?> > requirements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private int unfulfilledRequirementIndex;
 	
 	private java.util.List< edu.cmu.cs.dennisc.croquet.HistoryNode > nodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private int checkIndex = -1;
-	
 	public RequirementNote( Requirement<?>... requirements ) {
 		edu.cmu.cs.dennisc.java.util.Collections.addAll( this.requirements, requirements );
 		for( int i=0; i<this.requirements.size(); i++ ) {
 			this.nodes.add( null );
 		}
 	}
-	public void setCheckIndex( int checkIndex ) {
-		this.checkIndex = checkIndex;
-	}
+//	public void setCheckIndex( int checkIndex ) {
+//		this.checkIndex = checkIndex;
+//	}
 	public void addRequirement( Requirement<?> requirement ) {
 		this.requirements.add( requirement );
 		this.nodes.add( null );
@@ -73,6 +72,34 @@ class RequirementNote extends RetargetableNote implements ParentContextCriterion
 			this.nodes.set( i, null );
 		}
 	}
+	
+	public ParentContextCriterion getAcceptedContextAt( final int checkIndex ) {
+		return new ParentContextCriterion() {
+			public boolean isAcceptableParentContext( edu.cmu.cs.dennisc.croquet.ModelContext< ? > parentContext ) {
+				boolean rv;
+				final int N = RequirementNote.this.requirements.size();
+				int actualIndex = checkIndex;
+				if( actualIndex < 0 ) {
+					actualIndex += N;
+				}
+				edu.cmu.cs.dennisc.croquet.HistoryNode checkNode = RequirementNote.this.nodes.get( actualIndex );
+				if( checkNode != null ) {
+					if( checkNode instanceof edu.cmu.cs.dennisc.croquet.ModelContext ) {
+						rv = checkNode == parentContext;
+					} else {
+						rv = checkNode.getParent() == parentContext;
+					}
+				} else {
+					throw new NullPointerException();
+				}
+				return rv;
+			}
+		};
+	}
+	public ParentContextCriterion getLastAcceptedContext() {
+		return this.getAcceptedContextAt( -1 );
+	}
+	
 	@Override
 	public final boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
 		try {
@@ -81,8 +108,9 @@ class RequirementNote extends RetargetableNote implements ParentContextCriterion
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", this.index );
 			final int N = this.requirements.size();
 			while( this.unfulfilledRequirementIndex<N ) {
-				System.err.println( "checking requirement " + this.unfulfilledRequirementIndex );
-				if( this.requirements.get( this.unfulfilledRequirementIndex ).isWhatWereLookingFor( child ) ) {
+				Requirement< ? > requirement = this.requirements.get( this.unfulfilledRequirementIndex );
+				System.err.println( "checking requirement " + this.unfulfilledRequirementIndex + " " + requirement );
+				if( requirement.isWhatWereLookingFor( child ) ) {
 					System.err.println( "SUCCESS" );
 					this.nodes.set( this.unfulfilledRequirementIndex, child );
 					this.unfulfilledRequirementIndex += 1;
@@ -97,34 +125,34 @@ class RequirementNote extends RetargetableNote implements ParentContextCriterion
 			throw new RuntimeException( "todo", ce );
 		}
 	}
-	public boolean isAcceptableParentContext( edu.cmu.cs.dennisc.croquet.ModelContext< ? > parentContext ) {
-		boolean rv;
-		final int N = this.requirements.size();
-		int actualIndex = this.checkIndex;
-		if( actualIndex < 0 ) {
-			actualIndex += N;
-		}
-		edu.cmu.cs.dennisc.croquet.HistoryNode checkNode = this.nodes.get( actualIndex );
-		if( checkNode != null ) {
-			if( checkNode instanceof edu.cmu.cs.dennisc.croquet.ModelContext ) {
-				rv = checkNode == parentContext;
-			} else {
-				rv = checkNode.getParent() == parentContext;
-			}
-		} else {
-			throw new NullPointerException();
-		}
-		
-//		if( rv ) {
-//			//pass
-//		} else {
-//			for( int i=0; i<N; i++ ) {
-//				edu.cmu.cs.dennisc.croquet.HistoryNode node = this.nodes.get( i );
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "isAcceptableParentContext:", i, N, node != null ? node.hashCode() : 0, node );
-//			}
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "isAcceptableParentContext: parentCx", parentContext.hashCode(), parentContext );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "isAcceptableParentContext: value", checkNode == parentContext );
+//	public boolean isAcceptableParentContext( edu.cmu.cs.dennisc.croquet.ModelContext< ? > parentContext ) {
+//		boolean rv;
+//		final int N = this.requirements.size();
+//		int actualIndex = this.checkIndex;
+//		if( actualIndex < 0 ) {
+//			actualIndex += N;
 //		}
-		return rv;
-	}
+//		edu.cmu.cs.dennisc.croquet.HistoryNode checkNode = this.nodes.get( actualIndex );
+//		if( checkNode != null ) {
+//			if( checkNode instanceof edu.cmu.cs.dennisc.croquet.ModelContext ) {
+//				rv = checkNode == parentContext;
+//			} else {
+//				rv = checkNode.getParent() == parentContext;
+//			}
+//		} else {
+//			throw new NullPointerException();
+//		}
+//		
+////		if( rv ) {
+////			//pass
+////		} else {
+////			for( int i=0; i<N; i++ ) {
+////				edu.cmu.cs.dennisc.croquet.HistoryNode node = this.nodes.get( i );
+////				edu.cmu.cs.dennisc.print.PrintUtilities.println( "isAcceptableParentContext:", i, N, node != null ? node.hashCode() : 0, node );
+////			}
+////			edu.cmu.cs.dennisc.print.PrintUtilities.println( "isAcceptableParentContext: parentCx", parentContext.hashCode(), parentContext );
+////			edu.cmu.cs.dennisc.print.PrintUtilities.println( "isAcceptableParentContext: value", checkNode == parentContext );
+////		}
+//		return rv;
+//	}
 }

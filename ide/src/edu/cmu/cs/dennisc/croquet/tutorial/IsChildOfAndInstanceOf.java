@@ -70,4 +70,16 @@ class IsChildOfAndInstanceOf<N extends edu.cmu.cs.dennisc.croquet.HistoryNode> i
 			return false;
 		}
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( "[parent:" );
+		sb.append( this.parentContextCriterion );
+		sb.append( ";instanceof:" );
+		sb.append( this.cls );
+		sb.append( "]" );
+		return sb.toString();
+	}
 }

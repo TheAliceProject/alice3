@@ -154,7 +154,7 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 		
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				tutorial.setSelectedIndex( 0 );
+				tutorial.setSelectedIndex( 1 );
 			}
 		} );
 

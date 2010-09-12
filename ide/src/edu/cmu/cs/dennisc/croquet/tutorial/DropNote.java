@@ -53,8 +53,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent.class ),
 				new IsChildOfAndInstanceOf( parentContextCriterion, childModelContext.getClass() )
 		);
-		rv.addRequirement( new IsAcceptableSuccessfulCompletionOf( rv, successfulCompletionEvent ) );
-		rv.setCheckIndex( -2 );
+		rv.addRequirement( new IsAcceptableSuccessfulCompletionOf( rv.getAcceptedContextAt( -2 ), successfulCompletionEvent ) );
 		return rv;
 	}
 	public static DropNote createPendingInstance( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.croquet.ModelContext< ? > childModelContext ) {

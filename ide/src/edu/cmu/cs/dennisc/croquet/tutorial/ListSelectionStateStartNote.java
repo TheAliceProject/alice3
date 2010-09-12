@@ -54,8 +54,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 				successfulCompletionEvent
 		);
 		rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.ListSelectionStateContext.class ) );
-		rv.setCheckIndex( 0 );
-		rv.addRequirement( new IsChildOfAndInstanceOf( rv, edu.cmu.cs.dennisc.croquet.ListSelectionStateContext.PopupMenuWillBecomeVisibleEvent.class ) );
+		rv.addRequirement( new IsChildOfAndInstanceOf( rv.getAcceptedContextAt( 0 ), edu.cmu.cs.dennisc.croquet.ListSelectionStateContext.PopupMenuWillBecomeVisibleEvent.class ) );
 		return rv;
 	}
 	private ListSelectionStateStartNote( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) {

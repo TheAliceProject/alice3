@@ -122,7 +122,7 @@ public class AutomaticTutorial {
 				edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = menuBarModelContext.getLastChild();
 				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext ) {
 					edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)lastChild;
-					appendNotes( rv, IsAnyMenuBarModelContextCriterion.SINGLETON, popupMenuOperationContext );
+					appendNotes( rv, parentContextCriterion/*IsAnyMenuBarModelContextCriterion.SINGLETON*/, popupMenuOperationContext );
 				}
 			}
 		} else if( node instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
@@ -138,16 +138,16 @@ public class AutomaticTutorial {
 					boolean isCommit = lastGrandchild instanceof edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent;
 					if( isCommit ) {
 						edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = (edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent)lastGrandchild;
-						dropNote = DropNote.createCommitInstance( dragNote, dragAndDropContext, childModelContext, successfulCompletionEvent );
+						dropNote = DropNote.createCommitInstance( dragNote.getLastAcceptedContext(), dragAndDropContext, childModelContext, successfulCompletionEvent );
 					} else {
-						dropNote = DropNote.createPendingInstance( dragNote, dragAndDropContext, childModelContext );
+						dropNote = DropNote.createPendingInstance( dragNote.getLastAcceptedContext(), dragAndDropContext, childModelContext );
 					}
 					rv.add( dragNote );
 					rv.add( dropNote );
 					if( isCommit ) {
 						//pass
 					} else {
-						appendNotes( rv, dropNote, childModelContext );
+						appendNotes( rv, dropNote.getLastAcceptedContext(), childModelContext );
 					}
 				}
 			}
@@ -157,17 +157,17 @@ public class AutomaticTutorial {
 				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)node;
 				int POPUP_CONTEXT_CHILD_COUNT = popupMenuOperationContext.getChildCount();
 				if( POPUP_CONTEXT_CHILD_COUNT > 1 ) {
-					edu.cmu.cs.dennisc.croquet.HistoryNode firstChild = popupMenuOperationContext.getChildAt( 0 );
+					edu.cmu.cs.dennisc.croquet.HistoryNode<?> firstChild = popupMenuOperationContext.getChildAt( 0 );
 					edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent retargetableMenuModelInitializationEvent;
 					if( firstChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent ) {
 						retargetableMenuModelInitializationEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent)firstChild;
 					} else {
 						retargetableMenuModelInitializationEvent = null;
 					}
-					edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = popupMenuOperationContext.getChildAt( POPUP_CONTEXT_CHILD_COUNT-1 );
+					edu.cmu.cs.dennisc.croquet.HistoryNode<?> lastChild = popupMenuOperationContext.getChildAt( POPUP_CONTEXT_CHILD_COUNT-1 );
 					if( lastChild instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
 						edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)lastChild;
-						edu.cmu.cs.dennisc.croquet.HistoryNode secondToLastChild = popupMenuOperationContext.getChildAt( POPUP_CONTEXT_CHILD_COUNT-2 );
+						edu.cmu.cs.dennisc.croquet.HistoryNode<?> secondToLastChild = popupMenuOperationContext.getChildAt( POPUP_CONTEXT_CHILD_COUNT-2 );
 						if( secondToLastChild instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
 							edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)secondToLastChild;
 							final int N = menuSelectionEvent.getModelCount();
@@ -179,8 +179,20 @@ public class AutomaticTutorial {
 									index0 = 0;
 								}
 								for( int i=index0; i<N; i++ ) {
-									rv.add( MenuSelectionNote.createInstance( retargetableMenuModelInitializationEvent, menuSelectionEvent, i, modelContext, index0 ) );
-									retargetableMenuModelInitializationEvent = null;
+									edu.cmu.cs.dennisc.croquet.ModelContext< ? > childContext;
+									if( i == N-1 ) {
+										childContext = modelContext;
+									} else {
+										childContext = null;
+									}
+									MenuSelectionNote note = MenuSelectionNote.createInstance( parentContextCriterion, retargetableMenuModelInitializationEvent, menuSelectionEvent, i, childContext, index0 );
+									rv.add( note );
+									if( i==index0 ) {
+										parentContextCriterion = note.getAcceptedContextAt( index0 );
+										retargetableMenuModelInitializationEvent = null;
+									} else if( i == N-1 ) {
+										parentContextCriterion = note.getLastAcceptedContext();
+									}
 								}
 							}
 						}
@@ -227,7 +239,7 @@ public class AutomaticTutorial {
 					} else {
 						ListSelectionStateStartNote startNote = ListSelectionStateStartNote.createInstance( listSelectionStateContext, parentContextCriterion, successfulCompletionEvent ); 
 						rv.add( startNote );
-						rv.add( ListSelectionStateFinishNote.createInstance( listSelectionStateContext, startNote, successfulCompletionEvent ) );
+						rv.add( ListSelectionStateFinishNote.createInstance( listSelectionStateContext, startNote.getLastAcceptedContext(), successfulCompletionEvent ) );
 					}
 				}
 			}
@@ -307,32 +319,16 @@ public class AutomaticTutorial {
 		}
 		public boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
 			final int NOTE_COUNT = this.getNoteCount();
-			if( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
-				edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent)child;
-				for( int i=0; i<NOTE_COUNT; i++ ) {
-					RetargetableNote historyNote = this.notes.get( i );
-					if( historyNote instanceof MenuSelectionNote ) {
-						MenuSelectionNote menuSelectionNote = (MenuSelectionNote)historyNote;
-						if( menuSelectionNote.isAtLeastWhatWeveBeenWaitingFor( menuSelectionEvent ) ) {
-							//pass
-						} else {
-							this.setActiveNote( i );
-							break;
-						}
-					}
-				}
-			} else {
-				int activeNoteIndex = this.getIndexOfFirstActiveNote();
-				activeNoteIndex = Math.max( activeNoteIndex, 0 );
-				if( activeNoteIndex < NOTE_COUNT ) {
-					RetargetableNote activeNote = this.notes.get( activeNoteIndex );
-					if( activeNote.isWhatWeveBeenWaitingFor( child ) ) {
-						activeNoteIndex ++;
-						if( activeNoteIndex == NOTE_COUNT ) {
-							return true;
-						} else {
-							this.setActiveNote( activeNoteIndex );
-						}
+			int activeNoteIndex = this.getIndexOfFirstActiveNote();
+			activeNoteIndex = Math.max( activeNoteIndex, 0 );
+			if( activeNoteIndex < NOTE_COUNT ) {
+				RetargetableNote activeNote = this.notes.get( activeNoteIndex );
+				if( activeNote.isWhatWeveBeenWaitingFor( child ) ) {
+					activeNoteIndex ++;
+					if( activeNoteIndex == NOTE_COUNT ) {
+						return true;
+					} else {
+						this.setActiveNote( activeNoteIndex );
 					}
 				}
 			}
