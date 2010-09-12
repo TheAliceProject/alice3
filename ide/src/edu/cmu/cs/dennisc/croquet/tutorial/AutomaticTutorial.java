@@ -176,6 +176,9 @@ public class AutomaticTutorial {
 								if( menuSelectionEvent.getModelAt( 0 ) instanceof edu.cmu.cs.dennisc.croquet.MenuBarModel ) {
 									index0 = 1;
 								} else {
+									PopupMenuOperationStartNote popupMenuOperationStartNote = PopupMenuOperationStartNote.createInstance( popupMenuOperationContext, parentContextCriterion );
+									rv.add( popupMenuOperationStartNote );
+									parentContextCriterion = popupMenuOperationStartNote.getLastAcceptedContext();
 									index0 = 0;
 								}
 								for( int i=index0; i<N; i++ ) {
