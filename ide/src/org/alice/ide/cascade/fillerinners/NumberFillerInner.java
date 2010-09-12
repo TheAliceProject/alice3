@@ -53,7 +53,9 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 	@Override
 	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		final edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getCascadeManager().createCopyOfPreviousExpression();
-		final boolean isTop = blank.getParentFillIn() == null;
+		//final boolean isTop = blank.getParentFillIn() == null;
+		System.err.println( "todo: addFillIns isTop" );
+		final boolean isTop = false;
 		if( isTop && previousExpression != null ) {
 			if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression ) {
 				edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression previousArithmeticInfixExpression = (edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression)previousExpression;

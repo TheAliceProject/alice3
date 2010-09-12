@@ -77,13 +77,25 @@ public class FillInExpressionPropertyEdit extends edu.cmu.cs.dennisc.cascade.Cas
 		return rv;
 	}
 
-	
 	@Override
-	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		throw new RuntimeException( "todo" );
+	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		super.addKeyValuePairs( retargeter, edit );
+		FillInExpressionPropertyEdit replacementEdit = (FillInExpressionPropertyEdit)edit;
+		retargeter.addKeyValuePair( this.prevExpression, replacementEdit.prevExpression );
+		retargeter.addKeyValuePair( this.nextExpression, replacementEdit.nextExpression );
 	}
 	@Override
 	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+		java.util.UUID prevExpressionId = binaryDecoder.decodeId();
+		this.prevExpression = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, prevExpressionId );
+		java.util.UUID nextExpressionId = binaryDecoder.decodeId();
+		this.nextExpression = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, nextExpressionId );
+	}
+	@Override
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.prevExpression.getUUID() );
+		binaryEncoder.encode( this.nextExpression.getUUID() );
 	}
 }

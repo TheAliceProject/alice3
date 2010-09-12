@@ -79,4 +79,8 @@ public class FillInArgumentPopupMenuOperation extends FillInExpressionMenuModel 
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
 		return this.argument.parameter.getValue().getDesiredValueType();
 	}
+	@Override
+	public org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< FillInArgumentPopupMenuOperation > getCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< FillInArgumentPopupMenuOperation >( this, this.argument, edu.cmu.cs.dennisc.alice.ast.Argument.class );
+	}
 }

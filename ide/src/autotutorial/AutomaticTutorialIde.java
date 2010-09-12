@@ -93,6 +93,15 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 //		super.handleQuit( e );
 		if( IS_ENCODING ) {
 			edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
+			
+			System.err.println( "todo: remove filtering" );
+			edu.cmu.cs.dennisc.croquet.tutorial.Filter[] filters = {
+					edu.cmu.cs.dennisc.croquet.tutorial.MenuSelectionEventFilter.SINGLETON,
+			};
+			for( edu.cmu.cs.dennisc.croquet.tutorial.Filter filter : filters ) {
+				rootContext = filter.filter( rootContext );
+			}
+
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
 			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( rootContext, UI_HISTORY_PATH );
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
@@ -133,8 +142,7 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 //				edu.cmu.cs.dennisc.tutorial.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK,
 //				edu.cmu.cs.dennisc.tutorial.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK,
 				edu.cmu.cs.dennisc.croquet.tutorial.MenuPolicy.BELOW_STENCIL,
-				new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP },
-				new edu.cmu.cs.dennisc.croquet.Group[] { org.alice.ide.IDE.RUN_GROUP }
+				new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP }
 		);
 		tutorial.addSteps( this.postContext );
 		

@@ -63,7 +63,6 @@ public class AutomaticTutorial {
 	}
 
 	private AutomaticTutorialStencil stencil;
-	private java.util.List< edu.cmu.cs.dennisc.croquet.Group > groupsForWhichStepsAreGenerated; 
 	private edu.cmu.cs.dennisc.croquet.RootContext sourceContext;
 
 	/*package-private*/ class AutomaticTutorialStencil extends TutorialStencil {
@@ -72,19 +71,9 @@ public class AutomaticTutorial {
 		}
 	}
 	
-	public AutomaticTutorial( MenuPolicy menuPolicy, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess, edu.cmu.cs.dennisc.croquet.Group[] bonusGroupsForWhichStepsAreGenerated ) {
+	public AutomaticTutorial( MenuPolicy menuPolicy, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
 		instance = this;
 		this.stencil = new AutomaticTutorialStencil( menuPolicy, getLayeredPane(), groupsTrackedForRandomAccess );
-		this.groupsForWhichStepsAreGenerated = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		edu.cmu.cs.dennisc.java.util.Collections.addAll( this.groupsForWhichStepsAreGenerated, groupsTrackedForRandomAccess );
-		edu.cmu.cs.dennisc.java.util.Collections.addAll( this.groupsForWhichStepsAreGenerated, bonusGroupsForWhichStepsAreGenerated );
-		
-		
-		//todo: remove
-		this.groupsForWhichStepsAreGenerated.add( edu.cmu.cs.dennisc.croquet.DragAndDropModel.DRAG_GROUP );
-		this.groupsForWhichStepsAreGenerated.add( edu.cmu.cs.dennisc.croquet.MenuBarModel.MENU_BAR_MODEL_GROUP );
-		//
-		
 	}
 	private edu.cmu.cs.dennisc.croquet.Retargeter retargeter;
 	public edu.cmu.cs.dennisc.croquet.Retargeter getRetargeter() {
@@ -358,25 +347,19 @@ public class AutomaticTutorial {
 		return this.stencil;
 	}
 	public void addSteps( edu.cmu.cs.dennisc.croquet.RootContext sourceContext ) {
-		this.addMessageStep( "start", "start of tutorial" );
+		//this.addMessageStep( "start", "start of tutorial" );
 		this.sourceContext = sourceContext;
 		final int N = sourceContext.getChildCount();
 		for( int i=0; i<N; i++ ) {
 			edu.cmu.cs.dennisc.croquet.HistoryNode node = sourceContext.getChildAt( i );
 			if( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
 				edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)node;
-				edu.cmu.cs.dennisc.croquet.HistoryNode.State state = context.getState();
-				edu.cmu.cs.dennisc.croquet.Group group = context.getModel().getGroup();
-				if( state == edu.cmu.cs.dennisc.croquet.HistoryNode.State.CANCELED ) {
-					//pass
-				} else {
-					if( this.groupsForWhichStepsAreGenerated.contains( group ) ) {
-						this.stencil.addStep( new ContextStep( context ) );
-					}
+				if( context.isSuccessfullyCompleted() ) {
+					this.stencil.addStep( new ContextStep( context ) );
 				}
 			}
 		}
-		this.addMessageStep( "end", "end of tutorial" );
+		this.addMessageStep( "Finished", "<strong>Congratulations.</strong><br>You have completed the guided interaction." );
 	}
 	public void setSelectedIndex( int index ) {
 		this.stencil.setSelectedIndex( index );

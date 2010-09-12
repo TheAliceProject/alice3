@@ -80,12 +80,13 @@ import edu.cmu.cs.dennisc.tutorial.*;
 		sb.append( "</em></strong>" );
 		return sb.toString();
 	}
+	
 	public static MenuSelectionNote createInstance( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent retargetableMenuModelInitializationEvent, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, int index0 ) {
 		return new MenuSelectionNote( retargetableMenuModelInitializationEvent, menuSelectionEvent, i, modelContext, index0 );
 	}
 	
 	
-	edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent originalRetargetableMenuModelInitializationEvent;
+	private edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.RetargetableMenuModelInitializationEvent originalRetargetableMenuModelInitializationEvent;
 	private edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent originalMenuSelectionEvent;
 	private int i;
 	private edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext;
