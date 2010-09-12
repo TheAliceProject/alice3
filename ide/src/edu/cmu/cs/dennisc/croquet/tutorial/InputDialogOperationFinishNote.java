@@ -44,14 +44,14 @@ package edu.cmu.cs.dennisc.croquet.tutorial;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class InputDialogSuccessfulCompletionNote extends RequirementNote {
-	public static InputDialogSuccessfulCompletionNote createInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) {
-		return new InputDialogSuccessfulCompletionNote( 
+/*package-private*/ class InputDialogOperationFinishNote extends RequirementNote {
+	public static InputDialogOperationFinishNote createInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) {
+		return new InputDialogOperationFinishNote( 
 				inputDialogOperationContext, 
 				new IsAcceptableSuccessfulCompletionOf( parentContextCriterion, successfulCompletionEvent ) 
 		);
 	}
-	private InputDialogSuccessfulCompletionNote( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, Requirement< ? > requirement ) {
+	private InputDialogOperationFinishNote( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, Requirement< ? > requirement ) {
 		super( requirement );
 		this.setText( "press ok button" );
 		final ModelFromContextResolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> > inputDialogOperationResolver = new ModelFromContextResolver( inputDialogOperationContext );

@@ -75,13 +75,17 @@ class RequirementNote extends RetargetableNote /* implements ParentContextCriter
 	
 	public ParentContextCriterion getAcceptedContextAt( final int checkIndex ) {
 		return new ParentContextCriterion() {
-			public boolean isAcceptableParentContext( edu.cmu.cs.dennisc.croquet.ModelContext< ? > parentContext ) {
-				boolean rv;
+			private int calculateActualIndex() {
 				final int N = RequirementNote.this.requirements.size();
 				int actualIndex = checkIndex;
 				if( actualIndex < 0 ) {
 					actualIndex += N;
 				}
+				return actualIndex;
+			}
+			public boolean isAcceptableParentContext( edu.cmu.cs.dennisc.croquet.ModelContext< ? > parentContext ) {
+				boolean rv;
+				int actualIndex = this.calculateActualIndex();
 				edu.cmu.cs.dennisc.croquet.HistoryNode checkNode = RequirementNote.this.nodes.get( actualIndex );
 				if( checkNode != null ) {
 					if( checkNode instanceof edu.cmu.cs.dennisc.croquet.ModelContext ) {
@@ -93,6 +97,11 @@ class RequirementNote extends RetargetableNote /* implements ParentContextCriter
 					throw new NullPointerException();
 				}
 				return rv;
+			}
+			@Override
+			public String toString() {
+				int actualIndex = this.calculateActualIndex();
+				return "RequirementNote sub context " + actualIndex + " " + RequirementNote.this.nodes.get( actualIndex );
 			}
 		};
 	}

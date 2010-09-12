@@ -58,8 +58,8 @@ import edu.cmu.cs.dennisc.tutorial.*;
 	}
 	public static DropNote createPendingInstance( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.croquet.ModelContext< ? > childModelContext ) {
 		return new DropNote( dragAndDropContext, 
-				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent.class ),
-				new IsChildOfAndInstanceOf( parentContextCriterion, childModelContext.getClass() )
+				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent.class )//,
+				//new IsChildOfAndInstanceOf( parentContextCriterion, childModelContext.getClass() )
 		);
 	}
 	private DropNote( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, Requirement< ? >... requirements ) {

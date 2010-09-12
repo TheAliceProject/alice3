@@ -41,24 +41,22 @@
  */
 package edu.cmu.cs.dennisc.croquet.tutorial;
 
-import edu.cmu.cs.dennisc.tutorial.Feature;
-import edu.cmu.cs.dennisc.tutorial.FirstComponentResolver;
-import edu.cmu.cs.dennisc.tutorial.Hole;
+import edu.cmu.cs.dennisc.tutorial.*;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class InputDialogStartNote extends RequirementNote {
-	public static InputDialogStartNote createInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, ParentContextCriterion parentContextCriterion ) {
-		return new InputDialogStartNote( 
-				inputDialogOperationContext, 
-				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.InputDialogOperationContext.class ) 
+/*package-private*/ class OperationStartNote extends RequirementNote {
+	public static OperationStartNote createInstance( edu.cmu.cs.dennisc.croquet.OperationContext< ? > operationContext, ParentContextCriterion parentContextCriterion ) {
+		return new OperationStartNote( 
+				operationContext, 
+				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.OperationContext.class ) 
 		);
 	}
-	private InputDialogStartNote( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, Requirement< ? > requirement ) {
+	private OperationStartNote( edu.cmu.cs.dennisc.croquet.OperationContext< ? > operationContext, Requirement< ? > requirement ) {
 		super( requirement );
-		this.setText( inputDialogOperationContext.getModel().getTutorialNoteText( null ) );
-		ModelFromContextResolver modelResolver = new ModelFromContextResolver( inputDialogOperationContext );
+		this.setText( operationContext.getModel().getTutorialNoteText( null ) );
+		ModelFromContextResolver modelResolver = new ModelFromContextResolver( operationContext );
 		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
 		this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			
 	}

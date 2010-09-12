@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet.tutorial;
  * @author Dennis Cosgrove
  */
 enum IsRootContextCriterion implements ParentContextCriterion {
-	SINGLETON;
+	IS_PARENT_ROOT_CONTEXT;
 	public boolean isAcceptableParentContext( edu.cmu.cs.dennisc.croquet.ModelContext< ? > parentContext ) {
 		return edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() == parentContext;
 	}

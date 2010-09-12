@@ -90,33 +90,24 @@ public class AutomaticTutorial {
 	private void addMessageStep( String title, String text ) {
 		this.stencil.addStep( new MessageStep( title, text ) );
 	}
-	private static java.util.List< RetargetableNote > appendBonusOperationNotes( java.util.List< RetargetableNote > rv, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.OperationContext< ? > operationContext ) {
+	private static RequirementNote createBonusOperationNote( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.OperationContext< ? > operationContext ) {
 		if( operationContext instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext ){
 			if( operationContext instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext ) {
 				edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext = (edu.cmu.cs.dennisc.croquet.DialogOperationContext)operationContext;
 				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = operationContext.getSuccessfulCompletionEvent();
 				if( successfulCompletionEvent != null ) {
-					rv.add( DialogCloseNote.createInstance( dialogOperationContext, parentContextCriterion, successfulCompletionEvent ) );
+					return DialogCloseNote.createInstance( dialogOperationContext, parentContextCriterion, successfulCompletionEvent );
 				}
 			} else if( operationContext instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > ) {
 				edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?>)operationContext;
 				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = inputDialogOperationContext.getSuccessfulCompletionEvent();
 				if( successfulCompletionEvent != null ) {
 					//rv.add( InputDialogAcceptableEditNote.createInstance( inputDialogOperationContext, parentContextCriterion ) );
-					rv.add( InputDialogSuccessfulCompletionNote.createInstance( inputDialogOperationContext, parentContextCriterion, successfulCompletionEvent ) );
-				}
-			}
-		} else if( operationContext instanceof edu.cmu.cs.dennisc.croquet.ActionOperationContext ) {
-			edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = operationContext.getLastChild();
-			if( lastChild instanceof edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent ) {
-				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = (edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent)lastChild;
-				edu.cmu.cs.dennisc.croquet.HistoryNode child0 = operationContext.getChildAt( 0 );
-				if( child0 instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext< ? > ) {
-					appendBonusOperationNotes( rv, parentContextCriterion, (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext< ? >)child0 );
+					return InputDialogOperationFinishNote.createInstance( inputDialogOperationContext, parentContextCriterion, successfulCompletionEvent );
 				}
 			}
 		}
-		return rv;
+		return null;
 	}
 	private static java.util.List< RetargetableNote > appendNotes( java.util.List< RetargetableNote > rv, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.HistoryNode node ) {
 		if( node instanceof edu.cmu.cs.dennisc.croquet.MenuBarModelContext ) {
@@ -179,11 +170,16 @@ public class AutomaticTutorial {
 								if( menuSelectionEvent.getModelAt( 0 ) instanceof edu.cmu.cs.dennisc.croquet.MenuBarModel ) {
 									index0 = 1;
 								} else {
-									PopupMenuOperationStartNote popupMenuOperationStartNote = PopupMenuOperationStartNote.createInstance( popupMenuOperationContext, parentContextCriterion );
-									rv.add( popupMenuOperationStartNote );
-									parentContextCriterion = popupMenuOperationStartNote.getLastAcceptedContext();
+									if( node.getParent() instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
+										//pass
+									} else {
+										PopupMenuOperationStartNote popupMenuOperationStartNote = PopupMenuOperationStartNote.createInstance( popupMenuOperationContext, parentContextCriterion );
+										rv.add( popupMenuOperationStartNote );
+										parentContextCriterion = popupMenuOperationStartNote.getLastAcceptedContext();
+									}
 									index0 = 0;
 								}
+								ParentContextCriterion menuSelectionParentContextCriterion = parentContextCriterion;
 								for( int i=index0; i<N; i++ ) {
 									edu.cmu.cs.dennisc.croquet.ModelContext< ? > childContext;
 									if( i == N-1 ) {
@@ -191,12 +187,13 @@ public class AutomaticTutorial {
 									} else {
 										childContext = null;
 									}
-									MenuSelectionNote note = MenuSelectionNote.createInstance( parentContextCriterion, retargetableMenuModelInitializationEvent, menuSelectionEvent, i, childContext, index0 );
+									MenuSelectionNote note = MenuSelectionNote.createInstance( menuSelectionParentContextCriterion, retargetableMenuModelInitializationEvent, menuSelectionEvent, i, childContext, index0 );
 									rv.add( note );
 									if( i==index0 ) {
-										parentContextCriterion = note.getAcceptedContextAt( index0 );
+										menuSelectionParentContextCriterion = note.getAcceptedContextAt( index0 );
 										retargetableMenuModelInitializationEvent = null;
-									} else if( i == N-1 ) {
+									}
+									if( i == N-1 ) {
 										parentContextCriterion = note.getLastAcceptedContext();
 									}
 								}
@@ -204,21 +201,28 @@ public class AutomaticTutorial {
 						}
 						if( modelContext instanceof edu.cmu.cs.dennisc.croquet.OperationContext< ? > ) {
 							edu.cmu.cs.dennisc.croquet.OperationContext< ? > childOperationContext = (edu.cmu.cs.dennisc.croquet.OperationContext< ? >)modelContext;
-							appendBonusOperationNotes( rv, parentContextCriterion, childOperationContext );
+							edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = childOperationContext.getSuccessfulCompletionEvent();
+							if( successfulCompletionEvent != null ) {
+								if( operationContext instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext ){
+									RetargetableNote bonusNote = createBonusOperationNote( parentContextCriterion, childOperationContext );
+									if( bonusNote != null ) {
+										rv.add( bonusNote );
+									}
+								}
+							}
 						}
 					}
 				}
 			} else {
 				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = operationContext.getSuccessfulCompletionEvent();
 				if( successfulCompletionEvent != null ) {
-					if( operationContext instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > ) {
-						edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? >)operationContext;
-						InputDialogStartNote startNote = InputDialogStartNote.createInstance( inputDialogOperationContext, parentContextCriterion );
+					if( operationContext instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext ){
+						OperationStartNote startNote = OperationStartNote.createInstance( operationContext, parentContextCriterion );
+						RequirementNote bonusNote = createBonusOperationNote( startNote.getLastAcceptedContext(), operationContext );
 						rv.add( startNote );
-						rv.add( InputDialogSuccessfulCompletionNote.createInstance( inputDialogOperationContext, startNote.getLastAcceptedContext(), successfulCompletionEvent ) );
+						rv.add( bonusNote );
 					} else {
 						rv.add( OperationNote.createInstance( operationContext, parentContextCriterion, successfulCompletionEvent ) );
-						appendBonusOperationNotes( rv, parentContextCriterion, operationContext );
 					}
 				}
 			}
@@ -239,7 +243,6 @@ public class AutomaticTutorial {
 				edu.cmu.cs.dennisc.croquet.Component< ? > component = firstComponentResolver.getResolved();
 				if( component instanceof edu.cmu.cs.dennisc.croquet.ItemSelectable< ?,? > ) {
 					edu.cmu.cs.dennisc.croquet.ItemSelectable< ?,? > itemSelectable = (edu.cmu.cs.dennisc.croquet.ItemSelectable< ?,? >)component;
-					System.err.println( "itemSelectable: " + itemSelectable );
 					if( itemSelectable.isSingleStageSelectable() ) {
 						rv.add( ListSelectionStateSimpleNote.createInstance( listSelectionStateContext, parentContextCriterion, successfulCompletionEvent ) );
 					} else {
@@ -282,7 +285,7 @@ public class AutomaticTutorial {
 		private java.util.List< RetargetableNote > notes;
 		private java.util.List< RetargetableNote > createNotes() {
 			java.util.List< RetargetableNote > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			appendNotes( rv, IsRootContextCriterion.SINGLETON, this.context );
+			appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, this.context );
 			return rv;
 		}
 		@Override
