@@ -120,10 +120,10 @@ public class TutorialStencil extends Stencil {
 		final int PAD = 4;
 		frame.getJMenuBar().setBorder( javax.swing.BorderFactory.createEmptyBorder(PAD+32,PAD,0,PAD));
 		((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder(0,PAD,PAD,PAD));
-		return new TutorialStencil( MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK, layeredPane, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() ); 
+		return new TutorialStencil( MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK, DefaultScrollingRequiredRenderer.INSTANCE, layeredPane, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() ); 
 	}
-	public TutorialStencil( MenuPolicy menuPolicy, javax.swing.JLayeredPane layeredPane, edu.cmu.cs.dennisc.croquet.Group[] groups, edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext ) {
-		super( menuPolicy, layeredPane );
+	public TutorialStencil( MenuPolicy menuPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, javax.swing.JLayeredPane layeredPane, edu.cmu.cs.dennisc.croquet.Group[] groups, edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext ) {
+		super( menuPolicy, scrollingRequiredRenderer, layeredPane );
 		
 		rootContext.addChildrenObserver( this.childrenObserver );
 

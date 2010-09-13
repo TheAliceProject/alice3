@@ -137,11 +137,13 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 			}
 		};
 
-		
+		//edu.cmu.cs.dennisc.tutorial.ScrollingRequiredRenderer scrollingRequiredRenderer = null;
+		edu.cmu.cs.dennisc.tutorial.ScrollingRequiredRenderer scrollingRequiredRenderer = edu.cmu.cs.dennisc.tutorial.DefaultScrollingRequiredRenderer.INSTANCE;
 		final edu.cmu.cs.dennisc.croquet.tutorial.AutomaticTutorial tutorial = new edu.cmu.cs.dennisc.croquet.tutorial.AutomaticTutorial( 
 //				edu.cmu.cs.dennisc.tutorial.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK,
 //				edu.cmu.cs.dennisc.tutorial.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK,
 				edu.cmu.cs.dennisc.croquet.tutorial.MenuPolicy.BELOW_STENCIL,
+				scrollingRequiredRenderer,
 				new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP }
 		);
 		tutorial.addSteps( this.postContext );

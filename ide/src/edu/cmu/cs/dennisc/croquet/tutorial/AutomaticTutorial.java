@@ -66,14 +66,14 @@ public class AutomaticTutorial {
 	private edu.cmu.cs.dennisc.croquet.RootContext sourceContext;
 
 	/*package-private*/ class AutomaticTutorialStencil extends TutorialStencil {
-		public AutomaticTutorialStencil( MenuPolicy menuPolicy, javax.swing.JLayeredPane layeredPane, edu.cmu.cs.dennisc.croquet.Group[] groups ) {
-			super( menuPolicy, layeredPane, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() );
+		public AutomaticTutorialStencil( MenuPolicy menuPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, javax.swing.JLayeredPane layeredPane, edu.cmu.cs.dennisc.croquet.Group[] groups ) {
+			super( menuPolicy, scrollingRequiredRenderer, layeredPane, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() );
 		}
 	}
 	
-	public AutomaticTutorial( MenuPolicy menuPolicy, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
+	public AutomaticTutorial( MenuPolicy menuPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
 		instance = this;
-		this.stencil = new AutomaticTutorialStencil( menuPolicy, getLayeredPane(), groupsTrackedForRandomAccess );
+		this.stencil = new AutomaticTutorialStencil( menuPolicy, scrollingRequiredRenderer, getLayeredPane(), groupsTrackedForRandomAccess );
 	}
 	private edu.cmu.cs.dennisc.croquet.Retargeter retargeter;
 	public edu.cmu.cs.dennisc.croquet.Retargeter getRetargeter() {
