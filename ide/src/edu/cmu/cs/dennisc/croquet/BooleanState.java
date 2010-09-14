@@ -76,10 +76,7 @@ public /*final*/ class BooleanState extends State<Boolean> {
 				//pass
 			} else {
 				if( BooleanState.this.isContextCommitDesired() ) {
-					BooleanStateContext childContext = ContextManager.createAndPushBooleanStateContext( BooleanState.this, e, null );
-					childContext.commitAndInvokeDo( new BooleanStateEdit( e ) );
-					ModelContext< ? > popContext = ContextManager.popContext();
-					assert popContext == childContext;
+					BooleanState.this.commitEdit( new BooleanStateEdit( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ), e );
 				}
 			}
 		}
@@ -101,6 +98,21 @@ public /*final*/ class BooleanState extends State<Boolean> {
 		this(group, id, initialState );
 		this.setTextForBothTrueAndFalse( name );
 	}
+	
+	private void commitEdit( BooleanStateEdit booleanStateEdit, java.awt.event.ItemEvent e ) {
+		BooleanStateContext childContext = ContextManager.createAndPushBooleanStateContext( BooleanState.this, e, null );
+		childContext.commitAndInvokeDo( booleanStateEdit );
+		ModelContext< ? > popContext = ContextManager.popContext();
+		assert popContext == childContext;
+	}
+	
+	@Override
+	public void commitTutorialCompletionEdit( Edit<?> originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		assert originalEdit instanceof BooleanStateEdit;
+		BooleanStateEdit booleanStateEdit = (BooleanStateEdit)originalEdit;
+		this.commitEdit( booleanStateEdit, null );
+	}
+	
 	
 	@Override
 	protected boolean isOwnerOfEdit() {

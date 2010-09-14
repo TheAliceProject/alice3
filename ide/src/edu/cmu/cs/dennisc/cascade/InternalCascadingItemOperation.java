@@ -88,6 +88,12 @@ public class InternalCascadingItemOperation extends edu.cmu.cs.dennisc.croquet.A
 		return new org.alice.ide.croquet.resolvers.InternalCascadingItemOperationStaticGetInstanceKeyedResolver( this );
 	}
 	@Override
+	protected edu.cmu.cs.dennisc.croquet.Edit< ? > createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		Blank rootBlank = this.getFillIn().getRootBlank();
+		CascadingRoot cascadingRoot = rootBlank.getCascadingRoot();
+		return cascadingRoot.createTutorialCompletionEdit( originalEdit, retargeter );
+	}
+	@Override
 	protected final void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 		this.getFillIn().handleActionOperationPerformed( context );
 		Blank rootBlank = this.getFillIn().getRootBlank();

@@ -80,6 +80,11 @@ public class InsertStatementActionOperation extends edu.cmu.cs.dennisc.croquet.A
 		this.statement = statement;
 	}
 	
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.Edit< ? > createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		return originalEdit;
+	}
+
 	public edu.cmu.cs.dennisc.alice.ast.BlockStatement getBlockStatement() {
 		return this.blockStatement;
 	}

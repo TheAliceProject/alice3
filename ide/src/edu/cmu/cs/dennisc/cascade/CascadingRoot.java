@@ -48,4 +48,7 @@ package edu.cmu.cs.dennisc.cascade;
 public interface CascadingRoot {
 	public edu.cmu.cs.dennisc.croquet.Edit< ? extends edu.cmu.cs.dennisc.croquet.ActionOperation > createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context );
 	public edu.cmu.cs.dennisc.croquet.Model createCroquetModel( FillIn< ? > fillIn, boolean isLast );
+	
+	public edu.cmu.cs.dennisc.croquet.Edit< ? > createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter );
+
 }

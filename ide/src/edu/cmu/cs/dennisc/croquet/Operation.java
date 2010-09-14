@@ -65,6 +65,25 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 		return "Press " + this.getName();
 	}
 	
+	protected Edit< ? > createTutorialCompletionEdit( Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		return null;
+	}
+	@Override
+	public void commitTutorialCompletionEdit( Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		Edit< ? > replacementEdit = this.createTutorialCompletionEdit( originalEdit, retargeter );
+		if( replacementEdit != null ) {
+			final C childContext = this.createContext( null, null );
+			try {
+				childContext.commitAndInvokeDo( replacementEdit );
+			} finally {
+				ModelContext< ? > popContext = ContextManager.popContext();
+				assert popContext == childContext : popContext.getClass() + " " + childContext.getClass();
+			}
+		} else {
+			System.err.println( "createTutorialCompletionEdit returned null" );
+		}
+	}
+
 	public C fire( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		if( this.isEnabled() ) {
 			return this.handleFire(e, viewController);

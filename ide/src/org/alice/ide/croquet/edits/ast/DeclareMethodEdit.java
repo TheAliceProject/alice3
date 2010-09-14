@@ -53,9 +53,9 @@ public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit<
 
 	public DeclareMethodEdit() {
 	}
-	public DeclareMethodEdit( DeclareMethodEdit other ) {
-		this( other.declaringType, other.method );
-	}
+//	public DeclareMethodEdit( DeclareMethodEdit other ) {
+//		this( other.declaringType, other.method );
+//	}
 	public DeclareMethodEdit( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		this.declaringType = declaringType;
 		this.method = method;
@@ -102,14 +102,15 @@ public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit<
 	public boolean isReplacementAcceptable( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 		return edit instanceof DeclareMethodEdit;
 	}
-//	@Override
-//	public edu.cmu.cs.dennisc.croquet.Edit< org.alice.ide.croquet.models.ast.DeclareMethodOperation > getAcceptableReplacement( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-//		edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> replacementDeclaringType = retargeter.retarget( this.declaringType );
-//		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice replacementMethod = org.alice.ide.ast.NodeUtilities.createMethod( this.method.getName(), this.method.getReturnType() );
-//		retargeter.addKeyValuePair( this.method, replacementMethod );
-//		retargeter.addKeyValuePair( this.method.body.getValue(), replacementMethod.body.getValue() );
-//		return new DeclareMethodEdit( replacementDeclaringType, replacementMethod );
-//	}
+	
+	public DeclareMethodEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> replacementDeclaringType = retargeter.retarget( this.declaringType );
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice replacementMethod = org.alice.ide.ast.NodeUtilities.createMethod( this.method.getName(), this.method.getReturnType() );
+		retargeter.addKeyValuePair( this.method, replacementMethod );
+		retargeter.addKeyValuePair( this.method.body.getValue(), replacementMethod.body.getValue() );
+		return new DeclareMethodEdit( replacementDeclaringType, replacementMethod );
+	}
+
 	@Override
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );

@@ -54,6 +54,12 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdi
 		this.statement = statement;
 	}
 
+	public InsertStatementEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.alice.ast.Statement replacementStatement ) {
+		edu.cmu.cs.dennisc.alice.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
+		retargeter.addKeyValuePair( this.statement, replacementStatement );
+		return new InsertStatementEdit( replacementBlockStatement, this.index, replacementStatement );
+	}
+	
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		this.blockStatement.statements.add( this.index, this.statement );
@@ -67,6 +73,7 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdi
 			throw new javax.swing.undo.CannotUndoException();
 		}
 	}
+
 //	@Override
 //	public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.ActionOperation > getAcceptableReplacement( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 //		edu.cmu.cs.dennisc.alice.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
