@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,20 +39,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.guide;
+
+import edu.cmu.cs.dennisc.tutorial.*;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationEdit<M extends Operation<?>> extends Edit<M> {
-	public OperationEdit() {
+/*package-private*/ class PopupMenuOperationStartNote extends RequirementNote {
+	public static PopupMenuOperationStartNote createInstance( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext, ParentContextCriterion parentContextCriterion ) {
+		PopupMenuOperationStartNote rv = new PopupMenuOperationStartNote( popupMenuOperationContext, parentContextCriterion );
+		rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.class ) );
+		return rv;
 	}
-	public OperationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	private PopupMenuOperationStartNote( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext, ParentContextCriterion parentContextCriterion ) {
+		this.setText( popupMenuOperationContext.getModel().getTutorialNoteText( null ) );
+		ModelFromContextResolver modelResolver = new ModelFromContextResolver( popupMenuOperationContext );
+		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
+		this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			
 	}
-	
-//	@Override
-//	public Edit< M > createRetargetedEdit( Retargeter retargeter ) {
-//		return null;
-//	}
 }

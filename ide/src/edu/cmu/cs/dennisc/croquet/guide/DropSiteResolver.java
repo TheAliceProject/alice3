@@ -40,20 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.guide;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationEdit<M extends Operation<?>> extends Edit<M> {
-	public OperationEdit() {
+/*package-private*/ class DropSiteResolver implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape > {
+	private edu.cmu.cs.dennisc.croquet.DragAndDropContext.EnteredPotentialDropSiteEvent enteredPotentialDropSiteEvent;
+	public DropSiteResolver( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+		this.enteredPotentialDropSiteEvent = dragAndDropContext.getLastChildAssignableTo( edu.cmu.cs.dennisc.croquet.DragAndDropContext.EnteredPotentialDropSiteEvent.class );
 	}
-	public OperationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
+		if( this.enteredPotentialDropSiteEvent != null ) {
+			edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor = this.enteredPotentialDropSiteEvent.getDropReceptor();
+			if( dropReceptor != null ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "DropSiteResolver", this.enteredPotentialDropSiteEvent.getPotentialDropSite() );
+				return dropReceptor.getTrackableShape( this.enteredPotentialDropSiteEvent.getPotentialDropSite() );
+			}
+		}
+		return null;
 	}
-	
-//	@Override
-//	public Edit< M > createRetargetedEdit( Retargeter retargeter ) {
-//		return null;
-//	}
 }

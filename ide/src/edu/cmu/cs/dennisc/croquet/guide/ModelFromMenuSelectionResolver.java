@@ -40,20 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.guide;
+
+import edu.cmu.cs.dennisc.tutorial.*;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationEdit<M extends Operation<?>> extends Edit<M> {
-	public OperationEdit() {
+/*package-private*/ class ModelFromMenuSelectionResolver< M extends edu.cmu.cs.dennisc.croquet.Model > implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< M > {
+	private edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent;
+	private int index;
+	public ModelFromMenuSelectionResolver( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int index ) {
+		this.menuSelectionEvent = menuSelectionEvent;
+		this.index = index;
 	}
-	public OperationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public M getResolved() {
+		return this.menuSelectionEvent.getModelAt( this.index );
 	}
-	
-//	@Override
-//	public Edit< M > createRetargetedEdit( Retargeter retargeter ) {
-//		return null;
-//	}
 }
+

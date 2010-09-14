@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,20 +39,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.guide;
+
+import edu.cmu.cs.dennisc.tutorial.*;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationEdit<M extends Operation<?>> extends Edit<M> {
-	public OperationEdit() {
+/*package-private*/ abstract class RetargetableNote extends Note {
+	protected static boolean isMouseEventInterceptedInAllCases( java.awt.event.MouseEvent e ) {
+		return e.getID() == java.awt.event.MouseEvent.MOUSE_PRESSED || e.getID() == java.awt.event.MouseEvent.MOUSE_RELEASED || e.getID() == java.awt.event.MouseEvent.MOUSE_CLICKED || e.getID() == java.awt.event.MouseEvent.MOUSE_DRAGGED;
 	}
-	public OperationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+
+	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
+		return true;
 	}
+	public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child );
 	
-//	@Override
-//	public Edit< M > createRetargetedEdit( Retargeter retargeter ) {
-//		return null;
-//	}
+	protected final void retarget( edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit ) {
+		edu.cmu.cs.dennisc.croquet.Retargeter retargeter = ConstructionGuide.getInstance().getRetargeter();
+		originalEdit.addKeyValuePairs( retargeter, replacementEdit );
+		ConstructionGuide.getInstance().retargetOriginalContext( retargeter );
+	}
 }

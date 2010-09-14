@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,20 +39,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.guide;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationEdit<M extends Operation<?>> extends Edit<M> {
-	public OperationEdit() {
+/*package-private*/ class InputDialogOperationFinishNote extends RequirementNote {
+	public static InputDialogOperationFinishNote createInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) {
+		return new InputDialogOperationFinishNote( 
+				inputDialogOperationContext, 
+				new IsAcceptableSuccessfulCompletionOf( parentContextCriterion, successfulCompletionEvent ) 
+		);
 	}
-	public OperationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	private InputDialogOperationFinishNote( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, Requirement< ? > requirement ) {
+		super( requirement );
+		this.setText( "press ok button" );
+		final ModelFromContextResolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> > inputDialogOperationResolver = new ModelFromContextResolver( inputDialogOperationContext );
+		this.addFeature( new edu.cmu.cs.dennisc.tutorial.InputDialogCommitFeature( new edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
+			public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
+				edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> inputDialogOperation = inputDialogOperationResolver.getResolved();
+				if( inputDialogOperation != null ) {
+					edu.cmu.cs.dennisc.croquet.Dialog activeDialog = inputDialogOperation.getActiveDialog();
+					if( activeDialog != null ) {
+						//todo
+						return activeDialog;
+					} else {
+						return null;
+					}
+				} else {
+					return null;
+				}
+			}
+		} ) );
+		
 	}
-	
-//	@Override
-//	public Edit< M > createRetargetedEdit( Retargeter retargeter ) {
-//		return null;
-//	}
 }

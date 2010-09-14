@@ -40,20 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.guide;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationEdit<M extends Operation<?>> extends Edit<M> {
-	public OperationEdit() {
+/*package-private*/ class ItemResolver<E> implements edu.cmu.cs.dennisc.croquet.RuntimeResolver< E > {
+	private edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E > listSelectionStateEdit;
+	public ItemResolver( edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit< E > listSelectionStateEdit ) {
+		this.listSelectionStateEdit = listSelectionStateEdit;
 	}
-	public OperationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public E getResolved() {
+		return this.listSelectionStateEdit.getNextValue();
 	}
-	
-//	@Override
-//	public Edit< M > createRetargetedEdit( Retargeter retargeter ) {
-//		return null;
-//	}
 }

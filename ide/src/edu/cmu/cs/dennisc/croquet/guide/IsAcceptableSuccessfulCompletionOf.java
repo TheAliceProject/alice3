@@ -40,20 +40,49 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.guide;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationEdit<M extends Operation<?>> extends Edit<M> {
-	public OperationEdit() {
+class IsAcceptableSuccessfulCompletionOf extends IsChildOfAndInstanceOf< edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent > {
+	private edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent originalSuccessfulCompletionEvent;
+	public IsAcceptableSuccessfulCompletionOf( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent originalSuccessfulCompletionEvent ) {
+		super( parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent.class );
+		this.originalSuccessfulCompletionEvent = originalSuccessfulCompletionEvent;
 	}
-	public OperationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	@Override
+	protected boolean isSpecificallyWhatWereLookingFor( edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) throws CancelException {
+		boolean rv = super.isSpecificallyWhatWereLookingFor( successfulCompletionEvent );
+		if( rv ) {
+			if( successfulCompletionEvent instanceof edu.cmu.cs.dennisc.croquet.FinishEvent ) {
+				return this.originalSuccessfulCompletionEvent instanceof edu.cmu.cs.dennisc.croquet.FinishEvent;
+			} else {
+				edu.cmu.cs.dennisc.croquet.Edit< ? > potentialReplacementEdit = successfulCompletionEvent.getEdit();
+				if( this.originalSuccessfulCompletionEvent != null ) {
+					edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit = this.originalSuccessfulCompletionEvent.getEdit();
+					if( originalEdit != null ) {
+						if( originalEdit.isReplacementAcceptable( potentialReplacementEdit ) ) {
+							edu.cmu.cs.dennisc.croquet.Retargeter retargeter = ConstructionGuide.getInstance().getRetargeter();
+							originalEdit.addKeyValuePairs( retargeter, potentialReplacementEdit );
+							ConstructionGuide.getInstance().retargetOriginalContext( retargeter );
+						} else {
+							throw new CancelException( "unacceptable: replacement edit does not pass muster." );
+						}
+					} else {
+						throw new CancelException( "unacceptable: replacement edit is null." );
+					}
+				} else {
+					if( potentialReplacementEdit != null ) {
+						throw new CancelException( "unacceptable: original edit is null." );
+					} else {
+						//pass
+					}
+				}
+			}
+		} else {
+			System.err.println( "IsAcceptableSuccessfulCompletionOf did not pass super" );
+		}
+		return rv;
 	}
-	
-//	@Override
-//	public Edit< M > createRetargetedEdit( Retargeter retargeter ) {
-//		return null;
-//	}
 }

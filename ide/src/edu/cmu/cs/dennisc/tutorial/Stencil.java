@@ -42,7 +42,7 @@
  */
 package edu.cmu.cs.dennisc.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.tutorial.MenuPolicy;
+import edu.cmu.cs.dennisc.croquet.guide.MenuPolicy;
 
 /**
  * @author Dennis Cosgrove

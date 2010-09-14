@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,20 +39,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.guide;
+
+import edu.cmu.cs.dennisc.tutorial.*;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationEdit<M extends Operation<?>> extends Edit<M> {
-	public OperationEdit() {
+/*package-private*/ class DropNote extends RequirementNote {
+	public static DropNote createCommitInstance( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.croquet.ModelContext< ? > childModelContext, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) {
+		DropNote rv = new DropNote( 
+				dragAndDropContext, 
+				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent.class ),
+				new IsChildOfAndInstanceOf( parentContextCriterion, childModelContext.getClass() )
+		);
+		rv.addRequirement( new IsAcceptableSuccessfulCompletionOf( rv.getAcceptedContextAt( -2 ), successfulCompletionEvent ) );
+		return rv;
 	}
-	public OperationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public static DropNote createPendingInstance( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.croquet.ModelContext< ? > childModelContext ) {
+		return new DropNote( dragAndDropContext, 
+				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent.class )//,
+				//new IsChildOfAndInstanceOf( parentContextCriterion, childModelContext.getClass() )
+		);
 	}
-	
-//	@Override
-//	public Edit< M > createRetargetedEdit( Retargeter retargeter ) {
-//		return null;
-//	}
+	private DropNote( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, Requirement< ? >... requirements ) {
+		super( requirements );
+		this.setText( dragAndDropContext.getModel().getTutorialDropNoteText() );
+		DropSiteResolver dropSiteResolver = new DropSiteResolver( dragAndDropContext ); 
+		this.addFeature( new Hole( dropSiteResolver, Feature.ConnectionPreference.NORTH_SOUTH ) );			
+	}
 }

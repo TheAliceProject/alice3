@@ -40,20 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+
+package edu.cmu.cs.dennisc.croquet.guide;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationEdit<M extends Operation<?>> extends Edit<M> {
-	public OperationEdit() {
+public enum SuccessfullyCompletedFilter implements Filter {
+	SINGLETON;
+	private static void stripExtraneousContexts( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
+		java.util.ListIterator< edu.cmu.cs.dennisc.croquet.HistoryNode< ? > > childListIterator = context.getChildListIterator();
+		while( childListIterator.hasNext() ) {
+			edu.cmu.cs.dennisc.croquet.HistoryNode< ? > node = childListIterator.next();
+			if( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
+				edu.cmu.cs.dennisc.croquet.ModelContext< ? > childContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)node;
+				if( childContext.isSuccessfullyCompleted() ) {
+					//pass
+				} else {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "removing:", childContext );
+					childListIterator.remove();
+				}
+				stripExtraneousContexts( childContext );
+			} else {
+				//pass
+			}
+		}
 	}
-	public OperationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+
+	public < M extends edu.cmu.cs.dennisc.croquet.ModelContext< ? > > M filter( M rv ) {
+		stripExtraneousContexts( rv );
+		return rv;
 	}
-	
-//	@Override
-//	public Edit< M > createRetargetedEdit( Retargeter retargeter ) {
-//		return null;
-//	}
 }

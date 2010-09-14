@@ -40,20 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+
+package edu.cmu.cs.dennisc.croquet.guide;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationEdit<M extends Operation<?>> extends Edit<M> {
-	public OperationEdit() {
-	}
-	public OperationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+public enum MenuSelectionEventFilter implements Filter {
+	SINGLETON;
+	
+	private static void stripExtraneousMenuSelectionEvents( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
+		for( edu.cmu.cs.dennisc.croquet.HistoryNode< ? > node : context.getChildren() ) {
+			if( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
+				edu.cmu.cs.dennisc.croquet.ModelContext< ? > childContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)node;
+				if( childContext instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext ) {
+					edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext)childContext;
+					
+					java.util.ListIterator< edu.cmu.cs.dennisc.croquet.HistoryNode< ? > > childListIterator = popupMenuOperationContext.getChildListIterator();
+					while( childListIterator.hasNext() ) {
+						edu.cmu.cs.dennisc.croquet.HistoryNode< ? > child = childListIterator.next();
+						if( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
+							if( childListIterator.hasNext() ) {
+								int nextIndex = childListIterator.nextIndex();
+								if( popupMenuOperationContext.getChildAt( nextIndex ) instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
+									childListIterator.remove();
+								}
+							}
+						}
+					}
+				}
+				stripExtraneousMenuSelectionEvents( childContext );
+			}
+		}
 	}
 	
-//	@Override
-//	public Edit< M > createRetargetedEdit( Retargeter retargeter ) {
-//		return null;
-//	}
+	public < M extends edu.cmu.cs.dennisc.croquet.ModelContext< ? > > M filter( M rv ) {
+		stripExtraneousMenuSelectionEvents( rv );
+		return rv;
+	}
 }

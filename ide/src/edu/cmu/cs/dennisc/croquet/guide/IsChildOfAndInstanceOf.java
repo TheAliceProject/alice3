@@ -40,20 +40,50 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.guide;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationEdit<M extends Operation<?>> extends Edit<M> {
-	public OperationEdit() {
+class IsChildOfAndInstanceOf<N extends edu.cmu.cs.dennisc.croquet.HistoryNode> implements Requirement<N> {
+	private ParentContextCriterion parentContextCriterion;
+	private Class<N> cls;
+	public IsChildOfAndInstanceOf( ParentContextCriterion parentContextCriterion, Class<N> cls ) {
+		this.parentContextCriterion = parentContextCriterion;
+		this.cls = cls;
 	}
-	public OperationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	protected boolean isSpecificallyWhatWereLookingFor(N historyNode) throws CancelException {
+		return true;
+	}
+	public final boolean isWhatWereLookingFor( edu.cmu.cs.dennisc.croquet.HistoryNode historyNode ) throws CancelException {
+		if( this.parentContextCriterion.isAcceptableParentContext( historyNode.getParent() ) ) {
+			if( this.cls.isAssignableFrom( historyNode.getClass() ) ) {
+				return this.isSpecificallyWhatWereLookingFor( this.cls.cast( historyNode ) );
+			} else {
+				if( historyNode instanceof edu.cmu.cs.dennisc.croquet.CancelEvent ) {
+					throw new CancelException( "cancel" );
+				} else {
+					return false;
+				}
+			}
+		} else {
+			//System.err.println( "did not pass parentContextCriterion test" );
+			//System.err.println( this.parentContextCriterion );
+			//System.err.println( historyNode.getParent() );
+			return false;
+		}
 	}
 	
-//	@Override
-//	public Edit< M > createRetargetedEdit( Retargeter retargeter ) {
-//		return null;
-//	}
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( "[" );
+		sb.append( "\n\tparent:" );
+		sb.append( this.parentContextCriterion );
+		sb.append( "\n\tinstanceof:" );
+		sb.append( this.cls );
+		sb.append( "\n]" );
+		return sb.toString();
+	}
 }

@@ -53,7 +53,7 @@ public final class BooleanStateEdit extends StateEdit<BooleanState,Boolean> {
 	public BooleanStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public BooleanStateEdit( java.awt.event.ItemEvent e ) {
+	/*package-private*/ BooleanStateEdit( java.awt.event.ItemEvent e ) {
 		if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
 			this.previousValue = false;
 			this.nextValue = true;

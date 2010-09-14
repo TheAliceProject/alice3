@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,20 +39,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.guide;
+
+import edu.cmu.cs.dennisc.tutorial.*;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationEdit<M extends Operation<?>> extends Edit<M> {
-	public OperationEdit() {
+/*package-private*/ class OperationStartNote extends RequirementNote {
+	public static OperationStartNote createInstance( edu.cmu.cs.dennisc.croquet.OperationContext< ? > operationContext, ParentContextCriterion parentContextCriterion ) {
+		return new OperationStartNote( 
+				operationContext, 
+				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.OperationContext.class ) 
+		);
 	}
-	public OperationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	private OperationStartNote( edu.cmu.cs.dennisc.croquet.OperationContext< ? > operationContext, Requirement< ? > requirement ) {
+		super( requirement );
+		this.setText( operationContext.getModel().getTutorialNoteText( null ) );
+		ModelFromContextResolver modelResolver = new ModelFromContextResolver( operationContext );
+		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
+		this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			
 	}
-	
-//	@Override
-//	public Edit< M > createRetargetedEdit( Retargeter retargeter ) {
-//		return null;
-//	}
 }

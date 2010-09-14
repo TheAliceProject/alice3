@@ -91,6 +91,12 @@ public abstract class Model implements RuntimeResolver< Model > {
 		return this;
 	}
 	
+	public Edit< ? > createTutorialCompletionEvent( Edit< ? > edit ) {
+		if( edit != null ) {
+			System.err.println( "todo: override createTutorialCompletionEvent " + this );
+		}
+		return null;
+	}
 	protected static String getLocalizedText( Class<?> cls, String subKey ) {
 		String bundleName = cls.getPackage().getName() + ".croquet";
 		try {

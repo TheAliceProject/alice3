@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,20 +39,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.guide;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationEdit<M extends Operation<?>> extends Edit<M> {
-	public OperationEdit() {
+/*package-private*/ abstract class WaitingOnSuccessfulCompletionNote extends RequirementNote {
+	public WaitingOnSuccessfulCompletionNote( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent originalSuccessfulCompletionEvent, boolean isContextRequirementRequired ) {
+		this.setText( context.getModel().getTutorialNoteText( originalSuccessfulCompletionEvent.getEdit() ) );
+		if( isContextRequirementRequired ) {
+			this.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, context.getClass() ) );
+			parentContextCriterion = this.getAcceptedContextAt( 0 );
+		}
+		this.addRequirement( new IsAcceptableSuccessfulCompletionOf( parentContextCriterion, originalSuccessfulCompletionEvent ) );
 	}
-	public OperationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public WaitingOnSuccessfulCompletionNote( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent originalSuccessfulCompletionEvent ) {
+		this( context, parentContextCriterion, originalSuccessfulCompletionEvent, true );
 	}
-	
-//	@Override
-//	public Edit< M > createRetargetedEdit( Retargeter retargeter ) {
-//		return null;
-//	}
 }

@@ -52,19 +52,19 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 			
 			this.postContext = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( UI_HISTORY_PATH, edu.cmu.cs.dennisc.croquet.RootContext.class );
 
-			final boolean IS_SHOW_ME_HOW = true;
-			edu.cmu.cs.dennisc.croquet.tutorial.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.alice.Project.GROUP, edu.cmu.cs.dennisc.croquet.tutorial.GroupFilter.SuccessfulCompletionPolicy.ONLY_COMMITS );
-			edu.cmu.cs.dennisc.croquet.tutorial.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, edu.cmu.cs.dennisc.croquet.tutorial.GroupFilter.SuccessfulCompletionPolicy.ONLY_COMMITS );
-			edu.cmu.cs.dennisc.croquet.tutorial.GroupFilter.SINGLETON.addGroup( org.alice.ide.IDE.RUN_GROUP, edu.cmu.cs.dennisc.croquet.tutorial.GroupFilter.SuccessfulCompletionPolicy.BOTH_COMMITS_AND_FINISHES );
-			if( IS_SHOW_ME_HOW ) {
-				edu.cmu.cs.dennisc.croquet.tutorial.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.croquet.Application.INFORMATION_GROUP, edu.cmu.cs.dennisc.croquet.tutorial.GroupFilter.SuccessfulCompletionPolicy.BOTH_COMMITS_AND_FINISHES );
+			final boolean IS_INFORMATION_GROUP_INCLUDED = false;
+			edu.cmu.cs.dennisc.croquet.guide.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.alice.Project.GROUP, edu.cmu.cs.dennisc.croquet.guide.GroupFilter.SuccessfulCompletionPolicy.ONLY_COMMITS );
+			edu.cmu.cs.dennisc.croquet.guide.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, edu.cmu.cs.dennisc.croquet.guide.GroupFilter.SuccessfulCompletionPolicy.ONLY_COMMITS );
+			edu.cmu.cs.dennisc.croquet.guide.GroupFilter.SINGLETON.addGroup( org.alice.ide.IDE.RUN_GROUP, edu.cmu.cs.dennisc.croquet.guide.GroupFilter.SuccessfulCompletionPolicy.BOTH_COMMITS_AND_FINISHES );
+			if( IS_INFORMATION_GROUP_INCLUDED ) {
+				edu.cmu.cs.dennisc.croquet.guide.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.croquet.Application.INFORMATION_GROUP, edu.cmu.cs.dennisc.croquet.guide.GroupFilter.SuccessfulCompletionPolicy.BOTH_COMMITS_AND_FINISHES );
 			}
-			edu.cmu.cs.dennisc.croquet.tutorial.Filter[] filters = {
+			edu.cmu.cs.dennisc.croquet.guide.Filter[] filters = {
 					//edu.cmu.cs.dennisc.croquet.tutorial.SuccessfullyCompletedFilter.SINGLETON,
-					edu.cmu.cs.dennisc.croquet.tutorial.MenuSelectionEventFilter.SINGLETON,
-					edu.cmu.cs.dennisc.croquet.tutorial.GroupFilter.SINGLETON,
+					edu.cmu.cs.dennisc.croquet.guide.MenuSelectionEventFilter.SINGLETON,
+					edu.cmu.cs.dennisc.croquet.guide.GroupFilter.SINGLETON,
 			};
-			for( edu.cmu.cs.dennisc.croquet.tutorial.Filter filter : filters ) {
+			for( edu.cmu.cs.dennisc.croquet.guide.Filter filter : filters ) {
 				this.postContext = filter.filter( this.postContext );
 			}
 			this.isPostProjectLive = false;
@@ -95,10 +95,10 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 			edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
 			
 			System.err.println( "todo: remove filtering" );
-			edu.cmu.cs.dennisc.croquet.tutorial.Filter[] filters = {
-					edu.cmu.cs.dennisc.croquet.tutorial.MenuSelectionEventFilter.SINGLETON,
+			edu.cmu.cs.dennisc.croquet.guide.Filter[] filters = {
+					edu.cmu.cs.dennisc.croquet.guide.MenuSelectionEventFilter.SINGLETON,
 			};
-			for( edu.cmu.cs.dennisc.croquet.tutorial.Filter filter : filters ) {
+			for( edu.cmu.cs.dennisc.croquet.guide.Filter filter : filters ) {
 				rootContext = filter.filter( rootContext );
 			}
 
@@ -139,10 +139,10 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 
 		//edu.cmu.cs.dennisc.tutorial.ScrollingRequiredRenderer scrollingRequiredRenderer = null;
 		edu.cmu.cs.dennisc.tutorial.ScrollingRequiredRenderer scrollingRequiredRenderer = edu.cmu.cs.dennisc.tutorial.DefaultScrollingRequiredRenderer.INSTANCE;
-		final edu.cmu.cs.dennisc.croquet.tutorial.AutomaticTutorial tutorial = new edu.cmu.cs.dennisc.croquet.tutorial.AutomaticTutorial( 
+		final edu.cmu.cs.dennisc.croquet.guide.ConstructionGuide tutorial = new edu.cmu.cs.dennisc.croquet.guide.ConstructionGuide( 
 //				edu.cmu.cs.dennisc.tutorial.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK,
 //				edu.cmu.cs.dennisc.tutorial.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK,
-				edu.cmu.cs.dennisc.croquet.tutorial.MenuPolicy.BELOW_STENCIL,
+				edu.cmu.cs.dennisc.croquet.guide.MenuPolicy.BELOW_STENCIL,
 				scrollingRequiredRenderer,
 				new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP }
 		);
@@ -156,7 +156,7 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 		
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				tutorial.setSelectedIndex( 1 );
+				tutorial.setSelectedIndex( 0 );
 			}
 		} );
 

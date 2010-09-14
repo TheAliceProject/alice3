@@ -51,6 +51,13 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.In
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 		this.declaringType = declaringType;
 	}
+	
+	@Override
+	public edu.cmu.cs.dennisc.croquet.Edit< ? > createTutorialCompletionEvent( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		assert edit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
+		org.alice.ide.croquet.edits.ast.DeclareMethodEdit originalDeclareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)edit;
+		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( originalDeclareMethodEdit );
+	}
 	protected String getDeclarationName(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> context) {
 		org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = context.getMainPanel();
 		if( createMethodPane != null ) {
