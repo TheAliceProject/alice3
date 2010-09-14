@@ -60,6 +60,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 	public Group getGroup() {
 		return this.group;
 	}
+	@Deprecated
 	protected abstract boolean isOwnerOfEdit();
 
 	public String getTutorialNoteText( Edit< ? > edit ) {

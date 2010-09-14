@@ -411,7 +411,7 @@ public class ListSelectionState<E> extends State implements Iterable<E>/*, java.
 	}
 	
 	@Override
-	public java.lang.String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 		ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)edit;
 		StringBuilder sb = new StringBuilder();
 		sb.append( "Select " );
@@ -467,6 +467,11 @@ public class ListSelectionState<E> extends State implements Iterable<E>/*, java.
 //		}
 //		return this.codecResolver;
 //	}
+	
+	@Override
+	public E getValue() {
+		return this.getSelectedItem();
+	}
 	
 	public E getSelectedItem() {
 		return (E) this.comboBoxModel.getSelectedItem();

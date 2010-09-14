@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class StringState extends State {
+public class StringState extends State<String> {
 	public static interface ValueObserver {
 		public void changed( String nextValue );
 	};
@@ -149,6 +149,7 @@ public class StringState extends State {
 	protected void localize() {
 	}
 
+	@Override
 	public String getValue() {
 		try {
 			return this.document.getText( 0, this.document.getLength() );

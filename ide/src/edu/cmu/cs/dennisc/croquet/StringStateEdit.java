@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class StringStateEdit extends StateEdit<StringState> {
+public final class StringStateEdit extends StateEdit<StringState,String> {
 	private String previousValue;
 	private String nextValue;
 
@@ -57,9 +57,11 @@ public final class StringStateEdit extends StateEdit<StringState> {
 		this.nextValue = nextValue;
 	}
 	
+	@Override
 	public String getPreviousValue() {
 		return this.previousValue;
 	}
+	@Override
 	public String getNextValue() {
 		return this.nextValue;
 	}

@@ -45,8 +45,9 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class State extends Model {
+public abstract class State<T> extends Model {
 	public State( Group group, java.util.UUID id ) {
 		super(group, id);
 	}
+	public abstract T getValue();
 }

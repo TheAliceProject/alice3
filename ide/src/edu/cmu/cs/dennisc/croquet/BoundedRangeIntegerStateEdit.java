@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class BoundedRangeIntegerStateEdit extends StateEdit<BoundedRangeIntegerState> {
+public final class BoundedRangeIntegerStateEdit extends StateEdit<BoundedRangeIntegerState,Integer> {
 	private int previousValue;
 	private int nextValue;
 	private boolean isDoDesired;
@@ -58,14 +58,15 @@ public final class BoundedRangeIntegerStateEdit extends StateEdit<BoundedRangeIn
 		this.isDoDesired = isDoDesired;
 	}
 
-//	private BoundedRangeIntegerState getOperation() {
-//		if( this.operation != null ) {
-//			//pass
-//		} else {
-//			this.operation = Application.getSingleton().lookupOperation( this.operationId );
-//		}
-//		return this.operation;
-//	}
+	@Override
+	public Integer getPreviousValue() {
+		return this.previousValue;
+	}
+	@Override
+	public Integer getNextValue() {
+		return this.nextValue;
+	}
+	
 	@Override
 	protected void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 		this.previousValue = binaryDecoder.decodeInt();

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public /*final*/ class BooleanState extends State {
+public /*final*/ class BooleanState extends State<Boolean> {
 	public static interface ValueObserver {
 		public void changing( boolean nextValue );
 		public void changed( boolean nextValue );
@@ -161,10 +161,11 @@ public /*final*/ class BooleanState extends State {
 	/*package-private*/ javax.swing.Action getAction() {
 		return this.action;
 	}
+	@Override
 	public Boolean getValue() {
 		return this.buttonModel.isSelected();
 	}
-	public void setValue( boolean value ) {
+	public void setValue( Boolean value ) {
 		if( value != this.value ) {
 			//this.buttonModel.removeItemListener(itemListener);
 
