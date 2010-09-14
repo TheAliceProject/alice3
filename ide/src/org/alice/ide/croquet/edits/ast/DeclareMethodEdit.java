@@ -45,7 +45,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.Edit<org.alice.ide.croquet.models.ast.DeclareMethodOperation> {
+public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit<org.alice.ide.croquet.models.ast.DeclareMethodOperation> {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type;
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
 	

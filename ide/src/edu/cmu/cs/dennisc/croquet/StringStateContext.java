@@ -97,8 +97,11 @@ public class StringStateContext extends ModelContext<StringState> {
 //		}
 //	}
 	
-	/*package-private*/ StringStateContext( StringState stringState, java.util.EventObject e, ViewController< ?,? > viewController ) {
+	private String previousValue;
+	private String nextValue;
+	/*package-private*/ StringStateContext( StringState stringState, java.util.EventObject e, ViewController< ?,? > viewController, String previousValue ) {
 		super( stringState, e, viewController );
+		this.previousValue = previousValue;
 	}
 	public StringStateContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
@@ -110,7 +113,13 @@ public class StringStateContext extends ModelContext<StringState> {
 //	/*package-private*/ void handleFocusLost( java.awt.event.FocusEvent e ) {
 //		this.addChild( new FocusLostEvent( e ) );
 //	}
-	/*package-private*/ void handleDocumentEvent( javax.swing.event.DocumentEvent e ) {
+	/*package-private*/ void handleDocumentEvent( javax.swing.event.DocumentEvent e, String nextValue ) {
 		this.addChild( new StringStateEvent( e ) );
+		this.nextValue = nextValue;
 	}
+	/*package-private*/ void handlePop() {
+		this.commitAndInvokeDo( new StringStateEdit( this.previousValue, this.nextValue ) );
+	}
+	
+	
 }

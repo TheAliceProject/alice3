@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class StringState extends Model {
+public class StringState extends State {
 	public static interface ValueObserver {
 		public void changed( String nextValue );
 	};
@@ -89,24 +89,31 @@ public class StringState extends Model {
 	
 	
 	private javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
-		private void handleUpdate(javax.swing.event.DocumentEvent e) {
-//			ModelContext< ? > currentContext = ContextManager.getCurrentContext();
-			StringStateContext stringStateContext = ContextManager.createAndPushStringStateContext( StringState.this, null, null );
-//			if( currentContext instanceof StringStateContext ) {
-//				StringStateContext stringStateContext = (StringStateContext)currentContext; 
-				try {
-					String s = document.getText( 0, document.getLength() );
-					fireValueChanged( s );
-					stringStateContext.handleDocumentEvent( e );
-				} catch( javax.swing.text.BadLocationException ble ) {
-					throw new RuntimeException( ble );
-				} finally {
-					ModelContext< ? > popContext = ContextManager.popContext();
-					assert popContext == stringStateContext;
-				}
-//			} else {
-//				System.err.println( "not string state context: " + currentContext );
-//			}
+		private void handleUpdate( javax.swing.event.DocumentEvent e ) {
+			try {
+				String nextValue = document.getText( 0, document.getLength() );
+				ContextManager.handleDocumentEvent( StringState.this, null, null, e, StringState.this.previousValue, nextValue );
+				fireValueChanged( nextValue );
+			} catch( javax.swing.text.BadLocationException ble ) {
+				throw new RuntimeException( ble );
+			}
+////			ModelContext< ? > currentContext = ContextManager.getCurrentContext();
+//			StringStateContext stringStateContext = ContextManager.createAndPushStringStateContext( StringState.this, null, null );
+////			if( currentContext instanceof StringStateContext ) {
+////				StringStateContext stringStateContext = (StringStateContext)currentContext; 
+//				try {
+//					String s = document.getText( 0, document.getLength() );
+//					fireValueChanged( s );
+//					stringStateContext.handleDocumentEvent( e );
+//				} catch( javax.swing.text.BadLocationException ble ) {
+//					throw new RuntimeException( ble );
+//				} finally {
+//					ModelContext< ? > popContext = ContextManager.popContext();
+//					assert popContext == stringStateContext;
+//				}
+////			} else {
+////				System.err.println( "not string state context: " + currentContext );
+////			}
 		}
 		public void changedUpdate(javax.swing.event.DocumentEvent e) {
 			this.handleUpdate(e);
@@ -119,8 +126,10 @@ public class StringState extends Model {
 		}
 	};
 
+	private String previousValue;
 	public StringState(Group group, java.util.UUID id, String initialState) {
 		super(group, id);
+		this.previousValue = initialState;
 		this.document = new javax.swing.text.PlainDocument();
 		try {
 			this.document.insertString(0, initialState, null);

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class BoundedRangeIntegerState extends Model {
+public final class BoundedRangeIntegerState extends State {
 	public static interface ValueObserver {
 		//public void changing( int nextValue );
 		public void changed( int nextValue );

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class BooleanStateEdit extends Edit<BooleanState> {
+public final class BooleanStateEdit extends StateEdit<BooleanState> {
 	//can't really imagine this values being the same, but it doesn't seem likely to hurt to track both values
 	private boolean previousValue;
 	private boolean nextValue;

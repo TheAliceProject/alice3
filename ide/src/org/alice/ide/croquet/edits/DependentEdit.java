@@ -46,7 +46,7 @@ package org.alice.ide.croquet.edits;
 /**
  * @author Dennis Cosgrove
  */
-public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Model> extends edu.cmu.cs.dennisc.croquet.Edit< M > {
+public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<?>> extends edu.cmu.cs.dennisc.croquet.OperationEdit< M > {
 	private org.alice.ide.croquet.models.BeholdenModel getBeholdenModel() {
 		edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = this.getContext();
 		if( context != null ) {

@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
+import edu.cmu.cs.dennisc.croquet.StringStateContext.StringStateEvent;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -78,6 +80,12 @@ public class ContextManager {
 	}
 	private static <C extends ModelContext< ? > > C push( C rv ) {
 		ModelContext< ? > parentContext = getCurrentContext();
+		if( parentContext instanceof StringStateContext ) {
+			StringStateContext stringStateContext = (StringStateContext)parentContext;
+			stringStateContext.handlePop();
+			stack.pop();
+			parentContext = stack.peek();
+		}
 		HistoryNode lastChild = parentContext.getLastChild();
 		MenuBarModelContext menuBarModelContextToPushOnto = null;
 		DragAndDropContext dragAndDropContextToPushOnto = null;
@@ -132,6 +140,38 @@ public class ContextManager {
 		stack.push( rv );
 		return rv;
 	}
+	/*package-private*/ static ModelContext< ? > popContext() {
+		ModelContext< ? > childContext = stack.peek();
+		if( childContext instanceof StringStateContext ) {
+			StringStateContext stringStateContext = (StringStateContext)childContext;
+			stringStateContext.handlePop();
+			stack.pop();
+			childContext = stack.peek();
+		}
+		ModelContext< ? > parentContext = mapChildContextPendingParentContext.get( childContext );
+		
+		childContext.popping();
+		ModelContext< ? > rv = stack.pop();
+		childContext.popped();
+		if( parentContext != null ) {
+			mapChildContextPendingParentContext.remove( childContext );
+			assert parentContext == stack.peek() : parentContext + " " + stack.peek();
+			popContext();
+		}
+		return rv;
+	}
+
+	/*package-private*/ static void handleDocumentEvent( StringState stringState, java.util.EventObject e, ViewController< ?, ? > viewController, javax.swing.event.DocumentEvent documentEvent, String previousValue, String nextValue ) {
+		ModelContext< ? > topContext = stack.peek();
+		StringStateContext stringStateContext;
+		if( topContext instanceof StringStateContext ) {
+			stringStateContext = (StringStateContext)topContext;
+		} else {
+			stringStateContext = push( new StringStateContext( stringState, e, viewController, previousValue ) );
+		}
+		stringStateContext.handleDocumentEvent( documentEvent, nextValue );
+	}
+
 	
 	/*package-private*/ static ActionOperationContext createAndPushActionOperationContext(ActionOperation actionOperation, java.util.EventObject e, ViewController<?, ?> viewController) {
 		return push( new ActionOperationContext(actionOperation, e, viewController) );
@@ -179,9 +219,6 @@ public class ContextManager {
 	/*package-private*/ static BooleanStateContext createAndPushBooleanStateContext(BooleanState booleanState, java.awt.event.ItemEvent e, ViewController<?, ?> viewController) {
 		return push( new BooleanStateContext( booleanState, e, viewController ) );
 	}
-	/*package-private*/ static StringStateContext createAndPushStringStateContext(StringState stringState, java.util.EventObject e, ViewController< ?, ? > viewController ) {
-		return push( new StringStateContext( stringState, e, viewController ) );
-	}
 	/*package-private*/ static MenuBarModelContext createAndPushMenuBarModelContext(MenuBarModel menuBarModel, javax.swing.event.ChangeEvent e, MenuBar menuBar) {
 		return push( new MenuBarModelContext(menuBarModel, e, menuBar) );
 	}
@@ -191,20 +228,7 @@ public class ContextManager {
 	/*package-private*/ static DragAndDropContext createAndPushDragAndDropContext(DragAndDropModel dragAndDropOperation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource) {
 		return push( new DragAndDropContext(dragAndDropOperation, originalMouseEvent, latestMouseEvent, dragSource) );
 	}
-	/*package-private*/ static ModelContext< ? > popContext() {
-		ModelContext< ? > childContext = stack.peek();
-		ModelContext< ? > parentContext = mapChildContextPendingParentContext.get( childContext );
-		
-		childContext.popping();
-		ModelContext< ? > rv = stack.pop();
-		childContext.popped();
-		if( parentContext != null ) {
-			mapChildContextPendingParentContext.remove( childContext );
-			assert parentContext == stack.peek() : parentContext + " " + stack.peek();
-			popContext();
-		}
-		return rv;
-	}
+	
 		
 	private static javax.swing.JMenuBar getJMenuBarOrigin( javax.swing.MenuElement[] menuElements ) { 
 		if( menuElements.length > 0 ) {

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class BoundedRangeIntegerStateEdit extends Edit<BoundedRangeIntegerState> {
+public final class BoundedRangeIntegerStateEdit extends StateEdit<BoundedRangeIntegerState> {
 	private int previousValue;
 	private int nextValue;
 	private boolean isDoDesired;

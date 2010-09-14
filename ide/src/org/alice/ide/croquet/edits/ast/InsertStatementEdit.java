@@ -42,7 +42,7 @@
  */
 package org.alice.ide.croquet.edits.ast;
 
-public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.ActionOperation > {
+public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit< edu.cmu.cs.dennisc.croquet.ActionOperation > {
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
 	private int index;
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TreeSelectionState<E> extends Model {
+public abstract class TreeSelectionState<E> extends State {
 	public static interface SelectionObserver<E> {
 		public void selectionChanged(E nextValue);
 	};

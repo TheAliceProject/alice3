@@ -46,7 +46,7 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 @Deprecated
-public abstract class ToDoEdit extends edu.cmu.cs.dennisc.croquet.Edit {
+public abstract class ToDoEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<?>> extends edu.cmu.cs.dennisc.croquet.OperationEdit< M > {
 	public ToDoEdit() {
 	}
 	@Override

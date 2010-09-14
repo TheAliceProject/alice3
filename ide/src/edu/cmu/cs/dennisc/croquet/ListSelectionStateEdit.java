@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class ListSelectionStateEdit<E> extends Edit<ListSelectionState<E>> {
+public final class ListSelectionStateEdit<E> extends StateEdit<ListSelectionState<E>> {
 	private E prevValue;
 	private E nextValue;
 	
