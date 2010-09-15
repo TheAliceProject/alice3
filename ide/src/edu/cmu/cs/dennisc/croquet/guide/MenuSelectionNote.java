@@ -57,6 +57,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 	@Override
 	protected boolean isSpecificallyWhatWereLookingFor( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent ) throws CancelException {
 		boolean rv = super.isSpecificallyWhatWereLookingFor( menuSelectionEvent );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "isSpecificallyWhatWereLookingFor", rv );
 		if( rv ) {
 			final int N = this.requiredIndex+1;
 			if( menuSelectionEvent.getModelCount() >= N ) {
@@ -188,12 +189,12 @@ import edu.cmu.cs.dennisc.tutorial.*;
 		MenuSelectionNote rv = new MenuSelectionNote( menuSelectionEvent, i, index0 );
 		if( i == index0 ) {
 			if( index0 == 0 ) {
-				rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.class ) );
+				//pass
 			} else {
 				rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.MenuBarModelContext.class ) );
 				rv.addRequirement( new IsChildOfAndInstanceOf( rv.getAcceptedContextAt( 0 ), edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.class ) );
+				parentContextCriterion = rv.getAcceptedContextAt( index0 );
 			}
-			parentContextCriterion = rv.getAcceptedContextAt( index0 );
 		}
 		if( originalRetargetableMenuModelInitializationEvent != null ) {
 			rv.addRequirement( new IsRetargetableMenuModelInitializationEventOf( parentContextCriterion, originalRetargetableMenuModelInitializationEvent ) );

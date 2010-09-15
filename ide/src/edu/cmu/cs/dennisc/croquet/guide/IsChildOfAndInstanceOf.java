@@ -67,9 +67,9 @@ class IsChildOfAndInstanceOf<N extends edu.cmu.cs.dennisc.croquet.HistoryNode> i
 				}
 			}
 		} else {
-			//System.err.println( "did not pass parentContextCriterion test" );
-			//System.err.println( this.parentContextCriterion );
-			//System.err.println( historyNode.getParent() );
+//			System.err.println( "did not pass parentContextCriterion test" );
+//			System.err.println( this.parentContextCriterion );
+//			System.err.println( historyNode.getParent() );
 			return false;
 		}
 	}

@@ -176,9 +176,9 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 		@Override
 		protected StringBuilder appendRepr( StringBuilder rv ) {
 			super.appendRepr( rv );
-			for( Model model : this.models ) {
+			for( CodableResolver< Model > modelResolver : this.modelResolvers ) {
 				rv.append( " " );
-				rv.append( model );
+				rv.append( modelResolver.getResolved() );
 			}
 			return rv;
 		}

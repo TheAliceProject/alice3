@@ -118,24 +118,24 @@ class RequirementNote extends RetargetableNote /* implements ParentContextCriter
 	@Override
 	public final boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
 		try {
-			//System.err.println( "isWhatWeveBeenWaitingFor? " + child );
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", child );
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", this.index );
+//			System.err.println( "isWhatWeveBeenWaitingFor? " + child );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", child );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", this.unfulfilledRequirementIndex );
 			final int N = this.requirements.size();
 			while( this.unfulfilledRequirementIndex<N ) {
 				Requirement< ? > requirement = this.requirements.get( this.unfulfilledRequirementIndex );
-				//System.err.println( "checking requirement at index: " + this.unfulfilledRequirementIndex + "; length= " + N );
-				//System.err.println( requirement );
+//				System.err.println( "checking requirement at index: " + this.unfulfilledRequirementIndex + "; length= " + N );
+//				System.err.println( requirement );
 				if( requirement.isWhatWereLookingFor( child ) ) {
-					//System.err.println( "SUCCESS" );
+//					System.err.println( "SUCCESS" );
 					this.nodes.set( this.unfulfilledRequirementIndex, child );
 					this.unfulfilledRequirementIndex += 1;
 				} else {
 					break;
 				}
 			}
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", this.index );
-			//System.err.println( this.unfulfilledRequirementIndex == N );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", this.unfulfilledRequirementIndex );
+//			System.err.println( this.unfulfilledRequirementIndex == N );
 			return this.unfulfilledRequirementIndex == N;
 		} catch( CancelException ce ) {
 			throw new RuntimeException( "todo", ce );

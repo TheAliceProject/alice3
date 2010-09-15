@@ -177,7 +177,7 @@ public class ConstructionGuide {
 									} else {
 										PopupMenuOperationStartNote popupMenuOperationStartNote = PopupMenuOperationStartNote.createInstance( popupMenuOperationContext, parentContextCriterion );
 										rv.add( popupMenuOperationStartNote );
-										parentContextCriterion = popupMenuOperationStartNote.getLastAcceptedContext();
+										menuSelectionParentContextCriterion = popupMenuOperationStartNote.getLastAcceptedContext();
 									}
 									index0 = 0;
 								}
