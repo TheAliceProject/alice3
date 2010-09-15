@@ -23,6 +23,11 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 	private edu.cmu.cs.dennisc.alice.Project postProject;
 	private edu.cmu.cs.dennisc.croquet.RootContext postContext;
 	
+	@Override
+	protected StringBuffer updateTitle( StringBuffer rv ) {
+		rv.append( "AnonymizedForPeerReview" );
+		return rv;
+	}
 	
 	@Override
 	public void loadProjectFrom( java.net.URI uri ) {
