@@ -109,7 +109,7 @@ public abstract class Feature {
 		}
 	}
 	
-	/*package-private*/ void setHeightConstraint( Integer heightConstraint ) {
+	public void setHeightConstraint( Integer heightConstraint ) {
 		this.heightConstraint = heightConstraint;
 	}
 

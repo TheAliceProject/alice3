@@ -32,8 +32,8 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 	@Override
 	public void loadProjectFrom( java.net.URI uri ) {
 		super.loadProjectFrom( uri );
-		//org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( IS_ENCODING );
-		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( true );
+		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( IS_ENCODING );
+		//org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( true );
 		if( IS_ENCODING ) {
 			edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
 			rootContext.EPIC_HACK_clear();
@@ -108,7 +108,6 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 
 			if( IS_WIZARD_OF_OZ_HASTINGS_DESIRED ) {
 				WizardOfHastings.castPart( astDecodingRetargeter, this.postProject, "guppy", replacementProject, "car" );
-				WizardOfHastings.castPart( astDecodingRetargeter, this.postProject, "setting", replacementProject, "popcornCart" );
 			}
 			this.postContext.retarget( astDecodingRetargeter );
 		}
