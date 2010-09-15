@@ -37,6 +37,8 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 			rootContext.EPIC_HACK_clear();
 		} else {
 			
+			org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( false );
+			
 			class AstDecodingRetargeter implements edu.cmu.cs.dennisc.croquet.Retargeter {
 				private java.util.Map< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node > mapIdToReplacementNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 				public void addAllToReplacementMap( edu.cmu.cs.dennisc.alice.Project project ) {

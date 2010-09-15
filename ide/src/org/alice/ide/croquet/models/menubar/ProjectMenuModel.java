@@ -57,9 +57,9 @@ public class ProjectMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuMode
 				org.alice.ide.IDE.getSingleton().getRunOperation(),
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
 				org.alice.ide.croquet.models.project.ManageResourcesOperation.getInstance(),
-				org.alice.ide.croquet.models.project.StatisticsOperation.getInstance(),
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.ast.TypeRootMenuModel.getInstance()
+				org.alice.ide.croquet.models.project.StatisticsOperation.getInstance()//,
+//				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
+//				org.alice.ide.croquet.models.ast.TypeRootMenuModel.getInstance()
 		);
 	}
 }
