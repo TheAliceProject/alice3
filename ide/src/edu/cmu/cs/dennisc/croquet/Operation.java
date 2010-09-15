@@ -69,7 +69,7 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 		return null;
 	}
 	@Override
-	public void commitTutorialCompletionEdit( Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public Edit< ? > commitTutorialCompletionEdit( Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		Edit< ? > replacementEdit = this.createTutorialCompletionEdit( originalEdit, retargeter );
 		if( replacementEdit != null ) {
 			final C childContext = this.createContext( null, null );
@@ -82,6 +82,7 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 		} else {
 			System.err.println( "createTutorialCompletionEdit returned null" );
 		}
+		return replacementEdit;
 	}
 
 	public C fire( java.util.EventObject e, ViewController< ?, ? > viewController ) {

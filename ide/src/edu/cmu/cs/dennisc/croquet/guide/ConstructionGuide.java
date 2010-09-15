@@ -366,8 +366,11 @@ public class ConstructionGuide {
 			edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = this.context.getSuccessfulCompletionEvent();
 			edu.cmu.cs.dennisc.croquet.Edit originalEdit = successfulCompletionEvent.getEdit();
 			if( originalEdit != null ) {
-				originalEdit.getModel().commitTutorialCompletionEdit( originalEdit, retargeter );
-				retargetOriginalContext( retargeter );
+				edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit = originalEdit.getModel().commitTutorialCompletionEdit( originalEdit, retargeter );
+				if( replacementEdit != null ) {
+					//replacementEdit.addKeyValuePairs( retargeter, originalEdit );
+					retargetOriginalContext( retargeter );
+				}
 //				edu.cmu.cs.dennisc.croquet.Edit replacementEdit = edit.getAcceptableReplacement( retargeter );
 //				replacementEdit.setReplacementModel( edit.getModel() );
 //				TutorialStencil.complete( replacementEdit );

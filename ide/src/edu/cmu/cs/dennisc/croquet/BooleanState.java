@@ -107,10 +107,11 @@ public /*final*/ class BooleanState extends State<Boolean> {
 	}
 	
 	@Override
-	public void commitTutorialCompletionEdit( Edit<?> originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	public Edit<?> commitTutorialCompletionEdit( Edit<?> originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		assert originalEdit instanceof BooleanStateEdit;
 		BooleanStateEdit booleanStateEdit = (BooleanStateEdit)originalEdit;
 		this.commitEdit( booleanStateEdit, null );
+		return booleanStateEdit;
 	}
 	
 	
