@@ -588,90 +588,92 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 	}
 	@Deprecated
 	public void edit( final edu.cmu.cs.dennisc.alice.ast.AbstractCode code, boolean isOriginatedByPreviousCodeOperation ) {
-		if( this.containsItem( code ) ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> declaringType = code.getDeclaringType();
-			if( declaringType != null ) {
-				this.addItem( code );
-				if (declaringType instanceof edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> typeInAlice = (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>) declaringType;
-					this.startListeningTo( typeInAlice );
-				}
+		if( code != null ) {
+			if( this.containsItem( code ) ) {
+				//pass
 			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "investigate: declaringType==null" );
+				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> declaringType = code.getDeclaringType();
+				if( declaringType != null ) {
+					this.addItem( code );
+					if (declaringType instanceof edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>) {
+						edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> typeInAlice = (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>) declaringType;
+						this.startListeningTo( typeInAlice );
+					}
+				} else {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "investigate: declaringType==null" );
+				}
 			}
-		}
-		this.setSelectedItem( code );
-//		for( edu.cmu.cs.dennisc.croquet.TabStateOperation tabIsSelectedOperation : this.getTabStateOperations() ) {
-//			edu.cmu.cs.dennisc.croquet.Component< ? > component = tabIsSelectedOperation.getSingletonView();
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( component.getClass() );
-//			if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
-//				org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)component;
-//				if( codeEditor.getCode() == code ) {
-//					//tabIsSelectedOperation.setState( true );
-//					//this.setCurrentTabStateOperation( tabIsSelectedOperation );
-//					return;
-//				}
-//			}
-//		}
-//		class CodeTabIsSelectedOperation extends edu.cmu.cs.dennisc.croquet.TabStateOperation<edu.cmu.cs.dennisc.alice.ast.AbstractCode> {
-//			public CodeTabIsSelectedOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-//				super( org.alice.ide.IDE.IDE_GROUP,  java.util.UUID.fromString( "83fc2f34-a05f-48fd-941f-4e2ba08f45af" ), code );
-//			}
-//			@Override
-//			protected String getTextFor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-//				if( code != null ) {
-//					if( code instanceof edu.cmu.cs.dennisc.alice.ast.AbstractConstructor ) {
-//						return "constructor";
-//					} else {
-//						return code.getName();
+			this.setSelectedItem( code );
+//			for( edu.cmu.cs.dennisc.croquet.TabStateOperation tabIsSelectedOperation : this.getTabStateOperations() ) {
+//				edu.cmu.cs.dennisc.croquet.Component< ? > component = tabIsSelectedOperation.getSingletonView();
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( component.getClass() );
+//				if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
+//					org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)component;
+//					if( codeEditor.getCode() == code ) {
+//						//tabIsSelectedOperation.setState( true );
+//						//this.setCurrentTabStateOperation( tabIsSelectedOperation );
+//						return;
 //					}
-//				} else {
-//					return super.getTextFor( code );
 //				}
 //			}
-//			@Override
-//			protected boolean isCloseAffordanceDesired() {
-//				return true;
-//			}
-////			@Override
-////			public boolean isCloseButtonDesiredAt( int index ) {
-////				return index > 0 || org.alice.ide.IDE.getSingleton().isEmphasizingClasses();
-////			}
-//			@Override
-//			protected edu.cmu.cs.dennisc.croquet.JComponent<?> createSingletonView() {
-//				final org.alice.ide.codeeditor.CodeEditor codeEditor = new org.alice.ide.codeeditor.CodeEditor( code );
-//				if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-//					edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
-//					
-//					//todo: remove this property listener when tab is closed
-//					
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: listen to code name change" );
-////					method.name.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-////						public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-////						}
-////						public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-////							CodeTabIsSelectedOperation.this.setTrueText( code.getName() );
-////						}
-////					} );
+//			class CodeTabIsSelectedOperation extends edu.cmu.cs.dennisc.croquet.TabStateOperation<edu.cmu.cs.dennisc.alice.ast.AbstractCode> {
+//				public CodeTabIsSelectedOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+//					super( org.alice.ide.IDE.IDE_GROUP,  java.util.UUID.fromString( "83fc2f34-a05f-48fd-941f-4e2ba08f45af" ), code );
 //				}
-//				return codeEditor;
+//				@Override
+//				protected String getTextFor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+//					if( code != null ) {
+//						if( code instanceof edu.cmu.cs.dennisc.alice.ast.AbstractConstructor ) {
+//							return "constructor";
+//						} else {
+//							return code.getName();
+//						}
+//					} else {
+//						return super.getTextFor( code );
+//					}
+//				}
+//				@Override
+//				protected boolean isCloseAffordanceDesired() {
+//					return true;
+//				}
+////				@Override
+////				public boolean isCloseButtonDesiredAt( int index ) {
+////					return index > 0 || org.alice.ide.IDE.getSingleton().isEmphasizingClasses();
+////				}
+//				@Override
+//				protected edu.cmu.cs.dennisc.croquet.JComponent<?> createSingletonView() {
+//					final org.alice.ide.codeeditor.CodeEditor codeEditor = new org.alice.ide.codeeditor.CodeEditor( code );
+//					if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+//						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
+//						
+//						//todo: remove this property listener when tab is closed
+//						
+//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: listen to code name change" );
+////						method.name.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+////							public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+////							}
+////							public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+////								CodeTabIsSelectedOperation.this.setTrueText( code.getName() );
+////							}
+////						} );
+//					}
+//					return codeEditor;
+//				}
 //			}
-//		}
-//		
-//		CodeTabIsSelectedOperation codeTabIsSelectedOperation = new CodeTabIsSelectedOperation( code );
-//		this.addTabStateOperation( codeTabIsSelectedOperation );
-//		
-//		this.setValue( code );
-//		//codeTabIsSelectedOperation.setState( true );
-//
-//		if( isOriginatedByPreviousCodeOperation ) {
-//			//pass
-//		} else {
-//			this.editedCodes.add( code );
-//		}
-//		this.updateBackOperationsEnabled();
+//			
+//			CodeTabIsSelectedOperation codeTabIsSelectedOperation = new CodeTabIsSelectedOperation( code );
+//			this.addTabStateOperation( codeTabIsSelectedOperation );
+//			
+//			this.setValue( code );
+//			//codeTabIsSelectedOperation.setState( true );
+	//
+//			if( isOriginatedByPreviousCodeOperation ) {
+//				//pass
+//			} else {
+//				this.editedCodes.add( code );
+//			}
+//			this.updateBackOperationsEnabled();
+		}
 	}
 
 //	private org.alice.ide.IDE.CodeInFocusObserver codeInFocusObserver = new org.alice.ide.IDE.CodeInFocusObserver() {

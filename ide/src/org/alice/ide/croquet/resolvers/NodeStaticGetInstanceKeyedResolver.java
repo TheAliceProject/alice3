@@ -64,7 +64,9 @@ public class NodeStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.cr
 		Object[] arguments = this.getArguments();
 		assert arguments != null;
 		assert arguments.length == 1;
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "pre:", arguments[ 0 ] );
 		arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "pst:", arguments[ 0 ] );
 	}
 
 	@Override

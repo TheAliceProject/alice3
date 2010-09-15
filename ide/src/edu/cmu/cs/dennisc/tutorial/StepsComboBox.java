@@ -83,6 +83,7 @@ public class StepsComboBox extends edu.cmu.cs.dennisc.croquet.JComponent< javax.
 			}
 		} );
 
+		rv.setMaximumRowCount( 20 );
 		if( this.isLightWeightPopupEnabled ) {
 			//pass
 		} else {

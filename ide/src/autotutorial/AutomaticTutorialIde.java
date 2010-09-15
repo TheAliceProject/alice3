@@ -1,13 +1,28 @@
 package autotutorial;
 
+class WizardOfHastings {
+	public static void castPart( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.alice.Project originalProject, String originalFieldName, edu.cmu.cs.dennisc.alice.Project replacementProject, String replacementFieldName ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType orginalSceneType = originalProject.getProgramType().getDeclaredFields().get( 0 ).getValueType();		
+		edu.cmu.cs.dennisc.alice.ast.AbstractField originalField = orginalSceneType.getDeclaredField( originalFieldName );
+		edu.cmu.cs.dennisc.alice.ast.AbstractType replacementSceneType = replacementProject.getProgramType().getDeclaredFields().get( 0 ).getValueType();
+		edu.cmu.cs.dennisc.alice.ast.AbstractField replacementField = replacementSceneType.getDeclaredField( replacementFieldName );
+		
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "original:", originalField.getName(), originalField.getValueType().getName(), originalField.getValueType().getUUID() );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "replacement:", replacementField.getName(), replacementField.getValueType().getName(), replacementField.getValueType().getUUID() );
+		retargeter.addKeyValuePair( originalField, replacementField );
+		retargeter.addKeyValuePair( originalField.getValueType(), replacementField.getValueType() );
+	}
+}
 public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 	private static boolean IS_ENCODING;
+	private static boolean IS_WIZARD_OF_OZ_HASTINGS_DESIRED;
 	private static final String UI_HISTORY_PATH = "/autoTutorial1.bin";
 	private static final String POST_PROJECT_PATH = "/post.a3p";
 	
 	private boolean isPostProjectLive = false;
 	private edu.cmu.cs.dennisc.alice.Project postProject;
 	private edu.cmu.cs.dennisc.croquet.RootContext postContext;
+	
 	
 	@Override
 	public void loadProjectFrom( java.net.URI uri ) {
@@ -28,7 +43,11 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 					}
 				}
 				public void addKeyValuePair( Object key, Object value ) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: addKeyValuePair", key, value );
+					if( key instanceof edu.cmu.cs.dennisc.alice.ast.Node && value instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
+						mapIdToReplacementNode.put( ((edu.cmu.cs.dennisc.alice.ast.Node)key).getUUID(), (edu.cmu.cs.dennisc.alice.ast.Node)value );
+					} else {
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: IGNORING addKeyValuePair", key, value );
+					}
 				}
 				public <N> N retarget(N value) {
 					if( value instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
@@ -49,6 +68,8 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
 			this.isPostProjectLive = true;
 
+			
+			
 			
 			this.postContext = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( UI_HISTORY_PATH, edu.cmu.cs.dennisc.croquet.RootContext.class );
 
@@ -73,8 +94,16 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 			org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState isInteractionTreeShowingState = new org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState( this.postContext );
 			isInteractionTreeShowingState.setValue( true );
 
+			
+			edu.cmu.cs.dennisc.alice.Project replacementProject = this.getProject();
+			
 			AstDecodingRetargeter astDecodingRetargeter = new AstDecodingRetargeter();
-			astDecodingRetargeter.addAllToReplacementMap( this.getProject() );
+			astDecodingRetargeter.addAllToReplacementMap( replacementProject );
+
+			if( IS_WIZARD_OF_OZ_HASTINGS_DESIRED ) {
+				WizardOfHastings.castPart( astDecodingRetargeter, this.postProject, "guppy", replacementProject, "car" );
+				WizardOfHastings.castPart( astDecodingRetargeter, this.postProject, "setting", replacementProject, "popcornCart" );
+			}
 			this.postContext.retarget( astDecodingRetargeter );
 		}
 	}
@@ -164,6 +193,11 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 	
 	public static void main( String[] args ) throws Exception {
 		IS_ENCODING = Boolean.parseBoolean( args[ 5 ] );
+		if( IS_ENCODING ) {
+			IS_WIZARD_OF_OZ_HASTINGS_DESIRED = false;
+		} else {
+			IS_WIZARD_OF_OZ_HASTINGS_DESIRED = Boolean.parseBoolean( args[ 6 ] );
+		}
 		final AutomaticTutorialIde ide = org.alice.ide.LaunchUtilities.launchAndWait( AutomaticTutorialIde.class, null, args, false );
 		if( IS_ENCODING ) {
 			ide.getFrame().setVisible( true );
