@@ -40,69 +40,76 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.apis.moveandturn.graphic.animation;
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class OpenUpdateCloseOverlayGraphicAnimation extends OverlayGraphicAnimation {
-	protected double m_openingDuration;
-	protected double m_updatingDuration;
-	protected double m_closingDuration;
+package org.alice.virtualmachine.resources;
 
-	protected enum State {
-		OPENNING,
-		UPDATING,
-		CLOSING,
+import org.alice.flite.TextToSpeech;
+
+public class TextToSpeechResource extends AudioResource 
+{
+	public static interface ResourceLoadedObserver
+	{
+		public void ResourceLoaded(TextToSpeechResource resource);
 	}
 	
-	public OpenUpdateCloseOverlayGraphicAnimation( org.alice.apis.moveandturn.Composite composite, double openingDuration, double updatingDuration, double closingDuration ) {
-		super( composite );
-		m_openingDuration = openingDuration;
-		m_updatingDuration = updatingDuration;
-		m_closingDuration = closingDuration;
-	}
-	protected double getOpeningDuration() {
-		return m_openingDuration;
-	}
-	protected double getUpdatingDuration() {
-		return m_updatingDuration;
-	}
-	protected double getClosingDuration() {
-		return m_closingDuration;
-	}
-	protected abstract void updateStateAndPortion( State state, double portion );
-	@Override
-	protected void prologue() {
-		this.updateStateAndPortion(State.OPENNING, 0.0);
-		super.prologue();
-	}
-	@Override
-	protected double update( double deltaSincePrologue, double deltaSinceLastUpdate, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
-		State state;
-		double portion;
-		if( m_openingDuration > 0.0 && deltaSincePrologue <= m_openingDuration ) {
-			state = State.OPENNING;
-			portion = deltaSincePrologue / m_openingDuration;
-		} else if( m_updatingDuration > 0.0 && deltaSincePrologue <= (m_openingDuration+m_updatingDuration) ) {
-			state = State.UPDATING;
-			portion = ( deltaSincePrologue-m_openingDuration ) / m_updatingDuration;
-			System.out.println("portion: "+portion+", delta: "+deltaSincePrologue+", ");
+	private java.util.List< ResourceLoadedObserver > resourceLoadedObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	
+	private static java.util.Map< String, TextToSpeechResource > textToResourceMap = new java.util.HashMap< String, TextToSpeechResource >();
+
+	protected String text;
+	private boolean isLoaded;
+	
+	private static TextToSpeechResource get( String text ) {
+		TextToSpeechResource rv = textToResourceMap.get( text );
+		if( rv != null ) 
+		{
+			//pass
 		} else {
-			state = State.CLOSING;
-			if( m_closingDuration > 0.0 ) {
-				portion = Math.min( ( deltaSincePrologue-m_openingDuration-m_updatingDuration ) / m_closingDuration, 1.0 );
-			} else {
-				portion = 1.0;
-			}
+			rv = new TextToSpeechResource( text );
+			textToResourceMap.put( text, rv );
 		}
-		this.updateStateAndPortion(state, portion);
-		double toReturn = (m_openingDuration + m_updatingDuration + m_closingDuration) - deltaSincePrologue;
-		return toReturn;
+		return rv;
 	}
-	@Override
-	protected void epilogue() {
-		this.updateStateAndPortion(State.CLOSING, 1.0);
-		super.epilogue();
+	
+	public static TextToSpeechResource valueOf( String s ) {
+		return get( s );
 	}
+	
+	public TextToSpeechResource(String text)
+	{
+		super(java.util.UUID.randomUUID());
+		this.isLoaded = false;
+		this.text = text;
+		this.setOriginalFileName( this.text );
+		this.setName( this.text );
+	}
+	
+	public void addLoadObserver(ResourceLoadedObserver observer)
+	{
+		this.resourceLoadedObservers.add(observer);
+	}
+	
+	public boolean isLoaded()
+	{
+		return this.isLoaded;
+	}
+	
+	public void loadResource()
+	{
+		if (!this.isLoaded)
+		{
+			TextToSpeech tts = new TextToSpeech();
+			tts.processText(this.text);
+			byte[] data = tts.saveToByteArray();
+			this.setContent( AudioResource.getContentType(".wav"), data );
+			this.setDuration(tts.getDuration());
+			this.isLoaded = true;
+			for (ResourceLoadedObserver observer : this.resourceLoadedObservers)
+			{
+				observer.ResourceLoaded(this);
+			}
+			this.resourceLoadedObservers.clear();
+		}
+	}
+	
 }

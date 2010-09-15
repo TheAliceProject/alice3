@@ -40,69 +40,146 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.apis.moveandturn.graphic.animation;
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class OpenUpdateCloseOverlayGraphicAnimation extends OverlayGraphicAnimation {
-	protected double m_openingDuration;
-	protected double m_updatingDuration;
-	protected double m_closingDuration;
+package org.alice.flite;
 
-	protected enum State {
-		OPENNING,
-		UPDATING,
-		CLOSING,
+import java.io.IOException;
+import java.io.InputStream;
+
+public class ShortArrayInputStream extends InputStream
+{
+	private short[] data;
+	private int readIndex = 0;
+	private boolean closed = false;
+	
+	public ShortArrayInputStream(short[] data)
+	{
+		super();
+		this.data = data;
+		this.readIndex = 0;
+		this.closed = false;
 	}
 	
-	public OpenUpdateCloseOverlayGraphicAnimation( org.alice.apis.moveandturn.Composite composite, double openingDuration, double updatingDuration, double closingDuration ) {
-		super( composite );
-		m_openingDuration = openingDuration;
-		m_updatingDuration = updatingDuration;
-		m_closingDuration = closingDuration;
+	private int numBytes()
+	{
+		if (this.data != null)
+		{
+			return data.length*2;
+		}
+		return 0;
 	}
-	protected double getOpeningDuration() {
-		return m_openingDuration;
+	
+	private byte getByte(int index)
+	{
+		int shortIndex = (index / 2);
+		if (this.data != null && shortIndex < this.data.length)
+		{
+			short shortVal = this.data[shortIndex];
+			int shiftAmount = (1 - (index % 2))*8;
+			byte byteVal = (byte)(shortVal >> shiftAmount);
+			return byteVal;
+		}
+		else
+		{
+			return -1;
+		}
 	}
-	protected double getUpdatingDuration() {
-		return m_updatingDuration;
-	}
-	protected double getClosingDuration() {
-		return m_closingDuration;
-	}
-	protected abstract void updateStateAndPortion( State state, double portion );
+	
 	@Override
-	protected void prologue() {
-		this.updateStateAndPortion(State.OPENNING, 0.0);
-		super.prologue();
+	public boolean markSupported() 
+	{
+		return false;
 	}
+	
 	@Override
-	protected double update( double deltaSincePrologue, double deltaSinceLastUpdate, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
-		State state;
-		double portion;
-		if( m_openingDuration > 0.0 && deltaSincePrologue <= m_openingDuration ) {
-			state = State.OPENNING;
-			portion = deltaSincePrologue / m_openingDuration;
-		} else if( m_updatingDuration > 0.0 && deltaSincePrologue <= (m_openingDuration+m_updatingDuration) ) {
-			state = State.UPDATING;
-			portion = ( deltaSincePrologue-m_openingDuration ) / m_updatingDuration;
-			System.out.println("portion: "+portion+", delta: "+deltaSincePrologue+", ");
-		} else {
-			state = State.CLOSING;
-			if( m_closingDuration > 0.0 ) {
-				portion = Math.min( ( deltaSincePrologue-m_openingDuration-m_updatingDuration ) / m_closingDuration, 1.0 );
-			} else {
-				portion = 1.0;
+	public int available() throws IOException 
+	{
+		if (this.data != null)
+		{
+			return this.numBytes() - this.readIndex;
+		}
+		return 0;
+	}
+	
+	@Override
+	public long skip(long n) throws IOException 
+	{
+		if (n > 0)
+		{
+			int numLeft = this.available();
+			if (n > numLeft)
+			{
+				this.readIndex = this.numBytes();
+				return numLeft;
+			}
+			else
+			{
+				this.readIndex += n;
+				return (int)n;
 			}
 		}
-		this.updateStateAndPortion(state, portion);
-		double toReturn = (m_openingDuration + m_updatingDuration + m_closingDuration) - deltaSincePrologue;
+		return 0;
+	}
+	
+	@Override
+	public int read(byte[] b, int off, int len) throws IOException 
+	{
+		if (b == null)
+		{
+			throw new NullPointerException();
+		}
+		if (b.length == 0)
+		{
+			return 0;
+		}
+		if (this.closed)
+		{
+			throw new IOException("Try to read on a closed stream.");
+		}
+		int bytesRead = 0;
+		for (int i=off; i<off+len; i++)
+		{
+			if (i < b.length && this.available() > 0)
+			{
+				b[i] = this.getByte(this.readIndex);
+				this.readIndex++;
+				bytesRead++;
+			}
+			else
+			{
+				break;
+			}
+		}
+		return bytesRead;
+	}
+	
+	@Override
+	public int read(byte[] b) throws IOException 
+	{
+		return this.read(b, 0, b.length);
+	}
+	
+	@Override
+	public int read() throws IOException 
+	{
+		if (this.closed)
+		{
+			throw new IOException("Try to read on a closed stream.");
+		}
+		byte toReturn = -1;
+		if (readIndex < numBytes())
+		{
+			toReturn = getByte(this.readIndex);
+			this.readIndex++;
+		}
 		return toReturn;
 	}
+	
 	@Override
-	protected void epilogue() {
-		this.updateStateAndPortion(State.CLOSING, 1.0);
-		super.epilogue();
+	public void close() throws IOException 
+	{
+		this.data = null;
+		this.closed = true;
 	}
+	
 }

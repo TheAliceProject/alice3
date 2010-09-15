@@ -40,69 +40,69 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.apis.moveandturn.graphic.animation;
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class OpenUpdateCloseOverlayGraphicAnimation extends OverlayGraphicAnimation {
-	protected double m_openingDuration;
-	protected double m_updatingDuration;
-	protected double m_closingDuration;
+import org.alice.apis.moveandturn.Composite;
+import org.alice.virtualmachine.resources.TextToSpeechResource;
+import org.alice.virtualmachine.resources.TextToSpeechResource.ResourceLoadedObserver;
 
-	protected enum State {
-		OPENNING,
-		UPDATING,
-		CLOSING,
+import edu.cmu.cs.dennisc.animation.AnimationObserver;
+import edu.cmu.cs.dennisc.scenegraph.graphics.Bubble;
+
+public class AudioLimitedBubbleAnimation extends BubbleAnimation implements ResourceLoadedObserver
+{
+
+	protected long startTime;
+	
+	public AudioLimitedBubbleAnimation(Composite composite, double openingDuration, double closingDuration, Bubble bubble, TextToSpeechResource textToSpeechResource) {
+		super(composite, openingDuration, 100.0, closingDuration, bubble);
+		this.startTime = 0;
+//		if (textToSpeechResource.isLoaded())
+//		{
+//			this.m_updatingDuration = textToSpeechResource.getDuration();
+//		}
+//		else
+//		{
+//			textToSpeechResource.addLoadObserver(this);
+//		}
 	}
 	
-	public OpenUpdateCloseOverlayGraphicAnimation( org.alice.apis.moveandturn.Composite composite, double openingDuration, double updatingDuration, double closingDuration ) {
-		super( composite );
-		m_openingDuration = openingDuration;
-		m_updatingDuration = updatingDuration;
-		m_closingDuration = closingDuration;
-	}
-	protected double getOpeningDuration() {
-		return m_openingDuration;
-	}
-	protected double getUpdatingDuration() {
-		return m_updatingDuration;
-	}
-	protected double getClosingDuration() {
-		return m_closingDuration;
-	}
-	protected abstract void updateStateAndPortion( State state, double portion );
 	@Override
-	protected void prologue() {
-		this.updateStateAndPortion(State.OPENNING, 0.0);
+	protected void prologue() 
+	{
 		super.prologue();
+		this.startTime = System.currentTimeMillis();
 	}
+	
 	@Override
-	protected double update( double deltaSincePrologue, double deltaSinceLastUpdate, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
-		State state;
-		double portion;
-		if( m_openingDuration > 0.0 && deltaSincePrologue <= m_openingDuration ) {
-			state = State.OPENNING;
-			portion = deltaSincePrologue / m_openingDuration;
-		} else if( m_updatingDuration > 0.0 && deltaSincePrologue <= (m_openingDuration+m_updatingDuration) ) {
-			state = State.UPDATING;
-			portion = ( deltaSincePrologue-m_openingDuration ) / m_updatingDuration;
-			System.out.println("portion: "+portion+", delta: "+deltaSincePrologue+", ");
-		} else {
-			state = State.CLOSING;
-			if( m_closingDuration > 0.0 ) {
-				portion = Math.min( ( deltaSincePrologue-m_openingDuration-m_updatingDuration ) / m_closingDuration, 1.0 );
-			} else {
-				portion = 1.0;
-			}
-		}
-		this.updateStateAndPortion(state, portion);
-		double toReturn = (m_openingDuration + m_updatingDuration + m_closingDuration) - deltaSincePrologue;
-		return toReturn;
-	}
-	@Override
-	protected void epilogue() {
-		this.updateStateAndPortion(State.CLOSING, 1.0);
+	protected void epilogue() 
+	{
 		super.epilogue();
+		this.startTime = 0;
 	}
+
+	public void setDuration(double duration)
+	{
+		double elapsedTime = 0;
+		if (this.startTime != 0)
+		{
+			long currentTime = System.currentTimeMillis();
+			elapsedTime = (currentTime - this.startTime)*0.001;
+		}
+		if (elapsedTime > this.m_openingDuration)
+		{
+			this.m_updatingDuration = duration + elapsedTime - this.m_openingDuration;
+		}
+		else
+		{
+			this.m_updatingDuration = duration;
+		}
+	}
+	
+	public void ResourceLoaded(TextToSpeechResource resource) 
+	{
+		this.m_updatingDuration = resource.getDuration();
+	}
+
 }
