@@ -356,6 +356,12 @@ public class ConstructionGuide {
 				if( component != null && component.isInView() ) {
 					appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, this.context );
 				} else {
+					edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = this.context.getSuccessfulCompletionEvent();
+					edu.cmu.cs.dennisc.croquet.Model descendantModel = successfulCompletionEvent.getParent().getModel();
+					edu.cmu.cs.dennisc.croquet.Component< ? > descendantComponent = descendantModel.getFirstComponent();
+					if( descendantComponent != null && descendantComponent.isInView() ) {
+						appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, successfulCompletionEvent.getParent() );
+					}
 				}
 			}
 			return rv;
