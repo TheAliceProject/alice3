@@ -90,44 +90,12 @@ public final class Frame extends AbstractWindow<javax.swing.JFrame> {
 		this.getAwtComponent().setTitle( title );
 	}
 
-	public void setMenuBar(MenuBar menuBar) {
-		this.getAwtComponent().setJMenuBar(menuBar.getAwtComponent());
-//		try {
-//			java.util.List< javax.swing.KeyStroke > keyStrokesToRemove = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-//			javax.swing.JComponent component = this.getAwtComponent().getRootPane();
-//			//javax.swing.JComponent component = new javax.swing.JDesktopPane();
-//			//javax.swing.JComponent component = this.getAwtComponent().getLayeredPane();
-//			
-//			//int condition = javax.swing.JComponent.WHEN_FOCUSED;
-//			int condition = javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT;
-//			//int condition = javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW;
-//			javax.swing.InputMap inputMap = javax.swing.SwingUtilities.getUIInputMap( component, condition );
-//			javax.swing.KeyStroke[] allKeys = inputMap.allKeys();
-//			for( javax.swing.KeyStroke keyStroke : allKeys ) {
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( keyStroke, inputMap.get( keyStroke ) );
-//				if( keyStroke.getKeyCode() == java.awt.event.KeyEvent.VK_F6 ) {
-//					keyStrokesToRemove.add( keyStroke );
-//				}
-//			}
-//			for( javax.swing.KeyStroke keyStroke : keyStrokesToRemove ) {
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "removing:", keyStroke );
-//				inputMap.remove( keyStroke );
-//			}
-//
-//			//javax.swing.SwingUtilities.replaceUIInputMap( component, type, inputMap );
-//			inputMap = javax.swing.SwingUtilities.getUIInputMap( component, condition );
-//			allKeys = inputMap.allKeys();
-//			for( javax.swing.KeyStroke keyStroke : allKeys ) {
-//				if( keyStroke.getKeyCode() == java.awt.event.KeyEvent.VK_F6 ) {
-//					assert false;
-//				}
-//			}
-//		} catch( Exception e ) {
-//			e.printStackTrace();
-//		}
-	}
-
 	public void maximize() {
 		this.getAwtComponent().setExtendedState( this.getAwtComponent().getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH );
+	}
+	
+	@Override
+	protected void setJMenuBar( javax.swing.JMenuBar jMenuBar ) {
+		this.getAwtComponent().setJMenuBar( jMenuBar );
 	}
 }

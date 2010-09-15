@@ -372,6 +372,20 @@ public class ContextManager {
 //		return application;
 //	}
 	
+	public static MenuBarModelContext createContextFor( java.util.List<Model> path, ModelContext<?> descendantContext ) {
+		final int N = path.size();
+		assert N >= 3;
+		MenuBarModel menuBarModel = (MenuBarModel)path.get( 0 );
+		MenuModel menuModel = (MenuModel)path.get( 1 );
+		PopupMenuOperation popupMenuOperation = menuModel.getPopupMenuOperation();
+		MenuBarModelContext rv = new MenuBarModelContext(menuBarModel, null, null);
+		PopupMenuOperationContext popupMenuOperationContext = new PopupMenuOperationContext( popupMenuOperation, null, null );
+		rv.addChild( popupMenuOperationContext );
+		popupMenuOperationContext.handleMenuSelectionChanged( null, path );
+		popupMenuOperationContext.addChild( descendantContext );
+		return rv;
+		
+	}
 	
 	
 	private static java.util.Map< java.util.UUID, java.util.Set< Model > > mapIdToModels = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();

@@ -147,9 +147,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void initialize( java.lang.String[] args ) {
 		super.initialize( args );
-		edu.cmu.cs.dennisc.croquet.MenuBar menuBar = org.alice.ide.croquet.models.MenuBarModel.getInstance().createMenuBar();
 		edu.cmu.cs.dennisc.croquet.Frame frame = this.getFrame();
-		frame.setMenuBar( menuBar );		
+		frame.setMenuBarModel( org.alice.ide.croquet.models.MenuBarModel.getInstance() );		
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.croquet.Component< ? > createContentPane() {

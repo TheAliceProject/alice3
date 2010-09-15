@@ -55,6 +55,10 @@ public class DefaultMenuModel extends MenuModel {
 		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(models, Model.class) );
 	}
 	
+	public Model[] getModels() {
+		return this.models;
+	}
+	
 	//todo:
 	@Override
 	/*package-private*/ Menu createMenu() {

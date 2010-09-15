@@ -300,10 +300,64 @@ public class ConstructionGuide {
 			return rv;
 		}
 		
+		
+		private edu.cmu.cs.dennisc.croquet.Model huntFor( java.util.Stack< edu.cmu.cs.dennisc.croquet.Model > stack, edu.cmu.cs.dennisc.croquet.MenuModel menuModel, edu.cmu.cs.dennisc.croquet.Model model ) {
+			if( menuModel instanceof edu.cmu.cs.dennisc.croquet.DefaultMenuModel ) {
+				edu.cmu.cs.dennisc.croquet.DefaultMenuModel defaultMenuModel = (edu.cmu.cs.dennisc.croquet.DefaultMenuModel)menuModel;
+				for( edu.cmu.cs.dennisc.croquet.Model child : defaultMenuModel.getModels() ) {
+					if( child instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
+						edu.cmu.cs.dennisc.croquet.MenuModel childMenuModel = (edu.cmu.cs.dennisc.croquet.MenuModel)child;
+						edu.cmu.cs.dennisc.croquet.Model rv = this.huntFor( stack, childMenuModel, model );
+						if( rv != null ) {
+							stack.push( childMenuModel );
+						}
+						return rv;
+					}
+					if( child == model ) {
+						stack.push( model );
+						return model;
+					}
+				}
+			}
+			return null;
+		}
+		private java.util.Stack< edu.cmu.cs.dennisc.croquet.Model > huntFor( edu.cmu.cs.dennisc.croquet.Model model ) {
+			edu.cmu.cs.dennisc.croquet.MenuBarModel menuBarModel = edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getMenuBarModel();
+			java.util.Stack< edu.cmu.cs.dennisc.croquet.Model > rv = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+			for( edu.cmu.cs.dennisc.croquet.MenuModel menuModel : menuBarModel.getMenuModels() ) {
+				edu.cmu.cs.dennisc.croquet.Model found = huntFor( rv, menuModel, model );
+				if( found != null ) {
+					rv.push( menuModel );
+					rv.push( menuBarModel );
+					return rv;
+				}
+			}
+			return null;
+		}
+
 		private java.util.List< RetargetableNote > notes;
 		private java.util.List< RetargetableNote > createNotes() {
 			java.util.List< RetargetableNote > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, this.context );
+			
+			edu.cmu.cs.dennisc.croquet.Model model = this.context.getModel();
+			edu.cmu.cs.dennisc.croquet.Component< ? > component = model.getFirstComponent();
+			if( component instanceof edu.cmu.cs.dennisc.croquet.MenuItem ) {
+				edu.cmu.cs.dennisc.croquet.MenuItem menuItem = (edu.cmu.cs.dennisc.croquet.MenuItem)component;
+				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = this.context.getSuccessfulCompletionEvent();
+				edu.cmu.cs.dennisc.croquet.Model descendantModel = successfulCompletionEvent.getParent().getModel();
+
+				java.util.Stack< edu.cmu.cs.dennisc.croquet.Model > path = huntFor( descendantModel );
+				java.util.List< edu.cmu.cs.dennisc.croquet.Model > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				while( path.size() > 0 ) {
+					list.add( path.pop() );
+				}
+//				java.util.List< edu.cmu.cs.dennisc.croquet.Model > path = edu.cmu.cs.dennisc.croquet.MenuItemContainerUtilities.getMenuPath( menuItem );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "path:", path );
+				edu.cmu.cs.dennisc.croquet.MenuBarModelContext menuBarModelContext = edu.cmu.cs.dennisc.croquet.ContextManager.createContextFor( list, this.context );
+				appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, menuBarModelContext );
+			} else {
+				appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, this.context );
+			}
 			return rv;
 		}
 		@Override

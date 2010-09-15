@@ -134,4 +134,9 @@ public class Dialog extends AbstractWindow< javax.swing.JDialog > {
 			super.setVisible( isVisible );
 		}
 	}
+
+	@Override
+	protected void setJMenuBar( javax.swing.JMenuBar jMenuBar ) {
+		this.getAwtComponent().setJMenuBar( jMenuBar );
+	}
 }
