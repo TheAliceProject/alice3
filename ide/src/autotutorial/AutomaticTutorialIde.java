@@ -203,6 +203,7 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 		} else {
 			IS_WIZARD_OF_OZ_HASTINGS_DESIRED = Boolean.parseBoolean( args[ 6 ] );
 		}
+		org.alice.ide.memberseditor.MembersEditor.IS_FOLDER_TABBED_PANE_DESIRED = IS_ENCODING;
 		final AutomaticTutorialIde ide = org.alice.ide.LaunchUtilities.launchAndWait( AutomaticTutorialIde.class, null, args, false );
 		if( IS_ENCODING ) {
 			ide.getFrame().setVisible( true );
