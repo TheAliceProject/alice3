@@ -227,10 +227,11 @@ public class ListSelectionState<E> extends State implements Iterable<E>/*, java.
 					if( ContextManager.isInTheMidstOfUndoOrRedo() ) {
 						//pass
 					} else {
-						ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController /*, prevIndex, prevSelection, nextIndex, nextSelection*/ );
-						childContext.commitAndInvokeDo( new ListSelectionStateEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ) );
-						ModelContext< ? > popContext = ContextManager.popContext();
-						assert popContext == childContext;
+						ListSelectionState.this.commitEdit( new ListSelectionStateEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ), this.mostRecentEvent, this.mostRecentViewController );
+//						ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController /*, prevIndex, prevSelection, nextIndex, nextSelection*/ );
+//						childContext.commitAndInvokeDo( new ListSelectionStateEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ) );
+//						ModelContext< ? > popContext = ContextManager.popContext();
+//						assert popContext == childContext;
 					}
 					ListSelectionState.this.fireValueChanged(nextSelection);
 					this.mostRecentEvent = null;
@@ -408,6 +409,21 @@ public class ListSelectionState<E> extends State implements Iterable<E>/*, java.
 	@Override
 	protected boolean isOwnerOfEdit() {
 		return true;
+	}
+	
+	private void commitEdit( ListSelectionStateEdit<E> listSelectionStateEdit, java.util.EventObject e, ViewController<?,?> viewController ) {
+		ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( this, e, viewController );
+		childContext.commitAndInvokeDo( listSelectionStateEdit );
+		ModelContext< ? > popContext = ContextManager.popContext();
+		assert popContext == childContext;
+	}
+	
+	@Override
+	public Edit< ? > commitTutorialCompletionEdit( Edit<?> originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		assert originalEdit instanceof ListSelectionStateEdit;
+		ListSelectionStateEdit<E> listSelectionStateEdit = (ListSelectionStateEdit<E>)originalEdit;
+		this.commitEdit( listSelectionStateEdit, null, null );
+		return listSelectionStateEdit;
 	}
 	
 	@Override
