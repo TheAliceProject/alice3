@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.croquet.guide;
 
+import edu.cmu.cs.dennisc.tutorial.Note;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -117,6 +119,21 @@ class RequirementNote extends RetargetableNote /* implements ParentContextCriter
 	
 	@Override
 	public final boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+		if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent ) {
+			edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent)child;
+			edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext<?> dialogOperationContext = windowOpenedEvent.getParent();
+			edu.cmu.cs.dennisc.croquet.Dialog dialog = dialogOperationContext.getModel().getActiveDialog();
+			if( dialog != null ) {
+				java.awt.Rectangle dialogLocalBounds = dialog.getLocalBounds();
+				java.awt.Rectangle bounds = this.getBounds( dialog );
+				if( bounds.intersects( dialogLocalBounds ) ) {
+					this.setLocation( dialog.getWidth()+100, dialog.getHeight()/2, dialog );
+				}
+			}
+		} else if( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: check for popup menu overlap" );
+		}
+		
 		try {
 //			System.err.println( "isWhatWeveBeenWaitingFor? " + child );
 //			edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", child );
