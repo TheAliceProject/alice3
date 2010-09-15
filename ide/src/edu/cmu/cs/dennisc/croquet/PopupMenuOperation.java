@@ -135,6 +135,19 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 			}
 		} );
 
+		popupMenu.getAwtComponent().addComponentListener( new java.awt.event.ComponentListener() {
+			public void componentShown( java.awt.event.ComponentEvent e ) {
+				java.awt.Component awtComponent = e.getComponent();
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "awtComponent", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
+			}
+			public void componentMoved( java.awt.event.ComponentEvent e ) {
+			}
+			public void componentResized( java.awt.event.ComponentEvent e ) {
+			}
+			public void componentHidden( java.awt.event.ComponentEvent e ) {
+			}
+		} );
+
 		
 		this.menuModel.handlePopupMenuPrologue( popupMenu, context );
 		ViewController<?,?> viewController = context.getViewController();

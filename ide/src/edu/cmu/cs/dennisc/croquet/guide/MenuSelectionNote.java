@@ -189,7 +189,12 @@ import edu.cmu.cs.dennisc.tutorial.*;
 		MenuSelectionNote rv = new MenuSelectionNote( menuSelectionEvent, i, index0 );
 		if( i == index0 ) {
 			if( index0 == 0 ) {
-				//pass
+				if( modelContext != null ) {
+					rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.class ) );
+					parentContextCriterion = rv.getAcceptedContextAt( index0 );
+				} else {
+					//pass
+				}
 			} else {
 				rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.MenuBarModelContext.class ) );
 				rv.addRequirement( new IsChildOfAndInstanceOf( rv.getAcceptedContextAt( 0 ), edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.class ) );
