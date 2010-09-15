@@ -137,14 +137,25 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 
 		popupMenu.getAwtComponent().addComponentListener( new java.awt.event.ComponentListener() {
 			public void componentShown( java.awt.event.ComponentEvent e ) {
-				java.awt.Component awtComponent = e.getComponent();
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "awtComponent", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
+//				java.awt.Component awtComponent = e.getComponent();
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentShown", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
 			}
 			public void componentMoved( java.awt.event.ComponentEvent e ) {
+//				java.awt.Component awtComponent = e.getComponent();
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentMoved", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
 			}
 			public void componentResized( java.awt.event.ComponentEvent e ) {
+//				java.awt.Component awtComponent = e.getComponent();
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentResized", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
+				ModelContext< ? > currentContext = ContextManager.getCurrentContext();
+				if( currentContext instanceof PopupMenuOperationContext ) {
+					PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)currentContext;
+					popupMenuOperationContext.handleResized( e );
+				}
 			}
 			public void componentHidden( java.awt.event.ComponentEvent e ) {
+//				java.awt.Component awtComponent = e.getComponent();
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentHidden", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
 			}
 		} );
 

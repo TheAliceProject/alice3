@@ -85,6 +85,23 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 			return null;
 		}
 	}
+
+	public static class MenuResizedEvent extends ModelEvent< PopupMenuOperationContext > {
+		private java.awt.event.ComponentEvent componentEvent;
+		public MenuResizedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		private MenuResizedEvent( java.awt.event.ComponentEvent componentEvent ) {
+			this.componentEvent = componentEvent;
+		}
+		public java.awt.event.ComponentEvent getComponentEvent() {
+			return this.componentEvent;
+		}
+		@Override
+		public State getState() {
+			return null;
+		}
+	}
 	
 	public static class MenuSelectionEvent extends ModelEvent< PopupMenuOperationContext > {
 		private javax.swing.event.ChangeEvent changeEvent;
@@ -189,5 +206,8 @@ public class PopupMenuOperationContext extends OperationContext<PopupMenuOperati
 	}
 	/*package-private*/ void handleMenuSelectionChanged( javax.swing.event.ChangeEvent e, java.util.List< Model > models ) {
 		this.addChild( new MenuSelectionEvent( e, models ) );
+	}
+	/*package-private*/ void handleResized( java.awt.event.ComponentEvent e ) {
+		this.addChild( new MenuResizedEvent( e ) );
 	}
 }

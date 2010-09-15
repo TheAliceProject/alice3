@@ -130,8 +130,20 @@ class RequirementNote extends RetargetableNote /* implements ParentContextCriter
 					this.setLocation( dialog.getWidth()+100, dialog.getHeight()/2, dialog );
 				}
 			}
-		} else if( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: check for popup menu overlap" );
+		} else if( child instanceof edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuResizedEvent ) {
+			edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuResizedEvent menuResizedEvent = (edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuResizedEvent)child;
+			java.awt.event.ComponentEvent e = menuResizedEvent.getComponentEvent();
+			if( e != null ) {
+				java.awt.Component awtComponent = e.getComponent();
+				edu.cmu.cs.dennisc.croquet.Component< ? > popUp = edu.cmu.cs.dennisc.croquet.Component.lookup( awtComponent );
+				if( popUp != null ) {
+					java.awt.Rectangle dialogLocalBounds = popUp.getLocalBounds();
+					java.awt.Rectangle bounds = this.getBounds( popUp );
+					if( bounds.intersects( dialogLocalBounds ) ) {
+						this.setLocation( popUp.getWidth()+100, popUp.getHeight()/2, popUp );
+					}
+				}
+			}
 		}
 		
 		try {
