@@ -40,60 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.tutorial;
+
+package edu.cmu.cs.dennisc.croquet.guide;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class StepCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< Step > {
-	private StepsModel stepsModel;
-	private java.awt.Color background;
-	private java.awt.Color disabledBackground;
-	private java.awt.Color disabledForeground;
-
-	public StepCellRenderer( StepsModel stepsModel, java.awt.Color background ) {
-		this.stepsModel = stepsModel;
-		this.background = background;
-		this.disabledBackground = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.background, 1.0, 0.5, 1.25 );
-		this.disabledForeground = java.awt.Color.LIGHT_GRAY;
-	}
-	@Override
-	protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.tutorial.Step value, int index, boolean isSelected, boolean cellHasFocus) {
-		assert list != null;
-		if( value != null) {
-			StringBuilder sb = new StringBuilder();
-			int i;
-			if (index >= 0) {
-				i = index;
-			} else {
-				i = stepsModel.getSelectedIndex();
-				// if( i >= 0 ) {
-				// assert value == stepsModel.getElementAt( i ) :
-				// stepsModel.getElementAt( i );
-				// }
-			}
-			sb.append("<html>");
-			sb.append("<em>");
-			sb.append("Step ");
-			sb.append(i + 1);
-			sb.append(": ");
-			sb.append("</em>");
-			sb.append(value);
-			sb.append("</html>");
-			
-			rv.setText(sb.toString());
+public enum StepAccessPolicy {
+	ALLOW_ACCESS_TO_ALL_STEPS() {
+		@Override
+		public boolean isStepAccessible( int nextIndex, int furthestCompletedIndex ) {
+			return true;
 		}
-		
-		if( stepsModel.isStepAccessible( index ) ) {
-			if( isSelected || cellHasFocus ) {
-				//pass
-			} else {
-				rv.setBackground( this.background );
-			}
-		} else {
-			rv.setBackground( this.disabledBackground );
-			rv.setForeground( this.disabledForeground );
+	},
+	ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP() {
+		@Override
+		public boolean isStepAccessible( int nextIndex, int furthestCompletedIndex ) {
+			return nextIndex <= furthestCompletedIndex;
 		}
-		return rv;
-	}
+	};
+	public abstract boolean isStepAccessible( int nextIndex, int furthestCompletedIndex );
 }

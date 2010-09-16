@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.tutorial;
 
+import edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -82,9 +84,7 @@ public class TutorialStencil extends Stencil {
 //		}
 //	} );
 	
-	private static final boolean IS_FORWARD_ENABLED = true;
-	
-	private StepsModel stepsModel = new StepsModel( IS_FORWARD_ENABLED );
+	private StepsModel stepsModel = new StepsModel();
 	private StepsComboBoxModel stepsComboBoxModel = new StepsComboBoxModel( stepsModel );
 	
 	private PreviousStepOperation previousStepOperation = new PreviousStepOperation( this.stepsModel );
@@ -118,11 +118,12 @@ public class TutorialStencil extends Stencil {
 		final int PAD = 4;
 		frame.getJMenuBar().setBorder( javax.swing.BorderFactory.createEmptyBorder(PAD+32,PAD,0,PAD));
 		((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder(0,PAD,PAD,PAD));
-		return new TutorialStencil( edu.cmu.cs.dennisc.croquet.guide.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK, DefaultScrollingRequiredRenderer.INSTANCE, layeredPane, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() ); 
+		return new TutorialStencil( edu.cmu.cs.dennisc.croquet.guide.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK, StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP, DefaultScrollingRequiredRenderer.INSTANCE, layeredPane, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() ); 
 	}
-	public TutorialStencil( edu.cmu.cs.dennisc.croquet.guide.MenuPolicy menuPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, javax.swing.JLayeredPane layeredPane, edu.cmu.cs.dennisc.croquet.Group[] groups, edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext ) {
+	
+	public TutorialStencil( edu.cmu.cs.dennisc.croquet.guide.MenuPolicy menuPolicy, StepAccessPolicy stepAccessPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, javax.swing.JLayeredPane layeredPane, edu.cmu.cs.dennisc.croquet.Group[] groups, edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext ) {
 		super( menuPolicy, scrollingRequiredRenderer, layeredPane );
-		
+		this.stepsModel.setStepAccessPolicy( stepAccessPolicy );
 		rootContext.addChildrenObserver( this.childrenObserver );
 
 		final int N = groups.length;

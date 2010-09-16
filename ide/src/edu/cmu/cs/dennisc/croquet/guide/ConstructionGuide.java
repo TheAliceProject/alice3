@@ -67,16 +67,16 @@ public class ConstructionGuide {
 	private edu.cmu.cs.dennisc.croquet.RootContext sourceContext;
 
 	/*package-private*/ class AutomaticTutorialStencil extends TutorialStencil {
-		public AutomaticTutorialStencil( MenuPolicy menuPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, javax.swing.JLayeredPane layeredPane, edu.cmu.cs.dennisc.croquet.Group[] groups ) {
-			super( menuPolicy, scrollingRequiredRenderer, layeredPane, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() );
+		public AutomaticTutorialStencil( MenuPolicy menuPolicy, StepAccessPolicy stepAccessPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, javax.swing.JLayeredPane layeredPane, edu.cmu.cs.dennisc.croquet.Group[] groups ) {
+			super( menuPolicy, stepAccessPolicy, scrollingRequiredRenderer, layeredPane, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() );
 		}
 	}
 	
-	public ConstructionGuide( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, MenuPolicy menuPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
+	public ConstructionGuide( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, MenuPolicy menuPolicy, StepAccessPolicy stepAccessPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
 		assert instance == null;
 		instance = this;
 		this.userInformation = userInformation;
-		this.stencil = new AutomaticTutorialStencil( menuPolicy, scrollingRequiredRenderer, getLayeredPane(), groupsTrackedForRandomAccess );
+		this.stencil = new AutomaticTutorialStencil( menuPolicy, stepAccessPolicy, scrollingRequiredRenderer, getLayeredPane(), groupsTrackedForRandomAccess );
 	}
 	
 	public edu.cmu.cs.dennisc.croquet.UserInformation getUserInformation() {

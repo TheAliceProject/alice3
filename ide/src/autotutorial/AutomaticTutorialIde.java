@@ -183,9 +183,16 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 		edu.cmu.cs.dennisc.tutorial.ScrollingRequiredRenderer scrollingRequiredRenderer = edu.cmu.cs.dennisc.tutorial.DefaultScrollingRequiredRenderer.INSTANCE;
 		final edu.cmu.cs.dennisc.croquet.guide.ConstructionGuide tutorial = new edu.cmu.cs.dennisc.croquet.guide.ConstructionGuide( 
 				BareBonesUserInformation.INSTANCE,
+				
+				
 //				edu.cmu.cs.dennisc.tutorial.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK,
 //				edu.cmu.cs.dennisc.tutorial.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK,
 				edu.cmu.cs.dennisc.croquet.guide.MenuPolicy.BELOW_STENCIL,
+				
+				
+				edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP,
+				//edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy.ALLOW_ACCESS_TO_ALL_STEPS,
+				
 				scrollingRequiredRenderer,
 				new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP }
 		);
