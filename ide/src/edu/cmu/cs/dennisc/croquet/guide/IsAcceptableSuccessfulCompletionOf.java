@@ -62,12 +62,14 @@ class IsAcceptableSuccessfulCompletionOf extends IsChildOfAndInstanceOf< edu.cmu
 				if( this.originalSuccessfulCompletionEvent != null ) {
 					edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit = this.originalSuccessfulCompletionEvent.getEdit();
 					if( originalEdit != null ) {
-						if( originalEdit.isReplacementAcceptable( potentialReplacementEdit ) ) {
+						String reason = originalEdit.getReasonIfReplacementIsUnacceptable( potentialReplacementEdit, ConstructionGuide.getInstance().getUserInformation() );
+						if( reason != null ) {
+							edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( reason, "edit does not pass muster" );
+							throw new CancelException( "unacceptable: replacement edit does not pass muster." );
+						} else {
 							edu.cmu.cs.dennisc.croquet.Retargeter retargeter = ConstructionGuide.getInstance().getRetargeter();
 							originalEdit.addKeyValuePairs( retargeter, potentialReplacementEdit );
 							ConstructionGuide.getInstance().retargetOriginalContext( retargeter );
-						} else {
-							throw new CancelException( "unacceptable: replacement edit does not pass muster." );
 						}
 					} else {
 						throw new CancelException( "unacceptable: replacement edit is null." );

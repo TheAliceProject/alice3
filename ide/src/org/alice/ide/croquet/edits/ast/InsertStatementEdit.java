@@ -42,6 +42,8 @@
  */
 package org.alice.ide.croquet.edits.ast;
 
+import edu.cmu.cs.dennisc.croquet.Edit;
+
 public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit< edu.cmu.cs.dennisc.croquet.ActionOperation > {
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
 	private int index;
@@ -89,9 +91,14 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdi
 		return rv;
 	}
 	@Override
-	public boolean isReplacementAcceptable( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		return edit instanceof InsertStatementEdit;
+	public String getReasonIfReplacementIsUnacceptable( Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		if( edit instanceof InsertStatementEdit ) {
+			return null;
+		} else {
+			return "edit is note InsertStatementEdit";
+		}
 	}
+	
 	public InsertStatementEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.alice.ast.Statement replacementStatement ) {
 		edu.cmu.cs.dennisc.alice.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
 		retargeter.addKeyValuePair( this.statement, replacementStatement );

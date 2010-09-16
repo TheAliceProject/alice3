@@ -241,6 +241,11 @@ public class TutorialStencil extends Stencil {
 		}
 	}
 
+	
+	public void restoreHistoryIndicesDueToCancel() {
+		this.restoreHistoryIndices( this.stepsModel.getSelectedIndex() );
+	}
+	
 	private int prevSelectedIndex = -1;
 	private void completeOrUndoIfNecessary() {
 		SoundCache.pushIgnoreStartRequests();

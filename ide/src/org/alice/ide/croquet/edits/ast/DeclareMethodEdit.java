@@ -104,8 +104,19 @@ public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit<
 	}
 
 	@Override
-	public boolean isReplacementAcceptable( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		return edit instanceof DeclareMethodEdit;
+	public String getReasonIfReplacementIsUnacceptable( edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		if( edit instanceof DeclareMethodEdit ) {
+			final boolean IS_LENIENT = true;
+			DeclareMethodEdit declareMethodEdit = (DeclareMethodEdit)edit;
+			String requiredName = this.method.getName();
+			if( IS_LENIENT || declareMethodEdit.getMethod().getName().equals( requiredName ) ) {
+				return null;
+			} else {
+				return "name must be " + requiredName; 
+			}
+		} else {
+			return "edit is not a DeclareMethodEdit";
+		}
 	}
 	
 	public DeclareMethodEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {

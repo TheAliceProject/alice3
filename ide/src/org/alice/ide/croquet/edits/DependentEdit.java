@@ -43,6 +43,10 @@
 
 package org.alice.ide.croquet.edits;
 
+import org.alice.ide.croquet.edits.ast.InsertStatementEdit;
+
+import edu.cmu.cs.dennisc.croquet.Edit;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -81,8 +85,8 @@ public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<
 		return this.getBeholdenModel().updatePresentation( rv, locale );
 	}
 	@Override
-	public boolean isReplacementAcceptable( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		return this.getBeholdenModel().isReplacementAcceptable( edit );
+	public String getReasonIfReplacementIsUnacceptable( Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return this.getBeholdenModel().getReasonIfReplacementIsUnacceptable( edit, userInformation );
 	}
 	@Override
 	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {

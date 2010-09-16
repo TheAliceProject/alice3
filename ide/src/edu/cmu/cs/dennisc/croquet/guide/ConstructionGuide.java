@@ -448,6 +448,8 @@ public abstract class ConstructionGuide {
 						}
 					}
 				} catch( CancelException ce ) {
+					//this.reset();
+					stencil.restoreHistoryIndicesDueToCancel();
 					this.reset();
 				}
 			}

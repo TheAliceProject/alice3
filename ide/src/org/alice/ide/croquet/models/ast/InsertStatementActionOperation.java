@@ -119,8 +119,12 @@ public class InsertStatementActionOperation extends edu.cmu.cs.dennisc.croquet.A
 		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, this.statement, locale );
 		return rv;
 	}
-	public boolean isReplacementAcceptable( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		return edit instanceof org.alice.ide.croquet.edits.DependentEdit;
+	public String getReasonIfReplacementIsUnacceptable( edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		if( edit instanceof org.alice.ide.croquet.edits.DependentEdit ) {
+			return null;
+		} else {
+			return "edit is not DependentEdit";
+		}
 	}
 	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 		org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation>)edit;
