@@ -45,6 +45,6 @@ package edu.cmu.cs.dennisc.croquet.guide;
 /**
  * @author Dennis Cosgrove
  */
-interface ParentContextCriterion {
+public interface ParentContextCriterion {
 	boolean isAcceptableParentContext( edu.cmu.cs.dennisc.croquet.ModelContext< ? > parentContext );
 }

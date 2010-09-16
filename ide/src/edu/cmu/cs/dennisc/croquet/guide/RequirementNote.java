@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.tutorial.Note;
 /**
  * @author Dennis Cosgrove
  */
-class RequirementNote extends RetargetableNote /* implements ParentContextCriterion */ {
+public class RequirementNote extends RetargetableNote /* implements ParentContextCriterion */ {
 	private java.util.List< Requirement<?> > requirements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private int unfulfilledRequirementIndex;
 	

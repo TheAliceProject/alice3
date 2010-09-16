@@ -24,6 +24,7 @@ enum BareBonesUserInformation implements edu.cmu.cs.dennisc.croquet.UserInformat
 public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 	private static boolean IS_ENCODING;
 	private static boolean IS_WIZARD_OF_OZ_HASTINGS_DESIRED;
+	private static boolean IS_MONKEY_WRENCH_DESIRED = true;
 	private static final String UI_HISTORY_PATH = "/autoTutorial1.bin";
 	private static final String POST_PROJECT_PATH = "/post.a3p";
 	
@@ -46,6 +47,12 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 			edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
 			rootContext.EPIC_HACK_clear();
 		} else {
+			
+			if( IS_MONKEY_WRENCH_DESIRED ) {
+				final int N = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getItemCount();
+				org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedIndex( N-2 );
+			}
+			
 			class AstDecodingRetargeter implements edu.cmu.cs.dennisc.croquet.Retargeter {
 				private java.util.Map< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node > mapIdToReplacementNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 				public void addAllToReplacementMap( edu.cmu.cs.dennisc.alice.Project project ) {
@@ -196,7 +203,23 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 				
 				scrollingRequiredRenderer,
 				new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP }
-		);
+		) {
+			@Override
+			protected java.util.List< edu.cmu.cs.dennisc.croquet.guide.RetargetableNote > addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( 
+					java.util.List< edu.cmu.cs.dennisc.croquet.guide.RetargetableNote > rv,
+					edu.cmu.cs.dennisc.croquet.guide.ParentContextCriterion parentContextCriterion, 
+					edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext ) {
+				
+				System.err.println( "addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound: " + modelContext );
+				org.alice.ide.croquet.models.ui.AccessibleListSelectionState accessibleListSelectionState = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
+				edu.cmu.cs.dennisc.croquet.ListSelectionStateContext context = edu.cmu.cs.dennisc.croquet.ContextManager.createContextFor( accessibleListSelectionState, accessibleListSelectionState.getItemAt( accessibleListSelectionState.getItemCount()-1 ) );
+				edu.cmu.cs.dennisc.croquet.guide.ListSelectionStateStartNote listSelectionStateStartNote =  edu.cmu.cs.dennisc.croquet.guide.ListSelectionStateStartNote.createInstance( context, parentContextCriterion, context.getSuccessfulCompletionEvent() );
+				rv.add( listSelectionStateStartNote );
+				rv.add( edu.cmu.cs.dennisc.croquet.guide.ListSelectionStateFinishNote.createInstance( context, listSelectionStateStartNote.getAcceptedContextAt( 0 ), context.getSuccessfulCompletionEvent() ) );
+				
+				return rv;
+			}
+		};
 		tutorial.addSteps( this.postContext );
 		
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();

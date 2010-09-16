@@ -46,7 +46,8 @@ import edu.cmu.cs.dennisc.tutorial.*;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class ListSelectionStateStartNote<E> extends RequirementNote {
+//todo /*package-private*/ 
+public class ListSelectionStateStartNote<E> extends RequirementNote {
 	public static <E> ListSelectionStateStartNote<E> createInstance( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) {
 		ListSelectionStateStartNote rv = new ListSelectionStateStartNote( 
 				listSelectionStateContext, 

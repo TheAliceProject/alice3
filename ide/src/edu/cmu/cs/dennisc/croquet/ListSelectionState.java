@@ -439,7 +439,7 @@ public class ListSelectionState<E> extends State implements Iterable<E>/*, java.
 			sb.append( "Select " );
 			sb.append( "<strong>" );
 			this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
-			sb.append( "</strong>" );
+			sb.append( "</strong>." );
 		}
 		return sb.toString();
 	}
@@ -453,7 +453,7 @@ public class ListSelectionState<E> extends State implements Iterable<E>/*, java.
 		sb.append( " in order to change it to " );
 		sb.append( "<strong>" );
 		this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
-		sb.append( "</strong>" );
+		sb.append( "</strong>." );
 		return sb.toString();
 	}
 	public String getTutorialNoteFinishText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
@@ -461,7 +461,7 @@ public class ListSelectionState<E> extends State implements Iterable<E>/*, java.
 		sb.append( "Select " );
 		sb.append( "<strong>" );
 		this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
-		sb.append( "</strong>" );
+		sb.append( "</strong>." );
 		return sb.toString();
 	}
 

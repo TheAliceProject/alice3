@@ -327,7 +327,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 			}
 			for( JComponent< ? > component : this.components ) {
 				if( cls.isAssignableFrom( component.getClass() ) ) {
-					if( component.getAwtComponent().isVisible() ) {
+					if( component.getAwtComponent().isShowing() ) {
 //						edu.cmu.cs.dennisc.print.PrintUtilities.println( "isVisible:", component.getAwtComponent().getClass() );
 						return cls.cast( component );
 					} else {

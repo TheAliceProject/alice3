@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 /**
  * @author Dennis Cosgrove
  */
-public class ConstructionGuide {
+public abstract class ConstructionGuide {
 	private static ConstructionGuide instance;
 	public static ConstructionGuide getInstance() {
 		return instance;
@@ -370,9 +370,12 @@ public class ConstructionGuide {
 					edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = this.context.getSuccessfulCompletionEvent();
 					edu.cmu.cs.dennisc.croquet.Model descendantModel = successfulCompletionEvent.getParent().getModel();
 					edu.cmu.cs.dennisc.croquet.Component< ? > descendantComponent = descendantModel.getFirstComponent();
-					if( descendantComponent != null && descendantComponent.isInView() ) {
-						appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, successfulCompletionEvent.getParent() );
+					if( descendantComponent != null && descendantComponent.getAwtComponent().isShowing() ) {
+						//pass
+					} else {
+						ConstructionGuide.this.addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, this.context );
 					}
+					appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, successfulCompletionEvent.getParent() );
 				}
 			}
 			return rv;
@@ -454,11 +457,12 @@ public class ConstructionGuide {
 		}
 	}
 
+	protected abstract java.util.List< RetargetableNote > addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( java.util.List< RetargetableNote > rv, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext );
 	/*package-private*/ AutomaticTutorialStencil getStencil() {
 		return this.stencil;
 	}
 	public void addSteps( edu.cmu.cs.dennisc.croquet.RootContext sourceContext ) {
-		//this.addMessageStep( "start", "start of tutorial" );
+		this.addMessageStep( "start", "start of tutorial" );
 		this.sourceContext = sourceContext;
 		final int N = sourceContext.getChildCount();
 		for( int i=0; i<N; i++ ) {

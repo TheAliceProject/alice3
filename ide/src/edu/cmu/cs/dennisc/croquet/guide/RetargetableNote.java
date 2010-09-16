@@ -46,7 +46,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class RetargetableNote extends Note {
+public abstract class RetargetableNote extends Note {
 	protected static boolean isMouseEventInterceptedInAllCases( java.awt.event.MouseEvent e ) {
 		return e.getID() == java.awt.event.MouseEvent.MOUSE_PRESSED || e.getID() == java.awt.event.MouseEvent.MOUSE_RELEASED || e.getID() == java.awt.event.MouseEvent.MOUSE_CLICKED || e.getID() == java.awt.event.MouseEvent.MOUSE_DRAGGED;
 	}

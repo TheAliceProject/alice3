@@ -382,8 +382,15 @@ public class ContextManager {
 		popupMenuOperationContext.handleMenuSelectionChanged( null, path );
 		popupMenuOperationContext.addChild( descendantContext );
 		return rv;
-		
 	}
+	
+	public static <E> ListSelectionStateContext< E > createContextFor( ListSelectionState< E > listSelectionState, E nextValue ) {
+		ListSelectionStateContext< E > rv = new ListSelectionStateContext<E>( listSelectionState, null, null );
+		CommitEvent commitEvent = new CommitEvent( new ListSelectionStateEdit< E >( null, listSelectionState.getValue(), nextValue ) );
+		rv.addChild( commitEvent );
+		return rv;
+	}
+	
 	
 	
 	private static java.util.Map< java.util.UUID, java.util.Set< Model > > mapIdToModels = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
