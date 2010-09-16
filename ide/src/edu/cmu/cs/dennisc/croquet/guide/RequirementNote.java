@@ -117,8 +117,12 @@ class RequirementNote extends RetargetableNote /* implements ParentContextCriter
 		return this.getAcceptedContextAt( -1 );
 	}
 	
+	protected void handleCancel() {
+		this.reset();
+	}
+	
 	@Override
-	public final boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
+	public final boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) throws CancelException {
 		if( child instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent ) {
 			edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent windowOpenedEvent = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent)child;
 			edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext<?> dialogOperationContext = windowOpenedEvent.getParent();
@@ -146,29 +150,30 @@ class RequirementNote extends RetargetableNote /* implements ParentContextCriter
 			}
 		}
 		
-		try {
+//		if( child instanceof edu.cmu.cs.dennisc.croquet.CancelEvent ) {
+//			throw new CancelException( "cancel event" );
+//		}
+
+		
 //			System.err.println( "isWhatWeveBeenWaitingFor? " + child );
 //			edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", child );
 //			edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", this.unfulfilledRequirementIndex );
-			final int N = this.requirements.size();
-			while( this.unfulfilledRequirementIndex<N ) {
-				Requirement< ? > requirement = this.requirements.get( this.unfulfilledRequirementIndex );
+		final int N = this.requirements.size();
+		while( this.unfulfilledRequirementIndex<N ) {
+			Requirement< ? > requirement = this.requirements.get( this.unfulfilledRequirementIndex );
 //				System.err.println( "checking requirement at index: " + this.unfulfilledRequirementIndex + "; length= " + N );
 //				System.err.println( requirement );
-				if( requirement.isWhatWereLookingFor( child ) ) {
+			if( requirement.isWhatWereLookingFor( child ) ) {
 //					System.err.println( "SUCCESS" );
-					this.nodes.set( this.unfulfilledRequirementIndex, child );
-					this.unfulfilledRequirementIndex += 1;
-				} else {
-					break;
-				}
+				this.nodes.set( this.unfulfilledRequirementIndex, child );
+				this.unfulfilledRequirementIndex += 1;
+			} else {
+				break;
 			}
+		}
 //			edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", this.unfulfilledRequirementIndex );
 //			System.err.println( this.unfulfilledRequirementIndex == N );
-			return this.unfulfilledRequirementIndex == N;
-		} catch( CancelException ce ) {
-			throw new RuntimeException( "todo", ce );
-		}
+		return this.unfulfilledRequirementIndex == N;
 	}
 //	public boolean isAcceptableParentContext( edu.cmu.cs.dennisc.croquet.ModelContext< ? > parentContext ) {
 //		boolean rv;

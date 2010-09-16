@@ -294,6 +294,12 @@ public abstract class Step {
 	}
 
 	public void reset() {
+		java.awt.LayoutManager layoutManager = this.stepPanel.getAwtComponent().getLayout();
+		if( layoutManager instanceof StepLayoutManager ) {
+			StepLayoutManager stepLayoutManager = (StepLayoutManager)layoutManager;
+			stepLayoutManager.set.clear();
+			this.stepPanel.revalidateAndRepaint();
+		}
 		for( Note note : this.getNotes() ) {
 			note.reset();
 		}

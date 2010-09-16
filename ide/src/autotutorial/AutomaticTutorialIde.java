@@ -97,6 +97,7 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 			edu.cmu.cs.dennisc.croquet.guide.Filter[] filters = {
 					//edu.cmu.cs.dennisc.croquet.tutorial.SuccessfullyCompletedFilter.SINGLETON,
 					edu.cmu.cs.dennisc.croquet.guide.MenuSelectionEventFilter.SINGLETON,
+					edu.cmu.cs.dennisc.croquet.guide.DocumentEventFilter.SINGLETON,
 					edu.cmu.cs.dennisc.croquet.guide.GroupFilter.SINGLETON,
 			};
 			for( edu.cmu.cs.dennisc.croquet.guide.Filter filter : filters ) {
@@ -190,8 +191,8 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 				edu.cmu.cs.dennisc.croquet.guide.MenuPolicy.BELOW_STENCIL,
 				
 				
-				edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP,
-				//edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy.ALLOW_ACCESS_TO_ALL_STEPS,
+				//edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP,
+				edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy.ALLOW_ACCESS_TO_ALL_STEPS,
 				
 				scrollingRequiredRenderer,
 				new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP }

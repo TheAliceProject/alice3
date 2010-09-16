@@ -57,7 +57,6 @@ import edu.cmu.cs.dennisc.tutorial.*;
 	@Override
 	protected boolean isSpecificallyWhatWereLookingFor( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent ) throws CancelException {
 		boolean rv = super.isSpecificallyWhatWereLookingFor( menuSelectionEvent );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "isSpecificallyWhatWereLookingFor", rv );
 		if( rv ) {
 			final int N = this.requiredIndex+1;
 			if( menuSelectionEvent.getModelCount() >= N ) {
@@ -67,7 +66,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 					if( orginalModelI == replacementModelI ) {
 						//pass
 					} else {
-						System.err.println( "does not match: " + i + " " + N + " " + orginalModelI + " " + replacementModelI );
+//						System.err.println( "does not match: " + i + " " + N + " " + orginalModelI + " " + replacementModelI );
 						return false;
 					}
 				}
@@ -238,7 +237,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 		} else {
 			boolean isCheckMarkRenderingDesired = ConstructionGuide.getInstance().getStencil().getMenuPolicy().isFeedbackDesired();
 			if( isInMenuBar ) {
-				this.addFeature( new MenuHole( createComponentResolver( menuSelectionEvent, index0 ), Feature.ConnectionPreference.EAST_WEST, this.i == index0, true, false ) );
+				this.addFeature( new MenuHole( createComponentResolver( menuSelectionEvent, index0 ), Feature.ConnectionPreference.EAST_WEST, this.i == index0, false, false ) );
 			}
 			if( isInMenuBar==false || this.i > index0 ) {
 				this.addFeature( new MenuHole( createComponentResolver( menuSelectionEvent, this.i ), Feature.ConnectionPreference.EAST_WEST, true, false, isCheckMarkRenderingDesired ) );

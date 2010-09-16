@@ -421,13 +421,17 @@ public class ConstructionGuide {
 			activeNoteIndex = Math.max( activeNoteIndex, 0 );
 			if( activeNoteIndex < NOTE_COUNT ) {
 				RetargetableNote activeNote = this.notes.get( activeNoteIndex );
-				if( activeNote.isWhatWeveBeenWaitingFor( child ) ) {
-					activeNoteIndex ++;
-					if( activeNoteIndex == NOTE_COUNT ) {
-						return true;
-					} else {
-						this.setActiveNote( activeNoteIndex );
+				try {
+					if( activeNote.isWhatWeveBeenWaitingFor( child ) ) {
+						activeNoteIndex ++;
+						if( activeNoteIndex == NOTE_COUNT ) {
+							return true;
+						} else {
+							this.setActiveNote( activeNoteIndex );
+						}
 					}
+				} catch( CancelException ce ) {
+					this.reset();
 				}
 			}
 			return false;

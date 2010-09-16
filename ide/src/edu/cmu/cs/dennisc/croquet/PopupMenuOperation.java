@@ -144,7 +144,7 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 			}
 			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
 				if( this.cancelEvent != null ) {
-					//context.cancel();
+					context.cancel();
 					this.cancelEvent = null;
 				}
 				PopupMenuOperation.this.menuModel.handlePopupMenuEpilogue( popupMenu, context );

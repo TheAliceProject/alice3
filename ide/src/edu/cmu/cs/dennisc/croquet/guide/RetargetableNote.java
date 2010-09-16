@@ -54,7 +54,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
 		return true;
 	}
-	public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child );
+	public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) throws CancelException;
 	
 	protected final void retarget( edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit ) {
 		edu.cmu.cs.dennisc.croquet.Retargeter retargeter = ConstructionGuide.getInstance().getRetargeter();

@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -39,36 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet.guide;
 
-import edu.cmu.cs.dennisc.tutorial.*;
+package edu.cmu.cs.dennisc.croquet.guide;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class DropNote extends RequirementNote {
-	public static DropNote createCommitInstance( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.croquet.ModelContext< ? > childModelContext, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) {
-		DropNote rv = new DropNote( 
-				dragAndDropContext, 
-				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent.class ),
-				new IsChildOfAndInstanceOf( parentContextCriterion, childModelContext.getClass() )
-		);
-		rv.addRequirement( new IsAcceptableSuccessfulCompletionOf( rv.getAcceptedContextAt( -2 ), successfulCompletionEvent ) );
+public enum DocumentEventFilter implements Filter {
+	SINGLETON;
+	
+	private static void stripDocumentEvents( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
+		for( edu.cmu.cs.dennisc.croquet.HistoryNode< ? > node : context.getChildren() ) {
+			if( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
+				edu.cmu.cs.dennisc.croquet.ModelContext< ? > childContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)node;
+				if( childContext instanceof edu.cmu.cs.dennisc.croquet.StringStateContext ) {
+					edu.cmu.cs.dennisc.croquet.StringStateContext stringStateContext = (edu.cmu.cs.dennisc.croquet.StringStateContext)childContext;
+					java.util.ListIterator< edu.cmu.cs.dennisc.croquet.HistoryNode< ? > > childListIterator = stringStateContext.getChildListIterator();
+					while( childListIterator.hasNext() ) {
+						edu.cmu.cs.dennisc.croquet.HistoryNode< ? > child = childListIterator.next();
+						if( child instanceof edu.cmu.cs.dennisc.croquet.StringStateContext.DocumentEvent ) {
+							childListIterator.remove();
+						}
+					}
+				}
+				stripDocumentEvents( childContext );
+			}
+		}
+	}
+	
+	public < M extends edu.cmu.cs.dennisc.croquet.ModelContext< ? > > M filter( M rv ) {
+		stripDocumentEvents( rv );
 		return rv;
-	}
-	public static DropNote createPendingInstance( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, edu.cmu.cs.dennisc.croquet.ModelContext< ? > childModelContext ) {
-		return new DropNote( dragAndDropContext, 
-				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent.class )//,
-				//new IsChildOfAndInstanceOf( parentContextCriterion, childModelContext.getClass() )
-		);
-	}
-	private DropNote( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, Requirement< ? >... requirements ) {
-		super( requirements );
-		this.setText( dragAndDropContext.getModel().getTutorialDropNoteText( dragAndDropContext, ConstructionGuide.getInstance().getUserInformation() ) );
-		DropSiteResolver dropSiteResolver = new DropSiteResolver( dragAndDropContext ); 
-		
-		Hole dropHole = new Hole( dropSiteResolver, Feature.ConnectionPreference.NORTH_SOUTH );
-		dropHole.setHeightConstraint( 100 );
-		this.addFeature( dropHole );			
 	}
 }

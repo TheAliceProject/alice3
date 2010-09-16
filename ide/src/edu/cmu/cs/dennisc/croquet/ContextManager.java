@@ -43,8 +43,6 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
-import edu.cmu.cs.dennisc.croquet.StringStateContext.StringStateEvent;
-
 /**
  * @author Dennis Cosgrove
  */
