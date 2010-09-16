@@ -63,13 +63,17 @@ import org.alice.virtualmachine.resources.AudioResource;
 public class TextToSpeech 
 {
 	
+	public final static String MALE_VOICE = "MALE";
+	public final static String FEMALE_VOICE = "FEMALE";
+	
+	
 	private String type;
 	private int numSamples;
 	private int numChannels;
 	private int sampleRate;
 	private short[] samples;
 	
-	native void initWithTextToSpeech(String text);
+	native void initWithTextToSpeech(String text, String voice);
 	
 	static boolean isInitialized = false;
 	static
@@ -78,6 +82,7 @@ public class TextToSpeech
 		{
 			System.loadLibrary("fliteDll");
 			System.loadLibrary("cmu_us_rms");
+			System.loadLibrary("cmu_us_slt");
 			System.loadLibrary("flite_jni");
 			isInitialized = true;
 		}
@@ -96,9 +101,9 @@ public class TextToSpeech
 		this.samples = null;
 	}
 	
-	public void processText(String text)
+	public void processText(String text, String voice)
 	{
-		this.initWithTextToSpeech(text);
+		this.initWithTextToSpeech(text, voice);
 	}
 	
 	public double getDuration()
@@ -127,14 +132,14 @@ public class TextToSpeech
 		return null;
 	}
 	
-	static void doTextToSpeech(String toSaveTo, String text)
+	static void doTextToSpeech(String toSaveTo, String text, String voice)
 	{
 		try
 		{
 			//System.out.println("Doing text to speech on: \""+text+"\"");
 			long startTime = System.currentTimeMillis();
 			TextToSpeech tts = new TextToSpeech();
-			tts.initWithTextToSpeech(text);
+			tts.initWithTextToSpeech(text, voice);
 			long initTime = System.currentTimeMillis();
 			ShortArrayInputStream shortStream = new ShortArrayInputStream(tts.samples);
 			AudioFormat wavFormat = new AudioFormat(tts.sampleRate, 16, tts.numChannels, true, true);

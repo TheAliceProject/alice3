@@ -44,6 +44,7 @@
 package org.alice.virtualmachine.resources;
 
 import org.alice.flite.TextToSpeech;
+import org.alice.flite.TextVoicePair;
 
 public class TextToSpeechResource extends AudioResource 
 {
@@ -52,34 +53,39 @@ public class TextToSpeechResource extends AudioResource
 		public void ResourceLoaded(TextToSpeechResource resource);
 	}
 	
+	
+	
 	private java.util.List< ResourceLoadedObserver > resourceLoadedObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	
-	private static java.util.Map< String, TextToSpeechResource > textToResourceMap = new java.util.HashMap< String, TextToSpeechResource >();
+	private static java.util.Map< TextVoicePair, TextToSpeechResource > textToResourceMap = new java.util.HashMap< TextVoicePair, TextToSpeechResource >();
 
 	protected String text;
+	protected String voice;
 	private boolean isLoaded;
 	
-	private static TextToSpeechResource get( String text ) {
-		TextToSpeechResource rv = textToResourceMap.get( text );
+	private static TextToSpeechResource get( String text, String voice ) {
+		TextVoicePair tvp = new TextVoicePair(text, voice);
+		TextToSpeechResource rv = textToResourceMap.get( tvp );
 		if( rv != null ) 
 		{
 			//pass
 		} else {
-			rv = new TextToSpeechResource( text );
-			textToResourceMap.put( text, rv );
+			rv = new TextToSpeechResource( text, voice );
+			textToResourceMap.put( tvp, rv );
 		}
 		return rv;
 	}
 	
-	public static TextToSpeechResource valueOf( String s ) {
-		return get( s );
+	public static TextToSpeechResource valueOf( String text, String voice ) {
+		return get( text, voice );
 	}
 	
-	public TextToSpeechResource(String text)
+	public TextToSpeechResource(String text, String voice)
 	{
 		super(java.util.UUID.randomUUID());
 		this.isLoaded = false;
 		this.text = text;
+		this.voice = voice;
 		this.setOriginalFileName( this.text );
 		this.setName( this.text );
 	}
@@ -99,7 +105,7 @@ public class TextToSpeechResource extends AudioResource
 		if (!this.isLoaded)
 		{
 			TextToSpeech tts = new TextToSpeech();
-			tts.processText(this.text);
+			tts.processText(this.text, this.voice);
 			byte[] data = tts.saveToByteArray();
 			this.setContent( AudioResource.getContentType(".wav"), data );
 			this.setDuration(tts.getDuration());

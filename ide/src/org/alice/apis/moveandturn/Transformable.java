@@ -44,6 +44,7 @@
 package org.alice.apis.moveandturn;
 
 import org.alice.apis.moveandturn.graphic.animation.AudioLimitedBubbleAnimation;
+import org.alice.flite.TextToSpeech;
 import org.alice.virtualmachine.resources.TextToSpeechResource;
 
 import edu.cmu.cs.dennisc.alice.annotations.*;
@@ -354,7 +355,7 @@ public abstract class Transformable extends AbstractTransformable {
 	}
 	
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void speak( String text, org.alice.apis.moveandturn.Font font, Color textColor, Color bubbleFillColor, Color bubbleOutlineColor ) {
+	public void speak( String text, VoiceType voice, org.alice.apis.moveandturn.Font font, Color textColor, Color bubbleFillColor, Color bubbleOutlineColor ) {
 		edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble();
 		bubble.text.setValue(text);
 		bubble.font.setValue(font.getAsAWTFont());
@@ -362,8 +363,8 @@ public abstract class Transformable extends AbstractTransformable {
 		bubble.fillColor.setValue(bubbleFillColor.getInternal());
 		bubble.outlineColor.setValue(bubbleOutlineColor.getInternal());
 		bubble.originator.setValue( m_originator );
-		
-		final TextToSpeechResource tts = TextToSpeechResource.valueOf(text);
+
+		final TextToSpeechResource tts = TextToSpeechResource.valueOf(text, voice.getVoiceString());
 		final AudioLimitedBubbleAnimation bubbleAnimation = new AudioLimitedBubbleAnimation(this, .3, .3, bubble, tts);
 		Runnable[] runnables = new Runnable[ 2 ];
 		runnables[ 0 ] = new Runnable() { 
@@ -387,20 +388,24 @@ public abstract class Transformable extends AbstractTransformable {
 	}
 	
 	@MethodTemplate( visibility=Visibility.CHAINED )
-	public void speak( String text, org.alice.apis.moveandturn.Font font, Color textColor, Color bubbleFillColor ) {
-		speak( text, font, textColor, bubbleFillColor, Color.BLACK );
+	public void speak( String text, VoiceType voice, org.alice.apis.moveandturn.Font font, Color textColor, Color bubbleFillColor ) {
+		speak( text, voice, font, textColor, bubbleFillColor, Color.BLACK );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
-	public void speak( String text, org.alice.apis.moveandturn.Font font, Color textColor ) {
-		speak( text,  font, textColor, Color.WHITE );
+	public void speak( String text, VoiceType voice, org.alice.apis.moveandturn.Font font, Color textColor ) {
+		speak( text, voice, font, textColor, Color.WHITE );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
-	public void speak( String text,org.alice.apis.moveandturn.Font font ) {
-		speak( text, font, Color.BLACK );
+	public void speak( String text, VoiceType voice, org.alice.apis.moveandturn.Font font ) {
+		speak( text, voice, font, Color.BLACK );
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public void speak( String text, VoiceType voice ) {
+		speak( text, voice, DEFAULT_FONT );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void speak( String text ) {
-		speak( text, DEFAULT_FONT );
+		speak( text, VoiceType.MALE );
 	}
 
 	

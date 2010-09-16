@@ -42,6 +42,11 @@
  */
 package org.alice.apis.stage;
 
+import org.alice.apis.moveandturn.VoiceType;
+
+import edu.cmu.cs.dennisc.alice.annotations.MethodTemplate;
+import edu.cmu.cs.dennisc.alice.annotations.Visibility;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,7 +59,7 @@ public class FemaleAdult extends Adult implements Female {
 	public Boolean isPregnant() {
 		return m_isPregnant;
 	}
-
+	
 	//todo
 //	public void requestPregnant( Boolean isPregnant ) {
 //		if( m_isPregnant != isPregnant ) {
