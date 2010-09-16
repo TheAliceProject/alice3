@@ -462,7 +462,7 @@ public abstract class ConstructionGuide {
 		return this.stencil;
 	}
 	public void addSteps( edu.cmu.cs.dennisc.croquet.RootContext sourceContext ) {
-		this.addMessageStep( "start", "start of tutorial" );
+		//this.addMessageStep( "start", "start of tutorial" );
 		this.sourceContext = sourceContext;
 		final int N = sourceContext.getChildCount();
 		for( int i=0; i<N; i++ ) {

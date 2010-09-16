@@ -58,7 +58,11 @@ import edu.cmu.cs.dennisc.tutorial.*;
 		this.setText( dragAndDropContext.getModel().getTutorialDragNoteText( dragAndDropContext, ConstructionGuide.getInstance().getUserInformation() ) );
 		ModelFromContextResolver modelResolver = new ModelFromContextResolver( dragAndDropContext );
 		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
-		DropSiteResolver dropSiteResolver = new DropSiteResolver( dragAndDropContext ); 
 		this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			
+
+		DropSiteResolver dropSiteResolver = new DropSiteResolver( dragAndDropContext ); 
+		DropPreviewHole dropHole = new DropPreviewHole( dropSiteResolver, Feature.ConnectionPreference.NORTH_SOUTH );
+		dropHole.setHeightConstraint( 64 );
+		this.addFeature( dropHole );			
 	}
 }

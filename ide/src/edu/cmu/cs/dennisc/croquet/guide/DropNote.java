@@ -66,9 +66,8 @@ import edu.cmu.cs.dennisc.tutorial.*;
 		super( requirements );
 		this.setText( dragAndDropContext.getModel().getTutorialDropNoteText( dragAndDropContext, ConstructionGuide.getInstance().getUserInformation() ) );
 		DropSiteResolver dropSiteResolver = new DropSiteResolver( dragAndDropContext ); 
-		
 		Hole dropHole = new Hole( dropSiteResolver, Feature.ConnectionPreference.NORTH_SOUTH );
-		dropHole.setHeightConstraint( 100 );
+		dropHole.setHeightConstraint( 64 );
 		this.addFeature( dropHole );			
 	}
 }
