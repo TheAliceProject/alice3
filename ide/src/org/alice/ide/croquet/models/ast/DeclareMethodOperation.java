@@ -57,6 +57,8 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.In
 		org.alice.ide.croquet.edits.ast.DeclareMethodEdit originalDeclareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)originalEdit;
 		return originalDeclareMethodEdit.createTutorialCompletionEdit( retargeter );
 	}
+	
+	protected abstract String getMethodDescription( edu.cmu.cs.dennisc.croquet.UserInformation userInformation );
 
 	@Override
 	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
@@ -65,9 +67,27 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.In
 		if( successfulCompletionEvent != null ) {
 			org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)successfulCompletionEvent.getEdit();
 			sb.append( "Declare " );
+			sb.append( this.getMethodDescription( userInformation ) );
+			sb.append( " named " );
+			//sb.append( "<strong>" );
+			sb.append( declareMethodEdit.getMethod().getName() );
+			//sb.append( "</strong>" );
+		}
+		return sb.toString();
+	}
+	
+	@Override
+	public String getTutorialFinishNoteText( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		StringBuilder sb = new StringBuilder();
+		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = inputDialogOperationContext.getSuccessfulCompletionEvent();
+		if( successfulCompletionEvent != null ) {
+			org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)successfulCompletionEvent.getEdit();
+			sb.append( "1) Enter name: " );
 			sb.append( "<strong>" );
 			sb.append( declareMethodEdit.getMethod().getName() );
 			sb.append( "</strong>" );
+			sb.append( "<br>" );
+			sb.append( "2) Press <strong>OK</strong>." );
 		}
 		return sb.toString();
 	}

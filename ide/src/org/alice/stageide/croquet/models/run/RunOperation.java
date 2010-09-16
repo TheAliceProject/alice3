@@ -118,6 +118,15 @@ public class RunOperation extends edu.cmu.cs.dennisc.croquet.DialogOperation {
 		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "985b3795-e1c7-4114-9819-fae4dcfe5676" ) );
 		this.setSmallIcon( new RunIcon() );
 	}
+	
+	@Override
+	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return "Run your program.";
+	}
+	@Override
+	public String getTutorialCloseNoteText( edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return "Press the <strong>Close</strong> button when the program has finished running.";
+	}
 	private java.awt.Point location = new java.awt.Point( 100, 100 );
 	private java.awt.Dimension size = null;
 	@Override

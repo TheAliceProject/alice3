@@ -458,7 +458,7 @@ public class ListSelectionState<E> extends State implements Iterable<E>/*, java.
 	}
 	public String getTutorialNoteFinishText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
 		StringBuilder sb = new StringBuilder();
-		sb.append( "Now select " );
+		sb.append( "Select " );
 		sb.append( "<strong>" );
 		this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
 		sb.append( "</strong>" );

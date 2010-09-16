@@ -73,9 +73,11 @@ package edu.cmu.cs.dennisc.tutorial;
 				// }
 			}
 			sb.append("<html>");
+			sb.append("<em>");
 			sb.append("Step ");
 			sb.append(i + 1);
 			sb.append(": ");
+			sb.append("</em>");
 			sb.append(value);
 			sb.append("</html>");
 			

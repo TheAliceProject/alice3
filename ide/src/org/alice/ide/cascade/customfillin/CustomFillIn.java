@@ -73,6 +73,13 @@ public abstract class CustomFillIn<E extends edu.cmu.cs.dennisc.alice.ast.Expres
 	}
 
 	@Override
+	public StringBuilder appendTutorialNoteText( java.lang.StringBuilder rv, java.util.Locale locale ) {
+		super.appendTutorialNoteText( rv, locale );
+		rv.append( getMenuProxyText() );
+		return rv;
+	}
+	
+	@Override
 	protected void addChildren() {
 	}
 	

@@ -55,7 +55,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 	}
 	private DragNote( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, Requirement< ? > requirement ) {
 		super( requirement );
-		this.setText( dragAndDropContext.getModel().getTutorialDragNoteText() );
+		this.setText( dragAndDropContext.getModel().getTutorialDragNoteText( dragAndDropContext, ConstructionGuide.getInstance().getUserInformation() ) );
 		ModelFromContextResolver modelResolver = new ModelFromContextResolver( dragAndDropContext );
 		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
 		DropSiteResolver dropSiteResolver = new DropSiteResolver( dragAndDropContext ); 

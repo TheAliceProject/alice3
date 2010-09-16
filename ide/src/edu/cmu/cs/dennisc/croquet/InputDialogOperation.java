@@ -137,6 +137,10 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 		return ContextManager.createAndPushInputDialogOperationContext( this, e, viewController );
 	}
 
+	
+	public String getTutorialFinishNoteText( InputDialogOperationContext< ? > inputDialogOperationContext, UserInformation userInformation ) {
+		return "When finished press the <strong>OK</strong> button.";
+	}
 
 	public static interface ExternalOkButtonDisabler<J extends Component<?>> {
 		public String getExplanationIfOkButtonShouldBeDisabled( InputDialogOperationContext<J> context );

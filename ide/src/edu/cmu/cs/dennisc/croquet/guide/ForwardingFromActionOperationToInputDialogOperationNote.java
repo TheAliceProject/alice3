@@ -46,9 +46,7 @@ package edu.cmu.cs.dennisc.croquet.guide;
  */
 /*package-private*/ class ForwardingFromActionOperationToInputDialogOperationNote extends RequirementNote {
 	public static ForwardingFromActionOperationToInputDialogOperationNote createInstance( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.ActionOperationContext actionOperationContext, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent actionCompletionEvent, edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent inputDialogCompletionEvent ) {
-		ForwardingFromActionOperationToInputDialogOperationNote rv = new ForwardingFromActionOperationToInputDialogOperationNote( 
-				inputDialogOperationContext 
-		);
+		ForwardingFromActionOperationToInputDialogOperationNote rv = new ForwardingFromActionOperationToInputDialogOperationNote( parentContextCriterion, actionOperationContext, actionCompletionEvent, inputDialogOperationContext, inputDialogCompletionEvent );
 		rv.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.InputDialogOperationContext.class ) );
 		rv.addRequirement( new IsChildOfAndInstanceOf( rv.getAcceptedContextAt( 0 ), edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowOpenedEvent.class ) );
 		//rv.addRequirement( new IsChildOfAndInstanceOf( rv.getAcceptedContextAt( 0 ), edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext.WindowClosingEvent.class ) );
@@ -56,8 +54,20 @@ package edu.cmu.cs.dennisc.croquet.guide;
 		rv.addRequirement( new IsAcceptableSuccessfulCompletionOf( parentContextCriterion, actionCompletionEvent ) );
 		return rv;
 	}
-	private ForwardingFromActionOperationToInputDialogOperationNote( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext ) {
-		this.setText( "press ok button" );
+	private ForwardingFromActionOperationToInputDialogOperationNote( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.ActionOperationContext actionOperationContext, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent actionCompletionEvent, edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent inputDialogCompletionEvent ) {
+		edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > inputDialogOperation = inputDialogOperationContext.getModel();
+		String text = inputDialogOperation.getTutorialNoteText( inputDialogOperationContext, ConstructionGuide.getInstance().getUserInformation() );
+		edu.cmu.cs.dennisc.croquet.Edit< ? > edit = actionCompletionEvent.getEdit();
+		if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
+			org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;
+			edu.cmu.cs.dennisc.alice.ast.Expression[] originalExpressions = insertStatementEdit.getOriginalExpressions();
+			if( originalExpressions.length > 0 ) {
+				StringBuilder sb = new StringBuilder();
+				edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( sb, originalExpressions[ 0 ], java.util.Locale.getDefault() );
+				text = text.replaceAll( "fill_in_expression_value_here", sb.toString() );
+			}
+		}
+		this.setText( text );
 		final ModelFromContextResolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> > inputDialogOperationResolver = new ModelFromContextResolver( inputDialogOperationContext );
 		this.addFeature( new edu.cmu.cs.dennisc.tutorial.InputDialogCommitFeature( new edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
 			public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {

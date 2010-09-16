@@ -59,10 +59,14 @@ public abstract class DragAndDropModel extends Model {
 	protected void localize() {
 	}
 	
-	public String getTutorialDragNoteText() {
+	@Override
+	public String getTutorialStepTitle( ModelContext< ? > modelContext, UserInformation userInformation ) {
+		return "Drag and Drop...";
+	}
+	public String getTutorialDragNoteText( DragAndDropContext dragAndDropContext, UserInformation userInformation ) {
 		return "Drag...";
 	}
-	public String getTutorialDropNoteText() {
+	public String getTutorialDropNoteText( DragAndDropContext dragAndDropContext, UserInformation userInformation ) {
 		return "Drop...";
 	}
 	

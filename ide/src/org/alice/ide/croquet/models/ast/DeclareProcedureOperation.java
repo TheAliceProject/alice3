@@ -69,4 +69,8 @@ public class DeclareProcedureOperation extends DeclareMethodOperation {
 	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
 		return new org.alice.ide.declarationpanes.CreateProcedurePane( type );
 	}
+	@Override
+	protected String getMethodDescription( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return "Procedure";
+	}
 }

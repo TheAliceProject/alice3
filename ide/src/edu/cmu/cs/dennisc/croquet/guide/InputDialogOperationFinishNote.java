@@ -53,7 +53,8 @@ package edu.cmu.cs.dennisc.croquet.guide;
 	}
 	private InputDialogOperationFinishNote( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, Requirement< ? > requirement ) {
 		super( requirement );
-		this.setText( "press ok button" );
+		edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > inputDialogOperation = inputDialogOperationContext.getModel();
+		this.setText( inputDialogOperation.getTutorialFinishNoteText( inputDialogOperationContext, ConstructionGuide.getInstance().getUserInformation() ) );
 		final ModelFromContextResolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> > inputDialogOperationResolver = new ModelFromContextResolver( inputDialogOperationContext );
 		this.addFeature( new edu.cmu.cs.dennisc.tutorial.InputDialogCommitFeature( new edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
 			public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {

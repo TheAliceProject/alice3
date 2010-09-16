@@ -70,4 +70,20 @@ public abstract class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.al
 			context.cancel();
 		}
 	}
+	@Override
+	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		StringBuilder sb = new StringBuilder();
+		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+		if( successfulCompletionEvent != null ) {
+			//org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)successfulCompletionEvent.getEdit();
+			sb.append( "1) Enter " );
+			sb.append( "<strong>" );
+			sb.append( "fill_in_expression_value_here" );
+			sb.append( "</strong>" );
+			sb.append( "<br>" );
+			sb.append( "2) Press <strong>OK</strong>." );
+		}
+		return sb.toString();
+	}
+	
 }

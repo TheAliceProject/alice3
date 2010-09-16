@@ -59,9 +59,13 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	
 	protected abstract C createContext( java.util.EventObject e, ViewController< ?, ? > viewController );
 
+	public String getTutorialStartNoteText( OperationContext< ? > operationContext, UserInformation userInformation ) {
+		return "Press " + this.getTutorialNoteText( operationContext, userInformation );
+	}
+
 	@Override
 	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
-		return "Press <strong>" + this.getName() + "</strong>";
+		return "<strong>" + this.getName() + "</strong>";
 	}
 	
 	protected Edit< ? > createTutorialCompletionEdit( Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
@@ -145,10 +149,6 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	}
 	protected abstract void perform( C context );
 
-	
-	public String getTutorialStartNoteText( OperationContext< ? > operationContext, UserInformation userInformation ) {
-		return this.getTutorialNoteText( operationContext, userInformation );
-	}
 
 	public String getName() {
 		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );

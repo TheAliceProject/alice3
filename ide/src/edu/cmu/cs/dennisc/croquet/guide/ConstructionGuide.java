@@ -292,7 +292,10 @@ public class ConstructionGuide {
 		@Override
 		protected String getTitle() {
 			edu.cmu.cs.dennisc.croquet.Model model = context.getModel();
-			return model.getTutorialStepTitle( context, ConstructionGuide.getInstance().getUserInformation() );
+			String rv = model.getTutorialStepTitle( context, ConstructionGuide.getInstance().getUserInformation() );
+			rv = rv.replaceAll( "<strong>", "" );
+			rv = rv.replaceAll( "</strong>", "" );
+			return rv;
 		}
 		@Override
 		public void reset() {

@@ -67,4 +67,8 @@ public class StatementClassTemplateDragModel extends TemplateDragModel {
 	protected edu.cmu.cs.dennisc.croquet.CodableResolver< StatementClassTemplateDragModel > createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.ClassKeyedStaticGetInstanceKeyedResolver< StatementClassTemplateDragModel >( this, this.cls );
 	}
+	@Override
+	protected String getTutorialStepDescription( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.ubiquitouspane.Templates", userInformation.getLocale() );
+	}
 }
