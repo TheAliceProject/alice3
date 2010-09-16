@@ -352,32 +352,46 @@ public abstract class ConstructionGuide {
 			
 			edu.cmu.cs.dennisc.croquet.Model model = this.context.getModel();
 			edu.cmu.cs.dennisc.croquet.Component< ? > component = model.getFirstComponent();
-			if( component instanceof edu.cmu.cs.dennisc.croquet.MenuItem ) {
-				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = this.context.getSuccessfulCompletionEvent();
-				edu.cmu.cs.dennisc.croquet.Model descendantModel = successfulCompletionEvent.getParent().getModel();
-
-				java.util.List< edu.cmu.cs.dennisc.croquet.Model > list = huntFor( descendantModel );
-				if( list != null ) {
-					edu.cmu.cs.dennisc.croquet.MenuBarModelContext menuBarModelContext = edu.cmu.cs.dennisc.croquet.ContextManager.createContextFor( list, this.context );
-					appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, menuBarModelContext );
-				} else {
-					//todo?
-				}
-			} else {
+//			if( component instanceof edu.cmu.cs.dennisc.croquet.MenuItem ) {
+//				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = this.context.getSuccessfulCompletionEvent();
+//				edu.cmu.cs.dennisc.croquet.Model descendantModel = successfulCompletionEvent.getParent().getModel();
+//
+//				java.util.List< edu.cmu.cs.dennisc.croquet.Model > list = huntFor( descendantModel );
+//				if( list != null ) {
+//					edu.cmu.cs.dennisc.croquet.MenuBarModelContext menuBarModelContext = edu.cmu.cs.dennisc.croquet.ContextManager.createContextFor( list, this.context );
+//					appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, menuBarModelContext );
+//				} else {
+//					//todo?
+//				}
+//			} else {
 				if( component != null && component.isInView() ) {
 					appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, this.context );
 				} else {
-					edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = this.context.getSuccessfulCompletionEvent();
-					edu.cmu.cs.dennisc.croquet.Model descendantModel = successfulCompletionEvent.getParent().getModel();
-					edu.cmu.cs.dennisc.croquet.Component< ? > descendantComponent = descendantModel.getFirstComponent();
-					if( descendantComponent != null && descendantComponent.getAwtComponent().isShowing() ) {
-						//pass
+					edu.cmu.cs.dennisc.croquet.Component< ? > notNecessarilyShowingComponent = model.getFirstNotNecessarilyShowingComponent();
+					if( notNecessarilyShowingComponent instanceof edu.cmu.cs.dennisc.croquet.MenuItem ) {
+						edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = this.context.getSuccessfulCompletionEvent();
+						edu.cmu.cs.dennisc.croquet.Model descendantModel = successfulCompletionEvent.getParent().getModel();
+
+						java.util.List< edu.cmu.cs.dennisc.croquet.Model > list = huntFor( descendantModel );
+						if( list != null ) {
+							edu.cmu.cs.dennisc.croquet.MenuBarModelContext menuBarModelContext = edu.cmu.cs.dennisc.croquet.ContextManager.createContextFor( list, this.context );
+							appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, menuBarModelContext );
+						} else {
+							//todo?
+						}
 					} else {
-						ConstructionGuide.this.addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, this.context );
+						edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = this.context.getSuccessfulCompletionEvent();
+						edu.cmu.cs.dennisc.croquet.Model descendantModel = successfulCompletionEvent.getParent().getModel();
+						edu.cmu.cs.dennisc.croquet.Component< ? > descendantComponent = descendantModel.getFirstComponent();
+						if( descendantComponent != null && descendantComponent.getAwtComponent().isShowing() ) {
+							//pass
+						} else {
+							ConstructionGuide.this.addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, this.context );
+						}
+						appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, successfulCompletionEvent.getParent() );
 					}
-					appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, successfulCompletionEvent.getParent() );
 				}
-			}
+//			}
 			return rv;
 		}
 		@Override

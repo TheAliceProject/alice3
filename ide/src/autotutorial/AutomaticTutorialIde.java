@@ -24,7 +24,7 @@ enum BareBonesUserInformation implements edu.cmu.cs.dennisc.croquet.UserInformat
 public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 	private static boolean IS_ENCODING;
 	private static boolean IS_WIZARD_OF_OZ_HASTINGS_DESIRED;
-	private static boolean IS_MONKEY_WRENCH_DESIRED = true;
+	private static boolean IS_MONKEY_WRENCH_DESIRED = false;
 	private static final String UI_HISTORY_PATH = "/autoTutorial1.bin";
 	private static final String POST_PROJECT_PATH = "/post.a3p";
 	
