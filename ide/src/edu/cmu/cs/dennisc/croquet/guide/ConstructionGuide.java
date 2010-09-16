@@ -62,6 +62,7 @@ public class ConstructionGuide {
 		return layeredPane; 
 	}
 
+	private edu.cmu.cs.dennisc.croquet.UserInformation userInformation;
 	private AutomaticTutorialStencil stencil;
 	private edu.cmu.cs.dennisc.croquet.RootContext sourceContext;
 
@@ -71,10 +72,17 @@ public class ConstructionGuide {
 		}
 	}
 	
-	public ConstructionGuide( MenuPolicy menuPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
+	public ConstructionGuide( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, MenuPolicy menuPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
+		assert instance == null;
 		instance = this;
+		this.userInformation = userInformation;
 		this.stencil = new AutomaticTutorialStencil( menuPolicy, scrollingRequiredRenderer, getLayeredPane(), groupsTrackedForRandomAccess );
 	}
+	
+	public edu.cmu.cs.dennisc.croquet.UserInformation getUserInformation() {
+		return this.userInformation;
+	}
+	
 	private edu.cmu.cs.dennisc.croquet.Retargeter retargeter;
 	public edu.cmu.cs.dennisc.croquet.Retargeter getRetargeter() {
 		return this.retargeter;
@@ -284,7 +292,7 @@ public class ConstructionGuide {
 		@Override
 		protected String getTitle() {
 			edu.cmu.cs.dennisc.croquet.Model model = context.getModel();
-			return model.getClass().getSimpleName();
+			return model.getTutorialStepTitle( context, ConstructionGuide.getInstance().getUserInformation() );
 		}
 		@Override
 		public void reset() {

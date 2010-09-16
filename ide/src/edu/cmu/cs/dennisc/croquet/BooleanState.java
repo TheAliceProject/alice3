@@ -125,27 +125,35 @@ public /*final*/ class BooleanState extends State<Boolean> {
 	}
 	
 	@Override
-	public String getTutorialNoteText( Edit< ? > edit ) {
-		BooleanStateEdit booleanStateEdit = (BooleanStateEdit)edit;
+	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, UserInformation userInformation ) {
+		return getTutorialNoteText( modelContext, userInformation );
+	}
+
+	@Override
+	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
 		StringBuilder sb = new StringBuilder();
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.trueText, this.falseText ) ) {
-			if( booleanStateEdit.getNextValue() ) {
-				sb.append( "Select " );
+		SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+		if( successfulCompletionEvent != null ) {
+			BooleanStateEdit booleanStateEdit = (BooleanStateEdit)successfulCompletionEvent.getEdit();
+			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.trueText, this.falseText ) ) {
+				if( booleanStateEdit.getNextValue() ) {
+					sb.append( "Select " );
+				} else {
+					sb.append( "Unselect " );
+				}
+				sb.append( "<strong>" );
+				sb.append( this.getTrueText() );
+				sb.append( "</strong>" );
 			} else {
-				sb.append( "Unselect " );
+				sb.append( "Press " );
+				sb.append( "<strong>" );
+				if( booleanStateEdit.getNextValue() ) {
+					sb.append( this.falseText );
+				} else {
+					sb.append( this.trueText );
+				}
+				sb.append( "</strong>" );
 			}
-			sb.append( "<strong>" );
-			sb.append( this.getTrueText() );
-			sb.append( "</strong>" );
-		} else {
-			sb.append( "Press " );
-			sb.append( "<strong>" );
-			if( booleanStateEdit.getNextValue() ) {
-				sb.append( this.falseText );
-			} else {
-				sb.append( this.trueText );
-			}
-			sb.append( "</strong>" );
 		}
 		return sb.toString();
 	}

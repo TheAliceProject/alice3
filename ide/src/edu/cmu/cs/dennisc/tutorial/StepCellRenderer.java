@@ -72,10 +72,13 @@ package edu.cmu.cs.dennisc.tutorial;
 				// stepsModel.getElementAt( i );
 				// }
 			}
+			sb.append("<html>");
 			sb.append("Step ");
 			sb.append(i + 1);
 			sb.append(": ");
 			sb.append(value);
+			sb.append("</html>");
+			
 			rv.setText(sb.toString());
 		}
 		

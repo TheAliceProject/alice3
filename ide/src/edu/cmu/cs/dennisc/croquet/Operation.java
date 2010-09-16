@@ -60,9 +60,8 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	protected abstract C createContext( java.util.EventObject e, ViewController< ?, ? > viewController );
 
 	@Override
-	public String getTutorialNoteText( Edit< ? > edit ) {
-	//todo
-		return "Press " + this.getName();
+	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
+		return "Press <strong>" + this.getName() + "</strong>";
 	}
 	
 	protected Edit< ? > createTutorialCompletionEdit( Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
@@ -124,10 +123,6 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 		this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 	}
 	
-	public String getTutorialNoteText() {
-		return this.getName();
-	}
-	
 	protected static interface PerformObserver { 
 		public void handleFinally(); 
 	}
@@ -150,7 +145,10 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	}
 	protected abstract void perform( C context );
 
-	//protected abstract void perform( ModelContext context, java.util.EventObject e, Component<?> component );
+	
+	public String getTutorialStartNoteText( OperationContext< ? > operationContext, UserInformation userInformation ) {
+		return this.getTutorialNoteText( operationContext, userInformation );
+	}
 
 	public String getName() {
 		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );

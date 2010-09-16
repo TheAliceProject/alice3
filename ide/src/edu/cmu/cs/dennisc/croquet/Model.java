@@ -63,12 +63,39 @@ public abstract class Model implements RuntimeResolver< Model > {
 	@Deprecated
 	protected abstract boolean isOwnerOfEdit();
 
-	public String getTutorialNoteText( Edit< ? > edit ) {
+	private static StringBuilder appendSuccessfulCompletionEventText( StringBuilder rv, SuccessfulCompletionEvent successfulCompletionEvent ) {
+		if( successfulCompletionEvent != null ) {
+			if( successfulCompletionEvent instanceof CommitEvent ) {
+				CommitEvent commitEvent = (CommitEvent)successfulCompletionEvent;
+				rv.append( "[committed=" );
+				rv.append( commitEvent.getEdit() );
+				rv.append( "]" );
+			} else if( successfulCompletionEvent instanceof FinishEvent ) {
+				FinishEvent finishEvent = (FinishEvent)successfulCompletionEvent;
+				rv.append( "[finished]" );
+			} else {
+				rv.append( "[unknown]" );
+			}
+		} else {
+			rv.append( "[null]" );
+		}
+		return rv;
+	}
+	public String getTutorialStepTitle( ModelContext< ? > modelContext, UserInformation userInformation ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "title: " );
+		sb.append( this );
+		if( modelContext != null ) {
+			appendSuccessfulCompletionEventText( sb, modelContext.getSuccessfulCompletionEvent() );
+		}
+		return sb.toString();
+	}
+	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( this );
-		sb.append( "[" );
-		sb.append( edit );
-		sb.append( "]" );
+		if( modelContext != null ) {
+			appendSuccessfulCompletionEventText( sb, modelContext.getSuccessfulCompletionEvent() );
+		}
 		return sb.toString();
 	}
 	

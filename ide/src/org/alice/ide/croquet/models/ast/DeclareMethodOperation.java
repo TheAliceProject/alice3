@@ -57,6 +57,21 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.In
 		org.alice.ide.croquet.edits.ast.DeclareMethodEdit originalDeclareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)originalEdit;
 		return originalDeclareMethodEdit.createTutorialCompletionEdit( retargeter );
 	}
+
+	@Override
+	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		StringBuilder sb = new StringBuilder();
+		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+		if( successfulCompletionEvent != null ) {
+			org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)successfulCompletionEvent.getEdit();
+			sb.append( "Declare " );
+			sb.append( "<strong>" );
+			sb.append( declareMethodEdit.getMethod().getName() );
+			sb.append( "</strong>" );
+		}
+		return sb.toString();
+	}
+
 //	@Override
 //	public edu.cmu.cs.dennisc.croquet.Edit< ? > createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 //		assert edit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit;

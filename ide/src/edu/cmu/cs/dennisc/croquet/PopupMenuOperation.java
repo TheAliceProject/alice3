@@ -66,6 +66,27 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 		return ContextManager.createAndPushPopupMenuOperationContext( this, e, viewController );
 	}
 	
+	@Override
+	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+		if( successfulCompletionEvent != null ) {
+			ModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
+			return descendantContext.getModel().getTutorialStepTitle( descendantContext, userInformation );
+		} else {
+			return super.getTutorialStepTitle( modelContext, userInformation );
+		}
+	}
+	@Override
+	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+		if( successfulCompletionEvent != null ) {
+			ModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
+			return descendantContext.getModel().getTutorialNoteText( descendantContext, userInformation );
+		} else {
+			return super.getTutorialNoteText( modelContext, userInformation );
+		}
+	}
+	
 	public static class PopupMenuOperationResolver implements CodableResolver< PopupMenuOperation > {
 		private PopupMenuOperation popupMenuOperation;
 		

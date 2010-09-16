@@ -55,7 +55,8 @@ import edu.cmu.cs.dennisc.tutorial.*;
 	}
 	private OperationStartNote( edu.cmu.cs.dennisc.croquet.OperationContext< ? > operationContext, Requirement< ? > requirement ) {
 		super( requirement );
-		this.setText( operationContext.getModel().getTutorialNoteText( null ) );
+		edu.cmu.cs.dennisc.croquet.Operation< ? > operation = operationContext.getModel();
+		this.setText( operation.getTutorialStartNoteText( operationContext, ConstructionGuide.getInstance().getUserInformation() ) );
 		ModelFromContextResolver modelResolver = new ModelFromContextResolver( operationContext );
 		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
 		this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			

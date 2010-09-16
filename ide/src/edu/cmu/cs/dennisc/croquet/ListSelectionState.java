@@ -427,15 +427,23 @@ public class ListSelectionState<E> extends State implements Iterable<E>/*, java.
 	}
 	
 	@Override
-	public String getTutorialNoteText( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)edit;
+	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, UserInformation userInformation ) {
+		return getTutorialNoteText( modelContext, userInformation );
+	}
+	@Override
+	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
 		StringBuilder sb = new StringBuilder();
-		sb.append( "Select " );
-		sb.append( "<strong>" );
-		this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
-		sb.append( "</strong>" );
+		SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+		if( successfulCompletionEvent != null ) {
+			ListSelectionStateEdit< E > listSelectionStateEdit = (ListSelectionStateEdit< E >)successfulCompletionEvent.getEdit();
+			sb.append( "Select " );
+			sb.append( "<strong>" );
+			this.codec.appendRepresentation( sb, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
+			sb.append( "</strong>" );
+		}
 		return sb.toString();
 	}
+	
 	public String getTutorialNoteStartText( ListSelectionStateEdit< E > listSelectionStateEdit ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "First press on " );

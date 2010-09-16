@@ -13,6 +13,14 @@ class WizardOfHastings {
 		retargeter.addKeyValuePair( originalField.getValueType(), replacementField.getValueType() );
 	}
 }
+
+enum BareBonesUserInformation implements edu.cmu.cs.dennisc.croquet.UserInformation {
+	INSTANCE;
+	public java.util.Locale getLocale() {
+		return java.util.Locale.getDefault();
+	}
+}
+
 public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 	private static boolean IS_ENCODING;
 	private static boolean IS_WIZARD_OF_OZ_HASTINGS_DESIRED;
@@ -174,6 +182,7 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 		//edu.cmu.cs.dennisc.tutorial.ScrollingRequiredRenderer scrollingRequiredRenderer = null;
 		edu.cmu.cs.dennisc.tutorial.ScrollingRequiredRenderer scrollingRequiredRenderer = edu.cmu.cs.dennisc.tutorial.DefaultScrollingRequiredRenderer.INSTANCE;
 		final edu.cmu.cs.dennisc.croquet.guide.ConstructionGuide tutorial = new edu.cmu.cs.dennisc.croquet.guide.ConstructionGuide( 
+				BareBonesUserInformation.INSTANCE,
 //				edu.cmu.cs.dennisc.tutorial.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK,
 //				edu.cmu.cs.dennisc.tutorial.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK,
 				edu.cmu.cs.dennisc.croquet.guide.MenuPolicy.BELOW_STENCIL,

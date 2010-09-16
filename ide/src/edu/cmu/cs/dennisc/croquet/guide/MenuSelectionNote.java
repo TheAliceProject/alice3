@@ -172,15 +172,16 @@ import edu.cmu.cs.dennisc.tutorial.*;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class MenuSelectionNote extends RequirementNote {
-	private static String getText( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i ) {
+	private static String getText( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		edu.cmu.cs.dennisc.croquet.Model modelI = menuSelectionEvent.getModelAt( i );
 		StringBuilder sb = new StringBuilder();
 		sb.append( "select <strong><em>" );
-		if( modelI instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
-			sb.append( ((edu.cmu.cs.dennisc.croquet.MenuModel)modelI).getTutorialNoteText() );
-		} else if( modelI instanceof edu.cmu.cs.dennisc.croquet.Operation< ? > ){
-			sb.append( ((edu.cmu.cs.dennisc.croquet.Operation< ? >)modelI).getTutorialNoteText() );
-		}
+		sb.append( modelI.getTutorialNoteText( menuSelectionEvent.getParent(), userInformation ) );
+//		if( modelI instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
+//			sb.append( ((edu.cmu.cs.dennisc.croquet.MenuModel)modelI).getTutorialNoteText( menuSelectionEvent.getParent(), userInformation ) );
+//		} else if( modelI instanceof edu.cmu.cs.dennisc.croquet.Operation< ? > ){
+//			sb.append( ((edu.cmu.cs.dennisc.croquet.Operation< ? >)modelI).getTutorialNoteText( menuSelectionEvent.getParent(), userInformation ) );
+//		}
 		sb.append( "</em></strong>" );
 		return sb.toString();
 	}
@@ -222,7 +223,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 	}
 	
 	private MenuSelectionNote( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, int index0 ) {
-		this.setText( getText( menuSelectionEvent, i ) );
+		this.setText( getText( menuSelectionEvent, i, ConstructionGuide.getInstance().getUserInformation() ) );
 //		this.originalRetargetableMenuModelInitializationEvent = retargetableMenuModelInitializationEvent;
 //		this.originalMenuSelectionEvent = menuSelectionEvent;
 //		this.modelContext = modelContext;

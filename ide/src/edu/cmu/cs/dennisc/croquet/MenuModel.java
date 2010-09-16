@@ -76,7 +76,8 @@ public abstract class MenuModel extends Model {
 		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, getLocalizedMnemonicKey( clsForI18N ) );
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, getLocalizedAcceleratorKeyStroke( clsForI18N ) );
 	}
-	public String getTutorialNoteText() {
+	@Override
+	public String getTutorialNoteText( ModelContext< ? > modelContext, UserInformation userInformation ) {
 		return this.getName();
 	}
 	private String getName() {

@@ -60,6 +60,11 @@ public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit<
 		this.declaringType = declaringType;
 		this.method = method;
 	}
+	
+	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getMethod() {
+		return this.method;
+	}
+	
 	@Override
 	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class ).decode( binaryDecoder );
