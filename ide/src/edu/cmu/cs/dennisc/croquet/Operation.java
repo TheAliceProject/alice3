@@ -187,6 +187,10 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 	}
 
+	@Override
+	public boolean isAlreadyInState( Edit< ? > edit ) {
+		return false;
+	}
 
 	/*package-private*/ void addButton(OperationButton<?,?> button) {
 		button.setAction( Operation.this.action );

@@ -701,6 +701,7 @@ public class ListSelectionState<E> extends State implements Iterable<E>/*, java.
 	protected javax.swing.Icon getMenuSmallIcon( E item ) {
 		return null;
 	}
+
 	/*package-private*/ javax.swing.Action createAction( final E item ) {
 		javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed(java.awt.event.ActionEvent e) {

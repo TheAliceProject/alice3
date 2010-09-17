@@ -71,6 +71,12 @@ public class MenuBarModel extends Model {
 	public java.util.concurrent.CopyOnWriteArrayList< MenuModel > getMenuModels() {
 		return this.menuModels;
 	}
+
+	@Override
+	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		return false;
+	}
+	
 	public MenuBar createMenuBar() {
 		MenuBar rv = new MenuBar( this ) {
 			@Override

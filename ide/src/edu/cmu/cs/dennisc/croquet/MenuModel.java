@@ -144,6 +144,11 @@ public abstract class MenuModel extends Model {
 //		System.err.println( "todo: cancel" + " " + e );
 	}
 	
+	@Override
+	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		return false;
+	}
+	
 	private class PopupMenuListener implements javax.swing.event.PopupMenuListener {
 		private MenuItemContainer menuItemContainer;
 		public PopupMenuListener( MenuItemContainer menuItemContainer ) {

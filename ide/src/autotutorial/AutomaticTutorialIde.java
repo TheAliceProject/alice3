@@ -24,7 +24,7 @@ enum BareBonesUserInformation implements edu.cmu.cs.dennisc.croquet.UserInformat
 public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 	private static boolean IS_ENCODING;
 	private static boolean IS_WIZARD_OF_OZ_HASTINGS_DESIRED;
-	private static boolean IS_MONKEY_WRENCH_DESIRED = false;
+	private static boolean IS_MONKEY_WRENCH_DESIRED = true;
 	private static final String UI_HISTORY_PATH = "/autoTutorial1.bin";
 	private static final String POST_PROJECT_PATH = "/post.a3p";
 	
@@ -50,7 +50,8 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 			
 			if( IS_MONKEY_WRENCH_DESIRED ) {
 				final int N = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getItemCount();
-				org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedIndex( N-2 );
+				org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedIndex( 0 );
+				//org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedIndex( N-2 );
 			}
 			
 			class AstDecodingRetargeter implements edu.cmu.cs.dennisc.croquet.Retargeter {

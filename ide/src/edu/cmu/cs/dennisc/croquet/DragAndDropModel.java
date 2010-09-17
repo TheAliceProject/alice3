@@ -69,6 +69,11 @@ public abstract class DragAndDropModel extends Model {
 	public String getTutorialDropNoteText( DragAndDropContext dragAndDropContext, UserInformation userInformation ) {
 		return "Drop...";
 	}
+
+	@Override
+	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		return false;
+	}
 	
 	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( DragComponent dragSource );
 	public abstract void handleDragStarted( DragAndDropContext dragAndDropContext );

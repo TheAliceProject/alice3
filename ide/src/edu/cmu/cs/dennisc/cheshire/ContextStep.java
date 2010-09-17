@@ -370,7 +370,15 @@ public class ContextStep extends Step implements WaitingStep {
 		}
 	}
 	public boolean isAlreadyInTheDesiredState() {
-		return false;
+		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = this.context.getSuccessfulCompletionEvent();
+		if( successfulCompletionEvent != null ) {
+			edu.cmu.cs.dennisc.croquet.Edit< ? > edit = successfulCompletionEvent.getEdit();
+			edu.cmu.cs.dennisc.croquet.ModelContext< ? > parent = successfulCompletionEvent.getParent();
+			edu.cmu.cs.dennisc.croquet.Model model = this.context.getModel();
+			return model.isAlreadyInState( edit );
+		} else {
+			return false;
+		}
 	}
 	@Override
 	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {

@@ -69,6 +69,10 @@ public final class MenuSeparatorModel extends Model {
 	public javax.swing.Icon getIcon() {
 		return this.icon;
 	}
+	@Override
+	public boolean isAlreadyInState( edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
+		return false;
+	}
 	/*package-private*/ MenuTextSeparator createMenuTextSeparator() {
 		MenuTextSeparator rv = new MenuTextSeparator( this );
 		return rv;

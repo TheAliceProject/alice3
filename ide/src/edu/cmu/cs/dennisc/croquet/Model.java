@@ -370,6 +370,8 @@ public abstract class Model implements RuntimeResolver< Model > {
 			this.firstComponentHint = firstComponentHint;
 		}
 	}
+
+	public abstract boolean isAlreadyInState( Edit< ? > edit );
 	
 	protected StringBuilder appendRepr( StringBuilder rv ) {
 		rv.append( this.getClass().getName() );

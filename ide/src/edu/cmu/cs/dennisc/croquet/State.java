@@ -50,4 +50,15 @@ public abstract class State<T> extends Model {
 		super(group, id);
 	}
 	public abstract T getValue();
+	@Override
+	public boolean isAlreadyInState( Edit< ? > edit ) {
+		if( edit instanceof StateEdit ) {
+			StateEdit< ?, T > stateEdit = (StateEdit< ?, T >)edit;
+			T a = this.getValue();
+			T b = stateEdit.getNextValue();
+			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( a, b );
+		} else {
+			return false;
+		}
+	}
 }
