@@ -99,7 +99,7 @@ abstract class InsertStatementFillInExpressionsMenuModel extends org.alice.ide.c
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Edit< ? > createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)originalEdit;
-		edu.cmu.cs.dennisc.alice.ast.Expression[] expressions = insertStatementEdit.getOriginalExpressions();
+		edu.cmu.cs.dennisc.alice.ast.Expression[] expressions = insertStatementEdit.getInitialExpressions();
 		edu.cmu.cs.dennisc.alice.ast.Statement replacementStatement = this.createStatement( expressions );
 		return insertStatementEdit.createTutorialCompletionEdit( retargeter, replacementStatement );
 	}

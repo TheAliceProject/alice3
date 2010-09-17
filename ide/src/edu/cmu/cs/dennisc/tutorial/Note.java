@@ -135,6 +135,10 @@ public class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JCo
 //		return false;
 //	}
 		
+	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability() {
+		return null;
+	}
+
 	@Override
 	protected javax.swing.JComponent createAwtComponent() {
 		javax.swing.JEditorPane textComponent = new javax.swing.JEditorPane() {

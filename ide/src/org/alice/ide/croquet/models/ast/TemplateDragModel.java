@@ -66,7 +66,7 @@ public abstract class TemplateDragModel extends org.alice.ide.croquet.models.Ide
 			edu.cmu.cs.dennisc.croquet.Edit< ? > edit = successfulCompletionEvent.getEdit();
 			if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
 				org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;
-				edu.cmu.cs.dennisc.alice.ast.Expression[] originalExpressions = insertStatementEdit.getOriginalExpressions();
+				edu.cmu.cs.dennisc.alice.ast.Expression[] originalExpressions = insertStatementEdit.getInitialExpressions();
 				String prefix = " ";
 				for( edu.cmu.cs.dennisc.alice.ast.Expression expression : originalExpressions ) {
 					sb.append( prefix );

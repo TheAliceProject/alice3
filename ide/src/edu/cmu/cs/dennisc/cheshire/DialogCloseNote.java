@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,40 +39,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.tutorial;
+package edu.cmu.cs.dennisc.cheshire;
+
+import edu.cmu.cs.dennisc.tutorial.DialogCloseButtonFeature;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AuthoredStep extends Step {
-	private String title;
-	private java.util.List< Note > notes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public AuthoredStep( String title, String text ) {
-		this.title = title;
-		this.addNote( new Note( text ) );
+/*package-private*/ class DialogCloseNote extends RequirementNote {
+	public static DialogCloseNote createInstance( edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) {
+		return new DialogCloseNote( 
+				dialogOperationContext, 
+				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.DialogOperationContext.WindowClosingEvent.class ), 
+				new IsAcceptableSuccessfulCompletionOf( parentContextCriterion, successfulCompletionEvent )
+		);
 	}
-	@Override
-	protected String getTitle() {
-		return this.title;
-	}
-	public void addNote( Note note ) {
-		this.notes.add( note );
-		note.setTutorialStencil( this.getTutorialStencil() );
-	}
-	@Override
-	public java.util.List< Note > getNotes() {
-		return this.notes;
-	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability() {
-		return null;
-	}
-	
-	@Override
-	public void setTutorialStencil( edu.cmu.cs.dennisc.tutorial.TutorialStencil tutorialStencil ) {
-		super.setTutorialStencil( tutorialStencil );
-		for( Note note : this.notes ) {
-			note.setTutorialStencil( tutorialStencil );
-		}
+	private DialogCloseNote( edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext, ProgressRequirement... requirements ) {
+		super( requirements );
+		edu.cmu.cs.dennisc.croquet.DialogOperation dialogOperation = dialogOperationContext.getModel();
+		this.setText( dialogOperation.getTutorialCloseNoteText( dialogOperationContext, ConstructionGuide.getInstance().getUserInformation() ) );
+		final ModelFromContextResolver< edu.cmu.cs.dennisc.croquet.DialogOperation > dialogOperationResolver = new ModelFromContextResolver( dialogOperationContext );
+		this.addFeature( new DialogCloseButtonFeature( new edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
+			public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
+				edu.cmu.cs.dennisc.croquet.DialogOperation dialogOperation = dialogOperationResolver.getResolved();
+				if( dialogOperation != null ) {
+					edu.cmu.cs.dennisc.croquet.Dialog activeDialog = dialogOperation.getActiveDialog();
+					if( activeDialog != null ) {
+						return activeDialog.getCloseButtonTrackableShape();
+					} else {
+						return null;
+					}
+				} else {
+					return null;
+				}
+			}
+		} ) );
 	}
 }

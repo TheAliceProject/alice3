@@ -173,11 +173,11 @@ public abstract class Edit<M extends Model> implements edu.cmu.cs.dennisc.codec.
 		this.encodeInternal(binaryEncoder);
 	}
 
-	public String getReasonIfReplacementIsUnacceptable( Edit< ? > edit, UserInformation userInformation ) {
-		if( edit != null ) {
-			return null;
+	public ReplacementAcceptability getReplacementAcceptability( Edit< ? > replacementCandidate, UserInformation userInformation ) {
+		if( replacementCandidate != null ) {
+			return ReplacementAcceptability.PERFECT_MATCH;
 		} else {
-			return "edit is null";
+			return ReplacementAcceptability.createRejection( "replacement is null" );
 		}
 	}
 	public void retarget( Retargeter retargeter ) {

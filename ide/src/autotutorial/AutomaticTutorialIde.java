@@ -24,7 +24,7 @@ enum BareBonesUserInformation implements edu.cmu.cs.dennisc.croquet.UserInformat
 public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 	private static boolean IS_ENCODING;
 	private static boolean IS_WIZARD_OF_OZ_HASTINGS_DESIRED;
-	private static boolean IS_MONKEY_WRENCH_DESIRED = true;
+	private static boolean IS_MONKEY_WRENCH_DESIRED = false;
 	private static final String UI_HISTORY_PATH = "/autoTutorial1.bin";
 	private static final String POST_PROJECT_PATH = "/post.a3p";
 	
@@ -95,19 +95,19 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 			this.postContext = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( UI_HISTORY_PATH, edu.cmu.cs.dennisc.croquet.RootContext.class );
 
 			final boolean IS_INFORMATION_GROUP_INCLUDED = false;
-			edu.cmu.cs.dennisc.croquet.guide.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.alice.Project.GROUP, edu.cmu.cs.dennisc.croquet.guide.GroupFilter.SuccessfulCompletionPolicy.ONLY_COMMITS );
-			edu.cmu.cs.dennisc.croquet.guide.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, edu.cmu.cs.dennisc.croquet.guide.GroupFilter.SuccessfulCompletionPolicy.ONLY_COMMITS );
-			edu.cmu.cs.dennisc.croquet.guide.GroupFilter.SINGLETON.addGroup( org.alice.ide.IDE.RUN_GROUP, edu.cmu.cs.dennisc.croquet.guide.GroupFilter.SuccessfulCompletionPolicy.BOTH_COMMITS_AND_FINISHES );
+			edu.cmu.cs.dennisc.cheshire.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.alice.Project.GROUP, edu.cmu.cs.dennisc.cheshire.GroupFilter.SuccessfulCompletionPolicy.ONLY_COMMITS );
+			edu.cmu.cs.dennisc.cheshire.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, edu.cmu.cs.dennisc.cheshire.GroupFilter.SuccessfulCompletionPolicy.ONLY_COMMITS );
+			edu.cmu.cs.dennisc.cheshire.GroupFilter.SINGLETON.addGroup( org.alice.ide.IDE.RUN_GROUP, edu.cmu.cs.dennisc.cheshire.GroupFilter.SuccessfulCompletionPolicy.BOTH_COMMITS_AND_FINISHES );
 			if( IS_INFORMATION_GROUP_INCLUDED ) {
-				edu.cmu.cs.dennisc.croquet.guide.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.croquet.Application.INFORMATION_GROUP, edu.cmu.cs.dennisc.croquet.guide.GroupFilter.SuccessfulCompletionPolicy.BOTH_COMMITS_AND_FINISHES );
+				edu.cmu.cs.dennisc.cheshire.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.croquet.Application.INFORMATION_GROUP, edu.cmu.cs.dennisc.cheshire.GroupFilter.SuccessfulCompletionPolicy.BOTH_COMMITS_AND_FINISHES );
 			}
-			edu.cmu.cs.dennisc.croquet.guide.Filter[] filters = {
+			edu.cmu.cs.dennisc.cheshire.Filter[] filters = {
 					//edu.cmu.cs.dennisc.croquet.tutorial.SuccessfullyCompletedFilter.SINGLETON,
-					edu.cmu.cs.dennisc.croquet.guide.MenuSelectionEventFilter.SINGLETON,
-					edu.cmu.cs.dennisc.croquet.guide.DocumentEventFilter.SINGLETON,
-					edu.cmu.cs.dennisc.croquet.guide.GroupFilter.SINGLETON,
+					edu.cmu.cs.dennisc.cheshire.MenuSelectionEventFilter.SINGLETON,
+					edu.cmu.cs.dennisc.cheshire.DocumentEventFilter.SINGLETON,
+					edu.cmu.cs.dennisc.cheshire.GroupFilter.SINGLETON,
 			};
-			for( edu.cmu.cs.dennisc.croquet.guide.Filter filter : filters ) {
+			for( edu.cmu.cs.dennisc.cheshire.Filter filter : filters ) {
 				this.postContext = filter.filter( this.postContext );
 			}
 			this.isPostProjectLive = false;
@@ -145,10 +145,10 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 			edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
 			
 			System.err.println( "todo: remove filtering" );
-			edu.cmu.cs.dennisc.croquet.guide.Filter[] filters = {
-					edu.cmu.cs.dennisc.croquet.guide.MenuSelectionEventFilter.SINGLETON,
+			edu.cmu.cs.dennisc.cheshire.Filter[] filters = {
+					edu.cmu.cs.dennisc.cheshire.MenuSelectionEventFilter.SINGLETON,
 			};
-			for( edu.cmu.cs.dennisc.croquet.guide.Filter filter : filters ) {
+			for( edu.cmu.cs.dennisc.cheshire.Filter filter : filters ) {
 				rootContext = filter.filter( rootContext );
 			}
 
@@ -189,33 +189,35 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 
 		//edu.cmu.cs.dennisc.tutorial.ScrollingRequiredRenderer scrollingRequiredRenderer = null;
 		edu.cmu.cs.dennisc.tutorial.ScrollingRequiredRenderer scrollingRequiredRenderer = edu.cmu.cs.dennisc.tutorial.DefaultScrollingRequiredRenderer.INSTANCE;
-		final edu.cmu.cs.dennisc.croquet.guide.ConstructionGuide tutorial = new edu.cmu.cs.dennisc.croquet.guide.ConstructionGuide( 
+		final edu.cmu.cs.dennisc.cheshire.ConstructionGuide tutorial = new edu.cmu.cs.dennisc.cheshire.ConstructionGuide( 
 				BareBonesUserInformation.INSTANCE,
 				
 				
 //				edu.cmu.cs.dennisc.tutorial.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK,
 //				edu.cmu.cs.dennisc.tutorial.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK,
-				edu.cmu.cs.dennisc.croquet.guide.MenuPolicy.BELOW_STENCIL,
+				edu.cmu.cs.dennisc.cheshire.MenuPolicy.BELOW_STENCIL,
 				
 				
 				//edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP,
-				edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy.ALLOW_ACCESS_TO_ALL_STEPS,
+				edu.cmu.cs.dennisc.cheshire.StepAccessPolicy.ALLOW_ACCESS_TO_ALL_STEPS,
 				
 				scrollingRequiredRenderer,
 				new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP }
 		) {
 			@Override
-			protected java.util.List< edu.cmu.cs.dennisc.croquet.guide.RetargetableNote > addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( 
-					java.util.List< edu.cmu.cs.dennisc.croquet.guide.RetargetableNote > rv,
-					edu.cmu.cs.dennisc.croquet.guide.ParentContextCriterion parentContextCriterion, 
+			protected java.util.List< edu.cmu.cs.dennisc.cheshire.RetargetableNote > addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( 
+					java.util.List< edu.cmu.cs.dennisc.cheshire.RetargetableNote > rv,
+					edu.cmu.cs.dennisc.cheshire.ParentContextCriterion parentContextCriterion, 
 					edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext ) {
 				
-				System.err.println( "addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound: " + modelContext );
-				org.alice.ide.croquet.models.ui.AccessibleListSelectionState accessibleListSelectionState = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
-				edu.cmu.cs.dennisc.croquet.ListSelectionStateContext context = edu.cmu.cs.dennisc.croquet.ContextManager.createContextFor( accessibleListSelectionState, accessibleListSelectionState.getItemAt( accessibleListSelectionState.getItemCount()-1 ) );
-				edu.cmu.cs.dennisc.croquet.guide.ListSelectionStateStartNote listSelectionStateStartNote =  edu.cmu.cs.dennisc.croquet.guide.ListSelectionStateStartNote.createInstance( context, parentContextCriterion, context.getSuccessfulCompletionEvent() );
-				rv.add( listSelectionStateStartNote );
-				rv.add( edu.cmu.cs.dennisc.croquet.guide.ListSelectionStateFinishNote.createInstance( context, listSelectionStateStartNote.getAcceptedContextAt( 0 ), context.getSuccessfulCompletionEvent() ) );
+				if( IS_MONKEY_WRENCH_DESIRED ) {
+					System.err.println( "addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound: " + modelContext );
+					org.alice.ide.croquet.models.ui.AccessibleListSelectionState accessibleListSelectionState = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
+					edu.cmu.cs.dennisc.croquet.ListSelectionStateContext context = edu.cmu.cs.dennisc.croquet.ContextManager.createContextFor( accessibleListSelectionState, accessibleListSelectionState.getItemAt( accessibleListSelectionState.getItemCount()-1 ) );
+					edu.cmu.cs.dennisc.cheshire.ListSelectionStateStartNote listSelectionStateStartNote =  edu.cmu.cs.dennisc.cheshire.ListSelectionStateStartNote.createInstance( context, parentContextCriterion, context.getSuccessfulCompletionEvent() );
+					rv.add( listSelectionStateStartNote );
+					rv.add( edu.cmu.cs.dennisc.cheshire.ListSelectionStateFinishNote.createInstance( context, listSelectionStateStartNote.getAcceptedContextAt( 0 ), context.getSuccessfulCompletionEvent() ) );
+				}
 				
 				return rv;
 			}

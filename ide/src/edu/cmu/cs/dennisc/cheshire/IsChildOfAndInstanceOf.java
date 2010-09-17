@@ -40,40 +40,60 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.tutorial;
+package edu.cmu.cs.dennisc.cheshire;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AuthoredStep extends Step {
-	private String title;
-	private java.util.List< Note > notes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public AuthoredStep( String title, String text ) {
-		this.title = title;
-		this.addNote( new Note( text ) );
+class IsChildOfAndInstanceOf<N extends edu.cmu.cs.dennisc.croquet.HistoryNode<?>> implements ProgressRequirement {
+	private ParentContextCriterion parentContextCriterion;
+	private Class<N> cls;
+	private edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability;
+	public IsChildOfAndInstanceOf( ParentContextCriterion parentContextCriterion, Class<N> cls ) {
+		this.parentContextCriterion = parentContextCriterion;
+		this.cls = cls;
 	}
-	@Override
-	protected String getTitle() {
-		return this.title;
+	public void reset() {
+		this.replacementAcceptability = null;
 	}
-	public void addNote( Note note ) {
-		this.notes.add( note );
-		note.setTutorialStencil( this.getTutorialStencil() );
-	}
-	@Override
-	public java.util.List< Note > getNotes() {
-		return this.notes;
-	}
-	@Override
 	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability() {
-		return null;
+		return this.replacementAcceptability;
+	}
+	protected void setReplacementAcceptability( edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability ) {
+		this.replacementAcceptability = replacementAcceptability;
+	}
+	protected boolean isSpecificallyWhatWereLookingFor(N historyNode) throws CancelException {
+		return true;
+	}
+	public final boolean isWhatWereLookingFor( edu.cmu.cs.dennisc.croquet.HistoryNode<?> historyNode ) throws CancelException {
+		if( this.parentContextCriterion.isAcceptableParentContext( historyNode.getParent() ) ) {
+			if( this.cls.isAssignableFrom( historyNode.getClass() ) ) {
+				return this.isSpecificallyWhatWereLookingFor( this.cls.cast( historyNode ) );
+			} else {
+				if( historyNode instanceof edu.cmu.cs.dennisc.croquet.CancelEvent ) {
+					throw new CancelException( "cancel" );
+				} else {
+					return false;
+				}
+			}
+		} else {
+//			System.err.println( "did not pass parentContextCriterion test" );
+//			System.err.println( this.parentContextCriterion );
+//			System.err.println( historyNode.getParent() );
+			return false;
+		}
 	}
 	
 	@Override
-	public void setTutorialStencil( edu.cmu.cs.dennisc.tutorial.TutorialStencil tutorialStencil ) {
-		super.setTutorialStencil( tutorialStencil );
-		for( Note note : this.notes ) {
-			note.setTutorialStencil( tutorialStencil );
-		}
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( "[" );
+		sb.append( "\n\tparent:" );
+		sb.append( this.parentContextCriterion );
+		sb.append( "\n\tinstanceof:" );
+		sb.append( this.cls );
+		sb.append( "\n]" );
+		return sb.toString();
 	}
 }

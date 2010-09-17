@@ -104,18 +104,24 @@ public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit<
 	}
 
 	@Override
-	public String getReasonIfReplacementIsUnacceptable( edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		if( edit instanceof DeclareMethodEdit ) {
-			final boolean IS_LENIENT = true;
-			DeclareMethodEdit declareMethodEdit = (DeclareMethodEdit)edit;
-			String requiredName = this.method.getName();
-			if( IS_LENIENT || declareMethodEdit.getMethod().getName().equals( requiredName ) ) {
-				return null;
+	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability( edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidate, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		if( replacementCandidate instanceof DeclareMethodEdit ) {
+			DeclareMethodEdit declareMethodEdit = (DeclareMethodEdit)replacementCandidate;
+			String originalName = this.method.getName();
+			String replacementName = declareMethodEdit.method.getName();
+			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( originalName, replacementName ) ) {
+				return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.PERFECT_MATCH;
 			} else {
-				return "name must be " + requiredName; 
+				StringBuilder sb = new StringBuilder();
+				sb.append( "original name: " );
+				sb.append( originalName );
+				sb.append( "; changed to: " );
+				sb.append( replacementName );
+				sb.append( "." );
+				return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.createDeviation( edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.DeviationSeverity.SHOULD_BE_FINE, sb.toString() ); 
 			}
 		} else {
-			return "edit is not a DeclareMethodEdit";
+			return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.createRejection( "replacement is not an instance of DeclareMethodEdit" ); 
 		}
 	}
 	

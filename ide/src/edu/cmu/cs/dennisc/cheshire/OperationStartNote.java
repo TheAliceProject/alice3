@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,40 +39,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.tutorial;
+package edu.cmu.cs.dennisc.cheshire;
+
+import edu.cmu.cs.dennisc.tutorial.*;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AuthoredStep extends Step {
-	private String title;
-	private java.util.List< Note > notes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public AuthoredStep( String title, String text ) {
-		this.title = title;
-		this.addNote( new Note( text ) );
+/*package-private*/ class OperationStartNote extends RequirementNote {
+	public static OperationStartNote createInstance( edu.cmu.cs.dennisc.croquet.OperationContext< ? > operationContext, ParentContextCriterion parentContextCriterion ) {
+		return new OperationStartNote( 
+				operationContext, 
+				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.OperationContext.class ) 
+		);
 	}
-	@Override
-	protected String getTitle() {
-		return this.title;
-	}
-	public void addNote( Note note ) {
-		this.notes.add( note );
-		note.setTutorialStencil( this.getTutorialStencil() );
-	}
-	@Override
-	public java.util.List< Note > getNotes() {
-		return this.notes;
-	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability() {
-		return null;
-	}
-	
-	@Override
-	public void setTutorialStencil( edu.cmu.cs.dennisc.tutorial.TutorialStencil tutorialStencil ) {
-		super.setTutorialStencil( tutorialStencil );
-		for( Note note : this.notes ) {
-			note.setTutorialStencil( tutorialStencil );
-		}
+	private OperationStartNote( edu.cmu.cs.dennisc.croquet.OperationContext< ? > operationContext, ProgressRequirement requirement ) {
+		super( requirement );
+		edu.cmu.cs.dennisc.croquet.Operation< ? > operation = operationContext.getModel();
+		this.setText( operation.getTutorialStartNoteText( operationContext, ConstructionGuide.getInstance().getUserInformation() ) );
+		ModelFromContextResolver modelResolver = new ModelFromContextResolver( operationContext );
+		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
+		this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			
 	}
 }

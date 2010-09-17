@@ -40,40 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.tutorial;
+
+package edu.cmu.cs.dennisc.cheshire;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AuthoredStep extends Step {
-	private String title;
-	private java.util.List< Note > notes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public AuthoredStep( String title, String text ) {
-		this.title = title;
-		this.addNote( new Note( text ) );
-	}
-	@Override
-	protected String getTitle() {
-		return this.title;
-	}
-	public void addNote( Note note ) {
-		this.notes.add( note );
-		note.setTutorialStencil( this.getTutorialStencil() );
-	}
-	@Override
-	public java.util.List< Note > getNotes() {
-		return this.notes;
-	}
-	@Override
-	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability() {
-		return null;
+public enum DocumentEventFilter implements Filter {
+	SINGLETON;
+	
+	private static void stripDocumentEvents( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
+		for( edu.cmu.cs.dennisc.croquet.HistoryNode< ? > node : context.getChildren() ) {
+			if( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
+				edu.cmu.cs.dennisc.croquet.ModelContext< ? > childContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)node;
+				if( childContext instanceof edu.cmu.cs.dennisc.croquet.StringStateContext ) {
+					edu.cmu.cs.dennisc.croquet.StringStateContext stringStateContext = (edu.cmu.cs.dennisc.croquet.StringStateContext)childContext;
+					java.util.ListIterator< edu.cmu.cs.dennisc.croquet.HistoryNode< ? > > childListIterator = stringStateContext.getChildListIterator();
+					while( childListIterator.hasNext() ) {
+						edu.cmu.cs.dennisc.croquet.HistoryNode< ? > child = childListIterator.next();
+						if( child instanceof edu.cmu.cs.dennisc.croquet.StringStateContext.DocumentEvent ) {
+							childListIterator.remove();
+						}
+					}
+				}
+				stripDocumentEvents( childContext );
+			}
+		}
 	}
 	
-	@Override
-	public void setTutorialStencil( edu.cmu.cs.dennisc.tutorial.TutorialStencil tutorialStencil ) {
-		super.setTutorialStencil( tutorialStencil );
-		for( Note note : this.notes ) {
-			note.setTutorialStencil( tutorialStencil );
-		}
+	public < M extends edu.cmu.cs.dennisc.croquet.ModelContext< ? > > M filter( M rv ) {
+		stripDocumentEvents( rv );
+		return rv;
 	}
 }

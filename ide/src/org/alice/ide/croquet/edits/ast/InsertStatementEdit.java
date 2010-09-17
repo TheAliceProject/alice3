@@ -42,24 +42,22 @@
  */
 package org.alice.ide.croquet.edits.ast;
 
-import edu.cmu.cs.dennisc.croquet.Edit;
-
 public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit< edu.cmu.cs.dennisc.croquet.ActionOperation > {
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
 	private int index;
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
-	private edu.cmu.cs.dennisc.alice.ast.Expression[] originalExpressions;
+	private edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions;
 	public InsertStatementEdit() {
 	}
-	public InsertStatementEdit( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.Expression[] originalExpressions ) {
+	public InsertStatementEdit( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions ) {
 		this.blockStatement = blockStatement;
 		this.index = index;
 		this.statement = statement;
-		this.originalExpressions = originalExpressions;
+		this.initialExpressions = initialExpressions;
 	}
 
-	public edu.cmu.cs.dennisc.alice.ast.Expression[] getOriginalExpressions() {
-		return this.originalExpressions;
+	public edu.cmu.cs.dennisc.alice.ast.Expression[] getInitialExpressions() {
+		return this.initialExpressions;
 	}
 	
 	@Override
@@ -91,21 +89,52 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdi
 		return rv;
 	}
 	@Override
-	public String getReasonIfReplacementIsUnacceptable( Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		if( edit instanceof InsertStatementEdit ) {
-			return null;
+	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability( edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidate, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		if( replacementCandidate instanceof InsertStatementEdit ) {
+			InsertStatementEdit insertStatementEdit = (InsertStatementEdit)replacementCandidate;
+			final int N = this.initialExpressions.length;
+			if( insertStatementEdit.initialExpressions.length == N ) {
+				edu.cmu.cs.dennisc.croquet.ReplacementAcceptability rv = edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
+				//todo
+				if( N == 1 ) {
+					for( int i=0; i<N; i++ ) {
+						edu.cmu.cs.dennisc.alice.ast.Expression originalI = this.initialExpressions[ i ];
+						edu.cmu.cs.dennisc.alice.ast.Expression replacementI = insertStatementEdit.initialExpressions[ i ];
+						if( originalI instanceof edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral ) {
+							if( replacementI instanceof edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral ) {
+								Object originalValue = ((edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral)originalI).getValueProperty().getValue();
+								Object replacementValue = ((edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral)replacementI).getValueProperty().getValue();
+								if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( originalValue, replacementValue ) ) {
+									rv = edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.PERFECT_MATCH;
+								} else {
+									StringBuilder sb = new StringBuilder();
+									sb.append( "original value: " );
+									sb.append( originalValue );
+									sb.append( "; changed to: " );
+									sb.append( replacementValue );
+									sb.append( "." );
+									rv = edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.createDeviation( edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.DeviationSeverity.POTENTIAL_SOURCE_OF_PROBLEMS, sb.toString() );
+								}
+							}
+						}
+					}
+				}
+				return rv;
+			} else {
+				return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.createRejection( "expressions count not the same" ); 
+			}
 		} else {
-			return "edit is note InsertStatementEdit";
+			return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.createRejection( "replacement is not an instance of InsertStatementEdit" ); 
 		}
 	}
 	
 	public InsertStatementEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.alice.ast.Statement replacementStatement ) {
 		edu.cmu.cs.dennisc.alice.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
 		retargeter.addKeyValuePair( this.statement, replacementStatement );
-		final int N = this.originalExpressions.length;
+		final int N = this.initialExpressions.length;
 
 		System.err.println( "todo: replacementExpressions" );
-		edu.cmu.cs.dennisc.alice.ast.Expression[] replacementExpressions = this.originalExpressions;
+		edu.cmu.cs.dennisc.alice.ast.Expression[] replacementExpressions = this.initialExpressions;
 		
 		return new InsertStatementEdit( replacementBlockStatement, this.index, replacementStatement, replacementExpressions );
 	}
@@ -125,10 +154,10 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdi
 		if( this.statement instanceof edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody ) {
 			retargeter.addKeyValuePair( ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)this.statement).body.getValue(), ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)replacementEdit.statement).body.getValue() );
 		}
-		final int N = this.originalExpressions.length;
-		assert N == replacementEdit.originalExpressions.length;
+		final int N = this.initialExpressions.length;
+		assert N == replacementEdit.initialExpressions.length;
 		for( int i=0; i<N; i++ ) {
-			retargeter.addKeyValuePair( this.originalExpressions[ i ], replacementEdit.originalExpressions[ i ] );
+			retargeter.addKeyValuePair( this.initialExpressions[ i ], replacementEdit.initialExpressions[ i ] );
 		}
 	}
 	@Override
@@ -142,9 +171,9 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdi
 		this.statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, statementId );
 		java.util.UUID[] ids = binaryDecoder.decodeIdArray();
 		final int N = ids.length;
-		this.originalExpressions = new edu.cmu.cs.dennisc.alice.ast.Expression[ N ];
+		this.initialExpressions = new edu.cmu.cs.dennisc.alice.ast.Expression[ N ];
 		for( int i=0; i<N; i++ ) {
-			this.originalExpressions[ i ] = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, ids[ i ] );
+			this.initialExpressions[ i ] = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, ids[ i ] );
 		}
 	}
 	@Override
@@ -152,10 +181,10 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdi
 		binaryEncoder.encode( this.blockStatement.getUUID() );
 		binaryEncoder.encode( this.index );
 		binaryEncoder.encode( this.statement.getUUID() );
-		final int N = this.originalExpressions.length;
+		final int N = this.initialExpressions.length;
 		java.util.UUID[] ids = new java.util.UUID[ N ];
 		for( int i=0; i<N; i++ ) {
-			ids[ i ] = this.originalExpressions[ i ].getUUID();
+			ids[ i ] = this.initialExpressions[ i ].getUUID();
 		}
 		binaryEncoder.encode( ids );
 	}

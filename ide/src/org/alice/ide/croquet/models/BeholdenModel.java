@@ -43,7 +43,6 @@
 
 package org.alice.ide.croquet.models;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -52,6 +51,6 @@ public interface BeholdenModel {
 	public void doOrRedoInternal( boolean isDo );
 	public void undoInternal();
 	public StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale );
-	public String getReasonIfReplacementIsUnacceptable( edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation );
+	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability( edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidate, edu.cmu.cs.dennisc.croquet.UserInformation userInformation );
 	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit );	
 }

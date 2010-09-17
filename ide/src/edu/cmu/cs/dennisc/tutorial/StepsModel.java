@@ -53,13 +53,13 @@ package edu.cmu.cs.dennisc.tutorial;
 	private int selectedIndex = -1;
 	private int furthestCompletedIndex = -1;
 	private java.util.List<Step> steps = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy stepAccessPolicy = edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP;
+	private edu.cmu.cs.dennisc.cheshire.StepAccessPolicy stepAccessPolicy = edu.cmu.cs.dennisc.cheshire.StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP;
 	
 	private java.util.List< SelectionObserver > selectionObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy getStepAccessPolicy() {
+	public edu.cmu.cs.dennisc.cheshire.StepAccessPolicy getStepAccessPolicy() {
 		return this.stepAccessPolicy;
 	}
-	public void setStepAccessPolicy( edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy stepAccessPolicy ) {
+	public void setStepAccessPolicy( edu.cmu.cs.dennisc.cheshire.StepAccessPolicy stepAccessPolicy ) {
 		this.stepAccessPolicy = stepAccessPolicy;
 	}
 	

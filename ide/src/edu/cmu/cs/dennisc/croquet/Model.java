@@ -325,19 +325,29 @@ public abstract class Model implements RuntimeResolver< Model > {
 					}
 				}
 			}
-		}
-		return null;
-	}
-	public JComponent getFirstNotNecessarilyShowingComponent() {
-		for( JComponent< ? > component : this.components ) {
-			if( component.getAwtComponent().isVisible() ) {
-				return component;
-			} else {
-				//pass
+			for( JComponent< ? > component : this.components ) {
+				if( cls.isAssignableFrom( component.getClass() ) ) {
+					if( component.getAwtComponent().isVisible() ) {
+//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
+						return cls.cast( component );
+					} else {
+						//pass
+					}
+				}
 			}
 		}
 		return null;
 	}
+//	public JComponent getFirstNotNecessarilyShowingComponent() {
+//		for( JComponent< ? > component : this.components ) {
+//			if( component.getAwtComponent().isVisible() ) {
+//				return component;
+//			} else {
+//				//pass
+//			}
+//		}
+//		return null;
+//	}
 	@Deprecated
 	public JComponent< ? > getFirstComponent() {
 		JComponent< ? > rv = getFirstComponent( JComponent.class );

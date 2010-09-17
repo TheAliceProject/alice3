@@ -42,7 +42,7 @@
  */
 package edu.cmu.cs.dennisc.tutorial;
 
-import edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy;
+import edu.cmu.cs.dennisc.cheshire.StepAccessPolicy;
 
 /**
  * @author Dennis Cosgrove
@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy;
 public class TutorialStencil extends Stencil {
 	@Deprecated
 	/*package-private*/ static boolean isResultOfNextOperation = false;
-	/*package-private*/ static java.awt.Color CONTROL_COLOR = new java.awt.Color(255, 255, 191);
+	/*package-private*/ static java.awt.Color CONTROL_COLOR = new java.awt.Color(230, 230, 255);
 	/*package-private*/ static edu.cmu.cs.dennisc.croquet.Group TUTORIAL_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "7bfa86e3-234e-4bd1-9177-d4acac0b12d9" ), "TUTORIAL_GROUP" );
 	private static edu.cmu.cs.dennisc.croquet.Group TUTORIAL_COMPLETION_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "ea5df77d-d74d-4364-9bf5-2df1b2ede0a4" ), "TUTORIAL_COMPLETION_GROUP" );
 
@@ -118,10 +118,10 @@ public class TutorialStencil extends Stencil {
 		final int PAD = 4;
 		frame.getJMenuBar().setBorder( javax.swing.BorderFactory.createEmptyBorder(PAD+32,PAD,0,PAD));
 		((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder(0,PAD,PAD,PAD));
-		return new TutorialStencil( edu.cmu.cs.dennisc.croquet.guide.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK, StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP, DefaultScrollingRequiredRenderer.INSTANCE, layeredPane, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() ); 
+		return new TutorialStencil( edu.cmu.cs.dennisc.cheshire.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK, StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP, DefaultScrollingRequiredRenderer.INSTANCE, layeredPane, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() ); 
 	}
 	
-	public TutorialStencil( edu.cmu.cs.dennisc.croquet.guide.MenuPolicy menuPolicy, StepAccessPolicy stepAccessPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, javax.swing.JLayeredPane layeredPane, edu.cmu.cs.dennisc.croquet.Group[] groups, edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext ) {
+	public TutorialStencil( edu.cmu.cs.dennisc.cheshire.MenuPolicy menuPolicy, StepAccessPolicy stepAccessPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, javax.swing.JLayeredPane layeredPane, edu.cmu.cs.dennisc.croquet.Group[] groups, edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext ) {
 		super( menuPolicy, scrollingRequiredRenderer, layeredPane );
 		this.stepsModel.setStepAccessPolicy( stepAccessPolicy );
 		rootContext.addChildrenObserver( this.childrenObserver );
