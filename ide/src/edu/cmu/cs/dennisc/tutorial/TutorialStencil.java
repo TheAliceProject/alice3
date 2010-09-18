@@ -54,21 +54,31 @@ public class TutorialStencil extends Stencil {
 	/*package-private*/ static edu.cmu.cs.dennisc.croquet.Group TUTORIAL_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "7bfa86e3-234e-4bd1-9177-d4acac0b12d9" ), "TUTORIAL_GROUP" );
 	private static edu.cmu.cs.dennisc.croquet.Group TUTORIAL_COMPLETION_GROUP = edu.cmu.cs.dennisc.croquet.Group.getInstance( java.util.UUID.fromString( "ea5df77d-d74d-4364-9bf5-2df1b2ede0a4" ), "TUTORIAL_COMPLETION_GROUP" );
 
+	private boolean isIgnoring = false;
 	private edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver childrenObserver = new edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver() {
 		public void addingChild(edu.cmu.cs.dennisc.croquet.HistoryNode child) {
 		}
 		public void addedChild(edu.cmu.cs.dennisc.croquet.HistoryNode child) {
-			Step step = stepsModel.getSelectedStep();
-			if (step instanceof WaitingStep) {
-				WaitingStep waitingStep = (WaitingStep) step;
-				if( waitingStep.isWhatWeveBeenWaitingFor( child ) ) {
-					nextStepOperation.setEnabled( true );
-					if( step.isAutoAdvanceDesired() ) {
-						javax.swing.SwingUtilities.invokeLater(new Runnable() {
-							public void run() {
-								nextStepOperation.fire();
-							}
-						} );
+			if( isIgnoring ) {
+				//pass
+			} else {
+				Step step = stepsModel.getSelectedStep();
+				if (step instanceof WaitingStep) {
+					WaitingStep waitingStep = (WaitingStep) step;
+					if( waitingStep.isWhatWeveBeenWaitingFor( child ) ) {
+						nextStepOperation.setEnabled( true );
+						if( step.isAutoAdvanceDesired() ) {
+							javax.swing.SwingUtilities.invokeLater(new Runnable() {
+								public void run() {
+									isIgnoring = true;
+									try {
+										nextStepOperation.fire();
+									} finally {
+										isIgnoring = false;
+									}
+								}
+							} );
+						}
 					}
 				}
 			}
