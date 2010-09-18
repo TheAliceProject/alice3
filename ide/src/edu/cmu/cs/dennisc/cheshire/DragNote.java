@@ -55,7 +55,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 	}
 	private DragNote( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, ProgressRequirement requirement ) {
 		super( requirement );
-		this.setText( dragAndDropContext.getModel().getTutorialDragNoteText( dragAndDropContext, ConstructionGuide.getInstance().getUserInformation() ) );
+		this.setText( dragAndDropContext.getModel().getTutorialDragNoteText( dragAndDropContext, GuidedInteraction.getInstance().getUserInformation() ) );
 		ModelFromContextResolver modelResolver = new ModelFromContextResolver( dragAndDropContext );
 		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
 		this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			

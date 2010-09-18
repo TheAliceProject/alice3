@@ -292,7 +292,7 @@ public abstract class Step {
 		return this.stepPanel;
 	}
 	public boolean isAutoAdvanceDesired() {
-		return true;
+		return false;
 	}
 
 	public void reset() {

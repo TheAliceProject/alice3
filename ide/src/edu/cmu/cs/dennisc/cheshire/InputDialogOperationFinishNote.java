@@ -59,7 +59,7 @@ package edu.cmu.cs.dennisc.cheshire;
 		this.inputDialogOperationContext = inputDialogOperationContext;
 		this.originalSuccessfulCompletionEvent = originalSuccessfulCompletionEvent;
 		edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > inputDialogOperation = inputDialogOperationContext.getModel();
-		this.setText( inputDialogOperation.getTutorialFinishNoteText( inputDialogOperationContext, ConstructionGuide.getInstance().getUserInformation() ) );
+		this.setText( inputDialogOperation.getTutorialFinishNoteText( inputDialogOperationContext, GuidedInteraction.getInstance().getUserInformation() ) );
 		final ModelFromContextResolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> > inputDialogOperationResolver = new ModelFromContextResolver( inputDialogOperationContext );
 		this.addFeature( new edu.cmu.cs.dennisc.tutorial.InputDialogCommitFeature( new edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
 			public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {
@@ -84,7 +84,7 @@ package edu.cmu.cs.dennisc.cheshire;
 			if( originalEdit != null ) {
 				edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> inputDialogOperation = (edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>)inputDialogOperationContext.getModel();
 				edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidate = inputDialogOperation.createEdit( inputDialogOperationContext );
-				edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidate, ConstructionGuide.getInstance().getUserInformation() );
+				edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidate, GuidedInteraction.getInstance().getUserInformation() );
 				if( replacementAcceptability.isAcceptable() ) {
 					return null;
 				} else {

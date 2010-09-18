@@ -54,7 +54,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 	}
 	private PopupMenuOperationStartNote( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext popupMenuOperationContext, ParentContextCriterion parentContextCriterion ) {
 		edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupMenuOperation = popupMenuOperationContext.getModel();
-		this.setText( popupMenuOperation.getTutorialStartNoteText( popupMenuOperationContext, ConstructionGuide.getInstance().getUserInformation() ) );
+		this.setText( popupMenuOperation.getTutorialStartNoteText( popupMenuOperationContext, GuidedInteraction.getInstance().getUserInformation() ) );
 		ModelFromContextResolver modelResolver = new ModelFromContextResolver( popupMenuOperationContext );
 		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
 		this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			

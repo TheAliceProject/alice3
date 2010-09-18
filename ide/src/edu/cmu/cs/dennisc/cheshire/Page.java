@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 /**
  * @author Dennis Cosgrove
  */
-public class ContextStep extends Step implements WaitingStep {
+public class Page extends Step implements WaitingStep {
 	private static RequirementNote createBonusOperationNote( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.OperationContext< ? > operationContext ) {
 		if( operationContext instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext ){
 			if( operationContext instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext ) {
@@ -246,14 +246,13 @@ public class ContextStep extends Step implements WaitingStep {
 		return rv;
 	}
 
-	private edu.cmu.cs.dennisc.croquet.ModelContext< ? > context;
-	public ContextStep( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context ) {
-		this.context = context;
+	private edu.cmu.cs.dennisc.croquet.HistoryNode< ? > node;
+	public Page( edu.cmu.cs.dennisc.croquet.HistoryNode< ? > node ) {
+		this.node = node;
 	}
 	@Override
 	protected String getTitle() {
-		edu.cmu.cs.dennisc.croquet.Model model = context.getModel();
-		String rv = model.getTutorialStepTitle( context, ConstructionGuide.getInstance().getUserInformation() );
+		String rv = this.node.getTutorialStepTitle( GuidedInteraction.getInstance().getUserInformation() );
 		rv = rv.replaceAll( "<strong>", "" );
 		rv = rv.replaceAll( "</strong>", "" );
 		return rv;
@@ -310,46 +309,48 @@ public class ContextStep extends Step implements WaitingStep {
 	private java.util.List< RetargetableNote > notes;
 	private java.util.List< RetargetableNote > createNotes() {
 		java.util.List< RetargetableNote > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		
-		edu.cmu.cs.dennisc.croquet.Model model = this.context.getModel();
-		edu.cmu.cs.dennisc.croquet.Component< ? > component = model.getFirstComponent();
-		if( component instanceof edu.cmu.cs.dennisc.croquet.MenuItem ) {
-			edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = this.context.getSuccessfulCompletionEvent();
-			edu.cmu.cs.dennisc.croquet.Model descendantModel = successfulCompletionEvent.getParent().getModel();
-
-			java.util.List< edu.cmu.cs.dennisc.croquet.Model > list = huntFor( descendantModel );
-			if( list != null ) {
-				edu.cmu.cs.dennisc.croquet.MenuBarModelContext menuBarModelContext = edu.cmu.cs.dennisc.croquet.ContextManager.createContextFor( list, this.context );
-				appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, menuBarModelContext );
-			} else {
-				//todo?
-			}
-		} else {
-			if( component != null && component.getAwtComponent().isShowing() /*&& component.isInView()*/ ) {
-				appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, this.context );
-			} else {
-				edu.cmu.cs.dennisc.croquet.Component< ? > notNecessarilyShowingComponent = null;//model.getFirstNotNecessarilyShowingComponent();
-				if( notNecessarilyShowingComponent instanceof edu.cmu.cs.dennisc.croquet.MenuItem ) {
-					edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = this.context.getSuccessfulCompletionEvent();
-					edu.cmu.cs.dennisc.croquet.Model descendantModel = successfulCompletionEvent.getParent().getModel();
-
-					java.util.List< edu.cmu.cs.dennisc.croquet.Model > list = huntFor( descendantModel );
-					if( list != null ) {
-						edu.cmu.cs.dennisc.croquet.MenuBarModelContext menuBarModelContext = edu.cmu.cs.dennisc.croquet.ContextManager.createContextFor( list, this.context );
-						appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, menuBarModelContext );
-					} else {
-						//todo?
-					}
+		if( this.node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
+			edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)this.node;
+			edu.cmu.cs.dennisc.croquet.Model model = modelContext.getModel();
+			edu.cmu.cs.dennisc.croquet.Component< ? > component = model.getFirstComponent();
+			if( component instanceof edu.cmu.cs.dennisc.croquet.MenuItem ) {
+				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+				edu.cmu.cs.dennisc.croquet.Model descendantModel = successfulCompletionEvent.getParent().getModel();
+	
+				java.util.List< edu.cmu.cs.dennisc.croquet.Model > list = huntFor( descendantModel );
+				if( list != null ) {
+					edu.cmu.cs.dennisc.croquet.MenuBarModelContext menuBarModelContext = edu.cmu.cs.dennisc.croquet.ContextManager.createContextFor( list, modelContext );
+					appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, menuBarModelContext );
 				} else {
-					edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = this.context.getSuccessfulCompletionEvent();
-					edu.cmu.cs.dennisc.croquet.Model descendantModel = successfulCompletionEvent.getParent().getModel();
-					edu.cmu.cs.dennisc.croquet.Component< ? > descendantComponent = descendantModel.getFirstComponent();
-					if( descendantComponent != null && descendantComponent.getAwtComponent().isShowing() ) {
-						//pass
+					//todo?
+				}
+			} else {
+				if( component != null && component.getAwtComponent().isShowing() /*&& component.isInView()*/ ) {
+					appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, modelContext );
+				} else {
+					edu.cmu.cs.dennisc.croquet.Component< ? > notNecessarilyShowingComponent = null;//model.getFirstNotNecessarilyShowingComponent();
+					if( notNecessarilyShowingComponent instanceof edu.cmu.cs.dennisc.croquet.MenuItem ) {
+						edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+						edu.cmu.cs.dennisc.croquet.Model descendantModel = successfulCompletionEvent.getParent().getModel();
+	
+						java.util.List< edu.cmu.cs.dennisc.croquet.Model > list = huntFor( descendantModel );
+						if( list != null ) {
+							edu.cmu.cs.dennisc.croquet.MenuBarModelContext menuBarModelContext = edu.cmu.cs.dennisc.croquet.ContextManager.createContextFor( list, modelContext );
+							appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, menuBarModelContext );
+						} else {
+							//todo?
+						}
 					} else {
-						ConstructionGuide.getInstance().addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, this.context );
+						edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+						edu.cmu.cs.dennisc.croquet.Model descendantModel = successfulCompletionEvent.getParent().getModel();
+						edu.cmu.cs.dennisc.croquet.Component< ? > descendantComponent = descendantModel.getFirstComponent();
+						if( descendantComponent != null && descendantComponent.getAwtComponent().isShowing() ) {
+							//pass
+						} else {
+							GuidedInteraction.getInstance().addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, modelContext );
+						}
+						appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, successfulCompletionEvent.getParent() );
 					}
-					appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, successfulCompletionEvent.getParent() );
 				}
 			}
 		}
@@ -381,17 +382,28 @@ public class ContextStep extends Step implements WaitingStep {
 			}
 		}
 	}
+	@Override
+	public boolean isAutoAdvanceDesired() {
+		return this.node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? >;
+	}
 	public boolean isAlreadyInTheDesiredState() {
-		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = this.context.getSuccessfulCompletionEvent();
-		if( successfulCompletionEvent != null ) {
-			edu.cmu.cs.dennisc.croquet.Edit< ? > edit = successfulCompletionEvent.getEdit();
-			edu.cmu.cs.dennisc.croquet.ModelContext< ? > parent = successfulCompletionEvent.getParent();
-			edu.cmu.cs.dennisc.croquet.Model model = this.context.getModel();
-			return model.isAlreadyInState( edit );
+		if( this.node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
+			edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)this.node;
+			edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+			if( successfulCompletionEvent != null ) {
+				edu.cmu.cs.dennisc.croquet.Edit< ? > edit = successfulCompletionEvent.getEdit();
+				edu.cmu.cs.dennisc.croquet.ModelContext< ? > parent = successfulCompletionEvent.getParent();
+				edu.cmu.cs.dennisc.croquet.Model model = modelContext.getModel();
+				return model.isAlreadyInState( edit );
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
 	}
+	
+	
 	@Override
 	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
 		int activeNoteIndex = this.getIndexOfFirstActiveNote();
@@ -434,7 +446,7 @@ public class ContextStep extends Step implements WaitingStep {
 				}
 			} catch( CancelException ce ) {
 				//this.reset();
-				ConstructionGuide.getInstance().getStencil().restoreHistoryIndicesDueToCancel();
+				GuidedInteraction.getInstance().getStencil().restoreHistoryIndicesDueToCancel();
 				this.reset();
 			}
 		}
@@ -442,19 +454,22 @@ public class ContextStep extends Step implements WaitingStep {
 	}
 	@Override
 	protected void complete() {
-		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = this.context.getSuccessfulCompletionEvent();
-		edu.cmu.cs.dennisc.croquet.Edit<?> originalEdit = successfulCompletionEvent.getEdit();
-		if( originalEdit != null ) {
-			edu.cmu.cs.dennisc.croquet.Retargeter retargeter = ConstructionGuide.getInstance().getRetargeter();
-			edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit = originalEdit.getModel().commitTutorialCompletionEdit( originalEdit, retargeter );
-			if( replacementEdit != null ) {
-				//replacementEdit.addKeyValuePairs( retargeter, originalEdit );
-				ConstructionGuide.getInstance().retargetOriginalContext( retargeter );
+		if( this.node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
+			edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)this.node;
+			edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+			edu.cmu.cs.dennisc.croquet.Edit<?> originalEdit = successfulCompletionEvent.getEdit();
+			if( originalEdit != null ) {
+				edu.cmu.cs.dennisc.croquet.Retargeter retargeter = GuidedInteraction.getInstance().getRetargeter();
+				edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit = originalEdit.getModel().commitTutorialCompletionEdit( originalEdit, retargeter );
+				if( replacementEdit != null ) {
+					//replacementEdit.addKeyValuePairs( retargeter, originalEdit );
+					GuidedInteraction.getInstance().retargetOriginalContext( retargeter );
+				}
+//					edu.cmu.cs.dennisc.croquet.Edit replacementEdit = edit.getAcceptableReplacement( retargeter );
+//					replacementEdit.setReplacementModel( edit.getModel() );
+//					TutorialStencil.complete( replacementEdit );
+				//successfulCompletionEvent.getParent().commitAndInvokeDo( replacementEdit );
 			}
-//				edu.cmu.cs.dennisc.croquet.Edit replacementEdit = edit.getAcceptableReplacement( retargeter );
-//				replacementEdit.setReplacementModel( edit.getModel() );
-//				TutorialStencil.complete( replacementEdit );
-			//successfulCompletionEvent.getParent().commitAndInvokeDo( replacementEdit );
 		}
 	}
 }

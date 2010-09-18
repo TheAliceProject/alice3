@@ -57,7 +57,7 @@ import edu.cmu.cs.dennisc.tutorial.DialogCloseButtonFeature;
 	private DialogCloseNote( edu.cmu.cs.dennisc.croquet.DialogOperationContext dialogOperationContext, ProgressRequirement... requirements ) {
 		super( requirements );
 		edu.cmu.cs.dennisc.croquet.DialogOperation dialogOperation = dialogOperationContext.getModel();
-		this.setText( dialogOperation.getTutorialCloseNoteText( dialogOperationContext, ConstructionGuide.getInstance().getUserInformation() ) );
+		this.setText( dialogOperation.getTutorialCloseNoteText( dialogOperationContext, GuidedInteraction.getInstance().getUserInformation() ) );
 		final ModelFromContextResolver< edu.cmu.cs.dennisc.croquet.DialogOperation > dialogOperationResolver = new ModelFromContextResolver( dialogOperationContext );
 		this.addFeature( new DialogCloseButtonFeature( new edu.cmu.cs.dennisc.croquet.RuntimeResolver< edu.cmu.cs.dennisc.croquet.TrackableShape >() {
 			public edu.cmu.cs.dennisc.croquet.TrackableShape getResolved() {

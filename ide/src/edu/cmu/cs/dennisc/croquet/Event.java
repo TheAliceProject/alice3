@@ -54,4 +54,9 @@ package edu.cmu.cs.dennisc.croquet;
 	@Override
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 	}
+	
+	@Override
+	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return this.toString();
+	}
 }

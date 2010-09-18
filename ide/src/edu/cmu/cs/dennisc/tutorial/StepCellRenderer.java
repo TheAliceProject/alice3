@@ -119,7 +119,7 @@ package edu.cmu.cs.dennisc.tutorial;
 						}
 						if( isSelected ) {
 							StringBuilder sbToolTip = new StringBuilder();
-							sbToolTip.append( replacementAcceptability.getDeviationSeverity().getRepr( edu.cmu.cs.dennisc.cheshire.ConstructionGuide.getInstance().getUserInformation() ) );
+							sbToolTip.append( replacementAcceptability.getDeviationSeverity().getRepr( edu.cmu.cs.dennisc.cheshire.GuidedInteraction.getInstance().getUserInformation() ) );
 							sbToolTip.append( ": " );
 							sbToolTip.append( replacementAcceptability.getDeviationDescription() );
 							toolTipText = sbToolTip.toString();

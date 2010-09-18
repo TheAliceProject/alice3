@@ -302,12 +302,12 @@ public class TutorialStencil extends Stencil {
 
 			int selectedIndex = stepsModel.getSelectedIndex();
 
-			boolean isAutoAdvanceDesired = false;
+//			boolean isAutoAdvanceDesired = false;
 			boolean isWaiting;
 			if (step instanceof WaitingStep) {
 				WaitingStep waitingStep = (WaitingStep) step;
 				isWaiting = waitingStep.isAlreadyInTheDesiredState() == false;
-				isAutoAdvanceDesired = isWaiting == false;
+//				isAutoAdvanceDesired = isWaiting == false && waitingStep.isAutoAdvanceDesriedWhenAlreadyInTheDesiredState();
 			} else {
 				isWaiting = false;
 			}
@@ -315,9 +315,10 @@ public class TutorialStencil extends Stencil {
 			this.nextStepOperation.setEnabled(0 <= selectedIndex && selectedIndex < this.stepsModel.getSize() - 1 && isWaiting==false );
 			this.previousStepOperation.setEnabled(1 <= selectedIndex);
 			
-			if( isAutoAdvanceDesired ) {
-				this.nextStepOperation.fire();
-			}
+//			if( isAutoAdvanceDesired ) {
+//				this.nextStepOperation.fire();
+//			}
+			
 //			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 //				public void run() {
 //					TutorialStencil.this.controlsPanel.repaint();

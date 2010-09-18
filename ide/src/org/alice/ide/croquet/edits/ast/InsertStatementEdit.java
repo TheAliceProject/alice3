@@ -73,6 +73,10 @@ public class InsertStatementEdit extends edu.cmu.cs.dennisc.croquet.OperationEdi
 			throw new javax.swing.undo.CannotUndoException();
 		}
 	}
+	
+	public edu.cmu.cs.dennisc.alice.ast.Statement getStatement() {
+		return this.statement;
+	}
 
 //	@Override
 //	public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.ActionOperation > getAcceptableReplacement( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {

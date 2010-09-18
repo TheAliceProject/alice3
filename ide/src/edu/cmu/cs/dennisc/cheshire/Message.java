@@ -40,12 +40,41 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.tutorial;
+
+package edu.cmu.cs.dennisc.cheshire;
 
 /**
  * @author Dennis Cosgrove
  */
- public interface WaitingStep {
-	public boolean isAlreadyInTheDesiredState();
-	public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child );
+public class Message extends edu.cmu.cs.dennisc.croquet.HistoryNode {
+	private String title;
+	private String text;
+	public Message( String title, String text ) {
+		this.title = title;
+		this.text = text;
+	}
+	
+	@Override
+	public String getTutorialStepTitle( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+		return this.title;
+	}
+	public String getText() {
+		return this.text;
+	}
+	
+	@Override
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		throw new RuntimeException();
+	}
+	@Override
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		throw new RuntimeException();
+	}
+	@Override
+	public edu.cmu.cs.dennisc.croquet.HistoryNode.State getState() {
+		return null;
+	}
+	@Override
+	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	}
 }

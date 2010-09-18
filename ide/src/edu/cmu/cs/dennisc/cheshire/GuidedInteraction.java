@@ -47,9 +47,9 @@ import edu.cmu.cs.dennisc.tutorial.*;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ConstructionGuide {
-	private static ConstructionGuide instance;
-	public static ConstructionGuide getInstance() {
+public abstract class GuidedInteraction {
+	private static GuidedInteraction instance;
+	public static GuidedInteraction getInstance() {
 		return instance;
 	}
 	public static javax.swing.JLayeredPane getLayeredPane() {
@@ -72,7 +72,7 @@ public abstract class ConstructionGuide {
 		}
 	}
 	
-	public ConstructionGuide( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, MenuPolicy menuPolicy, StepAccessPolicy stepAccessPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
+	public GuidedInteraction( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, MenuPolicy menuPolicy, StepAccessPolicy stepAccessPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
 		assert instance == null;
 		instance = this;
 		this.userInformation = userInformation;
@@ -95,11 +95,7 @@ public abstract class ConstructionGuide {
 		this.sourceContext.retarget( retargeter );
 	}
 	
-	private void addMessageStep( String title, String text ) {
-		this.stencil.addStep( new MessageStep( title, text ) );
-	}
 	public void setOriginalRoot( edu.cmu.cs.dennisc.croquet.RootContext sourceContext ) {
-		//this.addMessageStep( "start", "start of tutorial" );
 		this.sourceContext = sourceContext;
 		final int N = sourceContext.getChildCount();
 		for( int i=0; i<N; i++ ) {
@@ -107,11 +103,15 @@ public abstract class ConstructionGuide {
 			if( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
 				edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)node;
 				if( context.isSuccessfullyCompleted() ) {
-					this.stencil.addStep( new ContextStep( context ) );
+					this.stencil.addStep( new Page( context ) );
+				}
+			} else {
+				if( node instanceof Message ) {
+					Message message = (Message)node;
+					this.stencil.addStep( new MessageStep( message.getTutorialStepTitle( null ), message.getText() ) );
 				}
 			}
 		}
-		this.addMessageStep( "Finished", "<strong>Congratulations.</strong><br>You have completed the guided interaction." );
 	}
 
 	protected abstract java.util.List< RetargetableNote > addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( java.util.List< RetargetableNote > rv, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext );

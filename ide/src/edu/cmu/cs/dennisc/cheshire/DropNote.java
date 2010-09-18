@@ -64,7 +64,7 @@ import edu.cmu.cs.dennisc.tutorial.*;
 	}
 	private DropNote( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, ProgressRequirement... requirements ) {
 		super( requirements );
-		this.setText( dragAndDropContext.getModel().getTutorialDropNoteText( dragAndDropContext, ConstructionGuide.getInstance().getUserInformation() ) );
+		this.setText( dragAndDropContext.getModel().getTutorialDropNoteText( dragAndDropContext, GuidedInteraction.getInstance().getUserInformation() ) );
 		DropSiteResolver dropSiteResolver = new DropSiteResolver( dragAndDropContext ); 
 		Hole dropHole = new Hole( dropSiteResolver, Feature.ConnectionPreference.NORTH_SOUTH );
 		dropHole.setHeightConstraint( 64 );

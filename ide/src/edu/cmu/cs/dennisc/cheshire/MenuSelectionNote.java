@@ -94,9 +94,9 @@ import edu.cmu.cs.dennisc.tutorial.*;
 			if( menuModel instanceof edu.cmu.cs.dennisc.croquet.RetargetableMenuModel ) {
 				edu.cmu.cs.dennisc.croquet.RetargetableMenuModel retargetableMenuModel = (edu.cmu.cs.dennisc.croquet.RetargetableMenuModel)menuModel;
 				edu.cmu.cs.dennisc.croquet.RetargetingData originalRetargetingData = this.originalRetargetableMenuModelInitializationEvent.getRetargetingData();
-				edu.cmu.cs.dennisc.croquet.Retargeter retargeter = ConstructionGuide.getInstance().getRetargeter();
+				edu.cmu.cs.dennisc.croquet.Retargeter retargeter = GuidedInteraction.getInstance().getRetargeter();
 				originalRetargetingData.addKeyValuePairs( retargeter, retargetableMenuModel.getRetargetableData() );
-				ConstructionGuide.getInstance().retargetOriginalContext( retargeter );
+				GuidedInteraction.getInstance().retargetOriginalContext( retargeter );
 			}
 		}
 		return rv;
@@ -222,20 +222,20 @@ import edu.cmu.cs.dennisc.tutorial.*;
 	}
 	
 	private MenuSelectionNote( edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext.MenuSelectionEvent menuSelectionEvent, int i, int index0 ) {
-		this.setText( getText( menuSelectionEvent, i, ConstructionGuide.getInstance().getUserInformation() ) );
+		this.setText( getText( menuSelectionEvent, i, GuidedInteraction.getInstance().getUserInformation() ) );
 //		this.originalRetargetableMenuModelInitializationEvent = retargetableMenuModelInitializationEvent;
 //		this.originalMenuSelectionEvent = menuSelectionEvent;
 //		this.modelContext = modelContext;
 //		this.i = i;
 //
-		boolean isBelowStencil = ConstructionGuide.getInstance().getStencil().getMenuPolicy().isBelowStencil();
+		boolean isBelowStencil = GuidedInteraction.getInstance().getStencil().getMenuPolicy().isBelowStencil();
 		boolean isInMenuBar = index0 == 1;
 		if( isBelowStencil ) {
 			for( int j=index0; j<=i; j++ ) {
 				this.addFeature( new MenuHole( createComponentResolver( menuSelectionEvent, j ), Feature.ConnectionPreference.EAST_WEST, j==i, true, false ) );
 			}
 		} else {
-			boolean isCheckMarkRenderingDesired = ConstructionGuide.getInstance().getStencil().getMenuPolicy().isFeedbackDesired();
+			boolean isCheckMarkRenderingDesired = GuidedInteraction.getInstance().getStencil().getMenuPolicy().isFeedbackDesired();
 			if( isInMenuBar ) {
 				this.addFeature( new MenuHole( createComponentResolver( menuSelectionEvent, index0 ), Feature.ConnectionPreference.EAST_WEST, this.i == index0, false, false ) );
 			}

@@ -57,8 +57,8 @@ public abstract class RetargetableNote extends Note {
 	public abstract boolean isWhatWeveBeenWaitingFor( edu.cmu.cs.dennisc.croquet.HistoryNode child ) throws CancelException;
 	
 	protected final void retarget( edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit, edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit ) {
-		edu.cmu.cs.dennisc.croquet.Retargeter retargeter = ConstructionGuide.getInstance().getRetargeter();
+		edu.cmu.cs.dennisc.croquet.Retargeter retargeter = GuidedInteraction.getInstance().getRetargeter();
 		originalEdit.addKeyValuePairs( retargeter, replacementEdit );
-		ConstructionGuide.getInstance().retargetOriginalContext( retargeter );
+		GuidedInteraction.getInstance().retargetOriginalContext( retargeter );
 	}
 }

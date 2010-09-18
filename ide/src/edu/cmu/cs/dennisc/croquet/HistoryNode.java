@@ -109,4 +109,6 @@ public abstract class HistoryNode<C extends ModelContext<?>> implements edu.cmu.
 	}
 	
 	public abstract void retarget( Retargeter retargeter );
+	
+	public abstract String getTutorialStepTitle( UserInformation userInformation );
 }

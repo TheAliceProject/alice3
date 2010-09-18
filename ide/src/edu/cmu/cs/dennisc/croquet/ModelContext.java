@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
+import edu.cmu.cs.dennisc.cheshire.GuidedInteraction;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -325,15 +327,22 @@ public abstract class ModelContext<M extends Model> extends HistoryNode< ModelCo
 //		return null;
 	}
 
-	protected void addChild(HistoryNode child) {
+	public void addChild(HistoryNode child) {
+		this.addChild( -1, child );
+	}
+	public void addChild(int index, HistoryNode child) {
 		this.fireAddingChild(child);
 		synchronized (this.children) {
-			this.children.add(child);
+			if( index == -1 ) {
+				this.children.add( child );
+			} else {
+				this.children.add( index, child );
+			}
 		}
 		child.setParent( this );
 		this.fireAddedChild(child);
 	}
-
+	
 	public void finish() {
 		this.addChild(new FinishEvent());
 	}
@@ -359,6 +368,11 @@ public abstract class ModelContext<M extends Model> extends HistoryNode< ModelCo
 		return null;
 	}
 
+	@Override
+	public String getTutorialStepTitle( UserInformation userInformation ) {
+		edu.cmu.cs.dennisc.croquet.Model model = this.getModel();
+		return model.getTutorialStepTitle( this, GuidedInteraction.getInstance().getUserInformation() );
+	}
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv ) {
 		super.appendRepr( rv );

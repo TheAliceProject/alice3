@@ -56,7 +56,7 @@ package edu.cmu.cs.dennisc.cheshire;
 	}
 	private ForwardingFromActionOperationToInputDialogOperationNote( ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.ActionOperationContext actionOperationContext, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent actionCompletionEvent, edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent inputDialogCompletionEvent ) {
 		edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > inputDialogOperation = inputDialogOperationContext.getModel();
-		String text = inputDialogOperation.getTutorialNoteText( inputDialogOperationContext, ConstructionGuide.getInstance().getUserInformation() );
+		String text = inputDialogOperation.getTutorialNoteText( inputDialogOperationContext, GuidedInteraction.getInstance().getUserInformation() );
 		edu.cmu.cs.dennisc.croquet.Edit< ? > edit = actionCompletionEvent.getEdit();
 		if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
 			org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;

@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.cheshire;
 /*package-private*/ abstract class WaitingOnSuccessfulCompletionNote extends RequirementNote {
 	public WaitingOnSuccessfulCompletionNote( edu.cmu.cs.dennisc.croquet.ModelContext< ? > context, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent originalSuccessfulCompletionEvent, boolean isContextRequirementRequired ) {
 		edu.cmu.cs.dennisc.croquet.Model model = context.getModel();
-		this.setText( model.getTutorialNoteText( context, ConstructionGuide.getInstance().getUserInformation() ) );
+		this.setText( model.getTutorialNoteText( context, GuidedInteraction.getInstance().getUserInformation() ) );
 		if( isContextRequirementRequired ) {
 			this.addRequirement( new IsChildOfAndInstanceOf( parentContextCriterion, context.getClass() ) );
 			parentContextCriterion = this.getAcceptedContextAt( 0 );

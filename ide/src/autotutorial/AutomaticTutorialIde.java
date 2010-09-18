@@ -1,6 +1,6 @@
 package autotutorial;
 
-import edu.cmu.cs.dennisc.cheshire.ContextStep;
+import edu.cmu.cs.dennisc.cheshire.Page;
 
 class WizardOfHastings {
 	public static void castPart( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.alice.Project originalProject, String originalFieldName, edu.cmu.cs.dennisc.alice.Project replacementProject, String replacementFieldName ) {
@@ -21,8 +21,12 @@ enum AlgUserInformation implements edu.cmu.cs.dennisc.croquet.UserInformation {
 	public java.util.Locale getLocale() {
 		return java.util.Locale.getDefault();
 	}
-	public boolean isFamiliarWithProgrammingConstruct( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls ) {
-		return statementCls != edu.cmu.cs.dennisc.alice.ast.CountLoop.class;
+	public edu.cmu.cs.dennisc.cheshire.Message createMessageIfUnfamiliarWithProgrammingConstruct( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls ) {
+		if( statementCls == edu.cmu.cs.dennisc.alice.ast.CountLoop.class ) {
+			return new edu.cmu.cs.dennisc.cheshire.Message( "New Concept: Count Loop", "<strong>New Concept: Count Loop</strong><br>Count Loops are useful for perfoming the same action multiple times." );
+		} else {
+			return null;
+		}
 	}
 }
 
@@ -49,10 +53,36 @@ class AlgPriorInteractionHistoryBasedGuidedInteractionGenerator extends PriorInt
 	@Override
 	protected void filterAndAugment( edu.cmu.cs.dennisc.croquet.ModelContext< ? > originalRoot, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		java.util.ListIterator< edu.cmu.cs.dennisc.croquet.HistoryNode< ? > > listIterator = originalRoot.getChildListIterator();
+		
+		while( listIterator.hasNext() ) {
+			edu.cmu.cs.dennisc.croquet.HistoryNode< ? > node = listIterator.next();
+			if( node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
+				edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)node;
+				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+				if( successfulCompletionEvent != null ) {
+					edu.cmu.cs.dennisc.croquet.Edit< ? > edit = successfulCompletionEvent.getEdit();
+					if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
+						org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;
+						edu.cmu.cs.dennisc.alice.ast.Statement statement = insertStatementEdit.getStatement();
+						if( userInformation instanceof AlgUserInformation ) {
+							AlgUserInformation algUserInformation = (AlgUserInformation)userInformation;
+							edu.cmu.cs.dennisc.cheshire.Message message = algUserInformation.createMessageIfUnfamiliarWithProgrammingConstruct( statement.getClass() );
+							if( message != null ) {
+								listIterator.previous();
+								listIterator.add( message );
+								listIterator.next();
+							}
+						}
+					}
+				}
+			}
+		}
+		originalRoot.addChild( 0, new edu.cmu.cs.dennisc.cheshire.Message( "title", "text" ) );
+		originalRoot.addChild( new edu.cmu.cs.dennisc.cheshire.Message( "Finished", "<strong>Congratulations.</strong><br>You have completed the guided interaction." ) );
 	}
 }
 
-class AlgConstructionGuide extends edu.cmu.cs.dennisc.cheshire.ConstructionGuide {
+class AlgConstructionGuide extends edu.cmu.cs.dennisc.cheshire.GuidedInteraction {
 	private static boolean IS_MONKEY_WRENCH_DESIRED = false;
 	public AlgConstructionGuide() {
 		super( 
@@ -263,6 +293,9 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 		};
 
 		AlgPriorInteractionHistoryBasedGuidedInteractionGenerator generator = new AlgPriorInteractionHistoryBasedGuidedInteractionGenerator( this.postContext );
+		generator.generate( AlgUserInformation.INSTANCE );
+		
+		
 		final AlgConstructionGuide tutorial = new AlgConstructionGuide();
 		tutorial.setOriginalRoot( this.postContext );
 		
