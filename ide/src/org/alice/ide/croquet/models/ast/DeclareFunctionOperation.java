@@ -77,18 +77,18 @@ public class DeclareFunctionOperation extends DeclareMethodOperation {
 	@Override
 	protected StringBuilder appendTutorialFinishNoteText( StringBuilder rv, org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = declareMethodEdit.getMethod();
-		rv.append( "1) Select type: " );
+		rv.append( "a) Select return value type: " );
 		rv.append( "<strong>" );
 		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
 		rv.append( formatter.getTextForType( method.getReturnType() ) );
-		rv.append( " *</strong>" );
+		rv.append( "*</strong>" );
 		rv.append( "<br>" );
-		rv.append( "2) Enter name: " );
+		rv.append( "b) Enter name: " );
 		rv.append( "<strong>" );
 		rv.append( method.getName() );
 		rv.append( "</strong>" );
 		rv.append( "<br>" );
-		rv.append( "3) Press <strong>OK</strong>." );
+		rv.append( "c) Press <strong>OK</strong>." );
 		rv.append( "<br>" );
 		rv.append( "<br>" );
 		rv.append( "* <em>Required</em>" );

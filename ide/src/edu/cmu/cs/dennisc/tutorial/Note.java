@@ -249,8 +249,8 @@ public class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JCo
 			@Override
 			public java.awt.Dimension getPreferredSize() {
 				java.awt.Dimension rv = super.getPreferredSize();
-				rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( rv, 256 );
-				rv.width = 256;
+				rv.width = 270;
+				rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( rv, rv.width );
 				return rv;
 			}
 		};

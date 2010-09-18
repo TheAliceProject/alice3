@@ -98,12 +98,7 @@ public abstract class ConstructionGuide {
 	private void addMessageStep( String title, String text ) {
 		this.stencil.addStep( new MessageStep( title, text ) );
 	}
-
-	protected abstract java.util.List< RetargetableNote > addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( java.util.List< RetargetableNote > rv, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext );
-	/*package-private*/ AutomaticTutorialStencil getStencil() {
-		return this.stencil;
-	}
-	public void addSteps( edu.cmu.cs.dennisc.croquet.RootContext sourceContext ) {
+	public void setOriginalRoot( edu.cmu.cs.dennisc.croquet.RootContext sourceContext ) {
 		//this.addMessageStep( "start", "start of tutorial" );
 		this.sourceContext = sourceContext;
 		final int N = sourceContext.getChildCount();
@@ -117,6 +112,11 @@ public abstract class ConstructionGuide {
 			}
 		}
 		this.addMessageStep( "Finished", "<strong>Congratulations.</strong><br>You have completed the guided interaction." );
+	}
+
+	protected abstract java.util.List< RetargetableNote > addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( java.util.List< RetargetableNote > rv, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext );
+	/*package-private*/ AutomaticTutorialStencil getStencil() {
+		return this.stencil;
 	}
 	public void setSelectedIndex( int index ) {
 		this.stencil.setSelectedIndex( index );

@@ -204,6 +204,7 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 			class OkCancelPanel extends Panel {
 				private Button okButton = CommitOperation.getInstance().createButton();
 				public OkCancelPanel() {
+					this.internalAddComponent( BoxUtilities.createHorizontalGlue() );
 					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 						this.internalAddComponent( okButton );
 						if( isCancelDesired ) {
@@ -211,22 +212,21 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 							this.internalAddComponent( CancelOperation.getInstance().createButton() );
 						}
 					} else {
-						this.internalAddComponent( BoxUtilities.createHorizontalGlue() );
 						if( isCancelDesired ) {
 							this.internalAddComponent( CancelOperation.getInstance().createButton() );
 							//this.internalAddComponent( BoxUtilities.createHorizontalSliver( 2 ) );
 						}
 						this.internalAddComponent( okButton );
 					}
-					this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,4,0 ) );
+					this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,4,16 ) );
 				}
 				@Override
 				protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
-					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-						return new java.awt.FlowLayout( java.awt.FlowLayout.TRAILING, 2, 0 );
-					} else {
+//					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+//						return new java.awt.FlowLayout( java.awt.FlowLayout.CENTER, 2, 0 );
+//					} else {
 						return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
-					}
+//					}
 				}
 				public Button getOkButton() {
 					return this.okButton;
