@@ -50,7 +50,7 @@ public abstract class ActionOperation extends Operation<ActionOperationContext> 
 		super( group, id );
 	}
 	@Override
-	protected ActionOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+	public ActionOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushActionOperationContext( this, e, viewController );
 	}
 }

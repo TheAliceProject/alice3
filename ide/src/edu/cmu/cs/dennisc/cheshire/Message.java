@@ -49,6 +49,9 @@ package edu.cmu.cs.dennisc.cheshire;
 public class Message extends edu.cmu.cs.dennisc.croquet.HistoryNode {
 	private String title;
 	private String text;
+	public Message( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 	public Message( String title, String text ) {
 		this.title = title;
 		this.text = text;
@@ -64,11 +67,13 @@ public class Message extends edu.cmu.cs.dennisc.croquet.HistoryNode {
 	
 	@Override
 	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException();
+		this.title = binaryDecoder.decodeString();
+		this.text = binaryDecoder.decodeString();
 	}
 	@Override
 	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		throw new RuntimeException();
+		binaryEncoder.encode( this.title );
+		binaryEncoder.encode( this.text );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.HistoryNode.State getState() {

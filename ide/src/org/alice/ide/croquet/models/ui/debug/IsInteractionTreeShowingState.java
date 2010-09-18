@@ -126,7 +126,7 @@ public class IsInteractionTreeShowingState extends org.alice.ide.croquet.models.
 	protected javax.swing.JFrame createFrame() {
 		javax.swing.JFrame rv = super.createFrame();
 		rv.setLocation( -1200, 0 );
-		rv.setSize( 1200, 1600 );
+		rv.setSize( 1200, 800 );
 		return rv;
 	}
 	@Override

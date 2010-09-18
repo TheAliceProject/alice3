@@ -62,7 +62,7 @@ public final class PopupMenuOperation extends Operation<PopupMenuOperationContex
 		return false;
 	}
 	@Override
-	protected PopupMenuOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+	public PopupMenuOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushPopupMenuOperationContext( this, e, viewController );
 	}
 	

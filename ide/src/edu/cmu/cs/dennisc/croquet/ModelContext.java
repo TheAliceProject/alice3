@@ -124,6 +124,12 @@ public abstract class ModelContext<M extends Model> extends HistoryNode< ModelCo
 
 	@Override
 	public void retarget( Retargeter retargeter ) {
+		if( this.modelResolver != null ) {
+			//pass
+		} else {
+			System.err.println( "MODEL RESOVER NULL: " + this );
+//			Thread.dumpStack();
+		}
 		if( this.modelResolver instanceof RetargetableResolver< ? > ) {
 			RetargetableResolver< ? > retargetableResolver = (RetargetableResolver< ? >)this.modelResolver;
 			retargetableResolver.retarget( retargeter );

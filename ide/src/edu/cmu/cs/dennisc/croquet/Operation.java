@@ -57,7 +57,7 @@ public abstract class Operation< C extends OperationContext<? extends Operation<
 	}
 	private java.util.Map< AbstractButton< ?,? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
-	protected abstract C createContext( java.util.EventObject e, ViewController< ?, ? > viewController );
+	public abstract C createContext( java.util.EventObject e, ViewController< ?, ? > viewController );
 
 	public String getTutorialStartNoteText( OperationContext< ? > operationContext, UserInformation userInformation ) {
 		return "Press " + this.getTutorialNoteText( operationContext, userInformation );

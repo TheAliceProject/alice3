@@ -61,7 +61,7 @@ public abstract class CompositeOperation extends Operation<CompositeOperationCon
 		super( group, id );
 	}
 	@Override
-	protected CompositeOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+	public CompositeOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushCompositeOperationContext( this, e, viewController );
 	}
 	protected abstract java.util.List< Operation<?> > getOperations();

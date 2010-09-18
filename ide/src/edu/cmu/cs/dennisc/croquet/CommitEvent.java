@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public class CommitEvent extends SuccessfulCompletionEvent {
 	private Edit<?> edit;
-	/*package-private*/ CommitEvent( Edit<?> edit ) {
+	public CommitEvent( Edit<?> edit ) {
 		this.edit = edit;
 	}
 	public CommitEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

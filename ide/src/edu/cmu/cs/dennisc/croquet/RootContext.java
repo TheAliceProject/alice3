@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class RootContext extends ModelContext<Model> {
-	/*package-private*/ RootContext() {
+	public RootContext() {
 		super( null, null, null );
 	}
 	public RootContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

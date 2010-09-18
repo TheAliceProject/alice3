@@ -414,7 +414,7 @@ public abstract class WizardDialogOperation extends DialogOperationWithControls<
 		this.updateExplanation( null );
 	}
 	@Override
-	protected WizardDialogOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+	public WizardDialogOperationContext createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushWizardDialogOperationContext( this, e, viewController );
 	}
 

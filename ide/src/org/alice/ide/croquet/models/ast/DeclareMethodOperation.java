@@ -68,6 +68,8 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.In
 		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
 		if( successfulCompletionEvent != null ) {
 			org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)successfulCompletionEvent.getEdit();
+			assert declareMethodEdit != null;
+			assert declareMethodEdit.getMethod() != null;
 			sb.append( "Declare " );
 			sb.append( this.getMethodDescription( userInformation ) );
 			sb.append( " named " );

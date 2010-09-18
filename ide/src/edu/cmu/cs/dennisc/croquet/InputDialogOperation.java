@@ -133,7 +133,7 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 	}
 
 	@Override
-	protected InputDialogOperationContext<J> createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
+	public InputDialogOperationContext<J> createContext( java.util.EventObject e, ViewController< ?, ? > viewController ) {
 		return ContextManager.createAndPushInputDialogOperationContext( this, e, viewController );
 	}
 

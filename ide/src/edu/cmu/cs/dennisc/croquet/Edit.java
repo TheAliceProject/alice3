@@ -82,7 +82,7 @@ public abstract class Edit<M extends Model> implements edu.cmu.cs.dennisc.codec.
 			return null;
 		}
 	}
-	/*package-private*/ void setContext( ModelContext<M> context ) {
+	public void setContext( ModelContext<M> context ) {
 		this.context = context;
 		if( this.context != null ) {
 			this.contextId = context.getId();

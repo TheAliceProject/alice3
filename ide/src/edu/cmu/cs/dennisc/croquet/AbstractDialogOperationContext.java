@@ -91,10 +91,10 @@ public class AbstractDialogOperationContext<M extends AbstractDialogOperation<?>
 	/*package-private*/ AbstractDialogOperationContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	/*package-private*/ void handleWindowOpened( java.awt.event.WindowEvent e ) {
+	public void handleWindowOpened( java.awt.event.WindowEvent e ) {
 		this.addChild( new WindowOpenedEvent( e ) );
 	}
-	/*package-private*/ void handleWindowClosing( java.awt.event.WindowEvent e ) {
+	public void handleWindowClosing( java.awt.event.WindowEvent e ) {
 		this.addChild( new WindowClosingEvent( e ) );
 	}
 	

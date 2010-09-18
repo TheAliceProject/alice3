@@ -58,17 +58,15 @@ public class NodeStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.cr
 	public NodeStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	
-	
+
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		Object[] arguments = this.getArguments();
-		assert arguments != null;
+		assert arguments != null : this;
 		assert arguments.length == 1;
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "pre:", arguments[ 0 ] );
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "pre:", arguments[ 0 ] );
 		arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "pst:", arguments[ 0 ] );
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "pst:", arguments[ 0 ] );
 	}
-
 	@Override
 	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		Class<?> parameterType = this.decodeClass( binaryDecoder );
