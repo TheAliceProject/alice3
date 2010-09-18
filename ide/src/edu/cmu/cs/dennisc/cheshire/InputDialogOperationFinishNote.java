@@ -48,11 +48,16 @@ package edu.cmu.cs.dennisc.cheshire;
 	public static InputDialogOperationFinishNote createInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) {
 		return new InputDialogOperationFinishNote( 
 				inputDialogOperationContext, 
-				new IsAcceptableSuccessfulCompletionOf( parentContextCriterion, successfulCompletionEvent ) 
+				parentContextCriterion,
+				successfulCompletionEvent
 		);
 	}
-	private InputDialogOperationFinishNote( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, ProgressRequirement requirement ) {
-		super( requirement );
+	private edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext;
+	private edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent originalSuccessfulCompletionEvent;
+	private InputDialogOperationFinishNote( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, ParentContextCriterion parentContextCriterion,edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent originalSuccessfulCompletionEvent ) {
+		super( new IsAcceptableSuccessfulCompletionOf( parentContextCriterion, originalSuccessfulCompletionEvent ) );
+		this.inputDialogOperationContext = inputDialogOperationContext;
+		this.originalSuccessfulCompletionEvent = originalSuccessfulCompletionEvent;
 		edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > inputDialogOperation = inputDialogOperationContext.getModel();
 		this.setText( inputDialogOperation.getTutorialFinishNoteText( inputDialogOperationContext, ConstructionGuide.getInstance().getUserInformation() ) );
 		final ModelFromContextResolver< edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> > inputDialogOperationResolver = new ModelFromContextResolver( inputDialogOperationContext );
@@ -72,6 +77,38 @@ package edu.cmu.cs.dennisc.cheshire;
 				}
 			}
 		} ) );
-		
 	}
+	private edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalCommitButtonDisabler externalCommitButtonDisabler = new edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalCommitButtonDisabler() {
+		public String getExplanationIfCommitButtonShouldBeDisabled( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext inputDialogOperationContext ) {
+			edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit = originalSuccessfulCompletionEvent.getEdit();
+			if( originalEdit != null ) {
+				edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> inputDialogOperation = (edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>)inputDialogOperationContext.getModel();
+				edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidate = inputDialogOperation.createEdit( inputDialogOperationContext );
+				edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidate, ConstructionGuide.getInstance().getUserInformation() );
+				if( replacementAcceptability.isAcceptable() ) {
+					return null;
+				} else {
+					return replacementAcceptability.getDeviationDescription();
+				}
+			}
+			return null;
+		}
+	};
+	@Override
+	public void reset() {
+		super.reset();
+	}
+	@Override
+	protected void handleAddedTo( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		super.handleAddedTo( parent );
+		edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > inputDialogOperation = this.inputDialogOperationContext.getModel();
+		inputDialogOperation.setExternalCommitButtonDisabler( this.externalCommitButtonDisabler );
+	}
+	@Override
+	protected void handleRemovedFrom( edu.cmu.cs.dennisc.croquet.Component< ? > parent ) {
+		edu.cmu.cs.dennisc.croquet.InputDialogOperation< ? > inputDialogOperation = this.inputDialogOperationContext.getModel();
+		inputDialogOperation.setExternalCommitButtonDisabler( null );
+		super.handleRemovedFrom( parent );
+	}
+	
 }

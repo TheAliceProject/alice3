@@ -48,8 +48,8 @@ package edu.cmu.cs.dennisc.tutorial;
 /*package-private*/ class InputDialogOpenAndCommitStep extends AuthoredWaitingStep<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> {
 	private InputDialogOperationCompletor completor;
 	private InputDialogOperationValidator validator;
-	private edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler externalOkButtonDisabler;
-	public InputDialogOpenAndCommitStep( String title, String openText, String commitText, final edu.cmu.cs.dennisc.croquet.RuntimeResolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> inputDialogOperationResolver, InputDialogOperationCompletor completor, InputDialogOperationValidator validator, edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler externalOkButtonDisabler ) {
+	private edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalCommitButtonDisabler externalOkButtonDisabler;
+	public InputDialogOpenAndCommitStep( String title, String openText, String commitText, final edu.cmu.cs.dennisc.croquet.RuntimeResolver<edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>> inputDialogOperationResolver, InputDialogOperationCompletor completor, InputDialogOperationValidator validator, edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalCommitButtonDisabler externalOkButtonDisabler ) {
 		super( title, openText, new Hole( new FirstComponentResolver( inputDialogOperationResolver ), Feature.ConnectionPreference.EAST_WEST ), inputDialogOperationResolver );
 		this.completor = completor;
 		this.validator = validator;
@@ -112,7 +112,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	protected void setActiveNote(int activeIndex) {
 		super.setActiveNote(activeIndex);
 		if( activeIndex == 1 ) {
-			this.getModel().setExternalOkButtonDisabler( this.externalOkButtonDisabler );
+			this.getModel().setExternalCommitButtonDisabler( this.externalOkButtonDisabler );
 		}
 	}
 	
@@ -169,7 +169,7 @@ package edu.cmu.cs.dennisc.tutorial;
 							SoundCache.FAILURE.startIfNotAlreadyActive();
 						}
 						//todo?
-						this.getModel().setExternalOkButtonDisabler( null );
+						this.getModel().setExternalCommitButtonDisabler( null );
 					}
 				}
 				break;

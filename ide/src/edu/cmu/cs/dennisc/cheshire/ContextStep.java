@@ -193,10 +193,22 @@ public class ContextStep extends Step implements WaitingStep {
 				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = operationContext.getSuccessfulCompletionEvent();
 				if( successfulCompletionEvent != null ) {
 					if( operationContext instanceof edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext ){
-						OperationStartNote startNote = OperationStartNote.createInstance( operationContext, parentContextCriterion );
-						RequirementNote bonusNote = createBonusOperationNote( startNote.getLastAcceptedContext(), operationContext );
-						rv.add( startNote );
-						rv.add( bonusNote );
+						edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext abstractDialogOperationContext = (edu.cmu.cs.dennisc.croquet.AbstractDialogOperationContext)operationContext;
+						AbstractDialogOperationStartNote startNote;
+						if( abstractDialogOperationContext instanceof edu.cmu.cs.dennisc.croquet.DialogOperationContext ) {
+							startNote = DialogOperationStartNote.createInstance( ((edu.cmu.cs.dennisc.croquet.DialogOperationContext)abstractDialogOperationContext), parentContextCriterion );
+						} else if( abstractDialogOperationContext instanceof edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > ) {
+							startNote = InputDialogOperationStartNote.createInstance( ((edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? >)abstractDialogOperationContext), parentContextCriterion );
+						} else {
+							startNote = null;
+						}
+						if( startNote != null ) {
+							RequirementNote bonusNote = createBonusOperationNote( startNote.getLastAcceptedContext(), operationContext );
+							rv.add( startNote );
+							rv.add( bonusNote );
+						} else {
+							throw new RuntimeException( "todo" );
+						}
 					} else {
 						rv.add( OperationNote.createInstance( operationContext, parentContextCriterion, successfulCompletionEvent ) );
 					}

@@ -158,7 +158,7 @@ public class StressTestTutorial {
 							return "<html>Please enter in the name <b>" + requiredProcedureName + "</b> and press <b>Ok</b> button.</html>";
 						}
 					}
-					public String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateProcedurePane> context) {
+					public String getExplanationIfCommitButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateProcedurePane> context) {
 						org.alice.ide.declarationpanes.CreateProcedurePane createProcedurePane = context.getMainPanel();
 						return this.getExplanationIfOkButtonShouldBeDisabled( createProcedurePane.getDeclarationName() );
 					}
@@ -317,7 +317,7 @@ public class StressTestTutorial {
 							return "this should not happen.  you have found a bug.  ask for help.";
 						}
 					}
-					public String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.cascade.customfillin.CustomInputPane<?>> context) {
+					public String getExplanationIfCommitButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.cascade.customfillin.CustomInputPane<?>> context) {
 						org.alice.ide.cascade.customfillin.CustomInputPane<?> customInputPane = context.getMainPanel();
 						return this.getExplanationIfOkButtonShouldBeDisabled( customInputPane.getValueChooser() );
 					}
@@ -353,7 +353,7 @@ public class StressTestTutorial {
 							}
 						}
 					}
-					public String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context) {
+					public String getExplanationIfCommitButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateMethodParameterPane> context) {
 						org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = context.getMainPanel();
 						return this.getExplanationIfOkButtonShouldBeDisabled( createMethodParameterPane.getDeclarationName(), createMethodParameterPane.getValueType() );
 					}

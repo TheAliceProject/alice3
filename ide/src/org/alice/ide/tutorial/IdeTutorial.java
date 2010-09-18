@@ -675,7 +675,7 @@ public class IdeTutorial extends edu.cmu.cs.dennisc.tutorial.Tutorial {
 	@Deprecated
 	public TodoCompletorValidator createToDoCompletorValidator() {
 		return new TodoCompletorValidator() {
-			public String getExplanationIfOkButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext context) {
+			public String getExplanationIfCommitButtonShouldBeDisabled(edu.cmu.cs.dennisc.croquet.InputDialogOperationContext context) {
 				return null;
 			}
 			public Result checkValidity(edu.cmu.cs.dennisc.croquet.ActionOperation actionOperation, edu.cmu.cs.dennisc.croquet.Edit<?> edit) {

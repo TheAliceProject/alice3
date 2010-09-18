@@ -57,7 +57,7 @@ package edu.cmu.cs.dennisc.tutorial;
 	private boolean isInputDialogNotePresent;
 	private DragAndDropOperationCompletor completor;
 	private DragAndDropOperationValidator validator;
-	private edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler<?> externalOkButtonDisabler;
+	private edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalCommitButtonDisabler<?> externalOkButtonDisabler;
 	public DragAndDropStep( 
 			String title, 
 			String text, 
@@ -68,7 +68,7 @@ package edu.cmu.cs.dennisc.tutorial;
 			String inputDialogText, 
 			DragAndDropOperationCompletor completor, 
 			DragAndDropOperationValidator validator, 
-			edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalOkButtonDisabler<?> externalOkButtonDisabler ) {
+			edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalCommitButtonDisabler<?> externalOkButtonDisabler ) {
 		super( title, text, new Hole( new FirstComponentResolver( dragResolver ), Feature.ConnectionPreference.EAST_WEST ), dragResolver );
 		this.completor = completor;
 		this.validator = validator;
@@ -233,7 +233,7 @@ package edu.cmu.cs.dennisc.tutorial;
 									}
 								}
 								
-								inputDialogOperation.setExternalOkButtonDisabler( this.externalOkButtonDisabler );
+								inputDialogOperation.setExternalCommitButtonDisabler( this.externalOkButtonDisabler );
 								
 							}
 						}
@@ -268,7 +268,7 @@ package edu.cmu.cs.dennisc.tutorial;
 								edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?> inputDialogOperationContext = (edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<?>)model;
 								edu.cmu.cs.dennisc.croquet.InputDialogOperation inputDialogOperation = inputDialogOperationContext.getModel();
 								if( inputDialogOperation != null ) {
-									inputDialogOperation.setExternalOkButtonDisabler( this.externalOkButtonDisabler );
+									inputDialogOperation.setExternalCommitButtonDisabler( this.externalOkButtonDisabler );
 								}
 							}
 						}

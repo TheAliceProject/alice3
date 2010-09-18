@@ -46,7 +46,8 @@ import edu.cmu.cs.dennisc.tutorial.*;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class ListSelectionStateSimpleNote<E> extends WaitingOnSuccessfulCompletionNote {
+//todo /*package-private*/
+public class ListSelectionStateSimpleNote<E> extends WaitingOnSuccessfulCompletionNote {
 	public static <E> ListSelectionStateSimpleNote<E> createInstance( edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< E > listSelectionStateContext, ParentContextCriterion parentContextCriterion, edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent ) {
 		return new ListSelectionStateSimpleNote<E>( listSelectionStateContext, parentContextCriterion, successfulCompletionEvent );
 	}

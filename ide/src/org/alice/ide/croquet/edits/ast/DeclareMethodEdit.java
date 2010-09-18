@@ -107,18 +107,29 @@ public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit<
 	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability( edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidate, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		if( replacementCandidate instanceof DeclareMethodEdit ) {
 			DeclareMethodEdit declareMethodEdit = (DeclareMethodEdit)replacementCandidate;
-			String originalName = this.method.getName();
-			String replacementName = declareMethodEdit.method.getName();
-			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( originalName, replacementName ) ) {
-				return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.PERFECT_MATCH;
+			if( this.method != null ) {
+				edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > originalReturnType = this.method.getReturnType();
+				edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > replacementReturnType = declareMethodEdit.method.getReturnType();
+				if( originalReturnType == replacementReturnType ) {
+					String originalName = this.method.getName();
+					String replacementName = declareMethodEdit.method.getName();
+					if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( originalName, replacementName ) ) {
+						return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.PERFECT_MATCH;
+					} else {
+						StringBuilder sb = new StringBuilder();
+						sb.append( "original name: " );
+						sb.append( originalName );
+						sb.append( "; changed to: " );
+						sb.append( replacementName );
+						//sb.append( "." );
+						return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.createDeviation( edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.DeviationSeverity.SHOULD_BE_FINE, sb.toString() ); 
+					}
+				} else {
+					org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
+					return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.createRejection( "<html>return type <strong>MUST</strong> be <strong>" + formatter.getTextForType( method.getReturnType() ) + "</strong></html>" ); 
+				}
 			} else {
-				StringBuilder sb = new StringBuilder();
-				sb.append( "original name: " );
-				sb.append( originalName );
-				sb.append( "; changed to: " );
-				sb.append( replacementName );
-				sb.append( "." );
-				return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.createDeviation( edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.DeviationSeverity.SHOULD_BE_FINE, sb.toString() ); 
+				return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.createRejection( "replacement method is null" ); 
 			}
 		} else {
 			return edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.createRejection( "replacement is not an instance of DeclareMethodEdit" ); 

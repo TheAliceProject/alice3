@@ -142,39 +142,42 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 		return "When finished press the <strong>OK</strong> button.";
 	}
 
-	public static interface ExternalOkButtonDisabler<J extends Component<?>> {
-		public String getExplanationIfOkButtonShouldBeDisabled( InputDialogOperationContext<J> context );
+	public static interface ExternalCommitButtonDisabler<J extends Component<?>> {
+		public String getExplanationIfCommitButtonShouldBeDisabled( InputDialogOperationContext<J> context );
 	}
-	private ExternalOkButtonDisabler<J> externalOkButtonDisabler;
-	public ExternalOkButtonDisabler<J> getExternalOkButtonDisabler() {
-		return this.externalOkButtonDisabler;
+	private ExternalCommitButtonDisabler<J> externalCommitButtonDisabler;
+	public ExternalCommitButtonDisabler<J> getExternalCommitButtonDisabler() {
+		return this.externalCommitButtonDisabler;
 	}
-	public void setExternalOkButtonDisabler( ExternalOkButtonDisabler<J> externalOkButtonDisabler ) {
-		this.externalOkButtonDisabler = externalOkButtonDisabler;
+	public void setExternalCommitButtonDisabler( ExternalCommitButtonDisabler<J> externalCommitButtonDisabler ) {
+		this.externalCommitButtonDisabler = externalCommitButtonDisabler;
 	}
-	protected String getExplanationIfOkButtonShouldBeDisabled( InputDialogOperationContext<J> context ) {
+	protected String getExplanationIfCommitButtonShouldBeDisabled( InputDialogOperationContext<J> context ) {
 		return null;
 	}
 	protected abstract J prologue( InputDialogOperationContext<J> context );
-	protected abstract void epilogue( InputDialogOperationContext<J> context, boolean isOk );
+	protected abstract void epilogue( InputDialogOperationContext<J> context, boolean isCommit );
 
-	protected void updateOkOperationAndExplanation( InputDialogOperationContext<J> context ) {
+	protected void updateOperationAndExplanation( HistoryNode<?> child ) {
+		InputDialogOperationContext<J> context = (InputDialogOperationContext<J>)child.findContextFor( InputDialogOperation.this );
+		String text;
 		if( context != null ) {
-			String explanation = this.getExplanationIfOkButtonShouldBeDisabled( context );
-			if( this.externalOkButtonDisabler != null ) {
-				String externalExplanation = this.externalOkButtonDisabler.getExplanationIfOkButtonShouldBeDisabled( context );
+			String explanation = this.getExplanationIfCommitButtonShouldBeDisabled( context );
+			if( this.externalCommitButtonDisabler != null ) {
+				String externalExplanation = this.externalCommitButtonDisabler.getExplanationIfCommitButtonShouldBeDisabled( context );
 				if( externalExplanation != null ) {
 					explanation = externalExplanation;
 				}
 			}
-			CommitOperation.getInstance().setEnabled( explanation == null );
 			if( explanation != null ) {
-				this.explanationLabel.setText( explanation );
+				text = explanation;
 			} else {
-				this.explanationLabel.setText( NULL_EXPLANATION );
+				text = NULL_EXPLANATION;
 			}
+			CommitOperation.getInstance().setEnabled( text == NULL_EXPLANATION );
+			this.explanationLabel.setText( text );
 		} else {
-			this.explanationLabel.setText( "todo: updateOkOperationAndExplanation context==null" );
+			this.explanationLabel.setText( "todo: updateOperationAndExplanation context==null" );
 			CommitOperation.getInstance().setEnabled( true );
 		}
 	}
@@ -183,10 +186,15 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 		public void addingChild(HistoryNode child) {
 		}
 		public void addedChild(HistoryNode child) {
-			InputDialogOperation.this.updateOkOperationAndExplanation( (InputDialogOperationContext<J>)child.findContextFor( InputDialogOperation.this ) );
+			InputDialogOperation.this.updateOperationAndExplanation( child );
 		}
 	};
 
+	public Edit< ? > createEdit( InputDialogOperationContext< J > inputDialogOperationContext ) {
+		//todo
+		return null;
+	}
+	
 	@Override
 	protected final Container<?> createContentPane(InputDialogOperationContext<J> context, Dialog dialog) {
 		J mainPane = this.prologue(context);
@@ -215,7 +223,7 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 				@Override
 				protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
 					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-						return new java.awt.FlowLayout( java.awt.FlowLayout.CENTER, 2, 0 );
+						return new java.awt.FlowLayout( java.awt.FlowLayout.TRAILING, 2, 0 );
 					} else {
 						return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
 					}
@@ -248,7 +256,7 @@ public abstract class InputDialogOperation<J extends Component<?>> extends Abstr
 
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate.  observer should not need to be added to the root" );
 			ContextManager.getRootContext().addChildrenObserver( this.childrenObserver );
-			this.updateOkOperationAndExplanation( context );
+			this.updateOperationAndExplanation( context );
 
 			return borderPanel;
 		} else {

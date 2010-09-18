@@ -41,24 +41,15 @@
  */
 package edu.cmu.cs.dennisc.cheshire;
 
-import edu.cmu.cs.dennisc.tutorial.*;
-
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class OperationStartNote extends RequirementNote {
-	public static OperationStartNote createInstance( edu.cmu.cs.dennisc.croquet.OperationContext< ? > operationContext, ParentContextCriterion parentContextCriterion ) {
-		return new OperationStartNote( 
-				operationContext, 
-				new IsChildOfAndInstanceOf( parentContextCriterion, edu.cmu.cs.dennisc.croquet.OperationContext.class ) 
-		);
+/*package-private*/ class InputDialogOperationStartNote extends AbstractDialogOperationStartNote {
+	public static InputDialogOperationStartNote createInstance( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > context, ParentContextCriterion parentContextCriterion ) {
+		return new InputDialogOperationStartNote( context, parentContextCriterion );
 	}
-	private OperationStartNote( edu.cmu.cs.dennisc.croquet.OperationContext< ? > operationContext, ProgressRequirement requirement ) {
-		super( requirement );
-		edu.cmu.cs.dennisc.croquet.Operation< ? > operation = operationContext.getModel();
-		this.setText( operation.getTutorialStartNoteText( operationContext, ConstructionGuide.getInstance().getUserInformation() ) );
-		ModelFromContextResolver modelResolver = new ModelFromContextResolver( operationContext );
-		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
-		this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			
+	
+	private InputDialogOperationStartNote( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< ? > inputDialogOperationContext, ParentContextCriterion parentContextCriterion ) {
+		super( inputDialogOperationContext, parentContextCriterion );
 	}
 }

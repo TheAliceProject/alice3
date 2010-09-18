@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,10 +39,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.tutorial;
+package edu.cmu.cs.dennisc.cheshire;
+
+import edu.cmu.cs.dennisc.tutorial.*;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface DragAndDropOperationCompletorValidatorOkButtonDisabler< J extends edu.cmu.cs.dennisc.croquet.JComponent<?> > extends DragAndDropOperationCompletorValidator, edu.cmu.cs.dennisc.croquet.InputDialogOperation.ExternalCommitButtonDisabler< J > {
+/*package-private*/ class DialogOperationStartNote extends AbstractDialogOperationStartNote {
+	public static DialogOperationStartNote createInstance( edu.cmu.cs.dennisc.croquet.DialogOperationContext context, ParentContextCriterion parentContextCriterion ) {
+		return new DialogOperationStartNote( context, parentContextCriterion ); 
+	}
+	
+	private DialogOperationStartNote( edu.cmu.cs.dennisc.croquet.DialogOperationContext context, ParentContextCriterion parentContextCriterion ) {
+		super( context, parentContextCriterion );
+		edu.cmu.cs.dennisc.croquet.AbstractDialogOperation< ? > operation = context.getModel();
+		this.setText( operation.getTutorialStartNoteText( context, ConstructionGuide.getInstance().getUserInformation() ) );
+		ModelFromContextResolver modelResolver = new ModelFromContextResolver( context );
+		FirstComponentResolver firstComponentResolver = new FirstComponentResolver( modelResolver );
+		this.addFeature( new Hole( firstComponentResolver, Feature.ConnectionPreference.EAST_WEST ) );			
+	}
 }
