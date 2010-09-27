@@ -177,13 +177,23 @@ public class TutorialStencil extends Stencil {
 		this.controlsPanel.addComponent(controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
 		this.isPaintingStencil.setTextForTrueAndTextForFalse( "", "WARNING: stencil is disabled.  Click here to turn re-enable." );
 		
+		controlPanel.getComponent( 1 ).scaleFont( 1.5f );
+//		controlPanel.getComponent( 1 ).changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
+
+//		controlPanel.getComponent( 0 ).scaleFont( 1.5f );
+//		controlPanel.getComponent( 2 ).scaleFont( 1.5f );
+//		for( edu.cmu.cs.dennisc.croquet.Component< ? > component : controlPanel.getComponents() ) {
+//			component.scaleFont( 1.5f );
+//			component.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
+//		}
+		
 		edu.cmu.cs.dennisc.croquet.CheckBox isPlayingSoundsCheckBox = this.isPlayingSounds.createCheckBox();
 		isPlayingSoundsCheckBox.getAwtComponent().setOpaque( false );
 		edu.cmu.cs.dennisc.croquet.CheckBox isInterceptingEventsCheckBox = this.isInterceptingEvents.createCheckBox();
 		isInterceptingEventsCheckBox.getAwtComponent().setOpaque( false );
 		edu.cmu.cs.dennisc.croquet.CheckBox isPaintingStencilCheckBox = this.isPaintingStencil.createCheckBox();
 		isPaintingStencilCheckBox.getAwtComponent().setOpaque( false );
-				
+
 		edu.cmu.cs.dennisc.croquet.FlowPanel westPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.TRAILING, 2, 0);
 		westPanel.addComponent( isPlayingSoundsCheckBox );
 		//this.controlsPanel.addComponent(westPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_START);

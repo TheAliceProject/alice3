@@ -106,34 +106,38 @@ package edu.cmu.cs.dennisc.tutorial;
 		String toolTipText = null;
 		javax.swing.Icon icon;
 		if( index != -1 ) {
-			if( replacementAcceptability != null ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( replacementAcceptability );
-				if( replacementAcceptability == edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.PERFECT_MATCH || replacementAcceptability == edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK ) {
-					icon = PERFECT_MATCH_ICON;
-				} else {
-					if( replacementAcceptability.isDeviation() ) {
-						if( replacementAcceptability.getDeviationSeverity() == edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.DeviationSeverity.SHOULD_BE_FINE ) {
-							icon = SHOULD_BE_FINE_ICON;
+			if( index <= this.stepsModel.getSelectedIndex() ) {
+				if( replacementAcceptability != null ) {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( replacementAcceptability );
+					if( replacementAcceptability == edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.PERFECT_MATCH || replacementAcceptability == edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK ) {
+						icon = PERFECT_MATCH_ICON;
+					} else {
+						if( replacementAcceptability.isDeviation() ) {
+							if( replacementAcceptability.getDeviationSeverity() == edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.DeviationSeverity.SHOULD_BE_FINE ) {
+								icon = SHOULD_BE_FINE_ICON;
+							} else {
+								icon = DEVIATION_ICON;
+							}
+							if( isSelected ) {
+								StringBuilder sbToolTip = new StringBuilder();
+								sbToolTip.append( replacementAcceptability.getDeviationSeverity().getRepr( edu.cmu.cs.dennisc.cheshire.GuidedInteraction.getInstance().getUserInformation() ) );
+								sbToolTip.append( ": " );
+								sbToolTip.append( replacementAcceptability.getDeviationDescription() );
+								toolTipText = sbToolTip.toString();
+							}
 						} else {
-							icon = DEVIATION_ICON;
+							icon = BLANK_ICON;
 						}
-						if( isSelected ) {
-							StringBuilder sbToolTip = new StringBuilder();
-							sbToolTip.append( replacementAcceptability.getDeviationSeverity().getRepr( edu.cmu.cs.dennisc.cheshire.GuidedInteraction.getInstance().getUserInformation() ) );
-							sbToolTip.append( ": " );
-							sbToolTip.append( replacementAcceptability.getDeviationDescription() );
-							toolTipText = sbToolTip.toString();
-						}
+					}
+				} else {
+					if( index == this.stepsModel.getSelectedIndex() ) {
+						icon = CURRENT_ICON;
 					} else {
 						icon = BLANK_ICON;
 					}
 				}
 			} else {
-				if( index == this.stepsModel.getSelectedIndex() ) {
-					icon = CURRENT_ICON;
-				} else {
-					icon = BLANK_ICON;
-				}
+				icon = BLANK_ICON;
 			}
 		} else {
 			icon = CURRENT_ICON;

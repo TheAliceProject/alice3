@@ -235,13 +235,16 @@ import edu.cmu.cs.dennisc.tutorial.*;
 				this.addFeature( new MenuHole( createComponentResolver( menuSelectionEvent, j ), Feature.ConnectionPreference.EAST_WEST, j==i, true, false ) );
 			}
 		} else {
-			boolean isCheckMarkRenderingDesired = GuidedInteraction.getInstance().getStencil().getMenuPolicy().isFeedbackDesired();
-			if( isInMenuBar ) {
-				this.addFeature( new MenuHole( createComponentResolver( menuSelectionEvent, index0 ), Feature.ConnectionPreference.EAST_WEST, this.i == index0, false, false ) );
+			for( int j=index0; j<=i; j++ ) {
+				this.addFeature( new MenuHole( createComponentResolver( menuSelectionEvent, j ), Feature.ConnectionPreference.EAST_WEST, j==i, false, false ) );
 			}
-			if( isInMenuBar==false || this.i > index0 ) {
-				this.addFeature( new MenuHole( createComponentResolver( menuSelectionEvent, this.i ), Feature.ConnectionPreference.EAST_WEST, true, false, isCheckMarkRenderingDesired ) );
-			}
+//			boolean isCheckMarkRenderingDesired = GuidedInteraction.getInstance().getStencil().getMenuPolicy().isFeedbackDesired();
+//			if( isInMenuBar ) {
+//				this.addFeature( new MenuHole( createComponentResolver( menuSelectionEvent, index0 ), Feature.ConnectionPreference.EAST_WEST, this.i == index0, false, false ) );
+//			}
+//			if( isInMenuBar==false || this.i > index0 ) {
+//				this.addFeature( new MenuHole( createComponentResolver( menuSelectionEvent, this.i ), Feature.ConnectionPreference.EAST_WEST, true, false, isCheckMarkRenderingDesired ) );
+//			}
 		}
 	}
 	
