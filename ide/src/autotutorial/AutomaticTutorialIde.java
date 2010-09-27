@@ -190,11 +190,7 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 	public void loadProjectFrom( java.net.URI uri ) {
 		super.loadProjectFrom( uri );
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( IS_ENCODING );
-<<<<<<< HEAD
 		//org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( false );
-=======
-		//org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( true );
->>>>>>> f68bca2c09b0a9642454b322f4b5e134a0615bb3
 		if( IS_ENCODING ) {
 			edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
 			rootContext.EPIC_HACK_clear();
