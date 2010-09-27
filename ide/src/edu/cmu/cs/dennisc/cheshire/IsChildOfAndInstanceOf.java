@@ -83,6 +83,9 @@ class IsChildOfAndInstanceOf<N extends edu.cmu.cs.dennisc.croquet.HistoryNode<?>
 			return false;
 		}
 	}
+	public void complete() {
+		this.replacementAcceptability = edu.cmu.cs.dennisc.croquet.ReplacementAcceptability.PERFECT_MATCH;
+	}
 	
 	@Override
 	public String toString() {

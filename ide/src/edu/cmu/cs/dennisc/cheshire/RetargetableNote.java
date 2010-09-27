@@ -61,4 +61,5 @@ public abstract class RetargetableNote extends Note {
 		originalEdit.addKeyValuePairs( retargeter, replacementEdit );
 		GuidedInteraction.getInstance().retargetOriginalContext( retargeter );
 	}
+	public abstract void complete();
 }

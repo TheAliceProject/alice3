@@ -49,4 +49,5 @@ interface ProgressRequirement {
 	void reset();
 	edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability();
 	boolean isWhatWereLookingFor( edu.cmu.cs.dennisc.croquet.HistoryNode<?> historyNode ) throws CancelException;
+	public void complete();
 }

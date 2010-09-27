@@ -308,8 +308,9 @@ public abstract class Model implements RuntimeResolver< Model > {
 	}
 	
 	private JComponent< ? > firstComponentHint;
+	
 	@Deprecated
-	public <J extends JComponent< ? > > J getFirstComponent( Class<J> cls ) {
+	public <J extends JComponent< ? > > J getFirstComponent( Class<J> cls, boolean isVisibleAcceptable ) {
 		if( this.firstComponentHint != null ) {
 			return cls.cast( this.firstComponentHint );
 		} else {
@@ -325,13 +326,15 @@ public abstract class Model implements RuntimeResolver< Model > {
 					}
 				}
 			}
-			for( JComponent< ? > component : this.components ) {
-				if( cls.isAssignableFrom( component.getClass() ) ) {
-					if( component.getAwtComponent().isVisible() ) {
-//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
-						return cls.cast( component );
-					} else {
-						//pass
+			if( isVisibleAcceptable ) {
+				for( JComponent< ? > component : this.components ) {
+					if( cls.isAssignableFrom( component.getClass() ) ) {
+						if( component.getAwtComponent().isVisible() ) {
+//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
+							return cls.cast( component );
+						} else {
+							//pass
+						}
 					}
 				}
 			}
@@ -349,17 +352,16 @@ public abstract class Model implements RuntimeResolver< Model > {
 //		return null;
 //	}
 	@Deprecated
+	public<J extends JComponent< ? > > J getFirstComponent( Class<J> cls ) {
+		return getFirstComponent( cls, false );
+	}
+	@Deprecated
+	public JComponent< ? > getFirstComponent( boolean isVisibleAcceptable ) {
+		return getFirstComponent( JComponent.class, isVisibleAcceptable );
+	}
+	@Deprecated
 	public JComponent< ? > getFirstComponent() {
-		JComponent< ? > rv = getFirstComponent( JComponent.class );
-//		assert rv != null;
-//		if( rv.isInView() ) {
-//			//pass
-//		} else {
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "not in view:", rv );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "components:", this.components );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "hint:", this.firstComponentHint );
-//		}
-		return rv;
+		return getFirstComponent( false );
 	}
 	@Deprecated
 	public void setFirstComponentHint( JComponent< ? > firstComponentHint ) {
