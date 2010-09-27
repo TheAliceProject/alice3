@@ -58,5 +58,6 @@ public class WrappedFlowPanel extends FlowPanel {
 	@Override
 	protected java.awt.FlowLayout createFlowLayout(int alignment, int hgap, int vgap) {
 		return new wrap.WrappedFlowLayout(alignment, hgap, vgap);
+		//return new java.awt.FlowLayout(alignment, hgap, vgap);
 	}
 }

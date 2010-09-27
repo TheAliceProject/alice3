@@ -74,7 +74,7 @@ class AlgPriorInteractionHistoryBasedGuidedInteractionGenerator extends PriorInt
 				}
 			}
 		}
-		originalRoot.addChild( 0, new edu.cmu.cs.dennisc.cheshire.Message( "title", "text" ) );
+		//originalRoot.addChild( 0, new edu.cmu.cs.dennisc.cheshire.Message( "title", "text" ) );
 		originalRoot.addChild( new edu.cmu.cs.dennisc.cheshire.Message( "Finished", "<strong>Congratulations.</strong><br>You have completed the guided interaction." ) );
 	}
 }
@@ -190,8 +190,8 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 	@Override
 	public void loadProjectFrom( java.net.URI uri ) {
 		super.loadProjectFrom( uri );
-		//org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( IS_ENCODING );
-		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( false );
+		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( IS_ENCODING );
+		//org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( false );
 		if( IS_ENCODING ) {
 			edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
 			rootContext.EPIC_HACK_clear();
