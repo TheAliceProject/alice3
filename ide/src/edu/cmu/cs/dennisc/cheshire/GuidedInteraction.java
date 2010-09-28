@@ -52,31 +52,22 @@ public abstract class GuidedInteraction {
 	public static GuidedInteraction getInstance() {
 		return instance;
 	}
-	public static javax.swing.JLayeredPane getLayeredPane() {
-		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
-		javax.swing.JFrame frame = application.getFrame().getAwtComponent();
-		javax.swing.JLayeredPane layeredPane = frame.getLayeredPane();
-		final int PAD = 4;
-		frame.getJMenuBar().setBorder( javax.swing.BorderFactory.createEmptyBorder(PAD+32,PAD,0,PAD));
-		((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder(0,PAD,PAD,PAD));
-		return layeredPane; 
-	}
 
 	private edu.cmu.cs.dennisc.croquet.UserInformation userInformation;
 	private AutomaticTutorialStencil stencil;
 	private edu.cmu.cs.dennisc.croquet.RootContext sourceContext;
 
 	/*package-private*/ class AutomaticTutorialStencil extends TutorialStencil {
-		public AutomaticTutorialStencil( MenuPolicy menuPolicy, StepAccessPolicy stepAccessPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, javax.swing.JLayeredPane layeredPane, edu.cmu.cs.dennisc.croquet.Group[] groups ) {
-			super( menuPolicy, stepAccessPolicy, scrollingRequiredRenderer, layeredPane, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() );
+		public AutomaticTutorialStencil( MenuPolicy menuPolicy, StepAccessPolicy stepAccessPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, boolean isOptimizedForBugRepro, edu.cmu.cs.dennisc.croquet.Group[] groups ) {
+			super( menuPolicy, stepAccessPolicy, scrollingRequiredRenderer, isOptimizedForBugRepro, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() );
 		}
 	}
 	
-	public GuidedInteraction( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, MenuPolicy menuPolicy, StepAccessPolicy stepAccessPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
+	public GuidedInteraction( edu.cmu.cs.dennisc.croquet.UserInformation userInformation, MenuPolicy menuPolicy, StepAccessPolicy stepAccessPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, boolean isOptimizedForBugRepro, edu.cmu.cs.dennisc.croquet.Group[] groupsTrackedForRandomAccess ) {
 		assert instance == null;
 		instance = this;
 		this.userInformation = userInformation;
-		this.stencil = new AutomaticTutorialStencil( menuPolicy, stepAccessPolicy, scrollingRequiredRenderer, getLayeredPane(), groupsTrackedForRandomAccess );
+		this.stencil = new AutomaticTutorialStencil( menuPolicy, stepAccessPolicy, scrollingRequiredRenderer, isOptimizedForBugRepro, groupsTrackedForRandomAccess );
 	}
 	
 	public edu.cmu.cs.dennisc.croquet.UserInformation getUserInformation() {

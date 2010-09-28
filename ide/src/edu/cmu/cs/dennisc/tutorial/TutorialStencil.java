@@ -107,7 +107,8 @@ public class TutorialStencil extends Stencil {
 	
 	private edu.cmu.cs.dennisc.history.HistoryManager[] historyManagers;
 
-	private edu.cmu.cs.dennisc.croquet.BorderPanel controlsPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+	private boolean isOptimizedForBugRepro;
+	
 	private edu.cmu.cs.dennisc.croquet.CardPanel cardPanel = new edu.cmu.cs.dennisc.croquet.CardPanel();
 	private StepsModel.SelectionObserver selectionObserver = new StepsModel.SelectionObserver() {
 		public void selectionChanging( StepsModel source, int fromIndex, int toIndex ) {
@@ -121,18 +122,30 @@ public class TutorialStencil extends Stencil {
 		}
 	};
 	
-	public static TutorialStencil createInstance( edu.cmu.cs.dennisc.croquet.Group[] groups ) {
+	public static javax.swing.JLayeredPane getLayeredPane( boolean isOptimizedForBugRepro ) {
 		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		javax.swing.JFrame frame = application.getFrame().getAwtComponent();
 		javax.swing.JLayeredPane layeredPane = frame.getLayeredPane();
-		final int PAD = 4;
-		frame.getJMenuBar().setBorder( javax.swing.BorderFactory.createEmptyBorder(PAD+32,PAD,0,PAD));
-		((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder(0,PAD,PAD,PAD));
-		return new TutorialStencil( edu.cmu.cs.dennisc.cheshire.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK, StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP, DefaultScrollingRequiredRenderer.INSTANCE, layeredPane, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() ); 
+		if( isOptimizedForBugRepro ) {
+			frame.getJMenuBar().setBorder( javax.swing.BorderFactory.createEmptyBorder(0,300,0,0));
+			((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder(0,300,0,0));
+		} else {
+			final int PAD = 4;
+			frame.getJMenuBar().setBorder( javax.swing.BorderFactory.createEmptyBorder(PAD+32,PAD,0,PAD));
+			((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder(0,PAD,PAD,PAD));
+		}
+		return layeredPane; 
 	}
 	
-	public TutorialStencil( edu.cmu.cs.dennisc.cheshire.MenuPolicy menuPolicy, StepAccessPolicy stepAccessPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, javax.swing.JLayeredPane layeredPane, edu.cmu.cs.dennisc.croquet.Group[] groups, edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext ) {
-		super( menuPolicy, scrollingRequiredRenderer, layeredPane );
+	
+	public static TutorialStencil createInstance( edu.cmu.cs.dennisc.croquet.Group[] groups ) {
+		return new TutorialStencil( edu.cmu.cs.dennisc.cheshire.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK, StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP, DefaultScrollingRequiredRenderer.INSTANCE, false, groups, edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext() ); 
+	}
+	
+	public TutorialStencil( edu.cmu.cs.dennisc.cheshire.MenuPolicy menuPolicy, StepAccessPolicy stepAccessPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer, boolean isOptimizedForBugRepro, edu.cmu.cs.dennisc.croquet.Group[] groups, edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext ) {
+		super( menuPolicy, scrollingRequiredRenderer, getLayeredPane( isOptimizedForBugRepro ) );
+		this.isOptimizedForBugRepro = isOptimizedForBugRepro;
+
 		this.stepsModel.setStepAccessPolicy( stepAccessPolicy );
 		rootContext.addChildrenObserver( this.childrenObserver );
 
@@ -170,39 +183,53 @@ public class TutorialStencil extends Stencil {
 		} );
 
 
-		edu.cmu.cs.dennisc.croquet.FlowPanel controlPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.CENTER, 2, 0);
-		controlPanel.addComponent(this.previousStepOperation.createButton());
-		controlPanel.addComponent( new StepsComboBox( this.stepsComboBoxModel, this.isAbovePopupMenus()==false ) );
-		controlPanel.addComponent(this.nextStepOperation.createButton());
-		this.controlsPanel.addComponent(controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
-		this.isPaintingStencil.setTextForTrueAndTextForFalse( "", "WARNING: stencil is disabled.  Click here to turn re-enable." );
-		
-		edu.cmu.cs.dennisc.croquet.CheckBox isPlayingSoundsCheckBox = this.isPlayingSounds.createCheckBox();
-		isPlayingSoundsCheckBox.getAwtComponent().setOpaque( false );
-		edu.cmu.cs.dennisc.croquet.CheckBox isInterceptingEventsCheckBox = this.isInterceptingEvents.createCheckBox();
-		isInterceptingEventsCheckBox.getAwtComponent().setOpaque( false );
-		edu.cmu.cs.dennisc.croquet.CheckBox isPaintingStencilCheckBox = this.isPaintingStencil.createCheckBox();
-		isPaintingStencilCheckBox.getAwtComponent().setOpaque( false );
-				
-		edu.cmu.cs.dennisc.croquet.FlowPanel westPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.TRAILING, 2, 0);
-		westPanel.addComponent( isPlayingSoundsCheckBox );
-		//this.controlsPanel.addComponent(westPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_START);
+		if( this.isOptimizedForBugRepro ) {
+			edu.cmu.cs.dennisc.croquet.LineAxisPanel prevNextPanel = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
+			prevNextPanel.addComponent(this.previousStepOperation.createButton());
+			prevNextPanel.addComponent(this.nextStepOperation.createButton());
 
-		edu.cmu.cs.dennisc.croquet.FlowPanel eastPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.TRAILING, 2, 0);
-		//eastPanel.addComponent( isInterceptingEventsCheckBox );
-		eastPanel.addComponent( isPaintingStencilCheckBox );
-		//this.controlsPanel.addComponent(eastPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END);
-		this.controlsPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 0, 4));
+			edu.cmu.cs.dennisc.croquet.BorderPanel controlPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+			controlPanel.addComponent(prevNextPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.PAGE_START);
+			controlPanel.addComponent(new StepsList(stepsComboBoxModel), edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
+			
+			this.internalAddComponent(controlPanel, java.awt.BorderLayout.LINE_START);
+			
+		} else {
+			edu.cmu.cs.dennisc.croquet.BorderPanel controlsPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+			edu.cmu.cs.dennisc.croquet.FlowPanel controlPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.CENTER, 2, 0);
+			controlPanel.addComponent(this.previousStepOperation.createButton());
+			controlPanel.addComponent( new StepsComboBox( this.stepsComboBoxModel, this.isAbovePopupMenus()==false ) );
+			controlPanel.addComponent(this.nextStepOperation.createButton());
+			controlsPanel.addComponent(controlPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.CENTER);
+			this.isPaintingStencil.setTextForTrueAndTextForFalse( "", "WARNING: stencil is disabled.  Click here to turn re-enable." );
+			
+			edu.cmu.cs.dennisc.croquet.CheckBox isPlayingSoundsCheckBox = this.isPlayingSounds.createCheckBox();
+			isPlayingSoundsCheckBox.getAwtComponent().setOpaque( false );
+			edu.cmu.cs.dennisc.croquet.CheckBox isInterceptingEventsCheckBox = this.isInterceptingEvents.createCheckBox();
+			isInterceptingEventsCheckBox.getAwtComponent().setOpaque( false );
+			edu.cmu.cs.dennisc.croquet.CheckBox isPaintingStencilCheckBox = this.isPaintingStencil.createCheckBox();
+			isPaintingStencilCheckBox.getAwtComponent().setOpaque( false );
+					
+			edu.cmu.cs.dennisc.croquet.FlowPanel westPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.TRAILING, 2, 0);
+			westPanel.addComponent( isPlayingSoundsCheckBox );
+			//controlsPanel.addComponent(westPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_START);
 
-		for( java.awt.Component component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this.controlsPanel.getAwtComponent() ) ) {
-			if( component instanceof javax.swing.JPanel ) {
-				//pass
-			} else {
-				component.setCursor( java.awt.Cursor.getDefaultCursor() );
+			edu.cmu.cs.dennisc.croquet.FlowPanel eastPanel = new edu.cmu.cs.dennisc.croquet.FlowPanel(edu.cmu.cs.dennisc.croquet.FlowPanel.Alignment.TRAILING, 2, 0);
+			//eastPanel.addComponent( isInterceptingEventsCheckBox );
+			eastPanel.addComponent( isPaintingStencilCheckBox );
+			//controlsPanel.addComponent(eastPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END);
+			controlsPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 0, 4));
+
+			for( java.awt.Component component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( controlsPanel.getAwtComponent() ) ) {
+				if( component instanceof javax.swing.JPanel ) {
+					//pass
+				} else {
+					component.setCursor( java.awt.Cursor.getDefaultCursor() );
+				}
 			}
-		}
 
-		this.internalAddComponent(this.controlsPanel, java.awt.BorderLayout.NORTH);
+			this.internalAddComponent(controlsPanel, java.awt.BorderLayout.PAGE_START);
+		}
 		this.internalAddComponent(this.cardPanel, java.awt.BorderLayout.CENTER);
 	}
 
@@ -322,18 +349,13 @@ public class TutorialStencil extends Stencil {
 				isWaiting = false;
 			}
 			
-			this.nextStepOperation.setEnabled(0 <= selectedIndex && selectedIndex < this.stepsModel.getSize() - 1 && isWaiting==false );
+			if( this.isOptimizedForBugRepro ) {
+				//pass
+			} else {
+				this.nextStepOperation.setEnabled(0 <= selectedIndex && selectedIndex < this.stepsModel.getSize() - 1 && isWaiting==false );
+			}
 			this.previousStepOperation.setEnabled(1 <= selectedIndex);
-			
-//			if( isAutoAdvanceDesired ) {
-//				this.nextStepOperation.fire();
-//			}
-			
-//			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//				public void run() {
-//					TutorialStencil.this.controlsPanel.repaint();
-//				}
-//			} );
+
 			this.requestFocus();
 			this.revalidateAndRepaint();
 		}
@@ -405,6 +427,9 @@ public class TutorialStencil extends Stencil {
 		step.setTutorialStencil( this );
 	}
 	public void setSelectedIndex( int index ) {
+		if( index < 0 ) {
+			index += this.stepsModel.getSize();
+		}
 		this.stepsModel.setSelectedIndex( index );
 	}
 		

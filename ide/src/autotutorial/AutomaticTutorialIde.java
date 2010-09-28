@@ -122,6 +122,14 @@ class AlgTopDownASTGuidedInteractionGenerator implements GuidedInteractionGenera
 		return rv;
 	}
 }
+class AlgBugReproGuidedInteractionGenerator extends PriorInteractionHistoryBasedGuidedInteractionGenerator {
+	public AlgBugReproGuidedInteractionGenerator( edu.cmu.cs.dennisc.croquet.RootContext originalRoot ) {
+		super( originalRoot );
+	}
+	@Override
+	protected void filterAndAugment( edu.cmu.cs.dennisc.croquet.ModelContext< ? > originalRoot, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	}	
+}
 
 class AlgConstructionGuide extends edu.cmu.cs.dennisc.cheshire.GuidedInteraction {
 	private static boolean IS_MONKEY_WRENCH_DESIRED = false;
@@ -139,6 +147,7 @@ class AlgConstructionGuide extends edu.cmu.cs.dennisc.cheshire.GuidedInteraction
 			edu.cmu.cs.dennisc.cheshire.StepAccessPolicy.ALLOW_ACCESS_TO_ALL_STEPS,
 			
 			edu.cmu.cs.dennisc.tutorial.DefaultScrollingRequiredRenderer.INSTANCE,
+			false,
 			new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP }
 		);
 
@@ -162,7 +171,6 @@ class AlgConstructionGuide extends edu.cmu.cs.dennisc.cheshire.GuidedInteraction
 			edu.cmu.cs.dennisc.cheshire.ListSelectionStateStartNote listSelectionStateStartNote =  edu.cmu.cs.dennisc.cheshire.ListSelectionStateStartNote.createInstance( context, parentContextCriterion, context.getSuccessfulCompletionEvent() );
 			rv.add( listSelectionStateStartNote );
 			rv.add( edu.cmu.cs.dennisc.cheshire.ListSelectionStateFinishNote.createInstance( context, listSelectionStateStartNote.getAcceptedContextAt( 0 ), context.getSuccessfulCompletionEvent() ) );
-
 		}
 		
 		if( IS_MONKEY_WRENCH_DESIRED ) {
@@ -174,11 +182,33 @@ class AlgConstructionGuide extends edu.cmu.cs.dennisc.cheshire.GuidedInteraction
 	}
 }
 
+class AlgBugRepro extends edu.cmu.cs.dennisc.cheshire.GuidedInteraction {
+	public AlgBugRepro() {
+		super( 
+			AlgUserInformation.INSTANCE,
+			edu.cmu.cs.dennisc.cheshire.MenuPolicy.BELOW_STENCIL,
+			edu.cmu.cs.dennisc.cheshire.StepAccessPolicy.ALLOW_ACCESS_TO_ALL_STEPS,
+			edu.cmu.cs.dennisc.tutorial.DefaultScrollingRequiredRenderer.INSTANCE,
+			true,
+			new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP }
+		);
+	}
+	@Override
+	protected java.util.List< edu.cmu.cs.dennisc.cheshire.RetargetableNote > addNotesToGetIntoTheRightStateWhenNoViewControllerCanBeFound( 
+			java.util.List< edu.cmu.cs.dennisc.cheshire.RetargetableNote > rv,
+			edu.cmu.cs.dennisc.cheshire.ParentContextCriterion parentContextCriterion, 
+			edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext ) {
+		
+		return rv;
+	}
+}
+
 
 public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 	private static boolean IS_ENCODING;
 	private static boolean IS_WIZARD_OF_OZ_HASTINGS_DESIRED;
 	private static boolean IS_BASED_ON_INTERACTION_AST;
+	private static boolean IS_OPTIMIZED_FOR_BUG_REPRO;
 	private static final String UI_HISTORY_PATH = "/autoTutorial1.bin";
 	private static final String AST_MIMIC_PATH = "/astMimic1.bin";
 	private static final String POST_PROJECT_PATH = "/post.a3p";
@@ -262,19 +292,19 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
 			this.isPostProjectLive = true;
 			this.originalContext = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( UI_HISTORY_PATH, edu.cmu.cs.dennisc.croquet.RootContext.class );
-
 			final boolean IS_INFORMATION_GROUP_INCLUDED = false;
 			edu.cmu.cs.dennisc.cheshire.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.alice.Project.GROUP, edu.cmu.cs.dennisc.cheshire.GroupFilter.SuccessfulCompletionPolicy.ONLY_COMMITS );
 			edu.cmu.cs.dennisc.cheshire.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.croquet.Application.UI_STATE_GROUP, edu.cmu.cs.dennisc.cheshire.GroupFilter.SuccessfulCompletionPolicy.ONLY_COMMITS );
 			edu.cmu.cs.dennisc.cheshire.GroupFilter.SINGLETON.addGroup( org.alice.ide.IDE.RUN_GROUP, edu.cmu.cs.dennisc.cheshire.GroupFilter.SuccessfulCompletionPolicy.BOTH_COMMITS_AND_FINISHES );
-			if( IS_INFORMATION_GROUP_INCLUDED ) {
+			if( IS_INFORMATION_GROUP_INCLUDED || IS_OPTIMIZED_FOR_BUG_REPRO ) {
 				edu.cmu.cs.dennisc.cheshire.GroupFilter.SINGLETON.addGroup( edu.cmu.cs.dennisc.croquet.Application.INFORMATION_GROUP, edu.cmu.cs.dennisc.cheshire.GroupFilter.SuccessfulCompletionPolicy.BOTH_COMMITS_AND_FINISHES );
 			}
 			edu.cmu.cs.dennisc.cheshire.Filter[] filters = {
-					//edu.cmu.cs.dennisc.croquet.tutorial.SuccessfullyCompletedFilter.SINGLETON,
+					edu.cmu.cs.dennisc.cheshire.SuccessfullyCompletedFilter.SINGLETON,
 					edu.cmu.cs.dennisc.cheshire.MenuSelectionEventFilter.SINGLETON,
 					edu.cmu.cs.dennisc.cheshire.DocumentEventFilter.SINGLETON,
 					edu.cmu.cs.dennisc.cheshire.GroupFilter.SINGLETON,
+					edu.cmu.cs.dennisc.cheshire.RepeatedStateEditsFilter.SINGLETON,
 			};
 			for( edu.cmu.cs.dennisc.cheshire.Filter filter : filters ) {
 				this.originalContext = filter.filter( this.originalContext );
@@ -282,7 +312,11 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 			this.isPostProjectLive = false;
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
 
-			generator = new AlgPriorInteractionHistoryBasedGuidedInteractionGenerator( this.originalContext );
+			if( IS_OPTIMIZED_FOR_BUG_REPRO ) {
+				generator = new AlgBugReproGuidedInteractionGenerator( this.originalContext );
+			} else {
+				generator = new AlgPriorInteractionHistoryBasedGuidedInteractionGenerator( this.originalContext );
+			}			
 		}
 
 		this.originalContext = generator.generate( AlgUserInformation.INSTANCE );
@@ -295,8 +329,15 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 		}
 		this.retarget();
 		
-		final AlgConstructionGuide tutorial = new AlgConstructionGuide();
-		tutorial.setOriginalRoot( this.originalContext );
+		
+		
+		final edu.cmu.cs.dennisc.cheshire.GuidedInteraction guidedInteraction;
+		if( IS_OPTIMIZED_FOR_BUG_REPRO ) {
+			guidedInteraction = new AlgBugRepro();
+		} else {
+			guidedInteraction = new AlgConstructionGuide();
+		}
+		guidedInteraction.setOriginalRoot( this.originalContext );
 		
 		class AstLiveRetargeter implements edu.cmu.cs.dennisc.croquet.Retargeter {
 			private java.util.Map< Object, Object > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -318,16 +359,20 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 			}
 		};
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
-		tutorial.setRetargeter( astLiveRetargeter );
+		guidedInteraction.setRetargeter( astLiveRetargeter );
 
-		tutorial.setVisible( true );
+		guidedInteraction.setVisible( true );
 		this.getFrame().setVisible( true );
 		
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState isInteractionTreeShowingState = new org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState( originalContext );
 				isInteractionTreeShowingState.setValue( true );
-				tutorial.setSelectedIndex( 0 );
+				if( IS_OPTIMIZED_FOR_BUG_REPRO ) {
+					guidedInteraction.setSelectedIndex( -1 );
+				} else {
+					guidedInteraction.setSelectedIndex( 0 );
+				}
 			}
 		} );
 
@@ -372,9 +417,11 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 		if( IS_ENCODING ) {
 			IS_WIZARD_OF_OZ_HASTINGS_DESIRED = false;
 			IS_BASED_ON_INTERACTION_AST = false;
+			IS_OPTIMIZED_FOR_BUG_REPRO = false;
 		} else {
 			IS_WIZARD_OF_OZ_HASTINGS_DESIRED = Boolean.parseBoolean( args[ 6 ] );
 			IS_BASED_ON_INTERACTION_AST = Boolean.parseBoolean( args[ 7 ] );
+			IS_OPTIMIZED_FOR_BUG_REPRO = Boolean.parseBoolean( args[ 8 ] );
 		}
 		org.alice.ide.memberseditor.MembersEditor.IS_FOLDER_TABBED_PANE_DESIRED = IS_ENCODING;
 		final AutomaticTutorialIde ide = org.alice.ide.LaunchUtilities.launchAndWait( AutomaticTutorialIde.class, null, args, false );
