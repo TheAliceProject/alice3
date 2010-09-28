@@ -105,6 +105,9 @@ public class Note extends edu.cmu.cs.dennisc.croquet.JComponent< javax.swing.JCo
 			rv.x = (container.getWidth()-this.getWidth())/2;
 			rv.y = 64;
 		}
+		if( this.text.contains( "resize" ) ) {
+			rv.y = 700;
+		}
 		return rv;
 	}
 

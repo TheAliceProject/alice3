@@ -163,6 +163,7 @@ public class RequirementNote extends RetargetableNote /* implements ParentContex
 				}
 			}
 		}
+		//edu.cmu.cs.dennisc.croquet.Application.getSingleton().getFrame().getContentPanel().repaint();
 		
 //		if( child instanceof edu.cmu.cs.dennisc.croquet.CancelEvent ) {
 //			throw new CancelException( "cancel event" );
@@ -219,4 +220,10 @@ public class RequirementNote extends RetargetableNote /* implements ParentContex
 ////		}
 //		return rv;
 //	}
+	@Override
+	public void complete() {
+		for( ProgressRequirement progressRequirement : this.progressRequirements ) {
+			progressRequirement.complete();
+		}
+	}
 }

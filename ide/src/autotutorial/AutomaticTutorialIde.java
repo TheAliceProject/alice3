@@ -74,7 +74,7 @@ class AlgPriorInteractionHistoryBasedGuidedInteractionGenerator extends PriorInt
 				}
 			}
 		}
-		originalRoot.addChild( 0, new edu.cmu.cs.dennisc.cheshire.Message( "title", "text" ) );
+		//originalRoot.addChild( 0, new edu.cmu.cs.dennisc.cheshire.Message( "title", "text" ) );
 		originalRoot.addChild( new edu.cmu.cs.dennisc.cheshire.Message( "Finished", "<strong>Congratulations.</strong><br>You have completed the guided interaction." ) );
 	}
 }
@@ -132,14 +132,14 @@ class AlgBugReproGuidedInteractionGenerator extends PriorInteractionHistoryBased
 }
 
 class AlgConstructionGuide extends edu.cmu.cs.dennisc.cheshire.GuidedInteraction {
-	private static boolean IS_MONKEY_WRENCH_DESIRED = false;
+	private static boolean IS_MONKEY_WRENCH_DESIRED = true;
 	public AlgConstructionGuide() {
 		super( 
 			AlgUserInformation.INSTANCE,
 			
 			
-//			edu.cmu.cs.dennisc.tutorial.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK,
-//			edu.cmu.cs.dennisc.tutorial.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK,
+//			edu.cmu.cs.dennisc.cheshire.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK,
+//			edu.cmu.cs.dennisc.cheshire.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK,
 			edu.cmu.cs.dennisc.cheshire.MenuPolicy.BELOW_STENCIL,
 			
 			
@@ -153,7 +153,7 @@ class AlgConstructionGuide extends edu.cmu.cs.dennisc.cheshire.GuidedInteraction
 
 		if( IS_MONKEY_WRENCH_DESIRED ) {
 			final int N = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getItemCount();
-			org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedIndex( 0 );
+			org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedItem( org.alice.ide.IDE.getSingleton().getSceneField() );
 			//org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedIndex( N-2 );
 		}
 		
@@ -173,11 +173,11 @@ class AlgConstructionGuide extends edu.cmu.cs.dennisc.cheshire.GuidedInteraction
 			rv.add( edu.cmu.cs.dennisc.cheshire.ListSelectionStateFinishNote.createInstance( context, listSelectionStateStartNote.getAcceptedContextAt( 0 ), context.getSuccessfulCompletionEvent() ) );
 		}
 		
-		if( IS_MONKEY_WRENCH_DESIRED ) {
-			org.alice.ide.croquet.models.members.MembersTabSelectionState membersTabSelectionState = org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance();
-			edu.cmu.cs.dennisc.croquet.ListSelectionStateContext context = edu.cmu.cs.dennisc.croquet.ContextManager.createContextFor( membersTabSelectionState, membersTabSelectionState.getItemAt( 1 ) );
-			rv.add( edu.cmu.cs.dennisc.cheshire.ListSelectionStateSimpleNote.createInstance( context, parentContextCriterion, context.getSuccessfulCompletionEvent() ) );
-		}
+//		if( IS_MONKEY_WRENCH_DESIRED ) {
+//			org.alice.ide.croquet.models.members.MembersTabSelectionState membersTabSelectionState = org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance();
+//			edu.cmu.cs.dennisc.croquet.ListSelectionStateContext context = edu.cmu.cs.dennisc.croquet.ContextManager.createContextFor( membersTabSelectionState, membersTabSelectionState.getItemAt( 1 ) );
+//			rv.add( edu.cmu.cs.dennisc.cheshire.ListSelectionStateSimpleNote.createInstance( context, parentContextCriterion, context.getSuccessfulCompletionEvent() ) );
+//		}
 		return rv;
 	}
 }
@@ -220,8 +220,8 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 	@Override
 	public void loadProjectFrom( java.net.URI uri ) {
 		super.loadProjectFrom( uri );
-		//org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( IS_ENCODING );
-		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( false );
+		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( IS_ENCODING );
+		//org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( false );
 		if( IS_ENCODING ) {
 			edu.cmu.cs.dennisc.croquet.ModelContext< ? > rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
 			rootContext.EPIC_HACK_clear();
@@ -366,6 +366,8 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 		
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
+				//org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState.getInstance().setValue( true );
+				
 				org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState isInteractionTreeShowingState = new org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState( originalContext );
 				isInteractionTreeShowingState.setValue( true );
 				if( IS_OPTIMIZED_FOR_BUG_REPRO ) {

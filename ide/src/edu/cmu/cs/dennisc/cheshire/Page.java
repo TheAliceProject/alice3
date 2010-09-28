@@ -312,7 +312,7 @@ public class Page extends Step implements WaitingStep {
 		if( this.node instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
 			edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)this.node;
 			edu.cmu.cs.dennisc.croquet.Model model = modelContext.getModel();
-			edu.cmu.cs.dennisc.croquet.Component< ? > component = model.getFirstComponent();
+			edu.cmu.cs.dennisc.croquet.Component< ? > component = model.getFirstComponent( true );
 			if( component instanceof edu.cmu.cs.dennisc.croquet.MenuItem ) {
 				edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
 				edu.cmu.cs.dennisc.croquet.Model descendantModel = successfulCompletionEvent.getParent().getModel();
@@ -325,6 +325,7 @@ public class Page extends Step implements WaitingStep {
 					//todo?
 				}
 			} else {
+				component = model.getFirstComponent();
 				if( component != null && component.getAwtComponent().isShowing() /*&& component.isInView()*/ ) {
 					appendNotes( rv, IsRootContextCriterion.IS_PARENT_ROOT_CONTEXT, modelContext );
 				} else {
@@ -469,6 +470,10 @@ public class Page extends Step implements WaitingStep {
 //					replacementEdit.setReplacementModel( edit.getModel() );
 //					TutorialStencil.complete( replacementEdit );
 				//successfulCompletionEvent.getParent().commitAndInvokeDo( replacementEdit );
+			}
+			
+			for( RetargetableNote note : this.notes ) {
+				note.complete();
 			}
 		}
 	}
