@@ -75,16 +75,11 @@ public class TextToSpeech
 	
 	native void initWithTextToSpeech(String text, String voice);
 	
-	static boolean isInitialized = false;
 	static
 	{
 		try
 		{
-			System.loadLibrary("flite");
-			System.loadLibrary("cmu_us_rms");
-			System.loadLibrary("cmu_us_slt");
-			System.loadLibrary("flite_jni");
-			isInitialized = true;
+			System.loadLibrary("jni_flite");
 		}
 		catch (Exception e)
 		{
