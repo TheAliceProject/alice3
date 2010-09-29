@@ -80,7 +80,7 @@ public class TextToSpeech
 	{
 		try
 		{
-			System.loadLibrary("fliteDll");
+			System.loadLibrary("flite");
 			System.loadLibrary("cmu_us_rms");
 			System.loadLibrary("cmu_us_slt");
 			System.loadLibrary("flite_jni");
