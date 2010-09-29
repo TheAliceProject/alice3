@@ -484,67 +484,6 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 					}
 				}
 				if( this.currentUnder != null ) {
-//					class DropOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-//						public DropOperation() {
-//							super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "ad0e5d93-8bc2-4ad8-8dd5-37768eaa5319" ) );
-//						}
-//						@Override
-//						protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-//							final java.awt.event.MouseEvent mouseEvent = context.getMouseEvent();
-//							class DropEdit extends org.alice.ide.ToDoEdit {
-//								private edu.cmu.cs.dennisc.alice.ast.Statement statement;
-//								@Override
-//								protected final void doOrRedoInternal( boolean isDo ) {
-//									statementListPropertyPane.getProperty().add( index, statement );
-//									CodeEditor.this.refresh();
-//									CodeEditor.this.resetScrollPane( viewPosition );
-//								}
-//
-//								@Override
-//								protected final void undoInternal() {
-//									if( statementListPropertyPane.getProperty().get( index ) == statement ) {
-//										statementListPropertyPane.getProperty().remove( index );
-//										CodeEditor.this.refresh();
-//										CodeEditor.this.resetScrollPane( viewPosition );
-//									} else {
-//										throw new javax.swing.undo.CannotUndoException();
-//									}
-//								}
-//								
-//								@Override
-//								protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
-//									//super.updatePresentation( rv, locale );
-//									rv.append( "drop: " );
-//									edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, statement, locale );
-//									return rv;
-//								}
-//							}
-//							context.pend( new edu.cmu.cs.dennisc.croquet.PendResolver< DropEdit, edu.cmu.cs.dennisc.alice.ast.Statement >() {
-//								public DropEdit createEdit() {
-//									return new DropEdit();
-//								}
-//								public DropEdit initialize(DropEdit rv, edu.cmu.cs.dennisc.croquet.ModelContext context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement> taskObserver) {
-//									edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
-//									if( propertyOwner instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
-//										edu.cmu.cs.dennisc.alice.ast.BlockStatement block = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)propertyOwner;
-//										statementTemplate.createStatement( mouseEvent, block, index, taskObserver );
-//									}
-//									return rv;
-//								}
-//								
-//								public DropEdit handleCompletion(DropEdit rv, edu.cmu.cs.dennisc.alice.ast.Statement statement) {
-//									rv.statement = statement;
-//									source.hideDropProxyIfNecessary();
-//									return rv;
-//								}
-//								public void handleCancelation() {
-//									source.hideDropProxyIfNecessary();
-//								}
-//							} );
-//						}
-//					}
-//					rv = new DropOperation();
-					edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.BlockStatement, Integer > blockStatementAndIndex;
 					edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
 					edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
 					if( propertyOwner instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
@@ -576,136 +515,146 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 					final int prevIndex = prevOwner.indexOf( statement );
 					final int nextIndex = this.currentUnder.calculateIndex( source.convertPoint( eSource.getPoint(), this.currentUnder ) );
 
+					edu.cmu.cs.dennisc.alice.ast.BlockStatement prevBlockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)prevOwner.getOwner();
+					edu.cmu.cs.dennisc.alice.ast.BlockStatement nextBlockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)nextOwner.getOwner();
 					
-					abstract class CodeEdit extends org.alice.ide.ToDoEdit {
-						protected abstract void redoInternal();
-						protected abstract void undoInternal2();
-
-						protected void refreshAndResetScrollPane() {
-							CodeEditor.this.refresh();
-							CodeEditor.this.resetScrollPane( viewPosition );
-						}
-						@Override
-						protected final void doOrRedoInternal( boolean isDo ) {
-							this.redoInternal();
-							this.refreshAndResetScrollPane();
-						}
-						@Override
-						protected final void undoInternal() {
-							this.undoInternal2();
-							this.refreshAndResetScrollPane();
-						}
-					}
+//					abstract class CodeEdit extends org.alice.ide.ToDoEdit {
+//						protected abstract void redoInternal();
+//						protected abstract void undoInternal2();
+//
+//						protected void refreshAndResetScrollPane() {
+//							CodeEditor.this.refresh();
+//							CodeEditor.this.resetScrollPane( viewPosition );
+//						}
+//						@Override
+//						protected final void doOrRedoInternal( boolean isDo ) {
+//							this.redoInternal();
+//							this.refreshAndResetScrollPane();
+//						}
+//						@Override
+//						protected final void undoInternal() {
+//							this.undoInternal2();
+//							this.refreshAndResetScrollPane();
+//						}
+//					}
 					
 					if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
-						class CopyOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-							public CopyOperation() {
-								super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "ef6143be-5de3-4a55-aed3-f61d8ebbbef2" ) );
-							}
-							@Override
-							protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-								final edu.cmu.cs.dennisc.alice.ast.Statement copy = (edu.cmu.cs.dennisc.alice.ast.Statement)getIDE().createCopy( statement );
-								class CopyEdit extends CodeEdit {
-									@Override
-									protected void redoInternal() {
-										nextOwner.add( nextIndex, copy );
-									}
-									@Override
-									protected void undoInternal2() {
-										if( nextOwner.get( nextIndex ) == copy ) {
-											nextOwner.remove( nextIndex );
-										} else {
-											throw new javax.swing.undo.CannotUndoException();
-										}
-									}
-									@Override
-									protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
-										rv.append( "copy code" );
-										return rv;
-									}
-									
-								}
-								context.commitAndInvokeDo( new CopyEdit() );
-							}
-						}
-						rv = new CopyOperation();
+//						class CopyOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+//							public CopyOperation() {
+//								super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "ef6143be-5de3-4a55-aed3-f61d8ebbbef2" ) );
+//							}
+//							@Override
+//							protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+//								final edu.cmu.cs.dennisc.alice.ast.Statement copy = (edu.cmu.cs.dennisc.alice.ast.Statement)getIDE().createCopy( statement );
+//								class CopyEdit extends CodeEdit {
+//									@Override
+//									protected void redoInternal() {
+//										nextOwner.add( nextIndex, copy );
+//									}
+//									@Override
+//									protected void undoInternal2() {
+//										if( nextOwner.get( nextIndex ) == copy ) {
+//											nextOwner.remove( nextIndex );
+//										} else {
+//											throw new javax.swing.undo.CannotUndoException();
+//										}
+//									}
+//									@Override
+//									protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
+//										rv.append( "copy code" );
+//										return rv;
+//									}
+//									
+//								}
+//								context.commitAndInvokeDo( new CopyEdit() );
+//							}
+//						}
+//						rv = new CopyOperation();
+						edu.cmu.cs.dennisc.alice.ast.Statement copy = (edu.cmu.cs.dennisc.alice.ast.Statement)getIDE().createCopy( statement );
+						rv = new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( nextBlockStatement, nextIndex, copy );
 					} else {
-						if( prevOwner == nextOwner ) {
-							if( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) {
-								rv = null;
-							} else {
-								class ReorderOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-									public ReorderOperation() {
-										super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "e2cffe11-be24-4b5c-9ca4-ac0d71ecd16c" ) );
-									}
-									@Override
-									protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-										class ReorderEdit extends CodeEdit {
-											private edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner;
-											private int aIndex;
-											private int bIndex;
-											
-											public ReorderEdit() {
-												assert prevOwner == nextOwner;
-												this.owner = prevOwner;
-												this.aIndex = prevIndex;
-												if( prevIndex < nextIndex ) {
-													this.bIndex = nextIndex - 1;
-												} else {
-													this.bIndex = nextIndex;
-												}
-											}
-											@Override
-											protected void redoInternal() {
-												this.owner.remove( this.aIndex );
-												this.owner.add( this.bIndex, statement );
-											}
-											@Override
-											protected void undoInternal2() {
-												this.owner.remove( this.bIndex );
-												this.owner.add( this.aIndex, statement );
-											}
-											@Override
-											protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-												rv.append( "move code" );
-												return rv;
-											}
-										}
-										context.commitAndInvokeDo( new ReorderEdit() );
-									}
-								}
-								rv = new ReorderOperation();
-							}
+						if( prevOwner == nextOwner && ( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) ) {
+							rv = null;
 						} else {
-							class ReparentOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-								public ReparentOperation() {
-									super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "6049a378-2972-4672-a211-1f3fcda45025" ) );
-								}
-								@Override
-								protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-									class ReparentEdit extends CodeEdit {
-										@Override
-										protected void redoInternal() {
-											prevOwner.remove( prevIndex );
-											nextOwner.add( nextIndex, statement );
-										}
-										@Override
-										protected void undoInternal2() {
-											nextOwner.remove( nextIndex );
-											prevOwner.add( prevIndex, statement );
-										}
-										@Override
-										protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
-											rv.append( "move code" );
-											return rv;
-										}
-									}
-									context.commitAndInvokeDo( new ReparentEdit() );
-								}
-							}
-							rv = new ReparentOperation();
+							rv = new org.alice.ide.croquet.models.ast.MoveStatementActionOperation( prevBlockStatement, prevIndex, statement, nextBlockStatement, nextIndex );
 						}
 					}
+//						if( prevOwner == nextOwner ) {
+//							if( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) {
+//								rv = null;
+//							} else {
+//								class ReorderOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+//									public ReorderOperation() {
+//										super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "e2cffe11-be24-4b5c-9ca4-ac0d71ecd16c" ) );
+//									}
+//									@Override
+//									protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+//										class ReorderEdit extends CodeEdit {
+//											private edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner;
+//											private int aIndex;
+//											private int bIndex;
+//											
+//											public ReorderEdit() {
+//												assert prevOwner == nextOwner;
+//												this.owner = prevOwner;
+//												this.aIndex = prevIndex;
+//												if( prevIndex < nextIndex ) {
+//													this.bIndex = nextIndex - 1;
+//												} else {
+//													this.bIndex = nextIndex;
+//												}
+//											}
+//											@Override
+//											protected void redoInternal() {
+//												this.owner.remove( this.aIndex );
+//												this.owner.add( this.bIndex, statement );
+//											}
+//											@Override
+//											protected void undoInternal2() {
+//												this.owner.remove( this.bIndex );
+//												this.owner.add( this.aIndex, statement );
+//											}
+//											@Override
+//											protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+//												rv.append( "move code" );
+//												return rv;
+//											}
+//										}
+//										context.commitAndInvokeDo( new ReorderEdit() );
+//									}
+//								}
+//								rv = new ReorderOperation();
+//							}
+//						} else {
+//							class ReparentOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+//								public ReparentOperation() {
+//									super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "6049a378-2972-4672-a211-1f3fcda45025" ) );
+//								}
+//								@Override
+//								protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+//									class ReparentEdit extends CodeEdit {
+//										@Override
+//										protected void redoInternal() {
+//											prevOwner.remove( prevIndex );
+//											nextOwner.add( nextIndex, statement );
+//										}
+//										@Override
+//										protected void undoInternal2() {
+//											nextOwner.remove( nextIndex );
+//											prevOwner.add( prevIndex, statement );
+//										}
+//										@Override
+//										protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
+//											rv.append( "move code" );
+//											return rv;
+//										}
+//									}
+//									context.commitAndInvokeDo( new ReparentEdit() );
+//								}
+//							}
+//							rv = new ReparentOperation();
+//						}
+//					}
 				}
 			}
 		}

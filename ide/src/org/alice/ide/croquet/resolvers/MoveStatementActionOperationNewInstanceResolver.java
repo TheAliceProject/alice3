@@ -46,16 +46,16 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class InsertStatementActionOperationNewInstanceResolver extends edu.cmu.cs.dennisc.croquet.NewInstanceKeyedResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > {
-	public InsertStatementActionOperationNewInstanceResolver( org.alice.ide.croquet.models.ast.InsertStatementActionOperation instance ) {
+public class MoveStatementActionOperationNewInstanceResolver extends edu.cmu.cs.dennisc.croquet.NewInstanceKeyedResolver< org.alice.ide.croquet.models.ast.MoveStatementActionOperation > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< org.alice.ide.croquet.models.ast.MoveStatementActionOperation > {
+	public MoveStatementActionOperationNewInstanceResolver( org.alice.ide.croquet.models.ast.MoveStatementActionOperation instance ) {
 		super( instance );
 	}
-	public InsertStatementActionOperationNewInstanceResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public MoveStatementActionOperationNewInstanceResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	@Override
 	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return org.alice.ide.croquet.models.ast.InsertStatementActionOperation.CONSTRUCTOR_PARAMETER_TYPES;
+		return org.alice.ide.croquet.models.ast.MoveStatementActionOperation.CONSTRUCTOR_PARAMETER_TYPES;
 	}
 	@Override
 	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
@@ -63,7 +63,7 @@ public class InsertStatementActionOperationNewInstanceResolver extends edu.cmu.c
 
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return org.alice.ide.croquet.models.ast.InsertStatementActionOperation.decodeArguments( binaryDecoder );
+		return org.alice.ide.croquet.models.ast.MoveStatementActionOperation.decodeArguments( binaryDecoder );
 	}
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
@@ -71,6 +71,6 @@ public class InsertStatementActionOperationNewInstanceResolver extends edu.cmu.c
 	}
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		Object[] arguments = this.getArguments();
-		org.alice.ide.croquet.models.ast.InsertStatementActionOperation.retargetArguments( arguments, retargeter );
+		org.alice.ide.croquet.models.ast.MoveStatementActionOperation.retargetArguments( arguments, retargeter );
 	}
 }
