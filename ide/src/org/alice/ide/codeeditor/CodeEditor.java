@@ -48,34 +48,6 @@ import org.alice.ide.common.StatementListPropertyPane;
 /**
  * @author Dennis Cosgrove
  */
-class StatementListPropertyPaneInfo /* implements edu.cmu.cs.dennisc.croquet.TrackableShape */ {
-	private StatementListPropertyPane statementListPropertyPane;
-	private java.awt.Rectangle bounds;
-
-	public StatementListPropertyPaneInfo( StatementListPropertyPane statementListPropertyPane, java.awt.Rectangle bounds ) {
-		this.statementListPropertyPane = statementListPropertyPane;
-		this.bounds = bounds;
-	}
-	public boolean contains( java.awt.event.MouseEvent e ) {
-		return this.bounds.contains( e.getPoint() );
-	}
-	public StatementListPropertyPane getStatementListPropertyPane() {
-		return this.statementListPropertyPane;
-	}
-	public void setStatementListPropertyPane( StatementListPropertyPane statementListPropertyPane ) {
-		this.statementListPropertyPane = statementListPropertyPane;
-	}
-	public java.awt.Rectangle getBounds() {
-		return this.bounds;
-	}
-	public void setBounds( java.awt.Rectangle bounds ) {
-		this.bounds = bounds;
-	}
-}
-
-/**
- * @author Dennis Cosgrove
- */
 public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implements edu.cmu.cs.dennisc.croquet.DropReceptor, java.awt.print.Printable {
 	private StatementListPropertyPane EPIC_HACK_desiredStatementListPropertyPane = null;
 	private int EPIC_HACK_desiredIndex = -1;
@@ -165,7 +137,6 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 			rv = new javax.swing.JPanel();
 		}
 		rv.setLayout( new java.awt.BorderLayout() );
-		
 		return rv;
 	}
 	private edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver typeFeedbackObserver = new edu.cmu.cs.dennisc.croquet.BooleanState.ValueObserver() {
@@ -194,6 +165,11 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 	}
 
 	private void refresh() {
+		if( this.scrollPane != null ) {
+			final java.awt.Point viewPosition = this.scrollPane.getAwtComponent().getViewport().getViewPosition();
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reset view position:", viewPosition );
+		}
+
 		this.forgetAndRemoveAllComponents();
 		if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ) {
 			final edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code;
@@ -224,6 +200,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 			this.internalAddComponent( header, java.awt.BorderLayout.NORTH );
 			this.internalAddComponent( scrollPane, java.awt.BorderLayout.CENTER );
 		}
+
 		this.revalidateAndRepaint();
 	}
 	protected org.alice.ide.IDE getIDE() {
@@ -432,7 +409,6 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 	}
 	public final edu.cmu.cs.dennisc.croquet.Operation<?> dragDropped( final edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 		edu.cmu.cs.dennisc.croquet.Operation<?> rv = null;
-		final java.awt.Point viewPosition = this.scrollPane.getAwtComponent().getViewport().getViewPosition();
 		final edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
 		final java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
 		final StatementListPropertyPane statementListPropertyPane = CodeEditor.this.currentUnder;
@@ -478,7 +454,6 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 							}
 							sb.append( "</html>" );
 							org.alice.ide.IDE.getSingleton().showMessageDialog( sb.toString(), "Recursion is disabled.", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
-							source.hideDropProxyIfNecessary();
 							return null;
 						}
 					}
@@ -493,20 +468,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 						//index = -1;
 					}
 					rv = statementTemplate.createDropOperation( context, blockStatement, index );
-//					context.addChildrenObserver( new edu.cmu.cs.dennisc.croquet.ModelContext.ChildrenObserver() {
-//						public void addingChild( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
-//						}
-//						public void addedChild( edu.cmu.cs.dennisc.croquet.HistoryNode child ) {
-//							if( child instanceof edu.cmu.cs.dennisc.croquet.CancelEvent || child instanceof edu.cmu.cs.dennisc.croquet.AbstractCompleteEvent ) {
-//								context.getDragSource().hideDropProxyIfNecessary();
-//							}
-//						}
-//					} );
-				} else {
-//					source.hideDropProxyIfNecessary();
 				}
 			} else if( source != null && source.getSubject() instanceof org.alice.ide.common.AbstractStatementPane ) {
-//				source.hideDropProxyIfNecessary();
 				if( this.currentUnder != null ) {
 					org.alice.ide.common.AbstractStatementPane abstractStatementPane = (org.alice.ide.common.AbstractStatementPane)source.getSubject();
 					final edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
@@ -517,59 +480,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 
 					edu.cmu.cs.dennisc.alice.ast.BlockStatement prevBlockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)prevOwner.getOwner();
 					edu.cmu.cs.dennisc.alice.ast.BlockStatement nextBlockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)nextOwner.getOwner();
-					
-//					abstract class CodeEdit extends org.alice.ide.ToDoEdit {
-//						protected abstract void redoInternal();
-//						protected abstract void undoInternal2();
-//
-//						protected void refreshAndResetScrollPane() {
-//							CodeEditor.this.refresh();
-//							CodeEditor.this.resetScrollPane( viewPosition );
-//						}
-//						@Override
-//						protected final void doOrRedoInternal( boolean isDo ) {
-//							this.redoInternal();
-//							this.refreshAndResetScrollPane();
-//						}
-//						@Override
-//						protected final void undoInternal() {
-//							this.undoInternal2();
-//							this.refreshAndResetScrollPane();
-//						}
-//					}
-					
 					if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
-//						class CopyOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-//							public CopyOperation() {
-//								super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "ef6143be-5de3-4a55-aed3-f61d8ebbbef2" ) );
-//							}
-//							@Override
-//							protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-//								final edu.cmu.cs.dennisc.alice.ast.Statement copy = (edu.cmu.cs.dennisc.alice.ast.Statement)getIDE().createCopy( statement );
-//								class CopyEdit extends CodeEdit {
-//									@Override
-//									protected void redoInternal() {
-//										nextOwner.add( nextIndex, copy );
-//									}
-//									@Override
-//									protected void undoInternal2() {
-//										if( nextOwner.get( nextIndex ) == copy ) {
-//											nextOwner.remove( nextIndex );
-//										} else {
-//											throw new javax.swing.undo.CannotUndoException();
-//										}
-//									}
-//									@Override
-//									protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
-//										rv.append( "copy code" );
-//										return rv;
-//									}
-//									
-//								}
-//								context.commitAndInvokeDo( new CopyEdit() );
-//							}
-//						}
-//						rv = new CopyOperation();
 						edu.cmu.cs.dennisc.alice.ast.Statement copy = (edu.cmu.cs.dennisc.alice.ast.Statement)getIDE().createCopy( statement );
 						rv = new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( nextBlockStatement, nextIndex, copy );
 					} else {
@@ -579,82 +490,6 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 							rv = new org.alice.ide.croquet.models.ast.MoveStatementActionOperation( prevBlockStatement, prevIndex, statement, nextBlockStatement, nextIndex );
 						}
 					}
-//						if( prevOwner == nextOwner ) {
-//							if( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) {
-//								rv = null;
-//							} else {
-//								class ReorderOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-//									public ReorderOperation() {
-//										super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "e2cffe11-be24-4b5c-9ca4-ac0d71ecd16c" ) );
-//									}
-//									@Override
-//									protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-//										class ReorderEdit extends CodeEdit {
-//											private edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner;
-//											private int aIndex;
-//											private int bIndex;
-//											
-//											public ReorderEdit() {
-//												assert prevOwner == nextOwner;
-//												this.owner = prevOwner;
-//												this.aIndex = prevIndex;
-//												if( prevIndex < nextIndex ) {
-//													this.bIndex = nextIndex - 1;
-//												} else {
-//													this.bIndex = nextIndex;
-//												}
-//											}
-//											@Override
-//											protected void redoInternal() {
-//												this.owner.remove( this.aIndex );
-//												this.owner.add( this.bIndex, statement );
-//											}
-//											@Override
-//											protected void undoInternal2() {
-//												this.owner.remove( this.bIndex );
-//												this.owner.add( this.aIndex, statement );
-//											}
-//											@Override
-//											protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-//												rv.append( "move code" );
-//												return rv;
-//											}
-//										}
-//										context.commitAndInvokeDo( new ReorderEdit() );
-//									}
-//								}
-//								rv = new ReorderOperation();
-//							}
-//						} else {
-//							class ReparentOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-//								public ReparentOperation() {
-//									super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "6049a378-2972-4672-a211-1f3fcda45025" ) );
-//								}
-//								@Override
-//								protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-//									class ReparentEdit extends CodeEdit {
-//										@Override
-//										protected void redoInternal() {
-//											prevOwner.remove( prevIndex );
-//											nextOwner.add( nextIndex, statement );
-//										}
-//										@Override
-//										protected void undoInternal2() {
-//											nextOwner.remove( nextIndex );
-//											prevOwner.add( prevIndex, statement );
-//										}
-//										@Override
-//										protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
-//											rv.append( "move code" );
-//											return rv;
-//										}
-//									}
-//									context.commitAndInvokeDo( new ReparentEdit() );
-//								}
-//							}
-//							rv = new ReparentOperation();
-//						}
-//					}
 				}
 			}
 		}
@@ -670,23 +505,11 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel implement
 	}
 	public final void dragExited( edu.cmu.cs.dennisc.croquet.DragAndDropContext context, boolean isDropRecipient ) {
 		this.statementListPropertyPaneInfos = null;
-		
 		//todo: listen to context
 		StatementListPropertyPane.EPIC_HACK_ignoreDrawingDesired = true;
 		this.setCurrentUnder( null, null );
 		StatementListPropertyPane.EPIC_HACK_ignoreDrawingDesired = false;
-		
 		this.repaint();
-		if( isDropRecipient ) {
-			//pass
-		} else {
-			if( context != null ) {
-				edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
-				if( source != null ) {
-					source.hideDropProxyIfNecessary();
-				}
-			}
-		}
 	}
 	public final void dragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext context ) {
 		EPIC_HACK_desiredStatementListPropertyPane = null;

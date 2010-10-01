@@ -372,7 +372,6 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 			assert modelContext == this;
 		}
 	}
-	
 	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		if( this.isCanceled() ) {
 			//pass
@@ -422,6 +421,7 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 	@Override
 	/*package-private*/ void popped() {
 		super.popped();
+		this.getDragSource().hideDragProxy();
 		this.getDragSource().hideDropProxyIfNecessary();
 	}
 }
