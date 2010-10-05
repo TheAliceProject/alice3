@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-import org.alice.apis.moveandturn.CameraMarker;
-
 abstract class DialogOperationWithControls<C extends AbstractDialogOperationContext<?>> extends AbstractDialogOperation<C> {
 	private static final String NULL_EXPLANATION = "good to go";
 
