@@ -94,6 +94,9 @@ public abstract class CascadingMenuModel extends edu.cmu.cs.dennisc.croquet.Reta
 		super.handlePopupMenuPrologue( popupMenu, context );
 		edu.cmu.cs.dennisc.cascade.Blank blank = this.getCascadeBlank();
 		blank.setCascadingRoot( this );
+		if( blank instanceof ForwardingBlank ) {
+			blank = blank.getFillInAt( 0 ).getBlankAt( 0 );
+		}
 		java.util.List< edu.cmu.cs.dennisc.cascade.Node > children = blank.getChildren();
 		for( edu.cmu.cs.dennisc.cascade.Node child : children ) {
 			edu.cmu.cs.dennisc.cascade.FillIn< ? > fillIn = (edu.cmu.cs.dennisc.cascade.FillIn< ? >)child;
