@@ -14,7 +14,7 @@
         <javaElement handleIdentifier="=ide/i18n"/>
         <javaElement handleIdentifier="=ide/src"/>
         <folder path="/ide/i18n_seed"/>
-        <javaElement handleIdentifier="=ide/src_deprecated"/>
+        <javaElement handleIdentifier="=ide/deprecated/src"/>
         <javaElement handleIdentifier="=ide/generated\/src"/>
     </selectedElements>
 </jardesc>
