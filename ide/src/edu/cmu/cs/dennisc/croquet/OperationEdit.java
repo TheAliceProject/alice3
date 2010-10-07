@@ -48,8 +48,8 @@ package edu.cmu.cs.dennisc.croquet;
 public abstract class OperationEdit<M extends Operation<?>> extends Edit<M> {
 	public OperationEdit() {
 	}
-	public OperationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public OperationEdit( Memento<M> memento ) {
+		super( memento );
 	}
 	
 //	@Override

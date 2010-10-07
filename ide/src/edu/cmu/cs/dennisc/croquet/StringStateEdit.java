@@ -46,37 +46,59 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public final class StringStateEdit extends StateEdit<StringState,String> {
-	private String previousValue;
-	private String nextValue;
-
-	public StringStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public static class StringStateEditMemento extends Memento<StringState> {
+		private String prevValue;
+		private String nextValue;
+		public StringStateEditMemento( StringStateEdit edit ) {
+			super( edit );
+			this.prevValue = edit.prevValue;
+			this.nextValue = edit.nextValue;
+		}
+		public StringStateEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		public edu.cmu.cs.dennisc.croquet.Edit< StringState > createEdit() {
+			return new StringStateEdit( this );
+		}
+		@Override
+		protected void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+			this.prevValue = binaryDecoder.decodeString();
+			this.nextValue = binaryDecoder.decodeString();
+		}
+		@Override
+		protected void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+			binaryEncoder.encode( this.prevValue );
+			binaryEncoder.encode( this.nextValue );
+		}
 	}
-	public StringStateEdit( String previousValue, String nextValue ) {
-		this.previousValue = previousValue;
+
+	private final String prevValue;
+	private final String nextValue;
+
+	public StringStateEdit( String prevValue, String nextValue ) {
+		this.prevValue = prevValue;
 		this.nextValue = nextValue;
+	}
+	private StringStateEdit( StringStateEditMemento memento ) {
+		super( memento );
+		this.prevValue = memento.prevValue;
+		this.nextValue = memento.nextValue;
+	}
+	@Override
+	public Memento<StringState> createMemento() {
+		return new StringStateEditMemento( this );
 	}
 	
 	@Override
 	public String getPreviousValue() {
-		return this.previousValue;
+		return this.prevValue;
 	}
 	@Override
 	public String getNextValue() {
 		return this.nextValue;
 	}
-	
-	@Override
-	protected void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		this.previousValue = binaryDecoder.decodeString();
-		this.nextValue = binaryDecoder.decodeString();
-	}
-	@Override
-	protected void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		binaryEncoder.encode( this.previousValue );
-		binaryEncoder.encode( this.nextValue );
-	}
-	
+		
 	@Override
 	public boolean canRedo() {
 		return this.getModel() != null;
@@ -93,7 +115,7 @@ public final class StringStateEdit extends StateEdit<StringState,String> {
 
 	@Override
 	protected final void undoInternal() {
-		this.getModel().setValue(this.previousValue);
+		this.getModel().setValue(this.prevValue);
 	}
 
 	@Override

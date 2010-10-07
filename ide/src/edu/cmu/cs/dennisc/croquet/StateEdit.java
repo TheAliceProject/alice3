@@ -48,8 +48,8 @@ package edu.cmu.cs.dennisc.croquet;
 public abstract class StateEdit<M extends State,T> extends Edit<M> {
 	public StateEdit() {
 	}
-	public StateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public StateEdit( Memento<M> memento ) {
+		super( memento );
 	}
 	
 	public abstract T getPreviousValue();

@@ -46,37 +46,56 @@ package org.alice.ide.croquet.edits.ast;
  * @author Dennis Cosgrove
  */
 public class DeclareMethodEdit extends edu.cmu.cs.dennisc.croquet.OperationEdit<org.alice.ide.croquet.models.ast.DeclareMethodOperation> {
+	public static class DeclareMethodEditMemento extends Memento<org.alice.ide.croquet.models.ast.DeclareMethodOperation> {
+		private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType;
+		private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
+		public DeclareMethodEditMemento( DeclareMethodEdit edit ) {
+			super( edit );
+			this.declaringType = edit.declaringType;
+			this.method = edit.method;
+		}
+		public DeclareMethodEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		public edu.cmu.cs.dennisc.croquet.Edit<org.alice.ide.croquet.models.ast.DeclareMethodOperation> createEdit() {
+			return new DeclareMethodEdit( this );
+		}
+		@Override
+		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class ).decode( binaryDecoder );
+			this.method = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class ).decode( binaryDecoder );
+		}
+		@Override
+		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class ).encode( binaryEncoder, this.declaringType );
+			org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class ).encode( binaryEncoder, this.method );
+		}
+	}
+
 	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType;
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
 	
-	private edu.cmu.cs.dennisc.alice.ast.AbstractCode prevFocusedCode;
+	private transient edu.cmu.cs.dennisc.alice.ast.AbstractCode prevFocusedCode;
 
-	public DeclareMethodEdit() {
-	}
-//	public DeclareMethodEdit( DeclareMethodEdit other ) {
-//		this( other.declaringType, other.method );
-//	}
 	public DeclareMethodEdit( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		this.declaringType = declaringType;
 		this.method = method;
+	}
+	private DeclareMethodEdit( DeclareMethodEditMemento memento ) {
+		super( memento );
+		this.declaringType = memento.declaringType;
+		this.method = memento.method;
+	}
+	@Override
+	public Memento<org.alice.ide.croquet.models.ast.DeclareMethodOperation> createMemento() {
+		return new DeclareMethodEditMemento( this );
 	}
 	
 	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getMethod() {
 		return this.method;
 	}
-	
-	@Override
-	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class ).decode( binaryDecoder );
-		this.method = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class ).decode( binaryDecoder );
-	}
-	@Override
-	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class ).encode( binaryEncoder, this.declaringType );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class ).encode( binaryEncoder, this.method );
-		assert this.method != null;
-	}
-	
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		this.declaringType.methods.add( this.method );

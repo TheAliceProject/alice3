@@ -46,45 +46,71 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public final class BoundedRangeIntegerStateEdit extends StateEdit<BoundedRangeIntegerState,Integer> {
-	private int previousValue;
-	private int nextValue;
-	private boolean isDoDesired;
-	public BoundedRangeIntegerStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public static class BoundedRangeIntegerStateEditMemento extends Memento<BoundedRangeIntegerState> {
+		private int prevValue;
+		private int nextValue;
+		private boolean isDoDesired;
+		public BoundedRangeIntegerStateEditMemento( BoundedRangeIntegerStateEdit edit ) {
+			super( edit );
+			this.prevValue = edit.prevValue;
+			this.nextValue = edit.nextValue;
+		}
+		public BoundedRangeIntegerStateEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		public edu.cmu.cs.dennisc.croquet.Edit< BoundedRangeIntegerState > createEdit() {
+			return new BoundedRangeIntegerStateEdit( this );
+		}
+		
+		@Override
+		protected void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+			this.prevValue = binaryDecoder.decodeInt();
+			this.nextValue = binaryDecoder.decodeInt();
+			
+			
+			//todo?
+			this.isDoDesired = binaryDecoder.decodeBoolean();
+			
+		}
+		@Override
+		protected void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+			binaryEncoder.encode( this.prevValue );
+			binaryEncoder.encode( this.nextValue );
+
+			
+			//todo?
+			binaryEncoder.encode( this.isDoDesired );
+		}
 	}
-	public BoundedRangeIntegerStateEdit( javax.swing.event.ChangeEvent e, int previousValue, int nextValue, boolean isDoDesired ) {
-		this.previousValue = previousValue;
+
+	private final int prevValue;
+	private final int nextValue;
+	private final boolean isDoDesired;
+	public BoundedRangeIntegerStateEdit( javax.swing.event.ChangeEvent e, int prevValue, int nextValue, boolean isDoDesired ) {
+		this.prevValue = prevValue;
 		this.nextValue = nextValue;
 		this.isDoDesired = isDoDesired;
 	}
+	private BoundedRangeIntegerStateEdit( BoundedRangeIntegerStateEditMemento memento ) {
+		super( memento );
+		this.prevValue = memento.prevValue;
+		this.nextValue = memento.nextValue;
+		this.isDoDesired = memento.isDoDesired;
+	}
+	@Override
+	public Memento<BoundedRangeIntegerState> createMemento() {
+		return new BoundedRangeIntegerStateEditMemento( this );
+	}
+	
 
 	@Override
 	public Integer getPreviousValue() {
-		return this.previousValue;
+		return this.prevValue;
 	}
 	@Override
 	public Integer getNextValue() {
 		return this.nextValue;
-	}
-	
-	@Override
-	protected void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		this.previousValue = binaryDecoder.decodeInt();
-		this.nextValue = binaryDecoder.decodeInt();
-		
-		
-		//todo?
-		this.isDoDesired = binaryDecoder.decodeBoolean();
-		
-	}
-	@Override
-	protected void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		binaryEncoder.encode( this.previousValue );
-		binaryEncoder.encode( this.nextValue );
-
-		
-		//todo?
-		binaryEncoder.encode( this.isDoDesired );
 	}
 	
 	@Override
@@ -105,7 +131,7 @@ public final class BoundedRangeIntegerStateEdit extends StateEdit<BoundedRangeIn
 
 	@Override
 	protected final void undoInternal() {
-		this.getModel().setValue(this.previousValue);
+		this.getModel().setValue(this.prevValue);
 	}
 
 	@Override

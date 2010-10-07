@@ -372,10 +372,8 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 				if( isCompleted ) {
 					context.commitAndInvokeDo( new OperationEdit< Operation<?> >() {
 						@Override
-						protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-						}
-						@Override
-						protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+						public Memento createMemento() {
+							throw new RuntimeException( "todo" );
 						}
 						@Override
 						protected void doOrRedoInternal( boolean isDo ) {

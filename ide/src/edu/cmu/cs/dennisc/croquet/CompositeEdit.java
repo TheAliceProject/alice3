@@ -54,10 +54,22 @@ public class CompositeEdit extends Edit {
 		this.isDoToBeIgnored = isDoToBeIgnored;
 		this.presentation = presentation;
 	}
-	public CompositeEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	@Override
+	public Memento< ? > createMemento() {
+		throw new RuntimeException( "todo" );
+//		@Override
+//		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+//			binaryEncoder.encode( this.edits );
+//			binaryEncoder.encode( this.isDoToBeIgnored );
+//			binaryEncoder.encode( this.presentation );
+//		}
+//		@Override
+//		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+//			this.edits = binaryDecoder.decodeBinaryEncodableAndDecodableArray( Edit.class );
+//			this.isDoToBeIgnored = binaryDecoder.decodeBoolean();
+//			this.presentation = binaryDecoder.decodeString();
+//		}
 	}
-	
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		if( isDo && this.isDoToBeIgnored ) {
@@ -101,18 +113,5 @@ public class CompositeEdit extends Edit {
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( this.presentation );
 		return rv;
-	}
-	
-	@Override
-	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.edits );
-		binaryEncoder.encode( this.isDoToBeIgnored );
-		binaryEncoder.encode( this.presentation );
-	}
-	@Override
-	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.edits = binaryDecoder.decodeBinaryEncodableAndDecodableArray( Edit.class );
-		this.isDoToBeIgnored = binaryDecoder.decodeBoolean();
-		this.presentation = binaryDecoder.decodeString();
 	}
 }

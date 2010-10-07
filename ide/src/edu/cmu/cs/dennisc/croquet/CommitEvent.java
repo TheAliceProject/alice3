@@ -55,11 +55,12 @@ public class CommitEvent extends SuccessfulCompletionEvent {
 	}
 	@Override
 	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.edit = binaryDecoder.decodeBinaryEncodableAndDecodable(/* Edit.class */);
+		edu.cmu.cs.dennisc.croquet.Edit.Memento memento = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		this.edit = memento.createEdit();
 	}
 	@Override
 	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.edit );
+		binaryEncoder.encode( this.edit.createMemento() );
 	}
 	@Override
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {

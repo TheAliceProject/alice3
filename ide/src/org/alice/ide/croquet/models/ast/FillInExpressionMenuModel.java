@@ -61,6 +61,6 @@ public abstract class FillInExpressionMenuModel extends FillInSingleExpressionMe
 		return expressionProperty.getExpressionType();
 	}
 	public org.alice.ide.croquet.edits.ast.FillInExpressionPropertyEdit createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-		return new org.alice.ide.croquet.edits.ast.FillInExpressionPropertyEdit( (edu.cmu.cs.dennisc.alice.ast.Expression)value );
+		return new org.alice.ide.croquet.edits.ast.FillInExpressionPropertyEdit( this.getPreviousExpression(), (edu.cmu.cs.dennisc.alice.ast.Expression)value );
 	}
 }

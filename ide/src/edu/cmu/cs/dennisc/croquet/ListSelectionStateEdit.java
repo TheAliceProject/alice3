@@ -46,15 +46,52 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public final class ListSelectionStateEdit<E> extends StateEdit<ListSelectionState<E>,E> {
+	public static class ListSelectionStateEditMemento<E> extends Memento<ListSelectionState<E>> {
+		private E prevValue;
+		private E nextValue;
+		public ListSelectionStateEditMemento( ListSelectionStateEdit<E> edit ) {
+			super( edit );
+			this.prevValue = edit.prevValue;
+			this.nextValue = edit.nextValue;
+		}
+		public ListSelectionStateEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		public edu.cmu.cs.dennisc.croquet.Edit< ListSelectionState<E> > createEdit() {
+			return new ListSelectionStateEdit<E>( this );
+		}
+		@Override
+		protected final void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+			ListSelectionState< E > listSelectionState = this.getModel();
+			Codec<E> codec = listSelectionState.getCodec();
+			this.prevValue = codec.decode( binaryDecoder );
+			this.nextValue = codec.decode( binaryDecoder );
+		}
+		@Override
+		protected final void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+			ListSelectionState< E > listSelectionState = this.getModel();
+			Codec<E> codec = listSelectionState.getCodec();
+			codec.encode( binaryEncoder, this.prevValue );
+			codec.encode( binaryEncoder, this.nextValue );
+		}
+	}
+
 	private E prevValue;
 	private E nextValue;
 	
-	public ListSelectionStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
 	public ListSelectionStateEdit( java.util.EventObject e, E prevValue, E nextValue ) {
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
+	}
+	private ListSelectionStateEdit( ListSelectionStateEditMemento<E> memento ) {
+		super( memento );
+		this.prevValue = memento.prevValue;
+		this.nextValue = memento.nextValue;
+	}
+	@Override
+	public Memento<ListSelectionState<E>> createMemento() {
+		return new ListSelectionStateEditMemento<E>( this );
 	}
 	
 	@Override
@@ -87,20 +124,6 @@ public final class ListSelectionStateEdit<E> extends StateEdit<ListSelectionStat
 //		retargeter.addKeyValuePair( this.prevValue, listSelectionStateEdit.prevValue );
 //		retargeter.addKeyValuePair( this.nextValue, listSelectionStateEdit.nextValue );
 //	}
-	@Override
-	protected final void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		ListSelectionState< E > listSelectionState = this.getModel();
-		Codec<E> codec = listSelectionState.getCodec();
-		this.prevValue = codec.decode( binaryDecoder );
-		this.nextValue = codec.decode( binaryDecoder );
-	}
-	@Override
-	protected final void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		ListSelectionState< E > listSelectionState = this.getModel();
-		Codec<E> codec = listSelectionState.getCodec();
-		codec.encode( binaryEncoder, this.prevValue );
-		codec.encode( binaryEncoder, this.nextValue );
-	}
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {

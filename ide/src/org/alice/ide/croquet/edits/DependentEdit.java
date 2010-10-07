@@ -47,6 +47,10 @@ package org.alice.ide.croquet.edits;
  * @author Dennis Cosgrove
  */
 public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<?>> extends edu.cmu.cs.dennisc.croquet.OperationEdit< M > {
+	@Override
+	public edu.cmu.cs.dennisc.croquet.Edit.Memento< M > createMemento() {
+		throw new RuntimeException( "todo" );
+	}
 	private org.alice.ide.croquet.models.BeholdenModel getBeholdenModel() {
 		edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = this.getContext();
 		if( context != null ) {
@@ -89,11 +93,4 @@ public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<
 		super.addKeyValuePairs( retargeter, edit );
 		this.getBeholdenModel().addKeyValuePairs( retargeter, edit );
 	}
-	@Override
-	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-	}
-	@Override
-	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-	}
-
 }

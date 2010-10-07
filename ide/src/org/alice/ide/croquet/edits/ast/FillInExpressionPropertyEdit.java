@@ -46,13 +46,54 @@ package org.alice.ide.croquet.edits.ast;
  * @author Dennis Cosgrove
  */
 public class FillInExpressionPropertyEdit extends edu.cmu.cs.dennisc.cascade.CascadingEdit< org.alice.ide.croquet.models.ast.FillInExpressionMenuModel > {
-	private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
-	private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
-	public FillInExpressionPropertyEdit() {
+	public static class FillInExpressionPropertyEditMemento extends Memento<edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation> {
+		private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
+		private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
+		public FillInExpressionPropertyEditMemento( FillInExpressionPropertyEdit edit ) {
+			super( edit );
+			this.prevExpression = edit.prevExpression;
+			this.nextExpression = edit.nextExpression;
+		}
+		public FillInExpressionPropertyEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > createEdit() {
+			return new FillInExpressionPropertyEdit( this );
+		}
+		@Override
+		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+			java.util.UUID prevExpressionId = binaryDecoder.decodeId();
+			this.prevExpression = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, prevExpressionId );
+			java.util.UUID nextExpressionId = binaryDecoder.decodeId();
+			this.nextExpression = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, nextExpressionId );
+		}
+		@Override
+		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			binaryEncoder.encode( this.prevExpression.getUUID() );
+			binaryEncoder.encode( this.nextExpression.getUUID() );
+		}
 	}
-	public FillInExpressionPropertyEdit( edu.cmu.cs.dennisc.alice.ast.Expression nextExpression ) {
+
+	private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
+	private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
+
+	public FillInExpressionPropertyEdit( edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, edu.cmu.cs.dennisc.alice.ast.Expression nextExpression ) {
+		this.prevExpression = prevExpression;
 		this.nextExpression = nextExpression;
 	}
+	private FillInExpressionPropertyEdit( FillInExpressionPropertyEditMemento memento ) {
+		super( memento );
+		this.prevExpression = memento.prevExpression;
+		this.nextExpression = memento.nextExpression;
+	}
+	@Override
+	public Memento<edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation> createMemento() {
+		return new FillInExpressionPropertyEditMemento( this );
+	}
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		org.alice.ide.croquet.models.ast.FillInExpressionMenuModel popupMenuOperation = this.getCascadingRoot();
@@ -83,19 +124,5 @@ public class FillInExpressionPropertyEdit extends edu.cmu.cs.dennisc.cascade.Cas
 		FillInExpressionPropertyEdit replacementEdit = (FillInExpressionPropertyEdit)edit;
 		retargeter.addKeyValuePair( this.prevExpression, replacementEdit.prevExpression );
 		retargeter.addKeyValuePair( this.nextExpression, replacementEdit.nextExpression );
-	}
-	@Override
-	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
-		java.util.UUID prevExpressionId = binaryDecoder.decodeId();
-		this.prevExpression = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, prevExpressionId );
-		java.util.UUID nextExpressionId = binaryDecoder.decodeId();
-		this.nextExpression = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, nextExpressionId );
-	}
-	@Override
-	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.prevExpression.getUUID() );
-		binaryEncoder.encode( this.nextExpression.getUUID() );
 	}
 }

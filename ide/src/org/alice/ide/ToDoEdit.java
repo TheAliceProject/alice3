@@ -50,9 +50,7 @@ public abstract class ToDoEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<?>
 	public ToDoEdit() {
 	}
 	@Override
-	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-	}
-	@Override
-	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public Memento createMemento() {
+		throw new RuntimeException( "todo" );
 	}
 }
