@@ -75,7 +75,7 @@ public class Project {
 		bos.write( s.getBytes() );
 	}
 
-	public class Properties {
+	private class Properties {
 		private java.util.Map< String, String > map = new java.util.HashMap< String, String >();
 		public void read( java.io.BufferedInputStream bis ) {
 			if( bis != null ) {
@@ -200,26 +200,80 @@ public class Project {
 		}
 	}
 	
-	private java.util.Set< Resource > resources = java.util.Collections.synchronizedSet( new java.util.HashSet< Resource >() );
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = null;
+	private java.util.Set< Resource > resources = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
 	private Properties properties = new Properties();
 	public Project( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType, java.util.Set< Resource > resources ) {
 		this( programType );
-		synchronized( this.resources ) {
-			this.resources.addAll( resources );
-		}
+		this.resources.addAll( resources );
 	}
 	public Project( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType ) {
-		setProgramType( programType );
+		this.programType = programType;
 	}
 	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getProgramType() {
 		return this.programType;
 	}
-	/*public*/private void setProgramType( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType ) {
-		this.programType = programType;
+
+
+	private static String IS_SCOPE_RESPECTED_KEY = Project.class.getName() + ".IS_SCOPE_RESPECTED";
+	public boolean isScopeRespected() {
+		return getBooleanProperty( IS_SCOPE_RESPECTED_KEY, true );
 	}
-	public Properties getProperties() {
-		return this.properties;
+	public void putScopeRespected( boolean isScopeRespected ) {
+		putBooleanProperty( IS_SCOPE_RESPECTED_KEY, isScopeRespected );
+	}
+	
+	public String getStringProperty( String key, String def ) {
+		return this.properties.getString( key, def );
+	}
+	public boolean getBooleanProperty( String key, boolean def ) {
+		return this.properties.getBoolean( key, def );
+	}
+	public int getIntegerProperty( String key, int def ) {
+		return this.properties.getInteger( key, def );
+	}
+	public long getLongProperty( String key, long def ) {
+		return this.properties.getLong( key, def );
+	}
+	public float getFloatProperty( String key, float def ) {
+		return this.properties.getFloat( key, def );
+	}
+	public double getDoubleProperty( String key, double def ) {
+		return this.properties.getDouble( key, def );
+	}
+	public byte[] getByteArrayProperty( String key, byte[] def ) {
+		return this.properties.getByteArray( key, def );
+	}
+	public void putStringProperty( String key, String value ) {
+		this.properties.putString( key, value );
+	}
+	public void putBooleanProperty( String key, boolean value ) {
+		this.properties.putBoolean( key, value );
+	}
+	public void putIntegerProperty( String key, int value ) {
+		this.properties.putInteger( key, value );
+	}
+	public void putLongProperty( String key, long value ) {
+		this.properties.putLong( key, value );
+	}
+	public void putFloatProperty( String key, float value ) {
+		this.properties.putFloat( key, value );
+	}
+	public void putDoubleProperty( String key, double value ) {
+		this.properties.putDouble( key, value );
+	}
+	public void putByteArrayProperty( String key, byte[] value ) {
+		this.properties.putByteArray( key, value );
+	}
+	
+	public java.util.Set< String > getPropertyKeySet() {
+		return this.properties.map.keySet();
+	}
+	public void readProperties( java.io.BufferedInputStream bis ) {
+		this.properties.read( bis );
+	}
+	public void writeProperties( java.io.BufferedOutputStream bos ) throws java.io.IOException {
+		this.properties.write( bos );
 	}
 	
 	public void addResource( Resource resource ) {
@@ -240,12 +294,4 @@ public class Project {
 	public java.util.Set< Resource > getResources() {
 		return this.resources;
 	}
-//	/*public*/private void setProperties( Properties properties ) {
-//		if( properties != null ) {
-//			//pass
-//		} else {
-//			properties = new Properties();
-//		}
-//		this.properties = properties;
-//	}
 }
