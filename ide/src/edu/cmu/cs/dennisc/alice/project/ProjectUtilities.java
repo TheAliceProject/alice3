@@ -147,12 +147,12 @@ public abstract class ProjectUtilities {
 			throw new java.io.IOException( zipFile.getName() + " does not contain entry " + VERSION_ENTRY_NAME );
 		}
 	}
-	private static edu.cmu.cs.dennisc.alice.Project.Properties readProperties( edu.cmu.cs.dennisc.alice.Project.Properties rv, java.util.zip.ZipFile zipFile ) throws java.io.IOException {
+	private static edu.cmu.cs.dennisc.alice.Project readProperties( edu.cmu.cs.dennisc.alice.Project rv, java.util.zip.ZipFile zipFile ) throws java.io.IOException {
 		assert zipFile != null;
 		java.util.zip.ZipEntry entry = zipFile.getEntry( PROPERTIES_ENTRY_NAME );
 		if( entry != null ) {
 			java.io.BufferedInputStream bis = new java.io.BufferedInputStream( zipFile.getInputStream( entry ) );
-			rv.read( bis );
+			rv.readProperties( bis );
 		}
 		return rv;
 	}
@@ -204,7 +204,7 @@ public abstract class ProjectUtilities {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = readType( zipFile, PROGRAM_TYPE_ENTRY_NAME );
 		java.util.Set< org.alice.virtualmachine.Resource > resources = readResources( zipFile );
 		edu.cmu.cs.dennisc.alice.Project rv = new edu.cmu.cs.dennisc.alice.Project( type, resources );
-		readProperties( rv.getProperties(), zipFile );
+		readProperties( rv, zipFile );
 		return rv;
 	}
 	public static edu.cmu.cs.dennisc.alice.Project readProject( java.io.File file ) {
@@ -327,21 +327,21 @@ public abstract class ProjectUtilities {
 		}
 	}
 
-	public static void writeProject( java.io.OutputStream os, edu.cmu.cs.dennisc.alice.Project project, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
+	public static void writeProject( java.io.OutputStream os, final edu.cmu.cs.dennisc.alice.Project project, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
 		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( os );
 		writeVersion( zos );
-
 		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = project.getProgramType();
 		writeType( programType, zos, PROGRAM_TYPE_ENTRY_NAME );
-		final edu.cmu.cs.dennisc.alice.Project.Properties properties = project.getProperties();
-		if( properties != null ) {
+		if( project.getPropertyKeySet().isEmpty() ) {
+			//pass
+		} else {
 			edu.cmu.cs.dennisc.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.zip.DataSource() {
 				public String getName() {
 					return PROPERTIES_ENTRY_NAME;
 				}
 				public void write( java.io.OutputStream os ) throws java.io.IOException {
 					assert os instanceof java.io.BufferedOutputStream;
-					properties.write( (java.io.BufferedOutputStream)os );
+					project.writeProperties( (java.io.BufferedOutputStream)os );
 				}
 			} );
 		}

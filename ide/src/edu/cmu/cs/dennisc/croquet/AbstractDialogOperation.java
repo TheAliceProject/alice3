@@ -80,6 +80,9 @@ public abstract class AbstractDialogOperation< C extends AbstractDialogOperation
 		return rv;
 	}
 	
+	protected boolean isWindowClosingEnabled( java.awt.event.WindowEvent e ) {
+		return true;
+	}
 	
 	@Override
 	protected final void perform( final C context ) {
@@ -91,14 +94,18 @@ public abstract class AbstractDialogOperation< C extends AbstractDialogOperation
 			owner = Application.getSingleton().getFrame().getContentPanel();
 		}
 		final Dialog dialog = new Dialog( owner );
-		dialog.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Dialog.DefaultCloseOperation.DO_NOTHING );
+//		dialog.getAwtComponent().setUndecorated( true );
+//		dialog.getRootPane().setWindowDecorationStyle(javax.swing.JRootPane.PLAIN_DIALOG);
 
+		dialog.setDefaultCloseOperation( edu.cmu.cs.dennisc.croquet.Dialog.DefaultCloseOperation.DO_NOTHING );
 		java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
 				context.handleWindowOpened( e );
 			}
 			public void windowClosing( java.awt.event.WindowEvent e ) {
-				dialog.setVisible( false );
+				if( AbstractDialogOperation.this.isWindowClosingEnabled( e ) ) {
+					dialog.setVisible( false );
+				}
 			}
 			public void windowClosed( java.awt.event.WindowEvent e ) {
 			}
@@ -119,7 +126,6 @@ public abstract class AbstractDialogOperation< C extends AbstractDialogOperation
 		try {
 			if( contentPane != null ) {
 				dialog.getAwtComponent().setContentPane( contentPane.getAwtComponent() );
-
 				java.awt.Dimension size = this.getDesiredDialogSize( dialog );
 				if( size != null ) {
 					dialog.getAwtComponent().setSize( size );
