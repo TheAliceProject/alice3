@@ -66,7 +66,7 @@ public class BubbleManager
 	private Hashtable<Bubble, OnscreenBubble> bubbleMap = new Hashtable<Bubble, OnscreenBubble>();
 	private List<OnscreenBubble> activeBubbles = new LinkedList<OnscreenBubble>();
 	
-	public OnscreenBubble addBubble(Bubble bubbleOwner, java.awt.geom.Point2D.Float originOfTail, java.awt.geom.Dimension2D textSize, float padding, java.awt.Rectangle viewport)
+	public synchronized OnscreenBubble addBubble(Bubble bubbleOwner, java.awt.geom.Point2D.Float originOfTail, java.awt.geom.Dimension2D textSize, float padding, java.awt.Rectangle viewport)
 	{
 		OnscreenBubble.PositionPreference positionPreference;
 		if (originOfTail.x < (viewport.width * .33))
@@ -150,7 +150,7 @@ public class BubbleManager
 		{
 			double minX = otherBubble.getBubbleRect().getMinX();
 			double maxX = otherBubble.getBubbleRect().getMaxX();
-			if ((x > minX && x < maxX) || (rightEdge > minX && rightEdge < maxX) )
+			if ((x >= minX && x <= maxX) || (rightEdge >= minX && rightEdge <= maxX) )
 			{
 				if (otherBubble.getBubbleRect().getMaxY() > maxY)
 				{
@@ -172,7 +172,7 @@ public class BubbleManager
 		return this.bubbleMap.get(bubbleOwner);
 	}
 	
-	public void removeBubble(Bubble bubbleOwner)
+	public synchronized void removeBubble(Bubble bubbleOwner)
 	{
 		OnscreenBubble bubble = this.bubbleMap.get(bubbleOwner);
 		if (bubble != null)
