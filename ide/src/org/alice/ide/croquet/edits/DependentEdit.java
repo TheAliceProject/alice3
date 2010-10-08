@@ -51,12 +51,12 @@ public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<
 	public edu.cmu.cs.dennisc.croquet.Edit.Memento< M > createMemento() {
 		throw new RuntimeException( "todo" );
 	}
-	private org.alice.ide.croquet.models.BeholdenModel getBeholdenModel() {
+	private org.alice.ide.croquet.models.ResponsibleModel getResponsibleModel() {
 		edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = this.getContext();
 		if( context != null ) {
 			edu.cmu.cs.dennisc.croquet.Model model = context.getModel();
-			if( model instanceof org.alice.ide.croquet.models.BeholdenModel ) {
-				return (org.alice.ide.croquet.models.BeholdenModel)model;
+			if( model instanceof org.alice.ide.croquet.models.ResponsibleModel ) {
+				return (org.alice.ide.croquet.models.ResponsibleModel)model;
 			} else {
 				throw new RuntimeException();
 			}
@@ -67,30 +67,30 @@ public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<
 	@Override
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
-		this.getBeholdenModel().retarget( retargeter );
+		this.getResponsibleModel().retarget( retargeter );
 	}
 	
 	@Override
 	protected void doOrRedoInternal( boolean isDo ) {
-		this.getBeholdenModel().doOrRedoInternal( isDo );
+		this.getResponsibleModel().doOrRedoInternal( isDo );
 	}
 
 	@Override
 	protected void undoInternal() {
-		this.getBeholdenModel().undoInternal();
+		this.getResponsibleModel().undoInternal();
 	}
 	
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-		return this.getBeholdenModel().updatePresentation( rv, locale );
+		return this.getResponsibleModel().updatePresentation( rv, locale );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.croquet.ReplacementAcceptability getReplacementAcceptability( edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidate, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-		return this.getBeholdenModel().getReplacementAcceptability( replacementCandidate, userInformation );
+		return this.getResponsibleModel().getReplacementAcceptability( replacementCandidate, userInformation );
 	}
 	@Override
 	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
 		super.addKeyValuePairs( retargeter, edit );
-		this.getBeholdenModel().addKeyValuePairs( retargeter, edit );
+		this.getResponsibleModel().addKeyValuePairs( retargeter, edit );
 	}
 }

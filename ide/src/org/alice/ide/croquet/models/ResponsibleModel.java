@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models;
 /**
  * @author Dennis Cosgrove
  */
-public interface BeholdenModel {
+public interface ResponsibleModel {
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter );
 	public void doOrRedoInternal( boolean isDo );
 	public void undoInternal();
