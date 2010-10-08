@@ -47,28 +47,34 @@ package org.alice.ide.croquet.edits;
  * @author Dennis Cosgrove
  */
 public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<?>> extends edu.cmu.cs.dennisc.croquet.OperationEdit< M > {
-//	public static class DependentEditMemento extends Memento<edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation> {
-//		public DependentEditMemento( DependentEdit edit ) {
-//			super( edit );
-//		}
-//		public DependentEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-//			super( binaryDecoder );
-//		}
-//		@Override
-//		public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > createEdit() {
-//			return new DependentEdit( this );
-//		}
-//		@Override
-//		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-//		}
-//		@Override
-//		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-//		}
-//	}
+	public static class DependentEditMemento<M extends edu.cmu.cs.dennisc.croquet.Operation<?>> extends Memento<M> {
+		public DependentEditMemento( DependentEdit<M> edit ) {
+			super( edit );
+		}
+		public DependentEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		public edu.cmu.cs.dennisc.croquet.Edit<M> createEdit() {
+			return new DependentEdit<M>( this );
+		}
+		@Override
+		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		}
+		@Override
+		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		}
+	}
+	
+	public DependentEdit() {
+	}
+	private DependentEdit( DependentEditMemento<M> memento ) {
+		super( memento );
+	}
 
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Edit.Memento< M > createMemento() {
-		throw new RuntimeException( "todo" );
+	public Memento< M > createMemento() {
+		return new DependentEditMemento<M>( this );
 	}
 	private org.alice.ide.croquet.models.ResponsibleModel getResponsibleModel() {
 		edu.cmu.cs.dennisc.croquet.ModelContext< ? > context = this.getContext();
