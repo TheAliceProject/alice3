@@ -42,6 +42,10 @@
  */
 package edu.cmu.cs.dennisc.lookingglass.opengl.graphics;
 
+import java.awt.Color;
+
+import edu.cmu.cs.dennisc.scenegraph.graphics.OnscreenBubble;
+
 public class SpeechBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble > {
 //	protected abstract java.awt.Stroke getStroke();
 	
@@ -77,61 +81,36 @@ public class SpeechBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scene
 			float wrapWidth,
 			java.awt.Color fillColor, 
 			java.awt.Color outlineColor,
-			java.awt.geom.Point2D.Float originOfTail,
-			java.awt.geom.Point2D.Float bodyConnectionLocationOfTail,
-			java.awt.geom.Point2D.Float textBoundsOffset,
+			OnscreenBubble bubble,
 			double portion ) {
-		assert originOfTail != null;
-		assert bodyConnectionLocationOfTail != null;
+		assert bubble != null;
 		
 		g2.setFont( font );
-		java.awt.geom.Dimension2D textSize = multilineText.getDimension( g2, wrapWidth );
-		java.awt.geom.Rectangle2D textBounds = new java.awt.geom.Rectangle2D.Double( 
-				textBoundsOffset.x, 
-				textBoundsOffset.y, 
-				textSize.getWidth(), 
-				textSize.getHeight() );
-
 		
-//		java.awt.Stroke stroke = g2.getStroke();
-//		g2.setStroke( getStroke() );
-		g2.setFont( font );
-		
-		float targetX = (float)bodyConnectionLocationOfTail.getX();
-		float targetY = (float)bodyConnectionLocationOfTail.getY();
+		float targetX = bubble.getEndOfTail().x;
+		float targetY = bubble.getEndOfTail().y;
 
-		float originX = (float)originOfTail.getX();
-		float originY = (float)originOfTail.getY();
+		float originX = (float)bubble.getOriginOfTail().getX();
+		float originY = (float)bubble.getOriginOfTail().getY();
 		
 		float controlX = targetX;
-		//float controlY = Math.max( originY, targetY+320 );
 		float controlY = originY;
-		float topOffsetX = 6f;
-		float topOffsetY = -2f;
+		float tailWidth = 6f;
+		float topOffsetY = -1f;
 
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
 		path.moveTo( originX, originY );
-		path.quadTo( controlX, controlY, targetX + topOffsetX, targetY + topOffsetY );
-		path.lineTo( targetX - topOffsetX, targetY + topOffsetY );
+		path.quadTo( controlX, controlY, targetX  + tailWidth, targetY + topOffsetY );
+		path.lineTo( targetX - tailWidth, targetY + topOffsetY );
 		path.quadTo( controlX, controlY, originX, originY );
 		path.closePath();
-
-		final double IPAD = font.getSize2D()*0.333f;
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "IPAD:", IPAD );
-		java.awt.geom.RoundRectangle2D.Double roundRect = new java.awt.geom.RoundRectangle2D.Double();
-		roundRect.x = textBounds.getX() + bodyConnectionLocationOfTail.getX() + textBoundsOffset.getX() - IPAD;
-		roundRect.y = textBounds.getY() + bodyConnectionLocationOfTail.getY() + textBoundsOffset.getY() - textBounds.getHeight() - IPAD;
-		roundRect.width =  textBounds.getWidth() + IPAD + IPAD;
-		roundRect.height =  textBounds.getHeight() + IPAD + IPAD;
-		roundRect.arcwidth = IPAD;
-		roundRect.archeight = IPAD;
 
 		java.awt.geom.Area area;
 		if( portion < 1.0 ) {
 			area = getPortionOfPath( path, portion );
 		} else {
 			area = new java.awt.geom.Area( path );
-			area.add( new java.awt.geom.Area( roundRect ) );
+			area.add( new java.awt.geom.Area( bubble.getBubbleRect() ) );
 		}
 
 		assert area != null;
@@ -147,14 +126,15 @@ public class SpeechBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scene
 		} else {
 			g2.setFont( font );
 			
-			double xT = bodyConnectionLocationOfTail.getX();
-			double yT = bodyConnectionLocationOfTail.getY() - textBounds.getHeight();
-			g2.translate( xT, yT );
+			//g2.translate( xT, yT );
 //			g2.setPaint( java.awt.Color.RED );
 //			g2.draw( textBounds );
 //			g2.setPaint( java.awt.Color.BLACK );
-			multilineText.paint( g2, wrapWidth, edu.cmu.cs.dennisc.java.awt.TextAlignment.LEADING, textBounds );
-			g2.translate( -xT, -yT );
+//			g2.setColor(Color.RED);
+//			g2.drawRect((int)textBounds.getMinX(), (int)textBounds.getMinX(), (int)textBounds.getWidth(), (int)textBounds.getHeight());
+			multilineText.paint( g2, wrapWidth, edu.cmu.cs.dennisc.java.awt.TextAlignment.LEADING, bubble.getTextBounds() );
+			
+			//g2.translate( -xT, -yT );
 //			int xPixel = (int)( bodyConnectionLocationOfTail.getX() + textBoundsOffset.getX() );
 //			int yPixel = (int)( bodyConnectionLocationOfTail.getY() + textBoundsOffset.getY() - 10 );
 //			g2.setColor( textColor );
