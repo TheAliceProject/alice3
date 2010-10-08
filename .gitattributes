@@ -1,0 +1,53 @@
+* text=auto
+
+# text=auto
+*.html text=auto
+*.icon text=auto
+*.java text=auto
+*.properties text=auto
+*.py text=auto
+*.rb text=auto
+*.txt text=auto
+*.xml text=auto
+
+# eol=lf
+.checkstyle text
+.classpath text
+.gitattributes eol=lf
+.gitignore eol=lf
+.project text
+.pydevproject text
+*.ac eol=lf
+*.am eol=lf
+*.guess eol=lf
+*.in eol=lf
+*.jardesc text
+*.launch text
+*.m4 eol=lf
+*.prefs text
+*.sh eol=lf
+*.sub eol=lf
+configure eol=lf
+install-sh eol=lf
+missing eol=lf
+mkinstalldirs eol=lf
+
+# binary
+*.a3c binary
+*.a3p binary
+*.lgp binary
+*.bin binary
+*.class binary
+*.dll binary
+*.ico binary
+*.jar binary
+*.jpg binary
+*.jks binary
+*.jnilib binary
+*.nebundle binary
+*.png binary
+*.so binary
+*.svg binary
+*.zip binary
+jmf.properties binary
+

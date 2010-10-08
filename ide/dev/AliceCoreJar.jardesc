@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
+<jardesc>
+    <jar path="C:/Alice Workspace/alicecore.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/ide/AliceCoreJar.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" mainClassHandleIdentifier="=ide/src&lt;org.alice.stageide{EntryPoint.java[EntryPoint" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=ide/i18n"/>
+        <javaElement handleIdentifier="=ide/src"/>
+        <folder path="/ide/i18n_seed"/>
+        <javaElement handleIdentifier="=ide/deprecated/src"/>
+        <javaElement handleIdentifier="=ide/generated\/src"/>
+    </selectedElements>
+</jardesc>
