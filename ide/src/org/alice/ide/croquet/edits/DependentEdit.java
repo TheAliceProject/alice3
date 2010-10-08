@@ -47,6 +47,25 @@ package org.alice.ide.croquet.edits;
  * @author Dennis Cosgrove
  */
 public final class DependentEdit<M extends edu.cmu.cs.dennisc.croquet.Operation<?>> extends edu.cmu.cs.dennisc.croquet.OperationEdit< M > {
+//	public static class DependentEditMemento extends Memento<edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation> {
+//		public DependentEditMemento( DependentEdit edit ) {
+//			super( edit );
+//		}
+//		public DependentEditMemento( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+//			super( binaryDecoder );
+//		}
+//		@Override
+//		public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation > createEdit() {
+//			return new DependentEdit( this );
+//		}
+//		@Override
+//		protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+//		}
+//		@Override
+//		protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+//		}
+//	}
+
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Edit.Memento< M > createMemento() {
 		throw new RuntimeException( "todo" );
