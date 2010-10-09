@@ -108,6 +108,10 @@ public class ExampleCameraPathAnimation extends AbstractAnimation {
 	}	
 	
 	@Override
+	protected void preEpilogue() {
+		//todo?
+	}
+	@Override
 	protected void epilogue() {
 		// TODO Auto-generated method stub
 		

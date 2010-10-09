@@ -66,6 +66,9 @@ public abstract class OverlayGraphicAnimation extends edu.cmu.cs.dennisc.animati
 		m_sgGraphic.setParent( m_sgLayer );
 	}
 	@Override
+	protected void preEpilogue() {
+	}
+	@Override
 	protected void epilogue() {
 		m_sgGraphic.setParent( null );
 	}

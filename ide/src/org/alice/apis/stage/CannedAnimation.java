@@ -83,6 +83,9 @@ public class CannedAnimation extends edu.cmu.cs.dennisc.animation.AbstractAnimat
 		}
 	}
 	@Override
+	protected final void preEpilogue() {
+	}
+	@Override
 	protected void epilogue() {
 		if( m_control != null ) {
 			m_control.epilogue();
