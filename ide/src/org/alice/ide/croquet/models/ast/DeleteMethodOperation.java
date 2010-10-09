@@ -40,38 +40,59 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteFieldOperation extends AbstractDeleteNodeOperation< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
-	private static edu.cmu.cs.dennisc.alice.ast.NodeListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractNode > getFieldsProperty( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = field.getDeclaringType();
-		assert type != null;
-		assert type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
-		return ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type).fields;
-		
+public class DeleteMethodOperation extends AbstractDeleteMemberOperation< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice, DeleteMethodOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized DeleteMethodOperation getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		return getInstance( method, method.getDeclaringType() );
 	}
-	public DeleteFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		super( java.util.UUID.fromString( "5a07b4dc-0bd9-4393-93d2-1cc1a9b48262" ), field, DeleteFieldOperation.getFieldsProperty( field ) );
+	public static synchronized DeleteMethodOperation getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+		DeleteMethodOperation rv = map.get( method );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new DeleteMethodOperation( method, declaringType );
+			map.put( method, rv );
+		}
+		return rv;
 	}
 
+	private DeleteMethodOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+		super( java.util.UUID.fromString( "5a07b4dc-0bd9-4393-93d2-1cc1a9b48262" ), method, declaringType );
+	}
 	@Override
-	protected boolean isClearToDelete( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.FieldAccess > references = this.getIDE().getFieldAccesses( field );
+	protected java.lang.Class< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > getNodeParameterType() {
+		return edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.NodeListProperty< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > getNodeListProperty( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+		return declaringType.methods;
+	}
+	@Override
+	protected boolean isClearToDelete( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > references = this.getIDE().getMethodInvocations( method );
 		final int N = references.size();
 		if( N > 0 ) {
 			StringBuffer sb = new StringBuffer();
-			sb.append( "Unable to delete property named \"" );
-			sb.append( field.name.getValue() );
+			sb.append( "Unable to delete " );
+			if( method.isProcedure() ) {
+				sb.append( "procedure" );
+			} else {
+				sb.append( "function" );
+			}
+			sb.append( " named \"" );
+			sb.append( method.name.getValue() );
 			sb.append( "\" because it has " );
 			if( N == 1 ) {
-				sb.append( "an access refrence" );
+				sb.append( "an invocation reference" );
 			} else {
 				sb.append( N );
 			}
-			sb.append( " access refrences" );
+			sb.append( " invocation references" );
 			sb.append( " to it.\nYou must remove " );
 			if( N == 1 ) {
 				sb.append( "this reference" );
@@ -79,8 +100,9 @@ public class DeleteFieldOperation extends AbstractDeleteNodeOperation< edu.cmu.c
 				sb.append( "these references" );
 			}
 			sb.append( " if you want to delete \"" );
-			sb.append( field.name.getValue() );
+			sb.append( method.name.getValue() );
 			sb.append( "\" ." );
+
 			this.getIDE().showMessageDialog( sb.toString() );
 			return false;
 		} else {

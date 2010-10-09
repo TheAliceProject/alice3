@@ -143,7 +143,7 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 				if( fieldType.isAssignableTo( org.alice.apis.moveandturn.AbstractCamera.class ) ) {
 					//pass
 				} else {
-					rv.add( new org.alice.ide.operations.ast.DeleteFieldOperation( fieldInAlice ) );
+					rv.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( fieldInAlice ) );
 					rv.add( new org.alice.stageide.operations.ast.OrientToUprightActionOperation( fieldInAlice ) );
 				}
 			}

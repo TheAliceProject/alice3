@@ -40,36 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteMethodOperation extends AbstractDeleteNodeOperation< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
-	public DeleteMethodOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		super( java.util.UUID.fromString( "5a07b4dc-0bd9-4393-93d2-1cc1a9b48262" ), method, ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)method.getDeclaringType()).methods );
+public class DeleteFieldOperation extends AbstractDeleteMemberOperation< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, DeleteFieldOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized DeleteFieldOperation getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+		return getInstance( field, field.getDeclaringType() );
+	}
+	public static synchronized DeleteFieldOperation getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+		DeleteFieldOperation rv = map.get( field );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new DeleteFieldOperation( field, declaringType );
+			map.put( field, rv );
+		}
+		return rv;
+	}
+
+	//todo
+	//note: index not preserved and restored
+	//in the case where it is undone across sessions, it will not know what to pass to the scene editor
+	private transient Object instance = null;
+	private DeleteFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+		super( java.util.UUID.fromString( "5a07b4dc-0bd9-4393-93d2-1cc1a9b48262" ), field, declaringType );
 	}
 	@Override
-	protected boolean isClearToDelete( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > references = this.getIDE().getMethodInvocations( method );
+	protected java.lang.Class< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > getNodeParameterType() {
+		return edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice.class;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.NodeListProperty< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > getNodeListProperty( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+		return declaringType.fields;
+	}
+	@Override
+	protected boolean isClearToDelete( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+		java.util.List< edu.cmu.cs.dennisc.alice.ast.FieldAccess > references = this.getIDE().getFieldAccesses( field );
 		final int N = references.size();
 		if( N > 0 ) {
 			StringBuffer sb = new StringBuffer();
-			sb.append( "Unable to delete " );
-			if( method.isProcedure() ) {
-				sb.append( "procedure" );
-			} else {
-				sb.append( "function" );
-			}
-			sb.append( " named \"" );
-			sb.append( method.name.getValue() );
+			sb.append( "Unable to delete property named \"" );
+			sb.append( field.name.getValue() );
 			sb.append( "\" because it has " );
 			if( N == 1 ) {
-				sb.append( "an invocation reference" );
+				sb.append( "an access refrence" );
 			} else {
 				sb.append( N );
 			}
-			sb.append( " invocation references" );
+			sb.append( " access refrences" );
 			sb.append( " to it.\nYou must remove " );
 			if( N == 1 ) {
 				sb.append( "this reference" );
@@ -77,13 +98,25 @@ public class DeleteMethodOperation extends AbstractDeleteNodeOperation< edu.cmu.
 				sb.append( "these references" );
 			}
 			sb.append( " if you want to delete \"" );
-			sb.append( method.name.getValue() );
+			sb.append( field.name.getValue() );
 			sb.append( "\" ." );
-
 			this.getIDE().showMessageDialog( sb.toString() );
 			return false;
 		} else {
 			return true;
 		}
+	}
+	
+	@Override
+	public void doOrRedoInternal( boolean isDo ) {
+		this.instance = this.getIDE().getSceneEditor().getInstanceInJavaForUndo( this.getMember() );
+		super.doOrRedoInternal( isDo );
+	}
+	@Override
+	public void undoInternal() {
+		if( this.instance != null ) {
+			getIDE().getSceneEditor().putInstanceForInitializingPendingField( this.getMember(), this.instance );
+		}
+		super.undoInternal();
 	}
 }

@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-import edu.cmu.cs.dennisc.cheshire.GuidedInteraction;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -77,22 +75,6 @@ public abstract class ModelContext<M extends Model> extends HistoryNode< ModelCo
 	/*package-private*/ ModelContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-
-//	public Group getEditGroup() {
-//		Model model = this.getModel();
-//		if( model.isOwnerOfEdit() ) {
-//			return model.getGroup();
-//		} else {
-//			HistoryNode lastChild = this.getLastChild();
-//			if( lastChild instanceof ModelContext< ? > ) {
-//				ModelContext< ? > lastChildContext = (ModelContext< ? >)lastChild;
-//				return lastChildContext.getEditGroup();
-//			} else {
-//				return null;
-//			}
-//		}
-//	}
-
 	public void EPIC_HACK_clear() {
 		this.children.clear();
 	}
@@ -377,7 +359,7 @@ public abstract class ModelContext<M extends Model> extends HistoryNode< ModelCo
 	@Override
 	public String getTutorialStepTitle( UserInformation userInformation ) {
 		edu.cmu.cs.dennisc.croquet.Model model = this.getModel();
-		return model.getTutorialStepTitle( this, GuidedInteraction.getInstance().getUserInformation() );
+		return model.getTutorialStepTitle( this, userInformation );
 	}
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv ) {

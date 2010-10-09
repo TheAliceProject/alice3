@@ -47,13 +47,18 @@ package org.alice.ide.croquet.resolvers;
  * @author Dennis Cosgrove
  */
 public class NodeStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.croquet.StaticGetInstanceKeyedResolver< T > implements edu.cmu.cs.dennisc.croquet.RetargetableResolver< T > {
-	private edu.cmu.cs.dennisc.alice.ast.Node node;
-	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > parameterType;
+	private edu.cmu.cs.dennisc.alice.ast.Node nodes[];
+	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > parameterTypes[];
 	
-	public NodeStaticGetInstanceKeyedResolver( T instance, edu.cmu.cs.dennisc.alice.ast.Node node, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > parameterType ) {
+	public NodeStaticGetInstanceKeyedResolver( T instance, edu.cmu.cs.dennisc.alice.ast.Node[] nodes, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node >[] parameterTypes ) {
 		super( instance );
-		this.node = node;
-		this.parameterType = parameterType;
+		assert nodes.length > 0;
+		assert nodes.length == parameterTypes.length;
+		this.nodes = nodes;
+		this.parameterTypes = parameterTypes;
+	}
+	public NodeStaticGetInstanceKeyedResolver( T instance, edu.cmu.cs.dennisc.alice.ast.Node node, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > parameterType ) {
+		this( instance, new edu.cmu.cs.dennisc.alice.ast.Node[]{ node }, new Class[] { parameterType } );
 	}
 	public NodeStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
@@ -61,29 +66,42 @@ public class NodeStaticGetInstanceKeyedResolver<T> extends edu.cmu.cs.dennisc.cr
 
 	public void retarget( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
 		Object[] arguments = this.getArguments();
-		assert arguments != null : this;
-		assert arguments.length == 1;
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "pre:", arguments[ 0 ] );
-		arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "pst:", arguments[ 0 ] );
+		for( int i=0; i<arguments.length; i++ ) {
+			arguments[ i ] = retargeter.retarget( arguments[ i ] );
+		}
 	}
 	@Override
 	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		Class<?> parameterType = this.decodeClass( binaryDecoder );
-		return new Class[] { parameterType };
+		final int N = binaryDecoder.decodeInt();
+		Class<?>[] rv = new Class<?>[ N ];
+		for( int i=0; i<N; i++ ) {
+			rv[ i ] = this.decodeClass( binaryDecoder );
+		}
+		return rv;
 	}
 	@Override
 	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		this.encodeClass( binaryEncoder, this.parameterType );
+		binaryEncoder.encode( this.parameterTypes.length );
+		for( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > parameterType : parameterTypes ) {
+			this.encodeClass( binaryEncoder, parameterType );
+		}
 	}
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		final java.util.UUID id = binaryDecoder.decodeId();
+		final int N = binaryDecoder.decodeInt();
+		edu.cmu.cs.dennisc.alice.ast.Node[] rv = new edu.cmu.cs.dennisc.alice.ast.Node[ N ];
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		return new Object[] { edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), id ) };
+		for( int i=0; i<N; i++ ) {
+			java.util.UUID id = binaryDecoder.decodeId();
+			rv[ i ] = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), id );
+		}
+		return rv;
 	}
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.node.getUUID() );
+		binaryEncoder.encode( this.nodes.length );
+		for( edu.cmu.cs.dennisc.alice.ast.Node node : nodes ) {
+			binaryEncoder.encode( node.getUUID() );
+		}
 	}
 }

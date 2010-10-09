@@ -102,6 +102,7 @@ public abstract class Model implements RuntimeResolver< Model > {
 	public java.util.UUID getId() {
 		return this.id;
 	}
+//	protected abstract <M extends Model> CodableResolver< M > createCodableResolver();
 	protected <M extends Model> CodableResolver< M > createCodableResolver() {
 		return new SingletonResolver( this );
 	}
