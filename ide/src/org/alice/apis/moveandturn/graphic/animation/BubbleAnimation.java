@@ -42,6 +42,8 @@
  */
 package org.alice.apis.moveandturn.graphic.animation;
 
+import edu.cmu.cs.dennisc.scenegraph.graphics.BubbleManager;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -65,5 +67,12 @@ public class BubbleAnimation extends OpenUpdateCloseOverlayGraphicAnimation {
 			//state == State.CLOSING;
 			m_bubble.portion.setValue( 1.0-portion );
 		}
+	}
+	
+	@Override
+	protected void epilogue() 
+	{
+		super.epilogue();
+		BubbleManager.getInstance().removeBubble(this.m_bubble);
 	}
 }

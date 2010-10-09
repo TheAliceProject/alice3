@@ -90,6 +90,7 @@ public abstract class AbstractAnimation implements Animation {
 				m_tPrevious = tCurrent;
 			}
 			if( m_state == State.EPILOGUE_IS_REQUIRED ) {
+				this.preEpilogue();
 				epilogue();
 				if( animationObserver != null ) {
 					animationObserver.finished( this );
@@ -119,6 +120,7 @@ public abstract class AbstractAnimation implements Animation {
 			m_state = State.EPILOGUE_IS_REQUIRED;
 		}
 		if( m_state == State.EPILOGUE_IS_REQUIRED ) {
+			this.preEpilogue();
 			epilogue();
 			if( animationObserver != null ) {
 				animationObserver.finished( this );
@@ -127,7 +129,13 @@ public abstract class AbstractAnimation implements Animation {
 		}
 	}
 	
+	
+	
 	protected abstract void prologue();
 	protected abstract double update( double tDeltaSincePrologue, double tDeltaSinceLastUpdate, AnimationObserver animationObserver );
+	
+	//todo: clean
+	protected abstract void preEpilogue();
+	
 	protected abstract void epilogue();
 }

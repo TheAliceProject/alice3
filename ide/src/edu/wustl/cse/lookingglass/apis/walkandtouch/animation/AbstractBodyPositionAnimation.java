@@ -49,10 +49,13 @@
  */
 package edu.wustl.cse.lookingglass.apis.walkandtouch.animation;
 
+import org.alice.apis.moveandturn.AsSeenBy;
 import org.alice.apis.moveandturn.HowMuch;
 
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.pattern.Criterion;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.wustl.cse.lookingglass.apis.walkandtouch.Person;
 /**
  * @author caitlin
@@ -116,6 +119,18 @@ public abstract class AbstractBodyPositionAnimation extends edu.cmu.cs.dennisc.a
 	@Override
 	protected void epilogue() {
 		// TODO Auto-generated method stub
+	}
+	
+	protected void adjustHeight(Point3 calculatedTargetPosition) {
+		double distanceAboveGround = 0.0;
+		if( m_subject != null ) {
+			
+			distanceAboveGround = m_subject.getAxisAlignedMinimumBoundingBox( org.alice.apis.moveandturn.AsSeenBy.SCENE ).getCenterOfBottomFace().y;
+			
+			Point3 currentPos = m_subject.getPosition(AsSeenBy.SCENE);
+			calculatedTargetPosition.y = currentPos.y- distanceAboveGround;
+			m_subject.setPositionRightNow( calculatedTargetPosition, org.alice.apis.moveandturn.AsSeenBy.SCENE );
+		}
 	}
 	
 	protected void adjustHeight() {

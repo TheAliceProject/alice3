@@ -94,6 +94,10 @@ public abstract class FrameBasedAnimation extends AbstractAnimation {
 		}
 		return tRemaining;
 	}
+	@Override
+	protected final void preEpilogue() {
+		this.setFrameIndex( getFrameCount() - 1 );
+	}
 	protected abstract void setFrameIndex( int frameIndex );
 }
 //public abstract class FrameBasedAnimation implements Animation {

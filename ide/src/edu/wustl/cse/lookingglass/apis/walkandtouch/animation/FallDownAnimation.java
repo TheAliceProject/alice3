@@ -43,6 +43,9 @@
  */
 package edu.wustl.cse.lookingglass.apis.walkandtouch.animation;
 
+import org.alice.apis.moveandturn.AsSeenBy;
+import org.alice.apis.moveandturn.StandIn;
+
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
@@ -88,7 +91,7 @@ public class FallDownAnimation extends AbstractBodyPositionAnimation {
 			m_positionEnd = getPositionEnd();
 		}
 		edu.cmu.cs.dennisc.math.Point3 currentPos = Point3.createInterpolation( m_positionBegin, m_positionEnd, portion );		
-		m_subject.setPositionRightNow( currentPos, org.alice.apis.moveandturn.AsSeenBy.SCENE );
+//		m_subject.setPositionRightNow( currentPos, org.alice.apis.moveandturn.AsSeenBy.SCENE );
 		
 		setOrientation(rightUpperArm, rightUpperArmInitialOrient, rightUpperArmFinalOrient, portion);
 		setOrientation(rightLowerArm, rightLowerArmInitialOrient, rightLowerArmFinalOrient, portion);
@@ -98,7 +101,7 @@ public class FallDownAnimation extends AbstractBodyPositionAnimation {
 		UnitQuaternion interpQuat = UnitQuaternion.createInterpolation(initialOrient.createUnitQuaternion(), finalOrient.createUnitQuaternion(), portion);
 		m_subject.setOrientationRightNow( interpQuat.createOrthogonalMatrix3x3(), org.alice.apis.moveandturn.AsSeenBy.SCENE );
 		
-		this.adjustHeight();
+		this.adjustHeight(currentPos);
 
 	}
 
@@ -138,9 +141,13 @@ public class FallDownAnimation extends AbstractBodyPositionAnimation {
 	public void setSubjectFinalOrientation() {
 		initialOrient = m_subject.getOrientation( org.alice.apis.moveandturn.AsSeenBy.SCENE );
 		
-		m_subject.orientToUprightRightNow( org.alice.apis.moveandturn.AsSeenBy.SCENE );
-		finalOrient = m_subject.getOrientation( org.alice.apis.moveandturn.AsSeenBy.SCENE );
-		m_subject.setOrientationRightNow( initialOrient, org.alice.apis.moveandturn.AsSeenBy.SCENE );
+		StandIn standIn = m_subject.createOffsetStandIn(0, 0, 0);
+		standIn.orientToUpright(0, AsSeenBy.SCENE);
+		finalOrient = standIn.getOrientation(AsSeenBy.SCENE);
+		
+//		m_subject.orientToUprightRightNow( org.alice.apis.moveandturn.AsSeenBy.SCENE );
+//		finalOrient = m_subject.getOrientation( org.alice.apis.moveandturn.AsSeenBy.SCENE );
+//		m_subject.setOrientationRightNow( initialOrient, org.alice.apis.moveandturn.AsSeenBy.SCENE );
 		
 		if (m_side.equals(edu.wustl.cse.lookingglass.apis.walkandtouch.FallDirection.LEFT)) {
 			RotationUtilities.rotateAroundZ( finalOrient, -0.5 * Math.PI);

@@ -782,6 +782,10 @@ public abstract class AbstractWalkAnimation extends edu.cmu.cs.dennisc.animation
 	}
 
 	@Override
+	protected void preEpilogue() {
+	}
+	
+	@Override
 	protected void epilogue() {
 		if( leftUpper != null ) {
 			if( swingArms ) {

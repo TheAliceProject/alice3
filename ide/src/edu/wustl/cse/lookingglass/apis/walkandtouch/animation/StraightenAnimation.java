@@ -47,6 +47,7 @@ import org.alice.apis.moveandturn.AsSeenBy;
 import org.alice.apis.moveandturn.HowMuch;
 
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.math.Vector3;
 
@@ -69,6 +70,18 @@ public class StraightenAnimation extends edu.cmu.cs.dennisc.animation.DurationBa
 	public StraightenAnimation(edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel subject, double duration) {
 		super(duration);
 		this.subject = subject;
+	}
+	
+	protected void adjustHeight(Point3 calculatedTargetPosition) {
+		double distanceAboveGround = 0.0;
+		if( subject != null ) {
+			
+			distanceAboveGround =subject.getAxisAlignedMinimumBoundingBox( org.alice.apis.moveandturn.AsSeenBy.SCENE ).getCenterOfBottomFace().y;
+			
+			Point3 currentPos = subject.getPosition(AsSeenBy.SCENE);
+			calculatedTargetPosition.y = currentPos.y- distanceAboveGround;
+			subject.setPositionRightNow( calculatedTargetPosition, org.alice.apis.moveandturn.AsSeenBy.SCENE );
+		}
 	}
 	
 	protected void adjustHeight() {
