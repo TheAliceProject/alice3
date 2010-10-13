@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteMethodOperation extends AbstractDeleteMemberOperation< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
+public class DeleteMethodOperation extends DeleteMemberOperation< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice, DeleteMethodOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized DeleteMethodOperation getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		return getInstance( method, method.getDeclaringType() );

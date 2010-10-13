@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteFieldOperation extends AbstractDeleteMemberOperation< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
+public class DeleteFieldOperation extends DeleteMemberOperation< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, DeleteFieldOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized DeleteFieldOperation getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		return getInstance( field, field.getDeclaringType() );
@@ -62,7 +62,7 @@ public class DeleteFieldOperation extends AbstractDeleteMemberOperation< edu.cmu
 	}
 
 	//todo
-	//note: index not preserved and restored
+	//note: instance not preserved and restored
 	//in the case where it is undone across sessions, it will not know what to pass to the scene editor
 	private transient Object instance = null;
 	private DeleteFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {

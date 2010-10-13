@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeleteMemberOperation< N extends edu.cmu.cs.dennisc.alice.ast.AbstractMember > extends org.alice.ide.operations.ActionOperation implements org.alice.ide.croquet.models.ResponsibleModel {
+public abstract class DeleteMemberOperation< N extends edu.cmu.cs.dennisc.alice.ast.AbstractMember > extends org.alice.ide.operations.ActionOperation implements org.alice.ide.croquet.models.ResponsibleModel {
 	private N member;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> delaringType;
 	
@@ -54,22 +54,49 @@ public abstract class AbstractDeleteMemberOperation< N extends edu.cmu.cs.dennis
 	//in the case where it is undone across sessions, it will not know where to insert the declaration
 	private transient int index = -1;
 	
-	public AbstractDeleteMemberOperation( java.util.UUID individualId, N node, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> delaringType ) {
+	public DeleteMemberOperation( java.util.UUID individualId, N node, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> delaringType ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
 		this.member = node;
 		this.delaringType = delaringType;
 	}
 	protected abstract Class<N> getNodeParameterType();
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.CodableResolver< AbstractDeleteMemberOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< AbstractDeleteMemberOperation >( this, new edu.cmu.cs.dennisc.alice.ast.Node[] {
-				this.member,
-				this.delaringType
-		}, new Class[] {
-				this.getNodeParameterType(),
-				edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class
-		} );
+	protected org.alice.ide.croquet.resolvers.DeleteMemberOperationResolver<N> createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.DeleteMemberOperationResolver<N>( this );
 	}
+	
+	public Class<?>[] getStaticGetInstanceParameterTypes() {
+		return new Class[] {
+				this.getNodeParameterType(),
+				edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class,
+				Integer.TYPE
+		};
+	}
+	public static Object[] retargetArguments( Object[] rv, edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+		assert rv != null;
+		assert rv.length == 3;
+		rv[ 0 ] = retargeter.retarget( rv[ 0 ] );
+		rv[ 1 ] = retargeter.retarget( rv[ 1 ] );
+		//todo: retarget index?
+		return rv;
+	}
+	
+
+	public static Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		java.util.UUID memberId = binaryDecoder.decodeId();
+		java.util.UUID declaringTypeId = binaryDecoder.decodeId();
+		int index = binaryDecoder.decodeInt();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		edu.cmu.cs.dennisc.alice.ast.BlockStatement member = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), memberId );
+		edu.cmu.cs.dennisc.alice.ast.Statement declaringType = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), declaringTypeId );
+		return new Object[] { member, declaringType, index };
+	}
+	public void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.member.getUUID() );
+		binaryEncoder.encode( this.delaringType.getUUID() );
+		binaryEncoder.encode( this.index );
+	}
+	
 	
 	protected N getMember() {
 		return this.member;
@@ -90,8 +117,8 @@ public abstract class AbstractDeleteMemberOperation< N extends edu.cmu.cs.dennis
 		owner.add( this.index, member );
 	}
 	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > edit ) {
-		org.alice.ide.croquet.edits.DependentEdit<AbstractDeleteMemberOperation<N>> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<AbstractDeleteMemberOperation<N>>)edit;
-		AbstractDeleteMemberOperation<N> replacement = replacementEdit.getModel();
+		org.alice.ide.croquet.edits.DependentEdit<DeleteMemberOperation<N>> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<DeleteMemberOperation<N>>)edit;
+		DeleteMemberOperation<N> replacement = replacementEdit.getModel();
 		retargeter.addKeyValuePair( this.member, replacement.member );
 		retargeter.addKeyValuePair( this.delaringType, replacement.delaringType );
 	}
@@ -111,40 +138,7 @@ public abstract class AbstractDeleteMemberOperation< N extends edu.cmu.cs.dennis
 	@Override
 	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
 		if( this.isClearToDelete( this.member ) ) {
-			context.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit< AbstractDeleteMemberOperation< N > >() );
-//			final edu.cmu.cs.dennisc.alice.ast.NodeListProperty<N> owner = this.getNodeListProperty( this.delaringType );
-//			final int index = owner.indexOf( this.node );
-//			final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
-//			final Object instance;
-//			if( this.node instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-//				field = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.node;
-//				instance = this.getIDE().getSceneEditor().getInstanceInJavaForUndo( field );
-//			} else {
-//				field = null;
-//				instance = null;
-//			}
-//			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
-//				@Override
-//				protected final void doOrRedoInternal( boolean isDo ) {
-//					owner.remove( index );
-//				}
-//				@Override
-//				protected final void undoInternal() {
-//					if( instance != null ) {
-//						getIDE().getSceneEditor().putInstanceForInitializingPendingField( field, instance );
-//					}
-//					owner.add( index, node );
-////					if( field != null && instance != null ) {
-////						getIDE().getSceneEditor().handleFieldCreation((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)field.getDeclaringType(), field, instance, false );
-////					}
-//				}
-//				@Override
-//				protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
-//					rv.append( "delete: " );
-//					edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, node, locale);
-//					return rv;
-//				}
-//			} );
+			context.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit< DeleteMemberOperation< N > >() );
 		} else {
 			context.cancel();
 		}
