@@ -46,10 +46,9 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class WizardDialogOperation extends GatedCommitDialogOperation<WizardDialogOperationContext> {
-	protected static final Group ENCLOSING_WIZARD_DIALOG_GROUP = Group.getInstance( java.util.UUID.fromString( "100a8027-cf11-4070-abd5-450f8c5ab1cc" ), "ENCLOSING_WIZARD_DIALOG_GROUP" );
 	private class NextOperation extends ActionOperation {
 		public NextOperation() {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "e1239539-1eb0-411d-b808-947d0b1c1e94" ) );
+			super( DIALOG_IMPLEMENTATION_GROUP, java.util.UUID.fromString( "e1239539-1eb0-411d-b808-947d0b1c1e94" ) );
 		}
 		@Override
 		protected void localize() {
@@ -67,7 +66,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 	}
 	private class PreviousOperation extends ActionOperation {
 		public PreviousOperation() {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "2b1ff0fd-8d8a-4d23-9d95-6203e9abff9c" ) );
+			super( DIALOG_IMPLEMENTATION_GROUP, java.util.UUID.fromString( "2b1ff0fd-8d8a-4d23-9d95-6203e9abff9c" ) );
 		}
 		@Override
 		protected void localize() {
