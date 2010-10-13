@@ -55,7 +55,7 @@ public abstract class InputDialogWithPreviewOperation<J extends org.alice.ide.pr
 		return panelWithPreview.getDialogTitle();
 	}
 	@Override
-	protected String getExplanationIfCommitButtonShouldBeDisabled( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< J > context ) {
+	protected String getExplanation( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext< J > context ) {
 		org.alice.ide.preview.PanelWithPreview panelWithPreview = context.getMainPanel();
 		String rv = null;
 		if( panelWithPreview != null ) {
@@ -65,7 +65,7 @@ public abstract class InputDialogWithPreviewOperation<J extends org.alice.ide.pr
 		if( rv != null ) {
 			return rv;
 		} else {
-			return super.getExplanationIfCommitButtonShouldBeDisabled( context );
+			return super.getExplanation( context );
 		}
 	}
 }

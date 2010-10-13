@@ -48,11 +48,13 @@ package edu.cmu.cs.dennisc.croquet;
  */
 abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationContext<?>> extends AbstractDialogOperation<C> {
 	private static final String NULL_EXPLANATION = "good to go";
+	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "35b47d9d-d17b-4862-ac22-5ece4e317242" ), "DIALOG_IMPLEMENTATION_GROUP" );
+	protected static final Group ENCLOSING_DIALOG_GROUP = Group.getInstance( java.util.UUID.fromString( "8dc8d3e5-9153-423e-bf1b-caa94597f57c" ), "ENCLOSING_DIALOG_GROUP" );
 
 	protected abstract class DialogOperation extends ActionOperation {
 		private Dialog dialog;
 		public DialogOperation( java.util.UUID id ) {
-			super( Application.INHERIT_GROUP, id );
+			super( DIALOG_IMPLEMENTATION_GROUP, id );
 		}
 		public Dialog getDialog() {
 			return this.dialog;
@@ -60,8 +62,13 @@ abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationConte
 		public void setDialog( Dialog dialog ) {
 			this.dialog = dialog;
 		}
+		protected GatedCommitDialogOperation< ? > getGatedCommitDialogOperation( ActionOperationContext context ) {
+			return (GatedCommitDialogOperation< ? >)context.getParent().getModel();
+		}
 	}
 
+	protected abstract String getCompleteOperationLocalization();
+	
 	protected class CompleteOperation extends DialogOperation {
 		public CompleteOperation() {
 			super( java.util.UUID.fromString( "6acdd95e-849c-4281-9779-994e9807b25b" ) );
@@ -73,7 +80,7 @@ abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationConte
 		}
 		@Override
 		protected void perform( ActionOperationContext context ) {
-			isCompleted = true;
+			GatedCommitDialogOperation.this.isCompleted = true;
 			context.finish();
 			this.getDialog().setVisible( false );
 		}
@@ -146,7 +153,7 @@ abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationConte
 					java.awt.Font font = g2.getFont();
 					java.awt.Paint paint = g2.getPaint();
 					try {
-						g2.translate( OFFSET+x, OFFSET+x );
+						g2.translate( OFFSET+x, OFFSET+y );
 						g2.fill( path );
 						g2.setPaint( java.awt.Color.WHITE );
 						g2.draw( path );
@@ -176,7 +183,7 @@ abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationConte
 	public GatedCommitDialogOperation( Group group, java.util.UUID id ) {
 		super( group, id );
 		this.explanationLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
-		//this.explanationLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
+		this.explanationLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 6, 8, 2, 0 ) );
 		this.explanationLabel.setForegroundColor( java.awt.Color.RED.darker().darker() );
 	}
 
@@ -193,9 +200,9 @@ abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationConte
 	protected abstract Component<?> createControlsPanel( C context, Dialog dialog );
 	protected abstract void release( C context, Dialog dialog, boolean isCompleted );
 	
-	protected abstract String getExplanation();
+	protected abstract String getExplanation( C context );
 	protected void updateExplanation( C context ) {
-		String explanation = this.getExplanation();
+		String explanation = this.getExplanation( context );
 		if( explanation != null ) {
 			//pass
 		} else {
@@ -212,6 +219,8 @@ abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationConte
 		Component< ? > mainPanel = this.createMainPanel( context, dialog, this.explanationLabel );
 		Component< ? > controlPanel = this.createControlsPanel( context, dialog );
 		GridBagPanel rv = new GridBagPanel();
+		rv.setBackgroundColor( mainPanel.getBackgroundColor() );
+
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.weightx = 1.0;

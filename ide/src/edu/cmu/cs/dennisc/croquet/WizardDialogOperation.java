@@ -184,7 +184,11 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 	}
 
 	@Override
-	protected String getExplanation() {
+	protected String getCompleteOperationLocalization() {
+		return "Finish";
+	}
+	@Override
+	protected String getExplanation( WizardDialogOperationContext context ) {
 		Card card = this.cardSelectionState.getSelectedItem();
 		if( card != null ) {
 			return card.step.getExplanationIfProcedeButtonShouldBeDisabled();
@@ -225,15 +229,17 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 	
 	@Override
 	protected Component< ? > createControlsPanel( WizardDialogOperationContext context, Dialog dialog ) {
+		Button finishButton = this.getCompleteOperation().createButton();
 		LineAxisPanel rv = new LineAxisPanel();
 		rv.addComponent( BoxUtilities.createHorizontalGlue() );
 		rv.addComponent( this.prevOperation.createButton() );
 		rv.addComponent( this.nextOperation.createButton() );
 		rv.addComponent( BoxUtilities.createHorizontalSliver( 8 ) );
-		rv.addComponent( this.getCompleteOperation().createButton() );
+		rv.addComponent( finishButton );
 		rv.addComponent( BoxUtilities.createHorizontalSliver( 8 ) );
 		rv.addComponent( this.getCancelOperation().createButton() );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );		
+		dialog.setDefaultButton( finishButton );
 		return rv;
 	}
 	@Override

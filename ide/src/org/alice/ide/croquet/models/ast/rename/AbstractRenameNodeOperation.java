@@ -93,14 +93,14 @@ public abstract class AbstractRenameNodeOperation extends edu.cmu.cs.dennisc.cro
 	protected abstract org.alice.ide.name.validators.NodeNameValidator getNodeNameValidator();
 	
 	@Override
-	protected String getExplanationIfCommitButtonShouldBeDisabled( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.name.RenamePane> context ) {
+	protected String getExplanation( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.name.RenamePane> context ) {
 		org.alice.ide.name.RenamePane renamePane = context.getMainPanel();
 		org.alice.ide.name.validators.NodeNameValidator nodeNameValidator = this.getNodeNameValidator();
 		String rv = nodeNameValidator.getExplanationIfOkButtonShouldBeDisabled( renamePane.getNameText() );
 		if( rv != null ) {
 			return rv;
 		} else {
-			return super.getExplanationIfCommitButtonShouldBeDisabled( context );
+			return super.getExplanation( context );
 		}
 	}
 }
