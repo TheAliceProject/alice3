@@ -141,6 +141,7 @@ public class PopupMenuButton extends edu.cmu.cs.dennisc.croquet.OperationButton<
 		this.prefixComponent = prefixComponent;
 		this.mainComponent = mainComponent;
 		this.postfixComponent = postfixComponent;
+		this.setMaximumSizeClampedToPreferredSize( true );
 	}
 	public PopupMenuButton(edu.cmu.cs.dennisc.croquet.PopupMenuOperation model) {
 		this(model, null, null, null);

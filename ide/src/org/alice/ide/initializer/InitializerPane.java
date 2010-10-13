@@ -99,16 +99,16 @@ public class InitializerPane extends edu.cmu.cs.dennisc.croquet.CardPanel {
 		} else {
 			key = this.itemKey;
 		}
-		this.show(key);
-
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				edu.cmu.cs.dennisc.croquet.AbstractWindow<?> root = InitializerPane.this.getRoot();
-				if( root != null ) {
-					root.pack();
-				}
-			}
-		} );
+		this.show( key );
+//		this.revalidateAndRepaint();
+//		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+//			public void run() {
+//				edu.cmu.cs.dennisc.croquet.AbstractWindow<?> root = InitializerPane.this.getRoot();
+//				if( root != null ) {
+//					root.pack();
+//				}
+//			}
+//		} );
 	}
 
 	// public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType
@@ -129,22 +129,22 @@ public class InitializerPane extends edu.cmu.cs.dennisc.croquet.CardPanel {
 		}
 	}
 
-	@Override
-	protected javax.swing.JPanel createJPanel() {
-		return new DefaultJPanel() {
-			@Override
-			public java.awt.Dimension getPreferredSize() {
-				if (InitializerPane.this.itemInitializerPane.isVisible()) {
-					return InitializerPane.this.itemInitializerPane.getAwtComponent().getPreferredSize();
-				} else {
-					return InitializerPane.this.arrayInitializerPane.getAwtComponent().getPreferredSize();
-				}
-			}
-
-			@Override
-			public java.awt.Dimension getMaximumSize() {
-				return super.getPreferredSize();
-			}
-		};
-	}
+//	@Override
+//	protected javax.swing.JPanel createJPanel() {
+//		return new DefaultJPanel() {
+//			@Override
+//			public java.awt.Dimension getPreferredSize() {
+//				if (InitializerPane.this.itemInitializerPane.isVisible()) {
+//					return InitializerPane.this.itemInitializerPane.getAwtComponent().getPreferredSize();
+//				} else {
+//					return InitializerPane.this.arrayInitializerPane.getAwtComponent().getPreferredSize();
+//				}
+//			}
+//
+//			@Override
+//			public java.awt.Dimension getMaximumSize() {
+//				return super.getPreferredSize();
+//			}
+//		};
+//	}
 }

@@ -419,6 +419,6 @@ public class ArrayInitializerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel
         //pageAxisPanel.getAwtComponent().setOpaque( false );
         pageAxisPanel.setBackgroundColor( null );
         this.addComponent( scrollPane, Constraint.CENTER );
-        this.setMinimumPreferredHeight( 200 );
+        this.setMinimumPreferredHeight( 120 );
     }
 } 

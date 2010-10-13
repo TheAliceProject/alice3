@@ -40,26 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class EditMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static EditMenuModel instance = new EditMenuModel();
+public class PredeterminedMenuModel extends MenuModel {
+	private Model[] models;
+	public PredeterminedMenuModel( java.util.UUID individualId, Model... models ) {
+		super( individualId );
+		this.models = models;
 	}
-	public static EditMenuModel getInstance() {
-		return SingletonHolder.instance;
+	public PredeterminedMenuModel( java.util.UUID individualId, java.util.List< Model > models ) {
+		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(models, Model.class) );
 	}
-	private EditMenuModel() {
-		super( java.util.UUID.fromString( "dbfe00f8-a401-4858-be5c-a544cad7c938" ), 
-				org.alice.ide.croquet.models.history.UndoOperation.getInstance(), 
-				org.alice.ide.croquet.models.history.RedoOperation.getInstance(), 
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, 
-				org.alice.ide.croquet.models.clipboard.CutOperation.getInstance(),
-				org.alice.ide.croquet.models.clipboard.CopyOperation.getInstance(), 
-				org.alice.ide.croquet.models.clipboard.PasteOperation.getInstance() 
-		);
+	
+	public Model[] getModels() {
+		return this.models;
+	}
+	
+	//todo:
+	@Override
+	/*package-private*/ Menu createMenu() {
+		Menu rv = super.createMenu();
+		MenuItemContainerUtilities.addMenuElements( rv, this.models );
+		return rv;
+	}
+	@Override
+	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
+		super.handlePopupMenuPrologue( popupMenu, context );
+		MenuItemContainerUtilities.addMenuElements( popupMenu, this.models );
 	}
 }

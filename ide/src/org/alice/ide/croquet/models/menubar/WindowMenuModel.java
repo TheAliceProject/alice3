@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.menubar;
 /**
  * @author Dennis Cosgrove
  */
-public class WindowMenuModel extends edu.cmu.cs.dennisc.croquet.DefaultMenuModel {
+public class WindowMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
 	private static class SingletonHolder {
 		private static WindowMenuModel instance = new WindowMenuModel();
 	}

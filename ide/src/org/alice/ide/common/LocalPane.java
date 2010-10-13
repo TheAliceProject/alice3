@@ -49,9 +49,6 @@ public abstract class LocalPane< N extends edu.cmu.cs.dennisc.alice.ast.LocalDec
 	public LocalPane( N local ) {
 		super( local );
 		this.addComponent( new org.alice.ide.common.LocalNameLabel( this.getTransient() ) );
-		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.DefaultMenuModel (
-				java.util.UUID.fromString( "b225cc92-f2c6-4a47-9818-1bbd0319091b" ),
-				org.alice.ide.croquet.models.ast.rename.RenameLocalOperation.getInstance( local ) 
-		).getPopupMenuOperation() );
+		this.setPopupMenuOperation( org.alice.ide.croquet.models.ast.LocalMenuModel.getInstance( local ).getPopupMenuOperation() );
 	}
 }

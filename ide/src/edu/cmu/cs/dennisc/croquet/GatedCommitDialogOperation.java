@@ -42,17 +42,17 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-
 /**
  * @author Dennis Cosgrove
  */
-abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationContext<?>> extends AbstractDialogOperation<C> {
+abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationContext< ? >> extends AbstractDialogOperation< C > {
 	private static final String NULL_EXPLANATION = "good to go";
 	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "35b47d9d-d17b-4862-ac22-5ece4e317242" ), "DIALOG_IMPLEMENTATION_GROUP" );
 	protected static final Group ENCLOSING_DIALOG_GROUP = Group.getInstance( java.util.UUID.fromString( "8dc8d3e5-9153-423e-bf1b-caa94597f57c" ), "ENCLOSING_DIALOG_GROUP" );
 
-	protected abstract class DialogOperation extends ActionOperation {
+	private static abstract class DialogOperation extends ActionOperation {
 		private Dialog dialog;
+
 		public DialogOperation( java.util.UUID id ) {
 			super( DIALOG_IMPLEMENTATION_GROUP, id );
 		}
@@ -67,26 +67,26 @@ abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationConte
 		}
 	}
 
-	protected abstract String getCompleteOperationLocalization();
-	
-	protected class CompleteOperation extends DialogOperation {
-		public CompleteOperation() {
-			super( java.util.UUID.fromString( "6acdd95e-849c-4281-9779-994e9807b25b" ) );
+	protected static abstract class CompleteOperation extends DialogOperation {
+		public CompleteOperation( java.util.UUID id ) {
+			super( id );
 		}
 		@Override
-		protected void localize() {
-			super.localize();
-			this.setName( "Finish" );
-		}
-		@Override
-		protected void perform( ActionOperationContext context ) {
-			GatedCommitDialogOperation.this.isCompleted = true;
+		protected final void perform( ActionOperationContext context ) {
+			this.getGatedCommitDialogOperation( context ).isCompleted = true;
 			context.finish();
 			this.getDialog().setVisible( false );
 		}
 	}
-	protected class CancelOperation extends DialogOperation {
-		public CancelOperation() {
+
+	protected static class CancelOperation extends DialogOperation {
+		private static class SingletonHolder {
+			private static CancelOperation instance = new CancelOperation();
+		}
+		public static CancelOperation getInstance() {
+			return SingletonHolder.instance;
+		}
+		private CancelOperation() {
 			super( java.util.UUID.fromString( "3363c6f0-c8a2-48f2-aefc-c53894ec8a99" ) );
 		}
 		@Override
@@ -100,15 +100,13 @@ abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationConte
 			this.getDialog().setVisible( false );
 		}
 	}
-	private CompleteOperation completeOperation = new CompleteOperation();
-	private CancelOperation cancelOperation = new CancelOperation();
 
 	private Label explanationLabel = new Label( NULL_EXPLANATION ) {
 		@Override
 		protected javax.swing.JLabel createAwtComponent() {
 			javax.swing.JLabel rv = new javax.swing.JLabel() {
 				@Override
-				protected void paintComponent(java.awt.Graphics g) {
+				protected void paintComponent( java.awt.Graphics g ) {
 					if( this.getText() == NULL_EXPLANATION ) {
 						//pass
 					} else {
@@ -116,7 +114,7 @@ abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationConte
 					}
 				}
 			};
-			
+
 			float f0 = 0.0f;
 			float fA = 0.333f;
 			float fB = 0.667f;
@@ -124,12 +122,12 @@ abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationConte
 
 			final int SCALE = 20;
 			final int OFFSET = 0;
-			
+
 			f0 *= SCALE;
 			fA *= SCALE;
 			fB *= SCALE;
 			f1 *= SCALE;
-			
+
 			final java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
 			path.moveTo( fA, f0 );
 			path.lineTo( fB, f0 );
@@ -153,7 +151,7 @@ abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationConte
 					java.awt.Font font = g2.getFont();
 					java.awt.Paint paint = g2.getPaint();
 					try {
-						g2.translate( OFFSET+x, OFFSET+y );
+						g2.translate( OFFSET + x, OFFSET + y );
 						g2.fill( path );
 						g2.setPaint( java.awt.Color.WHITE );
 						g2.draw( path );
@@ -173,13 +171,13 @@ abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationConte
 		};
 	};
 	private ModelContext.ChildrenObserver childrenObserver = new ModelContext.ChildrenObserver() {
-		public void addingChild(HistoryNode child) {
+		public void addingChild( HistoryNode child ) {
 		}
-		public void addedChild(HistoryNode child) {
+		public void addedChild( HistoryNode child ) {
 			GatedCommitDialogOperation.this.handleCroquetAddedChild( child );
 		}
 	};
-	
+
 	public GatedCommitDialogOperation( Group group, java.util.UUID id ) {
 		super( group, id );
 		this.explanationLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
@@ -188,18 +186,16 @@ abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationConte
 	}
 
 	private boolean isCompleted;
-	
-	protected CompleteOperation getCompleteOperation() {
-		return this.completeOperation;
-	}
+
+	protected abstract CompleteOperation getCompleteOperation();
 	protected CancelOperation getCancelOperation() {
-		return this.cancelOperation;
+		return CancelOperation.getInstance();
 	}
-	
-	protected abstract Component<?> createMainPanel( C context, Dialog dialog, Label explanationLabel );
-	protected abstract Component<?> createControlsPanel( C context, Dialog dialog );
+
+	protected abstract Component< ? > createMainPanel( C context, Dialog dialog, Label explanationLabel );
+	protected abstract Component< ? > createControlsPanel( C context, Dialog dialog );
 	protected abstract void release( C context, Dialog dialog, boolean isCompleted );
-	
+
 	protected abstract String getExplanation( C context );
 	protected void updateExplanation( C context ) {
 		String explanation = this.getExplanation( context );
@@ -210,12 +206,12 @@ abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationConte
 		}
 		this.explanationLabel.setText( explanation );
 	}
-	
-	protected void handleCroquetAddedChild(HistoryNode child) {
+
+	protected void handleCroquetAddedChild( HistoryNode child ) {
 		this.updateExplanation( (C)child.findContextFor( GatedCommitDialogOperation.this ) );
 	}
 	@Override
-	protected final Container<?> createContentPane(C context, Dialog dialog) {
+	protected final Container< ? > createContentPane( C context, Dialog dialog ) {
 		Component< ? > mainPanel = this.createMainPanel( context, dialog, this.explanationLabel );
 		Component< ? > controlPanel = this.createControlsPanel( context, dialog );
 		GridBagPanel rv = new GridBagPanel();
@@ -230,17 +226,17 @@ abstract class GatedCommitDialogOperation<C extends AbstractDialogOperationConte
 		gbc.weighty = 0.0;
 		rv.addComponent( new HorizontalSeparator(), gbc );
 		rv.addComponent( controlPanel, gbc );
-		
+
 		ContextManager.getRootContext().addChildrenObserver( this.childrenObserver );
 		this.updateExplanation( context );
-		
-		this.completeOperation.setDialog( dialog );
-		this.cancelOperation.setDialog( dialog );
+
+		this.getCompleteOperation().setDialog( dialog );
+		this.getCancelOperation().setDialog( dialog );
 		this.isCompleted = false;
 		return rv;
 	}
 	@Override
-	protected final void releaseContentPane(C context, Dialog dialog, Container<?> contentPane) {
+	protected final void releaseContentPane( C context, Dialog dialog, Container< ? > contentPane ) {
 		if( contentPane != null ) {
 			ContextManager.getRootContext().removeChildrenObserver( this.childrenObserver );
 			this.release( context, dialog, this.isCompleted );

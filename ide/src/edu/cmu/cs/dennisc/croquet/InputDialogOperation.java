@@ -46,11 +46,28 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class InputDialogOperation<J extends JComponent<?>> extends GatedCommitDialogOperation<InputDialogOperationContext<J>> {
-	@Override
-	protected String getCompleteOperationLocalization() {
-		return "OK";
+	protected static class OkOperation extends CompleteOperation {
+		private static class SingletonHolder {
+			private static OkOperation instance = new OkOperation();
+		}
+		public static OkOperation getInstance() {
+			return SingletonHolder.instance;
+		}
+		private OkOperation() {
+			super( java.util.UUID.fromString( "fc908f6f-4b72-48b6-9b65-352dc9f2e18b" ) );
+		}
+		@Override
+		protected void localize() {
+			super.localize();
+			this.setName( "OK" );
+		}
 	}
-//	private static abstract class ButtonOperation extends ActionOperation {
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.GatedCommitDialogOperation.CompleteOperation getCompleteOperation() {
+		return OkOperation.getInstance();
+	}
+
+	//	private static abstract class ButtonOperation extends ActionOperation {
 //		private boolean isOk;
 //		private Dialog dialog;
 //		public ButtonOperation(java.util.UUID individualId, String name, boolean isOk) {
@@ -122,7 +139,6 @@ public abstract class InputDialogOperation<J extends JComponent<?>> extends Gate
 		};
 	};
 	private boolean isCancelDesired;
-	private boolean isOk = false;
 	public InputDialogOperation(Group group, java.util.UUID individualId, boolean isCancelDesired) {
 		super(group, individualId);
 		this.isCancelDesired = isCancelDesired;
@@ -161,7 +177,8 @@ public abstract class InputDialogOperation<J extends JComponent<?>> extends Gate
 	protected abstract J prologue( InputDialogOperationContext<J> context );
 	protected abstract void epilogue( InputDialogOperationContext<J> context, boolean isCommit );
 
-	protected void updateOperationAndExplanation( HistoryNode<?> child ) {
+	@Override
+	protected void handleCroquetAddedChild( HistoryNode child ) {
 		InputDialogOperationContext<J> context = (InputDialogOperationContext<J>)child.findContextFor( InputDialogOperation.this );
 		String text;
 		if( context != null ) {
@@ -204,7 +221,7 @@ public abstract class InputDialogOperation<J extends JComponent<?>> extends Gate
 		LineAxisPanel rv = new LineAxisPanel();
 		rv.addComponent( BoxUtilities.createHorizontalGlue() );
 		rv.addComponent( okButton );
-		rv.addComponent( BoxUtilities.createHorizontalSliver( 8 ) );
+		rv.addComponent( BoxUtilities.createHorizontalSliver( 4 ) );
 		rv.addComponent( this.getCancelOperation().createButton() );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
 		dialog.setDefaultButton( okButton );

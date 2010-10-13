@@ -40,35 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultMenuModel extends MenuModel {
-	private Model[] models;
-	public DefaultMenuModel( java.util.UUID individualId, Model... models ) {
-		super( individualId );
-		this.models = models;
-	}
-	public DefaultMenuModel( java.util.UUID individualId, java.util.List< Model > models ) {
-		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(models, Model.class) );
-	}
-	
-	public Model[] getModels() {
-		return this.models;
-	}
-	
-	//todo:
-	@Override
-	/*package-private*/ Menu createMenu() {
-		Menu rv = super.createMenu();
-		MenuItemContainerUtilities.addMenuElements( rv, this.models );
+public class MethodHeaderMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice, MethodHeaderMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized MethodHeaderMenuModel getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		MethodHeaderMenuModel rv = map.get( method );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new MethodHeaderMenuModel( method );
+			map.put( method, rv );
+		}
 		return rv;
 	}
-	@Override
-	protected void handlePopupMenuPrologue( edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
-		super.handlePopupMenuPrologue( popupMenu, context );
-		MenuItemContainerUtilities.addMenuElements( popupMenu, this.models );
+
+	private MethodHeaderMenuModel( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		super( java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ),
+				org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( method ) 
+		);
 	}
 }

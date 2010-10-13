@@ -40,26 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class EditMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static EditMenuModel instance = new EditMenuModel();
+public class ParameterAccessMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, ParameterAccessMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ParameterAccessMenuModel getInstance( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+		ParameterAccessMenuModel rv = map.get( parameter );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ParameterAccessMenuModel( parameter );
+			map.put( parameter, rv );
+		}
+		return rv;
 	}
-	public static EditMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-	private EditMenuModel() {
-		super( java.util.UUID.fromString( "dbfe00f8-a401-4858-be5c-a544cad7c938" ), 
-				org.alice.ide.croquet.models.history.UndoOperation.getInstance(), 
-				org.alice.ide.croquet.models.history.RedoOperation.getInstance(), 
-				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR, 
-				org.alice.ide.croquet.models.clipboard.CutOperation.getInstance(),
-				org.alice.ide.croquet.models.clipboard.CopyOperation.getInstance(), 
-				org.alice.ide.croquet.models.clipboard.PasteOperation.getInstance() 
+
+	private ParameterAccessMenuModel( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+		super( java.util.UUID.fromString( "7a9b90a1-a645-4e13-aeef-9ca631baad55" ),
+				org.alice.ide.croquet.models.ast.rename.RenameParameterOperation.getInstance( parameter ) 
 		);
 	}
 }

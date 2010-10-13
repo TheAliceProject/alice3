@@ -46,9 +46,44 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class WizardDialogOperation extends GatedCommitDialogOperation<WizardDialogOperationContext> {
-	private class NextOperation extends ActionOperation {
-		public NextOperation() {
-			super( DIALOG_IMPLEMENTATION_GROUP, java.util.UUID.fromString( "e1239539-1eb0-411d-b808-947d0b1c1e94" ) );
+	protected static class FinishOperation extends CompleteOperation {
+		private static class SingletonHolder {
+			private static FinishOperation instance = new FinishOperation();
+		}
+		public static FinishOperation getInstance() {
+			return SingletonHolder.instance;
+		}
+		private FinishOperation() {
+			super( java.util.UUID.fromString( "687d90a2-4bdd-4b85-83f8-11b8a3cb0f6a" ) );
+		}
+		@Override
+		protected void localize() {
+			super.localize();
+			this.setName( "Finish" );
+		}
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.GatedCommitDialogOperation.CompleteOperation getCompleteOperation() {
+		return FinishOperation.getInstance();
+	}
+
+	private static abstract class WizardOperation extends ActionOperation {
+		public WizardOperation( java.util.UUID id ) {
+			super( DIALOG_IMPLEMENTATION_GROUP, id );
+		}
+		protected ListSelectionState< Card > getCardSelectionState( ActionOperationContext context ) {
+			return ((WizardDialogOperation)context.getParent().getModel()).cardSelectionState;
+		}
+	}
+	private static class NextOperation extends WizardOperation {
+		private static class SingletonHolder {
+			private static NextOperation instance = new NextOperation();
+		}
+		public static NextOperation getInstance() {
+			return SingletonHolder.instance;
+		}
+		private NextOperation() {
+			super( java.util.UUID.fromString( "e1239539-1eb0-411d-b808-947d0b1c1e94" ) );
 		}
 		@Override
 		protected void localize() {
@@ -57,6 +92,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 		}
 		@Override
 		protected void perform( ActionOperationContext context ) {
+			ListSelectionState< Card > cardSelectionState = this.getCardSelectionState(context);
 			int index = cardSelectionState.getSelectedIndex();
 			final int N = cardSelectionState.getItemCount();
 			if( index < N-1 ) {
@@ -64,9 +100,15 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 			}
 		}
 	}
-	private class PreviousOperation extends ActionOperation {
-		public PreviousOperation() {
-			super( DIALOG_IMPLEMENTATION_GROUP, java.util.UUID.fromString( "2b1ff0fd-8d8a-4d23-9d95-6203e9abff9c" ) );
+	private static class PreviousOperation extends WizardOperation {
+		private static class SingletonHolder {
+			private static PreviousOperation instance = new PreviousOperation();
+		}
+		public static PreviousOperation getInstance() {
+			return SingletonHolder.instance;
+		}
+		private PreviousOperation() {
+			super( java.util.UUID.fromString( "2b1ff0fd-8d8a-4d23-9d95-6203e9abff9c" ) );
 		}
 		@Override
 		protected void localize() {
@@ -75,6 +117,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 		}
 		@Override
 		protected void perform( ActionOperationContext context ) {
+			ListSelectionState< Card > cardSelectionState = this.getCardSelectionState(context);
 			int index = cardSelectionState.getSelectedIndex();
 			if( index > 0 ) {
 				cardSelectionState.setSelectedIndex( index-1 );
@@ -82,9 +125,6 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 		}
 	}
 
-	private PreviousOperation prevOperation = new PreviousOperation();
-	private NextOperation nextOperation = new NextOperation();
-	
 	private Label title = new Label( "Name/Description", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 	private CardPanel cardPanel = new CardPanel();
 	
@@ -183,10 +223,6 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 	}
 
 	@Override
-	protected String getCompleteOperationLocalization() {
-		return "Finish";
-	}
-	@Override
 	protected String getExplanation( WizardDialogOperationContext context ) {
 		Card card = this.cardSelectionState.getSelectedItem();
 		if( card != null ) {
@@ -210,10 +246,10 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 			this.title.setText( "" );
 		}
 		int index = this.cardSelectionState.getSelectedIndex();
-		this.prevOperation.setEnabled( index > 0 );
+		PreviousOperation.getInstance().setEnabled( index > 0 );
 		WizardStep step = nextValue.step;
 		String explanation = step.getExplanationIfProcedeButtonShouldBeDisabled();
-		this.nextOperation.setEnabled( explanation==null && index < this.cardSelectionState.getItemCount()-1 );
+		NextOperation.getInstance().setEnabled( explanation==null && index < this.cardSelectionState.getItemCount()-1 );
 		this.getCompleteOperation().setEnabled( explanation==null && step.isFinishPotentiallyEnabled() );
 		
 		//todo
@@ -231,8 +267,8 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<W
 		Button finishButton = this.getCompleteOperation().createButton();
 		LineAxisPanel rv = new LineAxisPanel();
 		rv.addComponent( BoxUtilities.createHorizontalGlue() );
-		rv.addComponent( this.prevOperation.createButton() );
-		rv.addComponent( this.nextOperation.createButton() );
+		rv.addComponent( PreviousOperation.getInstance().createButton() );
+		rv.addComponent( NextOperation.getInstance().createButton() );
 		rv.addComponent( BoxUtilities.createHorizontalSliver( 8 ) );
 		rv.addComponent( finishButton );
 		rv.addComponent( BoxUtilities.createHorizontalSliver( 8 ) );

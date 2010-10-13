@@ -252,7 +252,7 @@ public class Factory extends org.alice.ide.common.Factory {
 	public org.alice.ide.common.AbstractStatementPane createStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
 		org.alice.ide.common.AbstractStatementPane abstractStatementPane = super.createStatementPane( statement, statementListProperty );
 		abstractStatementPane.setDragModel( new org.alice.ide.croquet.models.ToDoDragModel() );
-		abstractStatementPane.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.DefaultMenuModel(
+		abstractStatementPane.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel(
 				java.util.UUID.fromString( "6190553d-309e-453f-b9eb-ded8aaf7ce63" ),
 				this.createPopupOperations( abstractStatementPane ) 
 		).getPopupMenuOperation() );

@@ -273,8 +273,8 @@ public class Page extends Step implements WaitingStep {
 	
 	
 	private edu.cmu.cs.dennisc.croquet.Model huntFor( java.util.List< edu.cmu.cs.dennisc.croquet.Model > list, edu.cmu.cs.dennisc.croquet.MenuModel menuModel, edu.cmu.cs.dennisc.croquet.Model model ) {
-		if( menuModel instanceof edu.cmu.cs.dennisc.croquet.DefaultMenuModel ) {
-			edu.cmu.cs.dennisc.croquet.DefaultMenuModel defaultMenuModel = (edu.cmu.cs.dennisc.croquet.DefaultMenuModel)menuModel;
+		if( menuModel instanceof edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel ) {
+			edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel defaultMenuModel = (edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel)menuModel;
 			for( edu.cmu.cs.dennisc.croquet.Model child : defaultMenuModel.getModels() ) {
 				if( child instanceof edu.cmu.cs.dennisc.croquet.MenuModel ) {
 					edu.cmu.cs.dennisc.croquet.MenuModel childMenuModel = (edu.cmu.cs.dennisc.croquet.MenuModel)child;

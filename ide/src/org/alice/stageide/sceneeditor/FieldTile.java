@@ -65,7 +65,7 @@ import edu.cmu.cs.dennisc.croquet.BooleanState;
 		this.accessible = accessible;
 		//this.setOpaque( false );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,4 ) );
-		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.DefaultMenuModel( java.util.UUID.fromString( "8e3989b2-34d6-44cf-998c-dda26662b3a0" ), FieldTile.this.createPopupOperations() ).getPopupMenuOperation() );
+		this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.PredeterminedMenuModel( java.util.UUID.fromString( "8e3989b2-34d6-44cf-998c-dda26662b3a0" ), FieldTile.this.createPopupOperations() ).getPopupMenuOperation() );
 		this.updateLabel();
 	}
 

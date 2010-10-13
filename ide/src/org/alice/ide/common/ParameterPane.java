@@ -48,13 +48,11 @@ package org.alice.ide.common;
 public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice> {
 	private edu.cmu.cs.dennisc.alice.ast.NodeListProperty< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice > parametersProperty;
 
-	public ParameterPane( edu.cmu.cs.dennisc.alice.ast.NodeListProperty< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice > parametersProperty, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+	public ParameterPane( edu.cmu.cs.dennisc.alice.ast.NodeListProperty< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice > parametersProperty, final edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
 		super( parameter );
 		this.parametersProperty = parametersProperty;
 		this.addComponent( new org.alice.ide.common.DeclarationNameLabel( parameter ) );
 		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.ParameterAccess.class ) );
-		final org.alice.ide.croquet.models.ast.rename.RenameParameterOperation renameParameterOperation = org.alice.ide.croquet.models.ast.rename.RenameParameterOperation.getInstance( parameter );
-		
 		if( this.parametersProperty != null ) {
 			final org.alice.ide.operations.ast.DeleteParameterOperation deleteParameterOperation = new org.alice.ide.operations.ast.DeleteParameterOperation( this.parametersProperty, parameter );
 			final org.alice.ide.operations.ast.ForwardShiftParameterOperation forwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.ForwardShiftParameterOperation( this.parametersProperty, parameter );
@@ -64,7 +62,7 @@ public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.Pa
 				protected void handlePopupMenuPrologue(edu.cmu.cs.dennisc.croquet.PopupMenu popupMenu, edu.cmu.cs.dennisc.croquet.PopupMenuOperationContext context ) {
 					super.handlePopupMenuPrologue( popupMenu, context );
 					java.util.List< edu.cmu.cs.dennisc.croquet.Model > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-					models.add( renameParameterOperation );
+					models.add( org.alice.ide.croquet.models.ast.rename.RenameParameterOperation.getInstance( parameter ) );
 					if( forwardShiftCodeParameterOperation.isIndexAppropriate() ) {
 						models.add( forwardShiftCodeParameterOperation );
 					}
@@ -77,7 +75,7 @@ public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.Pa
 				}
 			}.getPopupMenuOperation() );
 		} else {
-			this.setPopupMenuOperation( new edu.cmu.cs.dennisc.croquet.DefaultMenuModel( java.util.UUID.fromString( "7a9b90a1-a645-4e13-aeef-9ca631baad55" ), renameParameterOperation ).getPopupMenuOperation() );
+			this.setPopupMenuOperation( org.alice.ide.croquet.models.ast.ParameterAccessMenuModel.getInstance( parameter ).getPopupMenuOperation() );
 		}
 	}
 	@Override
