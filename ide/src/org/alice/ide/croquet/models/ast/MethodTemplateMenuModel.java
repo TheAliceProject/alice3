@@ -58,6 +58,7 @@ public class MethodTemplateMenuModel extends edu.cmu.cs.dennisc.croquet.Predeter
 		return rv;
 	}
 
+	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
 	private MethodTemplateMenuModel( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		super( java.util.UUID.fromString(  "96831579-1fb6-4c15-a509-ccdcc51458a8" ),
 				org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( method ),
@@ -65,5 +66,10 @@ public class MethodTemplateMenuModel extends edu.cmu.cs.dennisc.croquet.Predeter
 				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
 				org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( method )
 		);
+		this.method = method;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.CodableResolver< MethodTemplateMenuModel > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< MethodTemplateMenuModel >( this, this.method, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
 	}
 }

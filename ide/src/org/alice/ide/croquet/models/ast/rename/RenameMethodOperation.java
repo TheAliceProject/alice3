@@ -48,6 +48,7 @@ package org.alice.ide.croquet.models.ast.rename;
 public class RenameMethodOperation extends RenameDeclarationOperation< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
 	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice, RenameMethodOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized RenameMethodOperation getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		assert method != null;
 		RenameMethodOperation rv = map.get( method );
 		if( rv != null ) {
 			//pass
