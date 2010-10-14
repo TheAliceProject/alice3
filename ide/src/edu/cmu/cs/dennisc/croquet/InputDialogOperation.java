@@ -122,29 +122,29 @@ public abstract class InputDialogOperation<J extends JComponent<?>> extends Gate
 //			super( java.util.UUID.fromString("2a7e61c8-119a-45b1-830c-f59edda720a0"), "Cancel", false );
 //		}
 //	}
-	private static final String NULL_EXPLANATION = "good to go";
-	private Label explanationLabel = new Label( NULL_EXPLANATION ) {
-		@Override
-		protected javax.swing.JLabel createAwtComponent() {
-			return new javax.swing.JLabel() {
-				@Override
-				protected void paintComponent(java.awt.Graphics g) {
-					if( this.getText() == NULL_EXPLANATION ) {
-						//pass
-					} else {
-						super.paintComponent( g );
-					}
-				}
-			};
-		};
-	};
+//	private static final String NULL_EXPLANATION = "good to go";
+//	private Label explanationLabel = new Label( NULL_EXPLANATION ) {
+//		@Override
+//		protected javax.swing.JLabel createAwtComponent() {
+//			return new javax.swing.JLabel() {
+//				@Override
+//				protected void paintComponent(java.awt.Graphics g) {
+//					if( this.getText() == NULL_EXPLANATION ) {
+//						//pass
+//					} else {
+//						super.paintComponent( g );
+//					}
+//				}
+//			};
+//		};
+//	};
 	private boolean isCancelDesired;
 	public InputDialogOperation(Group group, java.util.UUID individualId, boolean isCancelDesired) {
 		super(group, individualId);
 		this.isCancelDesired = isCancelDesired;
-		this.explanationLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
-		this.explanationLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
-		this.explanationLabel.setForegroundColor( java.awt.Color.RED.darker().darker() );
+//		this.explanationLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
+//		this.explanationLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
+//		this.explanationLabel.setForegroundColor( java.awt.Color.RED.darker().darker() );
 	}
 	public InputDialogOperation(Group group, java.util.UUID individualId) {
 		this(group, individualId, true);
@@ -170,37 +170,40 @@ public abstract class InputDialogOperation<J extends JComponent<?>> extends Gate
 	public void setExternalCommitButtonDisabler( ExternalCommitButtonDisabler<J> externalCommitButtonDisabler ) {
 		this.externalCommitButtonDisabler = externalCommitButtonDisabler;
 	}
-	@Override
-	protected String getExplanation( InputDialogOperationContext<J> context ) {
+	
+	protected String getInternalExplanation( InputDialogOperationContext<J> context ) {
 		return null;
 	}
-	protected abstract J prologue( InputDialogOperationContext<J> context );
-	protected abstract void epilogue( InputDialogOperationContext<J> context, boolean isCommit );
-
+	
 	@Override
-	protected void handleCroquetAddedChild( HistoryNode child ) {
-		InputDialogOperationContext<J> context = (InputDialogOperationContext<J>)child.findContextFor( InputDialogOperation.this );
-		String text;
+	protected final String getExplanation( InputDialogOperationContext<J> context ) {
+		//InputDialogOperationContext<J> context = (InputDialogOperationContext<J>)child.findContextFor( InputDialogOperation.this );
+//		String text;
 		if( context != null ) {
-			String explanation = this.getExplanation( context );
+			String explanation = this.getInternalExplanation( context );
 			if( this.externalCommitButtonDisabler != null ) {
 				String externalExplanation = this.externalCommitButtonDisabler.getExplanationIfCommitButtonShouldBeDisabled( context );
 				if( externalExplanation != null ) {
 					explanation = externalExplanation;
 				}
 			}
-			if( explanation != null ) {
-				text = explanation;
-			} else {
-				text = NULL_EXPLANATION;
-			}
-			this.getCompleteOperation().setEnabled( text == NULL_EXPLANATION );
-			this.explanationLabel.setText( text );
+			return explanation;
+//			if( explanation != null ) {
+//				text = explanation;
+//			} else {
+//				text = NULL_EXPLANATION;
+//			}
+//			this.getCompleteOperation().setEnabled( text == NULL_EXPLANATION );
+//			this.explanationLabel.setText( text );
 		} else {
-			this.explanationLabel.setText( "todo: updateOperationAndExplanation context==null" );
+//			this.explanationLabel.setText( "todo: updateOperationAndExplanation context==null" );
 			this.getCompleteOperation().setEnabled( true );
+			return "todo: updateOperationAndExplanation context==null";
 		}
 	}
+	protected abstract J prologue( InputDialogOperationContext<J> context );
+	protected abstract void epilogue( InputDialogOperationContext<J> context, boolean isCommit );
+
 
 //	private ModelContext.ChildrenObserver childrenObserver = new ModelContext.ChildrenObserver() {
 //		public void addingChild(HistoryNode child) {
@@ -210,7 +213,8 @@ public abstract class InputDialogOperation<J extends JComponent<?>> extends Gate
 //		}
 //	};
 
-	public Edit< ? > createEdit( InputDialogOperationContext< J > inputDialogOperationContext ) {
+	@Deprecated
+	public Edit< ? > EPIC_HACK_createEdit( InputDialogOperationContext< J > inputDialogOperationContext ) {
 		//todo
 		return null;
 	}

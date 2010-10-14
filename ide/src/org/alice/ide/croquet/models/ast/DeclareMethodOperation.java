@@ -104,7 +104,7 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.Edit< ? > createEdit( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> context ) {
+	public edu.cmu.cs.dennisc.croquet.Edit< ? > EPIC_HACK_createEdit( edu.cmu.cs.dennisc.croquet.InputDialogOperationContext<org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >> context ) {
 		org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = context.getMainPanel();
 		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.getActualInputValue();
 		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( declaringType, method );

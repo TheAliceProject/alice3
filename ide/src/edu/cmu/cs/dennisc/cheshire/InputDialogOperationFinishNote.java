@@ -83,7 +83,7 @@ package edu.cmu.cs.dennisc.cheshire;
 			edu.cmu.cs.dennisc.croquet.Edit< ? > originalEdit = originalSuccessfulCompletionEvent.getEdit();
 			if( originalEdit != null ) {
 				edu.cmu.cs.dennisc.croquet.InputDialogOperation<?> inputDialogOperation = (edu.cmu.cs.dennisc.croquet.InputDialogOperation<?>)inputDialogOperationContext.getModel();
-				edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidate = inputDialogOperation.createEdit( inputDialogOperationContext );
+				edu.cmu.cs.dennisc.croquet.Edit< ? > replacementCandidate = inputDialogOperation.EPIC_HACK_createEdit( inputDialogOperationContext );
 				edu.cmu.cs.dennisc.croquet.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidate, GuidedInteraction.getInstance().getUserInformation() );
 				if( replacementAcceptability.isAcceptable() ) {
 					return null;
