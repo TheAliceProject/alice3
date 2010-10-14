@@ -46,6 +46,7 @@ import java.awt.Color;
 import java.awt.Point;
 
 import org.alice.interact.InputState;
+import org.alice.interact.condition.ClickedObjectCondition;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.ImageBasedManipulationHandle2D;
 import org.alice.interact.handle.ManipulationHandle2D;
@@ -54,6 +55,7 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.Vector2;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
@@ -74,12 +76,14 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 	protected Vector3 initialRotateFactor = new Vector3(0.0d, 0.0d, 0.0d);
 	protected static final double INITIAL_MOVE_FACTOR = 10.0d;
 	protected static final double INITIAL_ROTATE_FACTOR = 8.0d;
-	protected static final double MOVE_CLICK_FACTOR = .02d;
-	protected static final double ROTATE_CLICK_FACTOR = .003d;
+	protected static final double MOVE_CLICK_FACTOR = .04d;
+	protected static final double ROTATE_CLICK_FACTOR = .006d;
 	
 	protected Transformable standUpReference = new Transformable();
 	protected Color initialHandleColor = null;
 	protected Vector2 initialMousePosition = new Vector2();
+	protected InputState mouseDownState = null;
+	protected AffineMatrix4x4 initialTransform;
 	
 	public Camera2DDragManipulator( ImageBasedManipulationHandle2D handle)
 	{
@@ -91,27 +95,37 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 	
 	@Override
 	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
-	public void doEndManipulator( InputState endInput, InputState previousInput ) {
-
-		
+	public void doEndManipulator( InputState endInput, InputState previousInput ) 
+	{
+		boolean wasClicked = false;
+		if (this.mouseDownState != null)
+		{
+			long elapseTime = endInput.getTimeCaptured() - mouseDownState.getTimeCaptured();
+			double mouseDistance = endInput.getMouseLocation().distance(mouseDownState.getMouseLocation());
+			if (elapseTime <= ClickedObjectCondition.MAX_CLICK_TIME && mouseDistance <= ClickedObjectCondition.MAX_MOUSE_MOVE)
+			{
+				wasClicked = true;
+			}
+		}
+		if (wasClicked)
+		{
+			this.doClickManipulator(endInput, previousInput);
+		}
+		this.mouseDownState = null;
 		
 	}
 	
 	@Override
 	public void doClickManipulator(InputState clickInput, InputState previousInput) {
-		if (doStartManipulator(clickInput))
-		{
-			//This lets the manipulator know that the object has changed and we should push the change onto the undo/redo stack
-			this.hasDoneUpdate = true;
-			Vector3 amountToMoveClick = Vector3.createMultiplication( this.initialMoveFactor, MOVE_CLICK_FACTOR );
-			Vector3 amountToRotateClick = Vector3.createMultiplication( this.initialRotateFactor, ROTATE_CLICK_FACTOR );
-			applyMovement(amountToMoveClick, amountToRotateClick);
-		}
+		//This lets the manipulator know that the object has changed and we should push the change onto the undo/redo stack
+		this.hasDoneUpdate = true;
+		Vector3 amountToMoveClick = Vector3.createMultiplication( this.initialMoveFactor, MOVE_CLICK_FACTOR );
+		Vector3 amountToRotateClick = Vector3.createMultiplication( this.initialRotateFactor, ROTATE_CLICK_FACTOR );
+		this.manipulatedTransformable.setTransformation(this.initialTransform, AsSeenBy.SCENE);
+		applyMovement(amountToMoveClick, amountToRotateClick);
 	}
 
 	
@@ -124,9 +138,11 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 	public boolean doStartManipulator( InputState startInput ) {
 		if (super.doStartManipulator( startInput ))
 		{
+			this.mouseDownState = new InputState(startInput);
 			this.initializeEventMessages();
 			this.standUpReference.setParent( this.getCamera().getParent() );
 			this.standUpReference.localTransformation.setValue( AffineMatrix4x4.createIdentity() );
+			this.initialTransform = this.manipulatedTransformable.getAbsoluteTransformation();
 			this.standUpReference.setAxesOnlyToStandUp();
 			this.initialMousePosition.x = startInput.getMouseLocation().x;
 			this.initialMousePosition.y = startInput.getMouseLocation().y;
@@ -138,6 +154,7 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 			this.initialRotateFactor = this.getRotationVectorForColor( this.initialHandleColor );
 			return true;
 		}
+		this.mouseDownState = null;
 		return false;
 	}
 

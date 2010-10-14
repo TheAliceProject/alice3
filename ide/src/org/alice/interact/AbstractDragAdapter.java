@@ -553,7 +553,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		for (int i=0; i<this.manipulators.size(); i++)
 		{
 			ManipulatorConditionSet currentManipulatorSet = this.manipulators.get( i );
-			
+//			System.out.println(currentManipulatorSet.getManipulator()+": "+currentManipulatorSet.getCondition(0));
 			currentManipulatorSet.update(this.currentInputState, this.previousInputState );
 			if (currentManipulatorSet.isEnabled())
 			{
@@ -574,12 +574,6 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 					}
 					else if ( currentManipulatorSet.clicked( this.currentInputState, this.previousInputState ) )
 					{
-	//					System.out.println("Adding "+currentManipulatorSet.getManipulator()+" to click array");
-	////					if (currentManipulatorSet.getName().equals("Mouse Translate"))
-	//					{
-	//						boolean started = currentManipulatorSet.clicked( this.currentInputState, this.previousInputState );
-	//						System.out.println("Tested it again and it's "+started);
-	//					}
 						toClick.add( currentManipulatorSet.getManipulator() );
 					}
 				}
