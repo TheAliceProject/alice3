@@ -50,7 +50,11 @@ public class BrowserOperation extends org.alice.ide.operations.InconsequentialAc
 	public BrowserOperation( java.util.UUID id, String url ) {
 		super( id );
 		this.url = url;
+	}
+	@Override
+	protected void localize() {
 		this.setName( this.url );
+		super.localize();
 	}
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {

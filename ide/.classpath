@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="i18n"/>
 	<classpathentry kind="src" path="generated/src"/>
-    <classpathentry kind="src" path="deprecated/src"/>
 	<classpathentry kind="lib" path="lib/apple/AppleJavaExtensions.jar"/>
 	<classpathentry kind="lib" path="lib/jaf/activation.jar"/>
 	<classpathentry kind="lib" path="lib/jira/jira-soapclient-4.0-with-dependencies.jar"/>

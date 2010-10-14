@@ -91,12 +91,17 @@ class PasswordPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPa
 }
 
 class LogInPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
-	class TestLogInOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
+	class TestLogInOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 		public TestLogInOperation() {
+			super( java.util.UUID.fromString( "cf700b82-c80b-4fb4-8886-2d170503a253" ) );
+		}
+		@Override
+		protected void localize() {
+			super.localize();
 			this.setName( "Log In" );
 		}
 		@Override
-		protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+		protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 			try {
 				com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
 				com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" ) );
@@ -124,7 +129,7 @@ class LogInPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane 
 	private javax.swing.JTextField textUsername = new javax.swing.JTextField();
 	private PasswordPane passwordPane = new PasswordPane();
 	//todo: remove. rely only on operations.
-	private javax.swing.JButton logInButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new TestLogInOperation() );
+	private javax.swing.JButton logInButton = new TestLogInOperation().createButton().getAwtComponent();
 	private java.awt.Component createLabel( String text ) {
 		javax.swing.JLabel rv = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( text );
 		rv.setVerticalAlignment( javax.swing.SwingConstants.TOP );
@@ -143,8 +148,14 @@ class LogInPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane 
 
 		edu.cmu.cs.dennisc.javax.swing.components.JPane signUpPane = new edu.cmu.cs.dennisc.javax.swing.components.JPane();
 		signUpPane.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "Not a member?" ) );
-		edu.cmu.cs.dennisc.toolkit.hyperlink.HyperlinkOperation hyperlinkOperation = new edu.cmu.cs.dennisc.toolkit.hyperlink.HyperlinkOperation( "http://bugs.alice.org:8080/secure/Signup!default.jspa", "Sign up" );
-		signUpPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createHyperlink( hyperlinkOperation ) );
+		org.alice.ide.croquet.models.help.BrowserOperation hyperlinkOperation = new org.alice.ide.croquet.models.help.BrowserOperation( java.util.UUID.fromString( "450727b2-d86a-4812-a77c-99eb785e10b2" ), "http://bugs.alice.org:8080/secure/Signup!default.jspa" ) {
+			@Override
+			protected void localize() {
+				super.localize();
+				this.setName( "Sign up" );
+			}
+		};
+		signUpPane.add( hyperlinkOperation.createHyperlink().getAwtComponent() );
 		signUpPane.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "for an account." ) );
 
 		edu.cmu.cs.dennisc.javax.swing.components.JPane buttonPane = new edu.cmu.cs.dennisc.javax.swing.components.JPane();
@@ -171,14 +182,15 @@ class LogInPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane 
 
 public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.JCardPane {
 	public static final String BUGS_ALICE_ORG_KEY = "bugs.alice.org";
-	class LogInOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
+	class LogInOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 		public LogInOperation() {
+			super( java.util.UUID.fromString( "f2d620ad-9b18-42e7-8b77-240e7a829b03" ) );
 			this.setName( "Log In... (Optional)" );
 		}
 		@Override
-		protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+		protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 			LogInPane pane = new LogInPane();
-			java.awt.Component owner = this.getSourceComponent( actionContext );
+			java.awt.Component owner = context.getViewController().getAwtComponent();
 			javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( pane, owner, "Log In", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
 			edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog, javax.swing.SwingUtilities.getRoot( owner ) );
 			dialog.getRootPane().setDefaultButton( pane.getLogInButton() );
@@ -191,12 +203,13 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.J
 		}
 	}
 
-	class LogOutOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
+	class LogOutOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 		public LogOutOperation() {
+			super( java.util.UUID.fromString( "73bf08cc-3666-463d-86da-3d483a4d8f2b" ) );
 			this.setName( "Log Out" );
 		}
 		@Override
-		protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+		protected void performInternal( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 			edu.cmu.cs.dennisc.login.AccountManager.logOut( LogInStatusPane.BUGS_ALICE_ORG_KEY );
 			LogInStatusPane.this.show( OFF_KEY );
 		}
@@ -204,8 +217,8 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.J
 
 	private static final String OFF_KEY = "OFF_KEY";
 	private static final String ON_KEY = "ON_KEY";
-	private javax.swing.JButton logInButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new LogInOperation() );
-	private javax.swing.JButton logOutButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new LogOutOperation() );
+	private javax.swing.JButton logInButton = new LogInOperation().createButton().getAwtComponent();
+	private javax.swing.JButton logOutButton = new LogOutOperation().createButton().getAwtComponent();
 
 	class OffPane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
 		public OffPane() {
