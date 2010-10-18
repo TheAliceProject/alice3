@@ -355,24 +355,22 @@ public abstract class Transformable extends AbstractTransformable {
 	}
 	
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void speak( String text, VoiceType voice, org.alice.apis.moveandturn.Font font, Color textColor, Color bubbleFillColor, Color bubbleOutlineColor ) {
-		edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble();
-		bubble.text.setValue(text);
-		bubble.font.setValue(font.getAsAWTFont());
-		bubble.textColor.setValue(textColor.getInternal());
-		bubble.fillColor.setValue(bubbleFillColor.getInternal());
-		bubble.outlineColor.setValue(bubbleOutlineColor.getInternal());
-		bubble.originator.setValue( m_originator );
-
+	public void speak( String text, VoiceType voice, final boolean showSpeechBubble, org.alice.apis.moveandturn.Font font, Color textColor, Color bubbleFillColor, Color bubbleOutlineColor ) {
+		edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble bubble = null;
+		if (showSpeechBubble)
+		{
+			bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble();
+			bubble.text.setValue(text);
+			bubble.font.setValue(font.getAsAWTFont());
+			bubble.textColor.setValue(textColor.getInternal());
+			bubble.fillColor.setValue(bubbleFillColor.getInternal());
+			bubble.outlineColor.setValue(bubbleOutlineColor.getInternal());
+			bubble.originator.setValue( m_originator );
+		}
 		final TextToSpeechResource tts = TextToSpeechResource.valueOf(text, voice.getVoiceString());
-		final AudioLimitedBubbleAnimation bubbleAnimation = new AudioLimitedBubbleAnimation(this, .3, .3, bubble, tts);
-		Runnable[] runnables = new Runnable[ 2 ];
-		runnables[ 0 ] = new Runnable() { 
-			public void run() {
-				perform(bubbleAnimation);
-			}
-		};
-		runnables[ 1 ] = new Runnable() { 
+		final AudioLimitedBubbleAnimation bubbleAnimation = (showSpeechBubble)? new AudioLimitedBubbleAnimation(this, .3, .3, bubble, tts) : null;
+		
+		Runnable textToSpeech =  new Runnable() { 
 			public void run() {
 				if (!tts.isLoaded())
 				{
@@ -380,28 +378,49 @@ public abstract class Transformable extends AbstractTransformable {
 				}
 				edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
 				edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( tts, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_VOLUME, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_START_TIME, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_STOP_TIME  );
-				bubbleAnimation.setDuration(tts.getDuration()+.2);
+				if (showSpeechBubble)
+				{
+					bubbleAnimation.setDuration(tts.getDuration()+.2);
+				}
 				perform( new edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation( player ) );	
 			}
 		};
-		org.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
+		if (showSpeechBubble)
+		{
+			Runnable[] runnables = new Runnable[ 2 ];
+			runnables[ 0 ] = new Runnable() { 
+				public void run() {
+					perform(bubbleAnimation);
+				}
+			};
+			runnables[ 1 ] = textToSpeech;
+			org.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
+		}
+		else
+		{
+			textToSpeech.run();
+		}
 	}
 	
 	@MethodTemplate( visibility=Visibility.CHAINED )
-	public void speak( String text, VoiceType voice, org.alice.apis.moveandturn.Font font, Color textColor, Color bubbleFillColor ) {
-		speak( text, voice, font, textColor, bubbleFillColor, Color.BLACK );
+	public void speak( String text, VoiceType voice, boolean showSpeechBubble, org.alice.apis.moveandturn.Font font, Color textColor, Color bubbleFillColor ) {
+		speak( text, voice, showSpeechBubble, font, textColor, bubbleFillColor, Color.BLACK );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
-	public void speak( String text, VoiceType voice, org.alice.apis.moveandturn.Font font, Color textColor ) {
-		speak( text, voice, font, textColor, Color.WHITE );
+	public void speak( String text, VoiceType voice, boolean showSpeechBubble, org.alice.apis.moveandturn.Font font, Color textColor ) {
+		speak( text, voice, showSpeechBubble, font, textColor, Color.WHITE );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
-	public void speak( String text, VoiceType voice, org.alice.apis.moveandturn.Font font ) {
-		speak( text, voice, font, Color.BLACK );
+	public void speak( String text, VoiceType voice, boolean showSpeechBubble, org.alice.apis.moveandturn.Font font ) {
+		speak( text, voice, showSpeechBubble, font, Color.BLACK );
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public void speak( String text, VoiceType voice, boolean showSpeechBubble) {
+		speak( text, voice, showSpeechBubble, DEFAULT_FONT );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void speak( String text, VoiceType voice ) {
-		speak( text, voice, DEFAULT_FONT );
+		speak( text, voice, true);
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void speak( String text ) {
