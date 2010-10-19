@@ -291,7 +291,7 @@ public class EditorsTabSelectionState extends edu.cmu.cs.dennisc.croquet.ListSel
 			
 			if( IS_RUN_BUTTON_DESIRED ) {
 				if( isEntryPoint(code) ) {
-					edu.cmu.cs.dennisc.croquet.DialogOperation runOperation = org.alice.ide.IDE.getSingleton().getRunOperation();
+					edu.cmu.cs.dennisc.croquet.Operation<?> runOperation = org.alice.ide.IDE.getSingleton().getRunOperation();
 					edu.cmu.cs.dennisc.croquet.Button runButton = runOperation.createButton();
 					edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( button.getAwtComponent(), runButton.getAwtComponent(), edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 1 );
 					runButton.getAwtComponent().setText( null );

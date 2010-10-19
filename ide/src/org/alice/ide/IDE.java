@@ -243,7 +243,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public final edu.cmu.cs.dennisc.croquet.Operation< ? > getPreferencesOperation() {
 		return null;
 	}
-	public abstract edu.cmu.cs.dennisc.croquet.DialogOperation getRunOperation();
+	public abstract edu.cmu.cs.dennisc.croquet.Operation< ? > getRunOperation();
 	public abstract edu.cmu.cs.dennisc.croquet.Operation< ? > getRestartOperation();
 	public abstract edu.cmu.cs.dennisc.croquet.Operation< ? > getAboutOperation();
 
