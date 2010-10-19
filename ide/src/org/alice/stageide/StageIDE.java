@@ -360,9 +360,16 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.DialogOperation getRunOperation() {
+	public edu.cmu.cs.dennisc.croquet.Operation<?> getRunOperation() {
+		return EPIC_HACK_getRunDialogOperation();
+	}
+	
+	public edu.cmu.cs.dennisc.croquet.DialogOperation EPIC_HACK_getRunDialogOperation() {
 		return org.alice.stageide.croquet.models.run.RunOperation.getInstance();
 	}
+	
+	
+	
 	@Override
 	public edu.cmu.cs.dennisc.croquet.Operation< ? > getRestartOperation() {
 		return org.alice.stageide.croquet.models.run.RestartOperation.getInstance();

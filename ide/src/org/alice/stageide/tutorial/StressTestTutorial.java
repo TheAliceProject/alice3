@@ -968,7 +968,7 @@ public class StressTestTutorial {
 				"Run", 
 				"Now, try running your program again.<p>The <b>iceSkater</b> should spin and then skate.", 
 				"Press the <b>Close</b> button", 
-				ide.getRunOperation() 
+				ide.EPIC_HACK_getRunDialogOperation() 
 		);
 		
 		tutorial.addSpotlightStepForModel( 
