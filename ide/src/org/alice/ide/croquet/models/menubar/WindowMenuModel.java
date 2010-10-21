@@ -61,7 +61,7 @@ public class WindowMenuModel extends edu.cmu.cs.dennisc.croquet.PredeterminedMen
 			rv.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 			rv.add( InternalTestingMenuModel.getInstance() );
 			
-			org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState.getInstance().setValue( true );
+			//org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState.getInstance().setValue( true );
 		}
 		rv.add( edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR );
 		rv.add( PreferencesMenuModel.getInstance() );

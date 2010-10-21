@@ -254,113 +254,126 @@ public class ContextManager {
 		}
 	}
 
-	private static javax.swing.MenuElement[] previousMenuElements = {};
-	private static void handleStateChanged( javax.swing.event.ChangeEvent e ) {
-		javax.swing.MenuElement[] menuElements = javax.swing.MenuSelectionManager.defaultManager().getSelectedPath();
-		if( previousMenuElements.length > 0 ) {
-			if( menuElements.length > 0 ) {
-				java.util.List< Model > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				MenuBar menuBar = getMenuBarOrigin( menuElements );
-				int i0;
-				if( menuBar != null ) {
-					
-					models.add( menuBar.getModel() );
-					javax.swing.JPopupMenu jPreviousPopupMenu;
-					if( previousMenuElements.length >= 3 ) {
-						jPreviousPopupMenu = (javax.swing.JPopupMenu)previousMenuElements[ 2 ];
-					} else {
-						jPreviousPopupMenu = null;
-					}
-					
-					assert menuElements.length >= 3;
-					assert menuElements[ 1 ] instanceof javax.swing.JMenu;
-					assert menuElements[ 2 ] instanceof javax.swing.JPopupMenu;
-					javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElements[ 2 ];
-					
-					javax.swing.JMenu jMenu = (javax.swing.JMenu)menuElements[ 1 ];
-					Menu menu = (Menu)Component.lookup( jMenu );
-					assert menu != null;
-
-					MenuModel menuModel = menu.getModel();
-					assert menuModel != null;
-					models.add( menuModel );
-
-					if( jPreviousPopupMenu != jPopupMenu ) {
-						if( jPreviousPopupMenu != null ) {
-							ModelContext< ? > popupMenuOperationContext = ContextManager.popContext();
-							assert popupMenuOperationContext instanceof PopupMenuOperationContext;
-						}
-						
-						
-						
-						/*PopupMenuOperationContext popupMenuOperationContext =*/ ContextManager.createAndPushPopupMenuOperationContext( menuModel.getPopupMenuOperation(), e, null );
-					}
-					i0 = 3;
-				} else {
-					i0 = 0;
-				}
-				for( int i=i0; i<menuElements.length; i++ ) {
-					javax.swing.MenuElement menuElementI = menuElements[ i ];
-					if( menuElementI instanceof javax.swing.JPopupMenu ) {
-						javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElementI;
-						//pass
-					} else if( menuElementI instanceof javax.swing.JMenuItem ) {
-						javax.swing.JMenuItem jMenuItem = (javax.swing.JMenuItem)menuElementI;
-						Component< ? > component = Component.lookup( jMenuItem );
-						if( component instanceof ViewController< ?, ? > ) {
-							ViewController< ?, ? > viewController = (ViewController< ?, ? >)component;
-							models.add( viewController.getModel() );
-						}
-					}
-				}
-				ModelContext< ? > modelContext = ContextManager.getCurrentContext();
-				assert modelContext instanceof PopupMenuOperationContext;
-				PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)modelContext;
-				popupMenuOperationContext.handleMenuSelectionChanged( e, models );
-			} else {
-				MenuBarModel menuBarModel = getMenuBarModelOrigin( previousMenuElements );
-				if( menuBarModel != null ) {
-					ModelContext< ? > popupMenuOperationContext = ContextManager.popContext();
-					assert popupMenuOperationContext instanceof PopupMenuOperationContext;
-
-					ModelContext< ? > menuBarContext = ContextManager.popContext();
-					assert menuBarContext instanceof MenuBarModelContext;
-				}
-			}
-		} else {
-			if( menuElements.length > 0 ) {
-				MenuBar menuBar = getMenuBarOrigin( menuElements );
-				if( menuBar != null ) {
-					/*MenuBarModelContext childContext =*/ ContextManager.createAndPushMenuBarModelContext( menuBar.getModel(), e, menuBar );
-					assert menuElements.length == 2;
-				} else {
-					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
-					if( modelContext instanceof PopupMenuOperationContext ) {
-						//pass
-					} else {
-						System.err.println( "combo box? " + menuElements.length + " " + java.util.Arrays.toString( menuElements ) );
-						System.err.println( "modelContext: " + modelContext );
-					}
-				}
-			} else {
-				//assert false;
-				ModelContext< ? > modelContext = ContextManager.getCurrentContext();
-				System.err.println( "both prev and current menu selection length 0" );
-				System.err.println( "modelContext: " + modelContext );
+	private static boolean isCroquetMenuSelection( javax.swing.MenuElement[] menuElements ) {
+		for( javax.swing.MenuElement menuElement : menuElements ) {
+			Component< ? > component = Component.lookup( (javax.swing.JComponent)menuElement );
+			if( component instanceof MenuBar || component instanceof MenuItem || component instanceof Menu || component instanceof PopupMenu || component instanceof MenuTextSeparator ) {
+				return true;
 			}
 		}
-		previousMenuElements = menuElements;
+		return menuElements.length == 0;
 	}
-	private static javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+	
+	private static javax.swing.MenuElement[] previousMenuElements = {};
+	private static void handleMenuSelectionStateChanged( javax.swing.event.ChangeEvent e ) {
+		javax.swing.MenuElement[] menuElements = javax.swing.MenuSelectionManager.defaultManager().getSelectedPath();
+		if( isCroquetMenuSelection( menuElements ) ) {
+			if( previousMenuElements.length > 0 ) {
+				if( menuElements.length > 0 ) {
+					java.util.List< Model > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					MenuBar menuBar = getMenuBarOrigin( menuElements );
+					int i0;
+					if( menuBar != null ) {
+						models.add( menuBar.getModel() );
+						javax.swing.JPopupMenu jPreviousPopupMenu;
+						if( previousMenuElements.length >= 3 ) {
+							jPreviousPopupMenu = (javax.swing.JPopupMenu)previousMenuElements[ 2 ];
+						} else {
+							jPreviousPopupMenu = null;
+						}
+						
+						assert menuElements.length >= 3;
+						assert menuElements[ 1 ] instanceof javax.swing.JMenu;
+						assert menuElements[ 2 ] instanceof javax.swing.JPopupMenu;
+						javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElements[ 2 ];
+						
+						javax.swing.JMenu jMenu = (javax.swing.JMenu)menuElements[ 1 ];
+						Menu menu = (Menu)Component.lookup( jMenu );
+						assert menu != null;
+
+						MenuModel menuModel = menu.getModel();
+						assert menuModel != null;
+						models.add( menuModel );
+
+						if( jPreviousPopupMenu != jPopupMenu ) {
+							if( jPreviousPopupMenu != null ) {
+								ModelContext< ? > popupMenuOperationContext = ContextManager.popContext();
+								assert popupMenuOperationContext instanceof PopupMenuOperationContext;
+							}
+							
+							
+							
+							/*PopupMenuOperationContext popupMenuOperationContext =*/ ContextManager.createAndPushPopupMenuOperationContext( menuModel.getPopupMenuOperation(), e, null );
+						}
+						i0 = 3;
+					} else {
+						i0 = 0;
+					}
+					for( int i=i0; i<menuElements.length; i++ ) {
+						javax.swing.MenuElement menuElementI = menuElements[ i ];
+						if( menuElementI instanceof javax.swing.JPopupMenu ) {
+							javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElementI;
+							//pass
+						} else if( menuElementI instanceof javax.swing.JMenuItem ) {
+							javax.swing.JMenuItem jMenuItem = (javax.swing.JMenuItem)menuElementI;
+							Component< ? > component = Component.lookup( jMenuItem );
+							if( component instanceof ViewController< ?, ? > ) {
+								ViewController< ?, ? > viewController = (ViewController< ?, ? >)component;
+								models.add( viewController.getModel() );
+							}
+						}
+					}
+					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
+					assert modelContext instanceof PopupMenuOperationContext;
+					PopupMenuOperationContext popupMenuOperationContext = (PopupMenuOperationContext)modelContext;
+					popupMenuOperationContext.handleMenuSelectionChanged( e, models );
+				} else {
+					MenuBarModel menuBarModel = getMenuBarModelOrigin( previousMenuElements );
+					if( menuBarModel != null ) {
+						ModelContext< ? > popupMenuOperationContext = ContextManager.popContext();
+						assert popupMenuOperationContext instanceof PopupMenuOperationContext;
+
+						ModelContext< ? > menuBarContext = ContextManager.popContext();
+						assert menuBarContext instanceof MenuBarModelContext;
+					}
+				}
+			} else {
+				if( menuElements.length > 0 ) {
+					MenuBar menuBar = getMenuBarOrigin( menuElements );
+					if( menuBar != null ) {
+						/*MenuBarModelContext childContext =*/ ContextManager.createAndPushMenuBarModelContext( menuBar.getModel(), e, menuBar );
+						assert menuElements.length == 2;
+					} else {
+						ModelContext< ? > modelContext = ContextManager.getCurrentContext();
+						if( modelContext instanceof PopupMenuOperationContext ) {
+							//pass
+						} else {
+							System.err.println( "combo box? " + menuElements.length + " " + java.util.Arrays.toString( menuElements ) );
+							System.err.println( "modelContext: " + modelContext );
+						}
+					}
+				} else {
+					//assert false;
+					ModelContext< ? > modelContext = ContextManager.getCurrentContext();
+					System.err.println( "both prev and current menu selection length 0" );
+					System.err.println( "modelContext: " + modelContext );
+				}
+			}
+			previousMenuElements = menuElements;
+		} else {
+			System.err.println( "warning: not croquet menu selection." );
+		}
+	}
+	private static javax.swing.event.ChangeListener menuSelectionChangeListener = new javax.swing.event.ChangeListener() {
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
-			handleStateChanged( e );
+			handleMenuSelectionStateChanged( e );
 		}
 	};
 	public static void startListeningToMenuSelection() {
-		javax.swing.MenuSelectionManager.defaultManager().addChangeListener( changeListener );
+		javax.swing.MenuSelectionManager.defaultManager().addChangeListener( menuSelectionChangeListener );
 	}
 	public static void stopListeningToMenuSelection() {
-		javax.swing.MenuSelectionManager.defaultManager().removeChangeListener( changeListener );
+		javax.swing.MenuSelectionManager.defaultManager().removeChangeListener( menuSelectionChangeListener );
 	}
 	
 //	public static <A extends Application> A createAndShowApplication( Class<A> cls, String[] args ) throws IllegalAccessException, InstantiationException {
