@@ -256,7 +256,7 @@ public class ContextManager {
 
 	private static boolean isCroquetMenuSelection( javax.swing.MenuElement[] menuElements ) {
 		for( javax.swing.MenuElement menuElement : menuElements ) {
-			Component< ? > component = Component.lookup( (javax.swing.JComponent)menuElement );
+			Component< ? > component = Component.lookup( menuElement.getComponent() );
 			if( component instanceof MenuBar || component instanceof MenuItem || component instanceof Menu || component instanceof PopupMenu || component instanceof MenuTextSeparator ) {
 				return true;
 			}
