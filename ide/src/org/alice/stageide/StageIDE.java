@@ -54,7 +54,7 @@ public class StageIDE extends org.alice.ide.IDE {
 //		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "setHeight", org.alice.apis.moveandturn.Transformable.class );
 //		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "setDepth", org.alice.apis.moveandturn.Transformable.class );
 		//
-		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( new edu.cmu.cs.dennisc.alice.ast.ClassReflectionProxy( "edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel" ), "moveTo", "placeRelativeTo" );
+		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilterWithinClass( new edu.cmu.cs.dennisc.alice.ast.ClassReflectionProxy( "edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel" ), "moveTo", "placeRelativeTo" );
 		
 		org.alice.ide.common.BeveledShapeForType.addRoundType( org.alice.apis.moveandturn.Transformable.class );
 		this.getFrame().addWindowStateListener( new java.awt.event.WindowStateListener() {

@@ -47,25 +47,36 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class Decoder {
-//	private static edu.cmu.cs.dennisc.map.MapToMap< Class<?>, String, Class<?> > mapToMapCls = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	private static edu.cmu.cs.dennisc.map.MapToMap< ClassReflectionProxy, String, String > mapToMapName = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static void addMethodFilter( Class<?> prevCls, String name, Class<?> nextCls ) {
-//		Decoder.mapToMapCls.put( prevCls, name, nextCls );
+	private static edu.cmu.cs.dennisc.map.MapToMap< ClassReflectionProxy, String, String > mapToMapMethodName = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static java.util.Map< String, String > mapClassNameToClassName = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static void addMethodFilterWithinClass( ClassReflectionProxy classReflectionProxy, String prevName, String nextName ) {
+		Decoder.mapToMapMethodName.put( classReflectionProxy, prevName, nextName );
 	}
-	public static void addMethodFilter( ClassReflectionProxy classReflectionProxy, String prevName, String nextName ) {
-		Decoder.mapToMapName.put( classReflectionProxy, prevName, nextName );
+	public static void addMethodFilterWithinClass( Class<?> cls, String prevName, String nextName ) {
+		addMethodFilterWithinClass( TypeDeclaredInJava.get( cls ).getClassReflectionProxy(), prevName, nextName );
 	}
-//	private static Class<?> filterClsIfNecessary( Class<?> cls, String name ) {
-//		Class<?> rv = Decoder.mapToMapCls.get( cls, name );
-//		if( rv != null ) {
-//			//pass
-//		} else {
-//			rv = cls;
-//		}
-//		return rv;
-//	}
-	private static String filterNameIfNecessary( ClassReflectionProxy classReflectionProxy, String name ) {
-		String rv = Decoder.mapToMapName.get( classReflectionProxy, name );
+
+	public static void addClassFilter( ClassReflectionProxy prevClassReflectionProxy, ClassReflectionProxy nextClassReflectionProxy ) {
+		Decoder.mapClassNameToClassName.put( prevClassReflectionProxy.getName(), nextClassReflectionProxy.getName() );
+	}
+	public static void addClassFilter( ClassReflectionProxy prevClassReflectionProxy, Class<?> nextCls ) {
+		addClassFilter( prevClassReflectionProxy, TypeDeclaredInJava.get( nextCls ).getClassReflectionProxy() );
+	}
+	public static void addClassFilter( Class<?> prevCls, Class<?> nextCls ) {
+		addClassFilter( TypeDeclaredInJava.get( prevCls ).getClassReflectionProxy(), TypeDeclaredInJava.get( nextCls ).getClassReflectionProxy() );
+	}
+
+	private static String filterClassNameIfNecessary( String clsName ) {
+		String rv = Decoder.mapClassNameToClassName.get( clsName );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = clsName;
+		}
+		return rv;
+	}
+	private static String filterMethodNameIfNecessary( ClassReflectionProxy classReflectionProxy, String name ) {
+		String rv = Decoder.mapToMapMethodName.get( classReflectionProxy, name );
 		if( rv != null ) {
 			//pass
 		} else {
@@ -84,6 +95,9 @@ public class Decoder {
 		this.isUUIDDecodingDesired = isUUIDDecodingDesired;
 	}
 
+	private static ClassReflectionProxy createClassReflectionProxy( String clsName ) {
+		return new ClassReflectionProxy( filterClassNameIfNecessary( clsName ) );
+	}
 	private String getClassName( org.w3c.dom.Element xmlElement ) {
 		String rv = xmlElement.getAttribute( CodecConstants.TYPE_ATTRIBUTE );
 		if( this.srcVersion.contains( "alpha" ) ) {
@@ -94,7 +108,7 @@ public class Decoder {
 		return rv;
 	}
 	private ClassReflectionProxy getJavaClassInfo( org.w3c.dom.Element xmlElement ) {
-		return new ClassReflectionProxy( getClassName( xmlElement ) );
+		return createClassReflectionProxy( getClassName( xmlElement ) );
 	}
 	//todo: investigate
 	private Class< ? > getCls( org.w3c.dom.Element xmlElement ) {
@@ -159,7 +173,7 @@ public class Decoder {
 	private ClassReflectionProxy decodeType( org.w3c.dom.Element xmlElement, String nodeName ) {
 		org.w3c.dom.Element xmlClass = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, nodeName );
 		String clsName = xmlClass.getAttribute( "name" );
-		return new ClassReflectionProxy( clsName );
+		return createClassReflectionProxy( clsName );
 	}
 
 	private ArrayTypeDeclaredInAlice decodeArrayTypeDeclaredInAlice( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
@@ -185,7 +199,7 @@ public class Decoder {
 		java.util.List< org.w3c.dom.Element> xmlTypes = edu.cmu.cs.dennisc.xml.XMLUtilities.getChildElementsByTagName( xmlParameters, "type" );
 		ClassReflectionProxy[] rv = new ClassReflectionProxy[ xmlTypes.size() ];
 		for( int i = 0; i < rv.length; i++ ) {
-			rv[ i ] = new ClassReflectionProxy( xmlTypes.get( i ).getAttribute( "name" ) );
+			rv[ i ] = createClassReflectionProxy( xmlTypes.get( i ).getAttribute( "name" ) );
 		}
 		return rv;
 	}
@@ -205,7 +219,7 @@ public class Decoder {
 		org.w3c.dom.Element xmlMethod = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlParent, nodeName );
 		ClassReflectionProxy declaringCls = decodeDeclaringClass( xmlMethod );
 		String name = xmlMethod.getAttribute( "name" );
-		name = filterNameIfNecessary( declaringCls, name );
+		name = filterMethodNameIfNecessary( declaringCls, name );
 		ClassReflectionProxy[] parameterClses = decodeParameters( xmlMethod );
 		return new MethodReflectionProxy( declaringCls, name, parameterClses );
 	}
