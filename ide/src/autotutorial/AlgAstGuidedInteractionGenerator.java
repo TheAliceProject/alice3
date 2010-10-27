@@ -57,8 +57,8 @@ class AlgAstGuidedInteractionGenerator implements GuidedInteractionGenerator {
 	}
 	public edu.cmu.cs.dennisc.croquet.RootContext generate( edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
 		edu.cmu.cs.dennisc.croquet.RootContext rv = new edu.cmu.cs.dennisc.croquet.RootContext();
-		//rv.addChild( createDialogOperationContext( org.alice.stageide.croquet.models.run.RunOperation.getInstance() ) );
 		generate( rv, this.src, this.dst, this.dstIndex0 );
+		rv.addChild( createDialogOperationContext( org.alice.stageide.croquet.models.run.RunOperation.getInstance() ) );
 		return rv;
 	}
 	
@@ -70,7 +70,19 @@ class AlgAstGuidedInteractionGenerator implements GuidedInteractionGenerator {
 			edu.cmu.cs.dennisc.croquet.ActionOperationContext actionContext = new edu.cmu.cs.dennisc.croquet.ActionOperationContext( insertStatementActionOperation );
 			addEdit( actionContext, new org.alice.ide.croquet.edits.DependentEdit() );
 			
-			edu.cmu.cs.dennisc.croquet.DragAndDropModel dragAndDropModel = org.alice.ide.croquet.models.ast.StatementClassTemplateDragModel.getInstance( statement.getClass() );
+			edu.cmu.cs.dennisc.croquet.DragAndDropModel dragAndDropModel;
+			if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
+				edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)statement;
+				edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
+				if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
+					edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
+					dragAndDropModel = org.alice.ide.croquet.models.ast.MethodTemplateDragModel.getInstance( methodInvocation.method.getValue() );
+				} else {
+					dragAndDropModel = null;
+				}
+			} else {
+				dragAndDropModel = org.alice.ide.croquet.models.ast.StatementClassTemplateDragModel.getInstance( statement.getClass() );
+			}
 			
 			edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext = createDragAndDropContext( dragAndDropModel ); 
 			dragAndDropContext.addChild( actionContext );

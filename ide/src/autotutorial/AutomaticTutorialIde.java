@@ -279,6 +279,11 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 		}
 		this.originalContext.retarget( astDecodingRetargeter );
 	}
+	private static edu.cmu.cs.dennisc.alice.ast.BlockStatement getRunBody( edu.cmu.cs.dennisc.alice.Project project ) {
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)project.getProgramType().fields.get( 0 ).getValueType();
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice runMethod = sceneType.getDeclaredMethod( "run" );
+		return runMethod.body.getValue();
+	}
 	private void createAndShowTutorial() {
 		//final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( this, 0 );
 		this.originalProject = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readProject( POST_PROJECT_PATH );
@@ -287,9 +292,7 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 		if( IS_BASED_ON_INTERACTION_AST ) {
 			//this.isPostProjectLive = true;
 			//generator = new AlgFromAbstractSyntaxTreeGuidedInteractionGenerator( this.originalProject, "scene", "guppy" );
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice runMethod = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.originalProject.getProgramType().fields.get( 0 ).getValueType().getDeclaredMethod( "run" );
-			
-			generator = new AlgAstGuidedInteractionGenerator( runMethod.body.getValue(), runMethod.body.getValue(), 0 );
+			generator = new AlgAstGuidedInteractionGenerator( getRunBody( this.originalProject ), getRunBody( this.getProject() ), 0 );
 			//this.isPostProjectLive = false;
 		} else {
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
