@@ -85,6 +85,9 @@ class AlgAstGuidedInteractionGenerator implements GuidedInteractionGenerator {
 			}
 			
 			edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext = createDragAndDropContext( dragAndDropModel ); 
+			//edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor = null;
+			//edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent droppedEvent = new edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent( dropReceptor );
+			//rv.addChild( droppedEvent );
 			dragAndDropContext.addChild( actionContext );
 			
 			dstIndex++;
@@ -100,10 +103,7 @@ class AlgAstGuidedInteractionGenerator implements GuidedInteractionGenerator {
 	}
 
 	private static <M extends edu.cmu.cs.dennisc.croquet.Model> edu.cmu.cs.dennisc.croquet.ModelContext< M > addEdit( edu.cmu.cs.dennisc.croquet.ModelContext< M > rv, edu.cmu.cs.dennisc.croquet.Edit< M > edit ) {
-		edu.cmu.cs.dennisc.croquet.DropReceptor dropReceptor = null;
-		//edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent droppedEvent = new edu.cmu.cs.dennisc.croquet.DragAndDropContext.DroppedEvent( dropReceptor );
 		edu.cmu.cs.dennisc.croquet.CommitEvent commitEvent = new edu.cmu.cs.dennisc.croquet.CommitEvent( edit );
-		//rv.addChild( droppedEvent );
 		rv.addChild( commitEvent );
 		edit.setContext( rv );
 		return rv;
