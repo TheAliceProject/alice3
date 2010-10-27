@@ -80,7 +80,7 @@ public class Page extends Step implements WaitingStep {
 		} else if( node instanceof edu.cmu.cs.dennisc.croquet.DragAndDropContext ) {
 			edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext = (edu.cmu.cs.dennisc.croquet.DragAndDropContext)node;
 			int DND_CONTEXT_CHILD_COUNT = dragAndDropContext.getChildCount();
-			if( DND_CONTEXT_CHILD_COUNT > 1 ) {
+			if( DND_CONTEXT_CHILD_COUNT > 0 ) {
 				edu.cmu.cs.dennisc.croquet.HistoryNode lastChild = dragAndDropContext.getChildAt( DND_CONTEXT_CHILD_COUNT-1 );
 				if( lastChild instanceof edu.cmu.cs.dennisc.croquet.ModelContext< ? > ) {
 					edu.cmu.cs.dennisc.croquet.ModelContext< ? > childModelContext = (edu.cmu.cs.dennisc.croquet.ModelContext< ? >)lastChild;

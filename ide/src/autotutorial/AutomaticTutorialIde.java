@@ -79,9 +79,9 @@ class AlgPriorInteractionHistoryBasedGuidedInteractionGenerator extends PriorInt
 	}
 }
 
-class AlgTopDownASTGuidedInteractionGenerator implements GuidedInteractionGenerator {
+class AlgFromAbstractSyntaxTreeGuidedInteractionGenerator implements GuidedInteractionGenerator {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice fieldType;
-	public AlgTopDownASTGuidedInteractionGenerator( edu.cmu.cs.dennisc.alice.Project project, String sceneFieldName, String fieldName ) {
+	public AlgFromAbstractSyntaxTreeGuidedInteractionGenerator( edu.cmu.cs.dennisc.alice.Project project, String sceneFieldName, String fieldName ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = project.getProgramType();
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)programType.getDeclaredField( sceneFieldName ).getValueType();
 		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : sceneType.fields ) {
@@ -122,6 +122,7 @@ class AlgTopDownASTGuidedInteractionGenerator implements GuidedInteractionGenera
 		return rv;
 	}
 }
+
 class AlgBugReproGuidedInteractionGenerator extends PriorInteractionHistoryBasedGuidedInteractionGenerator {
 	public AlgBugReproGuidedInteractionGenerator( edu.cmu.cs.dennisc.croquet.RootContext originalRoot ) {
 		super( originalRoot );
@@ -132,7 +133,7 @@ class AlgBugReproGuidedInteractionGenerator extends PriorInteractionHistoryBased
 }
 
 class AlgConstructionGuide extends edu.cmu.cs.dennisc.cheshire.GuidedInteraction {
-	private static boolean IS_MONKEY_WRENCH_DESIRED = true;
+	private static boolean IS_MONKEY_WRENCH_DESIRED = false;
 	public AlgConstructionGuide() {
 		super( 
 			AlgUserInformation.INSTANCE,
@@ -202,7 +203,6 @@ class AlgBugRepro extends edu.cmu.cs.dennisc.cheshire.GuidedInteraction {
 		return rv;
 	}
 }
-
 
 public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 	private static boolean IS_ENCODING;
@@ -286,7 +286,10 @@ public class AutomaticTutorialIde extends org.alice.stageide.StageIDE {
 		GuidedInteractionGenerator generator;
 		if( IS_BASED_ON_INTERACTION_AST ) {
 			//this.isPostProjectLive = true;
-			generator = new AlgTopDownASTGuidedInteractionGenerator( this.originalProject, "scene", "guppy" );
+			//generator = new AlgFromAbstractSyntaxTreeGuidedInteractionGenerator( this.originalProject, "scene", "guppy" );
+			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice runMethod = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.originalProject.getProgramType().fields.get( 0 ).getValueType().getDeclaredMethod( "run" );
+			
+			generator = new AlgAstGuidedInteractionGenerator( runMethod.body.getValue(), runMethod.body.getValue(), 0 );
 			//this.isPostProjectLive = false;
 		} else {
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;

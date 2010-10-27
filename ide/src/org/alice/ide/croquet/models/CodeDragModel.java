@@ -46,31 +46,35 @@ package org.alice.ide.croquet.models;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IdeDragModel extends edu.cmu.cs.dennisc.croquet.DragAndDropModel {
-	public IdeDragModel( java.util.UUID id ) {
+public abstract class CodeDragModel extends IdeDragModel {
+	public CodeDragModel( java.util.UUID id ) {
 		super( id );
 	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
-	}
-//	@Override
-//	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.DragComponent dragSource ) {
-//		return getIDE().createListOfPotentialDropReceptors( dragSource );
-//	}
 	@Override
-	public void handleDragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		getIDE().handleDragStarted( dragAndDropContext );
-	}
-	@Override
-	public void handleDragEnteredDropReceptor( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		getIDE().handleDragEnteredDropReceptor( dragAndDropContext );
-	}
-	@Override
-	public void handleDragExitedDropReceptor( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		getIDE().handleDragExitedDropReceptor( dragAndDropContext );
-	}
-	@Override
-	public void handleDragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		getIDE().handleDragStopped( dragAndDropContext );
+	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.DragComponent dragSource ) {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		if( ide != null ) {
+			org.alice.ide.codeeditor.CodeEditor codeEditor = ide.getCodeEditorInFocus();
+			if( codeEditor != null ) {
+				if( dragSource.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance ) {
+					org.alice.ide.common.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.common.ExpressionLikeSubstance)dragSource.getSubject();
+					return codeEditor.createListOfPotentialDropReceptors( expressionLikeSubstance.getExpressionType() );
+				} else {
+					java.util.List< edu.cmu.cs.dennisc.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					rv.add( codeEditor );
+					//			for( alice.ide.ast.DropReceptor dropReceptor : this.dropReceptors ) {
+					//				if( dropReceptor.isPotentiallyAcceptingOf( source ) ) {
+					//					rv.add( dropReceptor );
+					//				}
+					//			}
+					return rv;
+				}
+			} else {
+				//todo: investigate
+				return java.util.Collections.emptyList();
+			}
+		} else {
+			return java.util.Collections.emptyList();
+		}
 	}
 }

@@ -892,32 +892,32 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().fire( e );
 	}
 
-	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.DragComponent source ) {
-		if( source instanceof org.alice.stageide.gallerybrowser.GalleryDragComponent ) {
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.getSceneEditor() );
-		} else {
-			assert source != null;
-			org.alice.ide.codeeditor.CodeEditor codeEditor = this.getCodeEditorInFocus();
-			if( codeEditor != null ) {
-				if( source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance ) {
-					org.alice.ide.common.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.common.ExpressionLikeSubstance)source.getSubject();
-					return codeEditor.createListOfPotentialDropReceptors( expressionLikeSubstance.getExpressionType() );
-				} else {
-					java.util.List< edu.cmu.cs.dennisc.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-					rv.add( codeEditor );
-					//			for( alice.ide.ast.DropReceptor dropReceptor : this.dropReceptors ) {
-					//				if( dropReceptor.isPotentiallyAcceptingOf( source ) ) {
-					//					rv.add( dropReceptor );
-					//				}
-					//			}
-					return rv;
-				}
-			} else {
-				//todo: investigate
-				return java.util.Collections.emptyList();
-			}
-		}
-	}
+//	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.DragComponent source ) {
+//		if( source instanceof org.alice.stageide.gallerybrowser.GalleryDragComponent ) {
+//			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.getSceneEditor() );
+//		} else {
+//			assert source != null;
+//			org.alice.ide.codeeditor.CodeEditor codeEditor = this.getCodeEditorInFocus();
+//			if( codeEditor != null ) {
+//				if( source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance ) {
+//					org.alice.ide.common.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.common.ExpressionLikeSubstance)source.getSubject();
+//					return codeEditor.createListOfPotentialDropReceptors( expressionLikeSubstance.getExpressionType() );
+//				} else {
+//					java.util.List< edu.cmu.cs.dennisc.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+//					rv.add( codeEditor );
+//					//			for( alice.ide.ast.DropReceptor dropReceptor : this.dropReceptors ) {
+//					//				if( dropReceptor.isPotentiallyAcceptingOf( source ) ) {
+//					//					rv.add( dropReceptor );
+//					//				}
+//					//			}
+//					return rv;
+//				}
+//			} else {
+//				//todo: investigate
+//				return java.util.Collections.emptyList();
+//			}
+//		}
+//	}
 
 	private static Iterable< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice > getVariables( edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus ) {
 		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice.class );

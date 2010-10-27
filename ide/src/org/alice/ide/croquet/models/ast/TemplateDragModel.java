@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TemplateDragModel extends org.alice.ide.croquet.models.IdeDragModel {
+public abstract class TemplateDragModel extends org.alice.ide.croquet.models.CodeDragModel {
 	public TemplateDragModel( java.util.UUID id ) {
 		super( id );
 	}

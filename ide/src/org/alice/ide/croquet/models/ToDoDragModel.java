@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models;
  * @author Dennis Cosgrove
  */
 @Deprecated
-public class ToDoDragModel extends IdeDragModel {
+public class ToDoDragModel extends CodeDragModel {
 	public ToDoDragModel() {
 		super( java.util.UUID.fromString( "18c35df3-fc24-434c-b451-94090f13310e" ) );
 	}

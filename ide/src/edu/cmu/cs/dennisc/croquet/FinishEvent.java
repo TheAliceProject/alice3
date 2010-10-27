@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class FinishEvent extends SuccessfulCompletionEvent {
-	/*package-private*/ FinishEvent() {
+	public FinishEvent() {
 	}
 	public FinishEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

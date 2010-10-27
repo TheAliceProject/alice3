@@ -193,7 +193,7 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 		public DroppedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
-		private DroppedEvent( DragAndDropContext parent, java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor ) {
+		private DroppedEvent( java.awt.event.MouseEvent mouseEvent, DropReceptor dropReceptor ) {
 			super( mouseEvent, dropReceptor );
 		}
 	}
@@ -228,10 +228,10 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 	private DropReceptor currentDropReceptor;
 	private DropSite currentPotentialDropSite;
 	private java.awt.event.MouseEvent latestMouseEvent;
-	/*package-private*/ DragAndDropContext( DragAndDropModel dragAndDropOperation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource ) {
-		super( dragAndDropOperation, originalMouseEvent, dragSource );
+	/*package-private*/ DragAndDropContext( DragAndDropModel dragAndDropModel, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, DragComponent dragSource ) {
+		super( dragAndDropModel, originalMouseEvent, dragSource );
 		this.setLatestMouseEvent( latestMouseEvent );
-		java.util.List< ? extends DropReceptor > potentialDropReceptors = dragAndDropOperation.createListOfPotentialDropReceptors( dragSource );
+		java.util.List< ? extends DropReceptor > potentialDropReceptors = dragAndDropModel.createListOfPotentialDropReceptors( dragSource );
 		this.potentialDropReceptorInfos = new DropReceptorInfo[ potentialDropReceptors.size() ];
 		int i = 0;
 		for( DropReceptor dropReceptor : potentialDropReceptors ) {
@@ -245,6 +245,9 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 			//todo: pass original mouse pressed event?
 			dropReceptorInfo.getDropReceptor().dragStarted( this );
 		}
+	}
+	public DragAndDropContext( DragAndDropModel dragAndDropModel ) {
+		this( dragAndDropModel, null, null, null );
 	}
 	public DragAndDropContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
@@ -381,7 +384,7 @@ public class DragAndDropContext extends ModelContext<DragAndDropModel> {
 			if( this.currentDropReceptor != null ) {
 				Operation<?> operation = this.currentDropReceptor.dragDropped( this );
 				if( operation != null ) {
-					this.addChild( new DroppedEvent( this, e, this.currentDropReceptor ) );
+					this.addChild( new DroppedEvent( e, this.currentDropReceptor ) );
 					JComponent<?> component = this.currentDropReceptor.getViewController();
 					ViewController<?,?> viewController; 
 					if( component instanceof ViewController<?,?> ) {
