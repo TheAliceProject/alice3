@@ -55,6 +55,12 @@ public class OrthographicCameraMarker extends CameraMarker {
 		picturePlane = new ClippedZPlane();
 	}
 	
+	@Override
+	protected void createVisuals()
+	{
+		
+	}
+	
 	public void setPicturePlane(ClippedZPlane picturePlane)
 	{
 		this.picturePlane.set(picturePlane);

@@ -57,6 +57,10 @@ import javax.swing.ImageIcon;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 public class MoveToImageIcon extends ImageIcon {
+	
+	public static int SUB_ICON_WIDTH = 25;
+	public static int SUB_ICON_HEIGHT = 20;
+
 	private Icon leftImage;
 	private Icon rightImage;
 	

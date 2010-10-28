@@ -51,6 +51,7 @@ import javax.swing.JDialog;
 
 import org.alice.stageide.sceneeditor.snap.SnapControlPanel;
 import org.alice.stageide.sceneeditor.snap.SnapState;
+import org.alice.stageide.sceneeditor.viewmanager.SceneObjectMarkerManagerPanel;
 import org.alice.stageide.sceneeditor.viewmanager.SceneViewManagerPanel;
 import org.alice.ide.IDE;
 import org.alice.ide.swing.BasicTreeNodeViewerPanel;
@@ -60,6 +61,8 @@ import org.alice.interact.handle.HandleSet;
 import edu.cmu.cs.dennisc.croquet.ActionOperation;
 import edu.cmu.cs.dennisc.croquet.ComboBox;
 import edu.cmu.cs.dennisc.croquet.GridBagPanel;
+import edu.cmu.cs.dennisc.croquet.PageAxisPanel;
+import edu.cmu.cs.dennisc.croquet.ScrollPane;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory;
 import edu.cmu.cs.dennisc.lookingglass.opengl.SceneAdapter;
@@ -72,6 +75,7 @@ import edu.cmu.cs.dennisc.croquet.BorderPanel;
 class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private boolean isExpanded = false;
 	private SceneViewManagerPanel viewManagerPanel = null;
+	private SceneObjectMarkerManagerPanel objectMarkerManagerPanel = null;
 	private SnapControlPanel snapControlPanel = null;
 	private GridBagPanel mainPanel = null;
 	
@@ -156,6 +160,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	public SidePane(MoveAndTurnSceneEditor sceneEditor) {
 		this.mainPanel = new GridBagPanel();
 		this.viewManagerPanel = new SceneViewManagerPanel(sceneEditor);
+		this.objectMarkerManagerPanel = new SceneObjectMarkerManagerPanel(sceneEditor);
 		this.snapControlPanel = new SnapControlPanel(sceneEditor.getSnapState(), sceneEditor);
 
 		
@@ -167,7 +172,10 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		handleControlPanel.addComponent(sceneEditor.getDragAdapter().getInteractionSelectionStateList().createDefaultRadioButtons(), BorderPanel.Constraint.CENTER);
 		handleControlPanel.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 
-		this.mainPanel.addComponent(this.viewManagerPanel, new GridBagConstraints(
+		ScrollPane markerScrollPane = new ScrollPane(new PageAxisPanel(this.viewManagerPanel, this.objectMarkerManagerPanel), ScrollPane.VerticalScrollbarPolicy.AS_NEEDED, ScrollPane.HorizontalScrollbarPolicy.AS_NEEDED);
+		markerScrollPane.setBorder(null);
+		
+		this.mainPanel.addComponent(markerScrollPane, new GridBagConstraints(
 				0, // gridX
 				0, // gridY
 				1, // gridWidth
@@ -183,7 +191,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 
 		this.mainPanel.addComponent(handleControlPanel, new GridBagConstraints(
 				0, // gridX
-				1, // gridY
+				2, // gridY
 				1, // gridWidth
 				1, // gridHeight
 				1.0, // weightX
@@ -196,7 +204,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				);
 		this.mainPanel.addComponent(this.snapControlPanel, new GridBagConstraints(
 				0, // gridX
-				2, // gridY
+				3, // gridY
 				1, // gridWidth
 				1, // gridHeight
 				1.0, // weightX
@@ -271,6 +279,10 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 
 	public SceneViewManagerPanel getViewManager() {
 		return this.viewManagerPanel;
+	}
+	
+	public SceneObjectMarkerManagerPanel getObjectMarkerManager() {
+		return this.objectMarkerManagerPanel;
 	}
 
 	public void setSnapState(SnapState snapState)

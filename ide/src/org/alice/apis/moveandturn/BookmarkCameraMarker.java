@@ -57,7 +57,7 @@ public class BookmarkCameraMarker extends PerspectiveCameraMarker {
 	}
 	
 	@Override
-	protected float getDefaultMarkerOpacity() 
+	public float getDefaultMarkerOpacity() 
 	{
 		return .5f;
 	}

@@ -43,22 +43,50 @@
 
 package org.alice.apis.moveandturn;
 
+import javax.swing.Icon;
+
+import org.alice.ide.IDE;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
-public abstract class CameraMarker extends MarkerWithIcon 
+
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class MarkerWithIcon extends Marker 
 {
-	public CameraMarker()
+	
+	private Icon icon = null;
+	private Icon iconHighlighted = null;
+	
+	public MarkerWithIcon()
 	{
 		super();
+	}
+	
+	public Icon getIcon()
+	{
+		return this.icon;
+	}
+	
+	public void setIcon(Icon icon)
+	{
+		this.icon = icon;
+	}
+	
+	public Icon getHighlightedIcon()
+	{
+		return this.iconHighlighted;
+	}
+	
+	public void setHighlightedIcon(Icon icon)
+	{
+		this.iconHighlighted = icon;
 	}
 	
 	@Override
 	public void setName(String name) 
 	{
 		super.setName(name);
-		if (this.getIcon() == null)
-		{
-			this.setIcon( MoveAndTurnSceneEditor.getIconForCameraMarkerName(name) );
-		}
 	}
+	
 }

@@ -42,6 +42,7 @@
  */
 package org.alice.interact.event;
 
+import org.alice.apis.moveandturn.Element;
 import org.alice.interact.AbstractDragAdapter;
 
 import edu.cmu.cs.dennisc.pattern.event.Event;
@@ -56,6 +57,19 @@ public class SelectionEvent extends Event< AbstractDragAdapter >{
 		super( source );
 		this.transformable = transformable;
 	}
+	
+	public SelectionEvent( AbstractDragAdapter source, org.alice.apis.moveandturn.Transformable mtTransformable ) {
+		super( source );
+		if (mtTransformable != null)
+		{
+			this.transformable = mtTransformable.getSGTransformable();
+		}
+		else
+		{
+			this.transformable = null;
+		}
+	}
+	
 	public Transformable getTransformable() {
 		return this.transformable;
 	}

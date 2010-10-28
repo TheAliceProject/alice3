@@ -58,11 +58,11 @@ public class Arrow extends Transformable {
 	private Transformable sgTransformableCone;
 	private BottomToTopAxis bottomToTopAxis;
 	
-	public Arrow( double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone, Cylinder.BottomToTopAxis bottomToTopAxis, SingleAppearance frontFacingAppearance, boolean isBottomCapDesired ) {
+	public Arrow( double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone, Cylinder.BottomToTopAxis bottomToTopAxis, SingleAppearance cylinderFrontFacingAppearance, SingleAppearance coneFrontFacingAppearance, boolean isBottomCapDesired ) {
 		this.bottomToTopAxis = bottomToTopAxis;
 		
 		this.sgVisualCylinder = new Visual();
-		sgVisualCylinder.frontFacingAppearance.setValue( frontFacingAppearance );
+		sgVisualCylinder.frontFacingAppearance.setValue( cylinderFrontFacingAppearance );
 		
 		this.sgCylinder = new Cylinder();
 		sgCylinder.topRadius.setValue( radiusCylinder );
@@ -77,7 +77,7 @@ public class Arrow extends Transformable {
 		setConeTranslation(lengthCylinder);
 
 		this.sgVisualCone = new Visual();
-		sgVisualCone.frontFacingAppearance.setValue( frontFacingAppearance );
+		sgVisualCone.frontFacingAppearance.setValue( coneFrontFacingAppearance );
 
 		this.sgCone = new Cylinder();
 	    sgCone.topRadius.setValue( 0.0 );
@@ -94,6 +94,11 @@ public class Arrow extends Transformable {
 	    sgVisualCylinder.setParent( this );
 	    sgTransformableCone.setParent( this );
 	    sgVisualCone.setParent( sgTransformableCone );
+	}
+	
+	public Arrow( double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone, Cylinder.BottomToTopAxis bottomToTopAxis, SingleAppearance frontFacingAppearance, boolean isBottomCapDesired ) 
+	{
+		this(lengthCylinder, radiusCylinder, lengthCone, radiusCone, bottomToTopAxis, frontFacingAppearance, frontFacingAppearance, isBottomCapDesired);
 	}
 	
 	private void setConeTranslation(double lengthCylinder)
@@ -117,6 +122,11 @@ public class Arrow extends Transformable {
 	    this.sgCone.length.setValue( lengthCone );
 	    setConeTranslation(lengthCylinder);
 		
+	}
+	
+	public Visual[] getVisuals()
+	{
+		return new Visual[]{this.sgVisualCone, this.sgVisualCylinder};
 	}
 	
 	public void setFrontFacingAppearance( SingleAppearance frontFacingAppearance )

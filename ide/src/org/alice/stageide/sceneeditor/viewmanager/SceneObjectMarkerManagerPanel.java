@@ -40,26 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.stageide.sceneeditor.viewmanager;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.croquet.Button;
 import edu.cmu.cs.dennisc.croquet.GridBagPanel;
 import edu.cmu.cs.dennisc.croquet.ScrollPane;
 
-/**
- * @author David Culyba
- */
-public class SceneViewManagerPanel extends GridBagPanel{
+public class SceneObjectMarkerManagerPanel extends GridBagPanel {
+	protected Button moveObjectToMarkerButton;
+	protected Button moveMarkerToObjectButton;
 	
-	protected Button moveCameraToMarkerButton;
-	protected Button moveMarkerToCameraButton;
-	
-	public SceneViewManagerPanel(org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor sceneEditor)
+	public SceneObjectMarkerManagerPanel(org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor sceneEditor)
 	{
 		super();
 		edu.cmu.cs.dennisc.croquet.MutableList.Factory<FieldDeclaredInAlice> factory = new edu.cmu.cs.dennisc.croquet.MutableList.Factory<FieldDeclaredInAlice>() {
@@ -79,11 +75,12 @@ public class SceneViewManagerPanel extends GridBagPanel{
 				((MarkerFieldTile)mainComponent).setSelected( isSelected );
 			}
 			public edu.cmu.cs.dennisc.croquet.Operation<?> getAddItemOperation() {
-				return CreateCameraMarkerActionOperation.getInstance();
+				return CreateObjectMarkerActionOperation.getInstance();
 			}
 		};
-		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( SceneViewManagerPanel.class.getPackage().getName() + ".cameraMarkers" );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( resourceBundle.getString( "cameraMarkersTitle" ), 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), new GridBagConstraints( 
+		
+		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( SceneObjectMarkerManagerPanel.class.getPackage().getName() + ".objectMarkers" );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( resourceBundle.getString( "objectMarkersTitle" ), 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), new GridBagConstraints( 
 				0, //gridX
 				0, //gridY
 				1, //gridWidth
@@ -96,8 +93,8 @@ public class SceneViewManagerPanel extends GridBagPanel{
 				0, //ipadX
 				0 ) //ipadY
 		);
-		this.moveCameraToMarkerButton = MoveActiveCameraToMarkerActionOperation.getInstance().createButton();
-		this.addComponent( this.moveCameraToMarkerButton, new GridBagConstraints( 
+		this.moveObjectToMarkerButton = MoveSelectedObjectToMarkerActionOperation.getInstance().createButton();
+		this.addComponent( this.moveObjectToMarkerButton, new GridBagConstraints( 
 				1, //gridX
 				0, //gridY
 				1, //gridWidth
@@ -110,8 +107,8 @@ public class SceneViewManagerPanel extends GridBagPanel{
 				0, //ipadX
 				0 ) //ipadY
 		);
-		this.moveMarkerToCameraButton = MoveMarkerToActiveCameraActionOperation.getInstance().createButton();
-		this.addComponent( this.moveMarkerToCameraButton, new GridBagConstraints( 
+		this.moveMarkerToObjectButton = MoveMarkerToSelectedObjectActionOperation.getInstance().createButton();
+		this.addComponent( this.moveMarkerToObjectButton, new GridBagConstraints( 
 				2, //gridX
 				0, //gridY
 				1, //gridWidth
@@ -124,7 +121,7 @@ public class SceneViewManagerPanel extends GridBagPanel{
 				0, //ipadX
 				0 ) //ipadY
 		);
-		this.addComponent(sceneEditor.getSceneMarkerFieldList().createMutableList( factory ), new GridBagConstraints( 
+		this.addComponent(sceneEditor.getObjectMarkerFieldList().createMutableList( factory ), new GridBagConstraints( 
 				0, //gridX
 				1, //gridY
 				3, //gridWidth
@@ -141,8 +138,9 @@ public class SceneViewManagerPanel extends GridBagPanel{
 	
 	public void updateButtons()
 	{
-		this.moveCameraToMarkerButton.setVisible(MoveActiveCameraToMarkerActionOperation.getInstance().isEnabled());
-		this.moveMarkerToCameraButton.setVisible(MoveMarkerToActiveCameraActionOperation.getInstance().isEnabled());
+		this.moveObjectToMarkerButton.setVisible(MoveSelectedObjectToMarkerActionOperation.getInstance().isEnabled());
+		this.moveMarkerToObjectButton.setVisible(MoveMarkerToSelectedObjectActionOperation.getInstance().isEnabled());
 	}
-
+	
+	
 }

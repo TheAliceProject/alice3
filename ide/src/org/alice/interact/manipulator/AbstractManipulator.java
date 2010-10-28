@@ -46,6 +46,8 @@ package org.alice.interact.manipulator;
 import java.util.List;
 import java.util.Vector;
 
+import org.alice.apis.moveandturn.Element;
+import org.alice.apis.moveandturn.Marker;
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.event.ManipulationEvent;
@@ -109,6 +111,16 @@ public abstract class AbstractManipulator {
 		this.manipulationEvents.clear();
 	}
 	
+	public boolean doesManipulatedObjectHaveHandles()
+	{
+		Element mvObject = Element.getElement(this.manipulatedTransformable);
+		if (!(mvObject instanceof Marker))
+		{
+			return true;
+		}
+		return false;
+	}
+	
 	public List< ManipulationEvent > getManipulationEvents()
 	{
 		this.initializeEventMessages();
@@ -135,11 +147,14 @@ public abstract class AbstractManipulator {
 		if (this.hasStarted)
 		{
 			undoRedoBeginManipulation();
-			HandleSet setToShow = this.getHandleSetToEnable();
-			if (setToShow != null && this.dragAdapter != null)
+			if (this.doesManipulatedObjectHaveHandles())
 			{
-//				System.out.println("Push on start: "+setToShow);
-				this.dragAdapter.pushHandleSet( setToShow );
+				HandleSet setToShow = this.getHandleSetToEnable();
+				if (setToShow != null && this.dragAdapter != null)
+				{
+	//				System.out.println("Push on start: "+setToShow);
+					this.dragAdapter.pushHandleSet( setToShow );
+				}
 			}
 		}
 		return this.hasStarted;
@@ -176,10 +191,13 @@ public abstract class AbstractManipulator {
 			if (this.hasStarted)
 			{
 				this.hasStarted = false;
-				HandleSet setToShow = this.getHandleSetToEnable();
-				if (setToShow != null && this.dragAdapter != null)
+				if (this.doesManipulatedObjectHaveHandles())
 				{
-					this.dragAdapter.popHandleSet();
+					HandleSet setToShow = this.getHandleSetToEnable();
+					if (setToShow != null && this.dragAdapter != null)
+					{
+						this.dragAdapter.popHandleSet();
+					}
 				}
 			}
 			triggerAllDeactivateEvents();
@@ -211,11 +229,14 @@ public abstract class AbstractManipulator {
 //				}
 //			}
 			this.hasStarted = false;
-			HandleSet setToShow = this.getHandleSetToEnable();
-			if (setToShow != null && this.dragAdapter != null)
+			if (this.doesManipulatedObjectHaveHandles())
 			{
-//				System.out.println("Pop on manip end:");
-				this.dragAdapter.popHandleSet();
+				HandleSet setToShow = this.getHandleSetToEnable();
+				if (setToShow != null && this.dragAdapter != null)
+				{
+	//				System.out.println("Pop on manip end:");
+					this.dragAdapter.popHandleSet();
+				}
 			}
 		}
 		SnapUtilities.hideMovementSnapVisualization();

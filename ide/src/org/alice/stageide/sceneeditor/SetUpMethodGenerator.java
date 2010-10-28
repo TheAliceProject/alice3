@@ -44,18 +44,6 @@ package org.alice.stageide.sceneeditor;
 
 import org.alice.apis.moveandturn.AsSeenBy;
 import org.alice.apis.moveandturn.CameraMarker;
-import org.alice.apis.moveandturn.gallery.environments.Ground;
-import org.alice.apis.moveandturn.gallery.environments.grounds.DirtGround;
-import org.alice.apis.moveandturn.gallery.environments.grounds.GrassyGround;
-import org.alice.apis.moveandturn.gallery.environments.grounds.MoonSurface;
-import org.alice.apis.moveandturn.gallery.environments.grounds.SandyGround;
-import org.alice.apis.moveandturn.gallery.environments.grounds.SeaSurface;
-import org.alice.apis.moveandturn.gallery.environments.grounds.SnowyGround;
-import org.alice.interact.AbstractDragAdapter;
-
-import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
 
 /**
  * @author Dennis Cosgrove

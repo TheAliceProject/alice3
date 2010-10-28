@@ -41,24 +41,65 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.apis.moveandturn;
+package org.alice.ide.name.validators;
 
-import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
+import org.alice.apis.moveandturn.Marker;
 
-public abstract class CameraMarker extends MarkerWithIcon 
-{
-	public CameraMarker()
+public class MarkerColorValidator extends MemberNameValidator {
+
+	public MarkerColorValidator( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+		super( field, field.getDeclaringType() );
+	}
+	public MarkerColorValidator( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type ) {
+		super( null, type );
+	}
+	
+	private static String getColorAndNumberSuffix(String name)
 	{
-		super();
+		String[] splitName = name.split("_");
+		if (splitName.length == 1)
+		{
+			return name;
+		}
+		if (splitName.length == 2)
+		{
+			return splitName[1];
+		}
+		else
+		{
+			return splitName[splitName.length-2] + "_" + splitName[splitName.length-1];
+		}
 	}
 	
 	@Override
-	public void setName(String name) 
-	{
-		super.setName(name);
-		if (this.getIcon() == null)
-		{
-			this.setIcon( MoveAndTurnSceneEditor.getIconForCameraMarkerName(name) );
+	protected boolean isNameAvailable( String name ) {
+		String suffix = getColorAndNumberSuffix(name);
+		
+		edu.cmu.cs.dennisc.alice.ast.Node node = this.getNode();
+		edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type = this.getType();
+		if( type != null ) {
+			for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : type.fields ) {
+				assert field != null;
+				if( field == node) {
+					//pass
+				} else if (field.getDesiredValueType().isAssignableTo(Marker.class)){
+					String fieldSuffix = getColorAndNumberSuffix(field.name.getValue());
+					if( suffix.equals( fieldSuffix ) ) {
+						return false;
+					}
+				} else
+				{
+					if (name.equals( field.name.getValue()))
+					{
+						return false;
+					}
+					
+				}
+			}
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: isNameAvailable type == null" );
 		}
+		return true;
 	}
+
 }

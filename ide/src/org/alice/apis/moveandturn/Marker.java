@@ -59,7 +59,7 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 /**
  * @author Dennis Cosgrove
  */
-public class Marker extends Transformable 
+public abstract class Marker extends Transformable 
 {
 	protected SingleAppearance sgFrontFacingAppearance = new SingleAppearance();
 	
@@ -129,9 +129,7 @@ public class Marker extends Transformable
 		
 	}
 	
-	protected void createVisuals()
-	{
-	}
+	protected abstract void createVisuals();
 	
 	public Color4f getMarkerColor()
 	{
@@ -148,7 +146,7 @@ public class Marker extends Transformable
 		return Color4f.CYAN;
 	}
 	
-	protected float getDefaultMarkerOpacity()
+	public float getDefaultMarkerOpacity()
 	{
 		return 1;
 	}
