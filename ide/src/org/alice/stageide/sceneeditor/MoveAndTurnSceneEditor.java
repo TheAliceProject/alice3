@@ -1804,10 +1804,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		CreateObjectMarkerActionOperation.getInstance().setEnabled(false);
 		
 		FieldDeclaredInAlice selectedField = (FieldDeclaredInAlice)org.alice.ide.IDE.getSingleton().getAccessibleListState().getSelectedItem();
-		if (selectedField == null)
-		{
-			System.out.println("ETTORORE");
-		}
 		Transformable selectedTransformable = this.getTransformableForField(selectedField);
 		String markerName = getNameForObjectMarker( ownerType, selectedField );
 

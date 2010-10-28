@@ -111,6 +111,7 @@ public class ObjectMarker extends MarkerWithIcon
 	public ObjectMarker()
 	{
 		super();
+		this.setShowing(false);
 	}
 
 	@Override
