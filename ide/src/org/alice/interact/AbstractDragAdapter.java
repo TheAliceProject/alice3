@@ -53,6 +53,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -207,6 +208,9 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			throw new RuntimeException( "todo" );
 		}
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.interact.InteractionGroup interactionGroup ) {
+			
+		}
+		public StringBuilder appendRepresentation(StringBuilder rv, InteractionGroup value, Locale locale) {
 			throw new RuntimeException( "todo" );
 		}
 	} );

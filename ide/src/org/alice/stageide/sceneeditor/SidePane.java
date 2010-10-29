@@ -81,7 +81,8 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	
 	private BasicTreeNodeViewerPanel sceneGraphViewer = null;
 	private JDialog sceneGraphViewDialog = null;
-	private ActionOperation showSceneGraphActionOperation; 
+	private ActionOperation showSceneGraphActionOperation;
+	private SceneObjectPropertyManager propertyManager;
 	
 	public void setSceneGraphRoot()
 	{
@@ -162,7 +163,7 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		this.viewManagerPanel = new SceneViewManagerPanel(sceneEditor);
 		this.objectMarkerManagerPanel = new SceneObjectMarkerManagerPanel(sceneEditor);
 		this.snapControlPanel = new SnapControlPanel(sceneEditor.getSnapState(), sceneEditor);
-
+		this.propertyManager = new SceneObjectPropertyManager();
 		
 		edu.cmu.cs.dennisc.croquet.BorderPanel handleControlPanel = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 //		handleControlPanel.setOpaque( false );
@@ -175,9 +176,23 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		ScrollPane markerScrollPane = new ScrollPane(new PageAxisPanel(this.viewManagerPanel, this.objectMarkerManagerPanel), ScrollPane.VerticalScrollbarPolicy.AS_NEEDED, ScrollPane.HorizontalScrollbarPolicy.AS_NEEDED);
 		markerScrollPane.setBorder(null);
 		
-		this.mainPanel.addComponent(markerScrollPane, new GridBagConstraints(
+		this.mainPanel.addComponent(this.propertyManager, new GridBagConstraints(
 				0, // gridX
 				0, // gridY
+				1, // gridWidth
+				1, // gridHeight
+				1.0, // weightX
+				1.0, // weightY
+				GridBagConstraints.NORTHWEST, // anchor
+				GridBagConstraints.NONE, // fill
+				new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
+				0, // ipadX
+				0) // ipadY
+				);
+		
+		this.mainPanel.addComponent(markerScrollPane, new GridBagConstraints(
+				0, // gridX
+				1, // gridY
 				1, // gridWidth
 				1, // gridHeight
 				1.0, // weightX
@@ -260,6 +275,10 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 				edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue()
 		);
 		this.addComponent( undoRedoPanel, Constraint.PAGE_START );
+	}
+	
+	public SceneObjectPropertyManager getPropertyManager() {
+		return this.propertyManager;
 	}
 	
 	public ActionOperation getShowSceneGraphViewerActionOperation()

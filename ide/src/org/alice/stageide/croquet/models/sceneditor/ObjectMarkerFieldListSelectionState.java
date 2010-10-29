@@ -41,66 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.properties;
+package org.alice.stageide.croquet.models.sceneditor;
 
-import java.util.Locale;
 
-import org.alice.ide.croquet.models.ast.rename.RenameFieldOperation;
-import org.alice.ide.properties.adapter.AbstractNamePropertyAdapter;
+import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 
-import edu.cmu.cs.dennisc.croquet.Operation;
-
-public class FieldNameAdapter extends AbstractNamePropertyAdapter<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> {
-	
-	public FieldNameAdapter(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice instance)
-	{
-		super(instance);
+public class ObjectMarkerFieldListSelectionState extends edu.cmu.cs.dennisc.croquet.ListSelectionState< FieldDeclaredInAlice > {
+	private static class SingletonHolder {
+		private static ObjectMarkerFieldListSelectionState instance = new ObjectMarkerFieldListSelectionState();
 	}
-
-	public String getValue() 
-	{
-		if (this.instance != null)
-		{
-			return this.instance.getName();
-		}
-		else
-		{
-			return null;
-		}
+	public static ObjectMarkerFieldListSelectionState getInstance() {
+		return SingletonHolder.instance;
 	}
-	
-	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice instance)
-	{
-		if (this.instance != null)
-		{
-			return this.instance.name;
-		}
-		return null;
+	private ObjectMarkerFieldListSelectionState() {
+		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "35ba71ac-34f5-46ec-9bf4-3b8127717366" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( FieldDeclaredInAlice.class ) );
 	}
-
-	@Override
-	public void setValue(String value) 
-	{
-		super.setValue(value);
-		if (this.instance != null)
-		{
-			this.instance.setName(value);
-		}
-		
-	}
-	
-	@Override
-	public Operation getEditOperation() 
-	{
-		return RenameFieldOperation.getInstance( this.instance );
-		
-	}
-
-	@Override
-	public String getUndoRedoDescription(Locale locale) 
-	{
-		return "Field Name";
-	}
-
 }

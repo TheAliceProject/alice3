@@ -153,7 +153,7 @@ public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
 		final org.alice.apis.moveandturn.PointOfView nextPOV;
 		
 		MoveAndTurnSceneEditor sceneEditor = (MoveAndTurnSceneEditor)(IDE.getSingleton().getSceneEditor());
-		FieldDeclaredInAlice selectedField = (FieldDeclaredInAlice)org.alice.ide.IDE.getSingleton().getAccessibleListState().getSelectedItem();
+		FieldDeclaredInAlice selectedField = (FieldDeclaredInAlice)org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
 		final Transformable selectedTransformable = sceneEditor.getTransformableForField(selectedField);
 		objectMarker = sceneEditor.getInstanceInJavaForField(this.markerField, org.alice.apis.moveandturn.ObjectMarker.class);
 		if( objectMarker != null ) {
@@ -165,15 +165,15 @@ public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
 			} else {
 				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
-					public void doOrRedo( boolean isDo ) {
+					public void doOrRedoInternal( boolean isDo ) {
 						setAbsolutePOV( selectedTransformable, nextPOV );
 					}
 					@Override
-					public void undo() {
+					public void undoInternal() {
 						setAbsolutePOV( selectedTransformable, prevPOV );
 					}
 					@Override
-					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+					protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
 						rv.append( MoveSelectedObjectToMarkerActionOperation.this.getName() );
 						return rv;
 					}
